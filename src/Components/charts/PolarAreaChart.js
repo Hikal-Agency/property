@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -13,9 +13,9 @@ ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
 const PolarAreaChart = ({ total_projects }) => {
   const { currentMode } = useStateContext();
-  // const [totail_projects2, settotail_projects2] = useState(
-  //     total_projects ? total_projects : []
-  // );
+  const [totail_projects2] = useState(
+      total_projects ? total_projects : []
+  );
 
   const data = {
     datasets: [
@@ -30,27 +30,12 @@ const PolarAreaChart = ({ total_projects }) => {
         //         project?.project_count
         //     })
         // ],
-        label: ["Riviera", "Crescent", "Tiger"],
-        data: [4, 3, 3],
-        backgroundColor: ["rgba(218, 31, 38, 1)", "rgba(0, 0, 0, 1)"],
+        label: totail_projects2.map((data) => data.project), //["Riviera", "Crescent", "Tiger"],
+                data: totail_projects2.map((data) => data.project_count), //[4, 3, 3],
+        backgroundColor: ["rgba(218, 31, 38, 1)"],
       },
     ],
   };
-  //     };
-  //   }),
-  // datasets: [
-  //     {
-  //         label: 'AED',
-  //         data: [3000000, 1000000, 2000000],
-  //         backgroundColor: [
-  //             'rgba(255, 99, 132, 0.5)',
-  //             'rgba(255, 0, 0, 0.5)',
-  //             'rgba(0, 0, 0, 0.5)',
-  //         ],
-  //         color: '#da1f26',
-  //         borderWidth: 1,
-  //     },
-  // ],
   return (
     <span>
       {currentMode === "dark" ? (
@@ -61,6 +46,7 @@ const PolarAreaChart = ({ total_projects }) => {
             responsive: true,
             maintainAspectRatio: true,
             aspectRatio: 1,
+            borderColor: "#000000",
           }}
         />
       ) : (
@@ -71,6 +57,7 @@ const PolarAreaChart = ({ total_projects }) => {
             responsive: true,
             maintainAspectRatio: true,
             aspectRatio: 1,
+            borderColor: "#ffffff",
           }}
         />
       )}

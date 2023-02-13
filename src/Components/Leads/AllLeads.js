@@ -571,7 +571,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       } else if (lead_type === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=No Answer`;
       } else if (lead_type === "meeting") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=meeting`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Meeting`;
       } else if (lead_type === "follow up") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Follow Up`;
       } else if (lead_type === "low budget") {
@@ -591,7 +591,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       } else if (lead_type === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=No Answer`;
       } else if (lead_type === "meeting") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=meeting`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Meeting`;
       } else if (lead_type === "follow up") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Follow Up`;
       } else if (lead_type === "low budget") {
@@ -611,7 +611,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       } else if (lead_type === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=No Answer`;
       } else if (lead_type === "meeting") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=meeting`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Meeting`;
       } else if (lead_type === "follow up") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Follow Up`;
       } else if (lead_type === "low budget") {
@@ -631,7 +631,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       } else if (lead_type === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=No Answer`;
       } else if (lead_type === "meeting") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=meeting`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Meeting`;
       } else if (lead_type === "follow up") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Follow Up`;
       } else if (lead_type === "low budget") {

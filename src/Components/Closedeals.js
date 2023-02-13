@@ -28,7 +28,13 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
   };
 
   const columns = [
-    { field: "id", headerName: "#", width: 70, headerAlign: "center" },
+    { 
+      field: "id", 
+      headerName: "#", 
+      minWidth: 50,
+      flex: 1, 
+      headerAlign: "center" 
+    },
     // {
     // field: "leads.creationDate",
     // headerName: "Lead Creation",
@@ -39,51 +45,66 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
     {
       field: "dealDate",
       headerName: "Deal date",
-      width: 150,
+      minWidth: 90,
+      flex: 1,
+      headerAlign: "center",
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
     {
       field: "leadName",
       headerName: "Lead name",
-      width: 170,
+      headerAlign: "center",
+      minWidth: 150,
+      flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
-      width: 110,
+      headerAlign: "center",
+      minWidth: 110,
+      flex: 1,
     },
     {
       field: "enquiryType",
       headerName: "Enquiry",
-      width: 110,
+      headerAlign: "center",
+      minWidth: 110,
+      flex: 1,
     },
     {
       field: "leadType",
       headerName: "Property",
-      width: 100,
+      headerAlign: "center",
+      minWidth: 110,
+      flex: 1,
     },
 
     {
       field: "amount",
       headerName: "Amount in AED",
-      width: 110,
+      headerAlign: "center",
+      minWidth: 110,
+      flex: 1,
     },
     // {
     //   field: "manager",
     //   headerName: "Manager",
-    //   width: 110,
+    //   minWidth: 150,
+    //   flex: 1,
     //   headerAlign: "center",
     // },
     // {
-    //   field: "Salesperson",
+    //   field: "salesperson",
     //   headerName: "Agent",
-    //   width: 110,
+    //   minWidth: 150,
+    //   flex: 1,
     //   headerAlign: "center",
     // },
     {
       field: "",
       headerName: "Action",
-      width: 150,
+      minWidth: 150,
+      flex: 1,
       headerAlign: "center",
       sortable: false,
       filterable: false,
@@ -192,7 +213,7 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
     },
     // TOOLBAR
     "& .MuiDataGrid-toolbarContainer": {
-      backgroundColor: currentMode === "dark" ? "#424242" : "#000000",
+      backgroundColor: currentMode === "dark" ? "#212121" : "#000000",
       // backgroundColor: "#3b3d44",
       paddingTop: "10px",
       paddingBottom: "10px",
@@ -221,7 +242,7 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
     },
     // background color of main table content
     "& .MuiDataGrid-virtualScroller": {
-      backgroundColor: currentMode === "dark" ? "#424242" : "#ffffff",
+      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
       color: currentMode === "dark" ? "white" : "black",
     },
     // changing rows hover color
@@ -232,7 +253,7 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
       },
     // changing row colors
     " .even": {
-      backgroundColor: currentMode === "dark" ? "#424242" : "#ffffff",
+      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
     },
     // changing rows right border
     // "& .MuiDataGrid-cell": {

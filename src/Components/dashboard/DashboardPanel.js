@@ -11,6 +11,7 @@ import BarChart from "../../Components/charts/BarChart";
 import CombinationChart from "../../Components/charts/CombinationChart";
 import DoughnutChart from "../../Components/charts/DoughnutChart";
 import BubbleChart from "../../Components/charts/BubbleChart";
+import PolarAreaChart from "../charts/PolarAreaChart";
 import Task from "../../Components/Tasks/Task";
 import { Link } from "react-router-dom";
 import UpcomingMeeting from "../meetings/UpcomingMeeting";
@@ -122,12 +123,6 @@ const DashboardPanel = () => {
       amount: DashboardData?.lead_status?.new,
       title: "New lead",
       link: "/hotleads/new",
-    },
-    {
-      icon: <AiOutlineFire />,
-      amount: DashboardData?.lead_status?.noanswer,
-      title: "No Answer",
-      link: "/hotleads/no answer",
     },
   ];
 
@@ -338,7 +333,7 @@ const DashboardPanel = () => {
                 >
                   <div className="justify-between items-center">
                     <h6 className="font-semibold">Project</h6>
-                    <BubbleChart
+                    <PolarAreaChart
                       total_projects={DashboardData?.total_projects}
                     />
                   </div>
@@ -437,7 +432,7 @@ const DashboardPanel = () => {
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Project Chart</h6>
-                <BubbleChart total_projects={DashboardData?.total_projects} />
+                <PolarAreaChart total_projects={DashboardData?.total_projects} />
               </div>
             </div>
           </div>
@@ -460,7 +455,7 @@ const DashboardPanel = () => {
                 currentMode === "dark" ? "text-white" : "text-gray-900"
               } `}
             >
-              Deal drawn in [Current Month]
+              Deal drawn in the month
             </p>
             <p
               className={`text-4xl font-bold mt-2 ${

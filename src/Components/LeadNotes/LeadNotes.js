@@ -33,44 +33,51 @@ const LeadNotes = ({ pageState, setpageState }) => {
     {
       field: "id",
       headerName: "#",
-      width: "70",
+      minWidth: "50",
+      flex: 1,
       headerAlign: "center",
     },
     {
       field: "creationDate",
       headerName: "Date",
-      width: 200,
+      minWidth: 170,
+      flex: 1,
       headerAlign: "center",
     },
     {
       field: "leadName",
       headerName: "Lead name",
-      width: 200,
+      minWidth: 150,
+      flex: 1,
       headerAlign: "center",
     },
     {
       field: "project",
       headerName: "Project",
-      // width: 110,
+      minWidth: 110,
+      flex: 1,
       headerAlign: "center",
     },
     {
       field: "enquiryType",
       headerName: "Enquiry",
-      // width: 110,
+      minWidth: 110,
+      flex: 1,
       headerAlign: "center",
     },
     {
       field: "leadNote",
       headerName: "Note",
-      width: 350,
+      minWidth: 400,
+      flex: 1,
       headerAlign: "center",
     },
 
     {
       field: "userName",
       headerName: "Added by",
-      // width: 150,
+      minWidth: 150,
+      flex: 1,
       headerAlign: "center",
     },
   ];
@@ -147,7 +154,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
     },
     // TOOLBAR
     "& .MuiDataGrid-toolbarContainer": {
-      backgroundColor: currentMode === "dark" ? "#424242" : "#000000",
+      backgroundColor: currentMode === "dark" ? "#212121" : "#000000",
       paddingTop: "10px",
       paddingBottom: "10px",
       paddingLeft: "20px",
@@ -174,7 +181,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
     },
     // background color of main table content
     "& .MuiDataGrid-virtualScroller": {
-      backgroundColor: currentMode === "dark" ? "#424242" : "#ffffff",
+      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
       color: currentMode === "dark" ? "white" : "black",
     },
     // changing rows hover color
@@ -184,7 +191,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
     },
     // changing row colors
     " .even": {
-      backgroundColor: currentMode === "dark" ? "#424242" : "#ffffff",
+      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
     },
     // changing rows right border
     // "& .MuiDataGrid-cell": {

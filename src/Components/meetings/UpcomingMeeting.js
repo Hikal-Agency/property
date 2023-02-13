@@ -16,7 +16,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
             key={index}
             className={`${
               currentMode === "dark" ? "bg-black" : "bg-white"
-            } bg-white rounded-md mb-3`}
+            } rounded-md mb-3`}
           >
             <div className="px-5 py-5 space-y-3">
               {/* <div className="w-full flex justify-between items-center">

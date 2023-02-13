@@ -255,6 +255,7 @@ const AddLeadComponent = ({ BACKEND_URL }) => {
                             type={"text"}
                             label="Notes"
                             className="w-full mb-5"
+                            style={{ marginBottom: "20px"}}
                             variant="outlined"
                             size="medium"
                             value={LeadNotes}
@@ -279,6 +280,7 @@ const AddLeadComponent = ({ BACKEND_URL }) => {
                             type={"text"}
                             label="Project name"
                             className="w-full mb-5"
+                            style={{ marginBottom: "20px"}}
                             variant="outlined"
                             size="medium"
                             value={LeadProject}
@@ -363,6 +365,7 @@ const AddLeadComponent = ({ BACKEND_URL }) => {
                             type={"text"}
                             label="Lead name"
                             className="w-full mb-5"
+                            style={{ marginBottom: "20px"}}
                             variant="outlined"
                             size="medium"
                             required
@@ -374,6 +377,7 @@ const AddLeadComponent = ({ BACKEND_URL }) => {
                             type={"number"}
                             label="Contact number"
                             className="w-full mb-5"
+                            style={{ marginBottom: "20px"}}
                             variant="outlined"
                             size="medium"
                             required
@@ -386,6 +390,7 @@ const AddLeadComponent = ({ BACKEND_URL }) => {
                             type={"email"}
                             label="Email address"
                             className="w-full mb-5"
+                            style={{ marginBottom: "20px"}}
                             variant="outlined"
                             size="medium"
                             required
@@ -396,7 +401,7 @@ const AddLeadComponent = ({ BACKEND_URL }) => {
                           <Select
                             id="LanguagePrefered"
                             value={LanguagePrefered}
-                            label="Prefered language"
+                            label="Preferred language"
                             onChange={ChangeLanguagePrefered}
                             size="medium"
                             className="w-full mb-5"
@@ -404,7 +409,7 @@ const AddLeadComponent = ({ BACKEND_URL }) => {
                             required
                           >
                             <MenuItem value="" disabled>
-                              Prefered language
+                            Preferred language
                             </MenuItem>
                             <MenuItem value={"Arabic"}>Arabic</MenuItem>
                             <MenuItem value={"English"}>English</MenuItem>

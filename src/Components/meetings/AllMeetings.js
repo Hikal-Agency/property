@@ -9,6 +9,7 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 import axios from "axios";
+import { AiOutlineEdit } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 
@@ -25,55 +26,69 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
   };
 
   const columns = [
-    { field: "id", headerName: "#", width: 70, headerAlign: "center" },
+    { 
+      field: "id", 
+      headerName: "#", 
+      minWidth: 50,
+      flex: 1,
+      headerAlign: "center",
+    },
     {
       field: "leadName",
       headerName: "Lead name",
-      width: 170,
+      minWidth: 150,
+      flex: 1,
       headerAlign: "center",
     },
     {
       field: "project",
       headerName: "Project",
-      width: 110,
+      minWidth: 110,
+      flex: 1,
       headerAlign: "center",
     },
     {
       field: "enquiryType",
       headerName: "Enquiry",
-      width: 110,
+      minWidth: 110,
+      flex: 1,
       headerAlign: "center",
     },
     {
       field: "leadType",
       headerName: "Property",
-      width: 100,
+      minWidth: 110,
+      flex: 1,
       headerAlign: "center",
     },
 
     {
       field: "meetingBy",
       headerName: "Meeting by",
-      width: 150,
+      minWidth: 170,
+      flex: 1,
       headerAlign: "center",
     },
 
     {
       field: "meetingDate",
       headerName: "Meeting date",
-      width: 150,
+      minWidth: 110,
+      flex: 1,
       headerAlign: "center",
     },
     {
       field: "meetingTime",
       headerName: "Meeting time",
-      width: 110,
+      minWidth: 110,
+      flex: 1,
       headerAlign: "center",
     },
     {
       field: "meetingStatus",
       headerName: "Meeting status",
       width: 150,
+      flex: 1,
       headerAlign: "center",
       sortable: false,
       filterable: false,
@@ -81,50 +96,54 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
         return (
           <>
             {cellValues.formattedValue === "Cancelled" && (
-              <div className="w-full h-full flex justify-center align-center">
-                <Button
-                  disabled
-                  className="bg-transparent disabled:opacity-100 cursor-none text-[#ff0000]"
-                >
-                  Cancelled
-                </Button>
+              <div className="w-full h-full flex justify-center align-center items-center text-[#ff0000]">
+                CANCELLED
               </div>
             )}
 
             {cellValues.formattedValue === "Pending" && (
-              <div className="w-full h-full flex justify-center align-center">
-                <Button
-                  disabled
-                  className="bg-transparent disabled:opacity-100 cursor-none text-[#f27f25]"
-                >
-                  Pending
-                </Button>
+              <div className="w-full h-full flex justify-center align-center items-center text-[#f27f25]">
+                PENDING
               </div>
             )}
             {cellValues.formattedValue === "Postponed" && (
-              <div className="w-full h-full flex justify-center align-center">
-                <Button
-                  disabled
-                  className="bg-transparent disabled:opacity-100 cursor-none text-[#f27f25]"
-                >
-                  Postponed
-                </Button>
+              <div className="w-full h-full flex justify-center align-center items-center text-[#f27f25]">
+                POSTPONED
               </div>
             )}
             {cellValues.formattedValue === "Attended" && (
-              <div className="w-full h-full flex justify-center align-center">
-                <Button
-                  disabled
-                  className="bg-transparent disabled:opacity-100 cursor-none text-[#0f9d58]"
-                >
-                  Attended
-                </Button>
+              <div className="w-full h-full flex justify-center align-center items-center text-[#0f9d58]">
+                ATTENDED
               </div>
             )}
           </>
         );
       },
     },
+    {
+      field: "edit",
+      headerName: "Actions",
+      headerAlign: "center",
+      minWidth: "110",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center align-center">
+            <Button
+              // onClick={() => HandleEditFunc(cellValues)}
+              className={`${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              {/* <AiTwotoneEdit size={20} /> */}
+              <AiOutlineEdit size={20} />
+            </Button>
+          </div>
+        )
+      }
+    }
   ];
 
   //eslint-disable-next-line
@@ -204,7 +223,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
     },
     // TOOLBAR
     "& .MuiDataGrid-toolbarContainer": {
-      backgroundColor: currentMode === "dark" ? "#424242" : "#000000",
+      backgroundColor: currentMode === "dark" ? "#212121" : "#000000",
       paddingTop: "10px",
       paddingBottom: "10px",
       paddingLeft: "20px",
@@ -232,7 +251,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
     },
     // background color of main table content
     "& .MuiDataGrid-virtualScroller": {
-      backgroundColor: currentMode === "dark" ? "#424242" : "#ffffff",
+      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
       color: currentMode === "dark" ? "white" : "black",
     },
     // changing rows hover color
@@ -243,7 +262,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
       },
     // changing row colors
     " .even": {
-      backgroundColor: currentMode === "dark" ? "#424242" : "#ffffff",
+      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
     },
     // changing rows right border
     // "& .MuiDataGrid-cell": {

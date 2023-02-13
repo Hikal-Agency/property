@@ -34,7 +34,6 @@ const UpdateLead = ({
   const [ForType, setForType] = useState("");
   const [LanguagePrefered, setLanguagePrefered] = useState("");
   const [LeadStatus, setLeadStatus] = useState("");
-  const [LeadSource, setLeadSource] = useState("");
   // eslint-disable-next-line
   const [Feedback, setFeedback] = useState("");
   const [Manager, setManager] = useState("");
@@ -62,9 +61,6 @@ const UpdateLead = ({
   // eslint-disable-next-line
   const ChangeLeadStatus = (event) => {
     setLeadStatus(event.target.value);
-  };
-  const ChangeLeadSource = (event) => {
-    setLeadSource(event.target.value);
   };
   // eslint-disable-next-line
   const ChangeFeedback = (event) => {
@@ -119,7 +115,6 @@ const UpdateLead = ({
         setLeadEmail(result?.data?.data?.leadEmail);
         setLanguagePrefered(result?.data?.data?.language);
         setLeadStatus(result?.data?.data?.leadStatus);
-        setLeadSource(result?.data?.data?.leadSource);
         setFeedback(result?.data?.data?.feedback);
         setLeadNotes(result?.data?.data?.notes);
         setManager(result?.data?.data?.assignedToManager);
@@ -170,7 +165,6 @@ const UpdateLead = ({
     UpdateLeadData.append("leadFor", ForType);
     UpdateLeadData.append("language", LanguagePrefered);
     UpdateLeadData.append("leadStatus", LeadStatus);
-    UpdateLeadData.append("leadSource", LeadSource);
     UpdateLeadData.append("notes", LeadNotes);
     if (User.role === 1 || User.role === 3) {
       UpdateLeadData.append("assignedToManager", Manager);
@@ -319,6 +313,7 @@ const UpdateLead = ({
                         type={"text"}
                         label="Notes"
                         className="w-full mb-5"
+                        style={{ marginBottom: "20px"}}
                         variant="outlined"
                         size="medium"
                         value={LeadNotes}
@@ -343,6 +338,7 @@ const UpdateLead = ({
                         type={"text"}
                         label="Project name"
                         className="w-full mb-5"
+                        style={{ marginBottom: "20px"}}
                         variant="outlined"
                         size="medium"
                         value={LeadProject}
@@ -427,6 +423,7 @@ const UpdateLead = ({
                         type={"text"}
                         label="Lead name"
                         className="w-full mb-5"
+                        style={{ marginBottom: "20px"}}
                         variant="outlined"
                         size="medium"
                         required
@@ -438,6 +435,7 @@ const UpdateLead = ({
                         type={"number"}
                         label="Contact number"
                         className="w-full mb-5"
+                        style={{ marginBottom: "20px"}}
                         variant="outlined"
                         size="medium"
                         required
@@ -450,6 +448,7 @@ const UpdateLead = ({
                         type={"email"}
                         label="Email address"
                         className="w-full mb-5"
+                        style={{ marginBottom: "20px"}}
                         variant="outlined"
                         size="medium"
                         required
@@ -478,40 +477,6 @@ const UpdateLead = ({
                         <MenuItem value={"Russian"}>Russian</MenuItem>
                         <MenuItem value={"Spanish"}>Spanish</MenuItem>
                         <MenuItem value={"Urdu"}>Urdu</MenuItem>
-                      </Select>
-
-                      <Select
-                        id="LeadSource"
-                        value={LeadSource}
-                        label="Source"
-                        onChange={ChangeLeadSource}
-                        size="medium"
-                        className="w-full mb-5"
-                        displayEmpty
-                        required
-                      >
-                        <MenuItem value="" disabled>
-                          Source
-                        </MenuItem>
-                        <MenuItem value={"Website"}>Website</MenuItem>
-                        <MenuItem value={"Propety Finder"}>
-                          Property Finder
-                        </MenuItem>
-                        <MenuItem value={"Campaign"}>Campaign</MenuItem>
-                        <MenuItem value={"Personal"}>Personal</MenuItem>
-                        <MenuItem value={"Cold"}>Cold</MenuItem>
-                        <MenuItem value={"Campaign Snapchat"}>
-                          Campaign Snapchat
-                        </MenuItem>
-                        <MenuItem value={"Campaign Tiktok"}>
-                          Campaign Tiktok
-                        </MenuItem>
-                        <MenuItem value={"Campaign Facebook"}>
-                          Campaign Facebook
-                        </MenuItem>
-                        <MenuItem value={"Campaign GoogleAds"}>
-                          Campaign GoogleAds
-                        </MenuItem>
                       </Select>
                     </Box>
                   </div>

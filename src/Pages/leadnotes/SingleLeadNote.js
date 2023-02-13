@@ -13,6 +13,10 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import moment from "moment/moment";
+import { FaHotjar } from "react-icons/fa";
+import { FiLink } from "react-icons/fi";
+import { BsSnow2, BsPatchQuestion } from "react-icons/bs";
+import { HiOutlineUserCircle } from "react-icons/hi";
 
 import React, { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
@@ -149,198 +153,142 @@ const SingleLeadNote = (props) => {
                   <div
                     className={`${
                       currentMode === "dark"
-                        ? "bg-main-dark-bg-2 text-white"
+                        ? "bg-black text-white"
                         : "bg-white"
-                    }  px-10 py-10 mt-5 mb-10 rounded-md`}
+                    }  px-10 py-10 mt-5 mb-10`}
                   >
-                    <h1 className="text-center font-bold text-4xl mb-2 ">
-                      Lead Notes Detail
+                    <h1
+                      className={`${
+                        currentMode === "dark" ? "text-red-600" : "text-red-600"
+                      } text-center font-bold text-2xl pb-5`}
+                    >
+                      Lead details and notes
                     </h1>
-                    <span className="block h-1 w-16 bg-main-red-color mx-auto rounded-md"></span>
-                    <div className="mt-3 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex space-x-3">
-                          <h1
-                            className={`text-lg font-bold ${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-gray-800"
-                            }`}
-                          >
-                            Lead Name:
-                          </h1>
-                          <h1
-                            className={`text-lg font-semibold ${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-main-red-color-2"
-                            }`}
-                          >
-                            {LeadData?.info?.lead}
-                          </h1>
+                    <div className="grid grid-cols-5 md:grid-cols-5 sm:grid-cols-1 gap-5">
+                      <div className="col-span-3 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex space-x-2">
+                            <h6
+                              className={`font-bold ${
+                                currentMode === "dark" ? "text-white" : "text-black"
+                              }`}
+                            >
+                              Lead Name:
+                            </h6>
+                            <h6
+                              className={`font-semibold ${
+                                currentMode === "dark" ? "text-white" : "text-black"
+                              }`}
+                            >
+                              {LeadData?.info?.lead}
+                            </h6>
+                          </div>
                         </div>
-                        <div className="flex space-x-3">
-                          <Button className="bg-main-red-color rounded-md px-2 py-2 shadow-none hover:shadow-none">
-                            <GrMail size={22} />
-                          </Button>
+                        <div className="flex items-center justify-between">
+                          <div className="flex space-x-2">
+                            <h6
+                              className={`font-bold ${
+                                currentMode === "dark" ? "text-white" : "text-black"
+                              }`}
+                            >
+                              Contact Details:
+                            </h6>
+                            <h6
+                              className={`font-semibold ${
+                                currentMode === "dark" ? "text-white" : "text-black"
+                              }`}
+                            >
+                              {/* {LeadData?.info?.leadContact} */}
+                            </h6>
+                            <h6
+                              className={`font-semibold ${
+                                currentMode === "dark" ? "text-white" : "text-black"
+                              }`}
+                            >
+                              {/* {LeadData?.info?.LeadEmail} */}
+                            </h6>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex space-x-3">
-                          <h1
-                            className={`text-lg font-bold ${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-gray-800"
-                            }`}
-                          >
-                            Feedback:
-                          </h1>
-                          <h1
-                            className={`text-lg font-semibold ${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-main-red-color-2"
-                            }`}
-                          >
-                            {LeadData?.feedback}
-                          </h1>
-                        </div>
-                        <div className="flex space-x-3">
-                          <p
-                            className={`italic ${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-main-red-color"
-                            }`}
-                          >
-                            Lead added on {LeadData?.info?.lead_date}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex space-x-3">
-                          <h1
-                            className={`text-lg font-bold ${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-gray-800"
-                            }`}
-                          >
-                            Project:
-                          </h1>
-                          <h1
-                            className={`text-lg font-semibold ${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-main-red-color-2"
-                            }`}
-                          >
-                            {LeadData?.info?.project} {LeadData?.info?.enquiry}
-                          </h1>
-                        </div>
-                        <div className="flex space-x-3">
-                          <p
-                            className={`italic ${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-main-red-color"
-                            }`}
-                          >
-                            Last edited on {LeadData?.lastEdited}
-                          </p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex space-x-2">
+                            <h6
+                              className={`font-bold ${
+                                currentMode === "dark" ? "text-white" : "text-black"
+                              }`}
+                            >
+                              Preferred language:
+                            </h6>
+                            <h6
+                              className={`font-semibold ${
+                                currentMode === "dark" ? "text-white" : "text-black"
+                              }`}
+                            >
+                              {LeadData?.info?.language}
+                            </h6>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex space-x-3">
-                        <h1
-                          className={`text-lg font-bold ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-gray-800"
+                      <div className="col-span-2 space-y-2 text-right">
+                        <div className="mb-5 space-x-3">
+                          <span className="p-2 bg-main-red-color text-white rounded-md">
+                            {LeadData?.info?.feedback}
+                          </span>
+                        </div>
+                        <p
+                          className={`italic text-sm ${
+                            currentMode === "dark" ? "text-white" : "text-black"
                           }`}
                         >
-                          Consultant:
-                        </h1>
-                        <h1
-                          className={`text-lg font-semibold ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-main-red-color-2"
+                          Lead added on {LeadData?.info?.lead_date}
+                        </p>
+                        <p
+                          className={`italic text-sm ${
+                            currentMode === "dark" ? "text-white" : "text-black"
                           }`}
                         >
-                          {LeadData?.info?.property_consultant}
-                        </h1>
+                          Lead edited on{" "}
+                          {LeadData?.info?.last_edited === "" ? "-" : LeadData?.info?.last_edited}
+                        </p>
                       </div>
                     </div>
-                    <div className="mt-7 flex items-center justify-between border-t-2 border-main-red-color rounded-md shadow-md px-5 py-2">
-                      <div className="flex space-x-3">
-                        <h1
-                          className={`text-lg font-bold capitalize ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-gray-800"
-                          }`}
-                        >
-                          Lead Status:
-                        </h1>
-                        <h1
-                          className={`text-lg font-semibold capitalize ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-main-red-color-2"
-                          }`}
-                        >
-                          {LeadData?.leadStatus}
-                        </h1>
+                    <div className="bg-main-red-color h-0.5 w-full my-7"></div>
+                    <div
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } grid grid-cols-4 md:grid-cols-4 sm:grid-cols-2 gap-5 `}
+                    >
+                      <div className="grid justify-center space-y-3 text-center">
+                        <h6 className="font-bold">Project</h6>
+                        <h6 className="font-semibold">{LeadData?.info?.project}</h6>
                       </div>
-                      <div className="flex space-x-3">
-                        <h1
-                          className={`text-lg font-bold capitalize ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-gray-800"
-                          }`}
-                        >
-                          Lead Category:
-                        </h1>
-                        <h1
-                          className={`text-lg font-semibold capitalize ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-main-red-color-2"
-                          }`}
-                        >
-                          {LeadData?.leadCategory}
-                        </h1>
+                      <div className="grid justify-center space-y-3 text-center">
+                        <h6 className="font-bold">How many bedrooms?</h6>
+                        <h6 className="font-semibold">{LeadData?.info?.category}</h6>
                       </div>
-                      <div className="flex space-x-3">
-                        <h1
-                          className={`text-lg font-bold capitalize ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-gray-800"
-                          }`}
-                        >
-                          Language Preferred:
-                        </h1>
-                        <h1
-                          className={`text-lg font-semibold capitalize ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-main-red-color-2"
-                          }`}
-                        >
-                          {LeadData?.info?.language}
-                        </h1>
+                      <div className="grid justify-center space-y-3 text-center">
+                        <h6 className="font-bold">Property type</h6>
+                        <h6 className="font-semibold">
+                          {/* {LeadData?.leadType} */}
+                        </h6>
+                      </div>
+                      <div className="grid justify-center space-y-3 text-center">
+                        <h6 className="font-bold">Purpose</h6>
+                        <h6 className="font-semibold">
+                          {/* {LeadData?.leadFor} */}
+                        </h6>
                       </div>
                     </div>
-                    <div className="mt-7 border-t-2 border-main-red-color rounded-md shadow-md px-5 py-3">
-                      <h1 className="font-bold text-lg">Lead Notes</h1>
-                      <span className="block h-1 w-16 my-1 bg-main-red-color rounded-md"></span>
+
+                    <div className="bg-main-red-color h-0.5 w-full my-7"></div>
+                    
+
+                    <div className={`rounded-md mt-5`}>
+                      <h1 className="font-bold text-lg text-center">Lead Notes</h1>
+
                       {LeadData?.notes?.data?.length > 0 ? (
                         <Box className="">
                           <form
-                            className="my-5"
+                            className="mb-10 mt-5"
                             onSubmit={(e) => {
                               e.preventDefault();
                               AddNote();
@@ -362,7 +310,7 @@ const SingleLeadNote = (props) => {
                             <button
                               disabled={addNoteloading ? true : false}
                               type="submit"
-                              className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-fit justify-center rounded-md border border-transparent bg-main-red-color py-2 px-5 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                              className="my-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-1 px-5 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
                             >
                               {addNoteloading ? (
                                 <CircularProgress
@@ -371,7 +319,7 @@ const SingleLeadNote = (props) => {
                                   className="text-white"
                                 />
                               ) : (
-                                <span>Add Note</span>
+                                <span>Add new note</span>
                               )}
                             </button>
                           </form>
@@ -393,14 +341,14 @@ const SingleLeadNote = (props) => {
                                     fontWeight: "600",
                                   },
                                 }}
-                                className="bg-main-red-color"
+                                className="bg-black"
                               >
                                 <TableRow>
-                                  <TableCell align="left">No#</TableCell>
-                                  <TableCell align="left">Added On</TableCell>
-                                  <TableCell align="left">Added By</TableCell>
-                                  <TableCell align="left"> Note</TableCell>
-                                  <TableCell align="left">Actions</TableCell>
+                                  <TableCell align="center">#</TableCell>
+                                  <TableCell align="center">Added On</TableCell>
+                                  <TableCell align="center">Added By</TableCell>
+                                  <TableCell align="center">Note</TableCell>
+                                  <TableCell align="center">Actions</TableCell>
                                 </TableRow>
                               </TableHead>
 
@@ -408,7 +356,7 @@ const SingleLeadNote = (props) => {
                                 sx={{
                                   "& .MuiTableRow-root:nth-of-type(odd)": {
                                     backgroundColor:
-                                      currentMode === "dark" && "#4f5159",
+                                      currentMode === "dark" && "#212121",
                                   },
                                   "& .MuiTableRow-root:nth-of-type(even)": {
                                     backgroundColor:
@@ -425,33 +373,44 @@ const SingleLeadNote = (props) => {
                                       },
                                     }}
                                   >
-                                    <TableCell component="th" scope="row">
+                                    <TableCell component="th" scope="row" align="center">
                                       {index + 1}
                                     </TableCell>
-                                    <TableCell align="left">
+                                    <TableCell align="center">
                                       {row?.creationDate}
                                     </TableCell>
-                                    <TableCell align="left">
+                                    <TableCell align="center">
                                       {row?.userName}
                                     </TableCell>
                                     <TableCell align="left">
                                       {row?.leadNote}
                                     </TableCell>
-                                    <TableCell align="left">
-                                      <div className="space-x-2  w-full flex items-center ">
+                                    <TableCell align="center">
+                                      <div className="space-x-2 w-full flex items-center justify-center">
                                         <Button
                                           // onClick={() =>
                                           //   HandleEditFunc(cellValues)
                                           // }
-                                          className="bg-main-red-color rounded-md px-1 py-1 shadow-none hover:shadow-none hover:scale-125"
+                                          className={`${
+                                            currentMode === "dark"
+                                              ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                                              : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                                          }`}
+                                          // className="bg-main-red-color rounded-md px-1 py-1 shadow-none hover:shadow-none hover:scale-125"
                                         >
                                           <BiEdit size={20} />
                                         </Button>
 
+                                          {/* ONLY FOR ADMIN  */}
                                         <Button
                                           // onClick={() => deleteLead(cellValues)}
                                           // disabled={deleteloading ? true : false}
-                                          className="bg-main-red-color rounded-md px-1 py-1 deleteLeadBtn shadow-none hover:shadow-none hover:scale-125"
+                                          className={`${
+                                            currentMode === "dark"
+                                              ? "text-white bg-transparent rounded-md p-1 shadow-none deleteLeadBtn hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                                              : "text-black bg-transparent rounded-md p-1 shadow-none deleteLeadBtn hover:shadow-red-600 hover:bg-black hover:text-white"
+                                          }`}
+                                          // className="bg-main-red-color rounded-md px-1 py-1 deleteLeadBtn shadow-none hover:shadow-none hover:scale-125"
                                         >
                                           <MdDeleteOutline size={22} />
                                         </Button>
