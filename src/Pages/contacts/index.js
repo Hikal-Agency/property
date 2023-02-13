@@ -1,0 +1,157 @@
+import React, { useEffect, useState } from "react";
+import Navbar from "../../Components/Navbar/Navbar";
+import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
+import Loader from "../../Components/Loader";
+import Footer from "../../Components/Footer/Footer";
+import { useStateContext } from "../../context/ContextProvider";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const Contacts = () => {
+  const { currentMode, BACKEND_URL, User, setUser, setopenBackDrop } =
+    useStateContext();
+  const navigate = useNavigate();
+  const [loading, setloading] = useState(true);
+  const ContactData = [
+    {
+      name: "Mohamed Hikal",
+      title: "Founder & CEO",
+      phone: "+971568374678",
+      email: "email@hikalagency",
+    },
+    {
+      name: "Mohamed Hikal",
+      title: "Founder & CEO",
+      phone: "+971568374678",
+      email: "email@hikalagency",
+    },
+    {
+      name: "Mohamed Hikal",
+      title: "Founder & CEO",
+      phone: "+971568374678",
+      email: "email@hikalagency",
+    },
+    {
+      name: "Mohamed Hikal",
+      title: "Founder & CEO",
+      phone: "+971568374678",
+      email: "email@hikalagency",
+    },
+    {
+      name: "Mohamed Hikal",
+      title: "Founder & CEO",
+      phone: "+971568374678",
+      email: "email@hikalagency",
+    },
+  ];
+
+  const FetchProfile = async (token) => {
+    await axios
+      .get(`${BACKEND_URL}/dashboard?page=1`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("dashboard data is");
+        console.log(result.data);
+        setUser(result.data.user);
+        setloading(false);
+      })
+      .catch((err) => {
+        // console.log(err);
+        navigate("/", {
+          state: { error: "Something Went Wrong! Please Try Again" },
+        });
+      });
+  };
+  useEffect(() => {
+    setopenBackDrop(false);
+    if (User?.uid && User?.loginId) {
+      setloading(false);
+    } else {
+      const token = localStorage.getItem("auth-token");
+      if (token) {
+        FetchProfile(token);
+      } else {
+        navigate("/", {
+          state: { error: "Something Went Wrong! Please Try Again" },
+        });
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
+  return (
+    <>
+      {/* <Head>
+        <title>HIKAL CRM - Leaderboard</title>
+        <meta name="description" content="Leaderboard - HIKAL CRM" />
+      </Head> */}
+      <div className="min-h-screen">
+        {loading ? (
+          <Loader />
+        ) : (
+          <div className="flex">
+            <Sidebarmui />
+            <div
+              className={`w-full  ${
+                currentMode === "dark" ? "bg-black" : "bg-white"
+              }`}
+            >
+              <div className="px-5">
+                <Navbar />
+
+                <div className="mt-5 md:mt-2">
+                  <h1
+                    className={`font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    } text-xl ml-2 mb-3 auto-cols-max gap-x-3`}
+                  >
+                    Contacts
+                    {/* <span className="px-5 py-3 rounded-md">Leaderboard</span> */}
+                    {/* <span className="px-5 py-3 rounded-md">Call Log Board</span> */}
+                  </h1>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3 pb-3">
+                    {ContactData.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-gray-900 text-white"
+                              : "bg-gray-200 text-black"
+                          } p-3 rounded-md grid grid-flow-col auto-cols-max gap-x-3`}
+                        >
+                          <img
+                            src="/favicon.png"
+                            height={120}
+                            width={120}
+                            className="rounded-md cursor-pointer"
+                            alt=""
+                          />
+                          <div className="space-y-2">
+                            <h1 className="font-bold">{item.name}</h1>
+                            <p className="text-sm font-semibold text-red-600">
+                              {item.title}
+                            </p>
+                            <p className="text-sm">{item.phone}</p>
+                            <p className="text-sm">{item.email}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+              <Footer />
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default Contacts;
