@@ -101,17 +101,17 @@ const RenderFeedback = (cellValues) => {
         required
       >
         <MenuItem value={null} disabled>
-          Feedback
+          ---SELECT---
         </MenuItem>
-        <MenuItem value={"No Answer"}>No Answer</MenuItem>
         <MenuItem value={"New"}>New</MenuItem>
-        <MenuItem value={"Meeting"}>Meeting</MenuItem>
-        <MenuItem value={"Not Interested"}>Not Interested</MenuItem>
-        <MenuItem value={"Low Budget"}>Low Budget</MenuItem>
         <MenuItem value={"Follow Up"}>Follow Up</MenuItem>
-        <MenuItem value={"Unreachable"}>Unreachable</MenuItem>
-        <MenuItem value={"Closed Ceal"}>Closed Deal</MenuItem>
+        <MenuItem value={"Meeting"}>Meeting</MenuItem>
+        <MenuItem value={"Booked"}>Booked</MenuItem>
         <MenuItem value={"Duplicate"}>Duplicate</MenuItem>
+        <MenuItem value={"No Answer"}>No Answer</MenuItem>
+        <MenuItem value={"Low Budget"}>Low Budget</MenuItem>
+        <MenuItem value={"Not Interested"}>Not Interested</MenuItem>
+        <MenuItem value={"Unreachable"}>Unreachable</MenuItem>
       </Select>
       {Dialogue && (
         <>

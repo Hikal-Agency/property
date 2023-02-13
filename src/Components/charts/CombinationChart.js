@@ -30,35 +30,11 @@ ChartJS.register(
 const CombinationChart = () => {
   const { currentMode } = useStateContext();
   const labels = [
-    "September",
-    "October",
-    "November",
-    "December",
-    "January",
-    "February",
+    "Agent 1",
+    "Agent 2",
+    "Agent 3",
+    "Agent 4",
   ];
-  // const data = {
-  //   labels,
-  //   datasets: [
-  //     {
-  //       type: "line",
-  //       label: "Closed deals",
-  //       data: [0, 3, 9, 5, 10, 0],
-  //       fill: true,
-  //       backgroundColor: "rgba(225,0,0,0.3)",
-  //       borderColor: "#da1f26",
-  //     },
-  //     {
-  //       type: "line",
-  //       label: "Meetings",
-  //       data: [10, 30, 20, 20, 40, 2],
-  //       // borderWidth: 1,
-  //       fill: false,
-  //       backgroundColor: "rgba(0,0,0,0.2)",
-  //       borderColor: "#020202",
-  //     },
-  //   ],
-  // };
   
 
   return (
@@ -72,16 +48,15 @@ const CombinationChart = () => {
               {
                 type: "line",
                 label: "Closed deals",
-                data: [0, 3, 9, 5, 10, 0],
+                data: [0, 3, 9, 5],
                 fill: true,
-                backgroundColor: "rgba(225,225,225,0.3)",
+                backgroundColor: "rgba(225,0,0,0.4)",
                 borderColor: "#da1f26",
               },
               {
                 type: "line",
                 label: "Meetings",
-                data: [10, 30, 20, 20, 40, 2],
-                // borderWidth: 1,
+                data: [10, 30, 20, 20],
                 fill: false,
                 backgroundColor: "rgba(0,0,0,0.2)",
                 borderColor: "#ffffff",
@@ -93,9 +68,10 @@ const CombinationChart = () => {
             backgroundColor: ["rgba(225,0,0,0.3)", "rgba(0,0,0,0.2)"],
             borderColor: ["#da1f26", "#ffffff"],
             scales: {
-              y: { ticks: { color: "#ffffff" } },
-              x: { ticks: { color: "#ffffff" } },
+              y: { ticks: { color: "#ffffff" }, grid: { color: "#424242" } },
+              x: { ticks: { color: "#ffffff" }, grid: { color: "#424242" } },
             },
+            responsive: true,
           }}
         />
       ) : (
@@ -107,15 +83,15 @@ const CombinationChart = () => {
               {
                 type: "line",
                 label: "Closed deals",
-                data: [0, 3, 9, 5, 10, 0],
+                data: [0, 3, 9, 5],
                 fill: true,
-                backgroundColor: "rgba(225,0,0,0.3)",
+                backgroundColor: "rgba(225,0,0,0.4)",
                 borderColor: "#da1f26",
               },
               {
                 type: "line",
                 label: "Meetings",
-                data: [10, 30, 20, 20, 40, 2],
+                data: [10, 30, 20, 20],
                 // borderWidth: 1,
                 fill: false,
                 backgroundColor: "rgba(0,0,0,0.2)",
@@ -131,6 +107,7 @@ const CombinationChart = () => {
               y: { ticks: { color: "#000000" } },
               x: { ticks: { color: "#000000" } },
             },
+            responsive: true,
           }}
         />
       )}

@@ -22,6 +22,7 @@ import {
   RiFileTransferFill,
 } from "react-icons/ri";
 import { SiHotjar } from "react-icons/si";
+import { ImBookmark } from "react-icons/im";
 import {
   Sidebar,
   Menu,
@@ -311,20 +312,19 @@ const Sidebarmui = () => {
               name: "New",
               count: ColdLeadsCount?.new,
               link: "/coldleads/new",
-            },
-            {
+            },{
               name: "Cold: Verified",
-              count: 43,
+              count: "", //TODO
               link: "/coldLeadsVerified",
             },
             {
               name: "Cold: Invalid",
-              count: 43,
+              count: "", //TODO
               link: "/coldLeadsInvalid",
             },
             {
               name: "Cold: Not Checked",
-              count: 43,
+              count: "", //TODO
               link: "/coldLeadsNotChecked",
             },
 
@@ -378,6 +378,11 @@ const Sidebarmui = () => {
               count: 10,
             },
           ],
+        },
+        {
+          name: "Booked deals",
+          icon: <ImBookmark />,
+          link: "/booked",
         },
         {
           name: "Closed deals",
@@ -720,6 +725,11 @@ const Sidebarmui = () => {
           link: "/transfferedleads",
         },
         {
+          name: "Booked deals",
+          icon: <ImBookmark />,
+          link: "/booked",
+        },
+        {
           name: "Closed deals",
           icon: <ImLock />,
           link: "/closedeals",
@@ -747,36 +757,36 @@ const Sidebarmui = () => {
         },
       ],
     },
-    {
-      title: "WHATSAPP MARKETING",
-      links: [
-        {
-          name: "Dashboard",
-          icon: <RiWhatsappFill />,
-          link: "/whatsapp-marketing/dashboard",
-        },
-        {
-          name: "Device",
-          icon: <FaMobile />,
-          link: "/whatsapp-marketing/device",
-        },
-        {
-          name: "Messages",
-          icon: <AiFillMessage />,
-          link: "/whatsapp-marketing/messages",
-        },
-        {
-          name: "Payments",
-          icon: <BsFillCreditCard2FrontFill />,
-          link: "/whatsapp-marketing/payments",
-        },
-        {
-          name: "Transactions",
-          icon: <GrTransaction />,
-          link: "/whatsapp-marketing/transactions",
-        },
-      ],
-    },
+    // {
+    //   title: "WHATSAPP MARKETING",
+    //   links: [
+    //     {
+    //       name: "Dashboard",
+    //       icon: <RiWhatsappFill />,
+    //       link: "/whatsapp-marketing/dashboard",
+    //     },
+    //     {
+    //       name: "Device",
+    //       icon: <FaMobile />,
+    //       link: "/whatsapp-marketing/device",
+    //     },
+    //     {
+    //       name: "Messages",
+    //       icon: <AiFillMessage />,
+    //       link: "/whatsapp-marketing/messages",
+    //     },
+    //     {
+    //       name: "Payments",
+    //       icon: <BsFillCreditCard2FrontFill />,
+    //       link: "/whatsapp-marketing/payments",
+    //     },
+    //     {
+    //       name: "Transactions",
+    //       icon: <GrTransaction />,
+    //       link: "/whatsapp-marketing/transactions",
+    //     },
+    //   ],
+    // },
   ];
   // const [UserLinks, setUserLinks] = useState(
   //   User.position === "Founder & CEO" ? links : Agentlinks

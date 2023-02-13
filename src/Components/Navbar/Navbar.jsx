@@ -163,14 +163,7 @@ const Navbar = () => {
               src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
               alt="user-profile"
             />
-            <p>
-              <span
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-main-dark-bg"
-                } text-14`}
-              >
-                Hi,
-              </span>{" "}
+            <p className="display-block sm:display-none">
               <span
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-main-dark-bg"

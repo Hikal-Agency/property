@@ -70,8 +70,8 @@ const Dashboard = () => {
           >
             <div className={`flex`}>
               <Sidebarmui />
-              <div className={`w-full }`}>
-                <div className="px-5 ">
+              <div className="w-full">
+                <div className="px-5">
                   <Navbar />
                   <DashboardPanel />
                 </div>

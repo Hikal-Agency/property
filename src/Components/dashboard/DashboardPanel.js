@@ -12,6 +12,7 @@ import CombinationChart from "../../Components/charts/CombinationChart";
 import DoughnutChart from "../../Components/charts/DoughnutChart";
 import BubbleChart from "../../Components/charts/BubbleChart";
 import PolarAreaChart from "../charts/PolarAreaChart";
+import BarChartProject from "../charts/BarChartProject";
 import Task from "../../Components/Tasks/Task";
 import { Link } from "react-router-dom";
 import UpcomingMeeting from "../meetings/UpcomingMeeting";
@@ -67,35 +68,29 @@ const DashboardPanel = () => {
 
   const ManagerData = [
     {
-      icon: <FaHandshake />,
       amount: DashboardData?.lead_status?.closed,
       title: "Closed deal",
     },
     {
-      icon: <AiOutlineFire />,
-      amount: DashboardData?.meeting,
-      percentage: "-12%",
-      title: "Hot leads",
+      amount: DashboardData?.lead_status?.meeting,
+      title: "Meeting",
     },
     {
-      icon: <GiThermometerCold />,
-      amount: DashboardData?.followup,
-      percentage: "-12%",
-      title: "Verified cold leads",
+      amount: DashboardData?.lead_status?.followup,
+      title: "Follow up",
     },
     {
-      icon: <FiUsers />,
-      amount: DashboardData?.new,
-      title: "Personal leads",
+      amount: DashboardData?.lead_status?.new,
+      title: "New lead",
     },
     {
-      icon: <ImUser />,
       amount: DashboardData?.agents,
-      title: "Sales agents",
-      iconColor: "rgb(228, 106, 118)",
-      iconBg: "rgb(255, 244, 229)",
-      pcColor: "green-600",
+      title: "Sales agent",
     },
+    // {
+    //   amount: 20,
+    //   title: "Potential lead",
+    // },
   ];
 
   const AgentData = [
@@ -136,7 +131,7 @@ const DashboardPanel = () => {
         Overview
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 text-center">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 text-center">
           {/* {DashboardData?.designation === "Head" && ( */}
           <Link
             to={"/hotleads/all"}
@@ -333,7 +328,7 @@ const DashboardPanel = () => {
                 >
                   <div className="justify-between items-center">
                     <h6 className="font-semibold">Project</h6>
-                    <PolarAreaChart
+                    <BarChartProject
                       total_projects={DashboardData?.total_projects}
                     />
                   </div>
@@ -386,7 +381,7 @@ const DashboardPanel = () => {
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Project Chart</h6>
-                <BubbleChart total_projects={DashboardData?.total_projects} />
+                <BarChartProject total_projects={DashboardData?.total_projects} />
               </div>
             </div>
           </div>
@@ -402,7 +397,7 @@ const DashboardPanel = () => {
               } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">Monthly Sales</h6>
+                <h6 className="font-semibold pb-3">Sales</h6>
                 <BarChart />
               </div>
             </div>
@@ -432,7 +427,7 @@ const DashboardPanel = () => {
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Project Chart</h6>
-                <PolarAreaChart total_projects={DashboardData?.total_projects} />
+                <BarChartProject total_projects={DashboardData?.total_projects} />
               </div>
             </div>
           </div>
