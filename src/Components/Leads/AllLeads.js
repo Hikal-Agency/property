@@ -11,7 +11,6 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-
 import { AiOutlineEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
@@ -19,10 +18,8 @@ import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { IoIosAlert } from "react-icons/io";
-
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
-
 import SingleLead from "./SingleLead";
 import UpdateLead from "./UpdateLead";
 import { toast, ToastContainer } from "react-toastify";
@@ -51,23 +48,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [searchText, setSearchText] = useState("");
   const [openDialog, setopenDialog] = useState(false);
   const [LeadToDelete, setLeadToDelete] = useState();
-
-  // eslint-disable-next-line
-  const SelectStyles = {
-    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium,& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
-      {
-        color: currentMode === "dark" ? "white" : "black",
-        borderColor: currentMode === "dark" ? "white" : "black",
-        fontSize: "0.9rem",
-        fontWeight: "500",
-      },
-    "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: currentMode === "dark" ? "white" : "black",
-    },
-    "& .MuiDataGrid-cell .MuiDataGrid-cellContent": {
-      justifyContent: "center",
-    },
-  };
 
   const handleCloseDialog = () => {
     setopenDialog(false);

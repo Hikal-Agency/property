@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FiPhoneMissed, FiPhoneCall } from "react-icons/fi";
 import { VscCallOutgoing, VscCallIncoming } from "react-icons/vsc";
 import { useStateContext } from "../../context/ContextProvider";
+import GroupChart from "../charts/GroupChart";
 
 const Calls = ({ call_logs }) => {
   const { darkModeColors, currentMode } = useStateContext();
@@ -16,6 +17,19 @@ const Calls = ({ call_logs }) => {
         currentMode === "dark" ? "bg-black" : "bg-white"
       }  px-5 py-3 w-full rounded-md`}
     >
+      {/* <<<<<<< HEAD
+      <div className="mb-10 mt-3 mx-3">
+        <h1 className="font-semibold text-center">
+          All-time total calls: {call_logs?.all_calls}
+        </h1>
+        <GroupChart />
+      </div>
+      <div className="grid grid-cols-3 gap-y-5 gap-x-5">
+        <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1">
+            <VscCallOutgoing size={20} className="text-main-red-color mr-3" />
+            <h2>Outgoing calls:</h2>
+======= */}
       <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={value} onChange={handleChange} variant="standard">
           <Tab label="TODAY" />
@@ -26,12 +40,17 @@ const Calls = ({ call_logs }) => {
       <div className="mt-1 p-5">
         <TabPanel value={value} index={0}>
           <div className="mb-10 mx-3">
-            <h1 className="font-semibold text-center">Today total calls: {call_logs?.all_calls}</h1>
+            <h1 className="font-semibold text-center">
+              Today total calls: {call_logs?.all_calls}
+            </h1>
           </div>
           <div className="grid grid-cols-3 gap-y-5 gap-x-5">
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
-                <VscCallOutgoing size={20} className="text-main-red-color mr-3" />
+                <VscCallOutgoing
+                  size={20}
+                  className="text-main-red-color mr-3"
+                />
                 <h2>Outgoing calls:</h2>
               </div>
               <p className="font-bold">{call_logs?.dialed}</p>
@@ -52,7 +71,10 @@ const Calls = ({ call_logs }) => {
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
-                <VscCallIncoming size={20} className="text-main-red-color mr-3" />
+                <VscCallIncoming
+                  size={20}
+                  className="text-main-red-color mr-3"
+                />
                 <h2>Incoming calls:</h2>
               </div>
               <p className="font-bold">{call_logs?.recieved}</p>
@@ -62,7 +84,9 @@ const Calls = ({ call_logs }) => {
                 <FiPhoneCall size={20} className="text-main-red-color mr-3" />
                 <h2>Recieved:</h2>
               </div>
-              <p className="font-bold">{call_logs?.recieved - call_logs?.missed}</p>
+              <p className="font-bold">
+                {call_logs?.recieved - call_logs?.missed}
+              </p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
@@ -74,13 +98,18 @@ const Calls = ({ call_logs }) => {
           </div>
         </TabPanel>
         <TabPanel value={value} index={1}>
-        <div className="mb-10 mx-3">
-            <h1 className="font-semibold text-center">This month total calls: {call_logs?.all_calls}</h1>
+          <div className="mb-10 mx-3">
+            <h1 className="font-semibold text-center">
+              This month total calls: {call_logs?.all_calls}
+            </h1>
           </div>
           <div className="grid grid-cols-3 gap-y-5 gap-x-5">
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
-                <VscCallOutgoing size={20} className="text-main-red-color mr-3" />
+                <VscCallOutgoing
+                  size={20}
+                  className="text-main-red-color mr-3"
+                />
                 <h2>Outgoing calls:</h2>
               </div>
               <p className="font-bold">{call_logs?.dialed}</p>
@@ -101,7 +130,10 @@ const Calls = ({ call_logs }) => {
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
-                <VscCallIncoming size={20} className="text-main-red-color mr-3" />
+                <VscCallIncoming
+                  size={20}
+                  className="text-main-red-color mr-3"
+                />
                 <h2>Incoming calls:</h2>
               </div>
               <p className="font-bold">{call_logs?.recieved}</p>
@@ -111,7 +143,9 @@ const Calls = ({ call_logs }) => {
                 <FiPhoneCall size={20} className="text-main-red-color mr-3" />
                 <h2>Recieved:</h2>
               </div>
-              <p className="font-bold">{call_logs?.recieved - call_logs?.missed}</p>
+              <p className="font-bold">
+                {call_logs?.recieved - call_logs?.missed}
+              </p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
@@ -123,13 +157,18 @@ const Calls = ({ call_logs }) => {
           </div>
         </TabPanel>
         <TabPanel value={value} index={2}>
-        <div className="mb-10 mx-3">
-            <h1 className="font-semibold text-center">All-time total calls: {call_logs?.all_calls}</h1>
+          <div className="mb-10 mx-3">
+            <h1 className="font-semibold text-center">
+              All-time total calls: {call_logs?.all_calls}
+            </h1>
           </div>
           <div className="grid grid-cols-3 gap-y-5 gap-x-5">
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
-                <VscCallOutgoing size={20} className="text-main-red-color mr-3" />
+                <VscCallOutgoing
+                  size={20}
+                  className="text-main-red-color mr-3"
+                />
                 <h2>Outgoing calls:</h2>
               </div>
               <p className="font-bold">{call_logs?.dialed}</p>
@@ -150,7 +189,10 @@ const Calls = ({ call_logs }) => {
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
-                <VscCallIncoming size={20} className="text-main-red-color mr-3" />
+                <VscCallIncoming
+                  size={20}
+                  className="text-main-red-color mr-3"
+                />
                 <h2>Incoming calls:</h2>
               </div>
               <p className="font-bold">{call_logs?.recieved}</p>
@@ -160,7 +202,9 @@ const Calls = ({ call_logs }) => {
                 <FiPhoneCall size={20} className="text-main-red-color mr-3" />
                 <h2>Recieved:</h2>
               </div>
-              <p className="font-bold">{call_logs?.recieved - call_logs?.missed}</p>
+              <p className="font-bold">
+                {call_logs?.recieved - call_logs?.missed}
+              </p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
@@ -198,7 +242,6 @@ const Calls = ({ call_logs }) => {
     const { children, value, index } = props;
     return <div>{value === index && <div>{children}</div>}</div>;
   }
-  
 };
 
 export default Calls;

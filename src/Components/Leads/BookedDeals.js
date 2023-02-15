@@ -1,12 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import {
-  Backdrop,
-  Box,
-  CircularProgress,
-  Dialog,
-  MenuItem,
-  Select,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -18,30 +11,16 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { BiEdit } from "react-icons/bi";
-import { AiTwotoneEdit, AiOutlineEdit } from "react-icons/ai";
-import {
-  MdDeleteOutline,
-  MdCampaign,
-  MdOutlineNoEncryptionGmailerrorred,
-} from "react-icons/md";
+import { AiOutlineEdit } from "react-icons/ai";
+import { MdCampaign } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
-import { IoIosAlert } from "react-icons/io";
-import { BsSnapchat } from "react-icons/bs";
+import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
-
 import SingleLead from "./SingleLead";
-import UpdateLead from "./UpdateLead";
-import Image from "next/image";
 import { toast, ToastContainer } from "react-toastify";
-import { FaUser } from "react-icons/fa";
-import RenderPriority from "./RenderPriority";
-import RenderFeedback from "./RenderFeedback";
 import RenderManagers from "./RenderManagers";
 import UpdateBookedDeal from "./UpdateBookedDeal";
 
@@ -296,7 +275,7 @@ const BookedDeals = ({
       renderCell: RenderManagers,
     },
     // { field: "assignedToSales", headerName: "Salesperson",hideable: false, width: 110 },
-    
+
     {
       field: "language",
       headerName: "Language",
@@ -329,7 +308,7 @@ const BookedDeals = ({
             )}
             {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <Image
+                <img
                   src={"/assets/tiktok-app.svg"}
                   alt=""
                   height={22}
@@ -366,7 +345,7 @@ const BookedDeals = ({
         );
       },
     },
-    
+
     {
       field: "edit",
       headerName: "Edit",
@@ -416,9 +395,6 @@ const BookedDeals = ({
         },
       })
       .then(async (result) => {
-        console.log("the user leads are ");
-        console.log(result.data);
-
         let rowsDataArray = "";
         if (result.data.coldLeads.current_page > 1) {
           const theme_values = Object.values(result.data.coldLeads.data);

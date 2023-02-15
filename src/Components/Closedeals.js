@@ -13,14 +13,22 @@ import axios from "axios";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { AiOutlineHistory, AiOutlineEdit } from "react-icons/ai";
+import { ToastContainer } from "react-toastify";
 import { useStateContext } from "../context/ContextProvider";
+import UpdateLead from "./Leads/UpdateLead";
 
-const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
+const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
-  const { currentMode } = useStateContext();
+  const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
+  //Update LEAD MODAL VARIABLES
+  const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
+  const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
+  const handleUpdateLeadModelClose = () => {
+    setUpdateLeadModelOpen(false);
+  };
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = (e) => {
@@ -28,12 +36,12 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
   };
 
   const columns = [
-    { 
-      field: "id", 
-      headerName: "#", 
+    {
+      field: "id",
+      headerName: "#",
       minWidth: 50,
-      flex: 1, 
-      headerAlign: "center" 
+      flex: 1,
+      headerAlign: "center",
     },
     // {
     // field: "leads.creationDate",
@@ -122,7 +130,7 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
               <AiOutlineHistory size={20} />
             </Button>
             <Button
-              // onClick={() => handleRowClick(cellValues)}
+              onClick={() => HandleEditFunc(cellValues)}
               className={`${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
@@ -140,6 +148,11 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
   //   const HandleClick = (params) => {
   //     console.log(params);
   //   };
+  const HandleEditFunc = async (params) => {
+    setsingleLeadData(params.row);
+    handleUpdateLeadModelOpen();
+    // setUpdateLeadModelOpen(true);
+  };
   const FetchLeads = async (token) => {
     setpageState((old) => ({
       ...old,
@@ -177,6 +190,7 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
           enquiryType: row?.enquiryType,
           leadType: row?.leadType,
           amount: row?.amount,
+          lid: row?.lid,
         }));
 
         setpageState((old) => ({
@@ -207,75 +221,6 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
   //   setsingleLeadData(params.row);
   //   handleUpdateLeadModelOpen();
   // };
-  const DataGridStyles = {
-    "& .MuiButtonBase-root": {
-      color: "white",
-    },
-    // TOOLBAR
-    "& .MuiDataGrid-toolbarContainer": {
-      backgroundColor: currentMode === "dark" ? "#212121" : "#000000",
-      // backgroundColor: "#3b3d44",
-      paddingTop: "10px",
-      paddingBottom: "10px",
-      paddingLeft: "20px",
-      paddingRight: "20px",
-    },
-
-    "& .MuiInputBase-root": {
-      color: "white",
-    },
-    "& .MuiInputBase-root::before": {
-      color: "white",
-    },
-    "& .MuiInputBase-root:hover::before": {
-      color: "white",
-    },
-
-    // Background color of header of data grid
-    "& .MuiDataGrid-columnHeaders": {
-      border: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
-      color: currentMode === "dark" ? "white" : "white",
-    },
-    "& .MuiIconButton-sizeSmall": {
-      color: currentMode === "dark" ? "white" : "white",
-    },
-    // background color of main table content
-    "& .MuiDataGrid-virtualScroller": {
-      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
-      color: currentMode === "dark" ? "white" : "black",
-    },
-    // changing rows hover color
-    "& .css-1uhmucx-MuiDataGrid-root .MuiDataGrid-row:hover .MuiDataGrid-root":
-      {
-        backgroundColor: currentMode === "dark" && "#000000",
-        border: "none !important",
-      },
-    // changing row colors
-    " .even": {
-      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
-    },
-    // changing rows right border
-    // "& .MuiDataGrid-cell": {
-    //   borderRight: "1px solid rgb(240, 240, 240)",
-    // },
-    // BACKGROUND COLOR OF FOOTER
-    "& .MuiDataGrid-footerContainer": {
-      borderTop: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
-      color: "white",
-    },
-    "& .MuiTablePagination-selectLabel": {
-      color: "white",
-    },
-    "& .MuiTablePagination-select ": { color: "white" },
-    "& .MuiSvgIcon-fontSizeMedium ": { color: "white" },
-    "& .MuiTablePagination-displayedRows": { color: "white" },
-    // For inner data styling
-    "& .MuiDataGrid-virtualScrollerRenderZone": {
-      // backgroundColor: "red",
-    },
-  };
   // Custom Pagination
   function CustomPagination() {
     const apiRef = useGridApiContext();
@@ -301,6 +246,7 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
   }
   return (
     <div className="pb-10">
+      <ToastContainer />
       <Box width={"100%"} sx={DataGridStyles}>
         <DataGrid
           autoHeight
@@ -342,6 +288,16 @@ const Closedeals = ({ BACKEND_URL, pageState, setpageState }) => {
           }
         />
       </Box>
+      {UpdateLeadModelOpen && (
+        <UpdateLead
+          LeadModelOpen={UpdateLeadModelOpen}
+          setLeadModelOpen={setUpdateLeadModelOpen}
+          handleLeadModelOpen={handleUpdateLeadModelOpen}
+          handleLeadModelClose={handleUpdateLeadModelClose}
+          LeadData={singleLeadData}
+          BACKEND_URL={BACKEND_URL}
+        />
+      )}
     </div>
   );
 };

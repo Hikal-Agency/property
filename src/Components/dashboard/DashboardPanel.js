@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useStateContext } from "../../context/ContextProvider";
 import { FaHandshake } from "react-icons/fa";
 import { ImUser } from "react-icons/im";
@@ -10,8 +9,6 @@ import { FiUsers } from "react-icons/fi";
 import BarChart from "../../Components/charts/BarChart";
 import CombinationChart from "../../Components/charts/CombinationChart";
 import DoughnutChart from "../../Components/charts/DoughnutChart";
-import BubbleChart from "../../Components/charts/BubbleChart";
-import PolarAreaChart from "../charts/PolarAreaChart";
 import BarChartProject from "../charts/BarChartProject";
 import Task from "../../Components/Tasks/Task";
 import { Link } from "react-router-dom";
@@ -381,7 +378,9 @@ const DashboardPanel = () => {
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Project Chart</h6>
-                <BarChartProject total_projects={DashboardData?.total_projects} />
+                <BarChartProject
+                  total_projects={DashboardData?.total_projects}
+                />
               </div>
             </div>
           </div>
@@ -427,7 +426,9 @@ const DashboardPanel = () => {
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Project Chart</h6>
-                <BarChartProject total_projects={DashboardData?.total_projects} />
+                <BarChartProject
+                  total_projects={DashboardData?.total_projects}
+                />
               </div>
             </div>
           </div>
@@ -494,21 +495,24 @@ const DashboardPanel = () => {
             currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
           } col-span-1 h-fit rounded-md p-5 cursor-pointer hover:shadow-sm`}
         >
+          {console.log("User is")}
+          {console.log(User)}
           <h4 className="font-semibold pb-5">Upcoming meetings</h4>
-          {DashboardData?.designation === "Head" ? (
+          {User?.role === 1 && (
             <UpcomingMeeting
               upcoming_meetings={DashboardData?.upcoming_meetings}
             />
-          ) : DashboardData?.designation === "Manager" ? (
+          )}
+          {User?.role === 3 && (
             <UpcomingMeeting
               upcoming_meetings={DashboardData?.upcoming_meetings}
             />
-          ) : (
+          )}
+          {User?.role === 7 && (
             <UpcomingMeetingAgent
               upcoming_meetings={DashboardData?.upcoming_meetings}
             />
           )}
-
           {/* <UserLocation /> */}
         </div>
       </div>

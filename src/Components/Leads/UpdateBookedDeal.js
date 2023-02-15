@@ -8,7 +8,7 @@ import {
   Select,
   TextField,
   FormControl,
-  InputLabel
+  InputLabel,
 } from "@mui/material";
 import axios from "axios";
 import moment from "moment";
@@ -24,7 +24,7 @@ const UpdateBookedDeal = ({
   LeadData,
   BACKEND_URL,
 }) => {
-  const { darkModeColors, currentMode, User } = useStateContext();
+  const { darkModeColors, currentMode } = useStateContext();
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
   const style = {
@@ -260,203 +260,201 @@ const UpdateBookedDeal = ({
                 }}
               >
                 <div className="mb-5 grid grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-10">
-                    
-                <div>
-                        <Box sx={darkModeColors}>
-                            <h4
-                                className={`${
-                                currentMode === "dark"
-                                    ? "text-red-600"
-                                    : "text-red-600"
-                                } text-center font-bold pb-5`}
-                            >
-                                Lead details
-                            </h4>
-                            <TextField
-                                id="LeadName"
-                                type={"text"}
-                                label="Lead name"
-                                className="w-full mb-5 py-2"
-                                variant="standard"
-                                size="small"
-                                required
-                                value={LeadName}
-                                onChange={(e) => setLeadName(e.target.value)}
-                            />
-                            <TextField
-                                id="LeadContactNumber"
-                                type={"number"}
-                                label="Contact number"
-                                className="w-full mb-5 py-2"
-                                variant="standard"
-                                size="small"
-                                required
-                                value={LeadContact}
-                                onChange={(e) => setLeadContact(e.target.value)}
-                            />
+                  <div>
+                    <Box sx={darkModeColors}>
+                      <h4
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-red-600"
+                            : "text-red-600"
+                        } text-center font-bold pb-5`}
+                      >
+                        Lead details
+                      </h4>
+                      <TextField
+                        id="LeadName"
+                        type={"text"}
+                        label="Lead name"
+                        className="w-full mb-5 py-2"
+                        variant="standard"
+                        size="small"
+                        required
+                        value={LeadName}
+                        onChange={(e) => setLeadName(e.target.value)}
+                      />
+                      <TextField
+                        id="LeadContactNumber"
+                        type={"number"}
+                        label="Contact number"
+                        className="w-full mb-5 py-2"
+                        variant="standard"
+                        size="small"
+                        required
+                        value={LeadContact}
+                        onChange={(e) => setLeadContact(e.target.value)}
+                      />
 
-                            <TextField
-                                id="LeadEmailAddress"
-                                type={"email"}
-                                label="Email address"
-                                className="w-full mb-5 py-2"
-                                variant="standard"
-                                size="small"
-                                value={LeadEmail}
-                                onChange={(e) => setLeadEmail(e.target.value)}
-                            />
+                      <TextField
+                        id="LeadEmailAddress"
+                        type={"email"}
+                        label="Email address"
+                        className="w-full mb-5 py-2"
+                        variant="standard"
+                        size="small"
+                        value={LeadEmail}
+                        onChange={(e) => setLeadEmail(e.target.value)}
+                      />
 
-                            <FormControl fullWidth variant="standard" size="small">
-                                <InputLabel id="">Preferred language</InputLabel>
-                                <Select
-                                    id="LanguagePrefered"
-                                    value={LanguagePrefered}
-                                    label="Prefered language"
-                                    onChange={ChangeLanguagePrefered}
-                                    className="w-full mb-5 py-2"
-                                    displayEmpty
-                                    required
-                                >
-                                    <MenuItem value="" disabled>
-                                        ---NONE---
-                                    </MenuItem>
-                                    <MenuItem value={"Arabic"}>Arabic</MenuItem>
-                                    <MenuItem value={"English"}>English</MenuItem>
-                                    <MenuItem value={"Farsi"}>Farsi</MenuItem>
-                                    <MenuItem value={"French"}>French</MenuItem>
-                                    <MenuItem value={"Hindi"}>Hindi</MenuItem>
-                                    <MenuItem value={"Russian"}>Russian</MenuItem>
-                                    <MenuItem value={"Spanish"}>Spanish</MenuItem>
-                                    <MenuItem value={"Urdu"}>Urdu</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Box>
-                    </div>
+                      <FormControl fullWidth variant="standard" size="small">
+                        <InputLabel id="">Preferred language</InputLabel>
+                        <Select
+                          id="LanguagePrefered"
+                          value={LanguagePrefered}
+                          label="Prefered language"
+                          onChange={ChangeLanguagePrefered}
+                          className="w-full mb-5 py-2"
+                          displayEmpty
+                          required
+                        >
+                          <MenuItem value="" disabled>
+                            ---NONE---
+                          </MenuItem>
+                          <MenuItem value={"Arabic"}>Arabic</MenuItem>
+                          <MenuItem value={"English"}>English</MenuItem>
+                          <MenuItem value={"Farsi"}>Farsi</MenuItem>
+                          <MenuItem value={"French"}>French</MenuItem>
+                          <MenuItem value={"Hindi"}>Hindi</MenuItem>
+                          <MenuItem value={"Russian"}>Russian</MenuItem>
+                          <MenuItem value={"Spanish"}>Spanish</MenuItem>
+                          <MenuItem value={"Urdu"}>Urdu</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </div>
 
-                    <div>
-                        <Box sx={darkModeColors}>
-                            <h4
-                                className={`${
-                                currentMode === "dark"
-                                    ? "text-red-600"
-                                    : "text-red-600"
-                                } text-center font-bold pb-5`}
-                            >
-                                Project details
-                            </h4>
-                            <TextField
-                                id="Project"
-                                type={"text"}
-                                label="Project name"
-                                className="w-full mb-5 py-2"
-                                variant="standard"
-                                size="small"
-                                value={LeadProject}
-                                onChange={(e) => setLeadProject(e.target.value)}
-                            />
+                  <div>
+                    <Box sx={darkModeColors}>
+                      <h4
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-red-600"
+                            : "text-red-600"
+                        } text-center font-bold pb-5`}
+                      >
+                        Project details
+                      </h4>
+                      <TextField
+                        id="Project"
+                        type={"text"}
+                        label="Project name"
+                        className="w-full mb-5 py-2"
+                        variant="standard"
+                        size="small"
+                        value={LeadProject}
+                        onChange={(e) => setLeadProject(e.target.value)}
+                      />
 
-                            <FormControl fullWidth variant="standard" size="small">
-                                <InputLabel id="">Enquiry for</InputLabel>
-                                <Select
-                                    id="enquiry"
-                                    value={EnquiryType}
-                                    label="Enquiry Type"
-                                    onChange={ChangeEnquiryType}
-                                    className="w-full mb-5 py-2"
-                                    displayEmpty
-                                    required
-                                >
-                                    <MenuItem value="" disabled>
-                                    ---NONE---
-                                    </MenuItem>
-                                    <MenuItem value={"Studio"}>Studio</MenuItem>
-                                    <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
-                                    <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
-                                    <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
-                                    <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
-                                    <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
-                                    <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
-                                    <MenuItem value={"Retail"}>Retail</MenuItem>
-                                    <MenuItem value={"Other"}>Others</MenuItem>
-                                </Select>
-                            </FormControl>
+                      <FormControl fullWidth variant="standard" size="small">
+                        <InputLabel id="">Enquiry for</InputLabel>
+                        <Select
+                          id="enquiry"
+                          value={EnquiryType}
+                          label="Enquiry Type"
+                          onChange={ChangeEnquiryType}
+                          className="w-full mb-5 py-2"
+                          displayEmpty
+                          required
+                        >
+                          <MenuItem value="" disabled>
+                            ---NONE---
+                          </MenuItem>
+                          <MenuItem value={"Studio"}>Studio</MenuItem>
+                          <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
+                          <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
+                          <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
+                          <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
+                          <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
+                          <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
+                          <MenuItem value={"Retail"}>Retail</MenuItem>
+                          <MenuItem value={"Other"}>Others</MenuItem>
+                        </Select>
+                      </FormControl>
 
-                            <FormControl fullWidth variant="standard" size="small">
-                                <InputLabel id="">Property type</InputLabel>
-                                <Select
-                                    id="property-type"
-                                    value={PropertyType}
-                                    label="Property type"
-                                    onChange={ChangePropertyType}
-                                    className="w-full mb-5 py-2"
-                                    displayEmpty
-                                    required
-                                >
-                                    <MenuItem value="" disabled>
-                                    ---NONE---
-                                    </MenuItem>
-                                    <MenuItem value={"Apartment"}>Apartment</MenuItem>
-                                    <MenuItem value={"Villa"}>Villa</MenuItem>
-                                    <MenuItem value={"Commercial"}>Commercial</MenuItem>
-                                    <MenuItem value={"Townhouse"}>Townhouse</MenuItem>
-                                </Select>
-                            </FormControl>
+                      <FormControl fullWidth variant="standard" size="small">
+                        <InputLabel id="">Property type</InputLabel>
+                        <Select
+                          id="property-type"
+                          value={PropertyType}
+                          label="Property type"
+                          onChange={ChangePropertyType}
+                          className="w-full mb-5 py-2"
+                          displayEmpty
+                          required
+                        >
+                          <MenuItem value="" disabled>
+                            ---NONE---
+                          </MenuItem>
+                          <MenuItem value={"Apartment"}>Apartment</MenuItem>
+                          <MenuItem value={"Villa"}>Villa</MenuItem>
+                          <MenuItem value={"Commercial"}>Commercial</MenuItem>
+                          <MenuItem value={"Townhouse"}>Townhouse</MenuItem>
+                        </Select>
+                      </FormControl>
 
-                            <FormControl fullWidth variant="standard" size="small">
-                                <InputLabel id="">Purpose of enquiry</InputLabel>
-                                <Select
-                                    id="for"
-                                    value={ForType}
-                                    label="Purpose of enquiry"
-                                    onChange={ChangeForType}
-                                    className="w-full mb-5 py-2"
-                                    displayEmpty
-                                    required
-                                >
-                                    <MenuItem value="" disabled>
-                                    ---NONE---
-                                    </MenuItem>
-                                    <MenuItem value={"Investment"}>Investment</MenuItem>
-                                    <MenuItem value={"End-user"}>End-User</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Box>
-                    </div>
+                      <FormControl fullWidth variant="standard" size="small">
+                        <InputLabel id="">Purpose of enquiry</InputLabel>
+                        <Select
+                          id="for"
+                          value={ForType}
+                          label="Purpose of enquiry"
+                          onChange={ChangeForType}
+                          className="w-full mb-5 py-2"
+                          displayEmpty
+                          required
+                        >
+                          <MenuItem value="" disabled>
+                            ---NONE---
+                          </MenuItem>
+                          <MenuItem value={"Investment"}>Investment</MenuItem>
+                          <MenuItem value={"End-user"}>End-User</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </div>
 
-                    <div>
-                        <Box sx={darkModeColors}>
-                            <h4
-                                className={`${
-                                currentMode === "dark"
-                                    ? "text-red-600"
-                                    : "text-red-600"
-                                } text-center font-bold pb-5`}
-                            >
-                                Status
-                            </h4>
+                  <div>
+                    <Box sx={darkModeColors}>
+                      <h4
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-red-600"
+                            : "text-red-600"
+                        } text-center font-bold pb-5`}
+                      >
+                        Status
+                      </h4>
 
-                            <FormControl fullWidth variant="standard" size="small">
-                                <InputLabel id="">Feedback</InputLabel>
-                                <Select
-                                    id="for"
-                                    value={Feedback}
-                                    label="Feedback"
-                                    onChange={ChangeFeedback}
-                                    className="w-full mb-5 py-2"
-                                    displayEmpty
-                                    required
-                                >
-                                    <MenuItem value="" disabled>
-                                    ---NONE---
-                                    </MenuItem>
-                                    <MenuItem value={"Closed Deal"}>Closed Deal</MenuItem>
-                                    <MenuItem value={"Booked"}>Booked</MenuItem>
-                                    <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
-
-                                </Select>
-                            </FormControl>
-                        </Box>
-                    </div>
+                      <FormControl fullWidth variant="standard" size="small">
+                        <InputLabel id="">Feedback</InputLabel>
+                        <Select
+                          id="for"
+                          value={Feedback}
+                          label="Feedback"
+                          onChange={ChangeFeedback}
+                          className="w-full mb-5 py-2"
+                          displayEmpty
+                          required
+                        >
+                          <MenuItem value="" disabled>
+                            ---NONE---
+                          </MenuItem>
+                          <MenuItem value={"Closed Deal"}>Closed Deal</MenuItem>
+                          <MenuItem value={"Booked"}>Booked</MenuItem>
+                          <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </div>
                 </div>
 
                 <Button

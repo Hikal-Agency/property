@@ -1,8 +1,6 @@
-import { CircularProgress } from "@mui/material";
 import axios from "axios";
-import Head from "next/head";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Footer from "../../Components/Footer/Footer";
 import BookedDeals from "../../Components/Leads/BookedDeals";
 import Loader from "../../Components/Loader";
@@ -10,19 +8,11 @@ import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
-export async function getServerSideProps(context) {
-  const BACKEND_URL = process.env.BACKEND_URL;
-  const BACKEND_URL_2 = process.env.BACKEND_URL_2;
-
-  return {
-    props: { BACKEND_URL_2 },
-  };
-}
-
-const Booked = (props) => {
-  const router = useRouter();
+const Booked = () => {
+  const navigate = useNavigate();
   const [loading, setloading] = useState(true);
-  const { User, setUser, currentMode, setopenBackDrop } = useStateContext();
+  const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
+    useStateContext();
 
   const [pageState, setpageState] = useState({
     isLoading: false,
@@ -33,7 +23,7 @@ const Booked = (props) => {
   });
   const FetchProfile = async (token) => {
     await axios
-      .get(`${props.BACKEND_URL_2}/profile`, {
+      .get(`${BACKEND_URL}/profile`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -44,9 +34,8 @@ const Booked = (props) => {
         setloading(false);
       })
       .catch((err) => {
-        router.push({
-          pathname: "/",
-          query: { error: "Something Went Wrong! Please Try Again " },
+        navigate("/", {
+          state: { error: "Something Went Wrong! Please Try Again " },
         });
       });
   };
@@ -59,9 +48,8 @@ const Booked = (props) => {
       if (token) {
         FetchProfile(token);
       } else {
-        router.push({
-          pathname: "/",
-          query: { error: "Something Went Wrong! Please Try Again" },
+        navigate("/", {
+          state: { error: "Something Went Wrong! Please Try Again" },
         });
       }
     }
@@ -69,10 +57,10 @@ const Booked = (props) => {
   }, []);
   return (
     <>
-      <Head>
+      {/* <Head>
         <title>HIKAL CRM - Booked Deals</title>
         <meta name="description" content="User Dashboard - HIKAL CRM" />
-      </Head>
+      </Head> */}
 
       <div className="flex min-h-screen">
         {loading ? (
@@ -102,7 +90,7 @@ const Booked = (props) => {
                       </span>
                     </h1>
                     <BookedDeals
-                      BACKEND_URL={props.BACKEND_URL_2}
+                      BACKEND_URL={BACKEND_URL}
                       pageState={pageState}
                       setpageState={setpageState}
                     />

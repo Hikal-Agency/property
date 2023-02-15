@@ -101,10 +101,6 @@ export const ContextProvider = ({ children }) => {
     "& .MuiTablePagination-select ": { color: "white" },
     "& .MuiSvgIcon-fontSizeMedium ": { color: "white" },
     "& .MuiTablePagination-displayedRows": { color: "white" },
-    // For inner data styling
-    "& .MuiDataGrid-virtualScrollerRenderZone": {
-      // backgroundColor: "red",
-    },
   };
   const darkModeColors = {
     // For DARK MODE

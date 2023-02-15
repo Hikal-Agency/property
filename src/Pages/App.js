@@ -2,6 +2,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AddLead from "./addlead";
 import Signup from "./auth/signup";
+import Booked from "./booked";
 import ClosedealsPage from "./closedeals";
 import ColdLeads from "./coldleads";
 import Contacts from "./contacts";
@@ -79,6 +80,10 @@ function App() {
     {
       path: "/meetings",
       element: <Meetings />,
+    },
+    {
+      path: "/booked",
+      element: <Booked />,
     },
     {
       path: "/contacts",

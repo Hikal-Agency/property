@@ -77,6 +77,8 @@ const UpdateLead = ({
     setSalesPerson2(event.target.value);
   };
   useEffect(() => {
+    console.log("lead data is ");
+    console.log(LeadData);
     const token = localStorage.getItem("auth-token");
 
     axios
@@ -87,7 +89,7 @@ const UpdateLead = ({
         },
       })
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         setManager2(result.data.team);
       })
       .catch((err) => {
@@ -313,7 +315,7 @@ const UpdateLead = ({
                         type={"text"}
                         label="Notes"
                         className="w-full mb-5"
-                        style={{ marginBottom: "20px"}}
+                        style={{ marginBottom: "20px" }}
                         variant="outlined"
                         size="medium"
                         value={LeadNotes}
@@ -338,7 +340,7 @@ const UpdateLead = ({
                         type={"text"}
                         label="Project name"
                         className="w-full mb-5"
-                        style={{ marginBottom: "20px"}}
+                        style={{ marginBottom: "20px" }}
                         variant="outlined"
                         size="medium"
                         value={LeadProject}
@@ -423,7 +425,7 @@ const UpdateLead = ({
                         type={"text"}
                         label="Lead name"
                         className="w-full mb-5"
-                        style={{ marginBottom: "20px"}}
+                        style={{ marginBottom: "20px" }}
                         variant="outlined"
                         size="medium"
                         required
@@ -435,7 +437,7 @@ const UpdateLead = ({
                         type={"number"}
                         label="Contact number"
                         className="w-full mb-5"
-                        style={{ marginBottom: "20px"}}
+                        style={{ marginBottom: "20px" }}
                         variant="outlined"
                         size="medium"
                         required
@@ -448,7 +450,7 @@ const UpdateLead = ({
                         type={"email"}
                         label="Email address"
                         className="w-full mb-5"
-                        style={{ marginBottom: "20px"}}
+                        style={{ marginBottom: "20px" }}
                         variant="outlined"
                         size="medium"
                         required
