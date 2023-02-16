@@ -4,6 +4,7 @@ import AddLead from "./addlead";
 import Signup from "./auth/signup";
 import Booked from "./booked";
 import ClosedealsPage from "./closedeals";
+import TimelinePage from "./timeline";
 import ColdLeads from "./coldleads";
 import Contacts from "./contacts";
 import Dashboard from "./dashboard";
@@ -64,6 +65,9 @@ function App() {
     {
       path: "/closedeals",
       element: <ClosedealsPage />,
+    },
+    {  path: "/timeline",
+      element: <TimelinePage />,
     },
     {
       path: "/leadnotes",

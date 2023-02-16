@@ -1,14 +1,14 @@
-import Image from "next/image";
+//import Image from "next/image";
 import moment from "moment";
 import React from "react";
-import { useLayoutEffect, useState, useRef } from "react";
+//import { useLayoutEffect, useState, useRef } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
-import DeviceComponent from "../../Components/whatsapp-marketing/DeviceComponent";
-import Head from "next/head";
-import Loader from "../../Components/Loader";
+//import DeviceComponent from "../../Components/whatsapp-marketing/DeviceComponent";
+//import Head from "next/head";
+//import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
-import UserImage from "../../public/favicon.png";
+//import UserImage from "../../public/favicon.png";
 import { useStateContext } from "../../context/ContextProvider";
 import { ImUserCheck } from "react-icons/im";
 import { MdStickyNote2, MdCategory } from "react-icons/md";
@@ -117,10 +117,10 @@ const Timeline = () => {
 
   return (
     <>
-      <Head>
+      {/* <Head>
         <title>HIKAL CRM - Timeline</title>
         <meta name="description" content="Timeline - HIKAL CRM" />
-      </Head>
+      </Head> */}
       <div className="min-h-screen">
         <div className="flex">
           <Sidebarmui />
