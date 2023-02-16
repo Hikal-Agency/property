@@ -513,13 +513,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                HotLeadsCount?.new +
-                HotLeadsCount?.no_nswer +
-                HotLeadsCount?.Meeting +
-                HotLeadsCount?.follow_up +
-                HotLeadsCount?.low_budget +
-                HotLeadsCount?.not_interested +
-                HotLeadsCount?.unreachable,
+                HotLeadsCount?.hot,
               link: "/hotleads/all",
             },
             {
