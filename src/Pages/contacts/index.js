@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import Loader from "../../Components/Loader";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +13,12 @@ const Contacts = () => {
   const { currentMode, BACKEND_URL, User, setUser, setopenBackDrop } =
     useStateContext();
   const navigate = useNavigate();
+  const token = localStorage.getItem("auth-token");
   const [loading, setloading] = useState(true);
+  const [contacts, setContacts] = useState([]);
+  const [page, setPage] = useState('1');
+  const [maxPage,setMaxPage] = useState(0);
+
   const ContactData = [
     {
       name: "Mohamed Hikal",
@@ -66,14 +73,41 @@ const Contacts = () => {
         });
       });
   };
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    FetchContacts(token)
+  };
+   const FetchContacts = async (token) => {
+    await axios
+      .get(`${BACKEND_URL}/users?page=${page}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("The data has contact",result.data);
+        console.log("The data has contact max page",result.data.managers.last_page);
+
+        setContacts(result.data.managers.data);
+        setMaxPage(result.data.managers.last_page)
+        setloading(false);
+      })
+      .catch((err) => {
+        navigate("/", {
+          state: { error: "Something Went Wrong! Please Try Again" },
+        });
+      });
+  };
   useEffect(() => {
     setopenBackDrop(false);
     if (User?.uid && User?.loginId) {
       setloading(false);
     } else {
-      const token = localStorage.getItem("auth-token");
       if (token) {
         FetchProfile(token);
+        FetchContacts(token)
       } else {
         navigate("/", {
           state: { error: "Something Went Wrong! Please Try Again" },
@@ -114,7 +148,7 @@ const Contacts = () => {
                   </h1>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3 pb-3">
-                    {ContactData.map((item, index) => {
+                    {contacts?.map((item, index) => {
                       return (
                         <div
                           key={index}
@@ -132,12 +166,13 @@ const Contacts = () => {
                             alt=""
                           />
                           <div className="space-y-2">
-                            <h1 className="font-bold">{item.name}</h1>
+                            <h1 className="font-bold">{item.userName}</h1>
+                            <p className="text-sm">{item.position}</p>
                             <p className="text-sm font-semibold text-red-600">
-                              {item.title}
+                              {item.userName}
                             </p>
-                            <p className="text-sm">{item.phone}</p>
-                            <p className="text-sm">{item.email}</p>
+                            <p className="text-sm">{item.userPhone}</p>
+                            <p className="text-sm">{item.userEmail}</p>
                           </div>
                         </div>
                       );
@@ -145,6 +180,10 @@ const Contacts = () => {
                   </div>
                 </div>
               </div>
+
+      <Stack spacing={2} marginTop={2}  >
+      <Pagination  count={maxPage} color="error" onChange={handlePageChange} style={{margin:"auto"}} />
+    </Stack>
               <Footer />
             </div>
           </div>
