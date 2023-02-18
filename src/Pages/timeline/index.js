@@ -64,8 +64,6 @@ const Timeline = () => {
 
   function groupLeadsByDate(leads) {
     const groups = {};
-
-    console.log(leads)
     leads.forEach((lead) => {
       let date;
       if (lead.CreationDate) date = (lead.CreationDate + " ").split(' ')[0];
@@ -78,12 +76,27 @@ const Timeline = () => {
       }
     });
 
-    return Object.keys(groups).map((date) => {
+    let grouped = Object.keys(groups).map((date) => {
       return {
         date: date,
         leads: groups[date],
       };
     });
+    console.log(grouped)
+
+    grouped = grouped.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+
+    grouped = grouped.map((obj) => {
+      const sortedLeads = obj.leads.sort((a, b) => {
+        return new Date(b.CreationDate) - new Date(a.CreationDate);
+      });
+      // return the sorted leads array as part of a new object with the same date
+      return { date: obj.date, leads: sortedLeads };
+    });
+
+    return grouped;
   }
 
 
