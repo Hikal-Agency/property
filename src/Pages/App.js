@@ -66,7 +66,10 @@ function App() {
       path: "/closedeals",
       element: <ClosedealsPage />,
     },
-    {  path: "/timeline",
+    // {  path: "/timeline",
+    //   element: <TimelinePage />,
+    // },
+    {  path: "/timeline/:id",
       element: <TimelinePage />,
     },
     {

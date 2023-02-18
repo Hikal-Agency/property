@@ -13,6 +13,7 @@ import axios from "axios";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { AiOutlineHistory, AiOutlineEdit } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useStateContext } from "../context/ContextProvider";
 import UpdateLead from "./Leads/UpdateLead";
@@ -20,6 +21,7 @@ import UpdateLead from "./Leads/UpdateLead";
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
+  const navigate = useNavigate();
   const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -127,7 +129,7 @@ const Closedeals = ({ pageState, setpageState }) => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              <AiOutlineHistory size={20} />
+              <AiOutlineHistory size={20} onClick={()=>navigate(`/timeline/${cellValues.row.lid}`)} />
             </Button>
             <Button
               onClick={() => HandleEditFunc(cellValues)}
@@ -190,7 +192,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           enquiryType: row?.enquiryType,
           leadType: row?.leadType,
           amount: row?.amount,
-          lid: row?.lid,
+          lid: row?.id,
         }));
 
         setpageState((old) => ({

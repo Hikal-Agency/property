@@ -11,7 +11,7 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
@@ -26,9 +26,11 @@ import { toast, ToastContainer } from "react-toastify";
 import RenderPriority from "./RenderPriority";
 import RenderFeedback from "./RenderFeedback";
 import RenderManagers from "./RenderManagers";
+import { useNavigate } from "react-router-dom";
 
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const token = localStorage.getItem("auth-token");
+  const navigate = useNavigate();
   const [singleLeadData, setsingleLeadData] = useState();
   const [deleteloading, setdeleteloading] = useState(false);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
@@ -218,6 +220,34 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
+            </Button>
+          </div>
+        );
+      },
+    },
+    {
+      field: "timeline",
+      headerName: "TimeLine",
+      // width: 150,
+      minWidth: 100,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+
+      renderCell: (cellValues) => {
+        return (
+          <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
+            <Button
+               onClick={()=>navigate(`/timeline/${cellValues.row.lid}`)} 
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
+              <AiOutlineHistory size={20} />
             </Button>
           </div>
         );
@@ -666,7 +696,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           priority: row.priority,
           language: row.language,
           leadSource: row?.leadSource,
-          lid: row?.lid,
+          lid: row?.id,
           lastEdited: row?.lastEdited,
           leadFor: row?.leadFor,
           leadStatus: row?.leadStatus,
@@ -732,7 +762,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             priority: row.priority,
             language: row.language,
             leadSource: row?.leadSource,
-            lid: row?.lid,
+            lid: row?.id,
             lastEdited: row?.lastEdited,
             leadFor: row?.leadFor,
             leadStatus: row?.leadStatus,

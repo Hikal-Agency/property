@@ -16,7 +16,7 @@ import { TiFlash } from "react-icons/ti";
 import { HiClock } from "react-icons/hi";
 import axios from "axios";
 import { FaCalendarDay } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Timeline = () => {
   const { currentMode, BACKEND_URL } = useStateContext();
@@ -24,10 +24,12 @@ const Timeline = () => {
   const [leadDetails, setLeadDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchLeadsData = async (token) => {
-  const urlLeadsCycle = `${BACKEND_URL}/leadscycle/326476`;
-  const urlLeadDetails = `${BACKEND_URL}/leads/326476`;
+    const LeadID = location.pathname.split("/")[2].replace(/%20/g, " ");
+    const urlLeadsCycle = `${BACKEND_URL}/leadscycle/${LeadID}}`;
+    const urlLeadDetails = `${BACKEND_URL}/leads/${LeadID}`;
     try {
       const [leadsCycleResult, leadDetailsResult] = await Promise.all([
         axios.get(urlLeadsCycle, {
@@ -59,6 +61,29 @@ const Timeline = () => {
     const token = localStorage.getItem("auth-token");
     fetchLeadsData(token);
   }, []);
+
+  function groupLeadsByDate(leads) {
+    const groups = {};
+
+    leads.forEach((lead) => {
+      console.log(lead.CreationDate);
+      const date = (lead.CreationDate + "").split(' ')[0];
+
+      if (groups[date]) {
+        groups[date].push(lead);
+      } else {
+        groups[date] = [lead];
+      }
+    });
+
+    return Object.keys(groups).map((date) => {
+      return {
+        date: date,
+        leads: groups[date],
+      };
+    });
+  }
+
 
 
   return (
@@ -153,212 +178,223 @@ const Timeline = () => {
                         <div className="flex flex-col md:grid grid-cols-12">
                           {loading ? <div className="flex items-center justify-center w-full">
                             <h1 className="font-semibold text-lg">Loading</h1>
-                          </div> : leadsCycle.map((timeline, index) => (
-                            <div key={index} className="flex md:contents">
-                              {timeline.leadNote ? (
-                                <>
-                                  <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                    <div className="h-full w-6 flex items-center justify-center">
-                                      <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
-                                    </div>
-                                    <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
-                                      <MdStickyNote2
-                                        className="bg-main-red-color text-white p-2 rounded-full"
-                                        size={33}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={`${currentMode === "dark"
-                                      ? "bg-gray-900"
-                                      : "bg-gray-200"
-                                      } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
-                                  >
-                                    <p className="text-xs font-italic float-right tracking-wide">
-                                      {timeline.creationDate}
-                                    </p>
-                                    <p className="font-semibold tracking-wide">
-                                      {timeline.leadNote}
-                                    </p>
-                                    <p className="text-xs tracking-wide uppercase dark:text-gray-400">
-                                      {timeline.addedBy}
-                                    </p>
-                                  </div>
-                                </>
-                              ) : timeline.manager != "0" ? (
-                                <>
-                                  <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                    <div className="h-full w-6 flex items-center justify-center">
-                                      <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
-                                    </div>
-                                    <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
-                                      <ImUserCheck
-                                        className="bg-main-red-color text-white p-2 rounded-full"
-                                        size={33}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={`${currentMode === "dark"
-                                      ? "bg-gray-900"
-                                      : "bg-gray-200"
-                                      } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
-                                  >
-                                    <p className="text-xs font-italic float-right tracking-wide">
-                                      {timeline.creationDate}
-                                    </p>
-                                    <p className="font-semibold tracking-wide">
-                                      Assigned to manager:{" "}
-                                      <span className="font-bold text-main-red-color">
-                                        {timeline.manager}
-                                      </span>
-                                    </p>
-                                    <p className="text-xs tracking-wide uppercase dark:text-gray-400">
-                                      {timeline.addedBy}
-                                    </p>
-                                  </div>
-                                </>
-                              ) : timeline.sales != "0" ? (
-                                <>
-                                  <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                    <div className="h-full w-6 flex items-center justify-center">
-                                      <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
-                                    </div>
-                                    <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
-                                      <ImUserCheck
-                                        className="bg-main-red-color text-white p-2 rounded-full"
-                                        size={33}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={`${currentMode === "dark"
-                                      ? "bg-gray-900"
-                                      : "bg-gray-200"
-                                      } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
-                                  >
-                                    <p className="text-xs font-italic float-right tracking-wide">
-                                      {timeline.creationDate}
-                                    </p>
-                                    <p className="font-semibold tracking-wide">
-                                      Assigned to agent:{" "}
-                                      <span className="font-bold text-main-red-color">
-                                        {timeline.sales}
-                                      </span>
-                                    </p>
-                                    <p className="text-xs tracking-wide uppercase dark:text-gray-400">
-                                      {timeline.addedBy}
-                                    </p>
-                                  </div>
-                                </>
-                              ) : timeline.feedback != "0" ? (
-                                <>
-                                  <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                    <div className="h-full w-6 flex items-center justify-center">
-                                      <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
-                                    </div>
-                                    <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
-                                      <TiFlash
-                                        className="bg-main-red-color text-white p-2 rounded-full"
-                                        size={33}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={`${currentMode === "dark"
-                                      ? "bg-gray-900"
-                                      : "bg-gray-200"
-                                      } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
-                                  >
-                                    <p className="text-xs font-italic float-right tracking-wide">
-                                      {timeline.creationDate}
-                                    </p>
-                                    <p className="font-semibold tracking-wide">
-                                      Feedback updated to:{" "}
-                                      <span className="font-bold text-main-red-color">
-                                        {timeline.feedback}
-                                      </span>
-                                    </p>
-                                    <p className="text-xs tracking-wide uppercase dark:text-gray-400">
-                                      {timeline.addedBy}
-                                    </p>
-                                  </div>
-                                </>
-                              ) : timeline.meetingStatus != "0" ? (
-                                <>
-                                  <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                    <div className="h-full w-6 flex items-center justify-center">
-                                      <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
-                                    </div>
-                                    <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
-                                      <FaCalendarDay
-                                        className="bg-main-red-color text-white p-2 rounded-full"
-                                        size={33}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={`${currentMode === "dark"
-                                      ? "bg-gray-900"
-                                      : "bg-gray-200"
-                                      } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
-                                  >
-                                    <p className="text-xs font-italic float-right tracking-wide">
-                                      {timeline.creationDate}
-                                    </p>
-                                    <p className="font-semibold tracking-wide">
-                                      Meeting status updated to:{" "}
-                                      <span className="font-bold text-main-red-color">
-                                        {timeline.meetingStatus}
-                                      </span>
-                                    </p>
-                                    <p className="text-xs tracking-wide uppercase dark:text-gray-400">
-                                      {timeline.addedBy}
-                                    </p>
-                                  </div>
-                                </>
-                              ) : timeline.meetingDate != "0" ? (
-                                <>
-                                  <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                    <div className="h-full w-6 flex items-center justify-center">
-                                      <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
-                                    </div>
-                                    <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
-                                      <HiClock
-                                        className="bg-main-red-color text-white p-2 rounded-full"
-                                        size={33}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={`${currentMode === "dark"
-                                      ? "bg-gray-900"
-                                      : "bg-gray-200"
-                                      } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
-                                  >
-                                    <p className="text-xs font-italic float-right tracking-wide">
-                                      {timeline.creationDate}
-                                    </p>
-                                    <p className="font-semibold tracking-wide">
-                                      Meeting set on:{" "}
-                                      <span className="font-bold text-main-red-color">
-                                        {timeline?.meetingTime === ""
-                                          ? ""
-                                          : `${timeline?.meetingTime}, `}{" "}
-                                        {moment(timeline?.meetingDate).format(
-                                          "MMMM D, Y"
-                                        )}
-                                      </span>
-                                    </p>
-                                    <p className="text-xs tracking-wide uppercase dark:text-gray-400">
-                                      {timeline.addedBy}
-                                    </p>
-                                  </div>
-                                </>
-                              ) : (
-                                <></>
-                              )}
+                          </div> : groupLeadsByDate(leadsCycle).map((timeline, index) => (
+                            <>
+                            <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
+                              <div className="h-full w-6 flex items-center justify-center">
+                              <div class="h-full bg-main-red-color rounded-lg px-3 py-1 text-white font-bold" style={{width: "min-content",whiteSpace: "nowrap"}}>{timeline.date}</div>
+                              </div>
                             </div>
+                            
+                              {timeline.leads.map((timeline, index) => (
+                        
+                              <div key={index} className="flex md:contents">
+                                {timeline.leadNote ? (
+                                  <>
+                                    <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
+                                      <div className="h-full w-6 flex items-center justify-center">
+                                        <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                      </div>
+                                      <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
+                                        <MdStickyNote2
+                                          className="bg-main-red-color text-white p-2 rounded-full"
+                                          size={33}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={`${currentMode === "dark"
+                                        ? "bg-gray-900"
+                                        : "bg-gray-200"
+                                        } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
+                                    >
+                                      <p className="text-xs font-italic float-right tracking-wide">
+                                        {timeline.creationDate}
+                                      </p>
+                                      <p className="font-semibold tracking-wide">
+                                        {timeline.leadNote}
+                                      </p>
+                                      <p className="text-xs tracking-wide uppercase dark:text-gray-400">
+                                        {timeline.addedBy}
+                                      </p>
+                                    </div>
+                                  </>
+                                ) : timeline.manager != "0" ? (
+                                  <>
+                                    <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
+                                      <div className="h-full w-6 flex items-center justify-center">
+                                        <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                      </div>
+                                      <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
+                                        <ImUserCheck
+                                          className="bg-main-red-color text-white p-2 rounded-full"
+                                          size={33}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={`${currentMode === "dark"
+                                        ? "bg-gray-900"
+                                        : "bg-gray-200"
+                                        } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
+                                    >
+                                      <p className="text-xs font-italic float-right tracking-wide">
+                                        {timeline.creationDate}
+                                      </p>
+                                      <p className="font-semibold tracking-wide">
+                                        Assigned to manager:{" "}
+                                        <span className="font-bold text-main-red-color">
+                                          {timeline.manager}
+                                        </span>
+                                      </p>
+                                      <p className="text-xs tracking-wide uppercase dark:text-gray-400">
+                                        {timeline.addedBy}
+                                      </p>
+                                    </div>
+                                  </>
+                                ) : timeline.sales != "0" ? (
+                                  <>
+                                    <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
+                                      <div className="h-full w-6 flex items-center justify-center">
+                                        <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                      </div>
+                                      <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
+                                        <ImUserCheck
+                                          className="bg-main-red-color text-white p-2 rounded-full"
+                                          size={33}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={`${currentMode === "dark"
+                                        ? "bg-gray-900"
+                                        : "bg-gray-200"
+                                        } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
+                                    >
+                                      <p className="text-xs font-italic float-right tracking-wide">
+                                        {timeline.creationDate}
+                                      </p>
+                                      <p className="font-semibold tracking-wide">
+                                        Assigned to agent:{" "}
+                                        <span className="font-bold text-main-red-color">
+                                          {timeline.sales}
+                                        </span>
+                                      </p>
+                                      <p className="text-xs tracking-wide uppercase dark:text-gray-400">
+                                        {timeline.addedBy}
+                                      </p>
+                                    </div>
+                                  </>
+                                ) : timeline.feedback != "0" ? (
+                                  <>
+                                    <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
+                                      <div className="h-full w-6 flex items-center justify-center">
+                                        <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                      </div>
+                                      <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
+                                        <TiFlash
+                                          className="bg-main-red-color text-white p-2 rounded-full"
+                                          size={33}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={`${currentMode === "dark"
+                                        ? "bg-gray-900"
+                                        : "bg-gray-200"
+                                        } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
+                                    >
+                                      <p className="text-xs font-italic float-right tracking-wide">
+                                        {timeline.creationDate}
+                                      </p>
+                                      <p className="font-semibold tracking-wide">
+                                        Feedback updated to:{" "}
+                                        <span className="font-bold text-main-red-color">
+                                          {timeline.feedback}
+                                        </span>
+                                      </p>
+                                      <p className="text-xs tracking-wide uppercase dark:text-gray-400">
+                                        {timeline.addedBy}
+                                      </p>
+                                    </div>
+                                  </>
+                                ) : timeline.meetingStatus != "0" ? (
+                                  <>
+                                    <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
+                                      <div className="h-full w-6 flex items-center justify-center">
+                                        <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                      </div>
+                                      <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
+                                        <FaCalendarDay
+                                          className="bg-main-red-color text-white p-2 rounded-full"
+                                          size={33}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={`${currentMode === "dark"
+                                        ? "bg-gray-900"
+                                        : "bg-gray-200"
+                                        } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
+                                    >
+                                      <p className="text-xs font-italic float-right tracking-wide">
+                                        {timeline.creationDate}
+                                      </p>
+                                      <p className="font-semibold tracking-wide">
+                                        Meeting status updated to:{" "}
+                                        <span className="font-bold text-main-red-color">
+                                          {timeline.meetingStatus}
+                                        </span>
+                                      </p>
+                                      <p className="text-xs tracking-wide uppercase dark:text-gray-400">
+                                        {timeline.addedBy}
+                                      </p>
+                                    </div>
+                                  </>
+                                ) : timeline.meetingDate != "0" ? (
+                                  <>
+                                    <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
+                                      <div className="h-full w-6 flex items-center justify-center">
+                                        <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                      </div>
+                                      <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
+                                        <HiClock
+                                          className="bg-main-red-color text-white p-2 rounded-full"
+                                          size={33}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={`${currentMode === "dark"
+                                        ? "bg-gray-900"
+                                        : "bg-gray-200"
+                                        } px-5 py-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`}
+                                    >
+                                      <p className="text-xs font-italic float-right tracking-wide">
+                                        {timeline.creationDate}
+                                      </p>
+                                      <p className="font-semibold tracking-wide">
+                                        Meeting set on:{" "}
+                                        <span className="font-bold text-main-red-color">
+                                          {timeline?.meetingTime === ""
+                                            ? ""
+                                            : `${timeline?.meetingTime}, `}{" "}
+                                          {moment(timeline?.meetingDate).format(
+                                            "MMMM D, Y"
+                                          )}
+                                        </span>
+                                      </p>
+                                      <p className="text-xs tracking-wide uppercase dark:text-gray-400">
+                                        {timeline.addedBy}
+                                      </p>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <></>
+                                )}
+                              </div>
+                              ))}
+                            </>
                           ))}
                         </div>
                       </div>
