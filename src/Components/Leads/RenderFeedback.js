@@ -1,11 +1,15 @@
 import { Button } from "@material-tailwind/react";
-import { CircularProgress, Dialog, MenuItem, Select } from "@mui/material";
+import { CircularProgress, Dialog, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import React, { useState } from "react";
 import { IoIosAlert } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 const RenderFeedback = (cellValues) => {
   const [btnloading, setbtnloading] = useState(false);
@@ -13,6 +17,12 @@ const RenderFeedback = (cellValues) => {
   const [newFeedback, setnewFeedback] = useState("");
   const [Dialogue, setDialogue] = useState(false);
   const { currentMode, setreloadDataGrid, reloadDataGrid } = useStateContext();
+  const [meetingData, setMeetingData] = useState({
+    meetingDate: null,
+    meetingTime: null,
+    meetingStatus: null,
+    meetingLocation: null,
+  });
   const ChangeFeedback = (e) => {
     setnewFeedback(e.target.value);
     setDialogue(true);
@@ -40,6 +50,12 @@ const RenderFeedback = (cellValues) => {
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.lid);
     UpdateLeadData.append("feedback", newFeedback);
+    if (newFeedback === "Meeting") {
+      UpdateLeadData.append("meetingDate", meetingData.meetingDate.toISOString().split('T')[0]);
+      UpdateLeadData.append("meetingTime", (new Date(meetingData.meetingTime)).toLocaleTimeString('en-US', {hour12: false, timeZone: 'Asia/Dubai', hour: '2-digit', minute:'2-digit'}));
+      UpdateLeadData.append("meetingStatus", meetingData.meetingStatus);
+      UpdateLeadData.append("meetingLocation", meetingData.meetingLocation);
+    }
 
     await axios
       .post(
@@ -148,6 +164,65 @@ const RenderFeedback = (cellValues) => {
                   ?
                 </h1>
               </div>
+              {newFeedback === "Meeting" && (
+                  <div className="flex flex-col justify-center items-center gap-4 mt-4">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        label="Meeting Date"
+                        value={meetingData.meetingDate}
+                        views={['year', 'month', 'day']}
+                        onChange={(newValue) => {
+                          setMeetingData({
+                            ...meetingData,
+                            meetingDate: newValue,
+                          });
+                        }}
+                        format="yyyy-MM-dd"
+                        renderInput={(params) => <TextField {...params} fullWidth /> }
+                      />
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <TimePicker
+                        ampm={false}
+                        label="Meeting Time"
+                        format="HH:mm"
+                        value={meetingData.meetingTime}
+                        onChange={(newValue) => {
+                          setMeetingData({
+                            ...meetingData,
+                            meetingTime: newValue,
+                          });
+                        }}
+                        renderInput={(params) => <TextField {...params} fullWidth />}
+                      />
+                    </LocalizationProvider>
+                    <FormControl fullWidth>
+                      <InputLabel id="meeting-status">Meeting Status</InputLabel>
+                      <Select
+                      labelId="meeting-status"
+                        label="Meeting Status"
+                        value={meetingData.meetingStatus}
+                        onChange={(e) => {
+                          setMeetingData({
+                            ...meetingData,
+                            meetingStatus: e.target.value,
+                          });
+                        }}
+                      >
+                        <MenuItem value={"Pending"}>Pending</MenuItem>
+                        <MenuItem value={"Postponed"}>Postponed</MenuItem>
+                        <MenuItem value={"Attended"}>Attended</MenuItem>
+                        <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <TextField fullWidth label="Meeting Location" value={meetingData.meetingLocation} onChange={(e) => {
+                      setMeetingData({
+                        ...meetingData,
+                        meetingLocation: e.target.value,
+                      });
+                    }} />
+                  </div>
+                )}
               <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                 <Button
                   className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
