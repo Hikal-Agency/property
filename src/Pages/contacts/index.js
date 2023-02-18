@@ -107,7 +107,7 @@ const Contacts = () => {
     } else {
       if (token) {
         FetchProfile(token);
-        FetchContacts(token)
+        FetchContacts(token) 
       } else {
         navigate("/", {
           state: { error: "Something Went Wrong! Please Try Again" },
