@@ -64,10 +64,12 @@ const Timeline = () => {
 
   function groupLeadsByDate(leads) {
     const groups = {};
-
+    
+    console.log(leads)
     leads.forEach((lead) => {
-      console.log(lead.CreationDate);
-      const date = (lead.CreationDate + "").split(' ')[0];
+      let date;
+      if(lead.CreationDate) date = (lead.CreationDate + " ").split(' ')[0];
+      else date = (lead.creationDate + " ").split(' ')[0];
 
       if (groups[date]) {
         groups[date].push(lead);
