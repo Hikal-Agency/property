@@ -185,7 +185,7 @@ const Newleads = ({
       flex: 1,
       headerAlign: "center",
       hideable: false,
-      renderCell: RenderFeedback,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
     },
     {
       field: "priority",
@@ -195,7 +195,7 @@ const Newleads = ({
       minWidth: 160,
       flex: 1,
       hideable: false,
-      renderCell: RenderPriority,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues}/>,
     },
     {
       field: "language",
@@ -340,7 +340,7 @@ const Newleads = ({
       minWidth: 200,
       flex: 1,
       hideable: false,
-      renderCell: RenderManagers,
+      renderCell: (cellValues) => <RenderManagers cellValues={cellValues}/>,
     },
     // { field: "assignedToSales", headerName: "Salesperson",hideable: false, width: 110 },
     {
@@ -351,7 +351,7 @@ const Newleads = ({
       flex: 1,
       headerAlign: "center",
       hideable: false,
-      renderCell: RenderFeedback,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
     },
     {
       field: "priority",
@@ -361,7 +361,7 @@ const Newleads = ({
       minWidth: 160,
       flex: 1,
       hideable: false,
-      renderCell: RenderPriority,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues}/>,
     },
     {
       field: "language",

@@ -167,14 +167,14 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       width: 150,
       headerAlign: "center",
       hideable: false,
-      renderCell: RenderFeedback,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
     },
     {
       field: "priority",
       headerName: "Priority",
       width: 150,
       hideable: false,
-      renderCell: RenderPriority,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues}/>,
     },
   ];
 

@@ -6,7 +6,7 @@ import { IoIosAlert } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
-const RenderManagers = (cellValues) => {
+const RenderManagers = ({cellValues}) => {
   const [Managers, setManagers] = useState([]);
   const [manager2, setmanager2] = useState(cellValues?.row?.assignedToManager);
   const [newManager, setnewManager] = useState("");

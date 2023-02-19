@@ -6,7 +6,7 @@ import { IoIosAlert } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
-const RenderPriority = (cellValues) => {
+const RenderPriority = ({cellValues}) => {
   const [btnloading, setbtnloading] = useState(false);
   const [Priority, setPriority] = useState(cellValues?.row?.priority);
   const [newPriority, setnewPriority] = useState("");

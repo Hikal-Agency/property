@@ -1,16 +1,19 @@
-import { Box, Tab, Tabs } from "@mui/material";
-import React, { useState } from "react";
+import { Box, Tab, Tabs, CircularProgress } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import { FiPhoneMissed, FiPhoneCall } from "react-icons/fi";
 import { VscCallOutgoing, VscCallIncoming } from "react-icons/vsc";
 import { useStateContext } from "../../context/ContextProvider";
 import GroupChart from "../charts/GroupChart";
 
-const Calls = ({ call_logs }) => {
-  const { darkModeColors, currentMode } = useStateContext();
-  const [value, setValue] = useState(0);
+const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => {
+  const { darkModeColors, currentMode} = useStateContext();
+  // const [value, setValue] = useState(0);
+
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setTabValue(newValue);
+    setCallLogs(newValue);
   };
+
   return (
     <div
       className={`${
@@ -30,15 +33,25 @@ const Calls = ({ call_logs }) => {
             <VscCallOutgoing size={20} className="text-main-red-color mr-3" />
             <h2>Outgoing calls:</h2>
 ======= */}
+  {isLoading ? 
+            <div className="w-full flex items-center justify-center space-x-1">
+              <CircularProgress size={20} />
+              <span className="font-semibold text-lg">
+                {" "}
+                Loading
+              </span>
+            </div>
+    :
+    <div>
       <Box sx={darkModeColors} className="font-semibold">
-        <Tabs value={value} onChange={handleChange} variant="standard">
+        <Tabs value={tabValue} onChange={handleChange} variant="standard">
           <Tab label="TODAY" />
           <Tab label="THIS MONTH" />
           <Tab label="ALL TIME" />
         </Tabs>
       </Box>
       <div className="mt-1 p-5">
-        <TabPanel value={value} index={0}>
+        <TabPanel value={tabValue} index={0}>
           <div className="mb-10 mx-3">
             <h1 className="font-semibold text-center">
               Today total calls: {call_logs?.all_calls}
@@ -97,7 +110,7 @@ const Calls = ({ call_logs }) => {
             </div>
           </div>
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        <TabPanel value={tabValue} index={1}>
           <div className="mb-10 mx-3">
             <h1 className="font-semibold text-center">
               This month total calls: {call_logs?.all_calls}
@@ -156,7 +169,7 @@ const Calls = ({ call_logs }) => {
             </div>
           </div>
         </TabPanel>
-        <TabPanel value={value} index={2}>
+        <TabPanel value={tabValue} index={2}>
           <div className="mb-10 mx-3">
             <h1 className="font-semibold text-center">
               All-time total calls: {call_logs?.all_calls}
@@ -236,6 +249,8 @@ const Calls = ({ call_logs }) => {
           </div>
         </TabPanel>
       </div> */}
+    </div>
+      } 
     </div>
   );
   function TabPanel(props) {

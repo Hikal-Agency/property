@@ -11,18 +11,18 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
-const RenderFeedback = (cellValues) => {
+const RenderFeedback = ({cellValues}) => {
   const [btnloading, setbtnloading] = useState(false);
   const [Feedback, setFeedback] = useState(cellValues?.row?.feedback);
   const [newFeedback, setnewFeedback] = useState("");
-  const [Dialogue, setDialogue] = useState(false);
-  const { currentMode, setreloadDataGrid, reloadDataGrid } = useStateContext();
+  const [DialogueVal, setDialogue] = useState(false);
   const [meetingData, setMeetingData] = useState({
     meetingDate: null,
     meetingTime: null,
     meetingStatus: null,
     meetingLocation: null,
   });
+  const { currentMode, setreloadDataGrid, reloadDataGrid } = useStateContext();
   const ChangeFeedback = (e) => {
     setnewFeedback(e.target.value);
     setDialogue(true);
@@ -129,7 +129,7 @@ const RenderFeedback = (cellValues) => {
         <MenuItem value={"Not Interested"}>Not Interested</MenuItem>
         <MenuItem value={"Unreachable"}>Unreachable</MenuItem>
       </Select>
-      {Dialogue && (
+      {DialogueVal && (
         <>
           <Dialog
             sx={{
@@ -141,7 +141,7 @@ const RenderFeedback = (cellValues) => {
                   backgroundColor: "rgba(0, 0, 0, 0.5) !important",
                 },
             }}
-            open={Dialogue}
+            open={DialogueVal}
             onClose={(e) => setDialogue(false)}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"

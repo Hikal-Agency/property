@@ -9,6 +9,7 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 import axios from "axios";
+import UpdateMeeting from "./UpdateMeeting";
 import { AiOutlineEdit } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -16,6 +17,10 @@ import { useStateContext } from "../../context/ContextProvider";
 const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
   //eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
+  const [openEditModal, setOpenEditModal] = useState({
+    open: false,
+    id: null
+  });
   const { currentMode } = useStateContext();
   //eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -24,6 +29,19 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
   const HandleQuicSearch = (e) => {
     console.log(e.target.value);
   };
+
+  const handleEditMeeting = ({row}) => {
+    setOpenEditModal({
+      open: true,
+      id: row.id
+    });
+  }
+
+  const handleMeetingModalClose = () => {
+    setOpenEditModal({
+      open: false
+    });
+  }
 
   const columns = [
     { 
@@ -129,7 +147,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center align-center">
-            <Button
+            <Button onClick={() => handleEditMeeting(cellValues)}
               // onClick={() => HandleEditFunc(cellValues)}
               className={`${
                 currentMode === "dark"
@@ -351,6 +369,11 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
           }
         />
       </Box>
+
+      {openEditModal.open && <UpdateMeeting FetchLeads={FetchLeads}
+          meetingModalOpen={openEditModal}
+          handleMeetingModalClose={handleMeetingModalClose}
+      />}
     </div>
   );
 };

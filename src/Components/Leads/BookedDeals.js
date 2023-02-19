@@ -301,7 +301,7 @@ const BookedDeals = ({
       minWidth: 200,
       flex: 1,
       hideable: false,
-      renderCell: RenderManagers,
+      renderCell: (cellValues) => <RenderManagers cellValues={cellValues}/>,
     },
     // { field: "assignedToSales", headerName: "Salesperson",hideable: false, width: 110 },
 
