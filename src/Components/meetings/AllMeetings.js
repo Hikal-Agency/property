@@ -33,7 +33,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
   const handleEditMeeting = ({row}) => {
     setOpenEditModal({
       open: true,
-      id: row.id
+      id: row.meetingId
     });
   }
 
@@ -196,6 +196,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
 
         let rowsdata = rowsDataArray.map((row, index) => ({
           id: pageState.page > 1 ? pageState.page * 15 - 14 + index : index + 1,
+          meetingId: row?.id,
           leadName: row?.leadName,
           project: row?.project,
           enquiryType: row?.enquiryType,

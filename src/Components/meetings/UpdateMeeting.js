@@ -5,10 +5,19 @@ import {
   CircularProgress,
   Modal,
   TextField,
+  FormControl, 
+  Select,
+  InputLabel,
+  MenuItem
 } from "@mui/material";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import React, { useState, useEffect } from "react";
+import dayjs from "dayjs";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { useStateContext } from "../../context/ContextProvider";
 
 const UpdateMeeting = ({
@@ -17,13 +26,16 @@ const UpdateMeeting = ({
   FetchLeads,
 }) => {
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL, setreloadDataGrid } =
+  const { darkModeColors, currentMode, User, BACKEND_URL } =
     useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState("");
   const [loading, setLoading] = useState(true);
   const [meetingTime, setMeetingTime] = useState("");
+  const [meetingTimeValue, setMeetingTimeValue] = useState({});
   const [meetingDate, setMeetingDate] = useState("");
+  const [meetingDateValue, setMeetingDateValue] = useState({});
+  const [meetingLocation, setMeetingLocation] = useState("");
   const style = {
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
@@ -61,10 +73,11 @@ const UpdateMeeting = ({
             theme: "light",
           });
         } else {
-          const {meetingStatus, meetingDate, meetingTime} = response.data.meeting;
+          const {meetingStatus, meetingDate, meetingLocation, meetingTime} = response.data.meeting;
           setMeetingStatus(meetingStatus);
-          setMeetingDate(meetingDate);
-          setMeetingTime(meetingTime);
+          setMeetingDateValue(dayjs(meetingDate));
+          setMeetingTimeValue(dayjs("2023-01-01 " + meetingTime));
+          setMeetingLocation(meetingLocation);
         }
       } catch (error) {
         console.log("Error in fetching single meeting: ", error);
@@ -96,6 +109,7 @@ const UpdateMeeting = ({
       meetingData.append("meetingStatus", meetingStatus);
       meetingData.append("meetingTime", meetingTime);
       meetingData.append("meetingDate", meetingDate);
+      meetingData.append("meetingLocation", meetingLocation);
 
       const response = await axios.post(
         `${BACKEND_URL}/updateMeeting`,
@@ -131,6 +145,7 @@ const UpdateMeeting = ({
           theme: "light",
         });
         handleMeetingModalClose();
+        FetchLeads(token);
       }
     } catch (error) {
       console.log("error in updating meeting: ", error);
@@ -145,9 +160,17 @@ const UpdateMeeting = ({
         theme: "light",
       });
     }
-    setreloadDataGrid(true);
+    // setreloadDataGrid(true);
     setbtnloading(false);
   };
+
+  function format(value) {
+    if(value < 10) {
+      return "0" + value;
+    } else {
+      return value;
+    }
+  }
   return (
     <>
       {/* MODAL FOR SINGLE LEAD SHOW */}
@@ -165,7 +188,7 @@ const UpdateMeeting = ({
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] md:w-[40%]  ${
+          className={`w-[calc(100%-20px)] md:w-[50%]  ${
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md`}
         >
@@ -194,45 +217,52 @@ const UpdateMeeting = ({
                 }}
               >
                 <div className="grid sm:grid-cols-1 gap-5">
-                  <div>
-                    <Box sx={darkModeColors} width="100%">
-                      <TextField
-                        id="status"
-                        type={"text"}
-                        label="Meeting Status"
-                        className="w-full mb-5"
-                        style={{ marginBottom: "20px", width: "100%" }}
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={meetingStatus}
-                        onChange={(e) => setMeetingStatus(e.target.value)}
-                      />
-                      <TextField
-                        id="time"
-                        type={"text"}
-                        label="Meeting Time"
-                        className="w-full mb-5"
-                        style={{ marginBottom: "20px" }}
-                        variant="outlined"
-                        size="medium"
-                        value={meetingTime}
-                        required
-                        onChange={(e) => setMeetingTime(e.target.value)}
-                      />
-                      <TextField
-                        id="date"
-                        type={"text"}
+                  <div className="flex flex-col justify-center items-center gap-4 mt-2 mb-4">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
                         label="Meeting Date"
-                        className="w-full mb-5"
-                        style={{ marginBottom: "20px" }}
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={meetingDate}
-                        onChange={(e) => setMeetingDate(e.target.value)}
+                        value={meetingDateValue}
+                        views={['year', 'month', 'day']}
+                        onChange={(newValue) => {
+                          setMeetingDateValue(newValue);
+                          setMeetingDate(format(newValue.$d.getUTCFullYear()) + "-" + format(newValue.$d.getUTCMonth() + 1) + "-" + format(newValue.$d.getUTCDate() + 1));
+                        }}
+                        format="yyyy-MM-dd"
+                        renderInput={(params) => <TextField {...params} fullWidth /> }
                       />
-                    </Box>
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <TimePicker
+                        ampm={false}
+                        label="Meeting Time"
+                        format="HH:mm"
+                        value={meetingTimeValue}
+                        onChange={(newValue) => {
+                          setMeetingTime(format(newValue.$d.getHours()) + ":" + format(newValue.$d.getMinutes()));
+                          setMeetingTimeValue(newValue)
+                        }}
+                        renderInput={(params) => <TextField {...params} fullWidth />}
+                      />
+                    </LocalizationProvider>
+                    <FormControl fullWidth>
+                      <InputLabel id="meeting-status">Meeting Status</InputLabel>
+                      <Select
+                      labelId="meeting-status"
+                        label="Meeting Status"
+                        value={meetingStatus}
+                        onChange={(e) => {
+                          setMeetingStatus(e.target.value);
+                        }}
+                      >
+                        <MenuItem value={"Pending"}>Pending</MenuItem>
+                        <MenuItem value={"Postponed"}>Postponed</MenuItem>
+                        <MenuItem value={"Attended"}>Attended</MenuItem>
+                        <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <TextField fullWidth label="Meeting Location" value={meetingLocation} onChange={(e) => {
+                      setMeetingLocation(e.target.value);
+                    }} />
                   </div>
                 </div>
 

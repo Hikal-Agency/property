@@ -71,7 +71,7 @@ const ClosedealsPage = (props) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
+            <div className="flex" style={{width: "100vw"}}>
               <Sidebarmui />
               <div className={`w-full `}>
                 <div className="px-5">
