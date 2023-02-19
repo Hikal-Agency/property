@@ -20,6 +20,7 @@ const UpdateLead = ({
   handleLeadModelOpen,
   handleLeadModelClose,
   LeadData,
+  FetchLeads
 }) => {
   // eslint-disable-next-line
   const { darkModeColors, currentMode, User, BACKEND_URL } = useStateContext();
@@ -196,6 +197,7 @@ const UpdateLead = ({
           progress: undefined,
           theme: "light",
         });
+        FetchLeads(token);
         setbtnloading(false);
         handleLeadModelClose();
       })
@@ -508,4 +510,4 @@ const UpdateLead = ({
   );
 };
 
-export default UpdateLead;
+export default UpdateLead

@@ -29,6 +29,13 @@ input[type=number] {
 .sidebar {
   box-shadow: rgb(113 122 131 / 11%) 0px 7px 30px 0px;
 }
+.ps-menu-button:hover {
+  color: black !important;
+}
+
+.ps-submenu-content ul a:hover .leads_counter{
+  color: black !important;
+}
 .nav-item,
 .navbar {
   z-index: 10000;

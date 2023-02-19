@@ -918,7 +918,7 @@ const Sidebarmui = () => {
                           <Box
                             sx={{
                               // FOR DARK MODE MENU SETTINGS
-                              "& .css-1mfnem1": { borderRadius: "5px" },
+                              "& .css-1mfnem1": { borderRadius: "5px", },
                               "& .css-1mfnem1:hover": {
                                 backgroundColor: "#DA1F26",
                               },

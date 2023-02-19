@@ -946,6 +946,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             handleLeadModelClose={handleUpdateLeadModelClose}
             LeadData={singleLeadData}
             BACKEND_URL={BACKEND_URL}
+            FetchLeads={FetchLeads}
           />
         )}
       </Box>

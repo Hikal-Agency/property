@@ -16,7 +16,7 @@ import { AiOutlineHistory, AiOutlineEdit } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useStateContext } from "../context/ContextProvider";
-import UpdateLead from "./Leads/UpdateLead";
+import UpdateClosedLead from "./Leads/UpdateClosedLead";
 
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
@@ -291,13 +291,14 @@ const Closedeals = ({ pageState, setpageState }) => {
         />
       </Box>
       {UpdateLeadModelOpen && (
-        <UpdateLead
+        <UpdateClosedLead
           LeadModelOpen={UpdateLeadModelOpen}
           setLeadModelOpen={setUpdateLeadModelOpen}
           handleLeadModelOpen={handleUpdateLeadModelOpen}
           handleLeadModelClose={handleUpdateLeadModelClose}
           LeadData={singleLeadData}
           BACKEND_URL={BACKEND_URL}
+          FetchLeads={FetchLeads}
         />
       )}
     </div>
