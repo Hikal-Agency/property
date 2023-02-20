@@ -243,7 +243,7 @@ const Timeline = () => {
                                         </p>
                                       </div>
                                     </>
-                                  ) : timeline.manager != "0" ? (
+                                  ) :  timeline.manager && timeline.manager != "0" ? (
                                     <>
                                       <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                         <div className="h-full w-6 flex items-center justify-center">
