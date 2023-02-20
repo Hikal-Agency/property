@@ -197,7 +197,7 @@ const Timeline = () => {
                             <>
                               <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                 <div className="h-full w-6 flex items-center justify-center">
-                                  <div class="h-full bg-main-red-color rounded-lg px-3 py-1 text-white font-bold" style={{ width: "min-content", whiteSpace: "nowrap" }}>{timeline.date}</div>
+                                  <div className="h-full bg-main-red-color rounded-lg px-3 py-1 text-white font-bold" style={{ width: "min-content", whiteSpace: "nowrap" }}>{timeline.date}</div>
                                 </div>
                               </div>
 
@@ -230,6 +230,14 @@ const Timeline = () => {
                                         <p className="font-semibold tracking-wide">
                                           {timeline.leadNote}
                                         </p>
+                                        {timeline?.feedback && timeline.feedback != "0"  &&
+                                          <p className="font-semibold tracking-wide">
+                                            Feedback updated to:{" "}
+                                            <span className="font-bold text-main-red-color">
+                                              {timeline.feedback}
+                                            </span>
+                                          </p>
+                                        }
                                         <p className="text-xs tracking-wide uppercase dark:text-gray-400">
                                           {timeline.creationDate || timeline.CreationDate}
                                         </p>
@@ -263,6 +271,14 @@ const Timeline = () => {
                                             {timeline.manager}
                                           </span>
                                         </p>
+{ timeline?.feedback && timeline.feedback != "0"  && 
+                                        <p className="font-semibold tracking-wide">
+                                          Feedback updated to:{" "}
+                                          <span className="font-bold text-main-red-color">
+                                            {timeline.feedback}
+                                          </span>
+                                        </p>
+                                        }
                                         <p className="text-xs tracking-wide uppercase dark:text-gray-400">
                                           {timeline.creationDate || timeline.CreationDate}
                                         </p>
@@ -296,45 +312,55 @@ const Timeline = () => {
                                             {timeline.sales}
                                           </span>
                                         </p>
+                                        {timeline?.feedback && timeline.feedback != "0"  &&
+                                          <p className="font-semibold tracking-wide">
+                                            Feedback updated to:{" "}
+                                            <span className="font-bold text-main-red-color">
+                                              {timeline.feedback}
+                                            </span>
+                                          </p>
+                                        }
                                         <p className="text-xs tracking-wide uppercase dark:text-gray-400">
                                           {timeline.creationDate || timeline.CreationDate}
                                         </p>
                                       </div>
                                     </>
-                                  ) : timeline.feedback != "0" ? (
-                                    <>
-                                      <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                        <div className="h-full w-6 flex items-center justify-center">
-                                          <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
-                                        </div>
-                                        <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
-                                          <TiFlash
-                                            className="bg-main-red-color text-white p-2 rounded-full"
-                                            size={33}
-                                          />
-                                        </div>
-                                      </div>
-                                      <div
-                                        className={`${currentMode === "dark"
-                                          ? "bg-gray-900"
-                                          : "bg-gray-200"
-                                          } px-5 pb-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`} style={{transform:"translateX(-30px)"}}
-                                      >
-                                        <p className="text-xs font-italic float-right tracking-wide mt-4" style={{display:"inline-flex"}}>
-                                        <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24"  style={{width:"15px"}} fill="gray" ><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>{"  "}{timeline.addedBy}
-                                        </p>
-                                        <p className="font-semibold tracking-wide">
-                                          Feedback updated to:{" "}
-                                          <span className="font-bold text-main-red-color">
-                                            {timeline.feedback}
-                                          </span>
-                                        </p>
-                                        <p className="text-xs tracking-wide uppercase dark:text-gray-400">
-                                          {timeline.creationDate || timeline.CreationDate}
-                                        </p>
-                                      </div>
-                                    </>
-                                  ) : timeline.meetingStatus != "0" ? (
+                                  ) 
+                                  // : timeline?.feedback && timeline.feedback != "0"  ? (
+                                  //   <>
+                                  //     <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
+                                  //       <div className="h-full w-6 flex items-center justify-center">
+                                  //         <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                  //       </div>
+                                  //       <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
+                                  //         <TiFlash
+                                  //           className="bg-main-red-color text-white p-2 rounded-full"
+                                  //           size={33}
+                                  //         />
+                                  //       </div>
+                                  //     </div>
+                                  //     <div
+                                  //       className={`${currentMode === "dark"
+                                  //         ? "bg-gray-900"
+                                  //         : "bg-gray-200"
+                                  //         } px-5 pb-3 space-y-3 rounded-md shadow-md col-start-4 col-end-12 my-2 w-full`} style={{transform:"translateX(-30px)"}}
+                                  //     >
+                                  //       <p className="text-xs font-italic float-right tracking-wide mt-4" style={{display:"inline-flex"}}>
+                                  //       <svg focusable="false" aria-hidden="true" viewBox="0 0 24 24"  style={{width:"15px"}} fill="gray" ><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>{"  "}{timeline.addedBy}
+                                  //       </p>
+                                  //       <p className="font-semibold tracking-wide">
+                                  //         Feedback updated to:{" "}
+                                  //         <span className="font-bold text-main-red-color">
+                                  //           {timeline.feedback}
+                                  //         </span>
+                                  //       </p>
+                                  //       <p className="text-xs tracking-wide uppercase dark:text-gray-400">
+                                  //         {timeline.creationDate || timeline.CreationDate}
+                                  //       </p>
+                                  //     </div>
+                                  //   </>
+                                  // ) 
+                                  : timeline.meetingStatus != "0" ? (
                                     <>
                                       <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                         <div className="h-full w-6 flex items-center justify-center">
@@ -364,6 +390,14 @@ const Timeline = () => {
                                             {timeline.meetingStatus}
                                           </span>
                                         </p>
+                                        {timeline?.feedback && timeline.feedback != "0"  &&
+                                          <p className="font-semibold tracking-wide">
+                                            Feedback updated to:{" "}
+                                            <span className="font-bold text-main-red-color">
+                                              {timeline.feedback}
+                                            </span>
+                                          </p>
+                                        }
                                         <p className="text-xs tracking-wide uppercase dark:text-gray-400">
                                           {timeline.creationDate || timeline.CreationDate}
                                         </p>
@@ -403,6 +437,14 @@ const Timeline = () => {
                                             )}
                                           </span>
                                         </p>
+                                        {timeline?.feedback && timeline.feedback != "0"  &&
+                                          <p className="font-semibold tracking-wide">
+                                            Feedback updated to:{" "}
+                                            <span className="font-bold text-main-red-color">
+                                              {timeline.feedback}
+                                            </span>
+                                          </p>
+                                        }
                                         <p className="text-xs tracking-wide uppercase dark:text-gray-400">
                                           {timeline.creationDate || timeline.CreationDate}
                                         </p>
