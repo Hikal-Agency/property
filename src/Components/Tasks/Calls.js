@@ -98,7 +98,8 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 <h2>Recieved:</h2>
               </div>
               <p className="font-bold">
-                {call_logs?.recieved - call_logs?.missed}
+                {/* {call_logs?.recieved - call_logs?.missed} */}
+                {call_logs?.recieved}
               </p>
             </div>
             <div className="flex items-center space-x-2">
@@ -157,7 +158,8 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 <h2>Recieved:</h2>
               </div>
               <p className="font-bold">
-                {call_logs?.recieved - call_logs?.missed}
+                {/* {call_logs?.recieved - call_logs?.missed} */}
+                {call_logs?.recieved}
               </p>
             </div>
             <div className="flex items-center space-x-2">
@@ -216,7 +218,8 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 <h2>Recieved:</h2>
               </div>
               <p className="font-bold">
-                {call_logs?.recieved - call_logs?.missed}
+                {/* {call_logs?.recieved - call_logs?.missed} */}
+                {call_logs?.recieved}
               </p>
             </div>
             <div className="flex items-center space-x-2">

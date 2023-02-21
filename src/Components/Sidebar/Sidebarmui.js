@@ -782,6 +782,316 @@ const Sidebarmui = () => {
     //   ],
     // },
   ];
+  const Managerlinks = [
+    {
+      title: "Dashboard",
+      links: [
+        {
+          name: "Dashboard",
+          icon: <RiDashboardFill />,
+          link: "/dashboard",
+        },
+      ],
+    },
+
+    {
+      title: "LEADS",
+      links: [
+        {
+          name: "Add lead",
+          icon: <MdPersonAdd />,
+          link: "/addlead",
+        },
+        {
+          name: "Fresh",
+          icon: <SiHotjar />,
+          submenu: [
+            {
+              name: "All",
+              count:
+                HotLeadsCount?.hot,
+              link: "/hotleads/all",
+            },
+            {
+              name: "New",
+              count: HotLeadsCount?.new,
+              link: "/hotleads/new",
+            },
+            {
+              name: "No Answer",
+              count: HotLeadsCount?.no_nswer,
+              link: "/hotleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: HotLeadsCount?.Meeting,
+              link: "/hotleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: HotLeadsCount?.follow_up,
+              link: "/hotleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: HotLeadsCount?.low_budget,
+              link: "/hotleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: HotLeadsCount?.not_interested,
+              link: "/hotleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: HotLeadsCount?.unreachable,
+              link: "/hotleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Personal",
+          icon: <HiUsers />,
+          submenu: [
+            {
+              name: "All",
+              count:
+                PersonalLeadsCount?.new +
+                PersonalLeadsCount?.no_nswer +
+                PersonalLeadsCount?.Meeting +
+                PersonalLeadsCount?.follow_up +
+                PersonalLeadsCount?.low_budget +
+                PersonalLeadsCount?.not_interested +
+                PersonalLeadsCount?.unreachable,
+              link: "/personalleads/all",
+            },
+            {
+              name: "New",
+              count: PersonalLeadsCount?.new,
+              link: "/personalleads/new",
+            },
+            {
+              name: "No Answer",
+              count: PersonalLeadsCount?.no_nswer,
+              link: "/personalleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: PersonalLeadsCount?.Meeting,
+              link: "/personalleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: PersonalLeadsCount?.follow_up,
+              link: "/personalleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: PersonalLeadsCount?.low_budget,
+              link: "/personalleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: PersonalLeadsCount?.not_interested,
+              link: "/personalleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: PersonalLeadsCount?.unreachable,
+              link: "/personalleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Third party",
+          icon: <FaLink />,
+          submenu: [
+            {
+              name: "All",
+              count:
+                ThirdPartLeadsCount?.new +
+                ThirdPartLeadsCount?.no_nswer +
+                ThirdPartLeadsCount?.Meeting +
+                ThirdPartLeadsCount?.follow_up +
+                ThirdPartLeadsCount?.low_budget +
+                ThirdPartLeadsCount?.not_interested +
+                ThirdPartLeadsCount?.unreachable,
+              link: "/thirdpartyleads/all",
+            },
+            {
+              name: "New",
+              count: ThirdPartLeadsCount?.new,
+              link: "/thirdpartyleads/new",
+            },
+            {
+              name: "No Answer",
+              count: ThirdPartLeadsCount?.no_nswer,
+              link: "/thirdpartyleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: ThirdPartLeadsCount?.Meeting,
+              link: "/thirdpartyleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: ThirdPartLeadsCount?.follow_up,
+              link: "/thirdpartyleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: ThirdPartLeadsCount?.low_budget,
+              link: "/thirdpartyleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: ThirdPartLeadsCount?.not_interested,
+              link: "/thirdpartyleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: ThirdPartLeadsCount?.unreachable,
+              link: "/thirdpartyleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Cold",
+          icon: <FaSnowflake />,
+          submenu: [
+            {
+              name: "All",
+              count:
+                ColdLeadsCount?.new +
+                ColdLeadsCount?.no_nswer +
+                ColdLeadsCount?.Meeting +
+                ColdLeadsCount?.follow_up +
+                ColdLeadsCount?.low_budget +
+                ColdLeadsCount?.not_interested +
+                ColdLeadsCount?.unreachable,
+              link: "/coldleads/all",
+            },
+            {
+              name: "New",
+              count: ColdLeadsCount?.new,
+              link: "/coldleads/new",
+            },
+
+            {
+              name: "No Answer",
+              count: ColdLeadsCount?.no_nswer,
+              link: "/coldleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: ColdLeadsCount?.Meeting,
+              link: "/coldleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: ColdLeadsCount?.follow_up,
+              link: "/coldleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: ColdLeadsCount?.low_budget,
+              link: "/coldleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: ColdLeadsCount?.not_interested,
+              link: "/coldleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: ColdLeadsCount?.unreachable,
+              link: "/coldleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Unassigned",
+          icon: <BsStopCircleFill />,
+          submenu: [
+            {
+              name: "Hot leads",
+              count: 10,
+            },
+            {
+              name: "Cold leads",
+              count: 10,
+            },
+          ],
+        },
+        {
+          name: "Transferred",
+          icon: <RiFileTransferFill />,
+          link: "/transfferedleads",
+        },
+        {
+          name: "Booked deals",
+          icon: <ImBookmark />,
+          link: "/booked",
+        },
+        {
+          name: "Closed deals",
+          icon: <ImLock />,
+          link: "/closedeals",
+        },
+        {
+          name: "Notes",
+          icon: <MdSpeakerNotes />,
+          link: "/leadnotes",
+        },
+      ],
+    },
+    {
+      title: "Apps",
+      links: [
+        {
+          name: "Meetings",
+          icon: <BsCalendarWeekFill />,
+          link: "/meetings",
+        },
+
+        {
+          name: "Contacts",
+          icon: <MdContactPage />,
+          link: "/contacts",
+        },
+      ],
+    },
+    // {
+    //   title: "WHATSAPP MARKETING",
+    //   links: [
+    //     {
+    //       name: "Dashboard",
+    //       icon: <RiWhatsappFill />,
+    //       link: "/whatsapp-marketing/dashboard",
+    //     },
+    //     {
+    //       name: "Device",
+    //       icon: <FaMobile />,
+    //       link: "/whatsapp-marketing/device",
+    //     },
+    //     {
+    //       name: "Messages",
+    //       icon: <AiFillMessage />,
+    //       link: "/whatsapp-marketing/messages",
+    //     },
+    //     {
+    //       name: "Payments",
+    //       icon: <BsFillCreditCard2FrontFill />,
+    //       link: "/whatsapp-marketing/payments",
+    //     },
+    //     {
+    //       name: "Transactions",
+    //       icon: <GrTransaction />,
+    //       link: "/whatsapp-marketing/transactions",
+    //     },
+    //   ],
+    // },
+  ];
   // const [UserLinks, setUserLinks] = useState(
   //   User.position === "Founder & CEO" ? links : Agentlinks
   // );
@@ -1057,6 +1367,190 @@ const Sidebarmui = () => {
                                   )}
                                 </div>
                               </Link>
+                            </MenuItem>
+                          </Box>
+                        )}
+                      </Tooltip>
+                    ))}
+                  </div>
+                ))
+                : User.position == "Sales Manager"
+                ? Managerlinks.map((item, index) => (
+                  <div key={index}>
+                    <p
+                      className={`font-bold m-3 mt-4 uppercase ${index === 0 && "hidden"
+                        } ${currentMode === "dark"
+                          ? "text-red-600"
+                          : "text-red-600"
+                        }`}
+                    >
+                      {item.title}
+                    </p>
+                    {item.links.map((link) => (
+                      <Tooltip
+                        title={link.name}
+                        key={link.name}
+                        placement="right"
+                      >
+                        {link.submenu ? (
+                          <Box
+                            sx={{
+                              // FOR DARK MODE MENU SETTINGS
+                              "& .css-1mfnem1": { borderRadius: "5px" },
+                              "& .css-1mfnem1:hover": {
+                                backgroundColor: "#DA1F26",
+                              },
+                              // submenu containerr color
+                              "& .css-z5rm24": {
+                                backgroundColor:
+                                  currentMode === "dark" && "#3b3d44",
+                                borderRadius: "5px",
+                              },
+                              // Submenu count color
+                              "& .css-1rnkhs0": {
+                                color: currentMode === "dark" && "white",
+                              },
+                              // LIGHT MODE SETTINGS
+                              "& .css-1ohfb25:hover": {
+                                backgroundColor: "#DA1F26",
+                                color: "white",
+                                borderRadius: "5px",
+                              },
+                              "& .css-wx7wi4": {
+                                width: "18px",
+                                minWidth: "18px",
+                              },
+                            }}
+                            className="my-1"
+                          >
+                            <SubMenu label={link.name} icon={link.icon}>
+                              {link.submenu.map((menu, index) => {
+                                return (
+                                  <Link
+                                    key={index}
+                                    to={`${menu.link}`}
+                                    onClick={() => setopenBackDrop(true)}
+                                  >
+                                    <Box
+                                      sx={{
+                                        // STYLING FOR LIGHT MODE
+                                        "& .css-1mfnem1": {
+                                          borderRadius: "5px",
+                                        },
+                                        "& .css-1mfnem1:hover": {
+                                          backgroundColor: "#DA1F26",
+                                        },
+                                        "& .css-1ogoo8i": {
+                                          backgroundColor: "#DA1F26",
+                                        },
+
+                                        // STYLING FOR DARK MODE
+                                        "& .css-yktbuo": {
+                                          backgroundColor: "#DA1F26",
+                                        },
+                                        "& .css-yktbuo:hover": {
+                                          backgroundColor: "#DA1F26",
+                                        },
+                                        "& .css-1v6ithu": {
+                                          color: "white",
+                                        },
+                                        "& .leads_counter": {
+                                          color:
+                                            currentMode === "dark"
+                                              ? "white"
+                                              : "black",
+                                        },
+                                      }}
+                                      className="relative my-1"
+                                    >
+                                      <MenuItem
+                                        active={selected === menu.name}
+                                        onClick={() => setSelected(menu.name)}
+                                      >
+                                        {menu?.name}
+                                      </MenuItem>
+                                      <span className="leads_counter block absolute right-5 top-5">
+                                        {menu?.count}
+                                      </span>
+                                    </Box>
+                                  </Link>
+                                );
+                              })}
+                            </SubMenu>
+                          </Box>
+                        ) : (
+                          <Box
+                            sx={{
+                              "& .css-1mfnem1": { borderRadius: "5px" },
+                              // hover bg color for dark mode
+                              "& .css-1mfnem1:hover": {
+                                backgroundColor: "#DA1F26",
+                              },
+                              // hover bg-color for light mode
+                              "& .css-1ohfb25:hover": {
+                                backgroundColor: "#DA1F26",
+                                color: "white",
+                                borderRadius: "5px",
+                              },
+                              // ACTIVE MENU ITEM STYLING FOR LIGHT MODE
+                              "& .css-xsmbnq": {
+                                backgroundColor: "#DA1F26",
+                                color: "white",
+                                borderRadius: "5px",
+                              },
+                              "& .css-xsmbnq:hover": {
+                                backgroundColor: "#DA1F26",
+                                color: "white",
+                                borderRadius: "5px",
+                              },
+                              // ACTIVE MENU STYLING FOR DARK MODE
+                              "& .css-yktbuo": {
+                                backgroundColor: "#DA1F26",
+                                borderRadius: "5px",
+                              },
+                              "& .css-yktbuo:hover": {
+                                backgroundColor: "#DA1F26",
+                              },
+                            }}
+                            className="my-1"
+                          >
+                            <MenuItem
+                              active={selected === link.name}
+                              onClick={() => setSelected(link.name)}
+                            >{link.link == "/contacts" || link.link == "/dashboard" ? <a
+                              href={link.link}
+                              onClick={() => setopenBackDrop(true)}
+                            >
+                              <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                <span
+                                  className={`${!isCollapsed && "text-xl"}`}
+                                >
+                                  {link.icon}
+                                </span>
+                                {isCollapsed && (
+                                  <span className="capitalize">
+                                    {link.name}
+                                  </span>
+                                )}
+                              </div>
+                            </a> :
+                              <Link
+                                to={link.link}
+                                onClick={() => setopenBackDrop(true)}
+                              >
+                                <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                  <span
+                                    className={`${!isCollapsed && "text-xl"}`}
+                                  >
+                                    {link.icon}
+                                  </span>
+                                  {isCollapsed && (
+                                    <span className="capitalize">
+                                      {link.name}
+                                    </span>
+                                  )}
+                                </div>
+                              </Link>}
                             </MenuItem>
                           </Box>
                         )}

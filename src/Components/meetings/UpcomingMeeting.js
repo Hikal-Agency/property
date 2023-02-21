@@ -68,7 +68,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
               </div>
             </div>
             <span className="block text-sm bg-main-red-color text-white rounded-md text-center p-2 font-semibold">
-              Agent Name
+            {meeting?.createdBy}
             </span>
           </div>
         );
