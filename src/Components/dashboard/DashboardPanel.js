@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { FaHandshake } from "react-icons/fa";
 import { ImUser } from "react-icons/im";
@@ -14,10 +14,39 @@ import Task from "../../Components/Tasks/Task";
 import { Link } from "react-router-dom";
 import UpcomingMeeting from "../meetings/UpcomingMeeting";
 import UpcomingMeetingAgent from "../meetings/UpcomingMeetingAgent";
+import axios from "axios";
+import { CircularProgress } from "@mui/material";
 
 const DashboardPanel = () => {
-  const { DashboardData, currentMode, setopenBackDrop, User } =
-    useStateContext();
+  const {
+    DashboardData,
+    currentMode,
+    setopenBackDrop,
+    User,
+    Sales_chart_data,
+    setSales_chart_data,
+  } = useStateContext();
+
+  const [saleschart_loading, setsaleschart_loading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    axios
+      .get("https://staging.hikalcrm.com/api/memberdeals", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        // console.log("sales chart data is");
+        // console.log(result);
+        setSales_chart_data(result?.data?.members_deal);
+        setsaleschart_loading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   // COUNTER DATA
   const HeadData = [
@@ -346,7 +375,7 @@ const DashboardPanel = () => {
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Monthly Sales</h6>
-                <BarChart />
+                <BarChart Sales_chart_data={Sales_chart_data} />
               </div>
             </div>
             <div
@@ -394,7 +423,13 @@ const DashboardPanel = () => {
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Sales</h6>
-                <BarChart />
+                {saleschart_loading ? (
+                  <div className="flex items-center space-x-2">
+                    <CircularProgress size={20} /> <span>Loading</span>
+                  </div>
+                ) : (
+                  <BarChart Sales_chart_data={Sales_chart_data} />
+                )}
               </div>
             </div>
             <div

@@ -27,6 +27,7 @@ export const ContextProvider = ({ children }) => {
   const [openBackDrop, setopenBackDrop] = useState(false);
   const [DashboardData, setDashboardData] = useState();
   const [fetchManagers, setfetchManagers] = useState(false);
+  const [Sales_chart_data, setSales_chart_data] = useState([]);
 
   // DATA GRID
   const [pageState, setpageState] = useState({
@@ -190,7 +191,8 @@ export const ContextProvider = ({ children }) => {
         setopenBackDrop,
         fetchManagers,
         setfetchManagers,
-
+        Sales_chart_data,
+        setSales_chart_data,
         screenSize,
         setScreenSize,
         handleClick,

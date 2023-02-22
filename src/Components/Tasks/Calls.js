@@ -33,7 +33,7 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
             <VscCallOutgoing size={20} className="text-main-red-color mr-3" />
             <h2>Outgoing calls:</h2>
 ======= */}
-  {isLoading ? 
+  {/* {isLoading ? 
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />
               <span className="font-semibold text-lg">
@@ -41,7 +41,7 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 Loading
               </span>
             </div>
-    :
+    : */}
     <div>
       <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={tabValue} onChange={handleChange} variant="standard">
@@ -50,11 +50,13 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
           <Tab label="ALL TIME" />
         </Tabs>
       </Box>
-      <div className="mt-1 p-5">
+      <Box className="mt-1 p-5" sx={isLoading && {
+        opacity: 0.3,
+      }}>
         <TabPanel value={tabValue} index={0}>
           <div className="mb-10 mx-3">
             <h1 className="font-semibold text-center">
-              Today total calls: {call_logs?.all_calls}
+              Today total calls: <span>{call_logs?.all_calls}</span>
             </h1>
           </div>
           <div className="grid grid-cols-3 gap-y-5 gap-x-5">
@@ -66,21 +68,21 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 />
                 <h2>Outgoing calls:</h2>
               </div>
-              <p className="font-bold">{call_logs?.dialed}</p>
+              <p className="font-bold"><span>{call_logs?.dialed}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
                 <FiPhoneCall size={20} className="text-main-red-color mr-3" />
                 <h2>Answered:</h2>
               </div>
-              <p className="font-bold">{call_logs?.answered}</p>
+              <p className="font-bold"><span>{call_logs?.answered}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
                 <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
                 <h2>Not answered:</h2>
               </div>
-              <p className="font-bold">{call_logs?.notanswered}</p>
+              <p className="font-bold"><span>{call_logs?.notanswered}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
@@ -90,7 +92,7 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 />
                 <h2>Incoming calls:</h2>
               </div>
-              <p className="font-bold">{call_logs?.recieved}</p>
+              <p className="font-bold"><span>{call_logs?.recieved}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
@@ -99,7 +101,7 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
               </div>
               <p className="font-bold">
                 {/* {call_logs?.recieved - call_logs?.missed} */}
-                {call_logs?.recieved}
+                <span>{call_logs?.recieved}</span>
               </p>
             </div>
             <div className="flex items-center space-x-2">
@@ -107,14 +109,14 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
                 <h2>Missed:</h2>
               </div>
-              <p className="font-bold">{call_logs?.missed}</p>
+              <p className="font-bold"><span>{call_logs?.missed}</span></p>
             </div>
           </div>
         </TabPanel>
         <TabPanel value={tabValue} index={1}>
           <div className="mb-10 mx-3">
             <h1 className="font-semibold text-center">
-              This month total calls: {call_logs?.all_calls}
+              This month total calls: <span>{call_logs?.all_calls}</span>
             </h1>
           </div>
           <div className="grid grid-cols-3 gap-y-5 gap-x-5">
@@ -126,21 +128,21 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 />
                 <h2>Outgoing calls:</h2>
               </div>
-              <p className="font-bold">{call_logs?.dialed}</p>
+              <p className="font-bold"><span>{call_logs?.dialed}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
                 <FiPhoneCall size={20} className="text-main-red-color mr-3" />
                 <h2>Answered:</h2>
               </div>
-              <p className="font-bold">{call_logs?.answered}</p>
+              <p className="font-bold"><span>{call_logs?.answered}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
                 <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
                 <h2>Not answered:</h2>
               </div>
-              <p className="font-bold">{call_logs?.notanswered}</p>
+              <p className="font-bold"><span>{call_logs?.notanswered}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
@@ -150,7 +152,7 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 />
                 <h2>Incoming calls:</h2>
               </div>
-              <p className="font-bold">{call_logs?.recieved}</p>
+              <p className="font-bold"><span>{call_logs?.recieved}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
@@ -159,7 +161,7 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
               </div>
               <p className="font-bold">
                 {/* {call_logs?.recieved - call_logs?.missed} */}
-                {call_logs?.recieved}
+                <span>{call_logs?.recieved}</span>
               </p>
             </div>
             <div className="flex items-center space-x-2">
@@ -167,14 +169,14 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
                 <h2>Missed:</h2>
               </div>
-              <p className="font-bold">{call_logs?.missed}</p>
+              <p className="font-bold"><span>{call_logs?.missed}</span></p>
             </div>
           </div>
         </TabPanel>
         <TabPanel value={tabValue} index={2}>
           <div className="mb-10 mx-3">
             <h1 className="font-semibold text-center">
-              All-time total calls: {call_logs?.all_calls}
+              All-time total calls: <span>{call_logs?.all_calls}</span>
             </h1>
           </div>
           <div className="grid grid-cols-3 gap-y-5 gap-x-5">
@@ -186,21 +188,21 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 />
                 <h2>Outgoing calls:</h2>
               </div>
-              <p className="font-bold">{call_logs?.dialed}</p>
+              <p className="font-bold"><span>{call_logs?.dialed}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
                 <FiPhoneCall size={20} className="text-main-red-color mr-3" />
                 <h2>Answered:</h2>
               </div>
-              <p className="font-bold">{call_logs?.answered}</p>
+              <p className="font-bold"><span>{call_logs?.answered}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
                 <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
                 <h2>Not answered:</h2>
               </div>
-              <p className="font-bold">{call_logs?.notanswered}</p>
+              <p className="font-bold"><span>{call_logs?.notanswered}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
@@ -210,7 +212,7 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 />
                 <h2>Incoming calls:</h2>
               </div>
-              <p className="font-bold">{call_logs?.recieved}</p>
+              <p className="font-bold"><span>{call_logs?.recieved}</span></p>
             </div>
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-1">
@@ -219,7 +221,7 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
               </div>
               <p className="font-bold">
                 {/* {call_logs?.recieved - call_logs?.missed} */}
-                {call_logs?.recieved}
+                <span>{call_logs?.recieved}</span>
               </p>
             </div>
             <div className="flex items-center space-x-2">
@@ -227,11 +229,11 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
                 <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
                 <h2>Missed:</h2>
               </div>
-              <p className="font-bold">{call_logs?.missed}</p>
+              <p className="font-bold"><span>{call_logs?.missed}</span></p>
             </div>
           </div>
         </TabPanel>
-      </div>
+      </Box>
       {/* <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={value} onChange={handleChange} variant="standard">
           <Tab label="ANSWERED CALLS " />
@@ -253,7 +255,7 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
         </TabPanel>
       </div> */}
     </div>
-      } 
+      {/* }  */}
     </div>
   );
   function TabPanel(props) {

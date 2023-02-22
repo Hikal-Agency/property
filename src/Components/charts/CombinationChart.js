@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import {
   Chart as ChartJS,
@@ -13,6 +13,7 @@ import {
   BarController,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
+import axios from "axios";
 // import faker from 'faker';
 
 ChartJS.register(
@@ -29,13 +30,25 @@ ChartJS.register(
 
 const CombinationChart = () => {
   const { currentMode } = useStateContext();
-  const labels = [
-    "Agent 1",
-    "Agent 2",
-    "Agent 3",
-    "Agent 4",
-  ];
-  
+  const labels = ["Agent 1", "Agent 2", "Agent 3", "Agent 4"];
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    axios
+      .get("https://staging.hikalcrm.com/api/performance", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("performance chart data is");
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <span>
