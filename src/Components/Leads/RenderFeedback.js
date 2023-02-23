@@ -1,17 +1,25 @@
 import { Button } from "@material-tailwind/react";
-import { CircularProgress, Dialog, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+  CircularProgress,
+  Dialog,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import React, { useState } from "react";
 import { IoIosAlert } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
-const RenderFeedback = ({cellValues}) => {
+const RenderFeedback = ({ cellValues }) => {
   const [btnloading, setbtnloading] = useState(false);
   const [Feedback, setFeedback] = useState(cellValues?.row?.feedback);
   const [newFeedback, setnewFeedback] = useState("");
@@ -51,8 +59,19 @@ const RenderFeedback = ({cellValues}) => {
     UpdateLeadData.append("lid", cellValues?.row?.lid);
     UpdateLeadData.append("feedback", newFeedback);
     if (newFeedback === "Meeting") {
-      UpdateLeadData.append("meetingDate", meetingData.meetingDate.toISOString().split('T')[0]);
-      UpdateLeadData.append("meetingTime", (new Date(meetingData.meetingTime)).toLocaleTimeString('en-US', {hour12: false, timeZone: 'Asia/Dubai', hour: '2-digit', minute:'2-digit'}));
+      UpdateLeadData.append(
+        "meetingDate",
+        meetingData.meetingDate.toISOString().split("T")[0]
+      );
+      UpdateLeadData.append(
+        "meetingTime",
+        new Date(meetingData.meetingTime).toLocaleTimeString("en-US", {
+          hour12: false,
+          timeZone: "Asia/Dubai",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      );
       UpdateLeadData.append("meetingStatus", meetingData.meetingStatus);
       UpdateLeadData.append("meetingLocation", meetingData.meetingLocation);
     }
@@ -164,13 +183,19 @@ const RenderFeedback = ({cellValues}) => {
                   ?
                 </h1>
               </div>
-              {newFeedback === "Meeting" && (
+              {newFeedback === "Meeting" ? (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    UpdateFeedback(cellValues);
+                  }}
+                >
                   <div className="flex flex-col justify-center items-center gap-4 mt-4">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         label="Meeting Date"
                         value={meetingData.meetingDate}
-                        views={['year', 'month', 'day']}
+                        views={["year", "month", "day"]}
                         onChange={(newValue) => {
                           setMeetingData({
                             ...meetingData,
@@ -178,7 +203,10 @@ const RenderFeedback = ({cellValues}) => {
                           });
                         }}
                         format="yyyy-MM-dd"
-                        renderInput={(params) => <TextField {...params} fullWidth /> }
+                        renderInput={(params) => (
+                          <TextField {...params} fullWidth />
+                        )}
+                        InputProps={{ required: true }}
                       />
                     </LocalizationProvider>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -193,13 +221,18 @@ const RenderFeedback = ({cellValues}) => {
                             meetingTime: newValue,
                           });
                         }}
-                        renderInput={(params) => <TextField {...params} fullWidth />}
+                        renderInput={(params) => (
+                          <TextField {...params} fullWidth />
+                        )}
+                        InputProps={{ required: true }}
                       />
                     </LocalizationProvider>
                     <FormControl fullWidth>
-                      <InputLabel id="meeting-status">Meeting Status</InputLabel>
+                      <InputLabel id="meeting-status">
+                        Meeting Status
+                      </InputLabel>
                       <Select
-                      labelId="meeting-status"
+                        labelId="meeting-status"
                         label="Meeting Status"
                         value={meetingData.meetingStatus}
                         onChange={(e) => {
@@ -208,6 +241,7 @@ const RenderFeedback = ({cellValues}) => {
                             meetingStatus: e.target.value,
                           });
                         }}
+                        required
                       >
                         <MenuItem value={"Pending"}>Pending</MenuItem>
                         <MenuItem value={"Postponed"}>Postponed</MenuItem>
@@ -215,41 +249,76 @@ const RenderFeedback = ({cellValues}) => {
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </Select>
                     </FormControl>
-                    <TextField fullWidth label="Meeting Location" value={meetingData.meetingLocation} onChange={(e) => {
-                      setMeetingData({
-                        ...meetingData,
-                        meetingLocation: e.target.value,
-                      });
-                    }} />
+                    <TextField
+                      fullWidth
+                      label="Meeting Location"
+                      value={meetingData.meetingLocation}
+                      onChange={(e) => {
+                        setMeetingData({
+                          ...meetingData,
+                          meetingLocation: e.target.value,
+                        });
+                      }}
+                      required
+                    />
                   </div>
-                )}
-              <div className="action buttons mt-5 flex items-center justify-center space-x-2">
-                <Button
-                  className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
-                  ripple={true}
-                  size="lg"
-                  onClick={() => UpdateFeedback(cellValues)}
-                >
-                  {btnloading ? (
-                    <CircularProgress size={18} sx={{ color: "white" }} />
-                  ) : (
-                    <span>Confirm</span>
-                  )}
-                </Button>
+                  <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                    <Button
+                      className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                      ripple={true}
+                      size="lg"
+                      type="submit"
+                    >
+                      {btnloading ? (
+                        <CircularProgress size={18} sx={{ color: "white" }} />
+                      ) : (
+                        <span>Confirm</span>
+                      )}
+                    </Button>
 
-                <Button
-                  onClick={() => setDialogue(false)}
-                  ripple={true}
-                  variant="outlined"
-                  className={`shadow-none  rounded-md text-sm  ${
-                    currentMode === "dark"
-                      ? "text-white border-white"
-                      : "text-main-red-color border-main-red-color"
-                  }`}
-                >
-                  Cancel
-                </Button>
-              </div>
+                    <Button
+                      onClick={() => setDialogue(false)}
+                      ripple={true}
+                      variant="outlined"
+                      className={`shadow-none px-2 rounded-md text-sm  ${
+                        currentMode === "dark"
+                          ? "text-white border-white"
+                          : "text-main-red-color border-main-red-color"
+                      }`}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              ) : (
+                <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                  <Button
+                    className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                    ripple={true}
+                    size="lg"
+                    onClick={() => UpdateFeedback(cellValues)}
+                  >
+                    {btnloading ? (
+                      <CircularProgress size={18} sx={{ color: "white" }} />
+                    ) : (
+                      <span>Confirm</span>
+                    )}
+                  </Button>
+
+                  <Button
+                    onClick={() => setDialogue(false)}
+                    ripple={true}
+                    variant="outlined"
+                    className={`shadow-none  rounded-md text-sm  ${
+                      currentMode === "dark"
+                        ? "text-white border-white"
+                        : "text-main-red-color border-main-red-color"
+                    }`}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              )}
             </div>
           </Dialog>
         </>
