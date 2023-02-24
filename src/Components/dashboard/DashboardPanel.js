@@ -86,7 +86,7 @@ const DashboardPanel = () => {
     },
     {
       icon: <MdLeaderboard />,
-      amount: DashboardData?.thirdparty_leads,
+      amount: DashboardData?.isAdmin?.thirdparty,
       percentage: "-12%",
       title: "Third party leads",
     },
@@ -110,7 +110,7 @@ const DashboardPanel = () => {
       title: "New lead",
     },
     {
-      amount: DashboardData?.agents,
+      amount: DashboardData?.isAdmin?.total_agents,
       title: "Sales agent",
     },
     // {
