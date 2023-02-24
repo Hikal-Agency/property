@@ -1,12 +1,19 @@
 import { Button } from "@material-tailwind/react";
-import { Box, CircularProgress, Dialog, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Dialog,
+  IconButton,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { IoIosAlert } from "react-icons/io";
+import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
-const RenderManagers = ({cellValues}) => {
+const RenderManagers = ({ cellValues }) => {
   const [Managers, setManagers] = useState([]);
   const [manager2, setmanager2] = useState(cellValues?.row?.assignedToManager);
   const [newManager, setnewManager] = useState("");
@@ -160,6 +167,17 @@ const RenderManagers = ({cellValues}) => {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
+            <IconButton
+              sx={{
+                position: "absolute",
+                right: 12,
+                top: 10,
+                color: (theme) => theme.palette.grey[500],
+              }}
+              onClick={() => setDialogue(false)}
+            >
+              <IoMdClose size={18} />
+            </IconButton>
             <div className="px-10 py-5">
               <div className="flex flex-col justify-center items-center">
                 <IoIosAlert

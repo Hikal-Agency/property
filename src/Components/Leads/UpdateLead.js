@@ -3,6 +3,7 @@ import {
   Backdrop,
   Box,
   CircularProgress,
+  IconButton,
   MenuItem,
   Modal,
   Select,
@@ -11,6 +12,7 @@ import {
 import axios from "axios";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
@@ -20,12 +22,13 @@ const UpdateLead = ({
   handleLeadModelOpen,
   handleLeadModelClose,
   LeadData,
-  FetchLeads
+  FetchLeads,
 }) => {
   // eslint-disable-next-line
   const { darkModeColors, currentMode, User, BACKEND_URL } = useStateContext();
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
+  const [filter_manager, setfilter_manager] = useState();
   const style = {
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
@@ -78,10 +81,7 @@ const UpdateLead = ({
     setSalesPerson2(event.target.value);
   };
   useEffect(() => {
-    console.log("lead data is ");
-    console.log(LeadData);
     const token = localStorage.getItem("auth-token");
-
     axios
       .get(`https://staging.hikalcrm.com/api/teamMembers/160`, {
         headers: {
@@ -92,6 +92,22 @@ const UpdateLead = ({
       .then((result) => {
         // console.log(result);
         setManager2(result.data.team);
+        console.log("user is");
+        console.log(User);
+        if (User.role === 3) {
+          setfilter_manager(
+            result.data.team.filter((manager) => {
+              return manager.id === User?.id;
+            })
+          );
+          const SalesPerson = result.data.team.filter((manager) => {
+            return manager.id === User?.id;
+          });
+          setSalesPerson(SalesPerson[0]?.child ? SalesPerson[0].child : []);
+          console.log("filtyer manager is");
+          console.log(filter_manager);
+          setloading(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -122,7 +138,6 @@ const UpdateLead = ({
         setLeadNotes(result?.data?.data?.notes);
         setManager(result?.data?.data?.assignedToManager);
         setSalesPerson2(result?.data?.data?.assignedToSales);
-        setloading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -141,13 +156,9 @@ const UpdateLead = ({
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    // console.log("manager hook is calling");
-    // console.log(Manager2);
-    // console.log(Manager);
     const SalesPersons = Manager2.filter(function (el) {
       return el.uid === parseInt(Manager);
     });
-    // console.log(SalesPersons);
     setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
     // eslint-disable-next-line
   }, [Manager]);
@@ -243,6 +254,17 @@ const UpdateLead = ({
             </div>
           ) : (
             <>
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  right: 12,
+                  top: 10,
+                  color: (theme) => theme.palette.grey[500],
+                }}
+                onClick={handleLeadModelClose}
+              >
+                <IoMdClose size={18} />
+              </IconButton>
               <h1
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-black"
@@ -268,10 +290,17 @@ const UpdateLead = ({
                       >
                         Agent details
                       </h4>
+
                       {(User.role === 1 || User.role === 3) && (
                         <Select
                           id="Manager"
-                          value={Manager}
+                          // value={Manager}
+                          value={
+                            User?.role === 3 ? filter_manager[0]?.id : Manager
+                          }
+                          disabled={
+                            (User?.role === 3 || User?.role === 1) && true
+                          }
                           label="Manager"
                           onChange={ChangeManager}
                           size="medium"
@@ -298,7 +327,7 @@ const UpdateLead = ({
                           size="medium"
                           className="w-full mb-5"
                           displayEmpty
-
+                          disabled={User?.role === 1 && true}
                           // required={SalesPerson.length > 0 ? true : false}
                         >
                           <MenuItem value="" disabled>
@@ -510,4 +539,4 @@ const UpdateLead = ({
   );
 };
 
-export default UpdateLead
+export default UpdateLead;

@@ -4,6 +4,7 @@ import {
   CircularProgress,
   Dialog,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -33,7 +34,7 @@ import { toast, ToastContainer } from "react-toastify";
 import RenderManagers from "./RenderManagers";
 import UpdateBookedDeal from "./UpdateBookedDeal";
 import { useNavigate } from "react-router-dom";
-import { IoIosAlert } from "react-icons/io";
+import { IoIosAlert, IoMdClose } from "react-icons/io";
 import {
   DatePicker,
   LocalizationProvider,
@@ -106,12 +107,6 @@ const BookedDeals = ({
     const [newFeedback, setnewFeedback] = useState("");
     const [DialogueVal, setDialogue] = useState(false);
     const [btnloading, setbtnloading] = useState(false);
-    const [meetingData, setMeetingData] = useState({
-      meetingDate: null,
-      meetingTime: null,
-      meetingStatus: null,
-      meetingLocation: null,
-    });
 
     const ChangeFeedback = (e) => {
       setnewFeedback(e.target.value);
@@ -206,6 +201,17 @@ const BookedDeals = ({
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  right: 12,
+                  top: 10,
+                  color: (theme) => theme.palette.grey[500],
+                }}
+                onClick={() => setDialogue(false)}
+              >
+                <IoMdClose size={18} />
+              </IconButton>
               <div className="px-10 py-5">
                 <div className="flex flex-col justify-center items-center">
                   <IoIosAlert

@@ -3,6 +3,7 @@ import {
   CircularProgress,
   Dialog,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -11,7 +12,7 @@ import {
 import { Box } from "@mui/system";
 import axios from "axios";
 import React, { useState } from "react";
-import { IoIosAlert } from "react-icons/io";
+import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -120,7 +121,7 @@ const RenderFeedback = ({ cellValues }) => {
   };
   return (
     <Box
-      className={`w-full h-full flex items-center justify-center ${
+      className={`relative w-full h-full flex items-center justify-center ${
         currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
       }`}
       sx={SelectStyles}
@@ -164,7 +165,19 @@ const RenderFeedback = ({ cellValues }) => {
             onClose={(e) => setDialogue(false)}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
+            className="relative"
           >
+            <IconButton
+              sx={{
+                position: "absolute",
+                right: 12,
+                top: 10,
+                color: (theme) => theme.palette.grey[500],
+              }}
+              onClick={() => setDialogue(false)}
+            >
+              <IoMdClose size={18} />
+            </IconButton>
             <div className="px-10 py-5">
               <div className="flex flex-col justify-center items-center">
                 <IoIosAlert

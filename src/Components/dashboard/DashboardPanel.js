@@ -527,8 +527,8 @@ const DashboardPanel = () => {
             currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
           } col-span-1 h-fit rounded-md p-5 cursor-pointer hover:shadow-sm`}
         >
-          {console.log("User is")}
-          {console.log(User)}
+          {/* {console.log("User is")}
+          {console.log(User)} */}
           <h4 className="font-semibold pb-5">Upcoming meetings</h4>
           {User?.role === 1 && (
             <UpcomingMeeting
