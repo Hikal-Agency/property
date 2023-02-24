@@ -171,14 +171,7 @@ const DashboardPanel = () => {
             <div>
               {User?.role === 3 && (
                 <p className="text-2xl font-bold pb-3 text-red-600">
-                  {DashboardData?.lead_status?.new +
-                    DashboardData?.lead_status?.meeting +
-                    DashboardData?.lead_status?.followup +
-                    DashboardData?.lead_status?.noanswer +
-                    DashboardData?.lead_status?.closed +
-                    DashboardData?.lead_status?.unreachable +
-                    DashboardData?.lead_status?.low +
-                    DashboardData?.lead_status?.notinterested}
+                  {DashboardData?.lead_status?.hot}
                 </p>
               )}
               {User?.role === 7 && (
