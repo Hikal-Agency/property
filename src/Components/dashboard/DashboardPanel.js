@@ -179,6 +179,11 @@ const DashboardPanel = () => {
                   {DashboardData?.lead_status?.hot}
                 </p>
               )}
+              {User?.role === 1 && (
+                <p className="text-2xl font-bold pb-3 text-red-600">
+                  {DashboardData?.lead_status?.hot}
+                </p>
+              )}
               <p
                 className={`text-sm ${
                   currentMode === "dark"
