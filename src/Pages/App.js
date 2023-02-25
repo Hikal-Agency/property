@@ -11,6 +11,7 @@ import Dashboard from "./dashboard";
 import Error from "./Error";
 import Home from "./Home";
 import AllHotLeads from "./hotleads";
+import AllUnassignedLeads from "./unassigned";
 import LeadNotesPage from "./leadnotes";
 import SingleLeadNote from "./leadnotes/SingleLeadNote";
 import Meetings from "./meetings";
@@ -41,6 +42,10 @@ function App() {
     {
       path: "/addlead",
       element: <AddLead />,
+    },
+    {
+      path: "/unassigned/:lead_type",
+      element: <AllUnassignedLeads />,
     },
     {
       path: "/hotleads/:lead_type",

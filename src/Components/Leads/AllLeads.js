@@ -69,7 +69,195 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   // ROLE 3
   // eslint-disable-next-line
-  const ManagerColumns = [];
+  const ManagerColumns = [
+    {
+      field: "id",
+      headerName: "#",
+      minWidth: 50,
+      flex: 1,
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
+            } w-full h-full flex justify-center items-center px-5 font-semibold`}
+          >
+            {cellValues.formattedValue}
+          </div>
+        );
+      },
+    },
+    {
+      field: "creationDate",
+      headerName: "Date",
+      // width: 120,
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+    },
+    {
+      field: "leadName",
+      headerName: "Lead name",
+      // width: 170,
+      minWidth: 150,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "leadContact",
+      headerName: "Contact",
+      // width: 150,
+      minWidth: 150,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "project",
+      headerName: "Project",
+      // width: 110,
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "enquiryType",
+      headerName: "Enquiry",
+      // width: 110,
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "leadType",
+      headerName: "Property",
+      // width: 100,
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    { 
+      field: "assignedToSales", 
+      headerName: "Salesperson",
+      minWidth: 160,
+      flex: 1,
+      hideable: false, 
+    },
+    {
+      field: "feedback",
+      headerName: "Feedback",
+      // width: 150,
+      minWidth: 160,
+      flex: 1,
+      headerAlign: "center",
+      hideable: false,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
+    },
+    {
+      field: "priority",
+      headerName: "Priority",
+      headerAlign: "center",
+      // width: 150,
+      minWidth: 160,
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues}/>,
+    },
+    {
+      field: "language",
+      headerName: "Language",
+      headerAlign: "center",
+      // width: 130,
+      minWidth: 110,
+      flex: 1,
+    },
+    {
+      field: "otp",
+      headerName: "OTP",
+      headerAlign: "center",
+      // width: "130",
+      minWidth: 110,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <>
+            {cellValues.formattedValue === "Verified" && (
+              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
+                <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
+              </div>
+            )}
+
+            {cellValues.formattedValue === "Not Verified" && (
+              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
+                <badge className="bg-[#ff0000] p-1 rounded-md">
+                  NOT VERIFIED
+                </badge>
+              </div>
+            )}
+          </>
+        );
+      },
+    },
+    {
+      field: "edit",
+      headerName: "Edit",
+      // width: 150,
+      minWidth: 100,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+
+      renderCell: (cellValues) => {
+        return (
+          <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
+            <Button
+              onClick={() => HandleEditFunc(cellValues)}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              {/* <AiTwotoneEdit size={20} /> */}
+              <AiOutlineEdit size={20} />
+            </Button>
+          </div>
+        );
+      },
+    },
+    {
+      field: "timeline",
+      headerName: "TimeLine",
+      // width: 150,
+      minWidth: 100,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+
+      renderCell: (cellValues) => {
+        return (
+          <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
+            <Button
+               onClick={()=>navigate(`/timeline/${cellValues.row.lid}`)} 
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
+              <AiOutlineHistory size={20} />
+            </Button>
+          </div>
+        );
+      },
+    },
+  ];
 
   // ROLE 7
   const AgentColumns = [
@@ -653,6 +841,26 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       }
     } else if (lead_origin === "transfferedleads") {
       FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&coldCall=0&leadStatus=Transferred`;
+    } else if (lead_origin === "unassigned") {
+      if (lead_type === "fresh") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0`;
+      } else if (lead_type === "new") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=New`;
+      } else if (lead_type === "no answer") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=No Answer`;
+      } else if (lead_type === "meeting") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Meeting`;
+      } else if (lead_type === "follow up") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Follow Up`;
+      } else if (lead_type === "low budget") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Low Budget`;
+      } else if (lead_type === "not interested") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Not Interested`;
+      } else if (lead_type === "unreachable") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Unreachable`;
+      } else if (lead_type === "cold") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=1`;
+      }
     }
 
     console.log("fetch lead url is");
@@ -899,7 +1107,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-          columns={User?.position === "Founder & CEO" ? columns : AgentColumns}
+          columns={User?.role === 1 ? columns : User?.role === 3 ? ManagerColumns : AgentColumns}
           // columns={columns}
           components={{
             Toolbar: GridToolbar,

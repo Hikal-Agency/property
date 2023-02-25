@@ -142,12 +142,12 @@ const Timeline = () => {
                             </h3>
                             <div className="text-center sm:text-left mb-5 before:block before:w-24 before:h-1 before:mb-5 before:rounded-md before:mx-auto sm:before:mx-0 before:bg-main-red-color">
                               <div className="space-y-2">
-                                {leadDetails.leadContact != "" ? (
+                                {leadDetails.leadContact !== "" ? (
                                   <p>{leadDetails.leadContact}</p>
                                 ) : (
                                   <></>
                                 )}
-                                {leadDetails.leadEmail != "" ? (
+                                {leadDetails.leadEmail !== "" ? (
                                   <p>{leadDetails.leadEmail}</p>
                                 ) : (
                                   <></>
@@ -230,7 +230,7 @@ const Timeline = () => {
                                         <p className="font-semibold tracking-wide">
                                           {timeline.leadNote}
                                         </p>
-                                        {timeline?.feedback && timeline.feedback != "0"  &&
+                                        {timeline?.feedback && timeline.feedback !== "0"  &&
                                           <p className="font-semibold tracking-wide">
                                             Feedback updated to:{" "}
                                             <span className="font-bold text-main-red-color">
@@ -243,7 +243,7 @@ const Timeline = () => {
                                         </p>
                                       </div>
                                     </>
-                                  ) :  timeline.manager && timeline.manager != "0" ? (
+                                  ) :  timeline.manager && timeline.manager !== "0" ? (
                                     <>
                                       <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                         <div className="h-full w-6 flex items-center justify-center">
@@ -271,7 +271,7 @@ const Timeline = () => {
                                             {timeline.manager}
                                           </span>
                                         </p>
-{ timeline?.feedback && timeline.feedback != "0"  && 
+{ timeline?.feedback && timeline.feedback !== "0"  && 
                                         <p className="font-semibold tracking-wide">
                                           Feedback updated to:{" "}
                                           <span className="font-bold text-main-red-color">
@@ -284,7 +284,7 @@ const Timeline = () => {
                                         </p>
                                       </div>
                                     </>
-                                  ) : timeline.sales != "0" ? (
+                                  ) : timeline.sales !== "0" ? (
                                     <>
                                       <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                         <div className="h-full w-6 flex items-center justify-center">
@@ -312,7 +312,7 @@ const Timeline = () => {
                                             {timeline.sales}
                                           </span>
                                         </p>
-                                        {timeline?.feedback && timeline.feedback != "0"  &&
+                                        {timeline?.feedback && timeline.feedback !== "0"  &&
                                           <p className="font-semibold tracking-wide">
                                             Feedback updated to:{" "}
                                             <span className="font-bold text-main-red-color">
@@ -360,7 +360,7 @@ const Timeline = () => {
                                   //     </div>
                                   //   </>
                                   // ) 
-                                  : timeline.meetingStatus != "0" ? (
+                                  : timeline.meetingStatus !== "0" ? (
                                     <>
                                       <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                         <div className="h-full w-6 flex items-center justify-center">
@@ -390,7 +390,7 @@ const Timeline = () => {
                                             {timeline.meetingStatus}
                                           </span>
                                         </p>
-                                        {timeline?.feedback && timeline.feedback != "0"  &&
+                                        {timeline?.feedback && timeline.feedback !== "0"  &&
                                           <p className="font-semibold tracking-wide">
                                             Feedback updated to:{" "}
                                             <span className="font-bold text-main-red-color">
@@ -403,7 +403,7 @@ const Timeline = () => {
                                         </p>
                                       </div>
                                     </>
-                                  ) : timeline.meetingDate != "0" ? (
+                                  ) : timeline.meetingDate !== "0" ? (
                                     <>
                                       <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                         <div className="h-full w-6 flex items-center justify-center">
@@ -437,7 +437,7 @@ const Timeline = () => {
                                             )}
                                           </span>
                                         </p>
-                                        {timeline?.feedback && timeline.feedback != "0"  &&
+                                        {timeline?.feedback && timeline.feedback !== "0"  &&
                                           <p className="font-semibold tracking-wide">
                                             Feedback updated to:{" "}
                                             <span className="font-bold text-main-red-color">

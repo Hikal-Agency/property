@@ -50,6 +50,7 @@ const Sidebarmui = () => {
   const [ColdLeadsCount, setColdLeadsCount] = useState();
   const [PersonalLeadsCount, setPersonalLeadsCount] = useState();
   const [ThirdPartLeadsCount, setThirdPartyLeadsCount] = useState();
+  const [UnassignedLeadsCount, setUnassignedLeadsCount] = useState();
 
   const fetchHotLeads = (token) => {
     axios
@@ -372,10 +373,12 @@ const Sidebarmui = () => {
             {
               name: "Hot leads",
               count: 10,
+              link: "/unassigned/fresh"
             },
             {
               name: "Cold leads",
               count: 10,
+              link: "/unassigned/cold",
             },
           ],
         },
@@ -803,6 +806,70 @@ const Sidebarmui = () => {
           link: "/addlead",
         },
         {
+          name: "Unassigned",
+          icon: <BsStopCircleFill />,
+          submenu: [
+            {
+              // name: "Hot leads",
+              // count: 10,
+              // submenu: [
+              //   {
+                  name: "Fresh Unassigned",
+                  count:
+                    UnassignedLeadsCount?.new +
+                    UnassignedLeadsCount?.no_nswer +
+                    UnassignedLeadsCount?.Meeting +
+                    UnassignedLeadsCount?.follow_up +
+                    UnassignedLeadsCount?.low_budget +
+                    UnassignedLeadsCount?.not_interested +
+                    UnassignedLeadsCount?.unreachable,
+                  link: "/unassigned/fresh",
+                },
+                {
+                  name: "New",
+                  count: UnassignedLeadsCount?.new,
+                  link: "/unassigned/new",
+                },
+                {
+                  name: "No Answer",
+                  count: UnassignedLeadsCount?.no_nswer,
+                  link: "/unassigned/no answer",
+                },
+                {
+                  name: "Meeting",
+                  count: UnassignedLeadsCount?.Meeting,
+                  link: "/unassigned/meeting",
+                },
+                {
+                  name: "Follow Up",
+                  count: UnassignedLeadsCount?.follow_up,
+                  link: "/unassigned/follow up",
+                },
+                {
+                  name: "Low Budget",
+                  count: UnassignedLeadsCount?.low_budget,
+                  link: "/unassigned/low budget",
+                },
+                {
+                  name: "Not Interested",
+                  count: UnassignedLeadsCount?.not_interested,
+                  link: "/unassigned/not interested",
+                },
+                {
+                  name: "Unreachable",
+                  count: UnassignedLeadsCount?.unreachable,
+                  link: "/unassigned/unreachable",
+                },
+              // ],
+            // },
+            {
+              name: "Cold Unassigned",
+              count: 10,
+              link: "/unassigned/cold",
+            },
+          ],
+        },
+        {
           name: "Fresh",
           icon: <SiHotjar />,
           submenu: [
@@ -1010,20 +1077,6 @@ const Sidebarmui = () => {
           ],
         },
         {
-          name: "Unassigned",
-          icon: <BsStopCircleFill />,
-          submenu: [
-            {
-              name: "Hot leads",
-              count: 10,
-            },
-            {
-              name: "Cold leads",
-              count: 10,
-            },
-          ],
-        },
-        {
           name: "Transferred",
           icon: <RiFileTransferFill />,
           link: "/transfferedleads",
@@ -1061,36 +1114,6 @@ const Sidebarmui = () => {
         },
       ],
     },
-    // {
-    //   title: "WHATSAPP MARKETING",
-    //   links: [
-    //     {
-    //       name: "Dashboard",
-    //       icon: <RiWhatsappFill />,
-    //       link: "/whatsapp-marketing/dashboard",
-    //     },
-    //     {
-    //       name: "Device",
-    //       icon: <FaMobile />,
-    //       link: "/whatsapp-marketing/device",
-    //     },
-    //     {
-    //       name: "Messages",
-    //       icon: <AiFillMessage />,
-    //       link: "/whatsapp-marketing/messages",
-    //     },
-    //     {
-    //       name: "Payments",
-    //       icon: <BsFillCreditCard2FrontFill />,
-    //       link: "/whatsapp-marketing/payments",
-    //     },
-    //     {
-    //       name: "Transactions",
-    //       icon: <GrTransaction />,
-    //       link: "/whatsapp-marketing/transactions",
-    //     },
-    //   ],
-    // },
   ];
   // const [UserLinks, setUserLinks] = useState(
   //   User.position === "Founder & CEO" ? links : Agentlinks
@@ -1374,7 +1397,7 @@ const Sidebarmui = () => {
                     ))}
                   </div>
                 ))
-                : User.position == "Sales Manager"
+                : User.position === "Sales Manager"
                 ? Managerlinks.map((item, index) => (
                   <div key={index}>
                     <p
@@ -1517,7 +1540,7 @@ const Sidebarmui = () => {
                             <MenuItem
                               active={selected === link.name}
                               onClick={() => setSelected(link.name)}
-                            >{link.link == "/contacts" || link.link == "/dashboard" ? <a
+                            >{link.link === "/contacts" || link.link === "/dashboard" ? <a
                               href={link.link}
                               onClick={() => setopenBackDrop(true)}
                             >
@@ -1700,7 +1723,7 @@ const Sidebarmui = () => {
                             <MenuItem
                               active={selected === link.name}
                               onClick={() => setSelected(link.name)}
-                            >{link.link == "/contacts" || link.link == "/dashboard" ? <a
+                            >{link.link === "/contacts" || link.link === "/dashboard" ? <a
                               href={link.link}
                               onClick={() => setopenBackDrop(true)}
                             >

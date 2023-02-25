@@ -2,6 +2,7 @@
 import { Backdrop, CircularProgress, Modal, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { FaHotjar } from "react-icons/fa";
+import { MdOutlineIndeterminateCheckBox } from "react-icons/md";
 import { FiLink } from "react-icons/fi";
 import { BsSnow2, BsPatchQuestion } from "react-icons/bs";
 import { HiOutlineUserCircle } from "react-icons/hi";
@@ -186,17 +187,15 @@ const SingleLead = ({
                   {LeadData?.feedback}
                 </span>
                 <span className="float-right">
-                  {/* {LeadData?.leadCategory} */}
-                  {LeadData?.leadCategory === "hot" ? (
-                    <FaHotjar size={25} />
-                  ) : LeadData?.leadCategory === "cold" ? (
+                  {LeadData?.coldcall === "1" ? (
                     <BsSnow2 size={25} />
-                  ) : LeadData?.leadCategory === "personal" ? (
+                  ) : LeadData?.coldcall === "2" ? (
                     <HiOutlineUserCircle size={25} />
-                  ) : LeadData?.leadCategory === "thridparty" ? (
+                  ) : LeadData?.coldcall === "3" ? (
                     <FiLink size={25} />
                   ) : (
-                    <BsPatchQuestion />
+                    // <BsPatchQuestion />
+                    <FaHotjar size={25} />
                   )}
                 </span>
               </div>
