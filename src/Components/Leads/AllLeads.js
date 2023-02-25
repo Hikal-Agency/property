@@ -26,6 +26,7 @@ import { toast, ToastContainer } from "react-toastify";
 import RenderPriority from "./RenderPriority";
 import RenderFeedback from "./RenderFeedback";
 import RenderManagers from "./RenderManagers";
+import RenderSalesperson from "./RenderSalesperson";
 import { useNavigate } from "react-router-dom";
 
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
@@ -139,12 +140,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       flex: 1,
       headerAlign: "center",
     },
-    { 
-      field: "assignedToSales", 
-      headerName: "Salesperson",
-      minWidth: 160,
+    {
+      field: "assignedToSales",
+      headerName: "Agent",
+      headerAlign: "center",
+      minWidth: 170,
       flex: 1,
-      hideable: false, 
+      hideable: false,
+      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues}/>,
     },
     {
       field: "feedback",
@@ -523,7 +526,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       hideable: false,
       renderCell: (cellValues) => <RenderManagers cellValues={cellValues}/>,
     },
-    // { field: "assignedToSales", headerName: "Salesperson",hideable: false, width: 110 },
+    {
+      field: "assignedToSales",
+      headerName: "Agent",
+      // width: 150,
+      minWidth: 200,
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues}/>,
+    },
     {
       field: "feedback",
       headerName: "Feedback",

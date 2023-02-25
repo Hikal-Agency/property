@@ -140,7 +140,7 @@ const RenderManagers = ({ cellValues }) => {
         required
       >
         <MenuItem value="" disabled>
-          Manager
+        - - - - -
         </MenuItem>
         {Managers.map((manager, index) => {
           return (

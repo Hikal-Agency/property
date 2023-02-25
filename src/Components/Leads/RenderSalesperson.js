@@ -8,24 +8,27 @@ import {
   Select,
 } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
-const RenderPriority = ({ cellValues }) => {
+const RenderSalesperson = ({ cellValues }) => {
+  const token = localStorage.getItem("auth-token");
+  const [SalesPerson, setSalesPerson] = useState([]);
+  const [SalesPerson2, setSalesPerson2] = useState(cellValues?.row?.assignedToSales);
+  const [newSalesPerson, setnewSalesPerson] = useState("");
+  const [Dialogue, setDialogue] = useState(false);
+  const {
+    currentMode,
+    reloadDataGrid,
+    setreloadDataGrid,
+    fetchSalesPerson,
+    setfetchSalesPerson,
+    User
+  } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
-  const [Priority, setPriority] = useState(cellValues?.row?.priority);
-  const [newPriority, setnewPriority] = useState("");
-  const [PriorityDialogue, setPriorityDialogue] = useState(false);
-  // eslint-disable-next-line
-  const [confirmbtnloading, setconfirmbtnloading] = useState(false);
-  const { currentMode, setreloadDataGrid, reloadDataGrid } = useStateContext();
 
-  const ChangePriority = (e) => {
-    setnewPriority(e.target.value);
-    setPriorityDialogue(true);
-  };
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium,& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
       {
@@ -40,12 +43,51 @@ const RenderPriority = ({ cellValues }) => {
       border: "none",
     },
   };
-  const UpdatePriority = async () => {
+  // await axios
+  //   .get("https://staging.hikalcrm.com/api/managers")
+  //   .then((result) => {
+  //     console.log("manager response is");
+  //     console.log(result);
+  //     setManagers(result?.data?.managers);
+  //   });
+  // await axios
+  //   .get("https://staging.hikalcrm.com/api/agents")
+  //   .then((result) => {
+  //     setAgents(result?.data?.agents);
+  //   });
+
+  useEffect(() => {
+    if (!fetchSalesPerson) {
+      axios
+        .get(`https://staging.hikalcrm.com/api/teamMembers/160`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          console.log(result);
+          // setSalesPerson(result?.data?.agents);
+          const SalesPerson = result.data.team.filter((manager) => {
+            return manager.id === User?.id;
+          });
+          setSalesPerson(SalesPerson[0]?.child ? SalesPerson[0].child : []);
+          setfetchSalesPerson(true);
+        });
+      }
+      // eslint-disable-next-line
+    }, []);
+
+  const ChangeSalesPerson = (e) => {
+    setnewSalesPerson(e.target.value);
+    setDialogue(true);
+  };
+  const UpdateSalesPerson = async () => {
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.lid);
-    UpdateLeadData.append("priority", newPriority);
+    UpdateLeadData.append("assignedToSales", newSalesPerson);
 
     await axios
       .post(
@@ -59,9 +101,9 @@ const RenderPriority = ({ cellValues }) => {
         }
       )
       .then((result) => {
-        console.log("Priority Updated successfull");
+        console.log("Agent Updated successfull");
         console.log(result);
-        toast.success("Priority Updated Successfully", {
+        toast.success("Agent Updated Successfully", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -71,13 +113,13 @@ const RenderPriority = ({ cellValues }) => {
           theme: "light",
         });
         setbtnloading(false);
-        setPriority(newPriority);
+        setSalesPerson2(newSalesPerson);
         setreloadDataGrid(!reloadDataGrid);
-        setPriorityDialogue(false);
+        setDialogue(false);
       })
       .catch((err) => {
         console.log(err);
-        toast.error("Error in Updating Priority", {
+        toast.error("Error in Updating Agent", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -97,25 +139,29 @@ const RenderPriority = ({ cellValues }) => {
       } w-full h-full flex items-center justify-center`}
       sx={SelectStyles}
     >
+      
       <Select
-        id="priority"
-        value={Priority}
-        label="Priority"
-        onChange={ChangePriority}
+        id="SalesPerson"
+        value={SalesPerson2}
+        label="Salesperson"
+        onChange={ChangeSalesPerson}
         size="medium"
-        className="w-[90%] h-[75%]"
+        className="w-[100%] h-[75%]"
         displayEmpty
         required
       >
-        <MenuItem value={null} disabled>
-        - - - - -
+        <MenuItem value="0" disabled>
+          - - - - -
         </MenuItem>
-        <MenuItem value={"Not Set"}>Not Set</MenuItem>
-        <MenuItem value={"High"}>High</MenuItem>
-        <MenuItem value={"Medium"}>Medium</MenuItem>
-        <MenuItem value={"Low"}>Low</MenuItem>
+        {SalesPerson.map((salesperson, index) => {
+          return (
+            <MenuItem key={index} value={salesperson?.id}>
+              {salesperson?.userName}
+            </MenuItem>
+          );
+        })}
       </Select>
-      {PriorityDialogue && (
+      {Dialogue && (
         <>
           <Dialog
             sx={{
@@ -127,8 +173,8 @@ const RenderPriority = ({ cellValues }) => {
                   backgroundColor: "rgba(0, 0, 0, 0.5) !important",
                 },
             }}
-            open={PriorityDialogue}
-            onClose={(e) => setPriorityDialogue(false)}
+            open={Dialogue}
+            onClose={(e) => setDialogue(false)}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
@@ -139,7 +185,7 @@ const RenderPriority = ({ cellValues }) => {
                 top: 10,
                 color: (theme) => theme.palette.grey[500],
               }}
-              onClick={() => setPriorityDialogue(false)}
+              onClick={() => setDialogue(false)}
             >
               <IoMdClose size={18} />
             </IconButton>
@@ -150,13 +196,13 @@ const RenderPriority = ({ cellValues }) => {
                   className="text-main-red-color text-2xl"
                 />
                 <h1 className="font-semibold pt-3 text-lg text-center">
-                  Do You Really Want Change the Priority from{" "}
+                  Do You Really Want Change the Agent from{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {Priority === null ? "Null" : Priority}
+                    {SalesPerson2}
                   </span>{" "}
                   to{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {newPriority}
+                    {newSalesPerson}
                   </span>{" "}
                   ?
                 </h1>
@@ -166,7 +212,7 @@ const RenderPriority = ({ cellValues }) => {
                   className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
                   ripple={true}
                   size="lg"
-                  onClick={() => UpdatePriority(cellValues)}
+                  onClick={() => UpdateSalesPerson(cellValues)}
                 >
                   {btnloading ? (
                     <CircularProgress size={18} sx={{ color: "white" }} />
@@ -176,7 +222,7 @@ const RenderPriority = ({ cellValues }) => {
                 </Button>
 
                 <Button
-                  onClick={() => setPriorityDialogue(false)}
+                  onClick={() => setDialogue(false)}
                   ripple={true}
                   variant="outlined"
                   className={`shadow-none  rounded-md text-sm  ${
@@ -196,4 +242,4 @@ const RenderPriority = ({ cellValues }) => {
   );
 };
 
-export default RenderPriority;
+export default RenderSalesperson;
