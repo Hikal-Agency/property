@@ -117,10 +117,10 @@ const BookedDeals = ({
       const token = localStorage.getItem("auth-token");
       const UpdateLeadData = new FormData();
       UpdateLeadData.append("lid", cellValues?.row?.lid);
-      UpdateLeadData.append("feedback", newFeedback);
+      UpdateLeadData.append("feedback", newFeedback); //${BACKEND_URL}
       await axios
         .post(
-          `https://staging.hikalcrm.com/api/leads/${cellValues?.row?.lid}`,
+          `${BACKEND_URL}/leads/${cellValues?.row?.lid}`,
           UpdateLeadData,
           {
             headers: {
@@ -178,9 +178,8 @@ const BookedDeals = ({
           required
         >
           <MenuItem value={null} disabled>
-            ---SELECT---
+            ---Booked---
           </MenuItem>
-          <MenuItem value={"Booked"}>Booked</MenuItem>
           <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
           <MenuItem value={"Closed"}>Closed</MenuItem>
         </Select>
@@ -474,15 +473,15 @@ const BookedDeals = ({
       flex: 1,
       headerAlign: "center",
     },
-    {
-      field: "assignedToManager",
-      headerName: "Manager",
-      // width: 150,
-      minWidth: 200,
-      flex: 1,
-      hideable: false,
-      renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
-    },
+    // {
+    //   field: "assignedToManager",
+    //   headerName: "Manager",
+    //   // width: 150,
+    //   minWidth: 200,
+    //   flex: 1,
+    //   hideable: false,
+    //   renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
+    // },
     // { field: "assignedToSales", headerName: "Salesperson",hideable: false, width: 110 },
 
     {
@@ -493,67 +492,67 @@ const BookedDeals = ({
       minWidth: 110,
       flex: 1,
     },
-    {
-      field: "leadSource",
-      headerName: "Source",
-      // width: 110,
-      minWidth: 70,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full mx-auto flex justify-center ">
-            {cellValues.row.leadSource.toLowerCase() ===
-              "campaign snapchat" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <FaSnapchat size={22} color={"#f6d80a"} />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() ===
-              "campaign facebook" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <FaFacebook size={22} color={"#0e82e1"} />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <img
-                  src={"/assets/tiktok-app.svg"}
-                  alt=""
-                  height={22}
-                  width={22}
-                  className="object-cover"
-                />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() ===
-              "campaign googleads" && (
-              <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
-                <FcGoogle size={22} />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() === "campaign" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
-                <MdCampaign
-                  size={22}
-                  color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-                />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() === "cold" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
-                <BsSnow2 size={22} color={"#0ec7ff"} />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() === "personal" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <BsPersonCircle size={22} color={"#14539a"} />
-              </div>
-            )}
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "leadSource",
+    //   headerName: "Source",
+    //   // width: 110,
+    //   minWidth: 70,
+    //   flex: 1,
+    //   headerAlign: "center",
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div className="w-full mx-auto flex justify-center ">
+    //         {cellValues.row.leadSource.toLowerCase() ===
+    //           "campaign snapchat" && (
+    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //             <FaSnapchat size={22} color={"#f6d80a"} />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() ===
+    //           "campaign facebook" && (
+    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //             <FaFacebook size={22} color={"#0e82e1"} />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
+    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //             <img
+    //               src={"/assets/tiktok-app.svg"}
+    //               alt=""
+    //               height={22}
+    //               width={22}
+    //               className="object-cover"
+    //             />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() ===
+    //           "campaign googleads" && (
+    //           <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
+    //             <FcGoogle size={22} />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() === "campaign" && (
+    //           <div className="w-fit rounded-full flex items-center justify-center">
+    //             <MdCampaign
+    //               size={22}
+    //               color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+    //             />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() === "cold" && (
+    //           <div className="w-fit rounded-full flex items-center justify-center">
+    //             <BsSnow2 size={22} color={"#0ec7ff"} />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() === "personal" && (
+    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //             <BsPersonCircle size={22} color={"#14539a"} />
+    //           </div>
+    //         )}
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       field: "feedback",
       headerName: "Feedback",
