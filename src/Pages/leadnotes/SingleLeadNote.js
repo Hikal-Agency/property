@@ -13,14 +13,8 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import moment from "moment/moment";
-import { FaHotjar } from "react-icons/fa";
-import { FiLink } from "react-icons/fi";
-import { BsSnow2, BsPatchQuestion } from "react-icons/bs";
-import { HiOutlineUserCircle } from "react-icons/hi";
-
 import React, { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
-import { GrMail } from "react-icons/gr";
 import { MdDeleteOutline } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -170,14 +164,18 @@ const SingleLeadNote = (props) => {
                           <div className="flex space-x-2">
                             <h6
                               className={`font-bold ${
-                                currentMode === "dark" ? "text-white" : "text-black"
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-black"
                               }`}
                             >
                               Lead Name:
                             </h6>
                             <h6
                               className={`font-semibold ${
-                                currentMode === "dark" ? "text-white" : "text-black"
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-black"
                               }`}
                             >
                               {LeadData?.info?.lead}
@@ -188,21 +186,27 @@ const SingleLeadNote = (props) => {
                           <div className="flex space-x-2">
                             <h6
                               className={`font-bold ${
-                                currentMode === "dark" ? "text-white" : "text-black"
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-black"
                               }`}
                             >
                               Contact Details:
                             </h6>
                             <h6
                               className={`font-semibold ${
-                                currentMode === "dark" ? "text-white" : "text-black"
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-black"
                               }`}
                             >
                               {/* {LeadData?.info?.leadContact} */}
                             </h6>
                             <h6
                               className={`font-semibold ${
-                                currentMode === "dark" ? "text-white" : "text-black"
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-black"
                               }`}
                             >
                               {/* {LeadData?.info?.LeadEmail} */}
@@ -213,14 +217,18 @@ const SingleLeadNote = (props) => {
                           <div className="flex space-x-2">
                             <h6
                               className={`font-bold ${
-                                currentMode === "dark" ? "text-white" : "text-black"
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-black"
                               }`}
                             >
                               Preferred language:
                             </h6>
                             <h6
                               className={`font-semibold ${
-                                currentMode === "dark" ? "text-white" : "text-black"
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-black"
                               }`}
                             >
                               {LeadData?.info?.language}
@@ -247,7 +255,9 @@ const SingleLeadNote = (props) => {
                           }`}
                         >
                           Lead edited on{" "}
-                          {LeadData?.info?.last_edited === "" ? "-" : LeadData?.info?.last_edited}
+                          {LeadData?.info?.last_edited === ""
+                            ? "-"
+                            : LeadData?.info?.last_edited}
                         </p>
                       </div>
                     </div>
@@ -259,11 +269,15 @@ const SingleLeadNote = (props) => {
                     >
                       <div className="grid justify-center space-y-3 text-center">
                         <h6 className="font-bold">Project</h6>
-                        <h6 className="font-semibold">{LeadData?.info?.project}</h6>
+                        <h6 className="font-semibold">
+                          {LeadData?.info?.project}
+                        </h6>
                       </div>
                       <div className="grid justify-center space-y-3 text-center">
                         <h6 className="font-bold">How many bedrooms?</h6>
-                        <h6 className="font-semibold">{LeadData?.info?.category}</h6>
+                        <h6 className="font-semibold">
+                          {LeadData?.info?.category}
+                        </h6>
                       </div>
                       <div className="grid justify-center space-y-3 text-center">
                         <h6 className="font-bold">Property type</h6>
@@ -280,10 +294,11 @@ const SingleLeadNote = (props) => {
                     </div>
 
                     <div className="bg-main-red-color h-0.5 w-full my-7"></div>
-                    
 
                     <div className={`rounded-md mt-5`}>
-                      <h1 className="font-bold text-lg text-center">Lead Notes</h1>
+                      <h1 className="font-bold text-lg text-center">
+                        Lead Notes
+                      </h1>
 
                       {LeadData?.notes?.data?.length > 0 ? (
                         <Box className="">
@@ -373,7 +388,11 @@ const SingleLeadNote = (props) => {
                                       },
                                     }}
                                   >
-                                    <TableCell component="th" scope="row" align="center">
+                                    <TableCell
+                                      component="th"
+                                      scope="row"
+                                      align="center"
+                                    >
                                       {index + 1}
                                     </TableCell>
                                     <TableCell align="center">
@@ -401,7 +420,7 @@ const SingleLeadNote = (props) => {
                                           <BiEdit size={20} />
                                         </Button>
 
-                                          {/* ONLY FOR ADMIN  */}
+                                        {/* ONLY FOR ADMIN  */}
                                         <Button
                                           // onClick={() => deleteLead(cellValues)}
                                           // disabled={deleteloading ? true : false}

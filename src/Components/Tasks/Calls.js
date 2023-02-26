@@ -1,12 +1,17 @@
-import { Box, Tab, Tabs, CircularProgress } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import { Box, Tab, Tabs } from "@mui/material";
+import React from "react";
 import { FiPhoneMissed, FiPhoneCall } from "react-icons/fi";
 import { VscCallOutgoing, VscCallIncoming } from "react-icons/vsc";
 import { useStateContext } from "../../context/ContextProvider";
-import GroupChart from "../charts/GroupChart";
 
-const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => {
-  const { darkModeColors, currentMode} = useStateContext();
+const Calls = ({
+  call_logs,
+  tabValue,
+  setTabValue,
+  setCallLogs,
+  isLoading,
+}) => {
+  const { darkModeColors, currentMode } = useStateContext();
   // const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -33,7 +38,7 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
             <VscCallOutgoing size={20} className="text-main-red-color mr-3" />
             <h2>Outgoing calls:</h2>
 ======= */}
-  {/* {isLoading ? 
+      {/* {isLoading ? 
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />
               <span className="font-semibold text-lg">
@@ -42,199 +47,252 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
               </span>
             </div>
     : */}
-    <div>
-      <Box sx={darkModeColors} className="font-semibold">
-        <Tabs value={tabValue} onChange={handleChange} variant="standard">
-          <Tab label="TODAY" />
-          <Tab label="THIS MONTH" />
-          <Tab label="ALL TIME" />
-        </Tabs>
-      </Box>
-      <Box className="mt-1 p-5" sx={isLoading && {
-        opacity: 0.3,
-      }}>
-        <TabPanel value={tabValue} index={0}>
-          <div className="mb-10 mx-3">
-            <h1 className="font-semibold text-center">
-              Today total calls: <span>{call_logs?.all_calls}</span>
-            </h1>
-          </div>
-          <div className="grid grid-cols-3 gap-y-5 gap-x-5">
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <VscCallOutgoing
-                  size={20}
-                  className="text-main-red-color mr-3"
-                />
-                <h2>Outgoing calls:</h2>
-              </div>
-              <p className="font-bold"><span>{call_logs?.dialed}</span></p>
+      <div>
+        <Box sx={darkModeColors} className="font-semibold">
+          <Tabs value={tabValue} onChange={handleChange} variant="standard">
+            <Tab label="TODAY" />
+            <Tab label="THIS MONTH" />
+            <Tab label="ALL TIME" />
+          </Tabs>
+        </Box>
+        <Box
+          className="mt-1 p-5"
+          sx={
+            isLoading && {
+              opacity: 0.3,
+            }
+          }
+        >
+          <TabPanel value={tabValue} index={0}>
+            <div className="mb-10 mx-3">
+              <h1 className="font-semibold text-center">
+                Today total calls: <span>{call_logs?.all_calls}</span>
+              </h1>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneCall size={20} className="text-main-red-color mr-3" />
-                <h2>Answered:</h2>
+            <div className="grid grid-cols-3 gap-y-5 gap-x-5">
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <VscCallOutgoing
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Outgoing calls:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.dialed}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.answered}</span></p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
-                <h2>Not answered:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <h2>Answered:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.answered}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.notanswered}</span></p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <VscCallIncoming
-                  size={20}
-                  className="text-main-red-color mr-3"
-                />
-                <h2>Incoming calls:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneMissed
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Not answered:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.notanswered}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.recieved}</span></p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneCall size={20} className="text-main-red-color mr-3" />
-                <h2>Recieved:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <VscCallIncoming
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Incoming calls:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.recieved}</span>
+                </p>
               </div>
-              <p className="font-bold">
-                {/* {call_logs?.recieved - call_logs?.missed} */}
-                <span>{call_logs?.recieved}</span>
-              </p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
-                <h2>Missed:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <h2>Recieved:</h2>
+                </div>
+                <p className="font-bold">
+                  {/* {call_logs?.recieved - call_logs?.missed} */}
+                  <span>{call_logs?.recieved}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.missed}</span></p>
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel value={tabValue} index={1}>
-          <div className="mb-10 mx-3">
-            <h1 className="font-semibold text-center">
-              This month total calls: <span>{call_logs?.all_calls}</span>
-            </h1>
-          </div>
-          <div className="grid grid-cols-3 gap-y-5 gap-x-5">
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <VscCallOutgoing
-                  size={20}
-                  className="text-main-red-color mr-3"
-                />
-                <h2>Outgoing calls:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneMissed
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Missed:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.missed}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.dialed}</span></p>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneCall size={20} className="text-main-red-color mr-3" />
-                <h2>Answered:</h2>
+          </TabPanel>
+          <TabPanel value={tabValue} index={1}>
+            <div className="mb-10 mx-3">
+              <h1 className="font-semibold text-center">
+                This month total calls: <span>{call_logs?.all_calls}</span>
+              </h1>
+            </div>
+            <div className="grid grid-cols-3 gap-y-5 gap-x-5">
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <VscCallOutgoing
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Outgoing calls:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.dialed}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.answered}</span></p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
-                <h2>Not answered:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <h2>Answered:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.answered}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.notanswered}</span></p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <VscCallIncoming
-                  size={20}
-                  className="text-main-red-color mr-3"
-                />
-                <h2>Incoming calls:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneMissed
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Not answered:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.notanswered}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.recieved}</span></p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneCall size={20} className="text-main-red-color mr-3" />
-                <h2>Recieved:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <VscCallIncoming
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Incoming calls:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.recieved}</span>
+                </p>
               </div>
-              <p className="font-bold">
-                {/* {call_logs?.recieved - call_logs?.missed} */}
-                <span>{call_logs?.recieved}</span>
-              </p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
-                <h2>Missed:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <h2>Recieved:</h2>
+                </div>
+                <p className="font-bold">
+                  {/* {call_logs?.recieved - call_logs?.missed} */}
+                  <span>{call_logs?.recieved}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.missed}</span></p>
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel value={tabValue} index={2}>
-          <div className="mb-10 mx-3">
-            <h1 className="font-semibold text-center">
-              All-time total calls: <span>{call_logs?.all_calls}</span>
-            </h1>
-          </div>
-          <div className="grid grid-cols-3 gap-y-5 gap-x-5">
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <VscCallOutgoing
-                  size={20}
-                  className="text-main-red-color mr-3"
-                />
-                <h2>Outgoing calls:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneMissed
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Missed:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.missed}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.dialed}</span></p>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneCall size={20} className="text-main-red-color mr-3" />
-                <h2>Answered:</h2>
+          </TabPanel>
+          <TabPanel value={tabValue} index={2}>
+            <div className="mb-10 mx-3">
+              <h1 className="font-semibold text-center">
+                All-time total calls: <span>{call_logs?.all_calls}</span>
+              </h1>
+            </div>
+            <div className="grid grid-cols-3 gap-y-5 gap-x-5">
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <VscCallOutgoing
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Outgoing calls:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.dialed}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.answered}</span></p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
-                <h2>Not answered:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <h2>Answered:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.answered}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.notanswered}</span></p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <VscCallIncoming
-                  size={20}
-                  className="text-main-red-color mr-3"
-                />
-                <h2>Incoming calls:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneMissed
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Not answered:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.notanswered}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.recieved}</span></p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneCall size={20} className="text-main-red-color mr-3" />
-                <h2>Recieved:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <VscCallIncoming
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Incoming calls:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.recieved}</span>
+                </p>
               </div>
-              <p className="font-bold">
-                {/* {call_logs?.recieved - call_logs?.missed} */}
-                <span>{call_logs?.recieved}</span>
-              </p>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-1">
-                <FiPhoneMissed size={20} className="text-main-red-color mr-3" />
-                <h2>Missed:</h2>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <h2>Recieved:</h2>
+                </div>
+                <p className="font-bold">
+                  {/* {call_logs?.recieved - call_logs?.missed} */}
+                  <span>{call_logs?.recieved}</span>
+                </p>
               </div>
-              <p className="font-bold"><span>{call_logs?.missed}</span></p>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneMissed
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Missed:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{call_logs?.missed}</span>
+                </p>
+              </div>
             </div>
-          </div>
-        </TabPanel>
-      </Box>
-      {/* <Box sx={darkModeColors} className="font-semibold">
+          </TabPanel>
+        </Box>
+        {/* <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={value} onChange={handleChange} variant="standard">
           <Tab label="ANSWERED CALLS " />
           <Tab label="MISSED CALLS" />
@@ -254,7 +312,7 @@ const Calls = ({ call_logs, tabValue, setTabValue, setCallLogs, isLoading }) => 
           </div>
         </TabPanel>
       </div> */}
-    </div>
+      </div>
       {/* }  */}
     </div>
   );

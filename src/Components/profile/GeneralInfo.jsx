@@ -1,20 +1,24 @@
 import { Button } from "@material-tailwind/react";
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 
-export const GeneralInfo = ({ GeneralInfoData, User }) => {
+export const GeneralInfo = ({ GeneralInfoData, User, UpdateProfile, btnloading }) => {
   const [GeneralInfo, setGeneralInfo] = useState(GeneralInfoData);
   const { currentMode, darkModeColors } = useStateContext();
   // eslint-disable-next-line
   const ResetGeneralInfo = () => {
-    setGeneralInfo("");
+    setGeneralInfo({
+      userAltContact: "",
+      userAltEmail: "",
+      userEmail: "",
+      userContact: "",
+    });
   };
 
-  // useEffect(() => {
-  //   console.log("general info data is ");
-  //   console.log(GeneralInfo);
-  // }, []);
+  const UpdateProfileFunc = () => {
+    UpdateProfile(GeneralInfo);
+  }
 
   return (
     <>
@@ -31,7 +35,7 @@ export const GeneralInfo = ({ GeneralInfoData, User }) => {
                 size="medium"
                 required
                 value={GeneralInfo?.userContact}
-                onChange={(e) =>
+                onInput={(e) =>
                   setGeneralInfo({
                     ...GeneralInfo,
                     userContact: e.target.value,
@@ -48,7 +52,7 @@ export const GeneralInfo = ({ GeneralInfoData, User }) => {
                 variant="outlined"
                 size="medium"
                 value={GeneralInfo?.userAltContact}
-                onChange={(e) =>
+                onInput={(e) =>
                   setGeneralInfo({
                     ...GeneralInfo,
                     userAltContact: e.target.value,
@@ -66,7 +70,7 @@ export const GeneralInfo = ({ GeneralInfoData, User }) => {
                 size="medium"
                 required
                 value={GeneralInfo?.userEmail}
-                onChange={(e) =>
+                onInput={(e) =>
                   setGeneralInfo({
                     ...GeneralInfo,
                     userEmail: e.target.value,
@@ -84,7 +88,7 @@ export const GeneralInfo = ({ GeneralInfoData, User }) => {
                 size="medium"
                 required
                 value={GeneralInfo?.userAltEmail}
-                onChange={(e) =>
+                onInput={(e) =>
                   setGeneralInfo({
                     ...GeneralInfo,
                     userAltEmail: e.target.value,
@@ -94,15 +98,25 @@ export const GeneralInfo = ({ GeneralInfoData, User }) => {
             </div>
             <div className="col-span-3 w-full">
               <Button
+                onClick={UpdateProfileFunc}
                 className={`min-w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
                 ripple={true}
                 size="lg"
               >
-                Update Profile
+              {btnloading ? (
+                <CircularProgress
+                  sx={{ color: "white" }}
+                  size={16}
+                  className="text-white"
+                />
+              ) : (
+                <span>Update Profile</span>
+              )}
               </Button>
             </div>
             <div className="col-span-3 w-full">
               <Button
+                onClick={ResetGeneralInfo}
                 ripple={true}
                 variant="outlined"
                 type="reset"

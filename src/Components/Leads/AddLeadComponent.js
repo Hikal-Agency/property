@@ -11,7 +11,6 @@ import { Button } from "@material-tailwind/react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
-import Loader from "../Loader";
 
 const AddLeadComponent = () => {
   const [loading, setloading] = useState(false);
@@ -179,6 +178,7 @@ const AddLeadComponent = () => {
       .catch((err) => {
         console.log(err);
       });
+    // eslint-disable-next-line
   }, []);
 
   return (

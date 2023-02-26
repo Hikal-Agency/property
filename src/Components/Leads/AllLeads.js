@@ -46,6 +46,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     setopenBackDrop,
     User,
     BACKEND_URL,
+    setSalesPerson,
   } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -147,7 +148,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 170,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
     },
     {
       field: "feedback",
@@ -157,7 +158,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       flex: 1,
       headerAlign: "center",
       hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
     {
       field: "priority",
@@ -167,7 +168,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 160,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderPriority cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
     {
       field: "language",
@@ -246,7 +247,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         return (
           <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
             <Button
-               onClick={()=>navigate(`/timeline/${cellValues.row.lid}`)} 
+              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
@@ -341,7 +342,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       flex: 1,
       headerAlign: "center",
       hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
     {
       field: "priority",
@@ -351,7 +352,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 160,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderPriority cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
     {
       field: "language",
@@ -430,7 +431,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         return (
           <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
             <Button
-               onClick={()=>navigate(`/timeline/${cellValues.row.lid}`)} 
+              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
@@ -524,7 +525,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 200,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderManagers cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
     },
     {
       field: "assignedToSales",
@@ -533,7 +534,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 200,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
     },
     {
       field: "feedback",
@@ -543,7 +544,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       flex: 1,
       headerAlign: "center",
       hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
     {
       field: "priority",
@@ -553,7 +554,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 160,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderPriority cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
     {
       field: "language",
@@ -1003,6 +1004,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
   useEffect(() => {
     setopenBackDrop(false);
+    const token = localStorage.getItem("auth-token");
+    axios
+      .get(`https://staging.hikalcrm.com/api/teamMembers/160`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log(result);
+        // setSalesPerson(result?.data?.agents);
+        const SalesPerson = result.data.team.filter((manager) => {
+          return manager.id === User?.id;
+        });
+        setSalesPerson(SalesPerson[0]?.child ? SalesPerson[0].child : []);
+      });
+
     // eslint-disable-next-line
   }, []);
 
@@ -1118,7 +1136,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-          columns={User?.role === 1 ? columns : User?.role === 3 ? ManagerColumns : AgentColumns}
+          columns={
+            User?.role === 1
+              ? columns
+              : User?.role === 3
+              ? ManagerColumns
+              : AgentColumns
+          }
           // columns={columns}
           components={{
             Toolbar: GridToolbar,

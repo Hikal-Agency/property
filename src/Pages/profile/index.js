@@ -10,8 +10,10 @@ import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
 import { GeneralInfo as GeneralInfoTab } from "../../Components/profile/GeneralInfo.jsx";
 import { PersonalInfo as PersonalInfoTab } from "../../Components/profile/PersonalInfo";
+import { ChangePassword as ChangePasswordTab } from "../../Components/profile/ChangePassword";
 import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
+import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
@@ -24,9 +26,17 @@ const ProfilePage = () => {
     setopenBackDrop,
     BACKEND_URL,
   } = useStateContext();
-  const [GeneralInfo, setGeneralInfo] = useState({});
+  const [GeneralInfoData, setGeneralInfo] = useState({
+    userAltContact: "",
+    userAltEmail: "",
+    userEmail: "",
+    userContact: "",
+  });
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
+
+  // Btn loading 
+  const [btnloading, setbtnloading] = useState(false);
 
   // COUNTER FOR TABS
   const [value, setValue] = useState(0);
@@ -55,6 +65,7 @@ const ProfilePage = () => {
           nationality: result.data.user[0].nationality,
           address: result.data.user[0].address,
           dob: result.data.user[0].dob,
+          gender: result.data.user[0].gender
         });
         // setgender(User?.gender);
         setloading(false);
@@ -80,15 +91,60 @@ const ProfilePage = () => {
     // eslint-disable-next-line
   }, []);
 
+  const UpdateProfile = async (data) => {
+    setbtnloading(true);
+      const token = localStorage.getItem("auth-token");
+      await axios
+        .post(
+          `${BACKEND_URL}/updateuser/${User.id}`,
+          JSON.stringify(data),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
+        .then((result) => {
+          console.log("Profile Updated successfull");
+          console.log(result);
+          toast.success("Profile Updated Successfully", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          const token = localStorage.getItem("auth-token");
+          if (token) {
+            FetchProfile(token);
+          } else {
+            navigate("/", {
+              state: { error: "Something Went Wrong! Please Try Again" },
+            });
+          }
+          setbtnloading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Error in Updating Profile", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setbtnloading(false);
+        });
+    };
+
   return (
     <>
-      {/* <Head>
-        <title>HIKAL CRM - Profile</title>
-        <meta name="description" content="User Dashboard - HIKAL CRM" />
-      </Head>
-      {console.log("the user is ")}
-      {console.log(User)} */}
-
+    <ToastContainer/>
       <div className="flex min-h-screen">
         {loading ? (
           <Loader />
@@ -204,20 +260,28 @@ const ProfilePage = () => {
                           >
                             <Tab label="General Info" />
                             <Tab label="Personal Info " />
+                            <Tab label="Change Password"/>
                           </Tabs>
                         </Box>
                         <div className="px-7 pt-12">
                           <TabPanel value={value} index={0}>
                             <GeneralInfoTab
-                              GeneralInfoData={GeneralInfo}
+                              btnloading={btnloading}
+                              GeneralInfoData={GeneralInfoData}
+                              UpdateProfile={UpdateProfile}
                               User={User}
                             />
                           </TabPanel>
                           <TabPanel value={value} index={1}>
                             <PersonalInfoTab
+                              UpdateProfile={UpdateProfile}
+                              btnloading={btnloading}
                               PersonalInfoData={PersonalInfo}
                               User={User}
                             />
+                          </TabPanel>
+                          <TabPanel value={value} index={2}>
+                            <ChangePasswordTab />
                           </TabPanel>
                         </div>
                       </div>

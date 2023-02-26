@@ -1,20 +1,28 @@
 import { Button } from "@material-tailwind/react";
-import { Box, MenuItem, Select, TextField } from "@mui/material";
+import { Box, MenuItem, Select, TextField, CircularProgress } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import React, { useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useStateContext } from "../../context/ContextProvider";
 
-export const PersonalInfo = ({ PersonalInfoData, User }) => {
+export const PersonalInfo = ({ PersonalInfoData, User, btnloading, UpdateProfile }) => {
   const { currentMode, darkModeColors } = useStateContext();
   console.log(PersonalInfoData);
   const [PersonalInfo, setPersonalInfo] = useState(PersonalInfoData);
   const [Datevalue, setDatevalue] = useState(PersonalInfoData.dob);
-  const [gender, setgender] = useState(User.gender ? User.gender : "");
 
-  const ChangeGender = (event) => {
-    setgender(event.target.value);
-  };
+  const UpdateProfileFunc = () => {
+    UpdateProfile(PersonalInfo);
+  }
+
+  function format(value) {
+    if (value < 10) {
+      return "0" + value;
+    } else {
+      return value;
+    }
+  }
+
   return (
     <div className="relative w-full">
       <form action="">
@@ -27,6 +35,16 @@ export const PersonalInfo = ({ PersonalInfoData, User }) => {
                 onChange={(newValue) => {
                   console.log(newValue);
                   setDatevalue(newValue);
+                  setPersonalInfo(
+                    {
+                    ...PersonalInfo, dob:
+                    format(newValue.$d.getUTCFullYear()) +
+                      "-" +
+                      format(newValue.$d.getUTCMonth() + 1) +
+                      "-" +
+                      format(newValue.$d.getUTCDate() + 1)
+                    }
+                  );
                   console.log(Datevalue);
                 }}
                 renderInput={(params) => <TextField {...params} />}
@@ -38,9 +56,9 @@ export const PersonalInfo = ({ PersonalInfoData, User }) => {
           <div className="col-span-3 w-full">
             <Select
               id="gender"
-              value={gender}
+              value={PersonalInfo?.gender}
               label="Gender"
-              onChange={ChangeGender}
+              onChange={(event) => setPersonalInfo({...PersonalInfo, gender: event.target.value})}
               size="medium"
               className="w-full"
               displayEmpty
@@ -63,7 +81,7 @@ export const PersonalInfo = ({ PersonalInfoData, User }) => {
               size="medium"
               required
               value={PersonalInfo?.nationality}
-              onChange={(e) =>
+              onInput={(e) =>
                 setPersonalInfo({
                   ...PersonalInfo,
                   nationality: e.target.value,
@@ -81,7 +99,7 @@ export const PersonalInfo = ({ PersonalInfoData, User }) => {
               size="medium"
               required
               value={PersonalInfo?.address}
-              onChange={(e) =>
+              onInput={(e) =>
                 setPersonalInfo({
                   ...PersonalInfo,
                   address: e.target.value,
@@ -93,9 +111,18 @@ export const PersonalInfo = ({ PersonalInfoData, User }) => {
             <Button
               className={`min-w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
               ripple={true}
+              onClick={UpdateProfileFunc}
               size="lg"
             >
-              Update Profile
+              {btnloading ? (
+                <CircularProgress
+                  sx={{ color: "white" }}
+                  size={16}
+                  className="text-white"
+                />
+              ) : (
+                <span>Update Profile</span>
+              )}
             </Button>
           </div>
           {/* <div className="col-span-3 w-full">

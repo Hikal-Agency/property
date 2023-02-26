@@ -1,12 +1,17 @@
 import moment from "moment";
-import React from "react";
+import React, { useEffect } from "react";
 import { BsBuilding } from "react-icons/bs";
-
 import { ImLocation, ImClock } from "react-icons/im";
 import { useStateContext } from "../../context/ContextProvider";
 
 const UpcomingMeeting = ({ upcoming_meetings }) => {
   const { currentMode } = useStateContext();
+
+  useEffect(() => {
+    console.log("upcoming meetings are");
+    console.log(upcoming_meetings);
+  }, []);
+
   return (
     // <div className="overflow-x-scroll snap-x auto-cols-min">
     <div className="overflow-x-scroll snap-x grid grid-flow-col auto-cols-max gap-x-3 scrollbar-thin">
@@ -68,7 +73,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
               </div>
             </div>
             <span className="block text-sm bg-main-red-color text-white rounded-md text-center p-2 font-semibold">
-            {meeting?.createdBy}
+              {meeting?.createdBy}
             </span>
           </div>
         );

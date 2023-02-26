@@ -1,17 +1,7 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Bar } from "react-chartjs-2";
-import { useStateContext } from "../../context/ContextProvider";
 
 const GroupChart = () => {
-  const [weeklydata, setweeklydata] = useState([]);
-  // useEffect(() => {
-  //   axios.get("http://staging.hikalcrm.com/api/callLogs/?period=daily").then((result)=>{
-  //     setweeklydata(result.data?.)
-  //   })
-  // }, [])
-
-  const { currentMode } = useStateContext();
   const data = {
     labels: [
       "Outgoing",

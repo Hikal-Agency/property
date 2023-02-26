@@ -8,25 +8,20 @@ import {
   Select,
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
 const RenderSalesperson = ({ cellValues }) => {
-  const token = localStorage.getItem("auth-token");
-  const [SalesPerson, setSalesPerson] = useState([]);
-  const [SalesPerson2, setSalesPerson2] = useState(cellValues?.row?.assignedToSales);
+  const [SalesPerson2, setSalesPerson2] = useState(
+    cellValues?.row?.assignedToSales
+  );
+  const [SalesPerson3, setSalesPerson3] = useState();
   const [newSalesPerson, setnewSalesPerson] = useState("");
   const [Dialogue, setDialogue] = useState(false);
-  const {
-    currentMode,
-    reloadDataGrid,
-    setreloadDataGrid,
-    fetchSalesPerson,
-    setfetchSalesPerson,
-    User
-  } = useStateContext();
+  const { currentMode, reloadDataGrid, setreloadDataGrid, SalesPerson } =
+    useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
   const SelectStyles = {
@@ -56,30 +51,16 @@ const RenderSalesperson = ({ cellValues }) => {
   //     setAgents(result?.data?.agents);
   //   });
 
-  useEffect(() => {
-    if (!fetchSalesPerson) {
-      axios
-        .get(`https://staging.hikalcrm.com/api/teamMembers/160`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
-          console.log(result);
-          // setSalesPerson(result?.data?.agents);
-          const SalesPerson = result.data.team.filter((manager) => {
-            return manager.id === User?.id;
-          });
-          setSalesPerson(SalesPerson[0]?.child ? SalesPerson[0].child : []);
-          setfetchSalesPerson(true);
-        });
-      }
-      // eslint-disable-next-line
-    }, []);
-
   const ChangeSalesPerson = (e) => {
-    setnewSalesPerson(e.target.value);
+    console.log(e.target);
+    const selectedItem = SalesPerson.find((item) => item.id === e.target.value);
+    const old_selectedItem = SalesPerson.find(
+      (item) => item.id === SalesPerson2
+    );
+    console.log(selectedItem);
+
+    setnewSalesPerson(selectedItem);
+    setSalesPerson3(old_selectedItem);
     setDialogue(true);
   };
   const UpdateSalesPerson = async () => {
@@ -87,8 +68,7 @@ const RenderSalesperson = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.lid);
-    UpdateLeadData.append("assignedToSales", newSalesPerson);
-
+    UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
     await axios
       .post(
         `https://staging.hikalcrm.com/api/leads/${cellValues?.row?.lid}`,
@@ -139,10 +119,10 @@ const RenderSalesperson = ({ cellValues }) => {
       } w-full h-full flex items-center justify-center`}
       sx={SelectStyles}
     >
-      
       <Select
         id="SalesPerson"
         value={SalesPerson2}
+        name="salesperson"
         label="Salesperson"
         onChange={ChangeSalesPerson}
         size="medium"
@@ -155,7 +135,12 @@ const RenderSalesperson = ({ cellValues }) => {
         </MenuItem>
         {SalesPerson.map((salesperson, index) => {
           return (
-            <MenuItem key={index} value={salesperson?.id}>
+            <MenuItem
+              key={index}
+              value={salesperson?.id}
+              data
+              name={salesperson?.userName}
+            >
               {salesperson?.userName}
             </MenuItem>
           );
@@ -198,11 +183,11 @@ const RenderSalesperson = ({ cellValues }) => {
                 <h1 className="font-semibold pt-3 text-lg text-center">
                   Do You Really Want Change the Agent from{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {SalesPerson2}
+                    {SalesPerson3?.userName}
                   </span>{" "}
                   to{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {newSalesPerson}
+                    {newSalesPerson?.userName}
                   </span>{" "}
                   ?
                 </h1>

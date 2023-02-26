@@ -35,17 +35,22 @@ const UpdateBookedDeal = ({
   const [EnquiryType, setEnquiryType] = useState("");
   const [ForType, setForType] = useState("");
   const [LanguagePrefered, setLanguagePrefered] = useState("");
+  //eslint-disable-next-line
   const [LeadStatus, setLeadStatus] = useState("");
+  //eslint-disable-next-line
   const [LeadSource, setLeadSource] = useState("");
   const [Feedback, setFeedback] = useState("");
   const [Manager, setManager] = useState("");
   const [Manager2, setManager2] = useState([]);
+  //eslint-disable-next-line
   const [SalesPerson, setSalesPerson] = useState([]);
+  //eslint-disable-next-line
   const [SalesPerson2, setSalesPerson2] = useState("");
   const [LeadName, setLeadName] = useState("");
   const [LeadContact, setLeadContact] = useState("");
   const [LeadEmail, setLeadEmail] = useState("");
   const [LeadProject, setLeadProject] = useState("");
+  //eslint-disable-next-line
   const [LeadNotes, setLeadNotes] = useState("");
 
   const ChangePropertyType = (event) => {
@@ -60,15 +65,19 @@ const UpdateBookedDeal = ({
   const ChangeLanguagePrefered = (event) => {
     setLanguagePrefered(event.target.value);
   };
+  //eslint-disable-next-line
   const ChangeLeadStatus = (event) => {
     setLeadStatus(event.target.value);
   };
+  //eslint-disable-next-line
   const ChangeLeadSource = (event) => {
     setLeadSource(event.target.value);
   };
   const ChangeFeedback = (event) => {
     setFeedback(event.target.value);
   };
+
+  //eslint-disable-next-line
   const ChangeManager = (event) => {
     setManager(event.target.value);
     const SalesPersons = Manager2.filter(function (el) {
@@ -76,6 +85,7 @@ const UpdateBookedDeal = ({
     });
     setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
   };
+  //eslint-disable-next-line
   const ChangeSalesPerson = (event) => {
     setSalesPerson2(event.target.value);
   };
@@ -85,7 +95,7 @@ const UpdateBookedDeal = ({
     // console.log(User);
 
     axios
-      .get(`${BACKEND_URL}teamMembers/160`, {
+      .get(`https://staging.hikalcrm.com/api/teamMembers/160`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

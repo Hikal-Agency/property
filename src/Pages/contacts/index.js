@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import Loader from "../../Components/Loader";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
@@ -16,9 +16,9 @@ const Contacts = () => {
   const token = localStorage.getItem("auth-token");
   const [loading, setloading] = useState(true);
   const [contacts, setContacts] = useState([]);
-  const [page, setPage] = useState('1');
-  const [maxPage,setMaxPage] = useState(0);
-
+  const [page, setPage] = useState("1");
+  const [maxPage, setMaxPage] = useState(0);
+  //eslint-disable-next-line
   const ContactData = [
     {
       name: "Mohamed Hikal",
@@ -76,9 +76,9 @@ const Contacts = () => {
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    FetchContacts(token)
+    FetchContacts(token);
   };
-   const FetchContacts = async (token) => {
+  const FetchContacts = async (token) => {
     await axios
       .get(`${BACKEND_URL}/users?page=${page}`, {
         headers: {
@@ -87,11 +87,14 @@ const Contacts = () => {
         },
       })
       .then((result) => {
-        console.log("The data has contact",result.data);
-        console.log("The data has contact max page",result.data.managers.last_page);
+        console.log("The data has contact", result.data);
+        console.log(
+          "The data has contact max page",
+          result.data.managers.last_page
+        );
 
         setContacts(result.data.managers.data);
-        setMaxPage(result.data.managers.last_page)
+        setMaxPage(result.data.managers.last_page);
         setloading(false);
       })
       .catch((err) => {
@@ -107,7 +110,7 @@ const Contacts = () => {
     } else {
       if (token) {
         FetchProfile(token);
-        FetchContacts(token) 
+        FetchContacts(token);
       } else {
         navigate("/", {
           state: { error: "Something Went Wrong! Please Try Again" },
@@ -147,7 +150,7 @@ const Contacts = () => {
                     {/* <span className="px-5 py-3 rounded-md">Call Log Board</span> */}
                   </h1>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3 pb-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
                     {contacts?.map((item, index) => {
                       return (
                         <div
@@ -156,16 +159,14 @@ const Contacts = () => {
                             currentMode === "dark"
                               ? "bg-gray-900 text-white"
                               : "bg-gray-200 text-black"
-                          } p-3 rounded-md grid grid-flow-col auto-cols-max gap-x-3`}
+                          } p-3 rounded-md `}
                         >
                           <img
                             src="/favicon.png"
-                            height={120}
-                            width={120}
-                            className="rounded-md cursor-pointer"
+                            className="rounded-md cursor-pointer h-[50px] w-[50px] object-cover"
                             alt=""
                           />
-                          <div className="space-y-2">
+                          <div className="mt-2 space-y-1 overflow-hidden">
                             <h1 className="font-bold">{item.userName}</h1>
                             <p className="text-sm">{item.position}</p>
                             <p className="text-sm font-semibold text-red-600">
@@ -181,9 +182,14 @@ const Contacts = () => {
                 </div>
               </div>
 
-      <Stack spacing={2} marginTop={2}  >
-      <Pagination  count={maxPage} color="error" onChange={handlePageChange} style={{margin:"auto"}} />
-    </Stack>
+              <Stack spacing={2} marginTop={2}>
+                <Pagination
+                  count={maxPage}
+                  color="error"
+                  onChange={handlePageChange}
+                  style={{ margin: "auto" }}
+                />
+              </Stack>
               <Footer />
             </div>
           </div>

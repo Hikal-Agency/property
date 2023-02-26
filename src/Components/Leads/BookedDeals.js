@@ -3,9 +3,7 @@ import {
   Box,
   CircularProgress,
   Dialog,
-  FormControl,
   IconButton,
-  InputLabel,
   MenuItem,
   Select,
   TextField,
@@ -23,6 +21,8 @@ import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -30,17 +30,12 @@ import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "./SingleLead";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast, ToastContainer } from "react-toastify";
 import RenderManagers from "./RenderManagers";
 import UpdateBookedDeal from "./UpdateBookedDeal";
 import { useNavigate } from "react-router-dom";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
-import {
-  DatePicker,
-  LocalizationProvider,
-  TimePicker,
-} from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const BookedDeals = ({
   BACKEND_URL,
@@ -52,7 +47,9 @@ const BookedDeals = ({
   const token = localStorage.getItem("auth-token");
   const [singleLeadData, setsingleLeadData] = useState();
   const navigate = useNavigate();
+  //eslint-disable-next-line
   const [deleteloading, setdeleteloading] = useState(false);
+  //eslint-disable-next-line
   const [deletebtnloading, setdeletebtnloading] = useState(false);
 
   const {
@@ -65,9 +62,11 @@ const BookedDeals = ({
     setopenBackDrop,
     User,
   } = useStateContext();
-
+  //eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
+  //eslint-disable-next-line
   const [openDialog, setopenDialog] = useState(false);
+  //eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
 
   const handleCloseDialog = () => {
@@ -102,22 +101,39 @@ const BookedDeals = ({
     },
   };
 
-  const RenderFeedback = (cellValues) => {
+  const RenderFeedback = ({cellValues}) => {
     const [Feedback, setFeedback] = useState(cellValues?.row?.feedback);
     const [newFeedback, setnewFeedback] = useState("");
     const [DialogueVal, setDialogue] = useState(false);
     const [btnloading, setbtnloading] = useState(false);
+    const [leadDateValue, setLeadDateValue] = useState({});
+    const [leadDate, setLeadDate] = useState("");
+    const [leadAmount, setLeadAmount] = useState("");
 
-    const ChangeFeedback = (e) => {
-      setnewFeedback(e.target.value);
-      setDialogue(true);
-    };
-    const UpdateFeedback = async () => {
+  function format(value) {
+    if(value < 10) {
+      return "0" + value;
+    } else {
+      return value;
+    }
+  }
+
+  const ChangeFeedback = (e) => {
+    setnewFeedback(e.target.value);
+    setDialogue(true);
+  };
+
+    const UpdateFeedback = async (event) => {
+      event.preventDefault();
+
       setbtnloading(true);
       const token = localStorage.getItem("auth-token");
       const UpdateLeadData = new FormData();
       UpdateLeadData.append("lid", cellValues?.row?.lid);
-      UpdateLeadData.append("feedback", newFeedback); //${BACKEND_URL}
+      UpdateLeadData.append("feedback", newFeedback);
+      UpdateLeadData.append("amount", leadAmount);
+      UpdateLeadData.append("dealDate", leadDate);
+
       await axios
         .post(
           `${BACKEND_URL}/leads/${cellValues?.row?.lid}`,
@@ -141,6 +157,7 @@ const BookedDeals = ({
             progress: undefined,
             theme: "light",
           });
+          // UpdateLeadFunc();
           setbtnloading(false);
           setFeedback(newFeedback);
           setreloadDataGrid(!reloadDataGrid);
@@ -178,93 +195,116 @@ const BookedDeals = ({
           required
         >
           <MenuItem value={null} disabled>
-            ---Booked---
+            ---SELECT---
           </MenuItem>
+          <MenuItem value={"Booked"}>Booked</MenuItem>
           <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
           <MenuItem value={"Closed"}>Closed</MenuItem>
         </Select>
         {DialogueVal && (
           <>
             <Dialog
-              sx={{
-                "& .MuiPaper-root": {
-                  boxShadow: "none !important",
-                },
-                "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
-                  {
-                    backgroundColor: "rgba(0, 0, 0, 0.5) !important",
-                  },
-              }}
-              open={DialogueVal}
-              onClose={(e) => setDialogue(false)}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <IconButton
                 sx={{
-                  position: "absolute",
-                  right: 12,
-                  top: 10,
-                  color: (theme) => theme.palette.grey[500],
+                  "& .MuiPaper-root": {
+                    boxShadow: "none !important",
+                  },
+                  "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
+                    {
+                      backgroundColor: "rgba(0, 0, 0, 0.5) !important",
+                    },
                 }}
-                onClick={() => setDialogue(false)}
+                open={DialogueVal}
+                onClose={(e) => setDialogue(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
               >
-                <IoMdClose size={18} />
-              </IconButton>
-              <div className="px-10 py-5">
-                <div className="flex flex-col justify-center items-center">
-                  <IoIosAlert
-                    size={50}
-                    className="text-main-red-color text-2xl"
-                  />
-                  <h1 className="font-semibold pt-3 text-lg text-center">
-                    Do You Really Want Change the Feedback from{" "}
-                    <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                      {Feedback}
-                    </span>{" "}
-                    to{" "}
-                    <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                      {newFeedback}
-                    </span>{" "}
-                    ?
-                  </h1>
+            <form action="" onSubmit={(event) => UpdateFeedback(event)}>
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    right: 12,
+                    top: 10,
+                    color: (theme) => theme.palette.grey[500],
+                  }}
+                  onClick={() => setDialogue(false)}
+                >
+                  <IoMdClose size={18} />
+                </IconButton>
+                <div className="px-10 py-5">
+                  <div className="flex flex-col justify-center items-center">
+                    <IoIosAlert
+                      size={50}
+                      className="text-main-red-color text-2xl"
+                    />
+                    <h1 className="font-semibold pt-3 text-lg text-center">
+                      Do You Really Want Change the Feedback from{" "}
+                      <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
+                        {Feedback}
+                      </span>{" "}
+                      to{" "}
+                      <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
+                        {newFeedback}
+                      </span>{" "}
+                      ?
+                    </h1>
+                    {newFeedback.toLowerCase() === "closed" &&
+                  <div className="grid sm:grid-cols-1 gap-5">
+                    <div className="flex flex-col justify-center items-center gap-4 mt-2 mb-4">
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          label="Meeting Date"
+                          value={leadDateValue}
+                          views={['year', 'month', 'day']}
+                          required
+                          onChange={(newValue) => {
+                            setLeadDateValue(newValue);
+                            setLeadDate(format(newValue.$d.getUTCFullYear()) + "-" + format(newValue.$d.getUTCMonth() + 1) + "-" + format(newValue.$d.getUTCDate() + 1));
+                          }}
+                          format="yyyy-MM-dd"
+                          renderInput={(params) => <TextField {...params} fullWidth /> }
+                        />
+                      </LocalizationProvider>
+                      <TextField required fullWidth label="Lead Amount" value={leadAmount} onChange={(e) => {
+                        setLeadAmount(e.target.value);
+                      }} />
+                    </div>
+                  </div>
+                    }
+                  </div>
+                  <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                    <Button
+                      className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                      ripple={true}
+                      size="lg"
+                      type="submit"
+                    >
+                      {btnloading ? (
+                        <CircularProgress size={18} sx={{ color: "white" }} />
+                      ) : (
+                        <span>Confirm</span>
+                      )}
+                    </Button>
+                    <Button
+                      onClick={() => setDialogue(false)}
+                      ripple={true}
+                      variant="outlined"
+                      className={`shadow-none  rounded-md text-sm  ${
+                        currentMode === "dark"
+                          ? "text-white border-white"
+                          : "text-main-red-color border-main-red-color"
+                      }`}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
                 </div>
-                <div className="action buttons mt-5 flex items-center justify-center space-x-2">
-                  <Button
-                    className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
-                    ripple={true}
-                    size="lg"
-                    onClick={() => UpdateFeedback(cellValues)}
-                  >
-                    {btnloading ? (
-                      <CircularProgress size={18} sx={{ color: "white" }} />
-                    ) : (
-                      <span>Confirm</span>
-                    )}
-                  </Button>
-
-                  <Button
-                    onClick={() => setDialogue(false)}
-                    ripple={true}
-                    variant="outlined"
-                    className={`shadow-none  rounded-md text-sm  ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-main-red-color border-main-red-color"
-                    }`}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            </Dialog>
+            </form>
+              </Dialog>
           </>
         )}
       </Box>
     );
   };
-  // ROLE 3
-  const ManagerColumns = [];
 
   // ROLE 7
   const AgentColumns = [
@@ -473,15 +513,15 @@ const BookedDeals = ({
       flex: 1,
       headerAlign: "center",
     },
-    // {
-    //   field: "assignedToManager",
-    //   headerName: "Manager",
-    //   // width: 150,
-    //   minWidth: 200,
-    //   flex: 1,
-    //   hideable: false,
-    //   renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
-    // },
+    {
+      field: "assignedToManager",
+      headerName: "Manager",
+      // width: 150,
+      minWidth: 200,
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
+    },
     // { field: "assignedToSales", headerName: "Salesperson",hideable: false, width: 110 },
 
     {
@@ -492,67 +532,67 @@ const BookedDeals = ({
       minWidth: 110,
       flex: 1,
     },
-    // {
-    //   field: "leadSource",
-    //   headerName: "Source",
-    //   // width: 110,
-    //   minWidth: 70,
-    //   flex: 1,
-    //   headerAlign: "center",
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div className="w-full mx-auto flex justify-center ">
-    //         {cellValues.row.leadSource.toLowerCase() ===
-    //           "campaign snapchat" && (
-    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //             <FaSnapchat size={22} color={"#f6d80a"} />
-    //           </div>
-    //         )}
-    //         {cellValues.row.leadSource.toLowerCase() ===
-    //           "campaign facebook" && (
-    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //             <FaFacebook size={22} color={"#0e82e1"} />
-    //           </div>
-    //         )}
-    //         {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
-    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //             <img
-    //               src={"/assets/tiktok-app.svg"}
-    //               alt=""
-    //               height={22}
-    //               width={22}
-    //               className="object-cover"
-    //             />
-    //           </div>
-    //         )}
-    //         {cellValues.row.leadSource.toLowerCase() ===
-    //           "campaign googleads" && (
-    //           <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
-    //             <FcGoogle size={22} />
-    //           </div>
-    //         )}
-    //         {cellValues.row.leadSource.toLowerCase() === "campaign" && (
-    //           <div className="w-fit rounded-full flex items-center justify-center">
-    //             <MdCampaign
-    //               size={22}
-    //               color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-    //             />
-    //           </div>
-    //         )}
-    //         {cellValues.row.leadSource.toLowerCase() === "cold" && (
-    //           <div className="w-fit rounded-full flex items-center justify-center">
-    //             <BsSnow2 size={22} color={"#0ec7ff"} />
-    //           </div>
-    //         )}
-    //         {cellValues.row.leadSource.toLowerCase() === "personal" && (
-    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //             <BsPersonCircle size={22} color={"#14539a"} />
-    //           </div>
-    //         )}
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      field: "leadSource",
+      headerName: "Source",
+      // width: 110,
+      minWidth: 70,
+      flex: 1,
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full mx-auto flex justify-center ">
+            {cellValues.row.leadSource.toLowerCase() ===
+              "campaign snapchat" && (
+              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                <FaSnapchat size={22} color={"#f6d80a"} />
+              </div>
+            )}
+            {cellValues.row.leadSource.toLowerCase() ===
+              "campaign facebook" && (
+              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                <FaFacebook size={22} color={"#0e82e1"} />
+              </div>
+            )}
+            {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
+              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                <img
+                  src={"/assets/tiktok-app.svg"}
+                  alt=""
+                  height={22}
+                  width={22}
+                  className="object-cover"
+                />
+              </div>
+            )}
+            {cellValues.row.leadSource.toLowerCase() ===
+              "campaign googleads" && (
+              <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
+                <FcGoogle size={22} />
+              </div>
+            )}
+            {cellValues.row.leadSource.toLowerCase() === "campaign" && (
+              <div className="w-fit rounded-full flex items-center justify-center">
+                <MdCampaign
+                  size={22}
+                  color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+                />
+              </div>
+            )}
+            {cellValues.row.leadSource.toLowerCase() === "cold" && (
+              <div className="w-fit rounded-full flex items-center justify-center">
+                <BsSnow2 size={22} color={"#0ec7ff"} />
+              </div>
+            )}
+            {cellValues.row.leadSource.toLowerCase() === "personal" && (
+              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                <BsPersonCircle size={22} color={"#14539a"} />
+              </div>
+            )}
+          </div>
+        );
+      },
+    },
     {
       field: "feedback",
       headerName: "Feedback",
@@ -561,7 +601,7 @@ const BookedDeals = ({
       flex: 1,
       headerAlign: "center",
       hideable: false,
-      renderCell: RenderFeedback,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
     },
     // {
     //   field: "edit",
@@ -641,6 +681,7 @@ const BookedDeals = ({
           leadSource: row?.leadSource,
           lid: row?.lid,
           lastEdited: row?.lastEdited,
+          //eslint-disable-next-line
           project: row?.project,
           leadFor: row?.leadFor,
           leadStatus: row?.leadStatus,
@@ -708,6 +749,7 @@ const BookedDeals = ({
             leadSource: row?.leadSource,
             lid: row?.lid,
             lastEdited: row?.lastEdited,
+            //eslint-disable-next-line
             project: row?.project,
             leadFor: row?.leadFor,
             leadStatus: row?.leadStatus,
@@ -729,6 +771,7 @@ const BookedDeals = ({
   };
   useEffect(() => {
     setopenBackDrop(false);
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -752,6 +795,7 @@ const BookedDeals = ({
     setUpdateLeadModelOpen(true);
   };
   // Delete Lead
+  //eslint-disable-next-line
   const deleteLead = async (params) => {
     setdeleteloading(true);
     setdeletebtnloading(true);

@@ -1,20 +1,11 @@
 import { Button } from "@material-tailwind/react";
-import {
-  Backdrop,
-  Box,
-  CircularProgress,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Backdrop, CircularProgress, Modal, TextField } from "@mui/material";
 import axios from "axios";
-import moment from "moment";
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
@@ -34,38 +25,31 @@ const UpdateLead = ({
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
   };
+  //eslint-disable-next-line
   const [PropertyType, setPropertyType] = useState("");
+  //eslint-disable-next-line
   const [EnquiryType, setEnquiryType] = useState("");
+  //eslint-disable-next-line
   const [ForType, setForType] = useState("");
+  //eslint-disable-next-line
   const [LanguagePrefered, setLanguagePrefered] = useState("");
+  //eslint-disable-next-line
   const [LeadStatus, setLeadStatus] = useState("");
   // eslint-disable-next-line
   const [Feedback, setFeedback] = useState("");
+  //eslint-disable-next-line
   const [Manager, setManager] = useState("");
   const [Manager2, setManager2] = useState([]);
+  //eslint-disable-next-line
   const [SalesPerson, setSalesPerson] = useState([]);
+  //eslint-disable-next-line
   const [SalesPerson2, setSalesPerson2] = useState("");
+  //eslint-disable-next-line
   const [LeadName, setLeadName] = useState("");
-  const [LeadContact, setLeadContact] = useState("");
-  const [LeadEmail, setLeadEmail] = useState("");
-  const [LeadProject, setLeadProject] = useState("");
-  const [LeadNotes, setLeadNotes] = useState("");
   const [leadDate, setLeadDate] = useState("");
   const [leadDateValue, setLeadDateValue] = useState({});
   const [leadAmount, setLeadAmount] = useState("");
 
-  const ChangePropertyType = (event) => {
-    setPropertyType(event.target.value);
-  };
-  const ChangeEnquiryType = (event) => {
-    setEnquiryType(event.target.value);
-  };
-  const ChangeForType = (event) => {
-    setForType(event.target.value);
-  };
-  const ChangeLanguagePrefered = (event) => {
-    setLanguagePrefered(event.target.value);
-  };
   // eslint-disable-next-line
   const ChangeLeadStatus = (event) => {
     setLeadStatus(event.target.value);
@@ -73,16 +57,6 @@ const UpdateLead = ({
   // eslint-disable-next-line
   const ChangeFeedback = (event) => {
     setFeedback(event.target.value);
-  };
-  const ChangeManager = (event) => {
-    setManager(event.target.value);
-    const SalesPersons = Manager2.filter(function (el) {
-      return el.uid === event.target.value;
-    });
-    setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
-  };
-  const ChangeSalesPerson = (event) => {
-    setSalesPerson2(event.target.value);
   };
   useEffect(() => {
     console.log("lead data is ");
@@ -106,34 +80,37 @@ const UpdateLead = ({
 
     // GETTING LEAD DETAILS
     axios
-      .post(`${BACKEND_URL}/editdeal/${LeadData.lid}`, {}, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
+      .post(
+        `${BACKEND_URL}/editdeal/${LeadData.lid}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
       .then((result) => {
         console.log("the lead details is given by");
         console.log(result);
         // setlead(result?.data?.data);
 
-        if(result.data.status) {
-            const {amount, dealDate} = result.data.closeddeals;
-            setLeadDateValue(dayjs(dealDate));
-            setLeadAmount(amount);
+        if (result.data.status) {
+          const { amount, dealDate } = result.data.closeddeals;
+          setLeadDateValue(dayjs(dealDate));
+          setLeadAmount(amount);
         } else {
-        toast.error("Error in Fetching the Lead", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        handleLeadModelClose();
-
+          toast.error("Error in Fetching the Lead", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          handleLeadModelClose();
         }
         setloading(false);
       })
@@ -210,8 +187,9 @@ const UpdateLead = ({
         setbtnloading(false);
       });
   };
+  
   function format(value) {
-    if(value < 10) {
+    if (value < 10) {
       return "0" + value;
     } else {
       return value;
@@ -264,19 +242,33 @@ const UpdateLead = ({
                       <DatePicker
                         label="Meeting Date"
                         value={leadDateValue}
-                        views={['year', 'month', 'day']}
+                        views={["year", "month", "day"]}
                         required
                         onChange={(newValue) => {
                           setLeadDateValue(newValue);
-                          setLeadDate(format(newValue.$d.getUTCFullYear()) + "-" + format(newValue.$d.getUTCMonth() + 1) + "-" + format(newValue.$d.getUTCDate() + 1));
+                          setLeadDate(
+                            format(newValue.$d.getUTCFullYear()) +
+                              "-" +
+                              format(newValue.$d.getUTCMonth() + 1) +
+                              "-" +
+                              format(newValue.$d.getUTCDate() + 1)
+                          );
                         }}
                         format="yyyy-MM-dd"
-                        renderInput={(params) => <TextField {...params} fullWidth /> }
+                        renderInput={(params) => (
+                          <TextField {...params} fullWidth />
+                        )}
                       />
                     </LocalizationProvider>
-                    <TextField required fullWidth label="Lead Amount" value={leadAmount} onChange={(e) => {
-                      setLeadAmount(e.target.value);
-                    }} />
+                    <TextField
+                      required
+                      fullWidth
+                      label="Lead Amount"
+                      value={leadAmount}
+                      onChange={(e) => {
+                        setLeadAmount(e.target.value);
+                      }}
+                    />
                   </div>
                 </div>
 

@@ -331,7 +331,7 @@ const UpdateLead = ({
                           // required={SalesPerson.length > 0 ? true : false}
                         >
                           <MenuItem value="" disabled>
-                            Sales Person
+                            Sales Person-
                           </MenuItem>
                           {SalesPerson.map((person, index) => (
                             <MenuItem key={index} value={person?.id}>

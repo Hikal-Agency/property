@@ -1,12 +1,3 @@
-// import {
-//   Tabs,
-//   TabsHeader,
-//   TabsBody,
-//   Tab,
-//   TabPanel,
-//   Button,
-//   Input,
-// } from "@material-tailwind/react";
 import { Box, Tab, Tabs } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -44,7 +35,8 @@ const data = [
 ];
 
 const Task = ({ call_logs }) => {
-  const { currentMode, darkModeColors, BACKEND_URL, setDashboardData } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, setDashboardData } =
+    useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -55,37 +47,37 @@ const Task = ({ call_logs }) => {
 
   const setCallLogs = async (tabId) => {
     try {
-        setLoading(true);
-        let url = "";
-        if(tabId === 0) {
-          url = `${BACKEND_URL}/callLogs/?%2F=&period=daily`;
-        } else if(tabId === 1) {
-          url = `${BACKEND_URL}/callLogs/?%2F=&period=monthly`;
-        } else {
-          url = `${BACKEND_URL}/callLogs`;
-        }
+      setLoading(true);
+      let url = "";
+      if (tabId === 0) {
+        url = `${BACKEND_URL}/callLogs/?%2F=&period=daily`;
+      } else if (tabId === 1) {
+        url = `${BACKEND_URL}/callLogs/?%2F=&period=monthly`;
+      } else {
+        url = `${BACKEND_URL}/callLogs`;
+      }
 
-        const token = localStorage.getItem("auth-token");
-        const response = await fetch(url, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          }
-        });
+      const token = localStorage.getItem("auth-token");
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        const {call_logs} = await response.json(); 
-        setDashboardData((dashboardData) => {
-          return {...dashboardData, call_logs};
-        });
-        setLoading(false);
-    }
-    catch(error) {
+      const { call_logs } = await response.json();
+      setDashboardData((dashboardData) => {
+        return { ...dashboardData, call_logs };
+      });
+      setLoading(false);
+    } catch (error) {
       console.log("Error in Setting call logs ", error);
     }
-  }
+  };
 
-useEffect(() => {
-  setCallLogs(0);
-}, []);
+  useEffect(() => {
+    setCallLogs(0);
+    //eslint-disable-next-line
+  }, []);
 
   return (
     <>
@@ -131,7 +123,13 @@ useEffect(() => {
         </Box>
         <div className="mt-3 pb-3">
           <TabPanel value={value} index={0}>
-            <Calls isLoading={loading} setCallLogs={setCallLogs} tabValue={tabValue} setTabValue={setTabValue} call_logs={call_logs} />
+            <Calls
+              isLoading={loading}
+              setCallLogs={setCallLogs}
+              tabValue={tabValue}
+              setTabValue={setTabValue}
+              call_logs={call_logs}
+            />
           </TabPanel>
           <TabPanel value={value} index={1}>
             tab panel 2

@@ -66,9 +66,9 @@ const Dashboard = () => {
           <Loader />
         ) : (
           <div
-            className={` ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
+            className={`${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >
-            <div className={`flex`} style={{width: "100vw"}}>
+            <div className="flex" style={{width: "100vw"}}>
               <Sidebarmui />
               <div className="w-full">
                 <div className="px-5">

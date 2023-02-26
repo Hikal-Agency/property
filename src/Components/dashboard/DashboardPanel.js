@@ -46,6 +46,7 @@ const DashboardPanel = () => {
       .catch((err) => {
         console.log(err);
       });
+    //eslint-disable-next-line
   }, []);
 
   // COUNTER DATA

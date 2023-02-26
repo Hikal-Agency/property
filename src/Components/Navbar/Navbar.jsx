@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AiOutlineCalendar, AiOutlineMenu } from "react-icons/ai";
-import { RiNotification3Line } from "react-icons/ri";
+import { RiLockPasswordFill, RiNotification3Line } from "react-icons/ri";
 import {
   MdDarkMode,
   MdKeyboardArrowDown,
@@ -216,9 +216,17 @@ const Navbar = () => {
         >
           <MenuItem>
             <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-              <div className="flex items-center space-x-2s">
+              <div className="flex items-center space-x-2">
                 <Avatar src={User?.displayImg} className="inline-block" />
                 <span>Profile</span>
+              </div>
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link to={"/change-password"} onClick={() => setopenBackDrop(true)}>
+              <div className="flex items-center space-x-2">
+                <RiLockPasswordFill className="inline-block" />
+                <span>Change Password</span>
               </div>
             </Link>
           </MenuItem>

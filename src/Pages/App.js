@@ -24,6 +24,7 @@ import Device from "./whatsapp-marketing/Device";
 import Messages from "./whatsapp-marketing/messages";
 import Payments from "./whatsapp-marketing/payments";
 import Transactions from "./whatsapp-marketing/transactions";
+import ChangePassword from "./auth/ChangePassword";
 
 function App() {
   const router = createBrowserRouter([
@@ -34,6 +35,10 @@ function App() {
     {
       path: "/auth/signup",
       element: <Signup />,
+    },
+    {
+      path: "/change-password",
+      element: <ChangePassword />,
     },
     {
       path: "/dashboard",
@@ -71,12 +76,8 @@ function App() {
       path: "/closedeals",
       element: <ClosedealsPage />,
     },
-    // {  path: "/timeline",
-    //   element: <TimelinePage />,
-    // },
-    {  path: "/timeline/:id",
-      element: <TimelinePage />,
-    },
+
+    { path: "/timeline/:id", element: <TimelinePage /> },
     {
       path: "/leadnotes",
       element: <LeadNotesPage />,

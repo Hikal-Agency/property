@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import {
   Chart as ChartJS,
@@ -30,7 +30,7 @@ ChartJS.register(
 
 const CombinationChart = () => {
   const { currentMode } = useStateContext();
-  const labels = ["Agent 1", "Agent 2", "Agent 3", "Agent 4"];
+  const [performanceChartData, setPerformanceChartData] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
@@ -42,8 +42,8 @@ const CombinationChart = () => {
         },
       })
       .then((result) => {
-        console.log("performance chart data is");
-        console.log(result);
+        const {data: {members_deal}} = result;
+        setPerformanceChartData(members_deal);
       })
       .catch((err) => {
         console.log(err);
@@ -56,12 +56,12 @@ const CombinationChart = () => {
         <Chart
           type="bar"
           data={{
-            labels,
+            labels: performanceChartData.map((member) => member.userName),
             datasets: [
               {
                 type: "line",
                 label: "Closed deals",
-                data: [0, 3, 9, 5],
+                data: performanceChartData.map((member) => member.total_sales),
                 fill: true,
                 backgroundColor: "rgba(225,0,0,0.4)",
                 borderColor: "#da1f26",
@@ -69,7 +69,7 @@ const CombinationChart = () => {
               {
                 type: "line",
                 label: "Meetings",
-                data: [10, 30, 20, 20],
+                data: performanceChartData.map((member) => member.total_meetings),
                 fill: false,
                 backgroundColor: "rgba(0,0,0,0.2)",
                 borderColor: "#ffffff",
@@ -91,12 +91,12 @@ const CombinationChart = () => {
         <Chart
           type="bar"
           data={{
-            labels,
+            labels: performanceChartData.map((member) => member.userName),
             datasets: [
               {
                 type: "line",
                 label: "Closed deals",
-                data: [0, 3, 9, 5],
+                data: performanceChartData.map((member) => member.total_sales),
                 fill: true,
                 backgroundColor: "rgba(225,0,0,0.4)",
                 borderColor: "#da1f26",
@@ -104,7 +104,7 @@ const CombinationChart = () => {
               {
                 type: "line",
                 label: "Meetings",
-                data: [10, 30, 20, 20],
+                data: performanceChartData.map((member) => member.total_meetings),
                 // borderWidth: 1,
                 fill: false,
                 backgroundColor: "rgba(0,0,0,0.2)",

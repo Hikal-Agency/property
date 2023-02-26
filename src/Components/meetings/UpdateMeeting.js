@@ -1,23 +1,22 @@
 import { Button } from "@material-tailwind/react";
 import {
   Backdrop,
-  Box,
   CircularProgress,
   Modal,
   TextField,
-  FormControl, 
+  FormControl,
   Select,
   InputLabel,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useStateContext } from "../../context/ContextProvider";
 
 const UpdateMeeting = ({
@@ -26,8 +25,7 @@ const UpdateMeeting = ({
   FetchLeads,
 }) => {
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL } =
-    useStateContext();
+  const { darkModeColors, currentMode, User, BACKEND_URL } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState("");
   const [loading, setLoading] = useState(true);
@@ -61,7 +59,7 @@ const UpdateMeeting = ({
         );
 
         if (!response.data.meeting) {
-          console.log("Hello")
+          console.log("Hello");
           toast.error("Error in Fetching the Meeting", {
             position: "top-right",
             autoClose: 3000,
@@ -73,7 +71,8 @@ const UpdateMeeting = ({
             theme: "light",
           });
         } else {
-          const {meetingStatus, meetingDate, meetingLocation, meetingTime} = response.data.meeting;
+          const { meetingStatus, meetingDate, meetingLocation, meetingTime } =
+            response.data.meeting;
           setMeetingStatus(meetingStatus);
           setMeetingDateValue(dayjs(meetingDate));
           setMeetingTimeValue(dayjs("2023-01-01 " + meetingTime));
@@ -81,21 +80,22 @@ const UpdateMeeting = ({
         }
       } catch (error) {
         console.log("Error in fetching single meeting: ", error);
-          toast.error("Error in Fetching the Meeting", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+        toast.error("Error in Fetching the Meeting", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
-          setLoading(false)
+      setLoading(false);
     };
 
     getMeeting();
+    //eslint-disable-next-line
   }, []);
 
   const update = async () => {
@@ -165,7 +165,7 @@ const UpdateMeeting = ({
   };
 
   function format(value) {
-    if(value < 10) {
+    if (value < 10) {
       return "0" + value;
     } else {
       return value;
@@ -222,13 +222,21 @@ const UpdateMeeting = ({
                       <DatePicker
                         label="Meeting Date"
                         value={meetingDateValue}
-                        views={['year', 'month', 'day']}
+                        views={["year", "month", "day"]}
                         onChange={(newValue) => {
                           setMeetingDateValue(newValue);
-                          setMeetingDate(format(newValue.$d.getUTCFullYear()) + "-" + format(newValue.$d.getUTCMonth() + 1) + "-" + format(newValue.$d.getUTCDate() + 1));
+                          setMeetingDate(
+                            format(newValue.$d.getUTCFullYear()) +
+                              "-" +
+                              format(newValue.$d.getUTCMonth() + 1) +
+                              "-" +
+                              format(newValue.$d.getUTCDate() + 1)
+                          );
                         }}
                         format="yyyy-MM-dd"
-                        renderInput={(params) => <TextField {...params} fullWidth /> }
+                        renderInput={(params) => (
+                          <TextField {...params} fullWidth />
+                        )}
                       />
                     </LocalizationProvider>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -238,16 +246,24 @@ const UpdateMeeting = ({
                         format="HH:mm"
                         value={meetingTimeValue}
                         onChange={(newValue) => {
-                          setMeetingTime(format(newValue.$d.getHours()) + ":" + format(newValue.$d.getMinutes()));
-                          setMeetingTimeValue(newValue)
+                          setMeetingTime(
+                            format(newValue.$d.getHours()) +
+                              ":" +
+                              format(newValue.$d.getMinutes())
+                          );
+                          setMeetingTimeValue(newValue);
                         }}
-                        renderInput={(params) => <TextField {...params} fullWidth />}
+                        renderInput={(params) => (
+                          <TextField {...params} fullWidth />
+                        )}
                       />
                     </LocalizationProvider>
                     <FormControl fullWidth>
-                      <InputLabel id="meeting-status">Meeting Status</InputLabel>
+                      <InputLabel id="meeting-status">
+                        Meeting Status
+                      </InputLabel>
                       <Select
-                      labelId="meeting-status"
+                        labelId="meeting-status"
                         label="Meeting Status"
                         value={meetingStatus}
                         onChange={(e) => {
@@ -260,9 +276,14 @@ const UpdateMeeting = ({
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </Select>
                     </FormControl>
-                    <TextField fullWidth label="Meeting Location" value={meetingLocation} onChange={(e) => {
-                      setMeetingLocation(e.target.value);
-                    }} />
+                    <TextField
+                      fullWidth
+                      label="Meeting Location"
+                      value={meetingLocation}
+                      onChange={(e) => {
+                        setMeetingLocation(e.target.value);
+                      }}
+                    />
                   </div>
                 </div>
 
