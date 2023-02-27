@@ -7,6 +7,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { ImUserCheck } from "react-icons/im";
 import { MdStickyNote2 } from "react-icons/md";
 import { HiClock } from "react-icons/hi";
+import Error from "../Error";
 import axios from "axios";
 import { FaCalendarDay } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,6 +16,7 @@ const Timeline = () => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [leadsCycle, setLeadsCycle] = useState(null);
   const [leadDetails, setLeadDetails] = useState(null);
+  const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,9 +45,10 @@ const Timeline = () => {
       setLoading(false);
     } catch (error) {
       console.log(error);
-      navigate("/", {
-        state: { error: "Something Went Wrong! Please Try Again " },
-      });
+      setError404(true);
+      // navigate("/", {
+      //   state: { error: "Something Went Wrong! Please Try Again " },
+      // });
     }
   };
 
@@ -108,7 +111,7 @@ const Timeline = () => {
           >
             <div className="px-5">
               <Navbar />
-
+              {error404 ? <Error/> :
               <div className="mt-5 md:mt-2">
                 <h1
                   className={`font-semibold ${
@@ -566,6 +569,7 @@ const Timeline = () => {
                   </div>
                 </div>
               </div>
+              }
             </div>
             <Footer />
           </div>

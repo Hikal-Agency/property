@@ -15,7 +15,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
   return (
     // <div className="overflow-x-scroll snap-x auto-cols-min">
     <div className="overflow-x-scroll snap-x grid grid-flow-col auto-cols-max gap-x-3 scrollbar-thin">
-      {upcoming_meetings.map((meeting, index) => {
+      {upcoming_meetings?.map((meeting, index) => {
         return (
           <div
             key={index}
