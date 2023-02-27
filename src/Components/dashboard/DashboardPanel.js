@@ -470,7 +470,7 @@ const DashboardPanel = () => {
       {/* 2ND ROW END [CHARTS FOR ADMIN ONLY] */}
 
       {/* 3RD ROW [REVENUE, TOTAL SALES] */}
-      <div className="grid grid-cols-2 gap-3 pb-3">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-3 pb-3">
         <div
           className={`${
             currentMode === "dark" ? "bg-red-600" : "bg-gray-200"

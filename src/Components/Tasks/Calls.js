@@ -69,7 +69,7 @@ const Calls = ({
                 Today total calls: <span>{call_logs?.all_calls}</span>
               </h1>
             </div>
-            <div className="grid grid-cols-3 gap-y-5 gap-x-5">
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-y-5 gap-x-5">
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
                   <VscCallOutgoing
@@ -145,7 +145,7 @@ const Calls = ({
                 This month total calls: <span>{call_logs?.all_calls}</span>
               </h1>
             </div>
-            <div className="grid grid-cols-3 gap-y-5 gap-x-5">
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-y-5 gap-x-5">
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
                   <VscCallOutgoing
@@ -221,7 +221,7 @@ const Calls = ({
                 All-time total calls: <span>{call_logs?.all_calls}</span>
               </h1>
             </div>
-            <div className="grid grid-cols-3 gap-y-5 gap-x-5">
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-y-5 gap-x-5">
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
                   <VscCallOutgoing
