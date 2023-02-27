@@ -815,49 +815,49 @@ const Sidebarmui = () => {
               // submenu: [
               //   {
               name: "Fresh Unassigned",
-              count:
-                UnassignedLeadsCount?.new +
-                UnassignedLeadsCount?.no_nswer +
-                UnassignedLeadsCount?.Meeting +
-                UnassignedLeadsCount?.follow_up +
-                UnassignedLeadsCount?.low_budget +
-                UnassignedLeadsCount?.not_interested +
-                UnassignedLeadsCount?.unreachable,
+              // count:
+              //   UnassignedLeadsCount?.new +
+              //   UnassignedLeadsCount?.no_nswer +
+              //   UnassignedLeadsCount?.Meeting +
+              //   UnassignedLeadsCount?.follow_up +
+              //   UnassignedLeadsCount?.low_budget +
+              //   UnassignedLeadsCount?.not_interested +
+              //   UnassignedLeadsCount?.unreachable,
               link: "/unassigned/fresh",
             },
             {
               name: "New",
-              count: UnassignedLeadsCount?.new,
+              // count: UnassignedLeadsCount?.new,
               link: "/unassigned/new",
             },
             {
               name: "No Answer",
-              count: UnassignedLeadsCount?.no_nswer,
+              // count: UnassignedLeadsCount?.no_nswer,
               link: "/unassigned/no answer",
             },
             {
               name: "Meeting",
-              count: UnassignedLeadsCount?.Meeting,
+              // count: UnassignedLeadsCount?.Meeting,
               link: "/unassigned/meeting",
             },
             {
               name: "Follow Up",
-              count: UnassignedLeadsCount?.follow_up,
+              // count: UnassignedLeadsCount?.follow_up,
               link: "/unassigned/follow up",
             },
             {
               name: "Low Budget",
-              count: UnassignedLeadsCount?.low_budget,
+              // count: UnassignedLeadsCount?.low_budget,
               link: "/unassigned/low budget",
             },
             {
               name: "Not Interested",
-              count: UnassignedLeadsCount?.not_interested,
+              // count: UnassignedLeadsCount?.not_interested,
               link: "/unassigned/not interested",
             },
             {
               name: "Unreachable",
-              count: UnassignedLeadsCount?.unreachable,
+              // count: UnassignedLeadsCount?.unreachable,
               link: "/unassigned/unreachable",
             },
             // ],
