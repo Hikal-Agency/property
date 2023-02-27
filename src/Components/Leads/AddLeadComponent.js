@@ -225,7 +225,7 @@ const AddLeadComponent = () => {
                           Add new lead details
                         </h3>
                       </div>
-                      <div className="grid grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5">
+                      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5">
                         <div>
                           <Box sx={darkModeColors}>
                             <h4
