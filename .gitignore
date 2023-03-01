@@ -10,7 +10,7 @@
 
 .env
 
-/src/.env
+src/.env
 
 # production
 /build
