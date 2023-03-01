@@ -25,13 +25,14 @@ const DashboardPanel = () => {
     User,
     Sales_chart_data,
     setSales_chart_data,
+    BACKEND_URL,
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     axios
-      .get("https://staging.hikalcrm.com/api/memberdeals", {
+      .get(`${BACKEND_URL}/memberdeals`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

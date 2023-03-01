@@ -31,7 +31,7 @@ const RenderFeedback = ({ cellValues }) => {
     meetingStatus: null,
     meetingLocation: null,
   });
-  const { currentMode, setreloadDataGrid, reloadDataGrid } = useStateContext();
+  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL } = useStateContext();
   const ChangeFeedback = (e) => {
     setnewFeedback(e.target.value);
     setDialogue(true);
@@ -79,7 +79,7 @@ const RenderFeedback = ({ cellValues }) => {
 
     await axios
       .post(
-        `https://staging.hikalcrm.com/api/leads/${cellValues?.row?.lid}`,
+        `${BACKEND_URL}/leads/${cellValues?.row?.lid}`,
         UpdateLeadData,
         {
           headers: {

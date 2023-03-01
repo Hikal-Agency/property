@@ -15,7 +15,7 @@ import moment from "moment";
 const AddLeadComponent = () => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
-  const { currentMode, darkModeColors, User } = useStateContext();
+  const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [Manager2, setManager2] = useState([]);
   const [SalesPerson, setSalesPerson] = useState([]);
   const [filter_manager, setfilter_manager] = useState();
@@ -101,7 +101,7 @@ const AddLeadComponent = () => {
     );
 
     await axios
-      .post(`https://staging.hikalcrm.com/api/leads`, LeadData, {
+      .post(`${BACKEND_URL}/leads`, LeadData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -153,7 +153,7 @@ const AddLeadComponent = () => {
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     axios
-      .get(`https://staging.hikalcrm.com/api/teamMembers/160`, {
+      .get(`${BACKEND_URL}/teamMembers/160`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

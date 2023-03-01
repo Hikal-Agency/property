@@ -24,6 +24,7 @@ const RenderManagers = ({ cellValues }) => {
     setreloadDataGrid,
     fetchManagers,
     setfetchManagers,
+    BACKEND_URL,
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -55,7 +56,7 @@ const RenderManagers = ({ cellValues }) => {
   //   });
   useEffect(() => {
     if (!fetchManagers) {
-      axios.get("https://staging.hikalcrm.com/api/managers").then((result) => {
+      axios.get(`${BACKEND_URL}/managers`).then((result) => {
         console.log("manager response is");
         console.log(result);
         setManagers(result?.data?.managers);
@@ -81,7 +82,7 @@ const RenderManagers = ({ cellValues }) => {
 
     await axios
       .post(
-        `https://staging.hikalcrm.com/api/leads/${cellValues?.row?.lid}`,
+        `${BACKEND_URL}/leads/${cellValues?.row?.lid}`,
         UpdateLeadData,
         {
           headers: {

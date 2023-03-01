@@ -16,7 +16,7 @@ import RenderFeedback from "./RenderFeedback";
 import RenderPriority from "./RenderPriority";
 
 const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, BACKEND_URL } = useStateContext();
   const [Priority, setPriority] = useState("");
   const [Managers, setManagers] = useState([]);
   const [Agents, setAgents] = useState([]);
@@ -192,14 +192,14 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       })
       .then(async (result) => {
         await axios
-          .get("https://staging.hikalcrm.com/api/managers")
+          .get(`${BACKEND_URL}/managers`)
           .then((result) => {
             console.log("manager response is");
             console.log(result);
             setManagers(result?.data?.managers);
           });
         await axios
-          .get("https://staging.hikalcrm.com/api/agents")
+          .get(`${BACKEND_URL}/agents`)
           .then((result) => {
             setAgents(result?.data?.agents);
           });

@@ -29,13 +29,13 @@ ChartJS.register(
 );
 
 const CombinationChart = () => {
-  const { currentMode } = useStateContext();
+  const { currentMode, BACKEND_URL } = useStateContext();
   const [performanceChartData, setPerformanceChartData] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     axios
-      .get("https://staging.hikalcrm.com/api/performance", {
+      .get(`${BACKEND_URL}/performance`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

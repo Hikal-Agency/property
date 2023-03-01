@@ -44,6 +44,7 @@ const Sidebarmui = () => {
     selected,
     setSelected,
     setopenBackDrop,
+    BACKEND_URL,
   } = useStateContext();
   const [LeadsCount, setLeadsCount] = useState(false);
   const [HotLeadsCount, setHotLeadsCount] = useState();
@@ -54,7 +55,7 @@ const Sidebarmui = () => {
 
   const fetchHotLeads = (token) => {
     axios
-      .get("https://staging.hikalcrm.com/api/sidebar/0", {
+      .get(`${BACKEND_URL}/sidebar/0`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -67,7 +68,7 @@ const Sidebarmui = () => {
   };
   const fetchColdLeads = (token) => {
     axios
-      .get("https://staging.hikalcrm.com/api/sidebar/1", {
+      .get(`${BACKEND_URL}/sidebar/1`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -79,7 +80,7 @@ const Sidebarmui = () => {
   };
   const fetchPersonalLeads = (token) => {
     axios
-      .get("https://staging.hikalcrm.com/api/sidebar/2", {
+      .get(`${BACKEND_URL}/sidebar/2`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -91,7 +92,7 @@ const Sidebarmui = () => {
   };
   const fetchthirdpartyleads = (token) => {
     axios
-      .get("https://staging.hikalcrm.com/api/sidebar/3", {
+      .get(`${BACKEND_URL}/sidebar/3`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

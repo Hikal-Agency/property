@@ -20,7 +20,7 @@ const RenderSalesperson = ({ cellValues }) => {
   const [SalesPerson3, setSalesPerson3] = useState();
   const [newSalesPerson, setnewSalesPerson] = useState("");
   const [Dialogue, setDialogue] = useState(false);
-  const { currentMode, reloadDataGrid, setreloadDataGrid, SalesPerson } =
+  const { currentMode, reloadDataGrid, setreloadDataGrid, SalesPerson, BACKEND_URL } =
     useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -71,7 +71,7 @@ const RenderSalesperson = ({ cellValues }) => {
     UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
     await axios
       .post(
-        `https://staging.hikalcrm.com/api/leads/${cellValues?.row?.lid}`,
+        `${BACKEND_URL}/leads/${cellValues?.row?.lid}`,
         UpdateLeadData,
         {
           headers: {

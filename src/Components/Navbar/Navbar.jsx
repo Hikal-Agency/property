@@ -90,8 +90,10 @@ const Navbar = () => {
     colorMode.toggleColorMode();
     if (currentMode === "dark") {
       setCurrentMode("light");
+      localStorage.setItem("currentMode", "light");
     } else {
       setCurrentMode("dark");
+      localStorage.setItem("currentMode", "dark");
     }
   };
   return (

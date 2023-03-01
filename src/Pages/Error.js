@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 
 const Error = () => {
   return (
-    <div class="flex h-[calc(100vh-80px)] items-center justify-center p-5 bg-white w-full">
-      <div class="text-center">
-        <div class="inline-flex rounded-full bg-yellow-100 p-4">
-          <div class="rounded-full stroke-yellow-600 bg-yellow-200 p-4">
+    <div className="flex h-[calc(100vh-80px)] items-center justify-center p-5 bg-white w-full">
+      <div className="text-center">
+        <div className="inline-flex rounded-full bg-yellow-100 p-4">
+          <div className="rounded-full stroke-yellow-600 bg-yellow-200 p-4">
             <svg
-              class="w-16 h-16"
+              className="w-16 h-16"
               viewBox="0 0 28 28"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -23,10 +23,10 @@ const Error = () => {
             </svg>
           </div>
         </div>
-        <h1 class="mt-5 text-[36px] font-bold text-slate-800 lg:text-[50px]">
+        <h1 className="mt-5 text-[36px] font-bold text-slate-800 lg:text-[50px]">
           404 - Page not found
         </h1>
-        <p class="text-slate-600 mt-5 lg:text-lg">
+        <p className="text-slate-600 mt-5 lg:text-lg">
           The page you are looking for doesn't exist or <br />
           has been removed.
         </p>
