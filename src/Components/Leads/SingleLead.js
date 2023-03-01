@@ -35,6 +35,11 @@ const SingleLead = ({
     boxShadow: 24,
   };
 
+  // ROW CLICK FUNCTION
+  const handleRowClick = async (params) => {
+    window.open(`/leadnotes/${params}`);
+  };
+
   const AddNote = () => {
     setaddNoteloading(true);
     const token = localStorage.getItem("auth-token");
@@ -194,8 +199,8 @@ const SingleLead = ({
                   ) : LeadData?.coldcall === "3" ? (
                     <FiLink size={25} />
                   ) : (
-                    // <BsPatchQuestion />
-                    <FaHotjar size={25} />
+                    <BsPatchQuestion size={25} />
+                    // <FaHotjar size={25} />
                   )}
                 </span>
               </div>
@@ -245,46 +250,8 @@ const SingleLead = ({
           <div className={`rounded-md mt-5`}>
             <h1 className="font-bold text-lg text-center">Lead Notes</h1>
 
-            {LeadData?.LeadNotes ? (
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>No#</TableCell>
-                      <TableCell align="center">Added On</TableCell>
-                      <TableCell align="center">Added By</TableCell>
-                      <TableCell align="left"> Note</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {LeadData.LeadNotes.map((row, index) => (
-                      <TableRow
-                        key={index}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row?.name}
-                        </TableCell>
-                        <TableCell align="right">{row?.calories}</TableCell>
-                        <TableCell align="right">{row?.fat}</TableCell>
-                        <TableCell align="right">{row?.carbs}</TableCell>
-                        <TableCell align="right">{row?.protein}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            ) : (
-              <p
-                className={`mt-3 italic ${
-                  currentMode === "dark" ? "text-white" : "text-main-red-color"
-                }`}
-              >
-                No notes to show
-              </p>
-            )}
+            <button type="button" className="btn btn-sm p-2 text-main-red-color text-italic font-semibold"
+              onClick={() => handleRowClick(LeadData.lid)}>View all notes</button>
             <form
               className="mt-5"
               onSubmit={(e) => {

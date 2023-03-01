@@ -80,13 +80,13 @@ const ChangePassword = () => {
                   </div>
                   <div className="my-5 mb-10">
                     <div
-                      className={`grid grid-cols-8 ${
+                      className={`grid grid-cols-12 sm:grid-cols-12 md:grid-cols-8 ${
                         currentMode === "dark"
-                          ? "bg-main-dark-bg-2 text-white"
+                          ? "bg-gray-900 text-white"
                           : "bg-white text-gray-900 "
                       } rounded-md shadow-md`}
                     >
-                      <div className="col-span-3  py-10 ">
+                      <div className="col-span-12 sm:col-span12 md:col-span-3 py-10 ">
                         <div className="accountinfo px-5 pt-10 ">
                           <div className="flex justify-center flex-col items-center">
                             <div className="relative">
@@ -133,7 +133,7 @@ const ChangePassword = () => {
                               }`}
                             >
                               <div className="flex items-center justify-center font-semibold mb-1">
-                                <h1 className="block">Status: </h1>{" "}
+                                <h1 className="block">Status:&nbsp;</h1>{" "}
                                 <p className="font-bold">Active</p>
                               </div>
                               <div className="mt-3">
@@ -144,21 +144,26 @@ const ChangePassword = () => {
                               </div>
                             </div>
 
-                            <div className="mt-5 text-center text-gray-600">
-                              <Button
-                                className="px-2 bg-main-red-color shadow-none hover:shadow-none"
-                                ripple={true}
-                              >
-                                Delete Acount
-                              </Button>
-                            </div>
+                            {User?.role === 1 ? (
+                              <div className="mt-5 text-center text-gray-600">
+                                <Button
+                                  className="px-2 bg-main-red-color shadow-none hover:shadow-none"
+                                  ripple={true}
+                                >
+                                  Delete Acount
+                                </Button>
+                              </div>
+                            ) : (
+                              <></>
+                            )}
+                            
                           </div>
                         </div>
                       </div>
                       {/* section 2 */}
-                      <div className="col-span-5 mr-10">
+                      <div className="col-span-12 sm:col-span-12 md:col-span-5 mr-10">
                         <div className="h-full w-full flex items-center justify-center">
-                          <div className="px-10 py-20 bg-gray-100 shadow-sm w-full rounded-md ">
+                          <div className={` ${currentMode === "dark" ? "bg-gray-900" : "bg-white"} px-10 py-20 shadow-sm w-full rounded-md`}>
                             <ChangePasswordComponent />
                           </div>
                         </div>

@@ -158,7 +158,21 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       flex: 1,
       headerAlign: "center",
       hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
+      renderCell: (cellValues) => {
+        return (
+          <>
+            {cellValues.formattedValue === "Closed Deal" && (
+              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
+                <badge className="text-[#0f9d58] p-1 rounded-md">CLOSED DEAL</badge>
+              </div>
+            )}
+
+            {cellValues.formattedValue !== "Closed Deal" && (
+              (<RenderFeedback cellValues={cellValues} />)
+            )}
+          </>
+        );
+      },
     },
     {
       field: "priority",

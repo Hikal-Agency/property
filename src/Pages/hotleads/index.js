@@ -93,8 +93,8 @@ const AllHotLeads = () => {
                   >
                     Fresh Leads -{" "}
                     <span className="capitalize">{lead_type}</span>{" "}
-                    <span className="bg-main-red-color text-white px-3 py-1 rounded-sm text-sm my-auto">
-                      Total: <span>({pageState?.total})</span>
+                    <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+                      {pageState?.total}
                     </span>
                   </h1>
                   <AllLeads

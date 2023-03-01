@@ -200,7 +200,7 @@ const SingleLeadNote = (props) => {
                                   : "text-black"
                               }`}
                             >
-                              {/* {LeadData?.info?.leadContact} */}
+                              {LeadData?.info?.leadContact}
                             </h6>
                             <h6
                               className={`font-semibold ${
@@ -209,7 +209,7 @@ const SingleLeadNote = (props) => {
                                   : "text-black"
                               }`}
                             >
-                              {/* {LeadData?.info?.LeadEmail} */}
+                              {LeadData?.info?.LeadEmail}
                             </h6>
                           </div>
                         </div>
@@ -282,13 +282,13 @@ const SingleLeadNote = (props) => {
                       <div className="grid justify-center space-y-3 text-center">
                         <h6 className="font-bold">Property type</h6>
                         <h6 className="font-semibold">
-                          {/* {LeadData?.leadType} */}
+                          {LeadData?.info?.leadType}
                         </h6>
                       </div>
                       <div className="grid justify-center space-y-3 text-center">
                         <h6 className="font-bold">Purpose</h6>
                         <h6 className="font-semibold">
-                          {/* {LeadData?.leadFor} */}
+                          {LeadData?.info?.leadFor}
                         </h6>
                       </div>
                     </div>
@@ -363,7 +363,6 @@ const SingleLeadNote = (props) => {
                                   <TableCell align="center">Added On</TableCell>
                                   <TableCell align="center">Added By</TableCell>
                                   <TableCell align="center">Note</TableCell>
-                                  <TableCell align="center">Actions</TableCell>
                                 </TableRow>
                               </TableHead>
 
@@ -403,37 +402,6 @@ const SingleLeadNote = (props) => {
                                     </TableCell>
                                     <TableCell align="left">
                                       {row?.leadNote}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      <div className="space-x-2 w-full flex items-center justify-center">
-                                        <Button
-                                          // onClick={() =>
-                                          //   HandleEditFunc(cellValues)
-                                          // }
-                                          className={`${
-                                            currentMode === "dark"
-                                              ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                                              : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-                                          }`}
-                                          // className="bg-main-red-color rounded-md px-1 py-1 shadow-none hover:shadow-none hover:scale-125"
-                                        >
-                                          <BiEdit size={20} />
-                                        </Button>
-
-                                        {/* ONLY FOR ADMIN  */}
-                                        <Button
-                                          // onClick={() => deleteLead(cellValues)}
-                                          // disabled={deleteloading ? true : false}
-                                          className={`${
-                                            currentMode === "dark"
-                                              ? "text-white bg-transparent rounded-md p-1 shadow-none deleteLeadBtn hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                                              : "text-black bg-transparent rounded-md p-1 shadow-none deleteLeadBtn hover:shadow-red-600 hover:bg-black hover:text-white"
-                                          }`}
-                                          // className="bg-main-red-color rounded-md px-1 py-1 deleteLeadBtn shadow-none hover:shadow-none hover:scale-125"
-                                        >
-                                          <MdDeleteOutline size={22} />
-                                        </Button>
-                                      </div>
                                     </TableCell>
                                   </TableRow>
                                 ))}

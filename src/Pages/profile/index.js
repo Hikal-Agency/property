@@ -164,7 +164,7 @@ const ProfilePage = () => {
                     <div
                       className={`grid grid-cols-8 ${
                         currentMode === "dark"
-                          ? "bg-main-dark-bg-2 text-white"
+                          ? "bg-gray-900 text-white"
                           : "bg-white text-gray-900 "
                       } rounded-md shadow-md`}
                     >
@@ -235,14 +235,19 @@ const ProfilePage = () => {
                               </div>
                             </div>
 
-                            <div className="mt-5 text-center text-gray-600">
-                              <Button
-                                className="bg-main-red-color shadow-none hover:shadow-none"
-                                ripple={true}
-                              >
-                                Delete Acount
-                              </Button>
-                            </div>
+                            {User?.role == 1 ? (
+                              <div className="mt-5 text-center text-gray-600">
+                                <Button
+                                  className="bg-main-red-color shadow-none hover:shadow-none p-3"
+                                  ripple={true}
+                                >
+                                  DELETE
+                                </Button>
+                              </div>
+                            ) : (
+                              <></>
+                            )}
+                            
                           </div>
                         </div>
                       </div>
