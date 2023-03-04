@@ -7,9 +7,11 @@ import { AiOutlineFire } from "react-icons/ai";
 import { GiThermometerCold } from "react-icons/gi";
 import { FiUsers } from "react-icons/fi";
 import BarChart from "../../Components/charts/BarChart";
+import SalesAmountChartAdmin from "../../Components/charts/SalesAmountChartAdmin";
 import CombinationChart from "../../Components/charts/CombinationChart";
 import DoughnutChart from "../../Components/charts/DoughnutChart";
-import BarChartProject from "../charts/BarChartProject";
+import BarChartProject from "../../Components/charts/BarChartProject";
+import BarChartProjectAdmin from "../../Components/charts/BarChartProjectAdmin";
 import Task from "../../Components/Tasks/Task";
 import { Link } from "react-router-dom";
 import UpcomingMeeting from "../meetings/UpcomingMeeting";
@@ -365,7 +367,7 @@ const DashboardPanel = () => {
       {/* 2ND ROW [CHARTS FOR ADMIN ONLY] */}
       {DashboardData?.designation === "Head" ? (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
             <div
               className={`${
                 currentMode === "dark"
@@ -374,24 +376,8 @@ const DashboardPanel = () => {
               } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">Monthly Sales</h6>
-                <BarChart Sales_chart_data={Sales_chart_data} />
-              </div>
-            </div>
-            <div
-              className={`${
-                currentMode === "dark"
-                  ? "bg-gray-900 text-white "
-                  : "bg-gray-200"
-              } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
-            >
-              <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">Monthly Target</h6>
-                <DoughnutChart
-                  target={DashboardData?.target}
-                  target_reached={DashboardData?.target_reached}
-                  target_remaining={DashboardData?.target_remaining}
-                />
+                <h6 className="font-semibold pb-3">Sales</h6>
+                <SalesAmountChartAdmin Sales_chart_data={Sales_chart_data} />
               </div>
             </div>
 
@@ -403,12 +389,16 @@ const DashboardPanel = () => {
               } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">Project Chart</h6>
-                <BarChartProject
+                <h6 className="font-semibold pb-3">Closed Projects</h6>
+                <BarChartProjectAdmin
                   total_projects={DashboardData?.total_projects}
                 />
               </div>
             </div>
+          </div>
+          {/* MANAGER TAGET PROGRESS BAR  */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
+
           </div>
         </>
       ) : DashboardData?.designation === "Manager" ? (
