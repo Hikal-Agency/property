@@ -1,0 +1,15 @@
+{
+    "type": "MeetingLocationCollection",
+    "features": [
+        {
+            "type": "Meetings",
+            "properties": {
+                "mId":1,
+                "leadId":28,
+                "meetingDate":"2023-03-03",
+                "meetingTime":"15:00"
+
+            }
+        }
+    ]
+}
