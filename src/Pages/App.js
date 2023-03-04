@@ -24,6 +24,7 @@ import Device from "./whatsapp-marketing/Device";
 import Messages from "./whatsapp-marketing/messages";
 import Payments from "./whatsapp-marketing/payments";
 import Transactions from "./whatsapp-marketing/transactions";
+import Livelocation from "./location/livelocation";
 import ChangePassword from "./auth/ChangePassword";
 
 function App() {
@@ -106,12 +107,34 @@ function App() {
       path: "/profile",
       element: <ProfilePage />,
     },
-    { path: "/whatsapp-marketing/dashboard", element: <WhatsappDashboard /> },
-    { path: "/whatsapp-marketing/device", element: <Device /> },
-    { path: "/whatsapp-marketing/messages", element: <Messages /> },
-    { path: "/whatsapp-marketing/payments", element: <Payments /> },
-    { path: "/whatsapp-marketing/transactions", element: <Transactions /> },
-    { path: "*", element: <Error /> },
+    { 
+      path: "/whatsapp-marketing/dashboard",
+      element: <WhatsappDashboard /> 
+    },
+    { 
+      path: "/whatsapp-marketing/device",
+      element: <Device /> 
+    },
+    { 
+      path: "/whatsapp-marketing/messages", 
+      element: <Messages /> 
+    },
+    { 
+      path: "/whatsapp-marketing/payments", 
+      element: <Payments /> 
+    },
+    { 
+      path: "/whatsapp-marketing/transactions", 
+      element: <Transactions /> 
+    },
+    { 
+      path: "/location/livelocation", 
+      element: <Livelocation /> 
+    },
+    { 
+      path: "*", 
+      element: <Error /> 
+    },
   ]);
   return <RouterProvider router={router} />;
 }
