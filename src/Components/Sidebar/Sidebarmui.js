@@ -1231,7 +1231,7 @@ const Sidebarmui = () => {
                 },
               }}
             >
-              {User.position === "Founder & CEO"
+              {User?.position === "Founder & CEO"
                 ? links.map((item, index) => (
                     <div key={index}>
                       <p
@@ -1401,7 +1401,7 @@ const Sidebarmui = () => {
                       ))}
                     </div>
                   ))
-                : User.position === "Sales Manager"
+                : User?.position === "Sales Manager"
                 ? Managerlinks.map((item, index) => (
                     <div key={index}>
                       <p

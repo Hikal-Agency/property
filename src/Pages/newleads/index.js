@@ -14,8 +14,8 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 export async function getServerSideProps(context) {
-  const BACKEND_URL = process.env.BACKEND_URL;
-  const BACKEND_URL_2 = process.env.BACKEND_URL_2;
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  const BACKEND_URL_2 = process.env.REACT_APP_BACKEND_URL_2;
 
   return {
     props: { BACKEND_URL_2 },

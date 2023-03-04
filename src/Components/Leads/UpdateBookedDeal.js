@@ -24,7 +24,7 @@ const UpdateBookedDeal = ({
   LeadData,
   BACKEND_URL,
 }) => {
-  const { darkModeColors, currentMode } = useStateContext();
+  const { darkModeColors, currentMode, User } = useStateContext();
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
   const style = {
@@ -95,7 +95,7 @@ const UpdateBookedDeal = ({
     // console.log(User);
 
     axios
-      .get(`${BACKEND_URL}/teamMembers/160`, {
+      .get(`${BACKEND_URL}/teamMembers/${User.id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

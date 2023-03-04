@@ -20,7 +20,7 @@ const RenderPriority = ({ cellValues }) => {
   const [PriorityDialogue, setPriorityDialogue] = useState(false);
   // eslint-disable-next-line
   const [confirmbtnloading, setconfirmbtnloading] = useState(false);
-  const { currentMode, setreloadDataGrid, reloadDataGrid } = useStateContext();
+  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL } = useStateContext();
 
   const ChangePriority = (e) => {
     setnewPriority(e.target.value);
@@ -49,7 +49,7 @@ const RenderPriority = ({ cellValues }) => {
 
     await axios
       .post(
-        `https://staging.hikalcrm.com/api/leads/${cellValues?.row?.lid}`,
+        `${BACKEND_URL}/leads/${cellValues?.row?.lid}`,
         UpdateLeadData,
         {
           headers: {

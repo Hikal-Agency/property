@@ -64,7 +64,7 @@ const UpdateLead = ({
     const token = localStorage.getItem("auth-token");
 
     axios
-      .get(`${BACKEND_URL}/teamMembers/160`, {
+      .get(`${BACKEND_URL}/teamMembers/${User.id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

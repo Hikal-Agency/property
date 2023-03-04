@@ -9,8 +9,8 @@
 /coverage
 
 .env
-
-src/.env
+.env.development
+.env.production
 
 # production
 /build

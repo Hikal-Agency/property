@@ -44,7 +44,7 @@ const MeetingForm = ({
     // console.log(User);
 
     axios
-      .get(`${BACKEND_URL}/teamMembers/160`, {
+      .get(`${BACKEND_URL}/teamMembers/${User.id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -99,7 +99,7 @@ const MeetingForm = ({
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  UpdateLeadFunc();
+                  // UpdateLeadFunc();
                 }}
               >
                 <div className="space-y-5">

@@ -10,8 +10,8 @@ const initialState = {
 };
 
 export const ContextProvider = ({ children }) => {
-  //const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-  const BACKEND_URL = "https://staging.hikalcrm.com/api";
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  // const BACKEND_URL = "https://staging.hikalcrm.com/api";
   const [screenSize, setScreenSize] = useState(undefined);
   // eslint-disable-next-line
   const [DarkIconsColor, setDarkIconsColor] = useState("#15CDCA");

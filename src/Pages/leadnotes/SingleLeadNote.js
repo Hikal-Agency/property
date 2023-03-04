@@ -12,6 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
+import Error from "../Error";
 import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
@@ -32,6 +33,7 @@ const SingleLeadNote = (props) => {
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [LeadData, setLeadData] = useState();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
+  const [error404, setError404] = useState(false);
   const { currentMode, setUser, darkModeColors, User, BACKEND_URL } =
     useStateContext();
 
@@ -50,7 +52,14 @@ const SingleLeadNote = (props) => {
         setLeadData(result.data);
         setloading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if(err.response.status === 404){
+            setError404(true);
+            setloading(false);
+        } else {
+          console.log(err);
+        }
+      });
   };
   const FetchProfile = async () => {
     const token = localStorage.getItem("auth-token");
@@ -139,6 +148,7 @@ const SingleLeadNote = (props) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
+          {error404 ? <Error/> :
             <div className="flex">
               <Sidebarmui />
               <div className={`w-full`}>
@@ -425,6 +435,7 @@ const SingleLeadNote = (props) => {
                 </div>
               </div>
             </div>
+          }
             <Footer />
           </div>
         )}

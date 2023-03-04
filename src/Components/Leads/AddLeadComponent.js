@@ -152,8 +152,9 @@ const AddLeadComponent = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
+    console.log(User)
     axios
-      .get(`${BACKEND_URL}/teamMembers/160`, {
+      .get(`${BACKEND_URL}/teamMembers/${User.id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -242,7 +243,7 @@ const AddLeadComponent = () => {
                                 id="Manager"
                                 value={
                                   User.role === 3
-                                    ? filter_manager[0].id
+                                    ? filter_manager[0]?.id
                                     : Manager
                                 }
                                 disabled={User.role === 3 && true}
