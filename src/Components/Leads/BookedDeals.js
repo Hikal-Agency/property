@@ -34,7 +34,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast, ToastContainer } from "react-toastify";
 import RenderManagers from "./RenderManagers";
 import UpdateBookedDeal from "./UpdateBookedDeal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 
 const BookedDeals = ({
@@ -46,7 +46,7 @@ const BookedDeals = ({
 }) => {
   const token = localStorage.getItem("auth-token");
   const [singleLeadData, setsingleLeadData] = useState();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); const location = useLocation();
   //eslint-disable-next-line
   const [deleteloading, setdeleteloading] = useState(false);
   //eslint-disable-next-line

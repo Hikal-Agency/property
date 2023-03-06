@@ -27,11 +27,11 @@ import RenderPriority from "./RenderPriority";
 import RenderFeedback from "./RenderFeedback";
 import RenderManagers from "./RenderManagers";
 import RenderSalesperson from "./RenderSalesperson";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const token = localStorage.getItem("auth-token");
-  const navigate = useNavigate();
+  const navigate = useNavigate(); const location = useLocation();
   const [singleLeadData, setsingleLeadData] = useState();
   const [deleteloading, setdeleteloading] = useState(false);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
@@ -779,6 +779,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const FetchLeads = async (token) => {
     console.log("lead type is");
     console.log(lead_type);
+    console.log("lead origin is");
+    console.log(lead_origin);
     let FetchLeads_url = "";
     setpageState((old) => ({
       ...old,

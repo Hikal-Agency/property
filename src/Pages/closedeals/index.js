@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Closedeals from "../../Components/Closedeals";
 import Footer from "../../Components/Footer/Footer";
 import Loader from "../../Components/Loader";
@@ -9,7 +9,7 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const ClosedealsPage = (props) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); const location = useLocation();
   const [loading, setloading] = useState(true);
   const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
     useStateContext();
@@ -49,7 +49,7 @@ const ClosedealsPage = (props) => {
         FetchProfile(token);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again" },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       }
     }

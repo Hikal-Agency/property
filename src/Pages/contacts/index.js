@@ -6,13 +6,13 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const Contacts = () => {
   const { currentMode, BACKEND_URL, User, setUser, setopenBackDrop } =
     useStateContext();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); const location = useLocation();
   const token = localStorage.getItem("auth-token");
   const [loading, setloading] = useState(true);
   const [contacts, setContacts] = useState([]);
@@ -69,7 +69,7 @@ const Contacts = () => {
       .catch((err) => {
         // console.log(err);
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again" },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       });
   };
@@ -99,7 +99,7 @@ const Contacts = () => {
       })
       .catch((err) => {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again" },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       });
   };
@@ -113,7 +113,7 @@ const Contacts = () => {
         FetchContacts(token);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again" },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       }
     }

@@ -13,7 +13,7 @@ import axios from "axios";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { AiOutlineHistory, AiOutlineEdit } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useStateContext } from "../context/ContextProvider";
 import UpdateClosedLead from "./Leads/UpdateClosedLead";
@@ -21,7 +21,7 @@ import UpdateClosedLead from "./Leads/UpdateClosedLead";
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); const location = useLocation();
   const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");

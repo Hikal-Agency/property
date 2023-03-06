@@ -10,14 +10,14 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const LeadNotes = ({ pageState, setpageState }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
   // eslint-disable-next-line
-  const navigate = useNavigate();
+  const navigate = useNavigate(); const location = useLocation();
 
   // Model Variables
   // const [LeadModelOpen, setLeadModelOpen] = useState(false);

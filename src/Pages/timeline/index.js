@@ -19,8 +19,7 @@ const Timeline = () => {
   const [leadDetails, setLeadDetails] = useState(null);
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate(); const location = useLocation();
 
   const fetchLeadsData = async (token) => {
     const LeadID = location.pathname.split("/")[2].replace(/%20/g, " ");

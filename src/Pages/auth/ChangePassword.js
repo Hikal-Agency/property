@@ -5,17 +5,18 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { ChangePassword as ChangePasswordComponent } from "../../Components/profile/ChangePassword";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { MdEmail } from "react-icons/md";
 import { Button } from "@material-tailwind/react";
 
 const ChangePassword = () => {
   const { User, setUser, setDashboardData, currentMode, BACKEND_URL } =
-    useStateContext();
+  useStateContext();
+  const loc = useLocation();
   const [loading, setloading] = useState(true);
-  const navigate = useNavigate();
-
+  const navigate = useNavigate(); 
+  
   const FetchProfile = async (token) => {
     await axios
       .get(`${BACKEND_URL}/dashboard?page=1`, {
@@ -34,7 +35,7 @@ const ChangePassword = () => {
       .catch((err) => {
         // console.log(err);
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again" },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: loc.pathname },
         });
       });
   };
@@ -47,7 +48,7 @@ const ChangePassword = () => {
         FetchProfile(token);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again" },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: loc.pathname },
         });
       }
     }

@@ -6,13 +6,13 @@ import AddLeadComponent from "../../Components/Leads/AddLeadComponent";
 import axios from "axios";
 import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const AddLead = (props) => {
   const { currentMode, setopenBackDrop, User, setUser, BACKEND_URL } =
     useStateContext();
   const [loading, setloading] = useState(true);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); const location = useLocation();
   const FetchProfile = async (token) => {
     await axios
       .get(`${BACKEND_URL}/profile`, {
@@ -28,7 +28,7 @@ const AddLead = (props) => {
       })
       .catch((err) => {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again" },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       });
   };
@@ -43,7 +43,7 @@ const AddLead = (props) => {
         FetchProfile(token);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again" },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       }
     }

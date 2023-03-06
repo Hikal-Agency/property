@@ -5,7 +5,7 @@ import "../../styles/app.css";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Signup = () => {
   const [formdata, setformdata] = useState({});
@@ -13,6 +13,8 @@ const Signup = () => {
   const [UserRole, setUserRole] = useState("");
   const [SamePasswordError, setSamePasswordError] = useState(false);
   const { BACKEND_URL } = useStateContext();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const ChangeUserRole = (event) => {
     setUserRole(event.target.value);
@@ -43,6 +45,7 @@ const Signup = () => {
             });
             localStorage.setItem("auth-token", result.data.data.token);
             // router.push("/dashboard");
+            navigate(location?.state?.continueURL || "/dashboard");
           }
           setloading(false);
         })
@@ -225,7 +228,7 @@ const Signup = () => {
                     )}
                   </button>
                   <div className="flex justify-center">
-                    <Link to={"/"}>
+                    <Link to={"/"} state={{continueURL: location?.state?.continueURL}}>
                       <button className="mt-1 h-10 rounded-md bg-transparent text-sm font-medium text-main_bg_color hover:text-hover_color focus:outline-none">
                         Already have an Account? Sign in
                       </button>

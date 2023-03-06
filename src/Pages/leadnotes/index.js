@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Footer from "../../Components/Footer/Footer";
 import LeadNotes from "../../Components/LeadNotes/LeadNotes";
 import Loader from "../../Components/Loader";
@@ -20,7 +20,7 @@ const LeadNotesPage = (props) => {
   const [loading, setloading] = useState(true);
   const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
     useStateContext();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); const location = useLocation();
   const FetchProfile = async (token) => {
     await axios
       .get(`${BACKEND_URL}/profile`, {
@@ -49,7 +49,7 @@ const LeadNotesPage = (props) => {
         FetchProfile(token);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again" },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       }
     }

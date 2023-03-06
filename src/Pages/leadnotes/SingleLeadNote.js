@@ -26,8 +26,7 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const SingleLeadNote = (props) => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate(); const location = useLocation();
   const leadId = location.pathname.split("/")[2];
   const [loading, setloading] = useState(true);
   const [addNoteloading, setaddNoteloading] = useState(false);

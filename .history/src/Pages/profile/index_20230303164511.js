@@ -14,7 +14,7 @@ import { ChangePassword as ChangePasswordTab } from "../../Components/profile/Ch
 import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ProfilePage = () => {
   const [loading, setloading] = useState(true);
@@ -33,7 +33,7 @@ const ProfilePage = () => {
     userContact: "",
   });
   const [PersonalInfo, setPersonalInfo] = useState({});
-  const navigate = useNavigate();
+  const navigate = useNavigate(); const location = useLocation();
 
   // Btn loading 
   const [btnloading, setbtnloading] = useState(false);
@@ -74,7 +74,7 @@ const ProfilePage = () => {
         console.log("here is error");
         console.log(err);
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again" },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       });
   };

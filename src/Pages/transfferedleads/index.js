@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Footer from "../../Components/Footer/Footer";
@@ -9,7 +9,7 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const TransferredLeads = (props) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); const location = useLocation();
   const [loading, setloading] = useState(true);
   const {
     User,
@@ -34,7 +34,7 @@ const TransferredLeads = (props) => {
       })
       .catch((err) => {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again " },
+          state: { error: "Something Went Wrong! Please Try Again ", continueURL: location.pathname },
         });
       });
   };
@@ -48,7 +48,7 @@ const TransferredLeads = (props) => {
         FetchProfile(token);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again" },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       }
     }
