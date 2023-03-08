@@ -1,0 +1,49 @@
+import React from "react";
+import { useEffect, useState } from "react";
+import Loader from "../../Components/Loader";
+import { useStateContext } from "../../context/ContextProvider";
+
+const CallLogBoard = () => {
+  const { currentMode } = useStateContext();
+
+  const data = [
+        {
+            "userImage":"",
+            "userName":"Hala Hikal",
+            "outgoing_calls": 303,
+            "out_answered_calls": 209,
+            "out_notanswered_calls":89,
+            "out_rejected_calls":5,
+            "incoming_calls":35,
+            "in_answered_calls":35,
+            "in_missed_calls":0,
+        },
+    ];
+
+  return (
+    <>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3">
+            <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} p-3 rounded-md`}>
+                <div className="grid grid-cols-6 gap-3 rounded-md p-5 my-3">
+                    <div>
+                        <img
+                        src="/favicon.png"
+                        height="full"
+                        width="full"
+                        className="rounded-full cursor-pointer"
+                        alt=""
+                        />
+                    </div>
+                    <div className="col-span-5">
+                        <h4 className="font-bold text-lg my-1 text-main-red-color">Mohammad Alam</h4>
+                        <h4 className="my-1">Sales Agent</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </>
+    
+  );
+};
+
+export default CallLogBoard;
