@@ -412,12 +412,10 @@ const Sidebarmui = () => {
         {
           name: "Reports",
           icon: <HiDocumentReport />,
-          link: "/reports",
         },
         {
           name: "Offers",
           icon: <AiFillGift />,
-          link: "/offers",
         },
         {
           name: "Users",

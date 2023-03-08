@@ -29,7 +29,6 @@ import Livelocation from "./location/livelocation";
 import ChangePassword from "./auth/ChangePassword";
 import Users from "./users";
 import Offers from "./offers";
-import Reports from "./reports";
 
 function App() {
   const router = createBrowserRouter([
@@ -149,7 +148,7 @@ function App() {
     },
     { 
       path: "/reports", 
-      element: <Reports /> 
+      element: <Users /> 
     },
     { 
       path: "*", 
