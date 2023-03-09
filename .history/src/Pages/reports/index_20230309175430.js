@@ -15,8 +15,6 @@ import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import ReportProjectBar from "../../Components/charts/ReportProjectBar";
-import ReportMeetingsClosed from "../../Components/charts/ReportMeetingsClosed";
 
 const Reports = () => {
   const [loading, setloading] = useState(true);
@@ -27,7 +25,6 @@ const Reports = () => {
     darkModeColors,
     setopenBackDrop,
     BACKEND_URL,
-    DashboardData,
   } = useStateContext();
 
   return (
@@ -45,43 +42,15 @@ const Reports = () => {
               <div className="px-5">
                 <Navbar />
                 <div className="my-5 mb-10">
-                  <div className="grid grid-cols-4 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-3">
-                    <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-3`}>
-                      <h6 className="mb-2 p-2">
-                        <span className="font-semibold">Project</span>
-                        <span className="float-right">
-                          <select 
-                            className={`${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"} text-xs rounded-md p-1`}>
-                            <option value="alltime">All-Time</option>
-                            <option value="lastmonth">Last Month</option>
-                            <option value="thismonth">This Month</option>
-                          </select>
-                        </span>
-                      </h6>
-                      <div className="justify-between items-center">
-                        <ReportProjectBar
-                          total_projects={DashboardData?.total_projects}
-                        />
-                      </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
+                    <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-2`}>
+                      hhh
                     </div>
                     <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-2`}>
-                      Doughnut chart
+                      hhh
                     </div>
-                    <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} col-span-2 rounded-md p-2`}>
-                      <h6 className="mb-2 p-2">
-                        <span className="font-semibold">Performance</span>
-                        <span className="float-right">
-                          <select 
-                            className={`${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"} text-xs rounded-md p-1`}>
-                            <option value="alltime">All-Time</option>
-                            <option value="lastmonth">Last Month</option>
-                            <option value="thismonth">This Month</option>
-                          </select>
-                        </span>
-                      </h6>
-                      <div className="justify-between items-center">
-                        <ReportMeetingsClosed />
-                      </div>
+                    <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-2`}>
+                      hhh
                     </div>
                     <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-2`}>
                       hhh

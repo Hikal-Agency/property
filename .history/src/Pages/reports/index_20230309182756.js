@@ -15,8 +15,7 @@ import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import ReportProjectBar from "../../Components/charts/ReportProjectBar";
-import ReportMeetingsClosed from "../../Components/charts/ReportMeetingsClosed";
+import BarChartProjectAdmin from "../../Components/charts/BarChartProjectAdmin";
 
 const Reports = () => {
   const [loading, setloading] = useState(true);
@@ -45,13 +44,13 @@ const Reports = () => {
               <div className="px-5">
                 <Navbar />
                 <div className="my-5 mb-10">
-                  <div className="grid grid-cols-4 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-4 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-3">
                     <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-3`}>
-                      <h6 className="mb-2 p-2">
+                      <h6 className="mb-3">
                         <span className="font-semibold">Project</span>
                         <span className="float-right">
                           <select 
-                            className={`${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"} text-xs rounded-md p-1`}>
+                            className={`${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"} text-xs rounded-md border-black`}>
                             <option value="alltime">All-Time</option>
                             <option value="lastmonth">Last Month</option>
                             <option value="thismonth">This Month</option>
@@ -59,7 +58,7 @@ const Reports = () => {
                         </span>
                       </h6>
                       <div className="justify-between items-center">
-                        <ReportProjectBar
+                        <BarChartProjectAdmin
                           total_projects={DashboardData?.total_projects}
                         />
                       </div>
@@ -67,21 +66,8 @@ const Reports = () => {
                     <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-2`}>
                       Doughnut chart
                     </div>
-                    <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} col-span-2 rounded-md p-2`}>
-                      <h6 className="mb-2 p-2">
-                        <span className="font-semibold">Performance</span>
-                        <span className="float-right">
-                          <select 
-                            className={`${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"} text-xs rounded-md p-1`}>
-                            <option value="alltime">All-Time</option>
-                            <option value="lastmonth">Last Month</option>
-                            <option value="thismonth">This Month</option>
-                          </select>
-                        </span>
-                      </h6>
-                      <div className="justify-between items-center">
-                        <ReportMeetingsClosed />
-                      </div>
+                    <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-2`}>
+                      hhh
                     </div>
                     <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-2`}>
                       hhh
