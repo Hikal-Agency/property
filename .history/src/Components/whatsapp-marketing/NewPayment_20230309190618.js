@@ -45,10 +45,9 @@ const NewPayment = () => {
         </div>
 
         <div className="space-3 p-1 sm:pt-5 md:pt-5 lg:pt-5 xl:pt-5">
-          <Box sx={darkModeColors}> 
             {/* TICKET DESCRIPTION  */}
-            <label className="font-semibold"><span className="text-main-red-color">Voucher / Gift Card</span> (optional)</label>
-            <br></br>
+            <label className="font-semibold mb-3"><span className="text-main-red-color">Voucher / Gift Card</span> (optional)</label>
+          <Box sx={darkModeColors}> 
             <TextField
               id="voucher"
               type={"text"}

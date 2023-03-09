@@ -48,7 +48,6 @@ const NewPayment = () => {
           <Box sx={darkModeColors}> 
             {/* TICKET DESCRIPTION  */}
             <label className="font-semibold"><span className="text-main-red-color">Voucher / Gift Card</span> (optional)</label>
-            <br></br>
             <TextField
               id="voucher"
               type={"text"}

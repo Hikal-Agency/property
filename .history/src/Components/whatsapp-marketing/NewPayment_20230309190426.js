@@ -45,21 +45,19 @@ const NewPayment = () => {
         </div>
 
         <div className="space-3 p-1 sm:pt-5 md:pt-5 lg:pt-5 xl:pt-5">
-          <Box sx={darkModeColors}> 
-            {/* TICKET DESCRIPTION  */}
-            <label className="font-semibold"><span className="text-main-red-color">Voucher / Gift Card</span> (optional)</label>
-            <br></br>
-            <TextField
-              id="voucher"
-              type={"text"}
-              label=""
-              className="w-full mb-5 mt-5"
-              style={{ marginBottom: "20px"}}
-              variant="outlined"
-              size="medium"
-              value=""
-            />
-          </Box>
+          
+          {/* TICKET DESCRIPTION  */}
+          <label className="font-semibold mb-3"><span className="text-main-red-color">Voucher / Gift Card</span> (optional)</label>
+          <TextField
+            id="voucher"
+            type={"text"}
+            label=""
+            className="w-full mb-5 mt-5"
+            style={{ marginBottom: "20px"}}
+            variant="standard"
+            size="medium"
+            value=""
+          />
           
           {/* <h6 className="mb-3 text-center">Need help with our system? Contact our support team or create ticket for prompt assistance.</h6> */}
           <div className={`${currentMode === "dark" ? "bg-black" : "bg-white"} rounded-lg p-3`}>

@@ -19,7 +19,7 @@ import { MdVideoCameraFront, MdOutlineWhatsapp } from "react-icons/md";
 import { RiWhatsappFill } from "react-icons/ri";
 
 const CreateTicket = () => {
-  const { currentMode, darkModeColors } = useStateContext();
+  const { currentMode } = useStateContext();
 
   return (
     <div className={`${currentMode === "dark" ? "text-white" : "text-black"} w-full h-full rounded-md p-5`}>

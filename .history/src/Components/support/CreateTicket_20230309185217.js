@@ -19,7 +19,7 @@ import { MdVideoCameraFront, MdOutlineWhatsapp } from "react-icons/md";
 import { RiWhatsappFill } from "react-icons/ri";
 
 const CreateTicket = () => {
-  const { currentMode, darkModeColors } = useStateContext();
+  const { currentMode } = useStateContext();
 
   return (
     <div className={`${currentMode === "dark" ? "text-white" : "text-black"} w-full h-full rounded-md p-5`}>
@@ -28,59 +28,57 @@ const CreateTicket = () => {
           <h3 className="mb-3 font-semibold text-main-red-color text-center">Ticket Details</h3>
           <hr className="mb-5"></hr>
 
-          <Box sx={darkModeColors}>
-            {/* TICKET CATEGORY  */}
-            <FormControl fullWidth>
-              <InputLabel>Ticket Category</InputLabel>
-              <Select
-                label="Ticket Category"
-                size="medium"
-                className="w-full mb-5"
-                required
-              >
-                <MenuItem value={null}>- - -</MenuItem>
-                <MenuItem value={"1"}>1</MenuItem>
-                <MenuItem value={"2"}>2</MenuItem>
-              </Select>
-            </FormControl>
-
-            {/* TICKET DESCRIPTION  */}
-            <TextField
-              id="ticket"
-              type={"text"}
-              label="Ticket Description"
+          {/* TICKET CATEGORY  */}
+          <FormControl fullWidth>
+            <InputLabel>Ticket Category</InputLabel>
+            <Select
+              label="Ticket Category"
+              size="medium"
               className="w-full mb-5"
-              style={{ marginBottom: "20px"}}
-              variant="outlined"
-              size="medium"
-              value=""
-            />
-
-            {/* SUPORT VIA  */}
-            <FormControl fullWidth>
-              <InputLabel>Support Source</InputLabel>
-              <Select
-                label="Support Source"
-                size="medium"
-                className="w-full mb-5"
-                required
-              >
-                <MenuItem value={null}>- - -</MenuItem>
-                <MenuItem value={"Email"}>Email</MenuItem>
-                <MenuItem value={"Video Call"}>Video Call</MenuItem>
-                <MenuItem value={"Phone Call"}>Phone Call</MenuItem>
-                <MenuItem value={"WhatsApp Chat"}>WhatsApp Chat</MenuItem>
-              </Select>
-            </FormControl>
-            <Button 
-              type="submit"
-              size="medium"
-              className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-              style={{ backgroundColor: "#da1f26", color: "#ffffff"}}
+              required
             >
-              SUBMIT
-            </Button>
-          </Box>
+              <MenuItem value={null}>- - -</MenuItem>
+              <MenuItem value={"1"}>1</MenuItem>
+              <MenuItem value={"2"}>2</MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* TICKET DESCRIPTION  */}
+          <TextField
+            id="ticket"
+            type={"text"}
+            label="Ticket Description"
+            className="w-full mb-5"
+            style={{ marginBottom: "20px"}}
+            variant="outlined"
+            size="medium"
+            value=""
+          />
+
+          {/* SUPORT VIA  */}
+          <FormControl fullWidth>
+            <InputLabel>Support Source</InputLabel>
+            <Select
+              label="Support Source"
+              size="medium"
+              className="w-full mb-5"
+              required
+            >
+              <MenuItem value={null}>- - -</MenuItem>
+              <MenuItem value={"Email"}>Email</MenuItem>
+              <MenuItem value={"Video Call"}>Video Call</MenuItem>
+              <MenuItem value={"Phone Call"}>Phone Call</MenuItem>
+              <MenuItem value={"WhatsApp Chat"}>WhatsApp Chat</MenuItem>
+            </Select>
+          </FormControl>
+          <Button 
+            type="submit"
+            size="medium"
+            className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
+            style={{ backgroundColor: "#da1f26", color: "#ffffff"}}
+          >
+            SUBMIT
+          </Button>
         </div>
         <div className="space-3 p-1 sm:pb-1 sm:pt-5 md:pb-1 md:pt-5 lg:pb-3 lg:pt-5 xl:p-5">
           <h3 className="mb-3 font-semibold text-main-red-color text-center">24x7 Real-time Support</h3>
