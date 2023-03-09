@@ -153,6 +153,10 @@ function App() {
       element: <Reports /> 
     },
     { 
+      path: "/support/alltickets", 
+      element: <AllTickets /> 
+    },
+    { 
       path: "/support", 
       element: <Tickets /> 
     },
