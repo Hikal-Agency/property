@@ -12,7 +12,7 @@ import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import NewPayment from "../../Components/whatsapp-marketing/NewPayment";
+import CreateTicket from "../../Components/support/CreateTicket";
 import AllTickets from "../../Components/support/AllTickets";
 
 const Payments = () => {
@@ -77,11 +77,14 @@ const Payments = () => {
                     >
                       <Tab label="NEW PAYMENT" />
                       <Tab label="ALL TRANSACTIONS" />
+                      {/* <Tab label="UPGRADE" />
+                      <Tab label="RENEWAL" />
+                      <Tab label="CANCELLATION" /> */}
                     </Tabs>
                   </Box>
                   <div className="mt-3 pb-3">
                     <TabPanel value={value} index={0}>
-                      <NewPayment
+                      <CreateTicket
                         isLoading={loading}
                         tabValue={tabValue}
                         setTabValue={setTabValue}

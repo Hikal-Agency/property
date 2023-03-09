@@ -12,7 +12,7 @@ import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import NewPayment from "../../Components/whatsapp-marketing/NewPayment";
+import CreateTicket from "../../Components/whatsapp-marketing/NewPayment";
 import AllTickets from "../../Components/support/AllTickets";
 
 const Payments = () => {
