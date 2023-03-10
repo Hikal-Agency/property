@@ -15,8 +15,7 @@ import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import AllOffers from "../../Components/offers/all_offers";
-import CreateOffer from "../../Components/offers/createoffer";
+import AllOffers from "./all_offers";
 
 const Offers = () => {
   const {
@@ -86,25 +85,16 @@ const Offers = () => {
                   </Box>
                   <div className="mt-3 pb-3">
                     <TabPanel value={value} index={0}>
-                      <CreateOffer
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                      />
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
                       <AllOffers
                         isLoading={loading}
                         tabValue={tabValue}
                         setTabValue={setTabValue}
                       />
                     </TabPanel>
-                    <TabPanel value={value} index={2}>
-                      <div>
-                        <h1>Hello world 3 </h1>
-                      </div>
+                    <TabPanel value={value} index={1}>
+                      tab panel 2
                     </TabPanel>
-                    <TabPanel value={value} index={3}>
+                    <TabPanel value={value} index={2}>
                       <div>
                         <h1>Hello world 3 </h1>
                       </div>
