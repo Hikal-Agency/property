@@ -19,7 +19,6 @@ import ReportProjectBar from "../../Components/charts/ReportProjectBar";
 import ReportMeetingsClosed from "../../Components/charts/ReportMeetingsClosed";
 import DoughnutChart from "../../Components/charts/DoughnutChart";
 import SalesAmountChartAdmin from "../../Components/charts/SalesAmountChartAdmin";
-import ReportClosedMeetingDoughnut from "../../Components/charts/ReportClosedMeetingDoughnut";
 
 const Reports = () => {
   const [loading, setloading] = useState(true);
@@ -68,23 +67,29 @@ const Reports = () => {
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                      <div className={`${currentMode === "dark" ? " text-white" : "text-black"} rounded-md p-2`}>
-                        <div className="justify-between items-center mb-3">
-                          {/* MONTHLY  */}
+                      <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-2`}>
+                        <div className="justify-between items-center">
+                          <h6 className="mb-2 p-2">
+                            <span className="font-semibold">Target</span>
+                          </h6>
                           <DoughnutChart
                             target={DashboardData?.user?.target}
                             target_reached={DashboardData?.target_reached}
                             target_remaining={DashboardData?.target_remaining}
                           />
                         </div>
-                        <h6 className="text-xs text-center mt-3 italic">Total revenue achieved with respect to addressed target for the month.</h6>
                       </div>
-                      <div className={`${currentMode === "dark" ? "text-white" : "text-black"} rounded-md p-2`}>
-                        <div className="justify-between items-center mb-3">
-                          {/* MONTHLY  */}
-                          <ReportClosedMeetingDoughnut />
+                      <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-2`}>
+                        <div className="justify-between items-center">
+                          <h6 className="mb-2 p-2">
+                            <span className="font-semibold">Performance</span>
+                          </h6>
+                          <DoughnutChart
+                            target={DashboardData?.user?.target}
+                            target_reached={DashboardData?.target_reached}
+                            target_remaining={DashboardData?.target_remaining}
+                          />
                         </div>
-                        <h6 className="text-xs text-center mt-3 italic">Number of total deals closed in comparison to total attended meetings.</h6>
                       </div>
                     </div>
                     <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} col-span-2 rounded-md p-2`}>

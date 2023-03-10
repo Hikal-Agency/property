@@ -70,7 +70,6 @@ const Reports = () => {
                     <div className="grid grid-cols-2 gap-3">
                       <div className={`${currentMode === "dark" ? " text-white" : "text-black"} rounded-md p-2`}>
                         <div className="justify-between items-center mb-3">
-                          {/* MONTHLY  */}
                           <DoughnutChart
                             target={DashboardData?.user?.target}
                             target_reached={DashboardData?.target_reached}
@@ -81,7 +80,6 @@ const Reports = () => {
                       </div>
                       <div className={`${currentMode === "dark" ? "text-white" : "text-black"} rounded-md p-2`}>
                         <div className="justify-between items-center mb-3">
-                          {/* MONTHLY  */}
                           <ReportClosedMeetingDoughnut />
                         </div>
                         <h6 className="text-xs text-center mt-3 italic">Number of total deals closed in comparison to total attended meetings.</h6>
