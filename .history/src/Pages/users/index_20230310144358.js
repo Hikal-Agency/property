@@ -66,7 +66,7 @@ const Users = () => {
       headerName: 'Email Address',
       headerAlign: 'center',
       editable: false,
-      minWidth: 250,
+      minWidth: 180,
       flex: 1,
     },
     {
@@ -74,7 +74,7 @@ const Users = () => {
       headerName: 'Status',
       headerAlign: 'center',
       editable: false,
-      minWidth: 180,
+      minWidth: 150,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -118,9 +118,6 @@ const Users = () => {
               <div className="px-5">
                 <Navbar />
                 <div className="my-5 mb-10">
-                  <div className="my-3">
-                    <h2 className={` ${currentMode === "dark" ? "text-white" : "text-black"} font-semibold text-xl`}>Users</h2>
-                  </div>
                   <Box width={"100%"} sx={DataGridStyles}>
                     <DataGrid
                       autoHeight

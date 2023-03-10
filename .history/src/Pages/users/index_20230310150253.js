@@ -119,7 +119,7 @@ const Users = () => {
                 <Navbar />
                 <div className="my-5 mb-10">
                   <div className="my-3">
-                    <h2 className={` ${currentMode === "dark" ? "text-white" : "text-black"} font-semibold text-xl`}>Users</h2>
+                    <h2 className="font-semibold text-xl">Users</h2>
                   </div>
                   <Box width={"100%"} sx={DataGridStyles}>
                     <DataGrid

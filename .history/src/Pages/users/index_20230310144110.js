@@ -42,7 +42,7 @@ const Users = () => {
       headerName: 'User Name',
       headerAlign: 'center',
       editable: false,
-      minWidth: 180,
+      minWidth: 130,
       flex: 1,
     },
     {
@@ -50,7 +50,7 @@ const Users = () => {
       headerName: 'Position',
       headerAlign: 'center',
       editable: false,
-      minWidth: 130,
+      minWidth: 150,
       flex: 1,
     },
     {
@@ -66,7 +66,7 @@ const Users = () => {
       headerName: 'Email Address',
       headerAlign: 'center',
       editable: false,
-      minWidth: 250,
+      minWidth: 555,
       flex: 1,
     },
     {
@@ -74,7 +74,7 @@ const Users = () => {
       headerName: 'Status',
       headerAlign: 'center',
       editable: false,
-      minWidth: 180,
+      minWidth: 110,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -97,10 +97,10 @@ const Users = () => {
   ];
   
   const rows = [
-    { id: 1, userName: 'Hala Hikal', position: 'Sales Agent', contactNumber: '566666555', email: "1@hikalproperties.ae", status: "1" },
-    { id: 2, userName: 'Ameer Ali', position: 'Sales Agent', contactNumber: '555567678', email: "2@hikalproperties.ae", status: "0" },
-    { id: 3, userName: 'Belal Hikal', position: 'Sales Manager', contactNumber: '536526766', email: "3@hikalproperties.ae", status: "1" },
-    { id: 4, userName: 'Nada Amin', position: 'Head of Sales', contactNumber: '5638378937', email: "4@hikalproperties.ae", status: "1" },
+    { id: 1, userName: 'Hala Hikal', position: 'Sales Agent', category: 'Closed Deals', description: "dhfjsfhs hasbdhakjbasda ashdbmajsdhaksjddakjdba jdbbajhakj jchjhbsadjh sjbsdjkbsdjhsddhsdd jcsdkhsksdf", status: "Pending" },
+    { id: 2, userName: 'Ameer Ali', position: 'Sales Agent', category: 'Meetings', description: "dhfjsfhs hasbdhakjbasda ashdbmajsdhaksjddakjdba jdbbajhakj jchjhbsadjh sjbsdjkbsdjhsddhsdd jcsdkhsksdf", status: "Closed" },
+    { id: 3, userName: 'Belal Hikal', position: 'Sales Manager', category: 'Closed Deals', description: "dhfjsfhs hasbdhakjbasda ashdbmajsdhaksjddakjdba jdbbajhakj jchjhbsadjh sjbsdjkbsdjhsddhsdd jcsdkhsksdf", status: "Postponed" },
+    { id: 4, userName: 'Nada Amin', position: 'Head of Sales', category: 'Closed Deals', description: "dhfjsfhs hasbdhakjbasda ashdbmajsdhaksjddakjdba jdbbajhakj jchjhbsadjh sjbsdjkbsdjhsddhsdd jcsdkhsksdf", status: "pending" },
   ];
 
   return (
@@ -118,9 +118,6 @@ const Users = () => {
               <div className="px-5">
                 <Navbar />
                 <div className="my-5 mb-10">
-                  <div className="my-3">
-                    <h2 className={` ${currentMode === "dark" ? "text-white" : "text-black"} font-semibold text-xl`}>Users</h2>
-                  </div>
                   <Box width={"100%"} sx={DataGridStyles}>
                     <DataGrid
                       autoHeight

@@ -1,6 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import { Box } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
+import { Box, DataGrid } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BsFillPlusCircleFill } from "react-icons/bs";
@@ -23,85 +22,10 @@ const Users = () => {
     User,
     setUser,
     currentMode,
-    DataGridStyles,
     darkModeColors,
     setopenBackDrop,
     BACKEND_URL,
   } = useStateContext();
-
-  const columns = [
-    { 
-      field: 'id', 
-      headerName: '#', 
-      headerAlign: 'center',
-      minWidth: 30,
-      flex: 1 
-    },
-    {
-      field: 'userName',
-      headerName: 'User Name',
-      headerAlign: 'center',
-      editable: false,
-      minWidth: 180,
-      flex: 1,
-    },
-    {
-      field: 'position',
-      headerName: 'Position',
-      headerAlign: 'center',
-      editable: false,
-      minWidth: 130,
-      flex: 1,
-    },
-    {
-      field: 'contactNumber',
-      headerName: 'Contact Number',
-      headerAlign: 'center',
-      editable: false,
-      minWidth: 130,
-      flex: 1,
-    },
-    {
-      field: 'email',
-      headerName: 'Email Address',
-      headerAlign: 'center',
-      editable: false,
-      minWidth: 250,
-      flex: 1,
-    },
-    {
-      field: 'status',
-      headerName: 'Status',
-      headerAlign: 'center',
-      editable: false,
-      minWidth: 180,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <>
-            {cellValues.formattedValue === "1" && (
-              <div className="w-full h-full flex justify-center items-center text-[#0f9d58] px-5 text-xs font-semibold">
-                ACTIVATED ACCOUNT
-              </div>
-            )}
-
-            {cellValues.formattedValue === "0" && (
-              <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
-                DEACTIVATED ACCOUNT
-              </div>
-            )}
-          </>
-        );
-      },
-    },
-  ];
-  
-  const rows = [
-    { id: 1, userName: 'Hala Hikal', position: 'Sales Agent', contactNumber: '566666555', email: "1@hikalproperties.ae", status: "1" },
-    { id: 2, userName: 'Ameer Ali', position: 'Sales Agent', contactNumber: '555567678', email: "2@hikalproperties.ae", status: "0" },
-    { id: 3, userName: 'Belal Hikal', position: 'Sales Manager', contactNumber: '536526766', email: "3@hikalproperties.ae", status: "1" },
-    { id: 4, userName: 'Nada Amin', position: 'Head of Sales', contactNumber: '5638378937', email: "4@hikalproperties.ae", status: "1" },
-  ];
 
   return (
     <>
@@ -118,9 +42,6 @@ const Users = () => {
               <div className="px-5">
                 <Navbar />
                 <div className="my-5 mb-10">
-                  <div className="my-3">
-                    <h2 className={` ${currentMode === "dark" ? "text-white" : "text-black"} font-semibold text-xl`}>Users</h2>
-                  </div>
                   <Box width={"100%"} sx={DataGridStyles}>
                     <DataGrid
                       autoHeight
@@ -142,6 +63,12 @@ const Users = () => {
                       }
                     />
                   </Box>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3">
+                    <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md p-2`}>
+                      hhh
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

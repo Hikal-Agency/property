@@ -42,31 +42,31 @@ const Users = () => {
       headerName: 'User Name',
       headerAlign: 'center',
       editable: false,
-      minWidth: 180,
+      minWidth: 130,
       flex: 1,
     },
     {
-      field: 'position',
-      headerName: 'Position',
+      field: 'userName',
+      headerName: 'User Name',
+      headerAlign: 'center',
+      editable: false,
+      minWidth: 150,
+      flex: 1,
+    },
+    {
+      field: 'category',
+      headerName: 'Category',
       headerAlign: 'center',
       editable: false,
       minWidth: 130,
       flex: 1,
     },
     {
-      field: 'contactNumber',
-      headerName: 'Contact Number',
+      field: 'description',
+      headerName: 'Description',
       headerAlign: 'center',
       editable: false,
-      minWidth: 130,
-      flex: 1,
-    },
-    {
-      field: 'email',
-      headerName: 'Email Address',
-      headerAlign: 'center',
-      editable: false,
-      minWidth: 250,
+      minWidth: 555,
       flex: 1,
     },
     {
@@ -74,20 +74,20 @@ const Users = () => {
       headerName: 'Status',
       headerAlign: 'center',
       editable: false,
-      minWidth: 180,
+      minWidth: 110,
       flex: 1,
       renderCell: (cellValues) => {
         return (
           <>
-            {cellValues.formattedValue === "1" && (
+            {cellValues.formattedValue === "Closed" && (
               <div className="w-full h-full flex justify-center items-center text-[#0f9d58] px-5 text-xs font-semibold">
-                ACTIVATED ACCOUNT
+                CLOSED
               </div>
             )}
 
-            {cellValues.formattedValue === "0" && (
+            {cellValues.formattedValue === "Pending" && (
               <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
-                DEACTIVATED ACCOUNT
+                PENDING
               </div>
             )}
           </>
@@ -97,10 +97,10 @@ const Users = () => {
   ];
   
   const rows = [
-    { id: 1, userName: 'Hala Hikal', position: 'Sales Agent', contactNumber: '566666555', email: "1@hikalproperties.ae", status: "1" },
-    { id: 2, userName: 'Ameer Ali', position: 'Sales Agent', contactNumber: '555567678', email: "2@hikalproperties.ae", status: "0" },
-    { id: 3, userName: 'Belal Hikal', position: 'Sales Manager', contactNumber: '536526766', email: "3@hikalproperties.ae", status: "1" },
-    { id: 4, userName: 'Nada Amin', position: 'Head of Sales', contactNumber: '5638378937', email: "4@hikalproperties.ae", status: "1" },
+    { id: 1, creationDate: "2022-03-03 03:03:03", userName: 'Hala Hikal', category: 'Closed Deals', description: "dhfjsfhs hasbdhakjbasda ashdbmajsdhaksjddakjdba jdbbajhakj jchjhbsadjh sjbsdjkbsdjhsddhsdd jcsdkhsksdf", status: "Pending" },
+    { id: 2, creationDate: "2022-03-03 03:03:03", userName: 'Ameer Ali', category: 'Meetings', description: "dhfjsfhs hasbdhakjbasda ashdbmajsdhaksjddakjdba jdbbajhakj jchjhbsadjh sjbsdjkbsdjhsddhsdd jcsdkhsksdf", status: "Closed" },
+    { id: 3, creationDate: "2022-03-03 03:03:03", userName: 'Hala Hikal', category: 'Closed Deals', description: "dhfjsfhs hasbdhakjbasda ashdbmajsdhaksjddakjdba jdbbajhakj jchjhbsadjh sjbsdjkbsdjhsddhsdd jcsdkhsksdf", status: "Postponed" },
+    { id: 4, creationDate: "2022-03-03 03:03:03", userName: 'Hala Hikal', category: 'Closed Deals', description: "dhfjsfhs hasbdhakjbasda ashdbmajsdhaksjddakjdba jdbbajhakj jchjhbsadjh sjbsdjkbsdjhsddhsdd jcsdkhsksdf", status: "pending" },
   ];
 
   return (
@@ -118,9 +118,6 @@ const Users = () => {
               <div className="px-5">
                 <Navbar />
                 <div className="my-5 mb-10">
-                  <div className="my-3">
-                    <h2 className={` ${currentMode === "dark" ? "text-white" : "text-black"} font-semibold text-xl`}>Users</h2>
-                  </div>
                   <Box width={"100%"} sx={DataGridStyles}>
                     <DataGrid
                       autoHeight
