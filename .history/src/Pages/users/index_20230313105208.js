@@ -119,6 +119,18 @@ const Users = () => {
             >
               <AiOutlineEdit size={20} />
             </Button>
+            
+            <Button
+              // onClick={() => HandleEditFunc(cellValues)}
+              title="Deactivate User"
+              className={`deactivateUserBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <TbBan size={20} />
+            </Button>
           </div>
         );
       },

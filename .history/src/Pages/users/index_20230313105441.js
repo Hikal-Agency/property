@@ -72,33 +72,33 @@ const Users = () => {
       minWidth: 250,
       flex: 1,
     },
-    {
-      field: 'status',
-      headerName: 'Status',
-      headerAlign: 'center',
-      editable: false,
-      minWidth: 180,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <>
-            {cellValues.formattedValue === "1" && (
-              <div className="w-full h-full flex justify-center items-center text-[#0f9d58] px-5 text-xs font-semibold">
-                ACTIVATED ACCOUNT
-              </div>
-            )}
+    // {
+    //   field: 'status',
+    //   headerName: 'Status',
+    //   headerAlign: 'center',
+    //   editable: false,
+    //   minWidth: 180,
+    //   flex: 1,
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <>
+    //         {cellValues.formattedValue === "1" && (
+    //           <div className="w-full h-full flex justify-center items-center text-[#0f9d58] px-5 text-xs font-semibold">
+    //             ACTIVATED ACCOUNT
+    //           </div>
+    //         )}
 
-            {cellValues.formattedValue === "0" && (
-              <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
-                DEACTIVATED ACCOUNT
-              </div>
-            )}
-          </>
-        );
-      },
-    },
+    //         {cellValues.formattedValue === "0" && (
+    //           <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
+    //             DEACTIVATED ACCOUNT
+    //           </div>
+    //         )}
+    //       </>
+    //     );
+    //   },
+    // },
     {
-      field: "",
+      field: "status",
       headerName: "Action",
       minWidth: 100,
       flex: 1,
@@ -119,6 +119,19 @@ const Users = () => {
             >
               <AiOutlineEdit size={20} />
             </Button>
+            {cellValues.formattedValue === "1" && (
+              <Button
+                // onClick={() => HandleEditFunc(cellValues)}
+                title="Deactivate User"
+                className={`deactivateUserBtn ${
+                  currentMode === "dark"
+                    ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                    : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                }`}
+              >
+                <TbBan size={20} />
+              </Button>
+            )}
           </div>
         );
       },
