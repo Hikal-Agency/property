@@ -22,6 +22,7 @@ const AllUnassignedLeads = () => {
   var lead_type = lead_type2.replace(/%20/g, " ");
   const pathname2 = location.pathname.split("/")[1];
   const [loading, setloading] = useState(true);
+  const [dataTableChanged, setDataTableChanged] = useState(false);
 
   const FetchProfile = async (token) => {
     await axios
@@ -97,6 +98,7 @@ const AllUnassignedLeads = () => {
                     </span>
                   </h1>
                   <AllLeads
+                  dataTableChanged={dataTableChanged}
                     BACKEND_URL={BACKEND_URL}
                     lead_type={lead_type}
                     lead_origin={pathname2}

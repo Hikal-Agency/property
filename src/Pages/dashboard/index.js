@@ -20,7 +20,7 @@ const Dashboard = () => {
   const [loading, setloading] = useState(true);
   const navigate = useNavigate(); const location = useLocation();
 
-  const FetchProfile = async (token) => {
+   const FetchProfile = async (token) => {
     await axios
       .get(`${BACKEND_URL}/dashboard?page=1`, {
         headers: {

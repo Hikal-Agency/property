@@ -5,7 +5,7 @@ import { useEffect } from "react";
 // import UserImage from "../../public/favicon.png";
 import { useStateContext } from "../../context/ContextProvider";
 import { BsBuilding, BsCircleFill } from "react-icons/bs";
-import { ImLocation, ImClock, ImUser } from "react-icons/im";
+import { ImLocation, ImClock } from "react-icons/im";
 import MapContainer from "./MapComponent";
 
 // import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";

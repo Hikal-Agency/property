@@ -14,7 +14,6 @@ import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
 const RenderManagers = ({ cellValues }) => {
-  const [Managers, setManagers] = useState([]);
   const [manager2, setmanager2] = useState(cellValues?.row?.assignedToManager);
   const [newManager, setnewManager] = useState("");
   const [Dialogue, setDialogue] = useState(false);
@@ -22,9 +21,8 @@ const RenderManagers = ({ cellValues }) => {
     currentMode,
     reloadDataGrid,
     setreloadDataGrid,
-    fetchManagers,
-    setfetchManagers,
     BACKEND_URL,
+    Managers,
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -55,19 +53,17 @@ const RenderManagers = ({ cellValues }) => {
   //     setAgents(result?.data?.agents);
   //   });
   useEffect(() => {
-    if (!fetchManagers) {
-      axios.get(`${BACKEND_URL}/managers`).then((result) => {
-        console.log("manager response is");
-        console.log(result);
-        setManagers(result?.data?.managers);
-        setfetchManagers(true);
-      });
-    }
+    setmanager2(cellValues?.row?.assignedToManager);
+      // axios.get(`${BACKEND_URL}/managers`).then((result) => {
+      //   console.log("manager response is");
+      //   console.log(result);
+      //   setManagers(result?.data?.managers);
+      // });
     // axios.get("https://staging.hikalcrm.com/api/agents").then((result) => {
     //   setAgents(result?.data?.agents);
     // });
     // eslint-disable-next-line
-  }, []);
+  }, [cellValues?.row?.assignedToManager]);
 
   const ChangeManager = (e) => {
     setnewManager(e.target.value);

@@ -18,6 +18,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useStateContext } from "../../context/ContextProvider";
+import LocationPicker from "./LocationPicker";
 
 const UpdateMeeting = ({
   meetingModalOpen,
@@ -33,10 +34,16 @@ const UpdateMeeting = ({
   const [meetingTimeValue, setMeetingTimeValue] = useState({});
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingDateValue, setMeetingDateValue] = useState({});
-  const [meetingLocation, setMeetingLocation] = useState("");
+  const [meetingLocation, setMeetingLocation] = useState({
+    lat: 0,
+    lng: 0,
+    addressText: "",
+  });
   const style = {
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
+    height: "90vh",
+    overflowY: "scroll",
   };
 
   useEffect(() => {
@@ -57,6 +64,7 @@ const UpdateMeeting = ({
             },
           }
         );
+        const geocoder = new window.google.maps.Geocoder();
 
         if (!response.data.meeting) {
           console.log("Hello");
@@ -71,12 +79,49 @@ const UpdateMeeting = ({
             theme: "light",
           });
         } else {
-          const { meetingStatus, meetingDate, meetingLocation, meetingTime } =
+          const { meetingStatus, meetingDate, mLat, mLong, meetingTime } =
             response.data.meeting;
           setMeetingStatus(meetingStatus);
           setMeetingDateValue(dayjs(meetingDate));
           setMeetingTimeValue(dayjs("2023-01-01 " + meetingTime));
-          setMeetingLocation(meetingLocation);
+          if (!mLat || !mLong) {
+            navigator.geolocation.getCurrentPosition((position) => {
+              geocoder.geocode(
+                {
+                  location: {
+                    lat: Number(position.coords.latitude),
+                    lng: Number(position.coords.longitude),
+                  },
+                },
+                (results, status) => {
+                  if (status === "OK") {
+                    setMeetingLocation({
+                      lat: Number(position.coords.latitude),
+                      lng: Number(position.coords.longitude),
+                      addressText: results[0].formatted_address,
+                    });
+                  } else {
+                    alert("Getting address failed due to: " + status);
+                  }
+                }
+              );
+            });
+          } else {
+            geocoder.geocode(
+              { location: { lat: Number(mLat), lng: Number(mLong) } },
+              (results, status) => {
+                if (status === "OK") {
+                  setMeetingLocation({
+                    lat: Number(mLat),
+                    lng: Number(mLong),
+                    addressText: results[0].formatted_address,
+                  });
+                } else {
+                  alert("Getting address failed due to: " + status);
+                }
+              }
+            );
+          }
         }
       } catch (error) {
         console.log("Error in fetching single meeting: ", error);
@@ -109,7 +154,9 @@ const UpdateMeeting = ({
       meetingData.append("meetingStatus", meetingStatus);
       meetingData.append("meetingTime", meetingTime);
       meetingData.append("meetingDate", meetingDate);
-      meetingData.append("meetingLocation", meetingLocation);
+      meetingData.append("mLat", String(meetingLocation.lat));
+      meetingData.append("mLong", String(meetingLocation.lng));
+      meetingData.append("meetingLocation", meetingLocation.addressText);
 
       const response = await axios.post(
         `${BACKEND_URL}/updateMeeting`,
@@ -276,14 +323,12 @@ const UpdateMeeting = ({
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </Select>
                     </FormControl>
-                    <TextField
-                      fullWidth
-                      label="Meeting Location"
-                      value={meetingLocation}
-                      onChange={(e) => {
-                        setMeetingLocation(e.target.value);
-                      }}
+                    {(meetingLocation.lat && meetingLocation.lng) ?
+                    <LocationPicker
+                      meetingLocation={meetingLocation}
+                      setMeetingLocation={setMeetingLocation}
                     />
+                    : <></>}
                   </div>
                 </div>
 

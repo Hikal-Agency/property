@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { GoogleMap, useJsApiLoader, MarkerF, InfoWindow } from '@react-google-maps/api';
-import { ImLocation } from "react-icons/im";
+import { GoogleMap, MarkerF, InfoWindow } from '@react-google-maps/api';
 
 const MapContainer = ({ meeting_location }) => {
   useEffect(() => {
@@ -98,7 +97,6 @@ const MapContainer = ({ meeting_location }) => {
     },
   ];
 
-  const libraries = ["places"];
   const mapContainerStyle = {
     width: "100%",
     height: "100%",
@@ -109,20 +107,13 @@ const MapContainer = ({ meeting_location }) => {
     mapTypeControl: true,
   }
 
-  // function MapContainer() {
-    const { isLoaded, loadError } = useJsApiLoader({
-      // googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-      googleMapsApiKey: "AIzaSyBtYwXsFlL25Jct9nYMl8ytW0KiZ6q19sY",
-      libraries,
-    });
-    const [markers, setMarkers] = React.useState([]);
+
     const [selectedMeeting, setSelectedMeeting] = React.useState(null);
     const [selectedUser, setSelectedUser] = React.useState(null);
 
-    if (loadError) return <div>Error loading maps</div>;
-    if (!isLoaded) return <div>Loading your map...</div>;
-
     return (
+      <>
+      {(typeof window.google !== "object") ? <div>Your map is loading...</div> :
       <GoogleMap
         zoom={10}
         center={{lat: 25.22527310000002, lng: 55.280889615218406}}
@@ -137,7 +128,7 @@ const MapContainer = ({ meeting_location }) => {
               position={{ lat: parseFloat(meeting.mLat), lng: parseFloat(meeting.mLong)}}
               icon={{
                 url: "/meetingpinattended.svg",
-                scaledSize: new window.google.maps.Size(50,50),
+                scaledSize: window.google ? new window.google.maps.Size(50,50) : null,
               }}
               onClick={() => {
                 setSelectedMeeting(meeting);
@@ -149,7 +140,7 @@ const MapContainer = ({ meeting_location }) => {
               position={{ lat: parseFloat(meeting.mLat), lng: parseFloat(meeting.mLong)}}
               icon={{
                 url: "/meetingpin.svg",
-                scaledSize: new window.google.maps.Size(50,50),
+                scaledSize: window.google ? new window.google.maps.Size(50,50) : null,
               }}
               onClick={() => {
                 setSelectedMeeting(meeting);
@@ -184,7 +175,7 @@ const MapContainer = ({ meeting_location }) => {
               position={{ lat: parseFloat(user.last_location_lat), lng: parseFloat(user.last_location_long)}}
               icon={{
                 url: "/userpin.svg",
-                scaledSize: new window.google.maps.Size(50,50),
+                scaledSize: window.google ? new window.google.maps.Size(50,50) : null,
               }}
               onClick={() => {
                 setSelectedUser(user);
@@ -192,7 +183,7 @@ const MapContainer = ({ meeting_location }) => {
             />
 
             {selectedUser ? (
-              <InfoWindow             
+              <InfoWindow
                 position={{ lat: parseFloat(selectedUser.last_location_lat), lng: parseFloat(selectedUser.last_location_long)}}
                 onCloseClick={
                   () => {setSelectedUser(null);
@@ -210,8 +201,9 @@ const MapContainer = ({ meeting_location }) => {
         ))}
 
       </GoogleMap>
+      }
+      </>
     );
-  // }
 }
 
 export default MapContainer;

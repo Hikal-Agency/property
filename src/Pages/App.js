@@ -26,6 +26,8 @@ import Payments from "./whatsapp-marketing/payments";
 import Transactions from "./whatsapp-marketing/transactions";
 import Livelocation from "./location/livelocation";
 import ChangePassword from "./auth/ChangePassword";
+import { useJsApiLoader } from "@react-google-maps/api";
+const libraries = ["places"];
 
 function App() {
   const router = createBrowserRouter([
@@ -136,6 +138,12 @@ function App() {
       element: <Error /> 
     },
   ]);
+ useJsApiLoader({
+      // googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+      googleMapsApiKey: "AIzaSyBtYwXsFlL25Jct9nYMl8ytW0KiZ6q19sY",
+      libraries,
+    });
+
   return <RouterProvider router={router} />;
 }
 

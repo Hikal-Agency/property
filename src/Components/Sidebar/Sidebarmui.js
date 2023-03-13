@@ -1149,8 +1149,8 @@ const Sidebarmui = () => {
       >
         <div className="px-2 mt-3">
           <div className="flex justify-between items-center h-[50px]">
-            <Link
-              to="/dashboard"
+            <a
+              href="/dashboard"
               className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
               onClick={() => {
                 setSelected("Dashboard");
@@ -1186,7 +1186,7 @@ const Sidebarmui = () => {
                   alt=""
                 />
               )}
-            </Link>
+            </a>
           </div>
           <div className="profile-section border-t border-b mt-5 mb-5 pt-3 pb-3">
             {isCollapsed ? (

@@ -14,13 +14,15 @@ import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
 import { CgLogOut } from "react-icons/cg";
 import { ColorModeContext } from "../../context/theme";
+import NotificationsMenu from "./NotificationsMenu";
+import UpcomingMeetingsMenu from "./UpcomingMeetingsMenu";
 import { Link } from "react-router-dom";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <Tooltip title={title} arrow placement="bottom">
     <button
       type="button"
-      onClick={() => customFunc()}
+      onClick={customFunc}
       style={{ color }}
       className="relative text-xl rounded-full p-3 hover:bg-light-gray"
     >
@@ -51,13 +53,18 @@ const Navbar = () => {
     screenSize,
     setopenBackDrop,
   } = useStateContext();
+  const [currNavBtn, setCurrNavBtn] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const [open, setOpen] = useState(false);
+  const handleClick = (event, navBtn) => {
     setAnchorEl(event.currentTarget);
+    setOpen(true);
+    setCurrNavBtn(navBtn);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
+    setOpen(false);
   };
   const LogoutUser = () => {
     localStorage.removeItem("auth-token");
@@ -83,6 +90,7 @@ const Navbar = () => {
     }
     // eslint-disable-next-line
   }, [screenSize]);
+
   // eslint-disable-next-line
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
@@ -127,14 +135,14 @@ const Navbar = () => {
         <NavButton
           title="Meetings"
           dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
-          // customFunc={() => handleClick("chat")}
+          customFunc={(event) => handleClick(event, "Meetings")}
           color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
           icon={<AiOutlineCalendar />}
         />
         <NavButton
           title="Notification"
           dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
-          customFunc={() => handleClick("notification")}
+          customFunc={(event) => handleClick(event, "Notifications")}
           color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
           icon={<RiNotification3Line />}
         />
@@ -187,12 +195,14 @@ const Navbar = () => {
           PaperProps={{
             elevation: 0,
             sx: {
+              height: "auto",
               overflow: "visible",
+              overflowY: "scroll",
               filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
               mt: 1.5,
               background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
               color: currentMode === "dark" ? "#ffffff" : "black",
-              minWidth: 200,
+              minWidth: 300,
               "& .MuiAvatar-root": {
                 width: 32,
                 height: 32,
@@ -216,25 +226,40 @@ const Navbar = () => {
           transformOrigin={{ horizontal: "center", vertical: "top" }}
           anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
         >
-          <MenuItem>
-            <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-              <div className="flex items-center space-x-2">
-                <Avatar src={User?.displayImg} className="inline-block" />
-                <span>Profile</span>
-              </div>
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link to={"/change-password"} onClick={() => setopenBackDrop(true)}>
-              <div className="flex items-center space-x-2">
-                <RiLockPasswordFill className="inline-block" />
-                <span>Change Password</span>
-              </div>
-            </Link>
-          </MenuItem>
-          <MenuItem onClick={LogoutUser}>
-            <CgLogOut className="mr-3 text-lg" /> Logout
-          </MenuItem>
+          {currNavBtn ? (
+            (currNavBtn === "Notifications") ? (
+                <NotificationsMenu/>
+            ) : (currNavBtn === "Meetings") ? (
+              <UpcomingMeetingsMenu/>
+            ) : (
+              <MenuItem/>
+            )
+          ) : (
+            <>
+              <MenuItem>
+                <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
+                  <div className="flex items-center space-x-2">
+                    <Avatar src={User?.displayImg} className="inline-block" />
+                    <span>Profile</span>
+                  </div>
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link
+                  to={"/change-password"}
+                  onClick={() => setopenBackDrop(true)}
+                >
+                  <div className="flex items-center space-x-2">
+                    <RiLockPasswordFill className="inline-block" />
+                    <span>Change Password</span>
+                  </div>
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={LogoutUser}>
+                <CgLogOut className="mr-3 text-lg" /> Logout
+              </MenuItem>
+            </>
+          )}
         </Menu>
         {/* {isClicked.cart && <Cart />} */}
         {/* {isClicked.chat && <Chat />} */}

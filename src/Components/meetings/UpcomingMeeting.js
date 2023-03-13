@@ -1,23 +1,43 @@
 import moment from "moment";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BsBuilding } from "react-icons/bs";
 import { ImLocation, ImClock } from "react-icons/im";
 import { useStateContext } from "../../context/ContextProvider";
+import ShowLocation from "./ShowLocation";
 
 const UpcomingMeeting = ({ upcoming_meetings }) => {
   const { currentMode } = useStateContext();
+  const [isModalOpened, setIsModalOpened] = useState(false);
+  const [meetingLocation, setMeetingLocation] = useState({
+    lat: 0,
+    lng: 0,
+    addressText: "",
+  });
 
   useEffect(() => {
     console.log("upcoming meetings are");
     console.log(upcoming_meetings);
   }, []);
 
+  const handleCardClick = (meeting) => {
+    setIsModalOpened(true);
+    setMeetingLocation({
+      lat: Number(meeting.mLat),
+      lng: Number(meeting.mLong),
+      addressText: meeting.meetingLocation,
+    });
+  }
+
+  const handleModalClose = () => {  
+    setIsModalOpened(false);
+  }
   return (
     // <div className="overflow-x-scroll snap-x auto-cols-min">
     <div className="overflow-x-scroll snap-x grid grid-flow-col auto-cols-max gap-x-3 scrollbar-thin">
       {upcoming_meetings?.map((meeting, index) => {
         return (
           <div
+          onClick={() => handleCardClick(meeting)}
             key={index}
             className={`${
               currentMode === "dark" ? "bg-black" : "bg-white"
@@ -68,7 +88,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   />
-                  <p className="text-sm mr-3"> {meeting?.meetingLocation ? meeting.meetingLocation : "Not Updated"}</p>
+                  <p className="text-sm mr-3"> {meeting?.meetingLocation || "Not Updated"}</p>
                 </div>
               </div>
             </div>
@@ -78,6 +98,10 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
           </div>
         );
       })}
+      {(meetingLocation.lat && meetingLocation.lng) && isModalOpened ? 
+      <ShowLocation isModalOpened={isModalOpened} meetingLocation={meetingLocation} handleModalClose={handleModalClose}/>
+      : <></>
+      }
     </div>
   );
 };

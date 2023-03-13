@@ -13,7 +13,7 @@ import DoughnutChart from "../../Components/charts/DoughnutChart";
 import BarChartProject from "../../Components/charts/BarChartProject";
 import BarChartProjectAdmin from "../../Components/charts/BarChartProjectAdmin";
 import Task from "../../Components/Tasks/Task";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import UpcomingMeeting from "../meetings/UpcomingMeeting";
 import UpcomingMeetingAgent from "../meetings/UpcomingMeetingAgent";
 import axios from "axios";
@@ -28,9 +28,33 @@ const DashboardPanel = () => {
     Sales_chart_data,
     setSales_chart_data,
     BACKEND_URL,
+    setDashboardData,
+    setManagers,
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+   const FetchProfile = async (token) => {
+    await axios
+      .get(`${BACKEND_URL}/dashboard?page=1`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        setDashboardData(result.data);
+      })
+      .catch((err) => {
+        // console.log(err);
+        navigate("/", {
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+        });
+      });
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     axios
@@ -49,6 +73,8 @@ const DashboardPanel = () => {
       .catch((err) => {
         console.log(err);
       });
+
+      FetchProfile(token);
     //eslint-disable-next-line
   }, []);
 

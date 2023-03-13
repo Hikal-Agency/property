@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
@@ -19,6 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import LocationPicker from "../meetings/LocationPicker";
 
 const RenderFeedback = ({ cellValues }) => {
   const [btnloading, setbtnloading] = useState(false);
@@ -29,13 +30,24 @@ const RenderFeedback = ({ cellValues }) => {
     meetingDate: null,
     meetingTime: null,
     meetingStatus: null,
-    meetingLocation: null,
+    meetingLocation: {
+      mLat: 0,
+      mLong: 0,
+      addressText: ""
+    },
   });
   const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL } = useStateContext();
   const ChangeFeedback = (e) => {
     setnewFeedback(e.target.value);
     setDialogue(true);
   };
+
+  const setMeetingLocation = (locationObj) => {
+    setMeetingData({
+        ...meetingData,
+        meetingLocation: locationObj,
+    });
+  }
 
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
@@ -74,7 +86,10 @@ const RenderFeedback = ({ cellValues }) => {
         })
       );
       UpdateLeadData.append("meetingStatus", meetingData.meetingStatus);
-      UpdateLeadData.append("meetingLocation", meetingData.meetingLocation);
+      UpdateLeadData.append("mLat", String(meetingData.meetingLocation.mLat));
+      UpdateLeadData.append("mLong", String(meetingData.meetingLocation.mLong));
+      UpdateLeadData.append("meetingLocation", meetingData.meetingLocation.addressText);
+      console.log(meetingData.meetingLocation.addressText);
     }
 
     await axios
@@ -119,6 +134,13 @@ const RenderFeedback = ({ cellValues }) => {
         setbtnloading(false);
       });
   };
+
+  useEffect(() => {
+      navigator.geolocation.getCurrentPosition(position =>{
+        setMeetingLocation({lat: position.coords.latitude, lng: position.coords.longitude, addressText: ""});
+      });
+  }, []);
+
   return (
     <Box
       className={`relative w-full h-full flex items-center justify-center ${
@@ -262,18 +284,7 @@ const RenderFeedback = ({ cellValues }) => {
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </Select>
                     </FormControl>
-                    <TextField
-                      fullWidth
-                      label="Meeting Location"
-                      value={meetingData.meetingLocation}
-                      onChange={(e) => {
-                        setMeetingData({
-                          ...meetingData,
-                          meetingLocation: e.target.value,
-                        });
-                      }}
-                      required
-                    />
+                    <LocationPicker meetingLocation={meetingData.meetingLocation} setMeetingLocation={setMeetingLocation}/>
                   </div>
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                     <Button

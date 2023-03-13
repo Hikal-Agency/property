@@ -8,7 +8,7 @@ import {
   Select,
 } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
@@ -16,11 +16,13 @@ import { useStateContext } from "../../context/ContextProvider";
 const RenderSalesperson = ({ cellValues }) => {
   const [SalesPerson2, setSalesPerson2] = useState(
     cellValues?.row?.assignedToSales
-  );
+  );  
+
+  const [SalesPersonsList, setSalesPersonsList] = useState([]);
   const [SalesPerson3, setSalesPerson3] = useState();
   const [newSalesPerson, setnewSalesPerson] = useState("");
   const [Dialogue, setDialogue] = useState(false);
-  const { currentMode, reloadDataGrid, setreloadDataGrid, SalesPerson, BACKEND_URL } =
+  const { currentMode, reloadDataGrid, setreloadDataGrid, User,SalesPerson, BACKEND_URL } =
     useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -53,10 +55,13 @@ const RenderSalesperson = ({ cellValues }) => {
 
   const ChangeSalesPerson = (e) => {
     console.log(e.target);
-    const selectedItem = SalesPerson.find((item) => item.id === e.target.value);
-    const old_selectedItem = SalesPerson.find(
-      (item) => item.id === SalesPerson2
-    );
+    let selectedItem;
+      selectedItem = SalesPersonsList.find((item) => item.id === Number(e.target.value));
+    let old_selectedItem;
+    
+      old_selectedItem = SalesPersonsList.find(
+        (item) => item.id === Number(SalesPerson2)
+      );
     console.log(selectedItem);
 
     setnewSalesPerson(selectedItem);
@@ -93,7 +98,7 @@ const RenderSalesperson = ({ cellValues }) => {
           theme: "light",
         });
         setbtnloading(false);
-        setSalesPerson2(newSalesPerson);
+        setSalesPerson2(newSalesPerson?.id);
         setreloadDataGrid(!reloadDataGrid);
         setDialogue(false);
       })
@@ -111,6 +116,15 @@ const RenderSalesperson = ({ cellValues }) => {
         setbtnloading(false);
       });
   };
+
+  useEffect(() => {
+    const managerId = cellValues?.row?.assignedToManager;
+    console.log(SalesPerson);
+    setSalesPersonsList(SalesPerson["manager-"+managerId]);
+    setSalesPerson2(cellValues?.row?.assignedToSales);
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cellValues?.row?.assignedToManager, cellValues?.row?.assignedToSales]);
 
   return (
     <Box
@@ -133,7 +147,7 @@ const RenderSalesperson = ({ cellValues }) => {
         <MenuItem value="0" disabled>
           - - - - -
         </MenuItem>
-        {SalesPerson.map((salesperson, index) => {
+        { SalesPersonsList?.map((salesperson, index) => {
           return (
             <MenuItem
               key={index}

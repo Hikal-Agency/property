@@ -27,11 +27,11 @@ import RenderPriority from "./RenderPriority";
 import RenderFeedback from "./RenderFeedback";
 import RenderManagers from "./RenderManagers";
 import RenderSalesperson from "./RenderSalesperson";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const token = localStorage.getItem("auth-token");
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
   const [singleLeadData, setsingleLeadData] = useState();
   const [deleteloading, setdeleteloading] = useState(false);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
@@ -47,6 +47,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     User,
     BACKEND_URL,
     setSalesPerson,
+    SalesPerson,
+    setManagers,
   } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -148,7 +150,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 170,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
+      renderCell: (cellValues) => <RenderSalesperson setSalesPersons={setSalesPersons} FetchLeads={(token) => FetchLeads(token)} cellValues={cellValues} />,
     },
     {
       field: "feedback",
@@ -460,6 +462,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       },
     },
   ];
+
+  function setSalesPersons(userId){
+    const token = localStorage.getItem("auth-token");
+    axios
+      .get(`${BACKEND_URL}/teamMembers/${userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Result:");
+        console.log(result);
+        const salesPersonsList = result.data.team;
+        setSalesPerson((salesPerson) => ({...salesPerson, ["manager-" + userId]: salesPersonsList}));
+      });
+  }
 
   const columns = [
     {
@@ -776,6 +795,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
   ];
 
+  const [CEOColumns, setCEOColumns] = useState(columns);
+
   const FetchLeads = async (token) => {
     console.log("lead type is");
     console.log(lead_type);
@@ -949,6 +970,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           pageSize: result.data.coldLeads.per_page,
           total: result.data.coldLeads.total,
         }));
+        setCEOColumns([...CEOColumns]);
       })
       .catch((err) => {
         console.log("error occured");
@@ -1018,31 +1040,29 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         .catch((err) => console.log(err));
     }
   };
+
   useEffect(() => {
     setopenBackDrop(false);
-    const token = localStorage.getItem("auth-token");
-    axios
-      .get(`${BACKEND_URL}/teamMembers/${User.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
+    if(User?.position !== "Founder & CEO") {
+      setSalesPersons(User?.id);
+    } else {
+      axios.get(`${BACKEND_URL}/managers`).then((result) => {
+        console.log("manager response is");
         console.log(result);
-        // setSalesPerson(result?.data?.agents);
-        const SalesPerson = result.data.team.filter((manager) => {
-          return manager.id === User?.id;
-        });
-        setSalesPerson(SalesPerson[0]?.child ? SalesPerson[0].child : []);
+        setManagers(result?.data?.managers);
+        result?.data?.managers.forEach((manager) => {
+          setSalesPersons(manager.id);
+        })
       });
+    }
 
     // eslint-disable-next-line
-  }, []);
+  }, [lead_type]);
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchLeads(token);
+    setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
   }, [pageState.page, lead_type, reloadDataGrid]);
 
@@ -1154,7 +1174,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }
           columns={
             User?.role === 1
-              ? columns
+              ? CEOColumns 
               : User?.role === 3
               ? ManagerColumns
               : AgentColumns
