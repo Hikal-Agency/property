@@ -19,19 +19,10 @@ import { useNavigate } from "react-router-dom";
 
 import { AiOutlineEdit } from "react-icons/ai";
 import { TbBan } from "react-icons/tb";
-import SingleUser from "../../Components/Users/SingleUser";
 
 const Users = () => {
-  const [loading, setloading] = useState(true);
-  const [singleUserData, setSingleUserData] = useState();
-  //View LEAD MODAL VARIABLES
-  const [UserModelOpen, setUserModelOpen] = useState(false);
-  const handleUserModelOpen = () => setUserModelOpen(true);
-  const handleUserModelClose = () => setUserModelOpen(false);
 
   const {
-    User,
-    setUser,
     currentMode,
     DataGridStyles,
     darkModeColors,
@@ -139,15 +130,6 @@ const Users = () => {
     { id: 4, userName: 'Nada Amin', position: 'Head of Sales', contactNumber: '5638378937', email: "4@hikalproperties.ae", status: "1" },
   ];
 
-  const handleRowClick = async (params, event) => {
-    if (
-      !event.target.classList.contains("editLeadBtn")
-    ) {
-      // setSingleUserData(params.row);
-      // handleUserModelOpen();
-      <SingleUser />
-    }
-  };
 
   return (
     <>
@@ -171,7 +153,6 @@ const Users = () => {
                     <DataGrid
                       autoHeight
                       disableSelectionOnClick
-                      onRowClick={handleRowClick}
                       rowsPerPageOptions={[30, 50, 75, 100]}
                       pagination
                       width="auto"
@@ -191,16 +172,6 @@ const Users = () => {
                   </Box>
                 </div>
               </div>
-
-
-
-
-              
-
-
-
-
-
             </div>
           </div>
           <Footer />

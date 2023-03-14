@@ -19,16 +19,9 @@ import { useNavigate } from "react-router-dom";
 
 import { AiOutlineEdit } from "react-icons/ai";
 import { TbBan } from "react-icons/tb";
-import SingleUser from "../../Components/Users/SingleUser";
 
 const Users = () => {
   const [loading, setloading] = useState(true);
-  const [singleUserData, setSingleUserData] = useState();
-  //View LEAD MODAL VARIABLES
-  const [UserModelOpen, setUserModelOpen] = useState(false);
-  const handleUserModelOpen = () => setUserModelOpen(true);
-  const handleUserModelClose = () => setUserModelOpen(false);
-
   const {
     User,
     setUser,
@@ -141,11 +134,11 @@ const Users = () => {
 
   const handleRowClick = async (params, event) => {
     if (
+      !event.target.classList.contains("deleteLeadBtn") ||
       !event.target.classList.contains("editLeadBtn")
     ) {
-      // setSingleUserData(params.row);
-      // handleUserModelOpen();
-      <SingleUser />
+      setsingleLeadData(params.row);
+      handleLeadModelOpen();
     }
   };
 
@@ -191,16 +184,6 @@ const Users = () => {
                   </Box>
                 </div>
               </div>
-
-
-
-
-              
-
-
-
-
-
             </div>
           </div>
           <Footer />

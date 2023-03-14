@@ -195,7 +195,104 @@ const Users = () => {
 
 
 
+              <h1
+            className={`${
+              currentMode === "dark" ? "text-red-600" : "text-red-600"
+            } text-center font-bold text-xl pb-5`}
+          >
+            User details
+          </h1>
+          <div className="grid grid-cols-6 gap-5">
+            <div className="col-span-2">
+              <img src="/favicon.png" width={"60%"} className="flex justify-center text-center items-center"  />
+              <h1 className="text-main-red-color text-center text-xl font-bold py-3">NAME OF THE USER</h1>
+              <h3 className={`${currentMode === "dark" ? "text-white" : "text-black"} mb-3 text-center`}>DESIGNATION OF THE USER</h3>
+              <div class="text-center py-3">
+                <span className="bg-green-600 text-white text-sm font-semibold rounded-md text-center p-2">ACTIVATED ACCOUNT</span>
+                <br></br>
+                OR
+                <br></br>
+                <span className="bg-red-600 text-white text-sm font-semibold rounded-md text-center p-2">DEACTIVATED ACCOUNT</span>
+              </div>
+            </div>
+            <div className="col-span-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex space-x-2">
+                  <h6
+                    className={`font-bold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    User Name:
+                  </h6>
+                  <h6
+                    className={`font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    NAME_OF_THE_USER
+                  </h6>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex space-x-2">
+                  <h6
+                    className={`font-bold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    Contact Number:
+                  </h6>
+                  <h6
+                    className={`font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    CONTACT_NUMBER
+                  </h6>
+                  <h6
+                    className={`font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    ALTERNATIVE_CONTACT_NUMBER
+                  </h6>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex space-x-2">
+                  <h6
+                    className={`font-bold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    Email Address:
+                  </h6>
+                  <h6
+                    className={`font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    EMAIL_ADDRESS
+                  </h6>
+                  <h6
+                    className={`font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    ALTERNATIVE_EMAIL_ADDRESS
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-5 md:grid-cols-5 sm:grid-cols-1 gap-5">
+            <div className="col-span-3 space-y-2">
               
+            </div>
+            
+          </div>
+          <div className="bg-main-red-color h-0.5 w-full my-7"></div>
 
 
 

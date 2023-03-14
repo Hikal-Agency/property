@@ -143,8 +143,8 @@ const Users = () => {
     if (
       !event.target.classList.contains("editLeadBtn")
     ) {
-      // setSingleUserData(params.row);
-      // handleUserModelOpen();
+      setSingleUserData(params.row);
+      handleUserModelOpen();
       <SingleUser />
     }
   };
@@ -191,16 +191,6 @@ const Users = () => {
                   </Box>
                 </div>
               </div>
-
-
-
-
-              
-
-
-
-
-
             </div>
           </div>
           <Footer />

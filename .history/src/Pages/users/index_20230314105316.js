@@ -191,16 +191,6 @@ const Users = () => {
                   </Box>
                 </div>
               </div>
-
-
-
-
-              
-
-
-
-
-
             </div>
           </div>
           <Footer />
