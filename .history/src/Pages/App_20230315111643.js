@@ -27,13 +27,6 @@ import Transactions from "./whatsapp-marketing/transactions";
 import Livelocation from "./location/livelocation";
 import ChangePassword from "./auth/ChangePassword";
 import { useJsApiLoader } from "@react-google-maps/api";
-// import Users from "./users";
-// import Offers from "./offers";
-// import Reports from "./reports";
-// import Tickets from "./support";
-// import Clients from "./clients";
-// import Leaderboard from "./leaderboard";
-
 const libraries = ["places"];
 
 function App() {

@@ -8,15 +8,17 @@ import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
+import { GeneralInfo as GeneralInfoTab } from "../../Components/profile/GeneralInfo.jsx";
+import { PersonalInfo as PersonalInfoTab } from "../../Components/profile/PersonalInfo";
+import { ChangePassword as ChangePasswordTab } from "../../Components/profile/ChangePassword";
 import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import NewPayment from "../../Components/whatsapp-marketing/NewPayment";
+import CreateTicket from "../../Components/support/CreateTicket";
 import AllTickets from "../../Components/support/AllTickets";
-import Transactions from "../../Components/whatsapp-marketing/Transactions";
 
-const Payments = () => {
+const Tickets = () => {
   const {
     User,
     setUser,
@@ -47,7 +49,7 @@ const Payments = () => {
             <div className={`w-full `}>
               <div className="px-5">
                 <Navbar />
-                <h4 className="font-semibold p-3 text-center">Payments</h4>
+                <h4 className="font-semibold p-7 text-center text-2xl">Welcome to <span className="text-main-red-color font-bold">HIKAL CRM</span>! We are here to assist you.</h4>
                 <div
                   className={`${
                     currentMode === "dark"
@@ -76,20 +78,23 @@ const Payments = () => {
                       // centered
                       className="w-full px-1 m-1"
                     >
-                      <Tab label="NEW PAYMENT" />
-                      <Tab label="ALL TRANSACTIONS" />
+                      <Tab label="CREATE NEW TICKET" />
+                      <Tab label="ALL TICKETS" />
+                      {/* <Tab label="UPGRADE" />
+                      <Tab label="RENEWAL" />
+                      <Tab label="CANCELLATION" /> */}
                     </Tabs>
                   </Box>
                   <div className="mt-3 pb-3">
                     <TabPanel value={value} index={0}>
-                      <NewPayment
+                      <CreateTicket
                         isLoading={loading}
                         tabValue={tabValue}
                         setTabValue={setTabValue}
                       />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                      <Transactions
+                      <AllTickets
                         isLoading={loading}
                         tabValue={tabValue}
                         setTabValue={setTabValue}
@@ -112,4 +117,4 @@ const Payments = () => {
   }
 };
 
-export default Payments;
+export default Tickets;

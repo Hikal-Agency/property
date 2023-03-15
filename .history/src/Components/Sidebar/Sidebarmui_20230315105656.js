@@ -436,11 +436,6 @@ const Sidebarmui = () => {
           icon: <ImUsers />,
         },
         {
-          name: "Clients",
-          icon: <ImUsers />,
-          link: "/clients",
-        },
-        {
           name: "Contacts",
           icon: <MdContactPage />,
           link: "/contacts",
@@ -455,7 +450,7 @@ const Sidebarmui = () => {
       ],
     },
     {
-      title: "WHATSAPP",
+      title: "WHATSAPP MARKETING",
       links: [
         {
           name: "Dashboard",
@@ -477,25 +472,35 @@ const Sidebarmui = () => {
           icon: <BsFillCreditCard2FrontFill />,
           link: "/whatsapp-marketing/payments",
         },
+        {
+          name: "Transactions",
+          icon: <GrTransaction />,
+          link: "/whatsapp-marketing/transactions",
+        },
       ],
     },
     {
       title: "LOCATION",
       links: [
         {
-          name: "Meetings",
+          name: "Upcoming meeting",
           icon: <ImLocation />,
           link: "/location/livelocation",
         },
       ],
     },
     {
-      title: "SUPPORT",
+      title: "CUSTOMER SUPPORT",
       links: [
         {
-          name: "Tickets",
+          name: "Create ticket",
+          icon: <MdCreateNewFolder />,
+          link: "/support/createticket",
+        },
+        {
+          name: "All tickets",
           icon: <HiTicket />,
-          link: "/support",
+          link: "/support/alltickets",
         },
       ],
     },

@@ -483,19 +483,24 @@ const Sidebarmui = () => {
       title: "LOCATION",
       links: [
         {
-          name: "Meetings",
+          name: "Upcoming meeting",
           icon: <ImLocation />,
           link: "/location/livelocation",
         },
       ],
     },
     {
-      title: "SUPPORT",
+      title: "CUSTOMER SUPPORT",
       links: [
         {
-          name: "Tickets",
+          name: "Create ticket",
+          icon: <MdCreateNewFolder />,
+          link: "/support/createticket",
+        },
+        {
+          name: "All tickets",
           icon: <HiTicket />,
-          link: "/support",
+          link: "/support/alltickets",
         },
       ],
     },

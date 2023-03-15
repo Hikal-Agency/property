@@ -1,23 +1,19 @@
-import Image from "next/image";
-import React from "react";import { useEffect, useState } from "react";
+import React from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
-import CreateTicket from "../../Components/support/CreateTicket";
-import Head from "next/head";
-import Loader from "../../Components/Loader";
+import DeviceComponent from "../../Components/whatsapp-marketing/DeviceComponent";
 import Footer from "../../Components/Footer/Footer";
-import UserImage from "../../public/favicon.png";
 import { useStateContext } from "../../context/ContextProvider";
 
-const CreateTickets = () => {
+const Device = () => {
   const { currentMode } = useStateContext();
 
   return (
     <>
-      <Head>
-        <title>HIKAL CRM - Location</title>
-        <meta name="description" content="Location - HIKAL CRM" />
-      </Head>
+      {/* <Head>
+        <title>HIKAL CRM - Device</title>
+        <meta name="description" content="Device - HIKAL CRM" />
+      </Head> */}
       <div className="min-h-screen">
         <div className="flex">
           <Sidebarmui />
@@ -26,17 +22,16 @@ const CreateTickets = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="px-5 ">
+            <div className="px-5">
               <Navbar />
-              <CreateTicket />
+              <DeviceComponent />
             </div>
             <Footer />
           </div>
         </div>
       </div>
     </>
-    
   );
 };
 
-export default CreateTickets;
+export default Device;

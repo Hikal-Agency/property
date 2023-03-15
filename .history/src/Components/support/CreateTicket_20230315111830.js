@@ -15,7 +15,7 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import { BiSupport, BiMailSend } from "react-icons/bi"; 
 import { BsWhatsapp } from "react-icons/bs";
-import { MdVideoCameraFront, MdOutlineWhatsapp } from "react-icons/md";
+import { MdVideoCameraFront, MdWhatsapp } from "react-icons/md";
 import { RiWhatsappFill } from "react-icons/ri";
 
 const CreateTicket = () => {
@@ -118,7 +118,7 @@ const CreateTicket = () => {
             <div className={`${currentMode === "dark" ? "bg-black" : "bg-white"} rounded-lg p-3`}>
               <div className="gap-2 text-center">
                 <div className="flex justify-center mb-2">
-                  <MdOutlineWhatsapp
+                  <MdWhatsapp
                     size={"50"}
                     color={"#ffffff"} 
                     className="bg-main-red-color p-3 rounded-full"

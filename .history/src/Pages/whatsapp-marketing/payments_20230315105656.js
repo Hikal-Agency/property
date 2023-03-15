@@ -1,13 +1,12 @@
-import Image from "next/image";
 import React from "react";
 
-const AllTickets = () => {
+const Payments = () => {
   return (
     <div className="h-screen w-screen overflow-hidden">
-      <Image
+      <img
         height={1000}
         width={1000}
-        src="/WhatsApp Image 2023-02-04 at 6.59.11 PM (1).jpeg"
+        src="/WhatsApp Image 2023-02-04 at 6.59.08 PM.jpeg"
         className="h-full w-full object-cover"
         alt=""
       />
@@ -15,4 +14,4 @@ const AllTickets = () => {
   );
 };
 
-export default AllTickets;
+export default Payments;

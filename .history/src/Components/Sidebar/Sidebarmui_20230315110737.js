@@ -493,9 +493,14 @@ const Sidebarmui = () => {
       title: "SUPPORT",
       links: [
         {
-          name: "Tickets",
+          name: "Create ticket",
+          icon: <MdCreateNewFolder />,
+          link: "/support/createticket",
+        },
+        {
+          name: "All tickets",
           icon: <HiTicket />,
-          link: "/support",
+          link: "/support/alltickets",
         },
       ],
     },

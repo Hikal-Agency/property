@@ -8,15 +8,17 @@ import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
+import { GeneralInfo as GeneralInfoTab } from "../../Components/profile/GeneralInfo.jsx";
+import { PersonalInfo as PersonalInfoTab } from "../../Components/profile/PersonalInfo";
+import { ChangePassword as ChangePasswordTab } from "../../Components/profile/ChangePassword";
 import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import NewPayment from "../../Components/whatsapp-marketing/NewPayment";
-import AllTickets from "../../Components/support/AllTickets";
-import Transactions from "../../Components/whatsapp-marketing/Transactions";
+import AllOffers from "../../Components/offers/all_offers";
+import CreateOffer from "../../Components/offers/createoffer";
 
-const Payments = () => {
+const Offers = () => {
   const {
     User,
     setUser,
@@ -47,7 +49,6 @@ const Payments = () => {
             <div className={`w-full `}>
               <div className="px-5">
                 <Navbar />
-                <h4 className="font-semibold p-3 text-center">Payments</h4>
                 <div
                   className={`${
                     currentMode === "dark"
@@ -55,6 +56,7 @@ const Payments = () => {
                       : "bg-gray-200 text-black"
                   } p-5 rounded-md my-5 mb-10`}
                 >
+                  <h4 className="font-semibold pb-5">Offers</h4>
                   <Box
                     sx={{
                       ...darkModeColors,
@@ -76,24 +78,36 @@ const Payments = () => {
                       // centered
                       className="w-full px-1 m-1"
                     >
-                      <Tab label="NEW PAYMENT" />
-                      <Tab label="ALL TRANSACTIONS" />
+                      <Tab label="CREATE NEW OFFER" />
+                      <Tab label="ALL" />
+                      <Tab label="FOR MANAGERS" />
+                      <Tab label="FOR AGENTS" />
                     </Tabs>
                   </Box>
                   <div className="mt-3 pb-3">
                     <TabPanel value={value} index={0}>
-                      <NewPayment
+                      <CreateOffer
                         isLoading={loading}
                         tabValue={tabValue}
                         setTabValue={setTabValue}
                       />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                      <Transactions
+                      <AllOffers
                         isLoading={loading}
                         tabValue={tabValue}
                         setTabValue={setTabValue}
                       />
+                    </TabPanel>
+                    <TabPanel value={value} index={2}>
+                      <div>
+                        <h1>Hello world 3 </h1>
+                      </div>
+                    </TabPanel>
+                    <TabPanel value={value} index={3}>
+                      <div>
+                        <h1>Hello world 3 </h1>
+                      </div>
                     </TabPanel>
                   </div>
 
@@ -112,4 +126,4 @@ const Payments = () => {
   }
 };
 
-export default Payments;
+export default Offers;
