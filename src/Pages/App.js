@@ -27,16 +27,13 @@ import Transactions from "./whatsapp-marketing/transactions";
 import Livelocation from "./location/livelocation";
 import ChangePassword from "./auth/ChangePassword";
 import { useJsApiLoader } from "@react-google-maps/api";
-<<<<<<< Updated upstream
-// import Users from "./users";
-// import Offers from "./offers";
-// import Reports from "./reports";
+import Users from "./users";
+import Offers from "./offers";
+import Reports from "./reports";
 // import Tickets from "./support";
-// import Clients from "./clients";
-// import Leaderboard from "./leaderboard";
+import Clients from "./clients";
+import Leaderboard from "./leaderboard";
 
-=======
->>>>>>> Stashed changes
 const libraries = ["places"];
 
 function App() {
@@ -163,10 +160,10 @@ function App() {
       path: "/reports", 
       element: <Reports /> 
     },
-    { 
-      path: "/support", 
-      element: <Tickets /> 
-    },
+    // { 
+    //   path: "/support", 
+    //   element: <Tickets /> 
+    // },
     { 
       path: "*", 
       element: <Error /> 
