@@ -11,7 +11,11 @@ const initialState = {
 
 export const ContextProvider = ({ children }) => {
   //const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+<<<<<<< Updated upstream
    const BACKEND_URL = "https://testing.hikalcrm.com/api";
+=======
+  const BACKEND_URL = "https://testing.hikalcrm.com/api";
+>>>>>>> Stashed changes
   const [screenSize, setScreenSize] = useState(undefined);
   // eslint-disable-next-line
   const [DarkIconsColor, setDarkIconsColor] = useState("#15CDCA");
