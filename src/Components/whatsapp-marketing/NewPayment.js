@@ -1,24 +1,13 @@
-
-import React, { useEffect, useState } from "react";
 import {
-  MenuItem,
   TextField,
-  Select,
   FormControl,
-  InputLabel,
   Button,
-  CircularProgress,
   Radio,
   RadioGroup,
   FormControlLabel,
   Box,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-
-import { BiSupport, BiMailSend } from "react-icons/bi"; 
-import { BsWhatsapp } from "react-icons/bs";
-import { MdVideoCameraFront, MdOutlineWhatsapp } from "react-icons/md";
-import { RiWhatsappFill } from "react-icons/ri";
 
 const NewPayment = () => {
   const { currentMode, darkModeColors } = useStateContext();

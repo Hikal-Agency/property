@@ -40,29 +40,8 @@ const RenderManagers = ({ cellValues }) => {
       border: "none",
     },
   };
-  // await axios
-  //   .get("https://staging.hikalcrm.com/api/managers")
-  //   .then((result) => {
-  //     console.log("manager response is");
-  //     console.log(result);
-  //     setManagers(result?.data?.managers);
-  //   });
-  // await axios
-  //   .get("https://staging.hikalcrm.com/api/agents")
-  //   .then((result) => {
-  //     setAgents(result?.data?.agents);
-  //   });
   useEffect(() => {
     setmanager2(cellValues?.row?.assignedToManager);
-      // axios.get(`${BACKEND_URL}/managers`).then((result) => {
-      //   console.log("manager response is");
-      //   console.log(result);
-      //   setManagers(result?.data?.managers);
-      // });
-    // axios.get("https://staging.hikalcrm.com/api/agents").then((result) => {
-    //   setAgents(result?.data?.agents);
-    // });
-    // eslint-disable-next-line
   }, [cellValues?.row?.assignedToManager]);
 
   const ChangeManager = (e) => {
@@ -128,7 +107,7 @@ const RenderManagers = ({ cellValues }) => {
     >
       <Select
         id="manager"
-        value={manager2}
+        value={manager2 || ""}
         label="Manager"
         onChange={ChangeManager}
         size="medium"
@@ -136,7 +115,7 @@ const RenderManagers = ({ cellValues }) => {
         displayEmpty
         required
       >
-        <MenuItem value="" disabled>
+        <MenuItem value="0" disabled>
         - - - - -
         </MenuItem>
         {Managers.map((manager, index) => {

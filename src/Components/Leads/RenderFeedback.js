@@ -139,6 +139,7 @@ const RenderFeedback = ({ cellValues }) => {
       navigator.geolocation.getCurrentPosition(position =>{
         setMeetingLocation({lat: position.coords.latitude, lng: position.coords.longitude, addressText: ""});
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -150,7 +151,7 @@ const RenderFeedback = ({ cellValues }) => {
     >
       <Select
         id="feedback"
-        value={Feedback}
+        value={Feedback || ""}
         label="Feedback"
         onChange={ChangeFeedback}
         size="medium"
@@ -158,7 +159,7 @@ const RenderFeedback = ({ cellValues }) => {
         displayEmpty
         required
       >
-        <MenuItem value={null} disabled>
+        <MenuItem value={"0"} disabled>
         - - - - -
         </MenuItem>
         <MenuItem value={"New"}>New</MenuItem>

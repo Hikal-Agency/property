@@ -29,7 +29,6 @@ const DashboardPanel = () => {
     setSales_chart_data,
     BACKEND_URL,
     setDashboardData,
-    setManagers,
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
@@ -65,8 +64,8 @@ const DashboardPanel = () => {
         },
       })
       .then((result) => {
-        // console.log("sales chart data is");
-        // console.log(result);
+        console.log("sales chart data is");
+        console.log(result?.data?.members_deal);
         setSales_chart_data(result?.data?.members_deal);
         setsaleschart_loading(false);
       })
@@ -403,7 +402,7 @@ const DashboardPanel = () => {
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Sales</h6>
-                <SalesAmountChartAdmin Sales_chart_data={Sales_chart_data} />
+                <SalesAmountChartAdmin/>
               </div>
             </div>
 

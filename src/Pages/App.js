@@ -19,11 +19,7 @@ import PersonaLeads from "./personalleads";
 import ProfilePage from "./profile";
 import ThirdPartyLeads from "./thirdpartyleads";
 import TransferredLeads from "./transfferedleads";
-import WhatsappDashboard from "./whatsapp-marketing/Dashboard";
-import Device from "./whatsapp-marketing/Device";
-import Messages from "./whatsapp-marketing/messages";
-import Payments from "./whatsapp-marketing/payments";
-import Transactions from "./whatsapp-marketing/transactions";
+import WhatsappMarketing from "./whatsapp-marketing/WhatsappMarketing";
 import Livelocation from "./location/livelocation";
 import ChangePassword from "./auth/ChangePassword";
 import { useJsApiLoader } from "@react-google-maps/api";
@@ -125,24 +121,8 @@ function App() {
       element: <ProfilePage />,
     },
     { 
-      path: "/whatsapp-marketing/dashboard",
-      element: <WhatsappDashboard /> 
-    },
-    { 
-      path: "/whatsapp-marketing/device",
-      element: <Device /> 
-    },
-    { 
-      path: "/whatsapp-marketing/messages", 
-      element: <Messages /> 
-    },
-    { 
-      path: "/whatsapp-marketing/payments", 
-      element: <Payments /> 
-    },
-    { 
-      path: "/whatsapp-marketing/transactions", 
-      element: <Transactions /> 
+      path: "/whatsapp-marketing/:page",
+      element: <WhatsappMarketing/>
     },
     { 
       path: "/location/livelocation", 

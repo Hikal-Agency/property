@@ -1,31 +1,17 @@
-import { Button } from "@material-tailwind/react";
 import { Box } from "@mui/material";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { BsFillPlusCircleFill } from "react-icons/bs";
-import { MdEmail } from "react-icons/md";
+import React, {useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
-import { GeneralInfo as GeneralInfoTab } from "../../Components/profile/GeneralInfo.jsx";
-import { PersonalInfo as PersonalInfoTab } from "../../Components/profile/PersonalInfo";
-import { ChangePassword as ChangePasswordTab } from "../../Components/profile/ChangePassword";
-import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
-import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import AllOffers from "../../Components/offers/all_offers";
 import CreateOffer from "../../Components/offers/createoffer";
 
 const Offers = () => {
   const {
-    User,
-    setUser,
     currentMode,
     darkModeColors,
-    setopenBackDrop,
-    BACKEND_URL,
   } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
@@ -33,7 +19,7 @@ const Offers = () => {
   };
 
   const [tabValue, setTabValue] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
 
   return (
     <>

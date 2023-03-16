@@ -1,42 +1,18 @@
 import { Button } from "@material-tailwind/react";
 import { Box } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { BsFillPlusCircleFill } from "react-icons/bs";
-import { MdEmail } from "react-icons/md";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
-import { Tab, Tabs } from "@mui/material";
-import { GeneralInfo as GeneralInfoTab } from "../../Components/profile/GeneralInfo.jsx";
-import { PersonalInfo as PersonalInfoTab } from "../../Components/profile/PersonalInfo";
-import { ChangePassword as ChangePasswordTab } from "../../Components/profile/ChangePassword";
-import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
-import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 import { AiOutlineEdit } from "react-icons/ai";
-import { TbBan } from "react-icons/tb";
 import SingleUser from "../../Components/Users/SingleUser";
 
 const Clients = () => {
-  const [loading, setloading] = useState(true);
-  const [singleUserData, setSingleUserData] = useState();
-  //View LEAD MODAL VARIABLES
-  const [UserModelOpen, setUserModelOpen] = useState(false);
-  const handleUserModelOpen = () => setUserModelOpen(true);
-  const handleUserModelClose = () => setUserModelOpen(false);
-
   const {
-    User,
-    setUser,
     currentMode,
     DataGridStyles,
-    darkModeColors,
-    setopenBackDrop,
-    BACKEND_URL,
   } = useStateContext();
 
   const columns = [

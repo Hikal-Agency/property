@@ -1,7 +1,5 @@
 import React from "react";
 import { Box, Tab, Tabs } from "@mui/material";
-import { useEffect, useState } from "react";
-import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 
 const CallLogBoard = ({

@@ -47,7 +47,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     User,
     BACKEND_URL,
     setSalesPerson,
-    SalesPerson,
     setManagers,
   } = useStateContext();
   // eslint-disable-next-line
@@ -463,21 +462,26 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
   ];
 
-  function setSalesPersons(userId){
+  async function setSalesPersons(urls){
     const token = localStorage.getItem("auth-token");
-    axios
-      .get(`${BACKEND_URL}/teamMembers/${userId}`, {
+    const requests = urls.map(url => axios.get(url, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
-      })
-      .then((result) => {
-        console.log("Result:");
-        console.log(result);
-        const salesPersonsList = result.data.team;
-        setSalesPerson((salesPerson) => ({...salesPerson, ["manager-" + userId]: salesPersonsList}));
-      });
+    }));
+    const responses = await Promise.all(requests);
+    const data = {};
+    for (let i = 0; i < responses.length; i++) {
+      const response = responses[i];
+      if(response.data?.team[0]?.isParent) {
+        const name = `manager-${response.data.team[0].isParent}`;
+        data[name] = response.data.team;
+      }
+    }
+    setSalesPerson(data);
+    setCEOColumnsState();
+    
   }
 
   const columns = [
@@ -797,6 +801,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   const [CEOColumns, setCEOColumns] = useState(columns);
 
+  function setCEOColumnsState() {
+      setCEOColumns([...CEOColumns]);
+  }
+
   const FetchLeads = async (token) => {
     console.log("lead type is");
     console.log(lead_type);
@@ -1043,24 +1051,36 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   useEffect(() => {
     setopenBackDrop(false);
-    if(User?.position !== "Founder & CEO") {
-      setSalesPersons(User?.id);
-    } else {
-      axios.get(`${BACKEND_URL}/managers`).then((result) => {
-        console.log("manager response is");
-        console.log(result);
-        setManagers(result?.data?.managers);
-        result?.data?.managers.forEach((manager) => {
-          setSalesPersons(manager.id);
-        })
-      });
-    }
-
     // eslint-disable-next-line
   }, [lead_type]);
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
+    if(User?.position !== "Founder & CEO") {
+      axios.get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }).then((result) => {
+        const agents = result.data?.team;
+        setSalesPerson({[`manager-${User?.id}`]: agents});
+      })
+    } else {
+      axios.get(`${BACKEND_URL}/managers`).then((result) => {
+        console.log("manager response is");
+        console.log(result);
+        const managers = result?.data?.managers;
+        setManagers(managers || []);
+
+        const urls = managers.map((manager) => {
+          return `${BACKEND_URL}/teamMembers/${manager?.id}`;
+        });
+
+        setSalesPersons(urls || []);
+      });
+    }
+
     FetchLeads(token);
     setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line

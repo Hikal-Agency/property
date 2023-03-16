@@ -1,7 +1,5 @@
 import React from "react";
 import { Box, TextField, FormControl, Radio, RadioGroup, FormControlLabel, Button } from "@mui/material";
-import { useEffect, useState } from "react";
-import Loader from "../Loader";
 import { useStateContext } from "../../context/ContextProvider";
 
 const CreateOffer = ({
@@ -10,10 +8,6 @@ const CreateOffer = ({
     isLoading,
 }) => {
   const { currentMode, darkModeColors } = useStateContext();
-
-  const handleChange = (event, newValue) => {
-      setTabValue(newValue);
-  };
 
   return (
         <div>

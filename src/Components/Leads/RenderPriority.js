@@ -99,7 +99,7 @@ const RenderPriority = ({ cellValues }) => {
     >
       <Select
         id="priority"
-        value={Priority}
+        value={Priority || ""}
         label="Priority"
         onChange={ChangePriority}
         size="medium"
@@ -107,7 +107,7 @@ const RenderPriority = ({ cellValues }) => {
         displayEmpty
         required
       >
-        <MenuItem value={null} disabled>
+        <MenuItem value={"0"} disabled>
         - - - - -
         </MenuItem>
         <MenuItem value={"Not Set"}>Not Set</MenuItem>

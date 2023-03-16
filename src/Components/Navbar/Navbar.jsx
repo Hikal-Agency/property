@@ -235,7 +235,7 @@ const Navbar = () => {
               <MenuItem/>
             )
           ) : (
-            <>
+            <div className="menu-wrapper">
               <MenuItem>
                 <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
                   <div className="flex items-center space-x-2">
@@ -258,7 +258,7 @@ const Navbar = () => {
               <MenuItem onClick={LogoutUser}>
                 <CgLogOut className="mr-3 text-lg" /> Logout
               </MenuItem>
-            </>
+            </div>
           )}
         </Menu>
         {/* {isClicked.cart && <Cart />} */}

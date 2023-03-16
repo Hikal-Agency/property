@@ -1,23 +1,8 @@
 // import { Button } from "@material-tailwind/react";
-import { Backdrop, CircularProgress, Modal, TextField } from "@mui/material";
-import React, { useState } from "react";
-import { FaHotjar } from "react-icons/fa";
-import { MdOutlineIndeterminateCheckBox } from "react-icons/md";
-import { FiLink } from "react-icons/fi";
-import { BsSnow2, BsPatchQuestion } from "react-icons/bs";
-import { HiOutlineUserCircle } from "react-icons/hi";
+import { Backdrop, Modal } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 // import LeadNotes from "../LeadNotes/LeadNotes";
-import Paper from "@mui/material/Paper";
-import axios from "axios";
-import moment from "moment";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 const SingleUser = ({
   UserModelOpen,
@@ -26,7 +11,7 @@ const SingleUser = ({
   handleUserModelClose,
   UserData,
 }) => {
-  const { darkModeColors, currentMode, User, BACKEND_URL } = useStateContext();
+  const { currentMode } = useStateContext();
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -66,7 +51,7 @@ const SingleUser = ({
           <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-5">
             <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} col-span-1 p-3 rounded-md w-full h-full`}>
               <div className="flex justify-center items-center m-2 mt-0">
-                <img src="/favicon.png" width={"60%"}  />
+                <img src="/favicon.png" alt="" width={"60%"}  />
               </div>
               <h1 className="text-main-red-color text-center text-xl font-bold py-3">NAME OF THE USER</h1>
               <h3 className={`${currentMode === "dark" ? "text-white" : "text-black"} mb-3 text-center`}>DESIGNATION OF THE USER</h3>

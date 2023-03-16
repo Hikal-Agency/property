@@ -1,22 +1,8 @@
-
-import React, { useEffect, useState } from "react";
 import {
-  MenuItem,
-  TextField,
-  Select,
-  FormControl,
-  InputLabel,
-  Button,
-  CircularProgress,
   Box,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { DataGrid } from '@mui/x-data-grid';
-
-import { BiSupport, BiMailSend } from "react-icons/bi"; 
-import { BsWhatsapp } from "react-icons/bs";
-import { MdVideoCameraFront, MdOutlineWhatsapp } from "react-icons/md";
-import { RiWhatsappFill } from "react-icons/ri";
 
 const AllTickets = () => {
   const { 

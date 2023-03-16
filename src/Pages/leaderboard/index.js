@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Tab, Tabs } from "@mui/material";
-import { useLayoutEffect, useState, useRef } from "react";
+import { useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import Footer from "../../Components/Footer/Footer";
@@ -11,7 +11,7 @@ import TargetBoard from "./targetboard";
 
 const Leaderboard = () => {
 
-  const { currentMode, darkModeColors, BACKEND_URL, setDashboardData } =
+  const { currentMode, darkModeColors } =
     useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
@@ -19,7 +19,7 @@ const Leaderboard = () => {
   };
 
   const [tabValue, setTabValue] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
 
   //   const ref = useRef(null);
   //   const [width, setWidth] = useState(0);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -11,28 +11,31 @@ import { useStateContext } from "../../context/ContextProvider";
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
-const SalesAmountChartAdmin = ({ Sales_chart_data }) => {
-  const { currentMode } = useStateContext();
-  const [Sales_data] = useState(
-    Sales_chart_data ? Sales_chart_data : []
-  );
+const SalesAmountChartAdmin = () => {
+  const { currentMode, Sales_chart_data } = useStateContext();
+  const [salesData, setSalesData] = useState({
+    labels: [],
+    datasets: [],
+  });
 
-  const data = {
-    labels: Sales_data.map((data) => data.userName), //["Riviera", "Crescent", "Tiger"],
+  useEffect(() => {
+    setSalesData({
+    labels: Sales_chart_data?.map((data) => data.userName), //["Riviera", "Crescent", "Tiger"],
     datasets: [
       {
         label: 'Sales in AED',
-        data: Sales_data.map((data) => data.total_ammount_sum_amount), //[4, 3, 3],
+        data: Sales_chart_data.map((data) => data.total_ammount_sum_amount), //[4, 3, 3],
         backgroundColor: ["rgba(218, 31, 38, 1)"],
       },
     ],
-  };
+  });
+  }, [Sales_chart_data]);
 
   return (
     <span>
       {currentMode === "dark" ? (
         <Bar
-          data={data}
+          data={salesData}
           options={{
             indexAxis: 'y',
             elements: {
@@ -77,7 +80,7 @@ const SalesAmountChartAdmin = ({ Sales_chart_data }) => {
         />
       ) : (
         <Bar
-            data={data}
+            data={salesData}
             options={{
                 indexAxis: 'y',
                 elements: {

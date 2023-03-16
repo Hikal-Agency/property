@@ -58,9 +58,9 @@ const Calls = ({
         <Box
           className="mt-1 p-5"
           sx={
-            isLoading && {
+            isLoading ? {
               opacity: 0.3,
-            }
+            } : {}
           }
         >
           <TabPanel value={tabValue} index={0}>

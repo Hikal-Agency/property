@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Tab, Tabs } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 
 const TargetBoard = ({

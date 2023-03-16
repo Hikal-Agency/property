@@ -106,8 +106,8 @@ const UpdateLead = ({
           setSalesPerson(SalesPerson[0]?.child ? SalesPerson[0].child : []);
           console.log("filtyer manager is");
           console.log(filter_manager);
-          setloading(false);
         }
+        setloading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -296,7 +296,7 @@ const UpdateLead = ({
                           id="Manager"
                           // value={Manager}
                           value={
-                            User?.role === 3 ? filter_manager[0]?.id : Manager
+                            User?.role === 3 ? (filter_manager[0]?.id || "") : (Manager || "")
                           }
                           disabled={
                             (User?.role === 3 || User?.role === 1) && true
@@ -308,11 +308,11 @@ const UpdateLead = ({
                           displayEmpty
                           required
                         >
-                          <MenuItem value="" disabled>
+                          <MenuItem value="0" disabled>
                             Manager
                           </MenuItem>
                           {Manager2.map((person, index) => (
-                            <MenuItem key={index} value={person?.id}>
+                            <MenuItem key={index} value={person?.id || ""}>
                               {person?.loginId}
                             </MenuItem>
                           ))}
@@ -321,7 +321,7 @@ const UpdateLead = ({
                       {(User.role === 1 || User.role === 3) && (
                         <Select
                           id="SalesPerson"
-                          value={SalesPerson2}
+                          value={SalesPerson2 || ""}
                           label="SalesPerson"
                           onChange={ChangeSalesPerson}
                           size="medium"
@@ -330,11 +330,11 @@ const UpdateLead = ({
                           disabled={User?.role === 1 && true}
                           // required={SalesPerson.length > 0 ? true : false}
                         >
-                          <MenuItem value="" disabled>
+                          <MenuItem value="0" disabled>
                             Sales Person-
                           </MenuItem>
                           {SalesPerson.map((person, index) => (
-                            <MenuItem key={index} value={person?.id}>
+                            <MenuItem key={index} value={person?.id || ""}>
                               {person?.loginId}
                             </MenuItem>
                           ))}
@@ -388,7 +388,7 @@ const UpdateLead = ({
                         displayEmpty
                         required
                       >
-                        <MenuItem value="" disabled>
+                        <MenuItem value="0" disabled>
                           Enquiry about
                         </MenuItem>
                         <MenuItem value={"Studio"}>Studio</MenuItem>
@@ -412,7 +412,7 @@ const UpdateLead = ({
                         displayEmpty
                         required
                       >
-                        <MenuItem value="" disabled>
+                        <MenuItem value="0" disabled>
                           Property type
                         </MenuItem>
                         <MenuItem value={"Apartment"}>Appartment</MenuItem>
@@ -431,7 +431,7 @@ const UpdateLead = ({
                         displayEmpty
                         required
                       >
-                        <MenuItem value="" disabled>
+                        <MenuItem value="0" disabled>
                           For
                         </MenuItem>
                         <MenuItem value={"Investment"}>Investment</MenuItem>
@@ -499,7 +499,7 @@ const UpdateLead = ({
                         displayEmpty
                         required
                       >
-                        <MenuItem value="" disabled>
+                        <MenuItem value="0" disabled>
                           Prefered language
                         </MenuItem>
                         <MenuItem value={"Arabic"}>Arabic</MenuItem>

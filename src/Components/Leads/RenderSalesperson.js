@@ -22,7 +22,8 @@ const RenderSalesperson = ({ cellValues }) => {
   const [SalesPerson3, setSalesPerson3] = useState();
   const [newSalesPerson, setnewSalesPerson] = useState("");
   const [Dialogue, setDialogue] = useState(false);
-  const { currentMode, reloadDataGrid, setreloadDataGrid, User,SalesPerson, BACKEND_URL } =
+  const [noAgents, setNoAgents] = useState(false);
+  const { currentMode, reloadDataGrid, setreloadDataGrid,SalesPerson, BACKEND_URL } =
     useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -119,12 +120,17 @@ const RenderSalesperson = ({ cellValues }) => {
 
   useEffect(() => {
     const managerId = cellValues?.row?.assignedToManager;
-    console.log(SalesPerson);
-    setSalesPersonsList(SalesPerson["manager-"+managerId]);
-    setSalesPerson2(cellValues?.row?.assignedToSales);
+    const agents = SalesPerson[`manager-${managerId}`];
+    if(agents === undefined) {
+      setNoAgents(true);
+    } else {
+      setNoAgents(false);
+      setSalesPersonsList(agents);
+      setSalesPerson2(cellValues?.row?.assignedToSales);
+    }
   
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cellValues?.row?.assignedToManager, cellValues?.row?.assignedToSales]);
+  }, [cellValues?.row?.assignedToManager, cellValues?.row?.assignedToSales, SalesPerson]);
 
   return (
     <Box
@@ -133,9 +139,10 @@ const RenderSalesperson = ({ cellValues }) => {
       } w-full h-full flex items-center justify-center`}
       sx={SelectStyles}
     >
+    {noAgents ? <p style={{color: "#0000005c", textAlign: "left", width: "85%"}}>No Agents</p> : 
       <Select
         id="SalesPerson"
-        value={SalesPerson2}
+        value={SalesPerson2 || ""}
         name="salesperson"
         label="Salesperson"
         onChange={ChangeSalesPerson}
@@ -143,7 +150,7 @@ const RenderSalesperson = ({ cellValues }) => {
         className="w-[100%] h-[75%]"
         displayEmpty
         required
-      >
+      >     
         <MenuItem value="0" disabled>
           - - - - -
         </MenuItem>
@@ -160,6 +167,8 @@ const RenderSalesperson = ({ cellValues }) => {
           );
         })}
       </Select>
+    }
+
       {Dialogue && (
         <>
           <Dialog

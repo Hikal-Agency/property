@@ -1,6 +1,7 @@
-import { Modal, Backdrop } from "@mui/material"
+import { Modal, Backdrop, IconButton } from "@mui/material"
 import { useStateContext } from "../../context/ContextProvider";
 import LocationPicker from "./LocationPicker";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 const ShowLocation = ({isModalOpened, handleModalClose, meetingLocation,}) => {
   const {currentMode } = useStateContext();
@@ -10,6 +11,7 @@ const ShowLocation = ({isModalOpened, handleModalClose, meetingLocation,}) => {
     boxShadow: 24,
     height: "90vh",
     overflowY: "scroll",
+    position: "relative"
   };
     return (<>
       <Modal
@@ -37,8 +39,8 @@ const ShowLocation = ({isModalOpened, handleModalClose, meetingLocation,}) => {
               >
                 Meeting Location
               </h1>
-
               <LocationPicker showOnly={true} meetingLocation={meetingLocation}/>
+            <AiFillCloseCircle onClick={handleModalClose} size={35} style={{position: "absolute", top: 15, right: 15, cursor: "pointer"}}/>
           </div>
           </Modal>
     </>);

@@ -1,7 +1,5 @@
 import React from "react";
-import { Box, Tab, Tabs } from "@mui/material";
-import { useEffect, useState } from "react";
-import Loader from "../Loader";
+import { Box } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 
 const AllOffers = ({
@@ -9,11 +7,7 @@ const AllOffers = ({
     setTabValue,
     isLoading,
 }) => {
-  const { currentMode, darkModeColors } = useStateContext();
-
-  const handleChange = (event, newValue) => {
-      setTabValue(newValue);
-  };
+  const { currentMode } = useStateContext();
 
   const offer = [
         {
