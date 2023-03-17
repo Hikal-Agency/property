@@ -232,7 +232,7 @@ const UpdateBookedDeal = ({
   };
   return (
     <>
-      {/* MODAL FOR SINGLE LEAD SHOW */}
+      {/* MODAL FOR BOOKED LEAD SHOW */}
       <Modal
         keepMounted
         open={LeadModelOpen}
@@ -298,45 +298,52 @@ const UpdateBookedDeal = ({
                         id="LeadName"
                         type={"text"}
                         label="Lead name"
-                        className="w-full mb-5 py-2"
-                        variant="standard"
-                        size="small"
+                        className="w-full mb-5"
+                        style={{ marginBottom: "20px" }}
+                        variant="outlined"
+                        size="medium"
                         required
                         value={LeadName}
-                        onChange={(e) => setLeadName(e.target.value)}
+                        readOnly
+                        // onChange={(e) => setLeadName(e.target.value)}
                       />
                       <TextField
                         id="LeadContactNumber"
                         type={"number"}
                         label="Contact number"
-                        className="w-full mb-5 py-2"
-                        variant="standard"
-                        size="small"
+                        className="w-full mb-5"
+                        style={{ marginBottom: "20px" }}
+                        variant="outlined"
+                        size="medium"
                         required
+                        readOnly
                         value={LeadContact}
-                        onChange={(e) => setLeadContact(e.target.value)}
+                        // onChange={(e) => setLeadContact(e.target.value)}
                       />
 
                       <TextField
                         id="LeadEmailAddress"
                         type={"email"}
                         label="Email address"
-                        className="w-full mb-5 py-2"
-                        variant="standard"
-                        size="small"
+                        className="w-full mb-5"
+                        style={{ marginBottom: "20px" }}
+                        variant="outlined"
+                        size="medium"
+                        readOnly
                         value={LeadEmail}
-                        onChange={(e) => setLeadEmail(e.target.value)}
+                        // onChange={(e) => setLeadEmail(e.target.value)}
                       />
 
-                      <FormControl fullWidth variant="standard" size="small">
+                      <FormControl fullWidth variant="outlined" size="medium">
                         <InputLabel id="">Preferred language</InputLabel>
                         <Select
                           id="LanguagePrefered"
                           value={LanguagePrefered}
                           label="Prefered language"
-                          onChange={ChangeLanguagePrefered}
-                          className="w-full mb-5 py-2"
+                          // onChange={ChangeLanguagePrefered}
+                          className="w-full mb-5"
                           displayEmpty
+                          readOnly
                           required
                         >
                           <MenuItem value="" disabled>
@@ -366,27 +373,31 @@ const UpdateBookedDeal = ({
                       >
                         Project details
                       </h4>
+                      
                       <TextField
                         id="Project"
                         type={"text"}
                         label="Project name"
-                        className="w-full mb-5 py-2"
-                        variant="standard"
-                        size="small"
+                        className="w-full mb-5"
+                        style={{ marginBottom: "20px" }}
+                        variant="outlined"
+                        size="medium"
+                        readOnly
                         value={LeadProject}
-                        onChange={(e) => setLeadProject(e.target.value)}
+                        // onChange={(e) => setLeadProject(e.target.value)}
                       />
 
-                      <FormControl fullWidth variant="standard" size="small">
+                      <FormControl fullWidth variant="outlined" size="medium">
                         <InputLabel id="">Enquiry for</InputLabel>
                         <Select
                           id="enquiry"
                           value={EnquiryType}
                           label="Enquiry Type"
-                          onChange={ChangeEnquiryType}
-                          className="w-full mb-5 py-2"
+                          // onChange={ChangeEnquiryType}
+                          className="w-full mb-5"
                           displayEmpty
                           required
+                          readOnly
                         >
                           <MenuItem value="" disabled>
                             ---NONE---
@@ -403,16 +414,17 @@ const UpdateBookedDeal = ({
                         </Select>
                       </FormControl>
 
-                      <FormControl fullWidth variant="standard" size="small">
+                      <FormControl fullWidth variant="outlined" size="medium">
                         <InputLabel id="">Property type</InputLabel>
                         <Select
                           id="property-type"
                           value={PropertyType}
                           label="Property type"
-                          onChange={ChangePropertyType}
-                          className="w-full mb-5 py-2"
+                          // onChange={ChangePropertyType}
+                          className="w-full mb-5"
                           displayEmpty
                           required
+                          readOnly
                         >
                           <MenuItem value="" disabled>
                             ---NONE---
@@ -424,16 +436,17 @@ const UpdateBookedDeal = ({
                         </Select>
                       </FormControl>
 
-                      <FormControl fullWidth variant="standard" size="small">
+                      <FormControl fullWidth variant="outlined" size="medium">
                         <InputLabel id="">Purpose of enquiry</InputLabel>
                         <Select
                           id="for"
                           value={ForType}
                           label="Purpose of enquiry"
-                          onChange={ChangeForType}
-                          className="w-full mb-5 py-2"
+                          // onChange={ChangeForType}
+                          className="w-full mb-5"
                           displayEmpty
                           required
+                          readOnly
                         >
                           <MenuItem value="" disabled>
                             ---NONE---
@@ -457,14 +470,14 @@ const UpdateBookedDeal = ({
                         Status
                       </h4>
 
-                      <FormControl fullWidth variant="standard" size="small">
+                      <FormControl fullWidth variant="outlined" size="medium">
                         <InputLabel id="">Feedback</InputLabel>
                         <Select
                           id="for"
                           value={Feedback}
                           label="Feedback"
                           onChange={ChangeFeedback}
-                          className="w-full mb-5 py-2"
+                          className="w-full mb-5"
                           displayEmpty
                           required
                         >

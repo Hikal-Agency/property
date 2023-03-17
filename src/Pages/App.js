@@ -26,7 +26,7 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import Users from "./users";
 import Offers from "./offers";
 import Reports from "./reports";
-// import Tickets from "./support";
+import Tickets from "./support";
 import Clients from "./clients";
 import Leaderboard from "./leaderboard";
 
@@ -82,8 +82,10 @@ function App() {
       path: "/closedeals",
       element: <ClosedealsPage />,
     },
-
-    { path: "/timeline/:id", element: <TimelinePage /> },
+    { 
+      path: "/timeline/:id", 
+      element: <TimelinePage /> 
+    },
     {
       path: "/leadnotes",
       element: <LeadNotesPage />,
@@ -140,10 +142,10 @@ function App() {
       path: "/reports", 
       element: <Reports /> 
     },
-    // { 
-    //   path: "/support", 
-    //   element: <Tickets /> 
-    // },
+    { 
+      path: "/support", 
+      element: <Tickets /> 
+    },
     { 
       path: "*", 
       element: <Error /> 

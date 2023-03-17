@@ -213,7 +213,7 @@ const UpdateLead = ({
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] md:w-[85%]  ${
+          className={`w-[calc(100%-20px)] sm:w-[85%] md:w-[80%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%] ${
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md`}
         >
@@ -252,7 +252,7 @@ const UpdateLead = ({
                   <div className="flex flex-col justify-center items-center gap-4 mt-2 mb-4">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
-                        label="Meeting Date"
+                        label="Closed Deal Date"
                         value={leadDateValue}
                         views={["year", "month", "day"]}
                         required
@@ -275,7 +275,7 @@ const UpdateLead = ({
                     <TextField
                       required
                       fullWidth
-                      label="Lead Amount"
+                      label="Closed Deal Amount"
                       value={leadAmount}
                       onChange={(e) => {
                         setLeadAmount(e.target.value);

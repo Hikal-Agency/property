@@ -427,14 +427,17 @@ const Sidebarmui = () => {
         {
           name: "Reports",
           icon: <HiDocumentReport />,
+          link: "/reports",
         },
         {
           name: "Offers",
           icon: <AiFillGift />,
+          link: "/offers",
         },
         {
           name: "Users",
           icon: <ImUsers />,
+          link: "/users",
         },
         {
           name: "Clients",
@@ -452,7 +455,7 @@ const Sidebarmui = () => {
           icon: <MdLeaderboard />,
           link: "/leaderboard",
         },
-        { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
       ],
     },
     {
@@ -464,14 +467,14 @@ const Sidebarmui = () => {
           link: "/whatsapp-marketing/dashboard",
         },
         {
-          name: "Device",
-          icon: <FaMobile />,
-          link: "/whatsapp-marketing/device",
-        },
-        {
           name: "Messages",
           icon: <AiFillMessage />,
           link: "/whatsapp-marketing/messages",
+        },
+        {
+          name: "Device",
+          icon: <FaMobile />,
+          link: "/whatsapp-marketing/device",
         },
         {
           name: "Payments",
