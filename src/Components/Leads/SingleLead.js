@@ -1,5 +1,5 @@
 // import { Button } from "@material-tailwind/react";
-import { Backdrop, CircularProgress, Modal, TextField } from "@mui/material";
+import { Backdrop, CircularProgress, Modal, TextField, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { FiLink } from "react-icons/fi";
 import { BsSnow2, BsPatchQuestion } from "react-icons/bs";
@@ -8,6 +8,7 @@ import { useStateContext } from "../../context/ContextProvider";
 // import LeadNotes from "../LeadNotes/LeadNotes";
 import axios from "axios";
 import moment from "moment";
+import { IoMdClose } from "react-icons/io";
 import { toast, ToastContainer } from "react-toastify";
 
 const SingleLead = ({
@@ -104,6 +105,17 @@ const SingleLead = ({
             currentMode === "dark" ? "bg-gray-900 text-white" : "bg-white"
           } absolute top-1/2 left-1/2 p-10 rounded-md`}
         >
+        <IconButton
+          sx={{
+            position: "absolute",
+            right: 12,
+            top: 10,
+            color: (theme) => theme.palette.grey[500],
+          }}
+          onClick={handleLeadModelClose}
+        >
+          <IoMdClose size={18} />
+        </IconButton>
           {/* {console.log("lead data is")}
           {console.log(LeadData)} */}
           <h1

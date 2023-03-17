@@ -34,8 +34,8 @@ const data = [
   },
 ];
 
-const Task = ({ call_logs }) => {
-  const { currentMode, darkModeColors, BACKEND_URL, setDashboardData } =
+const Task = () => {
+  const { currentMode, darkModeColors, BACKEND_URL } =
     useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
@@ -44,14 +44,16 @@ const Task = ({ call_logs }) => {
 
   const [tabValue, setTabValue] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [callLogsData, setCallLogsData] = useState({});
 
   const setCallLogs = async (tabId) => {
     try {
       setLoading(true);
       let url = "";
-      if (tabId === 0) {
+
+      if (Number(tabId) === 0) {
         url = `${BACKEND_URL}/callLogs/?%2F=&period=daily`;
-      } else if (tabId === 1) {
+      } else if (Number(tabId) === 1) {
         url = `${BACKEND_URL}/callLogs/?%2F=&period=monthly`;
       } else {
         url = `${BACKEND_URL}/callLogs`;
@@ -65,9 +67,8 @@ const Task = ({ call_logs }) => {
       });
 
       const { call_logs } = await response.json();
-      setDashboardData((dashboardData) => {
-        return { ...dashboardData, call_logs };
-      });
+      console.log(call_logs);
+      setCallLogsData({...call_logs});
       setLoading(false);
     } catch (error) {
       console.log("Error in Setting call logs ", error);
@@ -75,7 +76,8 @@ const Task = ({ call_logs }) => {
   };
 
   useEffect(() => {
-    setCallLogs(0);
+    setCallLogs("0");
+    setTabValue(0);
     //eslint-disable-next-line
   }, []);
 
@@ -126,9 +128,9 @@ const Task = ({ call_logs }) => {
             <Calls
               isLoading={loading}
               setCallLogs={setCallLogs}
+              callLogsData={callLogsData}
               tabValue={tabValue}
               setTabValue={setTabValue}
-              call_logs={call_logs}
             />
           </TabPanel>
           <TabPanel value={value} index={1}>

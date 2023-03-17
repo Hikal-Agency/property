@@ -8,11 +8,13 @@ import {
   Select,
   TextField,
   FormControl,
+  IconButton,
   InputLabel,
 } from "@mui/material";
 import axios from "axios";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
@@ -249,6 +251,17 @@ const UpdateBookedDeal = ({
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-7 rounded-md`}
         >
+        <IconButton
+          sx={{
+            position: "absolute",
+            right: 12,
+            top: 10,
+            color: (theme) => theme.palette.grey[500],
+          }}
+          onClick={handleLeadModelClose}
+        >
+          <IoMdClose size={18} />
+        </IconButton>
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />

@@ -1,4 +1,3 @@
-import { Button } from "@material-tailwind/react";
 import {
   Box,
   CircularProgress,
@@ -12,11 +11,8 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
-import Error from "../Error";
 import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
-import { BiEdit } from "react-icons/bi";
-import { MdDeleteOutline } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import Footer from "../../Components/Footer/Footer";
@@ -147,7 +143,6 @@ const SingleLeadNote = (props) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-          {error404 ? <Error/> :
             <div className="flex">
               <Sidebarmui />
               <div className={`w-full`}>
@@ -309,7 +304,6 @@ const SingleLeadNote = (props) => {
                         Lead Notes
                       </h1>
 
-                      {LeadData?.notes?.data?.length > 0 ? (
                         <Box className="">
                           <form
                             className="mb-10 mt-5"
@@ -347,6 +341,17 @@ const SingleLeadNote = (props) => {
                               )}
                             </button>
                           </form>
+                          {error404 || LeadData?.notes?.data?.length === 0 ?
+                        <p
+                          className={`mt-3 italic ${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-main-red-color"
+                          }`}
+                        >
+                          No notes to show
+                        </p>
+                        :
                           <TableContainer component={Paper}>
                             <Table
                               sx={{
@@ -417,24 +422,13 @@ const SingleLeadNote = (props) => {
                               </TableBody>
                             </Table>
                           </TableContainer>
+                        }
                         </Box>
-                      ) : (
-                        <p
-                          className={`mt-3 italic ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-main-red-color"
-                          }`}
-                        >
-                          No notes to show
-                        </p>
-                      )}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          }
             <Footer />
           </div>
         )}

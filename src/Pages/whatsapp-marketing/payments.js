@@ -23,18 +23,6 @@ const Payments = () => {
 
   return (
     <>
-    {/* <ToastContainer/> */}
-      <div className="flex min-h-screen">
-        <div
-          className={`w-full ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
-          }`}
-        >
-          <div className="flex">
-            <Sidebarmui />
-            <div className={`w-full `}>
-              <div className="px-5">
-                <Navbar />
                 <h4 className="font-semibold p-3 text-center">Payments</h4>
                 <div
                   className={`${
@@ -86,12 +74,6 @@ const Payments = () => {
                   </div>
 
                 </div>
-              </div>
-            </div>
-          </div>
-          <Footer />
-        </div>
-      </div>
     </>
   );
   function TabPanel(props) {

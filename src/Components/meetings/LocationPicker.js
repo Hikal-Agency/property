@@ -1,6 +1,17 @@
 import { useState, useEffect } from "react";
+import { Button } from "@mui/material";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import AutoComplete from "./AutoComplete";
+import { BiCurrentLocation } from "react-icons/bi";
+
+const mapContainerStyle = {
+  width: "100%",
+  height: "400px",
+};
+
+const currentLocBtnStyle = {
+  padding: "7px", width: 40, height: 40, minWidth: "auto", position: "absolute", top: 15, right: 10
+};
 
 const LocationPicker = ({
   meetingLocation,
@@ -12,6 +23,34 @@ const LocationPicker = ({
   const [map, setMap] = useState({
     panTo() {},
   });
+
+  const handleCurrentLocationClick = () => {
+      navigator.geolocation.getCurrentPosition((position) => {
+        geocoder.geocode(
+          {
+            location: {
+              lat: Number(position.coords.latitude),
+              lng: Number(position.coords.longitude),
+            },
+          },
+          (results, status) => {
+            if (status === "OK") {
+              if(showOnly) {
+                map.panTo({ lat: meetingLocation.lat, lng: meetingLocation.lng });
+              } else {
+              setMeetingLocation({
+                lat: Number(position.coords.latitude),
+                lng: Number(position.coords.longitude),
+                addressText: results[0].formatted_address,
+              });
+            }
+            } else {
+              alert("Getting address failed due to: " + status);
+            }
+          }
+        );
+      });
+  }
 
   const onSelect = ({ latLng }) => {
     geocoder.geocode(
@@ -29,10 +68,6 @@ const LocationPicker = ({
         }
       }
     );
-  };
-  const mapContainerStyle = {
-    width: "100%",
-    height: "400px",
   };
   const options = {
     disableDefaultUI: true,
@@ -64,6 +99,8 @@ const LocationPicker = ({
             options={options}
           >
             <Marker position={meetingLocation} />
+
+            <Button onClick={handleCurrentLocationClick} variant="contained" sx={currentLocBtnStyle}><BiCurrentLocation color="white" size={25}/></Button>
           </GoogleMap>
         </div>
       ) : (

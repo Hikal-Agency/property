@@ -1,8 +1,9 @@
 // import { Button } from "@material-tailwind/react";
-import { Backdrop, Modal } from "@mui/material";
+import { Backdrop, Modal, IconButton } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 // import LeadNotes from "../LeadNotes/LeadNotes";
 import { ToastContainer } from "react-toastify";
+import { IoMdClose } from "react-icons/io";
 
 const SingleUser = ({
   UserModelOpen,
@@ -41,6 +42,17 @@ const SingleUser = ({
             currentMode === "dark" ? "bg-gray-900 text-white" : "bg-white"
           } absolute top-1/2 left-1/2 p-10 rounded-md`}
         >
+        <IconButton
+          sx={{
+            position: "absolute",
+            right: 12,
+            top: 10,
+            color: (theme) => theme.palette.grey[500],
+          }}
+          onClick={handleUserModelClose}
+        >
+          <IoMdClose size={18} />
+        </IconButton>
           <h1
             className={`${
               currentMode === "dark" ? "text-red-600" : "text-red-600"

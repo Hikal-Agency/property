@@ -150,8 +150,7 @@ function App() {
     },
   ]);
  useJsApiLoader({
-      // googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-      googleMapsApiKey: "AIzaSyBtYwXsFlL25Jct9nYMl8ytW0KiZ6q19sY",
+      googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
       libraries,
     });
 

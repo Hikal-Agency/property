@@ -7,14 +7,13 @@ import {
   BsCalendarWeekFill,
   BsFillCreditCard2FrontFill,
 } from "react-icons/bs";
-import { GrBitcoin, GrTransaction } from "react-icons/gr";
+import { GrBitcoin } from "react-icons/gr";
 import { HiTicket, HiDocumentReport, HiUsers } from "react-icons/hi";
 import {
   MdLeaderboard,
   MdPersonAdd,
   MdSpeakerNotes,
   MdContactPage,
-  MdCreateNewFolder,
 } from "react-icons/md";
 import {
   RiWhatsappFill,

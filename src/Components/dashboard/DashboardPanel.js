@@ -567,7 +567,7 @@ const DashboardPanel = () => {
 
       {/* 5TH ROW [TODO + SHORTCUTS] */}
       <div className="grid grid-cols-1 pb-3">
-        <Task call_logs={DashboardData?.call_logs} />
+        <Task/>
       </div>
       {/* 5TH ROW END [TODO + SHORTCUTS] */}
     </div>

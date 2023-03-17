@@ -1,5 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import { Backdrop, CircularProgress, Modal, TextField } from "@mui/material";
+import { Backdrop, CircularProgress, Modal, TextField, IconButton } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
@@ -8,6 +8,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
+import { IoMdClose } from "react-icons/io";
 
 const UpdateLead = ({
   LeadModelOpen,
@@ -216,6 +217,17 @@ const UpdateLead = ({
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md`}
         >
+        <IconButton
+          sx={{
+            position: "absolute",
+            right: 12,
+            top: 10,
+            color: (theme) => theme.palette.grey[500],
+          }}
+          onClick={handleLeadModelClose}
+        >
+          <IoMdClose size={18} />
+        </IconButton>
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />

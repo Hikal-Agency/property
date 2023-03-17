@@ -1150,7 +1150,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     const apiRef = useGridApiContext();
     const page = useGridSelector(apiRef, gridPageSelector);
     const pageCount = useGridSelector(apiRef, gridPageCountSelector);
-
     return (
       <>
         <Pagination

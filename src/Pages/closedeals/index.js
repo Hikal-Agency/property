@@ -19,7 +19,7 @@ const ClosedealsPage = (props) => {
     data: [],
     total: 0,
     page: 1,
-    pageSize: 15,
+    pageSize: 25,
   });
   const FetchProfile = async (token) => {
     await axios

@@ -210,6 +210,7 @@ const Closedeals = ({ pageState, setpageState }) => {
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchLeads(token);
+
     // eslint-disable-next-line
   }, [pageState.page]);
 
@@ -228,7 +229,6 @@ const Closedeals = ({ pageState, setpageState }) => {
     const apiRef = useGridApiContext();
     const page = useGridSelector(apiRef, gridPageSelector);
     const pageCount = useGridSelector(apiRef, gridPageCountSelector);
-
     return (
       <>
         <Pagination

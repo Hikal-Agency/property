@@ -7,6 +7,7 @@ import {
   FormControl,
   Select,
   InputLabel,
+  IconButton,
   MenuItem,
 } from "@mui/material";
 import axios from "axios";
@@ -19,6 +20,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useStateContext } from "../../context/ContextProvider";
 import LocationPicker from "./LocationPicker";
+import { IoMdClose } from "react-icons/io";
 
 const UpdateMeeting = ({
   meetingModalOpen,
@@ -239,6 +241,17 @@ const UpdateMeeting = ({
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md`}
         >
+        <IconButton
+          sx={{
+            position: "absolute",
+            right: 12,
+            top: 10,
+            color: (theme) => theme.palette.grey[500],
+          }}
+          onClick={handleMeetingModalClose}
+        >
+          <IoMdClose size={18} />
+        </IconButton>
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />

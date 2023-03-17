@@ -3,18 +3,14 @@ import {
   Backdrop,
   Box,
   CircularProgress,
-  MenuItem,
   Modal,
-  Select,
   TextField,
-  FormControl,
-  InputLabel
+  IconButton,
 } from "@mui/material";
 import axios from "axios";
-import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
+import { IoMdClose } from "react-icons/io";
 
 const MeetingForm = ({
   LeadModelOpen,
@@ -30,12 +26,6 @@ const MeetingForm = ({
   const style = {
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
-  };
-  const textFieldStyle = {
-    "& .MuiOutlinedInput-notchedOutline ":
-    {
-      bottomBorder: "none",
-    },
   };
 
   useEffect(() => {
@@ -89,6 +79,17 @@ const MeetingForm = ({
             </div>
           ) : (
             <>
+          <IconButton
+            sx={{
+              position: "absolute",
+              right: 12,
+              top: 10,
+              color: (theme) => theme.palette.grey[500],
+            }}
+            onClick={handleLeadModelClose}
+          >
+            <IoMdClose size={18} />
+          </IconButton>
               <h1
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-black"

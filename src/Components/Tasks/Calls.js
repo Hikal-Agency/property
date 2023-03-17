@@ -5,14 +5,13 @@ import { VscCallOutgoing, VscCallIncoming } from "react-icons/vsc";
 import { useStateContext } from "../../context/ContextProvider";
 
 const Calls = ({
-  call_logs,
   tabValue,
   setTabValue,
   setCallLogs,
+  callLogsData,
   isLoading,
 }) => {
-  const { darkModeColors, currentMode } = useStateContext();
-  // const [value, setValue] = useState(0);
+  const { darkModeColors, currentMode} = useStateContext();
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -66,7 +65,7 @@ const Calls = ({
           <TabPanel value={tabValue} index={0}>
             <div className="mb-10 mx-3">
               <h1 className="font-semibold text-center">
-                Today total calls: <span>{call_logs?.all_calls}</span>
+                Today total calls: <span>{callLogsData?.all_calls}</span>
               </h1>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-y-5 gap-x-5">
@@ -79,7 +78,7 @@ const Calls = ({
                   <h2>Outgoing calls:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.dialed}</span>
+                  <span>{callLogsData?.dialed}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -88,7 +87,7 @@ const Calls = ({
                   <h2>Answered:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.answered}</span>
+                  <span>{callLogsData?.answered}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -100,7 +99,7 @@ const Calls = ({
                   <h2>Not answered:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.notanswered}</span>
+                  <span>{callLogsData?.notanswered}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -112,7 +111,7 @@ const Calls = ({
                   <h2>Incoming calls:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.recieved}</span>
+                  <span>{callLogsData?.recieved}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -122,7 +121,7 @@ const Calls = ({
                 </div>
                 <p className="font-bold">
                   {/* {call_logs?.recieved - call_logs?.missed} */}
-                  <span>{call_logs?.recieved}</span>
+                  <span>{callLogsData?.recieved}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -134,7 +133,7 @@ const Calls = ({
                   <h2>Missed:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.missed}</span>
+                  <span>{callLogsData?.missed}</span>
                 </p>
               </div>
             </div>
@@ -142,7 +141,7 @@ const Calls = ({
           <TabPanel value={tabValue} index={1}>
             <div className="mb-10 mx-3">
               <h1 className="font-semibold text-center">
-                This month total calls: <span>{call_logs?.all_calls}</span>
+                This month total calls: <span>{callLogsData?.all_calls}</span>
               </h1>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-y-5 gap-x-5">
@@ -155,7 +154,7 @@ const Calls = ({
                   <h2>Outgoing calls:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.dialed}</span>
+                  <span>{callLogsData?.dialed}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -164,7 +163,7 @@ const Calls = ({
                   <h2>Answered:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.answered}</span>
+                  <span>{callLogsData?.answered}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -176,7 +175,7 @@ const Calls = ({
                   <h2>Not answered:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.notanswered}</span>
+                  <span>{callLogsData?.notanswered}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -188,7 +187,7 @@ const Calls = ({
                   <h2>Incoming calls:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.recieved}</span>
+                  <span>{callLogsData?.recieved}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -198,7 +197,7 @@ const Calls = ({
                 </div>
                 <p className="font-bold">
                   {/* {call_logs?.recieved - call_logs?.missed} */}
-                  <span>{call_logs?.recieved}</span>
+                  <span>{callLogsData?.recieved}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -210,7 +209,7 @@ const Calls = ({
                   <h2>Missed:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.missed}</span>
+                  <span>{callLogsData?.missed}</span>
                 </p>
               </div>
             </div>
@@ -218,7 +217,7 @@ const Calls = ({
           <TabPanel value={tabValue} index={2}>
             <div className="mb-10 mx-3">
               <h1 className="font-semibold text-center">
-                All-time total calls: <span>{call_logs?.all_calls}</span>
+                All-time total calls: <span>{callLogsData?.all_calls}</span>
               </h1>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-y-5 gap-x-5">
@@ -231,7 +230,7 @@ const Calls = ({
                   <h2>Outgoing calls:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.dialed}</span>
+                  <span>{callLogsData?.dialed}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -240,7 +239,7 @@ const Calls = ({
                   <h2>Answered:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.answered}</span>
+                  <span>{callLogsData?.answered}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -252,7 +251,7 @@ const Calls = ({
                   <h2>Not answered:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.notanswered}</span>
+                  <span>{callLogsData?.notanswered}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -264,7 +263,7 @@ const Calls = ({
                   <h2>Incoming calls:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.recieved}</span>
+                  <span>{callLogsData?.recieved}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -274,7 +273,7 @@ const Calls = ({
                 </div>
                 <p className="font-bold">
                   {/* {call_logs?.recieved - call_logs?.missed} */}
-                  <span>{call_logs?.recieved}</span>
+                  <span>{callLogsData?.recieved}</span>
                 </p>
               </div>
               <div className="flex items-center space-x-2">
@@ -286,7 +285,7 @@ const Calls = ({
                   <h2>Missed:</h2>
                 </div>
                 <p className="font-bold">
-                  <span>{call_logs?.missed}</span>
+                  <span>{callLogsData?.missed}</span>
                 </p>
               </div>
             </div>
