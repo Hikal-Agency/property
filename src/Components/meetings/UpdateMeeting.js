@@ -42,9 +42,9 @@ const UpdateMeeting = ({
     addressText: "",
   });
   const style = {
-    transform: "translate(-50%, -50%)",
+    transform: "translate(-40%, -40%)",
     boxShadow: 24,
-    height: "90vh",
+    height: "auto",
     overflowY: "scroll",
   };
 

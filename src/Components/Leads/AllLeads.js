@@ -244,23 +244,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
             </Button>
-          </div>
-        );
-      },
-    },
-    {
-      field: "timeline",
-      headerName: "TimeLine",
-      // width: 150,
-      minWidth: 100,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-
-      renderCell: (cellValues) => {
-        return (
-          <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
             <Button
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
@@ -428,23 +411,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
             </Button>
-          </div>
-        );
-      },
-    },
-    {
-      field: "timeline",
-      headerName: "TimeLine",
-      // width: 150,
-      minWidth: 100,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-
-      renderCell: (cellValues) => {
-        return (
-          <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
             <Button
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
@@ -713,85 +679,90 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
             </Button>
-            {DashboardData?.designation === "Head" ? (
-              <div>
-                <Button
-                  onClick={() => {
-                    setLeadToDelete(cellValues);
-                    setopenDialog(true);
-                  }}
-                  disabled={deleteloading ? true : false}
-                  className={`deleteLeadBtn ${
-                    currentMode === "dark"
-                      ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                      : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-                  }`}
-                >
-                  <BsTrash className="deleteLeadBtn" size={18} />
-                </Button>
-                {openDialog && (
-                  <Dialog
-                    sx={{
-                      "& .MuiPaper-root": {
-                        boxShadow: "none !important",
-                      },
-                      "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
-                        {
-                          backgroundColor: "rgba(0, 0, 0, 0.05) !important",
-                        },
-                    }}
-                    open={openDialog}
-                    onClose={handleCloseDialog}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <div className="px-10 py-5">
-                      <div className="flex flex-col justify-center items-center">
-                        <IoIosAlert
-                          size={50}
-                          className="text-main-red-color text-2xl"
+            <Button
+              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
+              <AiOutlineHistory size={20} />
+            </Button>
+            <Button
+              onClick={() => {
+                setLeadToDelete(cellValues);
+                setopenDialog(true);
+              }}
+              disabled={deleteloading ? true : false}
+              className={`deleteLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <BsTrash className="deleteLeadBtn" size={18} />
+            </Button>
+            {openDialog && (
+              <Dialog
+                sx={{
+                  "& .MuiPaper-root": {
+                    boxShadow: "none !important",
+                  },
+                  "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
+                    {
+                      backgroundColor: "rgba(0, 0, 0, 0.05) !important",
+                    },
+                }}
+                open={openDialog}
+                onClose={handleCloseDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <div className="px-10 py-5">
+                  <div className="flex flex-col justify-center items-center">
+                    <IoIosAlert
+                      size={50}
+                      className="text-main-red-color text-2xl"
+                    />
+                    <h1 className="font-semibold pt-3 text-lg">
+                      Do You Really Want to delete this Lead?
+                    </h1>
+                  </div>
+
+                  <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                    <Button
+                      className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                      ripple={true}
+                      size="lg"
+                      onClick={() => deleteLead(LeadToDelete)}
+                    >
+                      {deletebtnloading ? (
+                        <CircularProgress
+                          size={18}
+                          sx={{ color: "white" }}
                         />
-                        <h1 className="font-semibold pt-3 text-lg">
-                          Do You Really Want to delete this Lead?
-                        </h1>
-                      </div>
+                      ) : (
+                        <span>Delete</span>
+                      )}
+                    </Button>
 
-                      <div className="action buttons mt-5 flex items-center justify-center space-x-2">
-                        <Button
-                          className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
-                          ripple={true}
-                          size="lg"
-                          onClick={() => deleteLead(LeadToDelete)}
-                        >
-                          {deletebtnloading ? (
-                            <CircularProgress
-                              size={18}
-                              sx={{ color: "white" }}
-                            />
-                          ) : (
-                            <span>Delete</span>
-                          )}
-                        </Button>
-
-                        <Button
-                          onClick={handleCloseDialog}
-                          ripple={true}
-                          variant="outlined"
-                          className={`shadow-none  rounded-md text-sm  ${
-                            currentMode === "dark"
-                              ? "text-white border-white"
-                              : "text-main-red-color border-main-red-color"
-                          }`}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    </div>
-                  </Dialog>
-                )}
-              </div>
-            ) : (
-              <></>
+                    <Button
+                      onClick={handleCloseDialog}
+                      ripple={true}
+                      variant="outlined"
+                      className={`shadow-none  rounded-md text-sm  ${
+                        currentMode === "dark"
+                          ? "text-white border-white"
+                          : "text-main-red-color border-main-red-color"
+                      }`}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </Dialog>
             )}
           </div>
         );

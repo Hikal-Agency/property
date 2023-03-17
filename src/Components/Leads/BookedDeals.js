@@ -36,6 +36,7 @@ import RenderManagers from "./RenderManagers";
 import UpdateBookedDeal from "./UpdateBookedDeal";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
+import RenderSalesperson from "./RenderSalesperson";
 
 const BookedDeals = ({
   BACKEND_URL,
@@ -378,6 +379,16 @@ const BookedDeals = ({
       headerAlign: "center",
     },
     {
+      field: "feedback",
+      headerName: "Feedback",
+      // width: 150,
+      minWidth: 160,
+      flex: 1,
+      headerAlign: "center",
+      hideable: false,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
+    },
+    {
       field: "language",
       headerName: "Language",
       headerAlign: "center",
@@ -409,13 +420,123 @@ const BookedDeals = ({
               {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
             </Button>
+            <Button
+              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineHistory size={20} />
+            </Button>
+          </div>
+        );
+      },
+    },
+  ];
+
+  // ROLE 3
+  const ManagerColumns = [
+    {
+      field: "id",
+      headerName: "#",
+      minWidth: 50,
+      flex: 1,
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
+            } w-full h-full flex justify-center items-center px-5 font-semibold`}
+          >
+            {cellValues.formattedValue}
           </div>
         );
       },
     },
     {
-      field: "timeline",
-      headerName: "TimeLine",
+      field: "creationDate",
+      headerName: "Date",
+      // width: 120,
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+    },
+    {
+      field: "leadName",
+      headerName: "Lead name",
+      // width: 170,
+      minWidth: 150,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "leadContact",
+      headerName: "Contact",
+      // width: 150,
+      minWidth: 150,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "project",
+      headerName: "Project",
+      // width: 110,
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "enquiryType",
+      headerName: "Enquiry",
+      // width: 110,
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "leadType",
+      headerName: "Property",
+      // width: 100,
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "assignedToSales",
+      headerName: "Agent",
+      // width: 150,
+      minWidth: 200,
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
+    },
+    {
+      field: "feedback",
+      headerName: "Feedback",
+      // width: 150,
+      minWidth: 160,
+      flex: 1,
+      headerAlign: "center",
+      hideable: false,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
+    },
+    {
+      field: "language",
+      headerName: "Language",
+      headerAlign: "center",
+      // width: 130,
+      minWidth: 110,
+      flex: 1,
+    },
+    {
+      field: "edit",
+      headerName: "Edit",
       // width: 150,
       minWidth: 100,
       flex: 1,
@@ -425,7 +546,18 @@ const BookedDeals = ({
 
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
+          <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
+            <Button
+              onClick={() => HandleEditFunc(cellValues)}
+              className={`${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              {/* <AiTwotoneEdit size={20} /> */}
+              <AiOutlineEdit size={20} />
+            </Button>
             <Button
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
@@ -522,8 +654,25 @@ const BookedDeals = ({
       hideable: false,
       renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
     },
-    // { field: "assignedToSales", headerName: "Salesperson",hideable: false, width: 110 },
-
+    {
+      field: "assignedToSales",
+      headerName: "Agent",
+      // width: 150,
+      minWidth: 200,
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
+    },
+    {
+      field: "feedback",
+      headerName: "Feedback",
+      // width: 150,
+      minWidth: 160,
+      flex: 1,
+      headerAlign: "center",
+      hideable: false,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
+    },
     {
       field: "language",
       headerName: "Language",
@@ -594,43 +743,43 @@ const BookedDeals = ({
       },
     },
     {
-      field: "feedback",
-      headerName: "Feedback",
+      field: "edit",
+      headerName: "Edit",
       // width: 150,
-      minWidth: 160,
+      minWidth: 100,
       flex: 1,
       headerAlign: "center",
-      hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
-    },
-    // {
-    //   field: "edit",
-    //   headerName: "Edit",
-    //   // width: 150,
-    //   minWidth: 100,
-    //   flex: 1,
-    //   headerAlign: "center",
-    //   sortable: false,
-    //   filterable: false,
+      sortable: false,
+      filterable: false,
 
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
-    //         <Button
-    //           onClick={() => HandleEditFunc(cellValues)}
-    //           className={`${
-    //             currentMode === "dark"
-    //               ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-    //               : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-    //           }`}
-    //         >
-    //           {/* <AiTwotoneEdit size={20} /> */}
-    //           <AiOutlineEdit size={20} />
-    //         </Button>
-    //       </div>
-    //     );
-    //   },
-    // },
+      renderCell: (cellValues) => {
+        return (
+          <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
+            <Button
+              onClick={() => HandleEditFunc(cellValues)}
+              className={`${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              {/* <AiTwotoneEdit size={20} /> */}
+              <AiOutlineEdit size={20} />
+            </Button>
+            <Button
+              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineHistory size={20} />
+            </Button>
+          </div>
+        );
+      },
+    },
   ];
 
   const FetchLeads = async (token) => {
@@ -885,7 +1034,7 @@ const BookedDeals = ({
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-          columns={User?.role === 3 ? columns : AgentColumns}
+          columns={User?.role === 3 ? columns : User?.role === 1 ? columns : AgentColumns}
           // columns={columns}
           components={{
             Toolbar: GridToolbar,
