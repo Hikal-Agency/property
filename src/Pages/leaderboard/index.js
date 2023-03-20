@@ -85,7 +85,6 @@ const Leaderboard = () => {
                       >
                         <Tab label="Closed Deals" />
                         <Tab label="Call Logs" />
-                        <Tab label="Performance" />
                         <Tab label="Target" />
                       </Tabs>
                     </Box>
@@ -105,11 +104,6 @@ const Leaderboard = () => {
                         />
                       </TabPanel>
                       <TabPanel value={value} index={2}>
-                        <div>
-                          <h1>performance </h1>
-                        </div>
-                      </TabPanel>
-                      <TabPanel value={value} index={3}>
                         <TargetBoard
                           isLoading={loading}
                           tabValue={tabValue}
