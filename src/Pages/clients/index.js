@@ -7,6 +7,9 @@ import { useStateContext } from "../../context/ContextProvider";
 import Footer from "../../Components/Footer/Footer";
 
 import { AiOutlineEdit } from "react-icons/ai";
+import { ImUser } from "react-icons/im";
+import { HiUsers } from "react-icons/hi";
+import { FaBan } from "react-icons/fa";
 import SingleUser from "../../Components/Users/SingleUser";
 
 const Clients = () => {
@@ -74,24 +77,46 @@ const Clients = () => {
     {
       field: "",
       headerName: "Actions",
-      minWidth: 100,
+      minWidth: 170,
       flex: 1,
       headerAlign: "center",
       sortable: false,
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
+          <div className="space-x-2 w-full flex items-center justify-center ">
             <Button
               // onClick={() => HandleEditFunc(cellValues)}
-              title="Edit User"
-              className={`editUserBtn ${
+              title="View User Accounts of the Client"
+              className={` ${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              <AiOutlineEdit size={20} />
+              <ImUser size={20} />
+            </Button>
+            <Button
+              // onClick={() => HandleEditFunc(cellValues)}
+              title="View Leads of the Client"
+              className={` ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <HiUsers size={20} />
+            </Button>
+            <Button
+              // onClick={() => HandleEditFunc(cellValues)}
+              title="Deactivate All User Accounts of the Client"
+              className={` ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <FaBan size={20} />
             </Button>
           </div>
         );
@@ -132,7 +157,7 @@ const Clients = () => {
                 <Navbar />
                 <div className="my-5 mb-10">
                   <div className="my-3">
-                    <h2 className={` ${currentMode === "dark" ? "text-white" : "text-black"} font-semibold text-xl`}>Users</h2>
+                    <h2 className={` ${currentMode === "dark" ? "text-white" : "text-black"} font-semibold text-xl`}>Clients</h2>
                   </div>
                   <Box width={"100%"} sx={DataGridStyles}>
                     <DataGrid
@@ -158,15 +183,6 @@ const Clients = () => {
                   </Box>
                 </div>
               </div>
-
-
-
-
-              
-
-
-
-
 
             </div>
           </div>

@@ -56,7 +56,7 @@ const AllOffers = ({
                     {offer.map((offer, index) => {
                         return (
                             // offer.validToManager === 1 && offer.validToSales === 1 ? (
-                                <div className={`${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"} p-5 rounded-md`}>
+                                <div className={`${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"} p-5 rounded-md h-fit`}>
                                     <h1 className="bg-main-red-color text-white font-semibold rounded-md p-2 mb-3">{offer.offerTitle}</h1>
                                     <h6 className="mb-3 p-2">{offer.offerDescription}</h6>
                                     <hr className="mb-3"></hr>
