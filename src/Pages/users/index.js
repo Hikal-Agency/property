@@ -23,7 +23,18 @@ const Users = () => {
       headerName: '#', 
       headerAlign: 'center',
       minWidth: 30,
-      flex: 1 
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
+            } w-full h-full flex justify-center items-center px-5 font-semibold`}
+          >
+            {cellValues.formattedValue}
+          </div>
+        );
+      },
     },
     {
       field: 'userName',
@@ -48,6 +59,13 @@ const Users = () => {
       editable: false,
       minWidth: 130,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues.formattedValue}</p>
+          </div>
+        );
+      },
     },
     {
       field: 'email',
@@ -56,6 +74,13 @@ const Users = () => {
       editable: false,
       minWidth: 250,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues.formattedValue}</p>
+          </div>
+        );
+      },
     },
     {
       field: 'status',

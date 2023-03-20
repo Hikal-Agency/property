@@ -24,7 +24,18 @@ const Clients = () => {
       headerName: '#', 
       headerAlign: 'center',
       minWidth: 30,
-      flex: 1 
+      flex: 1 ,
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
+            } w-full h-full flex justify-center items-center px-5 font-semibold`}
+          >
+            {cellValues.formattedValue}
+          </div>
+        );
+      },
     },
     {
       field: 'clientName',
@@ -41,6 +52,13 @@ const Clients = () => {
       editable: false,
       minWidth: 130,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues.formattedValue}</p>
+          </div>
+        );
+      },
     },
     {
       field: 'email',
@@ -49,22 +67,43 @@ const Clients = () => {
       editable: false,
       minWidth: 250,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues.formattedValue}</p>
+          </div>
+        );
+      },
     },
     {
       field: 'totalUser',
       headerName: 'Total User Accounts',
       headerAlign: 'center',
       editable: false,
-      minWidth: 110,
+      minWidth: 180,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues.formattedValue}</p>
+          </div>
+        );
+      },
     },
     {
       field: 'activeUser',
       headerName: 'Active User Accounts',
       headerAlign: 'center',
       editable: false,
-      minWidth: 110,
+      minWidth: 180,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues.formattedValue}</p>
+          </div>
+        );
+      },
     },
     {
       field: 'totalLeads',
@@ -73,6 +112,13 @@ const Clients = () => {
       editable: false,
       minWidth: 110,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues.formattedValue}</p>
+          </div>
+        );
+      },
     },
     {
       field: "",

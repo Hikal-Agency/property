@@ -50,6 +50,17 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
       minWidth: 50,
       flex: 1,
       headerAlign: "center",
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
+            } w-full h-full flex justify-center items-center px-5 font-semibold`}
+          >
+            {cellValues.formattedValue}
+          </div>
+        );
+      },
     },
     {
       field: "leadName",
