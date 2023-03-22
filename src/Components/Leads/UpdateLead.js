@@ -25,9 +25,17 @@ const UpdateLead = ({
   FetchLeads,
 }) => {
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL } = useStateContext();
+  const {
+    darkModeColors,
+    currentMode,
+    User,
+    BACKEND_URL,
+    setSalesPerson: setAllSalesPersons,
+    SalesPerson: AllSalesPersons,
+  } = useStateContext();
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
+  const [noAgents, setNoAgents] = useState(false);
   const [filter_manager, setfilter_manager] = useState();
   const style = {
     transform: "translate(-50%, -50%)",
@@ -72,18 +80,38 @@ const UpdateLead = ({
   };
   const ChangeManager = (event) => {
     setManager(event.target.value);
-    const SalesPersons = Manager2.filter(function (el) {
-      return el.uid === event.target.value;
-    });
-    setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
+    setSalesPerson(AllSalesPersons[`manager-${event.target.value}`] || []);
   };
   const ChangeSalesPerson = (event) => {
     setSalesPerson2(event.target.value);
   };
+
+  async function setPersons(urls) {
+    const token = localStorage.getItem("auth-token");
+    const requests = urls.map((url) =>
+      axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+    );
+    const responses = await Promise.all(requests);
+    const data = {};
+    for (let i = 0; i < responses.length; i++) {
+      const response = responses[i];
+      if (response.data?.team[0]?.isParent) {
+        const name = `manager-${response.data.team[0].isParent}`;
+        data[name] = response.data.team;
+      }
+    }
+    setAllSalesPersons(data);
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     axios
-      .get(`${BACKEND_URL}/teamMembers/${User.id}`, {
+      .get(`${BACKEND_URL}/managers`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -91,27 +119,37 @@ const UpdateLead = ({
       })
       .then((result) => {
         // console.log(result);
-        setManager2(result.data.team);
-        console.log("user is");
-        console.log(User);
-        if (User.role === 3) {
-          setfilter_manager(
-            result.data.team.filter((manager) => {
-              return manager.id === User?.id;
-            })
-          );
-          const SalesPerson = result.data.team.filter((manager) => {
-            return manager.id === User?.id;
-          });
-          setSalesPerson(SalesPerson[0]?.child ? SalesPerson[0].child : []);
-          console.log("filtyer manager is");
-          console.log(filter_manager);
-        }
+        const managers = result?.data?.managers;
+        setManager2(managers || []);
+
+        const urls = managers.map((manager) => {
+          return `${BACKEND_URL}/teamMembers/${manager?.id}`;
+        });
+
+        setPersons(urls || []);
+
+        // if (User.role === 3) {
+        //   setfilter_manager(
+        //     result.data.team.filter((manager) => {
+        //       return manager.id === User?.id;
+        //     })
+        //   );
+        //   const SalesPerson = result.data.team.filter((manager) => {
+        //     return manager.id === User?.id;
+        //   });
+        //   setSalesPerson(SalesPerson[0]?.child ? SalesPerson[0].child : []);
+        //   console.log("filtyer manager is");
+        //   console.log(filter_manager);
+        // }
         setloading(false);
       })
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
 
     // GETTING LEAD DETAILS
     axios
@@ -156,10 +194,13 @@ const UpdateLead = ({
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    const SalesPersons = Manager2.filter(function (el) {
-      return el.uid === parseInt(Manager);
-    });
-    setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
+    const agents = AllSalesPersons[`manager-${Manager}`];
+    if (agents === undefined) {
+      setNoAgents(true);
+    } else {
+      setNoAgents(false);
+      setSalesPerson(agents);
+    }
     // eslint-disable-next-line
   }, [Manager]);
 
@@ -183,6 +224,7 @@ const UpdateLead = ({
     if (User.role === 1 || User.role === 3) {
       UpdateLeadData.append("assignedToManager", Manager);
       UpdateLeadData.append("assignedToSales", SalesPerson2);
+      console.log(Manager, SalesPerson2)
     }
     UpdateLeadData.append(
       "lastEdited",
@@ -291,16 +333,11 @@ const UpdateLead = ({
                         Agent details
                       </h4>
 
-                      {(User.role === 1 || User.role === 3) && (
+                      {User.role === 1 && (
                         <Select
                           id="Manager"
-                          // value={Manager}
-                          value={
-                            User?.role === 3 ? (filter_manager[0]?.id || "") : (Manager || "")
-                          }
-                          disabled={
-                            (User?.role === 3 || User?.role === 1) && true
-                          }
+                          value={User?.role === 1 ? Manager : ""}
+                          disabled={User?.role !== 1 && true}
                           label="Manager"
                           onChange={ChangeManager}
                           size="medium"
@@ -311,34 +348,46 @@ const UpdateLead = ({
                           <MenuItem value="0" disabled>
                             Manager
                           </MenuItem>
-                          {Manager2.map((person, index) => (
+                          {Manager2?.map((person, index) => (
                             <MenuItem key={index} value={person?.id || ""}>
-                              {person?.loginId}
+                              {person?.userName}
                             </MenuItem>
                           ))}
                         </Select>
                       )}
-                      {(User.role === 1 || User.role === 3) && (
-                        <Select
-                          id="SalesPerson"
-                          value={SalesPerson2 || ""}
-                          label="SalesPerson"
-                          onChange={ChangeSalesPerson}
-                          size="medium"
-                          className="w-full mb-5"
-                          displayEmpty
-                          disabled={User?.role === 1 && true}
-                          // required={SalesPerson.length > 0 ? true : false}
+                      {noAgents ? (
+                        <p
+                          style={{
+                            color: "#0000005c",
+                            textAlign: "left",
+                            width: "85%",
+                          }}
                         >
-                          <MenuItem value="0" disabled>
-                            Sales Person-
-                          </MenuItem>
-                          {SalesPerson.map((person, index) => (
-                            <MenuItem key={index} value={person?.id || ""}>
-                              {person?.loginId}
+                          No Agents
+                        </p>
+                      ) : (
+                        User.role === 1 && (
+                          <Select
+                            id="SalesPerson"
+                            value={SalesPerson2 || ""}
+                            label="SalesPerson"
+                            onChange={ChangeSalesPerson}
+                            size="medium"
+                            className="w-full mb-5"
+                            displayEmpty
+                            disabled={User?.role !== 1 && true}
+                            // required={SalesPerson.length > 0 ? true : false}
+                          >
+                            <MenuItem value="0" disabled>
+                              Sales Person-
                             </MenuItem>
-                          ))}
-                        </Select>
+                            {SalesPerson?.map((person, index) => (
+                              <MenuItem key={index} value={person?.id || ""}>
+                                {person?.userName}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        )
                       )}
 
                       <TextField

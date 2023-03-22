@@ -167,6 +167,14 @@ export const ContextProvider = ({ children }) => {
   const handleClick = (clicked) =>
     setIsClicked({ ...initialState, [clicked]: true });
 
+  function formatNum(value) {
+    if (value < 10) {
+      return "0" + value;
+    } else {
+      return value;
+    }
+  }
+
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <StateContext.Provider
@@ -212,6 +220,7 @@ export const ContextProvider = ({ children }) => {
         // setColor,
         themeSettings,
         setThemeSettings,
+        formatNum
       }}
     >
       {children}

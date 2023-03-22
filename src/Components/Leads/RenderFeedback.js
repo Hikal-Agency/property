@@ -136,6 +136,10 @@ const RenderFeedback = ({ cellValues }) => {
   };
 
   useEffect(() => {
+    setFeedback(cellValues?.row?.feedback);
+  }, [cellValues]);
+
+  useEffect(() => {
       navigator.geolocation.getCurrentPosition(position =>{
         setMeetingLocation({lat: position.coords.latitude, lng: position.coords.longitude, addressText: ""});
       });

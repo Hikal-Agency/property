@@ -28,7 +28,7 @@ const UpdateMeeting = ({
   FetchLeads,
 }) => {
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL } = useStateContext();
+  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState("");
   const [loading, setLoading] = useState(true);
@@ -213,13 +213,6 @@ const UpdateMeeting = ({
     setbtnloading(false);
   };
 
-  function format(value) {
-    if (value < 10) {
-      return "0" + value;
-    } else {
-      return value;
-    }
-  }
   return (
     <>
       {/* MODAL FOR SINGLE LEAD SHOW */}
@@ -286,11 +279,11 @@ const UpdateMeeting = ({
                         onChange={(newValue) => {
                           setMeetingDateValue(newValue);
                           setMeetingDate(
-                            format(newValue.$d.getUTCFullYear()) +
+                            formatNum(newValue.$d.getUTCFullYear()) +
                               "-" +
-                              format(newValue.$d.getUTCMonth() + 1) +
+                              formatNum(newValue.$d.getUTCMonth() + 1) +
                               "-" +
-                              format(newValue.$d.getUTCDate() + 1)
+                              formatNum(newValue.$d.getUTCDate() + 1)
                           );
                         }}
                         format="yyyy-MM-dd"
@@ -307,9 +300,9 @@ const UpdateMeeting = ({
                         value={meetingTimeValue}
                         onChange={(newValue) => {
                           setMeetingTime(
-                            format(newValue.$d.getHours()) +
+                            formatNum(newValue.$d.getHours()) +
                               ":" +
-                              format(newValue.$d.getMinutes())
+                              formatNum(newValue.$d.getMinutes())
                           );
                           setMeetingTimeValue(newValue);
                         }}

@@ -16,15 +16,20 @@ import { useStateContext } from "../../context/ContextProvider";
 const RenderSalesperson = ({ cellValues }) => {
   const [SalesPerson2, setSalesPerson2] = useState(
     cellValues?.row?.assignedToSales
-  );  
+  );
 
   const [SalesPersonsList, setSalesPersonsList] = useState([]);
   const [SalesPerson3, setSalesPerson3] = useState();
   const [newSalesPerson, setnewSalesPerson] = useState("");
   const [Dialogue, setDialogue] = useState(false);
   const [noAgents, setNoAgents] = useState(false);
-  const { currentMode, reloadDataGrid, setreloadDataGrid,SalesPerson, BACKEND_URL } =
-    useStateContext();
+  const {
+    currentMode,
+    reloadDataGrid,
+    setreloadDataGrid,
+    SalesPerson,
+    BACKEND_URL,
+  } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
   const SelectStyles = {
@@ -57,12 +62,14 @@ const RenderSalesperson = ({ cellValues }) => {
   const ChangeSalesPerson = (e) => {
     console.log(e.target);
     let selectedItem;
-      selectedItem = SalesPersonsList.find((item) => item.id === Number(e.target.value));
+    selectedItem = SalesPersonsList.find(
+      (item) => item.id === Number(e.target.value)
+    );
     let old_selectedItem;
-    
-      old_selectedItem = SalesPersonsList.find(
-        (item) => item.id === Number(SalesPerson2)
-      );
+
+    old_selectedItem = SalesPersonsList.find(
+      (item) => item.id === Number(SalesPerson2)
+    );
     console.log(selectedItem);
 
     setnewSalesPerson(selectedItem);
@@ -76,16 +83,12 @@ const RenderSalesperson = ({ cellValues }) => {
     UpdateLeadData.append("lid", cellValues?.row?.lid);
     UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
     await axios
-      .post(
-        `${BACKEND_URL}/leads/${cellValues?.row?.lid}`,
-        UpdateLeadData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
+      .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
       .then((result) => {
         console.log("Agent Updated successfull");
         console.log(result);
@@ -121,16 +124,20 @@ const RenderSalesperson = ({ cellValues }) => {
   useEffect(() => {
     const managerId = cellValues?.row?.assignedToManager;
     const agents = SalesPerson[`manager-${managerId}`];
-    if(agents === undefined) {
+    if (agents === undefined) {
       setNoAgents(true);
     } else {
       setNoAgents(false);
       setSalesPersonsList(agents);
       setSalesPerson2(cellValues?.row?.assignedToSales);
     }
-  
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cellValues?.row?.assignedToManager, cellValues?.row?.assignedToSales, SalesPerson]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    cellValues?.row?.assignedToManager,
+    cellValues?.row?.assignedToSales,
+    SalesPerson,
+  ]);
 
   return (
     <Box
@@ -139,35 +146,39 @@ const RenderSalesperson = ({ cellValues }) => {
       } w-full h-full flex items-center justify-center`}
       sx={SelectStyles}
     >
-    {noAgents ? <p style={{color: "#0000005c", textAlign: "left", width: "85%"}}>No Agents</p> : 
-      <Select
-        id="SalesPerson"
-        value={SalesPerson2 || ""}
-        name="salesperson"
-        label="Salesperson"
-        onChange={ChangeSalesPerson}
-        size="medium"
-        className="w-[100%] h-[75%]"
-        displayEmpty
-        required
-      >     
-        <MenuItem value="0" disabled>
-          - - - - -
-        </MenuItem>
-        { SalesPersonsList?.map((salesperson, index) => {
-          return (
-            <MenuItem
-              key={index}
-              value={salesperson?.id}
-              data
-              name={salesperson?.userName}
-            >
-              {salesperson?.userName}
-            </MenuItem>
-          );
-        })}
-      </Select>
-    }
+      {noAgents ? (
+        <p style={{ color: "#0000005c", textAlign: "left", width: "85%" }}>
+          No Agents
+        </p>
+      ) : (
+        <Select
+          id="SalesPerson"
+          value={SalesPerson2 || ""}
+          name="salesperson"
+          label="Salesperson"
+          onChange={ChangeSalesPerson}
+          size="medium"
+          className="w-[100%] h-[75%]"
+          displayEmpty
+          required
+        >
+          <MenuItem value="0" disabled>
+            - - - - -
+          </MenuItem>
+          {SalesPersonsList?.map((salesperson, index) => {
+            return (
+              <MenuItem
+                key={index}
+                value={salesperson?.id}
+                data
+                name={salesperson?.userName}
+              >
+                {salesperson?.userName}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      )}
 
       {Dialogue && (
         <>
