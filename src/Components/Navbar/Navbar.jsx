@@ -7,7 +7,7 @@ import {
   MdOutlineLightMode,
 } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
-import { Tooltip } from "@mui/material";
+import { Tooltip, Breadcrumbs, Link as MuiLink, Typography } from "@mui/material";
 import { useProSidebar } from "react-pro-sidebar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -16,7 +16,7 @@ import { CgLogOut } from "react-icons/cg";
 import { ColorModeContext } from "../../context/theme";
 import NotificationsMenu from "./NotificationsMenu";
 import UpcomingMeetingsMenu from "./UpcomingMeetingsMenu";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <Tooltip title={title} arrow placement="bottom">
@@ -42,6 +42,7 @@ const Navbar = () => {
     LightIconsColor,
     User,
     isCollapsed,
+    allRoutes,
     setIsCollapsed,
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
@@ -56,6 +57,8 @@ const Navbar = () => {
   const [currNavBtn, setCurrNavBtn] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const pathnames = location.pathname.split('/').filter((x) => x);
   const handleClick = (event, navBtn) => {
     setAnchorEl(event.currentTarget);
     setOpen(true);
@@ -104,7 +107,15 @@ const Navbar = () => {
       localStorage.setItem("currentMode", "dark");
     }
   };
+
+  function LinkRouter(props) {
+    return <MuiLink {...props} component={Link} />;
+  }
+
+  console.log(pathnames);
+
   return (
+    <>
     <div className="flex justify-between p-2  relative">
       <div
         onClick={() => {
@@ -267,6 +278,27 @@ const Navbar = () => {
         {/* {isClicked.userProfile && <UserProfile />} */}
       </div>
     </div>
+
+        <Breadcrumbs sx={{margin: "10px 0 20px 0", color: currentMode === "dark" && "white"}} aria-label="breadcrumb">
+      <LinkRouter underline="hover" color="inherit" to="/">
+        Home
+      </LinkRouter>
+      {pathnames.map((value, index) => {
+        const last = index === pathnames.length - 1;
+        const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+        const formattedLastURL = `${pathnames[index][0].toUpperCase()}${pathnames[index].slice(1, pathnames[index].length)}`.replace('%20', " ");
+        return last ? (
+          <Typography color="primary" key={to}>
+            {formattedLastURL}
+          </Typography>
+        ) : (
+          <LinkRouter underline="hover" color="inherit" to={`/${pathnames.slice(index, pathnames.length).join("/")}`} key={to}>
+            {allRoutes.find((route) => route?.path?.includes(to))?.pageName}
+          </LinkRouter>
+        );
+      })}
+    </Breadcrumbs>
+    </>
   );
 };
 

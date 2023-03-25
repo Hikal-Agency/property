@@ -30,24 +30,17 @@ const RenderFeedback = ({ cellValues }) => {
     meetingDate: null,
     meetingTime: null,
     meetingStatus: null,
-    meetingLocation: {
-      mLat: 0,
-      mLong: 0,
-      addressText: ""
-    },
   });
+  const [meetingLocation, setMeetingLocation] = useState({
+      lat: 0,
+      lng: 0,
+      addressText: ""
+    });
   const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL } = useStateContext();
   const ChangeFeedback = (e) => {
     setnewFeedback(e.target.value);
     setDialogue(true);
   };
-
-  const setMeetingLocation = (locationObj) => {
-    setMeetingData({
-        ...meetingData,
-        meetingLocation: locationObj,
-    });
-  }
 
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
@@ -86,10 +79,10 @@ const RenderFeedback = ({ cellValues }) => {
         })
       );
       UpdateLeadData.append("meetingStatus", meetingData.meetingStatus);
-      UpdateLeadData.append("mLat", String(meetingData.meetingLocation.mLat));
-      UpdateLeadData.append("mLong", String(meetingData.meetingLocation.mLong));
-      UpdateLeadData.append("meetingLocation", meetingData.meetingLocation.addressText);
-      console.log(meetingData.meetingLocation.addressText);
+      UpdateLeadData.append("mLat", String(meetingLocation.lat));
+      UpdateLeadData.append("mLong", String(meetingLocation.lng));
+      UpdateLeadData.append("meetingLocation", meetingLocation.addressText);
+      console.log(meetingLocation.addressText);
     }
 
     await axios
@@ -141,7 +134,7 @@ const RenderFeedback = ({ cellValues }) => {
 
   useEffect(() => {
       navigator.geolocation.getCurrentPosition(position =>{
-        setMeetingLocation({lat: position.coords.latitude, lng: position.coords.longitude, addressText: ""});
+        setMeetingLocation({lat: Number(position.coords.latitude), lng: Number(position.coords.longitude), addressText: ""});
       });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -289,7 +282,10 @@ const RenderFeedback = ({ cellValues }) => {
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </Select>
                     </FormControl>
-                    <LocationPicker meetingLocation={meetingData.meetingLocation} setMeetingLocation={setMeetingLocation}/>
+                        {meetingLocation.lat && meetingLocation.lng ?
+                            <LocationPicker meetingLocation={meetingLocation} currLocByDefault setMeetingLocation={setMeetingLocation}/>
+                          : <></>
+                        }
                   </div>
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                     <Button

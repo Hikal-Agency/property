@@ -62,6 +62,8 @@ const BookedDeals = ({
     DataGridStyles,
     setopenBackDrop,
     User,
+    setSalesPerson,
+    setManagers,
   } = useStateContext();
   //eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -782,6 +784,12 @@ const BookedDeals = ({
     },
   ];
 
+  const [CEOColumns, setCEOColumns] = useState(columns);
+
+  function setCEOColumnsState() {
+      setCEOColumns([...CEOColumns]);
+  }
+
   const FetchLeads = async (token) => {
     console.log("lead type is");
     console.log(lead_type);
@@ -923,8 +931,42 @@ const BookedDeals = ({
     //eslint-disable-next-line
   }, []);
 
+  async function setSalesPersons(urls){
+    const token = localStorage.getItem("auth-token");
+    const requests = urls.map(url => axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+    }));
+    const responses = await Promise.all(requests);
+    const data = {};
+    for (let i = 0; i < responses.length; i++) {
+      const response = responses[i];
+      if(response.data?.team[0]?.isParent) {
+        const name = `manager-${response.data.team[0].isParent}`;
+        data[name] = response.data.team;
+      }
+    }
+    setSalesPerson(data);
+    setCEOColumnsState();
+    
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
+      axios.get(`${BACKEND_URL}/managers`).then((result) => {
+        console.log("manager response is");
+        console.log(result);
+        const managers = result?.data?.managers;
+        setManagers(managers || []);
+
+        const urls = managers.map((manager) => {
+          return `${BACKEND_URL}/teamMembers/${manager?.id}`;
+        });
+
+        setSalesPersons(urls || []);
+      });
     FetchLeads(token);
     // eslint-disable-next-line
   }, [pageState.page, lead_type, reloadDataGrid]);

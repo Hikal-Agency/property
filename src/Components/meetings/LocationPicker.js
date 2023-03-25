@@ -17,6 +17,7 @@ const LocationPicker = ({
   meetingLocation,
   setMeetingLocation,
   showOnly = false,
+  currLocByDefault
 }) => {
   const geocoder = new window.google.maps.Geocoder();
 
@@ -45,7 +46,7 @@ const LocationPicker = ({
               });
             }
             } else {
-              alert("Getting address failed due to: " + status);
+              console.log("Getting address failed due to : ", status);
             }
           }
         );
@@ -64,7 +65,7 @@ const LocationPicker = ({
           });
           console.log(results[0]);
         } else {
-          alert("Google maps couldn't load");
+          console.log("Google maps couldn't load");
         }
       }
     );
@@ -79,12 +80,17 @@ const LocationPicker = ({
   useEffect(() => {
     map.panTo({ lat: meetingLocation.lat, lng: meetingLocation.lng });
   }, [meetingLocation.lat, meetingLocation.lng, map]);
+
+  useEffect(() => {
+    if(currLocByDefault) {
+        handleCurrentLocationClick();
+    }
+  }, []);
   return (
     <>
       {typeof window.google === "object" ? (
         <div style={{ width: "100%" }}>
           <AutoComplete
-            setLocation={setMeetingLocation}
             defaultLocation={meetingLocation.addressText}
             setMeetingLocation={setMeetingLocation}
             isDisabled={showOnly}

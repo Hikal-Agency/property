@@ -42,9 +42,9 @@ const UpdateMeeting = ({
     addressText: "",
   });
   const style = {
-    transform: "translate(-40%, -40%)",
+    transform: "translate(-50%, -50%)",
     boxShadow: 24,
-    height: "auto",
+    height: "90%",
     overflowY: "scroll",
   };
 
@@ -103,7 +103,7 @@ const UpdateMeeting = ({
                       addressText: results[0].formatted_address,
                     });
                   } else {
-                    alert("Getting address failed due to: " + status);
+                    console.log("Getting address failed due to: " + status);
                   }
                 }
               );
@@ -119,7 +119,7 @@ const UpdateMeeting = ({
                     addressText: results[0].formatted_address,
                   });
                 } else {
-                  alert("Getting address failed due to: " + status);
+                  console.log("Getting address failed due to: " + status);
                 }
               }
             );

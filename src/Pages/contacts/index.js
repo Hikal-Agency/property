@@ -107,6 +107,8 @@ const Contacts = () => {
     setopenBackDrop(false);
     if (User?.uid && User?.loginId) {
       setloading(false);
+        FetchProfile(token);
+        FetchContacts(token);
     } else {
       if (token) {
         FetchProfile(token);

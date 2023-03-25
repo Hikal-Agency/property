@@ -1,5 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import { Box, CircularProgress, Dialog } from "@mui/material";
+import { Box, Button as MuiButton } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -9,25 +9,38 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
-import { IoIosAlert } from "react-icons/io";
+import { TbFileImport } from "react-icons/tb";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "./SingleLead";
 import UpdateLead from "./UpdateLead";
+import BulkUpdateLeads from "./BulkUpdateLeads";
 import { toast, ToastContainer } from "react-toastify";
 import RenderPriority from "./RenderPriority";
 import RenderFeedback from "./RenderFeedback";
 import RenderManagers from "./RenderManagers";
 import RenderSalesperson from "./RenderSalesperson";
 import { useNavigate } from "react-router-dom";
+import DeleteLeadModel from "./DeleteLead";
+import BulkImportModel from "./BulkImport";
+import BulkImport from "./BulkImport";
+
+const bulkUpdateBtnStyles = {
+  position: "absolute",
+  top: "12.5px",
+  zIndex: "500",
+  left: "52.5%",
+  transform: "translateX(-50%)",
+  fontWeight: "500",
+};
 
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const token = localStorage.getItem("auth-token");
@@ -35,6 +48,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [singleLeadData, setsingleLeadData] = useState();
   const [deleteloading, setdeleteloading] = useState(false);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
+
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
+  const [deleteModelOpen, setDeleteModelOpen] = useState(false);
+  const [bulkDeleteClicked, setBulkDeleteClicked] = useState(false);
+  const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
+  const [CSVData, setCSVData] = useState({
+    keys: [],
+    rows: [],
+  });
+
+  const bulkImportRef = useRef();
 
   const {
     currentMode,
@@ -49,14 +74,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     setSalesPerson,
     setManagers,
   } = useStateContext();
+
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
-  const [openDialog, setopenDialog] = useState(false);
   const [LeadToDelete, setLeadToDelete] = useState();
 
-  const handleCloseDialog = () => {
-    setopenDialog(false);
-  };
   //View LEAD MODAL VARIABLES
   const [LeadModelOpen, setLeadModelOpen] = useState(false);
   const handleLeadModelOpen = () => setLeadModelOpen(true);
@@ -149,7 +171,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 170,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderSalesperson setSalesPersons={setSalesPersons} FetchLeads={(token) => FetchLeads(token)} cellValues={cellValues} />,
+      renderCell: (cellValues) => (
+        <RenderSalesperson
+          setSalesPersons={setSalesPersons}
+          FetchLeads={(token) => FetchLeads(token)}
+          cellValues={cellValues}
+        />
+      ),
     },
     {
       field: "feedback",
@@ -164,12 +192,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <>
             {cellValues.formattedValue === "Closed Deal" && (
               <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="text-[#0f9d58] p-1 rounded-md">CLOSED DEAL</badge>
+                <badge className="text-[#0f9d58] p-1 rounded-md">
+                  CLOSED DEAL
+                </badge>
               </div>
             )}
 
             {cellValues.formattedValue !== "Closed Deal" && (
-              (<RenderFeedback cellValues={cellValues} />)
+              <RenderFeedback cellValues={cellValues} />
             )}
           </>
         );
@@ -428,26 +458,27 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
   ];
 
-  async function setSalesPersons(urls){
+  async function setSalesPersons(urls) {
     const token = localStorage.getItem("auth-token");
-    const requests = urls.map(url => axios.get(url, {
+    const requests = urls.map((url) =>
+      axios.get(url, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
-    }));
+      })
+    );
     const responses = await Promise.all(requests);
     const data = {};
     for (let i = 0; i < responses.length; i++) {
       const response = responses[i];
-      if(response.data?.team[0]?.isParent) {
+      if (response.data?.team[0]?.isParent) {
         const name = `manager-${response.data.team[0].isParent}`;
         data[name] = response.data.team;
       }
     }
     setSalesPerson(data);
     setCEOColumnsState();
-    
   }
 
   const columns = [
@@ -692,8 +723,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             </Button>
             <Button
               onClick={() => {
-                setLeadToDelete(cellValues);
-                setopenDialog(true);
+                setLeadToDelete(cellValues?.row.lid);
+                setDeleteModelOpen(true);
+                setBulkDeleteClicked(false);
               }}
               disabled={deleteloading ? true : false}
               className={`deleteLeadBtn ${
@@ -704,66 +736,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <BsTrash className="deleteLeadBtn" size={18} />
             </Button>
-            {openDialog && (
-              <Dialog
-                sx={{
-                  "& .MuiPaper-root": {
-                    boxShadow: "none !important",
-                  },
-                  "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
-                    {
-                      backgroundColor: "rgba(0, 0, 0, 0.05) !important",
-                    },
-                }}
-                open={openDialog}
-                onClose={handleCloseDialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <div className="px-10 py-5">
-                  <div className="flex flex-col justify-center items-center">
-                    <IoIosAlert
-                      size={50}
-                      className="text-main-red-color text-2xl"
-                    />
-                    <h1 className="font-semibold pt-3 text-lg">
-                      Do You Really Want to delete this Lead?
-                    </h1>
-                  </div>
-
-                  <div className="action buttons mt-5 flex items-center justify-center space-x-2">
-                    <Button
-                      className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
-                      ripple={true}
-                      size="lg"
-                      onClick={() => deleteLead(LeadToDelete)}
-                    >
-                      {deletebtnloading ? (
-                        <CircularProgress
-                          size={18}
-                          sx={{ color: "white" }}
-                        />
-                      ) : (
-                        <span>Delete</span>
-                      )}
-                    </Button>
-
-                    <Button
-                      onClick={handleCloseDialog}
-                      ripple={true}
-                      variant="outlined"
-                      className={`shadow-none  rounded-md text-sm  ${
-                        currentMode === "dark"
-                          ? "text-white border-white"
-                          : "text-main-red-color border-main-red-color"
-                      }`}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              </Dialog>
-            )}
           </div>
         );
       },
@@ -773,7 +745,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [CEOColumns, setCEOColumns] = useState(columns);
 
   function setCEOColumnsState() {
-      setCEOColumns([...CEOColumns]);
+    setCEOColumns([...CEOColumns]);
   }
 
   const FetchLeads = async (token) => {
@@ -1027,16 +999,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    if(User?.position !== "Founder & CEO") {
-      axios.get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }).then((result) => {
-        const agents = result.data?.team;
-        setSalesPerson({[`manager-${User?.id}`]: agents});
-      })
+    if (User?.position !== "Founder & CEO") {
+      axios
+        .get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          const agents = result.data?.team;
+          setSalesPerson({ [`manager-${User?.id}`]: agents });
+        });
     } else {
       axios.get(`${BACKEND_URL}/managers`).then((result) => {
         console.log("manager response is");
@@ -1060,8 +1034,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
     if (
-      !event.target.classList.contains("deleteLeadBtn") ||
-      !event.target.classList.contains("editLeadBtn")
+      !event.target.closest(".editLeadBtn") &&
+      !event.target.closest(".deleteLeadBtn")
     ) {
       setsingleLeadData(params.row);
       handleLeadModelOpen();
@@ -1074,11 +1048,56 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     // setUpdateLeadModelOpen(true);
   };
   // Delete Lead
-  const deleteLead = async (params) => {
+
+  const handleBulkDelete = async () => {
+    try {
+      setdeleteloading(true);
+      setdeletebtnloading(true);
+
+      const urls = selectedRows.map((lead) =>
+        axios.delete(`${BACKEND_URL}/leads/${lead}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+      );
+
+      await Promise.all(urls);
+      setdeleteloading(false);
+      setdeletebtnloading(false);
+      setreloadDataGrid(!reloadDataGrid);
+      FetchLeads(token);
+      setDeleteModelOpen(false);
+      toast.success("Leads Deleted Successfull", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log(error);
+      setdeleteloading(false);
+      setdeletebtnloading(false);
+      toast.error("Something Went Wrong! Please Try Again", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+  const deleteLead = async (lid) => {
     setdeleteloading(true);
     setdeletebtnloading(true);
     axios
-      .delete(`${BACKEND_URL}/leads/${params.row.lid}`, {
+      .delete(`${BACKEND_URL}/leads/${lid}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -1088,8 +1107,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         console.log(result);
         setdeleteloading(false);
         setdeletebtnloading(false);
-        handleCloseDialog();
         setreloadDataGrid(!reloadDataGrid);
+        FetchLeads(token);
+        setDeleteModelOpen(false);
         toast.success("Lead Deleted Successfull", {
           position: "top-right",
           autoClose: 3000,
@@ -1139,10 +1159,93 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     );
   }
 
+  const handleClickBulkUpdate = () => {
+    setBulkUpdateModelOpen(true);
+  };
+
+  const handleCloseBulkUpdateModel = () => {
+    setBulkUpdateModelOpen(false);
+  };
+
+  const handleCloseDeleteModel = () => {
+    setDeleteModelOpen(false);
+  };
+
+  const handleClickBulkDelete = () => {
+    setBulkDeleteClicked(true);
+    setDeleteModelOpen(true);
+  };
+
+  const handleCloseBulkImportModel = () => {
+    setBulkImportModelOpen(false);
+    bulkImportRef.current.value = "";
+  };
+
+  const handleBulkImport = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const text = e.target.result;
+      const rows = text.split("\n");
+      const keys = rows[0].split(",").map((key) => key.toString().trim());
+      const data = rows.slice(1, rows.length);
+      const formatted = data.map((row) =>
+        row.split(",").map((value) => value.toString().trim())
+      );
+      setCSVData({
+        rows: formatted,
+        keys,
+      });
+      setBulkImportModelOpen(true);
+    };
+
+    reader.readAsText(file);
+  };
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box width={"100%"} sx={DataGridStyles}>
+      <Box width={"100%"} sx={{ ...DataGridStyles, position: "relative" }}>
+        {selectedRows.length > 0 && (
+          <MuiButton
+            size="small"
+            sx={bulkUpdateBtnStyles}
+            variant="text"
+            onClick={handleClickBulkUpdate}
+          >
+            <AiFillEdit size={20} />{" "}
+            <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
+          </MuiButton>
+        )}
+        {selectedRows.length > 0 && (
+          <MuiButton
+            size="small"
+            sx={{ ...bulkUpdateBtnStyles, left: "64%" }}
+            variant="text"
+            onClick={handleClickBulkDelete}
+          >
+            <BsTrash size={18} />{" "}
+            <span style={{ paddingLeft: "5px" }}>Bulk Delete</span>
+          </MuiButton>
+        )}
+        <label htmlFor="bulkImport">
+          <MuiButton
+            onClick={() => bulkImportRef.current.click()}
+            size="small"
+            sx={{ ...bulkUpdateBtnStyles, left: "41.5%" }}
+            variant="text"
+          >
+            <TbFileImport size={18} />{" "}
+            <span style={{ paddingLeft: "5px" }}>Bulk Import</span>
+          </MuiButton>
+        </label>
+        <input
+          type="file"
+          style={{ display: "none" }}
+          ref={bulkImportRef}
+          onInput={handleBulkImport}
+          id="bulkImport"
+        />
         <DataGrid
           autoHeight
           disableSelectionOnClick
@@ -1155,6 +1258,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           width="auto"
           paginationMode="server"
           page={pageState.page - 1}
+          checkboxSelection
+          onSelectionModelChange={(ids) => {
+            setSelectedRows(ids.map((id) => pageState?.data[id - 1]?.lid));
+          }}
           pageSize={pageState.pageSize}
           onPageChange={(newPage) => {
             setpageState((old) => ({ ...old, page: newPage + 1 }));
@@ -1164,7 +1271,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }
           columns={
             User?.role === 1
-              ? CEOColumns 
+              ? CEOColumns
               : User?.role === 3
               ? ManagerColumns
               : AgentColumns
@@ -1216,6 +1323,38 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             LeadData={singleLeadData}
             BACKEND_URL={BACKEND_URL}
             FetchLeads={FetchLeads}
+          />
+        )}
+
+        {bulkUpdateModelOpen && (
+          <BulkUpdateLeads
+            handleCloseBulkUpdateModel={handleCloseBulkUpdateModel}
+            bulkUpdateModelOpen={bulkUpdateModelOpen}
+            selectedRows={selectedRows}
+            FetchLeads={FetchLeads}
+            setSelectedRows={setSelectedRows}
+          />
+        )}
+
+        {deleteModelOpen && (
+          <DeleteLeadModel
+            handleCloseDeleteModel={handleCloseDeleteModel}
+            deleteLead={deleteLead}
+            deleteModelOpen={deleteModelOpen}
+            LeadToDelete={LeadToDelete}
+            deletebtnloading={deletebtnloading}
+            bulkDeleteClicked={bulkDeleteClicked}
+            selectedRows={selectedRows}
+            handleBulkDelete={handleBulkDelete}
+          />
+        )}
+
+        {bulkImportModelOpen && (
+          <BulkImport
+            bulkImportModelOpen={bulkImportModelOpen}
+            handleCloseBulkImportModel={handleCloseBulkImportModel}
+            FetchLeads={FetchLeads}
+            CSVData={CSVData}
           />
         )}
       </Box>

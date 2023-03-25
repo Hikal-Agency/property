@@ -31,6 +31,7 @@ export const ContextProvider = ({ children }) => {
   const [Sales_chart_data, setSales_chart_data] = useState([]);
   const [SalesPerson, setSalesPerson] = useState([]);
   const [Managers, setManagers] = useState([]);
+  const [allRoutes, setAllRoutes] = useState([]);
 
   // DATA GRID
   const [pageState, setpageState] = useState({
@@ -220,7 +221,9 @@ export const ContextProvider = ({ children }) => {
         // setColor,
         themeSettings,
         setThemeSettings,
-        formatNum
+        formatNum,
+        allRoutes,
+        setAllRoutes
       }}
     >
       {children}
