@@ -1,15 +1,34 @@
-import React from "react";
+import {useState, useEffect} from "react";
+import axios from "axios";
+import Base64 from "Base64";
+import { useStateContext } from "../../context/ContextProvider";
+import LeadsTable from "../../Components/whatsapp-marketing/LeadsTable";
 
 const Messages = () => {
+  const {BACKEND_URL} = useStateContext();
+  const [leads, setLeads] = useState(null);
+
+const fetchLeads = () => {
+  const token = localStorage.getItem("auth-token");
+  axios
+    .get(`${BACKEND_URL}/leads`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }).then((result) => {
+      setLeads(result.data.posts.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+}
+
+  useEffect(() => {
+    fetchLeads();
+  }, []);
   return (
-    <div className="h-screen w-screen overflow-hidden">
-      <img
-        width={"100%"}
-        src="/WhatsApp Image 2023-02-04 at 6.48.51 PM (1).jpeg"
-        className="h-full w-full object-cover"
-        alt=""
-      />
-    </div>
+      <LeadsTable rows={leads}/>
   );
 };
 

@@ -34,6 +34,7 @@ const ProfilePage = () => {
   });
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate(); const location = useLocation();
+  const [selectedImage, setSelectedImage] = useState(null);
 
   // Btn loading 
   const [btnloading, setbtnloading] = useState(false);
@@ -142,6 +143,56 @@ const ProfilePage = () => {
         });
     };
 
+    const handlePickImage = (event) => {
+        const reader = new FileReader();
+    const file = event.target.files[0];
+    reader.onloadend = () => {
+        setSelectedImage(reader.result);
+    }
+    reader.readAsDataURL(new Blob([file], { type: file.type.slice(6) }));
+    }
+
+    const UpdateProfileImage = async file => {
+      try {
+      const token = localStorage.getItem("auth-token");
+      const imageData = new FormData();
+      imageData.append('image', file);
+      imageData.append('image', file);
+
+
+      const result = await axios
+        .post(
+          `${BACKEND_URL}/user/profile-picture`,
+          imageData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        console.log(result);
+        
+      } catch (err) {
+          console.log(err);
+          toast.error("Error in Updating Profile Image", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+      }
+    }
+
+    useEffect(() => {
+      if(selectedImage) {
+        UpdateProfileImage(selectedImage);
+      }
+    }, [selectedImage]);
+
   return (
     <>
     <ToastContainer/>
@@ -174,6 +225,7 @@ const ProfilePage = () => {
                         </h1>
                         <div className="accountinfo border-t-2 border-gray-400 px-5 pt-10 ">
                           <div className="flex justify-center flex-col items-center">
+                          <label htmlFor="pick-image">
                             <div className="relative">
                               <img
                                 src={User?.displayImg}
@@ -189,6 +241,8 @@ const ProfilePage = () => {
                                 />
                               </div>
                             </div>
+                            </label>
+                            <input accept="image/*" onInput={handlePickImage} id="pick-image" type="file" hidden/>
                             <div className="mt-3">
                               <h1 className="text-lg font-bold text-center">
                                 {User?.userName}
