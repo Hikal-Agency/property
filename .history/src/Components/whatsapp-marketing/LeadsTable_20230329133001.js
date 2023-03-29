@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,9 +8,15 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import SendMessageModal from "./SendMessageModal";
 import Pagination from "@mui/material/Pagination";
-// START 
-import { Button, Checkbox, Alert, Input } from "@mui/material";
-// END 
+import { Button, Checkbox, Alert, Box } from "@mui/material";
+import {
+  DataGrid,
+  gridPageCountSelector,
+  gridPageSelector,
+  GridToolbar,
+  useGridApiContext,
+  useGridSelector,
+} from "@mui/x-data-grid";
 import { AiFillMessage } from "react-icons/ai";
 import { CgRemoveR } from "react-icons/cg";
 import { useStateContext } from "../../context/ContextProvider";
@@ -19,37 +25,99 @@ export default function LeadsTable({ rows }) {
   const [selected, setSelected] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [messageModal, setMessageModal] = useState(false);
+  
+// --------START------------
+  const { 
+    currentMode, 
+    pageState,
+    setpageState,
+    reloadDataGrid,
+    setreloadDataGrid,
+    DataGridStyles, 
+    User,
+    BACKEND_URL,
+  } = useStateContext();
+// --------END------------
+
+// --------START------------
+  const [searchText, setSearchText] = useState("");
+  // --------END------------
+
+// --------START------------
+  const leadsList = [
+    {
+      field: "id",
+      headerName: "#",
+      minWidth: 50,
+      flex: 1,
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
+            } w-full h-full flex justify-center items-center px-5 font-semibold`}
+          >
+            {cellValues.formattedValue}
+          </div>
+        );
+      },
+    },
+    {
+      field: "leadName",
+      headerName: "Lead Name",
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "leadContact",
+      headerName: "Contact Number",
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "leadEmail",
+      headerName: "Email Address",
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "",
+      headerName: "Action",
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+      
+    },
+  ];
+  // --------END------------
 
   // --------START------------
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredRows = useMemo(() => {
-    if (!searchTerm) return rows;
-
-    if (rows.length > 0) {
-      const attributes = Object.keys(rows[0]);
-
-      const list = [];
-
-      for (const current of rows) {
-        for (const attribute of attributes) {
-          if (attribute === "key") {
-            continue;
-          }
-          const value = current[attribute];
-          if (value && value.toLowerCase() === searchTerm.toLowerCase()) {
-            const found = rows.find((row) => row.key === current.key);
-            if (found) {
-              list.push(found);
-            }
-          }
-        }
-      }
-      return list;
-    }
-
-    return [];
-  }, [searchTerm, rows]);
+  // Custom Pagination
+  function CustomPagination() {
+    const apiRef = useGridApiContext();
+    const page = useGridSelector(apiRef, gridPageSelector);
+    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+    return (
+      <>
+        <Pagination
+          sx={{
+            "& .Mui-selected": {
+              backgroundColor: "white !important",
+              color: "black !important",
+              borderRadius: "5px !important",
+            },
+          }}
+          count={pageCount}
+          page={page + 1}
+          onChange={(event, value) => apiRef.current.setPage(value - 1)}
+        />
+      </>
+    );
+  }
   // --------END------------
 
   const isChecked = (lid) => {
@@ -86,6 +154,60 @@ export default function LeadsTable({ rows }) {
 
   return (
     <>
+    {/* --------START------------ */}
+      <Box width={"100%"} sx={{ ...DataGridStyles, position: "relative" }}>
+        <DataGrid
+          autoHeight
+          disableSelectionOnClick
+          rows={pageState.data}
+          rowCount={pageState.total}
+          loading={pageState.isLoading}
+          rowsPerPageOptions={[30, 50, 75, 100]}
+          pagination
+          width="auto"
+          paginationMode="server"
+          page={pageState.page - 1}
+          checkboxSelection
+          pageSize={pageState.pageSize}
+          onPageChange={(newPage) => {
+            setpageState((old) => ({ ...old, page: newPage + 1 }));
+          }}
+          onPageSizeChange={(newPageSize) =>
+            setpageState((old) => ({ ...old, pageSize: newPageSize }))
+          }
+          columns={ leadsList }
+          // columns={columns}
+          components={{
+            Toolbar: GridToolbar,
+            Pagination: CustomPagination,
+          }}
+          componentsProps={{
+            toolbar: {
+              showQuickFilter: true,
+              value: searchText,
+              // onChange: HandleQuicSearch,
+            },
+            // columnsPanel: {
+            //   disableHideAllButton: true,
+            // }
+          }}
+          sx={{
+            boxShadow: 2,
+            "& .MuiDataGrid-cell:hover": {
+              cursor: "pointer",
+            },
+          }}
+          getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+          }
+          // style={{justifyContent: "center", alignItems: "center"}}
+        />
+      </Box>
+      {/* --------END------------ */}
+
+
+
+
       <TableContainer component={Paper}>
         {Object.keys(selected).length > 0 && (
           <Alert sx={{ mb: 2, position: "relative", padding: "20px" }}>
@@ -110,23 +232,6 @@ export default function LeadsTable({ rows }) {
             </Button>
           </Alert>
         )}
-
-        {/* START  */}
-        <div className="bg-main-red-color w-full h-fit grid justify-items-stretch">
-          {/* <div className="justify-self-end"> */}
-            <Input
-              className="m-3 text-white justify-self-end"
-              size="medium"
-              bordered
-              clearable
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          {/* </div> */}
-        </div>
-        {/* END  */}
-
         <Table sx={{ width: "100%", overflow: "scroll" }}>
           <TableHead>
             <TableRow

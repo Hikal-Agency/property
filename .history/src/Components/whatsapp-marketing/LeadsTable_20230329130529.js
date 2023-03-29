@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,50 +7,14 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import SendMessageModal from "./SendMessageModal";
-import Pagination from "@mui/material/Pagination";
-// START 
-import { Button, Checkbox, Alert, Input } from "@mui/material";
-// END 
+import { Button, Checkbox, Alert } from "@mui/material";
 import { AiFillMessage } from "react-icons/ai";
 import { CgRemoveR } from "react-icons/cg";
-import { useStateContext } from "../../context/ContextProvider";
 
 export default function LeadsTable({ rows }) {
   const [selected, setSelected] = useState({});
   const [selectAll, setSelectAll] = useState(false);
   const [messageModal, setMessageModal] = useState(false);
-
-  // --------START------------
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredRows = useMemo(() => {
-    if (!searchTerm) return rows;
-
-    if (rows.length > 0) {
-      const attributes = Object.keys(rows[0]);
-
-      const list = [];
-
-      for (const current of rows) {
-        for (const attribute of attributes) {
-          if (attribute === "key") {
-            continue;
-          }
-          const value = current[attribute];
-          if (value && value.toLowerCase() === searchTerm.toLowerCase()) {
-            const found = rows.find((row) => row.key === current.key);
-            if (found) {
-              list.push(found);
-            }
-          }
-        }
-      }
-      return list;
-    }
-
-    return [];
-  }, [searchTerm, rows]);
-  // --------END------------
 
   const isChecked = (lid) => {
     return Object.keys(selected).indexOf(String(lid)) !== -1;
@@ -86,6 +50,13 @@ export default function LeadsTable({ rows }) {
 
   return (
     <>
+      <Box width={"100%"} sx={{ ...DataGridStyles, position: "relative" }}>
+
+      </Box>
+
+
+
+      
       <TableContainer component={Paper}>
         {Object.keys(selected).length > 0 && (
           <Alert sx={{ mb: 2, position: "relative", padding: "20px" }}>
@@ -110,23 +81,6 @@ export default function LeadsTable({ rows }) {
             </Button>
           </Alert>
         )}
-
-        {/* START  */}
-        <div className="bg-main-red-color w-full h-fit grid justify-items-stretch">
-          {/* <div className="justify-self-end"> */}
-            <Input
-              className="m-3 text-white justify-self-end"
-              size="medium"
-              bordered
-              clearable
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          {/* </div> */}
-        </div>
-        {/* END  */}
-
         <Table sx={{ width: "100%", overflow: "scroll" }}>
           <TableHead>
             <TableRow

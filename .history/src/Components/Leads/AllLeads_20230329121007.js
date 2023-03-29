@@ -820,7 +820,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Unreachable`;
       }
     }
-    // LEADS URL GENERATON FOR PERSONAL PAGE
+    // LEADS URL GENERATON FOR THIRDPARTY PAGE
     else if (lead_origin === "personalleads") {
       if (lead_type === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2`;
@@ -839,31 +839,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       } else if (lead_type === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Unreachable`;
       }
-    } 
-    // LEADS URL GENERATON FOR WARM LEADS PAGE
-    else if (lead_origin === "warmleads") {
-      if (lead_type === "all") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4`;
-      } else if (lead_type === "new") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=New`;
-      } else if (lead_type === "no answer") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=No Answer`;
-      } else if (lead_type === "meeting") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Meeting`;
-      } else if (lead_type === "follow up") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Follow Up`;
-      } else if (lead_type === "low budget") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Low Budget`;
-      } else if (lead_type === "not interested") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Not Interested`;
-      } else if (lead_type === "unreachable") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Unreachable`;
-      }
-    }
-    else if (lead_origin === "transfferedleads") {
+    } else if (lead_origin === "transfferedleads") {
       FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&coldCall=0&leadStatus=Transferred`;
-    } 
-    else if (lead_origin === "unassigned") {
+    } else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0`;
       } else if (lead_type === "new") {
@@ -882,8 +860,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Unreachable`;
       } else if (lead_type === "cold") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=1`;
-      } else if (lead_type === "warm") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=4`;
       }
     }
 

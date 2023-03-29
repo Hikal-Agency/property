@@ -116,6 +116,7 @@ export default function LeadsTable({ rows }) {
           {/* <div className="justify-self-end"> */}
             <Input
               className="m-3 text-white justify-self-end"
+              sx={{ color: "#ffffff"}}
               size="medium"
               bordered
               clearable

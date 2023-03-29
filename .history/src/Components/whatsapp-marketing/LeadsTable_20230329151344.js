@@ -112,18 +112,17 @@ export default function LeadsTable({ rows }) {
         )}
 
         {/* START  */}
-        <div className="bg-main-red-color w-full h-fit grid justify-items-stretch">
-          {/* <div className="justify-self-end"> */}
-            <Input
-              className="m-3 text-white justify-self-end"
-              size="medium"
-              bordered
-              clearable
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          {/* </div> */}
+        <div className="bg-main-red-color w-full h-fit flex items-stretch">
+          <div className="self-end">
+            </div><Input
+            className="m-3 text-white self-end"
+            size="medium"
+            bordered
+            clearable
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
         {/* END  */}
 

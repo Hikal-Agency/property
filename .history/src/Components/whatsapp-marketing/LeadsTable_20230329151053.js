@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -22,34 +22,6 @@ export default function LeadsTable({ rows }) {
 
   // --------START------------
   const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredRows = useMemo(() => {
-    if (!searchTerm) return rows;
-
-    if (rows.length > 0) {
-      const attributes = Object.keys(rows[0]);
-
-      const list = [];
-
-      for (const current of rows) {
-        for (const attribute of attributes) {
-          if (attribute === "key") {
-            continue;
-          }
-          const value = current[attribute];
-          if (value && value.toLowerCase() === searchTerm.toLowerCase()) {
-            const found = rows.find((row) => row.key === current.key);
-            if (found) {
-              list.push(found);
-            }
-          }
-        }
-      }
-      return list;
-    }
-
-    return [];
-  }, [searchTerm, rows]);
   // --------END------------
 
   const isChecked = (lid) => {
@@ -112,18 +84,16 @@ export default function LeadsTable({ rows }) {
         )}
 
         {/* START  */}
-        <div className="bg-main-red-color w-full h-fit grid justify-items-stretch">
-          {/* <div className="justify-self-end"> */}
-            <Input
-              className="m-3 text-white justify-self-end"
-              size="medium"
-              bordered
-              clearable
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          {/* </div> */}
+        <div className="bg-main-red-color w-full h-fit flex items-stretch">
+          <Input
+            className="m-3 text-white flex self-end"
+            size="lg"
+            bordered
+            clearable
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
         {/* END  */}
 

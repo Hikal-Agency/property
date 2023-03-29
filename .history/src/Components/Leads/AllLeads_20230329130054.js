@@ -882,8 +882,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Unreachable`;
       } else if (lead_type === "cold") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=1`;
-      } else if (lead_type === "warm") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=4`;
       }
     }
 
