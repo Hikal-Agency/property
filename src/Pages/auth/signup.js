@@ -11,10 +11,36 @@ const Signup = () => {
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
   const [UserRole, setUserRole] = useState("");
-  const [SamePasswordError, setSamePasswordError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const { BACKEND_URL } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handlePassword = (e) => {
+    setPasswordError(false);
+    const password = e.target.value;
+
+    // Check if password meets the required criteria
+    const validPassword =
+      password.length >= 8 &&
+      /[a-z]/.test(password) &&
+      /[A-Z]/.test(password) &&
+      /[0-9]/.test(password) &&
+      /[@#$%^&+=]/.test(password);
+
+    if (validPassword) {
+      setPasswordError(false);
+    } else {
+      setPasswordError(
+        "Password must be at least 8 characters long, include numbers, characters, and special characters. Example: Abc123@#"
+      );
+    }
+
+    setformdata({
+      ...formdata,
+      password: e.target.value,
+    });
+  };
 
   const ChangeUserRole = (event) => {
     setUserRole(event.target.value);
@@ -31,7 +57,7 @@ const Signup = () => {
       await axios
         .post(`${BACKEND_URL}/register`, formdata)
         .then((result) => {
-          console.log(result);
+          console.log("result", result);
           if (result.data.success) {
             toast.success("Registration Completed Successfully", {
               position: "top-right",
@@ -63,7 +89,7 @@ const Signup = () => {
           setloading(false);
         });
     } else {
-      setSamePasswordError(true);
+      setPasswordError(true);
     }
   };
   return (
@@ -128,10 +154,8 @@ const Signup = () => {
                       size="medium"
                       required
                       value={formdata?.password}
-                      onChange={(e) => {
-                        setSamePasswordError(false);
-                        setformdata({ ...formdata, password: e.target.value });
-                      }}
+                      onChange={handlePassword}
+                      helperText={passwordError || "Example: Abc123@#"}
                     />
                   </div>
                   <div className="col-span-3">
@@ -145,7 +169,7 @@ const Signup = () => {
                       required
                       value={formdata?.c_password}
                       onChange={(e) => {
-                        setSamePasswordError(false);
+                        setPasswordError(false);
                         setformdata({
                           ...formdata,
                           c_password: e.target.value,
@@ -153,10 +177,11 @@ const Signup = () => {
                       }}
                     />
                   </div>
-                  {SamePasswordError && (
+                  {passwordError && (
                     <div className="col-span-6">
                       <p className="italic text-red-900">
-                        Your Password & Confirm Password must be Same
+                        {passwordError &&
+                          "Your Password & Confirm Password must be Same"}
                       </p>
                     </div>
                   )}
@@ -228,7 +253,10 @@ const Signup = () => {
                     )}
                   </button>
                   <div className="flex justify-center">
-                    <Link to={"/"} state={{continueURL: location?.state?.continueURL}}>
+                    <Link
+                      to={"/"}
+                      state={{ continueURL: location?.state?.continueURL }}
+                    >
                       <button className="mt-1 h-10 rounded-md bg-transparent text-sm font-medium text-main_bg_color hover:text-hover_color focus:outline-none">
                         Already have an Account? Sign in
                       </button>
