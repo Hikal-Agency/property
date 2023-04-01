@@ -36,6 +36,15 @@ const AddLeadComponent = () => {
   const [LeadProject, setLeadProject] = useState("");
   const [LeadNotes, setLeadNotes] = useState("");
 
+  const handlePhone = (e) => {
+    const value = e.target.value;
+    const onlyDigitsAndPlus = /^[0-9+]*$/;
+    if (onlyDigitsAndPlus.test(value)) {
+      setLeadContact(value);
+    }
+    console.log(LeadContact);
+  };
+
   const ChangePropertyType = (event) => {
     setPropertyType(event.target.value);
   };
@@ -152,7 +161,7 @@ const AddLeadComponent = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    console.log(User)
+    console.log(User);
     axios
       .get(`${BACKEND_URL}/teamMembers/${User.id}`, {
         headers: {
@@ -161,7 +170,7 @@ const AddLeadComponent = () => {
         },
       })
       .then((result) => {
-        console.log(result);
+        console.log("result", result);
         setManager2(result.data.team);
         if (User.role === 3) {
           setfilter_manager(
@@ -436,7 +445,7 @@ const AddLeadComponent = () => {
                               size="medium"
                               required
                               value={LeadContact}
-                              onChange={(e) => setLeadContact(e.target.value)}
+                              onChange={handlePhone}
                             />
 
                             <TextField
