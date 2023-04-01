@@ -13,7 +13,6 @@ const NotificationsMenu = () => {
 
   const handleAvoidClose = (event) => {
     event.stopPropagation();
-    // Do other things here
   };
 
   useEffect(() => {

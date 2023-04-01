@@ -1,8 +1,8 @@
 import { CircularProgress, TextField } from "@mui/material";
-import Image from "next/image";
-import Link from "next/link";
+// import Image from "next/image";
+import { Link } from "react-router-dom";
 import React, { useState } from "react";
-import Styles from "../../styles/Home.module.css";
+import Styles from "../../styles/app.css";
 
 const ForgotPassword = () => {
   const [formdata, setformdata] = useState({});
@@ -17,7 +17,7 @@ const ForgotPassword = () => {
           <div className="w-[calc(100vw-50px)] md:max-w-[500px] space-y-4 md:space-y-6 bg-white py-8 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
             <div>
               <Link href={"/"} className="cursor-pointer">
-                <Image
+                <img
                   height={200}
                   width={200}
                   className="mx-auto h-20 w-auto"
@@ -34,6 +34,7 @@ const ForgotPassword = () => {
               className="mt-8 space-y-6"
               onSubmit={(e) => {
                 e.preventDefault();
+                console.log("formData: ", formdata);
               }}
             >
               <input type="hidden" name="remember" defaultValue="true" />
