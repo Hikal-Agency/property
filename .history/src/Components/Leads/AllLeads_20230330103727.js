@@ -493,7 +493,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         return (
           <div
             className={`${
-              currentMode === "dark" ? "bg-[#000000] text-white" : "bg-[#000000] text-white"
+              currentMode === "dark" ? "bg-[#8b8b8b]" : "bg-[#8b8b8b]"
             } w-full h-full flex justify-center items-center px-5 font-semibold`}
           >
             {cellValues.formattedValue}
@@ -1256,7 +1256,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <MuiButton
             onClick={() => bulkImportRef.current.click()}
             size="small"
-            sx={{ ...bulkUpdateBtnStyles, left: "50.5%" }}
+            sx={{ ...bulkUpdateBtnStyles, left: "41.5%" }}
             variant="text"
           >
             <TbFileImport size={18} />{" "}

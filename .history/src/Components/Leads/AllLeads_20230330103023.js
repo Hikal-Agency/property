@@ -484,22 +484,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const columns = [
     {
       field: "id",
-      headerName: "#",
+      headerName: "ID",
       // width: 150,
       minWidth: 50,
       flex: 1,
       headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-[#000000] text-white" : "bg-[#000000] text-white"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
+      
     },
     {
       field: "creationDate",
@@ -1256,7 +1246,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <MuiButton
             onClick={() => bulkImportRef.current.click()}
             size="small"
-            sx={{ ...bulkUpdateBtnStyles, left: "50.5%" }}
+            sx={{ ...bulkUpdateBtnStyles, left: "41.5%" }}
             variant="text"
           >
             <TbFileImport size={18} />{" "}

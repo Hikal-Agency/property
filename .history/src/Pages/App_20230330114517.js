@@ -155,12 +155,12 @@ const routes = [
     { 
       path: "/users", 
       pageName: "Users",
-      element: <Users /> 
+      element: <ActivityLog /> 
     },
     { 
       path: "/activity", 
       pageName: "Activity Log",
-      element: <ActivityLog /> 
+      element: <Users /> 
     },
     { 
       path: "/offers", 

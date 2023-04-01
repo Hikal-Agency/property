@@ -1256,7 +1256,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <MuiButton
             onClick={() => bulkImportRef.current.click()}
             size="small"
-            sx={{ ...bulkUpdateBtnStyles, left: "50.5%" }}
+            sx={{ ...bulkUpdateBtnStyles, left: "41.5%" }}
             variant="text"
           >
             <TbFileImport size={18} />{" "}

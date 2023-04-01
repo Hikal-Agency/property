@@ -31,7 +31,6 @@ import Reports from "./reports";
 import Clients from "./clients";
 import Leaderboard from "./leaderboard";
 import { useStateContext } from "../context/ContextProvider";
-import ActivityLog from "./activity";
 
 const libraries = ["places"];
 
@@ -160,7 +159,7 @@ const routes = [
     { 
       path: "/activity", 
       pageName: "Activity Log",
-      element: <ActivityLog /> 
+      element: <Users /> 
     },
     { 
       path: "/offers", 
