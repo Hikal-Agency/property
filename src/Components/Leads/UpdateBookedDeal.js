@@ -251,17 +251,17 @@ const UpdateBookedDeal = ({
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-7 rounded-md`}
         >
-        <IconButton
-          sx={{
-            position: "absolute",
-            right: 12,
-            top: 10,
-            color: (theme) => theme.palette.grey[500],
-          }}
-          onClick={handleLeadModelClose}
-        >
-          <IoMdClose size={18} />
-        </IconButton>
+          <IconButton
+            sx={{
+              position: "absolute",
+              right: 12,
+              top: 10,
+              color: (theme) => theme.palette.grey[500],
+            }}
+            onClick={handleLeadModelClose}
+          >
+            <IoMdClose size={18} />
+          </IconButton>
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />
@@ -309,7 +309,7 @@ const UpdateBookedDeal = ({
                       />
                       <TextField
                         id="LeadContactNumber"
-                        type={"number"}
+                        type={"tel"}
                         label="Contact number"
                         className="w-full mb-5"
                         style={{ marginBottom: "20px" }}
@@ -373,7 +373,7 @@ const UpdateBookedDeal = ({
                       >
                         Project details
                       </h4>
-                      
+
                       <TextField
                         id="Project"
                         type={"text"}
