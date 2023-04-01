@@ -33,9 +33,10 @@ const ProfilePage = () => {
     userContact: "",
   });
   const [PersonalInfo, setPersonalInfo] = useState({});
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // Btn loading 
+  // Btn loading
   const [btnloading, setbtnloading] = useState(false);
 
   // COUNTER FOR TABS
@@ -65,7 +66,7 @@ const ProfilePage = () => {
           nationality: result.data.user[0].nationality,
           address: result.data.user[0].address,
           dob: result.data.user[0].dob,
-          gender: result.data.user[0].gender
+          gender: result.data.user[0].gender,
         });
         // setgender(User?.gender);
         setloading(false);
@@ -74,7 +75,10 @@ const ProfilePage = () => {
         console.log("here is error");
         console.log(err);
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       });
   };
@@ -93,58 +97,54 @@ const ProfilePage = () => {
 
   const UpdateProfile = async (data) => {
     setbtnloading(true);
-      const token = localStorage.getItem("auth-token");
-      await axios
-        .post(
-          `${BACKEND_URL}/updateuser/${User.id}`,
-          JSON.stringify(data),
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        )
-        .then((result) => {
-          console.log("Profile Updated successfull");
-          console.log(result);
-          toast.success("Profile Updated Successfully", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          const token = localStorage.getItem("auth-token");
-          if (token) {
-            FetchProfile(token);
-          } else {
-            navigate("/", {
-              state: { error: "Something Went Wrong! Please Try Again" },
-            });
-          }
-          setbtnloading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error("Error in Updating Profile", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          setbtnloading(false);
+    const token = localStorage.getItem("auth-token");
+    await axios
+      .post(`${BACKEND_URL}/updateuser/${User.id}`, JSON.stringify(data), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Profile Updated successfull");
+        console.log(result);
+        toast.success("Profile Updated Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
         });
-    };
+        const token = localStorage.getItem("auth-token");
+        if (token) {
+          FetchProfile(token);
+        } else {
+          navigate("/", {
+            state: { error: "Something Went Wrong! Please Try Again" },
+          });
+        }
+        setbtnloading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Error in Updating Profile", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setbtnloading(false);
+      });
+  };
 
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer />
       <div className="flex min-h-screen">
         {loading ? (
           <Loader />
@@ -247,7 +247,6 @@ const ProfilePage = () => {
                             ) : (
                               <></>
                             )}
-                            
                           </div>
                         </div>
                       </div>
@@ -265,7 +264,7 @@ const ProfilePage = () => {
                           >
                             <Tab label="General Info" />
                             <Tab label="Personal Info " />
-                            <Tab label="Change Password"/>
+                            <Tab label="Change Password" />
                           </Tabs>
                         </Box>
                         <div className="px-7 pt-12">

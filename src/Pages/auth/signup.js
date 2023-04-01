@@ -12,6 +12,7 @@ const Signup = () => {
   const [loading, setloading] = useState(false);
   const [UserRole, setUserRole] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
   const { BACKEND_URL } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,6 +42,19 @@ const Signup = () => {
       password: e.target.value,
     });
   };
+  const handleEmail = (e) => {
+    setEmailError(false);
+    const email = e.target.value;
+    const emailRegex = /^\S+@\S+\.\S+$/; // regex pattern to match email address format
+    const isValidEmail = emailRegex.test(email);
+    if (isValidEmail) {
+      setEmailError(false);
+    } else {
+      setEmailError("Please enter a valid email address");
+    }
+
+    setformdata({ ...formdata, userEmail: email });
+  };
 
   const ChangeUserRole = (event) => {
     setUserRole(event.target.value);
@@ -51,7 +65,33 @@ const Signup = () => {
     }
   };
 
+  // sql injuction
+  function isSafeInput(input) {
+    const regex = /([';\/*-])/g; // Characters to look for in input
+    return !regex.test(input);
+  }
+
   const RegisterUser = async () => {
+    const { userName, userEmail, password, c_password, loginId } = formdata;
+    if (
+      !isSafeInput(userName) ||
+      !isSafeInput(userEmail) ||
+      !isSafeInput(password) ||
+      !isSafeInput(c_password) ||
+      !isSafeInput(loginId)
+    ) {
+      toast.error("Input contains invalid email", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
     if (formdata.password === formdata.c_password) {
       setloading(true);
       await axios
@@ -89,7 +129,7 @@ const Signup = () => {
           setloading(false);
         });
     } else {
-      setPasswordError(true);
+      setPasswordError("Your Password & Confirm Password must be Same");
     }
   };
   return (
@@ -155,7 +195,7 @@ const Signup = () => {
                       required
                       value={formdata?.password}
                       onChange={handlePassword}
-                      helperText={passwordError || "Example: Abc123@#"}
+                      helperText={"Example: Abc123@#"}
                     />
                   </div>
                   <div className="col-span-3">
@@ -179,10 +219,7 @@ const Signup = () => {
                   </div>
                   {passwordError && (
                     <div className="col-span-6">
-                      <p className="italic text-red-900">
-                        {passwordError &&
-                          "Your Password & Confirm Password must be Same"}
-                      </p>
+                      <p className="italic text-red-900">{passwordError}</p>
                     </div>
                   )}
 
@@ -228,13 +265,17 @@ const Signup = () => {
                       className="w-full"
                       variant="outlined"
                       size="medium"
+                      // error={!!emailError}
                       required
                       value={formdata?.userEmail}
-                      onChange={(e) => {
-                        setformdata({ ...formdata, userEmail: e.target.value });
-                      }}
+                      onChange={handleEmail}
                     />
                   </div>
+                  {emailError && (
+                    <div className="col-span-6">
+                      <p className="italic text-red-900">{emailError}</p>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <button
