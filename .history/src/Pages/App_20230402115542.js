@@ -184,15 +184,10 @@ const routes = [
     pageName: "Activity",
     element: <ActivityLog />,
   },
-  // {
-  //   path: "/propertyPortfolio",
-  //   pageName: "Property Portfolio",
-  //   element: <PropertyPortfolio />,
-  // },
   {
     path: "/360tours",
-    pageName: "360 Tour",
-    element: <Tour360 />,
+    pageName: "Property Portfolio",
+    element: <PropertyPortfolio />,
   },
   {
     path: "*",

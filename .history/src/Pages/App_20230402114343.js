@@ -34,7 +34,6 @@ import { useStateContext } from "../context/ContextProvider";
 import ForgotPassword from "./auth/forgot-password"
 import ActivityLog from "./activity";
 import Tour360 from "./360tours";
-import PropertyPortfolio from "./propertyPortfolio";
 
 const libraries = ["places"];
 
@@ -184,14 +183,9 @@ const routes = [
     pageName: "Activity",
     element: <ActivityLog />,
   },
-  // {
-  //   path: "/propertyPortfolio",
-  //   pageName: "Property Portfolio",
-  //   element: <PropertyPortfolio />,
-  // },
   {
     path: "/360tours",
-    pageName: "360 Tour",
+    pageName: "360 Virtual Tour",
     element: <Tour360 />,
   },
   {

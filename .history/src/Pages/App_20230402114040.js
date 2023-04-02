@@ -27,14 +27,12 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import Users from "./users";
 import Offers from "./offers";
 import Reports from "./reports";
-import Tickets from "./support";
+// import Tickets from "./support";
 import Clients from "./clients";
 import Leaderboard from "./leaderboard";
 import { useStateContext } from "../context/ContextProvider";
 import ForgotPassword from "./auth/forgot-password"
 import ActivityLog from "./activity";
-import Tour360 from "./360tours";
-import PropertyPortfolio from "./propertyPortfolio";
 
 const libraries = ["places"];
 
@@ -175,24 +173,14 @@ const routes = [
     element: <Reports />,
   },
   {
-     path: "/support",
-     pageName: "Support",
-     element: <Tickets />
-  },
-  {
     path: "/activity",
     pageName: "Activity",
     element: <ActivityLog />,
   },
-  // {
-  //   path: "/propertyPortfolio",
-  //   pageName: "Property Portfolio",
-  //   element: <PropertyPortfolio />,
-  // },
   {
-    path: "/360tours",
-    pageName: "360 Tour",
-    element: <Tour360 />,
+     path: "/support",
+     pageName: "Support",
+     element: <Tickets />
   },
   {
     path: "*",

@@ -451,9 +451,9 @@ const Sidebarmui = () => {
           link: "/contacts",
         },
         {
-          name: "360 Tour",
+          name: "Property Portfolio",
           icon: <BsFillBuildingsFill />,
-          link: "/360tours",
+          link: "/propertyPortfolio",
         },
         {
           name: "Leaderboard",
