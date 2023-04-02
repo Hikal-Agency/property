@@ -71,7 +71,7 @@ const UpcomingMeetingsMenu = () => {
                   <div className="w-full flex justify-between items-center">
                     <div className="flex items-center space-x-1">
                       <ImClock
-                        size={"18px"}
+                        size={"20px"}
                         className={`mr-2 ${
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}
@@ -87,7 +87,7 @@ const UpcomingMeetingsMenu = () => {
                   <div className="w-full flex justify-between items-center">
                     <div className="flex items-center space-x-1">
                       <ImLocation
-                        size={"18px"}
+                        size={"20px"}
                         className={`mr-2 ${
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}
