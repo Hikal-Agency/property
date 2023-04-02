@@ -78,8 +78,8 @@ const Tour360 = (props) => {
                                     Arada - Masaar
                                 </h1>
 
-                                <div className="w-full h-[80vh]">
-                                    <iframe width="100%" height="100%" frameborder="0" allow="xr-spatial-tracking; gyroscope; accelerometer" allowfullscreen scrolling="no" src={tour[4-1].tourlink}></iframe>
+                                <div>
+                                    <iframe width="100%" minHeight="700" frameborder="0" allow="xr-spatial-tracking; gyroscope; accelerometer" allowfullscreen scrolling="no" src={tour[4-1].tourlink}></iframe>
                                 </div>
                             </div>
                         </div>
