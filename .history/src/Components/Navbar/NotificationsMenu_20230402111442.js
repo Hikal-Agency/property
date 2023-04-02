@@ -137,7 +137,78 @@ const NotificationsMenu = () => {
             enquiryType: "3 Bedrooms",
         },
     ];
-    
+
+    return (
+        <Container
+            onClick={handleAvoidClose}
+            maxWidth={false}
+            sx={{ height: 300, width: 400 }}
+        >
+            <Typography variant="h5">Notifications</Typography>
+            {loading && <CircularProgress />}
+            <Tabs
+            value={tabValue}
+            onChange={(e, value) => setTabValue(value)}
+            className="mt-6"
+            sx={{
+                "& .MuiTabs-indicator": {
+                backgroundColor: currentMode === "dark" ? "#fff" : "#000", // change indicator color
+                },
+                "& .MuiTab-root": {
+                color: currentMode === "dark" ? "#fff" : "#000", // change tab text color
+                },
+                "& .Mui-selected": {
+                color: currentMode === "dark" ? "#fff" : "#000", // change selected tab text color
+                },
+                "& .MuiTab-textColorInherit.Mui-selected": {
+                color: currentMode === "dark" ? "#fff" : "#000", // change selected tab text color when using textColorInherit prop
+                },
+            }}
+            >
+            <Tab label="Read" value="read" />
+            <Tab label="Unread" value="unread" />
+            </Tabs>
+            {filteredNotifications?.length > 0 ? (
+            <div className="mt-4 flex flex-col space-y-2 ">
+                <div className="notification-container space-y-2">
+                {filteredNotifications.map((notification) => (
+                    <div
+                    key={notification.id}
+                    className={` h-300 w-400 overflow-auto flex items-center p-4 rounded-lg ${
+                        currentMode === "dark"
+                        ? "bg-black text-white"
+                        : "bg-white text-black"
+                    }`}
+                    onClick={(e) => handleNotificationClick(notification.id, e)}
+                    style={{ cursor: "pointer" }}
+                    >
+                    <div className="notification-icon">
+                        <i className="fa fa-bell"></i>
+                    </div>
+                    <div className="notification-text">
+                        <Typography
+                        className={`notification-note ${
+                            notification.read ? "text-gray-500" : ""
+                        }`}
+                        >
+                        {notification?.note}
+                        </Typography>
+                    </div>
+                    </div>
+                ))}
+                </div>
+            </div>
+            ) : (
+            !loading && <Typography>No notifications</Typography>
+            )}
+        </Container>
+    );
+}   
+};
+
+export default NotificationsMenu;
+
+
 // return (
 //     <Container 
 //         onClick={handleAvoidClose} 
@@ -259,75 +330,3 @@ const NotificationsMenu = () => {
 //         })}
 //     </Container>
 // );
-
-    return (
-        <Container
-            onClick={handleAvoidClose}
-            maxWidth={false}
-            sx={{ height: 300, width: 400 }}
-        >
-            <Typography variant="h5">Notifications</Typography>
-            {loading && <CircularProgress />}
-            <Tabs
-            value={tabValue}
-            onChange={(e, value) => setTabValue(value)}
-            className="mt-6"
-            sx={{
-                "& .MuiTabs-indicator": {
-                backgroundColor: currentMode === "dark" ? "#fff" : "#000", // change indicator color
-                },
-                "& .MuiTab-root": {
-                color: currentMode === "dark" ? "#fff" : "#000", // change tab text color
-                },
-                "& .Mui-selected": {
-                color: currentMode === "dark" ? "#fff" : "#000", // change selected tab text color
-                },
-                "& .MuiTab-textColorInherit.Mui-selected": {
-                color: currentMode === "dark" ? "#fff" : "#000", // change selected tab text color when using textColorInherit prop
-                },
-            }}
-            >
-            <Tab label="Read" value="read" />
-            <Tab label="Unread" value="unread" />
-            </Tabs>
-            {filteredNotifications?.length > 0 ? (
-            <div className="mt-4 flex flex-col space-y-2 ">
-                <div className="notification-container space-y-2">
-                {filteredNotifications.map((notification) => (
-                    <div
-                    key={notification.id}
-                    className={` h-300 w-400 overflow-auto flex items-center p-4 rounded-lg ${
-                        currentMode === "dark"
-                        ? "bg-black text-white"
-                        : "bg-white text-black"
-                    }`}
-                    onClick={(e) => handleNotificationClick(notification.id, e)}
-                    style={{ cursor: "pointer" }}
-                    >
-                    <div className="notification-icon">
-                        <i className="fa fa-bell"></i>
-                    </div>
-                    <div className="notification-text">
-                        <Typography
-                        className={`notification-note ${
-                            notification.read ? "text-gray-500" : ""
-                        }`}
-                        >
-                        {notification?.note}
-                        </Typography>
-                    </div>
-                    </div>
-                ))}
-                </div>
-            </div>
-            ) : (
-            !loading && <Typography>No notifications</Typography>
-            )}
-        </Container>
-    );
-}   
-};
-
-export default NotificationsMenu;
-
-

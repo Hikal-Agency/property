@@ -172,11 +172,6 @@ const routes = [
     pageName: "Reports",
     element: <Reports />,
   },
-  {
-    path: "/activity",
-    pageName: "Activity",
-    element: <ActivityLog />,
-  },
   // {
   //   path: "/support",
   //   element: <Tickets />
