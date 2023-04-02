@@ -32,7 +32,7 @@ const UpcomingMeetingsMenu = () => {
   }, []);
   return (
     <>
-      <Container  sx={{ maxHeight: 500, width: 400}}>
+      <Container  sx={{ maxHeight: 500, maxWidth: 200}}>
         {upcomingMeetings.length > 0 ? (
           upcomingMeetings.map((meeting, index) => {
             return (
