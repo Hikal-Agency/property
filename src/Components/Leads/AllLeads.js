@@ -37,7 +37,6 @@ const bulkUpdateBtnStyles = {
   position: "absolute",
   top: "12.5px",
   zIndex: "500",
-  left: "52.5%",
   transform: "translateX(-50%)",
   fontWeight: "500",
 };
@@ -1233,7 +1232,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         {selectedRows.length > 0 && (
           <MuiButton
             size="small"
-            sx={bulkUpdateBtnStyles}
+            sx={{...bulkUpdateBtnStyles, left: "564px"}}
             variant="text"
             onClick={handleClickBulkUpdate}
           >
@@ -1244,7 +1243,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         {selectedRows.length > 0 && (
           <MuiButton
             size="small"
-            sx={{ ...bulkUpdateBtnStyles, left: "64%" }}
+            sx={{ ...bulkUpdateBtnStyles, left: "685px" }}
             variant="text"
             onClick={handleClickBulkDelete}
           >
@@ -1256,7 +1255,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <MuiButton
             onClick={() => bulkImportRef.current.click()}
             size="small"
-            sx={{ ...bulkUpdateBtnStyles, left: "50.5%" }}
+            sx={{ ...bulkUpdateBtnStyles, left: "444px" }}
             variant="text"
           >
             <TbFileImport size={18} />{" "}

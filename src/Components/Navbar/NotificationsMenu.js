@@ -1,5 +1,5 @@
-import { CircularProgress, Tab, Tabs, Typography } from "@mui/material";
 import { Container } from "@mui/system";
+<<<<<<< Updated upstream
 
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -10,14 +10,18 @@ import { BsCalendar2EventFill, BsFillBuildingFill } from "react-icons/bs";
 import { BiUserCircle } from "react-icons/bi";
 import { HiUser } from "react-icons/hi";
 import { useStateContext } from "../../context/ContextProvider";
+=======
+>>>>>>> Stashed changes
 
 const NotificationsMenu = () => {
-  const token = localStorage.getItem("auth-token");
-  const { BACKEND_URL, currentMode } = useStateContext();
-  const [notifications, setNotifications] = useState();
-  const [loading, setLoading] = useState(false);
-  const [tabValue, setTabValue] = useState("unread");
+    return (<>
+            <Container >
+                <p>Notifications</p>
+            </Container>
+    </>);
+}
 
+<<<<<<< Updated upstream
 
 const NotificationsMenu = () => {
     const { currentMode, BACKEND_URL } = useStateContext();
@@ -331,3 +335,6 @@ const NotificationsMenu = () => {
 export default NotificationsMenu;
 
 
+=======
+export default NotificationsMenu;
+>>>>>>> Stashed changes

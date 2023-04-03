@@ -224,7 +224,7 @@ const UpdateLead = ({
     if (User.role === 1 || User.role === 3) {
       UpdateLeadData.append("assignedToManager", Manager);
       UpdateLeadData.append("assignedToSales", SalesPerson2);
-      console.log(Manager, SalesPerson2);
+      console.log(Manager, SalesPerson2)
     }
     UpdateLeadData.append(
       "lastEdited",
@@ -389,18 +389,6 @@ const UpdateLead = ({
                           </Select>
                         )
                       )}
-
-                      {/* <TextField
-                        id="notes"
-                        type={"text"}
-                        label="Notes"
-                        className="w-full mb-5"
-                        style={{ marginBottom: "20px" }}
-                        variant="outlined"
-                        size="medium"
-                        value={LeadNotes}
-                        onChange={(e) => setLeadNotes(e.target.value)}
-                      /> */}
                     </Box>
                   </div>
 
@@ -514,7 +502,7 @@ const UpdateLead = ({
                       />
                       <TextField
                         id="LeadContactNumber"
-                        type={"tel"}
+                        type={"number"}
                         label="Contact number"
                         className="w-full mb-5"
                         style={{ marginBottom: "20px" }}

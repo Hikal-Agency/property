@@ -171,7 +171,7 @@ const AddLead = () => {
                         <TextField
                           id="LeadContactNumber"
                           type={"text"}
-                          label="Lead Contact Number fdsdfdsfda"
+                          label="Lead Contact Number"
                           className="w-full"
                           variant="outlined"
                           size="medium"

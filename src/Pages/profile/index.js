@@ -33,11 +33,10 @@ const ProfilePage = () => {
     userContact: "",
   });
   const [PersonalInfo, setPersonalInfo] = useState({});
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate(); const location = useLocation();
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Btn loading
+  // Btn loading 
   const [btnloading, setbtnloading] = useState(false);
 
   // COUNTER FOR TABS
@@ -67,7 +66,7 @@ const ProfilePage = () => {
           nationality: result.data.user[0].nationality,
           address: result.data.user[0].address,
           dob: result.data.user[0].dob,
-          gender: result.data.user[0].gender,
+          gender: result.data.user[0].gender
         });
         // setgender(User?.gender);
         setloading(false);
@@ -76,10 +75,7 @@ const ProfilePage = () => {
         console.log("here is error");
         console.log(err);
         navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       });
   };
@@ -98,101 +94,108 @@ const ProfilePage = () => {
 
   const UpdateProfile = async (data) => {
     setbtnloading(true);
-    const token = localStorage.getItem("auth-token");
-    await axios
-      .post(`${BACKEND_URL}/updateuser/${User.id}`, JSON.stringify(data), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("Profile Updated successfull");
-        console.log(result);
-        toast.success("Profile Updated Successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        const token = localStorage.getItem("auth-token");
-        if (token) {
-          FetchProfile(token);
-        } else {
-          navigate("/", {
-            state: { error: "Something Went Wrong! Please Try Again" },
+      const token = localStorage.getItem("auth-token");
+      await axios
+        .post(
+          `${BACKEND_URL}/updateuser/${User.id}`,
+          JSON.stringify(data),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
+        .then((result) => {
+          console.log("Profile Updated successfull");
+          console.log(result);
+          toast.success("Profile Updated Successfully", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
           });
-        }
-        setbtnloading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Error in Updating Profile", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+          const token = localStorage.getItem("auth-token");
+          if (token) {
+            FetchProfile(token);
+          } else {
+            navigate("/", {
+              state: { error: "Something Went Wrong! Please Try Again" },
+            });
+          }
+          setbtnloading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Error in Updating Profile", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setbtnloading(false);
         });
-        setbtnloading(false);
-      });
-  };
+    };
 
-  const handlePickImage = (event) => {
-    const reader = new FileReader();
+    const handlePickImage = (event) => {
+        const reader = new FileReader();
     const file = event.target.files[0];
     reader.onloadend = () => {
-      setSelectedImage(reader.result);
-    };
+        setSelectedImage(reader.result);
+    }
     reader.readAsDataURL(new Blob([file], { type: file.type.slice(6) }));
-  };
+    }
 
-  const UpdateProfileImage = async (file) => {
-    try {
+    const UpdateProfileImage = async file => {
+      try {
       const token = localStorage.getItem("auth-token");
       const imageData = new FormData();
-      imageData.append("image", file);
-      imageData.append("image", file);
+      imageData.append('image', file);
+      imageData.append('image', file);
 
-      const result = await axios.post(
-        `${BACKEND_URL}/user/profile-picture`,
-        imageData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      console.log(result);
-    } catch (err) {
-      console.log(err);
-      toast.error("Error in Updating Profile Image", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
 
-  useEffect(() => {
-    if (selectedImage) {
-      UpdateProfileImage(selectedImage);
+      const result = await axios
+        .post(
+          `${BACKEND_URL}/user/profile-picture`,
+          imageData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        console.log(result);
+        
+      } catch (err) {
+          console.log(err);
+          toast.error("Error in Updating Profile Image", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+      }
     }
-  }, [selectedImage]);
+
+    useEffect(() => {
+      if(selectedImage) {
+        UpdateProfileImage(selectedImage);
+      }
+    }, [selectedImage]);
 
   return (
     <>
-      <ToastContainer />
+    <ToastContainer/>
       <div className="flex min-h-screen">
         {loading ? (
           <Loader />
@@ -222,30 +225,24 @@ const ProfilePage = () => {
                         </h1>
                         <div className="accountinfo border-t-2 border-gray-400 px-5 pt-10 ">
                           <div className="flex justify-center flex-col items-center">
-                            <label htmlFor="pick-image">
-                              <div className="relative">
-                                <img
-                                  src={User?.displayImg}
-                                  width={200}
-                                  height={200}
-                                  alt=""
-                                  className="rounded-full mx-auto w-28"
+                          <label htmlFor="pick-image">
+                            <div className="relative">
+                              <img
+                                src={User?.displayImg}
+                                width={200}
+                                height={200}
+                                alt=""
+                                className="rounded-full mx-auto w-28"
+                              />
+                              <div className="absolute -top-1 right-1 ">
+                                <BsFillPlusCircleFill
+                                  className="text-main-red-color bg-white border-white border-[3px] rounded-full w-full h-full"
+                                  size={30}
                                 />
-                                <div className="absolute -top-1 right-1 ">
-                                  <BsFillPlusCircleFill
-                                    className="text-main-red-color bg-white border-white border-[3px] rounded-full w-full h-full"
-                                    size={30}
-                                  />
-                                </div>
                               </div>
+                            </div>
                             </label>
-                            <input
-                              accept="image/*"
-                              onInput={handlePickImage}
-                              id="pick-image"
-                              type="file"
-                              hidden
-                            />
+                            <input accept="image/*" onInput={handlePickImage} id="pick-image" type="file" hidden/>
                             <div className="mt-3">
                               <h1 className="text-lg font-bold text-center">
                                 {User?.userName}
@@ -304,6 +301,7 @@ const ProfilePage = () => {
                             ) : (
                               <></>
                             )}
+                            
                           </div>
                         </div>
                       </div>
@@ -321,7 +319,7 @@ const ProfilePage = () => {
                           >
                             <Tab label="General Info" />
                             <Tab label="Personal Info " />
-                            <Tab label="Change Password" />
+                            <Tab label="Change Password"/>
                           </Tabs>
                         </Box>
                         <div className="px-7 pt-12">
