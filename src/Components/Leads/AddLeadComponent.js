@@ -12,6 +12,13 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
 
+const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+function isEmailValid(email) {
+  console.log("Validating email: ", email);
+  return emailRegex.test(email);
+}
+
 const AddLeadComponent = () => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
@@ -35,7 +42,24 @@ const AddLeadComponent = () => {
   const [LeadEmail, setLeadEmail] = useState("");
   const [LeadProject, setLeadProject] = useState("");
   const [LeadNotes, setLeadNotes] = useState("");
+  const handleEmailChange = (e) => {
+    const email = e.target.value;
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (emailRegex.test(email)) {
+      setLeadEmail(email);
+    }
 
+    console.log("email: ", LeadEmail);
+  };
+
+  const handlePhone = (e) => {
+    const value = e.target.value;
+    const onlyDigitsAndPlus = /^[0-9+]*$/;
+    if (onlyDigitsAndPlus.test(value)) {
+      setLeadContact(value);
+    }
+    console.log(LeadContact);
+  };
   const ChangePropertyType = (event) => {
     setPropertyType(event.target.value);
   };
@@ -439,7 +463,7 @@ const AddLeadComponent = () => {
                               onChange={(e) => setLeadContact(e.target.value)}
                             />
 
-                            <TextField
+                            {/* <TextField
                               id="LeadEmailAddress"
                               type={"email"}
                               label="Email address"
@@ -450,6 +474,24 @@ const AddLeadComponent = () => {
                               required
                               value={LeadEmail}
                               onChange={(e) => setLeadEmail(e.target.value)}
+                            /> */}
+
+                            <TextField
+                              id="LeadEmailAddress"
+                              type="email"
+                              label="Email address"
+                              className="w-full mb-5"
+                              style={{ marginBottom: "20px" }}
+                              variant="outlined"
+                              size="medium"
+                              required
+                              value={LeadEmail}
+                              onChange={handleEmailChange}
+                              // error={!isEmailValid(LeadEmail)}
+                              // helperText={
+                              //   !isEmailValid(LeadEmail) &&
+                              //   "Invalid email address"
+                              // }
                             />
 
                             <Select

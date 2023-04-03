@@ -31,6 +31,8 @@ import Tickets from "./support";
 import Clients from "./clients";
 import Leaderboard from "./leaderboard";
 import { useStateContext } from "../context/ContextProvider";
+import ForgotPassword from "./auth/forgot-password";
+
 import ActivityLog from "./activity";
 import Tour360 from "./360tours";
 import PropertyPortfolio from "./propertyPortfolio";

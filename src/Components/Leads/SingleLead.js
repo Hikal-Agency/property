@@ -1,5 +1,11 @@
 // import { Button } from "@material-tailwind/react";
-import { Backdrop, CircularProgress, Modal, TextField, IconButton } from "@mui/material";
+import {
+  Backdrop,
+  CircularProgress,
+  Modal,
+  TextField,
+  IconButton,
+} from "@mui/material";
 import React, { useState } from "react";
 import { FiLink } from "react-icons/fi";
 import { BsSnow2, BsPatchQuestion } from "react-icons/bs";
@@ -37,13 +43,20 @@ const SingleLead = ({
     const token = localStorage.getItem("auth-token");
     console.log("lead data is");
     console.log(LeadData);
+
+    const now = moment();
+    const datetimeString = now.format("YYYY/MM/DD hh:mm:ss A");
+
+    console.log(datetimeString);
     const data = {
       leadId: LeadData.lid,
       leadNote: AddNoteTxt,
       addedBy: User?.id,
-      creationDate: moment(new Date()).format("YYYY/MM/DD"),
+      // creationDate: moment(new Date()).format("YYYY/MM/DD"),
+      creationDate: datetimeString,
     };
-    // console.log(data);
+    console.log("Data: ");
+    console.log("Data: ", data);
     axios
       .post(`${BACKEND_URL}/leadNotes`, data, {
         headers: {
@@ -52,6 +65,8 @@ const SingleLead = ({
         },
       })
       .then((result) => {
+        console.log("Result: ");
+        console.log("Result: ", result);
         setaddNoteloading(false);
         setAddNoteTxt("");
         toast.success("Note added Successfully", {
@@ -64,7 +79,7 @@ const SingleLead = ({
           progress: undefined,
           theme: "light",
         });
-        console.log(result);
+        // console.log(result);
       })
       .catch((err) => {
         setaddNoteloading(false);
@@ -105,17 +120,17 @@ const SingleLead = ({
             currentMode === "dark" ? "bg-gray-900 text-white" : "bg-white"
           } absolute top-1/2 left-1/2 p-10 rounded-md`}
         >
-        <IconButton
-          sx={{
-            position: "absolute",
-            right: 12,
-            top: 10,
-            color: (theme) => theme.palette.grey[500],
-          }}
-          onClick={handleLeadModelClose}
-        >
-          <IoMdClose size={18} />
-        </IconButton>
+          <IconButton
+            sx={{
+              position: "absolute",
+              right: 12,
+              top: 10,
+              color: (theme) => theme.palette.grey[500],
+            }}
+            onClick={handleLeadModelClose}
+          >
+            <IoMdClose size={18} />
+          </IconButton>
           {/* {console.log("lead data is")}
           {console.log(LeadData)} */}
           <h1
@@ -253,8 +268,13 @@ const SingleLead = ({
           <div className={`rounded-md mt-5`}>
             <h1 className="font-bold text-lg text-center">Lead Notes</h1>
 
-            <button type="button" className="btn btn-sm p-2 text-main-red-color text-italic font-semibold"
-              onClick={() => handleRowClick(LeadData.lid)}>View all notes</button>
+            <button
+              type="button"
+              className="btn btn-sm p-2 text-main-red-color text-italic font-semibold"
+              onClick={() => handleRowClick(LeadData.lid)}
+            >
+              View all notes
+            </button>
             <form
               className="mt-5"
               onSubmit={(e) => {

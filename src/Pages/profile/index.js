@@ -54,7 +54,7 @@ const ProfilePage = () => {
         },
       })
       .then((result) => {
-        console.log(result.data);
+        console.log("fetched profile ", result.data);
         setUser(result.data.user[0]);
         setGeneralInfo({
           userContact: result.data.user[0].userContact,
@@ -64,10 +64,12 @@ const ProfilePage = () => {
         });
         setPersonalInfo({
           nationality: result.data.user[0].nationality,
-          address: result.data.user[0].address,
+          currentAddress: result.data.user[0].currentAddress,
           dob: result.data.user[0].dob,
           gender: result.data.user[0].gender
         });
+
+        console.log("Personal info: ", PersonalInfo.address);
         // setgender(User?.gender);
         setloading(false);
       })

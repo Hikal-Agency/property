@@ -11,12 +11,82 @@ import { ImUser } from "react-icons/im";
 import { HiUsers } from "react-icons/hi";
 import { FaBan } from "react-icons/fa";
 import SingleUser from "../../Components/Users/SingleUser";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 const Clients = () => {
-  const {
-    currentMode,
-    DataGridStyles,
-  } = useStateContext();
+  const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
+  const [pageState, setpageState] = useState({
+    isLoading: false,
+    data: [],
+    total: 0,
+    page: 1,
+    pageSize: 15,
+  });
+
+  const HandleEditFunc = (cellValues) => {
+    console.log("cellValues : ", cellValues.id);
+  };
+
+  const FetchLeads = async (token) => {
+    setpageState((old) => ({
+      ...old,
+      isLoading: true,
+    }));
+
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/clients?page=${pageState.page}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("Clients ", response);
+
+      const clientsData = response.data.clients.data;
+      console.log("clients array is", clientsData);
+
+      const rowsdata = clientsData?.map((client, index) => ({
+        id:
+          pageState.page > 1
+            ? pageState.page * pageState.pageSize -
+              (pageState.pageSize - 1) +
+              index
+            : index + 1,
+        creationDate: client?.creationDate,
+        businessName: client?.businessName,
+        clientContact: client?.clientContact,
+        clientEmail: client?.clientEmail,
+        // notes: client?.notes,
+        project: client?.website,
+        clientName: client?.clientName,
+        clientId: client?.id,
+      }));
+
+      console.log("Rows data: ", rowsdata);
+
+      setpageState((old) => ({
+        ...old,
+        isLoading: false,
+        data: rowsdata,
+        total: response.data.clients.total,
+        pageSize: response.data.clients.per_page,
+      }));
+    } catch (error) {
+      console.log("error occurred", error);
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    FetchLeads(token);
+    // eslint-disable-next-line
+  }, [pageState.page]);
 
   const columns = [
     { 
@@ -46,9 +116,10 @@ const Clients = () => {
       flex: 1,
     },
     {
-      field: 'contactNumber',
-      headerName: 'Contact Number',
-      headerAlign: 'center',
+
+      field: "clientContact",
+      headerName: "Contact Number",
+      headerAlign: "center",
       editable: false,
       minWidth: 130,
       flex: 1,
@@ -61,9 +132,11 @@ const Clients = () => {
       },
     },
     {
-      field: 'email',
-      headerName: 'Email Address',
-      headerAlign: 'center',
+
+      field: "clientEmail",
+      headerName: "Email Address",
+      headerAlign: "center",
+
       editable: false,
       minWidth: 250,
       flex: 1,
@@ -76,9 +149,10 @@ const Clients = () => {
       },
     },
     {
-      field: 'totalUser',
-      headerName: 'Total User Accounts',
-      headerAlign: 'center',
+      field: "businessName",
+      headerName: "Business",
+      headerAlign: "center",
+
       editable: false,
       minWidth: 180,
       flex: 1,
@@ -90,25 +164,26 @@ const Clients = () => {
         );
       },
     },
+    // {
+    //   field: "notes",
+    //   headerName: "Notes",
+    //   headerAlign: "center",
+    //   editable: false,
+    //   minWidth: 180,
+    //   flex: 1,
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div className="w-full flex items-center justify-center">
+    //         <p className="text-center">{cellValues.formattedValue}</p>
+    //       </div>
+    //     );
+    //   },
+    // },
     {
-      field: 'activeUser',
-      headerName: 'Active User Accounts',
-      headerAlign: 'center',
-      editable: false,
-      minWidth: 180,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    {
-      field: 'totalLeads',
-      headerName: 'Total Leads',
-      headerAlign: 'center',
+
+      field: "creationDate",
+      headerName: "Creation Date",
+      headerAlign: "center",
       editable: false,
       minWidth: 110,
       flex: 1,
@@ -132,7 +207,7 @@ const Clients = () => {
         return (
           <div className="space-x-2 w-full flex items-center justify-center ">
             <Button
-              // onClick={() => HandleEditFunc(cellValues)}
+              onClick={() => HandleEditFunc(cellValues)}
               title="View User Accounts of the Client"
               className={` ${
                 currentMode === "dark"
@@ -168,13 +243,6 @@ const Clients = () => {
         );
       },
     },
-  ];
-  
-  const rows = [
-    { id: 1, clientName: 'Mahmoud Zreik', contactNumber: '566666555', email: "1@hikalproperties.ae", businessName: "Fam Properties", totalUser: "18", activeUser: "13", totalLeads: "714" },
-    { id: 2, clientName: 'Hadjer', contactNumber: '555567678', email: "2@hikalproperties.ae", businessName: "", totalUser: "1", activeUser: "1", totalLeads: "371" },
-    { id: 3, clientName: 'Saad Bukhari', contactNumber: '536526766', email: "3@hikalproperties.ae", businessName: "Grace House Properties", totalUser: "1", activeUser: "0", totalLeads: "0" },
-    { id: 4, clientName: 'Kareem', contactNumber: '5638378937', email: "4@hikalproperties.ae", businessName: "Azizi Developments", totalUser: "1", activeUser: "1", totalLeads: "0" },
   ];
 
   const handleRowClick = async (params, event) => {
@@ -214,7 +282,7 @@ const Clients = () => {
                       pagination
                       width="auto"
                       paginationMode="server"
-                      rows={rows}
+                      rows={pageState?.data}
                       columns={columns}
                       sx={{
                         boxShadow: 2,
