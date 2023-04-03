@@ -22,7 +22,8 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const SingleLeadNote = (props) => {
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const leadId = location.pathname.split("/")[2];
   const [loading, setloading] = useState(true);
   const [addNoteloading, setaddNoteloading] = useState(false);
@@ -48,9 +49,9 @@ const SingleLeadNote = (props) => {
         setloading(false);
       })
       .catch((err) => {
-        if(err.response.status === 404){
-            setError404(true);
-            setloading(false);
+        if (err.response.status === 404) {
+          setError404(true);
+          setloading(false);
         } else {
           console.log(err);
         }
@@ -66,6 +67,7 @@ const SingleLeadNote = (props) => {
         },
       })
       .then((result) => {
+        console.log("profile: ", result);
         setUser(result.data.user[0]);
         fetchLead();
       })
@@ -76,13 +78,16 @@ const SingleLeadNote = (props) => {
       });
   };
   const AddNote = () => {
+    const now = moment();
+    const datetimeString = now.format("YYYY/MM/DD  HH:mm:ss ");
     setaddNoteloading(true);
     const token = localStorage.getItem("auth-token");
     const data = {
       leadId: location.pathname.split("/")[2],
       leadNote: AddNoteTxt,
       addedBy: User?.id,
-      creationDate: moment(new Date()).format("YYYY/MM/DD"),
+      // creationDate: moment(new Date()).format("YYYY/MM/DD "),
+      creationDate: datetimeString,
     };
     console.log(data);
     axios
@@ -304,54 +309,54 @@ const SingleLeadNote = (props) => {
                         Lead Notes
                       </h1>
 
-                        <Box className="">
-                          <form
-                            className="mb-10 mt-5"
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                              AddNote();
-                            }}
-                          >
-                            <TextField
-                              sx={darkModeColors}
-                              id="note"
-                              type={"text"}
-                              label="Your Note"
-                              className="w-full"
-                              variant="outlined"
-                              size="medium"
-                              required
-                              value={AddNoteTxt}
-                              onChange={(e) => setAddNoteTxt(e.target.value)}
-                            />
-
-                            <button
-                              disabled={addNoteloading ? true : false}
-                              type="submit"
-                              className="my-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-1 px-5 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
-                            >
-                              {addNoteloading ? (
-                                <CircularProgress
-                                  sx={{ color: "white" }}
-                                  size={25}
-                                  className="text-white"
-                                />
-                              ) : (
-                                <span>Add new note</span>
-                              )}
-                            </button>
-                          </form>
-                          {error404 || LeadData?.notes?.data?.length === 0 ?
-                        <p
-                          className={`mt-3 italic ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-main-red-color"
-                          }`}
+                      <Box className="">
+                        <form
+                          className="mb-10 mt-5"
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            AddNote();
+                          }}
                         >
-                          No notes to show
-                        </p>
-                        :
+                          <TextField
+                            sx={darkModeColors}
+                            id="note"
+                            type={"text"}
+                            label="Your Note"
+                            className="w-full"
+                            variant="outlined"
+                            size="medium"
+                            required
+                            value={AddNoteTxt}
+                            onChange={(e) => setAddNoteTxt(e.target.value)}
+                          />
+
+                          <button
+                            disabled={addNoteloading ? true : false}
+                            type="submit"
+                            className="my-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-1 px-5 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                          >
+                            {addNoteloading ? (
+                              <CircularProgress
+                                sx={{ color: "white" }}
+                                size={25}
+                                className="text-white"
+                              />
+                            ) : (
+                              <span>Add new note</span>
+                            )}
+                          </button>
+                        </form>
+                        {error404 || LeadData?.notes?.data?.length === 0 ? (
+                          <p
+                            className={`mt-3 italic ${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-main-red-color"
+                            }`}
+                          >
+                            No notes to show
+                          </p>
+                        ) : (
                           <TableContainer component={Paper}>
                             <Table
                               sx={{
@@ -422,8 +427,8 @@ const SingleLeadNote = (props) => {
                               </TableBody>
                             </Table>
                           </TableContainer>
-                        }
-                        </Box>
+                        )}
+                      </Box>
                     </div>
                   </div>
                 </div>

@@ -31,7 +31,7 @@ import Reports from "./reports";
 import Clients from "./clients";
 import Leaderboard from "./leaderboard";
 import { useStateContext } from "../context/ContextProvider";
-import ForgotPassword from "./auth/forgot-password"
+import ForgotPassword from "./auth/forgot-password";
 import ActivityLog from "./activity";
 
 const libraries = ["places"];
@@ -101,7 +101,8 @@ const routes = [
     path: "/closedeals",
     pageName: "Close Deals",
     element: <ClosedealsPage />,
-  
+  },
+
   {
     path: "/timeline/:id",
     element: <TimelinePage />,
