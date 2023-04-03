@@ -9,49 +9,14 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   let canvas = useRef();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate(); const location = useLocation();
   const { BACKEND_URL } = useStateContext();
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
   const [openBackDrop, setOpenBackDrop] = useState(false);
 
-  // sql injuction
-  function isSafeInput(input) {
-    const regex = /([';\/*-])/g; // Characters to look for in input
-    return !regex.test(input);
-  }
-
   const LoginUser = async () => {
-    if (!isSafeInput(formdata.email) || !isSafeInput(formdata.password)) {
-      toast.error("Input contains invalid email", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      return;
-    }
     setloading(true);
-    if (!formdata.email || !formdata.password) {
-      toast.error("All fields are required", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setloading(false);
-
-      return;
-    }
     var bodyFormData = new FormData();
     bodyFormData.append("loginId", formdata.email);
     bodyFormData.append("password", formdata.password);
@@ -60,7 +25,6 @@ const Home = () => {
       .post(`${BACKEND_URL}/login`, bodyFormData)
       .then((result) => {
         setOpenBackDrop(true);
-        console.log("result: ", result);
         // console.log(result);
         if (result.data.success && result.data.data.token) {
           localStorage.setItem("auth-token", result.data.data.token);
@@ -284,13 +248,6 @@ const Home = () => {
                     </div>
                   </div>
                   <div>
-                    <Link
-                      to={"/auth/forgot-password"}
-                      className="my-2 block text-center text-sm font-medium text-main_bg_color hover:text-hover_color focus:outline-none"
-                    >
-                      Forgot your password?
-                    </Link>
-
                     <button
                       disabled={loading ? true : false}
                       type="submit"
@@ -309,7 +266,7 @@ const Home = () => {
                     <div className="flex justify-center">
                       <Link
                         to={"/auth/signup"}
-                        state={{ continueURL: location?.state?.continueURL }}
+                        state={{continueURL: location?.state?.continueURL}}
                         onClick={() => setOpenBackDrop(true)}
                       >
                         <button className="mt-1 h-10 rounded-md bg-transparent text-sm font-medium text-main_bg_color hover:text-hover_color focus:outline-none">

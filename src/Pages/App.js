@@ -27,12 +27,15 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import Users from "./users";
 import Offers from "./offers";
 import Reports from "./reports";
-// import Tickets from "./support";
+import Tickets from "./support";
 import Clients from "./clients";
 import Leaderboard from "./leaderboard";
 import { useStateContext } from "../context/ContextProvider";
 import ForgotPassword from "./auth/forgot-password";
+
 import ActivityLog from "./activity";
+import Tour360 from "./360tours";
+import PropertyPortfolio from "./propertyPortfolio";
 
 const libraries = ["places"];
 
@@ -47,11 +50,11 @@ const routes = [
     pageName: "Sign Up",
     element: <Signup />,
   },
-  {
-    path: "/auth/forgot-password",
-    pageName: "Sign Up",
-    element: <ForgotPassword />,
-  },
+  // {
+  //   path: "/auth/forgot-password",
+  //   pageName: "Sign Up",
+  //   element: <ForgotPassword />,
+  // },
   {
     path: "/change-password",
     element: <ChangePassword />,
@@ -102,7 +105,6 @@ const routes = [
     pageName: "Close Deals",
     element: <ClosedealsPage />,
   },
-
   {
     path: "/timeline/:id",
     element: <TimelinePage />,
@@ -173,28 +175,191 @@ const routes = [
     pageName: "Reports",
     element: <Reports />,
   },
+  {
+     path: "/support",
+     pageName: "Support",
+     element: <Tickets />
+  },
+  {
+    path: "/activity",
+    pageName: "Activity",
+    element: <ActivityLog />,
+  },
   // {
-  //   path: "/support",
-  //   element: <Tickets />
+  //   path: "/propertyPortfolio",
+  //   pageName: "Property Portfolio",
+  //   element: <PropertyPortfolio />,
   // },
+  {
+    path: "/360tours",
+    pageName: "360 Tour",
+    element: <Tour360 />,
+  },
   {
     path: "*",
     element: <Error />,
   },
 ];
+// =======
+//     {
+//       path: "/",
+//       element: <Home />,
+//       pageName: "Home",
+//     },
+//     {
+//       path: "/auth/signup",
+//       pageName: "Sign Up",
+//       element: <Signup />,
+//     },
+//     {
+//       path: "/change-password",
+//       element: <ChangePassword />,
+//       pageName: "Change Password",
+//     },
+//     {
+//       path: "/dashboard",
+//       element: <Dashboard />,
+//       pageName: "Dashboard",
+//     },
+//     {
+//       path: "/addlead",
+//       element: <AddLead />,
+//       pageName: "Add Lead",
+//     },
+//     {
+//       path: "/unassigned/:lead_type",
+//       element: <AllUnassignedLeads />,
+//       pageName: "Unassigned Leads",
+//     },
+//     {
+//       path: "/hotleads/:lead_type",
+//       element: <AllHotLeads />,
+//       pageName: "Hot Leads",
+//     },
+//     {
+//       path: "/personalleads/:lead_type",
+//       element: <PersonaLeads />,
+//       pageName: "Personal Leads",
+//     },
+//     {
+//       path: "/thirdpartyleads/:lead_type",
+//       element: <ThirdPartyLeads />,
+//       pageName: "Third-party Leads",
+//     },
+//     {
+//       path: "/coldleads/:lead_type",
+//       element: <ColdLeads />,
+//       pageName: "Cold Leads",
+//     },
+//     {
+//       path: "/transfferedleads",
+//       element: <TransferredLeads />,
+//       pageName: "Transferred Leads",
+//     },
+//     {
+//       path: "/closedeals",
+//       pageName: "Close Deals",
+//       element: <ClosedealsPage />,
+//     },
+
+//     { 
+//       path: "/timeline/:id", 
+//       element: <TimelinePage />,
+//       pageName: "Timeline",
+//     },
+//     {
+//       path: "/leadnotes",
+//       element: <LeadNotesPage />,
+//       pageName: "Lead Notes",
+//     },
+//     {
+//       path: "/leadnotes/:id",
+//       element: <SingleLeadNote />,
+//       pageName: "Lead Notes",
+//     },
+//     {
+//       path: "/meetings",
+//       element: <Meetings />,
+//       pageName: "Meetings",
+//     },
+//     {
+//       path: "/booked",
+//       element: <Booked />,
+//       pageName: "Booked",
+//     },
+//     {
+//       path: "/contacts",
+//       element: <Contacts />,
+//       pageName: "Contacts",
+//     },
+//     {
+//       path: "/clients",
+//       element: <Clients />,
+//       pageName: "Clients",
+//     },
+//     {
+//       path: "/leaderboard",
+//       element: <Leaderboard />,
+//       pageName: "Leaderboard",
+//     },
+//     {
+//       path: "/profile",
+//       element: <ProfilePage />,
+//       pageName: "Profile",
+//     },
+//     { 
+//       path: "/whatsapp-marketing/:page",
+//       element: <WhatsappMarketing/>,
+//       pageName: "Whatsapp Marketing",
+//     },
+//     { 
+//       path: "/location/livelocation", 
+//       pageName: "Live Location",
+//       element: <Livelocation /> 
+//     },
+//     { 
+//       path: "/users", 
+//       pageName: "Users",
+//       element: <Users /> 
+//     },
+//     { 
+//       path: "/activity", 
+//       pageName: "Activity Log",
+//       element: <ActivityLog /> 
+//     },
+//     { 
+//       path: "/offers", 
+//       pageName: "Offers",
+//       element: <Offers /> 
+//     },
+//     { 
+//       path: "/reports", 
+//       pageName: "Reports",
+//       element: <Reports /> 
+//     },
+//     // { 
+//     //   path: "/support", 
+//     //   element: <Tickets /> 
+//     // },
+//     { 
+//       path: "*", 
+//       element: <Error /> 
+//     },
+//   ];
+// >>>>>>> Stashed changes
 
 function App() {
-  const { setAllRoutes } = useStateContext();
+  const {setAllRoutes} = useStateContext();
 
   const router = createBrowserRouter(routes);
-  useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
-    libraries,
-  });
+ useJsApiLoader({
+      googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
+      libraries,
+    });
 
-  useEffect(() => {
-    setAllRoutes(routes);
-  }, []);
+    useEffect(() => {
+      setAllRoutes(routes);
+    }, []);
 
   return <RouterProvider router={router} />;
 }

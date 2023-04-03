@@ -27,6 +27,7 @@
     "react-pro-sidebar": "^1.0.0",
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
+    "react-tabs": "^6.0.0",
     "react-toastify": "^9.1.1",
     "react-whatsapp-widget": "^2.2.0",
     "use-places-autocomplete": "^4.0.0",

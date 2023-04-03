@@ -1,6 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import { Box } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid } from '@mui/x-data-grid';
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
@@ -89,12 +89,12 @@ const Clients = () => {
   }, [pageState.page]);
 
   const columns = [
-    {
-      field: "id",
-      headerName: "#",
-      headerAlign: "center",
+    { 
+      field: 'id', 
+      headerName: '#', 
+      headerAlign: 'center',
       minWidth: 30,
-      flex: 1,
+      flex: 1 ,
       renderCell: (cellValues) => {
         return (
           <div
@@ -108,14 +108,15 @@ const Clients = () => {
       },
     },
     {
-      field: "clientName",
-      headerName: "Client Name",
-      headerAlign: "center",
+      field: 'clientName',
+      headerName: 'Client Name',
+      headerAlign: 'center',
       editable: false,
       minWidth: 180,
       flex: 1,
     },
     {
+
       field: "clientContact",
       headerName: "Contact Number",
       headerAlign: "center",
@@ -131,9 +132,11 @@ const Clients = () => {
       },
     },
     {
+
       field: "clientEmail",
       headerName: "Email Address",
       headerAlign: "center",
+
       editable: false,
       minWidth: 250,
       flex: 1,
@@ -149,6 +152,7 @@ const Clients = () => {
       field: "businessName",
       headerName: "Business",
       headerAlign: "center",
+
       editable: false,
       minWidth: 180,
       flex: 1,
@@ -176,6 +180,7 @@ const Clients = () => {
     //   },
     // },
     {
+
       field: "creationDate",
       headerName: "Creation Date",
       headerAlign: "center",
@@ -241,16 +246,18 @@ const Clients = () => {
   ];
 
   const handleRowClick = async (params, event) => {
-    if (!event.target.classList.contains("editLeadBtn")) {
+    if (
+      !event.target.classList.contains("editLeadBtn")
+    ) {
       // setSingleUserData(params.row);
       // handleUserModelOpen();
-      <SingleUser />;
+      <SingleUser />
     }
   };
 
   return (
     <>
-      {/* <ToastContainer/> */}
+    {/* <ToastContainer/> */}
       <div className="flex min-h-screen">
         <div
           className={`w-full ${
@@ -264,13 +271,7 @@ const Clients = () => {
                 <Navbar />
                 <div className="my-5 mb-10">
                   <div className="my-3">
-                    <h2
-                      className={` ${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      } font-semibold text-xl`}
-                    >
-                      Clients
-                    </h2>
+                    <h2 className={` ${currentMode === "dark" ? "text-white" : "text-black"} font-semibold text-xl`}>Clients</h2>
                   </div>
                   <Box width={"100%"} sx={DataGridStyles}>
                     <DataGrid
@@ -290,14 +291,13 @@ const Clients = () => {
                         },
                       }}
                       getRowClassName={(params) =>
-                        params.indexRelativeToCurrentPage % 2 === 0
-                          ? "even"
-                          : "odd"
+                        params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
                       }
                     />
                   </Box>
                 </div>
               </div>
+
             </div>
           </div>
           <Footer />

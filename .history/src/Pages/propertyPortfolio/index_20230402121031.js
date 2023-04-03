@@ -1,0 +1,50 @@
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import Navbar from "../../Components/Navbar/Navbar";
+import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
+import Footer from "../../Components/Footer/Footer";
+import { useStateContext } from "../../context/ContextProvider";
+import { ImUserCheck } from "react-icons/im";
+import { MdFeedback } from "react-icons/md";
+import { MdStickyNote2 } from "react-icons/md";
+import { BsCalendar2EventFill } from "react-icons/bs";
+import { BiUserCircle } from "react-icons/bi";
+
+const PropertyPortfolio = () => {
+    const { currentMode } = useStateContext();
+
+    return (
+        <>
+            <div className="min-h-screen">
+                <div className="flex">
+                    <Sidebarmui />
+                    <div
+                        className={`w-full  ${
+                        currentMode === "dark" ? "bg-black" : "bg-white"
+                        }`}
+                    >
+                        <div className="px-5">
+                            <Navbar />
+                            
+                            <div className="mt-5 md:mt-2">
+                                <h1
+                                className={`font-semibold ${
+                                    currentMode === "dark" ? "text-white" : "text-red-600"
+                                } text-xl ml-2 mb-3 auto-cols-max gap-x-3`}
+                                >
+                                    Property Portfolio
+                                </h1>
+                                <div className="w-full p-2 bg-gray-200">
+                                    Developers with projects
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <Footer />
+            </div>
+        </>
+    );
+};
+
+export default PropertyPortfolio;

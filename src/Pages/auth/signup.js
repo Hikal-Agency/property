@@ -11,50 +11,10 @@ const Signup = () => {
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
   const [UserRole, setUserRole] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
+  const [SamePasswordError, setSamePasswordError] = useState(false);
   const { BACKEND_URL } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const handlePassword = (e) => {
-    setPasswordError(false);
-    const password = e.target.value;
-
-    // Check if password meets the required criteria
-    const validPassword =
-      password.length >= 8 &&
-      /[a-z]/.test(password) &&
-      /[A-Z]/.test(password) &&
-      /[0-9]/.test(password) &&
-      /[@#$%^&+=]/.test(password);
-
-    if (validPassword) {
-      setPasswordError(false);
-    } else {
-      setPasswordError(
-        "Password must be at least 8 characters long, include numbers, characters, and special characters. Example: Abc123@#"
-      );
-    }
-
-    setformdata({
-      ...formdata,
-      password: e.target.value,
-    });
-  };
-  const handleEmail = (e) => {
-    setEmailError(false);
-    const email = e.target.value;
-    const emailRegex = /^\S+@\S+\.\S+$/; // regex pattern to match email address format
-    const isValidEmail = emailRegex.test(email);
-    if (isValidEmail) {
-      setEmailError(false);
-    } else {
-      setEmailError("Please enter a valid email address");
-    }
-
-    setformdata({ ...formdata, userEmail: email });
-  };
 
   const ChangeUserRole = (event) => {
     setUserRole(event.target.value);
@@ -65,39 +25,13 @@ const Signup = () => {
     }
   };
 
-  // sql injuction
-  function isSafeInput(input) {
-    const regex = /([';\/*-])/g; // Characters to look for in input
-    return !regex.test(input);
-  }
-
   const RegisterUser = async () => {
-    const { userName, userEmail, password, c_password, loginId } = formdata;
-    if (
-      !isSafeInput(userName) ||
-      !isSafeInput(userEmail) ||
-      !isSafeInput(password) ||
-      !isSafeInput(c_password) ||
-      !isSafeInput(loginId)
-    ) {
-      toast.error("Input contains invalid email", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      return;
-    }
     if (formdata.password === formdata.c_password) {
       setloading(true);
       await axios
         .post(`${BACKEND_URL}/register`, formdata)
         .then((result) => {
-          console.log("result", result);
+          console.log(result);
           if (result.data.success) {
             toast.success("Registration Completed Successfully", {
               position: "top-right",
@@ -129,7 +63,7 @@ const Signup = () => {
           setloading(false);
         });
     } else {
-      setPasswordError("Your Password & Confirm Password must be Same");
+      setSamePasswordError(true);
     }
   };
   return (
@@ -194,8 +128,10 @@ const Signup = () => {
                       size="medium"
                       required
                       value={formdata?.password}
-                      onChange={handlePassword}
-                      helperText={"Example: Abc123@#"}
+                      onChange={(e) => {
+                        setSamePasswordError(false);
+                        setformdata({ ...formdata, password: e.target.value });
+                      }}
                     />
                   </div>
                   <div className="col-span-3">
@@ -209,7 +145,7 @@ const Signup = () => {
                       required
                       value={formdata?.c_password}
                       onChange={(e) => {
-                        setPasswordError(false);
+                        setSamePasswordError(false);
                         setformdata({
                           ...formdata,
                           c_password: e.target.value,
@@ -217,9 +153,11 @@ const Signup = () => {
                       }}
                     />
                   </div>
-                  {passwordError && (
+                  {SamePasswordError && (
                     <div className="col-span-6">
-                      <p className="italic text-red-900">{passwordError}</p>
+                      <p className="italic text-red-900">
+                        Your Password & Confirm Password must be Same
+                      </p>
                     </div>
                   )}
 
@@ -265,17 +203,13 @@ const Signup = () => {
                       className="w-full"
                       variant="outlined"
                       size="medium"
-                      // error={!!emailError}
                       required
                       value={formdata?.userEmail}
-                      onChange={handleEmail}
+                      onChange={(e) => {
+                        setformdata({ ...formdata, userEmail: e.target.value });
+                      }}
                     />
                   </div>
-                  {emailError && (
-                    <div className="col-span-6">
-                      <p className="italic text-red-900">{emailError}</p>
-                    </div>
-                  )}
                 </div>
                 <div>
                   <button
@@ -294,10 +228,7 @@ const Signup = () => {
                     )}
                   </button>
                   <div className="flex justify-center">
-                    <Link
-                      to={"/"}
-                      state={{ continueURL: location?.state?.continueURL }}
-                    >
+                    <Link to={"/"} state={{continueURL: location?.state?.continueURL}}>
                       <button className="mt-1 h-10 rounded-md bg-transparent text-sm font-medium text-main_bg_color hover:text-hover_color focus:outline-none">
                         Already have an Account? Sign in
                       </button>
