@@ -1,5 +1,4 @@
 import { Container } from "@mui/system";
-<<<<<<< Updated upstream
 
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -10,21 +9,27 @@ import { BsCalendar2EventFill, BsFillBuildingFill } from "react-icons/bs";
 import { BiUserCircle } from "react-icons/bi";
 import { HiUser } from "react-icons/hi";
 import { useStateContext } from "../../context/ContextProvider";
-=======
->>>>>>> Stashed changes
+import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+
+
+// const NotificationsMenu = () => {
+//     return (<>
+//             <Container >
+//                 <p>Notifications</p>
+//             </Container>
+//     </>);
+// }
 
 const NotificationsMenu = () => {
-    return (<>
-            <Container >
-                <p>Notifications</p>
-            </Container>
-    </>);
-}
 
-<<<<<<< Updated upstream
-
-const NotificationsMenu = () => {
-    const { currentMode, BACKEND_URL } = useStateContext();
+    const token = localStorage.getItem("auth-token");
+    const { BACKEND_URL, currentMode } = useStateContext();
+    const [notifications, setNotifications] = useState();
+    const [loading, setLoading] = useState(false);
+    const [tabValue, setTabValue] = useState("unread");
+    //const { currentMode, BACKEND_URL } = useStateContext();
     
     const handleAvoidClose = (event) => {
         event.stopPropagation();
@@ -330,11 +335,6 @@ const NotificationsMenu = () => {
         </Container>
     );
 }   
-};
+;
 
 export default NotificationsMenu;
-
-
-=======
-export default NotificationsMenu;
->>>>>>> Stashed changes
