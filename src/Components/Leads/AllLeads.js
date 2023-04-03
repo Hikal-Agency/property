@@ -493,7 +493,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         return (
           <div
             className={`${
-              currentMode === "dark" ? "bg-[#000000] text-white" : "bg-[#000000] text-white"
+              currentMode === "dark"
+                ? "bg-[#000000] text-white"
+                : "bg-[#000000] text-white"
             } w-full h-full flex justify-center items-center px-5 font-semibold`}
           >
             {cellValues.formattedValue}
@@ -839,7 +841,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       } else if (lead_type === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Unreachable`;
       }
-    } 
+    }
     // LEADS URL GENERATON FOR WARM LEADS PAGE
     else if (lead_origin === "warmleads") {
       if (lead_type === "all") {
@@ -859,11 +861,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       } else if (lead_type === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Unreachable`;
       }
-    }
-    else if (lead_origin === "transfferedleads") {
+    } else if (lead_origin === "transfferedleads") {
       FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&coldCall=0&leadStatus=Transferred`;
-    } 
-    else if (lead_origin === "unassigned") {
+    } else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0`;
       } else if (lead_type === "new") {
