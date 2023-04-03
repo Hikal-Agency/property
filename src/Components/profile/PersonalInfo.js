@@ -1,19 +1,32 @@
 import { Button } from "@material-tailwind/react";
-import { Box, MenuItem, Select, TextField, CircularProgress } from "@mui/material";
+import {
+  Box,
+  MenuItem,
+  Select,
+  TextField,
+  CircularProgress,
+} from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import React, { useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useStateContext } from "../../context/ContextProvider";
 
-export const PersonalInfo = ({ PersonalInfoData, User, btnloading, UpdateProfile }) => {
+export const PersonalInfo = ({
+  PersonalInfoData,
+  User,
+  btnloading,
+  UpdateProfile,
+}) => {
   const { currentMode, darkModeColors } = useStateContext();
   console.log(PersonalInfoData);
   const [PersonalInfo, setPersonalInfo] = useState(PersonalInfoData);
   const [Datevalue, setDatevalue] = useState(PersonalInfoData.dob);
 
+  const currentDate = new Date();
+
   const UpdateProfileFunc = () => {
     UpdateProfile(PersonalInfo);
-  }
+  };
 
   function format(value) {
     if (value < 10) {
@@ -28,6 +41,29 @@ export const PersonalInfo = ({ PersonalInfoData, User, btnloading, UpdateProfile
       <form action="">
         <Box sx={darkModeColors} className="grid grid-cols-6 gap-x-3 gap-y-5">
           <div className="col-span-3 w-full">
+            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Date of Birth"
+                value={Datevalue}
+                onChange={(newValue) => {
+                  console.log(newValue);
+                  setDatevalue(newValue);
+                  setPersonalInfo({
+                    ...PersonalInfo,
+                    dob:
+                      format(newValue.$d.getUTCFullYear()) +
+                      "-" +
+                      format(newValue.$d.getUTCMonth() + 1) +
+                      "-" +
+                      format(newValue.$d.getUTCDate() + 1),
+                  });
+                  console.log(Datevalue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+                className="w-full"
+                required
+              />
+            </LocalizationProvider> */}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Date of Birth"
@@ -35,21 +71,26 @@ export const PersonalInfo = ({ PersonalInfoData, User, btnloading, UpdateProfile
                 onChange={(newValue) => {
                   console.log(newValue);
                   setDatevalue(newValue);
-                  setPersonalInfo(
-                    {
-                    ...PersonalInfo, dob:
-                    format(newValue.$d.getUTCFullYear()) +
+                  setPersonalInfo({
+                    ...PersonalInfo,
+                    dob:
+                      format(newValue.$d.getUTCFullYear()) +
                       "-" +
                       format(newValue.$d.getUTCMonth() + 1) +
                       "-" +
-                      format(newValue.$d.getUTCDate() + 1)
-                    }
-                  );
+                      format(newValue.$d.getUTCDate() + 1),
+                  });
                   console.log(Datevalue);
                 }}
                 renderInput={(params) => <TextField {...params} />}
                 className="w-full"
                 required
+                maxDate={currentDate}
+                // minDate={minDate}
+                // inputFormat="MM/dd/yyyy"
+                disableFuture
+                invalidDateMessage="Invalid date"
+                mask="__/__/____"
               />
             </LocalizationProvider>
           </div>
@@ -58,7 +99,9 @@ export const PersonalInfo = ({ PersonalInfoData, User, btnloading, UpdateProfile
               id="gender"
               value={PersonalInfo?.gender}
               label="Gender"
-              onChange={(event) => setPersonalInfo({...PersonalInfo, gender: event.target.value})}
+              onChange={(event) =>
+                setPersonalInfo({ ...PersonalInfo, gender: event.target.value })
+              }
               size="medium"
               className="w-full"
               displayEmpty
@@ -98,13 +141,14 @@ export const PersonalInfo = ({ PersonalInfoData, User, btnloading, UpdateProfile
               variant="outlined"
               size="medium"
               required
-              value={PersonalInfo?.address}
-              onInput={(e) =>
+              value={PersonalInfo?.currentAddress}
+              onChange={(e) => {
                 setPersonalInfo({
                   ...PersonalInfo,
-                  address: e.target.value,
-                })
-              }
+                  currentAddress: e.target.value,
+                });
+                console.log("address: ", PersonalInfo.currentAddress);
+              }}
             />
           </div>
           <div className="col-span-3 w-full">
