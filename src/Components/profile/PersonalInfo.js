@@ -21,6 +21,24 @@ export const PersonalInfo = ({
   console.log(PersonalInfoData);
   const [PersonalInfo, setPersonalInfo] = useState(PersonalInfoData);
   const [Datevalue, setDatevalue] = useState(PersonalInfoData.dob);
+  const [error, setError] = useState(false);
+
+  const handleCountry = (e) => {
+    setError(false);
+    const value = e.target.value;
+    const onlyLetters = /^[A-Za-z]+$/;
+    if (onlyLetters.test(value)) {
+      setError(false);
+    } else {
+      setError("Kindly enter a valid country name.");
+      return;
+    }
+
+    setPersonalInfo({
+      ...PersonalInfo,
+      nationality: value,
+    });
+  };
 
   const currentDate = new Date();
 
@@ -115,7 +133,7 @@ export const PersonalInfo = ({
             </Select>
           </div>
           <div className="col-span-3 w-full">
-            <TextField
+            {/* <TextField
               id="country"
               type={"text"}
               label="Country"
@@ -130,6 +148,19 @@ export const PersonalInfo = ({
                   nationality: e.target.value,
                 })
               }
+            /> */}
+            <TextField
+              id="country"
+              type={"text"}
+              label="Country"
+              className="w-full"
+              variant="outlined"
+              size="medium"
+              required
+              error={error && error}
+              helperText={error && error}
+              value={PersonalInfo?.nationality}
+              onInput={handleCountry}
             />
           </div>
           <div className="col-span-3 w-full">
