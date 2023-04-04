@@ -92,11 +92,11 @@ export const PersonalInfo = ({
                   setPersonalInfo({
                     ...PersonalInfo,
                     dob:
-                      format(newValue.$d.getUTCFullYear()) +
+                      format(newValue?.$d.getUTCFullYear()) +
                       "-" +
-                      format(newValue.$d.getUTCMonth() + 1) +
+                      format(newValue?.$d.getUTCMonth() + 1) +
                       "-" +
-                      format(newValue.$d.getUTCDate() + 1),
+                      format(newValue?.$d.getUTCDate() + 1),
                   });
                   console.log(Datevalue);
                 }}

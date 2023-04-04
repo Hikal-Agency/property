@@ -494,7 +494,6 @@ const AddLeadComponent = () => {
                               style={{ marginBottom: "20px" }}
                               variant="outlined"
                               size="medium"
-                              required
                               error={emailError && emailError}
                               helperText={emailError && emailError}
                               // value={LeadEmail}
