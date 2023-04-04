@@ -11,7 +11,7 @@ import { HiUser } from "react-icons/hi";
 import { useStateContext } from "../../context/ContextProvider";
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { Tab, Tabs } from '@mui/material';
 
 
 // const NotificationsMenu = () => {

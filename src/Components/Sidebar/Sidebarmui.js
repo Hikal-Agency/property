@@ -6,7 +6,6 @@ import {
   BsStopCircleFill,
   BsCalendarWeekFill,
   BsFillCreditCard2FrontFill,
-  BsFillBuildingsFill
 } from "react-icons/bs";
 import { GrBitcoin } from "react-icons/gr";
 import { HiTicket, HiDocumentReport, HiUsers } from "react-icons/hi";
@@ -452,7 +451,7 @@ const Sidebarmui = () => {
         },
         {
           name: "360 Tour",
-          icon: <BsFillBuildingsFill />,
+          icon: null,
           link: "/360tours",
         },
         {

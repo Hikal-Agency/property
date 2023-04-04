@@ -10,7 +10,6 @@ import axios from "axios";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import {useLocation, useNavigate} from "react-router-dom";
-import WhatsappChat from "./WhatsappChat";
 
 const pagesComponents = {
   dashboard: <DashboardComponent/>,
@@ -18,7 +17,6 @@ const pagesComponents = {
   device: <DeviceComponent/>,
   payments: <PaymentsComponent/>,
   transactions: <TransactionsComponent/>,
-  "whatsapp-chat": <WhatsappChat/>
 };
 
 const WhatsappMarketing = () => {
