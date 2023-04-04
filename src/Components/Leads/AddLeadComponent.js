@@ -39,17 +39,27 @@ const AddLeadComponent = () => {
   const [SalesPerson2, setSalesPerson2] = useState("");
   const [LeadName, setLeadName] = useState("");
   const [LeadContact, setLeadContact] = useState("");
-  const [LeadEmail, setLeadEmail] = useState("");
+  const [LeadEmail, setLeadEmail] = useState();
+  const [emailError, setEmailError] = useState(false);
   const [LeadProject, setLeadProject] = useState("");
   const [LeadNotes, setLeadNotes] = useState("");
-  const handleEmailChange = (e) => {
-    const email = e.target.value;
+
+  const handleEmail = (e) => {
+    setEmailError(false);
+    const value = e.target.value;
+    console.log(value);
     const emailRegex = /^\S+@\S+\.\S+$/;
-    if (emailRegex.test(email)) {
-      setLeadEmail(email);
+    if (emailRegex.test(value)) {
+      setEmailError(false);
+    } else {
+      setEmailError("Kindly enter a valid email.");
+      // setLeadEmail("");
+      return;
     }
 
-    console.log("email: ", LeadEmail);
+    setLeadEmail(value);
+
+    console.log("Email state: ", LeadEmail);
   };
 
   const handlePhone = (e) => {
@@ -176,7 +186,7 @@ const AddLeadComponent = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    console.log(User)
+    console.log(User);
     axios
       .get(`${BACKEND_URL}/teamMembers/${User.id}`, {
         headers: {
@@ -475,8 +485,22 @@ const AddLeadComponent = () => {
                               value={LeadEmail}
                               onChange={(e) => setLeadEmail(e.target.value)}
                             /> */}
-
                             <TextField
+                              id="LeadEmailAddress"
+                              type={"email"}
+                              label="Email address"
+                              className="w-full mb-5"
+                              style={{ marginBottom: "20px" }}
+                              variant="outlined"
+                              size="medium"
+                              required
+                              error={emailError && emailError}
+                              helperText={emailError && emailError}
+                              // value={LeadEmail}
+                              onChange={handleEmail}
+                            />
+
+                            {/* <TextField
                               id="LeadEmailAddress"
                               type="email"
                               label="Email address"
@@ -486,13 +510,8 @@ const AddLeadComponent = () => {
                               size="medium"
                               required
                               value={LeadEmail}
-                              onChange={handleEmailChange}
-                              // error={!isEmailValid(LeadEmail)}
-                              // helperText={
-                              //   !isEmailValid(LeadEmail) &&
-                              //   "Invalid email address"
-                              // }
-                            />
+                              onChange={handleEmail}
+                            /> */}
 
                             <Select
                               id="LanguagePrefered"
