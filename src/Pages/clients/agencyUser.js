@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
-import Loader from "../../Components/Loader";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate, useLocation } from "react-router-dom";
+import Loader from "../../Components/Loader";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 
-const Contacts = () => {
+const AgencyUsers = () => {
   const { currentMode, BACKEND_URL, User, setUser, setopenBackDrop } =
     useStateContext();
   const navigate = useNavigate();
@@ -19,6 +19,10 @@ const Contacts = () => {
   const [contacts, setContacts] = useState([]);
   const [page, setPage] = useState("1");
   const [maxPage, setMaxPage] = useState(0);
+  const { client_id } = useParams();
+  //   const client_id = location.pathname.split("/")[2];
+
+  console.log("id from URL:", client_id);
   //eslint-disable-next-line
   const ContactData = [
     {
@@ -53,16 +57,16 @@ const Contacts = () => {
     },
   ];
 
-  const FetchProfile = async (token) => {
+  const FetchClient = async (token) => {
     await axios
-      .get(`${BACKEND_URL}/dashboard?page=1`, {
+      .get(`${BACKEND_URL}/clients?id=1`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       })
       .then((result) => {
-        console.log("dashboard data is");
+        console.log("client data is");
         console.log(result.data);
         setUser(result.data.user);
         setloading(false);
@@ -84,20 +88,21 @@ const Contacts = () => {
   };
   const FetchContacts = async (token) => {
     await axios
-      .get(`${BACKEND_URL}/users?page=${page}`, {
+      .get(`${BACKEND_URL}/agencyusers/${client_id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       })
       .then((result) => {
-        console.log("The data has contact", result.data);
-        console.log(
-          "The data has contact max page",
-          result.data.managers.last_page
-        );
+        console.log("agency users ", result.data);
+        console.log("agency-users ", result.data["agency-users"].data);
+        // console.log(
+        //   "The data has contact max page",
+        //   result.data.managers.last_page
+        // );
 
-        setContacts(result.data.managers.data);
+        setContacts(result?.data["agency-users"]?.data);
         setMaxPage(result.data.managers.last_page);
         setloading(false);
       })
@@ -114,11 +119,11 @@ const Contacts = () => {
     setopenBackDrop(false);
     if (User?.uid && User?.loginId) {
       setloading(false);
-      FetchProfile(token);
+      //FetchClient(token);
       FetchContacts(token);
     } else {
       if (token) {
-        FetchProfile(token);
+        // FetchClient(token);
         FetchContacts(token);
       } else {
         navigate("/", {
@@ -211,4 +216,4 @@ const Contacts = () => {
   );
 };
 
-export default Contacts;
+export default AgencyUsers;

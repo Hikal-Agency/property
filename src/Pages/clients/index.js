@@ -16,6 +16,8 @@ import SingleUser from "../../Components/Users/SingleUser";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
+import Loader from "../../Components/Loader";
 
 const Clients = () => {
   const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
@@ -28,8 +30,10 @@ const Clients = () => {
   });
   const [token, setToken] = useState(null);
 
-  const HandleEditFunc = (cellValues) => {
+  const navigate = useNavigate();
+  const HandleViewAccounts = (cellValues) => {
     console.log("cellValues : ", cellValues.id);
+    navigate(`/agencyUsers/${cellValues.id}`);
   };
 
   const HandleAccountDeactivation = async (cellValues) => {
@@ -73,19 +77,20 @@ const Clients = () => {
     console.log("cellValues: ", cellValues.id);
   };
 
-  // const activeAccountCount = async (token, id) => {
-  //   const activeAccounts = await axios.get(
-  //     `${BACKEND_URL}/activeAccounts/${id}`,
-  //     {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     }
-  //   );
+  const activeAccountCount = async (token, id) => {
+    const activeAccounts = await axios.get(
+      `${BACKEND_URL}/activeAccounts/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
 
-  //   console.log("Accounts: ", activeAccountCount);
-  // };
+    console.log("Accounts: ", activeAccounts);
+    return activeAccounts?.data?.total_users;
+  };
 
   const LeadCount = async (token, id) => {
     const userLeads = await axios.get(`${BACKEND_URL}/usersleads/${id}`, {
@@ -134,13 +139,13 @@ const Clients = () => {
         project: client?.website,
         clientName: client?.clientName,
         clientId: client?.id,
+        activeAccounts: await activeAccountCount(token, client?.id),
         totalLeads: await LeadCount(token, client?.id),
-        // activeAccounts: await activeAccountCount(token, client?.id),
       }));
 
       const rowsdata = await Promise.all(rowsdataPromises);
 
-      console.log("Rows data: ", rowsdata);
+      console.log("Rows data here: ", rowsdata);
 
       setpageState((old) => ({
         ...old,
@@ -285,7 +290,7 @@ const Clients = () => {
         return (
           <div className="space-x-2 w-full flex items-center justify-center ">
             <Button
-              onClick={() => HandleEditFunc(cellValues)}
+              onClick={() => HandleViewAccounts(cellValues)}
               title="View User Accounts of the Client"
               className={` ${
                 currentMode === "dark"
@@ -334,6 +339,7 @@ const Clients = () => {
   return (
     <>
       <ToastContainer />
+      {/* <Loader /> */}
       <div className="flex min-h-screen">
         <div
           className={`w-full ${
