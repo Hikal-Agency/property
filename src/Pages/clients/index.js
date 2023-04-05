@@ -7,6 +7,8 @@ import { useStateContext } from "../../context/ContextProvider";
 import Footer from "../../Components/Footer/Footer";
 
 import { AiOutlineEdit } from "react-icons/ai";
+import { toast, ToastContainer } from "react-toastify";
+
 import { ImUser } from "react-icons/im";
 import { HiUsers } from "react-icons/hi";
 import { FaBan } from "react-icons/fa";
@@ -24,24 +26,66 @@ const Clients = () => {
     page: 1,
     pageSize: 15,
   });
+  const [token, setToken] = useState(null);
 
   const HandleEditFunc = (cellValues) => {
     console.log("cellValues : ", cellValues.id);
   };
 
-  const activeAccountCount = async (token, id) => {
-    const activeAccounts = await axios.get(
-      `${BACKEND_URL}/activeAccounts/${id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+  const HandleAccountDeactivation = async (cellValues) => {
+    if (window.confirm("Confirm to deactivate the account.")) {
+      try {
+        const deactivateAccount = await axios.get(
+          `${BACKEND_URL}/blockagency/${cellValues?.id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
 
-    console.log("Accounts: ", activeAccountCount);
+        toast.success("Account Deactivated.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        console.log("Deactivate: ", deactivateAccount);
+      } catch (error) {
+        console.error(error);
+        toast.error("Sorry something went wrong.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    }
+
+    console.log("cellValues: ", cellValues.id);
   };
+
+  // const activeAccountCount = async (token, id) => {
+  //   const activeAccounts = await axios.get(
+  //     `${BACKEND_URL}/activeAccounts/${id}`,
+  //     {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     }
+  //   );
+
+  //   console.log("Accounts: ", activeAccountCount);
+  // };
 
   const LeadCount = async (token, id) => {
     const userLeads = await axios.get(`${BACKEND_URL}/usersleads/${id}`, {
@@ -91,7 +135,7 @@ const Clients = () => {
         clientName: client?.clientName,
         clientId: client?.id,
         totalLeads: await LeadCount(token, client?.id),
-        activeAccounts: await activeAccountCount(token, client?.id),
+        // activeAccounts: await activeAccountCount(token, client?.id),
       }));
 
       const rowsdata = await Promise.all(rowsdataPromises);
@@ -110,79 +154,12 @@ const Clients = () => {
     }
   };
 
-  // const FetchLeads = async (token) => {
-  //   setpageState((old) => ({
-  //     ...old,
-  //     isLoading: true,
-  //   }));
-
-  //   try {
-  //     const userLeadsResponse = await axios.get(`${BACKEND_URL}/usersleads/2`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     });
-  //     const userLeads = userLeadsResponse.data;
-  //     console.log("User Leads: ", userLeads);
-
-  //     const clientsResponse = await axios.get(
-  //       `${BACKEND_URL}/clients?page=${pageState.page}`,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-
-  //     const clientsData = clientsResponse.data.clients.data;
-  //     console.log("Clients array: ", clientsData);
-
-  //     const rowsdata = clientsData?.map((client, index) => {
-  //       const userLead = userLeads.find((lead) => lead.clientId === client.id);
-  //       const leadCount = userLead ? userLead.leadCount : 0;
-
-  //       return {
-  //         id:
-  //           pageState.page > 1
-  //             ? pageState.page * pageState.pageSize -
-  //               (pageState.pageSize - 1) +
-  //               index
-  //             : index + 1,
-  //         creationDate: client?.creationDate,
-  //         businessName: client?.businessName,
-  //         clientContact: client?.clientContact,
-  //         clientEmail: client?.clientEmail,
-  //         project: client?.website,
-  //         clientName: client?.clientName,
-  //         clientId: client?.id,
-  //         leadCount,
-  //       };
-  //     });
-
-  //     console.log("Rows data: ", rowsdata);
-
-  //     setpageState((old) => ({
-  //       ...old,
-  //       isLoading: false,
-  //       data: rowsdata,
-  //       totalLeads: clientsResponse.data.clients.total,
-  //       pageSize: clientsResponse.data.clients.per_page,
-  //     }));
-  //   } catch (error) {
-  //     console.log("Error occurred: ", error);
-  //     setpageState((old) => ({
-  //       ...old,
-  //       isLoading: false,
-  //     }));
-  //   }
-  // };
-
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    FetchLeads(token);
-    // eslint-disable-next-line
+    // const token = localStorage.getItem("auth-token");
+    // FetchLeads(token);
+    const authToken = localStorage.getItem("auth-token");
+    setToken(authToken);
+    FetchLeads(authToken);
   }, [pageState.page]);
 
   const columns = [
@@ -330,7 +307,7 @@ const Clients = () => {
               <HiUsers size={20} />
             </Button>
             <Button
-              // onClick={() => HandleEditFunc(cellValues)}
+              onClick={() => HandleAccountDeactivation(cellValues)}
               title="Deactivate All User Accounts of the Client"
               className={` ${
                 currentMode === "dark"
@@ -356,7 +333,7 @@ const Clients = () => {
 
   return (
     <>
-      {/* <ToastContainer/> */}
+      <ToastContainer />
       <div className="flex min-h-screen">
         <div
           className={`w-full ${
