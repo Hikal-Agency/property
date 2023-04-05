@@ -29,6 +29,31 @@ const Clients = () => {
     console.log("cellValues : ", cellValues.id);
   };
 
+  const activeAccountCount = async (token, id) => {
+    const activeAccounts = await axios.get(
+      `${BACKEND_URL}/activeAccounts/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    console.log("Accounts: ", activeAccountCount);
+  };
+
+  const LeadCount = async (token, id) => {
+    const userLeads = await axios.get(`${BACKEND_URL}/usersleads/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    return userLeads?.data?.total_users_leads;
+  };
+
   const FetchLeads = async (token) => {
     setpageState((old) => ({
       ...old,
@@ -51,7 +76,7 @@ const Clients = () => {
       const clientsData = response.data.clients.data;
       console.log("clients array is", clientsData);
 
-      const rowsdata = clientsData?.map((client, index) => ({
+      const rowsdataPromises = clientsData?.map(async (client, index) => ({
         id:
           pageState.page > 1
             ? pageState.page * pageState.pageSize -
@@ -62,11 +87,14 @@ const Clients = () => {
         businessName: client?.businessName,
         clientContact: client?.clientContact,
         clientEmail: client?.clientEmail,
-        // notes: client?.notes,
         project: client?.website,
         clientName: client?.clientName,
         clientId: client?.id,
+        totalLeads: await LeadCount(token, client?.id),
+        activeAccounts: await activeAccountCount(token, client?.id),
       }));
+
+      const rowsdata = await Promise.all(rowsdataPromises);
 
       console.log("Rows data: ", rowsdata);
 
@@ -82,6 +110,75 @@ const Clients = () => {
     }
   };
 
+  // const FetchLeads = async (token) => {
+  //   setpageState((old) => ({
+  //     ...old,
+  //     isLoading: true,
+  //   }));
+
+  //   try {
+  //     const userLeadsResponse = await axios.get(`${BACKEND_URL}/usersleads/2`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     });
+  //     const userLeads = userLeadsResponse.data;
+  //     console.log("User Leads: ", userLeads);
+
+  //     const clientsResponse = await axios.get(
+  //       `${BACKEND_URL}/clients?page=${pageState.page}`,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+
+  //     const clientsData = clientsResponse.data.clients.data;
+  //     console.log("Clients array: ", clientsData);
+
+  //     const rowsdata = clientsData?.map((client, index) => {
+  //       const userLead = userLeads.find((lead) => lead.clientId === client.id);
+  //       const leadCount = userLead ? userLead.leadCount : 0;
+
+  //       return {
+  //         id:
+  //           pageState.page > 1
+  //             ? pageState.page * pageState.pageSize -
+  //               (pageState.pageSize - 1) +
+  //               index
+  //             : index + 1,
+  //         creationDate: client?.creationDate,
+  //         businessName: client?.businessName,
+  //         clientContact: client?.clientContact,
+  //         clientEmail: client?.clientEmail,
+  //         project: client?.website,
+  //         clientName: client?.clientName,
+  //         clientId: client?.id,
+  //         leadCount,
+  //       };
+  //     });
+
+  //     console.log("Rows data: ", rowsdata);
+
+  //     setpageState((old) => ({
+  //       ...old,
+  //       isLoading: false,
+  //       data: rowsdata,
+  //       totalLeads: clientsResponse.data.clients.total,
+  //       pageSize: clientsResponse.data.clients.per_page,
+  //     }));
+  //   } catch (error) {
+  //     console.log("Error occurred: ", error);
+  //     setpageState((old) => ({
+  //       ...old,
+  //       isLoading: false,
+  //     }));
+  //   }
+  // };
+
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchLeads(token);
@@ -91,9 +188,9 @@ const Clients = () => {
   const columns = [
     {
       field: "id",
-      headerName: "#",
+      headerName: "Client Id",
       headerAlign: "center",
-      minWidth: 30,
+      minWidth: 90,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -147,7 +244,7 @@ const Clients = () => {
     },
     {
       field: "businessName",
-      headerName: "Business",
+      headerName: "Business Name",
       headerAlign: "center",
       editable: false,
       minWidth: 180,
@@ -160,35 +257,44 @@ const Clients = () => {
         );
       },
     },
-    // {
-    //   field: "notes",
-    //   headerName: "Notes",
-    //   headerAlign: "center",
-    //   editable: false,
-    //   minWidth: 180,
-    //   flex: 1,
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div className="w-full flex items-center justify-center">
-    //         <p className="text-center">{cellValues.formattedValue}</p>
-    //       </div>
-    //     );
-    //   },
-    // },
+
     {
-      field: "creationDate",
-      headerName: "Creation Date",
+      field: "totalUserAccounts",
+      headerName: "Total User Accounts",
       headerAlign: "center",
       editable: false,
-      minWidth: 110,
+      minWidth: 180,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full flex items-center justify-center">
+          <div className="w-full flex items-center justify-center items-center">
             <p className="text-center">{cellValues.formattedValue}</p>
           </div>
         );
       },
+    },
+    {
+      field: "activeAccounts",
+      headerName: "Total Active Accounts",
+      headerAlign: "center",
+      editable: false,
+      minWidth: 180,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center items-center">
+            <p className="text-center">{cellValues.activeAccounts}</p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "totalLeads",
+      headerName: "Total Leads",
+      headerAlign: "center",
+      editable: false,
+      minWidth: 180,
+      flex: 1,
     },
     {
       field: "",
