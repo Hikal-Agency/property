@@ -77,36 +77,83 @@ const Clients = () => {
   };
 
   const totalUser = async (token, id) => {
-    const accountCount = await axios.get(`${BACKEND_URL}/totalUser/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
+    let accountCount;
+    try {
+      accountCount = await axios.get(`${BACKEND_URL}/totalUser/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
-    console.log("Total Accounts: ", accountCount?.data?.total_users);
+      console.log("Total Accounts: ", accountCount?.data?.total_users);
+    } catch (error) {
+      console.log("accounts count: ", error);
+      toast.error("Failed to fetch accounts count.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
     return accountCount?.data?.total_users;
   };
 
   const activeAccountCount = async (token, id) => {
-    const accounts = await axios.get(`${BACKEND_URL}/activeAccounts/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
+    let accounts;
+    try {
+      accounts = await axios.get(`${BACKEND_URL}/activeAccounts/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
-    console.log("Accounts: ", accounts?.data?.total_users);
+      console.log("Accounts: ", accounts?.data?.total_users);
+    } catch (error) {
+      console.log("active account error: ", accounts);
+      toast.error("Failed to fetch active accounts.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
     return accounts?.data?.total_users;
   };
 
   const LeadCount = async (token, id) => {
-    const userLeads = await axios.get(`${BACKEND_URL}/usersleads/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
+    let userLeads;
+    try {
+      userLeads = await axios.get(`${BACKEND_URL}/usersleads/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+    } catch (error) {
+      console.log("lead error: ", userLeads);
+      toast.error("Failed to load leads.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    // setpageState((old) => ({
+    //   ...old,
+    //   isLoading: false,
+    // }));
 
     return userLeads?.data?.total_users_leads;
   };
@@ -161,10 +208,23 @@ const Clients = () => {
         isLoading: false,
         data: rowsdata,
         total: response.data.clients.total,
-        pageSize: response.data.clients.per_page,
       }));
     } catch (error) {
-      console.log("error occurred", error);
+      console.error(error);
+      toast.error("Sorry something went wrong.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } finally {
+      setpageState((old) => ({
+        ...old,
+        isLoading: false,
+      }));
     }
   };
 
@@ -338,7 +398,7 @@ const Clients = () => {
     <>
       <ToastContainer />
       {/* <Loader /> */}
-      {/* {pageState?.isLoading && (<CircularProgress />)} */}
+
       <div className="flex min-h-screen">
         <div
           className={`w-full ${
@@ -365,6 +425,7 @@ const Clients = () => {
                       autoHeight
                       disableSelectionOnClick
                       onRowClick={handleRowClick}
+                      rowCount={pageState.total}
                       rowsPerPageOptions={[30, 50, 75, 100]}
                       pagination
                       width="auto"
