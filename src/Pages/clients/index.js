@@ -1,5 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
@@ -17,7 +17,6 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import Loader from "../../Components/Loader";
 
 const Clients = () => {
   const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
@@ -77,19 +76,28 @@ const Clients = () => {
     console.log("cellValues: ", cellValues.id);
   };
 
-  const activeAccountCount = async (token, id) => {
-    const activeAccounts = await axios.get(
-      `${BACKEND_URL}/activeAccounts/${id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+  const totalUser = async (token, id) => {
+    const accountCount = await axios.get(`${BACKEND_URL}/totalUser/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
 
-    console.log("Accounts: ", activeAccounts);
-    return activeAccounts?.data?.total_users;
+    console.log("Total Accounts: ", accountCount?.data?.total_users);
+    return accountCount?.data?.total_users;
+  };
+
+  const activeAccountCount = async (token, id) => {
+    const accounts = await axios.get(`${BACKEND_URL}/activeAccounts/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    console.log("Accounts: ", accounts?.data?.total_users);
+    return accounts?.data?.total_users;
   };
 
   const LeadCount = async (token, id) => {
@@ -139,8 +147,9 @@ const Clients = () => {
         project: client?.website,
         clientName: client?.clientName,
         clientId: client?.id,
-        activeAccounts: await activeAccountCount(token, client?.id),
         totalLeads: await LeadCount(token, client?.id),
+        activeAccounts: await activeAccountCount(token, client?.id),
+        totalAccounts: await totalUser(token, client?.id),
       }));
 
       const rowsdata = await Promise.all(rowsdataPromises);
@@ -241,39 +250,28 @@ const Clients = () => {
     },
 
     {
-      field: "totalUserAccounts",
+      field: "totalAccounts",
       headerName: "Total User Accounts",
       headerAlign: "center",
+      align: "center",
       editable: false,
       minWidth: 180,
       flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center items-center">
-            <p className="text-center">{cellValues.formattedValue}</p>
-          </div>
-        );
-      },
     },
     {
       field: "activeAccounts",
       headerName: "Total Active Accounts",
       headerAlign: "center",
+      align: "center",
       editable: false,
       minWidth: 180,
       flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center items-center">
-            <p className="text-center">{cellValues.activeAccounts}</p>
-          </div>
-        );
-      },
     },
     {
       field: "totalLeads",
       headerName: "Total Leads",
       headerAlign: "center",
+      align: "center",
       editable: false,
       minWidth: 180,
       flex: 1,
@@ -340,6 +338,7 @@ const Clients = () => {
     <>
       <ToastContainer />
       {/* <Loader /> */}
+      {/* {pageState?.isLoading && (<CircularProgress />)} */}
       <div className="flex min-h-screen">
         <div
           className={`w-full ${
@@ -371,6 +370,7 @@ const Clients = () => {
                       width="auto"
                       paginationMode="server"
                       rows={pageState?.data}
+                      loading={pageState.isLoading}
                       columns={columns}
                       sx={{
                         boxShadow: 2,
