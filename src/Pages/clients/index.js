@@ -17,9 +17,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import DeactivateModel from "./deactivateModel";
 
 const Clients = () => {
   const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
+  const [accountDeactivate, setAccountToDeactivate] = useState();
+  const [model, setModel] = useState(false);
   const [pageState, setpageState] = useState({
     isLoading: false,
     data: [],
@@ -35,45 +38,58 @@ const Clients = () => {
     navigate(`/agencyUsers/${cellValues.id}`);
   };
 
-  const HandleAccountDeactivation = async (cellValues) => {
-    if (window.confirm("Confirm to deactivate the account.")) {
-      try {
-        const deactivateAccount = await axios.get(
-          `${BACKEND_URL}/blockagency/${cellValues?.id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+  const HandleOpenModel = (cellValues) => {
+    setModel(true);
+  };
 
-        toast.success("Account Deactivated.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+  const HandleModelClose = (cellValues) => {
+    setModel(false);
+  };
 
-        console.log("Deactivate: ", deactivateAccount);
-      } catch (error) {
-        console.error(error);
-        toast.error("Sorry something went wrong.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+  const HandleViewLeads = (cellValues) => {
+    console.log("cellValues : ", cellValues.id);
+    navigate(`/clientLeads/${cellValues.id}`);
+  };
+
+  const HandleAccountDeactivation = async (accountDeactivate) => {
+    try {
+      const deactivateAccount = await axios.get(
+        `${BACKEND_URL}/blockagency/${accountDeactivate}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      setModel(false);
+
+      console.log("ID: ", accountDeactivate);
+
+      toast.success("Account Deactivated.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      console.log("Deactivate: ", deactivateAccount);
+    } catch (error) {
+      console.error(error);
+      toast.error("Sorry something went wrong.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
-
-    console.log("cellValues: ", cellValues.id);
   };
 
   const totalUser = async (token, id) => {
@@ -359,7 +375,7 @@ const Clients = () => {
               <ImUser size={20} />
             </Button>
             <Button
-              // onClick={() => HandleEditFunc(cellValues)}
+              onClick={() => HandleViewLeads(cellValues)}
               title="View Leads of the Client"
               className={` ${
                 currentMode === "dark"
@@ -370,7 +386,10 @@ const Clients = () => {
               <HiUsers size={20} />
             </Button>
             <Button
-              onClick={() => HandleAccountDeactivation(cellValues)}
+              onClick={() => {
+                HandleOpenModel(cellValues);
+                setAccountToDeactivate(cellValues?.id);
+              }}
               title="Deactivate All User Accounts of the Client"
               className={` ${
                 currentMode === "dark"
@@ -397,7 +416,15 @@ const Clients = () => {
   return (
     <>
       <ToastContainer />
-      {/* <Loader /> */}
+
+      {model && (
+        <DeactivateModel
+          handleOpenModel={HandleOpenModel}
+          deactivateAccount={HandleAccountDeactivation}
+          deactivateModelClose={HandleModelClose}
+          accountToDelete={accountDeactivate}
+        />
+      )}
 
       <div className="flex min-h-screen">
         <div

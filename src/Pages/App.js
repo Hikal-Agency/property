@@ -34,6 +34,7 @@ import Leaderboard from "./leaderboard";
 import { useStateContext } from "../context/ContextProvider";
 import ForgotPassword from "./auth/forgot-password";
 import ActivityLog from "./activity";
+import ClientLeads from "./clients/clientLeads";
 
 const libraries = ["places"];
 
@@ -142,6 +143,11 @@ const routes = [
   {
     path: "/agencyUsers/:client_id",
     element: <AgencyUsers />,
+    pageName: "Clients",
+  },
+  {
+    path: "/clientLeads/:client_id",
+    element: <ClientLeads />,
     pageName: "Clients",
   },
   {

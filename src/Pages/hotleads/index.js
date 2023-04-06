@@ -17,7 +17,8 @@ const AllHotLeads = () => {
     pageState,
     BACKEND_URL,
   } = useStateContext();
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
   var lead_type = lead_type2.replace(/%20/g, " ");
   const pathname2 = location.pathname.split("/")[1];
@@ -51,7 +52,10 @@ const AllHotLeads = () => {
         FetchProfile(token);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       }
     }
