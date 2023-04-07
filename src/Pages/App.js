@@ -34,6 +34,8 @@ import Leaderboard from "./leaderboard";
 import { useStateContext } from "../context/ContextProvider";
 import ForgotPassword from "./auth/forgot-password";
 
+import Tour360 from "./360tours";
+import PropertyPortfolio from "./propertyPortfolio";
 import ActivityLog from "./activity";
 
 import ClientLeads from "./clients/clientLeads";
