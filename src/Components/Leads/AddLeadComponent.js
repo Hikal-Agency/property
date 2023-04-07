@@ -472,6 +472,7 @@ const AddLeadComponent = () => {
                               value={LeadContact}
                               onChange={(e) => setLeadContact(e.target.value)}
                             />
+
                             {/* <TextField
                               id="LeadEmailAddress"
                               type={"email"}
@@ -492,6 +493,7 @@ const AddLeadComponent = () => {
                               style={{ marginBottom: "20px" }}
                               variant="outlined"
                               size="medium"
+                              required
                               error={emailError && emailError}
                               helperText={emailError && emailError}
                               // value={LeadEmail}
@@ -500,32 +502,16 @@ const AddLeadComponent = () => {
 
                             {/* <TextField
                               id="LeadEmailAddress"
-                              type={"email"}
+                              type="email"
                               label="Email address"
                               className="w-full mb-5"
                               style={{ marginBottom: "20px" }}
                               variant="outlined"
                               size="medium"
-                              error={emailError && emailError}
-                              helperText={emailError && emailError}
-                              // value={LeadEmail}
+                              required
+                              value={LeadEmail}
                               onChange={handleEmail}
-                            />
-
-                            {/* <TextField
-                              id="LeadEmailAddress"
-                              type={"email"}
-                              label="Email address"
-                              className="w-full mb-5"
-                              style={{ marginBottom: "20px" }}
-                              variant="outlined"
-                              size="medium"
-                              error={emailError && emailError}
-                              helperText={emailError && emailError}
-                              // value={LeadEmail}
-                              onChange={handleEmail}
-                            />
-                          */}
+                            /> */}
 
                             <Select
                               id="LanguagePrefered"
@@ -549,6 +535,7 @@ const AddLeadComponent = () => {
                               <MenuItem value={"Spanish"}>Spanish</MenuItem>
                               <MenuItem value={"Urdu"}>Urdu</MenuItem>
                             </Select>
+
                             <Select
                               id="LeadSource"
                               value={LeadSource}

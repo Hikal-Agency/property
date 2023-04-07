@@ -6,7 +6,7 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiLink } from "react-icons/fi";
 import { BsSnow2, BsPatchQuestion } from "react-icons/bs";
 import { HiOutlineUserCircle } from "react-icons/hi";
@@ -27,6 +27,7 @@ const SingleLead = ({
   const { darkModeColors, currentMode, User, BACKEND_URL } = useStateContext();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [addNoteloading, setaddNoteloading] = useState(false);
+  const [lastNote, setLastNote] = useState("");
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -96,6 +97,20 @@ const SingleLead = ({
         });
       });
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    axios
+      .get(`https://testing.hikalcrm.com/api/lastnote/59`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Data::", result);
+      })
+  }, [LeadData]);
 
   return (
     <>
