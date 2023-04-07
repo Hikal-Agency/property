@@ -180,67 +180,83 @@ const Clients = () => {
       isLoading: true,
     }));
 
-    try {
-      const response = await axios.get(
-        `${BACKEND_URL}/clients?page=${pageState.page}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
+    const MAX_RETRY_COUNT = 50; // maximum number of times to retry the API call
+    const RETRY_DELAY = 9000; // delay in milliseconds between each retry
+
+    let retryCount = 0;
+
+    while (retryCount < MAX_RETRY_COUNT) {
+      try {
+        const response = await axios.get(
+          `${BACKEND_URL}/clients?page=${pageState.page}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+
+        console.log("Clients ", response);
+
+        const clientsData = response.data.clients.data;
+        console.log("clients array is", clientsData);
+
+        const rowsdataPromises = clientsData?.map(async (client, index) => ({
+          id:
+            pageState.page > 1
+              ? pageState.page * pageState.pageSize -
+                (pageState.pageSize - 1) +
+                index
+              : index + 1,
+          creationDate: client?.creationDate,
+          businessName: client?.businessName,
+          clientContact: client?.clientContact,
+          clientEmail: client?.clientEmail,
+          project: client?.website,
+          clientName: client?.clientName,
+          clientId: client?.id,
+          totalLeads: await LeadCount(token, client?.id),
+          activeAccounts: await activeAccountCount(token, client?.id),
+          totalAccounts: await totalUser(token, client?.id),
+        }));
+
+        const rowsdata = await Promise.all(rowsdataPromises);
+
+        console.log("Rows data here: ", rowsdata);
+
+        setpageState((old) => ({
+          ...old,
+          isLoading: false,
+          data: rowsdata,
+          total: response.data.clients.total,
+        }));
+
+        return; // exit the function on success
+      } catch (error) {
+        console.error(error);
+
+        if (retryCount < MAX_RETRY_COUNT - 1) {
+          console.log(`Retrying in ${RETRY_DELAY / 1000} seconds...`);
+          await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
+          retryCount++;
+        } else {
+          toast.error("Sorry something went wrong.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setpageState((old) => ({
+            ...old,
+            isLoading: false,
+          }));
+          return; // exit the function on failure
         }
-      );
-
-      console.log("Clients ", response);
-
-      const clientsData = response.data.clients.data;
-      console.log("clients array is", clientsData);
-
-      const rowsdataPromises = clientsData?.map(async (client, index) => ({
-        id:
-          pageState.page > 1
-            ? pageState.page * pageState.pageSize -
-              (pageState.pageSize - 1) +
-              index
-            : index + 1,
-        creationDate: client?.creationDate,
-        businessName: client?.businessName,
-        clientContact: client?.clientContact,
-        clientEmail: client?.clientEmail,
-        project: client?.website,
-        clientName: client?.clientName,
-        clientId: client?.id,
-        totalLeads: await LeadCount(token, client?.id),
-        activeAccounts: await activeAccountCount(token, client?.id),
-        totalAccounts: await totalUser(token, client?.id),
-      }));
-
-      const rowsdata = await Promise.all(rowsdataPromises);
-
-      console.log("Rows data here: ", rowsdata);
-
-      setpageState((old) => ({
-        ...old,
-        isLoading: false,
-        data: rowsdata,
-        total: response.data.clients.total,
-      }));
-    } catch (error) {
-      console.error(error);
-      toast.error("Sorry something went wrong.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } finally {
-      setpageState((old) => ({
-        ...old,
-        isLoading: false,
-      }));
+      }
     }
   };
 
