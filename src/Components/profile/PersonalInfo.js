@@ -24,20 +24,17 @@ export const PersonalInfo = ({
   const [error, setError] = useState(false);
 
   const handleCountry = (e) => {
-    setError(false);
     const value = e.target.value;
-    const onlyLetters = /^[A-Za-z]+$/;
+    const onlyLetters = /^[A-Za-z]*$/;
     if (onlyLetters.test(value)) {
       setError(false);
+      setPersonalInfo({
+        ...PersonalInfo,
+        nationality: value,
+      });
     } else {
       setError("Kindly enter a valid country name.");
-      return;
     }
-
-    setPersonalInfo({
-      ...PersonalInfo,
-      nationality: value,
-    });
   };
 
   const currentDate = new Date();
@@ -166,7 +163,7 @@ export const PersonalInfo = ({
               error={error && error}
               helperText={error && error}
               value={PersonalInfo?.nationality}
-              onInput={handleCountry}
+              onChange={handleCountry}
             />
           </div>
           <div className="col-span-3 w-full">
