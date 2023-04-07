@@ -18,10 +18,9 @@ const Dashboard = () => {
     BACKEND_URL,
   } = useStateContext();
   const [loading, setloading] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate(); const location = useLocation();
 
-  const FetchProfile = async (token) => {
+   const FetchProfile = async (token) => {
     await axios
       .get(`${BACKEND_URL}/dashboard?page=1`, {
         headers: {
@@ -39,10 +38,7 @@ const Dashboard = () => {
       .catch((err) => {
         // console.log(err);
         navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       });
   };
@@ -56,10 +52,7 @@ const Dashboard = () => {
         FetchProfile(token);
       } else {
         navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       }
     }
@@ -75,7 +68,7 @@ const Dashboard = () => {
           <div
             className={`${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >
-            <div className="flex" style={{ width: "100vw" }}>
+            <div className="flex" style={{width: "100vw"}}>
               <Sidebarmui />
               <div className="w-full">
                 <div className="px-5">

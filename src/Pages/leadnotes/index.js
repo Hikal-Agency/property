@@ -20,7 +20,8 @@ const LeadNotesPage = (props) => {
   const [loading, setloading] = useState(true);
   const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
     useStateContext();
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate(); 
+  const location = useLocation();
   const FetchProfile = async (token) => {
     await axios
       .get(`${BACKEND_URL}/profile`, {

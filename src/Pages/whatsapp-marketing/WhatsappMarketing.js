@@ -16,7 +16,7 @@ const pagesComponents = {
   messages: <MessagesComponent/>,
   device: <DeviceComponent/>,
   payments: <PaymentsComponent/>,
-  transactions: <TransactionsComponent/>
+  transactions: <TransactionsComponent/>,
 };
 
 const WhatsappMarketing = () => {

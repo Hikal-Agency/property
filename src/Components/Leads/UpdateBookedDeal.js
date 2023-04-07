@@ -55,18 +55,6 @@ const UpdateBookedDeal = ({
   //eslint-disable-next-line
   const [LeadNotes, setLeadNotes] = useState("");
 
-  const ChangePropertyType = (event) => {
-    setPropertyType(event.target.value);
-  };
-  const ChangeEnquiryType = (event) => {
-    setEnquiryType(event.target.value);
-  };
-  const ChangeForType = (event) => {
-    setForType(event.target.value);
-  };
-  const ChangeLanguagePrefered = (event) => {
-    setLanguagePrefered(event.target.value);
-  };
   //eslint-disable-next-line
   const ChangeLeadStatus = (event) => {
     setLeadStatus(event.target.value);
@@ -251,17 +239,17 @@ const UpdateBookedDeal = ({
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-7 rounded-md`}
         >
-          <IconButton
-            sx={{
-              position: "absolute",
-              right: 12,
-              top: 10,
-              color: (theme) => theme.palette.grey[500],
-            }}
-            onClick={handleLeadModelClose}
-          >
-            <IoMdClose size={18} />
-          </IconButton>
+        <IconButton
+          sx={{
+            position: "absolute",
+            right: 12,
+            top: 10,
+            color: (theme) => theme.palette.grey[500],
+          }}
+          onClick={handleLeadModelClose}
+        >
+          <IoMdClose size={18} />
+        </IconButton>
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />
@@ -303,13 +291,13 @@ const UpdateBookedDeal = ({
                         variant="outlined"
                         size="medium"
                         required
-                        value={LeadName}
+                        value={LeadName || ""}
                         readOnly
                         // onChange={(e) => setLeadName(e.target.value)}
                       />
                       <TextField
                         id="LeadContactNumber"
-                        type={"tel"}
+                        type={"number"}
                         label="Contact number"
                         className="w-full mb-5"
                         style={{ marginBottom: "20px" }}
@@ -317,21 +305,22 @@ const UpdateBookedDeal = ({
                         size="medium"
                         required
                         readOnly
-                        value={LeadContact}
+                        value={LeadContact || ""}
                         // onChange={(e) => setLeadContact(e.target.value)}
                       />
 
                       <TextField
-                        id="LeadEmailAddress"
+                        id="LeadEmail"
                         type={"email"}
                         label="Email address"
                         className="w-full mb-5"
                         style={{ marginBottom: "20px" }}
                         variant="outlined"
                         size="medium"
+                        required
+                        value={LeadEmail || ""}
                         readOnly
-                        value={LeadEmail}
-                        // onChange={(e) => setLeadEmail(e.target.value)}
+                        // onChange={(e) => setLeadName(e.target.value)}
                       />
 
                       <FormControl fullWidth variant="outlined" size="medium">
@@ -373,7 +362,7 @@ const UpdateBookedDeal = ({
                       >
                         Project details
                       </h4>
-
+                      
                       <TextField
                         id="Project"
                         type={"text"}
@@ -496,7 +485,7 @@ const UpdateBookedDeal = ({
                 <Button
                   className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
                   ripple={true}
-                  size="small"
+                  size="sm"
                   type="submit"
                   disabled={btnloading ? true : false}
                 >

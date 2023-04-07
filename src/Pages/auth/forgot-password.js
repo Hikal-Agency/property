@@ -1,5 +1,6 @@
 import { CircularProgress, TextField } from "@mui/material";
-// import Image from "next/image";
+//import Image from "next/image";
+//import Link from "next/link";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import Styles from "../../styles/app.css";
@@ -34,7 +35,6 @@ const ForgotPassword = () => {
               className="mt-8 space-y-6"
               onSubmit={(e) => {
                 e.preventDefault();
-                console.log("formData: ", formdata);
               }}
             >
               <input type="hidden" name="remember" defaultValue="true" />

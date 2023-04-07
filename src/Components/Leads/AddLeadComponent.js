@@ -70,7 +70,6 @@ const AddLeadComponent = () => {
     }
     console.log(LeadContact);
   };
-
   const ChangePropertyType = (event) => {
     setPropertyType(event.target.value);
   };
@@ -196,7 +195,7 @@ const AddLeadComponent = () => {
         },
       })
       .then((result) => {
-        console.log("result", result);
+        console.log(result);
         setManager2(result.data.team);
         if (User.role === 3) {
           setfilter_manager(
@@ -471,7 +470,7 @@ const AddLeadComponent = () => {
                               size="medium"
                               required
                               value={LeadContact}
-                              onChange={handlePhone}
+                              onChange={(e) => setLeadContact(e.target.value)}
                             />
 
                             {/* <TextField
@@ -494,6 +493,7 @@ const AddLeadComponent = () => {
                               style={{ marginBottom: "20px" }}
                               variant="outlined"
                               size="medium"
+                              required
                               error={emailError && emailError}
                               helperText={emailError && emailError}
                               // value={LeadEmail}

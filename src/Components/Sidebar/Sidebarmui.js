@@ -449,7 +449,11 @@ const Sidebarmui = () => {
           icon: <MdContactPage />,
           link: "/contacts",
         },
-
+        {
+          name: "360 Tour",
+          icon: null,
+          link: "/360tours",
+        },
         {
           name: "Leaderboard",
           icon: <MdLeaderboard />,

@@ -24,6 +24,7 @@ export const PersonalInfo = ({
   const [error, setError] = useState(false);
 
   const handleCountry = (e) => {
+
     const value = e.target.value;
     const onlyLetters = /^[A-Za-z]*$/;
     if (onlyLetters.test(value)) {
@@ -164,6 +165,8 @@ export const PersonalInfo = ({
               helperText={error && error}
               value={PersonalInfo?.nationality}
               onChange={handleCountry}
+
+
             />
           </div>
           <div className="col-span-3 w-full">

@@ -32,7 +32,7 @@ const UpcomingMeetingsMenu = () => {
   }, []);
   return (
     <>
-      <Container maxWidth="sm" sx={{ height: 500,}}>
+      <Container  sx={{ maxHeight: 500, width: 400}}>
         {upcomingMeetings.length > 0 ? (
           upcomingMeetings.map((meeting, index) => {
             return (
@@ -57,6 +57,7 @@ const UpcomingMeetingsMenu = () => {
                   <div className="w-full flex justify-between items-center">
                     <div className="flex items-center space-x-1">
                       <BsBuilding
+                        size={"20px"}
                         className={`mr-2 ${
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}
@@ -70,6 +71,7 @@ const UpcomingMeetingsMenu = () => {
                   <div className="w-full flex justify-between items-center">
                     <div className="flex items-center space-x-1">
                       <ImClock
+                        size={"18px"}
                         className={`mr-2 ${
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}
@@ -85,6 +87,7 @@ const UpcomingMeetingsMenu = () => {
                   <div className="w-full flex justify-between items-center">
                     <div className="flex items-center space-x-1">
                       <ImLocation
+                        size={"18px"}
                         className={`mr-2 ${
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}

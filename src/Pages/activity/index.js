@@ -9,10 +9,6 @@ import { MdFeedback } from "react-icons/md";
 import { MdStickyNote2 } from "react-icons/md";
 import { BsCalendar2EventFill } from "react-icons/bs";
 import { BiUserCircle } from "react-icons/bi";
-import Error from "../Error";
-import axios from "axios";
-import { FaCalendarDay } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
 
 const ActivityLog = () => {
   const { currentMode, BACKEND_URL } = useStateContext();
@@ -92,7 +88,7 @@ const ActivityLog = () => {
                     >
                         <div className="px-5">
                             <Navbar />
-              
+                            
                             <div className="mt-5 md:mt-2">
                                 <h1
                                 className={`font-semibold ${
