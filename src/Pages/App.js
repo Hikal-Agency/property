@@ -29,13 +29,15 @@ import Offers from "./offers";
 import Reports from "./reports";
 import Tickets from "./support";
 import Clients from "./clients";
+import AgencyUsers from "./clients/agencyUser";
 import Leaderboard from "./leaderboard";
 import { useStateContext } from "../context/ContextProvider";
 import ForgotPassword from "./auth/forgot-password";
 
 import ActivityLog from "./activity";
-import Tour360 from "./360tours";
-import PropertyPortfolio from "./propertyPortfolio";
+
+import ClientLeads from "./clients/clientLeads";
+
 
 const libraries = ["places"];
 
@@ -138,6 +140,16 @@ const routes = [
   {
     path: "/clients",
     element: <Clients />,
+    pageName: "Clients",
+  },
+  {
+    path: "/agencyUsers/:client_id",
+    element: <AgencyUsers />,
+    pageName: "Clients",
+  },
+  {
+    path: "/clientLeads/:client_id",
+    element: <ClientLeads />,
     pageName: "Clients",
   },
   {

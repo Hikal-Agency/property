@@ -24,20 +24,18 @@ export const PersonalInfo = ({
   const [error, setError] = useState(false);
 
   const handleCountry = (e) => {
-    setError(false);
+
     const value = e.target.value;
-    const onlyLetters = /^[A-Za-z]+$/;
+    const onlyLetters = /^[A-Za-z]*$/;
     if (onlyLetters.test(value)) {
       setError(false);
+      setPersonalInfo({
+        ...PersonalInfo,
+        nationality: value,
+      });
     } else {
       setError("Kindly enter a valid country name.");
-      return;
     }
-
-    setPersonalInfo({
-      ...PersonalInfo,
-      nationality: value,
-    });
   };
 
   const currentDate = new Date();
@@ -92,15 +90,21 @@ export const PersonalInfo = ({
                   setPersonalInfo({
                     ...PersonalInfo,
                     dob:
-                      format(newValue.$d.getUTCFullYear()) +
+                      format(newValue?.$d.getUTCFullYear()) +
                       "-" +
-                      format(newValue.$d.getUTCMonth() + 1) +
+                      format(newValue?.$d.getUTCMonth() + 1) +
                       "-" +
-                      format(newValue.$d.getUTCDate() + 1),
+                      format(newValue?.$d.getUTCDate() + 1),
                   });
                   console.log(Datevalue);
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    onKeyDown={(e) => e.preventDefault()}
+                    readOnly={true}
+                  />
+                )}
                 className="w-full"
                 required
                 maxDate={currentDate}
@@ -160,7 +164,9 @@ export const PersonalInfo = ({
               error={error && error}
               helperText={error && error}
               value={PersonalInfo?.nationality}
-              onInput={handleCountry}
+              onChange={handleCountry}
+
+
             />
           </div>
           <div className="col-span-3 w-full">

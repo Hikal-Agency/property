@@ -1,12 +1,16 @@
 import { Button } from "@material-tailwind/react";
-import { Box } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
+
+import { Box, CircularProgress } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import Footer from "../../Components/Footer/Footer";
 
 import { AiOutlineEdit } from "react-icons/ai";
+import { toast, ToastContainer } from "react-toastify";
+
 import { ImUser } from "react-icons/im";
 import { HiUsers } from "react-icons/hi";
 import { FaBan } from "react-icons/fa";
@@ -14,9 +18,13 @@ import SingleUser from "../../Components/Users/SingleUser";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
+import DeactivateModel from "./deactivateModel";
 
 const Clients = () => {
   const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
+  const [accountDeactivate, setAccountToDeactivate] = useState();
+  const [model, setModel] = useState(false);
   const [pageState, setpageState] = useState({
     isLoading: false,
     data: [],
@@ -24,20 +32,31 @@ const Clients = () => {
     page: 1,
     pageSize: 15,
   });
+  const [token, setToken] = useState(null);
 
-  const HandleEditFunc = (cellValues) => {
+  const navigate = useNavigate();
+  const HandleViewAccounts = (cellValues) => {
     console.log("cellValues : ", cellValues.id);
+    navigate(`/agencyUsers/${cellValues.id}`);
   };
 
-  const FetchLeads = async (token) => {
-    setpageState((old) => ({
-      ...old,
-      isLoading: true,
-    }));
+  const HandleOpenModel = (cellValues) => {
+    setModel(true);
+  };
 
+  const HandleModelClose = (cellValues) => {
+    setModel(false);
+  };
+
+  const HandleViewLeads = (cellValues) => {
+    console.log("cellValues : ", cellValues.id);
+    navigate(`/clientLeads/${cellValues.id}`);
+  };
+
+  const HandleAccountDeactivation = async (accountDeactivate) => {
     try {
-      const response = await axios.get(
-        `${BACKEND_URL}/clients?page=${pageState.page}`,
+      const deactivateAccount = await axios.get(
+        `${BACKEND_URL}/blockagency/${accountDeactivate}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -46,55 +65,219 @@ const Clients = () => {
         }
       );
 
-      console.log("Clients ", response);
+      setModel(false);
 
-      const clientsData = response.data.clients.data;
-      console.log("clients array is", clientsData);
+      console.log("ID: ", accountDeactivate);
 
-      const rowsdata = clientsData?.map((client, index) => ({
-        id:
-          pageState.page > 1
-            ? pageState.page * pageState.pageSize -
-              (pageState.pageSize - 1) +
-              index
-            : index + 1,
-        creationDate: client?.creationDate,
-        businessName: client?.businessName,
-        clientContact: client?.clientContact,
-        clientEmail: client?.clientEmail,
-        // notes: client?.notes,
-        project: client?.website,
-        clientName: client?.clientName,
-        clientId: client?.id,
-      }));
+      toast.success("Account Deactivated.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
 
-      console.log("Rows data: ", rowsdata);
-
-      setpageState((old) => ({
-        ...old,
-        isLoading: false,
-        data: rowsdata,
-        total: response.data.clients.total,
-        pageSize: response.data.clients.per_page,
-      }));
+      console.log("Deactivate: ", deactivateAccount);
     } catch (error) {
-      console.log("error occurred", error);
+      console.error(error);
+      toast.error("Sorry something went wrong.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const totalUser = async (token, id) => {
+    let accountCount;
+    try {
+      accountCount = await axios.get(`${BACKEND_URL}/totalUser/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("Total Accounts: ", accountCount?.data?.total_users);
+    } catch (error) {
+      console.log("accounts count: ", error);
+      toast.error("Failed to fetch accounts count.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    return accountCount?.data?.total_users;
+  };
+
+  const activeAccountCount = async (token, id) => {
+    let accounts;
+    try {
+      accounts = await axios.get(`${BACKEND_URL}/activeAccounts/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("Accounts: ", accounts?.data?.total_users);
+    } catch (error) {
+      console.log("active account error: ", accounts);
+      toast.error("Failed to fetch active accounts.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    return accounts?.data?.total_users;
+  };
+
+  const LeadCount = async (token, id) => {
+    let userLeads;
+    try {
+      userLeads = await axios.get(`${BACKEND_URL}/usersleads/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+    } catch (error) {
+      console.log("lead error: ", userLeads);
+      toast.error("Failed to load leads.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    // setpageState((old) => ({
+    //   ...old,
+    //   isLoading: false,
+    // }));
+
+    return userLeads?.data?.total_users_leads;
+  };
+
+  const FetchLeads = async (token) => {
+    setpageState((old) => ({
+      ...old,
+      isLoading: true,
+    }));
+
+    const MAX_RETRY_COUNT = 50; // maximum number of times to retry the API call
+    const RETRY_DELAY = 9000; // delay in milliseconds between each retry
+
+    let retryCount = 0;
+
+    while (retryCount < MAX_RETRY_COUNT) {
+      try {
+        const response = await axios.get(
+          `${BACKEND_URL}/clients?page=${pageState.page}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+
+        console.log("Clients ", response);
+
+        const clientsData = response.data.clients.data;
+        console.log("clients array is", clientsData);
+
+        const rowsdataPromises = clientsData?.map(async (client, index) => ({
+          id:
+            pageState.page > 1
+              ? pageState.page * pageState.pageSize -
+                (pageState.pageSize - 1) +
+                index
+              : index + 1,
+          creationDate: client?.creationDate,
+          businessName: client?.businessName,
+          clientContact: client?.clientContact,
+          clientEmail: client?.clientEmail,
+          project: client?.website,
+          clientName: client?.clientName,
+          clientId: client?.id,
+          totalLeads: await LeadCount(token, client?.id),
+          activeAccounts: await activeAccountCount(token, client?.id),
+          totalAccounts: await totalUser(token, client?.id),
+        }));
+
+        const rowsdata = await Promise.all(rowsdataPromises);
+
+        console.log("Rows data here: ", rowsdata);
+
+        setpageState((old) => ({
+          ...old,
+          isLoading: false,
+          data: rowsdata,
+          total: response.data.clients.total,
+        }));
+
+        return; // exit the function on success
+      } catch (error) {
+        console.error(error);
+
+        if (retryCount < MAX_RETRY_COUNT - 1) {
+          console.log(`Retrying in ${RETRY_DELAY / 1000} seconds...`);
+          await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
+          retryCount++;
+        } else {
+          toast.error("Sorry something went wrong.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setpageState((old) => ({
+            ...old,
+            isLoading: false,
+          }));
+          return; // exit the function on failure
+        }
+      }
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    FetchLeads(token);
-    // eslint-disable-next-line
+    // const token = localStorage.getItem("auth-token");
+    // FetchLeads(token);
+    const authToken = localStorage.getItem("auth-token");
+    setToken(authToken);
+    FetchLeads(authToken);
   }, [pageState.page]);
 
   const columns = [
-    { 
-      field: 'id', 
-      headerName: '#', 
-      headerAlign: 'center',
-      minWidth: 30,
-      flex: 1 ,
+    {
+      field: "id",
+      headerName: "Client Id",
+      headerAlign: "center",
+      minWidth: 90,
+      flex: 1,
+
       renderCell: (cellValues) => {
         return (
           <div
@@ -150,7 +333,7 @@ const Clients = () => {
     },
     {
       field: "businessName",
-      headerName: "Business",
+      headerName: "Business Name",
       headerAlign: "center",
 
       editable: false,
@@ -164,36 +347,35 @@ const Clients = () => {
         );
       },
     },
-    // {
-    //   field: "notes",
-    //   headerName: "Notes",
-    //   headerAlign: "center",
-    //   editable: false,
-    //   minWidth: 180,
-    //   flex: 1,
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div className="w-full flex items-center justify-center">
-    //         <p className="text-center">{cellValues.formattedValue}</p>
-    //       </div>
-    //     );
-    //   },
-    // },
+
     {
 
-      field: "creationDate",
-      headerName: "Creation Date",
+      field: "totalAccounts",
+      headerName: "Total User Accounts",
+
       headerAlign: "center",
+      align: "center",
       editable: false,
-      minWidth: 110,
+      minWidth: 180,
       flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues.formattedValue}</p>
-          </div>
-        );
-      },
+    },
+    {
+      field: "activeAccounts",
+      headerName: "Total Active Accounts",
+      headerAlign: "center",
+      align: "center",
+      editable: false,
+      minWidth: 180,
+      flex: 1,
+    },
+    {
+      field: "totalLeads",
+      headerName: "Total Leads",
+      headerAlign: "center",
+      align: "center",
+      editable: false,
+      minWidth: 180,
+      flex: 1,
     },
     {
       field: "",
@@ -207,7 +389,7 @@ const Clients = () => {
         return (
           <div className="space-x-2 w-full flex items-center justify-center ">
             <Button
-              onClick={() => HandleEditFunc(cellValues)}
+              onClick={() => HandleViewAccounts(cellValues)}
               title="View User Accounts of the Client"
               className={` ${
                 currentMode === "dark"
@@ -218,7 +400,7 @@ const Clients = () => {
               <ImUser size={20} />
             </Button>
             <Button
-              // onClick={() => HandleEditFunc(cellValues)}
+              onClick={() => HandleViewLeads(cellValues)}
               title="View Leads of the Client"
               className={` ${
                 currentMode === "dark"
@@ -229,7 +411,10 @@ const Clients = () => {
               <HiUsers size={20} />
             </Button>
             <Button
-              // onClick={() => HandleEditFunc(cellValues)}
+              onClick={() => {
+                HandleOpenModel(cellValues);
+                setAccountToDeactivate(cellValues?.id);
+              }}
               title="Deactivate All User Accounts of the Client"
               className={` ${
                 currentMode === "dark"
@@ -257,7 +442,19 @@ const Clients = () => {
 
   return (
     <>
-    {/* <ToastContainer/> */}
+
+      <ToastContainer />
+
+      {model && (
+        <DeactivateModel
+          handleOpenModel={HandleOpenModel}
+          deactivateAccount={HandleAccountDeactivation}
+          deactivateModelClose={HandleModelClose}
+          accountToDelete={accountDeactivate}
+        />
+      )}
+
+
       <div className="flex min-h-screen">
         <div
           className={`w-full ${
@@ -278,11 +475,13 @@ const Clients = () => {
                       autoHeight
                       disableSelectionOnClick
                       onRowClick={handleRowClick}
+                      rowCount={pageState.total}
                       rowsPerPageOptions={[30, 50, 75, 100]}
                       pagination
                       width="auto"
                       paginationMode="server"
                       rows={pageState?.data}
+                      loading={pageState.isLoading}
                       columns={columns}
                       sx={{
                         boxShadow: 2,
