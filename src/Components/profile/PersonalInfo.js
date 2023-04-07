@@ -100,7 +100,13 @@ export const PersonalInfo = ({
                   });
                   console.log(Datevalue);
                 }}
-                renderInput={(params) => <TextField {...params} />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    onKeyDown={(e) => e.preventDefault()}
+                    readOnly={true}
+                  />
+                )}
                 className="w-full"
                 required
                 maxDate={currentDate}
