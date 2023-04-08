@@ -287,6 +287,7 @@ const Navbar = () => {
         const last = index === pathnames.length - 1;
         const to = `/${pathnames.slice(0, index + 1).join('/')}`;
         const formattedLastURL = `${pathnames[index][0].toUpperCase()}${pathnames[index].slice(1, pathnames[index].length)}`.replace('%20', " ");
+        console.log("URL: ",formattedLastURL)
         return last ? (
           <Typography color="primary" key={to}>
             {formattedLastURL}

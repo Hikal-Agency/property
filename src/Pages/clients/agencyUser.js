@@ -8,6 +8,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 const AgencyUsers = () => {
   const { currentMode, BACKEND_URL, User, setUser, setopenBackDrop } =
@@ -103,15 +104,26 @@ const AgencyUsers = () => {
         // );
 
         setContacts(result?.data["agency-users"]?.data);
-        setMaxPage(result.data.managers.last_page);
+        setMaxPage(result.data.managers?.last_page);
         setloading(false);
       })
       .catch((err) => {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
+        // navigate("/", {
+        //   state: {
+        //     error: "Something Went Wrong! Please Try Again",
+        //     continueURL: location.pathname,
+        //   },
+        // });
+
+        console.error("Agency User Error: ", err);
+        toast.error("Sorry something went wrong.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
         });
       });
   };
@@ -138,6 +150,8 @@ const AgencyUsers = () => {
   }, []);
   return (
     <>
+      <ToastContainer />
+
       {/* <Head>
         <title>HIKAL CRM - Leaderboard</title>
         <meta name="description" content="Leaderboard - HIKAL CRM" />

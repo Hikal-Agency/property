@@ -274,7 +274,7 @@ const Clients = () => {
     const MAX_RETRY_COUNT = 10; // maximum number of times to retry the API call
     const RETRY_DELAY = 9000; // delay in milliseconds between each retry
     const STORAGE_KEY = "leadsData";
-    const EXPIRY_TIME = 5 * 60 * 1000; // 5 minutes expiry time
+    const EXPIRY_TIME = 10 * 60 * 1000; // 5 minutes expiry time
 
     let retryCount = 0;
     let shouldFetchFromApi = true;
