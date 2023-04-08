@@ -103,7 +103,7 @@ const SingleLead = ({
     try {
       const token = localStorage.getItem("auth-token");
       const result = await axios
-        .get(`https://testing.hikalcrm.com/api/lastnote/59`, {
+        .get(`https://testing.hikalcrm.com/api/lastnote/${LeadData?.lid}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,

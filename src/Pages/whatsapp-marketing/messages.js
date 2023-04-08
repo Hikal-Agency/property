@@ -42,7 +42,13 @@ const AllLeads = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [leadOriginSelected, setLeadOriginSelected] = useState(leadOrigins[0]);
   const [leadTypeSelected, setLeadTypeSelected] = useState(leadTypes[0]);
-  const [openMessageModal, setOpenMessageModal] = useState(false);
+  const [openMessageModal, setOpenMessageModal] = useState({
+    open: false, 
+    isWhatsapp: false,
+  });
+
+ // const [openMessageModal, setOpenMessageModal] = useState(false);
+
   const {
     currentMode,
     pageState,
@@ -507,19 +513,37 @@ const AllLeads = () => {
       <Alert color="success" sx={{ mb: 2 }}>
         {selectedRows.length} rows selected
       </Alert>
-
-      {selectedRows.length > 0 && (
+      {selectedRows.length > 0 &&
+        <Box className="flex items-center"> 
         <Button
-          onClick={() => setOpenMessageModal(true)}
+          onClick={() => setOpenMessageModal({open: true, isWhatsapp: false})}
           type="button"
           variant="contained"
-          sx={{ padding: "12px", mb: 2 }}
+          sx={{ padding: "12px", mb: 2, mr: 2 }}
+      // {selectedRows.length > 0 && (
+      //   <Button
+      //     onClick={() => setOpenMessageModal(true)}
+      //     type="button"
+      //     variant="contained"
+      //     sx={{ padding: "12px", mb: 2 }}
           color="info"
           size="lg"
         >
           <MdSend style={{ marginRight: 8 }} size={20} /> Bulk SMS
         </Button>
-      )}
+        <Button
+          onClick={() => setOpenMessageModal({open: true, isWhatsapp: true})}
+          type="button"
+          variant="contained"
+          sx={{ padding: "12px", mb: 2 }}
+          color="success"
+          size="lg"
+        >
+          <MdSend style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp
+        </Button>
+
+        </Box>
+      }
 
       <Box width={"100%"} sx={{ ...DataGridStyles, position: "relative" }}>
         <DataGrid
@@ -569,8 +593,8 @@ const AllLeads = () => {
           }
         />
       </Box>
+      {openMessageModal.open && (
 
-      {openMessageModal && (
         <SendMessageModal
           sendMessageModal={openMessageModal}
           setSendMessageModal={setOpenMessageModal}

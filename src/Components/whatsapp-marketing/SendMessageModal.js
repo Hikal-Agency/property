@@ -1,5 +1,6 @@
+
+//import { useState } from "react";
 import { useState, useEffect } from "react";
-import Base64 from "Base64";
 import {
   Modal,
   Backdrop,
@@ -8,13 +9,15 @@ import {
   CircularProgress,
   Tabs,
   Tab,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { MdSend } from "react-icons/md";
+import Base64 from "Base64";
 import { Box } from "@mui/system";
-import {IoMdClose} from "react-icons/io";
-import {toast} from "react-toastify";
+import axios from "axios";
+import { IoMdClose } from "react-icons/io";
+import { toast } from "react-toastify";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -26,41 +29,61 @@ const SendMessageModal = ({
   setSendMessageModal,
   selectedContacts,
 }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, BACKEND_URL } = useStateContext();
+
   const [messageValue, setMessageValue] = useState("");
   const [btnloading, setbtnloading] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState(false);
-
-  async function sendMessage(messageText, contactList, isWhatsapp = false) {
+  async function sendSMS(messageText, contactList) {
     try {
-      const TWILIO_ACCOUNT_SID = process.env.REACT_APP_TWILIO_ACCOUNT_SID;
-      const TWILIO_AUTH_TOKEN = process.env.REACT_APP_TWILIO_AUTH_TOKEN;
+      const token = localStorage.getItem("auth-token");
       setbtnloading(true);
       const responses = await Promise.all(
         contactList.map((contact) => {
-          return fetch(
-            `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`,
+          return axios.post(
+            `${BACKEND_URL}/send-tw-message`,
             {
-              method: "POST",
+              to: `+${contact}`,
+              message: messageText,
+            },
+            {
               headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                Authorization: `Basic ${Base64.btoa(
-                  `${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`
-                )}`,
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
               },
-              body: new URLSearchParams({
-                Body: messageText,
-                From: `${isWhatsapp ? "whatsapp:" : ""}+15855013080`,
-                To:  `${isWhatsapp ? "whatsapp:" : ""}+${contact}`,
-              }).toString(),
             }
-          ).then((data) => data.json());
+          );
+  // async function sendMessage(messageText, contactList, isWhatsapp = false) {
+  //   try {
+  //     const TWILIO_ACCOUNT_SID = process.env.REACT_APP_TWILIO_ACCOUNT_SID;
+  //     const TWILIO_AUTH_TOKEN = process.env.REACT_APP_TWILIO_AUTH_TOKEN;
+  //     setbtnloading(true);
+  //     const responses = await Promise.all(
+  //       contactList.map((contact) => {
+  //         return fetch(
+  //           `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`,
+  //           {
+  //             method: "POST",
+  //             headers: {
+  //               "Content-Type": "application/x-www-form-urlencoded",
+  //               Authorization: `Basic ${Base64.btoa(
+  //                 `${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`
+  //               )}`,
+  //             },
+  //             body: new URLSearchParams({
+  //               Body: messageText,
+  //               From: `${isWhatsapp ? "whatsapp:" : ""}+15855013080`,
+  //               To:  `${isWhatsapp ? "whatsapp:" : ""}+${contact}`,
+  //             }).toString(),
+  //           }
+  //         ).then((data) => data.json());
         })
       );
 
       console.log(responses);
-      toast.success("Messages Added to the Queue", {
+      toast.success("Messages Sent", {
+
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -74,11 +97,103 @@ const SendMessageModal = ({
       console.error(error);
     }
   }
+  async function sendWhatsappTwilioMsg(messageText, contactList) {
+    try {
+      const TWILIO_ACCOUNT_SID = process.env.REACT_APP_TWILIO_ACCOUNT_SID;
+      const TWILIO_AUTH_TOKEN = process.env.REACT_APP_TWILIO_AUTH_TOKEN;
+      
+      const responses = await Promise.all(
+        contactList.map((contact) => {
+          return fetch(
+        `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Basic ${Base64.btoa(
+              `${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`
+            )}`,
+          },
+          body: new URLSearchParams({
+            Body: messageText,
+            From: "whatsapp:+15855013080",
+            To: "whatsapp:+" + contact,
+          }).toString(),
+        }
+      ).then((response) => response.json());
+        })
+      );
+
+      console.log(responses);
+      // toast.success("Messages Sent", {
+      //   position: "top-right",
+      //   autoClose: 3000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "light",
+      // });
+    } catch(error){
+      console.log(error);
+    }
+  }
+
+  async function sendWhatsappUltraMsg(messageText, contactList) {
+    try {
+      const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
+      const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
+
+      const responses = await Promise.all(
+        contactList.map((contact) => {
+          var urlencoded = new URLSearchParams();
+          urlencoded.append("token", ULTRA_MSG_TOKEN);
+          urlencoded.append("to", "+" + contact);
+          urlencoded.append("body", messageText);
+
+          var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+          return fetch(
+        `${ULTRA_MSG_API}/messages/chat`,
+        {
+          headers: myHeaders,
+          method: "POST",
+          body: urlencoded,
+        }
+      ).then((response) => response.json());
+        })
+      );
+
+      console.log(responses);
+      toast.success("Messages Sent", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch(error){
+      console.log(error);
+    }
+  }
 
   const handleSendMessage = (event) => {
-    // sendMessage("+923055497517", message);
     event.preventDefault();
-    sendMessage(messageValue, selectedContacts);
+    // sendWhatsappMessages(messageValue, selectedContacts)
+
+    if(sendMessageModal.isWhatsapp) {
+      sendWhatsappUltraMsg(messageValue, selectedContacts);
+    } else {
+      sendSMS(messageValue, selectedContacts);
+    }
+
+    setSendMessageModal({open: false});
+  // const handleSendMessage = (event) => {
+  //   // sendMessage("+923055497517", message);
+  //   event.preventDefault();
+  //   sendMessage(messageValue, selectedContacts);
   };
 
   const handleChange = (event, newValue) => {
@@ -102,8 +217,8 @@ const SendMessageModal = ({
     <>
       <Modal
         keepMounted
-        open={sendMessageModal}
-        onClose={() => setSendMessageModal(false)}
+        open={sendMessageModal.open}
+        onClose={() => setSendMessageModal({open: false})}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
         closeAfterTransition
@@ -125,7 +240,8 @@ const SendMessageModal = ({
               top: 10,
               color: (theme) => theme.palette.grey[500],
             }}
-            onClick={() => setSendMessageModal(false)}
+            onClick={() => setSendMessageModal({open: false})}
+
           >
             <IoMdClose size={18} />
           </IconButton>
