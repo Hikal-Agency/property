@@ -74,6 +74,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     setManagers,
   } = useStateContext();
 
+  console.log("Path in alleads component: ", lead_origin);
+
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
   const [LeadToDelete, setLeadToDelete] = useState();
@@ -937,6 +939,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           edit: "edit",
         }));
 
+        console.log("Rows Data: ", rowsdata);
+
         setpageState((old) => ({
           ...old,
           isLoading: false,
@@ -1232,7 +1236,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         {selectedRows.length > 0 && (
           <MuiButton
             size="small"
-            sx={{...bulkUpdateBtnStyles, left: "564px"}}
+            sx={{ ...bulkUpdateBtnStyles, left: "564px" }}
             variant="text"
             onClick={handleClickBulkUpdate}
           >

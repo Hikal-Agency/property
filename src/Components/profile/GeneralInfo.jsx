@@ -46,7 +46,7 @@ export const GeneralInfo = ({ GeneralInfoData, User, UpdateProfile, btnloading }
             <div className="col-span-3 w-full">
               <TextField
                 id="alternative-contact-number"
-                type={"text"}
+                type={"number"}
                 label="Alternative Contact Number"
                 className="w-full"
                 variant="outlined"
