@@ -470,7 +470,7 @@ const AddLeadComponent = () => {
                               size="medium"
                               required
                               value={LeadContact}
-                              onChange={(e) => setLeadContact(e.target.value)}
+                              onChange={handlePhone}
                             />
 
                             {/* <TextField
