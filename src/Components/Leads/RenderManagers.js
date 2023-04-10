@@ -56,16 +56,12 @@ const RenderManagers = ({ cellValues }) => {
     UpdateLeadData.append("assignedToManager", newManager);
 
     await axios
-      .post(
-        `${BACKEND_URL}/leads/${cellValues?.row?.lid}`,
-        UpdateLeadData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
+      .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
       .then((result) => {
         console.log("Manager Updated successfull");
         console.log(result);
@@ -116,15 +112,26 @@ const RenderManagers = ({ cellValues }) => {
         required
       >
         <MenuItem value="0" disabled>
-        - - - - -
+          - - - - -
         </MenuItem>
-        {Managers.map((manager, index) => {
+        {/* {Managers.map((manager, index) => {
           return (
             <MenuItem key={index} value={manager?.id}>
               {manager?.userName}
             </MenuItem>
           );
-        })}
+        })} */}
+        {Managers.length > 0 ? (
+          Managers.map((manager, index) => (
+            <MenuItem key={index} value={manager?.id}>
+              {manager?.userName}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem value="">
+            <em>No manager</em>
+          </MenuItem>
+        )}
       </Select>
       {Dialogue && (
         <>
