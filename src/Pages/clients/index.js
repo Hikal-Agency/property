@@ -274,7 +274,7 @@ const Clients = () => {
     const MAX_RETRY_COUNT = 10; // maximum number of times to retry the API call
     const RETRY_DELAY = 9000; // delay in milliseconds between each retry
     const STORAGE_KEY = "leadsData";
-    const EXPIRY_TIME = 10 * 60 * 1000; // 5 minutes expiry time
+    const EXPIRY_TIME = 10 * 60 * 1000; // 10 minutes expiry time
 
     let retryCount = 0;
     let shouldFetchFromApi = true;
@@ -314,28 +314,11 @@ const Clients = () => {
           const clientsData = response.data.clients.data;
           console.log("clients array is", clientsData);
 
-          // const rowsdataPromises = clientsData?.map(async (client, index) => ({
-          //   id:
-          //     pageState.page > 1
-          //       ? pageState.page * pageState.pageSize -
-          //         (pageState.pageSize - 1) +
-          //         index
-          //       : index + 1,
-          //   creationDate: client?.creationDate,
-          //   businessName: client?.businessName,
-          //   clientContact: client?.clientContact,
-          //   clientEmail: client?.clientEmail,
-          //   project: client?.website,
-          //   clientName: client?.clientName,
-          //   clientId: client?.id,
-          //   totalLeads: await LeadCount(token, client?.id),
-          //   activeAccounts: await activeAccountCount(token, client?.id),
-          //   totalAccounts: await totalUser(token, client?.id),
-          // }));
+          const sortedClients = clientsData?.sort((a, b) => a.id - b.id);
 
-          // const rowsdata = await Promise.all(rowsdataPromises);
+          console.log("Sorted: ", sortedClients);
 
-          const rowsdataPromises = clientsData?.map(async (client, index) => {
+          const rowsdataPromises = sortedClients?.map(async (client, index) => {
             const totalLeadsPromise = LeadCount(token, client?.id);
             const activeAccountsPromise = activeAccountCount(token, client?.id);
             const totalAccountsPromise = totalUser(token, client?.id);
@@ -368,12 +351,7 @@ const Clients = () => {
             };
           });
 
-          const rowsdata = await Promise.allSettled(rowsdataPromises).then(
-            (results) =>
-              results
-                .filter((result) => result.status === "fulfilled") // filter out rejected promises
-                .map((result) => result.value)
-          ); // extract the value of each promise result
+          const rowsdata = await Promise.all(rowsdataPromises);
           console.log("Rows data here: ", rowsdata);
 
           setpageState((old) => ({
@@ -428,23 +406,23 @@ const Clients = () => {
 
   const columns = [
     {
-      field: "id",
+      field: "clientId",
       headerName: "Client Id",
       headerAlign: "center",
       minWidth: 90,
       flex: 1,
 
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
+      // renderCell: (cellValues) => {
+      //   return (
+      //     <div
+      //       className={`${
+      //         currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
+      //       } w-full h-full flex justify-center items-center px-5 font-semibold`}
+      //     >
+      //       {cellValues.formattedValue}
+      //     </div>
+      //   );
+      // },
     },
     {
       field: "clientName",
