@@ -184,6 +184,8 @@ const Clients = () => {
 
     const MAX_RETRY_COUNT = 50; // maximum number of times to retry the API call
     const RETRY_DELAY = 9000; // delay in milliseconds between each retry
+    const STORAGE_KEY = "leadsData";
+    const EXPIRY_TIME = 10 * 60 * 1000; // 5 minutes expiry time
 
     let retryCount = 0;
 
@@ -291,15 +293,14 @@ const Clients = () => {
       },
     },
     {
-      field: 'clientName',
-      headerName: 'Client Name',
-      headerAlign: 'center',
+      field: "clientName",
+      headerName: "Client Name",
+      headerAlign: "center",
       editable: false,
       minWidth: 180,
       flex: 1,
     },
     {
-
       field: "clientContact",
       headerName: "Contact Number",
       headerAlign: "center",
@@ -315,7 +316,6 @@ const Clients = () => {
       },
     },
     {
-
       field: "clientEmail",
       headerName: "Email Address",
       headerAlign: "center",
@@ -349,7 +349,6 @@ const Clients = () => {
     },
 
     {
-
       field: "totalAccounts",
       headerName: "Total User Accounts",
 
@@ -431,18 +430,15 @@ const Clients = () => {
   ];
 
   const handleRowClick = async (params, event) => {
-    if (
-      !event.target.classList.contains("editLeadBtn")
-    ) {
+    if (!event.target.classList.contains("editLeadBtn")) {
       // setSingleUserData(params.row);
       // handleUserModelOpen();
-      <SingleUser />
+      <SingleUser />;
     }
   };
 
   return (
     <>
-
       <ToastContainer />
 
       {model && (
@@ -453,7 +449,6 @@ const Clients = () => {
           accountToDelete={accountDeactivate}
         />
       )}
-
 
       <div className="flex min-h-screen">
         <div
@@ -468,7 +463,13 @@ const Clients = () => {
                 <Navbar />
                 <div className="my-5 mb-10">
                   <div className="my-3">
-                    <h2 className={` ${currentMode === "dark" ? "text-white" : "text-black"} font-semibold text-xl`}>Clients</h2>
+                    <h2
+                      className={` ${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } font-semibold text-xl`}
+                    >
+                      Clients
+                    </h2>
                   </div>
                   <Box width={"100%"} sx={DataGridStyles}>
                     <DataGrid
@@ -490,13 +491,14 @@ const Clients = () => {
                         },
                       }}
                       getRowClassName={(params) =>
-                        params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+                        params.indexRelativeToCurrentPage % 2 === 0
+                          ? "even"
+                          : "odd"
                       }
                     />
                   </Box>
                 </div>
               </div>
-
             </div>
           </div>
           <Footer />
