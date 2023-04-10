@@ -18,11 +18,11 @@ import SingleUser from "../../Components/Users/SingleUser";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import DeactivateModel from "./deactivateModel";
 
 const Clients = () => {
-  const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
+  const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
   const [accountDeactivate, setAccountToDeactivate] = useState();
   const [model, setModel] = useState(false);
   const [pageState, setpageState] = useState({
@@ -35,6 +35,8 @@ const Clients = () => {
   const [token, setToken] = useState(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
   const HandleViewAccounts = (cellValues) => {
     console.log("cellValues : ", cellValues.id);
     navigate(`/agencyUsers/${cellValues.id}`);
@@ -103,8 +105,6 @@ const Clients = () => {
           Authorization: "Bearer " + token,
         },
       });
-
-      console.log("Total Accounts: ", accountCount?.data?.total_users);
     } catch (error) {
       console.log("accounts count: ", error);
       toast.error("Failed to fetch accounts count.", {
@@ -117,6 +117,10 @@ const Clients = () => {
         theme: "light",
       });
     }
+
+    console.log(
+      `Total Accounts: ${accountCount?.data?.total_users} for User ${id}`
+    );
     return accountCount?.data?.total_users;
   };
 
@@ -129,8 +133,6 @@ const Clients = () => {
           Authorization: "Bearer " + token,
         },
       });
-
-      console.log("Accounts: ", accounts?.data?.total_users);
     } catch (error) {
       console.log("active account error: ", accounts);
       toast.error("Failed to fetch active accounts.", {
@@ -143,6 +145,10 @@ const Clients = () => {
         theme: "light",
       });
     }
+
+    console.log(
+      `Active  Accounts:  ${accounts?.data?.total_users} for User : ${id}`
+    );
     return accounts?.data?.total_users;
   };
 
@@ -168,13 +174,98 @@ const Clients = () => {
       });
     }
 
-    // setpageState((old) => ({
-    //   ...old,
-    //   isLoading: false,
-    // }));
+    console.log(
+      `Users Leads: ${userLeads?.data?.total_users_leads} for User: ${id}`
+    );
 
     return userLeads?.data?.total_users_leads;
   };
+
+  // const FetchLeads = async (token) => {
+  //   setpageState((old) => ({
+  //     ...old,
+  //     isLoading: true,
+  //   }));
+
+  //   const MAX_RETRY_COUNT = 50; // maximum number of times to retry the API call
+  //   const RETRY_DELAY = 9000; // delay in milliseconds between each retry
+
+  //   let retryCount = 0;
+
+  //   while (retryCount < MAX_RETRY_COUNT) {
+  //     try {
+  //       const response = await axios.get(
+  //         `${BACKEND_URL}/clients?page=${pageState.page}`,
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: "Bearer " + token,
+  //           },
+  //         }
+  //       );
+
+  //       console.log("Clients ", response);
+
+  //       const clientsData = response.data.clients.data;
+  //       console.log("clients array is", clientsData);
+
+  //       const rowsdataPromises = clientsData?.map(async (client, index) => ({
+  //         id:
+  //           pageState.page > 1
+  //             ? pageState.page * pageState.pageSize -
+  //               (pageState.pageSize - 1) +
+  //               index
+  //             : index + 1,
+  //         creationDate: client?.creationDate,
+  //         businessName: client?.businessName,
+  //         clientContact: client?.clientContact,
+  //         clientEmail: client?.clientEmail,
+  //         project: client?.website,
+  //         clientName: client?.clientName,
+  //         clientId: client?.id,
+  //         totalLeads: await LeadCount(token, client?.id),
+  //         activeAccounts: await activeAccountCount(token, client?.id),
+  //         totalAccounts: await totalUser(token, client?.id),
+  //       }));
+
+  //       const rowsdata = await Promise.all(rowsdataPromises);
+
+  //       console.log("Rows data here: ", rowsdata);
+
+  //       setpageState((old) => ({
+  //         ...old,
+  //         isLoading: false,
+  //         data: rowsdata,
+  //         total: response.data.clients.total,
+  //       }));
+
+  //       return; // exit the function on success
+  //     } catch (error) {
+  //       console.error(error);
+
+  //       if (retryCount < MAX_RETRY_COUNT - 1) {
+  //         console.log(`Retrying in ${RETRY_DELAY / 1000} seconds...`);
+  //         await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
+  //         retryCount++;
+  //       } else {
+  //         toast.error("Sorry something went wrong.", {
+  //           position: "top-right",
+  //           autoClose: 3000,
+  //           hideProgressBar: false,
+  //           closeOnClick: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //           theme: "light",
+  //         });
+  //         setpageState((old) => ({
+  //           ...old,
+  //           isLoading: false,
+  //         }));
+  //         return; // exit the function on failure
+  //       }
+  //     }
+  //   }
+  // };
 
   const FetchLeads = async (token) => {
     setpageState((old) => ({
@@ -182,83 +273,126 @@ const Clients = () => {
       isLoading: true,
     }));
 
-    const MAX_RETRY_COUNT = 50; // maximum number of times to retry the API call
+    const MAX_RETRY_COUNT = 10; // maximum number of times to retry the API call
     const RETRY_DELAY = 9000; // delay in milliseconds between each retry
     const STORAGE_KEY = "leadsData";
-    const EXPIRY_TIME = 10 * 60 * 1000; // 5 minutes expiry time
+    const EXPIRY_TIME = 10 * 60 * 1000; // 10 minutes expiry time
 
     let retryCount = 0;
+    let shouldFetchFromApi = true;
 
-    while (retryCount < MAX_RETRY_COUNT) {
-      try {
-        const response = await axios.get(
-          `${BACKEND_URL}/clients?page=${pageState.page}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-
-        console.log("Clients ", response);
-
-        const clientsData = response.data.clients.data;
-        console.log("clients array is", clientsData);
-
-        const rowsdataPromises = clientsData?.map(async (client, index) => ({
-          id:
-            pageState.page > 1
-              ? pageState.page * pageState.pageSize -
-                (pageState.pageSize - 1) +
-                index
-              : index + 1,
-          creationDate: client?.creationDate,
-          businessName: client?.businessName,
-          clientContact: client?.clientContact,
-          clientEmail: client?.clientEmail,
-          project: client?.website,
-          clientName: client?.clientName,
-          clientId: client?.id,
-          totalLeads: await LeadCount(token, client?.id),
-          activeAccounts: await activeAccountCount(token, client?.id),
-          totalAccounts: await totalUser(token, client?.id),
-        }));
-
-        const rowsdata = await Promise.all(rowsdataPromises);
-
-        console.log("Rows data here: ", rowsdata);
-
+    // Check if data is present in local storage and if it is not expired
+    const storedData = localStorage.getItem(STORAGE_KEY);
+    if (storedData) {
+      const { data, timestamp } = JSON.parse(storedData);
+      if (Date.now() - timestamp < EXPIRY_TIME) {
         setpageState((old) => ({
           ...old,
           isLoading: false,
-          data: rowsdata,
-          total: response.data.clients.total,
+          data,
+          total: data.length,
         }));
+        shouldFetchFromApi = false;
+      } else {
+        localStorage.removeItem(STORAGE_KEY); // remove expired data
+      }
+    }
 
-        return; // exit the function on success
-      } catch (error) {
-        console.error(error);
+    if (shouldFetchFromApi) {
+      while (retryCount < MAX_RETRY_COUNT) {
+        try {
+          const response = await axios.get(
+            `${BACKEND_URL}/clients?page=${pageState.page}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
+            }
+          );
 
-        if (retryCount < MAX_RETRY_COUNT - 1) {
-          console.log(`Retrying in ${RETRY_DELAY / 1000} seconds...`);
-          await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
-          retryCount++;
-        } else {
-          toast.error("Sorry something went wrong.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
+          console.log("Clients ", response);
+
+          const clientsData = response.data.clients.data;
+          console.log("clients array is", clientsData);
+
+          const sortedClients = clientsData?.sort((a, b) => a.id - b.id);
+
+          console.log("Sorted: ", sortedClients);
+
+          const rowsdataPromises = clientsData?.map(async (client, index) => {
+            const totalLeadsPromise = LeadCount(token, client?.id);
+            const activeAccountsPromise = activeAccountCount(token, client?.id);
+            const totalAccountsPromise = totalUser(token, client?.id);
+
+            // Wait for all three promises to complete
+            const [totalLeads, activeAccounts, totalAccounts] =
+              await Promise.all([
+                totalLeadsPromise,
+                activeAccountsPromise,
+                totalAccountsPromise,
+              ]);
+
+            return {
+              id:
+                pageState.page > 1
+                  ? pageState.page * pageState.pageSize -
+                    (pageState.pageSize - 1) +
+                    index
+                  : index + 1,
+              creationDate: client?.creationDate,
+              businessName: client?.businessName,
+              clientContact: client?.clientContact,
+              clientEmail: client?.clientEmail,
+              project: client?.website,
+              clientName: client?.clientName,
+              clientId: client?.id,
+              totalLeads,
+              activeAccounts,
+              totalAccounts,
+            };
           });
+
+          const rowsdata = await Promise.all(rowsdataPromises);
+          console.log("Rows data here: ", rowsdata);
+
           setpageState((old) => ({
             ...old,
             isLoading: false,
+            data: rowsdata,
+            total: response.data.clients.total,
           }));
-          return; // exit the function on failure
+
+          // Store the data in local storage
+          localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({ data: rowsdata, timestamp: Date.now() })
+          );
+
+          return; // exit the function on success
+        } catch (error) {
+          console.error(error);
+
+          if (retryCount < MAX_RETRY_COUNT - 1) {
+            console.log(`Retrying in ${RETRY_DELAY / 1000} seconds...`);
+            await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
+            retryCount++;
+          } else {
+            toast.error("Sorry something went wrong.", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            setpageState((old) => ({
+              ...old,
+              isLoading: false,
+            }));
+            return; // exit the function on failure
+          }
         }
       }
     }
@@ -269,28 +403,44 @@ const Clients = () => {
     // FetchLeads(token);
     const authToken = localStorage.getItem("auth-token");
     setToken(authToken);
-    FetchLeads(authToken);
+    if (User?.uid && User?.loginId) {
+      //FetchClient(token);
+      FetchLeads(authToken);
+    } else {
+      if (authToken) {
+        // FetchClient(token);
+        FetchLeads(authToken);
+        console.log("I ma fetching");
+      } else {
+        navigate("/", {
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
+        });
+      }
+    }
   }, [pageState.page]);
 
   const columns = [
     {
-      field: "id",
+      field: "clientId",
       headerName: "Client Id",
       headerAlign: "center",
       minWidth: 90,
       flex: 1,
 
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
+      // renderCell: (cellValues) => {
+      //   return (
+      //     <div
+      //       className={`${
+      //         currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
+      //       } w-full h-full flex justify-center items-center px-5 font-semibold`}
+      //     >
+      //       {cellValues.formattedValue}
+      //     </div>
+      //   );
+      // },
     },
     {
       field: "clientName",

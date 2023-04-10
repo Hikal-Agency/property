@@ -9,10 +9,12 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const PersonaLeads = () => {
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
   var lead_type = lead_type2.replace(/%20/g, " ");
   const pathname2 = location.pathname.split("/")[1];
+  console.log("PathName: ", pathname2);
   const [loading, setloading] = useState(true);
   const {
     User,
@@ -51,7 +53,10 @@ const PersonaLeads = () => {
         FetchProfile(token);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       }
     }
@@ -93,7 +98,7 @@ const PersonaLeads = () => {
                       Personal Leads -{" "}
                       <span className="uppercase">{lead_type}</span>{" "}
                       <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
-                      {pageState?.total}
+                        {pageState?.total}
                       </span>
                     </h1>
                     <AllLeads

@@ -104,7 +104,7 @@ const AgencyUsers = () => {
         // );
 
         setContacts(result?.data["agency-users"]?.data);
-        setMaxPage(result.data.managers.last_page);
+        setMaxPage(result.data.managers?.last_page);
         setloading(false);
       })
       .catch((err) => {
@@ -115,6 +115,7 @@ const AgencyUsers = () => {
         //   },
         // });
 
+        console.error("Agency User Error: ", err);
         toast.error("Sorry something went wrong.", {
           position: "top-right",
           autoClose: 3000,
@@ -136,6 +137,7 @@ const AgencyUsers = () => {
       if (token) {
         // FetchClient(token);
         FetchContacts(token);
+        console.log("Contacting : ");
       } else {
         navigate("/", {
           state: {
