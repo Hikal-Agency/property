@@ -85,6 +85,7 @@ const ProfilePage = () => {
         });
       });
   };
+
   useEffect(() => {
     setopenBackDrop(false);
     const token = localStorage.getItem("auth-token");
@@ -98,7 +99,112 @@ const ProfilePage = () => {
     // eslint-disable-next-line
   }, []);
 
+  // const UpdateProfile = async (data) => {
+  //   console.log("Profile: ", data);
+  //   if (data?.userAltEmail) {
+  //     console.log("email: ", data?.userAltEmail);
+
+  //     const onlyLetters = /^[A-Za-z]*$/;
+  //     if (!onlyLetters.test(data?.userAltEmail)) {
+  //       return;
+  //     }
+  //   }
+  //   setbtnloading(true);
+  //   const token = localStorage.getItem("auth-token");
+  //   await axios
+  //     .post(`${BACKEND_URL}/updateuser/${User.id}`, JSON.stringify(data), {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log("Profile Updated successfull");
+  //       console.log(result);
+  //       toast.success("Profile Updated Successfully", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //       const token = localStorage.getItem("auth-token");
+  //       if (token) {
+  //         FetchProfile(token);
+  //       } else {
+  //         navigate("/", {
+  //           state: { error: "Something Went Wrong! Please Try Again" },
+  //         });
+  //       }
+  //       setbtnloading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       toast.error("Error in Updating Profile", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //       setbtnloading(false);
+  //     });
+  // };
+
+  // const handlePickImage = (event) => {
+  //   const reader = new FileReader();
+  //   const file = event.target.files[0];
+  //   console.log("file: ", file);
+  //   reader.onloadend = () => {
+  //     setSelectedImage(reader?.result);
+  //     console.log("onload: ", file);
+  //   };
+  //   // reader.readAsDataURL(file);
+
+  //   reader?.readAsDataURL(new Blob([file], { type: file.type.slice(6) }));
+
+  //   console.log("reader: ", reader);
+  //   console.log("reader result: ", reader.result);
+  //   console.log("Uploaded image: ", selectedImage);
+  // };
+
+  // const handlePickImage = (event) => {
+  //   console.log(event);
+  //   if (event.target && event.target.files && event.target.files.length > 0) {
+  //     const file = event.target.files[0];
+  //     console.log("file: ", file);
+  //     setSelectedImage((imageFile) => file);
+  //     console.log("Select: ", selectedImage);
+
+  //     if (file.type.startsWith("image/")) {
+  //       // setSelectedImage(file);
+  //       console.log("selected IMAGE: ", selectedImage);
+  //     } else {
+  //       console.log("Invalid file type: ", file.type);
+  //     }
+  //   } else {
+  //     console.log("No file selected");
+  //   }
+  //   console.log("selected image: ", selectedImage);
+  // };
+
   const UpdateProfile = async (data) => {
+    console.log("Profile: ", data);
+
+    if (data?.userAltEmail) {
+      // check if data contains userAltEmail
+      console.log("email: ", data?.userAltEmail);
+
+      const emailRegex = /^\S+@\S+\.\S+$/;
+      if (!emailRegex.test(data?.userAltEmail)) {
+        return;
+      }
+    }
+
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
     await axios
@@ -145,21 +251,20 @@ const ProfilePage = () => {
       });
   };
 
-  const handlePickImage = (event) => {
-    const reader = new FileReader();
-    const file = event.target.files[0];
-    reader.onloadend = () => {
-      setSelectedImage(reader.result);
-    };
-    reader.readAsDataURL(new Blob([file], { type: file.type.slice(6) }));
+  const handlePickImage = (e) => {
+    console.log("File: ", e.target.files[0]);
+    setSelectedImage(e.target.files[0]);
+    console.log("Selected: ", selectedImage);
   };
 
   const UpdateProfileImage = async (file) => {
     try {
       const token = localStorage.getItem("auth-token");
       const imageData = new FormData();
-      imageData.append("image", file);
-      imageData.append("image", file);
+      imageData.append("image", selectedImage);
+      // imageData.append("image", file);
+
+      console.log("Image Data: ", imageData);
 
       const result = await axios.post(
         `${BACKEND_URL}/user/profile-picture`,
@@ -171,9 +276,9 @@ const ProfilePage = () => {
           },
         }
       );
-      console.log(result);
+      console.log("Result", result);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Error in Updating Profile Image", {
         position: "top-right",
         autoClose: 3000,
@@ -241,9 +346,16 @@ const ProfilePage = () => {
                                 </div>
                               </div>
                             </label>
-                            <input
+                            {/* <input
                               accept="image/*"
                               onInput={handlePickImage}
+                              id="pick-image"
+                              type="file"
+                              hidden
+                            /> */}
+                            <input
+                              accept="image/*"
+                              onChange={handlePickImage}
                               id="pick-image"
                               type="file"
                               hidden
