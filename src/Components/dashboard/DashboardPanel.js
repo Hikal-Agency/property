@@ -32,6 +32,7 @@ const DashboardPanel = () => {
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
+  const [newLeads, setNewLeads] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -54,6 +55,27 @@ const DashboardPanel = () => {
       });
   };
 
+  const fetchAllNewLeads = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      await axios
+        .get(`${BACKEND_URL}/newLeads`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          setNewLeads(result.data?.leads?.total);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     axios
@@ -74,6 +96,8 @@ const DashboardPanel = () => {
       });
 
       FetchProfile(token);
+
+      fetchAllNewLeads();
     //eslint-disable-next-line
   }, []);
 
@@ -97,9 +121,9 @@ const DashboardPanel = () => {
     },
     {
       icon: <AiOutlineFire />,
-      amount: DashboardData?.isAdmin?.hot_leads,
+      amount: newLeads,
       percentage: "-12%",
-      title: "Hot leads",
+      title: "All New Leads",
     },
     {
       icon: <GiThermometerCold />,

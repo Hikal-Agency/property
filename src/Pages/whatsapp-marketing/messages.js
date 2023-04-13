@@ -17,6 +17,7 @@ import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
 import Pagination from "@mui/material/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
+import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh Leads" },
@@ -43,11 +44,24 @@ const AllLeads = () => {
   const [leadOriginSelected, setLeadOriginSelected] = useState(leadOrigins[0]);
   const [leadTypeSelected, setLeadTypeSelected] = useState(leadTypes[0]);
   const [openMessageModal, setOpenMessageModal] = useState({
+<<<<<<< Updated upstream
     open: false, 
     isWhatsapp: false,
   });
 
  // const [openMessageModal, setOpenMessageModal] = useState(false);
+=======
+    open: false,
+    isWhatsapp: false,
+  });
+  const [messageLogsModal, setMessageLogsModal] = useState({
+    isOpen: false,
+    data: {},
+  });
+  const [whatsappSenderNo, setWhatsappSenderNo] = useState("");
+
+  // const [openMessageModal, setOpenMessageModal] = useState(false);
+>>>>>>> Stashed changes
 
   const {
     currentMode,
@@ -357,6 +371,34 @@ const AllLeads = () => {
         console.log(err);
       });
   };
+
+  const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
+  const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
+
+  const fetchUltraMsgInstance = async () => {
+   try {
+          const token = localStorage.getItem("auth-token");
+          const response =  await axios.get(
+            `${ULTRA_MSG_API}/instance/me?token=${ULTRA_MSG_TOKEN}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
+            }
+          );
+          const waNo = response.data?.id.slice(0, response.data?.id.indexOf("@"));;
+          setWhatsappSenderNo(waNo);
+   } catch (error) {
+      console.log(error);
+   } 
+  }
+
+  useEffect(() => {
+    fetchUltraMsgInstance();
+  }, []);
+
+
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
     console.log(e.target.value);
@@ -422,6 +464,13 @@ const AllLeads = () => {
     setColumnsArr([...columnsArr]);
     // eslint-disable-next-line
   }, [pageState.page, leadTypeSelected, leadOriginSelected, reloadDataGrid]);
+
+  const handleRowClick = async (params, event) => {
+    setMessageLogsModal({
+      isOpen: true,
+      data: params,
+    });
+  };
 
   // Custom Pagination
   function CustomPagination() {
@@ -513,6 +562,7 @@ const AllLeads = () => {
       <Alert color="success" sx={{ mb: 2 }}>
         {selectedRows.length} rows selected
       </Alert>
+<<<<<<< Updated upstream
       {selectedRows.length > 0 &&
         <Box className="flex items-center"> 
         <Button
@@ -544,12 +594,49 @@ const AllLeads = () => {
 
         </Box>
       }
+=======
+      {selectedRows.length > 0 && (
+        <Box className="flex items-center">
+          <Button
+            onClick={() =>
+              setOpenMessageModal({ open: true, isWhatsapp: false })
+            }
+            type="button"
+            variant="contained"
+            sx={{ padding: "12px", mb: 2, mr: 2 }}
+            // {selectedRows.length > 0 && (
+            //   <Button
+            //     onClick={() => setOpenMessageModal(true)}
+            //     type="button"
+            //     variant="contained"
+            //     sx={{ padding: "12px", mb: 2 }}
+            color="info"
+            size="lg"
+          >
+            <MdSend style={{ marginRight: 8 }} size={20} /> Bulk SMS
+          </Button>
+          <Button
+            onClick={() =>
+              setOpenMessageModal({ open: true, isWhatsapp: true })
+            }
+            type="button"
+            variant="contained"
+            sx={{ padding: "12px", mb: 2 }}
+            color="success"
+            size="lg"
+          >
+            <MdSend style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp
+          </Button>
+        </Box>
+      )}
+>>>>>>> Stashed changes
 
       <Box width={"100%"} sx={{ ...DataGridStyles, position: "relative" }}>
         <DataGrid
           autoHeight
           disableSelectionOnClick
           rows={pageState.data}
+          onRowClick={handleRowClick}
           rowCount={pageState.total}
           loading={pageState.isLoading}
           rowsPerPageOptions={[30, 50, 75, 100]}
@@ -594,11 +681,22 @@ const AllLeads = () => {
         />
       </Box>
       {openMessageModal.open && (
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         <SendMessageModal
           sendMessageModal={openMessageModal}
           setSendMessageModal={setOpenMessageModal}
           selectedContacts={selectedRows}
+          whatsappSenderNo={whatsappSenderNo}
+        />
+      )}
+      {messageLogsModal.isOpen && (
+        <MessageLogs
+          messageLogsModal={messageLogsModal}
+          setMessageLogsModal={setMessageLogsModal}
+          whatsappSenderNo={whatsappSenderNo}
         />
       )}
     </div>

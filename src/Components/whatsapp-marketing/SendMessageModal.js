@@ -1,4 +1,7 @@
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 //import { useState } from "react";
 import { useState, useEffect } from "react";
 import {
@@ -18,6 +21,10 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
+<<<<<<< Updated upstream
+=======
+import { messageTemplates } from "./messageTemplates";
+>>>>>>> Stashed changes
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -28,17 +35,31 @@ const SendMessageModal = ({
   sendMessageModal,
   setSendMessageModal,
   selectedContacts,
+  whatsappSenderNo,
 }) => {
+<<<<<<< Updated upstream
   const { currentMode, BACKEND_URL } = useStateContext();
+=======
+  const { currentMode, BACKEND_URL, User } = useStateContext();
+>>>>>>> Stashed changes
 
   const [messageValue, setMessageValue] = useState("");
   const [btnloading, setbtnloading] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState(false);
+<<<<<<< Updated upstream
+=======
+  const [ultraMsgInstance, setUltraMsgInstance] = useState({});
+
+  const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
+  const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
+
+>>>>>>> Stashed changes
   async function sendSMS(messageText, contactList) {
     try {
       const token = localStorage.getItem("auth-token");
       setbtnloading(true);
+      console.log(contactList);
       const responses = await Promise.all(
         contactList.map((contact) => {
           return axios.post(
@@ -46,6 +67,10 @@ const SendMessageModal = ({
             {
               to: `+${contact}`,
               message: messageText,
+<<<<<<< Updated upstream
+=======
+              from: "+15855013080",
+>>>>>>> Stashed changes
             },
             {
               headers: {
@@ -54,6 +79,7 @@ const SendMessageModal = ({
               },
             }
           );
+<<<<<<< Updated upstream
   // async function sendMessage(messageText, contactList, isWhatsapp = false) {
   //   try {
   //     const TWILIO_ACCOUNT_SID = process.env.REACT_APP_TWILIO_ACCOUNT_SID;
@@ -84,6 +110,31 @@ const SendMessageModal = ({
       console.log(responses);
       toast.success("Messages Sent", {
 
+=======
+        })
+      );
+
+      const allSentMessages = [];
+      responses.forEach((response, index) => {
+        if (!response?.error) {
+          const messageInfo = {
+            msg_to: contactList[index],
+            msg_from: "+15855013080",
+            message: messageText,
+            type: "sent",
+            userID: User?.id,
+            source: "sms",
+            status: 1,
+          };
+          allSentMessages.push(messageInfo);
+        }
+      });
+
+      saveMessages(allSentMessages);
+
+      setSendMessageModal({ open: false });
+      toast.success("Messages Sent", {
+>>>>>>> Stashed changes
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -95,6 +146,164 @@ const SendMessageModal = ({
       setbtnloading(false);
     } catch (error) {
       console.error(error);
+      toast.error("Messages Couldn't be sent", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setbtnloading(false);
+    }
+  }
+
+  async function sendWhatsappTwilioMsg(messageText, contactList) {
+    try {
+      setbtnloading(true);
+      const token = localStorage.getItem("auth-token");
+      const responses = await Promise.all(
+        contactList.map((contact) => {
+          return fetch(`${BACKEND_URL}/send-tw-whatsapp-message`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              Authorization: "Bearer " + token,
+            },
+            body: new URLSearchParams({
+              message: messageText,
+              to: "+" + contact,
+            }).toString(),
+          }).then((response) => response.json());
+        })
+      );
+
+      const allSentMessages = [];
+      responses.forEach((response, index) => {
+        if (!response?.error) {
+          const messageInfo = {
+            msg_to: contactList[index],
+            // msg_from: whatsappSenderNo,
+            message: messageText,
+            type: "sent",
+            userID: User?.id,
+            source: "whatsapp",
+            status: 1,
+          };
+          allSentMessages.push(messageInfo);
+        }
+      });
+
+      const responses2 = await Promise.all(
+        allSentMessages.map((msg) => {
+          return axios.post(`${BACKEND_URL}/messages`, JSON.stringify(msg), {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          });
+        })
+      );
+
+      setSendMessageModal({ open: false });
+      setbtnloading(false);
+
+      console.log(responses);
+      // toast.success("Messages Sent", {
+      //   position: "top-right",
+      //   autoClose: 3000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "light",
+      // });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const saveMessages = async (allSentMessages) => {
+    try {
+      const token = localStorage.getItem('auth-token'); 
+      await Promise.all(
+        allSentMessages.map((msg) => {
+          return axios.post(`${BACKEND_URL}/messages`, JSON.stringify(msg), {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          });
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async function sendWhatsappUltraMsg(messageText, contactList) {
+    try {
+      setbtnloading(true);
+      const responses = await Promise.all(
+        contactList.map((contact) => {
+          var urlencoded = new URLSearchParams();
+          urlencoded.append("token", ULTRA_MSG_TOKEN);
+          urlencoded.append("to", "+" + contact);
+          urlencoded.append("body", messageText);
+
+          var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+          return fetch(`${ULTRA_MSG_API}/messages/chat`, {
+            headers: myHeaders,
+            method: "POST",
+            body: urlencoded,
+          }).then((response) => response.json());
+        })
+      );
+        console.log(responses)
+      const allSentMessages = [];
+      responses.forEach((response, index) => {
+        if (!response?.error) {
+          const messageInfo = {
+            msg_to: contactList[index],
+            msg_from: whatsappSenderNo,
+            message: messageText,
+            type: "sent",
+            userID: User?.id,
+            source: "whatsapp",
+            status: 1,
+          };
+          allSentMessages.push(messageInfo);
+        }
+      });
+
+      saveMessages(allSentMessages);
+
+      setbtnloading(true);
+      setSendMessageModal({ open: false });
+      toast.success("Messages Sent", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Messages Couldn't be sent", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setbtnloading(false);
     }
   }
   async function sendWhatsappTwilioMsg(messageText, contactList) {
@@ -183,17 +392,24 @@ const SendMessageModal = ({
     event.preventDefault();
     // sendWhatsappMessages(messageValue, selectedContacts)
 
+<<<<<<< Updated upstream
     if(sendMessageModal.isWhatsapp) {
+=======
+    if (sendMessageModal.isWhatsapp) {
+>>>>>>> Stashed changes
       sendWhatsappUltraMsg(messageValue, selectedContacts);
     } else {
       sendSMS(messageValue, selectedContacts);
     }
+<<<<<<< Updated upstream
 
     setSendMessageModal({open: false});
   // const handleSendMessage = (event) => {
   //   // sendMessage("+923055497517", message);
   //   event.preventDefault();
   //   sendMessage(messageValue, selectedContacts);
+=======
+>>>>>>> Stashed changes
   };
 
   const handleChange = (event, newValue) => {
@@ -206,11 +422,7 @@ const SendMessageModal = ({
 
   const handleSelectTemplate = (template) => {
     setSelectedTemplate(true);
-    if (template === "Thanks") {
-      setMessageValue(
-        `Hey [First name], \nThanks for taking the time to connect this morning. \nI think you'd be a great fit for [plan type or option] and we're excited to get you on board.`
-      );
-    }
+    setMessageValue(messageTemplates[template]);
   };
 
   return (
@@ -218,7 +430,11 @@ const SendMessageModal = ({
       <Modal
         keepMounted
         open={sendMessageModal.open}
+<<<<<<< Updated upstream
         onClose={() => setSendMessageModal({open: false})}
+=======
+        onClose={() => setSendMessageModal({ open: false })}
+>>>>>>> Stashed changes
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
         closeAfterTransition
@@ -236,12 +452,16 @@ const SendMessageModal = ({
           <IconButton
             sx={{
               position: "absolute",
-              right: 12,
-              top: 10,
+              right: 5,
+              top: 2,
               color: (theme) => theme.palette.grey[500],
             }}
+<<<<<<< Updated upstream
             onClick={() => setSendMessageModal({open: false})}
 
+=======
+            onClick={() => setSendMessageModal({ open: false })}
+>>>>>>> Stashed changes
           >
             <IoMdClose size={18} />
           </IconButton>
@@ -300,13 +520,13 @@ const SendMessageModal = ({
                   onInput={(e) => setMessageValue(e.target.value)}
                 />
               ) : (
-                <Box className="border rounded p-4 min-h-[250px]">
-                  {["Thanks"].map((template, index) => {
+                <Box className="flex items-start flex-wrap border rounded p-4 min-h-[250px]">
+                  {Object.keys(messageTemplates).map((template) => {
                     return (
                       <Box
-                        key={index}
+                        key={template}
                         onClick={() => handleSelectTemplate(template)}
-                        className="bg-slate-600 text-white w-max cursor-pointer text-center p-4 rounded"
+                        className=" bg-slate-600 mr-2 text-white w-max cursor-pointer text-center p-4 rounded"
                       >
                         <h3>{template}</h3>
                       </Box>

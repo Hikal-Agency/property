@@ -10,6 +10,7 @@ import axios from "axios";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import {useLocation, useNavigate} from "react-router-dom";
+import AllMessages from "./AllMessages";
 
 const pagesComponents = {
   dashboard: <DashboardComponent/>,
@@ -17,6 +18,7 @@ const pagesComponents = {
   device: <DeviceComponent/>,
   payments: <PaymentsComponent/>,
   transactions: <TransactionsComponent/>,
+  "all": <AllMessages/>
 };
 
 const WhatsappMarketing = () => {
