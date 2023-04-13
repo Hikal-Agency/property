@@ -26,6 +26,7 @@ const ProfilePage = () => {
     setopenBackDrop,
     BACKEND_URL,
   } = useStateContext();
+  const [error, setError] = useState(null);
   const [GeneralInfoData, setGeneralInfo] = useState({
     userAltContact: "",
     userAltEmail: "",
@@ -85,6 +86,7 @@ const ProfilePage = () => {
         });
       });
   };
+
   useEffect(() => {
     setopenBackDrop(false);
     const token = localStorage.getItem("auth-token");
@@ -98,7 +100,231 @@ const ProfilePage = () => {
     // eslint-disable-next-line
   }, []);
 
+  // const UpdateProfile = async (data) => {
+  //   console.log("Profile: ", data);
+  //   if (data?.userAltEmail) {
+  //     console.log("email: ", data?.userAltEmail);
+
+  //     const onlyLetters = /^[A-Za-z]*$/;
+  //     if (!onlyLetters.test(data?.userAltEmail)) {
+  //       return;
+  //     }
+  //   }
+  //   setbtnloading(true);
+  //   const token = localStorage.getItem("auth-token");
+  //   await axios
+  //     .post(`${BACKEND_URL}/updateuser/${User.id}`, JSON.stringify(data), {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log("Profile Updated successfull");
+  //       console.log(result);
+  //       toast.success("Profile Updated Successfully", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //       const token = localStorage.getItem("auth-token");
+  //       if (token) {
+  //         FetchProfile(token);
+  //       } else {
+  //         navigate("/", {
+  //           state: { error: "Something Went Wrong! Please Try Again" },
+  //         });
+  //       }
+  //       setbtnloading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       toast.error("Error in Updating Profile", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //       setbtnloading(false);
+  //     });
+  // };
+
+  // const handlePickImage = (event) => {
+  //   const reader = new FileReader();
+  //   const file = event.target.files[0];
+  //   console.log("file: ", file);
+  //   reader.onloadend = () => {
+  //     setSelectedImage(reader?.result);
+  //     console.log("onload: ", file);
+  //   };
+  //   // reader.readAsDataURL(file);
+
+  //   reader?.readAsDataURL(new Blob([file], { type: file.type.slice(6) }));
+
+  //   console.log("reader: ", reader);
+  //   console.log("reader result: ", reader.result);
+  //   console.log("Uploaded image: ", selectedImage);
+  // };
+
+  // const handlePickImage = (event) => {
+  //   console.log(event);
+  //   if (event.target && event.target.files && event.target.files.length > 0) {
+  //     const file = event.target.files[0];
+  //     console.log("file: ", file);
+  //     setSelectedImage((imageFile) => file);
+  //     console.log("Select: ", selectedImage);
+
+  //     if (file.type.startsWith("image/")) {
+  //       // setSelectedImage(file);
+  //       console.log("selected IMAGE: ", selectedImage);
+  //     } else {
+  //       console.log("Invalid file type: ", file.type);
+  //     }
+  //   } else {
+  //     console.log("No file selected");
+  //   }
+  //   console.log("selected image: ", selectedImage);
+  // };
+
   const UpdateProfile = async (data) => {
+    console.log("Profile: ", data);
+
+    // if (data?.userAltEmail) {
+    //   // check if data contains userAltEmail
+    //   console.log("email: ", data?.userAltEmail);
+
+    //   const emailRegex = /^\S+@\S+\.\S+$/;
+    //   if (!emailRegex.test(data?.userAltEmail)) {
+    //     return;
+    //   }
+    // }
+
+    // if (data?.userAltEmail) {
+    //   // check if data contains userAltEmail
+    //   console.log("email is here: ", data?.userAltEmail);
+
+    //   // regex for validating the username
+    //   const usernameRegex = /^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9]$/;
+    //   // regex for validating the domain name
+    //   const domainRegex = /^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/;
+    //   // regex for validating the TLD
+    //   const tldRegex = /^[a-zA-Z]+$/;
+
+    //   const parts = data.userAltEmail.split("@");
+    //   if (parts.length !== 2) {
+    //     // the email address must contain one "@" symbol
+
+    //     return;
+    //   }
+
+    //   const username = parts[0];
+    //   const domain = parts[1].split(".");
+    //   if (domain.length < 2) {
+    //     // the domain name must contain at least one "." symbol
+    //     return;
+    //   }
+
+    //   const tld = domain[domain.length - 1];
+    //   const domainName = domain.slice(0, domain.length - 1).join(".");
+
+    //   if (
+    //     !usernameRegex.test(username) ||
+    //     !domainRegex.test(domainName) ||
+    //     !tldRegex.test(tld)
+    //   ) {
+    //     console.log("Email is not valid");
+    //     toast.error("Invalid Email", {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //     return;
+    //   }
+    // }
+
+    const validateEmail = (email) => {
+      // regex for validating the username
+      const usernameRegex = /^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9]$/;
+      // regex for validating the domain name
+      const domainRegex = /^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/;
+      // regex for validating the TLD
+      const tldRegex = /^[a-zA-Z]+$/;
+
+      const parts = email.split("@");
+      if (parts.length !== 2) {
+        // the email address must contain one "@" symbol
+        return false;
+      }
+
+      const username = parts[0];
+      const domain = parts[1].split(".");
+      if (domain.length < 2) {
+        // the domain name must contain at least one "." symbol
+        return false;
+      }
+
+      const tld = domain[domain.length - 1];
+      const domainName = domain.slice(0, domain.length - 1).join(".");
+
+      if (
+        !usernameRegex.test(username) ||
+        !domainRegex.test(domainName) ||
+        !tldRegex.test(tld)
+      ) {
+        // the email address contains invalid characters
+        return false;
+      }
+
+      return true;
+    };
+
+    if (data?.userAltEmail) {
+      // check if data contains userAltEmail
+      console.log("email is here: ", data?.userAltEmail);
+      if (!validateEmail(data.userAltEmail)) {
+        console.log("Email is not valid");
+        toast.error("Invalid Alternate Email", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return;
+      }
+    }
+
+    if (data?.userEmail) {
+      // check if data contains userEmail
+      console.log("email is here: ", data?.userEmail);
+      if (!validateEmail(data.userEmail)) {
+        console.log("Email is not valid");
+        toast.error("Invalid Email", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return;
+      }
+    }
+
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
     await axios
@@ -145,21 +371,21 @@ const ProfilePage = () => {
       });
   };
 
-  const handlePickImage = (event) => {
-    const reader = new FileReader();
-    const file = event.target.files[0];
-    reader.onloadend = () => {
-      setSelectedImage(reader.result);
-    };
-    reader.readAsDataURL(new Blob([file], { type: file.type.slice(6) }));
+  const handlePickImage = (e) => {
+    const file = e.target.files[0];
+    console.log("File: ", file);
+    setSelectedImage(file);
+    console.log("Selected: ", selectedImage);
   };
 
   const UpdateProfileImage = async (file) => {
     try {
       const token = localStorage.getItem("auth-token");
       const imageData = new FormData();
-      imageData.append("image", file);
-      imageData.append("image", file);
+      imageData.append("image", selectedImage);
+      // imageData.append("image", file);
+
+      console.log("Image Data: ", imageData);
 
       const result = await axios.post(
         `${BACKEND_URL}/user/profile-picture`,
@@ -171,9 +397,9 @@ const ProfilePage = () => {
           },
         }
       );
-      console.log(result);
+      console.log("Result", result);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Error in Updating Profile Image", {
         position: "top-right",
         autoClose: 3000,
@@ -186,11 +412,11 @@ const ProfilePage = () => {
     }
   };
 
-  useEffect(() => {
-    if (selectedImage) {
-      UpdateProfileImage(selectedImage);
-    }
-  }, [selectedImage]);
+  // useEffect(() => {
+  //   if (selectedImage) {
+  //     UpdateProfileImage(selectedImage);
+  //   }
+  // }, [selectedImage]);
 
   return (
     <>
@@ -241,9 +467,16 @@ const ProfilePage = () => {
                                 </div>
                               </div>
                             </label>
-                            <input
+                            {/* <input
                               accept="image/*"
                               onInput={handlePickImage}
+                              id="pick-image"
+                              type="file"
+                              hidden
+                            /> */}
+                            <input
+                              accept="image/*"
+                              onChange={handlePickImage}
                               id="pick-image"
                               type="file"
                               hidden

@@ -3,7 +3,13 @@ import { Box, TextField, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 
-export const GeneralInfo = ({ GeneralInfoData, User, UpdateProfile, btnloading }) => {
+export const GeneralInfo = ({
+  GeneralInfoData,
+  User,
+  UpdateProfile,
+  btnloading,
+}) => {
+  const [emailError, setEmailError] = useState(false);
   const [GeneralInfo, setGeneralInfo] = useState(GeneralInfoData);
   const { currentMode, darkModeColors } = useStateContext();
   // eslint-disable-next-line
@@ -16,9 +22,52 @@ export const GeneralInfo = ({ GeneralInfoData, User, UpdateProfile, btnloading }
     });
   };
 
+  const handlePhone = (e) => {
+    const value = e.target.value;
+    const onlyDigitsAndPlus = /^[0-9+]*$/;
+    if (onlyDigitsAndPlus.test(value)) {
+      setGeneralInfo({
+        ...GeneralInfo,
+        userAltContact: e.target.value,
+      });
+    }
+    console.log(GeneralInfo?.userAltContact);
+  };
+
+  const handleContact = (e) => {
+    const value = e.target.value;
+    const onlyDigitsAndPlus = /^[0-9+]*$/;
+    if (onlyDigitsAndPlus.test(value)) {
+      setGeneralInfo({
+        ...GeneralInfo,
+        userContact: e.target.value,
+      });
+    }
+    console.log(GeneralInfo?.userContact);
+  };
+
+  const handleEmail = (e) => {
+    setEmailError(false);
+    const value = e.target.value;
+    console.log(value);
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (emailRegex.test(value)) {
+      setEmailError(false);
+    } else {
+      setEmailError("Kindly enter a valid email.");
+      // return;
+    }
+
+    setGeneralInfo({
+      ...GeneralInfo,
+      userAltEmail: value, // update userAltEmail to the updated email value
+    });
+    console.log("Email state: ", GeneralInfo?.userAltEmail);
+  };
+
   const UpdateProfileFunc = () => {
     UpdateProfile(GeneralInfo);
-  }
+  };
 
   return (
     <>
@@ -28,36 +77,38 @@ export const GeneralInfo = ({ GeneralInfoData, User, UpdateProfile, btnloading }
             <div className="col-span-3 w-full">
               <TextField
                 id="contact-number"
-                type={"text"}
+                type={"tel"}
                 label="Contact Number"
                 className="w-full"
                 variant="outlined"
                 size="medium"
                 required
                 value={GeneralInfo?.userContact}
-                onInput={(e) =>
-                  setGeneralInfo({
-                    ...GeneralInfo,
-                    userContact: e.target.value,
-                  })
-                }
+                // onInput={(e) =>
+                //   setGeneralInfo({
+                //     ...GeneralInfo,
+                //     userContact: e.target.value,
+                //   })
+                // }
+                onInput={handleContact}
               />
             </div>
             <div className="col-span-3 w-full">
               <TextField
                 id="alternative-contact-number"
-                type={"number"}
+                type={"tel"}
                 label="Alternative Contact Number"
                 className="w-full"
                 variant="outlined"
                 size="medium"
                 value={GeneralInfo?.userAltContact}
-                onInput={(e) =>
-                  setGeneralInfo({
-                    ...GeneralInfo,
-                    userAltContact: e.target.value,
-                  })
-                }
+                // onInput={(e) =>
+                //   setGeneralInfo({
+                //     ...GeneralInfo,
+                //     userAltContact: e.target.value,
+                //   })
+                // }
+                onInput={handlePhone}
               />
             </div>
             <div className="col-span-3 w-full">
@@ -88,13 +139,26 @@ export const GeneralInfo = ({ GeneralInfoData, User, UpdateProfile, btnloading }
                 size="medium"
                 required
                 value={GeneralInfo?.userAltEmail}
+                error={emailError && emailError}
+                helperText={emailError && emailError}
+                onChange={handleEmail}
+              />
+              {/* <TextField
+                id="alternative-email"
+                type={"email"}
+                label="AlternativeEmail Address"
+                className="w-full"
+                variant="outlined"
+                size="medium"
+                required
+                value={GeneralInfo?.userAltEmail}
                 onInput={(e) =>
                   setGeneralInfo({
                     ...GeneralInfo,
                     userAltEmail: e.target.value,
                   })
                 }
-              />
+              /> */}
             </div>
             <div className="col-span-3 w-full">
               <Button
@@ -103,15 +167,15 @@ export const GeneralInfo = ({ GeneralInfoData, User, UpdateProfile, btnloading }
                 ripple={true}
                 size="lg"
               >
-              {btnloading ? (
-                <CircularProgress
-                  sx={{ color: "white" }}
-                  size={16}
-                  className="text-white"
-                />
-              ) : (
-                <span>Update Profile</span>
-              )}
+                {btnloading ? (
+                  <CircularProgress
+                    sx={{ color: "white" }}
+                    size={16}
+                    className="text-white"
+                  />
+                ) : (
+                  <span>Update Profile</span>
+                )}
               </Button>
             </div>
             <div className="col-span-3 w-full">
