@@ -34,6 +34,18 @@ export const GeneralInfo = ({
     console.log(GeneralInfo?.userAltContact);
   };
 
+  const handleContact = (e) => {
+    const value = e.target.value;
+    const onlyDigitsAndPlus = /^[0-9+]*$/;
+    if (onlyDigitsAndPlus.test(value)) {
+      setGeneralInfo({
+        ...GeneralInfo,
+        userContact: e.target.value,
+      });
+    }
+    console.log(GeneralInfo?.userContact);
+  };
+
   const handleEmail = (e) => {
     setEmailError(false);
     const value = e.target.value;
@@ -65,19 +77,20 @@ export const GeneralInfo = ({
             <div className="col-span-3 w-full">
               <TextField
                 id="contact-number"
-                type={"text"}
+                type={"tel"}
                 label="Contact Number"
                 className="w-full"
                 variant="outlined"
                 size="medium"
                 required
                 value={GeneralInfo?.userContact}
-                onInput={(e) =>
-                  setGeneralInfo({
-                    ...GeneralInfo,
-                    userContact: e.target.value,
-                  })
-                }
+                // onInput={(e) =>
+                //   setGeneralInfo({
+                //     ...GeneralInfo,
+                //     userContact: e.target.value,
+                //   })
+                // }
+                onInput={handleContact}
               />
             </div>
             <div className="col-span-3 w-full">
