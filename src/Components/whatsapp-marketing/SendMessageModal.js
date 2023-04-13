@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 //import { useState } from "react";
 import { useState, useEffect } from "react";
 import {
@@ -21,10 +17,7 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
-<<<<<<< Updated upstream
-=======
 import { messageTemplates } from "./messageTemplates";
->>>>>>> Stashed changes
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -37,24 +30,17 @@ const SendMessageModal = ({
   selectedContacts,
   whatsappSenderNo,
 }) => {
-<<<<<<< Updated upstream
-  const { currentMode, BACKEND_URL } = useStateContext();
-=======
   const { currentMode, BACKEND_URL, User } = useStateContext();
->>>>>>> Stashed changes
 
   const [messageValue, setMessageValue] = useState("");
   const [btnloading, setbtnloading] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState(false);
-<<<<<<< Updated upstream
-=======
   const [ultraMsgInstance, setUltraMsgInstance] = useState({});
 
   const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
   const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
 
->>>>>>> Stashed changes
   async function sendSMS(messageText, contactList) {
     try {
       const token = localStorage.getItem("auth-token");
@@ -67,10 +53,7 @@ const SendMessageModal = ({
             {
               to: `+${contact}`,
               message: messageText,
-<<<<<<< Updated upstream
-=======
               from: "+15855013080",
->>>>>>> Stashed changes
             },
             {
               headers: {
@@ -79,38 +62,6 @@ const SendMessageModal = ({
               },
             }
           );
-<<<<<<< Updated upstream
-  // async function sendMessage(messageText, contactList, isWhatsapp = false) {
-  //   try {
-  //     const TWILIO_ACCOUNT_SID = process.env.REACT_APP_TWILIO_ACCOUNT_SID;
-  //     const TWILIO_AUTH_TOKEN = process.env.REACT_APP_TWILIO_AUTH_TOKEN;
-  //     setbtnloading(true);
-  //     const responses = await Promise.all(
-  //       contactList.map((contact) => {
-  //         return fetch(
-  //           `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`,
-  //           {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/x-www-form-urlencoded",
-  //               Authorization: `Basic ${Base64.btoa(
-  //                 `${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`
-  //               )}`,
-  //             },
-  //             body: new URLSearchParams({
-  //               Body: messageText,
-  //               From: `${isWhatsapp ? "whatsapp:" : ""}+15855013080`,
-  //               To:  `${isWhatsapp ? "whatsapp:" : ""}+${contact}`,
-  //             }).toString(),
-  //           }
-  //         ).then((data) => data.json());
-        })
-      );
-
-      console.log(responses);
-      toast.success("Messages Sent", {
-
-=======
         })
       );
 
@@ -134,7 +85,6 @@ const SendMessageModal = ({
 
       setSendMessageModal({ open: false });
       toast.success("Messages Sent", {
->>>>>>> Stashed changes
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -306,110 +256,16 @@ const SendMessageModal = ({
       setbtnloading(false);
     }
   }
-  async function sendWhatsappTwilioMsg(messageText, contactList) {
-    try {
-      const TWILIO_ACCOUNT_SID = process.env.REACT_APP_TWILIO_ACCOUNT_SID;
-      const TWILIO_AUTH_TOKEN = process.env.REACT_APP_TWILIO_AUTH_TOKEN;
-      
-      const responses = await Promise.all(
-        contactList.map((contact) => {
-          return fetch(
-        `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: `Basic ${Base64.btoa(
-              `${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`
-            )}`,
-          },
-          body: new URLSearchParams({
-            Body: messageText,
-            From: "whatsapp:+15855013080",
-            To: "whatsapp:+" + contact,
-          }).toString(),
-        }
-      ).then((response) => response.json());
-        })
-      );
-
-      console.log(responses);
-      // toast.success("Messages Sent", {
-      //   position: "top-right",
-      //   autoClose: 3000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "light",
-      // });
-    } catch(error){
-      console.log(error);
-    }
-  }
-
-  async function sendWhatsappUltraMsg(messageText, contactList) {
-    try {
-      const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
-      const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
-
-      const responses = await Promise.all(
-        contactList.map((contact) => {
-          var urlencoded = new URLSearchParams();
-          urlencoded.append("token", ULTRA_MSG_TOKEN);
-          urlencoded.append("to", "+" + contact);
-          urlencoded.append("body", messageText);
-
-          var myHeaders = new Headers();
-          myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-          return fetch(
-        `${ULTRA_MSG_API}/messages/chat`,
-        {
-          headers: myHeaders,
-          method: "POST",
-          body: urlencoded,
-        }
-      ).then((response) => response.json());
-        })
-      );
-
-      console.log(responses);
-      toast.success("Messages Sent", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } catch(error){
-      console.log(error);
-    }
-  }
 
   const handleSendMessage = (event) => {
     event.preventDefault();
     // sendWhatsappMessages(messageValue, selectedContacts)
 
-<<<<<<< Updated upstream
-    if(sendMessageModal.isWhatsapp) {
-=======
     if (sendMessageModal.isWhatsapp) {
->>>>>>> Stashed changes
       sendWhatsappUltraMsg(messageValue, selectedContacts);
     } else {
       sendSMS(messageValue, selectedContacts);
     }
-<<<<<<< Updated upstream
-
-    setSendMessageModal({open: false});
-  // const handleSendMessage = (event) => {
-  //   // sendMessage("+923055497517", message);
-  //   event.preventDefault();
-  //   sendMessage(messageValue, selectedContacts);
-=======
->>>>>>> Stashed changes
   };
 
   const handleChange = (event, newValue) => {
@@ -430,11 +286,7 @@ const SendMessageModal = ({
       <Modal
         keepMounted
         open={sendMessageModal.open}
-<<<<<<< Updated upstream
-        onClose={() => setSendMessageModal({open: false})}
-=======
         onClose={() => setSendMessageModal({ open: false })}
->>>>>>> Stashed changes
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
         closeAfterTransition
@@ -456,12 +308,7 @@ const SendMessageModal = ({
               top: 2,
               color: (theme) => theme.palette.grey[500],
             }}
-<<<<<<< Updated upstream
-            onClick={() => setSendMessageModal({open: false})}
-
-=======
             onClick={() => setSendMessageModal({ open: false })}
->>>>>>> Stashed changes
           >
             <IoMdClose size={18} />
           </IconButton>

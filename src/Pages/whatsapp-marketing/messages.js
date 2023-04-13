@@ -44,13 +44,6 @@ const AllLeads = () => {
   const [leadOriginSelected, setLeadOriginSelected] = useState(leadOrigins[0]);
   const [leadTypeSelected, setLeadTypeSelected] = useState(leadTypes[0]);
   const [openMessageModal, setOpenMessageModal] = useState({
-<<<<<<< Updated upstream
-    open: false, 
-    isWhatsapp: false,
-  });
-
- // const [openMessageModal, setOpenMessageModal] = useState(false);
-=======
     open: false,
     isWhatsapp: false,
   });
@@ -61,7 +54,6 @@ const AllLeads = () => {
   const [whatsappSenderNo, setWhatsappSenderNo] = useState("");
 
   // const [openMessageModal, setOpenMessageModal] = useState(false);
->>>>>>> Stashed changes
 
   const {
     currentMode,
@@ -562,39 +554,6 @@ const AllLeads = () => {
       <Alert color="success" sx={{ mb: 2 }}>
         {selectedRows.length} rows selected
       </Alert>
-<<<<<<< Updated upstream
-      {selectedRows.length > 0 &&
-        <Box className="flex items-center"> 
-        <Button
-          onClick={() => setOpenMessageModal({open: true, isWhatsapp: false})}
-          type="button"
-          variant="contained"
-          sx={{ padding: "12px", mb: 2, mr: 2 }}
-      // {selectedRows.length > 0 && (
-      //   <Button
-      //     onClick={() => setOpenMessageModal(true)}
-      //     type="button"
-      //     variant="contained"
-      //     sx={{ padding: "12px", mb: 2 }}
-          color="info"
-          size="lg"
-        >
-          <MdSend style={{ marginRight: 8 }} size={20} /> Bulk SMS
-        </Button>
-        <Button
-          onClick={() => setOpenMessageModal({open: true, isWhatsapp: true})}
-          type="button"
-          variant="contained"
-          sx={{ padding: "12px", mb: 2 }}
-          color="success"
-          size="lg"
-        >
-          <MdSend style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp
-        </Button>
-
-        </Box>
-      }
-=======
       {selectedRows.length > 0 && (
         <Box className="flex items-center">
           <Button
@@ -629,7 +588,6 @@ const AllLeads = () => {
           </Button>
         </Box>
       )}
->>>>>>> Stashed changes
 
       <Box width={"100%"} sx={{ ...DataGridStyles, position: "relative" }}>
         <DataGrid
@@ -681,10 +639,6 @@ const AllLeads = () => {
         />
       </Box>
       {openMessageModal.open && (
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
         <SendMessageModal
           sendMessageModal={openMessageModal}
           setSendMessageModal={setOpenMessageModal}
