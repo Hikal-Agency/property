@@ -63,6 +63,7 @@ const AllLeads = () => {
     DataGridStyles,
     setopenBackDrop,
     BACKEND_URL,
+    darkModeColors,
   } = useStateContext();
 
   // eslint-disable-next-line
@@ -368,28 +369,27 @@ const AllLeads = () => {
   const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
 
   const fetchUltraMsgInstance = async () => {
-   try {
-          const token = localStorage.getItem("auth-token");
-          const response =  await axios.get(
-            `${ULTRA_MSG_API}/instance/me?token=${ULTRA_MSG_TOKEN}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-              },
-            }
-          );
-          const waNo = response.data?.id.slice(0, response.data?.id.indexOf("@"));;
-          setWhatsappSenderNo(waNo);
-   } catch (error) {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.get(
+        `${ULTRA_MSG_API}/instance/me?token=${ULTRA_MSG_TOKEN}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const waNo = response.data?.id.slice(0, response.data?.id.indexOf("@"));
+      setWhatsappSenderNo(waNo);
+    } catch (error) {
       console.log(error);
-   } 
-  }
+    }
+  };
 
   useEffect(() => {
     fetchUltraMsgInstance();
   }, []);
-
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
@@ -490,52 +490,86 @@ const AllLeads = () => {
   return (
     <div className="pb-10">
       <ToastContainer />
-      <label htmlFor="leadOrigin">Lead Origin</label>
-      <Select
-        id="leadOrigin"
-        value={leadOriginSelected?.id || "hotleads"}
-        onChange={(event) =>
-          setLeadOriginSelected(
-            leadOrigins.find((origin) => origin.id === event.target.value)
-          )
-        }
-        size="medium"
-        className="w-full mt-1 mb-5"
-        displayEmpty
-        required
-      >
-        <MenuItem value="0" disabled>
+      <Box className={darkModeColors}>
+        <label
+          htmlFor="leadOrigin"
+          className={`${currentMode === "dark" ? "text-white" : "text-dark"} `}
+        >
           Lead Origin
-        </MenuItem>
-        {leadOrigins?.map((origin, index) => (
-          <MenuItem key={index} value={origin?.id || ""}>
-            {origin?.formattedValue}
+        </label>
+        <Select
+          id="leadOrigin"
+          value={leadOriginSelected?.id || "hotleads"}
+          onChange={(event) =>
+            setLeadOriginSelected(
+              leadOrigins.find((origin) => origin.id === event.target.value)
+            )
+          }
+          size="medium"
+          className={`w-full mt-1 mb-5 `}
+          displayEmpty
+          required
+          sx={{
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+            },
+            "&:hover:not (.Mui-disabled):before": {
+              borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+            },
+          }}
+        >
+          <MenuItem value="0" disabled>
+            Lead Origin
           </MenuItem>
-        ))}
-      </Select>
-      <label htmlFor="leadType">Lead Type</label>
-      <Select
-        id="leadType"
-        value={leadTypeSelected?.id || "all"}
-        onChange={(event) =>
-          setLeadTypeSelected(
-            leadTypes.find((type) => type.id === event.target.value)
-          )
-        }
-        size="medium"
-        className="w-full mt-1 mb-5"
-        displayEmpty
-        required
-      >
-        <MenuItem value="0" disabled>
+          {leadOrigins?.map((origin, index) => (
+            <MenuItem key={index} value={origin?.id || ""}>
+              {origin?.formattedValue}
+            </MenuItem>
+          ))}
+        </Select>
+        <label
+          htmlFor="leadType"
+          className={`${currentMode === "dark" ? "text-white" : "text-dark"} `}
+        >
           Lead Type
-        </MenuItem>
-        {leadTypes?.map((type, index) => (
-          <MenuItem key={index} value={type?.id || ""}>
-            {type?.formattedValue}
+        </label>
+        <Select
+          id="leadType"
+          value={leadTypeSelected?.id || "all"}
+          onChange={(event) =>
+            setLeadTypeSelected(
+              leadTypes.find((type) => type.id === event.target.value)
+            )
+          }
+          size="medium"
+          className={`w-full mt-1 mb-5`}
+          displayEmpty
+          required
+          sx={{
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+            },
+            "&:hover:not (.Mui-disabled):before": {
+              borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+            },
+          }}
+        >
+          <MenuItem
+            value="0"
+            disabled
+            sx={{
+              color: currentMode === "dark" ? "#ffffff" : "#000000",
+            }}
+          >
+            Lead Type
           </MenuItem>
-        ))}
-      </Select>
+          {leadTypes?.map((type, index) => (
+            <MenuItem key={index} value={type?.id || ""}>
+              {type?.formattedValue}
+            </MenuItem>
+          ))}
+        </Select>
+      </Box>
 
       <h1
         className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
