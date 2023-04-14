@@ -222,7 +222,7 @@ const UpdateLead = ({
     UpdateLeadData.append("leadStatus", LeadStatus);
     UpdateLeadData.append("notes", LeadNotes);
     if (User.role === 1 || User.role === 3) {
-      if (!Manager) {
+      if (!Manager || !SalesPerson2) {
         toast.error("Manager and sales field is required", {
           position: "top-right",
           autoClose: 3000,
@@ -232,6 +232,8 @@ const UpdateLead = ({
           progress: undefined,
           theme: "light",
         });
+        setbtnloading(false);
+        return;
       }
       UpdateLeadData.append("assignedToManager", Manager);
       UpdateLeadData.append("assignedToSales", SalesPerson2);
