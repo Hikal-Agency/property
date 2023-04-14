@@ -11,14 +11,15 @@ import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import {useLocation, useNavigate} from "react-router-dom";
 import AllMessages from "./AllMessages";
+import Stripe from "./StripePayment";
 
 const pagesComponents = {
   dashboard: <DashboardComponent/>,
   messages: <MessagesComponent/>,
   device: <DeviceComponent/>,
-  payments: <PaymentsComponent/>,
+  payments: <Stripe/>,
   transactions: <TransactionsComponent/>,
-  "all": <AllMessages/>
+  "all": <AllMessages/>,
 };
 
 const WhatsappMarketing = () => {
