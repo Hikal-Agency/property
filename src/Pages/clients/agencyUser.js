@@ -87,50 +87,110 @@ const AgencyUsers = () => {
     setPage(value);
     FetchContacts(token);
   };
+  // const FetchContacts = async (token) => {
+  //   await axios
+  //     .get(`${BACKEND_URL}/agencyusers/${client_id}`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log("agency users ", result.data);
+  //       console.log("agency-users ", result.data["agency-users"].data);
+  //       // console.log(
+  //       //   "The data has contact max page",
+  //       //   result.data.managers.last_page
+  //       // );
+
+  //       setContacts(result?.data["agency-users"]?.data);
+  //       setMaxPage(result.data.managers?.last_page);
+  //       setloading(false);
+  //     })
+  //     .catch((err) => {
+  //       // navigate("/", {
+  //       //   state: {
+  //       //     error: "Something Went Wrong! Please Try Again",
+  //       //     continueURL: location.pathname,
+  //       //   },
+  //       // });
+
+  //       console.error("Agency User Error: ", err);
+  //       toast.error("Sorry something went wrong.", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //     });
+  // };
   const FetchContacts = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/agencyusers/${client_id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
+    const maxRetries = 8;
+    let retries = 0;
+
+    while (retries < maxRetries) {
+      try {
+        const result = await axios.get(
+          `${BACKEND_URL}/agencyusers/${client_id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+
         console.log("agency users ", result.data);
         console.log("agency-users ", result.data["agency-users"].data);
-        // console.log(
-        //   "The data has contact max page",
-        //   result.data.managers.last_page
-        // );
 
         setContacts(result?.data["agency-users"]?.data);
         setMaxPage(result.data.managers?.last_page);
         setloading(false);
-      })
-      .catch((err) => {
-        // navigate("/", {
-        //   state: {
-        //     error: "Something Went Wrong! Please Try Again",
-        //     continueURL: location.pathname,
-        //   },
-        // });
 
-        console.error("Agency User Error: ", err);
-        toast.error("Sorry something went wrong.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
+        return; // exit the function if successful
+      } catch (err) {
+        if (err.response && err.response.status === 429) {
+          // retry after waiting for a certain amount of time
+          const waitTime = (retries + 1) * 1000;
+          console.warn(`Received 429 error. Retrying after ${waitTime}ms.`);
+          await new Promise((resolve) => setTimeout(resolve, waitTime));
+          retries++;
+        } else {
+          console.error("Agency User Error: ", err);
+          toast.error("Sorry something went wrong.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          break; // exit the loop if the error is not a 429 error
+        }
+      }
+    }
+
+    // retries have been exhausted without success
+    console.error(`Agency User Error: Failed after ${maxRetries} retries`);
+    toast.error("Sorry something went wrong.", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
+
   useEffect(() => {
     setopenBackDrop(false);
     if (User?.uid && User?.loginId) {
-      setloading(false);
+      setloading(true);
       //FetchClient(token);
       FetchContacts(token);
     } else {

@@ -32,6 +32,7 @@ const Dashboard = () => {
       .then((result) => {
         console.log("dashboard data is");
         console.log(result.data);
+        console.log("User from dashboard: ", result.data.user);
         setUser(result.data.user);
         setDashboardData(result.data);
         setloading(false);

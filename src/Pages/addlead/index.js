@@ -12,7 +12,8 @@ const AddLead = (props) => {
   const { currentMode, setopenBackDrop, User, setUser, BACKEND_URL } =
     useStateContext();
   const [loading, setloading] = useState(true);
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const FetchProfile = async (token) => {
     await axios
       .get(`${BACKEND_URL}/profile`, {
@@ -24,11 +25,15 @@ const AddLead = (props) => {
       .then((result) => {
         console.log("request completeted");
         setUser(result.data.user[0]);
+        console.log("User: ", User);
         setloading(false);
       })
       .catch((err) => {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       });
   };
@@ -43,7 +48,10 @@ const AddLead = (props) => {
         FetchProfile(token);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       }
     }

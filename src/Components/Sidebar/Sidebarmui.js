@@ -75,7 +75,13 @@ const Sidebarmui = () => {
       })
       .then((result) => {
         setColdLeadsCount(result.data["COLD LEADS"]);
+        console.log(
+          "Not Intereseted 1:  ",
+          result.data["COLD LEADS"].not_interested
+        );
       });
+
+    console.log("Cold leads not Intereseted:  ", ColdLeadsCount);
   };
   const fetchPersonalLeads = (token) => {
     axios
@@ -124,6 +130,7 @@ const Sidebarmui = () => {
       fetchunassignedleads(token);
       setLeadsCount(true);
 
+      console.log("Cold Leads: ", ColdLeadsCount);
       console.log(User);
     }
     // eslint-disable-next-line
@@ -298,7 +305,7 @@ const Sidebarmui = () => {
               link: "/thirdpartyleads/low budget",
             },
             {
-              name: "Not Interested",
+              name: "Not Interested ",
               count: ThirdPartLeadsCount?.not_interested,
               link: "/thirdpartyleads/not interested",
             },
@@ -367,8 +374,10 @@ const Sidebarmui = () => {
               link: "/coldleads/low budget",
             },
             {
-              name: "Not Interested",
-              count: ColdLeadsCount?.not_interested,
+              name: "Not Interested  ",
+              count: ColdLeadsCount?.not_interested
+                ? ColdLeadsCount?.not_interested
+                : "0",
               link: "/coldleads/not interested",
             },
             {
