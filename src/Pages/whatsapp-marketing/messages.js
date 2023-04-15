@@ -1,4 +1,4 @@
-import { Button, Box, Select, MenuItem, Alert } from "@mui/material";
+import { Button, Box, Select, MenuItem, Alert, TextField } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -6,6 +6,7 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
+import "./messages.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -18,6 +19,8 @@ import Pagination from "@mui/material/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh Leads" },
@@ -53,6 +56,8 @@ const AllLeads = () => {
   });
   const [whatsappSenderNo, setWhatsappSenderNo] = useState("");
 
+  const currentDate = new Date();
+
   // const [openMessageModal, setOpenMessageModal] = useState(false);
 
   const {
@@ -70,25 +75,25 @@ const AllLeads = () => {
   const [searchText, setSearchText] = useState("");
 
   const columns = [
-    {
-      field: "id",
-      headerName: "#",
-      // width: 150,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#000000] text-white"
-            } h-full justify-center flex w-full items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "id",
+    //   headerName: "#",
+    //   // width: 150,
+    //   headerAlign: "center",
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div
+    //         className={`${
+    //           currentMode === "dark"
+    //             ? "bg-[#000000] text-white"
+    //             : "bg-[#000000] text-white"
+    //         } h-full justify-center flex w-full items-center px-5 font-semibold`}
+    //       >
+    //         {cellValues.formattedValue}
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       field: "leadName",
       headerAlign: "left",
@@ -490,85 +495,331 @@ const AllLeads = () => {
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box className={darkModeColors}>
-        <label
-          htmlFor="leadOrigin"
-          className={`${currentMode === "dark" ? "text-white" : "text-dark"} `}
-        >
-          Lead Origin
-        </label>
-        <Select
-          id="leadOrigin"
-          value={leadOriginSelected?.id || "hotleads"}
-          onChange={(event) =>
-            setLeadOriginSelected(
-              leadOrigins.find((origin) => origin.id === event.target.value)
-            )
-          }
-          size="medium"
-          className={`w-full mt-1 mb-5 `}
-          displayEmpty
-          required
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-            },
-            "&:hover:not (.Mui-disabled):before": {
-              borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-            },
-          }}
-        >
-          <MenuItem value="0" disabled>
+      {/* <Box
+        className={darkModeColors}
+        sx={{ display: "flex", alignItems: "center", width: "100%" }}
+      >
+        <div>
+          <label
+            htmlFor="leadOrigin"
+            className={`${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            } `}
+          >
             Lead Origin
-          </MenuItem>
-          {leadOrigins?.map((origin, index) => (
-            <MenuItem key={index} value={origin?.id || ""}>
-              {origin?.formattedValue}
-            </MenuItem>
-          ))}
-        </Select>
-        <label
-          htmlFor="leadType"
-          className={`${currentMode === "dark" ? "text-white" : "text-dark"} `}
-        >
-          Lead Type
-        </label>
-        <Select
-          id="leadType"
-          value={leadTypeSelected?.id || "all"}
-          onChange={(event) =>
-            setLeadTypeSelected(
-              leadTypes.find((type) => type.id === event.target.value)
-            )
-          }
-          size="medium"
-          className={`w-full mt-1 mb-5`}
-          displayEmpty
-          required
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-            },
-            "&:hover:not (.Mui-disabled):before": {
-              borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-            },
-          }}
-        >
-          <MenuItem
-            value="0"
-            disabled
+          </label>
+          <Select
+            id="leadOrigin"
+            value={leadOriginSelected?.id || "hotleads"}
+            onChange={(event) =>
+              setLeadOriginSelected(
+                leadOrigins.find((origin) => origin.id === event.target.value)
+              )
+            }
+            size="medium"
+            className={`w-full mt-1 mb-5 `}
+            displayEmpty
+            required
             sx={{
-              color: currentMode === "dark" ? "#ffffff" : "#000000",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+              "&:hover:not (.Mui-disabled):before": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
             }}
           >
-            Lead Type
-          </MenuItem>
-          {leadTypes?.map((type, index) => (
-            <MenuItem key={index} value={type?.id || ""}>
-              {type?.formattedValue}
+            <MenuItem value="0" disabled>
+              Lead Origin
             </MenuItem>
-          ))}
-        </Select>
+            {leadOrigins?.map((origin, index) => (
+              <MenuItem key={index} value={origin?.id || ""}>
+                {origin?.formattedValue}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+        <div>
+          <label
+            htmlFor="leadType"
+            className={`${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            } `}
+          >
+            Lead Type
+          </label>
+          <Select
+            id="leadType"
+            value={leadTypeSelected?.id || "all"}
+            onChange={(event) =>
+              setLeadTypeSelected(
+                leadTypes.find((type) => type.id === event.target.value)
+              )
+            }
+            size="medium"
+            className={`w-full mt-1 mb-5`}
+            displayEmpty
+            required
+            sx={{
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+              "&:hover:not (.Mui-disabled):before": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+            }}
+          >
+            <MenuItem
+              value="0"
+              disabled
+              sx={{
+                color: currentMode === "dark" ? "#ffffff" : "#000000",
+              }}
+            >
+              Lead Type
+            </MenuItem>
+            {leadTypes?.map((type, index) => (
+              <MenuItem key={index} value={type?.id || ""}>
+                {type?.formattedValue}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+      </Box> */}
+
+      <div className={`grid grid-cols-2 gap-4 ${darkModeColors}`}>
+        <div>
+          <label
+            htmlFor="leadOrigin"
+            className={`${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            } `}
+          >
+            Lead Origin
+          </label>
+          <Select
+            id="leadOrigin"
+            value={leadOriginSelected?.id || "hotleads"}
+            onChange={(event) =>
+              setLeadOriginSelected(
+                leadOrigins.find((origin) => origin.id === event.target.value)
+              )
+            }
+            size="medium"
+            className={`w-full mt-1 mb-5 `}
+            displayEmpty
+            required
+            sx={{
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+              "&:hover:not (.Mui-disabled):before": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+            }}
+          >
+            <MenuItem value="0" disabled>
+              Lead Origin
+            </MenuItem>
+            {leadOrigins?.map((origin, index) => (
+              <MenuItem key={index} value={origin?.id || ""}>
+                {origin?.formattedValue}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+        <div className="ml-4">
+          <label
+            htmlFor="leadType"
+            className={`${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            } `}
+          >
+            Lead Type
+          </label>
+          <Select
+            id="leadType"
+            value={leadTypeSelected?.id || "all"}
+            onChange={(event) =>
+              setLeadTypeSelected(
+                leadTypes.find((type) => type.id === event.target.value)
+              )
+            }
+            size="medium"
+            className={`w-full mt-1 mb-5`}
+            displayEmpty
+            required
+            sx={{
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+              "&:hover:not (.Mui-disabled):before": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+            }}
+          >
+            <MenuItem
+              value="0"
+              disabled
+              sx={{
+                color: currentMode === "dark" ? "#ffffff" : "#000000",
+              }}
+            >
+              Lead Type
+            </MenuItem>
+            {leadTypes?.map((type, index) => (
+              <MenuItem key={index} value={type?.id || ""}>
+                {type?.formattedValue}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+      </div>
+
+      {/* <Box sx={{ width: "100%" }} className="mb-5">
+        <div className="grid grid-cols-2 gap-4">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Date of Birth"
+              // value={Datevalue}
+              // onChange={(newValue) => {
+              //   console.log(newValue);
+              //   setDatevalue(newValue);
+              //   setPersonalInfo({
+              //     ...PersonalInfo,
+              //     dob:
+              //       format(newValue?.$d.getUTCFullYear()) +
+              //       "-" +
+              //       format(newValue?.$d.getUTCMonth() + 1) +
+              //       "-" +
+              //       format(newValue?.$d.getUTCDate() + 1),
+              //   });
+              //   console.log(Datevalue);
+              // }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  onKeyDown={(e) => e.preventDefault()}
+                  readOnly={true}
+                />
+              )}
+              className="w-full"
+              required
+              maxDate={currentDate}
+              // minDate={minDate}
+              // inputFormat="MM/dd/yyyy"
+              disableFuture
+              invalidDateMessage="Invalid date"
+              mask="__/__/____"
+              sx={{ width: "full" }}
+            />
+          </LocalizationProvider>
+          <TextField
+            label="Search"
+            // value={searchText}
+            // onChange={(event) => setSearchText(event.target.value)}
+            variant="outlined"
+            className="w-full"
+            sx={{ marginLeft: "1rem" }}
+          />
+        </div>
+      </Box> */}
+
+      <Box sx={{ width: "100%" }} className="mb-5">
+        <div className="grid grid-cols-2 gap-4">
+          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Date of Birth"
+              // value={Datevalue}
+              // onChange={(newValue) => {
+              //   console.log(newValue);
+              //   setDatevalue(newValue);
+              //   setPersonalInfo({
+              //     ...PersonalInfo,
+              //     dob:
+              //       format(newValue?.$d.getUTCFullYear()) +
+              //       "-" +
+              //       format(newValue?.$d.getUTCMonth() + 1) +
+              //       "-" +
+              //       format(newValue?.$d.getUTCDate() + 1),
+              //   });
+              //   console.log(Datevalue);
+              // }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  onKeyDown={(e) => e.preventDefault()}
+                  readOnly={true}
+                />
+              )}
+              className="w-full"
+              required
+              maxDate={currentDate}
+              // minDate={minDate}
+              // inputFormat="MM/dd/yyyy"
+              disableFuture
+              invalidDateMessage="Invalid date"
+              mask="__/__/____"
+              sx={{
+                width: "full",
+                border:
+                  currentMode === "dark" ? "1px solid #FFF" : "1px solid #000",
+              }}
+            />
+          </LocalizationProvider> */}
+
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  onKeyDown={(e) => e.preventDefault()}
+                  readOnly={true}
+                  className={`myDatePicker ${
+                    currentMode === "dark" ? "dark-border" : ""
+                  }`}
+                />
+              )}
+              className="w-full"
+              required
+              maxDate={currentDate}
+              // minDate={minDate}
+              // inputFormat="MM/dd/yyyy"
+              disableFuture
+              invalidDateMessage="Invalid date"
+              mask="__/__/____"
+              sx={{
+                border: `1px solid ${
+                  currentMode === "dark" ? "white" : "black"
+                }`,
+                width: "full",
+              }}
+              InputProps={{
+                classes: {
+                  notchedOutline: `${
+                    currentMode === "dark" ? "dark-border" : ""
+                  }`,
+                  focused: `${
+                    currentMode === "dark" ? "dark-focused" : "light-focused"
+                  }`,
+                },
+              }}
+            />
+          </LocalizationProvider>
+          <TextField
+            label="Search"
+            // value={searchText}
+            // onChange={(event) => setSearchText(event.target.value)}
+            variant="outlined"
+            className="w-full"
+            sx={{
+              marginLeft: "1rem",
+              border:
+                currentMode === "dark" ? "1px solid #FFF" : "1px solid #000",
+              color: currentMode === "dark" ? "#ffffff" : "#000",
+            }}
+          />
+        </div>
       </Box>
 
       <h1
@@ -665,6 +916,12 @@ const AllLeads = () => {
             boxShadow: 2,
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
+            },
+            "& .MuiCheckbox-root": {
+              color: currentMode === "dark" ? "#FFF" : "#000",
+            },
+            "& .Mui-checked": {
+              color: currentMode === "dark" ? "#FFF" : "#000",
             },
           }}
           getRowClassName={(params) =>
