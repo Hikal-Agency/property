@@ -217,7 +217,7 @@ const routes = [
     element: <PropertyPortfolio />,
   },
   {
-    path: "/propertyPortfolio/tour360/:proId",
+    path: "/360tours/:proId",
     pageName: "360 Tour",
     element: <Tour360 />,
   },

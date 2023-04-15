@@ -1,4 +1,3 @@
-import moment from "moment";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
@@ -8,18 +7,19 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Tour360 = () => {
+const Tour360 = (props) => {
     const { 
         currentMode,
         ProjectData,
         setProjectData,
+        setopenBackDrop,
         BACKEND_URL
     } = useStateContext();
 
     const [loading, setloading] = useState(true);
     const navigate = useNavigate(); 
     const location = useLocation();
-    const devproid = location.pathname.split("/")[2];
+    const devproid = location.pathname.split("/")[3];
 
     const FetchProject = async (token) => {
         await axios
@@ -30,6 +30,7 @@ const Tour360 = () => {
                 },
             })
             .then((result) => {
+                console.log("project data is");
                 console.log(result.data);
                 setProjectData(result.data);
                 setloading(false);
@@ -68,7 +69,8 @@ const Tour360 = () => {
                             <Navbar />
                             
                             <div className="mt-5 md:mt-2">
-                                {ProjectData?.map((project) => (
+                                {ProjectData?.data?.projectName}
+                                {/* {ProjectData?.map((project) => (
                                     <>
                                     <h1
                                     className={`font-semibold ${
@@ -82,7 +84,7 @@ const Tour360 = () => {
                                         <iframe width="100%" height="100%" frameborder="0" allow="xr-spatial-tracking; gyroscope; accelerometer" allowfullscreen scrolling="no" src={project?.tourlink}></iframe>
                                     </div>
                                     </>
-                                ))}
+                                ))} */}
                             </div>
                         </div>
                     </div>

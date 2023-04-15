@@ -176,7 +176,7 @@ const PropertyPortfolio = () => {
                                                                                 <Button 
                                                                                     type="button"
                                                                                     // onClick={() => handle360Click(project.proId)}
-                                                                                    onClick={() => navigate(`/propertyPortfolio/tour360/${project.proId}`)}
+                                                                                    onClick={() => navigate(`/tour360/${project.proId}`)}
                                                                                     sx={{ backgroundColor: "#8279c7", color: "#ffffff" }} className="rounded-sm p-1 gap-1 flex items-center hover:border-main-red-color">
                                                                                     <Md360 size={"25px"} />
                                                                                     <span className="text-xs">360 View</span>
