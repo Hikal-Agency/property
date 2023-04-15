@@ -18,7 +18,11 @@ const Dashboard = () => {
     BACKEND_URL,
   } = useStateContext();
   const [loading, setloading] = useState(true);
+<<<<<<< Updated upstream
   const navigate = useNavigate();
+=======
+  const navigate = useNavigate(); 
+>>>>>>> Stashed changes
   const location = useLocation();
 
   const FetchProfile = async (token) => {
