@@ -165,8 +165,8 @@ const UserLocationComponent = () => {
                                         </div>
                                         <div className="flex justify-end">
                                             <Button
-                                                type="button"
-                                                onClick={() => navigate(`/location/useralllocation/${location.user_id}`)}
+                                                // type="button"
+                                                onClick={() => `/location/useralllocation/${location.user_id}`}
                                                 // onClick={() => handleRowClick(location.user_id)}
                                                 sx={{ backgroundColor: "#da1f26", color: "#ffffff" }} 
                                                 className="rounded-md p-1 flex items-center w-fit h-fit text-sm btn-sm"
