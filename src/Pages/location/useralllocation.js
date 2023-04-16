@@ -102,8 +102,7 @@ const UserAllLocation = (props) => {
                       mapContainerStyle={mapContainerStyle}
                       options={options}
                     >
-                      {UserLocationData?.location?.data?.length > 0 ? (
-                        <>
+                      
                           {UserLocationData?.locations?.data?.map(user => (
                             <>
                               <MarkerF
@@ -144,11 +143,6 @@ const UserAllLocation = (props) => {
                               setSelectedUser(UserLocationData?.locations?.data[0]);
                             }} 
                           />
-                        </>
-                      ) : (
-                        <>
-                        </>
-                      )}
                       
 
                       
