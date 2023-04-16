@@ -1,0 +1,106 @@
+// import Image from "next/image";
+import moment from "moment";
+import React from "react";
+import { useEffect } from "react";
+// import UserImage from "../../public/favicon.png";
+import { useStateContext } from "../../context/ContextProvider";
+import { BsBuilding, BsCircleFill } from "react-icons/bs";
+import { ImLocation, ImClock } from "react-icons/im";
+import MapContainer from "./MapComponent";
+
+// import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+// import "./App.css";
+
+const UserLocationComponent = ({ user_location }) => {
+  const { currentMode } = useStateContext();
+
+//   const position = [51.505, -0.09];
+
+    useEffect(() => {
+        console.log("upcoming meetings are");
+        console.log(user_location);
+    }, []);
+
+  return (
+    <>
+        <h4 className="text-red-600 font-bold text-xl mb-2 text-center">Meeting Locations</h4>
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-5 pb-3">
+            <div className={`${currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"} w-full h-[85vh]`}>
+                {/* MAP */}
+                <MapContainer />
+            </div>
+            <div className="h-full w-full mt-5">
+                <h4 className="text-red-600 font-bold text-xl mb-2">Meetings</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+                {/* LIST OF UPCOMING MEETINGS */}
+                    {upcoming_meetings?.map((meeting, index) => {
+                        return (
+                            <div className={`${currentMode === "dark" ? "bg-gray-900 text-white" : "bg-gray-200 text-black"} rounded-md mt-3`}>
+                                <div className="p-5 space-y-2">
+                                    <div className="flex justify-between w-[100%]">
+                                        <h4 className="font-bold my-1 text-main-red-color">{meeting?.leadName}</h4>
+                                        {meeting?.meetingStatus === "Attended" ? (
+                                            <BsCircleFill
+                                                className={``}
+                                                color="#3cbe4d"
+                                            />
+                                        ) : (
+                                            <BsCircleFill
+                                                className={``}
+                                                color="#ffce44"
+                                            />
+                                        )}
+                                    </div>
+                                    <div className="w-full flex justify-between items-center">
+                                        <div className="flex items-center space-x-1">
+                                        <BsBuilding
+                                            className={`mr-2 ${
+                                            currentMode === "dark" ? "text-white" : "text-black"
+                                            }`}
+                                        />
+                                        <p className="text-sm mr-3">
+                                            {meeting?.project} {meeting?.enquiryType}{" "}
+                                            {meeting?.leadType} {meeting?.leadFor}
+                                        </p>
+                                        </div>
+                                    </div>
+                                    <div className="w-full flex justify-between items-center">
+                                        <div className="flex items-center space-x-1">
+                                        <ImClock
+                                            className={`mr-2 ${
+                                            currentMode === "dark" ? "text-white" : "text-black"
+                                            }`}
+                                        />
+                                        <p className="text-sm mr-3">
+                                            {meeting?.meetingTime === ""
+                                            ? ""
+                                            : `${meeting?.meetingTime}, `}{" "}
+                                            {moment(meeting?.meetingDate).format("MMMM D, Y")}
+                                        </p>
+                                        </div>
+                                    </div>
+                                    <div className="w-full flex justify-between items-center">
+                                        <div className="flex items-center space-x-1">
+                                        <ImLocation
+                                            className={`mr-2 ${
+                                            currentMode === "dark" ? "text-white" : "text-black"
+                                            }`}
+                                        />
+                                        <p className="text-sm mr-3"> {meeting?.meetingLocation ? meeting.meetingLocation : "Not Updated"}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span className="block text-sm bg-main-red-color text-white rounded-md text-center p-2 font-semibold">
+                                    {meeting?.createdBy}
+                                </span>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </div>    
+    </>
+  );
+};
+
+export default UserLocationComponent;

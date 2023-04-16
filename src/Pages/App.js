@@ -217,7 +217,11 @@ const routes = [
     element: <PropertyPortfolio />,
   },
   {
+<<<<<<< Updated upstream
     path: "/propertyPortfolio/tour360/:proId",
+=======
+    path: "/360tours/:proId",
+>>>>>>> Stashed changes
     pageName: "360 Tour",
     element: <Tour360 />,
   },

@@ -166,8 +166,12 @@ const UserLocationComponent = () => {
                                         <div className="flex justify-end">
                                             <Button
                                                 type="button"
+<<<<<<< Updated upstream
                                                 onClick={() => navigate(`/location/useralllocation/${location.user_id}`)}
                                                 // onClick={() => handleRowClick(location.user_id)}
+=======
+                                                onClick={() => handleRowClick(location.user_id)}
+>>>>>>> Stashed changes
                                                 sx={{ backgroundColor: "#da1f26", color: "#ffffff" }} 
                                                 className="rounded-md p-1 flex items-center w-fit h-fit text-sm btn-sm"
                                                 >
