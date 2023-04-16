@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-=======
-// import Image from "next/image";
->>>>>>> Stashed changes
 import React from "react";
 import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
@@ -12,10 +8,6 @@ import { GoogleMap, MarkerF, InfoWindow } from '@react-google-maps/api';
 import axios from "axios";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
-<<<<<<< Updated upstream
-=======
-import UserLocationComponent from "../../Components/location/UserLocationComponent";
->>>>>>> Stashed changes
 import moment from "moment";
 
 const UserAllLocation = (props) => {

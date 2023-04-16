@@ -175,12 +175,7 @@ const PropertyPortfolio = () => {
                                                                             <div className="flex items-center justify-end gap-3 text-white text-sm">
                                                                                 <Button 
                                                                                     type="button"
-                                                                                    // onClick={() => handle360Click(project.proId)}
-<<<<<<< Updated upstream
                                                                                     onClick={() => navigate(`/propertyPortfolio/tour360/${project.proId}`)}
-=======
-                                                                                    onClick={() => navigate(`/360tours/${project.proId}`)}
->>>>>>> Stashed changes
                                                                                     sx={{ backgroundColor: "#8279c7", color: "#ffffff" }} className="rounded-sm p-1 gap-1 flex items-center hover:border-main-red-color">
                                                                                     <Md360 size={"25px"} />
                                                                                     <span className="text-xs">360 View</span>
