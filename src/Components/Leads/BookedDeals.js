@@ -47,7 +47,8 @@ const BookedDeals = ({
 }) => {
   const token = localStorage.getItem("auth-token");
   const [singleLeadData, setsingleLeadData] = useState();
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   //eslint-disable-next-line
   const [deleteloading, setdeleteloading] = useState(false);
   //eslint-disable-next-line
@@ -104,7 +105,7 @@ const BookedDeals = ({
     },
   };
 
-  const RenderFeedback = ({cellValues}) => {
+  const RenderFeedback = ({ cellValues }) => {
     const [Feedback, setFeedback] = useState(cellValues?.row?.feedback);
     const [newFeedback, setnewFeedback] = useState("");
     const [DialogueVal, setDialogue] = useState(false);
@@ -113,18 +114,18 @@ const BookedDeals = ({
     const [leadDate, setLeadDate] = useState("");
     const [leadAmount, setLeadAmount] = useState("");
 
-  function format(value) {
-    if(value < 10) {
-      return "0" + value;
-    } else {
-      return value;
+    function format(value) {
+      if (value < 10) {
+        return "0" + value;
+      } else {
+        return value;
+      }
     }
-  }
 
-  const ChangeFeedback = (e) => {
-    setnewFeedback(e.target.value);
-    setDialogue(true);
-  };
+    const ChangeFeedback = (e) => {
+      setnewFeedback(e.target.value);
+      setDialogue(true);
+    };
 
     const UpdateFeedback = async (event) => {
       event.preventDefault();
@@ -138,16 +139,12 @@ const BookedDeals = ({
       UpdateLeadData.append("dealDate", leadDate);
 
       await axios
-        .post(
-          `${BACKEND_URL}/leads/${cellValues?.row?.lid}`,
-          UpdateLeadData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        )
+        .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
         .then((result) => {
           console.log("Feedback Updated successfull");
           console.log(result);
@@ -207,21 +204,21 @@ const BookedDeals = ({
         {DialogueVal && (
           <>
             <Dialog
-                sx={{
-                  "& .MuiPaper-root": {
-                    boxShadow: "none !important",
+              sx={{
+                "& .MuiPaper-root": {
+                  boxShadow: "none !important",
+                },
+                "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
+                  {
+                    backgroundColor: "rgba(0, 0, 0, 0.5) !important",
                   },
-                  "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
-                    {
-                      backgroundColor: "rgba(0, 0, 0, 0.5) !important",
-                    },
-                }}
-                open={DialogueVal}
-                onClose={(e) => setDialogue(false)}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-            <form action="" onSubmit={(event) => UpdateFeedback(event)}>
+              }}
+              open={DialogueVal}
+              onClose={(e) => setDialogue(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <form action="" onSubmit={(event) => UpdateFeedback(event)}>
                 <IconButton
                   sx={{
                     position: "absolute",
@@ -250,29 +247,43 @@ const BookedDeals = ({
                       </span>{" "}
                       ?
                     </h1>
-                    {newFeedback.toLowerCase() === "closed" &&
-                  <div className="grid sm:grid-cols-1 gap-5">
-                    <div className="flex flex-col justify-center items-center gap-4 mt-2 mb-4">
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          label="Meeting Date"
-                          value={leadDateValue}
-                          views={['year', 'month', 'day']}
-                          required
-                          onChange={(newValue) => {
-                            setLeadDateValue(newValue);
-                            setLeadDate(format(newValue.$d.getUTCFullYear()) + "-" + format(newValue.$d.getUTCMonth() + 1) + "-" + format(newValue.$d.getUTCDate() + 1));
-                          }}
-                          format="yyyy-MM-dd"
-                          renderInput={(params) => <TextField {...params} fullWidth /> }
-                        />
-                      </LocalizationProvider>
-                      <TextField required fullWidth label="Lead Amount" value={leadAmount} onChange={(e) => {
-                        setLeadAmount(e.target.value);
-                      }} />
-                    </div>
-                  </div>
-                    }
+                    {newFeedback.toLowerCase() === "closed" && (
+                      <div className="grid sm:grid-cols-1 gap-5">
+                        <div className="flex flex-col justify-center items-center gap-4 mt-2 mb-4">
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                              label="Meeting Date"
+                              value={leadDateValue}
+                              views={["year", "month", "day"]}
+                              required
+                              onChange={(newValue) => {
+                                setLeadDateValue(newValue);
+                                setLeadDate(
+                                  format(newValue.$d.getUTCFullYear()) +
+                                    "-" +
+                                    format(newValue.$d.getUTCMonth() + 1) +
+                                    "-" +
+                                    format(newValue.$d.getUTCDate() + 1)
+                                );
+                              }}
+                              format="yyyy-MM-dd"
+                              renderInput={(params) => (
+                                <TextField {...params} fullWidth />
+                              )}
+                            />
+                          </LocalizationProvider>
+                          <TextField
+                            required
+                            fullWidth
+                            label="Lead Amount"
+                            value={leadAmount}
+                            onChange={(e) => {
+                              setLeadAmount(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                     <Button
@@ -301,8 +312,8 @@ const BookedDeals = ({
                     </Button>
                   </div>
                 </div>
-            </form>
-              </Dialog>
+              </form>
+            </Dialog>
           </>
         )}
       </Box>
@@ -388,7 +399,7 @@ const BookedDeals = ({
       flex: 1,
       headerAlign: "center",
       hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
     {
       field: "language",
@@ -526,7 +537,7 @@ const BookedDeals = ({
       flex: 1,
       headerAlign: "center",
       hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
     {
       field: "language",
@@ -673,7 +684,7 @@ const BookedDeals = ({
       flex: 1,
       headerAlign: "center",
       hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
     {
       field: "language",
@@ -693,19 +704,20 @@ const BookedDeals = ({
       renderCell: (cellValues) => {
         return (
           <div className="w-full mx-auto flex justify-center ">
-            {cellValues.row.leadSource.toLowerCase() ===
+            {cellValues?.row?.leadSource?.toLowerCase() ===
               "campaign snapchat" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
                 <FaSnapchat size={22} color={"#f6d80a"} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() ===
+            {cellValues?.row?.leadSource?.toLowerCase() ===
               "campaign facebook" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
                 <FaFacebook size={22} color={"#0e82e1"} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
+            {cellValues?.row?.leadSource?.toLowerCase() ===
+              "campaign tiktok" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
                 <img
                   src={"/assets/tiktok-app.svg"}
@@ -716,13 +728,13 @@ const BookedDeals = ({
                 />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() ===
+            {cellValues?.row?.leadSource?.toLowerCase() ===
               "campaign googleads" && (
               <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
                 <FcGoogle size={22} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "campaign" && (
+            {cellValues?.row?.leadSource?.toLowerCase() === "campaign" && (
               <div className="w-fit rounded-full flex items-center justify-center">
                 <MdCampaign
                   size={22}
@@ -730,12 +742,12 @@ const BookedDeals = ({
                 />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "cold" && (
+            {cellValues?.row?.leadSource?.toLowerCase() === "cold" && (
               <div className="w-fit rounded-full flex items-center justify-center">
                 <BsSnow2 size={22} color={"#0ec7ff"} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "personal" && (
+            {cellValues?.row?.leadSource?.toLowerCase() === "personal" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
                 <BsPersonCircle size={22} color={"#14539a"} />
               </div>
@@ -787,7 +799,7 @@ const BookedDeals = ({
   const [CEOColumns, setCEOColumns] = useState(columns);
 
   function setCEOColumnsState() {
-      setCEOColumns([...CEOColumns]);
+    setCEOColumns([...CEOColumns]);
   }
 
   const FetchLeads = async (token) => {
@@ -931,42 +943,43 @@ const BookedDeals = ({
     //eslint-disable-next-line
   }, []);
 
-  async function setSalesPersons(urls){
+  async function setSalesPersons(urls) {
     const token = localStorage.getItem("auth-token");
-    const requests = urls.map(url => axios.get(url, {
+    const requests = urls.map((url) =>
+      axios.get(url, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
-    }));
+      })
+    );
     const responses = await Promise.all(requests);
     const data = {};
     for (let i = 0; i < responses.length; i++) {
       const response = responses[i];
-      if(response.data?.team[0]?.isParent) {
+      if (response.data?.team[0]?.isParent) {
         const name = `manager-${response.data.team[0].isParent}`;
         data[name] = response.data.team;
       }
     }
     setSalesPerson(data);
     setCEOColumnsState();
-    
   }
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-      axios.get(`${BACKEND_URL}/managers`).then((result) => {
-        console.log("manager response is");
-        console.log(result);
-        const managers = result?.data?.managers;
-        setManagers(managers || []);
+    axios.get(`${BACKEND_URL}/managers`).then((result) => {
+      console.log("manager response is");
+      console.log(result);
+      const managers = result?.data?.managers;
+      setManagers(managers || []);
 
-        const urls = managers.map((manager) => {
-          return `${BACKEND_URL}/teamMembers/${manager?.id}`;
-        });
-
-        setSalesPersons(urls || []);
+      const urls = managers.map((manager) => {
+        return `${BACKEND_URL}/teamMembers/${manager?.id}`;
       });
+
+      setSalesPersons(urls || []);
+    });
     FetchLeads(token);
     // eslint-disable-next-line
   }, [pageState.page, lead_type, reloadDataGrid]);
@@ -1076,7 +1089,13 @@ const BookedDeals = ({
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-          columns={User?.role === 3 ? columns : User?.role === 1 ? columns : AgentColumns}
+          columns={
+            User?.role === 3
+              ? columns
+              : User?.role === 1
+              ? columns
+              : AgentColumns
+          }
           // columns={columns}
           components={{
             Toolbar: GridToolbar,
