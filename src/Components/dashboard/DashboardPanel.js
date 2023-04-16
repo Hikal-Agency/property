@@ -36,7 +36,7 @@ const DashboardPanel = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-   const FetchProfile = async (token) => {
+  const FetchProfile = async (token) => {
     await axios
       .get(`${BACKEND_URL}/dashboard?page=1`, {
         headers: {
@@ -46,11 +46,15 @@ const DashboardPanel = () => {
       })
       .then((result) => {
         setDashboardData(result.data);
+        console.log("Dashboard: ", result.data);
       })
       .catch((err) => {
         // console.log(err);
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       });
   };
@@ -71,10 +75,10 @@ const DashboardPanel = () => {
         .catch((err) => {
           console.log(err);
         });
-      } catch (error) {
-        console.log(error);
-      }
-  }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
@@ -95,9 +99,9 @@ const DashboardPanel = () => {
         console.log(err);
       });
 
-      FetchProfile(token);
+    FetchProfile(token);
 
-      fetchAllNewLeads();
+    fetchAllNewLeads();
     //eslint-disable-next-line
   }, []);
 
@@ -111,7 +115,7 @@ const DashboardPanel = () => {
     {
       icon: <ImUser />,
       amount: DashboardData?.isAdmin?.managers,
-      title: "Sales managers",
+      title: "Sales managers ",
     },
     {
       icon: <MdSupportAgent />,
@@ -426,7 +430,7 @@ const DashboardPanel = () => {
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Sales</h6>
-                <SalesAmountChartAdmin/>
+                <SalesAmountChartAdmin />
               </div>
             </div>
 
@@ -446,9 +450,7 @@ const DashboardPanel = () => {
             </div>
           </div>
           {/* MANAGER TAGET PROGRESS BAR  */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
-
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3"></div>
         </>
       ) : DashboardData?.designation === "Manager" ? (
         <>
@@ -591,7 +593,7 @@ const DashboardPanel = () => {
 
       {/* 5TH ROW [TODO + SHORTCUTS] */}
       <div className="grid grid-cols-1 pb-3">
-        <Task/>
+        <Task />
       </div>
       {/* 5TH ROW END [TODO + SHORTCUTS] */}
     </div>

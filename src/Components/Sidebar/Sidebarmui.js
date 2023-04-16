@@ -14,13 +14,13 @@ import {
   MdPersonAdd,
   MdSpeakerNotes,
   MdContactPage,
-  MdPersonPinCircle
+  MdPersonPinCircle,
 } from "react-icons/md";
 import {
   RiWhatsappFill,
   RiDashboardFill,
   RiFileTransferFill,
-  RiBuilding2Fill
+  RiBuilding2Fill,
 } from "react-icons/ri";
 import { SiHotjar } from "react-icons/si";
 import { ImBookmark } from "react-icons/im";
@@ -63,7 +63,7 @@ const Sidebarmui = () => {
         },
       })
       .then((result) => {
-        // console.log(result.data);
+        console.log("hot leads: ", result.data);
         setHotLeadsCount(result.data["HOT LEADS"]);
       });
   };
@@ -94,6 +94,7 @@ const Sidebarmui = () => {
         },
       })
       .then((result) => {
+        console.log("Personal leads: ", result.data["PERSONAL LEADS"]);
         setPersonalLeadsCount(result.data["PERSONAL LEADS"]);
       });
   };
@@ -106,6 +107,7 @@ const Sidebarmui = () => {
         },
       })
       .then((result) => {
+        console.log("Unassigned leads: ", result.data["UNASSIGNED LEADS"]);
         setUnassignedLeadsCount(result.data["UNASSIGNED LEADS"]);
       });
   };
@@ -119,6 +121,7 @@ const Sidebarmui = () => {
         },
       })
       .then((result) => {
+        console.log("Third party: ", result.data["THIRD PARTY LEADS"]);
         setThirdPartyLeadsCount(result.data["THIRD PARTY LEADS"]);
       });
   };
@@ -165,8 +168,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                HotLeadsCount?.hot,
+              count: HotLeadsCount?.hot,
               link: "/hotleads/all",
             },
             {
@@ -212,8 +214,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                PersonalLeadsCount?.all,
+              count: PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
@@ -259,8 +260,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                ThirdPartLeadsCount?.all,
+              count: ThirdPartLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
@@ -306,8 +306,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                ColdLeadsCount?.all,
+              count: ColdLeadsCount?.all,
               link: "/coldleads/all",
             },
             {
@@ -318,17 +317,17 @@ const Sidebarmui = () => {
             {
               name: "Cold: Verified",
               count: ColdLeadsCount?.verified, //TODO
-              link: "/coldLeadsVerified",
+              link: "/coldleads/coldLeadsVerified",
             },
             {
               name: "Cold: Invalid",
               count: ColdLeadsCount?.unverified, //TODO
-              link: "/coldLeadsInvalid",
+              link: "/coldleads/coldLeadsInvalid",
             },
             {
               name: "Cold: Not Checked",
               count: ColdLeadsCount?.unchecked, //TODO
-              link: "/coldLeadsNotChecked",
+              link: "/coldleads/coldLeadsNotChecked",
             },
 
             {

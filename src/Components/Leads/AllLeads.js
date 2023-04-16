@@ -789,6 +789,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1`;
       } else if (lead_type === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=New`;
+      } else if (lead_type === "coldLeadsVerified") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&is_whatsapp=1`;
+      } else if (lead_type === "coldLeadsInvalid") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&is_whatsapp=2`;
+      } else if (lead_type === "coldLeadsNotChecked") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&is_whatsapp=0`;
       } else if (lead_type === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=No Answer`;
       } else if (lead_type === "meeting") {
