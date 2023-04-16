@@ -166,13 +166,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                HotLeadsCount?.new +
-                HotLeadsCount?.no_nswer +
-                HotLeadsCount?.Meeting +
-                HotLeadsCount?.follow_up +
-                HotLeadsCount?.low_budget +
-                HotLeadsCount?.not_interested +
-                HotLeadsCount?.unreachable,
+                HotLeadsCount?.hot,
               link: "/hotleads/all",
             },
             {
@@ -219,13 +213,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                PersonalLeadsCount?.new +
-                PersonalLeadsCount?.no_nswer +
-                PersonalLeadsCount?.Meeting +
-                PersonalLeadsCount?.follow_up +
-                PersonalLeadsCount?.low_budget +
-                PersonalLeadsCount?.not_interested +
-                PersonalLeadsCount?.unreachable,
+                PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
@@ -272,13 +260,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                ThirdPartLeadsCount?.new +
-                ThirdPartLeadsCount?.no_nswer +
-                ThirdPartLeadsCount?.Meeting +
-                ThirdPartLeadsCount?.follow_up +
-                ThirdPartLeadsCount?.low_budget +
-                ThirdPartLeadsCount?.not_interested +
-                ThirdPartLeadsCount?.unreachable,
+                ThirdPartLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
@@ -325,13 +307,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                ColdLeadsCount?.new +
-                ColdLeadsCount?.no_nswer +
-                ColdLeadsCount?.Meeting +
-                ColdLeadsCount?.follow_up +
-                ColdLeadsCount?.low_budget +
-                ColdLeadsCount?.not_interested +
-                ColdLeadsCount?.unreachable,
+                ColdLeadsCount?.all,
               link: "/coldleads/all",
             },
             {
@@ -341,17 +317,17 @@ const Sidebarmui = () => {
             },
             {
               name: "Cold: Verified",
-              count: "", //TODO
+              count: ColdLeadsCount?.verified, //TODO
               link: "/coldLeadsVerified",
             },
             {
               name: "Cold: Invalid",
-              count: "", //TODO
+              count: ColdLeadsCount?.unverified, //TODO
               link: "/coldLeadsInvalid",
             },
             {
               name: "Cold: Not Checked",
-              count: "", //TODO
+              count: ColdLeadsCount?.unchecked, //TODO
               link: "/coldLeadsNotChecked",
             },
 
