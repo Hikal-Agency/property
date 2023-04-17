@@ -10,9 +10,7 @@ import ClosedDealsBoard from "./closeddealsboard";
 import TargetBoard from "./targetboard";
 
 const Leaderboard = () => {
-
-  const { currentMode, darkModeColors } =
-    useStateContext();
+  const { currentMode, darkModeColors } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -33,7 +31,6 @@ const Leaderboard = () => {
   //   const progress = (150000 / 3000000) * 100;
   //   const absoluteprogress = progress.toFixed(0);
 
-
   return (
     <>
       <div className="min-h-screen">
@@ -48,7 +45,7 @@ const Leaderboard = () => {
               <Navbar />
 
               <div className="mt-5 md:mt-2">
-              <h1
+                <h1
                   className={`font-semibold ${
                     currentMode === "dark" ? "text-white" : "text-black"
                   } text-xl ml-2 mb-3 auto-cols-max gap-x-3`}
@@ -58,9 +55,7 @@ const Leaderboard = () => {
                 {/* TABS */}
                 <div className="grid grid-cols-1 pb-3">
                   {/* <Task call_logs={DashboardData?.call_logs} /> */}
-                  <div
-                    className={`p-5 rounded-md`}
-                  >
+                  <div className={`p-5 rounded-md`}>
                     {/* <hr className="w-[calc(100%+40px)] -ml-[20px] mt-2 mb-5" /> */}
                     <Box
                       sx={{
@@ -71,7 +66,10 @@ const Leaderboard = () => {
                           borderRadius: "5px",
                           backgroundColor: "#da1f26",
                         },
-                        "& .Mui-selected": { color: "white !important", zIndex: "1" },
+                        "& .Mui-selected": {
+                          color: "white !important",
+                          zIndex: "1",
+                        },
                       }}
                       className={`w-full rounded-md overflow-hidden ${
                         currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
@@ -116,13 +114,13 @@ const Leaderboard = () => {
                 {/* TABS END */}
               </div>
             </div>
-            <Footer />
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );
-  
+
   function TabPanel(props) {
     const { children, value, index } = props;
     return <div>{value === index && <div>{children}</div>}</div>;
