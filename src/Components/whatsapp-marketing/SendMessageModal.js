@@ -17,6 +17,7 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
+import { messageTemplates } from "./messageTemplates";
 
 const style = {
   transform: "translate(-50%, -50%)",

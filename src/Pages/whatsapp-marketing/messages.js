@@ -126,19 +126,19 @@ const AllLeads = () => {
       renderCell: (cellValues) => {
         return (
           <div className="w-full mx-auto flex justify-center ">
-            {cellValues.row.leadSource.toLowerCase() ===
+            {cellValues?.row?.leadSource?.toLowerCase() ===
               "campaign snapchat" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
                 <FaSnapchat size={22} color={"#f6d80a"} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() ===
+            {cellValues?.row?.leadSource?.toLowerCase() ===
               "campaign facebook" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
                 <FaFacebook size={22} color={"#0e82e1"} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
+            {cellValues?.row?.leadSource?.toLowerCase() === "campaign tiktok" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
                 <img
                   src={"/assets/tiktok-app.svg"}
@@ -149,13 +149,13 @@ const AllLeads = () => {
                 />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() ===
+            {cellValues?.row?.leadSource?.toLowerCase() ===
               "campaign googleads" && (
               <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
                 <FcGoogle size={22} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "campaign" && (
+            {cellValues?.row?.leadSource?.toLowerCase() === "campaign" && (
               <div className="w-fit rounded-full flex items-center justify-center">
                 <MdCampaign
                   size={22}
@@ -163,12 +163,12 @@ const AllLeads = () => {
                 />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "cold" && (
+            {cellValues?.row?.leadSource?.toLowerCase() === "cold" && (
               <div className="w-fit rounded-full flex items-center justify-center">
                 <BsSnow2 size={22} color={"#0ec7ff"} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "personal" && (
+            {cellValues?.row?.leadSource?.toLowerCase() === "personal" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
                 <BsPersonCircle size={22} color={"#14539a"} />
               </div>
