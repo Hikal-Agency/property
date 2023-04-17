@@ -1011,13 +1011,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                ColdLeadsCount?.new +
-                ColdLeadsCount?.no_nswer +
-                ColdLeadsCount?.Meeting +
-                ColdLeadsCount?.follow_up +
-                ColdLeadsCount?.low_budget +
-                ColdLeadsCount?.not_interested +
-                ColdLeadsCount?.unreachable,
+                ColdLeadsCount?.hot,
               link: "/coldleads/all",
             },
             {
@@ -1268,13 +1262,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                HotLeadsCount?.new +
-                HotLeadsCount?.no_nswer +
-                HotLeadsCount?.Meeting +
-                HotLeadsCount?.follow_up +
-                HotLeadsCount?.low_budget +
-                HotLeadsCount?.not_interested +
-                HotLeadsCount?.unreachable,
+                HotLeadsCount?.hot,
               link: "/hotleads/all",
             },
             {
@@ -1321,13 +1309,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                PersonalLeadsCount?.new +
-                PersonalLeadsCount?.no_nswer +
-                PersonalLeadsCount?.Meeting +
-                PersonalLeadsCount?.follow_up +
-                PersonalLeadsCount?.low_budget +
-                PersonalLeadsCount?.not_interested +
-                PersonalLeadsCount?.unreachable,
+                PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
