@@ -16,10 +16,24 @@ const Dashboard = () => {
     currentMode,
     setDashboardData,
     BACKEND_URL,
+    setIsUserSubscribed
   } = useStateContext();
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const checkUser = (user) => {
+    const expiry = new Date(user?.expiry_date).getTime();
+    const now =  new Date().getTime();
+
+    const isExpired = now > expiry;
+
+    if(user?.role === 1) {
+      return true;
+    } else {
+      return isExpired === false && user?.package_name?.length > 0;
+    }
+  }
 
   const FetchProfile = async (token) => {
     await axios
@@ -34,6 +48,7 @@ const Dashboard = () => {
         console.log(result.data);
         console.log("User from dashboard: ", result.data.user);
         setUser(result.data.user);
+        setIsUserSubscribed(checkUser(result.data.user));
         setDashboardData(result.data);
         setloading(false);
       })

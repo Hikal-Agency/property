@@ -46,6 +46,8 @@ const Sidebarmui = () => {
     setSelected,
     setopenBackDrop,
     BACKEND_URL,
+    isUserSubscribed,
+    setIsUserSubscribed
   } = useStateContext();
   const [LeadsCount, setLeadsCount] = useState(false);
   const [HotLeadsCount, setHotLeadsCount] = useState();
@@ -54,6 +56,7 @@ const Sidebarmui = () => {
   const [ThirdPartLeadsCount, setThirdPartyLeadsCount] = useState();
   const [UnassignedLeadsCount, setUnassignedLeadsCount] = useState();
 
+<<<<<<< Updated upstream
   const fetchHotLeads = (token) => {
     axios
       .get(`${BACKEND_URL}/sidebar/0`, {
@@ -500,6 +503,9 @@ const Sidebarmui = () => {
     },
   ];
   const Agentlinks = [
+=======
+    const Agentlinks = [
+>>>>>>> Stashed changes
     {
       title: "Dashboard",
       links: [
@@ -1124,10 +1130,607 @@ const Sidebarmui = () => {
       ],
     },
   ];
+
+  const [agentData, setAgentData] = useState(isUserSubscribed === true ? [...Agentlinks, {
+      title: "WHATSAPP",
+      links: [
+        {
+          name: "Instances",
+          icon: <RiWhatsappFill />,
+          link: "/whatsapp-marketing/instances",
+        },
+        {
+          name: "Messages",
+          icon: <AiFillMessage />,
+          link: "/whatsapp-marketing/messages",
+        },
+        {
+          name: "Templates",
+          icon: <FaMobile />,
+          link: "/whatsapp-marketing/templates",
+        },
+        {
+          name: "Payments",
+          icon: <BsFillCreditCard2FrontFill />,
+          link: "/whatsapp-marketing/payments",
+        },
+      ],
+    }] : Agentlinks);
+  const [managerData, setManagerData] = useState(isUserSubscribed === true ? [...Managerlinks, {
+      title: "WHATSAPP",
+      links: [
+        {
+          name: "Instances",
+          icon: <RiWhatsappFill />,
+          link: "/whatsapp-marketing/instances",
+        },
+        {
+          name: "Messages",
+          icon: <AiFillMessage />,
+          link: "/whatsapp-marketing/messages",
+        },
+        {
+          name: "Templates",
+          icon: <FaMobile />,
+          link: "/whatsapp-marketing/templates",
+        },
+        {
+          name: "Payments",
+          icon: <BsFillCreditCard2FrontFill />,
+          link: "/whatsapp-marketing/payments",
+        },
+      ],
+    }] : Managerlinks);
+
+  const fetchHotLeads = (token) => {
+    axios
+      .get(`${BACKEND_URL}/sidebar/0`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        // console.log(result.data);
+        setHotLeadsCount(result.data["HOT LEADS"]);
+      });
+  };
+  const fetchColdLeads = (token) => {
+    axios
+      .get(`${BACKEND_URL}/sidebar/1`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        setColdLeadsCount(result.data["COLD LEADS"]);
+      });
+  };
+  const fetchPersonalLeads = (token) => {
+    axios
+      .get(`${BACKEND_URL}/sidebar/2`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        setPersonalLeadsCount(result.data["PERSONAL LEADS"]);
+      });
+  };
+  const fetchunassignedleads = (token) => {
+    axios
+      .get(`${BACKEND_URL}/sidebar/4`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        setUnassignedLeadsCount(result.data["UNASSIGNED LEADS"]);
+      });
+  };
+
+  const fetchthirdpartyleads = (token) => {
+    axios
+      .get(`${BACKEND_URL}/sidebar/3`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        setThirdPartyLeadsCount(result.data["THIRD PARTY LEADS"]);
+      });
+  };
+  useEffect(() => {
+    if (!LeadsCount) {
+      const token = localStorage.getItem("auth-token");
+      fetchHotLeads(token);
+      fetchColdLeads(token);
+      fetchPersonalLeads(token);
+      fetchthirdpartyleads(token);
+      fetchunassignedleads(token);
+      setLeadsCount(true);
+
+      console.log(User);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  //  DATA
+  const links = [
+    {
+      title: "Dashboard",
+      links: [
+        {
+          name: "Dashboard",
+          icon: <RiDashboardFill />,
+          link: "/dashboard",
+        },
+      ],
+    },
+
+    {
+      title: "LEADS",
+      links: [
+        {
+          name: "Add lead",
+          icon: <MdPersonAdd />,
+          link: "/addlead",
+        },
+        {
+          name: "Hot",
+          icon: <SiHotjar />,
+          submenu: [
+            {
+              name: "All",
+              count:
+                HotLeadsCount?.new +
+                HotLeadsCount?.no_nswer +
+                HotLeadsCount?.Meeting +
+                HotLeadsCount?.follow_up +
+                HotLeadsCount?.low_budget +
+                HotLeadsCount?.not_interested +
+                HotLeadsCount?.unreachable,
+              link: "/hotleads/all",
+            },
+            {
+              name: "New",
+              count: HotLeadsCount?.new,
+              link: "/hotleads/new",
+            },
+            {
+              name: "No Answer",
+              count: HotLeadsCount?.no_nswer,
+              link: "/hotleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: HotLeadsCount?.Meeting,
+              link: "/hotleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: HotLeadsCount?.follow_up,
+              link: "/hotleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: HotLeadsCount?.low_budget,
+              link: "/hotleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: HotLeadsCount?.not_interested,
+              link: "/hotleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: HotLeadsCount?.unreachable,
+              link: "/hotleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Personal",
+          icon: <HiUsers />,
+          submenu: [
+            {
+              name: "All",
+              count:
+                PersonalLeadsCount?.new +
+                PersonalLeadsCount?.no_nswer +
+                PersonalLeadsCount?.Meeting +
+                PersonalLeadsCount?.follow_up +
+                PersonalLeadsCount?.low_budget +
+                PersonalLeadsCount?.not_interested +
+                PersonalLeadsCount?.unreachable,
+              link: "/personalleads/all",
+            },
+            {
+              name: "New",
+              count: PersonalLeadsCount?.new,
+              link: "/personalleads/new",
+            },
+            {
+              name: "No Answer",
+              count: PersonalLeadsCount?.no_nswer,
+              link: "/personalleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: PersonalLeadsCount?.Meeting,
+              link: "/personalleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: PersonalLeadsCount?.follow_up,
+              link: "/personalleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: PersonalLeadsCount?.low_budget,
+              link: "/personalleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: PersonalLeadsCount?.not_interested,
+              link: "/personalleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: PersonalLeadsCount?.unreachable,
+              link: "/personalleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Third party",
+          icon: <FaLink />,
+          submenu: [
+            {
+              name: "All",
+              count:
+                ThirdPartLeadsCount?.new +
+                ThirdPartLeadsCount?.no_nswer +
+                ThirdPartLeadsCount?.Meeting +
+                ThirdPartLeadsCount?.follow_up +
+                ThirdPartLeadsCount?.low_budget +
+                ThirdPartLeadsCount?.not_interested +
+                ThirdPartLeadsCount?.unreachable,
+              link: "/thirdpartyleads/all",
+            },
+            {
+              name: "New",
+              count: ThirdPartLeadsCount?.new,
+              link: "/thirdpartyleads/new",
+            },
+            {
+              name: "No Answer",
+              count: ThirdPartLeadsCount?.no_nswer,
+              link: "/thirdpartyleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: ThirdPartLeadsCount?.Meeting,
+              link: "/thirdpartyleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: ThirdPartLeadsCount?.follow_up,
+              link: "/thirdpartyleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: ThirdPartLeadsCount?.low_budget,
+              link: "/thirdpartyleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: ThirdPartLeadsCount?.not_interested,
+              link: "/thirdpartyleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: ThirdPartLeadsCount?.unreachable,
+              link: "/thirdpartyleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Cold",
+          icon: <FaSnowflake />,
+          submenu: [
+            {
+              name: "All",
+              count:
+                ColdLeadsCount?.new +
+                ColdLeadsCount?.no_nswer +
+                ColdLeadsCount?.Meeting +
+                ColdLeadsCount?.follow_up +
+                ColdLeadsCount?.low_budget +
+                ColdLeadsCount?.not_interested +
+                ColdLeadsCount?.unreachable,
+              link: "/coldleads/all",
+            },
+            {
+              name: "New",
+              count: ColdLeadsCount?.new,
+              link: "/coldleads/new",
+            },
+            {
+              name: "Cold: Verified",
+              count: "", //TODO
+              link: "/coldLeadsVerified",
+            },
+            {
+              name: "Cold: Invalid",
+              count: "", //TODO
+              link: "/coldLeadsInvalid",
+            },
+            {
+              name: "Cold: Not Checked",
+              count: "", //TODO
+              link: "/coldLeadsNotChecked",
+            },
+
+            {
+              name: "No Answer",
+              count: ColdLeadsCount?.no_nswer,
+              link: "/coldleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: ColdLeadsCount?.Meeting,
+              link: "/coldleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: ColdLeadsCount?.follow_up,
+              link: "/coldleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: ColdLeadsCount?.low_budget,
+              link: "/coldleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: ColdLeadsCount?.not_interested,
+              link: "/coldleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: ColdLeadsCount?.unreachable,
+              link: "/coldleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Transffered",
+          icon: <RiFileTransferFill />,
+          link: "/transfferedleads",
+        },
+        {
+          name: "Unassigned",
+          icon: <BsStopCircleFill />,
+          submenu: [
+            {
+              name: "Hot leads",
+              count: UnassignedLeadsCount?.hot,
+              link: "/unassigned/fresh",
+            },
+            {
+              name: "Cold leads",
+              count: UnassignedLeadsCount?.cold,
+              link: "/unassigned/cold",
+            },
+          ],
+        },
+        {
+          name: "Booked deals",
+          icon: <ImBookmark />,
+          link: "/booked",
+        },
+        {
+          name: "Closed deals",
+          icon: <ImLock />,
+          link: "/closedeals",
+        },
+        {
+          name: "Notes",
+          icon: <MdSpeakerNotes />,
+          link: "/leadnotes",
+        },
+      ],
+    },
+    {
+      title: "Apps",
+      links: [
+        {
+          name: "Meetings",
+          icon: <BsCalendarWeekFill />,
+          link: "/meetings",
+        },
+        {
+          name: "Reports",
+          icon: <HiDocumentReport />,
+          link: "/reports",
+        },
+        {
+          name: "Offers",
+          icon: <AiFillGift />,
+          link: "/offers",
+        },
+        {
+          name: "Users",
+          icon: <ImUsers />,
+          link: "/users",
+        },
+        {
+          name: "Clients",
+          icon: <ImUsers />,
+          link: "/clients",
+        },
+        {
+          name: "Contacts",
+          icon: <MdContactPage />,
+          link: "/contacts",
+        },
+        {
+          name: "360 Tour",
+          icon: null,
+          link: "/360tours",
+        },
+        {
+          name: "Leaderboard",
+          icon: <MdLeaderboard />,
+          link: "/leaderboard",
+        },
+        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+      ],
+    },
+    {
+      title: "WHATSAPP",
+      links: [
+        {
+          name: "Instances",
+          icon: <RiWhatsappFill />,
+          link: "/whatsapp-marketing/instances",
+        },
+        {
+          name: "Messages",
+          icon: <AiFillMessage />,
+          link: "/whatsapp-marketing/messages",
+        },
+        {
+          name: "Templates",
+          icon: <FaMobile />,
+          link: "/whatsapp-marketing/templates",
+        },
+        {
+          name: "Payments",
+          icon: <BsFillCreditCard2FrontFill />,
+          link: "/whatsapp-marketing/payments",
+        },
+      ],
+    },
+    {
+      title: "LOCATION",
+      links: [
+        {
+          name: "Meetings",
+          icon: <ImLocation />,
+          link: "/location/livelocation",
+        },
+      ],
+    },
+    {
+      title: "SUPPORT",
+      links: [
+        {
+          name: "Tickets",
+          icon: <HiTicket />,
+          link: "/support",
+        },
+      ],
+    },
+  ];
+  
+  const checkUser = (user) => {
+    const expiry = new Date(user?.expiry_date).getTime();
+    const now =  new Date().getTime();
+
+    const isExpired = now > expiry;
+
+    if(user?.role === 1) {
+      return true;
+    } else {
+      return isExpired === false && user?.package_name?.length > 0;
+    }
+  }
+
+  const FetchProfile = async () => {
+    const token = localStorage.getItem("auth-token");
+    await axios
+      .get(`${BACKEND_URL}/profile`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        setIsUserSubscribed(checkUser(result.data.user[0]));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // useEffect(() => {
+  //       if(isUserSubscribed != null && isUserSubscribed) {
+  //     setAgentData([...agentData, {
+  //     title: "WHATSAPP",
+  //     links: [
+  //       {
+  //         name: "Dashboard",
+  //         icon: <RiWhatsappFill />,
+  //         link: "/whatsapp-marketing/dashboard",
+  //       },
+  //       {
+  //         name: "Messages",
+  //         icon: <AiFillMessage />,
+  //         link: "/whatsapp-marketing/messages",
+  //       },
+  //       {
+  //         name: "Device",
+  //         icon: <FaMobile />,
+  //         link: "/whatsapp-marketing/device",
+  //       },
+  //       {
+  //         name: "Payments",
+  //         icon: <BsFillCreditCard2FrontFill />,
+  //         link: "/whatsapp-marketing/payments",
+  //       },
+  //     ],
+  //   }]);
+  //     setManagerData([...managerData, {
+  //     title: "WHATSAPP",
+  //     links: [
+  //       {
+  //         name: "Dashboard",
+  //         icon: <RiWhatsappFill />,
+  //         link: "/whatsapp-marketing/dashboard",
+  //       },
+  //       {
+  //         name: "Messages",
+  //         icon: <AiFillMessage />,
+  //         link: "/whatsapp-marketing/messages",
+  //       },
+  //       {
+  //         name: "Templates",
+  //         icon: <FaMobile />,
+  //         link: "/whatsapp-marketing/templates",
+  //       },
+  //       {
+  //         name: "Payments",
+  //         icon: <BsFillCreditCard2FrontFill />,
+  //         link: "/whatsapp-marketing/payments",
+  //       },
+  //     ],
+  //   }]);
+  //   }
+  // }, [User, isUserSubscribed]);
+
   // const [UserLinks, setUserLinks] = useState(
   //   User.position === "Founder & CEO" ? links : Agentlinks
   // );
 
+  useEffect(() => {
+    FetchProfile();
+  }, [User]);
   return (
     <div
       style={{ display: "flex", height: "100%" }}
@@ -1416,7 +2019,7 @@ const Sidebarmui = () => {
                       </div>
                     ))
                   : User?.position === "Sales Manager"
-                  ? Managerlinks.map((item, index) => (
+                  ? managerData.map((item, index) => (
                       <div key={index}>
                         <p
                           className={`font-bold m-3 mt-4 uppercase ${
@@ -1612,7 +2215,7 @@ const Sidebarmui = () => {
                         ))}
                       </div>
                     ))
-                  : Agentlinks.map((item, index) => (
+                  : agentData.map((item, index) => (
                       <div key={index}>
                         <p
                           className={`font-bold m-3 mt-4 uppercase ${

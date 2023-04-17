@@ -7,7 +7,7 @@ import {
   MdOutlineLightMode,
 } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
-import { Tooltip, Breadcrumbs, Link as MuiLink, Typography } from "@mui/material";
+import { Tooltip, Breadcrumbs, Link as MuiLink, Typography, Button } from "@mui/material";
 import { useProSidebar } from "react-pro-sidebar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -53,6 +53,7 @@ const Navbar = () => {
     setScreenSize,
     screenSize,
     setopenBackDrop,
+    isUserSubscribed
   } = useStateContext();
   const [currNavBtn, setCurrNavBtn] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
@@ -143,6 +144,7 @@ const Navbar = () => {
         </span>
       </div>
       <div className="flex">
+         {isUserSubscribed === false && <Button variant="contained" style={{background: "red"}} sx={{mr: 2}}><a href="/whatsapp-marketing/payments">Upgrade</a></Button>}
         <NavButton
           title="Meetings"
           dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}

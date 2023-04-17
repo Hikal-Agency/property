@@ -1,29 +1,28 @@
 import React, {useEffect} from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
-import DeviceComponent from "../../Components/whatsapp-marketing/DeviceComponent";
 import MessagesComponent from "./messages";
-import PaymentsComponent from "./payments";
 import TransactionsComponent from "./transactions";
-import DashboardComponent from "./Dashboard";
+import TemplatesComponent from "../../Components/whatsapp-marketing/TemplatesComponent";
+import InstancesComponent from "./Instances";
 import axios from "axios";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import {useLocation, useNavigate} from "react-router-dom";
 import AllMessages from "./AllMessages";
-import Stripe from "./StripePayment";
+import Payments from "./payments";
 
 const pagesComponents = {
-  dashboard: <DashboardComponent/>,
+  instances: <InstancesComponent/>,
   messages: <MessagesComponent/>,
-  device: <DeviceComponent/>,
-  payments: <Stripe/>,
+  templates: <TemplatesComponent/>,
+  payments: <Payments/>,
   transactions: <TransactionsComponent/>,
   "all": <AllMessages/>,
 };
 
 const WhatsappMarketing = () => {
-  const { currentMode, User, setUser, BACKEND_URL, setopenBackDrop } = useStateContext();
+  const { currentMode, User, setUser, BACKEND_URL, setopenBackDrop, isUserSubscribed } = useStateContext();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -48,7 +47,7 @@ const WhatsappMarketing = () => {
   };
   useEffect(() => {
     setopenBackDrop(false);
-      
+    
     if(!(User?.uid && User?.loginId)){
       const token = localStorage.getItem("auth-token");
       if (token) {
@@ -61,6 +60,16 @@ const WhatsappMarketing = () => {
     }
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if(User && isUserSubscribed != null) {
+      if(!isUserSubscribed && page !== "payments") {
+        navigate("/dashboard", {
+          state: { error: "You are not subscribed to access these pages",},
+        });
+      }
+    }
+  }, [User, isUserSubscribed, page]);
   return (
     <>
       <div className="min-h-screen">

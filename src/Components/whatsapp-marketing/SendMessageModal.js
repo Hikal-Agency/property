@@ -17,7 +17,6 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
-import { messageTemplates } from "./messageTemplates";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -37,6 +36,7 @@ const SendMessageModal = ({
   const [tabValue, setTabValue] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState(false);
   const [ultraMsgInstance, setUltraMsgInstance] = useState({});
+  const [templates, setTemplates] = useState([]);
 
   const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
   const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
@@ -278,8 +278,27 @@ const SendMessageModal = ({
 
   const handleSelectTemplate = (template) => {
     setSelectedTemplate(true);
-    setMessageValue(messageTemplates[template]);
+    setMessageValue(templates.find((tmp) => tmp === template).body);
   };
+
+  const fetchTemplates = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.get(`${BACKEND_URL}/templates`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      setTemplates(response.data.templates.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTemplates();
+  }, []);
 
   return (
     <>
@@ -368,14 +387,14 @@ const SendMessageModal = ({
                 />
               ) : (
                 <Box className="flex items-start flex-wrap border rounded p-4 min-h-[250px]">
-                  {Object.keys(messageTemplates).map((template) => {
+                  {templates.map((template) => {
                     return (
                       <Box
-                        key={template}
+                        key={template.name}
                         onClick={() => handleSelectTemplate(template)}
                         className=" bg-slate-600 mr-2 text-white w-max cursor-pointer text-center p-4 rounded"
                       >
-                        <h3>{template}</h3>
+                        <h3>{template.name}</h3>
                       </Box>
                     );
                   })}

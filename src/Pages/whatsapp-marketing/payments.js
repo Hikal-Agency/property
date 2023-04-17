@@ -6,7 +6,7 @@ import NewPayment from "../../Components/whatsapp-marketing/NewPayment";
 import Transactions from "../../Components/whatsapp-marketing/Transactions";
 
 const Payments = () => {
-  const { currentMode, darkModeColors } = useStateContext();
+  const { currentMode, darkModeColors, isUserSubscribed, User } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -15,6 +15,11 @@ const Payments = () => {
   const [tabValue, setTabValue] = useState(0);
   const [loading] = useState(false);
 
+  if(isUserSubscribed){
+    return <Box className="min-h-screen flex justify-center items-center">
+      <h1>You are Subscribed to <span style={{color: "red"}}>{User?.package_name}</span></h1>
+    </Box>;
+  } else {
   return (
     <>
       <h4 className="font-semibold p-3 text-center">Payments</h4>
@@ -74,5 +79,6 @@ const Payments = () => {
     return <div>{value === index && <div>{children}</div>}</div>;
   }
 };
+}
 
 export default Payments;

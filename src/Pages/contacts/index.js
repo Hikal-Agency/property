@@ -10,7 +10,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const Contacts = () => {
-  const { currentMode, BACKEND_URL, User, setUser, setopenBackDrop } =
+  const { currentMode, BACKEND_URL, User, setUser, setopenBackDrop, setIsUserSubscribed } =
     useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,6 +53,19 @@ const Contacts = () => {
     },
   ];
 
+  const checkUser = (user) => {
+    const expiry = new Date(user?.expiry_date).getTime();
+    const now =  new Date().getTime();
+
+    const isExpired = now > expiry;
+
+    if(user?.role === 1) {
+      return true;
+    } else {
+      return isExpired === false && user?.package_name?.length > 0;
+    }
+  }
+
   const FetchProfile = async (token) => {
     await axios
       .get(`${BACKEND_URL}/dashboard?page=1`, {
@@ -64,6 +77,7 @@ const Contacts = () => {
       .then((result) => {
         console.log("dashboard data is");
         console.log(result.data);
+        setIsUserSubscribed(checkUser(result.data.user));
         setUser(result.data.user);
         setloading(false);
       })

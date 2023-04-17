@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const StateContext = createContext();
 
@@ -37,6 +37,7 @@ export const ContextProvider = ({ children }) => {
   const [SalesPerson, setSalesPerson] = useState([]);
   const [Managers, setManagers] = useState([]);
   const [allRoutes, setAllRoutes] = useState([]);
+  const [isUserSubscribed, setIsUserSubscribed] = useState(null);
 
   // DATA GRID
   const [pageState, setpageState] = useState({
@@ -238,7 +239,9 @@ export const ContextProvider = ({ children }) => {
         setThemeSettings,
         formatNum,
         allRoutes,
-        setAllRoutes
+        setAllRoutes,
+        isUserSubscribed,
+        setIsUserSubscribed
       }}
     >
       {children}

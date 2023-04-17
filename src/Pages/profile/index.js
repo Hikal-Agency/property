@@ -15,6 +15,7 @@ import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate, useLocation } from "react-router-dom";
+import ImagePicker from "./ImagePicker";
 
 const ProfilePage = () => {
   const [loading, setloading] = useState(true);
@@ -37,6 +38,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePickerModal, setImagePickerModal] = useState(false);
 
   // Btn loading
   const [btnloading, setbtnloading] = useState(false);
@@ -451,7 +453,7 @@ const ProfilePage = () => {
                         <div className="accountinfo border-t-2 border-gray-400 px-5 pt-10 ">
                           <div className="flex justify-center flex-col items-center">
                             <label htmlFor="pick-image">
-                              <div className="relative">
+                              <div onClick={() => setImagePickerModal({isOpen: true})} className="relative">
                                 <img
                                   src={User?.displayImg}
                                   width={200}
@@ -474,13 +476,13 @@ const ProfilePage = () => {
                               type="file"
                               hidden
                             /> */}
-                            <input
+                            {/* <input
                               accept="image/*"
                               onChange={handlePickImage}
                               id="pick-image"
                               type="file"
                               hidden
-                            />
+                            /> */}
                             <div className="mt-3">
                               <h1 className="text-lg font-bold text-center">
                                 {User?.userName}
@@ -590,6 +592,8 @@ const ProfilePage = () => {
           </div>
         )}
       </div>
+
+      {imagePickerModal.isOpen && <ImagePicker imagePickerModal={imagePickerModal} setImagePickerModal={setImagePickerModal}/>}    
     </>
   );
   function TabPanel(props) {

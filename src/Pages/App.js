@@ -37,7 +37,7 @@ import ForgotPassword from "./auth/forgot-password";
 import Tour360 from "./propertyPortfolio/tour360";
 import PropertyPortfolio from "./propertyPortfolio";
 import ActivityLog from "./activity";
-
+import axios from "axios";
 import ClientLeads from "./clients/clientLeads";
 import Userlocation from "./location/userlocation";
 import UserAllLocation from "./location/useralllocation";
@@ -374,9 +374,9 @@ const routes = [
 //   ];
 // >>>>>>> Stashed changes
 
+
 function App() {
   const {setAllRoutes} = useStateContext();
-
   const router = createBrowserRouter(routes);
  useJsApiLoader({
       googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
