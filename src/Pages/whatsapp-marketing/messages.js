@@ -138,7 +138,8 @@ const AllLeads = () => {
                 <FaFacebook size={22} color={"#0e82e1"} />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "campaign tiktok" && (
+            {cellValues?.row?.leadSource?.toLowerCase() ===
+              "campaign tiktok" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
                 <img
                   src={"/assets/tiktok-app.svg"}
@@ -768,7 +769,7 @@ const AllLeads = () => {
             />
           </LocalizationProvider> */}
 
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               renderInput={(params) => (
                 <TextField
@@ -805,8 +806,8 @@ const AllLeads = () => {
                 },
               }}
             />
-          </LocalizationProvider>
-          <TextField
+          </LocalizationProvider> */}
+          {/* <TextField
             label="Search"
             // value={searchText}
             // onChange={(event) => setSearchText(event.target.value)}
@@ -818,7 +819,7 @@ const AllLeads = () => {
                 currentMode === "dark" ? "1px solid #FFF" : "1px solid #000",
               color: currentMode === "dark" ? "#ffffff" : "#000",
             }}
-          />
+          /> */}
         </div>
       </Box>
 
