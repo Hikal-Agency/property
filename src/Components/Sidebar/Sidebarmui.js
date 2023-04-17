@@ -1473,20 +1473,19 @@ const Sidebarmui = () => {
             },
             {
               name: "Cold: Verified",
-              count: "", //TODO
-              link: "/coldLeadsVerified",
+              count: ColdLeadsCount?.verified, //TODO
+              link: "/coldleads/coldLeadsVerified",
             },
             {
               name: "Cold: Invalid",
-              count: "", //TODO
-              link: "/coldLeadsInvalid",
+              count: ColdLeadsCount?.unverified, //TODO
+              link: "/coldleads/coldLeadsInvalid",
             },
             {
               name: "Cold: Not Checked",
-              count: "", //TODO
-              link: "/coldLeadsNotChecked",
+              count: ColdLeadsCount?.unchecked, //TODO
+              link: "/coldleads/coldLeadsNotChecked",
             },
-
             {
               name: "No Answer",
               count: ColdLeadsCount?.no_nswer,
