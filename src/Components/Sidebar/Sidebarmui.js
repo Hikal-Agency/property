@@ -528,7 +528,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: HotLeadsCount?.hot,
+              count: HotLeadsCount?.all,
               link: "/hotleads/all",
             },
             {
@@ -575,13 +575,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                PersonalLeadsCount?.new +
-                PersonalLeadsCount?.no_nswer +
-                PersonalLeadsCount?.Meeting +
-                PersonalLeadsCount?.follow_up +
-                PersonalLeadsCount?.low_budget +
-                PersonalLeadsCount?.not_interested +
-                PersonalLeadsCount?.unreachable,
+                PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
@@ -628,13 +622,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                ThirdPartLeadsCount?.new +
-                ThirdPartLeadsCount?.no_nswer +
-                ThirdPartLeadsCount?.Meeting +
-                ThirdPartLeadsCount?.follow_up +
-                ThirdPartLeadsCount?.low_budget +
-                ThirdPartLeadsCount?.not_interested +
-                ThirdPartLeadsCount?.unreachable,
+                ThirdPartLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
@@ -681,13 +669,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                ColdLeadsCount?.new +
-                ColdLeadsCount?.no_nswer +
-                ColdLeadsCount?.Meeting +
-                ColdLeadsCount?.follow_up +
-                ColdLeadsCount?.low_budget +
-                ColdLeadsCount?.not_interested +
-                ColdLeadsCount?.unreachable,
+                ColdLeadsCount?.all,
               link: "/coldleads/all",
             },
             {
@@ -935,13 +917,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                PersonalLeadsCount?.new +
-                PersonalLeadsCount?.no_nswer +
-                PersonalLeadsCount?.Meeting +
-                PersonalLeadsCount?.follow_up +
-                PersonalLeadsCount?.low_budget +
-                PersonalLeadsCount?.not_interested +
-                PersonalLeadsCount?.unreachable,
+                PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
@@ -988,13 +964,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                ThirdPartLeadsCount?.new +
-                ThirdPartLeadsCount?.no_nswer +
-                ThirdPartLeadsCount?.Meeting +
-                ThirdPartLeadsCount?.follow_up +
-                ThirdPartLeadsCount?.low_budget +
-                ThirdPartLeadsCount?.not_interested +
-                ThirdPartLeadsCount?.unreachable,
+                ThirdPartLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
@@ -1404,13 +1374,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                ThirdPartLeadsCount?.new +
-                ThirdPartLeadsCount?.no_nswer +
-                ThirdPartLeadsCount?.Meeting +
-                ThirdPartLeadsCount?.follow_up +
-                ThirdPartLeadsCount?.low_budget +
-                ThirdPartLeadsCount?.not_interested +
-                ThirdPartLeadsCount?.unreachable,
+                ThirdPartLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
@@ -1457,13 +1421,7 @@ const Sidebarmui = () => {
             {
               name: "All",
               count:
-                ColdLeadsCount?.new +
-                ColdLeadsCount?.no_nswer +
-                ColdLeadsCount?.Meeting +
-                ColdLeadsCount?.follow_up +
-                ColdLeadsCount?.low_budget +
-                ColdLeadsCount?.not_interested +
-                ColdLeadsCount?.unreachable,
+                ColdLeadsCount?.all,
               link: "/coldleads/all",
             },
             {
@@ -1590,9 +1548,9 @@ const Sidebarmui = () => {
           link: "/contacts",
         },
         {
-          name: "360 Tour",
-          icon: null,
-          link: "/360tours",
+          name: "Property Portfolio",
+          icon: <RiBuilding2Fill />,
+          link: "/propertyPortfolio",
         },
         {
           name: "Leaderboard",
@@ -1632,8 +1590,13 @@ const Sidebarmui = () => {
       links: [
         {
           name: "Meetings",
-          icon: <ImLocation />,
+          icon: <ImLocation size={20} />,
           link: "/location/livelocation",
+        },
+        {
+          name: "Live",
+          icon: <MdPersonPinCircle size={22} />,
+          link: "/location/userlocation",
         },
       ],
     },
