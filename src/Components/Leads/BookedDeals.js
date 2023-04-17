@@ -123,12 +123,33 @@ const BookedDeals = ({
     }
 
     const ChangeFeedback = (e) => {
+      console.log(e.target.value);
       setnewFeedback(e.target.value);
       setDialogue(true);
     };
 
-    const UpdateFeedback = async (event) => {
+    const UpdateFeedback = async (event, newFeedback) => {
       event.preventDefault();
+
+      console.log("Feedback", newFeedback);
+
+      if (newFeedback === "Closed") {
+        console.log("Date: ", leadDate);
+        if (!leadDate) {
+          console.log("Date: ", leadDate);
+          toast.error("Date is required.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setbtnloading(false);
+          return;
+        }
+      }
 
       setbtnloading(true);
       const token = localStorage.getItem("auth-token");
@@ -165,6 +186,7 @@ const BookedDeals = ({
         })
         .catch((err) => {
           console.log(err);
+
           toast.error("Error in Updating Feedback", {
             position: "top-right",
             autoClose: 3000,
@@ -218,7 +240,10 @@ const BookedDeals = ({
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <form action="" onSubmit={(event) => UpdateFeedback(event)}>
+              <form
+                action=""
+                onSubmit={(event) => UpdateFeedback(event, newFeedback)}
+              >
                 <IconButton
                   sx={{
                     position: "absolute",
@@ -259,11 +284,11 @@ const BookedDeals = ({
                               onChange={(newValue) => {
                                 setLeadDateValue(newValue);
                                 setLeadDate(
-                                  format(newValue.$d.getUTCFullYear()) +
+                                  format(newValue?.$d?.getUTCFullYear()) +
                                     "-" +
-                                    format(newValue.$d.getUTCMonth() + 1) +
+                                    format(newValue?.$d?.getUTCMonth() + 1) +
                                     "-" +
-                                    format(newValue.$d.getUTCDate() + 1)
+                                    format(newValue?.$d?.getUTCDate() + 1)
                                 );
                               }}
                               format="yyyy-MM-dd"
