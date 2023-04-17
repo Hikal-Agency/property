@@ -31,7 +31,7 @@ const Dashboard = () => {
     if(user?.role === 1) {
       return true;
     } else {
-      return isExpired === false && user?.package_name?.length > 0;
+      return isExpired === false && (user?.package_name?.length > 0 && user?.package_name !== "unsubscribed");
     }
   }
 
