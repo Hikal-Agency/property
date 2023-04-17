@@ -47,7 +47,7 @@ const Sidebarmui = () => {
     setopenBackDrop,
     BACKEND_URL,
     isUserSubscribed,
-    setIsUserSubscribed
+    setIsUserSubscribed,
   } = useStateContext();
   const [LeadsCount, setLeadsCount] = useState(false);
   const [HotLeadsCount, setHotLeadsCount] = useState();
@@ -56,7 +56,6 @@ const Sidebarmui = () => {
   const [ThirdPartLeadsCount, setThirdPartyLeadsCount] = useState();
   const [UnassignedLeadsCount, setUnassignedLeadsCount] = useState();
 
-<<<<<<< Updated upstream
   const fetchHotLeads = (token) => {
     axios
       .get(`${BACKEND_URL}/sidebar/0`, {
@@ -88,46 +87,46 @@ const Sidebarmui = () => {
 
     console.log("Cold leads not Intereseted:  ", ColdLeadsCount);
   };
-  const fetchPersonalLeads = (token) => {
-    axios
-      .get(`${BACKEND_URL}/sidebar/2`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("Personal leads: ", result.data["PERSONAL LEADS"]);
-        setPersonalLeadsCount(result.data["PERSONAL LEADS"]);
-      });
-  };
-  const fetchunassignedleads = (token) => {
-    axios
-      .get(`${BACKEND_URL}/sidebar/4`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("Unassigned leads: ", result.data["UNASSIGNED LEADS"]);
-        setUnassignedLeadsCount(result.data["UNASSIGNED LEADS"]);
-      });
-  };
+  // const fetchPersonalLeads = (token) => {
+  //   axios
+  //     .get(`${BACKEND_URL}/sidebar/2`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log("Personal leads: ", result.data["PERSONAL LEADS"]);
+  //       setPersonalLeadsCount(result.data["PERSONAL LEADS"]);
+  //     });
+  // };
+  // const fetchunassignedleads = (token) => {
+  //   axios
+  //     .get(`${BACKEND_URL}/sidebar/4`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log("Unassigned leads: ", result.data["UNASSIGNED LEADS"]);
+  //       setUnassignedLeadsCount(result.data["UNASSIGNED LEADS"]);
+  //     });
+  // };
 
-  const fetchthirdpartyleads = (token) => {
-    axios
-      .get(`${BACKEND_URL}/sidebar/3`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("Third party: ", result.data["THIRD PARTY LEADS"]);
-        setThirdPartyLeadsCount(result.data["THIRD PARTY LEADS"]);
-      });
-  };
+  // const fetchthirdpartyleads = (token) => {
+  //   axios
+  //     .get(`${BACKEND_URL}/sidebar/3`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log("Third party: ", result.data["THIRD PARTY LEADS"]);
+  //       setThirdPartyLeadsCount(result.data["THIRD PARTY LEADS"]);
+  //     });
+  // };
   useEffect(() => {
     if (!LeadsCount) {
       const token = localStorage.getItem("auth-token");
@@ -145,367 +144,365 @@ const Sidebarmui = () => {
   }, []);
 
   //  DATA
-  const links = [
-    {
-      title: "Dashboard",
-      links: [
-        {
-          name: "Dashboard",
-          icon: <RiDashboardFill />,
-          link: "/dashboard",
-        },
-      ],
-    },
+  // const links = [
+  //   {
+  //     title: "Dashboard",
+  //     links: [
+  //       {
+  //         name: "Dashboard",
+  //         icon: <RiDashboardFill />,
+  //         link: "/dashboard",
+  //       },
+  //     ],
+  //   },
 
-    {
-      title: "LEADS",
-      links: [
-        {
-          name: "Add lead",
-          icon: <MdPersonAdd />,
-          link: "/addlead",
-        },
-        {
-          name: "Hot",
-          icon: <SiHotjar />,
-          submenu: [
-            {
-              name: "All",
-              count: HotLeadsCount?.hot,
-              link: "/hotleads/all",
-            },
-            {
-              name: "New",
-              count: HotLeadsCount?.new,
-              link: "/hotleads/new",
-            },
-            {
-              name: "No Answer",
-              count: HotLeadsCount?.no_nswer,
-              link: "/hotleads/no answer",
-            },
-            {
-              name: "Meeting",
-              count: HotLeadsCount?.Meeting,
-              link: "/hotleads/meeting",
-            },
-            {
-              name: "Follow Up",
-              count: HotLeadsCount?.follow_up,
-              link: "/hotleads/follow up",
-            },
-            {
-              name: "Low Budget",
-              count: HotLeadsCount?.low_budget,
-              link: "/hotleads/low budget",
-            },
-            {
-              name: "Not Interested",
-              count: HotLeadsCount?.not_interested,
-              link: "/hotleads/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: HotLeadsCount?.unreachable,
-              link: "/hotleads/unreachable",
-            },
-          ],
-        },
-        {
-          name: "Personal",
-          icon: <HiUsers />,
-          submenu: [
-            {
-              name: "All",
-              count: PersonalLeadsCount?.all,
-              link: "/personalleads/all",
-            },
-            {
-              name: "New",
-              count: PersonalLeadsCount?.new,
-              link: "/personalleads/new",
-            },
-            {
-              name: "No Answer",
-              count: PersonalLeadsCount?.no_nswer,
-              link: "/personalleads/no answer",
-            },
-            {
-              name: "Meeting",
-              count: PersonalLeadsCount?.Meeting,
-              link: "/personalleads/meeting",
-            },
-            {
-              name: "Follow Up",
-              count: PersonalLeadsCount?.follow_up,
-              link: "/personalleads/follow up",
-            },
-            {
-              name: "Low Budget",
-              count: PersonalLeadsCount?.low_budget,
-              link: "/personalleads/low budget",
-            },
-            {
-              name: "Not Interested",
-              count: PersonalLeadsCount?.not_interested,
-              link: "/personalleads/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: PersonalLeadsCount?.unreachable,
-              link: "/personalleads/unreachable",
-            },
-          ],
-        },
-        {
-          name: "Third party",
-          icon: <FaLink />,
-          submenu: [
-            {
-              name: "All",
-              count: ThirdPartLeadsCount?.all,
-              link: "/thirdpartyleads/all",
-            },
-            {
-              name: "New",
-              count: ThirdPartLeadsCount?.new,
-              link: "/thirdpartyleads/new",
-            },
-            {
-              name: "No Answer",
-              count: ThirdPartLeadsCount?.no_nswer,
-              link: "/thirdpartyleads/no answer",
-            },
-            {
-              name: "Meeting",
-              count: ThirdPartLeadsCount?.Meeting,
-              link: "/thirdpartyleads/meeting",
-            },
-            {
-              name: "Follow Up",
-              count: ThirdPartLeadsCount?.follow_up,
-              link: "/thirdpartyleads/follow up",
-            },
-            {
-              name: "Low Budget",
-              count: ThirdPartLeadsCount?.low_budget,
-              link: "/thirdpartyleads/low budget",
-            },
-            {
-              name: "Not Interested ",
-              count: ThirdPartLeadsCount?.not_interested,
-              link: "/thirdpartyleads/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: ThirdPartLeadsCount?.unreachable,
-              link: "/thirdpartyleads/unreachable",
-            },
-          ],
-        },
-        {
-          name: "Cold",
-          icon: <FaSnowflake />,
-          submenu: [
-            {
-              name: "All",
-              count: ColdLeadsCount?.all,
-              link: "/coldleads/all",
-            },
-            {
-              name: "New",
-              count: ColdLeadsCount?.new,
-              link: "/coldleads/new",
-            },
-            {
-              name: "Cold: Verified",
-              count: ColdLeadsCount?.verified, //TODO
-              link: "/coldleads/coldLeadsVerified",
-            },
-            {
-              name: "Cold: Invalid",
-              count: ColdLeadsCount?.unverified, //TODO
-              link: "/coldleads/coldLeadsInvalid",
-            },
-            {
-              name: "Cold: Not Checked",
-              count: ColdLeadsCount?.unchecked, //TODO
-              link: "/coldleads/coldLeadsNotChecked",
-            },
+  //   {
+  //     title: "LEADS",
+  //     links: [
+  //       {
+  //         name: "Add lead",
+  //         icon: <MdPersonAdd />,
+  //         link: "/addlead",
+  //       },
+  //       {
+  //         name: "Hot",
+  //         icon: <SiHotjar />,
+  //         submenu: [
+  //           {
+  //             name: "All",
+  //             count: HotLeadsCount?.hot,
+  //             link: "/hotleads/all",
+  //           },
+  //           {
+  //             name: "New",
+  //             count: HotLeadsCount?.new,
+  //             link: "/hotleads/new",
+  //           },
+  //           {
+  //             name: "No Answer",
+  //             count: HotLeadsCount?.no_nswer,
+  //             link: "/hotleads/no answer",
+  //           },
+  //           {
+  //             name: "Meeting",
+  //             count: HotLeadsCount?.Meeting,
+  //             link: "/hotleads/meeting",
+  //           },
+  //           {
+  //             name: "Follow Up",
+  //             count: HotLeadsCount?.follow_up,
+  //             link: "/hotleads/follow up",
+  //           },
+  //           {
+  //             name: "Low Budget",
+  //             count: HotLeadsCount?.low_budget,
+  //             link: "/hotleads/low budget",
+  //           },
+  //           {
+  //             name: "Not Interested",
+  //             count: HotLeadsCount?.not_interested,
+  //             link: "/hotleads/not interested",
+  //           },
+  //           {
+  //             name: "Unreachable",
+  //             count: HotLeadsCount?.unreachable,
+  //             link: "/hotleads/unreachable",
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         name: "Personal",
+  //         icon: <HiUsers />,
+  //         submenu: [
+  //           {
+  //             name: "All",
+  //             count: PersonalLeadsCount?.all,
+  //             link: "/personalleads/all",
+  //           },
+  //           {
+  //             name: "New",
+  //             count: PersonalLeadsCount?.new,
+  //             link: "/personalleads/new",
+  //           },
+  //           {
+  //             name: "No Answer",
+  //             count: PersonalLeadsCount?.no_nswer,
+  //             link: "/personalleads/no answer",
+  //           },
+  //           {
+  //             name: "Meeting",
+  //             count: PersonalLeadsCount?.Meeting,
+  //             link: "/personalleads/meeting",
+  //           },
+  //           {
+  //             name: "Follow Up",
+  //             count: PersonalLeadsCount?.follow_up,
+  //             link: "/personalleads/follow up",
+  //           },
+  //           {
+  //             name: "Low Budget",
+  //             count: PersonalLeadsCount?.low_budget,
+  //             link: "/personalleads/low budget",
+  //           },
+  //           {
+  //             name: "Not Interested",
+  //             count: PersonalLeadsCount?.not_interested,
+  //             link: "/personalleads/not interested",
+  //           },
+  //           {
+  //             name: "Unreachable",
+  //             count: PersonalLeadsCount?.unreachable,
+  //             link: "/personalleads/unreachable",
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         name: "Third party",
+  //         icon: <FaLink />,
+  //         submenu: [
+  //           {
+  //             name: "All",
+  //             count: ThirdPartLeadsCount?.all,
+  //             link: "/thirdpartyleads/all",
+  //           },
+  //           {
+  //             name: "New",
+  //             count: ThirdPartLeadsCount?.new,
+  //             link: "/thirdpartyleads/new",
+  //           },
+  //           {
+  //             name: "No Answer",
+  //             count: ThirdPartLeadsCount?.no_nswer,
+  //             link: "/thirdpartyleads/no answer",
+  //           },
+  //           {
+  //             name: "Meeting",
+  //             count: ThirdPartLeadsCount?.Meeting,
+  //             link: "/thirdpartyleads/meeting",
+  //           },
+  //           {
+  //             name: "Follow Up",
+  //             count: ThirdPartLeadsCount?.follow_up,
+  //             link: "/thirdpartyleads/follow up",
+  //           },
+  //           {
+  //             name: "Low Budget",
+  //             count: ThirdPartLeadsCount?.low_budget,
+  //             link: "/thirdpartyleads/low budget",
+  //           },
+  //           {
+  //             name: "Not Interested ",
+  //             count: ThirdPartLeadsCount?.not_interested,
+  //             link: "/thirdpartyleads/not interested",
+  //           },
+  //           {
+  //             name: "Unreachable",
+  //             count: ThirdPartLeadsCount?.unreachable,
+  //             link: "/thirdpartyleads/unreachable",
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         name: "Cold",
+  //         icon: <FaSnowflake />,
+  //         submenu: [
+  //           {
+  //             name: "All",
+  //             count: ColdLeadsCount?.all,
+  //             link: "/coldleads/all",
+  //           },
+  //           {
+  //             name: "New",
+  //             count: ColdLeadsCount?.new,
+  //             link: "/coldleads/new",
+  //           },
+  //           {
+  //             name: "Cold: Verified",
+  //             count: ColdLeadsCount?.verified, //TODO
+  //             link: "/coldleads/coldLeadsVerified",
+  //           },
+  //           {
+  //             name: "Cold: Invalid",
+  //             count: ColdLeadsCount?.unverified, //TODO
+  //             link: "/coldleads/coldLeadsInvalid",
+  //           },
+  //           {
+  //             name: "Cold: Not Checked",
+  //             count: ColdLeadsCount?.unchecked, //TODO
+  //             link: "/coldleads/coldLeadsNotChecked",
+  //           },
 
-            {
-              name: "No Answer",
-              count: ColdLeadsCount?.no_nswer,
-              link: "/coldleads/no answer",
-            },
-            {
-              name: "Meeting",
-              count: ColdLeadsCount?.Meeting,
-              link: "/coldleads/meeting",
-            },
-            {
-              name: "Follow Up",
-              count: ColdLeadsCount?.follow_up,
-              link: "/coldleads/follow up",
-            },
-            {
-              name: "Low Budget",
-              count: ColdLeadsCount?.low_budget,
-              link: "/coldleads/low budget",
-            },
-            {
-              name: "Not Interested  ",
-              count: ColdLeadsCount?.not_interested
-                ? ColdLeadsCount?.not_interested
-                : "0",
-              link: "/coldleads/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: ColdLeadsCount?.unreachable,
-              link: "/coldleads/unreachable",
-            },
-          ],
-        },
-        {
-          name: "Transffered",
-          icon: <RiFileTransferFill />,
-          link: "/transfferedleads",
-        },
-        {
-          name: "Unassigned",
-          icon: <BsStopCircleFill />,
-          submenu: [
-            {
-              name: "Hot leads",
-              count: UnassignedLeadsCount?.hot,
-              link: "/unassigned/fresh",
-            },
-            {
-              name: "Cold leads",
-              count: UnassignedLeadsCount?.cold,
-              link: "/unassigned/cold",
-            },
-          ],
-        },
-        {
-          name: "Booked deals",
-          icon: <ImBookmark />,
-          link: "/booked",
-        },
-        {
-          name: "Closed deals",
-          icon: <ImLock />,
-          link: "/closedeals",
-        },
-        {
-          name: "Notes",
-          icon: <MdSpeakerNotes />,
-          link: "/leadnotes",
-        },
-      ],
-    },
-    {
-      title: "Apps",
-      links: [
-        {
-          name: "Meetings",
-          icon: <BsCalendarWeekFill />,
-          link: "/meetings",
-        },
-        {
-          name: "Reports",
-          icon: <HiDocumentReport />,
-          link: "/reports",
-        },
-        {
-          name: "Offers",
-          icon: <AiFillGift />,
-          link: "/offers",
-        },
-        {
-          name: "Users",
-          icon: <ImUsers />,
-          link: "/users",
-        },
-        {
-          name: "Clients",
-          icon: <ImUsers />,
-          link: "/clients",
-        },
-        {
-          name: "Contacts",
-          icon: <MdContactPage />,
-          link: "/contacts",
-        },
-        {
-          name: "Property Portfolio",
-          icon: <RiBuilding2Fill />,
-          link: "/propertyPortfolio",
-        },
-        {
-          name: "Leaderboard",
-          icon: <MdLeaderboard />,
-          link: "/leaderboard",
-        },
-        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
-      ],
-    },
-    {
-      title: "WHATSAPP",
-      links: [
-        {
-          name: "Dashboard",
-          icon: <RiWhatsappFill />,
-          link: "/whatsapp-marketing/dashboard",
-        },
-        {
-          name: "Messages",
-          icon: <AiFillMessage />,
-          link: "/whatsapp-marketing/messages",
-        },
-        {
-          name: "Device",
-          icon: <FaMobile />,
-          link: "/whatsapp-marketing/device",
-        },
-        {
-          name: "Payments",
-          icon: <BsFillCreditCard2FrontFill />,
-          link: "/whatsapp-marketing/payments",
-        },
-      ],
-    },
-    {
-      title: "LOCATION",
-      links: [
-        {
-          name: "Meetings",
-          icon: <ImLocation size={20} />,
-          link: "/location/livelocation",
-        },
-        {
-          name: "Live",
-          icon: <MdPersonPinCircle size={22} />,
-          link: "/location/userlocation",
-        },
-      ],
-    },
-    {
-      title: "SUPPORT",
-      links: [
-        {
-          name: "Tickets",
-          icon: <HiTicket />,
-          link: "/support",
-        },
-      ],
-    },
-  ];
+  //           {
+  //             name: "No Answer",
+  //             count: ColdLeadsCount?.no_nswer,
+  //             link: "/coldleads/no answer",
+  //           },
+  //           {
+  //             name: "Meeting",
+  //             count: ColdLeadsCount?.Meeting,
+  //             link: "/coldleads/meeting",
+  //           },
+  //           {
+  //             name: "Follow Up",
+  //             count: ColdLeadsCount?.follow_up,
+  //             link: "/coldleads/follow up",
+  //           },
+  //           {
+  //             name: "Low Budget",
+  //             count: ColdLeadsCount?.low_budget,
+  //             link: "/coldleads/low budget",
+  //           },
+  //           {
+  //             name: "Not Interested  ",
+  //             count: ColdLeadsCount?.not_interested
+  //               ? ColdLeadsCount?.not_interested
+  //               : "0",
+  //             link: "/coldleads/not interested",
+  //           },
+  //           {
+  //             name: "Unreachable",
+  //             count: ColdLeadsCount?.unreachable,
+  //             link: "/coldleads/unreachable",
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         name: "Transffered",
+  //         icon: <RiFileTransferFill />,
+  //         link: "/transfferedleads",
+  //       },
+  //       {
+  //         name: "Unassigned",
+  //         icon: <BsStopCircleFill />,
+  //         submenu: [
+  //           {
+  //             name: "Hot leads",
+  //             count: UnassignedLeadsCount?.hot,
+  //             link: "/unassigned/fresh",
+  //           },
+  //           {
+  //             name: "Cold leads",
+  //             count: UnassignedLeadsCount?.cold,
+  //             link: "/unassigned/cold",
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         name: "Booked deals",
+  //         icon: <ImBookmark />,
+  //         link: "/booked",
+  //       },
+  //       {
+  //         name: "Closed deals",
+  //         icon: <ImLock />,
+  //         link: "/closedeals",
+  //       },
+  //       {
+  //         name: "Notes",
+  //         icon: <MdSpeakerNotes />,
+  //         link: "/leadnotes",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     title: "Apps",
+  //     links: [
+  //       {
+  //         name: "Meetings",
+  //         icon: <BsCalendarWeekFill />,
+  //         link: "/meetings",
+  //       },
+  //       {
+  //         name: "Reports",
+  //         icon: <HiDocumentReport />,
+  //         link: "/reports",
+  //       },
+  //       {
+  //         name: "Offers",
+  //         icon: <AiFillGift />,
+  //         link: "/offers",
+  //       },
+  //       {
+  //         name: "Users",
+  //         icon: <ImUsers />,
+  //         link: "/users",
+  //       },
+  //       {
+  //         name: "Clients",
+  //         icon: <ImUsers />,
+  //         link: "/clients",
+  //       },
+  //       {
+  //         name: "Contacts",
+  //         icon: <MdContactPage />,
+  //         link: "/contacts",
+  //       },
+  //       {
+  //         name: "Property Portfolio",
+  //         icon: <RiBuilding2Fill />,
+  //         link: "/propertyPortfolio",
+  //       },
+  //       {
+  //         name: "Leaderboard",
+  //         icon: <MdLeaderboard />,
+  //         link: "/leaderboard",
+  //       },
+  //       // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+  //     ],
+  //   },
+  //   {
+  //     title: "WHATSAPP",
+  //     links: [
+  //       {
+  //         name: "Dashboard",
+  //         icon: <RiWhatsappFill />,
+  //         link: "/whatsapp-marketing/dashboard",
+  //       },
+  //       {
+  //         name: "Messages",
+  //         icon: <AiFillMessage />,
+  //         link: "/whatsapp-marketing/messages",
+  //       },
+  //       {
+  //         name: "Device",
+  //         icon: <FaMobile />,
+  //         link: "/whatsapp-marketing/device",
+  //       },
+  //       {
+  //         name: "Payments",
+  //         icon: <BsFillCreditCard2FrontFill />,
+  //         link: "/whatsapp-marketing/payments",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     title: "LOCATION",
+  //     links: [
+  //       {
+  //         name: "Meetings",
+  //         icon: <ImLocation size={20} />,
+  //         link: "/location/livelocation",
+  //       },
+  //       {
+  //         name: "Live",
+  //         icon: <MdPersonPinCircle size={22} />,
+  //         link: "/location/userlocation",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     title: "SUPPORT",
+  //     links: [
+  //       {
+  //         name: "Tickets",
+  //         icon: <HiTicket />,
+  //         link: "/support",
+  //       },
+  //     ],
+  //   },
+  // ];
+
   const Agentlinks = [
-=======
-    const Agentlinks = [
->>>>>>> Stashed changes
     {
       title: "Dashboard",
       links: [
@@ -1131,82 +1128,96 @@ const Sidebarmui = () => {
     },
   ];
 
-  const [agentData, setAgentData] = useState(isUserSubscribed === true ? [...Agentlinks, {
-      title: "WHATSAPP",
-      links: [
-        {
-          name: "Instances",
-          icon: <RiWhatsappFill />,
-          link: "/whatsapp-marketing/instances",
-        },
-        {
-          name: "Messages",
-          icon: <AiFillMessage />,
-          link: "/whatsapp-marketing/messages",
-        },
-        {
-          name: "Templates",
-          icon: <FaMobile />,
-          link: "/whatsapp-marketing/templates",
-        },
-        {
-          name: "Payments",
-          icon: <BsFillCreditCard2FrontFill />,
-          link: "/whatsapp-marketing/payments",
-        },
-      ],
-    }] : Agentlinks);
-  const [managerData, setManagerData] = useState(isUserSubscribed === true ? [...Managerlinks, {
-      title: "WHATSAPP",
-      links: [
-        {
-          name: "Instances",
-          icon: <RiWhatsappFill />,
-          link: "/whatsapp-marketing/instances",
-        },
-        {
-          name: "Messages",
-          icon: <AiFillMessage />,
-          link: "/whatsapp-marketing/messages",
-        },
-        {
-          name: "Templates",
-          icon: <FaMobile />,
-          link: "/whatsapp-marketing/templates",
-        },
-        {
-          name: "Payments",
-          icon: <BsFillCreditCard2FrontFill />,
-          link: "/whatsapp-marketing/payments",
-        },
-      ],
-    }] : Managerlinks);
+  const [agentData, setAgentData] = useState(
+    isUserSubscribed === true
+      ? [
+          ...Agentlinks,
+          {
+            title: "WHATSAPP",
+            links: [
+              {
+                name: "Instances",
+                icon: <RiWhatsappFill />,
+                link: "/whatsapp-marketing/instances",
+              },
+              {
+                name: "Messages",
+                icon: <AiFillMessage />,
+                link: "/whatsapp-marketing/messages",
+              },
+              {
+                name: "Templates",
+                icon: <FaMobile />,
+                link: "/whatsapp-marketing/templates",
+              },
+              {
+                name: "Payments",
+                icon: <BsFillCreditCard2FrontFill />,
+                link: "/whatsapp-marketing/payments",
+              },
+            ],
+          },
+        ]
+      : Agentlinks
+  );
+  const [managerData, setManagerData] = useState(
+    isUserSubscribed === true
+      ? [
+          ...Managerlinks,
+          {
+            title: "WHATSAPP",
+            links: [
+              {
+                name: "Instances",
+                icon: <RiWhatsappFill />,
+                link: "/whatsapp-marketing/instances",
+              },
+              {
+                name: "Messages",
+                icon: <AiFillMessage />,
+                link: "/whatsapp-marketing/messages",
+              },
+              {
+                name: "Templates",
+                icon: <FaMobile />,
+                link: "/whatsapp-marketing/templates",
+              },
+              {
+                name: "Payments",
+                icon: <BsFillCreditCard2FrontFill />,
+                link: "/whatsapp-marketing/payments",
+              },
+            ],
+          },
+        ]
+      : Managerlinks
+  );
 
-  const fetchHotLeads = (token) => {
-    axios
-      .get(`${BACKEND_URL}/sidebar/0`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        // console.log(result.data);
-        setHotLeadsCount(result.data["HOT LEADS"]);
-      });
-  };
-  const fetchColdLeads = (token) => {
-    axios
-      .get(`${BACKEND_URL}/sidebar/1`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setColdLeadsCount(result.data["COLD LEADS"]);
-      });
-  };
+  // const fetchHotLeads = (token) => {
+  //   axios
+  //     .get(`${BACKEND_URL}/sidebar/0`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       // console.log(result.data);
+  //       setHotLeadsCount(result.data["HOT LEADS"]);
+  //     });
+  // };
+  // const fetchColdLeads = (token) => {
+  //   axios
+  //     .get(`${BACKEND_URL}/sidebar/1`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       setColdLeadsCount(result.data["COLD LEADS"]);
+  //     });
+  // };
   const fetchPersonalLeads = (token) => {
     axios
       .get(`${BACKEND_URL}/sidebar/2`, {
@@ -1638,19 +1649,19 @@ const Sidebarmui = () => {
       ],
     },
   ];
-  
+
   const checkUser = (user) => {
     const expiry = new Date(user?.expiry_date).getTime();
-    const now =  new Date().getTime();
+    const now = new Date().getTime();
 
     const isExpired = now > expiry;
 
-    if(user?.role === 1) {
+    if (user?.role === 1) {
       return true;
     } else {
       return isExpired === false && user?.package_name?.length > 0;
     }
-  }
+  };
 
   const FetchProfile = async () => {
     const token = localStorage.getItem("auth-token");
