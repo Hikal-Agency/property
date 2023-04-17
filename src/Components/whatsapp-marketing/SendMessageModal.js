@@ -206,7 +206,7 @@ const SendMessageModal = ({
 
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-          return fetch(`${ULTRA_MSG_API}/messages/chat`, {
+          return fetch(`${ULTRA_MSG_API}/instance24405/messages/chat`, {
             headers: myHeaders,
             method: "POST",
             body: urlencoded,
