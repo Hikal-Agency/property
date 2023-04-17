@@ -178,24 +178,24 @@ const Contacts = () => {
     <>
       <ToastContainer />
       {/* <Head>
-        <title>HIKAL CRM - Leaderboard</title>
-        <meta name="description" content="Leaderboard - HIKAL CRM" />
-      </Head> */}
-      <div className="min-h-screen">
+    <title>HIKAL CRM - Leaderboard</title>
+    <meta name="description" content="Leaderboard - HIKAL CRM" />
+  </Head> */}
+      <div className="flex flex-col min-h-screen">
         {loading ? (
           <Loader />
         ) : (
-          <div className="flex">
+          <div className="flex-grow flex">
             <Sidebarmui />
             <div
-              className={`w-full  ${
+              className={`flex-grow ${
                 currentMode === "dark" ? "bg-black" : "bg-white"
               }`}
             >
               <div className="px-5">
                 <Navbar />
 
-                <div className="mt-5 md:mt-2">
+                <div className="mt-5 md:mt-2 flex-grow overflow-hidden">
                   <h1
                     className={`font-semibold ${
                       currentMode === "dark" ? "text-white" : "text-black"
@@ -246,10 +246,10 @@ const Contacts = () => {
                   style={{ margin: "auto" }}
                 />
               </Stack>
-              <Footer />
             </div>
           </div>
         )}
+        <Footer />
       </div>
     </>
   );

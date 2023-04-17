@@ -213,15 +213,11 @@ const AgencyUsers = () => {
     <>
       <ToastContainer />
 
-      {/* <Head>
-        <title>HIKAL CRM - Leaderboard</title>
-        <meta name="description" content="Leaderboard - HIKAL CRM" />
-      </Head> */}
-      <div className="min-h-screen">
+      <div className="min-h-screen flex flex-col">
         {loading ? (
           <Loader />
         ) : (
-          <div className="flex">
+          <div className="flex-grow flex">
             <Sidebarmui />
             <div
               className={`w-full  ${
@@ -231,15 +227,13 @@ const AgencyUsers = () => {
               <div className="px-5">
                 <Navbar />
 
-                <div className="mt-5 md:mt-2">
+                <div className="mt-5 md:mt-2 flex-grow">
                   <h1
                     className={`font-semibold ${
                       currentMode === "dark" ? "text-white" : "text-black"
                     } text-xl ml-2 mb-3 auto-cols-max gap-x-3`}
                   >
                     Contacts
-                    {/* <span className="px-5 py-3 rounded-md">Leaderboard</span> */}
-                    {/* <span className="px-5 py-3 rounded-md">Call Log Board</span> */}
                   </h1>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
@@ -282,10 +276,11 @@ const AgencyUsers = () => {
                   style={{ margin: "auto" }}
                 />
               </Stack>
-              <Footer />
+              {/* <Footer /> */}
             </div>
           </div>
         )}
+        <Footer />
       </div>
     </>
   );
