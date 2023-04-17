@@ -91,15 +91,11 @@ const Instances = () => {
                         <span>{pageState?.total}</span>
                       </span>
                     </h1>
+
                     <InstancesTable
                       pageState={pageState}
                       setpageState={setpageState}
                     />
-
-                    {/* <LeadNotes
-                      pageState={pageState}
-                      setpageState={setpageState}
-                    /> */}
                   </div>
                 </div>
               </div>
