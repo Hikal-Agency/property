@@ -378,15 +378,18 @@ const Clients = () => {
             await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
             retryCount++;
           } else {
-            toast.error("Sorry something went wrong.", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
+            toast.error(
+              "Sorry something went wrong. Kindly refresh the page.",
+              {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              }
+            );
             setpageState((old) => ({
               ...old,
               isLoading: false,

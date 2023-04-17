@@ -7,6 +7,7 @@ import axios from "axios";
 import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const AddLead = (props) => {
   const { currentMode, setopenBackDrop, User, setUser, BACKEND_URL } =
@@ -29,12 +30,21 @@ const AddLead = (props) => {
         setloading(false);
       })
       .catch((err) => {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
+        toast.error("Sorry something went wrong. Kindly refresh the page.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
         });
+        // navigate("/", {
+        //   state: {
+        //     error: "Something Went Wrong! Please Try Again",
+        //     continueURL: location.pathname,
+        //   },
+        // });
       });
   };
   useEffect(() => {
@@ -60,6 +70,7 @@ const AddLead = (props) => {
   }, []);
   return (
     <>
+      <ToastContainer />
       {/* <Head>
         <title>HIKAL CRM - Add Lead</title>
         <meta name="description" content="User Dashboard - HIKAL CRM" />

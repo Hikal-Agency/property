@@ -7,6 +7,7 @@ import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import DashboardPanel from "../../Components/dashboard/DashboardPanel";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 const Dashboard = () => {
   const {
@@ -16,7 +17,7 @@ const Dashboard = () => {
     currentMode,
     setDashboardData,
     BACKEND_URL,
-    setIsUserSubscribed
+    setIsUserSubscribed,
   } = useStateContext();
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
@@ -24,16 +25,20 @@ const Dashboard = () => {
 
   const checkUser = (user) => {
     const expiry = new Date(user?.expiry_date).getTime();
-    const now =  new Date().getTime();
+    const now = new Date().getTime();
 
     const isExpired = now > expiry;
 
-    if(user?.role === 1) {
+    if (user?.role === 1) {
       return true;
     } else {
-      return isExpired === false && (user?.package_name?.length > 0 && user?.package_name !== "unsubscribed");
+      return (
+        isExpired === false &&
+        user?.package_name?.length > 0 &&
+        user?.package_name !== "unsubscribed"
+      );
     }
-  }
+  };
 
   const FetchProfile = async (token) => {
     await axios
@@ -53,13 +58,22 @@ const Dashboard = () => {
         setloading(false);
       })
       .catch((err) => {
-        // console.log(err);
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
+        console.log(err);
+        toast.error("Sorry something went wrong. Kindly refresh the page.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
         });
+        // navigate("/", {
+        //   state: {
+        //     error: "Something Went Wrong! Please Try Again",
+        //     continueURL: location.pathname,
+        //   },
+        // });
       });
   };
   useEffect(() => {
@@ -84,6 +98,7 @@ const Dashboard = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="flex min-h-screen">
         {loading ? (
           <Loader />

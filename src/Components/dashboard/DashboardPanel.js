@@ -18,6 +18,7 @@ import UpcomingMeeting from "../meetings/UpcomingMeeting";
 import UpcomingMeetingAgent from "../meetings/UpcomingMeetingAgent";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
 
 const DashboardPanel = () => {
   const {
@@ -49,13 +50,22 @@ const DashboardPanel = () => {
         console.log("Dashboard: ", result.data);
       })
       .catch((err) => {
-        // console.log(err);
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
+        console.log(err);
+        toast.error("Sorry something went wrong. Kindly refresh the page.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
         });
+        // navigate("/", {
+        //   state: {
+        //     error: "Something Went Wrong! Please Try Again",
+        //     continueURL: location.pathname,
+        //   },
+        // });
       });
   };
 
@@ -206,6 +216,7 @@ const DashboardPanel = () => {
 
   return (
     <div className="mt-5 md:mt-2">
+      <ToastContainer />
       <h1
         className={`font-semibold ${
           currentMode === "dark" ? "text-white" : "text-red-600"

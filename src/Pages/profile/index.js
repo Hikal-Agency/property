@@ -80,12 +80,21 @@ const ProfilePage = () => {
       .catch((err) => {
         console.log("here is error");
         console.log(err);
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
+        toast.error("Sorry something went wrong. Kindly refresh the page.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
         });
+        // navigate("/", {
+        //   state: {
+        //     error: "Something Went Wrong! Please Try Again",
+        //     continueURL: location.pathname,
+        //   },
+        // });
       });
   };
 
@@ -453,7 +462,12 @@ const ProfilePage = () => {
                         <div className="accountinfo border-t-2 border-gray-400 px-5 pt-10 ">
                           <div className="flex justify-center flex-col items-center">
                             <label htmlFor="pick-image">
-                              <div onClick={() => setImagePickerModal({isOpen: true})} className="relative">
+                              <div
+                                onClick={() =>
+                                  setImagePickerModal({ isOpen: true })
+                                }
+                                className="relative"
+                              >
                                 <img
                                   src={User?.displayImg}
                                   width={200}
@@ -593,7 +607,12 @@ const ProfilePage = () => {
         )}
       </div>
 
-      {imagePickerModal.isOpen && <ImagePicker imagePickerModal={imagePickerModal} setImagePickerModal={setImagePickerModal}/>}    
+      {imagePickerModal.isOpen && (
+        <ImagePicker
+          imagePickerModal={imagePickerModal}
+          setImagePickerModal={setImagePickerModal}
+        />
+      )}
     </>
   );
   function TabPanel(props) {
