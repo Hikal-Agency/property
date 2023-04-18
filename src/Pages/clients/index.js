@@ -437,18 +437,17 @@ const Clients = () => {
       });
   };
 
-  
   useEffect(() => {
     // const token = localStorage.getItem("auth-token");
     // FetchLeads(token);
     const authToken = localStorage.getItem("auth-token");
     setToken(authToken);
     if (User?.uid && User?.loginId) {
-      //FetchClient(token);
+      // FetchProfile(authToken);
       FetchLeads(authToken);
     } else {
       if (authToken) {
-        // FetchClient(token);
+        // FetchProfile(authToken);
         FetchLeads(authToken);
         console.log("I ma fetching");
       } else {
