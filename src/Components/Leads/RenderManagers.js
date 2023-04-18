@@ -94,8 +94,6 @@ const RenderManagers = ({ cellValues }) => {
       });
   };
 
-  console.log(Managers)
-
   return (
     <Box
       className={`${

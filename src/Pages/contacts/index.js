@@ -86,7 +86,7 @@ const Contacts = () => {
         },
       })
       .then((result) => {
-        console.log("User data is");
+        console.log("dashboard data is");
         console.log(result.data);
         setIsUserSubscribed(checkUser(result.data.user));
         setUser(result.data.user);
@@ -178,24 +178,24 @@ const Contacts = () => {
     <>
       <ToastContainer />
       {/* <Head>
-    <title>HIKAL CRM - Leaderboard</title>
-    <meta name="description" content="Leaderboard - HIKAL CRM" />
-  </Head> */}
-      <div className="flex flex-col min-h-screen">
+        <title>HIKAL CRM - Leaderboard</title>
+        <meta name="description" content="Leaderboard - HIKAL CRM" />
+      </Head> */}
+      <div className="min-h-screen">
         {loading ? (
           <Loader />
         ) : (
-          <div className="flex-grow flex">
+          <div className="flex">
             <Sidebarmui />
             <div
-              className={`flex-grow ${
+              className={`w-full  ${
                 currentMode === "dark" ? "bg-black" : "bg-white"
               }`}
             >
               <div className="px-5">
                 <Navbar />
 
-                <div className="mt-5 md:mt-2 flex-grow overflow-hidden">
+                <div className="mt-5 md:mt-2">
                   <h1
                     className={`font-semibold ${
                       currentMode === "dark" ? "text-white" : "text-black"
@@ -246,10 +246,10 @@ const Contacts = () => {
                   style={{ margin: "auto" }}
                 />
               </Stack>
+              <Footer />
             </div>
           </div>
         )}
-        <Footer />
       </div>
     </>
   );
