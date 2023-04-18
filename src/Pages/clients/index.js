@@ -22,7 +22,8 @@ import { useNavigate, useLocation } from "react-router";
 import DeactivateModel from "./deactivateModel";
 
 const Clients = () => {
-  const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
+  const { currentMode, DataGridStyles, BACKEND_URL, User, setUser } =
+    useStateContext();
   const [accountDeactivate, setAccountToDeactivate] = useState();
   const [model, setModel] = useState(false);
   const [pageState, setpageState] = useState({
@@ -401,17 +402,51 @@ const Clients = () => {
     }
   };
 
+  const FetchProfile = async (token) => {
+    await axios
+      .get(`${BACKEND_URL}/dashboard?page=1`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("User data is");
+        console.log(result.data);
+        setUser(result.data.user);
+        // setloading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Sorry something went wrong. Kindly refresh the page.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        // navigate("/", {
+        //   state: {
+        //     error: "Something Went Wrong! Please Try Again",
+        //     continueURL: location.pathname,
+        //   },
+        // });
+      });
+  };
+
   useEffect(() => {
     // const token = localStorage.getItem("auth-token");
     // FetchLeads(token);
     const authToken = localStorage.getItem("auth-token");
     setToken(authToken);
     if (User?.uid && User?.loginId) {
-      //FetchClient(token);
+      // FetchProfile(authToken);
       FetchLeads(authToken);
     } else {
       if (authToken) {
-        // FetchClient(token);
+        // FetchProfile(authToken);
         FetchLeads(authToken);
         console.log("I ma fetching");
       } else {

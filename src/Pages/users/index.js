@@ -1,6 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import { Box } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid } from "@mui/x-data-grid";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
@@ -12,16 +12,13 @@ import SingleUser from "../../Components/Users/SingleUser";
 const Users = () => {
   //View LEAD MODAL VARIABLES
 
-  const {
-    currentMode,
-    DataGridStyles,
-  } = useStateContext();
+  const { currentMode, DataGridStyles } = useStateContext();
 
   const columns = [
-    { 
-      field: 'id', 
-      headerName: '#', 
-      headerAlign: 'center',
+    {
+      field: "id",
+      headerName: "#",
+      headerAlign: "center",
       minWidth: 30,
       flex: 1,
       renderCell: (cellValues) => {
@@ -37,25 +34,25 @@ const Users = () => {
       },
     },
     {
-      field: 'userName',
-      headerName: 'User Name',
-      headerAlign: 'center',
+      field: "userName",
+      headerName: "User Name",
+      headerAlign: "center",
       editable: false,
       minWidth: 180,
       flex: 1,
     },
     {
-      field: 'position',
-      headerName: 'Position',
-      headerAlign: 'center',
+      field: "position",
+      headerName: "Position",
+      headerAlign: "center",
       editable: false,
       minWidth: 130,
       flex: 1,
     },
     {
-      field: 'contactNumber',
-      headerName: 'Contact Number',
-      headerAlign: 'center',
+      field: "contactNumber",
+      headerName: "Contact Number",
+      headerAlign: "center",
       editable: false,
       minWidth: 130,
       flex: 1,
@@ -68,9 +65,9 @@ const Users = () => {
       },
     },
     {
-      field: 'email',
-      headerName: 'Email Address',
-      headerAlign: 'center',
+      field: "email",
+      headerName: "Email Address",
+      headerAlign: "center",
       editable: false,
       minWidth: 250,
       flex: 1,
@@ -83,9 +80,9 @@ const Users = () => {
       },
     },
     {
-      field: 'status',
-      headerName: 'Status',
-      headerAlign: 'center',
+      field: "status",
+      headerName: "Status",
+      headerAlign: "center",
       editable: false,
       minWidth: 180,
       flex: 1,
@@ -134,27 +131,53 @@ const Users = () => {
       },
     },
   ];
-  
+
   const rows = [
-    { id: 1, userName: 'Hala Hikal', position: 'Sales Agent', contactNumber: '566666555', email: "1@hikalproperties.ae", status: "1" },
-    { id: 2, userName: 'Ameer Ali', position: 'Sales Agent', contactNumber: '555567678', email: "2@hikalproperties.ae", status: "0" },
-    { id: 3, userName: 'Belal Hikal', position: 'Sales Manager', contactNumber: '536526766', email: "3@hikalproperties.ae", status: "1" },
-    { id: 4, userName: 'Nada Amin', position: 'Head of Sales', contactNumber: '5638378937', email: "4@hikalproperties.ae", status: "1" },
+    {
+      id: 1,
+      userName: "Hala Hikal",
+      position: "Sales Agent",
+      contactNumber: "566666555",
+      email: "1@hikalproperties.ae",
+      status: "1",
+    },
+    {
+      id: 2,
+      userName: "Ameer Ali",
+      position: "Sales Agent",
+      contactNumber: "555567678",
+      email: "2@hikalproperties.ae",
+      status: "0",
+    },
+    {
+      id: 3,
+      userName: "Belal Hikal",
+      position: "Sales Manager",
+      contactNumber: "536526766",
+      email: "3@hikalproperties.ae",
+      status: "1",
+    },
+    {
+      id: 4,
+      userName: "Nada Amin",
+      position: "Head of Sales",
+      contactNumber: "5638378937",
+      email: "4@hikalproperties.ae",
+      status: "1",
+    },
   ];
 
   const handleRowClick = async (params, event) => {
-    if (
-      !event.target.classList.contains("editLeadBtn")
-    ) {
+    if (!event.target.classList.contains("editLeadBtn")) {
       // setSingleUserData(params.row);
       // handleUserModelOpen();
-      <SingleUser />
+      <SingleUser />;
     }
   };
 
   return (
     <>
-    {/* <ToastContainer/> */}
+      {/* <ToastContainer/> */}
       <div className="flex min-h-screen">
         <div
           className={`w-full ${
@@ -168,7 +191,13 @@ const Users = () => {
                 <Navbar />
                 <div className="my-5 mb-10">
                   <div className="my-3">
-                    <h2 className={` ${currentMode === "dark" ? "text-white" : "text-black"} font-semibold text-xl`}>Users</h2>
+                    <h2
+                      className={` ${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } font-semibold text-xl`}
+                    >
+                      Users
+                    </h2>
                   </div>
                   <Box width={"100%"} sx={DataGridStyles}>
                     <DataGrid
@@ -188,22 +217,14 @@ const Users = () => {
                         },
                       }}
                       getRowClassName={(params) =>
-                        params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+                        params.indexRelativeToCurrentPage % 2 === 0
+                          ? "even"
+                          : "odd"
                       }
                     />
                   </Box>
                 </div>
               </div>
-
-
-
-
-              
-
-
-
-
-
             </div>
           </div>
           <Footer />

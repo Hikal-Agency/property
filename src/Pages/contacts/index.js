@@ -86,7 +86,7 @@ const Contacts = () => {
         },
       })
       .then((result) => {
-        console.log("dashboard data is");
+        console.log("User data is");
         console.log(result.data);
         setIsUserSubscribed(checkUser(result.data.user));
         setUser(result.data.user);
