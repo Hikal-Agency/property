@@ -20,7 +20,8 @@ const RenderPriority = ({ cellValues }) => {
   const [PriorityDialogue, setPriorityDialogue] = useState(false);
   // eslint-disable-next-line
   const [confirmbtnloading, setconfirmbtnloading] = useState(false);
-  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL } = useStateContext();
+  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL } =
+    useStateContext();
 
   const ChangePriority = (e) => {
     setnewPriority(e.target.value);
@@ -48,16 +49,12 @@ const RenderPriority = ({ cellValues }) => {
     UpdateLeadData.append("priority", newPriority);
 
     await axios
-      .post(
-        `${BACKEND_URL}/leads/${cellValues?.row?.lid}`,
-        UpdateLeadData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
+      .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
       .then((result) => {
         console.log("Priority Updated successfull");
         console.log(result);
@@ -108,9 +105,9 @@ const RenderPriority = ({ cellValues }) => {
         required
       >
         <MenuItem value={"0"} disabled>
-        - - - - -
+          - - - - -
         </MenuItem>
-        <MenuItem value={"Not Set"}>Not Set</MenuItem>
+        {Priority ?? <MenuItem value={"Set Priority"}>Set Priority</MenuItem>}
         <MenuItem value={"High"}>High</MenuItem>
         <MenuItem value={"Medium"}>Medium</MenuItem>
         <MenuItem value={"Low"}>Low</MenuItem>

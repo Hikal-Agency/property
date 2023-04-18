@@ -524,6 +524,7 @@ const UpdateLead = ({
                         required
                         value={LeadContact}
                         onChange={(e) => setLeadContact(e.target.value)}
+                        autoComplete
                       />
 
                       <TextField

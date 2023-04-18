@@ -44,8 +44,22 @@ const RenderManagers = ({ cellValues }) => {
     setmanager2(cellValues?.row?.assignedToManager);
   }, [cellValues?.row?.assignedToManager]);
 
+  // const ChangeManager = (e) => {
+  //   setnewManager(e.target.value);
+  //   setDialogue(true);
+  // };
   const ChangeManager = (e) => {
-    setnewManager(e.target.value);
+    console.log(e.target);
+    let selectedItem;
+    selectedItem = Managers.find((item) => item.id === Number(e.target.value));
+    let old_selectedItem;
+
+    old_selectedItem = Managers.find((item) => item.id === Number(manager2));
+    console.log("old: ", old_selectedItem);
+    console.log("new: ", old_selectedItem);
+
+    setnewManager(selectedItem);
+    setmanager2(old_selectedItem);
     setDialogue(true);
   };
   const UpdateManager = async () => {
@@ -53,7 +67,7 @@ const RenderManagers = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.lid);
-    UpdateLeadData.append("assignedToManager", newManager);
+    UpdateLeadData.append("assignedToManager", newManager?.id);
 
     await axios
       .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {
@@ -81,7 +95,7 @@ const RenderManagers = ({ cellValues }) => {
       })
       .catch((err) => {
         console.log(err);
-        toast.error("Error in Updating Manager", {
+        toast.error("Error in Updating Manager. Kindly Refresh the page", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -101,7 +115,7 @@ const RenderManagers = ({ cellValues }) => {
       } w-full h-full flex items-center justify-center`}
       sx={SelectStyles}
     >
-      <Select
+      {/* <Select
         id="manager"
         value={manager2 || ""}
         label="Manager"
@@ -120,7 +134,7 @@ const RenderManagers = ({ cellValues }) => {
               {manager?.userName}
             </MenuItem>
           );
-        })} */}
+        })} 
         {Managers.length > 0 ? (
           Managers.map((manager, index) => (
             <MenuItem key={index} value={manager?.id}>
@@ -132,7 +146,29 @@ const RenderManagers = ({ cellValues }) => {
             <em>No manager</em>
           </MenuItem>
         )}
+      </Select> */}
+
+      <Select
+        id="manager"
+        value={manager2 || ""}
+        label="Manager"
+        onChange={ChangeManager}
+        size="medium"
+        className="w-[100%] h-[75%]"
+        displayEmpty
+        required
+      >
+        {manager2 ? (
+          Managers.map((manager, index) => (
+            <MenuItem key={index} value={manager?.id}>
+              {manager?.userName}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem value="">Select Manager</MenuItem>
+        )}
       </Select>
+
       {Dialogue && (
         <>
           <Dialog
@@ -170,11 +206,11 @@ const RenderManagers = ({ cellValues }) => {
                 <h1 className="font-semibold pt-3 text-lg text-center">
                   Do You Really Want Change the Manager from{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {manager2}
+                    {manager2?.userName ?? "No manager"}
                   </span>{" "}
                   to{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {newManager}
+                    {newManager?.userName}
                   </span>{" "}
                   ?
                 </h1>

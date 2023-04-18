@@ -28,7 +28,8 @@ const UpdateMeeting = ({
   FetchLeads,
 }) => {
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum } = useStateContext();
+  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum } =
+    useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState("");
   const [loading, setLoading] = useState(true);
@@ -170,7 +171,32 @@ const UpdateMeeting = ({
           },
         }
       );
-      console.log(response);
+      console.log("Response: ", response);
+
+      // if (!response.data.meeting) {
+      //   toast.error("Error in Updating the Meeting", {
+      //     position: "top-right",
+      //     autoClose: 3000,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     pauseOnHover: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //     theme: "light",
+      //   });
+      // } else {
+      //   toast.success("Meeting Updated Successfully", {
+      //     position: "top-right",
+      //     autoClose: 3000,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //     theme: "light",
+      //   });
+      //   FetchLeads(token);
+      //   handleMeetingModalClose();
+      // }
 
       if (!response.data.meeting) {
         toast.error("Error in Updating the Meeting", {
@@ -193,8 +219,10 @@ const UpdateMeeting = ({
           progress: undefined,
           theme: "light",
         });
-        handleMeetingModalClose();
         FetchLeads(token);
+        setTimeout(() => {
+          handleMeetingModalClose();
+        }, 3000); // delay the modal closing by 1 second (1000 milliseconds)
       }
     } catch (error) {
       console.log("error in updating meeting: ", error);
@@ -215,6 +243,7 @@ const UpdateMeeting = ({
 
   return (
     <>
+      <ToastContainer />
       {/* MODAL FOR SINGLE LEAD SHOW */}
       <Modal
         keepMounted
@@ -234,17 +263,17 @@ const UpdateMeeting = ({
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md`}
         >
-        <IconButton
-          sx={{
-            position: "absolute",
-            right: 12,
-            top: 10,
-            color: (theme) => theme.palette.grey[500],
-          }}
-          onClick={handleMeetingModalClose}
-        >
-          <IoMdClose size={18} />
-        </IconButton>
+          <IconButton
+            sx={{
+              position: "absolute",
+              right: 12,
+              top: 10,
+              color: (theme) => theme.palette.grey[500],
+            }}
+            onClick={handleMeetingModalClose}
+          >
+            <IoMdClose size={18} />
+          </IconButton>
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />
@@ -255,7 +284,7 @@ const UpdateMeeting = ({
             </div>
           ) : (
             <>
-              <ToastContainer />
+              {/* <ToastContainer /> */}
               <h1
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-black"
@@ -329,12 +358,14 @@ const UpdateMeeting = ({
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </Select>
                     </FormControl>
-                    {(meetingLocation.lat && meetingLocation.lng) ?
-                    <LocationPicker
-                      meetingLocation={meetingLocation}
-                      setMeetingLocation={setMeetingLocation}
-                    />
-                    : <></>}
+                    {meetingLocation.lat && meetingLocation.lng ? (
+                      <LocationPicker
+                        meetingLocation={meetingLocation}
+                        setMeetingLocation={setMeetingLocation}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </div>
 

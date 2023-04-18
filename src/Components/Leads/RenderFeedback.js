@@ -32,11 +32,12 @@ const RenderFeedback = ({ cellValues }) => {
     meetingStatus: null,
   });
   const [meetingLocation, setMeetingLocation] = useState({
-      lat: 0,
-      lng: 0,
-      addressText: ""
-    });
-  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL } = useStateContext();
+    lat: 0,
+    lng: 0,
+    addressText: "",
+  });
+  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL } =
+    useStateContext();
   const ChangeFeedback = (e) => {
     setnewFeedback(e.target.value);
     setDialogue(true);
@@ -86,16 +87,12 @@ const RenderFeedback = ({ cellValues }) => {
     }
 
     await axios
-      .post(
-        `${BACKEND_URL}/leads/${cellValues?.row?.lid}`,
-        UpdateLeadData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
+      .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
       .then((result) => {
         console.log("Feedback Updated successfull");
         console.log(result);
@@ -133,10 +130,14 @@ const RenderFeedback = ({ cellValues }) => {
   }, [cellValues]);
 
   useEffect(() => {
-      navigator.geolocation.getCurrentPosition(position =>{
-        setMeetingLocation({lat: Number(position.coords.latitude), lng: Number(position.coords.longitude), addressText: ""});
+    navigator.geolocation.getCurrentPosition((position) => {
+      setMeetingLocation({
+        lat: Number(position.coords.latitude),
+        lng: Number(position.coords.longitude),
+        addressText: "",
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -157,7 +158,7 @@ const RenderFeedback = ({ cellValues }) => {
         required
       >
         <MenuItem value={"0"} disabled>
-        - - - - -
+          - - - - -
         </MenuItem>
         <MenuItem value={"New"}>New</MenuItem>
         <MenuItem value={"Follow Up"}>Follow Up</MenuItem>
@@ -282,10 +283,16 @@ const RenderFeedback = ({ cellValues }) => {
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </Select>
                     </FormControl>
-                        {meetingLocation.lat && meetingLocation.lng ?
-                            <LocationPicker meetingLocation={meetingLocation} currLocByDefault setMeetingLocation={setMeetingLocation}/>
-                          : <></>
-                        }
+
+                    {meetingLocation.lat && meetingLocation.lng ? (
+                      <LocationPicker
+                        meetingLocation={meetingLocation}
+                        currLocByDefault
+                        setMeetingLocation={setMeetingLocation}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </div>
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                     <Button

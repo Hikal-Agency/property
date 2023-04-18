@@ -79,6 +79,22 @@ const UpdateBookedDeal = ({
   const ChangeSalesPerson = (event) => {
     setSalesPerson2(event.target.value);
   };
+
+  const ChangeLanguagePrefered = (e) => {
+    setLanguagePrefered(e.target.value);
+  };
+
+  const ChangeEnquiryType = (e) => {
+    setEnquiryType(e.target.value);
+  };
+
+  const ChangePropertyType = (e) => {
+    setPropertyType(e.target.value);
+  };
+
+  const ChangeForType = (e) => {
+    setForType(e.target.value);
+  };
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     // console.log("User is");
@@ -239,17 +255,17 @@ const UpdateBookedDeal = ({
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-7 rounded-md`}
         >
-        <IconButton
-          sx={{
-            position: "absolute",
-            right: 12,
-            top: 10,
-            color: (theme) => theme.palette.grey[500],
-          }}
-          onClick={handleLeadModelClose}
-        >
-          <IoMdClose size={18} />
-        </IconButton>
+          <IconButton
+            sx={{
+              position: "absolute",
+              right: 12,
+              top: 10,
+              color: (theme) => theme.palette.grey[500],
+            }}
+            onClick={handleLeadModelClose}
+          >
+            <IoMdClose size={18} />
+          </IconButton>
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />
@@ -292,8 +308,7 @@ const UpdateBookedDeal = ({
                         size="medium"
                         required
                         value={LeadName || ""}
-                        readOnly
-                        // onChange={(e) => setLeadName(e.target.value)}
+                        onChange={(e) => setLeadName(e.target.value)}
                       />
                       <TextField
                         id="LeadContactNumber"
@@ -304,9 +319,8 @@ const UpdateBookedDeal = ({
                         variant="outlined"
                         size="medium"
                         required
-                        readOnly
                         value={LeadContact || ""}
-                        // onChange={(e) => setLeadContact(e.target.value)}
+                        onChange={(e) => setLeadContact(e.target.value)}
                       />
 
                       <TextField
@@ -319,8 +333,7 @@ const UpdateBookedDeal = ({
                         size="medium"
                         required
                         value={LeadEmail || ""}
-                        readOnly
-                        // onChange={(e) => setLeadName(e.target.value)}
+                        onChange={(e) => setLeadEmail(e.target.value)}
                       />
 
                       <FormControl fullWidth variant="outlined" size="medium">
@@ -329,10 +342,9 @@ const UpdateBookedDeal = ({
                           id="LanguagePrefered"
                           value={LanguagePrefered}
                           label="Prefered language"
-                          // onChange={ChangeLanguagePrefered}
+                          onChange={ChangeLanguagePrefered}
                           className="w-full mb-5"
                           displayEmpty
-                          readOnly
                           required
                         >
                           <MenuItem value="" disabled>
@@ -362,7 +374,7 @@ const UpdateBookedDeal = ({
                       >
                         Project details
                       </h4>
-                      
+
                       <TextField
                         id="Project"
                         type={"text"}
@@ -371,9 +383,8 @@ const UpdateBookedDeal = ({
                         style={{ marginBottom: "20px" }}
                         variant="outlined"
                         size="medium"
-                        readOnly
                         value={LeadProject}
-                        // onChange={(e) => setLeadProject(e.target.value)}
+                        onChange={(e) => setLeadProject(e.target.value)}
                       />
 
                       <FormControl fullWidth variant="outlined" size="medium">
@@ -382,11 +393,10 @@ const UpdateBookedDeal = ({
                           id="enquiry"
                           value={EnquiryType}
                           label="Enquiry Type"
-                          // onChange={ChangeEnquiryType}
+                          onChange={ChangeEnquiryType}
                           className="w-full mb-5"
                           displayEmpty
                           required
-                          readOnly
                         >
                           <MenuItem value="" disabled>
                             ---NONE---
@@ -409,11 +419,10 @@ const UpdateBookedDeal = ({
                           id="property-type"
                           value={PropertyType}
                           label="Property type"
-                          // onChange={ChangePropertyType}
+                          onChange={ChangePropertyType}
                           className="w-full mb-5"
                           displayEmpty
                           required
-                          readOnly
                         >
                           <MenuItem value="" disabled>
                             ---NONE---
@@ -431,11 +440,10 @@ const UpdateBookedDeal = ({
                           id="for"
                           value={ForType}
                           label="Purpose of enquiry"
-                          // onChange={ChangeForType}
+                          onChange={ChangeForType}
                           className="w-full mb-5"
                           displayEmpty
                           required
-                          readOnly
                         >
                           <MenuItem value="" disabled>
                             ---NONE---

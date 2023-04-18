@@ -574,8 +574,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                PersonalLeadsCount?.all,
+              count: PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
@@ -621,8 +620,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                ThirdPartLeadsCount?.all,
+              count: ThirdPartLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
@@ -668,8 +666,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                ColdLeadsCount?.all,
+              count: ColdLeadsCount?.all,
               link: "/coldleads/all",
             },
             {
@@ -916,8 +913,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                PersonalLeadsCount?.all,
+              count: PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
@@ -963,8 +959,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                ThirdPartLeadsCount?.all,
+              count: ThirdPartLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
@@ -1010,8 +1005,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                ColdLeadsCount?.hot,
+              count: ColdLeadsCount?.hot,
               link: "/coldleads/all",
             },
             {
@@ -1261,8 +1255,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                HotLeadsCount?.hot,
+              count: HotLeadsCount?.hot,
               link: "/hotleads/all",
             },
             {
@@ -1308,8 +1301,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                PersonalLeadsCount?.all,
+              count: PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
@@ -1355,8 +1347,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                ThirdPartLeadsCount?.all,
+              count: ThirdPartLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
@@ -1402,8 +1393,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count:
-                ColdLeadsCount?.all,
+              count: ColdLeadsCount?.all,
               link: "/coldleads/all",
             },
             {
@@ -1603,7 +1593,11 @@ const Sidebarmui = () => {
     if (user?.role === 1) {
       return true;
     } else {
-      return isExpired === false && (user?.package_name?.length > 0 && user?.package_name !== "unsubscribed");
+      return (
+        isExpired === false &&
+        user?.package_name?.length > 0 &&
+        user?.package_name !== "unsubscribed"
+      );
     }
   };
 

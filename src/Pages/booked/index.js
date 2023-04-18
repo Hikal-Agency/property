@@ -9,18 +9,27 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const Booked = () => {
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setloading] = useState(true);
-  const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
-    useStateContext();
+  const {
+    User,
+    setUser,
+    currentMode,
+    setopenBackDrop,
+    BACKEND_URL,
+    pageState,
+  } = useStateContext();
 
-  const [pageState, setpageState] = useState({
-    isLoading: false,
-    data: [],
-    total: 0,
-    page: 1,
-    pageSize: 25,
-  });
+  // const [pageState, setpageState] = useState({
+  //   isLoading: false,
+  //   data: [],
+  //   total: 0,
+  //   page: 1,
+  //   pageSize: 25,
+  // });
+
+  console.log("Booked State: ", pageState);
   const FetchProfile = async (token) => {
     await axios
       .get(`${BACKEND_URL}/profile`, {
@@ -49,7 +58,10 @@ const Booked = () => {
         FetchProfile(token);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       }
     }
@@ -91,8 +103,8 @@ const Booked = () => {
                     </h1>
                     <BookedDeals
                       BACKEND_URL={BACKEND_URL}
-                      pageState={pageState}
-                      setpageState={setpageState}
+                      // pageState={pageState}
+                      // setpageState={setpageState}
                     />
                   </div>
                 </div>

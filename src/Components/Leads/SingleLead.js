@@ -102,19 +102,21 @@ const SingleLead = ({
   const fetchLastNote = async () => {
     try {
       const token = localStorage.getItem("auth-token");
-      const result = await axios
-        .get(`https://testing.hikalcrm.com/api/lastnote/${LeadData?.lid}`, {
+      const result = await axios.get(
+        `https://testing.hikalcrm.com/api/lastnote/${LeadData?.lid}`,
+        {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
-        });
-        const lastNoteText = result.data?.notes?.data[0]?.leadNote;
-        setLastNote(lastNoteText);
+        }
+      );
+      const lastNoteText = result.data?.notes?.data[0]?.leadNote;
+      setLastNote(lastNoteText);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchLastNote();
@@ -172,7 +174,7 @@ const SingleLead = ({
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   >
-                    Lead Name:
+                    Lead Name :
                   </h6>
                   <h6
                     className={`font-semibold ${
@@ -230,7 +232,7 @@ const SingleLead = ({
             <div className="col-span-2 space-y-2 text-right">
               <div className="mb-5 space-x-3">
                 <span className="p-2 bg-main-red-color text-white rounded-md">
-                  {LeadData?.feedback}
+                  {LeadData?.feedback ?? "No Feedback"}
                 </span>
                 <span className="float-right">
                   {LeadData?.coldcall === "1" ? (
@@ -290,11 +292,11 @@ const SingleLead = ({
           <div className="bg-main-red-color h-0.5 w-full my-7"></div>
           <div className={`rounded-md mt-5`}>
             <h1 className="font-bold text-lg text-center">Lead Notes</h1>
-            {lastNote &&
+            {lastNote && (
               <Box className="bg-gray-300 rounded px-2 py-1 mt-3">
                 {lastNote}
               </Box>
-            }
+            )}
             <button
               type="button"
               className="btn btn-sm p-2 text-main-red-color text-italic font-semibold"

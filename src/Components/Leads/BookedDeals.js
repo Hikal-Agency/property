@@ -846,6 +846,7 @@ const BookedDeals = ({
         },
       })
       .then(async (result) => {
+        console.log("Booked deals list: ", result);
         let rowsDataArray = "";
         if (result.data.coldLeads.current_page > 1) {
           const theme_values = Object.values(result.data.coldLeads.data);
@@ -892,6 +893,8 @@ const BookedDeals = ({
           pageSize: result.data.coldLeads.per_page,
           total: result.data.coldLeads.total,
         }));
+
+        console.log("Page state: ", pageState.total);
       })
       .catch((err) => {
         console.log("error occured");

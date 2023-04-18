@@ -108,7 +108,7 @@ const RenderSalesperson = ({ cellValues }) => {
       })
       .catch((err) => {
         console.log(err);
-        toast.error("Error in Updating Agent", {
+        toast.error("Error in Updating Agent. Kindly refresh the page", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -162,21 +162,25 @@ const RenderSalesperson = ({ cellValues }) => {
           displayEmpty
           required
         >
-          <MenuItem value="0" disabled>
-            - - - - -
-          </MenuItem>
-          {SalesPersonsList?.map((salesperson, index) => {
-            return (
-              <MenuItem
-                key={index}
-                value={salesperson?.id}
-                data
-                name={salesperson?.userName}
-              >
-                {salesperson?.userName}
-              </MenuItem>
-            );
-          })}
+          {SalesPerson2 ? (
+            //    <MenuItem value="0" disabled>
+            //    - - - - -
+            //  </MenuItem>
+            SalesPersonsList?.map((salesperson, index) => {
+              return (
+                <MenuItem
+                  key={index}
+                  value={salesperson?.id}
+                  data
+                  name={salesperson?.userName}
+                >
+                  {salesperson?.userName}
+                </MenuItem>
+              );
+            })
+          ) : (
+            <MenuItem value="">Select Salesperson</MenuItem>
+          )}
         </Select>
       )}
 
@@ -217,7 +221,7 @@ const RenderSalesperson = ({ cellValues }) => {
                 <h1 className="font-semibold pt-3 text-lg text-center">
                   Do You Really Want Change the Agent from{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {SalesPerson3?.userName}
+                    {SalesPerson3?.userName ?? "No Agent"}
                   </span>{" "}
                   to{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
