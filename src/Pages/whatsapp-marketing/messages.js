@@ -8,13 +8,14 @@ import {
 } from "@mui/x-data-grid";
 import "./messages.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { MdCampaign, MdSend } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
+import {BsWhatsapp} from "react-icons/bs";
 import Pagination from "@mui/material/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
@@ -55,6 +56,7 @@ const AllLeads = () => {
     data: {},
   });
   const [whatsappSenderNo, setWhatsappSenderNo] = useState("");
+  const imagePickerRef = useRef();
 
   const currentDate = new Date();
 
@@ -178,9 +180,81 @@ const AllLeads = () => {
         );
       },
     },
+       {
+      field: "whatsapp-web",
+      headerName: "",
+      // width: 150,
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        return <div className="whatsapp-web-link" style={{display: "flex", justifyContent: "center", width: "100%"}}>
+          <BsWhatsapp size={24} onClick={() => window.open(`https://wa.me/${cellValues.row.leadContact}`)} color="green"/>
+        </div>;
+      }
+    },
   ];
 
   const [columnsArr, setColumnsArr] = useState(columns);
+
+  const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
+  const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
+
+  async function sendImage(img, contactList) {
+    try {
+      const responses = await Promise.all(
+        contactList.map((contact) => {
+          
+          var urlencoded = new URLSearchParams();
+          urlencoded.append("token", ULTRA_MSG_TOKEN);
+          urlencoded.append("to", "+" + contact);
+          urlencoded.append("image", img);
+          urlencoded.append("caption","ولأول مرة بالشارقة تملك ڤيلتك بأقساط 1% شهريا فقط من المطور مباشرة وبدون فوائد بنكيه   للمزيد من التفاصيل سجل بياناتك الأن.    ⬇️                                                            http://hikalproperties.ae/ar-hayyan-t     وإذا كنت غير مهتم الرجاء إرسال رقم 2 لعدم إزعاجك مرة أخري");
+
+
+          var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+          return fetch(`${ULTRA_MSG_API}/instance24405/messages/image`, {
+            headers: myHeaders,
+            method: "POST",
+            body: urlencoded,
+          }).then((response) => response.json());
+        })
+      );
+
+      toast.success("Image Sent", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Image Couldn't be sent", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
+
+      const handleInputChange = (event) => {
+        let files = event.target.files;
+        let reader = new FileReader();
+        reader.readAsDataURL(files[0]);
+ 
+        reader.onload = (e) => {
+            sendImage(e.target.result, selectedRows);
+        }
+ 
+    }
 
   const FetchLeads = async (token, lead_origin, lead_type) => {
     console.log("lead type is");
@@ -371,9 +445,6 @@ const AllLeads = () => {
       });
   };
 
-  const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
-  const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
-
   const fetchUltraMsgInstance = async () => {
     try {
       const token = localStorage.getItem("auth-token");
@@ -464,10 +535,13 @@ const AllLeads = () => {
   }, [pageState.page, leadTypeSelected, leadOriginSelected, reloadDataGrid]);
 
   const handleRowClick = async (params, event) => {
-    setMessageLogsModal({
-      isOpen: true,
-      data: params,
-    });
+
+    if(!event.target.closest(".whatsapp-web-link")) {
+      setMessageLogsModal({
+        isOpen: true,
+        data: params,
+      });
+    }
   };
 
   // Custom Pagination
@@ -866,12 +940,24 @@ const AllLeads = () => {
             }
             type="button"
             variant="contained"
-            sx={{ padding: "12px", mb: 2 }}
+            sx={{ padding: "12px", mb: 2, mr: 2 }}
             color="success"
             size="lg"
           >
             <MdSend style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp
           </Button>
+          <Button
+            onClick={() => imagePickerRef.current.click()}
+            type="button"
+            variant="contained"
+            sx={{ padding: "12px", mb: 2, mr: 2 }}
+            color="success"
+            size="lg"
+          >
+            <MdSend style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp Image
+          </Button>
+
+          <input onInput={handleInputChange} type="file" ref={imagePickerRef} hidden/>
         </Box>
       )}
 

@@ -33,7 +33,9 @@ const Livelocation = () => {
             </div>
             <Footer />
           </div>
+         
         </div>
+           
       </div>
     </>
   );

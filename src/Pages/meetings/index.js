@@ -94,9 +94,9 @@ const Meetings = () => {
                     />
                   </div>
                 </div>
+              </div>           
               </div>
-            </div>
-            <Footer />
+              <Footer />
           </div>
         )}
       </div>
