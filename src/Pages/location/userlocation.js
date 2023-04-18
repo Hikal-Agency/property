@@ -11,11 +11,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import UserLocationComponent from "../../Components/location/UserLocationComponent";
 
 const Userlocation = () => {
-  const { currentMode, setopenBackDrop, setLocationData, BACKEND_URL } =
-    useStateContext();
+  const { 
+    currentMode, 
+    setopenBackDrop,
+    setLocationData,
+    BACKEND_URL
+  } = useStateContext();
 
   const [loading, setloading] = useState(true);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const location = useLocation();
 
   const FetchLocation = async (token) => {
@@ -34,10 +38,7 @@ const Userlocation = () => {
       })
       .catch((err) => {
         navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
+          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
         });
       });
   };
@@ -45,16 +46,13 @@ const Userlocation = () => {
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
 
-    setopenBackDrop(false);
+      setopenBackDrop(false);
 
     if (token) {
       FetchLocation(token);
     } else {
       navigate("/", {
-        state: {
-          error: "Something Went Wrong! Please Try Again",
-          continueURL: location.pathname,
-        },
+        state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
       });
     }
     // eslint-disable-next-line
@@ -74,9 +72,9 @@ const Userlocation = () => {
               <Navbar />
               <UserLocationComponent />
             </div>
+            <Footer />
           </div>
         </div>
-        <Footer />
       </div>
     </>
   );

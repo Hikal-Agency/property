@@ -10,7 +10,8 @@ import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 
 const Livelocation = () => {
-  const { currentMode, setopenBackDrop, DashboardData } = useStateContext();
+  const { currentMode, setopenBackDrop,
+    DashboardData } = useStateContext();
   useEffect(() => {
     setopenBackDrop(false);
     // eslint-disable-next-line
@@ -28,13 +29,13 @@ const Livelocation = () => {
           >
             <div className="px-5 ">
               <Navbar />
-              <LocationComponent
-                upcoming_meetings={DashboardData?.upcoming_meetings}
-              />
+              <LocationComponent upcoming_meetings={DashboardData?.upcoming_meetings} />
             </div>
+            <Footer />
           </div>
+         
         </div>
-        <Footer />
+           
       </div>
     </>
   );

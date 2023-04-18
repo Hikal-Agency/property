@@ -22,6 +22,7 @@ import { useNavigate, useLocation } from "react-router";
 import DeactivateModel from "./deactivateModel";
 
 const Clients = () => {
+  // const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
   const { currentMode, DataGridStyles, BACKEND_URL, User, setUser } =
     useStateContext();
   const [accountDeactivate, setAccountToDeactivate] = useState();
@@ -436,17 +437,18 @@ const Clients = () => {
       });
   };
 
+  
   useEffect(() => {
     // const token = localStorage.getItem("auth-token");
     // FetchLeads(token);
     const authToken = localStorage.getItem("auth-token");
     setToken(authToken);
     if (User?.uid && User?.loginId) {
-      // FetchProfile(authToken);
+      //FetchClient(token);
       FetchLeads(authToken);
     } else {
       if (authToken) {
-        // FetchProfile(authToken);
+        // FetchClient(token);
         FetchLeads(authToken);
         console.log("I ma fetching");
       } else {

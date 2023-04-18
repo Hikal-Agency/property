@@ -83,39 +83,23 @@ const WhatsappMarketing = () => {
     }
   }, [User, isUserSubscribed, page]);
   return (
-    // <>
-    //   <div className="min-h-screen">
-    //     <div className="flex">
-    //       <Sidebarmui />
-    //       <div
-    //         className={`w-full  ${
-    //           currentMode === "dark" ? "bg-black" : "bg-white"
-    //         }`}
-    //       >
-    //         <div className="px-5">
-    //           <Navbar />
-    //           {pagesComponents[page]}
-    //         </div>
-    //         <Footer />
-    //       </div>
-    //     </div>
-    //   </div>
-    // </>
     <>
-      <div className="min-h-screen flex">
-        <Sidebarmui />
-        <div
-          className={`w-full flex flex-col ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
-          }`}
-        >
-          <div className="flex-grow px-5">
-            <Navbar />
-            {pagesComponents[page]}
+      <div className="min-h-screen">
+        <div className="flex">
+          <Sidebarmui />
+          <div
+            className={`w-full  ${
+              currentMode === "dark" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className="px-5">
+              <Navbar />
+              {pagesComponents[page]}
+            </div>
+            <Footer />
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
