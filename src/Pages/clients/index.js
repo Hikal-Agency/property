@@ -437,6 +437,10 @@ const Clients = () => {
       });
   };
 
+<<<<<<< Updated upstream
+=======
+  
+>>>>>>> Stashed changes
   useEffect(() => {
     // const token = localStorage.getItem("auth-token");
     // FetchLeads(token);
