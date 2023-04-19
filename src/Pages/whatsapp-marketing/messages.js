@@ -209,11 +209,8 @@ const AllLeads = () => {
           urlencoded.append("token", ULTRA_MSG_TOKEN);
           urlencoded.append("to", "+" + contact);
           urlencoded.append("image", img);
-<<<<<<< Updated upstream
           urlencoded.append("caption","ولأول مرة بالشارقة تملك ڤيلتك بأقساط 1% شهريا فقط من المطور مباشرة وبدون فوائد بنكيه   للمزيد من التفاصيل سجل بياناتك الأن.    ⬇️                                                            http://hikalproperties.ae/ar-hayyan-t     وإذا كنت غير مهتم الرجاء إرسال رقم 2 لعدم إزعاجك مرة أخري");
-=======
-          urlencoded.append("caption","Image Sent");
->>>>>>> Stashed changes
+
 
 
           var myHeaders = new Headers();
