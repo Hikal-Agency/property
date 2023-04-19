@@ -150,7 +150,7 @@ const RenderManagers = ({ cellValues }) => {
 
       <Select
         id="manager"
-        value={manager2 || ""}
+        value={manager2 || "select_manager"}
         label="Manager"
         onChange={ChangeManager}
         size="medium"
@@ -158,15 +158,14 @@ const RenderManagers = ({ cellValues }) => {
         displayEmpty
         required
       >
-        {manager2 ? (
-          Managers.map((manager, index) => (
-            <MenuItem key={index} value={manager?.id}>
-              {manager?.userName}
-            </MenuItem>
-          ))
-        ) : (
-          <MenuItem value="">Select Manager</MenuItem>
+        {!manager2 && (
+          <MenuItem value="select_manager">Select Manager</MenuItem>
         )}
+        {Managers.map((manager, index) => (
+          <MenuItem key={index} value={manager?.id}>
+            {manager?.userName}
+          </MenuItem>
+        ))}
       </Select>
 
       {Dialogue && (

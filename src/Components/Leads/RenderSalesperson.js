@@ -153,7 +153,7 @@ const RenderSalesperson = ({ cellValues }) => {
       ) : (
         <Select
           id="SalesPerson"
-          value={SalesPerson2 || ""}
+          value={SalesPerson2 || "selected_agent"}
           name="salesperson"
           label="Salesperson"
           onChange={ChangeSalesPerson}
@@ -162,25 +162,25 @@ const RenderSalesperson = ({ cellValues }) => {
           displayEmpty
           required
         >
-          {SalesPerson2 ? (
-            //    <MenuItem value="0" disabled>
-            //    - - - - -
-            //  </MenuItem>
-            SalesPersonsList?.map((salesperson, index) => {
-              return (
-                <MenuItem
-                  key={index}
-                  value={salesperson?.id}
-                  data
-                  name={salesperson?.userName}
-                >
-                  {salesperson?.userName}
-                </MenuItem>
-              );
-            })
-          ) : (
-            <MenuItem value="">Select Salesperson</MenuItem>
+          {!SalesPerson2 && (
+            <MenuItem value={"selected_agent"} selected>
+              {" "}
+              Select Agent
+            </MenuItem>
           )}
+
+          {SalesPersonsList?.map((salesperson, index) => {
+            return (
+              <MenuItem
+                key={index}
+                value={salesperson?.id}
+                data
+                name={salesperson?.userName}
+              >
+                {salesperson?.userName}
+              </MenuItem>
+            );
+          })}
         </Select>
       )}
 

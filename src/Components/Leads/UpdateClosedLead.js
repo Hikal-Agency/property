@@ -1,5 +1,11 @@
 import { Button } from "@material-tailwind/react";
-import { Backdrop, CircularProgress, Modal, TextField, IconButton } from "@mui/material";
+import {
+  Backdrop,
+  CircularProgress,
+  Modal,
+  TextField,
+  IconButton,
+} from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
@@ -116,7 +122,7 @@ const UpdateLead = ({
         setloading(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         toast.error("Error in Fetching the Lead", {
           position: "top-right",
           autoClose: 3000,
@@ -188,7 +194,7 @@ const UpdateLead = ({
         setbtnloading(false);
       });
   };
-  
+
   function format(value) {
     if (value < 10) {
       return "0" + value;
@@ -217,17 +223,17 @@ const UpdateLead = ({
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md`}
         >
-        <IconButton
-          sx={{
-            position: "absolute",
-            right: 12,
-            top: 10,
-            color: (theme) => theme.palette.grey[500],
-          }}
-          onClick={handleLeadModelClose}
-        >
-          <IoMdClose size={18} />
-        </IconButton>
+          <IconButton
+            sx={{
+              position: "absolute",
+              right: 12,
+              top: 10,
+              color: (theme) => theme.palette.grey[500],
+            }}
+            onClick={handleLeadModelClose}
+          >
+            <IoMdClose size={18} />
+          </IconButton>
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />

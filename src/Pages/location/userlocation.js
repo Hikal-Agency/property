@@ -9,17 +9,20 @@ import axios from "axios";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
 import UserLocationComponent from "../../Components/location/UserLocationComponent";
+import { toast, ToastContainer } from "react-toastify";
 
 const Userlocation = () => {
-  const { 
-    currentMode, 
+  const {
+    currentMode,
     setopenBackDrop,
     setLocationData,
-    BACKEND_URL
+    BACKEND_URL,
+    setUser,
+    User,
   } = useStateContext();
 
   const [loading, setloading] = useState(true);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const location = useLocation();
 
   const FetchLocation = async (token) => {
@@ -38,21 +41,62 @@ const Userlocation = () => {
       })
       .catch((err) => {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
+      });
+  };
+
+  const FetchProfile = async (token) => {
+    await axios
+      .get(`${BACKEND_URL}/dashboard?page=1`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("User data is");
+        console.log(result.data);
+        setUser(result.data.user);
+        // setloading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Sorry something went wrong. Kindly refresh the page.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        // navigate("/", {
+        //   state: {
+        //     error: "Something Went Wrong! Please Try Again",
+        //     continueURL: location.pathname,
+        //   },
+        // });
       });
   };
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
 
-      setopenBackDrop(false);
+    setopenBackDrop(false);
 
     if (token) {
       FetchLocation(token);
+      FetchProfile(token);
     } else {
       navigate("/", {
-        state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+        state: {
+          error: "Something Went Wrong! Please Try Again",
+          continueURL: location.pathname,
+        },
       });
     }
     // eslint-disable-next-line
@@ -60,6 +104,7 @@ const Userlocation = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="min-h-screen">
         <div className="flex">
           <Sidebarmui />

@@ -23,7 +23,8 @@ import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import SingleLead from "../../Components/Leads/SingleLead";
-import UpdateLead from "../../Components/Leads/UpdateClosedLead";
+import UpdateLead from "../../Components/Leads/UpdateLead";
+// import UpdateLead from "../../Components/Leads/UpdateClosedLead";
 import BulkUpdateLeads from "../../Components/Leads/BulkUpdateLeads";
 import { toast, ToastContainer } from "react-toastify";
 import RenderPriority from "../../Components/Leads/RenderPriority";
@@ -865,7 +866,7 @@ const ClientLeads = ({
 
         // filter leads with feedback = no answer
         const feedback_no_answer = rowsdata.filter(
-          (row) => row?.feedback.toLowerCase() === "no answer"
+          (row) => row?.feedback?.toLowerCase() === "no answer"
         );
         const feedback_no_answer_count = feedback_no_answer.length;
 
