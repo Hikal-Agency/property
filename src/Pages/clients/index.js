@@ -445,6 +445,7 @@ const Clients = () => {
         // });
       });
   };
+<<<<<<< Updated upstream
 
 <<<<<<< Updated upstream
 =======
@@ -465,6 +466,8 @@ const Clients = () => {
     FetchProfile(token);
   }, []);
 
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   useEffect(() => {
     // const token = localStorage.getItem("auth-token");
