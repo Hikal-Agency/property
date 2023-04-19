@@ -1,5 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import { Box, Button as MuiButton } from "@mui/material";
+import { Box, Button as MuiButton, makeStyles, styled } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -41,7 +41,15 @@ const bulkUpdateBtnStyles = {
   fontWeight: "500",
 };
 
+const useStyles = styled({
+  customCheckbox: {
+    color: "#f44336", // Replace #f44336 with your desired color
+  },
+});
+
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
+  const classes = useStyles();
+
   const token = localStorage.getItem("auth-token");
   const navigate = useNavigate();
   const [singleLeadData, setsingleLeadData] = useState();
@@ -264,7 +272,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
-            <Button
+            {/* <Button
               onClick={() => HandleEditFunc(cellValues)}
               className={`editLeadBtn ${
                 currentMode === "dark"
@@ -272,9 +280,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
-            </Button>
+            </Button> */}
+
+            <p
+              onClick={() => HandleEditFunc(cellValues)}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineEdit size={20} />
+            </p>
+
             <Button
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
@@ -431,7 +450,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
-            <Button
+            {/* <Button
+              onClick={() => HandleEditFunc(cellValues)}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineEdit size={20} />
+            </Button> */}
+            <p
               onClick={() => HandleEditFunc(cellValues)}
               className={`editLeadBtn ${
                 currentMode === "dark"
@@ -441,7 +470,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
-            </Button>
+            </p>
             <Button
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
@@ -702,7 +731,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
-            <Button
+            {/* <Button
+              onClick={() => HandleEditFunc(cellValues)}
+              className={`${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineEdit size={20} />
+            </Button> */}
+            <p
               onClick={() => HandleEditFunc(cellValues)}
               className={`${
                 currentMode === "dark"
@@ -712,7 +751,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
-            </Button>
+            </p>
             <Button
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
@@ -1326,14 +1365,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }}
           sx={{
             boxShadow: 2,
-            "& .MuiDataGrid-cell:hover": {
-              cursor: "pointer",
+            "& .MuiSvgIcon-root": {
+              color: currentMode === "dark" ? "#ffffff" : "#000000",
             },
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
           }
-          // style={{justifyContent: "center", alignItems: "center"}}
         />
 
         {!UpdateLeadModelOpen && (
