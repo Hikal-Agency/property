@@ -206,11 +206,19 @@ const RenderManagers = ({ cellValues }) => {
                 <h1 className="font-semibold pt-3 text-lg text-center">
                   Do You Really Want Change the Manager from{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
+<<<<<<< Updated upstream
                     {manager2?.userName ?? "No manager"}
                   </span>{" "}
                   to{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                     {newManager?.userName}
+=======
+                    {Managers.find((manager) => manager.id === manager2).userName}
+                  </span>{" "}
+                  to{" "}
+                  <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
+                    {Managers.find((manager) => manager.id === newManager).userName}
+>>>>>>> Stashed changes
                   </span>{" "}
                   ?
                 </h1>
