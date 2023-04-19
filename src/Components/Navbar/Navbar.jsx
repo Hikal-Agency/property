@@ -289,13 +289,13 @@ const Navbar = () => {
         const last = index === pathnames.length - 1;
         const to = `/${pathnames.slice(0, index + 1).join('/')}`;
         const formattedLastURL = `${pathnames[index][0].toUpperCase()}${pathnames[index].slice(1, pathnames[index].length)}`.replace('%20', " ");
-        console.log("URL: ",formattedLastURL)
+        const isClientsURL = pathnames[0] === "clientLeads" || pathnames[0] === "agencyUsers";
         return last ? (
           <Typography color="primary" key={to}>
             {formattedLastURL}
           </Typography>
         ) : (
-          <LinkRouter underline="hover" color="inherit" to={`/${pathnames.slice(index, pathnames.length).join("/")}`} key={to}>
+          <LinkRouter underline="hover" color="inherit" to={isClientsURL ? "/clients" : `/${pathnames.slice(index, pathnames.length).join("/")}`} key={to}>
             {allRoutes.find((route) => route?.path?.includes(to))?.pageName}
           </LinkRouter>
         );

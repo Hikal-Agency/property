@@ -22,9 +22,13 @@ import { useNavigate, useLocation } from "react-router";
 import DeactivateModel from "./deactivateModel";
 
 const Clients = () => {
+<<<<<<< Updated upstream
   // const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
   const { currentMode, DataGridStyles, BACKEND_URL, User, setUser } =
     useStateContext();
+=======
+  const { currentMode, DataGridStyles, BACKEND_URL, User, setUser } = useStateContext();
+>>>>>>> Stashed changes
   const [accountDeactivate, setAccountToDeactivate] = useState();
   const [model, setModel] = useState(false);
   const [pageState, setpageState] = useState({
@@ -405,13 +409,18 @@ const Clients = () => {
 
   const FetchProfile = async (token) => {
     await axios
+<<<<<<< Updated upstream
       .get(`${BACKEND_URL}/dashboard?page=1`, {
+=======
+      .get(`${BACKEND_URL}/profile`, {
+>>>>>>> Stashed changes
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       })
       .then((result) => {
+<<<<<<< Updated upstream
         console.log("User data is");
         console.log(result.data);
         setUser(result.data.user);
@@ -440,6 +449,22 @@ const Clients = () => {
 <<<<<<< Updated upstream
 =======
   
+>>>>>>> Stashed changes
+=======
+        setUser(result.data.user[0]);
+      })
+      .catch((err) => {
+        navigate("/", {
+          state: { error: "Something Went Wrong! Please Try Again " },
+        });
+      });
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    FetchProfile(token);
+  }, []);
+
 >>>>>>> Stashed changes
   useEffect(() => {
     // const token = localStorage.getItem("auth-token");
