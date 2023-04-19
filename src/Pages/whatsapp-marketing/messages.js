@@ -212,6 +212,7 @@ const AllLeads = () => {
           urlencoded.append("caption","ولأول مرة بالشارقة تملك ڤيلتك بأقساط 1% شهريا فقط من المطور مباشرة وبدون فوائد بنكيه   للمزيد من التفاصيل سجل بياناتك الأن.    ⬇️                                                            http://hikalproperties.ae/ar-hayyan-t     وإذا كنت غير مهتم الرجاء إرسال رقم 2 لعدم إزعاجك مرة أخري");
 
 
+
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
           return fetch(`${ULTRA_MSG_API}/instance24405/messages/image`, {

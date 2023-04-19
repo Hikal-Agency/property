@@ -21,6 +21,7 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router";
 import DeactivateModel from "./deactivateModel";
 
+
 const Clients = () => {
   // const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
   const { currentMode, DataGridStyles, BACKEND_URL, User, setUser } =
@@ -405,7 +406,8 @@ const Clients = () => {
 
   const FetchProfile = async (token) => {
     await axios
-      .get(`${BACKEND_URL}/dashboard?page=1`, {
+      // .get(`${BACKEND_URL}/dashboard?page=1`, {
+        .get(`${BACKEND_URL}/profile`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -414,7 +416,8 @@ const Clients = () => {
       .then((result) => {
         console.log("User data is");
         console.log(result.data);
-        setUser(result.data.user);
+        // setUser(result.data.user);
+        setUser(result.data.user[0]);
         // setloading(false);
       })
       .catch((err) => {
