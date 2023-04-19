@@ -28,7 +28,7 @@ import RenderPriority from "./RenderPriority";
 import RenderFeedback from "./RenderFeedback";
 import RenderManagers from "./RenderManagers";
 import RenderSalesperson from "./RenderSalesperson";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteLeadModel from "./DeleteLead";
 import BulkImportModel from "./BulkImport";
 import BulkImport from "./BulkImport";
@@ -294,7 +294,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <AiOutlineEdit size={20} />
             </p>
 
-            <Button
+            <p
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
                 currentMode === "dark"
@@ -304,7 +304,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
               <AiOutlineHistory size={20} />
-            </Button>
+            </p>
           </div>
         );
       },
@@ -471,7 +471,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
             </p>
-            <Button
+            <p
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
                 currentMode === "dark"
@@ -481,7 +481,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
               <AiOutlineHistory size={20} />
-            </Button>
+            </p>
           </div>
         );
       },
@@ -752,7 +752,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
             </p>
-            <Button
+            {/* <p
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
                 currentMode === "dark"
@@ -760,10 +760,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
               <AiOutlineHistory size={20} />
-            </Button>
-            <Button
+            </p> */}
+            <Link
+              to={`/timeline/${cellValues.row.lid}`}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineHistory size={20} />
+            </Link>
+            <p
               onClick={() => {
                 setLeadToDelete(cellValues?.row.lid);
                 setDeleteModelOpen(true);
@@ -777,7 +786,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               }`}
             >
               <BsTrash className="deleteLeadBtn" size={18} />
-            </Button>
+            </p>
           </div>
         );
       },
