@@ -66,6 +66,19 @@ const RenderFeedback = ({ cellValues }) => {
     UpdateLeadData.append("lid", cellValues?.row?.lid);
     UpdateLeadData.append("feedback", newFeedback);
     if (newFeedback === "Meeting") {
+      if (!meetingData.meetingDate || !meetingData.meetingTime) {
+        toast.error("Meeting time and date required.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setbtnloading(false);
+        return;
+      }
       UpdateLeadData.append(
         "meetingDate",
         meetingData.meetingDate.toISOString().split("T")[0]
@@ -267,8 +280,16 @@ const RenderFeedback = ({ cellValues }) => {
                           });
                         }}
                         format="yyyy-MM-dd"
+                        // renderInput={(params) => (
+                        //   <TextField {...params} fullWidth />
+                        // )}
                         renderInput={(params) => (
-                          <TextField {...params} fullWidth />
+                          <TextField
+                            {...params}
+                            onKeyDown={(e) => e.preventDefault()}
+                            readOnly={true}
+                            fullWidth
+                          />
                         )}
                         InputProps={{ required: true }}
                       />

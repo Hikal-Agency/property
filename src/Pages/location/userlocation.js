@@ -117,9 +117,9 @@ const Userlocation = () => {
               <Navbar />
               <UserLocationComponent />
             </div>
-            <Footer />
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );
