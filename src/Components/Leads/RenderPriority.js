@@ -96,7 +96,7 @@ const RenderPriority = ({ cellValues }) => {
     >
       <Select
         id="priority"
-        value={Priority || "set_priority"}
+        value={Priority ?? "set_priority"}
         label="Priority"
         onChange={ChangePriority}
         size="medium"

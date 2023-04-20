@@ -153,7 +153,7 @@ const RenderSalesperson = ({ cellValues }) => {
       ) : (
         <Select
           id="SalesPerson"
-          value={SalesPerson2 || "selected_agent"}
+          value={SalesPerson2 ?? "selected_agent"}
           name="salesperson"
           label="Salesperson"
           onChange={ChangeSalesPerson}

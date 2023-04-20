@@ -188,7 +188,7 @@ const RenderFeedback = ({ cellValues }) => {
       </Select> */}
       <Select
         id="feedback"
-        value={Feedback || "selected"}
+        value={Feedback ?? "selected"}
         label="Feedback"
         onChange={ChangeFeedback}
         size="medium"

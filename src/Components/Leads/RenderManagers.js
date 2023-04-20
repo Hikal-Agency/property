@@ -150,7 +150,7 @@ const RenderManagers = ({ cellValues }) => {
 
       <Select
         id="manager"
-        value={manager2 || "select_manager"}
+        value={manager2 ?? "select_manager"}
         label="Manager"
         onChange={ChangeManager}
         size="medium"
@@ -205,19 +205,25 @@ const RenderManagers = ({ cellValues }) => {
                 <h1 className="font-semibold pt-3 text-lg text-center">
                   Do You Really Want Change the Manager from{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-
                     {manager2?.userName ?? "No manager"}
                   </span>{" "}
                   to{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                     {newManager?.userName}
-
-                  //   {Managers.find((manager) => manager.id === manager2).userName}
-                  // </span>{" "}
-                  // to{" "}
-                  // <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                  //   {Managers.find((manager) => manager.id === newManager).userName}
-
+                    //{" "}
+                    {
+                      Managers.find((manager) => manager.id === manager2)
+                        .userName
+                    }
+                    //{" "}
+                  </span>{" "}
+                  // to //{" "}
+                  <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
+                    //{" "}
+                    {
+                      Managers.find((manager) => manager.id === newManager)
+                        .userName
+                    }
                   </span>{" "}
                   ?
                 </h1>
