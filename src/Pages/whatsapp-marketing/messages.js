@@ -15,7 +15,7 @@ import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
-import {BsWhatsapp} from "react-icons/bs";
+import { BsWhatsapp } from "react-icons/bs";
 import Pagination from "@mui/material/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
@@ -180,7 +180,7 @@ const AllLeads = () => {
         );
       },
     },
-       {
+    {
       field: "whatsapp-web",
       headerName: "",
       // width: 150,
@@ -188,10 +188,21 @@ const AllLeads = () => {
       flex: 1,
       headerAlign: "center",
       renderCell: (cellValues) => {
-        return <div className="whatsapp-web-link" style={{display: "flex", justifyContent: "center", width: "100%"}}>
-          <BsWhatsapp size={24} onClick={() => window.open(`https://wa.me/${cellValues.row.leadContact}`)} color="green"/>
-        </div>;
-      }
+        return (
+          <div
+            className="whatsapp-web-link"
+            style={{ display: "flex", justifyContent: "center", width: "100%" }}
+          >
+            <BsWhatsapp
+              size={24}
+              onClick={() =>
+                window.open(`https://wa.me/${cellValues.row.leadContact}`)
+              }
+              color="green"
+            />
+          </div>
+        );
+      },
     },
   ];
 
@@ -204,14 +215,14 @@ const AllLeads = () => {
     try {
       const responses = await Promise.all(
         contactList.map((contact) => {
-          
           var urlencoded = new URLSearchParams();
           urlencoded.append("token", ULTRA_MSG_TOKEN);
           urlencoded.append("to", "+" + contact);
           urlencoded.append("image", img);
-          urlencoded.append("caption","ولأول مرة بالشارقة تملك ڤيلتك بأقساط 1% شهريا فقط من المطور مباشرة وبدون فوائد بنكيه   للمزيد من التفاصيل سجل بياناتك الأن.    ⬇️                                                            http://hikalproperties.ae/ar-hayyan-t     وإذا كنت غير مهتم الرجاء إرسال رقم 2 لعدم إزعاجك مرة أخري");
-
-
+          urlencoded.append(
+            "caption",
+            "ولأول مرة بالشارقة تملك ڤيلتك بأقساط 1% شهريا فقط من المطور مباشرة وبدون فوائد بنكيه   للمزيد من التفاصيل سجل بياناتك الأن.    ⬇️                                                            http://hikalproperties.ae/ar-hayyan-t     وإذا كنت غير مهتم الرجاء إرسال رقم 2 لعدم إزعاجك مرة أخري"
+          );
 
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -246,16 +257,15 @@ const AllLeads = () => {
     }
   }
 
-      const handleInputChange = (event) => {
-        let files = event.target.files;
-        let reader = new FileReader();
-        reader.readAsDataURL(files[0]);
- 
-        reader.onload = (e) => {
-            sendImage(e.target.result, selectedRows);
-        }
- 
-    }
+  const handleInputChange = (event) => {
+    let files = event.target.files;
+    let reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+
+    reader.onload = (e) => {
+      sendImage(e.target.result, selectedRows);
+    };
+  };
 
   const FetchLeads = async (token, lead_origin, lead_type) => {
     console.log("lead type is");
@@ -536,8 +546,7 @@ const AllLeads = () => {
   }, [pageState.page, leadTypeSelected, leadOriginSelected, reloadDataGrid]);
 
   const handleRowClick = async (params, event) => {
-
-    if(!event.target.closest(".whatsapp-web-link")) {
+    if (!event.target.closest(".whatsapp-web-link")) {
       setMessageLogsModal({
         isOpen: true,
         data: params,
@@ -958,7 +967,12 @@ const AllLeads = () => {
             <MdSend style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp Image
           </Button>
 
-          <input onInput={handleInputChange} type="file" ref={imagePickerRef} hidden/>
+          <input
+            onInput={handleInputChange}
+            type="file"
+            ref={imagePickerRef}
+            hidden
+          />
         </Box>
       )}
 
@@ -1010,6 +1024,9 @@ const AllLeads = () => {
             },
             "& .Mui-checked": {
               color: currentMode === "dark" ? "#FFF" : "#000",
+            },
+            "& .MuiSvgIcon-root": {
+              color: currentMode === "dark" ? "#ffffff" : "#000000",
             },
           }}
           getRowClassName={(params) =>

@@ -96,9 +96,9 @@ const WhatsappMarketing = () => {
               <Navbar />
               {pagesComponents[page]}
             </div>
-            <Footer />
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );
