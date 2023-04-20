@@ -515,7 +515,7 @@ const UpdateLead = ({
                       />
                       <TextField
                         id="LeadContactNumber"
-                        type={"number"}
+                        type={"tel"}
                         label="Contact number"
                         className="w-full mb-5"
                         style={{ marginBottom: "20px" }}

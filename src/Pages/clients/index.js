@@ -20,7 +20,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router";
 import DeactivateModel from "./deactivateModel";
-
+import apiClient from "../../axoisConfig";
 
 const Clients = () => {
   // const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
@@ -60,7 +60,17 @@ const Clients = () => {
 
   const HandleAccountDeactivation = async (accountDeactivate) => {
     try {
-      const deactivateAccount = await axios.get(
+      // const deactivateAccount = await axios.get(
+      //   `${BACKEND_URL}/blockagency/${accountDeactivate}`,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: "Bearer " + token,
+      //     },
+      //   }
+      // );
+
+      const deactivateAccount = await apiClient.get(
         `${BACKEND_URL}/blockagency/${accountDeactivate}`,
         {
           headers: {
@@ -102,7 +112,13 @@ const Clients = () => {
   const totalUser = async (token, id) => {
     let accountCount;
     try {
-      accountCount = await axios.get(`${BACKEND_URL}/totalUser/${id}`, {
+      // accountCount = await axios.get(`${BACKEND_URL}/totalUser/${id}`, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: "Bearer " + token,
+      //   },
+      // });
+      accountCount = await apiClient.get(`${BACKEND_URL}/totalUser/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -130,7 +146,13 @@ const Clients = () => {
   const activeAccountCount = async (token, id) => {
     let accounts;
     try {
-      accounts = await axios.get(`${BACKEND_URL}/activeAccounts/${id}`, {
+      // accounts = await axios.get(`${BACKEND_URL}/activeAccounts/${id}`, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: "Bearer " + token,
+      //   },
+      // });
+      accounts = await apiClient.get(`${BACKEND_URL}/activeAccounts/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -158,7 +180,13 @@ const Clients = () => {
   const LeadCount = async (token, id) => {
     let userLeads;
     try {
-      userLeads = await axios.get(`${BACKEND_URL}/usersleads/${id}`, {
+      // userLeads = await axios.get(`${BACKEND_URL}/usersleads/${id}`, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: "Bearer " + token,
+      //   },
+      // });
+      userLeads = await apiClient.get(`${BACKEND_URL}/usersleads/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -276,7 +304,7 @@ const Clients = () => {
       isLoading: true,
     }));
 
-    const MAX_RETRY_COUNT = 20; // maximum number of times to retry the API call
+    const MAX_RETRY_COUNT = 5; // maximum number of times to retry the API call
     const RETRY_DELAY = 9000; // delay in milliseconds between each retry
     const STORAGE_KEY = "leadsData";
     const EXPIRY_TIME = 10 * 60 * 1000; // 10 minutes expiry time
@@ -304,7 +332,49 @@ const Clients = () => {
     if (shouldFetchFromApi) {
       while (retryCount < MAX_RETRY_COUNT) {
         try {
-          const response = await axios.get(
+          // const response = await axios.get(
+          //   `${BACKEND_URL}/clients?page=${pageState.page}`,
+          //   {
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //       Authorization: "Bearer " + token,
+          //     },
+          //   }
+          // );
+          // console.log("Clients ", response);
+
+          // let response;
+          // apiClient
+          //   .get(`/clients?page=${pageState.page}`, {
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //       Authorization: "Bearer " + token,
+          //     },
+          //   })
+          //   .then((res) => {
+          //     console.log("Clients: ", res);
+          //     response = res;
+          //   })
+          //   .catch((error) => {
+          //     console.error("Error: ", error);
+          //     toast.error("Sorry something went wrong.", {
+          //       position: "top-right",
+          //       autoClose: 3000,
+          //       hideProgressBar: false,
+          //       closeOnClick: true,
+          //       draggable: true,
+          //       progress: undefined,
+          //       theme: "light",
+          //     });
+          //     setpageState((old) => ({
+          //       ...old,
+          //       isLoading: false,
+          //     }));
+          //   });
+
+          // console.log("Response: ", response);
+
+          const response = await apiClient.get(
             `${BACKEND_URL}/clients?page=${pageState.page}`,
             {
               headers: {
@@ -314,7 +384,7 @@ const Clients = () => {
             }
           );
 
-          console.log("Clients ", response);
+          console.log("Clients: ", response);
 
           const clientsData = response.data.clients.data;
           console.log("clients array is", clientsData);
@@ -407,7 +477,7 @@ const Clients = () => {
   const FetchProfile = async (token) => {
     await axios
       // .get(`${BACKEND_URL}/dashboard?page=1`, {
-        .get(`${BACKEND_URL}/profile`, {
+      .get(`${BACKEND_URL}/profile`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

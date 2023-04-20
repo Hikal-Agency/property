@@ -35,6 +35,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { ImLock, ImUsers, ImLocation } from "react-icons/im";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import apiClient from "../../axoisConfig";
 // import { Link as NextLink } from "next/link";
 
 const Sidebarmui = () => {
@@ -57,7 +58,7 @@ const Sidebarmui = () => {
   const [UnassignedLeadsCount, setUnassignedLeadsCount] = useState();
 
   const fetchHotLeads = (token) => {
-    axios
+    apiClient
       .get(`${BACKEND_URL}/sidebar/0`, {
         headers: {
           "Content-Type": "application/json",
@@ -127,18 +128,45 @@ const Sidebarmui = () => {
   //       setThirdPartyLeadsCount(result.data["THIRD PARTY LEADS"]);
   //     });
   // };
-  useEffect(() => {
-    if (!LeadsCount) {
-      const token = localStorage.getItem("auth-token");
-      fetchHotLeads(token);
-      fetchColdLeads(token);
-      fetchPersonalLeads(token);
-      fetchthirdpartyleads(token);
-      fetchunassignedleads(token);
-      setLeadsCount(true);
+  // useEffect(() => {
+  //   if (!LeadsCount) {
+  //     const token = localStorage.getItem("auth-token");
+  //     fetchHotLeads(token);
+  //     fetchColdLeads(token);
+  //     fetchPersonalLeads(token);
+  //     fetchthirdpartyleads(token);
+  //     fetchunassignedleads(token);
+  //     setLeadsCount(true);
 
-      console.log("Cold Leads: ", ColdLeadsCount);
-      console.log(User);
+  //     console.log("Cold Leads: ", ColdLeadsCount);
+  //     console.log(User);
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("auth-token");
+        const hotLeads = await fetchHotLeads(token);
+        const coldLeads = await fetchColdLeads(token);
+        const personalLeads = await fetchPersonalLeads(token);
+        const thirdPartyLeads = await fetchthirdpartyleads(token);
+        const unassignedLeads = await fetchunassignedleads(token);
+
+        console.log("Hot Leads: ", hotLeads);
+        console.log("Cold Leads: ", coldLeads);
+        console.log("Personal Leads: ", personalLeads);
+        console.log("Third Party Leads: ", thirdPartyLeads);
+        console.log("Unassigned Leads: ", unassignedLeads);
+
+        setLeadsCount(true);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (!LeadsCount) {
+      fetchData();
     }
     // eslint-disable-next-line
   }, []);
@@ -1177,7 +1205,7 @@ const Sidebarmui = () => {
   //     });
   // };
   const fetchPersonalLeads = (token) => {
-    axios
+    apiClient
       .get(`${BACKEND_URL}/sidebar/2`, {
         headers: {
           "Content-Type": "application/json",
@@ -1189,7 +1217,7 @@ const Sidebarmui = () => {
       });
   };
   const fetchunassignedleads = (token) => {
-    axios
+    apiClient
       .get(`${BACKEND_URL}/sidebar/4`, {
         headers: {
           "Content-Type": "application/json",
@@ -1208,7 +1236,7 @@ const Sidebarmui = () => {
   };
 
   const fetchthirdpartyleads = (token) => {
-    axios
+    apiClient
       .get(`${BACKEND_URL}/sidebar/3`, {
         headers: {
           "Content-Type": "application/json",
@@ -1219,20 +1247,19 @@ const Sidebarmui = () => {
         setThirdPartyLeadsCount(result.data["THIRD PARTY LEADS"]);
       });
   };
-  useEffect(() => {
-    if (!LeadsCount) {
-      const token = localStorage.getItem("auth-token");
-      fetchHotLeads(token);
-      fetchColdLeads(token);
-      fetchPersonalLeads(token);
-      fetchthirdpartyleads(token);
-      fetchunassignedleads(token);
-      setLeadsCount(true);
+  // useEffect(() => {
+  //   if (!LeadsCount) {
+  //     const token = localStorage.getItem("auth-token");
+  //     fetchHotLeads(token);
+  //     fetchColdLeads(token);
+  //     fetchPersonalLeads(token);
+  //     fetchthirdpartyleads(token);
+  //     fetchunassignedleads(token);
+  //     setLeadsCount(true);
 
-      console.log(User);
-    }
-    // eslint-disable-next-line
-  }, []);
+  //     console.log(User);
+  //   }
+  // }, []);
 
   //  DATA
   const links = [

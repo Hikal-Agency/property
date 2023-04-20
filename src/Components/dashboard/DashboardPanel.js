@@ -19,6 +19,7 @@ import UpcomingMeetingAgent from "../meetings/UpcomingMeetingAgent";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
+import apiClient from "../../axoisConfig";
 
 const DashboardPanel = () => {
   const {
@@ -38,7 +39,7 @@ const DashboardPanel = () => {
   const location = useLocation();
 
   const FetchProfile = async (token) => {
-    await axios
+    await apiClient
       .get(`${BACKEND_URL}/dashboard?page=1`, {
         headers: {
           "Content-Type": "application/json",
@@ -47,9 +48,15 @@ const DashboardPanel = () => {
       })
       .then((result) => {
         setDashboardData(result.data);
+        console.log("API CLIENT HITTED: ", result);
+
         console.log("Dashboard: ", result.data);
       })
       .catch((err) => {
+        if (err.response && err.response.status === 429) {
+          window.location.reload();
+        }
+
         console.log(err);
         toast.error("Sorry something went wrong. Kindly refresh the page.", {
           position: "top-right",
@@ -60,6 +67,12 @@ const DashboardPanel = () => {
           progress: undefined,
           theme: "light",
         });
+
+        // setTimeout(() => {
+        //   console.log("Reloading.....");
+        //   window.location.reload();
+        // }, 8000);
+
         // navigate("/", {
         //   state: {
         //     error: "Something Went Wrong! Please Try Again",
@@ -72,7 +85,7 @@ const DashboardPanel = () => {
   const fetchAllNewLeads = async () => {
     try {
       const token = localStorage.getItem("auth-token");
-      await axios
+      await apiClient
         .get(`${BACKEND_URL}/newLeads`, {
           headers: {
             "Content-Type": "application/json",
@@ -80,6 +93,7 @@ const DashboardPanel = () => {
           },
         })
         .then((result) => {
+          console.log("API CLIENT HITTED: ", result);
           setNewLeads(result.data?.leads?.total);
         })
         .catch((err) => {
@@ -92,7 +106,7 @@ const DashboardPanel = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    axios
+    apiClient
       .get(`${BACKEND_URL}/memberdeals`, {
         headers: {
           "Content-Type": "application/json",
@@ -109,10 +123,23 @@ const DashboardPanel = () => {
         console.log(err);
       });
 
-    FetchProfile(token);
+    // FetchProfile(token);
 
-    fetchAllNewLeads();
-    //eslint-disable-next-line
+    // fetchAllNewLeads();
+
+    const fetchData = async () => {
+      try {
+        console.log("Fetching profile...");
+        await FetchProfile(token);
+
+        console.log("Fetching new leads...");
+        await fetchAllNewLeads(token);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   // COUNTER DATA

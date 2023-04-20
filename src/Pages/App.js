@@ -42,7 +42,6 @@ import ClientLeads from "./clients/clientLeads";
 import Userlocation from "./location/userlocation";
 import UserAllLocation from "./location/useralllocation";
 
-
 const libraries = ["places"];
 
 const routes = [
@@ -202,9 +201,9 @@ const routes = [
     element: <Reports />,
   },
   {
-     path: "/support",
-     pageName: "Support",
-     element: <Tickets />
+    path: "/support",
+    pageName: "Support",
+    element: <Tickets />,
   },
   {
     path: "/activity",
@@ -288,8 +287,8 @@ const routes = [
 //       element: <ClosedealsPage />,
 //     },
 
-//     { 
-//       path: "/timeline/:id", 
+//     {
+//       path: "/timeline/:id",
 //       element: <TimelinePage />,
 //       pageName: "Timeline",
 //     },
@@ -333,59 +332,62 @@ const routes = [
 //       element: <ProfilePage />,
 //       pageName: "Profile",
 //     },
-//     { 
+//     {
 //       path: "/whatsapp-marketing/:page",
 //       element: <WhatsappMarketing/>,
 //       pageName: "Whatsapp Marketing",
 //     },
-//     { 
-//       path: "/location/livelocation", 
+//     {
+//       path: "/location/livelocation",
 //       pageName: "Live Location",
-//       element: <Livelocation /> 
+//       element: <Livelocation />
 //     },
-//     { 
-//       path: "/users", 
+//     {
+//       path: "/users",
 //       pageName: "Users",
-//       element: <Users /> 
+//       element: <Users />
 //     },
-//     { 
-//       path: "/activity", 
+//     {
+//       path: "/activity",
 //       pageName: "Activity Log",
-//       element: <ActivityLog /> 
+//       element: <ActivityLog />
 //     },
-//     { 
-//       path: "/offers", 
+//     {
+//       path: "/offers",
 //       pageName: "Offers",
-//       element: <Offers /> 
+//       element: <Offers />
 //     },
-//     { 
-//       path: "/reports", 
+//     {
+//       path: "/reports",
 //       pageName: "Reports",
-//       element: <Reports /> 
+//       element: <Reports />
 //     },
-//     // { 
-//     //   path: "/support", 
-//     //   element: <Tickets /> 
+//     // {
+//     //   path: "/support",
+//     //   element: <Tickets />
 //     // },
-//     { 
-//       path: "*", 
-//       element: <Error /> 
+//     {
+//       path: "*",
+//       element: <Error />
 //     },
 //   ];
 // >>>>>>> Stashed changes
 
-
 function App() {
-  const {setAllRoutes} = useStateContext();
+  const { setAllRoutes } = useStateContext();
   const router = createBrowserRouter(routes);
- useJsApiLoader({
-      googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
-      libraries,
-    });
+  const { BACKEND_URL } = useStateContext();
 
-    useEffect(() => {
-      setAllRoutes(routes);
-    }, []);
+  useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
+    libraries,
+  });
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    setAllRoutes(routes);
+  }, []);
 
   return <RouterProvider router={router} />;
 }
