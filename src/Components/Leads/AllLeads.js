@@ -41,15 +41,7 @@ const bulkUpdateBtnStyles = {
   fontWeight: "500",
 };
 
-const useStyles = styled({
-  customCheckbox: {
-    color: "#f44336", // Replace #f44336 with your desired color
-  },
-});
-
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
-  const classes = useStyles();
-
   const token = localStorage.getItem("auth-token");
   const navigate = useNavigate();
   const [singleLeadData, setsingleLeadData] = useState();
@@ -972,24 +964,24 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 index
               : index + 1,
           creationDate: row?.creationDate,
-          leadName: row?.leadName,
-          leadContact: row?.leadContact,
-          project: row?.project,
-          enquiryType: row?.enquiryType,
-          leadType: row?.leadType,
-          assignedToManager: row.assignedToManager,
-          assignedToSales: row.assignedToSales,
-          feedback: row?.feedback,
-          priority: row.priority,
-          language: row.language,
-          leadSource: row?.leadSource,
-          lid: row?.id,
-          lastEdited: row?.lastEdited,
-          leadFor: row?.leadFor,
-          leadStatus: row?.leadStatus,
-          leadCategory: leadCategory,
-          notes: row?.notes,
-          otp: row?.otp,
+          leadName: row?.leadName || "No Name",
+          leadContact: row?.leadContact || "No Contact",
+          project: row?.project || "No Project",
+          enquiryType: row?.enquiryType || "No Type",
+          leadType: row?.leadType || "No Type",
+          assignedToManager: row?.assignedToManager || null,
+          assignedToSales: row?.assignedToSales || null,
+          feedback: row?.feedback || null,
+          priority: row?.priority || null,
+          language: row?.language || "No language",
+          leadSource: row?.leadSource || "No source",
+          lid: row?.id || "No id",
+          lastEdited: row?.lastEdited || "No date",
+          leadFor: row?.leadFor || "No lead",
+          leadStatus: row?.leadStatus || "No status",
+          leadCategory: leadCategory || "No category",
+          notes: row?.notes || "No notes",
+          otp: row?.otp || "No otp",
           edit: "edit",
         }));
 
@@ -1041,24 +1033,24 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   index
                 : index + 1,
             creationDate: row?.creationDate,
-            leadName: row?.leadName,
-            leadContact: row?.leadContact,
-            project: row?.project,
-            enquiryType: row?.enquiryType,
-            leadType: row?.leadType,
-            assignedToManager: row.assignedToManager,
-            assignedToSales: row.assignedToSales,
-            feedback: row?.feedback,
-            priority: row.priority,
-            language: row.language,
-            leadSource: row?.leadSource,
-            lid: row?.id,
-            lastEdited: row?.lastEdited,
-            leadFor: row?.leadFor,
-            leadStatus: row?.leadStatus,
-            leadCategory: leadCategory,
-            notes: row?.notes,
-            otp: row?.otp,
+            leadName: row?.leadName || "No Name",
+            leadContact: row?.leadContact || "No Contact",
+            project: row?.project || "No Project",
+            enquiryType: row?.enquiryType || "No Type",
+            leadType: row?.leadType || "No Type",
+            assignedToManager: row?.assignedToManager || null,
+            assignedToSales: row?.assignedToSales || null,
+            feedback: row?.feedback || null,
+            priority: row?.priority || null,
+            language: row?.language || "No Language",
+            leadSource: row?.leadSource || "No Source",
+            lid: row?.id || "No id",
+            lastEdited: row?.lastEdited || "No Date",
+            leadFor: row?.leadFor || "No Lead",
+            leadStatus: row?.leadStatus || "No Status",
+            leadCategory: leadCategory || "No Category",
+            notes: row?.notes || "No notes",
+            otp: row?.otp || "No otp",
             edit: "edit",
           }));
           setpageState((old) => ({
