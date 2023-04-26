@@ -9,7 +9,8 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const ClosedealsPage = (props) => {
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setloading] = useState(true);
   const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
     useStateContext();
@@ -49,7 +50,10 @@ const ClosedealsPage = (props) => {
         FetchProfile(token);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       }
     }
@@ -71,7 +75,7 @@ const ClosedealsPage = (props) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex" style={{width: "100vw"}}>
+            <div className="flex" style={{ width: "100vw" }}>
               <Sidebarmui />
               <div className={`w-full `}>
                 <div className="px-5">
