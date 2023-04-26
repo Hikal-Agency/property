@@ -86,6 +86,14 @@ const UpdateLead = ({
     setSalesPerson2(event.target.value);
   };
 
+  const handleContact = (e) => {
+    const value = e.target.value;
+    const onlyDigitsAndPlus = /^[0-9+]*$/;
+    if (onlyDigitsAndPlus.test(value) && value.startsWith("+")) {
+      setLeadContact(value);
+    }
+  };
+
   async function setPersons(urls) {
     const token = localStorage.getItem("auth-token");
     const requests = urls.map((url) =>
@@ -514,6 +522,9 @@ const UpdateLead = ({
                         onChange={(e) => setLeadName(e.target.value)}
                       />
                       <TextField
+                        sx={{
+                          color: "red",
+                        }}
                         id="LeadContactNumber"
                         type={"tel"}
                         label="Contact number"
@@ -523,7 +534,9 @@ const UpdateLead = ({
                         size="medium"
                         required
                         value={LeadContact}
-                        onChange={(e) => setLeadContact(e.target.value)}
+                        // onChange={(e) => setLeadContact(e.target.value)}
+                        helperText="Enter contact number starting with '+'  "
+                        onChange={handleContact}
                         autoComplete
                       />
 
