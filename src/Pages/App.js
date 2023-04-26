@@ -146,12 +146,12 @@ const routes = [
     pageName: "Clients",
   },
   {
-    path: "/agencyUsers/:client_id",
+    path: "/clients/agencyUsers/:client_id",
     element: <AgencyUsers />,
     pageName: "Clients",
   },
   {
-    path: "/clientLeads/:client_id",
+    path: "/clients/clientLeads/:client_id",
     element: <ClientLeads />,
     pageName: "Clients",
   },

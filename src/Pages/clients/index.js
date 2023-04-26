@@ -42,7 +42,7 @@ const Clients = () => {
 
   const HandleViewAccounts = (cellValues) => {
     console.log("cellValues : ", cellValues.id);
-    navigate(`/agencyUsers/${cellValues.id}`);
+    navigate(`/clients/agencyUsers/${cellValues.id}`);
   };
 
   const HandleOpenModel = (cellValues) => {
@@ -55,7 +55,7 @@ const Clients = () => {
 
   const HandleViewLeads = (cellValues) => {
     console.log("cellValues : ", cellValues.id);
-    navigate(`/clientLeads/${cellValues.id}`);
+    navigate(`/clients/clientLeads/${cellValues.id}`);
   };
 
   const HandleAccountDeactivation = async (accountDeactivate) => {

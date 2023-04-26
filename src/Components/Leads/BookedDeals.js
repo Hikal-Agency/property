@@ -252,7 +252,7 @@ const BookedDeals = ({
                         <div className="flex flex-col justify-center items-center gap-4 mt-2 mb-4">
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                              label="Meeting Date"
+                              label="Deal Date"
                               value={leadDateValue}
                               views={["year", "month", "day"]}
                               required
@@ -275,7 +275,7 @@ const BookedDeals = ({
                           <TextField
                             required
                             fullWidth
-                            label="Lead Amount"
+                            label="Closed Amount"
                             value={leadAmount}
                             onChange={(e) => {
                               setLeadAmount(e.target.value);
