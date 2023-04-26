@@ -29,6 +29,7 @@ const UserLocationComponent = () => {
 
   const [selectedUser, setSelectedUser] = React.useState(null);
 
+  console.log("Last location data: ", LastLocationData);
   const mapContainerStyle = {
     width: "100%",
     height: "100%",
@@ -132,7 +133,7 @@ const UserLocationComponent = () => {
               {LastLocationData?.locations?.data?.map((user) => (
                 <>
                   <MarkerF
-                    key={user.user_id}
+                    key={user?.user_id}
                     position={{
                       lat: parseFloat(user.latitude),
                       lng: parseFloat(user.longitude),
@@ -202,7 +203,7 @@ const UserLocationComponent = () => {
                         type="button"
                         onClick={() =>
                           navigate(
-                            `/location/useralllocation/${location.user_id}`
+                            `/location/useralllocation/${location?.user_id}`
                           )
                         }
                         // onClick={() => handleRowClick(location.user_id)}

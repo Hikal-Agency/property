@@ -125,10 +125,10 @@ const UserAllLocation = (props) => {
                       {UserLocationData?.locations?.data?.map((user) => (
                         <>
                           <MarkerF
-                            key={user.user_id}
+                            key={user?.user_id}
                             position={{
-                              lat: parseFloat(user.latitude),
-                              lng: parseFloat(user.longitude),
+                              lat: parseFloat(user?.latitude),
+                              lng: parseFloat(user?.longitude),
                             }}
                             icon={{
                               url: "/oldpin.svg",
@@ -143,8 +143,8 @@ const UserAllLocation = (props) => {
                           {selectedUser ? (
                             <InfoWindow
                               position={{
-                                lat: parseFloat(selectedUser.latitude),
-                                lng: parseFloat(selectedUser.longitude),
+                                lat: parseFloat(selectedUser?.latitude),
+                                lng: parseFloat(selectedUser?.longitude),
                               }}
                               onCloseClick={() => {
                                 setSelectedUser(null);
@@ -155,8 +155,8 @@ const UserAllLocation = (props) => {
                                   {selectedUser.userName}
                                 </h1>
                                 <h1>
-                                  LatLong: {selectedUser.latitude},{" "}
-                                  {selectedUser.longitude}
+                                  LatLong: {selectedUser?.latitude},{" "}
+                                  {selectedUser?.longitude}
                                 </h1>
                                 <h1>
                                   Last updated: {selectedUser.recorded_at}
@@ -167,13 +167,13 @@ const UserAllLocation = (props) => {
                         </>
                       ))}
                       <MarkerF
-                        key={UserLocationData?.locations?.data[0].user_id}
+                        key={UserLocationData?.locations?.data[0]?.user_id}
                         position={{
                           lat: parseFloat(
-                            UserLocationData?.locations?.data[0].latitude
+                            UserLocationData?.locations?.data[0]?.latitude
                           ),
                           lng: parseFloat(
-                            UserLocationData?.locations?.data[0].longitude
+                            UserLocationData?.locations?.data[0]?.longitude
                           ),
                         }}
                         icon={{
@@ -191,9 +191,9 @@ const UserAllLocation = (props) => {
                 </div>
               </div>
             </div>
-            <Footer />
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );
