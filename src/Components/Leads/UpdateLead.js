@@ -3,6 +3,7 @@ import {
   Backdrop,
   Box,
   CircularProgress,
+  FormHelperText,
   IconButton,
   MenuItem,
   Modal,
@@ -355,26 +356,38 @@ const UpdateLead = ({
                       </h4>
 
                       {User.role === 1 && (
-                        <Select
-                          id="Manager"
-                          value={User?.role === 1 ? Manager : ""}
-                          disabled={User?.role !== 1 && true}
-                          label="Manager"
-                          onChange={ChangeManager}
-                          size="medium"
-                          className="w-full mb-5"
-                          displayEmpty
-                          required
-                        >
-                          <MenuItem value="0" disabled>
+                        <>
+                          <FormHelperText
+                            sx={{
+                              color: currentMode === "dark" ? "white" : "black",
+                            }}
+                          >
                             Manager
-                          </MenuItem>
-                          {Manager2?.map((person, index) => (
-                            <MenuItem key={index} value={person?.id || ""}>
-                              {person?.userName}
+                          </FormHelperText>
+                          {/* <label className="text-sm text-gray-500">
+                            Manager
+                          </label> */}
+                          <Select
+                            id="Manager"
+                            value={User?.role === 1 ? Manager : ""}
+                            disabled={User?.role !== 1 && true}
+                            label="Manager"
+                            onChange={ChangeManager}
+                            size="medium"
+                            className="w-full mb-5"
+                            displayEmpty
+                            required
+                          >
+                            <MenuItem value="0" disabled>
+                              Manager
                             </MenuItem>
-                          ))}
-                        </Select>
+                            {Manager2?.map((person, index) => (
+                              <MenuItem key={index} value={person?.id || ""}>
+                                {person?.userName}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </>
                       )}
                       {noAgents ? (
                         <p
@@ -388,26 +401,39 @@ const UpdateLead = ({
                         </p>
                       ) : (
                         User.role === 1 && (
-                          <Select
-                            id="SalesPerson"
-                            value={SalesPerson2 || ""}
-                            label="SalesPerson"
-                            onChange={ChangeSalesPerson}
-                            size="medium"
-                            className="w-full mb-5"
-                            displayEmpty
-                            disabled={User?.role !== 1 && true}
-                            // required={SalesPerson.length > 0 ? true : false}
-                          >
-                            <MenuItem value="0" disabled>
-                              Sales Person-
-                            </MenuItem>
-                            {SalesPerson?.map((person, index) => (
-                              <MenuItem key={index} value={person?.id || ""}>
-                                {person?.userName}
+                          <>
+                            <FormHelperText
+                              sx={{
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
+                              }}
+                            >
+                              Sales Agent
+                            </FormHelperText>
+                            {/* <label className="text-sm text-gray-500">
+                              Sales Agent
+                            </label> */}
+                            <Select
+                              id="SalesPerson"
+                              value={SalesPerson2 || ""}
+                              label="SalesPerson"
+                              onChange={ChangeSalesPerson}
+                              size="medium"
+                              className="w-full mb-5"
+                              displayEmpty
+                              disabled={User?.role !== 1 && true}
+                              // required={SalesPerson.length > 0 ? true : false}
+                            >
+                              <MenuItem value="0" disabled>
+                                Sales Person-
                               </MenuItem>
-                            ))}
-                          </Select>
+                              {SalesPerson?.map((person, index) => (
+                                <MenuItem key={index} value={person?.id || ""}>
+                                  {person?.userName}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </>
                         )
                       )}
                     </Box>
@@ -436,6 +462,16 @@ const UpdateLead = ({
                         onChange={(e) => setLeadProject(e.target.value)}
                       />
 
+                      <FormHelperText
+                        sx={{
+                          color: currentMode === "dark" ? "white" : "black",
+                        }}
+                      >
+                        Enquiry About
+                      </FormHelperText>
+                      {/* <label className="text-sm text-gray-500">
+                        Enquiry About
+                      </label> */}
                       <Select
                         id="enquiry"
                         value={EnquiryType}
@@ -460,6 +496,16 @@ const UpdateLead = ({
                         <MenuItem value={"Other"}>Others</MenuItem>
                       </Select>
 
+                      <FormHelperText
+                        sx={{
+                          color: currentMode === "dark" ? "white" : "black",
+                        }}
+                      >
+                        Property Type
+                      </FormHelperText>
+                      {/* <label className="text-sm text-gray-500">
+                        Property Type
+                      </label> */}
                       <Select
                         id="property-type"
                         value={PropertyType}
@@ -479,13 +525,21 @@ const UpdateLead = ({
                         <MenuItem value={"Townhouse"}>TownHouse</MenuItem>
                       </Select>
 
+                      <FormHelperText
+                        sx={{
+                          color: currentMode === "dark" ? "white" : "black",
+                        }}
+                      >
+                        For
+                      </FormHelperText>
+                      {/* <label className="text-sm text-gray-500">For</label> */}
                       <Select
                         id="for"
                         value={ForType}
                         label="Purpose of enquiry"
                         onChange={ChangeForType}
                         size="medium"
-                        className="w-full"
+                        className="w-full mb-3 "
                         displayEmpty
                         required
                       >
@@ -552,6 +606,13 @@ const UpdateLead = ({
                         onChange={(e) => setLeadEmail(e.target.value)}
                       />
 
+                      <FormHelperText
+                        sx={{
+                          color: currentMode === "dark" ? "white" : "black",
+                        }}
+                      >
+                        For
+                      </FormHelperText>
                       <Select
                         id="LanguagePrefered"
                         value={LanguagePrefered}
@@ -586,7 +647,7 @@ const UpdateLead = ({
                   disabled={btnloading ? true : false}
                 >
                   {btnloading ? (
-                    <div className="flex items-center justify-center space-x-1">
+                    <div className="flex items-center justify-center space-x-1 mt-5">
                       <CircularProgress size={18} sx={{ color: "white" }} />
                     </div>
                   ) : (
