@@ -24,6 +24,8 @@ import NotificationsMenu from "./NotificationsMenu";
 import UpcomingMeetingsMenu from "./UpcomingMeetingsMenu";
 import { Link, useLocation } from "react-router-dom";
 import BreadCrumb from "./BreadCrumb";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <Tooltip title={title} arrow placement="bottom">
@@ -47,7 +49,9 @@ const Navbar = () => {
     currentMode,
     setCurrentMode,
     LightIconsColor,
+    setUser,
     User,
+    BACKEND_URL,
     isCollapsed,
     allRoutes,
     setIsCollapsed,
@@ -77,12 +81,53 @@ const Navbar = () => {
     setAnchorEl(null);
     setOpen(false);
   };
+
+  const FetchProfile = async (token) => {
+    await axios
+      // .get(`${BACKEND_URL}/dashboard?page=1`, {
+      .get(`${BACKEND_URL}/profile`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("User data is");
+        console.log(result.data);
+        // setUser(result.data.user);
+        setUser(result.data.user[0]);
+        // setloading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Sorry something went wrong. Kindly refresh the page.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        // navigate("/", {
+        //   state: {
+        //     error: "Something Went Wrong! Please Try Again",
+        //     continueURL: location.pathname,
+        //   },
+        // });
+      });
+  };
+
   const LogoutUser = () => {
     localStorage.removeItem("auth-token");
     window.open("/", "_self");
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+
+    console.log("Token: ", token);
+    FetchProfile(token);
     const handleResize = () => setScreenSize(window.innerWidth);
 
     window.addEventListener("resize", handleResize);
@@ -124,6 +169,7 @@ const Navbar = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="flex justify-between p-2  relative">
         <div
           onClick={() => {

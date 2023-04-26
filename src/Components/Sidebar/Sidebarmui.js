@@ -1711,7 +1711,7 @@ const Sidebarmui = () => {
   // );
 
   useEffect(() => {
-    FetchProfile();
+    // FetchProfile();
   }, [User]);
   return (
     <div
