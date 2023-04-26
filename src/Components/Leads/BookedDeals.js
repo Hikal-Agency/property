@@ -267,8 +267,15 @@ const BookedDeals = ({
                                 );
                               }}
                               format="yyyy-MM-dd"
+                              // renderInput={(params) => (
+                              //   <TextField {...params} fullWidth />
+                              // )}
                               renderInput={(params) => (
-                                <TextField {...params} fullWidth />
+                                <TextField
+                                  {...params}
+                                  onKeyDown={(e) => e.preventDefault()}
+                                  readOnly={true}
+                                />
                               )}
                             />
                           </LocalizationProvider>
