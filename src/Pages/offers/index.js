@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
@@ -49,14 +49,21 @@ const Offers = () => {
   };
   useEffect(() => {
     setopenBackDrop(false);
-      
-    if(!(User?.uid && User?.loginId)){
+
+    if (!(User?.uid && User?.loginId)) {
       const token = localStorage.getItem("auth-token");
       if (token) {
-        FetchProfile(token);
+        // FetchProfile(token);
+        const user = localStorage.getItem("user");
+        console.log("User in add lead: ", user);
+        setUser(JSON.parse(user));
+        // setloading(false);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       }
     }
@@ -64,7 +71,7 @@ const Offers = () => {
   }, []);
   return (
     <>
-    {/* <ToastContainer/> */}
+      {/* <ToastContainer/> */}
       <div className="flex min-h-screen">
         <div
           className={`w-full ${
@@ -92,7 +99,10 @@ const Offers = () => {
                         borderRadius: "5px",
                         backgroundColor: "#da1f26",
                       },
-                      "& .Mui-selected": { color: "white !important", zIndex: "1" },
+                      "& .Mui-selected": {
+                        color: "white !important",
+                        zIndex: "1",
+                      },
                     }}
                     className={`w-full rounded-md overflow-hidden ${
                       currentMode === "dark" ? "bg-black" : "bg-white"
@@ -137,7 +147,6 @@ const Offers = () => {
                       </div>
                     </TabPanel>
                   </div>
-
                 </div>
               </div>
             </div>

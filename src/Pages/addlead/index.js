@@ -51,11 +51,16 @@ const AddLead = (props) => {
     setopenBackDrop(false);
     if (User?.uid && User?.loginId) {
       setloading(false);
+      console.log("User: ", User);
     } else {
       setloading(true);
       const token = localStorage.getItem("auth-token");
       if (token) {
-        FetchProfile(token);
+        // FetchProfile(token);
+        const user = localStorage.getItem("user");
+        console.log("User in add lead: ", user);
+        setUser(JSON.parse(user));
+        setloading(false);
       } else {
         navigate("/", {
           state: {

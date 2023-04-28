@@ -55,6 +55,8 @@ const AddLeadComponent = () => {
   const [value, setValue] = useState();
   const [error, setError] = useState(false);
 
+  console.log("User in add lead component: ", User);
+
   const handleEmail = (e) => {
     setEmailError(false);
     const value = e.target.value;

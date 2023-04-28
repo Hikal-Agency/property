@@ -9,7 +9,8 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const TransferredLeads = (props) => {
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setloading] = useState(true);
   const {
     User,
@@ -34,7 +35,10 @@ const TransferredLeads = (props) => {
       })
       .catch((err) => {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again ", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again ",
+            continueURL: location.pathname,
+          },
         });
       });
   };
@@ -45,10 +49,17 @@ const TransferredLeads = (props) => {
     } else {
       const token = localStorage.getItem("auth-token");
       if (token) {
-        FetchProfile(token);
+        // FetchProfile(token);
+        const user = localStorage.getItem("user");
+        console.log("User in add lead: ", user);
+        setUser(JSON.parse(user));
+        setloading(false);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       }
     }

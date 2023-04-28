@@ -82,44 +82,122 @@ const Navbar = () => {
     setOpen(false);
   };
 
+  // const FetchProfile = async (token) => {
+  //   await axios
+  //     // .get(`${BACKEND_URL}/dashboard?page=1`, {
+  //     .get(`${BACKEND_URL}/profile`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log("User data is");
+  //       console.log(result.data);
+  //       // setUser(result.data.user);
+  //       setUser(result.data.user[0]);
+  //       // setloading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       toast.error("Sorry something went wrong. Kindly refresh the page.", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //       // navigate("/", {
+  //       //   state: {
+  //       //     error: "Something Went Wrong! Please Try Again",
+  //       //     continueURL: location.pathname,
+  //       //   },
+  //       // });
+  //     });
+  // };
+
   const FetchProfile = async (token) => {
-    await axios
-      // .get(`${BACKEND_URL}/dashboard?page=1`, {
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("User data is");
-        console.log(result.data);
-        // setUser(result.data.user);
-        setUser(result.data.user[0]);
-        // setloading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Sorry something went wrong. Kindly refresh the page.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      // If user data is stored in local storage, parse and set it in state
+      setUser(JSON.parse(storedUser));
+      console.log("User from navbar", User);
+    } else {
+      await axios
+        .get(`${BACKEND_URL}/profile`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          console.log("User data is");
+          console.log(result.data);
+
+          // Create a new object with only the specific fields you want to store
+          const user = {
+            addedBy: result.data.user[0].addedBy,
+            addedFor: result.data.user[0].addedFor,
+            agency: result.data.user[0].agency,
+            created_at: result.data.user[0].created_at,
+            creationDate: result.data.user[0].creationDate,
+            displayImg: result.data.user[0].displayImg,
+            expiry_date: result.data.user[0].expiry_date,
+            gender: result.data.user[0].gender,
+            id: result.data.user[0].id,
+            idExpiryDate: result.data.user[0].idExpiryDate,
+            isParent: result.data.user[0].isParent,
+            is_online: result.data.user[0].is_online,
+            joiningDate: result.data.user[0].joiningDate,
+            loginId: result.data.user[0].loginId,
+            loginStatus: result.data.user[0].loginStatus,
+            master: result.data.user[0].master,
+            nationality: result.data.user[0].nationality,
+            notes: result.data.user[0].notes,
+            old_password: result.data.user[0].old_password,
+            package_name: result.data.user[0].package_name,
+            plusSales: result.data.user[0].plusSales,
+            position: result.data.user[0].position,
+            profile_picture: result.data.user[0].profile_picture,
+            role: result.data.user[0].role,
+            status: result.data.user[0].status,
+            target: result.data.user[0].target,
+            uid: result.data.user[0].uid,
+            updated_at: result.data.user[0].updated_at,
+            userEmail: result.data.user[0].userEmail,
+            userName: result.data.user[0].userName,
+            userType: result.data.user[0].userType,
+          };
+
+          setUser(user);
+
+          console.log("Localstorage: ", user);
+
+          // Save user data to local storage
+          localStorage.setItem("user", JSON.stringify(user));
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error("Sorry something went wrong. Kindly refresh the page.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
-        // navigate("/", {
-        //   state: {
-        //     error: "Something Went Wrong! Please Try Again",
-        //     continueURL: location.pathname,
-        //   },
-        // });
-      });
+    }
   };
 
   const LogoutUser = () => {
     localStorage.removeItem("auth-token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("leadsData");
     window.open("/", "_self");
   };
 

@@ -17,7 +17,8 @@ const AllUnassignedLeads = () => {
     pageState,
     BACKEND_URL,
   } = useStateContext();
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
   var lead_type = lead_type2.replace(/%20/g, " ");
   const pathname2 = location.pathname.split("/")[1];
@@ -49,10 +50,17 @@ const AllUnassignedLeads = () => {
     } else {
       const token = localStorage.getItem("auth-token");
       if (token) {
-        FetchProfile(token);
+        // FetchProfile(token);
+        const user = localStorage.getItem("user");
+        console.log("User in add lead: ", user);
+        setUser(JSON.parse(user));
+        setloading(false);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       }
     }
@@ -98,7 +106,7 @@ const AllUnassignedLeads = () => {
                     </span>
                   </h1>
                   <AllLeads
-                  dataTableChanged={dataTableChanged}
+                    dataTableChanged={dataTableChanged}
                     BACKEND_URL={BACKEND_URL}
                     lead_type={lead_type}
                     lead_origin={pathname2}

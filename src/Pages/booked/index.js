@@ -55,7 +55,11 @@ const Booked = () => {
     } else {
       const token = localStorage.getItem("auth-token");
       if (token) {
-        FetchProfile(token);
+        // FetchProfile(token);
+        const user = localStorage.getItem("user");
+        console.log("User in add lead: ", user);
+        setUser(JSON.parse(user));
+        setloading(false);
       } else {
         navigate("/", {
           state: {

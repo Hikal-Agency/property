@@ -247,10 +247,10 @@ const Contacts = () => {
                   style={{ margin: "auto" }}
                 />
               </Stack>
-              <Footer />
             </div>
           </div>
         )}
+        <Footer />
       </div>
     </>
   );

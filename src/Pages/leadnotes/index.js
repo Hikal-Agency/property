@@ -20,7 +20,7 @@ const LeadNotesPage = (props) => {
   const [loading, setloading] = useState(true);
   const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
     useStateContext();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const location = useLocation();
   const FetchProfile = async (token) => {
     await axios
@@ -47,10 +47,17 @@ const LeadNotesPage = (props) => {
     } else {
       const token = localStorage.getItem("auth-token");
       if (token) {
-        FetchProfile(token);
+        // FetchProfile(token);
+        const user = localStorage.getItem("user");
+        console.log("User in add lead: ", user);
+        setUser(JSON.parse(user));
+        setloading(false);
       } else {
         navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
         });
       }
     }
