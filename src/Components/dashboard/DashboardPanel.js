@@ -129,8 +129,8 @@ const DashboardPanel = () => {
 
     const fetchData = async () => {
       try {
-        console.log("Fetching profile...");
-        await FetchProfile(token);
+        // console.log("Fetching profile...");
+        // await FetchProfile(token);
 
         console.log("Fetching new leads...");
         await fetchAllNewLeads(token);
