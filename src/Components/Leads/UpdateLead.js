@@ -9,6 +9,7 @@ import {
   Modal,
   Select,
   TextField,
+  Typography,
 } from "@mui/material";
 import axios from "axios";
 import moment from "moment";
@@ -16,6 +17,14 @@ import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
+import "react-phone-number-input/style.css";
+import PhoneInput, {
+  formatPhoneNumber,
+  formatPhoneNumberIntl,
+  isValidPhoneNumber,
+  isPossiblePhoneNumber,
+} from "react-phone-number-input";
+import classNames from "classnames";
 
 const UpdateLead = ({
   LeadModelOpen,
@@ -34,10 +43,12 @@ const UpdateLead = ({
     setSalesPerson: setAllSalesPersons,
     SalesPerson: AllSalesPersons,
   } = useStateContext();
+  const [value, setValue] = useState();
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
   const [noAgents, setNoAgents] = useState(false);
   const [filter_manager, setfilter_manager] = useState();
+  const [error, setError] = useState(false);
   const style = {
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
@@ -58,6 +69,35 @@ const UpdateLead = ({
   const [LeadEmail, setLeadEmail] = useState("");
   const [LeadProject, setLeadProject] = useState("");
   const [LeadNotes, setLeadNotes] = useState("");
+
+  // const handlePhone = (e) => {
+  //   console.log("Phone: ", e.target.value);
+  //   setValue(e.target.value);
+  //   if (isPossiblePhoneNumber(value)) {
+  //     console.log("Possible: ", e.target.value);
+  //     if (isValidPhoneNumber(value)) {
+  //       setValue(formatPhoneNumberIntl(value));
+  //       console.log("Valid: ", value);
+  //     }
+  //   }
+  // };
+
+  const handlePhone = () => {
+    setError(false);
+    const inputValue = value;
+    console.log("Phone: ", inputValue);
+    if (inputValue && isPossiblePhoneNumber(inputValue)) {
+      console.log("Possible: ", inputValue);
+      if (isValidPhoneNumber(inputValue)) {
+        setLeadContact(formatPhoneNumberIntl(inputValue));
+        console.log("Valid: ", LeadContact);
+      } else {
+        setError("No a valid number.");
+      }
+    } else {
+      setError("No a valid number.");
+    }
+  };
 
   const ChangePropertyType = (event) => {
     setPropertyType(event.target.value);
@@ -575,7 +615,45 @@ const UpdateLead = ({
                         value={LeadName}
                         onChange={(e) => setLeadName(e.target.value)}
                       />
-                      <TextField
+                      <PhoneInput
+                        placeholder="Enter phone number"
+                        value={value || LeadContact}
+                        onChange={(value) => setValue(value)}
+                        onKeyDown={handlePhone}
+                        error={error}
+                        className={classNames({
+                          "dark-mode": currentMode === "dark",
+                        })}
+                        style={{
+                          // background: `${
+                          //   currentMode === "dark" ? "#000000" : "#fff"
+                          // }`,
+                          "& .PhoneInputCountryIconImg": {
+                            color: "#fff",
+                          },
+                          padding: "10px",
+                          border: `1px solid ${
+                            currentMode === "dark" ? "#fff" : "#ccc"
+                          }`,
+                          borderRadius: "3px",
+                          outline: "none",
+                        }}
+                        inputStyle={{
+                          outline: "none",
+                          fontSize: "16px",
+                        }}
+                      />
+                      {error && (
+                        <Typography variant="body2" color="error">
+                          {error}
+                        </Typography>
+                      )}
+                      <br />
+                      {/* Possible{" "}
+                      {value && isPossiblePhoneNumber(value)
+                        ? value
+                        : "Invalid"} */}
+                      {/* <TextField
                         sx={{
                           color: "red",
                         }}
@@ -592,8 +670,7 @@ const UpdateLead = ({
                         helperText="Enter contact number starting with '+'  "
                         onChange={handleContact}
                         autoComplete
-                      />
-
+                      /> */}
                       <TextField
                         id="LeadEmailAddress"
                         type={"email"}
@@ -605,7 +682,6 @@ const UpdateLead = ({
                         value={LeadEmail}
                         onChange={(e) => setLeadEmail(e.target.value)}
                       />
-
                       <FormHelperText
                         sx={{
                           color: currentMode === "dark" ? "white" : "black",

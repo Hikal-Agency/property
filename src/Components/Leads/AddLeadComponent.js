@@ -4,6 +4,7 @@ import {
   Select,
   CircularProgress,
   Box,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -11,6 +12,14 @@ import { Button } from "@material-tailwind/react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
+import "react-phone-number-input/style.css";
+import PhoneInput, {
+  formatPhoneNumber,
+  formatPhoneNumberIntl,
+  isValidPhoneNumber,
+  isPossiblePhoneNumber,
+} from "react-phone-number-input";
+import classNames from "classnames";
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -43,6 +52,8 @@ const AddLeadComponent = () => {
   const [emailError, setEmailError] = useState(false);
   const [LeadProject, setLeadProject] = useState("");
   const [LeadNotes, setLeadNotes] = useState("");
+  const [value, setValue] = useState();
+  const [error, setError] = useState(false);
 
   const handleEmail = (e) => {
     setEmailError(false);
@@ -60,6 +71,23 @@ const AddLeadComponent = () => {
     setLeadEmail(value);
 
     console.log("Email state: ", LeadEmail);
+  };
+
+  const handleContact = () => {
+    setError(false);
+    const inputValue = value;
+    console.log("Phone: ", inputValue);
+    if (inputValue && isPossiblePhoneNumber(inputValue)) {
+      console.log("Possible: ", inputValue);
+      if (isValidPhoneNumber(inputValue)) {
+        setLeadContact(formatPhoneNumberIntl(inputValue));
+        console.log("Valid: ", LeadContact);
+      } else {
+        setError("No a valid number.");
+      }
+    } else {
+      setError("No a valid number.");
+    }
   };
 
   const handlePhone = (e) => {
@@ -167,6 +195,7 @@ const AddLeadComponent = () => {
         setLeadNotes("");
         setManager("");
         setSalesPerson2("");
+        setValue("");
       })
       .catch((err) => {
         console.log(err);
@@ -460,7 +489,41 @@ const AddLeadComponent = () => {
                               value={LeadName}
                               onChange={(e) => setLeadName(e.target.value)}
                             />
-                            <TextField
+                            <PhoneInput
+                              placeholder="Enter phone number"
+                              value={value ? value : LeadContact}
+                              onChange={(value) => setValue(value)}
+                              onKeyDown={handleContact}
+                              error={error}
+                              className={classNames({
+                                "dark-mode": currentMode === "dark",
+                              })}
+                              style={{
+                                background: `${
+                                  currentMode === "dark" ? "#000000" : "#fff"
+                                }`,
+                                "& .PhoneInputCountryIconImg": {
+                                  color: "#fff",
+                                },
+                                padding: "10px",
+                                border: `1px solid ${
+                                  currentMode === "dark" ? "#fff" : "#ccc"
+                                }`,
+                                borderRadius: "3px",
+                                outline: "none",
+                              }}
+                              inputStyle={{
+                                outline: "none",
+                                fontSize: "16px",
+                              }}
+                            />
+                            {error && (
+                              <Typography variant="body2" color="error">
+                                {error}
+                              </Typography>
+                            )}
+                            <br />
+                            {/* <TextField
                               id="LeadContactNumber"
                               type={"tel"}
                               label="Contact number"
@@ -471,7 +534,7 @@ const AddLeadComponent = () => {
                               required
                               value={LeadContact}
                               onChange={handlePhone}
-                            />
+                            /> */}
 
                             {/* <TextField
                               id="LeadEmailAddress"
