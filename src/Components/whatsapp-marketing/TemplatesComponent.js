@@ -4,6 +4,7 @@ import CreateTemplateModal from "./CreateTemplateModal";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "axios";
 import { BiPen } from "react-icons/bi";
+import Markdown from 'markdown-to-jsx';
 
 const TemplatesComponent = () => {
   const { BACKEND_URL } = useStateContext();
@@ -56,7 +57,7 @@ const TemplatesComponent = () => {
                   </h3>
                   <hr />
                   <p style={{ marginTop: 10, whiteSpace: "pre-wrap" }}>
-                    {template.body}
+                    <Markdown>{template.body}</Markdown>
                   </p>
                 </Box>
               );

@@ -42,11 +42,52 @@ const leadTypes = [
   { id: "unreachable", formattedValue: "Unreachable" },
 ];
 
+const enquiryTypes = [
+  {
+    id: "studio",
+    formattedValue: "Studio",
+  },
+  {
+    id: "1 bedroom",
+    formattedValue: "1 Bedroom",
+  },
+  {
+    id: "2 bedrooms",
+    formattedValue: "2 Bedrooms",
+  },
+  {
+    id: "3 bedrooms",
+    formattedValue: "3 Bedrooms",
+  },
+  {
+    id: "4 bedrooms",
+    formattedValue: "4 Bedrooms",
+  },
+  {
+    id: "5 bedrooms",
+    formattedValue: "5 Bedrooms",
+  },
+  {
+    id: "6 bedrooms",
+    formattedValue: "6 Bedrooms",
+  },
+  {
+    id: "retail",
+    formattedValue: "Retail",
+  },
+  {
+    id: "others",
+    formattedValue: "Others",
+  },
+];
+
 const AllLeads = () => {
   const token = localStorage.getItem("auth-token");
   const [selectedRows, setSelectedRows] = useState([]);
   const [leadOriginSelected, setLeadOriginSelected] = useState(leadOrigins[0]);
   const [leadTypeSelected, setLeadTypeSelected] = useState(leadTypes[0]);
+  const [enquiryTypeSelected, setEnquiryTypeSelected] = useState({id: 0});
+  const [projectNameTyped, setProjectNameTyped] = useState("");
   const [openMessageModal, setOpenMessageModal] = useState({
     open: false,
     isWhatsapp: false,
@@ -57,8 +98,6 @@ const AllLeads = () => {
   });
   const [whatsappSenderNo, setWhatsappSenderNo] = useState("");
   const imagePickerRef = useRef();
-
-  const currentDate = new Date();
 
   // const [openMessageModal, setOpenMessageModal] = useState(false);
 
@@ -117,6 +156,22 @@ const AllLeads = () => {
       minWidth: 110,
       flex: 1,
       headerAlign: "left",
+    },
+    {
+      field: "enquiryType",
+      headerName: "Enquiry",
+      // width: 110,
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "leadType",
+      headerName: "Property",
+      // width: 100,
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
     },
     {
       field: "leadSource",
@@ -219,10 +274,7 @@ const AllLeads = () => {
           urlencoded.append("token", ULTRA_MSG_TOKEN);
           urlencoded.append("to", "+" + contact);
           urlencoded.append("image", img);
-          urlencoded.append(
-            "caption",
-            "ولأول مرة بالشارقة تملك ڤيلتك بأقساط 1% شهريا فقط من المطور مباشرة وبدون فوائد بنكيه   للمزيد من التفاصيل سجل بياناتك الأن.    ⬇️                                                            http://hikalproperties.ae/ar-hayyan-t     وإذا كنت غير مهتم الرجاء إرسال رقم 2 لعدم إزعاجك مرة أخري"
-          );
+          urlencoded.append("caption", "Image Sent");
 
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -267,7 +319,13 @@ const AllLeads = () => {
     };
   };
 
-  const FetchLeads = async (token, lead_origin, lead_type) => {
+  const FetchLeads = async (
+    token,
+    lead_origin,
+    lead_type,
+    projectName,
+    enquiryType
+  ) => {
     console.log("lead type is");
     console.log(lead_type);
     console.log("lead origin is");
@@ -407,6 +465,16 @@ const AllLeads = () => {
     console.log("fetch lead url is");
     console.log(FetchLeads_url);
 
+    if(projectName) {
+      FetchLeads_url += `&project=${projectName}`;
+    }
+
+    if(enquiryTypeSelected?.id) {
+      FetchLeads_url += `&enquiryType=${enquiryTypeSelected?.id}`;
+    }
+
+    console.log(FetchLeads_url);
+
     axios
       .get(FetchLeads_url, {
         headers: {
@@ -438,6 +506,7 @@ const AllLeads = () => {
           leadContact: row?.leadContact,
           project: row?.project,
           leadType: row?.leadType,
+          enquiryType: row?.enquiryType,
           leadSource: row?.leadSource,
         }));
 
@@ -539,11 +608,13 @@ const AllLeads = () => {
     FetchLeads(
       token,
       leadOriginSelected?.id || "hotleads",
-      leadTypeSelected?.id || "all"
+      leadTypeSelected?.id || "all",
+      projectNameTyped,
+      enquiryTypeSelected?.id
     );
     setColumnsArr([...columnsArr]);
     // eslint-disable-next-line
-  }, [pageState.page, leadTypeSelected, leadOriginSelected, reloadDataGrid]);
+  }, [pageState.page, leadTypeSelected, leadOriginSelected, projectNameTyped, enquiryTypeSelected, reloadDataGrid]);
 
   const handleRowClick = async (params, event) => {
     if (!event.target.closest(".whatsapp-web-link")) {
@@ -672,7 +743,7 @@ const AllLeads = () => {
         </div>
       </Box> */}
 
-      <div className={`grid grid-cols-2 gap-4 ${darkModeColors}`}>
+      <div className={`grid grid-cols-4 gap-3 ${darkModeColors}`}>
         <div>
           <label
             htmlFor="leadOrigin"
@@ -758,6 +829,64 @@ const AllLeads = () => {
               </MenuItem>
             ))}
           </Select>
+        </div>
+        <div>
+           <label
+            htmlFor="enquiryType"
+            className={`flex justify-between items-center ${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            } `}
+          >
+            <span>Enquiry Type</span>
+             {enquiryTypeSelected?.id ? <strong className="ml-4 text-red-600 cursor-pointer" onClick={() => setEnquiryTypeSelected({id: 0})}>Clear</strong> : ""}
+          </label>
+          <Select
+            id="enquiryType"
+            value={enquiryTypeSelected?.id}
+            className={`w-full mt-1 mb-5`}
+            onChange={(event) =>
+              setEnquiryTypeSelected(
+                enquiryTypes.find((type) => type.id === event.target.value)
+              )
+            }
+            displayEmpty
+            required
+            sx={{
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+              "&:hover:not (.Mui-disabled):before": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+            }}
+          >
+            <MenuItem
+              value="0"
+              disabled
+              sx={{
+                color: currentMode === "dark" ? "#ffffff" : "#000000",
+              }}
+            >
+              Select Enquiry Type
+            </MenuItem>
+            {enquiryTypes?.map((type, index) => (
+              <MenuItem key={index} value={type?.id || ""}>
+                {type?.formattedValue}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+      <div style={{marginTop: 26}}>
+          <TextField
+            className={`w-full mt-1`}
+            id="Project"
+            type={"text"}
+            label="Project Name"
+            variant="outlined"
+            size="large"
+            onChange={(e) => setProjectNameTyped(e.target.value)}
+            required
+          />
         </div>
       </div>
 

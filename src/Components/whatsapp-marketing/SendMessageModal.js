@@ -17,7 +17,8 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
-import { messageTemplates } from "./messageTemplates";
+import RichEditor from "./richEditorComp/RichEditor";
+import TurndownService from 'turndown';
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -36,11 +37,12 @@ const SendMessageModal = ({
   const [btnloading, setbtnloading] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState(false);
-  const [ultraMsgInstance, setUltraMsgInstance] = useState({});
   const [templates, setTemplates] = useState([]);
 
   const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
   const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
+
+  var turndownService = new TurndownService();
 
   async function sendSMS(messageText, contactList) {
     try {
@@ -202,7 +204,9 @@ const SendMessageModal = ({
           var urlencoded = new URLSearchParams();
           urlencoded.append("token", ULTRA_MSG_TOKEN);
           urlencoded.append("to", "+" + contact);
-          urlencoded.append("body", messageText);
+
+          const modifiedMessageText = messageText.toString().replaceAll("**", "*");
+          urlencoded.append("body", modifiedMessageText);
 
           var myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -261,11 +265,17 @@ const SendMessageModal = ({
   const handleSendMessage = (event) => {
     event.preventDefault();
     // sendWhatsappMessages(messageValue, selectedContacts)
-
+    turndownService.addRule('strikethrough', {
+        filter: ['del', 's', 'strike'],
+        replacement: function (content) {
+          return '~' + content + '~'
+        }
+      })
+    const messageText = turndownService.turndown(messageValue);
     if (sendMessageModal.isWhatsapp) {
-      sendWhatsappUltraMsg(messageValue, selectedContacts);
+      sendWhatsappUltraMsg(messageText, selectedContacts);
     } else {
-      sendSMS(messageValue, selectedContacts);
+      sendSMS(messageText, selectedContacts);
     }
   };
 
@@ -343,57 +353,65 @@ const SendMessageModal = ({
           </Tabs>
           <form onSubmit={handleSendMessage} action="">
             {tabValue === 0 && (
-              <TextareaAutosize
-                id="message"
-                placeholder="Type here"
-                type={"text"}
-                required
-                minRows={8}
-                label="Message"
-                className="w-full"
-                style={{
-                  border: "1px solid",
-                  padding: 10,
-                  borderRadius: "4px",
-                  marginTop: "10px",
-                }}
-                variant="outlined"
-                size="medium"
-                value={messageValue}
-                onInput={(e) => setMessageValue(e.target.value)}
-              />
-            )}
-
-            {tabValue === 1 && [
-              selectedTemplate ? (
-                <TextareaAutosize
-                  id="template-message"
+              <div style={{height: 200, overflowY: "scroll"}}>
+                {/* <TextareaAutosize
+                  id="message"
                   placeholder="Type here"
                   type={"text"}
+                  required
                   minRows={8}
                   label="Message"
-                  className="w-full mb-5"
+                  className="w-full"
                   style={{
-                    marginBottom: "20px",
                     border: "1px solid",
                     padding: 10,
                     borderRadius: "4px",
                     marginTop: "10px",
                   }}
                   variant="outlined"
-                  required
                   size="medium"
                   value={messageValue}
                   onInput={(e) => setMessageValue(e.target.value)}
-                />
+                /> */}
+                <RichEditor messageValue={messageValue} setMessageValue={setMessageValue}/>
+              </div>
+            )}
+
+            {tabValue === 1 && [
+              selectedTemplate ? (
+                <>
+                  {/* <TextareaAutosize
+                    id="template-message"
+                    placeholder="Type here"
+                    type={"text"}
+                    minRows={8}
+                    label="Message"
+                    className="w-full mb-5"
+                    style={{
+                      marginBottom: "20px",
+                      border: "1px solid",
+                      padding: 10,
+                      borderRadius: "4px",
+                      marginTop: "10px",
+                    }}
+                    variant="outlined"
+                    required
+                    size="medium"
+                    value={messageValue}
+                    onInput={(e) => setMessageValue(e.target.value)}
+                  /> */}
+                  <div style={{height: 200, overflowY: "scroll"}}>
+                    <RichEditor messageValue={messageValue} setMessageValue={setMessageValue}/>
+                  </div>
+                </>
               ) : (
                 <Box className="flex items-start flex-wrap border rounded p-4 min-h-[250px]">
-                  {templates.map((template) => {
+                  {templates.map((template, index) => {
                     return (
                       <Box
-                        key={template.name}
+                        key={index}
                         onClick={() => handleSelectTemplate(template)}
-                        className=" bg-slate-600 mr-2 text-white w-max cursor-pointer text-center p-4 rounded"
+                        className=" bg-slate-600 mr-2 text-white w-max cursor-pointer text-center p-4 mb-1 rounded"
                       >
                         <h3>{template.name}</h3>
                       </Box>
