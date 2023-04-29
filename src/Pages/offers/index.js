@@ -9,6 +9,8 @@ import Footer from "../../Components/Footer/Footer";
 import AllOffers from "../../Components/offers/all_offers";
 import CreateOffer from "../../Components/offers/createoffer";
 import { useNavigate, useLocation } from "react-router-dom";
+import ManagerOffers from "../../Components/offers/manager_offers";
+import SalesPersonOffers from "../../Components/offers/salePerson_offers";
 
 const Offers = () => {
   const {
@@ -137,14 +139,21 @@ const Offers = () => {
                       />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                      <div>
+                      <ManagerOffers
+                      isLoading={loading}
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                      />
+                      {/* <div>
                         <h1>Hello world 3 </h1>
-                      </div>
+                      </div> */}
                     </TabPanel>
                     <TabPanel value={value} index={3}>
-                      <div>
-                        <h1>Hello world 3 </h1>
-                      </div>
+                     <SalesPersonOffers
+                      isLoading={loading}
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                     />
                     </TabPanel>
                   </div>
                 </div>

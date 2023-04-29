@@ -7,19 +7,116 @@ import {
   RadioGroup,
   FormControlLabel,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import moment from "moment";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, formatNum } = useStateContext();
+  const { currentMode, darkModeColors, formatNum, BACKEND_URL } =
+    useStateContext();
   const [validFromDate, setValidFromDate] = useState("");
   const [validFromDateValue, setValidFromDateValue] = useState({});
   const [validToDate, setValidToDate] = useState("");
   const [validToDateValue, setValidToDateValue] = useState({});
+  const [loading, setloading] = useState(false);
+
+  const [offerData, setOfferData] = useState({
+    offerTitle: "",
+    offerDescription: "",
+    validToManager: 1,
+    validToSales: 1,
+  });
+
+  // const handleChange = (e) => {
+  //   setOfferData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  //   console.log("OFFer Data: ", offerData);
+  // };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+
+    console.log("OFFer Data: ", offerData);
+    console.log("OFFer Valid from: ", validFromDate);
+    console.log("OFFer Valid To: ", validToDate);
+
+    setloading(true);
+    const token = localStorage.getItem("auth-token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    console.log("User", user);
+    const creationDate = new Date();
+    const Offer = new FormData();
+
+    Offer.append(
+      "creationDate",
+      moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
+    );
+    Offer.append("offerTitle", offerData.offerTitle);
+    Offer.append("offerDescription", offerData.offerDescription);
+    Offer.append("status", "Open");
+    Offer.append("validFrom", validFromDate);
+    Offer.append("validTill", validToDate);
+    Offer.append("offerFrom", user?.id);
+    Offer.append("offerAgency", user?.agency);
+    Offer.append("validToManager", offerData.validToManager);
+    Offer.append("validToSales", offerData.validToSales);
+
+    console.log("Offer append: ", Offer);
+
+    try {
+      const submitOffer = await axios.post(`${BACKEND_URL}/offers`, Offer, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("OFFer submitted: ", submitOffer);
+
+      toast.success("Offer Added Successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setOfferData({
+        offerTitle: "",
+        offerDescription: "",
+        validToManager: "",
+        validToSales: "",
+      });
+      setValidFromDate("");
+      setValidToDate("");
+
+      setloading(false);
+    } catch (error) {
+      console.log("Error: ", error);
+      setloading(false);
+      toast.error("Something went wrong! Please Try Again", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   useEffect(() => {
     setValidFromDateValue(dayjs("2023-01-01"));
@@ -27,6 +124,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
   }, []);
   return (
     <div>
+      <ToastContainer />
       <div
         className={`${
           currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
@@ -41,21 +139,29 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
           <Box sx={darkModeColors}>
             <TextField
               type={"text"}
-              label="Offer Title"
+              label="Offer Title "
               className="w-full mb-3"
               style={{ marginBottom: "20px" }}
               variant="outlined"
+              name="offerTitle"
               size="medium"
-              value=""
+              value={offerData.offerTitle}
+              onChange={(e) =>
+                setOfferData({ ...offerData, offerTitle: e.target.value })
+              }
             />
             <TextField
-              type={"text"}
+              type="text"
               label="Offer Description"
               className="w-full mb-3"
+              name="offerDescription"
               style={{ marginBottom: "20px" }}
               variant="outlined"
               size="medium"
-              value=""
+              value={offerData.offerDescription}
+              onChange={(e) =>
+                setOfferData({ ...offerData, offerDescription: e.target.value })
+              }
             />
             <div className="grid grid-cols-2 gap-3 mb-1">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -76,7 +182,13 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                     );
                   }}
                   format="yyyy-MM-dd"
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      onKeyDown={(e) => e.preventDefault()}
+                      readOnly={true}
+                    />
+                  )}
                 />
               </LocalizationProvider>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -97,7 +209,13 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                     );
                   }}
                   format="yyyy-MM-dd"
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      onKeyDown={(e) => e.preventDefault()}
+                      readOnly={true}
+                    />
+                  )}
                 />
               </LocalizationProvider>
             </div>
@@ -116,19 +234,42 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 <RadioGroup defaultValue="Both" name="radio-buttons-group">
                   <FormControlLabel
                     className="m-1"
-                    value="Managers"
+                    value="1"
+                    name="validToManager"
                     control={<Radio />}
                     label="Sales Managers"
+                    onChange={(e) =>
+                      setOfferData({
+                        ...offerData,
+                        validToManager: 1,
+                        validToSales: 0,
+                      })
+                    }
                   />
                   <FormControlLabel
                     className="m-1"
-                    value="Agents"
+                    value="1"
+                    name="validToSales"
                     control={<Radio />}
+                    onChange={(e) =>
+                      setOfferData({
+                        ...offerData,
+                        validToSales: 1,
+                        validToManager: 0,
+                      })
+                    }
                     label="Sales Agents"
                   />
                   <FormControlLabel
                     className="mt-1"
                     value="Both"
+                    onChange={(e) =>
+                      setOfferData({
+                        ...offerData,
+                        validToSales: 1,
+                        validToManager: 1,
+                      })
+                    }
                     control={<Radio />}
                     label="Both"
                   />
@@ -143,8 +284,18 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
           size="medium"
           className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
           style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+          onClick={handleClick}
+          disabled={loading ? true : false}
         >
-          CREATE
+          {loading ? (
+            <CircularProgress
+              size={23}
+              sx={{ color: "white" }}
+              className="text-white"
+            />
+          ) : (
+            <span> Create</span>
+          )}
         </Button>
       </div>
     </div>

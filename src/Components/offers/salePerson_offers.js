@@ -5,7 +5,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 
-const AllOffers = ({
+const SalesPersonOffers = ({
     tabValue,
     setTabValue,
     isLoading,
@@ -23,6 +23,7 @@ const AllOffers = ({
               Authorization: "Bearer " + token,
             },
           })
+
 
           setOffers(all_offers?.data?.offers?.data)
 
@@ -84,7 +85,7 @@ const AllOffers = ({
                 <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-x-3 gap-y-3 pb-4 text-center">
                     {offers?.map((offer, index) => {
                         return (
-                            // offer.validToManager === 1 && offer.validToSales === 1 ? (
+                            offer?.validToSales === 1 && (
                                 <div className={`${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"} p-5 rounded-md h-fit`}>
                                     <h1 className="bg-main-red-color text-white font-semibold rounded-md p-2 mb-3">{offer?.offerTitle}</h1>
                                     <h6 className="mb-3 p-2">{offer?.offerDescription}</h6>
@@ -93,8 +94,10 @@ const AllOffers = ({
                                     <hr className="mb-3"></hr>
                                     <h6 className="mb-3 bg-main-red-color text-white p-2 rounded-md">Offer from Mr. {offer?.offerBy}</h6>
                                 </div>
-                            // ) : (
-                            //     <>l
+                            )
+                            //  : (
+                            //     <>
+                            //     No valid offers for agents
                             //     </>
                             // )
                         )
@@ -105,4 +108,4 @@ const AllOffers = ({
     );
 };
 
-export default AllOffers;
+export default SalesPersonOffers;
