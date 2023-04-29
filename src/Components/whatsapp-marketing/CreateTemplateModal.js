@@ -5,14 +5,13 @@ import {
   Backdrop,
   IconButton,
   TextField,
-  TextareaAutosize,
   CircularProgress
 } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
-import { setId } from "@material-tailwind/react/components/Tabs/TabsContext";
+import RichEditor from "./richEditorComp/RichEditor";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -74,6 +73,7 @@ const CreateTemplateModal = ({
   }
   return (
     <>
+          <ToastContainer/>
       <Modal
         keepMounted
         open={createTemplateModal.isOpen}
@@ -104,57 +104,56 @@ const CreateTemplateModal = ({
             <IoMdClose size={18} />
           </IconButton>
 
-          <ToastContainer/>
-
-          <form onSubmit={handleSubmit} className="mt-8">
-            <TextField
-              id="templateTitle"
-              type={"text"}
-              label="Template Title"
-              className="w-full mb-5"
-              style={{ marginBottom: "10px" }}
-              variant="outlined"
-              size="medium"
-              required
-              value={templateTitle}
-              onChange={(e) => setTemplateTitle(e.target.value)}
-            />
-
-            <TextareaAutosize
-              id="template-body"
-              placeholder="Template Body"
-              type={"text"}
-              required
-              minRows={8}
-              label="Template Body"
-              className="w-full"
-              style={{
-                border: "1px solid",
-                padding: 10,
-                borderRadius: "4px",
-                marginTop: "10px",
-                marginBottom: "20px"
-              }}
-              variant="outlined"
-              size="medium"
-              value={templateBody}
-              onInput={(e) => setTemplateBody(e.target.value)}
-            />
-
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              style={{ padding: "10px 0" }}
-            >
-              {btnloading ? (
-                <CircularProgress size={18} sx={{ color: "white" }} />
-              ) : (
-                <span>Create Template</span>
-              )}
-            </Button>
-          </form>
-        </div>
+            <form onSubmit={handleSubmit} className="mt-8">
+              <TextField
+                id="templateTitle"
+                type={"text"}
+                label="Template Title"
+                className="w-full mb-5"
+                style={{ marginBottom: "10px" }}
+                variant="outlined"
+                size="medium"
+                required
+                value={templateTitle}
+                onChange={(e) => setTemplateTitle(e.target.value)}
+              />
+              {/* <TextareaAutosize
+                id="template-body"
+                placeholder="Template Body"
+                type={"text"}
+                required
+                minRows={8}
+                label="Template Body"
+                className="w-full"
+                style={{
+                  border: "1px solid",
+                  padding: 10,
+                  borderRadius: "4px",
+                  marginTop: "10px",
+                  marginBottom: "20px"
+                }}
+                variant="outlined"
+                size="medium"
+                value={templateBody}
+                onInput={(e) => setTemplateBody(e.target.value)}
+              /> */}
+              <div style={{height: 200, overflowY: "scroll"}}>
+                <RichEditor setMessageValue={setTemplateBody}/>
+              </div>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                style={{ padding: "10px 0" }}
+              >
+                {btnloading ? (
+                  <CircularProgress size={18} sx={{ color: "white" }} />
+                ) : (
+                  <span>Create Template</span>
+                )}
+              </Button>
+            </form>
+          </div>
       </Modal>
     </>
   );
