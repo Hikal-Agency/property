@@ -15,7 +15,7 @@ import { BsWhatsapp } from "react-icons/bs";
 import { MdVideoCameraFront } from "react-icons/md";
 import { RiWhatsappFill } from "react-icons/ri";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const ticketCategories = [
@@ -83,6 +83,26 @@ const CreateTicket = () => {
       setbtnloading(false);
     }
   };
+
+  const fetchCategories = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.get(`${BACKEND_URL}/categories`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const data = response.data.categories.data;
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   return (
     <div
