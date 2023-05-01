@@ -18,17 +18,9 @@ import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const ticketCategories = [
-  { id: "hotleads", formattedValue: "Fresh Leads" },
-  { id: "coldleads", formattedValue: "Cold Leads" },
-  { id: "thirdpartyleads", formattedValue: "Thirdparty Leads" },
-  { id: "personaleads", formattedValue: "Personal Leads" },
-  { id: "warmleads", formattedValue: "Warm Leads" },
-  { id: "transfferedleads", formattedValue: "Transferred Leads" },
-];
-
 const CreateTicket = () => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const [categories, setCategories] = useState([]);
   const [values, setValues] = useState({
     ticketCategory: "",
     ticketDescription: "",
@@ -97,30 +89,8 @@ const CreateTicket = () => {
           Authorization: "Bearer " + token,
         },
       });
-      const data = response.data;
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
-  const createCategory = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      const response = await axios.post(`${BACKEND_URL}/categories`, JSON.stringify({
-        catName: "Leads",
-        status: null,
-        type: null,
-        is_parent: null
-      }), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      const data = response.data.categories.data;
-      console.log(data);
+      const data = response.data.cagtegories.data;
+      setCategories(data);
     } catch (error) {
       console.log(error);
     }
@@ -128,7 +98,6 @@ const CreateTicket = () => {
 
   useEffect(() => {
     fetchCategories();
-    createCategory();
   }, []);
 
   return (
@@ -165,12 +134,14 @@ const CreateTicket = () => {
                 <MenuItem disabled selected value="0">
                   Select Category
                 </MenuItem>
-                {ticketCategories.map((category) => {
-                  return (
-                    <MenuItem key={category.id} value={category.formattedValue}>
-                      {category.formattedValue}
-                    </MenuItem>
-                  );
+                {categories.map((category) => {
+                  if(category.catName) {
+                    return (
+                      <MenuItem key={category.id} value={category.catName}>
+                        {category.catName}
+                      </MenuItem>
+                    );
+                  }
                 })}
               </Select>
             </FormControl>
