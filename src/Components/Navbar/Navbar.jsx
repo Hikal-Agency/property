@@ -249,30 +249,26 @@ const Navbar = () => {
     <>
       <ToastContainer />
       <div className="flex justify-between p-2  relative">
-        <div
-          onClick={() => {
-            collapseSidebar();
-            setIsCollapsed(!isCollapsed);
-          }}
-          className="flex items-center rounded-lg px-5 cursor-pointer"
-        >
-          <button
-            type="button"
-            // style={{ color: currentColor }}
-            className={`relative text-xl rounded-full hover:bg-light-gray mr-2  ${
-              currentMode === "dark" ? "text-white" : "text-main-red-color"
-            }`}
+        <div className="flex items-center">
+          <div
+            onClick={() => {
+              collapseSidebar();
+              setIsCollapsed(!isCollapsed);
+            }}
+            className="flex items-center rounded-lg px-5 cursor-pointer"
           >
-            <span className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2" />
-            <AiOutlineMenu />
-          </button>
-          <span
-            className={`text-md font-bold select-none ${
-              currentMode === "dark" ? "text-white" : "text-gray-900"
-            }`}
-          >
-            Menu
-          </span>
+            <button
+              type="button"
+              // style={{ color: currentColor }}
+              className={`relative text-xl rounded-full hover:bg-light-gray mr-4  ${
+                currentMode === "dark" ? "text-white" : "text-main-red-color"
+              }`}
+            >
+              <span className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2" />
+              <AiOutlineMenu />
+            </button>
+          </div>
+          <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
         </div>
         <div className="flex">
           {isUserSubscribed === false && (
@@ -440,8 +436,6 @@ const Navbar = () => {
         );
       })}
     </Breadcrumbs> */}
-
-      <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
     </>
   );
 };

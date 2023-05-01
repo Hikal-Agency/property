@@ -18,27 +18,21 @@ import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const ticketCategories = [
-  { id: "hotleads", formattedValue: "Fresh Leads" },
-  { id: "coldleads", formattedValue: "Cold Leads" },
-  { id: "thirdpartyleads", formattedValue: "Thirdparty Leads" },
-  { id: "personaleads", formattedValue: "Personal Leads" },
-  { id: "warmleads", formattedValue: "Warm Leads" },
-  { id: "transfferedleads", formattedValue: "Transferred Leads" },
-];
-
 const CreateTicket = () => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const [categories, setCategories] = useState([]);
   const [values, setValues] = useState({
     ticketCategory: "",
     ticketDescription: "",
     supportSource: "",
     ticketIssue: "",
+    ticketStatus: "",
   });
   const [btnloading, setbtnloading] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     try {
+      e.preventDefault();
       const token = localStorage.getItem("auth-token");
       setbtnloading(true);
       const response = await axios.post(
@@ -47,7 +41,7 @@ const CreateTicket = () => {
           description: values.ticketDescription,
           category: values.ticketCategory.toLocaleLowerCase(),
           source: values.supportSource.toLowerCase(),
-          status: "open",
+          status: values.ticketStatus,
           issue: values.ticketIssue,
         }),
         {
@@ -62,6 +56,7 @@ const CreateTicket = () => {
         ticketDescription: "",
         supportSource: "",
         ticketIssue: "",
+        ticketStatus: ""
       });
       toast.success("Created new ticket successfully", {
         position: "top-right",
@@ -97,30 +92,8 @@ const CreateTicket = () => {
           Authorization: "Bearer " + token,
         },
       });
-      const data = response.data;
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
-  const createCategory = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      const response = await axios.post(`${BACKEND_URL}/categories`, JSON.stringify({
-        catName: "Leads",
-        status: null,
-        type: null,
-        is_parent: null
-      }), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      const data = response.data.categories.data;
-      console.log(data);
+      const data = response.data.cagtegories.data;
+      setCategories(data);
     } catch (error) {
       console.log(error);
     }
@@ -128,7 +101,6 @@ const CreateTicket = () => {
 
   useEffect(() => {
     fetchCategories();
-    createCategory();
   }, []);
 
   return (
@@ -148,99 +120,142 @@ const CreateTicket = () => {
           </h3>
           <hr className="mb-5"></hr>
 
-          <Box sx={darkModeColors}>
-            {/* TICKET CATEGORY  */}
-            <FormControl fullWidth>
-              <InputLabel>Ticket Category</InputLabel>
-              <Select
-                label="Ticket Category"
-                size="medium"
-                onChange={(e) =>
-                  setValues({ ...values, ticketCategory: e.target.value })
-                }
-                value={values.ticketCategory}
+          <form onSubmit={handleSubmit} action="">
+            <Box sx={darkModeColors}>
+              {/* TICKET CATEGORY  */}
+              <FormControl fullWidth>
+                <InputLabel>Ticket Category</InputLabel>
+                <Select
+                  label="Ticket Category"
+                  size="medium"
+                  onChange={(e) =>
+                    setValues({ ...values, ticketCategory: e.target.value })
+                  }
+                  value={values.ticketCategory}
+                  className="w-full mb-5"
+                  required
+                >
+                  <MenuItem disabled selected value="">
+                    Select Category
+                  </MenuItem>
+                  {categories.map((category) => {
+                    if(category.catName) {
+                      return (
+                        <MenuItem key={category.id} value={category.catName}>
+                          {category.catName}
+                        </MenuItem>
+                      );
+                    }
+                  })}
+                </Select>
+              </FormControl>
+              <TextField
+                id="ticket"
+                type={"text"}
+                label="Ticket Description"
                 className="w-full mb-5"
-                required
-              >
-                <MenuItem disabled selected value="0">
-                  Select Category
-                </MenuItem>
-                {ticketCategories.map((category) => {
-                  return (
-                    <MenuItem key={category.id} value={category.formattedValue}>
-                      {category.formattedValue}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-
-            <TextField
-              id="ticket"
-              type={"text"}
-              label="Ticket Description"
-              className="w-full mb-5"
-              style={{ marginBottom: "20px" }}
-              variant="outlined"
-              size="medium"
-              required
-              onChange={(e) =>
-                setValues({ ...values, ticketDescription: e.target.value })
-              }
-              value={values.ticketDescription}
-            />
-
-            <TextField
-              id="issue"
-              type={"text"}
-              label="Ticket Issue"
-              className="w-full mb-5"
-              style={{ marginBottom: "20px" }}
-              variant="outlined"
-              size="medium"
-              required
-              onChange={(e) =>
-                setValues({ ...values, ticketIssue: e.target.value })
-              }
-              value={values.ticketIssue}
-            />
-
-            {/* SUPORT VIA  */}
-            <FormControl fullWidth>
-              <InputLabel>Support Source</InputLabel>
-              <Select
-                label="Support Source"
+                style={{ marginBottom: "20px" }}
+                variant="outlined"
                 size="medium"
-                className="w-full mb-5"
-                onChange={(e) =>
-                  setValues({ ...values, supportSource: e.target.value })
-                }
-                value={values.supportSource}
                 required
+                onChange={(e) =>
+                  setValues({ ...values, ticketDescription: e.target.value })
+                }
+                value={values.ticketDescription}
+              />
+              <TextField
+                id="issue"
+                type={"text"}
+                label="Ticket Issue"
+                className="w-full mb-5"
+                style={{ marginBottom: "20px" }}
+                variant="outlined"
+                size="medium"
+                required
+                onChange={(e) =>
+                  setValues({ ...values, ticketIssue: e.target.value })
+                }
+                value={values.ticketIssue}
+              />
+              {/* SUPORT VIA  */}
+              <FormControl fullWidth>
+                <InputLabel>Support Source</InputLabel>
+                <Select
+                  label="Support Source"
+                  size="medium"
+                  className="w-full mb-5"
+                  onChange={(e) =>
+                    setValues({ ...values, supportSource: e.target.value })
+                  }
+                  value={values.supportSource}
+                  required
+                >
+                  <MenuItem disabled value="">
+                    Select Support Source
+                  </MenuItem>
+                  <MenuItem value={"Email"}>Email</MenuItem>
+                  <MenuItem value={"Video Call"}>Video Call</MenuItem>
+                  <MenuItem value={"Phone Call"}>Phone Call</MenuItem>
+                  <MenuItem value={"WhatsApp Chat"}>WhatsApp Chat</MenuItem>
+                </Select>
+              </FormControl>
+              {/* Status */}
+              <FormControl fullWidth>
+                <InputLabel>Ticket Status</InputLabel>
+                <Select
+                  label="Ticket Status"
+                  size="medium"
+                  className="w-full mb-5"
+                  onChange={(e) =>
+                    setValues({ ...values, ticketStatus: e.target.value })
+                  }
+                  value={values.ticketStatus}
+                  required
+                >
+                  <MenuItem disabled value="">
+                    Select Ticket Status
+                  </MenuItem>
+                  <MenuItem value={"open"}>
+                    <div className="bg-green-400 h-[100%] py-2 rounded px-3 w-[100%]">
+                      Open
+                    </div>
+                  </MenuItem>
+                  <MenuItem value={"pending"}>
+                    <div className="bg-blue-400 h-[100%] py-2 rounded px-3 w-[100%]">
+                      Pending
+                    </div>
+                  </MenuItem>
+                  <MenuItem value={"in process"}>
+                    <div className="bg-slate-400 h-[100%] py-2 rounded px-3 w-[100%]">
+                      In Process
+                    </div>
+                  </MenuItem>
+                  <MenuItem value={"resolved"}>
+                    <div className="bg-purple-400 h-[100%] py-2 rounded px-3 w-[100%]">
+                      Resolved
+                    </div>
+                  </MenuItem>
+                  <MenuItem value={"closed"}>
+                    <div className="bg-red-400 h-[100%] py-2 rounded px-3 w-[100%]">
+                      Closed
+                    </div>
+                  </MenuItem>
+                </Select>
+              </FormControl>
+              <Button
+                type="submit"
+                size="medium"
+                className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
+                style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
               >
-                <MenuItem disabled value="0">
-                  Select Support Source
-                </MenuItem>
-                <MenuItem value={"Email"}>Email</MenuItem>
-                <MenuItem value={"Video Call"}>Video Call</MenuItem>
-                <MenuItem value={"Phone Call"}>Phone Call</MenuItem>
-                <MenuItem value={"WhatsApp Chat"}>WhatsApp Chat</MenuItem>
-              </Select>
-            </FormControl>
-            <Button
-              type="submit"
-              onClick={handleSubmit}
-              size="medium"
-              className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-              style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
-            >
-              {btnloading ? (
-                <CircularProgress size={18} sx={{ color: "white" }} />
-              ) : (
-                <span>Submit</span>
-              )}
-            </Button>
-          </Box>
+                {btnloading ? (
+                  <CircularProgress size={18} sx={{ color: "white" }} />
+                ) : (
+                  <span>Submit</span>
+                )}
+              </Button>
+            </Box>
+          </form>
         </div>
         <div className="space-3 p-1 sm:pb-1 sm:pt-5 md:pb-1 md:pt-5 lg:pb-3 lg:pt-5 xl:p-5">
           <h3 className="mb-3 font-semibold text-main-red-color text-center">

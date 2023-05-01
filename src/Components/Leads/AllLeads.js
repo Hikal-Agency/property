@@ -1,5 +1,12 @@
 import { Button } from "@material-tailwind/react";
-import { Box, Button as MuiButton, makeStyles, styled } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Button as MuiButton,
+  makeStyles,
+  styled,
+  Avatar,
+} from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -17,6 +24,7 @@ import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { TbFileImport } from "react-icons/tb";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
@@ -41,6 +49,17 @@ const bulkUpdateBtnStyles = {
   fontWeight: "500",
 };
 
+const arrowStyles = {
+  position: "absolute",
+  background: "red",
+  cursor: "pointer",
+  width: 50,
+  height: 50,
+  top: "50%",
+  transform: "translateY(-50%)",
+  zIndex: 1000,
+};
+
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const token = localStorage.getItem("auth-token");
   const navigate = useNavigate();
@@ -59,6 +78,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   });
 
   const bulkImportRef = useRef();
+  const dataTableRef = useRef();
 
   const {
     currentMode,
@@ -255,7 +275,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "edit",
       headerName: "Edit",
       // width: 150,
-      minWidth: 100,
+      minWidth: 170,
       flex: 1,
       headerAlign: "center",
       sortable: false,
@@ -433,7 +453,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "edit",
       headerName: "Edit",
       // width: 150,
-      minWidth: 100,
+      minWidth: 170,
       flex: 1,
       headerAlign: "center",
       sortable: false,
@@ -479,6 +499,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       },
     },
   ];
+
+  const handleNextArrow = () => {
+    dataTableRef.current
+      .querySelector(".MuiDataGrid-virtualScroller")
+      .scrollBy(140, 0);
+  };
+
+  const handlePrevArrow = () => {
+    dataTableRef.current
+      .querySelector(".MuiDataGrid-virtualScroller")
+      .scrollBy(-140, 0);
+  };
 
   async function setSalesPersons(urls) {
     const token = localStorage.getItem("auth-token");
@@ -714,7 +746,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "edit",
       headerName: "Edit",
       // width: 150,
-      minWidth: 100,
+      minWidth: 170,
       flex: 1,
       headerAlign: "center",
       sortable: false,
@@ -1278,7 +1310,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box width={"100%"} sx={{ ...DataGridStyles, position: "relative" }}>
+      <Box
+        width={"73vw"}
+        sx={{
+          ...DataGridStyles,
+          position: "relative",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
         {selectedRows.length > 0 && (
           <MuiButton
             size="small"
@@ -1319,61 +1359,106 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           onInput={handleBulkImport}
           id="bulkImport"
         />
-        <DataGrid
-          autoHeight
-          disableSelectionOnClick
-          rows={pageState.data}
-          onRowClick={handleRowClick}
-          rowCount={pageState.total}
-          loading={pageState.isLoading}
-          rowsPerPageOptions={[30, 50, 75, 100]}
-          pagination
-          width="auto"
-          paginationMode="server"
-          page={pageState.page - 1}
-          checkboxSelection
-          onSelectionModelChange={(ids) => {
-            setSelectedRows(ids.map((id) => pageState?.data[id - 1]?.lid));
-          }}
-          pageSize={pageState.pageSize}
-          onPageChange={(newPage) => {
-            setpageState((old) => ({ ...old, page: newPage + 1 }));
-          }}
-          onPageSizeChange={(newPageSize) =>
-            setpageState((old) => ({ ...old, pageSize: newPageSize }))
+        <div style={{ position: "relative" }}>
+          {pageState.data.length > 0 &&
+          <>
+          <div onClick={handleNextArrow}>
+            <Avatar
+              className="shadow-md"
+              style={{
+                ...arrowStyles,
+                right: -30,
+              }}
+            >
+              <GrFormNext size={30} />
+            </Avatar>
+          </div>
+          <div onClick={handlePrevArrow}>
+            <Avatar
+              className="shadow-md"
+              style={{
+                ...arrowStyles,
+                left: -30,
+              }}
+            >
+              <GrFormPrevious size={30} />
+            </Avatar>
+          </div>
+          </>
           }
-          columns={
-            User?.role === 1
-              ? CEOColumns
-              : User?.role === 3
-              ? ManagerColumns
-              : AgentColumns
-          }
-          // columns={columns}
-          components={{
-            Toolbar: GridToolbar,
-            Pagination: CustomPagination,
-          }}
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              value: searchText,
-              onChange: HandleQuicSearch,
-            },
-            // columnsPanel: {
-            //   disableHideAllButton: true,
-            // }
-          }}
-          sx={{
-            boxShadow: 2,
-            "& .MuiDataGrid-virtualScrollerContent .MuiSvgIcon-root": {
-              color: currentMode === "dark" ? "#ffffff" : "#000000",
-            },
-          }}
-          getRowClassName={(params) =>
-            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-          }
-        />
+          <DataGrid
+            ref={dataTableRef}
+            autoHeight
+            disableSelectionOnClick
+            rows={pageState.data}
+            onRowClick={handleRowClick}
+            rowCount={pageState.total}
+            loading={pageState.isLoading}
+            rowsPerPageOptions={[30, 50, 75, 100]}
+            pagination
+            width="auto"
+            paginationMode="server"
+            page={pageState.page - 1}
+            checkboxSelection
+            onSelectionModelChange={(ids) => {
+              setSelectedRows(ids.map((id) => pageState?.data[id - 1]?.lid));
+            }}
+            pageSize={pageState.pageSize}
+            onPageChange={(newPage) => {
+              setpageState((old) => ({ ...old, page: newPage + 1 }));
+            }}
+            onPageSizeChange={(newPageSize) =>
+              setpageState((old) => ({ ...old, pageSize: newPageSize }))
+            }
+            columns={
+              User?.role === 1
+                ? CEOColumns
+                : User?.role === 3
+                ? ManagerColumns
+                : AgentColumns
+            }
+            // columns={columns}
+            components={{
+              Toolbar: GridToolbar,
+              Pagination: CustomPagination,
+            }}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: true,
+                value: searchText,
+                onChange: HandleQuicSearch,
+              },
+              // columnsPanel: {
+              //   disableHideAllButton: true,
+              // }
+            }}
+            sx={{
+              boxShadow: 2,
+              "& .MuiDataGrid-virtualScrollerContent .MuiSvgIcon-root": {
+                color: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+              "& .MuiDataGrid-cellCheckbox": {
+                paddingLeft: "28px",
+              },
+              "& .MuiDataGrid-virtualScroller": {
+                scrollBehavior: "smooth",
+                marginTop: "0 !important",
+              },
+              "& .MuiDataGrid-main": {
+                overflowY: "scroll",
+                height: pageState.data.length > 0 ? 475 : "auto",
+              },
+              "& .MuiDataGrid-columnHeaders": {
+                position: "sticky",
+                top: 0,
+                zIndex: 5000,
+              },
+            }}
+            getRowClassName={(params) =>
+              params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+            }
+          />
+        </div>
 
         {!UpdateLeadModelOpen && (
           <SingleLead

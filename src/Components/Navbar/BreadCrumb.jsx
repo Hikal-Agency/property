@@ -56,7 +56,6 @@ const BreadCrumb = ({ allroutes, currentMode }) => {
   return (
     <Breadcrumbs
       sx={{
-        margin: "10px 0 20px 0",
         color: currentMode === "dark" ? "white" : "inherit",
       }}
       aria-label="breadcrumb"
