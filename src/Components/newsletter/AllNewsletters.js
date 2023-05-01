@@ -97,7 +97,10 @@ const AllNewsletters = ({ pageState, setpageState }) => {
               : index + 1,
           creationDate: row?.created_at,
           email: row?.email || "No Email",
-          status: row?.status,
+          status:
+            row?.status === "Subscribed" || row?.status === "Subscribed"
+              ? "Subscribed"
+              : "Not Subscribed",
         }));
 
         setpageState((old) => ({

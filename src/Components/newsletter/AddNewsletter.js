@@ -36,8 +36,24 @@ const AddNewsletter = ({ tabValue, setTabValue, isLoading }) => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-
     setloading(true);
+    if (!newsletterData?.email || !newsletterData?.status) {
+      toast.error("Kindly enter all fields.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setloading(false);
+
+      return;
+    }
+
     const token = localStorage.getItem("auth-token");
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -45,18 +61,8 @@ const AddNewsletter = ({ tabValue, setTabValue, isLoading }) => {
     const creationDate = new Date();
     const NewsLetter = new FormData();
 
-    NewsLetter.append(
-      "creationDate",
-      moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
-    );
-    NewsLetter.append("email", newsletterData.offerTitle);
-    NewsLetter.append("status", newsletterData.offerDescription);
-    // NewsLetter.append("validFrom", validFromDate);
-    // NewsLetter.append("validTill", validToDate);
-    // NewsLetter.append("offerFrom", user?.id);
-    // NewsLetter.append("offerAgency", user?.agency);
-    // NewsLetter.append("validToManager", newsletterData.validToManager);
-    // NewsLetter.append("validToSales", newsletterData.validToSales);
+    NewsLetter.append("email", newsletterData.email);
+    NewsLetter.append("status", newsletterData.status);
 
     console.log("NewsLetter append: ", NewsLetter);
 
@@ -158,7 +164,7 @@ const AddNewsletter = ({ tabValue, setTabValue, isLoading }) => {
                 Status
               </MenuItem>
               <MenuItem value={"Subscribed"}>Subscribe</MenuItem>
-              <MenuItem value={"UnSubscribed"}>Not Subcbribed</MenuItem>
+              <MenuItem value={"Unsubscribed"}>Un-Subscribed</MenuItem>
             </Select>
           </Box>
         </div>
