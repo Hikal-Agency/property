@@ -201,9 +201,9 @@ const CreateTicket = () => {
               </FormControl>
               {/* Status */}
               <FormControl fullWidth>
-                <InputLabel>Status</InputLabel>
+                <InputLabel>Ticket Status</InputLabel>
                 <Select
-                  label="Status"
+                  label="Ticket Status"
                   size="medium"
                   className="w-full mb-5"
                   onChange={(e) =>

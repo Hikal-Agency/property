@@ -50,14 +50,14 @@ const bulkUpdateBtnStyles = {
 };
 
 const arrowStyles = {
-            position: "absolute",
-            background: "white",
-            cursor: "pointer",
-            width: 60,
-            height: 60,
-            top: "50%",
-            transform: "translateY(-50%)",
-            zIndex: 1000,
+  position: "absolute",
+  background: "red",
+  cursor: "pointer",
+  width: 50,
+  height: 50,
+  top: "50%",
+  transform: "translateY(-50%)",
+  zIndex: 1000,
 };
 
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
@@ -501,12 +501,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   ];
 
   const handleNextArrow = () => {
-    dataTableRef.current.querySelector(".MuiDataGrid-virtualScroller").scrollBy(140, 0);
-  }
+    dataTableRef.current
+      .querySelector(".MuiDataGrid-virtualScroller")
+      .scrollBy(140, 0);
+  };
 
   const handlePrevArrow = () => {
-    dataTableRef.current.querySelector(".MuiDataGrid-virtualScroller").scrollBy(-140, 0);
-  }
+    dataTableRef.current
+      .querySelector(".MuiDataGrid-virtualScroller")
+      .scrollBy(-140, 0);
+  };
 
   async function setSalesPersons(urls) {
     const token = localStorage.getItem("auth-token");
@@ -1306,7 +1310,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box width={"95%"} sx={{ ...DataGridStyles, position: "relative", marginLeft: "auto", marginRight: "auto" }}>
+      <Box
+        width={"73vw"}
+        sx={{
+          ...DataGridStyles,
+          position: "relative",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
         {selectedRows.length > 0 && (
           <MuiButton
             size="small"
@@ -1348,12 +1360,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           id="bulkImport"
         />
         <div style={{ position: "relative" }}>
+          {pageState.data.length > 0 &&
+          <>
           <div onClick={handleNextArrow}>
             <Avatar
-            className="shadow-md"
+              className="shadow-md"
               style={{
                 ...arrowStyles,
-                right: -40
+                right: -30,
               }}
             >
               <GrFormNext size={30} />
@@ -1361,15 +1375,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           </div>
           <div onClick={handlePrevArrow}>
             <Avatar
-            className="shadow-md"
+              className="shadow-md"
               style={{
                 ...arrowStyles,
-                left: -40
+                left: -30,
               }}
             >
               <GrFormPrevious size={30} />
             </Avatar>
           </div>
+          </>
+          }
           <DataGrid
             ref={dataTableRef}
             autoHeight
@@ -1422,11 +1438,21 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 color: currentMode === "dark" ? "#ffffff" : "#000000",
               },
               "& .MuiDataGrid-cellCheckbox": {
-                paddingLeft: "28px"
-              }, 
+                paddingLeft: "28px",
+              },
               "& .MuiDataGrid-virtualScroller": {
-                scrollBehavior: "smooth"
-              }
+                scrollBehavior: "smooth",
+                marginTop: "0 !important",
+              },
+              "& .MuiDataGrid-main": {
+                overflowY: "scroll",
+                height: pageState.data.length > 0 ? 475 : "auto",
+              },
+              "& .MuiDataGrid-columnHeaders": {
+                position: "sticky",
+                top: 0,
+                zIndex: 5000,
+              },
             }}
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

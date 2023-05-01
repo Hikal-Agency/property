@@ -41,16 +41,15 @@ import { IoIosAlert, IoMdClose } from "react-icons/io";
 import RenderSalesperson from "./RenderSalesperson";
 
 const arrowStyles = {
-            position: "absolute",
-            background: "white",
-            cursor: "pointer",
-            width: 60,
-            height: 60,
-            top: "50%",
-            transform: "translateY(-50%)",
-            zIndex: 1000,
+  position: "absolute",
+  background: "red",
+  cursor: "pointer",
+  width: 50,
+  height: 50,
+  top: "50%",
+  transform: "translateY(-50%)",
+  zIndex: 1000,
 };
-
 
 const BookedDeals = ({
   BACKEND_URL,
@@ -93,14 +92,17 @@ const BookedDeals = ({
     setopenDialog(false);
   };
 
-
   const handleNextArrow = () => {
-    dataTableRef.current.querySelector(".MuiDataGrid-virtualScroller").scrollBy(140, 0);
-  }
+    dataTableRef.current
+      .querySelector(".MuiDataGrid-virtualScroller")
+      .scrollBy(140, 0);
+  };
 
   const handlePrevArrow = () => {
-    dataTableRef.current.querySelector(".MuiDataGrid-virtualScroller").scrollBy(-140, 0);
-  }
+    dataTableRef.current
+      .querySelector(".MuiDataGrid-virtualScroller")
+      .scrollBy(-140, 0);
+  };
 
   //View LEAD MODAL VARIABLES
   const [LeadModelOpen, setLeadModelOpen] = useState(false);
@@ -1105,14 +1107,19 @@ const BookedDeals = ({
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box width={"95%"} sx={{...DataGridStyles, marginLeft: "auto", marginRight: "auto"}}>
-        <div style={{position: "relative"}}>
+      <Box
+        width={"95%"}
+        sx={{ ...DataGridStyles, marginLeft: "auto", marginRight: "auto" }}
+      >
+        <div style={{ position: "relative" }}>
+        {pageState.data.length > 0 &&
+        <>
           <div onClick={handleNextArrow}>
             <Avatar
-            className="shadow-md"
+              className="shadow-md"
               style={{
                 ...arrowStyles,
-                right: -40
+                right: -30,
               }}
             >
               <GrFormNext size={30} />
@@ -1120,71 +1127,83 @@ const BookedDeals = ({
           </div>
           <div onClick={handlePrevArrow}>
             <Avatar
-            className="shadow-md"
+              className="shadow-md"
               style={{
                 ...arrowStyles,
-                left: -40
+                left: -30,
               }}
             >
               <GrFormPrevious size={30} />
             </Avatar>
           </div>
-        <DataGrid
-        ref={dataTableRef}
-          autoHeight
-          disableSelectionOnClick
-          rows={pageState.data}
-          onRowClick={handleRowClick}
-          rowCount={pageState.total}
-          loading={pageState.isLoading}
-          rowsPerPageOptions={[30, 50, 75, 100]}
-          pagination
-          width="auto"
-          paginationMode="server"
-          page={pageState.page - 1}
-          pageSize={pageState.pageSize}
-          onPageChange={(newPage) => {
-            setpageState((old) => ({ ...old, page: newPage + 1 }));
-          }}
-          onPageSizeChange={(newPageSize) =>
-            setpageState((old) => ({ ...old, pageSize: newPageSize }))
-          }
-          columns={
-            User?.role === 3
-              ? columns
-              : User?.role === 1
-              ? columns
-              : AgentColumns
-          }
-          // columns={columns}
-          components={{
-            Toolbar: GridToolbar,
-            Pagination: CustomPagination,
-          }}
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              value: searchText,
-              onChange: HandleQuicSearch,
-            },
-          }}
-          sx={{
-            boxShadow: 2,
-            "& .MuiDataGrid-cell:hover": {
-              cursor: "pointer",
-            },
+          </>
+        }
+          <DataGrid
+            ref={dataTableRef}
+            autoHeight
+            disableSelectionOnClick
+            rows={pageState.data}
+            onRowClick={handleRowClick}
+            rowCount={pageState.total}
+            loading={pageState.isLoading}
+            rowsPerPageOptions={[30, 50, 75, 100]}
+            pagination
+            width="auto"
+            paginationMode="server"
+            page={pageState.page - 1}
+            pageSize={pageState.pageSize}
+            onPageChange={(newPage) => {
+              setpageState((old) => ({ ...old, page: newPage + 1 }));
+            }}
+            onPageSizeChange={(newPageSize) =>
+              setpageState((old) => ({ ...old, pageSize: newPageSize }))
+            }
+            columns={
+              User?.role === 3
+                ? columns
+                : User?.role === 1
+                ? columns
+                : AgentColumns
+            }
+            // columns={columns}
+            components={{
+              Toolbar: GridToolbar,
+              Pagination: CustomPagination,
+            }}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: true,
+                value: searchText,
+                onChange: HandleQuicSearch,
+              },
+            }}
+            sx={{
+              boxShadow: 2,
+              "& .MuiDataGrid-cell:hover": {
+                cursor: "pointer",
+              },
               "& .MuiDataGrid-cellCheckbox": {
-                paddingLeft: "28px"
-              }, 
+                paddingLeft: "28px",
+              },
               "& .MuiDataGrid-virtualScroller": {
-                scrollBehavior: "smooth"
-              }
-          }}
-          getRowClassName={(params) =>
-            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-          }
-          // style={{justifyContent: "center", alignItems: "center"}}
-        />
+                scrollBehavior: "smooth",
+                marginTop: 0,
+              },
+              "& .MuiDataGrid-main": {
+                overflowY: "scroll",
+                height: pageState.data.length > 0 ? 475 : "auto",
+              },
+              "& .MuiDataGrid-columnHeaders": {
+                position: "sticky",
+                top: 0,
+                zIndex: 5000,
+              },
+            }}
+            getRowClassName={(params) =>
+              params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+            }
+            // style={{justifyContent: "center", alignItems: "center"}}
+          />
         </div>
 
         {!UpdateLeadModelOpen && (
