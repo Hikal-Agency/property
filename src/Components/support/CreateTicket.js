@@ -97,7 +97,30 @@ const CreateTicket = () => {
           Authorization: "Bearer " + token,
         },
       });
+      const data = response.data;
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  const createCategory = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.post(`${BACKEND_URL}/categories`, JSON.stringify({
+        catName: "Leads",
+        status: null,
+        type: null,
+        is_parent: null
+      }), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
       const data = response.data.categories.data;
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -105,6 +128,7 @@ const CreateTicket = () => {
 
   useEffect(() => {
     fetchCategories();
+    createCategory();
   }, []);
 
   return (
