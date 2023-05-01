@@ -42,6 +42,7 @@ import ClientLeads from "./clients/clientLeads";
 import Userlocation from "./location/userlocation";
 import UserAllLocation from "./location/useralllocation";
 import QAForm from "./qaform";
+import Newsletter from "./newsletter";
 
 const libraries = ["places"];
 
@@ -200,6 +201,11 @@ const routes = [
     path: "/reports",
     pageName: "Reports",
     element: <Reports />,
+  },
+  {
+    path: "/newsletter",
+    pageName: "Newsletter",
+    element: <Newsletter />,
   },
   {
     path: "/qaform",
