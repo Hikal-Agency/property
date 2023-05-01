@@ -10,7 +10,6 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
   const [offers, setOffers] = useState();
 
   console.log("Offers: ", offers);
-
   const FetchOffers = async (token) => {
     try {
       const all_offers = await axios.get(`${BACKEND_URL}/offers`, {

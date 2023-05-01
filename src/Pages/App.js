@@ -41,6 +41,7 @@ import axios from "axios";
 import ClientLeads from "./clients/clientLeads";
 import Userlocation from "./location/userlocation";
 import UserAllLocation from "./location/useralllocation";
+import QAForm from "./qaform";
 
 const libraries = ["places"];
 
@@ -199,6 +200,11 @@ const routes = [
     path: "/reports",
     pageName: "Reports",
     element: <Reports />,
+  },
+  {
+    path: "/qaform",
+    pageName: "QAForm",
+    element: <QAForm />,
   },
   {
     path: "/support",

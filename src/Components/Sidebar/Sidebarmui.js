@@ -1609,6 +1609,11 @@ const Sidebarmui = () => {
       title: "SUPPORT",
       links: [
         {
+          name: "QA Form",
+          icon: <HiTicket />,
+          link: "/qaform",
+        },
+        {
           name: "Tickets",
           icon: <HiTicket />,
           link: "/support",
