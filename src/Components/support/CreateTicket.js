@@ -140,7 +140,7 @@ const CreateTicket = () => {
                 </MenuItem>
                 {ticketCategories.map((category) => {
                   return (
-                    <MenuItem value={category.formattedValue}>
+                    <MenuItem key={category.id} value={category.formattedValue}>
                       {category.formattedValue}
                     </MenuItem>
                   );
