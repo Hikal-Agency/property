@@ -43,6 +43,8 @@ import Userlocation from "./location/userlocation";
 import UserAllLocation from "./location/useralllocation";
 import QAForm from "./qaform";
 import Newsletter from "./newsletter";
+import AddNewsletter from "../Components/newsletter/AddNewsletter";
+import AddNewsLetters from "./newsletter/addNewsletter";
 
 const libraries = ["places"];
 
@@ -201,6 +203,11 @@ const routes = [
     path: "/reports",
     pageName: "Reports",
     element: <Reports />,
+  },
+  {
+    path: "/newsletter/addnewsletter",
+    pageName: "Newsletter",
+    element: <AddNewsLetters />,
   },
   {
     path: "/newsletter",

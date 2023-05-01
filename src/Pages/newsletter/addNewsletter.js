@@ -6,13 +6,13 @@ import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
 import Footer from "../../Components/Footer/Footer";
 
-import ADDQA from "../../Components/addQA/ADDQA";
 import { useEffect } from "react";
 import AllNewsletters from "../../Components/newsletter/AllNewsletters";
 import Loader from "../../Components/Loader";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import AddNewsletter from "../../Components/newsletter/AddNewsletter";
 
-const Newsletter = () => {
+const AddNewsLetters = () => {
   const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
     useStateContext();
   const navigate = useNavigate();
@@ -89,30 +89,8 @@ const Newsletter = () => {
                       setpageState={setpageState}
                     />
                   </div> */}
-                  <div className="mt-3 flex justify-between items-center">
-                    <h1
-                      className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                        currentMode === "dark"
-                          ? "text-white border-white"
-                          : "text-red-600 font-bold border-red-600"
-                      }`}
-                    >
-                      Newsletter{" "}
-                      <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
-                        <span>{pageState?.total}</span>
-                      </span>
-                    </h1>
-                    <Link
-                      to="/newsletter/addnewsletter"
-                      className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-sm"
-                    >
-                      Add Newsletter
-                    </Link>
-                  </div>
-                  <AllNewsletters
-                    pageState={pageState}
-                    setpageState={setpageState}
-                  />
+                  <div className="mt-3 flex justify-between items-center"></div>
+                  <AddNewsletter />
                 </div>
               </div>
             </div>
@@ -124,4 +102,4 @@ const Newsletter = () => {
   );
 };
 
-export default Newsletter;
+export default AddNewsLetters;
