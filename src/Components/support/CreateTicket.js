@@ -26,6 +26,7 @@ const CreateTicket = () => {
     ticketDescription: "",
     supportSource: "",
     ticketIssue: "",
+    ticketStatus: "",
   });
   const [btnloading, setbtnloading] = useState(false);
 
@@ -40,7 +41,7 @@ const CreateTicket = () => {
           description: values.ticketDescription,
           category: values.ticketCategory.toLocaleLowerCase(),
           source: values.supportSource.toLowerCase(),
-          status: "open",
+          status: values.ticketStatus,
           issue: values.ticketIssue,
         }),
         {
@@ -55,6 +56,7 @@ const CreateTicket = () => {
         ticketDescription: "",
         supportSource: "",
         ticketIssue: "",
+        ticketStatus: ""
       });
       toast.success("Created new ticket successfully", {
         position: "top-right",
@@ -195,6 +197,49 @@ const CreateTicket = () => {
                   <MenuItem value={"Video Call"}>Video Call</MenuItem>
                   <MenuItem value={"Phone Call"}>Phone Call</MenuItem>
                   <MenuItem value={"WhatsApp Chat"}>WhatsApp Chat</MenuItem>
+                </Select>
+              </FormControl>
+              {/* Status */}
+              <FormControl fullWidth>
+                <InputLabel>Status</InputLabel>
+                <Select
+                  label="Status"
+                  size="medium"
+                  className="w-full mb-5"
+                  onChange={(e) =>
+                    setValues({ ...values, ticketStatus: e.target.value })
+                  }
+                  value={values.ticketStatus}
+                  required
+                >
+                  <MenuItem disabled value="">
+                    Select Ticket Status
+                  </MenuItem>
+                  <MenuItem value={"open"}>
+                    <div className="bg-green-400 h-[100%] py-2 rounded px-3 w-[100%]">
+                      Open
+                    </div>
+                  </MenuItem>
+                  <MenuItem value={"pending"}>
+                    <div className="bg-blue-400 h-[100%] py-2 rounded px-3 w-[100%]">
+                      Pending
+                    </div>
+                  </MenuItem>
+                  <MenuItem value={"in process"}>
+                    <div className="bg-slate-400 h-[100%] py-2 rounded px-3 w-[100%]">
+                      In Process
+                    </div>
+                  </MenuItem>
+                  <MenuItem value={"resolved"}>
+                    <div className="bg-purple-400 h-[100%] py-2 rounded px-3 w-[100%]">
+                      Resolved
+                    </div>
+                  </MenuItem>
+                  <MenuItem value={"closed"}>
+                    <div className="bg-red-400 h-[100%] py-2 rounded px-3 w-[100%]">
+                      Closed
+                    </div>
+                  </MenuItem>
                 </Select>
               </FormControl>
               <Button
