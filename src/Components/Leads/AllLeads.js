@@ -1366,8 +1366,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }}
           sx={{
             boxShadow: 2,
-            "& .MuiSvgIcon-root": {
-              color: "#ffffff"
+            "& .MuiDataGrid-virtualScrollerContent .MuiSvgIcon-root": {
+              color: currentMode === "dark" ? "#ffffff" : "#000000",
             },
           }}
           getRowClassName={(params) =>
