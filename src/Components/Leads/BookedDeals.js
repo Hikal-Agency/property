@@ -6,6 +6,7 @@ import {
   IconButton,
   MenuItem,
   Select,
+  Avatar,
   TextField,
 } from "@mui/material";
 import {
@@ -17,13 +18,14 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { FaSnapchat } from "react-icons/fa";
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
@@ -37,6 +39,18 @@ import UpdateBookedDeal from "./UpdateBookedDeal";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import RenderSalesperson from "./RenderSalesperson";
+
+const arrowStyles = {
+            position: "absolute",
+            background: "white",
+            cursor: "pointer",
+            width: 60,
+            height: 60,
+            top: "50%",
+            transform: "translateY(-50%)",
+            zIndex: 1000,
+};
+
 
 const BookedDeals = ({
   BACKEND_URL,
@@ -53,6 +67,8 @@ const BookedDeals = ({
   const [deleteloading, setdeleteloading] = useState(false);
   //eslint-disable-next-line
   const [deletebtnloading, setdeletebtnloading] = useState(false);
+
+  const dataTableRef = useRef();
 
   const {
     currentMode,
@@ -76,6 +92,16 @@ const BookedDeals = ({
   const handleCloseDialog = () => {
     setopenDialog(false);
   };
+
+
+  const handleNextArrow = () => {
+    dataTableRef.current.querySelector(".MuiDataGrid-virtualScroller").scrollBy(140, 0);
+  }
+
+  const handlePrevArrow = () => {
+    dataTableRef.current.querySelector(".MuiDataGrid-virtualScroller").scrollBy(-140, 0);
+  }
+
   //View LEAD MODAL VARIABLES
   const [LeadModelOpen, setLeadModelOpen] = useState(false);
   const handleLeadModelOpen = () => setLeadModelOpen(true);
@@ -420,7 +446,7 @@ const BookedDeals = ({
       field: "edit",
       headerName: "Edit",
       // width: 150,
-      minWidth: 100,
+      minWidth: 170,
       flex: 1,
       headerAlign: "center",
       sortable: false,
@@ -558,7 +584,7 @@ const BookedDeals = ({
       field: "edit",
       headerName: "Edit",
       // width: 150,
-      minWidth: 100,
+      minWidth: 170,
       flex: 1,
       headerAlign: "center",
       sortable: false,
@@ -767,7 +793,7 @@ const BookedDeals = ({
       field: "edit",
       headerName: "Edit",
       // width: 150,
-      minWidth: 100,
+      minWidth: 170,
       flex: 1,
       headerAlign: "center",
       sortable: false,
@@ -1079,8 +1105,32 @@ const BookedDeals = ({
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box width={"100%"} sx={DataGridStyles}>
+      <Box width={"95%"} sx={{...DataGridStyles, marginLeft: "auto", marginRight: "auto"}}>
+        <div style={{position: "relative"}}>
+          <div onClick={handleNextArrow}>
+            <Avatar
+            className="shadow-md"
+              style={{
+                ...arrowStyles,
+                right: -40
+              }}
+            >
+              <GrFormNext size={30} />
+            </Avatar>
+          </div>
+          <div onClick={handlePrevArrow}>
+            <Avatar
+            className="shadow-md"
+              style={{
+                ...arrowStyles,
+                left: -40
+              }}
+            >
+              <GrFormPrevious size={30} />
+            </Avatar>
+          </div>
         <DataGrid
+        ref={dataTableRef}
           autoHeight
           disableSelectionOnClick
           rows={pageState.data}
@@ -1123,12 +1173,19 @@ const BookedDeals = ({
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
             },
+              "& .MuiDataGrid-cellCheckbox": {
+                paddingLeft: "28px"
+              }, 
+              "& .MuiDataGrid-virtualScroller": {
+                scrollBehavior: "smooth"
+              }
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
           }
           // style={{justifyContent: "center", alignItems: "center"}}
         />
+        </div>
 
         {!UpdateLeadModelOpen && (
           <SingleLead
