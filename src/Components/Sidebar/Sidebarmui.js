@@ -9,6 +9,8 @@ import {
 } from "react-icons/bs";
 import { GrBitcoin } from "react-icons/gr";
 import { HiTicket, HiDocumentReport, HiUsers } from "react-icons/hi";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
+
 import {
   MdLeaderboard,
   MdPersonAdd,
@@ -1608,6 +1610,11 @@ const Sidebarmui = () => {
     {
       title: "SUPPORT",
       links: [
+        {
+          name: "QA Form",
+          icon: <AiOutlineQuestionCircle />,
+          link: "/qaform",
+        },
         {
           name: "Tickets",
           icon: <HiTicket />,

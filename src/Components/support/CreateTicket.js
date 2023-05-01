@@ -6,7 +6,7 @@ import {
   InputLabel,
   Button,
   Box,
-  CircularProgress
+  CircularProgress,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 
@@ -33,7 +33,7 @@ const CreateTicket = () => {
     ticketCategory: "",
     ticketDescription: "",
     supportSource: "",
-    ticketIssue: ""
+    ticketIssue: "",
   });
   const [btnloading, setbtnloading] = useState(false);
 
@@ -41,23 +41,27 @@ const CreateTicket = () => {
     try {
       const token = localStorage.getItem("auth-token");
       setbtnloading(true);
-      const response = await axios.post(`${BACKEND_URL}/tickets`, JSON.stringify({
-        description: values.ticketDescription,
-        category: values.ticketCategory.toLocaleLowerCase(),
-        source: values.supportSource.toLowerCase(),
-        status: "open",
-        issue: values.ticketIssue
-      }), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const response = await axios.post(
+        `${BACKEND_URL}/tickets`,
+        JSON.stringify({
+          description: values.ticketDescription,
+          category: values.ticketCategory.toLocaleLowerCase(),
+          source: values.supportSource.toLowerCase(),
+          status: "open",
+          issue: values.ticketIssue,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       setValues({
-          ticketCategory: "",
-          ticketDescription: "",
-          supportSource: "",
-          ticketIssue: ""
+        ticketCategory: "",
+        ticketDescription: "",
+        supportSource: "",
+        ticketIssue: "",
       });
       toast.success("Created new ticket successfully", {
         position: "top-right",
@@ -94,12 +98,11 @@ const CreateTicket = () => {
         },
       });
       const data = response.data.categories.data;
-      
     } catch (error) {
       console.log(error);
     }
-  }
-  
+  };
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -207,11 +210,11 @@ const CreateTicket = () => {
               className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
               style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
             >
-                      {btnloading ? (
-                        <CircularProgress size={18} sx={{ color: "white" }} />
-                      ) : (
-                        <span>Submit</span>
-                      )}
+              {btnloading ? (
+                <CircularProgress size={18} sx={{ color: "white" }} />
+              ) : (
+                <span>Submit</span>
+              )}
             </Button>
           </Box>
         </div>
