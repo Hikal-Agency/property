@@ -10,6 +10,7 @@ import {
 import { GrBitcoin } from "react-icons/gr";
 import { HiTicket, HiDocumentReport, HiUsers } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
+import { BsEnvelopeFill } from "react-icons/bs";
 
 import {
   MdLeaderboard,
@@ -1538,6 +1539,11 @@ const Sidebarmui = () => {
           name: "Offers",
           icon: <AiFillGift />,
           link: "/offers",
+        },
+        {
+          name: "Newsletter",
+          icon: <BsEnvelopeFill />,
+          link: "/newsletter",
         },
         {
           name: "Users",

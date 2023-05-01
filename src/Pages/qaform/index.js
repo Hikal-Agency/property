@@ -5,8 +5,7 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
 import Footer from "../../Components/Footer/Footer";
-import CreateTicket from "../../Components/support/CreateTicket";
-import AllTickets from "../../Components/support/AllTickets";
+
 import ADDQA from "../../Components/addQA/ADDQA";
 
 const QAForm = () => {
