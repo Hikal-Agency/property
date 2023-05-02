@@ -11,13 +11,16 @@ const initialState = {
 
 export const ContextProvider = ({ children }) => {
   //const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-  const BACKEND_URL = "https://testing.hikalcrm.com/api";
+  // const BACKEND_URL = "https://testing.hikalcrm.com/api";
+  const BACKEND_URL = process.env.REACT_APP_API_URL;
   const [screenSize, setScreenSize] = useState(undefined);
   // eslint-disable-next-line
   const [DarkIconsColor, setDarkIconsColor] = useState("#15CDCA");
   // eslint-disable-next-line
   const [LightIconsColor, setLightIconsColor] = useState("#DA1F26");
-  const [currentMode, setCurrentMode] = useState(localStorage.getItem("currentMode") || "light");
+  const [currentMode, setCurrentMode] = useState(
+    localStorage.getItem("currentMode") || "light"
+  );
   const [themeSettings, setThemeSettings] = useState(false);
   const [activeMenu, setActiveMenu] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
@@ -241,7 +244,7 @@ export const ContextProvider = ({ children }) => {
         allRoutes,
         setAllRoutes,
         isUserSubscribed,
-        setIsUserSubscribed
+        setIsUserSubscribed,
       }}
     >
       {children}
