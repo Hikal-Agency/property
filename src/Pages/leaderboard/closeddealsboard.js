@@ -14,6 +14,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
 
   console.log("Leaderboard here: ", leaderboard);
   console.log("Manager here: ", manager);
+  console.log("Agents here: ", agents);
   const FetchOffers = async (token) => {
     try {
       const all_leaderboard = await axios.get(`${BACKEND_URL}/leaderboard`, {
@@ -25,9 +26,15 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
 
       setLeaderboard(all_leaderboard?.data?.user);
 
-      const get_managers = leaderboard.filter((manager) => manager?.role === 3);
+      const leaderboard = all_leaderboard?.data?.user;
 
+      const get_managers = leaderboard?.filter(
+        (manager) => manager?.role === 3
+      );
       setManagers(get_managers);
+
+      const get_agents = leaderboard?.filter((manager) => manager?.role === 7);
+      setAgents(get_agents);
 
       //   console.log("All Offers: ", get);
     } catch (error) {
@@ -119,7 +126,11 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
         }
       >
         {/* ALL-TIME */}
-        <TabPanel value={tabValue} index={0}>
+        <TabPanel
+          value={tabValue}
+          index={0}
+          className="h-[100px] overflow-y-scroll"
+        >
           <div className="mb-10 mx-3">
             <h1 className="font-semibold text-center">
               <span className="font-bold">32</span>&nbsp;&nbsp;Closed Deals
@@ -138,7 +149,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
             >
               Sales Manager
             </div>
-            <div>
+            <div className="h-[300px] overflow-y-scroll">
               {manager?.map((item, index) => {
                 return (
                   <div
@@ -172,8 +183,8 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                       <span
                         className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
                       >
-                        Team deals: {item.teamDeals} / Direct deals:{" "}
-                        {item.directDeals}
+                        Total Closed Deals: {item?.total_closed_deals} / Direct
+                        deals: {item?.total_sales || 0}
                       </span>
                       <img
                         src="/favicon.png"
@@ -201,18 +212,18 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
             >
               Sales Agent
             </div>
-            <div>
-              {Agent.map((item, index) => {
+            <div className="h-[300px] overflow-y-scroll">
+              {agents?.map((item, index) => {
                 return (
                   <div
                     key={index}
                     className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
                   >
                     <div className="col-span-2">
-                      <h4 className="font-bold my-1">{item.name}</h4>
+                      <h4 className="font-bold my-1">{item?.userName}</h4>
                     </div>
                     <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                      {item.achieved >= item.target ? (
+                      {/* {item.achieved >= item.target ? (
                         <span
                           className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
                         >
@@ -229,7 +240,12 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                         </div>
                       ) : (
                         <></>
-                      )}
+                      )} */}
+                      <span
+                        className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
+                      >
+                        Closed deals: {item?.total_closed_deals || 0}
+                      </span>
                       <img
                         src="/favicon.png"
                         height={50}
