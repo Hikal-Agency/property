@@ -4,6 +4,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
@@ -24,6 +25,16 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
       //   console.log("All Offers: ",all_offers)
     } catch (error) {
       console.log("Offers not fetched. ", error);
+      toast.error("Unable to fetch the error.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -70,6 +81,7 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
 
   return (
     <div>
+      <ToastContainer />
       <Box
         className="mt-1 p-5"
         sx={
