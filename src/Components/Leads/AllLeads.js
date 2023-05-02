@@ -1451,7 +1451,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               "& .MuiDataGrid-columnHeaders": {
                 position: "sticky",
                 top: 0,
-                zIndex: 5000,
+                zIndex: 50,
               },
             }}
             getRowClassName={(params) =>
