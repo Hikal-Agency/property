@@ -18,14 +18,14 @@ const style = {
   boxShadow: 24,
 };
 
-const CreateTemplateModal = ({
-  createTemplateModal,
-  setCreateTemplateModal,
+const UpdateTemplateModal = ({
+  updateTemplateModal,
+  setUpdateTemplateModal,
   fetchTemplates
 }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
-  const [templateTitle, setTemplateTitle] = useState("");
-  const [templateBody, setTemplateBody] = useState("");
+  const [templateTitle, setTemplateTitle] = useState(updateTemplateModal?.template?.name);
+  const [templateBody, setTemplateBody] = useState(updateTemplateModal?.template?.body);
   const [btnloading, setbtnloading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -33,7 +33,7 @@ const CreateTemplateModal = ({
    try {
     setbtnloading(true);
       const token = localStorage.getItem("auth-token");
-      await axios.post(`${BACKEND_URL}/templates`, JSON.stringify({
+      await axios.post(`${BACKEND_URL}/templates/${updateTemplateModal?.template?.id}`, JSON.stringify({
         name: templateTitle,
         body: templateBody,
         status: "active",
@@ -43,7 +43,7 @@ const CreateTemplateModal = ({
           Authorization: "Bearer " + token,
         },
       });
-        toast.success("Template created Successfully", {
+        toast.success("Template updated Successfully", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -53,12 +53,12 @@ const CreateTemplateModal = ({
           progress: undefined,
           theme: "light",
         });
-        setCreateTemplateModal({isOpen: false});
+        setUpdateTemplateModal({isOpen: false});
         fetchTemplates();
         setbtnloading(false);
    } catch (error) {
     console.log(error);
-        toast.error("Template creation failed", {
+        toast.error("Template update failed", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -76,8 +76,8 @@ const CreateTemplateModal = ({
           <ToastContainer/>
       <Modal
         keepMounted
-        open={createTemplateModal.isOpen}
-        onClose={() => setCreateTemplateModal({ isOpen: false })}
+        open={updateTemplateModal.isOpen}
+        onClose={() => setUpdateTemplateModal({ isOpen: false })}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
         closeAfterTransition
@@ -99,11 +99,11 @@ const CreateTemplateModal = ({
               top: 2,
               color: (theme) => theme.palette.grey[500],
             }}
-            onClick={() => setCreateTemplateModal({ isOpen: false })}
+            onClick={() => setUpdateTemplateModal({ isOpen: false })}
           >
             <IoMdClose size={18} />
           </IconButton>
-            <h1>Create template</h1>
+            <h1>Update Template</h1>
             <form onSubmit={handleSubmit} className="mt-8">
               <TextField
                 id="templateTitle"
@@ -138,7 +138,7 @@ const CreateTemplateModal = ({
                 onInput={(e) => setTemplateBody(e.target.value)}
               /> */}
               <div style={{height: 200, overflowY: "scroll"}}>
-                <RichEditor setMessageValue={setTemplateBody}/>
+                <RichEditor messageValue={updateTemplateModal?.template?.body} setMessageValue={setTemplateBody}/>
               </div>
               <Button
                 type="submit"
@@ -149,7 +149,7 @@ const CreateTemplateModal = ({
                 {btnloading ? (
                   <CircularProgress size={18} sx={{ color: "white" }} />
                 ) : (
-                  <span>Create Template</span>
+                  <span>Update Template</span>
                 )}
               </Button>
             </form>
@@ -159,4 +159,4 @@ const CreateTemplateModal = ({
   );
 };
 
-export default CreateTemplateModal;
+export default UpdateTemplateModal;

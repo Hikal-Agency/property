@@ -55,7 +55,7 @@
 import React, { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
-export default function RichEditor({setMessageValue, messageValue}) {
+export default function RichEditor({setMessageValue, messageValue=""}) {
 
   const editorRef = useRef(null);
 
@@ -65,7 +65,7 @@ export default function RichEditor({setMessageValue, messageValue}) {
         apiKey='asb4zu1qlqrydo9vhg8yo2co2t7kjhb2efga5v04gl0ejx35'
         onInit={(evt, editor) => editorRef.current = editor}
         onEditorChange={() => setMessageValue(editorRef.current.getContent())}
-        value={messageValue}
+        initialValue={messageValue}
         init={{
           height: 500,
           menubar: false,
