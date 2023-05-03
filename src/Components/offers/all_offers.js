@@ -25,7 +25,7 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
       //   console.log("All Offers: ",all_offers)
     } catch (error) {
       console.log("Offers not fetched. ", error);
-      toast.error("Unable to fetch the error.", {
+      toast.error("Unable to fetch offers.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
