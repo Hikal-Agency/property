@@ -78,10 +78,11 @@ const Dashboard = () => {
   };
   useEffect(() => {
     setopenBackDrop(false);
+    const token = localStorage.getItem("auth-token");
     if (User?.uid && User?.loginId) {
+      FetchProfile(token);
       setloading(false);
     } else {
-      const token = localStorage.getItem("auth-token");
       if (token) {
         FetchProfile(token);
       } else {

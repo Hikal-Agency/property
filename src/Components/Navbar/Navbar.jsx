@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AiOutlineCalendar, AiOutlineMenu } from "react-icons/ai";
+import {MdUnsubscribe} from "react-icons/md";
 import { RiLockPasswordFill, RiNotification3Line } from "react-icons/ri";
 import {
   MdDarkMode,
@@ -199,6 +200,47 @@ const Navbar = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("leadsData");
     window.open("/", "_self");
+  };
+
+  const UnsubscribeUser = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      await axios.post(
+        `${BACKEND_URL}/cancel`,
+        JSON.stringify({
+          package_name: "unsubscribed",
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      toast.success("User Unsubscribed Successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      window.location.href = "/dashboard";
+    } catch (error) {
+      console.log(error);
+      toast.error("Sorry, something went wrong", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   useEffect(() => {
@@ -403,6 +445,11 @@ const Navbar = () => {
                     </div>
                   </Link>
                 </MenuItem>
+                {User?.role !== 1 && isUserSubscribed &&
+                <MenuItem onClick={UnsubscribeUser}>
+                  <MdUnsubscribe className="mr-3 text-lg" /> Unsubscribe
+                </MenuItem>
+                }
                 <MenuItem onClick={LogoutUser}>
                   <CgLogOut className="mr-3 text-lg" /> Logout
                 </MenuItem>

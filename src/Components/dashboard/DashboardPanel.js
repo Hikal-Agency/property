@@ -37,51 +37,7 @@ const DashboardPanel = () => {
   const [newLeads, setNewLeads] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-
-  const FetchProfile = async (token) => {
-    await apiClient
-      .get(`${BACKEND_URL}/dashboard?page=1`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setDashboardData(result.data);
-        console.log("API CLIENT HITTED: ", result);
-
-        console.log("Dashboard: ", result.data);
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 429) {
-          window.location.reload();
-        }
-
-        console.log(err);
-        toast.error("Sorry something went wrong. Kindly refresh the page.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
-        // setTimeout(() => {
-        //   console.log("Reloading.....");
-        //   window.location.reload();
-        // }, 8000);
-
-        // navigate("/", {
-        //   state: {
-        //     error: "Something Went Wrong! Please Try Again",
-        //     continueURL: location.pathname,
-        //   },
-        // });
-      });
-  };
-
+  
   const fetchAllNewLeads = async () => {
     try {
       const token = localStorage.getItem("auth-token");

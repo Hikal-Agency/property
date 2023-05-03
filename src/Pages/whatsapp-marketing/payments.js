@@ -54,7 +54,7 @@ const Payments = () => {
         }
       );
       setbtnloading(false);
-      toast.success("Lead Added Successfully", {
+      toast.success("User Unsubscribed Successfully", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -67,6 +67,15 @@ const Payments = () => {
       window.location.href = "/dashboard";
     } catch (error) {
       console.log(error);
+      toast.error("Sorry, something went wrong", {
+        position: "top-right", autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
