@@ -11,6 +11,7 @@ import { GrBitcoin } from "react-icons/gr";
 import { HiTicket, HiDocumentReport, HiUsers } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill } from "react-icons/bs";
+import { FaFacebookSquare } from "react-icons/fa";
 
 import {
   MdLeaderboard,
@@ -776,6 +777,7 @@ const Sidebarmui = () => {
         },
       ],
     },
+
     // {
     //   title: "WHATSAPP MARKETING",
     //   links: [
@@ -1569,6 +1571,17 @@ const Sidebarmui = () => {
           name: "Leaderboard",
           icon: <MdLeaderboard />,
           link: "/leaderboard",
+        },
+        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+      ],
+    },
+    {
+      title: "Social Media",
+      links: [
+        {
+          name: "campaigns",
+          icon: <FaFacebookSquare />,
+          link: "/campaigns",
         },
         // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
       ],

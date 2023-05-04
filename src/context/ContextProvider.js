@@ -13,6 +13,7 @@ export const ContextProvider = ({ children }) => {
   //const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
   // const BACKEND_URL = "https://testing.hikalcrm.com/api";
   const BACKEND_URL = process.env.REACT_APP_API_URL;
+  const graph_api_token = process.env.REACT_APP_FB_TOKEN;
   const [screenSize, setScreenSize] = useState(undefined);
   // eslint-disable-next-line
   const [DarkIconsColor, setDarkIconsColor] = useState("#15CDCA");
@@ -190,6 +191,7 @@ export const ContextProvider = ({ children }) => {
     <StateContext.Provider
       value={{
         BACKEND_URL,
+        graph_api_token,
         User,
         setUser,
         DashboardData,

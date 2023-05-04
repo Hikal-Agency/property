@@ -45,6 +45,7 @@ import QAForm from "./qaform";
 import Newsletter from "./newsletter";
 import AddNewsletter from "../Components/newsletter/AddNewsletter";
 import AddNewsLetters from "./newsletter/addNewsletter";
+import Campaigns from "./SocialMedia/campaigns";
 
 const libraries = ["places"];
 
@@ -238,6 +239,11 @@ const routes = [
     path: "/propertyPortfolio/tour360/:proId",
     pageName: "360 Tour",
     element: <Tour360 />,
+  },
+  {
+    path: "/campaigns",
+    pageName: "Facebook Campaigns",
+    element: <Campaigns />,
   },
   {
     path: "*",
