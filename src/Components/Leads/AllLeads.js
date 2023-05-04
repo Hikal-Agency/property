@@ -38,7 +38,6 @@ import RenderManagers from "./RenderManagers";
 import RenderSalesperson from "./RenderSalesperson";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteLeadModel from "./DeleteLead";
-import BulkImportModel from "./BulkImport";
 import BulkImport from "./BulkImport";
 
 const bulkUpdateBtnStyles = {

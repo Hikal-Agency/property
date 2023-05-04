@@ -71,6 +71,14 @@ const Offers = () => {
     }
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/test")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Data:::", data);
+    })
+  }, []);
   return (
     <>
       {/* <ToastContainer/> */}

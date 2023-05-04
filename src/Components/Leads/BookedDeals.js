@@ -1108,7 +1108,7 @@ const BookedDeals = ({
     <div className="pb-10">
       <ToastContainer />
       <Box
-        width={"95%"}
+        width={"73vw"}
         sx={{ ...DataGridStyles, marginLeft: "auto", marginRight: "auto" }}
       >
         <div style={{ position: "relative" }}>
@@ -1187,7 +1187,7 @@ const BookedDeals = ({
               },
               "& .MuiDataGrid-virtualScroller": {
                 scrollBehavior: "smooth",
-                marginTop: 0,
+                marginTop: "0 !important",
               },
               "& .MuiDataGrid-main": {
                 overflowY: "scroll",
@@ -1196,7 +1196,7 @@ const BookedDeals = ({
               "& .MuiDataGrid-columnHeaders": {
                 position: "sticky",
                 top: 0,
-                zIndex: 5000,
+                zIndex: 50,
               },
             }}
             getRowClassName={(params) =>
