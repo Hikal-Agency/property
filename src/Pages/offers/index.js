@@ -11,6 +11,7 @@ import CreateOffer from "../../Components/offers/createoffer";
 import { useNavigate, useLocation } from "react-router-dom";
 import ManagerOffers from "../../Components/offers/manager_offers";
 import SalesPersonOffers from "../../Components/offers/salePerson_offers";
+import {io} from "socket.io-client";
 
 const Offers = () => {
   const {
@@ -72,13 +73,6 @@ const Offers = () => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/test")
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Data:::", data);
-    })
-  }, []);
   return (
     <>
       {/* <ToastContainer/> */}
