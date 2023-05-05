@@ -152,7 +152,7 @@ const ListQa = ({ pageState, setpageState }) => {
           question: qa?.question,
           answers:
             qa?.answers.length > 0
-              ? qa?.answers.map((ans) => ans?.question).join("\n")
+              ? qa?.answers.map((ans) => ans?.question).join(", ")
               : "No answers",
         }));
 
