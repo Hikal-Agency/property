@@ -85,8 +85,19 @@ const AllCampaigns = ({ pageState, setpageState }) => {
 
   const FetchCampaigns = async (e) => {
     try {
+      // const relative_campaigns = await axios.get(
+      //   `https://graph.facebook.com/v16.0/act_967421490560096/campaigns?fields=name,bid_strategy,daily_budget,special_ad_category,ads{name,adset,bid_amount,status}&access_token=${graph_api_token}`
+      // );
+
       const relative_campaigns = await axios.get(
-        `https://graph.facebook.com/v16.0/act_967421490560096/campaigns?fields=name,bid_strategy,daily_budget,special_ad_category,ads{name,adset,bid_amount,status}&access_token=${graph_api_token}`
+        "https://graph.facebook.com/v16.0/act_967421490560096/campaigns",
+        {
+          params: {
+            fields:
+              "name,bid_strategy,daily_budget,special_ad_category,ads{name,adset,bid_amount,status}",
+            access_token: graph_api_token,
+          },
+        }
       );
 
       setCampaigns(relative_campaigns?.data?.data);
