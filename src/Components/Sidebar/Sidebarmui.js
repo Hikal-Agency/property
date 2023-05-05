@@ -1230,12 +1230,12 @@ const Sidebarmui = () => {
         },
       })
       .then((result) => {
-        setUnassignedLeadsCount(result.data["UNASSIGNED LEADS"].unassigned);
+        setUnassignedLeadsCount(result?.data["UNASSIGNED LEADS"]?.unassigned);
         // setUnassignedLeadsCount(result.data["UNASSIGNED LEADS"]);
 
         console.log(
           "Unassigned sdfsa: ",
-          result.data["UNASSIGNED LEADS"].unassigned
+          result?.data["UNASSIGNED LEADS"]?.unassigned
         );
       });
   };

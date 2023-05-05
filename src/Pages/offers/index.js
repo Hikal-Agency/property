@@ -11,6 +11,7 @@ import CreateOffer from "../../Components/offers/createoffer";
 import { useNavigate, useLocation } from "react-router-dom";
 import ManagerOffers from "../../Components/offers/manager_offers";
 import SalesPersonOffers from "../../Components/offers/salePerson_offers";
+import {io} from "socket.io-client";
 
 const Offers = () => {
   const {
@@ -71,6 +72,7 @@ const Offers = () => {
     }
     // eslint-disable-next-line
   }, []);
+
   return (
     <>
       {/* <ToastContainer/> */}

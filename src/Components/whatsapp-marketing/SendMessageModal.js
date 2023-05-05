@@ -273,11 +273,11 @@ const SendMessageModal = ({
       })
       console.log(messageValue);
     const messageText = turndownService.turndown(messageValue);
-    // if (sendMessageModal.isWhatsapp) {
-    //   sendWhatsappUltraMsg(messageText, selectedContacts);
-    // } else {
-    //   sendSMS(messageText, selectedContacts);
-    // }
+    if (sendMessageModal.isWhatsapp) {
+      sendWhatsappUltraMsg(messageText, selectedContacts);
+    } else {
+      sendSMS(messageText, selectedContacts);
+    }
   };
 
   const handleChange = (event, newValue) => {
