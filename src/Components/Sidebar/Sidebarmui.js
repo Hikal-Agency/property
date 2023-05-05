@@ -778,7 +778,7 @@ const Sidebarmui = () => {
       ],
     },
     {
-      title: "Apps",
+      title: "Support",
       links: [
         {
           name: "QA Form",

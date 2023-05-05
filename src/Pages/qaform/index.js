@@ -67,7 +67,7 @@ const QAForm = () => {
                       className="w-full px-1 m-1"
                     >
                       <Tab label="Add QA" />
-                      {/* <Tab label="ALL TICKETS" /> */}
+                      {/* <Tab label="ALL QA" /> */}
                       {/* <Tab label="UPGRADE" />
                       <Tab label="RENEWAL" />
                       <Tab label="CANCELLATION" /> */}

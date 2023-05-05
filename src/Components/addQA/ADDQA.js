@@ -140,6 +140,20 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
         theme: "light",
       });
     } catch (error) {
+      if (error.status === false) {
+        toast.error(error.message, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        return;
+      }
       setloading(false);
       console.error(error);
       toast.error("Something went wrong. Data not added.", {
