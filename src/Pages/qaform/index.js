@@ -83,7 +83,11 @@ const QAForm = () => {
                       />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                      <ListQa />
+                      <ListQa
+                        isLoading={loading}
+                        tabValue={tabValue}
+                        setTabValue={setTabValue}
+                      />
                     </TabPanel>
                     {/* <TabPanel value={value} index={1}>
                       <AllTickets
