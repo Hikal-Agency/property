@@ -127,6 +127,7 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
       );
       console.log(submitQA.data);
       setloading(false);
+
       setQuestion("");
       setAnswers([""]);
       toast.success("Training data added successfully.", {
@@ -140,8 +141,10 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
         theme: "light",
       });
     } catch (error) {
-      if (error.status === false) {
-        toast.error(error.message, {
+      setloading(false);
+
+      if (error?.response?.data?.status === false) {
+        toast.error(error?.response?.data?.message, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -154,7 +157,6 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
 
         return;
       }
-      setloading(false);
       console.error(error);
       toast.error("Something went wrong. Data not added.", {
         position: "top-right",

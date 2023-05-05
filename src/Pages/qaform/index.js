@@ -7,6 +7,7 @@ import { Tab, Tabs } from "@mui/material";
 import Footer from "../../Components/Footer/Footer";
 
 import ADDQA from "../../Components/addQA/ADDQA";
+import ListQa from "../../Components/addQA/ListQa";
 
 const QAForm = () => {
   const { currentMode, darkModeColors } = useStateContext();
@@ -67,7 +68,7 @@ const QAForm = () => {
                       className="w-full px-1 m-1"
                     >
                       <Tab label="Add QA" />
-                      {/* <Tab label="ALL QA" /> */}
+                      <Tab label="ALL QA" />
                       {/* <Tab label="UPGRADE" />
                       <Tab label="RENEWAL" />
                       <Tab label="CANCELLATION" /> */}
@@ -80,6 +81,9 @@ const QAForm = () => {
                         tabValue={tabValue}
                         setTabValue={setTabValue}
                       />
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                      <ListQa />
                     </TabPanel>
                     {/* <TabPanel value={value} index={1}>
                       <AllTickets
