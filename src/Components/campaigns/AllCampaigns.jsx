@@ -45,7 +45,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
     },
     {
       field: "campaignName",
-      headerName: "Campaign Name",
+      headerName: "Ad Name",
       minWidth: 170,
       flex: 1,
       headerAlign: "center",
@@ -71,16 +71,58 @@ const AllCampaigns = ({ pageState, setpageState }) => {
       flex: 1,
       headerAlign: "center",
     },
+    {
+      field: "spend",
+      headerName: "Spend",
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "cpc",
+      headerName: "Cost Per Click",
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
+      field: "cpm",
+      headerName: "CPM",
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    // {
+    //   field: "impressions",
+    //   headerName: "Impressions",
+    //   minWidth: 110,
+    //   flex: 1,
+    //   headerAlign: "center",
+    // },
   ];
+
+  // const row =
+  //   ads?.length > 0 &&
+  //   ads?.map((ad, index) => ({
+  //     id: ad?.id,
+  //     campaignName: ad?.name,
+  //     status: ad?.status,
+  //     adset: ad?.adset?.name,
+  //     dailyBudget: ad?.adset?.daily_budget,
+  //   }));
 
   const row =
     ads?.length > 0 &&
     ads?.map((ad, index) => ({
       id: ad?.id,
-      campaignName: ad?.name,
-      status: ad?.status,
-      adset: ad?.adset?.name,
-      dailyBudget: ad?.adset?.daily_budget,
+      campaignName: ad?.name || "No Data",
+      status: ad?.status || "No Data",
+      adset: ad?.adset || "No Data",
+      dailyBudget: ad?.dailyBudget || "No Data",
+      spend: ad?.spend || "No Data",
+      cpc: ad?.cpc || "No Data",
+      cpm: ad?.cpm || "No Data",
+      impressions: ad?.impressions || "No Data",
     }));
 
   const FetchCampaigns = async (e) => {
@@ -125,46 +167,62 @@ const AllCampaigns = ({ pageState, setpageState }) => {
       .get(
         `https://graph.facebook.com/v16.0/${selectedCampaign}/ads?fields=id,name,adset{id,name,daily_budget},status&date_preset=last_year&limit=1000&access_token=${graph_api_token}`
       )
-      .then((result) => {
-        console.log(" ads of campaign ");
+      .then(async (result) => {
+        console.log("ads of campaign ");
         console.log(result.data);
-        let rowsDataArray = "";
-        // if (result.data.logs.current_page > 1) {
-        //   const theme_values = Object.values(result.data.logs.data);
-        //   rowsDataArray = theme_values;
-        // } else {
-        //   rowsDataArray = result.data.logs.data;
-        // }
 
-        rowsDataArray = result?.data?.data;
-        console.log("rows array is");
-        console.log(rowsDataArray);
+        const adsData = result.data.data;
+        console.log("adsData: ", adsData);
+        const adsWithInsights = await Promise.all(
+          adsData.map(async (ad) => {
+            const insightsResult = await axios.get(
+              `https://graph.facebook.com/v16.0/${ad.id}/insights?fields=spend,cpc,cpm,impressions&date_preset=maximum&access_token=${graph_api_token}`
+            );
+            console.log("Insights result: ", insightsResult);
+            const insightsData = insightsResult.data.data[0];
+            return {
+              ...ad,
+              adset: ad?.adset?.name,
+              dailyBudget: ad?.adset?.daily_budget,
+              spend: insightsData?.spend,
+              cpc: insightsData?.cpc,
+              cpm: insightsData?.cpm,
+              impressions: insightsData?.impressions,
+            };
+          })
+        );
 
-        let rowsdata = rowsDataArray.map((row, index) => ({
+        console.log("Insights Data: ", adsWithInsights);
+
+        setAds(adsWithInsights);
+
+        const rowsdata = adsWithInsights.map((row, index) => ({
           id: index + 1,
           campaignName: row?.name,
           status: row?.status,
-          adset: row?.adset?.name,
-          dailyBudget: row?.adset?.daily_budget,
+          adset: row?.adset,
+          dailyBudget: row?.dailyBudget,
+          spend: row?.spend,
+          cpc: row?.cpc,
+          cpm: row?.cpm,
+          impressions: row?.impressions,
           Cid: row?.id,
         }));
 
-        setAds(result?.data?.data);
-        // setAds(rowsdata);
-
-        // setpageState((old) => ({
-        //   ...old,
-        //   isLoading: false,
-        //   data: rowsdata,
-        //   total: result.data.logs.total,
-        //   pageSize: result.data.logs.per_page,
-        // }));
+        setpageState((old) => ({
+          ...old,
+          isLoading: false,
+          data: rowsdata,
+          total: rowsdata.length,
+          pageSize: 10,
+        }));
       })
       .catch((err) => {
         console.log("error occured", err);
         console.log(err);
       });
   };
+
   useEffect(() => {
     // const token = localStorage.getItem("auth-token");
     // FetchSingleCampaign(token);
@@ -310,7 +368,11 @@ const AllCampaigns = ({ pageState, setpageState }) => {
           </Select>
         </div>
       </div>
-      <Box width={"100%"} sx={DataGridStyles}>
+      <Box
+        width={"100%"}
+        sx={DataGridStyles}
+        style={{ width: "100%", overflowX: "auto" }}
+      >
         <DataGrid
           autoHeight
           rows={row}
