@@ -777,6 +777,16 @@ const Sidebarmui = () => {
         },
       ],
     },
+    {
+      title: "Apps",
+      links: [
+        {
+          name: "QA Form",
+          icon: <AiOutlineQuestionCircle />,
+          link: "/qaform",
+        },
+      ],
+    },
 
     // {
     //   title: "WHATSAPP MARKETING",
@@ -1114,6 +1124,16 @@ const Sidebarmui = () => {
           name: "Contacts",
           icon: <MdContactPage />,
           link: "/contacts",
+        },
+      ],
+    },
+    {
+      title: "Support",
+      links: [
+        {
+          name: "QA Form",
+          icon: <AiOutlineQuestionCircle />,
+          link: "/qaform",
         },
       ],
     },
