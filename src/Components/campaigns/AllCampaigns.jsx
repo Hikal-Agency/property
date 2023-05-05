@@ -232,7 +232,8 @@ const AllCampaigns = ({ pageState, setpageState }) => {
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params) => {
-    window.open(`/leadnotes/${params.row.leadId}`);
+    console.log("Clicked");
+    // window.open(`/leadnotes/${params.row.leadId}`);
   };
 
   const DataGridStyles = {
