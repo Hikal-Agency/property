@@ -167,6 +167,7 @@ const AddLeadComponent = () => {
         progress: undefined,
         theme: "light",
       });
+      setloading(false);
 
       return;
     }

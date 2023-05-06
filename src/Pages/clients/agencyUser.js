@@ -262,10 +262,15 @@ const AgencyUsers = () => {
                             <h1 className="font-bold">{item.userName}</h1>
                             <p className="text-sm">{item.position}</p>
                             <p className="text-sm font-semibold text-red-600">
-                              {item.userName}
+                              {item?.userName}
                             </p>
-                            <p className="text-sm">{item.userPhone}</p>
+                            <p className="text-sm">{item?.userPhone}</p>
                             <p className="text-sm">{item.userEmail}</p>
+                            {item?.status === 1 ? (
+                              <p className="text-sm text-red-600">Deactive</p>
+                            ) : (
+                              <p className="text-sm text-green-600">Active</p>
+                            )}
                           </div>
                         </div>
                       );
@@ -282,10 +287,10 @@ const AgencyUsers = () => {
                   style={{ margin: "auto" }}
                 />
               </Stack>
-              <Footer />
             </div>
           </div>
         )}
+        <Footer />
       </div>
     </>
   );

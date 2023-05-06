@@ -256,6 +256,24 @@ const UpdateLead = ({
 
   const UpdateLeadFunc = async () => {
     setbtnloading(true);
+
+    if (!LeadContact) {
+      setloading(false);
+      toast.error("Contact number is required.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setbtnloading(false);
+
+      return;
+    }
+
     const token = localStorage.getItem("auth-token");
     const creationDate = new Date();
     const UpdateLeadData = new FormData();
