@@ -8,7 +8,6 @@ build/
 *.tgz
 .env
 .env.development
-/src/Pages/whatsapp-marketing/Chat.js
 .env.production
 my-app*
 template/src/__tests__/__snapshots__/
