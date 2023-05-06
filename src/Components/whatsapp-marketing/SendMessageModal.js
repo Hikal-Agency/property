@@ -38,6 +38,7 @@ const SendMessageModal = ({
   const [tabValue, setTabValue] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState(false);
   const [templates, setTemplates] = useState([]);
+  const [defaultMessageValue, setDefaultMessageValue] = useState("");
 
   const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
   const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
@@ -282,7 +283,7 @@ const SendMessageModal = ({
 
   const handleChange = (event, newValue) => {
     if (tabValue === 1 && newValue === 0) {
-      setMessageValue("");
+      setDefaultMessageValue("");
       setSelectedTemplate(false);
     }
     setTabValue(newValue);
@@ -290,7 +291,7 @@ const SendMessageModal = ({
 
   const handleSelectTemplate = (template) => {
     setSelectedTemplate(true);
-    setMessageValue(templates.find((tmp) => tmp === template).body);
+    setDefaultMessageValue(templates.find((tmp) => tmp === template).body);
   };
 
   const fetchTemplates = async () => {
@@ -374,7 +375,7 @@ const SendMessageModal = ({
                   value={messageValue}
                   onInput={(e) => setMessageValue(e.target.value)}
                 /> */}
-                <RichEditor messageValue={messageValue} setMessageValue={setMessageValue}/>
+                <RichEditor messageValue={defaultMessageValue} setMessageValue={setMessageValue}/>
               </div>
             )}
 
@@ -402,7 +403,7 @@ const SendMessageModal = ({
                     onInput={(e) => setMessageValue(e.target.value)}
                   /> */}
                   <div style={{height: 200, overflowY: "scroll"}}>
-                    <RichEditor messageValue={messageValue} setMessageValue={setMessageValue}/>
+                    <RichEditor messageValue={defaultMessageValue} setMessageValue={setMessageValue}/>
                   </div>
                 </>
               ) : (

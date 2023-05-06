@@ -250,8 +250,9 @@ const AllLeads = () => {
           >
             <BsWhatsapp
               size={24}
-              onClick={() =>
-                window.open(`https://wa.me/${cellValues.row.leadContact}`)
+              onClick={() => {
+                window.open(`https://wa.me/${cellValues.row.leadContact.slice(1).replaceAll(" ", "")}`)
+              }
               }
               color="green"
             />

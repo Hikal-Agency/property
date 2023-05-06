@@ -32,20 +32,18 @@ import Clients from "./clients";
 import AgencyUsers from "./clients/agencyUser";
 import Leaderboard from "./leaderboard";
 import { useStateContext } from "../context/ContextProvider";
-import ForgotPassword from "./auth/forgot-password";
 
 import Tour360 from "./propertyPortfolio/tour360";
 import PropertyPortfolio from "./propertyPortfolio";
 import ActivityLog from "./activity";
-import axios from "axios";
 import ClientLeads from "./clients/clientLeads";
 import Userlocation from "./location/userlocation";
 import UserAllLocation from "./location/useralllocation";
 import QAForm from "./qaform";
 import Newsletter from "./newsletter";
-import AddNewsletter from "../Components/newsletter/AddNewsletter";
 import AddNewsLetters from "./newsletter/addNewsletter";
 import Campaigns from "./SocialMedia/campaigns";
+import { io } from "socket.io-client";
 
 const libraries = ["places"];
 
@@ -401,17 +399,19 @@ const routes = [
 function App() {
   const { setAllRoutes } = useStateContext();
   const router = createBrowserRouter(routes);
-  const { BACKEND_URL } = useStateContext();
+  const { setSocket } = useStateContext();
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
     libraries,
   });
 
-  const token = localStorage.getItem("token");
-
   useEffect(() => {
     setAllRoutes(routes);
+
+    const socketURL = "http://localhost:5000";
+    const socket = io(socketURL);
+    setSocket(socket);
   }, []);
 
   return <RouterProvider router={router} />;

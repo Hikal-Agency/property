@@ -11,7 +11,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import AllMessages from "./AllMessages";
 import Payments from "./payments";
-import Chat from "./Chat";
+// import Chat from "./Chat";
 
 const pagesComponents = {
   instances: <InstancesComponent />,
@@ -20,7 +20,7 @@ const pagesComponents = {
   payments: <Payments />,
   transactions: <TransactionsComponent />,
   all: <AllMessages />,
-  chat: <Chat/>
+  // chat: <Chat/>
 };
 
 const WhatsappMarketing = () => {
