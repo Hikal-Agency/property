@@ -308,16 +308,21 @@ const UpdateMeeting = ({
                         onChange={(newValue) => {
                           setMeetingDateValue(newValue);
                           setMeetingDate(
-                            formatNum(newValue.$d.getUTCFullYear()) +
+                            formatNum(newValue?.$d?.getUTCFullYear()) +
                               "-" +
-                              formatNum(newValue.$d.getUTCMonth() + 1) +
+                              formatNum(newValue?.$d?.getUTCMonth() + 1) +
                               "-" +
-                              formatNum(newValue.$d.getUTCDate() + 1)
+                              formatNum(newValue?.$d?.getUTCDate() + 1)
                           );
                         }}
                         format="yyyy-MM-dd"
                         renderInput={(params) => (
-                          <TextField {...params} fullWidth />
+                          <TextField
+                            fullWidth
+                            {...params}
+                            onKeyDown={(e) => e.preventDefault()}
+                            readOnly={true}
+                          />
                         )}
                       />
                     </LocalizationProvider>
@@ -329,14 +334,19 @@ const UpdateMeeting = ({
                         value={meetingTimeValue}
                         onChange={(newValue) => {
                           setMeetingTime(
-                            formatNum(newValue.$d.getHours()) +
+                            formatNum(newValue?.$d?.getHours()) +
                               ":" +
-                              formatNum(newValue.$d.getMinutes())
+                              formatNum(newValue?.$d?.getMinutes())
                           );
                           setMeetingTimeValue(newValue);
                         }}
                         renderInput={(params) => (
-                          <TextField {...params} fullWidth />
+                          <TextField
+                            {...params}
+                            fullWidth
+                            onKeyDown={(e) => e.preventDefault()}
+                            readOnly={true}
+                          />
                         )}
                       />
                     </LocalizationProvider>
