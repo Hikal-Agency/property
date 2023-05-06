@@ -21,7 +21,7 @@ const Chat = () => {
   const [data, setData] = useState([]);
   const [messageValue, setMessageValue] = useState("");
   const [contactValue, setContactValue] = useState("0");
-  const [selectedContact, setSelectedContact] = useState(null);
+  const [selectedChat, setSelectedChat] = useState(null);
   const [serverDisconnected, setServerDisconnected] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatMessageInputVal, setChatMessageInputVal] = useState("");
@@ -34,7 +34,7 @@ const Chat = () => {
     const messages = await axios.get(
       `${socketURL}/user-chat-messages/${contact}`
     );
-    console.log(messages.data);
+    console.log("Messages Received: ", messages.data);
     setChatMessages(messages.data);
   };
 
@@ -43,12 +43,12 @@ const Chat = () => {
       e.preventDefault();
       if (chatMessageInputVal) {
         await axios.post(`${socketURL}/send-message`, {
-          to: selectedContact.id.user + "@c.us",
+          to: selectedChat.id.user + "@c.us",
           msg: chatMessageInputVal,
         });
 
         setChatMessageInputVal("");
-        fetchChatMessages(selectedContact?.id?.user);
+        fetchChatMessages(selectedChat?.id?.user);
       }
     } catch (error) {
       console.log(error);
@@ -72,8 +72,8 @@ const Chat = () => {
     setContactValue(e.target.value);
   };
 
-  const selectContact = (contact) => {
-    setSelectedContact(contact);
+  const selectChat = (contact) => {
+    setSelectedChat(contact);
   };
 
   const handleSend = async () => {
@@ -126,11 +126,9 @@ const Chat = () => {
         });
 
         socket.on("message_received", (message) => {
+          console.log("Message Received");
           // setChatMessages([...chatMessages, message]);
-          console.log(message.from, selectedContact?.id?.user + "@c.us")
-          if (message.from === selectedContact?.id?.user + "@c.us") {
-            fetchChatMessages(selectedContact?.id?.user);
-          }
+            fetchChatMessages(selectedChat?.id?.user);
         });
 
         socket.on("user_ready", async (clientInfo) => {
@@ -159,10 +157,10 @@ const Chat = () => {
     }
   }, [socket]);
   useEffect(() => {
-    if (selectedContact) {
-      fetchChatMessages(selectedContact?.id?.user);
+    if (selectedChat) {
+      fetchChatMessages(selectedChat?.id?.user);
     }
-  }, [selectedContact]);
+  }, [selectedChat]);
 
   return (
     <>
@@ -236,16 +234,16 @@ const Chat = () => {
                         </Button>
                       </div>
                     </div>
-                    {selectedContact && (
+                    {selectedChat && (
                       <div className="flex justify-end items-center">
-                        <Button onClick={() => setSelectedContact(null)}>
+                        <Button onClick={() => setSelectedChat(null)}>
                           Goto Contacts
                         </Button>
                       </div>
                     )}
 
                     <div className="mt-4">
-                      {selectedContact ? (
+                      {selectedChat ? (
                         <>
                           {/* Chat Section */}
                           <div className="chat-container flex">
@@ -255,8 +253,8 @@ const Chat = () => {
                             >
                               <div className="bg-white py-3 rounded cursor-pointer mx-2 px-2">
                                 <strong>
-                                  {selectedContact?.name ||
-                                    selectedContact?.number}
+                                  {selectedChat?.name ||
+                                    selectedChat?.number}
                                 </strong>
                               </div>
                             </div>
@@ -270,7 +268,7 @@ const Chat = () => {
                                     if (
                                       message.id.fromMe &&
                                       message.to ===
-                                        selectedContact.id._serialized
+                                        selectedChat.id._serialized
                                     ) {
                                       return (
                                         <div
@@ -279,7 +277,7 @@ const Chat = () => {
                                             position: "relative",
                                             backgroundColor: "#075e54",
                                           }}
-                                          className="max-w-[100%] mb-2 rounded p-2"
+                                          className="max-w-[600px] mb-2 rounded p-2"
                                         >
                                           {message.type === "revoked" ? (
                                             <i className="text-gray-200">
@@ -307,7 +305,7 @@ const Chat = () => {
                                     } else {
                                       if (
                                         message.from ===
-                                        selectedContact.id._serialized
+                                        selectedChat.id._serialized
                                       ) {
                                         return (
                                           <div
@@ -317,7 +315,7 @@ const Chat = () => {
                                               backgroundColor: "#075e54",
                                               alignSelf: "flex-start",
                                             }}
-                                            className="max-w-[100%] mb-2 rounded p-2"
+                                            className="max-w-[600px] mb-2 rounded p-2"
                                           >
                                             {message.type === "revoked" ? (
                                               <i className="text-gray-200">
@@ -377,7 +375,7 @@ const Chat = () => {
                           {data?.userChats?.map((chat, index) => {
                             return (
                               <div
-                                onClick={() => selectContact(chat)}
+                                onClick={() => selectChat(chat)}
                                 className="bg-slate-700 text-white py-2 px-5 rounded mb-2 cursor-pointer"
                                 key={`${index}${chat.id.user}`}
                               >
