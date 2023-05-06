@@ -57,11 +57,30 @@ const AddLeadComponent = () => {
 
   console.log("User in add lead component: ", User);
 
+  // const handleEmail = (e) => {
+  //   setEmailError(false);
+  //   const value = e.target.value;
+  //   console.log(value);
+  //   const emailRegex = /^\S+@\S+\.\S+$/;
+  //   if (emailRegex.test(value)) {
+  //     setEmailError(false);
+  //   } else {
+  //     setEmailError("Kindly enter a valid email.");
+  //     // setLeadEmail("");
+  //     return;
+  //   }
+
+  //   setLeadEmail(value);
+
+  //   console.log("Email state: ", LeadEmail);
+  // };
+
   const handleEmail = (e) => {
     setEmailError(false);
     const value = e.target.value;
     console.log(value);
-    const emailRegex = /^\S+@\S+\.\S+$/;
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
     if (emailRegex.test(value)) {
       setEmailError(false);
     } else {
@@ -69,9 +88,7 @@ const AddLeadComponent = () => {
       // setLeadEmail("");
       return;
     }
-
     setLeadEmail(value);
-
     console.log("Email state: ", LeadEmail);
   };
 
