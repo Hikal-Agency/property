@@ -40,13 +40,7 @@ const ListQa = ({ pageState, setpageState }) => {
       flex: 1,
       headerAlign: "center",
     },
-    {
-      field: "creationDate",
-      headerName: "Date",
-      minWidth: 50,
-      flex: 1,
-      headerAlign: "center",
-    },
+
     {
       field: "question",
       headerName: "Question",
@@ -146,17 +140,21 @@ const ListQa = ({ pageState, setpageState }) => {
         console.log(result?.data?.QAs);
 
         let data = result?.data?.QAs;
-        let rowData = data
-          ?.filter((qa) => qa?.type === "Question")
-          .map((qa) => ({
-            id: qa?.id,
-            creationDate: qa?.created_at,
-            question: qa?.question,
-            answers:
-              qa?.answers.length > 0
-                ? qa?.answers.map((ans) => ans?.question).join(", ")
-                : "No answers",
-          }));
+        // let rowData = data?.map((qa, index) => ({
+        //   id: index + 1,
+        //   question: qa?.question,
+        //   answers:
+        //     qa?.answers.length > 0
+        //       ? qa?.answers.map((ans) => ans?.answer).join(", ")
+        //       : "No answers",
+        // }));
+
+        let rowData = data?.map((qa, index) => ({
+          id: index + 1,
+          question: qa?.question,
+          answers:
+            qa?.answers.length > 0 ? qa?.answers.join(", ") : "No answers",
+        }));
 
         console.log("Row Data: ", rowData);
 

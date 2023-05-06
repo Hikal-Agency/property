@@ -136,6 +136,21 @@ const AddLeadComponent = () => {
 
   const AddLead = async () => {
     setloading(true);
+    if (!LeadContact || !LeadEmail) {
+      setloading(false);
+      toast.error("Contact or email is empty.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      return;
+    }
     const token = localStorage.getItem("auth-token");
     const creationDate = new Date();
     const LeadData = new FormData();
@@ -518,6 +533,7 @@ const AddLeadComponent = () => {
                                 outline: "none",
                                 fontSize: "16px",
                               }}
+                              required
                             />
                             {error && (
                               <Typography variant="body2" color="error">
@@ -562,6 +578,7 @@ const AddLeadComponent = () => {
                               helperText={emailError && emailError}
                               // value={LeadEmail}
                               onChange={handleEmail}
+                              required
                             />
 
                             {/* <TextField
