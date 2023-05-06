@@ -100,12 +100,14 @@ const AddLeadComponent = () => {
       console.log("Possible: ", inputValue);
       if (isValidPhoneNumber(inputValue)) {
         setLeadContact(formatPhoneNumberIntl(inputValue));
-        console.log("Valid: ", LeadContact);
+        console.log("Valid lead contact: ", LeadContact);
+        console.log("Valid input: ", inputValue);
+        setError(false);
       } else {
-        setError("No a valid number.");
+        setError("Not a valid number.");
       }
     } else {
-      setError("No a valid number.");
+      setError("Not a valid number.");
     }
   };
 
@@ -153,9 +155,9 @@ const AddLeadComponent = () => {
 
   const AddLead = async () => {
     setloading(true);
-    if (!LeadContact || !LeadEmail) {
+    if (!LeadContact) {
       setloading(false);
-      toast.error("Contact or email is empty.", {
+      toast.error("Contact number is required.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -525,9 +527,9 @@ const AddLeadComponent = () => {
                             />
                             <PhoneInput
                               placeholder="Enter phone number"
-                              value={value ? value : LeadContact}
+                              value={value}
                               onChange={(value) => setValue(value)}
-                              onKeyDown={handleContact}
+                              onKeyUp={handleContact}
                               error={error}
                               className={classNames({
                                 "dark-mode": currentMode === "dark",
@@ -595,7 +597,6 @@ const AddLeadComponent = () => {
                               helperText={emailError && emailError}
                               // value={LeadEmail}
                               onChange={handleEmail}
-                              required
                             />
 
                             {/* <TextField

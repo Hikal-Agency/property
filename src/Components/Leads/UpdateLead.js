@@ -91,11 +91,12 @@ const UpdateLead = ({
       if (isValidPhoneNumber(inputValue)) {
         setLeadContact(formatPhoneNumberIntl(inputValue));
         console.log("Valid: ", LeadContact);
+        setError(false);
       } else {
-        setError("No a valid number.");
+        setError("Not a valid number.");
       }
     } else {
-      setError("No a valid number.");
+      setError("Not a valid number.");
     }
   };
 
@@ -617,9 +618,9 @@ const UpdateLead = ({
                       />
                       <PhoneInput
                         placeholder="Enter phone number"
-                        value={value || LeadContact}
+                        value={LeadContact}
                         onChange={(value) => setValue(value)}
-                        onKeyDown={handlePhone}
+                        onKeyUp={handlePhone}
                         error={error}
                         className={classNames({
                           "dark-mode": currentMode === "dark",
@@ -679,7 +680,7 @@ const UpdateLead = ({
                         style={{ marginBottom: "20px" }}
                         variant="outlined"
                         size="medium"
-                        value={LeadEmail}
+                        value={LeadEmail === "undefined" ? "" : LeadEmail}
                         onChange={(e) => setLeadEmail(e.target.value)}
                       />
                       <FormHelperText
