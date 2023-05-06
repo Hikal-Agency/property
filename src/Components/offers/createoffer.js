@@ -34,14 +34,39 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     validToSales: 1,
   });
 
-  // const handleChange = (e) => {
-  //   setOfferData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-
-  //   console.log("OFFer Data: ", offerData);
-  // };
-
   const handleClick = async (e) => {
     e.preventDefault();
+
+    const { offerTitle, offerDescription } = offerData;
+
+    if (!offerTitle || !offerDescription || !validFromDate || !validToDate) {
+      toast.error("Please fill all the required fields", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+
+    // check if validTo date is greater than validFrom date
+    if (new Date(validToDate) < new Date(validFromDate)) {
+      toast.error("Valid To date cannot be before Valid From date", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
 
     console.log("OFFer Data: ", offerData);
     console.log("OFFer Valid from: ", validFromDate);
@@ -149,6 +174,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
               onChange={(e) =>
                 setOfferData({ ...offerData, offerTitle: e.target.value })
               }
+              required
             />
             <TextField
               type="text"
@@ -159,6 +185,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
               variant="outlined"
               size="medium"
               value={offerData.offerDescription}
+              required
               onChange={(e) =>
                 setOfferData({ ...offerData, offerDescription: e.target.value })
               }
