@@ -34,6 +34,7 @@ const Chat = () => {
     const messages = await axios.get(
       `${socketURL}/user-chat-messages/${contact}`
     );
+    console.log(messages.data);
     setChatMessages(messages.data);
   };
 
@@ -126,6 +127,7 @@ const Chat = () => {
 
         socket.on("message_received", (message) => {
           // setChatMessages([...chatMessages, message]);
+          console.log(message.from, selectedContact?.id?.user + "@c.us")
           if (message.from === selectedContact?.id?.user + "@c.us") {
             fetchChatMessages(selectedContact?.id?.user);
           }
@@ -277,7 +279,7 @@ const Chat = () => {
                                             position: "relative",
                                             backgroundColor: "#075e54",
                                           }}
-                                          className="w-max mb-2 rounded p-2"
+                                          className="max-w-[100%] mb-2 rounded p-2"
                                         >
                                           {message.type === "revoked" ? (
                                             <i className="text-gray-200">
@@ -315,7 +317,7 @@ const Chat = () => {
                                               backgroundColor: "#075e54",
                                               alignSelf: "flex-start",
                                             }}
-                                            className="w-max mb-2 rounded p-2"
+                                            className="max-w-[100%] mb-2 rounded p-2"
                                           >
                                             {message.type === "revoked" ? (
                                               <i className="text-gray-200">
