@@ -20,8 +20,6 @@ import Pagination from "@mui/material/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh Leads" },
@@ -87,7 +85,11 @@ const AllLeads = () => {
   const [leadOriginSelected, setLeadOriginSelected] = useState(leadOrigins[0]);
   const [leadTypeSelected, setLeadTypeSelected] = useState(leadTypes[0]);
   const [enquiryTypeSelected, setEnquiryTypeSelected] = useState({id: 0});
+  const [managerSelected, setManagerSelected] = useState("");
+  const [agentSelected, setAgentSelected] = useState("");
   const [projectNameTyped, setProjectNameTyped] = useState("");
+  const [managers, setManagers] = useState([]);
+  const [agents, setAgents] = useState([])
   const [openMessageModal, setOpenMessageModal] = useState({
     open: false,
     isWhatsapp: false,
@@ -325,7 +327,9 @@ const AllLeads = () => {
     lead_origin,
     lead_type,
     projectName,
-    enquiryType
+    enquiryType,
+    assignedManager,
+    assignedAgent
   ) => {
     console.log("lead type is");
     console.log(lead_type);
@@ -470,8 +474,16 @@ const AllLeads = () => {
       FetchLeads_url += `&project=${projectName}`;
     }
 
-    if(enquiryTypeSelected?.id) {
-      FetchLeads_url += `&enquiryType=${enquiryTypeSelected?.id}`;
+    if(enquiryType) {
+      FetchLeads_url += `&enquiryType=${enquiryType}`;
+    }
+
+    if(assignedManager) {
+      FetchLeads_url += `&managerAssigned=${assignedManager}`;
+    }
+
+    if(assignedAgent) {
+      FetchLeads_url += `&agentAssigned=${assignedAgent}`;
     }
 
     console.log(FetchLeads_url);
@@ -611,11 +623,13 @@ const AllLeads = () => {
       leadOriginSelected?.id || "hotleads",
       leadTypeSelected?.id || "all",
       projectNameTyped,
-      enquiryTypeSelected?.id
+      enquiryTypeSelected?.id,
+      managerSelected,
+      agentSelected
     );
     setColumnsArr([...columnsArr]);
     // eslint-disable-next-line
-  }, [pageState.page, leadTypeSelected, leadOriginSelected, projectNameTyped, enquiryTypeSelected, reloadDataGrid]);
+  }, [pageState.page, leadTypeSelected, managerSelected, agentSelected, leadOriginSelected, projectNameTyped, enquiryTypeSelected, reloadDataGrid]);
 
   const handleRowClick = async (params, event) => {
     if (!event.target.closest(".whatsapp-web-link")) {
@@ -649,6 +663,44 @@ const AllLeads = () => {
     );
   }
 
+  const getManagers = () => {
+      axios.get(`${BACKEND_URL}/managers`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }).then((result) => {
+        const managers = result?.data?.managers;
+        console.log("Managers: ", managers)
+        setManagers(managers || []);
+      });
+  }
+
+  const getAgents = (managerId) => {
+      axios.get(`${BACKEND_URL}/teamMembers/${managerId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }).then((result) => {
+        const agents = result?.data?.team;
+          setAgents(agents || []);
+      });
+  }
+
+  useEffect(() => {
+    getManagers();
+
+  }, []);
+
+  useEffect(() => {
+    if(managerSelected){
+      getAgents(managerSelected);
+      setAgentSelected("");
+    }
+
+  }, [managerSelected]);
+
   return (
     <div className="pb-10">
       <ToastContainer />
@@ -673,7 +725,7 @@ const AllLeads = () => {
                 leadOrigins.find((origin) => origin.id === event.target.value)
               )
             }
-            size="medium"
+            size="small"
             className={`w-full mt-1 mb-5 `}
             displayEmpty
             required
@@ -713,7 +765,7 @@ const AllLeads = () => {
                 leadTypes.find((type) => type.id === event.target.value)
               )
             }
-            size="medium"
+            size="small"
             className={`w-full mt-1 mb-5`}
             displayEmpty
             required
@@ -744,7 +796,7 @@ const AllLeads = () => {
         </div>
       </Box> */}
 
-      <div className={`grid grid-cols-4 gap-3 ${darkModeColors}`}>
+      <div className={`grid grid-cols-6 gap-1 ${darkModeColors}`}>
         <div>
           <label
             htmlFor="leadOrigin"
@@ -762,7 +814,7 @@ const AllLeads = () => {
                 leadOrigins.find((origin) => origin.id === event.target.value)
               )
             }
-            size="medium"
+            size="small"
             className={`w-full mt-1 mb-5 `}
             displayEmpty
             required
@@ -785,7 +837,7 @@ const AllLeads = () => {
             ))}
           </Select>
         </div>
-        <div className="ml-4">
+        <div>
           <label
             htmlFor="leadType"
             className={`${
@@ -802,7 +854,7 @@ const AllLeads = () => {
                 leadTypes.find((type) => type.id === event.target.value)
               )
             }
-            size="medium"
+            size="small"
             className={`w-full mt-1 mb-5`}
             displayEmpty
             required
@@ -851,6 +903,7 @@ const AllLeads = () => {
               )
             }
             displayEmpty
+            size="small"
             required
             sx={{
               "& .MuiOutlinedInput-notchedOutline": {
@@ -884,10 +937,95 @@ const AllLeads = () => {
             type={"text"}
             label="Project Name"
             variant="outlined"
-            size="large"
+            size="small"
             onChange={(e) => setProjectNameTyped(e.target.value)}
             required
           />
+        </div>
+        <div>
+          <label
+            htmlFor="Manager"
+            className={`flex justify-between items-center ${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            } `}
+          >
+            <span>Manager</span>
+             {managerSelected ? <strong className="ml-4 text-red-600 cursor-pointer" onClick={() => setManagerSelected("")}>Clear</strong> : ""}
+          </label>
+          <Select
+            id="Manager"
+            value={managerSelected || ""}
+            onChange={(event) =>
+              setManagerSelected(
+                event.target.value
+              )
+            }
+            size="small"
+            className={`w-full mt-1 mb-5 `}
+            displayEmpty
+            required
+            sx={{
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+              "&:hover:not (.Mui-disabled):before": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+            }}
+          >
+            <MenuItem value="" selected disabled>
+              Manager
+            </MenuItem>
+            {managers?.map((manager, index) => (
+              <MenuItem key={index} value={manager?.id || ""}>
+                {manager?.userName}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+        <div>
+          <label
+            htmlFor="Agent"
+            className={`flex justify-between items-center ${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            } `}
+          >
+            <span>Agent</span>
+             {agentSelected ? <strong className="ml-4 text-red-600 cursor-pointer" onClick={() => {
+              setAgentSelected("");
+              setAgents([]);
+              }}>Clear</strong> : ""}
+          </label>
+          <Select
+            id="Agent"
+            value={agentSelected || ""}
+            onChange={(event) =>
+              setAgentSelected(
+                event.target.value
+              )
+            }
+            size="small"
+            className={`w-full mt-1 mb-5 `}
+            displayEmpty
+            required
+            sx={{
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+              "&:hover:not (.Mui-disabled):before": {
+                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
+            }}
+          >
+            <MenuItem selected value="" disabled>
+              Agent
+            </MenuItem>
+            {agents?.map((agent, index) => (
+              <MenuItem key={index} value={agent?.id || ""}>
+                {agent?.userName}
+              </MenuItem>
+            ))}
+          </Select>
         </div>
       </div>
 

@@ -61,117 +61,33 @@ const Sidebarmui = () => {
   const [ThirdPartLeadsCount, setThirdPartyLeadsCount] = useState();
   const [UnassignedLeadsCount, setUnassignedLeadsCount] = useState();
 
-  const fetchHotLeads = (token) => {
-    apiClient
-      .get(`${BACKEND_URL}/sidebar/0`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("hot leads: ", result.data);
-        setHotLeadsCount(result.data["HOT LEADS"]);
-      });
-  };
-  const fetchColdLeads = (token) => {
-    axios
-      .get(`${BACKEND_URL}/sidebar/1`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setColdLeadsCount(result.data["COLD LEADS"]);
-        console.log(
-          "Not Intereseted 1:  ",
-          result.data["COLD LEADS"].not_interested
-        );
-      });
-
-    console.log("Cold leads not Intereseted:  ", ColdLeadsCount);
-  };
-  // const fetchPersonalLeads = (token) => {
-  //   axios
-  //     .get(`${BACKEND_URL}/sidebar/2`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     })
-  //     .then((result) => {
-  //       console.log("Personal leads: ", result.data["PERSONAL LEADS"]);
-  //       setPersonalLeadsCount(result.data["PERSONAL LEADS"]);
-  //     });
-  // };
-  // const fetchunassignedleads = (token) => {
-  //   axios
-  //     .get(`${BACKEND_URL}/sidebar/4`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     })
-  //     .then((result) => {
-  //       console.log("Unassigned leads: ", result.data["UNASSIGNED LEADS"]);
-  //       setUnassignedLeadsCount(result.data["UNASSIGNED LEADS"]);
-  //     });
-  // };
-
-  // const fetchthirdpartyleads = (token) => {
-  //   axios
-  //     .get(`${BACKEND_URL}/sidebar/3`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     })
-  //     .then((result) => {
-  //       console.log("Third party: ", result.data["THIRD PARTY LEADS"]);
-  //       setThirdPartyLeadsCount(result.data["THIRD PARTY LEADS"]);
-  //     });
-  // };
-  // useEffect(() => {
-  //   if (!LeadsCount) {
-  //     const token = localStorage.getItem("auth-token");
-  //     fetchHotLeads(token);
-  //     fetchColdLeads(token);
-  //     fetchPersonalLeads(token);
-  //     fetchthirdpartyleads(token);
-  //     fetchunassignedleads(token);
-  //     setLeadsCount(true);
-
-  //     console.log("Cold Leads: ", ColdLeadsCount);
-  //     console.log(User);
-  //   }
-  // }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("auth-token");
-        const hotLeads = await fetchHotLeads(token);
-        const coldLeads = await fetchColdLeads(token);
-        const personalLeads = await fetchPersonalLeads(token);
-        const thirdPartyLeads = await fetchthirdpartyleads(token);
-        const unassignedLeads = await fetchunassignedleads(token);
+        const urls = [`${BACKEND_URL}/sidebar/0`, `${BACKEND_URL}/sidebar/1`, `${BACKEND_URL}/sidebar/2`, `${BACKEND_URL}/sidebar/3`, `${BACKEND_URL}/sidebar/4`];
+        const responses = await Promise.all(urls.map((url) => {
+          return axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+        }));
 
-        console.log("Hot Leads: ", hotLeads);
-        console.log("Cold Leads: ", coldLeads);
-        console.log("Personal Leads: ", personalLeads);
-        console.log("Third Party Leads: ", thirdPartyLeads);
-        console.log("Unassigned Leads: ", unassignedLeads);
-
+        console.log("Response:::", responses);
+        setHotLeadsCount(responses[0].data["HOT LEADS"]);
+        setColdLeadsCount(responses[1].data["COLD LEADS"]);
+        setPersonalLeadsCount(responses[2].data["PERSONAL LEADS"]);
+        setThirdPartyLeadsCount(responses[3].data["THIRD PARTY LEADS"]);
+        setUnassignedLeadsCount(responses[4].data["UNASSIGNED LEADS"]);
         setLeadsCount(true);
       } catch (error) {
         console.log(error);
       }
     };
 
-    if (!LeadsCount) {
       fetchData();
-    }
     // eslint-disable-next-line
   }, []);
 
@@ -1204,74 +1120,6 @@ const Sidebarmui = () => {
       : Managerlinks
   );
 
-  // const fetchHotLeads = (token) => {
-  //   axios
-  //     .get(`${BACKEND_URL}/sidebar/0`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     })
-  //     .then((result) => {
-  //       // console.log(result.data);
-  //       setHotLeadsCount(result.data["HOT LEADS"]);
-  //     });
-  // };
-  // const fetchColdLeads = (token) => {
-  //   axios
-  //     .get(`${BACKEND_URL}/sidebar/1`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     })
-  //     .then((result) => {
-  //       setColdLeadsCount(result.data["COLD LEADS"]);
-  //     });
-  // };
-  const fetchPersonalLeads = (token) => {
-    apiClient
-      .get(`${BACKEND_URL}/sidebar/2`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setPersonalLeadsCount(result.data["PERSONAL LEADS"]);
-      });
-  };
-  const fetchunassignedleads = (token) => {
-    apiClient
-      .get(`${BACKEND_URL}/sidebar/4`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setUnassignedLeadsCount(result?.data["UNASSIGNED LEADS"]?.unassigned);
-        // setUnassignedLeadsCount(result.data["UNASSIGNED LEADS"]);
-
-        console.log(
-          "Unassigned sdfsa: ",
-          result?.data["UNASSIGNED LEADS"]?.unassigned
-        );
-      });
-  };
-
-  const fetchthirdpartyleads = (token) => {
-    apiClient
-      .get(`${BACKEND_URL}/sidebar/3`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setThirdPartyLeadsCount(result.data["THIRD PARTY LEADS"]);
-      });
-  };
   // useEffect(() => {
   //   if (!LeadsCount) {
   //     const token = localStorage.getItem("auth-token");
@@ -1678,23 +1526,6 @@ const Sidebarmui = () => {
         user?.package_name !== "unsubscribed"
       );
     }
-  };
-
-  const FetchProfile = async () => {
-    const token = localStorage.getItem("auth-token");
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setIsUserSubscribed(checkUser(result.data.user[0]));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   // useEffect(() => {
