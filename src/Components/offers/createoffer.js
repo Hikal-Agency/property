@@ -18,6 +18,8 @@ import moment from "moment";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
+const currentDate = dayjs();
+
 const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
   const { currentMode, darkModeColors, formatNum, BACKEND_URL } =
     useStateContext();
@@ -143,10 +145,10 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     }
   };
 
-  useEffect(() => {
-    setValidFromDateValue(dayjs("2023-01-01"));
-    setValidToDateValue(dayjs("2023-01-01"));
-  }, []);
+  // useEffect(() => {
+  //   setValidFromDateValue(dayjs("2023-01-01"));
+  //   setValidToDateValue(dayjs("2023-01-01"));
+  // }, []);
   return (
     <div>
       <ToastContainer />
@@ -198,14 +200,15 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                   style={{ marginBottom: "20px" }}
                   value={validFromDateValue}
                   views={["year", "month", "day"]}
+                  minDate={currentDate.toDate()}
                   onChange={(newValue) => {
                     setValidFromDateValue(newValue);
                     setValidFromDate(
-                      formatNum(newValue.$d.getUTCFullYear()) +
+                      formatNum(newValue?.$d?.getUTCFullYear()) +
                         "-" +
-                        formatNum(newValue.$d.getUTCMonth() + 1) +
+                        formatNum(newValue?.$d?.getUTCMonth() + 1) +
                         "-" +
-                        formatNum(newValue.$d.getUTCDate() + 1)
+                        formatNum(newValue?.$d?.getUTCDate() + 1)
                     );
                   }}
                   format="yyyy-MM-dd"
@@ -225,14 +228,15 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                   style={{ marginBottom: "20px" }}
                   value={validToDateValue}
                   views={["year", "month", "day"]}
+                  minDate={currentDate.toDate()}
                   onChange={(newValue) => {
                     setValidToDateValue(newValue);
                     setValidToDate(
-                      formatNum(newValue.$d.getUTCFullYear()) +
+                      formatNum(newValue?.$d?.getUTCFullYear()) +
                         "-" +
-                        formatNum(newValue.$d.getUTCMonth() + 1) +
+                        formatNum(newValue?.$d?.getUTCMonth() + 1) +
                         "-" +
-                        formatNum(newValue.$d.getUTCDate() + 1)
+                        formatNum(newValue?.$d?.getUTCDate() + 1)
                     );
                   }}
                   format="yyyy-MM-dd"
