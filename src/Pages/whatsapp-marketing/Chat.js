@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import {QRCodeCanvas} from 'qrcode.react';
+import { useEffect, useState, useRef } from "react";
+import { QRCodeCanvas } from "qrcode.react";
 import {
   Box,
   CircularProgress,
@@ -8,10 +8,13 @@ import {
   MenuItem,
   TextField,
 } from "@mui/material";
-import { io } from "socket.io-client";
 import axios from "axios";
+import { useStateContext } from "../../context/ContextProvider";
+import { toast } from "react-toastify";
+import { BsFillChatLeftDotsFill } from "react-icons/bs";
 
 const Chat = () => {
+  const { socket } = useStateContext();
   const [loading, setloading] = useState(false);
   const [ready, setReady] = useState(false);
   const [qr, setQr] = useState("");
@@ -20,8 +23,45 @@ const Chat = () => {
   const [contactValue, setContactValue] = useState("0");
   const [selectedContact, setSelectedContact] = useState(null);
   const [serverDisconnected, setServerDisconnected] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatMessageInputVal, setChatMessageInputVal] = useState("");
+
+  const messagesContainerRef = useRef();
 
   const socketURL = "http://localhost:5000";
+
+  const fetchChatMessages = async (contact) => {
+    const messages = await axios.get(
+      `${socketURL}/user-chat-messages/${contact}`
+    );
+    setChatMessages(messages.data);
+  };
+
+  const handleSendMessage = async (e) => {
+    try {
+      e.preventDefault();
+      if (chatMessageInputVal) {
+        await axios.post(`${socketURL}/send-message`, {
+          to: selectedContact.id.user + "@c.us",
+          msg: chatMessageInputVal,
+        });
+
+        setChatMessageInputVal("");
+        fetchChatMessages(selectedContact?.id?.user);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Message Couldn't be sent", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const handleInput = (e) => {
     setMessageValue(e.target.value);
@@ -40,55 +80,96 @@ const Chat = () => {
       to: contactValue + "@c.us",
       msg: messageValue,
     });
+        toast.success("Message Sent", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+  };
+
+  const handleLogout = async () => {
+    // await axios.post(`${socketURL}/logout`);
+    //     toast.success("Logged out", {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
   };
 
   useEffect(() => {
-    const socket = io(socketURL);
+    if (socket) {
+      socket.on("connect", () => {
+        console.log("Client Connected");
+        setServerDisconnected(false);
+        setloading(true);
+        socket.on("get_qr", (data) => {
+          const qrCode = data;
+          setQr(qrCode);
 
-    socket.on("connect", () => {
-        console.log("Client Connected")
-      setServerDisconnected(false);
-      setloading(true);
-      socket.on("get_qr", (data) => {
-        const qrCode = data;
-        setQr(qrCode);
+          console.log("QR REceived");
+          setloading(false);
+        });
 
-        console.log("QR REceived")
-        setloading(false);
-      });
+        socket.on("user_disconnected", () => {
+          alert("Disconnected Device");
+          document.location.reload();
+        });
 
-      socket.on("user_disconnected", () => {
-        alert("Disconnected Device");
-        document.location.reload();
-      });
+        socket.on("message_received", (message) => {
+          // setChatMessages([...chatMessages, message]);
+          if (message.from === selectedContact?.id?.user + "@c.us") {
+            fetchChatMessages(selectedContact?.id?.user);
+          }
+        });
 
-      socket.on("user_ready", async (clientInfo) => {
-        setReady(true);
-        setloading(false);
+        socket.on("user_ready", async (clientInfo) => {
+          console.log("User ready");
 
-        console.log("User ready")
-
-        const contacts = await axios.get(`${socketURL}/user-contacts`);
-        const profileImage = await axios.get(`${socketURL}/user-profilepic`);
-
-        setData({
-          userInfo: clientInfo, 
-          userContacts: contacts.data.filter((c) => !c.isGroup && c.isMyContact), 
-          userProfilePic: profileImage.data,
+          setloading(true);
+          const chats = await axios.get(`${socketURL}/user-chats`);
+          const profileImage = await axios.get(`${socketURL}/user-profilepic`);
+          const contacts = await axios.get(`${socketURL}/user-contacts`);
+          setData({
+            userInfo: clientInfo,
+            userContacts: contacts.data.filter(
+              (c) => !c.isGroup && c.isMyContact
+            ),
+            userChats: chats.data.filter((c) => !c.isGroup),
+            userProfilePic: profileImage.data,
+          });
+          setReady(true);
+          setloading(false);
         });
       });
-    });
 
       socket.on("disconnect", () => {
         setServerDisconnected(true);
       });
-  }, []);
+    }
+  }, [socket]);
+  useEffect(() => {
+    if (selectedContact) {
+      fetchChatMessages(selectedContact?.id?.user);
+    }
+  }, [selectedContact]);
 
   return (
     <>
       <Box className="min-h-screen">
         {serverDisconnected ? (
-          <h1 className="text-red-600 text-center mt-12" style={{ fontSize: "38px"}}>
+          <h1
+            className="text-red-600 text-center mt-12"
+            style={{ fontSize: "38px" }}
+          >
             Server Disconnected!
           </h1>
         ) : (
@@ -114,7 +195,15 @@ const Chat = () => {
                     />
                     <strong>{data?.userInfo?.pushname}</strong>
                     <p>{data?.userInfo?.me?.user}</p>
+                    <Button
+                      onClick={handleLogout}
+                      variant="contained"
+                      color="error"
+                    >
+                      Logout
+                    </Button>
                     <div style={{ marginTop: "40px" }}>
+                      {/* Send message form */}
                       <TextField
                         type="text"
                         placeholder="Type here.."
@@ -145,23 +234,152 @@ const Chat = () => {
                         </Button>
                       </div>
                     </div>
+                    {selectedContact && (
+                      <div className="flex justify-end items-center">
+                        <Button onClick={() => setSelectedContact(null)}>
+                          Goto Contacts
+                        </Button>
+                      </div>
+                    )}
 
                     <div className="mt-4">
                       {selectedContact ? (
-                        <div>{selectedContact.number}</div>
+                        <>
+                          {/* Chat Section */}
+                          <div className="chat-container flex">
+                            <div
+                              style={{ background: "#000000c2" }}
+                              className="px-1 w-[250px] pt-4"
+                            >
+                              <div className="bg-white py-3 rounded cursor-pointer mx-2 px-2">
+                                <strong>
+                                  {selectedContact?.name ||
+                                    selectedContact?.number}
+                                </strong>
+                              </div>
+                            </div>
+                            <div className="flex-1">
+                              {chatMessages.length > 0 ? (
+                                <div
+                                  ref={messagesContainerRef}
+                                  className="h-[400px] overflow-y-scroll bg-gray-100 p-3 flex flex-col items-end"
+                                >
+                                  {chatMessages?.map((message, index) => {
+                                    if (
+                                      message.id.fromMe &&
+                                      message.to ===
+                                        selectedContact.id._serialized
+                                    ) {
+                                      return (
+                                        <div
+                                          key={index}
+                                          style={{
+                                            position: "relative",
+                                            backgroundColor: "#075e54",
+                                          }}
+                                          className="w-max mb-2 rounded p-2"
+                                        >
+                                          {message.type === "revoked" ? (
+                                            <i className="text-gray-200">
+                                              This message was deleted
+                                            </i>
+                                          ) : (
+                                            <span className="text-white">
+                                              {message.body}
+                                            </span>
+                                          )}
+
+                                          <div
+                                            style={{
+                                              position: "absolute",
+                                              top: -5,
+                                              right: 0,
+                                              borderStyle: "solid",
+                                              borderWidth: "0 0 10px 10px",
+                                              borderColor:
+                                                "transparent transparent #075e54 transparent",
+                                            }}
+                                          ></div>
+                                        </div>
+                                      );
+                                    } else {
+                                      if (
+                                        message.from ===
+                                        selectedContact.id._serialized
+                                      ) {
+                                        return (
+                                          <div
+                                            key={index}
+                                            style={{
+                                              position: "relative",
+                                              backgroundColor: "#075e54",
+                                              alignSelf: "flex-start",
+                                            }}
+                                            className="w-max mb-2 rounded p-2"
+                                          >
+                                            {message.type === "revoked" ? (
+                                              <i className="text-gray-200">
+                                                This message was deleted
+                                              </i>
+                                            ) : (
+                                              <span className="text-white">
+                                                {message.body}
+                                              </span>
+                                            )}
+                                          </div>
+                                        );
+                                      }
+                                    }
+                                  })}
+                                </div>
+                              ) : (
+                                <div className="bg-gray-100 h-[400px] flex flex-col items-center justify-center">
+                                  <BsFillChatLeftDotsFill size={40} />
+                                  <p className="mt-3">
+                                    Start the Conversation!
+                                  </p>
+                                </div>
+                              )}
+                              <form
+                                className="flex border border-gray-400 p-2"
+                                onSubmit={handleSendMessage}
+                              >
+                                <TextField
+                                  autoComplete="off"
+                                  onInput={(e) =>
+                                    setChatMessageInputVal(e.target.value)
+                                  }
+                                  value={chatMessageInputVal}
+                                  type="text"
+                                  fullWidth
+                                  placeholder="Type your message.."
+                                />
+                                <Button
+                                  type="submit"
+                                  variant="contained"
+                                  sx={{ ml: 2, px: 5 }}
+                                  color="info"
+                                >
+                                  Send
+                                </Button>
+                              </form>
+                            </div>
+                          </div>
+                        </>
                       ) : (
                         <>
+                          {/* All contacts list */}
                           <h1 style={{ fontSize: "38px", fontWeight: "bold" }}>
-                            Contacts
+                            Chats
                           </h1>
-                          {data?.userContacts?.map((contact, index) => {
+                          {data?.userChats?.map((chat, index) => {
                             return (
                               <div
-                                onClick={() => selectContact(contact)}
+                                onClick={() => selectContact(chat)}
                                 className="bg-slate-700 text-white py-2 px-5 rounded mb-2 cursor-pointer"
-                                key={`${index}${contact.number}`}
+                                key={`${index}${chat.id.user}`}
                               >
-                                {contact.name || contact.number}
+                                {chat.name || chat.id.user}
                               </div>
                             );
                           })}
@@ -170,7 +388,12 @@ const Chat = () => {
                     </div>
                   </div>
                 ) : (
-                  qr && <QRCodeCanvas style={{width: 150, height: 150}} value={qr} />
+                  qr && (
+                    <QRCodeCanvas
+                      style={{ width: 150, height: 150 }}
+                      value={qr}
+                    />
+                  )
                 )}
               </>
             )}
