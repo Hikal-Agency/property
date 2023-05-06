@@ -146,15 +146,17 @@ const ListQa = ({ pageState, setpageState }) => {
         console.log(result?.data?.QAs);
 
         let data = result?.data?.QAs;
-        let rowData = data?.map((qa) => ({
-          id: qa?.id,
-          creationDate: qa?.created_at,
-          question: qa?.question,
-          answers:
-            qa?.answers.length > 0
-              ? qa?.answers.map((ans) => ans?.question).join(", ")
-              : "No answers",
-        }));
+        let rowData = data
+          ?.filter((qa) => qa?.type === "Question")
+          .map((qa) => ({
+            id: qa?.id,
+            creationDate: qa?.created_at,
+            question: qa?.question,
+            answers:
+              qa?.answers.length > 0
+                ? qa?.answers.map((ans) => ans?.question).join(", ")
+                : "No answers",
+          }));
 
         console.log("Row Data: ", rowData);
 
