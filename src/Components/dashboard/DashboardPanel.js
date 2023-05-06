@@ -35,66 +35,33 @@ const DashboardPanel = () => {
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
   const [newLeads, setNewLeads] = useState("");
-  const navigate = useNavigate();
-  const location = useLocation();
-  
-  const fetchAllNewLeads = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      await apiClient
-        .get(`${BACKEND_URL}/newLeads`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
-          console.log("API CLIENT HITTED: ", result);
-          setNewLeads(result.data?.leads?.total);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    apiClient
-      .get(`${BACKEND_URL}/memberdeals`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("sales chart data is");
-        console.log(result?.data?.members_deal);
-        setSales_chart_data(result?.data?.members_deal);
-        setsaleschart_loading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    // FetchProfile(token);
-
-    // fetchAllNewLeads();
 
     const fetchData = async () => {
       try {
         // console.log("Fetching profile...");
         // await FetchProfile(token);
 
-        console.log("Fetching new leads...");
-        await fetchAllNewLeads(token);
+        const token = localStorage.getItem("auth-token");
+        const urls = [`${BACKEND_URL}/newLeads`,`${BACKEND_URL}/memberdeals` ];
+        const responses = await Promise.all(urls.map((url) => {
+          return axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+        }));
+        setSales_chart_data(responses[1].data?.members_deal);
+        setsaleschart_loading(false);
+        setNewLeads(responses[0].data?.leads?.total);
       } catch (error) {
         console.log(error);
       }
     };
-
+    
+    useEffect(() => {
+      
+      console.log("DASHBOARD PANEL APIS CALLED**********")
     fetchData();
   }, []);
 

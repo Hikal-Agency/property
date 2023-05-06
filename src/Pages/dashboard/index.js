@@ -40,8 +40,8 @@ const Dashboard = () => {
     }
   };
 
-  const FetchProfile = async (token) => {
-    await axios
+  const FetchProfile = (token) => {
+    axios
       .get(`${BACKEND_URL}/dashboard?page=1`, {
         headers: {
           "Content-Type": "application/json",
