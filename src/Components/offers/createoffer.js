@@ -265,7 +265,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 <RadioGroup defaultValue="Both" name="radio-buttons-group">
                   <FormControlLabel
                     className="m-1"
-                    value="1"
+                    value="manager"
                     name="validToManager"
                     control={<Radio />}
                     label="Sales Managers"
@@ -279,7 +279,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                   />
                   <FormControlLabel
                     className="m-1"
-                    value="1"
+                    value="agent"
                     name="validToSales"
                     control={<Radio />}
                     onChange={(e) =>
