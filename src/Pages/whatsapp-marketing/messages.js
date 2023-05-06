@@ -796,7 +796,7 @@ const AllLeads = () => {
         </div>
       </Box> */}
 
-      <div className={`grid grid-cols-6 gap-1 ${darkModeColors}`}>
+      <div className={`grid grid-cols-6 mt-6 gap-1 ${darkModeColors}`}>
         <div>
           <Select
             id="leadOrigin"
@@ -867,9 +867,10 @@ const AllLeads = () => {
             ))}
           </Select>
         </div>
-        <div>
+        <div style={{position: "relative"}}>
            <label
             htmlFor="enquiryType"
+            style={{position: "absolute", top: "-20px", right: 0}}
             className={`flex justify-end items-center ${
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
@@ -925,8 +926,9 @@ const AllLeads = () => {
             required
           />
         </div>
-        <div>
+        <div style={{position: "relative"}}>
           <label
+          style={{position: "absolute", top: "-20px", right: 0}}
             htmlFor="Manager"
             className={`flex justify-end items-center ${
               currentMode === "dark" ? "text-white" : "text-dark"
@@ -965,8 +967,9 @@ const AllLeads = () => {
             ))}
           </Select>
         </div>
-        <div>
+        <div style={{position: "relative"}}>
           <label
+            style={{position: "absolute", top: "-20px", right: 0}}
             htmlFor="Agent"
             className={`flex justify-end items-center ${
               currentMode === "dark" ? "text-white" : "text-dark"

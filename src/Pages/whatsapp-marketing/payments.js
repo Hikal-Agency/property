@@ -96,8 +96,8 @@ const Payments = () => {
           All Subscribers
         </h1>
         <Box className="mb-16 mt-4 items-start flex flex-wrap">
-          {subscribers.map((sub) => {
-            return <Subscriber data={sub} />;
+          {subscribers.map((sub, index) => {
+            return <Subscriber key={index} data={sub} />;
           })}
         </Box>
       </Box>
