@@ -796,16 +796,8 @@ const AllLeads = () => {
         </div>
       </Box> */}
 
-      <div className={`grid grid-cols-6 gap-1 ${darkModeColors}`}>
+      <div className={`grid grid-cols-6 mt-6 gap-1 ${darkModeColors}`}>
         <div>
-          <label
-            htmlFor="leadOrigin"
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            } `}
-          >
-            Lead Origin
-          </label>
           <Select
             id="leadOrigin"
             value={leadOriginSelected?.id || "hotleads"}
@@ -838,14 +830,6 @@ const AllLeads = () => {
           </Select>
         </div>
         <div>
-          <label
-            htmlFor="leadType"
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            } `}
-          >
-            Lead Type
-          </label>
           <Select
             id="leadType"
             value={leadTypeSelected?.id || "all"}
@@ -883,14 +867,14 @@ const AllLeads = () => {
             ))}
           </Select>
         </div>
-        <div>
+        <div style={{position: "relative"}}>
            <label
             htmlFor="enquiryType"
-            className={`flex justify-between items-center ${
+            style={{position: "absolute", top: "-20px", right: 0}}
+            className={`flex justify-end items-center ${
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
           >
-            <span>Enquiry Type</span>
              {enquiryTypeSelected?.id ? <strong className="ml-4 text-red-600 cursor-pointer" onClick={() => setEnquiryTypeSelected({id: 0})}>Clear</strong> : ""}
           </label>
           <Select
@@ -930,9 +914,9 @@ const AllLeads = () => {
             ))}
           </Select>
         </div>
-      <div style={{marginTop: 26}}>
+      <div className="mt-1">
           <TextField
-            className={`w-full mt-1`}
+            className={`w-full`}
             id="Project"
             type={"text"}
             label="Project Name"
@@ -942,14 +926,14 @@ const AllLeads = () => {
             required
           />
         </div>
-        <div>
+        <div style={{position: "relative"}}>
           <label
+          style={{position: "absolute", top: "-20px", right: 0}}
             htmlFor="Manager"
-            className={`flex justify-between items-center ${
+            className={`flex justify-end items-center ${
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
           >
-            <span>Manager</span>
              {managerSelected ? <strong className="ml-4 text-red-600 cursor-pointer" onClick={() => setManagerSelected("")}>Clear</strong> : ""}
           </label>
           <Select
@@ -983,14 +967,14 @@ const AllLeads = () => {
             ))}
           </Select>
         </div>
-        <div>
+        <div style={{position: "relative"}}>
           <label
+            style={{position: "absolute", top: "-20px", right: 0}}
             htmlFor="Agent"
-            className={`flex justify-between items-center ${
+            className={`flex justify-end items-center ${
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
           >
-            <span>Agent</span>
              {agentSelected ? <strong className="ml-4 text-red-600 cursor-pointer" onClick={() => {
               setAgentSelected("");
               setAgents([]);

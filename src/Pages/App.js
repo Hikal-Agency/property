@@ -43,7 +43,7 @@ import QAForm from "./qaform";
 import Newsletter from "./newsletter";
 import AddNewsLetters from "./newsletter/addNewsletter";
 import Campaigns from "./SocialMedia/campaigns";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
 const libraries = ["places"];
 
@@ -409,9 +409,9 @@ function App() {
   useEffect(() => {
     setAllRoutes(routes);
 
-    const socketURL = "http://localhost:5000";
-    const socket = io(socketURL);
-    setSocket(socket);
+    // const socketURL = "http://localhost:5000";
+    // const socket = io(socketURL);
+    // setSocket(socket);
   }, []);
 
   return <RouterProvider router={router} />;
