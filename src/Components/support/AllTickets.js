@@ -1,76 +1,79 @@
 import { useState, useEffect } from "react";
-import {
-  Box,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AllTickets = () => {
-  const { 
-    currentMode, 
-    DataGridStyles,
-    BACKEND_URL
-  } = useStateContext();
+  const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
   const [rows, setRows] = useState([]);
+  const navigate = useNavigate();
+
+  // ROW CLICK FUNCTION
+  const handleRowClick = async (params, event) => {
+    console.log("ID: ", params?.id);
+    const ticketId = params?.id;
+    navigate(`/singleTicket/${ticketId}`);
+  };
 
   const columns = [
-    { 
-      field: 'id', 
-      headerName: 'ID', 
-      headerAlign: 'center',
+    {
+      field: "id",
+      headerName: "ID",
+      headerAlign: "center",
       minWidth: 50,
-      flex: 1 
+      flex: 1,
     },
     {
-      field: 'creationDate',
-      headerName: 'Ticket Date',
-      headerAlign: 'center',
+      field: "creationDate",
+      headerName: "Ticket Date",
+      headerAlign: "center",
       editable: false,
       minWidth: 130,
       flex: 1,
     },
     {
-      field: 'userName',
-      headerName: 'User Name',
-      headerAlign: 'center',
+      field: "userName",
+      headerName: "User Name",
+      headerAlign: "center",
       editable: false,
       minWidth: 150,
       flex: 1,
     },
     {
-      field: 'category',
-      headerName: 'Category',
-      headerAlign: 'center',
+      field: "category",
+      headerName: "Category",
+      headerAlign: "center",
       editable: false,
       minWidth: 130,
       flex: 1,
     },
     {
-      field: 'description',
-      headerName: 'Description',
-      headerAlign: 'center',
+      field: "description",
+      headerName: "Description",
+      headerAlign: "center",
       editable: false,
       minWidth: 300,
       flex: 1,
     },
     {
-      field: 'issue',
-      headerName: 'Issue',
-      headerAlign: 'center',
+      field: "issue",
+      headerName: "Issue",
+      headerAlign: "center",
       editable: false,
       minWidth: 200,
       flex: 1,
     },
     {
-      field: 'status',
-      headerName: 'Status',
-      headerAlign: 'center',
+      field: "status",
+      headerName: "Status",
+      headerAlign: "center",
       editable: false,
       minWidth: 110,
       flex: 1,
       renderCell: (cellValues) => {
-         return (
+        return (
           <>
             {cellValues.formattedValue === "closed" && (
               <div className="w-full h-full flex justify-center items-center text-red-400 px-5 text-xs font-semibold">
@@ -105,6 +108,56 @@ const AllTickets = () => {
         );
       },
     },
+    // {
+    //   field: "edit",
+    //   headerName: "Edit",
+    //   // width: 150,
+    //   minWidth: 170,
+    //   flex: 1,
+    //   headerAlign: "center",
+    //   sortable: false,
+    //   filterable: false,
+
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
+    //         {/* <Button
+    //           onClick={() => HandleEditFunc(cellValues)}
+    //           className={`editLeadBtn ${
+    //             currentMode === "dark"
+    //               ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+    //               : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+    //           }`}
+    //         >
+    //           <AiOutlineEdit size={20} />
+    //         </Button> */}
+
+    //         <p
+    //           onClick={() => HandleEditFunc(cellValues)}
+    //           className={`editLeadBtn ${
+    //             currentMode === "dark"
+    //               ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+    //               : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+    //           }`}
+    //         >
+    //           <AiOutlineEdit size={20} />
+    //         </p>
+
+    //         <p
+    //           onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+    //           className={`editLeadBtn ${
+    //             currentMode === "dark"
+    //               ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+    //               : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+    //           }`}
+    //         >
+    //           {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
+    //           <AiOutlineHistory size={20} />
+    //         </p>
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 
   const fetchTickets = async () => {
@@ -120,20 +173,24 @@ const AllTickets = () => {
       rowsList.forEach((row) => {
         row.creationDate = row.created_ad;
         row.userName = row.added_by;
-      })
+      });
       setRows(rowsList);
-      console.log(rowsList)
+      console.log("Rowslist: ", rowsList);
     } catch (error) {
       console.log(error);
     }
-  }
-  
+  };
+
   useEffect(() => {
     fetchTickets();
-  }, []); 
+  }, []);
 
   return (
-    <div className={`${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"} rounded-md`}>
+    <div
+      className={`${
+        currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
+      } rounded-md`}
+    >
       {/* <Box sx={{ height: 600, width: '100%' }}>
         <DataGrid
           rows={rows}
@@ -154,6 +211,7 @@ const AllTickets = () => {
       <Box width={"100%"} sx={DataGridStyles}>
         <DataGrid
           autoHeight
+          onRowClick={handleRowClick}
           disableSelectionOnClick
           rowsPerPageOptions={[30, 50, 75, 100]}
           pagination
@@ -161,6 +219,7 @@ const AllTickets = () => {
           paginationMode="server"
           rows={rows}
           columns={columns}
+          // checkboxSelection
           sx={{
             boxShadow: 2,
             "& .MuiDataGrid-cell:hover": {

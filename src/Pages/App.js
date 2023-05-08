@@ -43,6 +43,7 @@ import QAForm from "./qaform";
 import Newsletter from "./newsletter";
 import AddNewsLetters from "./newsletter/addNewsletter";
 import Campaigns from "./SocialMedia/campaigns";
+import SingleTicket from "./support/SingleTicket";
 // import { io } from "socket.io-client";
 
 const libraries = ["places"];
@@ -222,6 +223,11 @@ const routes = [
     path: "/support",
     pageName: "Support",
     element: <Tickets />,
+  },
+  {
+    path: "/singleTicket/:id",
+    pageName: "SingleTicket",
+    element: <SingleTicket />,
   },
   {
     path: "/activity",
