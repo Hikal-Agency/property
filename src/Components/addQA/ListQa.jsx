@@ -1,4 +1,11 @@
-import { Box, Pagination } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Pagination,
+  Typography,
+} from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -7,6 +14,7 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
+import { BsChevronCompactDown } from "react-icons/bs";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -21,6 +29,24 @@ const ListQa = ({ pageState, setpageState }) => {
   const location = useLocation();
   const [row, setRow] = useState([]);
   const [column, setColumns] = useState([]);
+
+  console.log("Rows: ", row);
+
+  const getSummaryBgClass = () => {
+    if (currentMode === "dark") {
+      return "bg-gray-800 text-white";
+    } else {
+      return "bg-gray-200 text-gray-800";
+    }
+  };
+
+  const getDetailBgClass = () => {
+    if (currentMode === "dark") {
+      return "bg-gray-900 text-white";
+    } else {
+      return "bg-gray-100 text-gray-800";
+    }
+  };
 
   // Model Variables
   // const [LeadModelOpen, setLeadModelOpen] = useState(false);
@@ -153,7 +179,11 @@ const ListQa = ({ pageState, setpageState }) => {
           id: index + 1,
           question: qa?.question,
           answers:
-            qa?.answers.length > 0 ? qa?.answers.join(", ") : "No answers",
+            // qa?.answers.length > 0
+            //   ? Array.from(qa?.answers).join(", ")
+            //   : "No answers",
+            // qa?.answers.length > 0 ? qa?.answers.join(", ") : "No answers",
+            qa?.answers,
         }));
 
         console.log("Row Data: ", rowData);
@@ -268,24 +298,10 @@ const ListQa = ({ pageState, setpageState }) => {
   }
   return (
     <div className="pb-10">
-      <Box width={"100%"} sx={DataGridStyles}>
+      {/* <Box width={"100%"} sx={DataGridStyles}>
         <DataGrid
           autoHeight
           rows={row}
-          // onRowClick={handleRowClick}
-          // rowCount={pageState.total}
-          // loading={pageState.isLoading}
-          // rowsPerPageOptions={[30, 50, 75, 100]}
-          // pagination
-          // paginationMode="server"
-          // page={pageState.page - 1}
-          // pageSize={pageState.pageSize}
-          // onPageChange={(newPage) => {
-          //   setpageState((old) => ({ ...old, page: newPage + 1 }));
-          // }}
-          // onPageSizeChange={(newPageSize) =>
-          //   setpageState((old) => ({ ...old, pageSize: newPageSize }))
-          // }
           columns={columns}
           components={{
             Toolbar: GridToolbar,
@@ -308,7 +324,35 @@ const ListQa = ({ pageState, setpageState }) => {
           //   params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
           // }
         />
-      </Box>
+      </Box> */}
+      {row.length > 0 &&
+        row?.map((qa, index) => (
+          <Accordion key={index} className="mb-4">
+            <AccordionSummary
+              expandIcon={<BsChevronCompactDown />}
+              className={getSummaryBgClass()}
+            >
+              <Typography>{qa.question}</Typography>
+            </AccordionSummary>
+
+            <AccordionDetails className={getDetailBgClass()}>
+              <Typography>
+                {/* {Array.isArray(qa?.answers)
+                ? qa?.answers.join(", ")
+                : "No answers"} */}
+                {qa?.answers.length > 0
+                  ? qa?.answers.map((ans) => (
+                      <>
+                        {ans}
+                        <hr />
+                        <br />
+                      </>
+                    ))
+                  : "No answer."}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))}
     </div>
   );
 };
