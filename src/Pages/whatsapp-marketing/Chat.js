@@ -26,6 +26,8 @@ const Chat = () => {
   const [chatMessages, setChatMessages] = useState([]);
   const [chatMessageInputVal, setChatMessageInputVal] = useState("");
 
+  const selectedChatRef = useRef();
+
   const messagesContainerRef = useRef();
 
   const socketURL = "http://localhost:5000";
@@ -34,7 +36,6 @@ const Chat = () => {
     const messages = await axios.get(
       `${socketURL}/user-chat-messages/${contact}`
     );
-    console.log("Messages Received: ", messages.data);
     setChatMessages(messages.data);
   };
 
@@ -74,6 +75,7 @@ const Chat = () => {
 
   const selectChat = (contact) => {
     setSelectedChat(contact);
+    selectedChatRef.current = contact;
   };
 
   const handleSend = async () => {
@@ -125,10 +127,8 @@ const Chat = () => {
           document.location.reload();
         });
 
-        socket.on("message_received", (message) => {
-          console.log("Message Received");
-          // setChatMessages([...chatMessages, message]);
-            fetchChatMessages(selectedChat?.id?.user);
+        socket.on("message_received", (msg) => {
+            fetchChatMessages(selectedChatRef.current?.id?.user);
         });
 
         socket.on("user_ready", async (clientInfo) => {
@@ -156,6 +156,7 @@ const Chat = () => {
       });
     }
   }, [socket]);
+
   useEffect(() => {
     if (selectedChat) {
       fetchChatMessages(selectedChat?.id?.user);
@@ -236,7 +237,10 @@ const Chat = () => {
                     </div>
                     {selectedChat && (
                       <div className="flex justify-end items-center">
-                        <Button onClick={() => setSelectedChat(null)}>
+                        <Button onClick={() => {
+                            setSelectedChat(null);
+                            selectedChatRef.current = null;
+                          }}>
                           Goto Contacts
                         </Button>
                       </div>
