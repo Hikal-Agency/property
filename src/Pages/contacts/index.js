@@ -231,6 +231,11 @@ const Contacts = () => {
                             </p>
                             <p className="text-sm">{item.userPhone}</p>
                             <p className="text-sm">{item.userEmail}</p>
+                            {item?.status === 1 ? (
+                              <p className="text-sm text-red-600">Deactive</p>
+                            ) : (
+                              <p className="text-sm text-green-600">Active</p>
+                            )}
                           </div>
                         </div>
                       );
