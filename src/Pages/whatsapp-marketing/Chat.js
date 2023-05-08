@@ -36,7 +36,9 @@ const Chat = () => {
     const messages = await axios.get(
       `${socketURL}/user-chat-messages/${contact}`
     );
-    setChatMessages(messages.data);
+    if(selectedChatRef.current) {
+      setChatMessages(messages.data);
+    }
   };
 
   const handleSendMessage = async (e) => {
@@ -48,8 +50,8 @@ const Chat = () => {
           msg: chatMessageInputVal,
         });
 
+        fetchChatMessages(selectedChatRef.current.id?.user);
         setChatMessageInputVal("");
-        fetchChatMessages(selectedChat?.id?.user);
       }
     } catch (error) {
       console.log(error);
@@ -92,7 +94,6 @@ const Chat = () => {
           progress: undefined,
           theme: "light",
         });
-
   };
 
   const handleLogout = async () => {
@@ -109,11 +110,11 @@ const Chat = () => {
   };
 
   useEffect(() => {
+    setloading(true);
     if (socket) {
       socket.on("connect", () => {
         console.log("Client Connected");
         setServerDisconnected(false);
-        setloading(true);
         socket.on("get_qr", (data) => {
           const qrCode = data;
           setQr(qrCode);
@@ -162,6 +163,17 @@ const Chat = () => {
       fetchChatMessages(selectedChat?.id?.user);
     }
   }, [selectedChat]);
+
+  useEffect(() => {
+    const cb = () => {
+      fetchChatMessages(selectedChat);
+    }
+    const interval = setInterval(cb, 8000);
+
+    return () => {
+      clearInterval(interval, cb);
+    }
+  }, []);
 
   return (
     <>
@@ -272,7 +284,7 @@ const Chat = () => {
                                     if (
                                       message.id.fromMe &&
                                       message.to ===
-                                        selectedChat.id._serialized
+                                        selectedChat?.id?._serialized
                                     ) {
                                       return (
                                         <div
@@ -309,7 +321,7 @@ const Chat = () => {
                                     } else {
                                       if (
                                         message.from ===
-                                        selectedChat.id._serialized
+                                        selectedChat?.id?._serialized
                                       ) {
                                         return (
                                           <div
