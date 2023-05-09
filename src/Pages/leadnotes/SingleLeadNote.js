@@ -33,6 +33,8 @@ const SingleLeadNote = (props) => {
   const { currentMode, setUser, darkModeColors, User, BACKEND_URL } =
     useStateContext();
 
+  console.log("ID: ", leadId);
+
   const fetchLead = async () => {
     const token = localStorage.getItem("auth-token");
     await axios

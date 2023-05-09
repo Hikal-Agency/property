@@ -41,17 +41,17 @@ const SingleTickt = ({ ticketData }) => {
 
   function getStatusColorClass(status) {
     switch (status) {
-      case "Open":
+      case "open":
         return "text-green-500";
-      case "In Process":
+      case "in Process":
         return "text-blue-500";
-      case "Pending":
+      case "pending":
         return "text-yellow-500";
-      case "Paused":
+      case "paused":
         return "text-orange-500";
-      case "Closed":
+      case "closed":
         return "text-red-500";
-      case "Resolved":
+      case "resolved":
         return "text-purple-500";
       default:
         return "text-gray-500";

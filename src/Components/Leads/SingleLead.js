@@ -46,16 +46,16 @@ const SingleLead = ({
     console.log("lead data is");
     console.log(LeadData);
 
-    const now = moment();
-    const datetimeString = now.format("YYYY/MM/DD hh:mm:ss A");
+    // const now = moment();
+    // const datetimeString = now.format("YYYY/MM/DD hh:mm:ss A");
 
-    console.log(datetimeString);
+    // console.log(datetimeString);
     const data = {
       leadId: LeadData.lid,
       leadNote: AddNoteTxt,
       addedBy: User?.id,
-      // creationDate: moment(new Date()).format("YYYY/MM/DD"),
-      creationDate: datetimeString,
+      creationDate: moment(new Date()).format("YYYY/MM/DD"),
+      // creationDate: datetimeString,
     };
     console.log("Data: ");
     console.log("Data: ", data);
