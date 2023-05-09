@@ -65,7 +65,9 @@ const SingleTicket = () => {
                   }`}
                 >
                   <span className="text-main-red-color font-bold">
-                    {tickeData?.issue}
+                    {tickeData?.issue &&
+                      tickeData.issue.charAt(0).toUpperCase() +
+                        tickeData.issue.slice(1)}
                   </span>
                 </h4>
                 <div

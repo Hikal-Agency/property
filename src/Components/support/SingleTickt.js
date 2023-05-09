@@ -39,6 +39,25 @@ const SingleTickt = ({ ticketData }) => {
     console.log("Content was updated:", content);
   };
 
+  function getStatusColorClass(status) {
+    switch (status) {
+      case "Open":
+        return "text-green-500";
+      case "In Process":
+        return "text-blue-500";
+      case "Pending":
+        return "text-yellow-500";
+      case "Paused":
+        return "text-orange-500";
+      case "Closed":
+        return "text-red-500";
+      case "Resolved":
+        return "text-purple-500";
+      default:
+        return "text-gray-500";
+    }
+  }
+
   const handleFilePicker = (callback, value, meta) => {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
@@ -268,37 +287,25 @@ const SingleTickt = ({ ticketData }) => {
                   <b> Ticket ID: </b>
                   {ticketData?.id} <br />
                   <b>Created: </b> {ticketData?.created_ad} <br />
-                  <b> Status: </b> {ticketData?.status}
-                  <hr /> <br />
-                  <b> Status: </b> {ticketData?.status}
+                  <b>Status: </b>
+                  <span className={getStatusColorClass(ticketData?.status)}>
+                    {ticketData?.status}
+                  </span>
+                  <br />
+                  <b> Source: </b> {ticketData?.source}
+                  <br />
                 </Typography>
               </AccordionDetails>
             </Accordion>
             <Accordion className="mb-4">
               <AccordionSummary expandIcon={<BsChevronCompactDown />}>
-                <Typography>Ticket Details</Typography>
+                <Typography>Responsibility</Typography>
               </AccordionSummary>
 
               <AccordionDetails>
                 <Typography sx={{ wordWrap: "break-word" }}>
-                  Ticket ID: AL837K Copy URL
-                  https://app.helpdesk.com/tickets/AL837K Created: 8 May 2023
-                  Last message: 8 May 2023 Status: Open Rating: Not rated
-                  Priority: Medium Source: Created manually
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion className="mb-4">
-              <AccordionSummary expandIcon={<BsChevronCompactDown />}>
-                <Typography>Ticket Details</Typography>
-              </AccordionSummary>
-
-              <AccordionDetails>
-                <Typography sx={{ wordWrap: "break-word" }}>
-                  Ticket ID: AL837K Copy URL
-                  https://app.helpdesk.com/tickets/AL837K Created: 8 May 2023
-                  Last message: 8 May 2023 Status: Open Rating: Not rated
-                  Priority: Medium Source: Created manually
+                  <b> Added By: </b> {ticketData?.added_by} <br />
+                  <b> Assigned to: </b> {ticketData?.assigned_to || "No one"}
                 </Typography>
               </AccordionDetails>
             </Accordion>
