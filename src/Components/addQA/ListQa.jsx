@@ -302,7 +302,7 @@ const ListQa = ({ pageState, setpageState }) => {
         <div className="flex items-center justify-center">
           <CircularProgress
             size={23}
-            sx={{ color: "white" }}
+            // sx={{ color: "white" }}
             className="text-white"
           />
         </div>
