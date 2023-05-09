@@ -49,7 +49,6 @@ const SingleLead = ({
     // const now = moment();
     // const datetimeString = now.format("YYYY/MM/DD hh:mm:ss A");
 
-    // console.log(datetimeString);
     const data = {
       leadId: LeadData.lid,
       leadNote: AddNoteTxt,

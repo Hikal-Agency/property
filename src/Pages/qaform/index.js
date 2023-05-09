@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
@@ -8,16 +8,49 @@ import Footer from "../../Components/Footer/Footer";
 
 import ADDQA from "../../Components/addQA/ADDQA";
 import ListQa from "../../Components/addQA/ListQa";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const QAForm = () => {
-  const { currentMode, darkModeColors } = useStateContext();
+  const {
+    darkModeColors,
+    User,
+    setUser,
+    currentMode,
+    setopenBackDrop,
+    BACKEND_URL,
+  } = useStateContext();
   const [value, setValue] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const [tabValue, setTabValue] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setloading] = useState(false);
+  useEffect(() => {
+    setopenBackDrop(false);
+    if (User?.uid && User?.loginId) {
+      setloading(false);
+    } else {
+      const token = localStorage.getItem("auth-token");
+      if (token) {
+        // FetchProfile(token);
+        const user = localStorage.getItem("user");
+        console.log("User in add lead: ", user);
+        setUser(JSON.parse(user));
+        setloading(false);
+      } else {
+        navigate("/", {
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
+        });
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>
