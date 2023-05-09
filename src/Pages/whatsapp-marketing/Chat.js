@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
 
 const Chat = () => {
-  const { socket } = useStateContext();
+  const { socket, User } = useStateContext();
   const [loading, setloading] = useState(false);
   const [ready, setReady] = useState(false);
   const [qr, setQr] = useState("");
@@ -34,7 +34,7 @@ const Chat = () => {
 
   const fetchChatMessages = async (contact) => {
     const messages = await axios.get(
-      `${socketURL}/user-chat-messages/${contact}`
+      `${socketURL}/user-chat-messages/${contact}/${User?.id}`
     );
     if(selectedChatRef.current) {
       setChatMessages(messages.data);
@@ -45,7 +45,7 @@ const Chat = () => {
     try {
       e.preventDefault();
       if (chatMessageInputVal) {
-        await axios.post(`${socketURL}/send-message`, {
+        await axios.post(`${socketURL}/send-message/${User?.id}`, {
           to: selectedChat.id.user + "@c.us",
           msg: chatMessageInputVal,
         });
@@ -81,7 +81,7 @@ const Chat = () => {
   };
 
   const handleSend = async () => {
-    await axios.post(`${socketURL}/send-message`, {
+    await axios.post(`${socketURL}/send-message/${User?.id}`, {
       to: contactValue + "@c.us",
       msg: messageValue,
     });
@@ -97,7 +97,7 @@ const Chat = () => {
   };
 
   const handleLogout = async () => {
-    // await axios.post(`${socketURL}/logout`);
+    // await axios.post(`${socketURL}/logout/${User?.id}`);
     //     toast.success("Logged out", {
     //       position: "top-right",
     //       autoClose: 3000,
@@ -111,9 +111,10 @@ const Chat = () => {
 
   useEffect(() => {
     setloading(true);
-    if (socket) {
+    if (socket && User) {
       socket.on("connect", () => {
         console.log("Client Connected");
+        socket.emit("connectClient", User?.id);
         setServerDisconnected(false);
         socket.on("get_qr", (data) => {
           const qrCode = data;
@@ -136,12 +137,12 @@ const Chat = () => {
           console.log("User ready");
 
           setloading(true);
-          const chats = await axios.get(`${socketURL}/user-chats`);
-          const profileImage = await axios.get(`${socketURL}/user-profilepic`);
-          const contacts = await axios.get(`${socketURL}/user-contacts`);
+          const chats = await axios.get(`${socketURL}/user-chats/${User?.id}`);
+          const profileImage = await axios.get(`${socketURL}/user-profilepic/${User?.id}`);
+          const contacts = await axios.get(`${socketURL}/user-contacts/${User?.id}`);
           setData({
             userInfo: clientInfo,
-            userContacts: contacts.data.filter(
+            userContacts: contacts?.data?.filter(
               (c) => !c.isGroup && c.isMyContact
             ),
             userChats: chats.data.filter((c) => !c.isGroup),
@@ -156,24 +157,27 @@ const Chat = () => {
         setServerDisconnected(true);
       });
     }
-  }, [socket]);
+  }, [socket, User]);
 
   useEffect(() => {
-    if (selectedChat) {
-      fetchChatMessages(selectedChat?.id?.user);
+    if (selectedChat && User) {
+      fetchChatMessages(selectedChatRef.current?.id?.user);
     }
-  }, [selectedChat]);
+  }, [selectedChat, User]);
 
   useEffect(() => {
+
     const cb = () => {
-      fetchChatMessages(selectedChat);
+      if(User) {
+        fetchChatMessages(selectedChatRef?.current?.id?.user);
+      }
     }
     const interval = setInterval(cb, 8000);
 
     return () => {
       clearInterval(interval, cb);
     }
-  }, []);
+  }, [User]);
 
   return (
     <>
