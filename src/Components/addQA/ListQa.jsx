@@ -297,7 +297,7 @@ const ListQa = ({ pageState, setpageState }) => {
     );
   }
   return (
-    <div className="pb-10">
+    <div className="pb-10 h-[500px] overflow-y-scroll">
       {loading && (
         <div className="flex items-center justify-center">
           <CircularProgress
@@ -335,7 +335,8 @@ const ListQa = ({ pageState, setpageState }) => {
           // }
         />
       </Box> */}
-      {row.length > 0 &&
+      {!loading &&
+        row.length > 0 &&
         row?.map((qa, index) => (
           <Accordion key={index} className="mb-4">
             <AccordionSummary
