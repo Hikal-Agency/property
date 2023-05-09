@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  CircularProgress,
   Box,
   Pagination,
   Typography,
@@ -29,6 +30,7 @@ const ListQa = ({ pageState, setpageState }) => {
   const location = useLocation();
   const [row, setRow] = useState([]);
   const [column, setColumns] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   console.log("Rows: ", row);
 
@@ -153,6 +155,7 @@ const ListQa = ({ pageState, setpageState }) => {
   //   };
 
   const FetchQA = async (token) => {
+    setLoading(true);
     axios
       .get(`${BACKEND_URL}/trainingdata`, {
         headers: {
@@ -161,6 +164,7 @@ const ListQa = ({ pageState, setpageState }) => {
         },
       })
       .then((result) => {
+        setLoading(false);
         console.log("QAs ");
         console.log(result.data);
         console.log(result?.data?.QAs);
@@ -186,6 +190,7 @@ const ListQa = ({ pageState, setpageState }) => {
         setRow(rowData);
       })
       .catch((err) => {
+        setLoading(false);
         console.log("error occured");
         console.log(err);
       });
@@ -293,6 +298,16 @@ const ListQa = ({ pageState, setpageState }) => {
   }
   return (
     <div className="pb-10">
+      {loading && (
+        <div className="flex items-center justify-center">
+          <CircularProgress
+            size={23}
+            sx={{ color: "white" }}
+            className="text-white"
+          />
+        </div>
+      )}
+
       {/* <Box width={"100%"} sx={DataGridStyles}>
         <DataGrid
           autoHeight
