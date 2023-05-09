@@ -177,13 +177,8 @@ const ListQa = ({ pageState, setpageState }) => {
 
         let rowData = data?.map((qa, index) => ({
           id: index + 1,
-          question: qa?.question,
-          answers:
-            // qa?.answers.length > 0
-            //   ? Array.from(qa?.answers).join(", ")
-            //   : "No answers",
-            // qa?.answers.length > 0 ? qa?.answers.join(", ") : "No answers",
-            qa?.answers,
+          question: qa?.question || "No Questions",
+          answers: qa?.answers || "No Answers",
         }));
 
         console.log("Row Data: ", rowData);

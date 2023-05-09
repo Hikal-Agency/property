@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AiOutlineCalendar, AiOutlineMenu } from "react-icons/ai";
-import {MdUnsubscribe} from "react-icons/md";
+import { MdUnsubscribe } from "react-icons/md";
 import { RiLockPasswordFill, RiNotification3Line } from "react-icons/ri";
 import {
   MdDarkMode,
@@ -23,7 +23,7 @@ import { CgLogOut } from "react-icons/cg";
 import { ColorModeContext } from "../../context/theme";
 import NotificationsMenu from "./NotificationsMenu";
 import UpcomingMeetingsMenu from "./UpcomingMeetingsMenu";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import BreadCrumb from "./BreadCrumb";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -72,6 +72,8 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
+  const [loading, setloading] = useState(true);
+  const navigate = useNavigate();
   const handleClick = (event, navBtn) => {
     setAnchorEl(event.currentTarget);
     setOpen(true);
@@ -81,6 +83,46 @@ const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
     setOpen(false);
+  };
+
+  const CheckValidToken = async (token) => {
+    await axios
+      .get(`${BACKEND_URL}/profile`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Valid token");
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 401) {
+          setopenBackDrop(false);
+          setloading(false);
+
+          localStorage.removeItem("auth-token");
+          localStorage.removeItem("user");
+          localStorage.removeItem("leadsData");
+          navigate("/", {
+            state: {
+              error: "Please login to proceed.",
+              continueURL: location.pathname,
+            },
+          });
+          return;
+        }
+        toast.error("Sorry something went wrong. Kindly refresh the page.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
   };
 
   // const FetchProfile = async (token) => {
@@ -182,6 +224,21 @@ const Navbar = () => {
         })
         .catch((err) => {
           console.log(err);
+          if (err.response.status === 401) {
+            setopenBackDrop(false);
+            setloading(false);
+
+            localStorage.removeItem("auth-token");
+            localStorage.removeItem("user");
+            localStorage.removeItem("leadsData");
+            navigate("/", {
+              state: {
+                error: "Please login to proceed.",
+                continueURL: location.pathname,
+              },
+            });
+            return;
+          }
           toast.error("Sorry something went wrong. Kindly refresh the page.", {
             position: "top-right",
             autoClose: 3000,
@@ -244,10 +301,24 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    setopenBackDrop(false);
     const token = localStorage.getItem("auth-token");
-
-    console.log("Token: ", token);
-    FetchProfile(token);
+    if (User?.id && User?.loginId) {
+      CheckValidToken(token);
+      FetchProfile(token);
+      setloading(false);
+    } else {
+      if (token) {
+        FetchProfile(token);
+      } else {
+        navigate("/", {
+          state: {
+            error: "Please login to proceed.",
+            continueURL: location.pathname,
+          },
+        });
+      }
+    }
     const handleResize = () => setScreenSize(window.innerWidth);
 
     window.addEventListener("resize", handleResize);
@@ -445,11 +516,11 @@ const Navbar = () => {
                     </div>
                   </Link>
                 </MenuItem>
-                {User?.role !== 1 && isUserSubscribed &&
-                <MenuItem onClick={UnsubscribeUser}>
-                  <MdUnsubscribe className="mr-3 text-lg" /> Unsubscribe
-                </MenuItem>
-                }
+                {User?.role !== 1 && isUserSubscribed && (
+                  <MenuItem onClick={UnsubscribeUser}>
+                    <MdUnsubscribe className="mr-3 text-lg" /> Unsubscribe
+                  </MenuItem>
+                )}
                 <MenuItem onClick={LogoutUser}>
                   <CgLogOut className="mr-3 text-lg" /> Logout
                 </MenuItem>

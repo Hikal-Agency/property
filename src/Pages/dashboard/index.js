@@ -59,6 +59,21 @@ const Dashboard = () => {
       })
       .catch((err) => {
         console.log(err);
+        if (err.response.status === 401) {
+          setopenBackDrop(false);
+          setloading(false);
+
+          localStorage.removeItem("auth-token");
+          localStorage.removeItem("user");
+          localStorage.removeItem("leadsData");
+          navigate("/", {
+            state: {
+              error: "Please login to proceed.",
+              continueURL: location.pathname,
+            },
+          });
+          return;
+        }
         toast.error("Sorry something went wrong. Kindly refresh the page.", {
           position: "top-right",
           autoClose: 3000,
@@ -79,7 +94,7 @@ const Dashboard = () => {
   useEffect(() => {
     setopenBackDrop(false);
     const token = localStorage.getItem("auth-token");
-    if (User?.uid && User?.loginId) {
+    if (User?.id && User?.loginId) {
       FetchProfile(token);
       setloading(false);
     } else {
@@ -88,7 +103,7 @@ const Dashboard = () => {
       } else {
         navigate("/", {
           state: {
-            error: "Something Went Wrong! Please Try Again",
+            error: "Please login to proceed.",
             continueURL: location.pathname,
           },
         });

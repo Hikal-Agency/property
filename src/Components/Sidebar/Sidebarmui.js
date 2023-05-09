@@ -38,7 +38,7 @@ import {
 import { useStateContext } from "../../context/ContextProvider";
 import { ImLock, ImUsers, ImLocation } from "react-icons/im";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import apiClient from "../../axoisConfig";
 // import { Link as NextLink } from "next/link";
 
@@ -60,20 +60,31 @@ const Sidebarmui = () => {
   const [PersonalLeadsCount, setPersonalLeadsCount] = useState();
   const [ThirdPartLeadsCount, setThirdPartyLeadsCount] = useState();
   const [UnassignedLeadsCount, setUnassignedLeadsCount] = useState();
+  const [loading, setloading] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("auth-token");
-        const urls = [`${BACKEND_URL}/sidebar/0`, `${BACKEND_URL}/sidebar/1`, `${BACKEND_URL}/sidebar/2`, `${BACKEND_URL}/sidebar/3`, `${BACKEND_URL}/sidebar/4`];
-        const responses = await Promise.all(urls.map((url) => {
-          return axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-        }));
+        const urls = [
+          `${BACKEND_URL}/sidebar/0`,
+          `${BACKEND_URL}/sidebar/1`,
+          `${BACKEND_URL}/sidebar/2`,
+          `${BACKEND_URL}/sidebar/3`,
+          `${BACKEND_URL}/sidebar/4`,
+        ];
+        const responses = await Promise.all(
+          urls.map((url) => {
+            return axios.get(url, {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
+            });
+          })
+        );
 
         console.log("Response:::", responses);
         setHotLeadsCount(responses[0].data["HOT LEADS"]);
@@ -84,10 +95,26 @@ const Sidebarmui = () => {
         setLeadsCount(true);
       } catch (error) {
         console.log(error);
+
+        if (error.response.status === 401) {
+          setopenBackDrop(false);
+          setloading(false);
+
+          localStorage.removeItem("auth-token");
+          localStorage.removeItem("user");
+          localStorage.removeItem("leadsData");
+          navigate("/", {
+            state: {
+              error: "Please login to proceed.",
+              continueURL: location.pathname,
+            },
+          });
+          return;
+        }
       }
     };
 
-      fetchData();
+    fetchData();
     // eslint-disable-next-line
   }, []);
 
