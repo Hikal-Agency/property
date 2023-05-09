@@ -1359,32 +1359,32 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           id="bulkImport"
         />
         <div style={{ position: "relative" }}>
-          {pageState.data.length > 0 &&
-          <>
-          <div onClick={handleNextArrow}>
-            <Avatar
-              className="shadow-md"
-              style={{
-                ...arrowStyles,
-                right: -30,
-              }}
-            >
-              <GrFormNext size={30} />
-            </Avatar>
-          </div>
-          <div onClick={handlePrevArrow}>
-            <Avatar
-              className="shadow-md"
-              style={{
-                ...arrowStyles,
-                left: -30,
-              }}
-            >
-              <GrFormPrevious size={30} />
-            </Avatar>
-          </div>
-          </>
-          }
+          {pageState.data.length > 0 && (
+            <>
+              <div onClick={handleNextArrow}>
+                <Avatar
+                  className="shadow-md"
+                  style={{
+                    ...arrowStyles,
+                    right: -30,
+                  }}
+                >
+                  <GrFormNext size={30} />
+                </Avatar>
+              </div>
+              <div onClick={handlePrevArrow}>
+                <Avatar
+                  className="shadow-md"
+                  style={{
+                    ...arrowStyles,
+                    left: -30,
+                  }}
+                >
+                  <GrFormPrevious size={30} />
+                </Avatar>
+              </div>
+            </>
+          )}
           <DataGrid
             ref={dataTableRef}
             autoHeight
