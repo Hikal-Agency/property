@@ -1,12 +1,8 @@
-import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
-import { Tab, Tabs } from "@mui/material";
 import Footer from "../../Components/Footer/Footer";
-import CreateTicket from "../../Components/support/CreateTicket";
-import AllTickets from "../../Components/support/AllTickets";
 import SingleTickt from "../../Components/support/SingleTickt";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
