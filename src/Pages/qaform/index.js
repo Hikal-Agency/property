@@ -66,7 +66,11 @@ const QAForm = () => {
             <div className={`w-full `}>
               <div className="px-5">
                 <Navbar />
-                <h4 className={`font-semibold p-7 text-center text-2xl`}>
+                <h4
+                  className={`font-semibold p-7 text-center text-2xl ${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  }`}
+                >
                   Add Questions And Relative Answers For Customer Support.
                 </h4>
                 <div
