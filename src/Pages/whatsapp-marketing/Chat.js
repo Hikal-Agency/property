@@ -138,6 +138,7 @@ const Chat = () => {
 
           setloading(true);
           const chats = await axios.get(`${socketURL}/user-chats/${User?.id}`);
+          console.log(chats)
           const profileImage = await axios.get(`${socketURL}/user-profilepic/${User?.id}`);
           const contacts = await axios.get(`${socketURL}/user-contacts/${User?.id}`);
           setData({
@@ -168,7 +169,7 @@ const Chat = () => {
   useEffect(() => {
 
     const cb = () => {
-      if(User) {
+      if(User && selectedChat) {
         fetchChatMessages(selectedChatRef?.current?.id?.user);
       }
     }
