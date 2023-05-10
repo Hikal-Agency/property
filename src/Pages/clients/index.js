@@ -554,14 +554,38 @@ const Clients = () => {
       //   );
       // },
     },
+    // {
+    //   field: "clientName",
+    //   headerName: "Client Name",
+    //   headerAlign: "center",
+    //   editable: false,
+    //   minWidth: 180,
+    //   flex: 1,
+    // },
     {
       field: "clientName",
       headerName: "Client Name",
       headerAlign: "center",
       editable: false,
-      minWidth: 180,
+      minWidth: 300,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex flex-col items-center justify-center">
+            <p className="text-center">{cellValues.formattedValue}</p>
+            <div className="flex justify-between w-full">
+              <p className="text-sm font-medium text-gray-500">
+                Active Accounts: {cellValues.row.activeAccounts}
+              </p>
+              <p className="text-sm font-medium text-gray-500">
+                Total Accounts: {cellValues.row.totalAccounts}
+              </p>
+            </div>
+          </div>
+        );
+      },
     },
+
     {
       field: "clientContact",
       headerName: "Contact Number",
@@ -610,25 +634,25 @@ const Clients = () => {
       },
     },
 
-    {
-      field: "totalAccounts",
-      headerName: "Total User Accounts",
+    // {
+    //   field: "totalAccounts",
+    //   headerName: "Total User Accounts",
 
-      headerAlign: "center",
-      align: "center",
-      editable: false,
-      minWidth: 180,
-      flex: 1,
-    },
-    {
-      field: "activeAccounts",
-      headerName: "Total Active Accounts",
-      headerAlign: "center",
-      align: "center",
-      editable: false,
-      minWidth: 180,
-      flex: 1,
-    },
+    //   headerAlign: "center",
+    //   align: "center",
+    //   editable: false,
+    //   minWidth: 180,
+    //   flex: 1,
+    // },
+    // {
+    //   field: "activeAccounts",
+    //   headerName: "Total Active Accounts",
+    //   headerAlign: "center",
+    //   align: "center",
+    //   editable: false,
+    //   minWidth: 180,
+    //   flex: 1,
+    // },
     {
       field: "totalLeads",
       headerName: "Total Leads",
