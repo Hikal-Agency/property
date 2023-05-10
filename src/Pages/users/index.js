@@ -8,18 +8,53 @@ import Footer from "../../Components/Footer/Footer";
 
 import { AiOutlineEdit } from "react-icons/ai";
 import SingleUser from "../../Components/Users/SingleUser";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const Users = () => {
   //View LEAD MODAL VARIABLES
 
-  const { currentMode, DataGridStyles } = useStateContext();
+  const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
+
+  const [user, setUser] = useState([]);
+
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.get(`${BACKEND_URL}/users`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("Users: ", response);
+      setUser(response?.data?.managers?.data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Unable to fetch users.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const columns = [
     {
       field: "id",
       headerName: "#",
       headerAlign: "center",
-      minWidth: 30,
+      minWidth: 60,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -50,7 +85,7 @@ const Users = () => {
       flex: 1,
     },
     {
-      field: "contactNumber",
+      field: "userContact",
       headerName: "Contact Number",
       headerAlign: "center",
       editable: false,
@@ -59,13 +94,13 @@ const Users = () => {
       renderCell: (cellValues) => {
         return (
           <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues.formattedValue}</p>
+            <p className="text-center">{cellValues?.formattedValue}</p>
           </div>
         );
       },
     },
     {
-      field: "email",
+      field: "userEmail",
       headerName: "Email Address",
       headerAlign: "center",
       editable: false,
@@ -89,13 +124,13 @@ const Users = () => {
       renderCell: (cellValues) => {
         return (
           <>
-            {cellValues.formattedValue === "1" && (
+            {cellValues?.formattedValue === 1 && (
               <div className="w-full h-full flex justify-center items-center text-[#0f9d58] px-5 text-xs font-semibold">
                 ACTIVATED ACCOUNT
               </div>
             )}
 
-            {cellValues.formattedValue === "0" && (
+            {cellValues?.formattedValue === 0 && (
               <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
                 DEACTIVATED ACCOUNT
               </div>
@@ -177,7 +212,7 @@ const Users = () => {
 
   return (
     <>
-      {/* <ToastContainer/> */}
+      <ToastContainer />
       <div className="flex min-h-screen">
         <div
           className={`w-full ${
@@ -208,7 +243,7 @@ const Users = () => {
                       pagination
                       width="auto"
                       paginationMode="server"
-                      rows={rows}
+                      rows={user}
                       columns={columns}
                       sx={{
                         boxShadow: 2,

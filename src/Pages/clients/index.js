@@ -683,7 +683,7 @@ const Clients = () => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              <FaBan size={20} />
+              <FaBan size={20} color={"#DA1F26"} />
             </Button>
           </div>
         );

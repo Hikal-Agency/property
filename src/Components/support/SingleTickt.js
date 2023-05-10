@@ -207,73 +207,7 @@ const SingleTickt = ({ ticketData }) => {
             <button onClick={log}>Log editor content</button>
           </div>
         </div>
-        {/* <div className="h-full w-full">
-          <div
-            className="grid grid-cols-1 gap-5"
-            sx={{ height: "40px", overflowY: "auto" }}
-          >
-            Ticket details
-            <Accordion className="mb-4">
-              <AccordionSummary expandIcon={<BsChevronCompactDown />}>
-                <Typography>Ticket Details</Typography>
-              </AccordionSummary>
 
-              <AccordionDetails>
-                <Typography> ticket id</Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion className="mb-4">
-              <AccordionSummary expandIcon={<BsChevronCompactDown />}>
-                <Typography>Ticket Details</Typography>
-              </AccordionSummary>
-
-              <AccordionDetails>
-                <Typography> ticket id</Typography>
-                <hr />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion className="mb-4">
-              <AccordionSummary expandIcon={<BsChevronCompactDown />}>
-                <Typography>Ticket Details</Typography>
-              </AccordionSummary>
-
-              <AccordionDetails>
-                <Typography> ticket id</Typography>
-                <hr />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion className="mb-4">
-              <AccordionSummary expandIcon={<BsChevronCompactDown />}>
-                <Typography>Ticket Details</Typography>
-              </AccordionSummary>
-
-              <AccordionDetails>
-                <Typography> ticket id</Typography>
-                <hr />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion className="mb-4">
-              <AccordionSummary expandIcon={<BsChevronCompactDown />}>
-                <Typography>Ticket Details</Typography>
-              </AccordionSummary>
-
-              <AccordionDetails>
-                <Typography> ticket id</Typography>
-                <hr />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion className="mb-4">
-              <AccordionSummary expandIcon={<BsChevronCompactDown />}>
-                <Typography>Ticket Details</Typography>
-              </AccordionSummary>
-
-              <AccordionDetails>
-                <Typography> ticket id</Typography>
-                <hr />
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        </div> */}
         <div className="h-full w-full">
           <div className="grid grid-cols-1 gap-5 overflow-y-auto h-[400px]">
             <div className="mb-2">Ticket details</div>
