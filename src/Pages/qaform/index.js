@@ -8,7 +8,11 @@ import Footer from "../../Components/Footer/Footer";
 
 import ADDQA from "../../Components/addQA/ADDQA";
 import ListQa from "../../Components/addQA/ListQa";
+import FilterQA from "../../Components/addQA/FilterQA";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Select, MenuItem } from "@mui/material";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const QAForm = () => {
   const {
@@ -20,14 +24,57 @@ const QAForm = () => {
     BACKEND_URL,
   } = useStateContext();
   const [value, setValue] = useState(0);
+  const [users, setUsers] = useState([]);
+  const [selectUserId, setSelectedUserId] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
   const handleChange = (event, newValue) => {
+    console.log("Tab: ", newValue);
     setValue(newValue);
   };
 
   const [tabValue, setTabValue] = useState(0);
   const [loading, setloading] = useState(false);
+
+  const handleUser = (event) => {
+    const selected_user = users.find((user) => user.id === event.target.value);
+    setSelectedUserId(selected_user);
+    console.log("Selected User: ", selected_user);
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.get(`${BACKEND_URL}/users`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("Users: ", response);
+      setUsers(response?.data?.managers?.data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Unable to fetch users.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (value === 2) {
+      console.log("Tab 2");
+      fetchUsers();
+    }
+  }, [value]);
+
   useEffect(() => {
     setopenBackDrop(false);
     if (User?.uid && User?.loginId) {
@@ -54,7 +101,7 @@ const QAForm = () => {
 
   return (
     <>
-      {/* <ToastContainer/> */}
+      <ToastContainer />
       <div className="flex min-h-screen">
         <div
           className={`w-full ${
@@ -106,9 +153,7 @@ const QAForm = () => {
                     >
                       <Tab label="Add QA" />
                       <Tab label="ALL QA" />
-                      {/* <Tab label="UPGRADE" />
-                      <Tab label="RENEWAL" />
-                      <Tab label="CANCELLATION" /> */}
+                      <Tab label="Filter QA"></Tab>
                     </Tabs>
                   </Box>
                   <div className="mt-3 pb-3">
@@ -126,13 +171,52 @@ const QAForm = () => {
                         setTabValue={setTabValue}
                       />
                     </TabPanel>
-                    {/* <TabPanel value={value} index={1}>
-                      <AllTickets
+                    <TabPanel value={value} index={2}>
+                      <Select
+                        id="user"
+                        value={selectUserId?.id}
+                        label="Select User"
+                        onChange={handleUser}
+                        size="medium"
+                        className="w-full mb-4"
+                        displayEmpty
+                        required
+                      >
+                        <MenuItem value="" disabled>
+                          Select User
+                        </MenuItem>
+                        {users && users.length > 0 ? (
+                          users.map((user) => (
+                            <MenuItem key={user.id} value={user.id}>
+                              {user.userName}
+                            </MenuItem>
+                          ))
+                        ) : (
+                          <MenuItem value="" disabled>
+                            No Users
+                          </MenuItem>
+                        )}
+                      </Select>
+
+                      <h3
+                        className={`font-semibold  text-center  ${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        } mb-5`}
+                      >
+                        Data of :{" "}
+                        <span className="text-main-red-color">
+                          {" "}
+                          {selectUserId?.userName || "No User"}
+                        </span>
+                      </h3>
+
+                      <FilterQA
                         isLoading={loading}
                         tabValue={tabValue}
                         setTabValue={setTabValue}
+                        user={selectUserId?.id}
                       />
-                    </TabPanel> */}
+                    </TabPanel>
                   </div>
                 </div>
               </div>
