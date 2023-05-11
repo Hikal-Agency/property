@@ -537,9 +537,9 @@ const Clients = () => {
   const columns = [
     {
       field: "clientId",
-      headerName: "Client Id",
+      headerName: "Id",
       headerAlign: "center",
-      minWidth: 90,
+      minWidth: 50,
       flex: 1,
 
       // renderCell: (cellValues) => {
@@ -572,7 +572,7 @@ const Clients = () => {
       renderCell: (cellValues) => {
         return (
           <div className="w-full flex flex-col items-center justify-center">
-            <p className="text-center">{cellValues.formattedValue}</p>
+            <p className="text-center font-bold">{cellValues.formattedValue}</p>
             <div className="flex justify-between w-full">
               <p className="text-sm font-medium text-gray-500">
                 Active Accounts: {cellValues.row.activeAccounts}
@@ -655,17 +655,17 @@ const Clients = () => {
     // },
     {
       field: "totalLeads",
-      headerName: "Total Leads",
+      headerName: "Leads",
       headerAlign: "center",
       align: "center",
       editable: false,
-      minWidth: 180,
+      minWidth: 100,
       flex: 1,
     },
     {
       field: "",
       headerName: "Actions",
-      minWidth: 170,
+      minWidth: 130,
       flex: 1,
       headerAlign: "center",
       sortable: false,
