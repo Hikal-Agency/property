@@ -125,9 +125,13 @@ const SingleTickt = ({ ticketData }) => {
             sx={{ height: "400px", overflowY: "auto" }}
           >
             <CardContent className={classes.content}>
-              <h1 className="text-xl font-bold text-gray-700">
+              <h3 className={` text-xl font-bold text-center text-black mb-3`}>
+                Description
+              </h3>
+              <hr />
+              <h3 className="text-xl font-bold text-gray-700">
                 {ticketData?.description}
-              </h1>
+              </h3>
             </CardContent>
           </Card>
           <div style={{ height: 200, overflowY: "scroll", marginTop: "20px" }}>
@@ -209,9 +213,21 @@ const SingleTickt = ({ ticketData }) => {
         </div>
 
         <div className="h-full w-full">
-          <div className="grid grid-cols-1 gap-5 overflow-y-auto h-[400px]">
+          <div className="grid grid-cols-1 gap-5 ">
             <div className="mb-2">Ticket details</div>
-            <Accordion className="mb-4">
+            <Typography sx={{ wordWrap: "break-word" }}>
+              <b> Ticket ID: </b>
+              {ticketData?.id} <br />
+              <b>Created: </b> {ticketData?.created_ad} <br />
+              <b>Status: </b>
+              <span className={getStatusColorClass(ticketData?.status)}>
+                {ticketData?.status}
+              </span>
+              <br />
+              <b> Source: </b> {ticketData?.source}
+              <br />
+            </Typography>
+            {/* <Accordion className="mb-4">
               <AccordionSummary expandIcon={<BsChevronCompactDown />}>
                 <Typography>Ticket Details</Typography>
               </AccordionSummary>
@@ -230,8 +246,12 @@ const SingleTickt = ({ ticketData }) => {
                   <br />
                 </Typography>
               </AccordionDetails>
-            </Accordion>
-            <Accordion className="mb-4">
+            </Accordion> */}
+            <Typography sx={{ wordWrap: "break-word" }}>
+              <b> Added By: </b> {ticketData?.added_by} <br />
+              <b> Assigned to: </b> {ticketData?.assigned_to || "No one"}
+            </Typography>
+            {/* <Accordion className="mb-4">
               <AccordionSummary expandIcon={<BsChevronCompactDown />}>
                 <Typography>Responsibility</Typography>
               </AccordionSummary>
@@ -242,7 +262,7 @@ const SingleTickt = ({ ticketData }) => {
                   <b> Assigned to: </b> {ticketData?.assigned_to || "No one"}
                 </Typography>
               </AccordionDetails>
-            </Accordion>
+            </Accordion> */}
           </div>
         </div>
       </div>

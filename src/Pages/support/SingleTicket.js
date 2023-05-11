@@ -60,6 +60,7 @@ const SingleTicket = () => {
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
+                  Issue :{" "}
                   <span className="text-main-red-color font-bold">
                     {tickeData?.issue &&
                       tickeData.issue.charAt(0).toUpperCase() +
