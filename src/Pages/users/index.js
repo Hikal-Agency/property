@@ -13,22 +13,89 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 const Users = () => {
-  //View LEAD MODAL VARIABLES
-
-  const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
+  const { currentMode, DataGridStyles, BACKEND_URL, pageState, setpageState } =
+    useStateContext();
 
   const [user, setUser] = useState([]);
+
+  // const fetchUsers = async () => {
+  //   try {
+  //     const token = localStorage.getItem("auth-token");
+  //     const response = await axios.get(`${BACKEND_URL}/users`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     });
+  //     console.log("Users: ", response);
+  //     setUser(response?.data?.managers?.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error("Unable to fetch users.", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   }
+  // };
 
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("auth-token");
-      const response = await axios.get(`${BACKEND_URL}/users`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const response = await axios.get(
+        `${BACKEND_URL}/users?page=${pageState.page}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       console.log("Users: ", response);
+
+      let rowsDataArray = "";
+      if (response?.data?.managers?.current_page > 1) {
+        const theme_values = Object.values(response?.data?.managers?.data);
+        rowsDataArray = theme_values;
+      } else {
+        rowsDataArray = response?.data?.managers?.data;
+      }
+
+      let rowsdata = rowsDataArray.map((row, index) => ({
+        id:
+          pageState.page > 1
+            ? pageState.page * pageState.pageSize -
+              (pageState.pageSize - 1) +
+              index
+            : index + 1,
+        id: row?.id,
+        userName: row?.userName || "No Name",
+        position: row?.position || "No Position",
+        userContact: row?.userContact || "No Contact",
+        userEmail: row?.userEmail || "No Email",
+        // status:
+        //   row?.status === 1
+        //     ? "Active Account"
+        //     : "Deactive Account" || "No Satus",
+        status: row?.status,
+        edit: "edit",
+      }));
+
+      console.log("Rows Data: ", rowsdata);
+
+      setpageState((old) => ({
+        ...old,
+        isLoading: false,
+        data: rowsdata,
+        pageSize: response?.data?.managers?.per_page,
+        total: response?.data?.managers?.total,
+      }));
+
       setUser(response?.data?.managers?.data);
     } catch (error) {
       console.log(error);
@@ -44,10 +111,9 @@ const Users = () => {
       });
     }
   };
-
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [pageState.page]);
 
   const columns = [
     {
@@ -238,13 +304,24 @@ const Users = () => {
                     <DataGrid
                       autoHeight
                       disableSelectionOnClick
-                      onRowClick={handleRowClick}
+                      rows={pageState.data}
+                      columns={columns}
+                      rowCount={pageState.total}
                       rowsPerPageOptions={[30, 50, 75, 100]}
                       pagination
                       width="auto"
                       paginationMode="server"
-                      rows={user}
-                      columns={columns}
+                      page={pageState.page - 1}
+                      pageSize={pageState.pageSize}
+                      onPageChange={(newPage) => {
+                        setpageState((old) => ({ ...old, page: newPage + 1 }));
+                      }}
+                      onPageSizeChange={(newPageSize) =>
+                        setpageState((old) => ({
+                          ...old,
+                          pageSize: newPageSize,
+                        }))
+                      }
                       sx={{
                         boxShadow: 2,
                         "& .MuiDataGrid-cell:hover": {
