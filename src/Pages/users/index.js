@@ -1,4 +1,6 @@
 import { Button } from "@material-tailwind/react";
+import Switch from "@mui/material/Switch";
+
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Navbar from "../../Components/Navbar/Navbar";
@@ -11,6 +13,7 @@ import SingleUser from "../../Components/Users/SingleUser";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const Users = () => {
   const { currentMode, DataGridStyles, BACKEND_URL, pageState, setpageState } =
@@ -18,35 +21,39 @@ const Users = () => {
 
   const [user, setUser] = useState([]);
 
-  // const fetchUsers = async () => {
-  //   try {
-  //     const token = localStorage.getItem("auth-token");
-  //     const response = await axios.get(`${BACKEND_URL}/users`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     });
-  //     console.log("Users: ", response);
-  //     setUser(response?.data?.managers?.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Unable to fetch users.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   }
-  // };
+  const handleTrainerSwitchChange = async (cellValues) => {
+    console.log("Id: ", cellValues?.id);
+    const token = localStorage.getItem("auth-token");
 
-  const fetchUsers = async () => {
+    const make_trainer = cellValues?.formattedValue === 1 ? 0 : 1;
+
+    console.log("Make trainer: ", make_trainer);
+
+    const Update_trainer = new FormData();
+
+    Update_trainer.append("is_trainer", make_trainer);
+
     try {
-      const token = localStorage.getItem("auth-token");
+      const is_trainer = await axios.post(
+        `${BACKEND_URL}/updateuser/${cellValues?.id}`,
+        Update_trainer,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("Response: ", is_trainer);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
+  const fetchUsers = async (token) => {
+    try {
+      // const token = localStorage.getItem("auth-token");
       const response = await axios.get(
         `${BACKEND_URL}/users?page=${pageState.page}`,
         {
@@ -66,7 +73,7 @@ const Users = () => {
         rowsDataArray = response?.data?.managers?.data;
       }
 
-      let rowsdata = rowsDataArray.map((row, index) => ({
+      let rowsdata = rowsDataArray?.map((row, index) => ({
         id:
           pageState.page > 1
             ? pageState.page * pageState.pageSize -
@@ -78,11 +85,8 @@ const Users = () => {
         position: row?.position || "No Position",
         userContact: row?.userContact || "No Contact",
         userEmail: row?.userEmail || "No Email",
-        // status:
-        //   row?.status === 1
-        //     ? "Active Account"
-        //     : "Deactive Account" || "No Satus",
         status: row?.status,
+        is_trainer: row?.is_trainer,
         edit: "edit",
       }));
 
@@ -112,7 +116,8 @@ const Users = () => {
     }
   };
   useEffect(() => {
-    fetchUsers();
+    const token = localStorage.getItem("auth-token");
+    fetchUsers(token);
   }, [pageState.page]);
 
   const columns = [
@@ -120,7 +125,7 @@ const Users = () => {
       field: "id",
       headerName: "#",
       headerAlign: "center",
-      minWidth: 60,
+      maxWidth: 90,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -151,11 +156,11 @@ const Users = () => {
       flex: 1,
     },
     {
-      field: "userContact",
-      headerName: "Contact Number",
+      field: "userEmail",
+      headerName: "Email Address",
       headerAlign: "center",
       editable: false,
-      minWidth: 130,
+      minWidth: 250,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -166,39 +171,45 @@ const Users = () => {
       },
     },
     {
-      field: "userEmail",
-      headerName: "Email Address",
+      field: "is_trainer",
+      headerName: "Trainer",
       headerAlign: "center",
       editable: false,
-      minWidth: 250,
+      minWidth: 150,
       flex: 1,
       renderCell: (cellValues) => {
+        console.log("Trainer: ", cellValues);
         return (
           <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues.formattedValue}</p>
+            <Switch
+              defaultChecked={cellValues?.formattedValue === 1}
+              onClick={() => handleTrainerSwitchChange(cellValues)}
+              color={"default"}
+            />
           </div>
         );
       },
     },
+
     {
       field: "status",
       headerName: "Status",
       headerAlign: "center",
       editable: false,
-      minWidth: 180,
+      maxWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
           <>
             {cellValues?.formattedValue === 1 && (
               <div className="w-full h-full flex justify-center items-center text-[#0f9d58] px-5 text-xs font-semibold">
-                ACTIVATED ACCOUNT
+                ACTIVE
               </div>
             )}
 
             {cellValues?.formattedValue === 0 && (
               <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
-                DEACTIVATED ACCOUNT
+                DEACTIVE
               </div>
             )}
           </>
@@ -208,7 +219,7 @@ const Users = () => {
     {
       field: "",
       headerName: "Action",
-      minWidth: 100,
+      maxWidth: 90,
       flex: 1,
       headerAlign: "center",
       sortable: false,
@@ -217,7 +228,6 @@ const Users = () => {
         return (
           <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
             <Button
-              // onClick={() => HandleEditFunc(cellValues)}
               title="Edit User"
               className={`editUserBtn ${
                 currentMode === "dark"
@@ -225,7 +235,10 @@ const Users = () => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              <AiOutlineEdit size={20} />
+              <Link to={`/updateuser/${cellValues?.id}`}>
+                {" "}
+                <AiOutlineEdit size={20} />
+              </Link>
             </Button>
           </div>
         );

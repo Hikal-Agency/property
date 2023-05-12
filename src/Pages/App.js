@@ -44,6 +44,7 @@ import Newsletter from "./newsletter";
 import AddNewsLetters from "./newsletter/addNewsletter";
 import Campaigns from "./SocialMedia/campaigns";
 import SingleTicket from "./support/SingleTicket";
+import UpdateUser from "./users/updateUser";
 // import { io } from "socket.io-client";
 
 const libraries = ["places"];
@@ -188,6 +189,11 @@ const routes = [
     path: "/location/useralllocation/:user_id",
     pageName: "User All Location",
     element: <UserAllLocation />,
+  },
+  {
+    path: "/updateuser/:id",
+    pageName: "Users",
+    element: <UpdateUser />,
   },
   {
     path: "/users",

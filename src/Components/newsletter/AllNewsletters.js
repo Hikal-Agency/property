@@ -100,7 +100,7 @@ const AllNewsletters = ({ pageState, setpageState }) => {
           status:
             row?.status === "Subscribed" || row?.status === "Subscribed"
               ? "Subscribed"
-              : "Not Subscribed",
+              : "UnSubscribed",
         }));
 
         setpageState((old) => ({
