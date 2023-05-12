@@ -87,7 +87,6 @@ const Chat = () => {
           setQr(qrCode);
 
           console.log("QR REceived");
-          setReady(true);
           setloading(false);
         });
 
@@ -104,19 +103,11 @@ const Chat = () => {
           console.log("User ready");
 
           setloading(true);
-          const chats = await axios.get(`${socketURL}/user-chats/${User?.id}`);
           const profileImage = await axios.get(
             `${socketURL}/user-profilepic/${User?.id}`
           );
-          const contacts = await axios.get(
-            `${socketURL}/user-contacts/${User?.id}`
-          );
           setData({
             userInfo: clientInfo,
-            userContacts: contacts?.data?.filter(
-              (c) => !c.isGroup && c.isMyContact
-            ),
-            userChats: chats.data.filter((c) => !c.isGroup),
             userProfilePic: profileImage.data,
           });
           setReady(true);
@@ -131,14 +122,14 @@ const Chat = () => {
   }, [socket, User]);
 
   useEffect(() => {
-    if (User) {
+    if (User && ready) {
       fetchChatMessages(searchParams.get("phoneNumber"));
     }
   }, [User]);
 
   useEffect(() => {
     const cb = () => {
-      if (User) {
+      if (User && ready) {
         fetchChatMessages(searchParams.get("phoneNumber"));
       }
     };
