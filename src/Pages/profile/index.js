@@ -27,7 +27,6 @@ const ProfilePage = () => {
     setopenBackDrop,
     BACKEND_URL,
   } = useStateContext();
-  const [error, setError] = useState(null);
   const [GeneralInfoData, setGeneralInfo] = useState({
     userAltContact: "",
     userAltEmail: "",
@@ -36,7 +35,6 @@ const ProfilePage = () => {
   });
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
-  const location = useLocation();
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePickerModal, setImagePickerModal] = useState(false);
 
