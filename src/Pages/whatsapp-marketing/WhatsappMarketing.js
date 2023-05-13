@@ -11,7 +11,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import AllMessages from "./AllMessages";
 import Payments from "./payments";
-// import Chat from "./Chat";
+import Chat from "./Chat";
 
 const pagesComponents = {
   instances: <InstancesComponent />,
@@ -20,7 +20,7 @@ const pagesComponents = {
   payments: <Payments />,
   transactions: <TransactionsComponent />,
   all: <AllMessages />,
-  // chat: <Chat/>
+  chat: <Chat/>
 };
 
 const WhatsappMarketing = () => {
@@ -28,7 +28,6 @@ const WhatsappMarketing = () => {
     currentMode,
     User,
     setUser,
-    BACKEND_URL,
     setopenBackDrop,
     isUserSubscribed,
   } = useStateContext();
@@ -39,23 +38,6 @@ const WhatsappMarketing = () => {
 
   console.log("Page: ", page);
 
-  const FetchProfile = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setUser(result.data.user[0]);
-      })
-      .catch((err) => {
-        navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again " },
-        });
-      });
-  };
   useEffect(() => {
     setopenBackDrop(false);
 
