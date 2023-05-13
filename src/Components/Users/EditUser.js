@@ -131,8 +131,17 @@ const EditUser = ({ user }) => {
                           id="master"
                           type={"password"}
                           label="Update Master Password"
-                          className="w-full mb-5"
-                          style={{ marginBottom: "20px" }}
+                          className={`w-full mb-5 ${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                          sx={{
+                            marginBottom: "20px",
+                            input: {
+                              color: `${
+                                currentMode === "dark" ? "#ffffff" : "#000000"
+                              }`,
+                            },
+                          }}
                           variant="outlined"
                           size="medium"
                           value={userData?.master}
@@ -151,8 +160,17 @@ const EditUser = ({ user }) => {
                           id="target"
                           type={"number"}
                           label="Target"
-                          className="w-full mb-5"
-                          style={{ marginBottom: "20px" }}
+                          className={`w-full mb-5 ${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                          sx={{
+                            marginBottom: "20px",
+                            input: {
+                              color: `${
+                                currentMode === "dark" ? "#ffffff" : "#000000"
+                              }`,
+                            },
+                          }}
                           variant="outlined"
                           size="medium"
                           value={userData?.target}
@@ -172,7 +190,14 @@ const EditUser = ({ user }) => {
                           label="Package Name"
                           className="w-full mb-5"
                           value={userData?.package_name}
-                          style={{ marginBottom: "20px" }}
+                          sx={{
+                            marginBottom: "20px",
+                            input: {
+                              color: `${
+                                currentMode === "dark" ? "#ffffff" : "#000000"
+                              }`,
+                            },
+                          }}
                           variant="outlined"
                           size="medium"
                           onChange={(e) =>
@@ -236,16 +261,38 @@ const EditUser = ({ user }) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
+                                sx={{
+                                  marginBottom: "20px",
+                                  input: {
+                                    color: `${
+                                      currentMode === "dark"
+                                        ? "#ffffff"
+                                        : "#000000"
+                                    }`,
+                                  },
+                                }}
                                 onKeyDown={(e) => e.preventDefault()}
                                 readOnly={true}
                               />
                             )}
-                            className="w-full"
+                            className={`w-full ${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-black"
+                            }`}
                             required
                             // maxDate={currentDate}
                             // minDate={minDate}
                             // inputFormat="MM/dd/yyyy"
                             // disableFuture
+                            sx={{
+                              marginBottom: "20px",
+                              input: {
+                                color: `${
+                                  currentMode === "dark" ? "#ffffff" : "#000000"
+                                }`,
+                              },
+                            }}
                             invalidDateMessage="Invalid date"
                             mask="__/__/____"
                           />
