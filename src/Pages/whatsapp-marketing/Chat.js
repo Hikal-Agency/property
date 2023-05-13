@@ -14,7 +14,7 @@ import { useSearchParams } from "react-router-dom";
 
 const Chat = () => {
   const { socket, User } = useStateContext();
-  const [loading, setloading] = useState(false);
+  const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
   const [ready, setReady] = useState(false);
   const [data, setData] = useState([]);
@@ -22,7 +22,6 @@ const Chat = () => {
   const [chatMessages, setChatMessages] = useState([]);
   const [chatMessageInputVal, setChatMessageInputVal] = useState("");
 
-  const selectedChatRef = useRef();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const messagesContainerRef = useRef();
@@ -33,6 +32,7 @@ const Chat = () => {
     const messages = await axios.get(
       `${socketURL}/user-chat-messages/${contact}/${User?.id}`
     );
+    console.log("Messages Data: ", messages.data);
     setChatMessages(messages.data);
   };
 
@@ -75,12 +75,9 @@ const Chat = () => {
     //     });
   };
 
-  useEffect(() => {
-    setloading(true);
     if (socket && User) {
       socket.on("connect", () => {
         console.log("Client Connected");
-        socket.emit("connectClient", User?.id);
         setServerDisconnected(false);
         socket.on("get_qr", (data) => {
           const qrCode = data;
@@ -95,9 +92,10 @@ const Chat = () => {
           document.location.reload();
         });
 
-        socket.on("message_received", (msg) => {
-          fetchChatMessages(selectedChatRef.current?.id?.user);
+        socket.on("message_received", () => {
+          fetchChatMessages(searchParams.get("phoneNumber"));
         });
+        console.log(searchParams.get("phoneNumber"))
 
         socket.on("user_ready", async (clientInfo) => {
           console.log("User ready");
@@ -119,13 +117,12 @@ const Chat = () => {
         setServerDisconnected(true);
       });
     }
-  }, [socket, User]);
 
   useEffect(() => {
     if (User && ready) {
       fetchChatMessages(searchParams.get("phoneNumber"));
     }
-  }, [User]);
+  }, [User, ready])
 
   useEffect(() => {
     const cb = () => {
@@ -138,7 +135,7 @@ const Chat = () => {
     return () => {
       clearInterval(interval, cb);
     };
-  }, [User]);
+  }, [User, ready]);
 
   return (
     <>
@@ -203,7 +200,7 @@ const Chat = () => {
                               {chatMessages?.map((message, index) => {
                                 if (
                                   message.id.fromMe &&
-                                  message.to === searchParams.get("phoneNumber")
+                                  message.to === searchParams.get("phoneNumber") + "@c.us"
                                 ) {
                                   return (
                                     <div
@@ -239,7 +236,7 @@ const Chat = () => {
                                   );
                                 } else {
                                   if (
-                                    message.from === searchParams.get("phoneNumber")
+                                    message.from === searchParams.get("phoneNumber") + "@c.us"
                                   ) {
                                     return (
                                       <div

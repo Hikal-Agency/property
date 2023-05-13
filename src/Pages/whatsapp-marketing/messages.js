@@ -20,8 +20,7 @@ import Pagination from "@mui/material/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import {Link} from "react-router-dom";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh Leads" },
@@ -1096,6 +1095,20 @@ const AllLeads = () => {
           >
             <MdSend style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp Image
           </Button>
+
+      {selectedRows.length === 1 && 
+          <Button
+            onClick={() => window.location.href=`/whatsapp-marketing/chat?phoneNumber=${selectedRows[0].slice(1).replaceAll(" ", "")}`}
+            type="button"
+            variant="contained"
+            sx={{ padding: "12px", mb: 2, mr: 2 }}
+            color="warning"
+            size="lg"
+          >
+          Open Chat
+          </Button>
+      }
+
 
           <input
             onInput={handleInputChange}
