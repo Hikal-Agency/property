@@ -324,6 +324,7 @@ const UpdateMeeting = ({
                             readOnly={true}
                           />
                         )}
+                        minDate={dayjs().startOf("day").toDate()}
                       />
                     </LocalizationProvider>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
