@@ -7,7 +7,7 @@ import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import Footer from "../../Components/Footer/Footer";
-
+import { RiRadioButtonLine } from "react-icons/ri";
 import { AiOutlineEdit } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -539,7 +539,7 @@ const Clients = () => {
       field: "clientId",
       headerName: "Id",
       headerAlign: "center",
-      minWidth: 50,
+      maxWidth: 40,
       flex: 1,
 
       // renderCell: (cellValues) => {
@@ -567,18 +567,39 @@ const Clients = () => {
       headerName: "Client Name",
       headerAlign: "center",
       editable: false,
-      minWidth: 300,
+      align: "center",
+      minWidth: 17,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full flex flex-col items-center justify-center">
-            <p className="text-center font-bold">{cellValues.formattedValue}</p>
-            <div className="flex justify-between w-full">
+          <div
+          // className="w-full flex flex-col items-center justify-center"
+          // style={{ height: "500px" }}
+          >
+            <p className="text-center font-bold mb-2">
+              {cellValues.formattedValue}
+            </p>
+            <div className="flex flex-row  w-full">
+              <div className="flex items-center w-full">
+                <p
+                  className="text-sm font-medium text-gray-500"
+                  style={{ marginRight: "5px" }}
+                >
+                  Active
+                </p>
+                <RiRadioButtonLine
+                  style={{ color: "green", marginRight: "5px" }}
+                />
+                :{"  "}
+                <p className="text-sm font-medium text-gray-500">
+                  {" "}
+                  {cellValues.row.activeAccounts}
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col  justify-between w-full">
               <p className="text-sm font-medium text-gray-500">
-                Active Accounts: {cellValues.row.activeAccounts}
-              </p>
-              <p className="text-sm font-medium text-gray-500">
-                Total Accounts: {cellValues.row.totalAccounts}
+                Total : {cellValues.row.totalAccounts}
               </p>
             </div>
           </div>
@@ -659,7 +680,7 @@ const Clients = () => {
       headerAlign: "center",
       align: "center",
       editable: false,
-      minWidth: 100,
+      maxWidth: 80,
       flex: 1,
     },
     {
@@ -766,6 +787,7 @@ const Clients = () => {
                       rowsPerPageOptions={[30, 50, 75, 100]}
                       pagination
                       width="auto"
+                      rowHeight={90}
                       paginationMode="server"
                       rows={pageState?.data}
                       loading={pageState.isLoading}

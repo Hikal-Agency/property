@@ -347,7 +347,10 @@ const Users = () => {
                         currentMode === "dark" ? "text-white" : "text-black"
                       } font-semibold text-xl`}
                     >
-                      Users
+                      Users :{" "}
+                      <span className="text-main-red-color font-bold">
+                        {pageState?.total}
+                      </span>
                     </h2>
                   </div>
                   <Box width={"100%"} sx={DataGridStyles}>
