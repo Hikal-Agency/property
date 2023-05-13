@@ -7,17 +7,27 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const EditUser = ({ user }) => {
   const [loading, setloading] = useState(false);
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [error, setError] = useState(false);
+  const [userData, setUserData] = useState({
+    master: "",
+    package_name: "",
+    position: "",
+    dob: "",
+    target: "",
+  });
+
+  console.log("UserData: ", userData);
 
   const currentDate = new Date();
 
@@ -29,22 +39,22 @@ const EditUser = ({ user }) => {
     }
   }
 
-  const handleTrainerSwitchChange = async (cellValues) => {
-    console.log("Id: ", cellValues?.id);
+  const UpdateUser = async (e) => {
+    setloading(true);
     const token = localStorage.getItem("auth-token");
 
-    const make_trainer = cellValues?.formattedValue === 1 ? 0 : 1;
+    const updated_data = new FormData();
 
-    console.log("Make trainer: ", make_trainer);
-
-    const Update_trainer = new FormData();
-
-    Update_trainer.append("is_trainer", make_trainer);
+    updated_data.append("master", userData?.master);
+    updated_data.append("package_name", userData?.package_name || "");
+    updated_data.append("position", userData?.position);
+    updated_data.append("dob", userData?.dob);
+    updated_data.append("target", userData?.target);
 
     try {
-      const is_trainer = await axios.post(
-        `${BACKEND_URL}/updateuser/${cellValues?.id}`,
-        Update_trainer,
+      const UpdateUser = await axios.post(
+        `${BACKEND_URL}/updateuser/${user?.id}`,
+        updated_data,
         {
           headers: {
             "Content-Type": "application/json",
@@ -53,18 +63,54 @@ const EditUser = ({ user }) => {
         }
       );
 
-      console.log("Response: ", is_trainer);
+      toast.success("User updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setloading(false);
+
+      console.log("Response: ", UpdateUser);
     } catch (error) {
+      setloading(false);
       console.log("Error: ", error);
+      toast.error("Unable to update user.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      setUserData({
+        master: user.master,
+        package_name: user.package_name,
+        position: user.position,
+        dob: user.dob,
+        target: user.target,
+      });
+    }
+  }, [user]);
 
   return (
     <div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          //   AddLead();
+          UpdateUser();
         }}
         disabled={loading ? true : false}
       >
@@ -78,7 +124,7 @@ const EditUser = ({ user }) => {
                   } py-10 px-4 md:px-10 `}
                 >
                   {/* <div className="mb-10"></div> */}
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 md:grid-cols- sm:grid-cols-1 gap-5">
                     <div>
                       <Box sx={darkModeColors}>
                         <TextField
@@ -89,8 +135,33 @@ const EditUser = ({ user }) => {
                           style={{ marginBottom: "20px" }}
                           variant="outlined"
                           size="medium"
-                          value={user?.master || ""}
-                          //   onChange={(e) => setLeadName(e.target.value)}
+                          value={userData?.master}
+                          onChange={(e) =>
+                            setUserData({
+                              ...userData,
+                              master: e.target.value,
+                            })
+                          }
+                          fullWidth
+                        />
+
+                        <br />
+
+                        <TextField
+                          id="target"
+                          type={"number"}
+                          label="Target"
+                          className="w-full mb-5"
+                          style={{ marginBottom: "20px" }}
+                          variant="outlined"
+                          size="medium"
+                          value={userData?.target}
+                          onChange={(e) =>
+                            setUserData({
+                              ...userData,
+                              target: e.target.value,
+                            })
+                          }
                         />
 
                         <br />
@@ -100,22 +171,31 @@ const EditUser = ({ user }) => {
                           type={"text"}
                           label="Package Name"
                           className="w-full mb-5"
-                          value={user?.package_name}
+                          value={userData?.package_name}
                           style={{ marginBottom: "20px" }}
                           variant="outlined"
                           size="medium"
-                          //   error={emailError && emailError}
-                          //   helperText={emailError && emailError}
-                          //   onChange={handleEmail}
+                          onChange={(e) =>
+                            setUserData({
+                              ...userData,
+                              package_name: e.target.value,
+                            })
+                          }
                         />
 
                         <Select
                           id="LeadSource"
-                          value={user?.position}
+                          value={userData?.position}
                           label="Position"
                           size="medium"
                           className="w-full mb-5"
                           displayEmpty
+                          onChange={(e) =>
+                            setUserData({
+                              ...userData,
+                              position: e.target.value,
+                            })
+                          }
                         >
                           <MenuItem value="" disabled>
                             Position
@@ -131,12 +211,6 @@ const EditUser = ({ user }) => {
                           <MenuItem value={"marketing head"}>
                             Head Of Marketing
                           </MenuItem>
-                          <MenuItem value={"sales head"}>
-                            Head Of Marketing
-                          </MenuItem>
-                          <MenuItem value={"office boy"}>
-                            Head Of Marketing
-                          </MenuItem>
                           <MenuItem value={"admin assistant"}>
                             Admin Assistant
                           </MenuItem>
@@ -145,19 +219,19 @@ const EditUser = ({ user }) => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
                             label="Date of Birth"
-                            value={user?.dob}
+                            value={userData?.dob}
                             onChange={(newValue) => {
                               console.log(newValue);
                               //   setDatevalue(newValue);
-                              //   setPersonalInfo({
-                              //     ...PersonalInfo,
-                              //     dob:
-                              //       format(newValue?.$d.getUTCFullYear()) +
-                              //       "-" +
-                              //       format(newValue?.$d.getUTCMonth() + 1) +
-                              //       "-" +
-                              //       format(newValue?.$d.getUTCDate() + 1),
-                              //   });
+                              setUserData({
+                                ...userData,
+                                dob:
+                                  format(newValue?.$d.getUTCFullYear()) +
+                                  "-" +
+                                  format(newValue?.$d.getUTCMonth() + 1) +
+                                  "-" +
+                                  format(newValue?.$d.getUTCDate() + 1),
+                              });
                             }}
                             renderInput={(params) => (
                               <TextField
