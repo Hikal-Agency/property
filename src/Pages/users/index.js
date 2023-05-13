@@ -1,5 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import Switch from "@mui/material/Switch";
+import Avatar from "@mui/material/Avatar";
 
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -87,6 +88,7 @@ const Users = () => {
         userEmail: row?.userEmail || "No Email",
         status: row?.status,
         is_trainer: row?.is_trainer,
+        displayImg: row?.displayImg,
         edit: "edit",
       }));
 
@@ -139,6 +141,41 @@ const Users = () => {
         );
       },
     },
+    {
+      field: "displayImg",
+      headerName: "Image",
+      headerAlign: "center",
+      align: "center",
+      editable: false,
+      minWidth: 90,
+      flex: 1,
+      renderCell: (cellValues) => {
+        console.log("Image: ", cellValues);
+        const imgSrc = cellValues?.formattedValue;
+        if (imgSrc) {
+          return (
+            <img
+              src={imgSrc}
+              alt="User"
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+              }}
+            />
+          );
+        } else {
+          return (
+            <Avatar
+              alt="User"
+              variant="circular"
+              style={{ width: "30px", height: "30px" }}
+            />
+          );
+        }
+      },
+    },
+
     {
       field: "userName",
       headerName: "User Name",

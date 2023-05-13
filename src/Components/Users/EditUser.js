@@ -23,7 +23,7 @@ const EditUser = ({ user }) => {
     master: "",
     package_name: "",
     position: "",
-    dob: "",
+    expiry_date: "",
     target: "",
   });
 
@@ -48,7 +48,7 @@ const EditUser = ({ user }) => {
     updated_data.append("master", userData?.master);
     updated_data.append("package_name", userData?.package_name || "");
     updated_data.append("position", userData?.position);
-    updated_data.append("dob", userData?.dob);
+    updated_data.append("expiry_date", userData?.expiry_date);
     updated_data.append("target", userData?.target);
 
     try {
@@ -96,11 +96,11 @@ const EditUser = ({ user }) => {
   useEffect(() => {
     if (user) {
       setUserData({
-        master: user.master,
-        package_name: user.package_name,
-        position: user.position,
-        dob: user.dob,
-        target: user.target,
+        master: user?.master,
+        package_name: !user?.package_name === "null" ? user?.package_name : "",
+        position: user?.position,
+        expiry_date: user?.expiry_date,
+        target: user?.target,
       });
     }
   }, [user]);
@@ -218,14 +218,14 @@ const EditUser = ({ user }) => {
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
-                            label="Date of Birth"
-                            value={userData?.dob}
+                            label="Expiry Date"
+                            value={userData?.expiry_date}
                             onChange={(newValue) => {
                               console.log(newValue);
                               //   setDatevalue(newValue);
                               setUserData({
                                 ...userData,
-                                dob:
+                                expiry_date:
                                   format(newValue?.$d.getUTCFullYear()) +
                                   "-" +
                                   format(newValue?.$d.getUTCMonth() + 1) +
@@ -242,10 +242,10 @@ const EditUser = ({ user }) => {
                             )}
                             className="w-full"
                             required
-                            maxDate={currentDate}
+                            // maxDate={currentDate}
                             // minDate={minDate}
                             // inputFormat="MM/dd/yyyy"
-                            disableFuture
+                            // disableFuture
                             invalidDateMessage="Invalid date"
                             mask="__/__/____"
                           />
