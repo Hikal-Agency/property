@@ -26,7 +26,7 @@ const Users = () => {
     console.log("Id: ", cellValues?.id);
     const token = localStorage.getItem("auth-token");
 
-    const make_trainer = cellValues?.formattedValue === 1 ? 0 : 1;
+    const make_trainer = cellValues?.formattedValue === 1 ? 2 : 1;
 
     console.log("Make trainer: ", make_trainer);
 
@@ -46,9 +46,29 @@ const Users = () => {
         }
       );
 
+      toast.success("User trainer permission updated.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
       console.log("Response: ", is_trainer);
     } catch (error) {
-      console.log("Error: ", error);
+      toast.error("Unable to update user.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -216,11 +236,14 @@ const Users = () => {
       flex: 1,
       renderCell: (cellValues) => {
         console.log("Trainer: ", cellValues);
+        // const [isChecked, setIsChecked] = useState(
+        //   cellValues?.formattedValue === 1
+        // );
         return (
           <div className="w-full flex items-center justify-center">
             <Switch
               defaultChecked={cellValues?.formattedValue === 1}
-              onClick={() => handleTrainerSwitchChange(cellValues)}
+              onChange={() => handleTrainerSwitchChange(cellValues)}
               color={"default"}
             />
           </div>
