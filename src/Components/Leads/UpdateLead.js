@@ -70,6 +70,8 @@ const UpdateLead = ({
   const [LeadProject, setLeadProject] = useState("");
   const [LeadNotes, setLeadNotes] = useState("");
 
+  const [emailError, setEmailError] = useState(false);
+
   // const handlePhone = (e) => {
   //   console.log("Phone: ", e.target.value);
   //   setValue(e.target.value);
@@ -134,6 +136,25 @@ const UpdateLead = ({
     if (onlyDigitsAndPlus.test(value) && value.startsWith("+")) {
       setLeadContact(value);
     }
+  };
+
+  const handleEmail = (e) => {
+    setEmailError(false);
+    const value = e.target.value;
+    console.log(value);
+    // const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+    const emailRegex = /^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+    if (emailRegex.test(value)) {
+      setEmailError(false);
+    } else {
+      setEmailError("Kindly enter a valid email.");
+      // setLeadEmail("");
+      // return;
+    }
+    setLeadEmail(value);
+    console.log("Email state: ", LeadEmail);
   };
 
   async function setPersons(urls) {
@@ -256,6 +277,22 @@ const UpdateLead = ({
 
   const UpdateLeadFunc = async () => {
     setbtnloading(true);
+
+    if (emailError !== false) {
+      toast.error("Kindly enter a valid email.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setbtnloading(false);
+      setloading(false);
+      return;
+    }
 
     if (!LeadContact) {
       setloading(false);
@@ -699,7 +736,10 @@ const UpdateLead = ({
                         variant="outlined"
                         size="medium"
                         value={LeadEmail === "undefined" ? "" : LeadEmail}
-                        onChange={(e) => setLeadEmail(e.target.value)}
+                        // onChange={(e) => setLeadEmail(e.target.value)}
+                        error={emailError && emailError}
+                        helperText={emailError && emailError}
+                        onChange={handleEmail}
                       />
                       <FormHelperText
                         sx={{

@@ -79,7 +79,9 @@ const AddLeadComponent = () => {
     setEmailError(false);
     const value = e.target.value;
     console.log(value);
-    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    // const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+    const emailRegex = /^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
     if (emailRegex.test(value)) {
       setEmailError(false);
@@ -155,6 +157,21 @@ const AddLeadComponent = () => {
 
   const AddLead = async () => {
     setloading(true);
+    if (emailError !== false) {
+      setloading(false);
+      toast.error("Kindly enter a valid email.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      return;
+    }
     if (!LeadContact) {
       setloading(false);
       toast.error("Contact number is required.", {
