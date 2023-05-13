@@ -73,6 +73,10 @@ const Users = () => {
   };
 
   const fetchUsers = async (token) => {
+    setpageState((old) => ({
+      ...old,
+      isLoading: true,
+    }));
     try {
       // const token = localStorage.getItem("auth-token");
       const response = await axios.get(
@@ -236,9 +240,7 @@ const Users = () => {
       flex: 1,
       renderCell: (cellValues) => {
         console.log("Trainer: ", cellValues);
-        // const [isChecked, setIsChecked] = useState(
-        //   cellValues?.formattedValue === 1
-        // );
+
         return (
           <div className="w-full flex items-center justify-center">
             <Switch
@@ -383,6 +385,7 @@ const Users = () => {
                       rows={pageState.data}
                       columns={columns}
                       rowCount={pageState.total}
+                      loading={pageState.isLoading}
                       rowsPerPageOptions={[30, 50, 75, 100]}
                       pagination
                       width="auto"
