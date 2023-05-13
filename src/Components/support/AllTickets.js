@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const AllTickets = () => {
   const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
   const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // ROW CLICK FUNCTION
@@ -161,6 +162,7 @@ const AllTickets = () => {
   ];
 
   const fetchTickets = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
       const response = await axios.get(`${BACKEND_URL}/tickets`, {
@@ -175,8 +177,10 @@ const AllTickets = () => {
         row.userName = row.added_by;
       });
       setRows(rowsList);
+      setLoading(false);
       console.log("Rowslist: ", rowsList);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -215,6 +219,7 @@ const AllTickets = () => {
           disableSelectionOnClick
           rowsPerPageOptions={[30, 50, 75, 100]}
           pagination
+          loading={loading}
           width="auto"
           paginationMode="server"
           rows={rows}

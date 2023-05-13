@@ -6,6 +6,7 @@ import Footer from "../../Components/Footer/Footer";
 import SingleTickt from "../../Components/support/SingleTickt";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { CircularProgress } from "@mui/material";
 
 const SingleTicket = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const SingleTicket = () => {
   console.log("Ticket DAta: ", tickeData);
 
   const fetchTickets = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
       const response = await axios.get(`${BACKEND_URL}/tickets/${id}`, {
@@ -32,7 +34,10 @@ const SingleTicket = () => {
       });
       console.log("Single Ticket: ", response);
       setTicketData(response?.data?.data[0]);
+
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -75,7 +80,13 @@ const SingleTicket = () => {
                   } p-5 rounded-md my-5 mb-10 min-h-screen`}
                 >
                   <div className="mt-3 pb-3 min-h-screen">
-                    <SingleTickt ticketData={tickeData} />
+                    {loading ? (
+                      <div className="fixed  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <CircularProgress />
+                      </div>
+                    ) : (
+                      <SingleTickt ticketData={tickeData} />
+                    )}
                   </div>
                 </div>
               </div>
