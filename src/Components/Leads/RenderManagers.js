@@ -161,11 +161,12 @@ const RenderManagers = ({ cellValues }) => {
         {!manager2 && (
           <MenuItem value="select_manager">Select Manager</MenuItem>
         )}
-        {Managers.map((manager, index) => (
-          <MenuItem key={index} value={manager?.id}>
-            {manager?.userName}
-          </MenuItem>
-        ))}
+        {Managers?.length > 0 &&
+          Managers.map((manager, index) => (
+            <MenuItem key={index} value={manager?.id}>
+              {manager?.userName}
+            </MenuItem>
+          ))}
       </Select>
 
       {Dialogue && (
@@ -210,9 +211,9 @@ const RenderManagers = ({ cellValues }) => {
                   to{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                     {newManager?.userName}
-                    //{" "}
+                    {/* //{" "}
                     {
-                      Managers.find((manager) => manager.id === manager2)
+                      Managers?.find((manager) => manager.id === manager2)
                         .userName
                     }
                     //{" "}
@@ -223,7 +224,7 @@ const RenderManagers = ({ cellValues }) => {
                     {
                       Managers.find((manager) => manager.id === newManager)
                         .userName
-                    }
+                    } */}
                   </span>{" "}
                   ?
                 </h1>

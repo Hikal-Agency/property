@@ -169,18 +169,19 @@ const RenderSalesperson = ({ cellValues }) => {
             </MenuItem>
           )}
 
-          {SalesPersonsList?.map((salesperson, index) => {
-            return (
-              <MenuItem
-                key={index}
-                value={salesperson?.id}
-                data
-                name={salesperson?.userName}
-              >
-                {salesperson?.userName}
-              </MenuItem>
-            );
-          })}
+          {SalesPersonsList?.length > 0 &&
+            SalesPersonsList?.map((salesperson, index) => {
+              return (
+                <MenuItem
+                  key={index}
+                  value={salesperson?.id}
+                  data
+                  name={salesperson?.userName}
+                >
+                  {salesperson?.userName}
+                </MenuItem>
+              );
+            })}
         </Select>
       )}
 

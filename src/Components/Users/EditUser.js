@@ -262,7 +262,6 @@ const EditUser = ({ user }) => {
                               <TextField
                                 {...params}
                                 sx={{
-                                  marginBottom: "20px",
                                   input: {
                                     color: `${
                                       currentMode === "dark"

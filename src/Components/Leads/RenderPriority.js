@@ -23,6 +23,8 @@ const RenderPriority = ({ cellValues }) => {
   const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL } =
     useStateContext();
 
+  console.log("Priority: ", Priority);
+
   const ChangePriority = (e) => {
     setnewPriority(e.target.value);
     setPriorityDialogue(true);
@@ -94,7 +96,7 @@ const RenderPriority = ({ cellValues }) => {
       } w-full h-full flex items-center justify-center`}
       sx={SelectStyles}
     >
-      <Select
+      {/* <Select
         id="priority"
         value={Priority ?? "set_priority"}
         label="Priority"
@@ -108,7 +110,27 @@ const RenderPriority = ({ cellValues }) => {
         <MenuItem value={"High"}>High</MenuItem>
         <MenuItem value={"Medium"}>Medium</MenuItem>
         <MenuItem value={"Low"}>Low</MenuItem>
+      </Select> */}
+      <Select
+        id="priority"
+        value={Priority != null ? Priority : "set_priority"}
+        label="Priority"
+        onChange={ChangePriority}
+        size="medium"
+        className="w-[90%] h-[75%]"
+        displayEmpty
+        required
+      >
+        {Priority != null ? (
+          <MenuItem value={Priority}>Priority {Priority}</MenuItem>
+        ) : (
+          <MenuItem value={"set_priority"}>Set Priority</MenuItem>
+        )}
+        <MenuItem value={"High"}>High</MenuItem>
+        <MenuItem value={"Medium"}>Medium</MenuItem>
+        <MenuItem value={"Low"}>Low</MenuItem>
       </Select>
+
       {PriorityDialogue && (
         <>
           <Dialog

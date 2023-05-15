@@ -794,6 +794,8 @@ const ClientLeads = ({
     setCEOColumns([...CEOColumns]);
   }
 
+  console.log("Leads: ", pageState);
+
   const FetchLeads = async (token) => {
     console.log("lead type is here");
     console.log(lead_type);
@@ -914,6 +916,7 @@ const ClientLeads = ({
           pageSize: result?.data?.agency_leads.per_page,
           total: result?.data?.agency_leads?.total,
         }));
+
         setCEOColumns([...CEOColumns]);
       })
       .catch((err) => {
@@ -1031,13 +1034,13 @@ const ClientLeads = ({
       !event.target.closest(".editLeadBtn") &&
       !event.target.closest(".deleteLeadBtn")
     ) {
-      setsingleLeadData(params.row);
+      setsingleLeadData(params?.row);
       handleLeadModelOpen();
     }
   };
   // EDIT BTN CLICK FUNC
   const HandleEditFunc = async (params) => {
-    setsingleLeadData(params.row);
+    setsingleLeadData(params?.row);
     handleUpdateLeadModelOpen();
     // setUpdateLeadModelOpen(true);
   };
@@ -1625,7 +1628,7 @@ const ClientLeads = ({
                     <DataGrid
                       autoHeight
                       disableSelectionOnClick
-                      rows={pageState.data}
+                      rows={pageState?.data}
                       onRowClick={handleRowClick}
                       rowCount={pageState.total}
                       loading={pageState.isLoading}

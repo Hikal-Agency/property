@@ -59,6 +59,8 @@ const RenderFeedback = ({ cellValues }) => {
       border: "none",
     },
   };
+
+  console.log("Feedback: ", Feedback);
   const UpdateFeedback = async () => {
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
