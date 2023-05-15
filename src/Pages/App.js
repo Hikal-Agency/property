@@ -421,7 +421,7 @@ function App() {
   useEffect(() => {
     setAllRoutes(routes);
 
-    const socketURL = "http://localhost:5000";
+    const socketURL = "https://server1.hikalcrm.com";
     const socket = io(socketURL);
     setSocket(socket);
   }, []);

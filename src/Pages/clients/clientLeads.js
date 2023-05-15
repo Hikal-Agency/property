@@ -34,11 +34,10 @@ import RenderSalesperson from "../../Components/Leads/RenderSalesperson";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteLeadModel from "../../Components/Leads/DeleteLead";
 // import BulkImportModel from "./BulkImport";
-import clsx from "clsx";
 import BulkImport from "../../Components/Leads/BulkImport";
 import Footer from "../../Components/Footer/Footer";
+import { Link } from "react-router-dom";
 import Loader from "../../Components/Loader";
-import { styled } from "@mui/material";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -293,7 +292,7 @@ const ClientLeads = ({
       field: "edit",
       headerName: "Edit",
       // width: 150,
-      minWidth: 100,
+      minWidth: 170,
       flex: 1,
       headerAlign: "center",
       sortable: false,
@@ -313,8 +312,8 @@ const ClientLeads = ({
               {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
             </Button>
-            <Button
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+            <Link
+              to={`/timeline/${cellValues.row.lid}`}
               className={`editLeadBtn ${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
@@ -323,7 +322,7 @@ const ClientLeads = ({
             >
               {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
               <AiOutlineHistory size={20} />
-            </Button>
+            </Link>
           </div>
         );
       },
