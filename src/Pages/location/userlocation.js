@@ -106,8 +106,6 @@ const Userlocation = () => {
     <>
       <ToastContainer />
       <div className="min-h-screen">
-        <div className="flex">
-          <Sidebarmui />
           <div
             className={`w-full  ${
               currentMode === "dark" ? "bg-black" : "bg-white"
@@ -118,7 +116,6 @@ const Userlocation = () => {
               <UserLocationComponent />
             </div>
           </div>
-        </div>
         <Footer />
       </div>
     </>

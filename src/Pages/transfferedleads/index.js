@@ -81,8 +81,6 @@ const TransferredLeads = (props) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
-              <Sidebarmui />
               <div className={`w-full`}>
                 <div className="px-5">
                   <Navbar />
@@ -106,7 +104,6 @@ const TransferredLeads = (props) => {
                   </div>
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}

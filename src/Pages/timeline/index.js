@@ -109,8 +109,6 @@ const Timeline = () => {
         <meta name="description" content="Timeline - HIKAL CRM" />
       </Head> */}
       <div className="min-h-screen">
-        <div className="flex">
-          <Sidebarmui />
           <div
             className={`w-full  ${
               currentMode === "dark" ? "bg-black" : "bg-white"
@@ -636,7 +634,6 @@ const Timeline = () => {
               )}
             </div>
           </div>
-        </div>
         <Footer />
       </div>
     </>

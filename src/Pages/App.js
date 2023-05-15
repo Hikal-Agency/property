@@ -438,13 +438,16 @@ function App() {
   }
 
   return <>
-  <div className="min-h-screen">
-    <div className="flex">
+  <div className="min-h-screen overflow-x-hidden">
+    <div className="flex w-screen">
         {checkIfPageHasSidebar() && <Sidebarmui/>}
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard/>}/>
-          <Route path="/addlead" element={<AddLead/>}/>
-        </Routes>
+        <div className="w-[100%]">
+          <Routes>
+          {routes.map((route) => {
+            return <Route path={route.path} element={route.element}/>
+          })}
+          </Routes>
+        </div>
     </div>
   </div>
   </>

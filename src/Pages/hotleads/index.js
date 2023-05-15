@@ -86,8 +86,6 @@ const AllHotLeads = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
-              <Sidebarmui />
               <div className="w-full px-5">
                 <Navbar />
                 <div className="mt-3">
@@ -112,7 +110,6 @@ const AllHotLeads = () => {
                   />
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}

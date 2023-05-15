@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import AddLeadComponent from "../../Components/Leads/AddLeadComponent";
 import axios from "axios";

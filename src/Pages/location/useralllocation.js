@@ -87,8 +87,6 @@ const UserAllLocation = (props) => {
   return (
     <>
       <div className="min-h-screen">
-        <div className="flex">
-          <Sidebarmui />
           <div
             className={`w-full  ${
               currentMode === "dark" ? "bg-black" : "bg-white"
@@ -192,7 +190,6 @@ const UserAllLocation = (props) => {
               </div>
             </div>
           </div>
-        </div>
         <Footer />
       </div>
     </>

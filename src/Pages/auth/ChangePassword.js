@@ -64,7 +64,6 @@ const ChangePassword = () => {
             className={`${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >
             <div className="flex w-screen overflow-x-hidden">
-              <Sidebarmui />
               <div className="w-full">
                 <div className="px-5">
                   <Navbar />

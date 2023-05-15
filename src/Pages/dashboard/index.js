@@ -115,14 +115,14 @@ const Dashboard = () => {
   return (
     <>
       <ToastContainer />
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen w-[100%]">
         {loading ? (
           <Loader />
         ) : (
           <div
             className={`${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >
-              <div className="w-full">
+              <div className="w-full overflow-x-hidden">
                 <div className="px-5">
                   <Navbar />
                   <DashboardPanel />

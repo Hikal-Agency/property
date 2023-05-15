@@ -186,8 +186,6 @@ const Contacts = () => {
         {loading ? (
           <Loader />
         ) : (
-          <div className="flex">
-            <Sidebarmui />
             <div
               className={`w-full  ${
                 currentMode === "dark" ? "bg-black" : "bg-white"
@@ -253,7 +251,6 @@ const Contacts = () => {
                 />
               </Stack>
             </div>
-          </div>
         )}
         <Footer />
       </div>

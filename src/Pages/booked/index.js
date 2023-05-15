@@ -87,8 +87,6 @@ const Booked = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
-              <Sidebarmui />
               <div className={`w-full `}>
                 <div className="px-5">
                   <Navbar />
@@ -113,7 +111,6 @@ const Booked = () => {
                   </div>
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}

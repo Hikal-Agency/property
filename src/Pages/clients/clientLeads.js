@@ -1209,7 +1209,6 @@ const ClientLeads = ({
           }`}
         >
           <div className="flex pb-10">
-            <Sidebarmui />
             <div className={`w-full`}>
               <div className="px-5">
                 <Navbar />
@@ -1403,8 +1402,6 @@ const ClientLeads = ({
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
-              <Sidebarmui />
               <div className="w-full px-5">
                 <Navbar />
                 <div className="mt-5">
@@ -1745,7 +1742,6 @@ const ClientLeads = ({
                   </Box>
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}
