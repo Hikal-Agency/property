@@ -2,6 +2,7 @@ import { Button } from "@material-tailwind/react";
 import {
   Box,
   CircularProgress,
+  InputLabel,
   MenuItem,
   Select,
   TextField,
@@ -226,10 +227,11 @@ const EditUser = ({ user }) => {
                           }
                         />
 
+                        <InputLabel id="position">Position</InputLabel>
                         <Select
-                          id="LeadSource"
+                          id="position"
                           value={userData?.position || "no position"}
-                          label="Position"
+                          InputLabel="Position"
                           size="medium"
                           className="w-full mb-5"
                           displayEmpty
