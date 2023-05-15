@@ -438,7 +438,6 @@ function App() {
   }
 
   return <>
-  <div className="min-h-screen overflow-x-hidden">
     <div className="flex w-screen">
         {checkIfPageHasSidebar() && <Sidebarmui/>}
         <div className="w-[100%]">
@@ -449,7 +448,6 @@ function App() {
           </Routes>
         </div>
     </div>
-  </div>
   </>
 }
 

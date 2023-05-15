@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "axios";
 import Loader from "../../Components/Loader";
@@ -41,6 +40,7 @@ const Dashboard = () => {
   };
 
   const FetchProfile = (token) => {
+    setloading(true);
     axios
       .get(`${BACKEND_URL}/dashboard?page=1`, {
         headers: {
@@ -54,8 +54,19 @@ const Dashboard = () => {
         console.log("User from dashboard: ", result.data.user);
         setUser(result.data.user);
         setIsUserSubscribed(checkUser(result.data.user));
-        setDashboardData(result.data);
+
+      axios
+        .get(`${BACKEND_URL}/newLeads`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((data) => {
+
+        setDashboardData({...result.data, newLeads: data.data.leads.total});
         setloading(false);
+        })
       })
       .catch((err) => {
         console.log(err);
@@ -91,12 +102,12 @@ const Dashboard = () => {
         // });
       });
   };
+
   useEffect(() => {
     setopenBackDrop(false);
     const token = localStorage.getItem("auth-token");
     if (User?.id && User?.loginId) {
       FetchProfile(token);
-      setloading(false);
     } else {
       if (token) {
         FetchProfile(token);
