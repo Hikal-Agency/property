@@ -46,8 +46,6 @@ import Campaigns from "./SocialMedia/campaigns";
 import SingleTicket from "./support/SingleTicket";
 import UpdateUser from "./users/updateUser";
 import { io } from "socket.io-client";
-import Sidebarmui from "../Components/Sidebar/Sidebarmui";
-import {Routes, Route} from "react-router-dom";
 
 const libraries = ["places"];
 
@@ -423,31 +421,12 @@ function App() {
   useEffect(() => {
     setAllRoutes(routes);
 
-    const socketURL = "https://server1.hikalcrm.com";
+    const socketURL = "http://localhost:5000";
     const socket = io(socketURL);
     setSocket(socket);
   }, []);
 
-  function checkIfPageHasSidebar() {
-    const pathname = window.location.pathname;
-    if(pathname === "/" || pathname === "/auth/signup") {
-      return false; 
-    } else {
-      return true;
-    }
-  }
-
-  return <>
-  <div className="min-h-screen">
-    <div className="flex">
-        {checkIfPageHasSidebar() && <Sidebarmui/>}
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard/>}/>
-          <Route path="/addlead" element={<AddLead/>}/>
-        </Routes>
-    </div>
-  </div>
-  </>
+  return <RouterProvider router={router} />;
 }
 
 export default App;
