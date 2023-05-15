@@ -16,6 +16,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const EditUser = ({ user }) => {
+  console.log("Edit User: ", user);
   const [loading, setloading] = useState(false);
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [error, setError] = useState(false);
@@ -44,6 +45,23 @@ const EditUser = ({ user }) => {
     const token = localStorage.getItem("auth-token");
 
     const updated_data = new FormData();
+
+    if (!userData?.expiry_date) {
+      setloading(false);
+
+      toast.error("Kindly enter a valid date..", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      return;
+    }
 
     updated_data.append("master", userData?.master);
     updated_data.append("package_name", userData?.package_name || "");
@@ -210,7 +228,7 @@ const EditUser = ({ user }) => {
 
                         <Select
                           id="LeadSource"
-                          value={userData?.position}
+                          value={userData?.position || "no position"}
                           label="Position"
                           size="medium"
                           className="w-full mb-5"
@@ -222,21 +240,27 @@ const EditUser = ({ user }) => {
                             })
                           }
                         >
-                          <MenuItem value="" disabled>
-                            Position
+                          <MenuItem value="no position" selected>
+                            Select Position
+                          </MenuItem>
+                          <MenuItem value={"IT Administration"}>
+                            IT Administration
                           </MenuItem>
                           <MenuItem value={"developer"}>Developer</MenuItem>
-                          <MenuItem value={"sales agent"}>Sales Agent</MenuItem>
-                          <MenuItem value={"sales manager"}>
+                          <MenuItem value={"Sales Agent"}>Sales Agent</MenuItem>
+                          <MenuItem value={"Sales Manager"}>
                             Sales Manager
                           </MenuItem>
-                          <MenuItem value={"social media assisstant"}>
+                          <MenuItem value={"Social Media Assistant"}>
                             Social Media Assistant
                           </MenuItem>
-                          <MenuItem value={"marketing head"}>
+                          <MenuItem value={"Head of Marketing"}>
                             Head Of Marketing
                           </MenuItem>
-                          <MenuItem value={"admin assistant"}>
+                          <MenuItem value={"Head of Sales"}>
+                            Head Of Sales
+                          </MenuItem>
+                          <MenuItem value={"Admin Assistant"}>
                             Admin Assistant
                           </MenuItem>
                         </Select>
