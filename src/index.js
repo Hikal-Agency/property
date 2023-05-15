@@ -5,6 +5,7 @@ import "./styles/index.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ContextProvider } from "./context/ContextProvider";
 import { ProSidebarProvider } from "react-pro-sidebar";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,7 +13,9 @@ root.render(
     <ContextProvider>
       <ProSidebarProvider>
         {/* <Backdrop /> */}
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ProSidebarProvider>
     </ContextProvider>
   </>

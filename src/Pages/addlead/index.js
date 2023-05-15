@@ -87,15 +87,12 @@ const AddLead = (props) => {
           <div
             className={` ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >
-            <div className="flex">
-              <Sidebarmui />
               <div className={`w-full`}>
                 <div className="px-5 ">
                   <Navbar />
                   <AddLeadComponent BACKEND_URL={BACKEND_URL} User={User} />
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}

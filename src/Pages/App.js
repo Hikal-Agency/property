@@ -46,6 +46,8 @@ import Campaigns from "./SocialMedia/campaigns";
 import SingleTicket from "./support/SingleTicket";
 import UpdateUser from "./users/updateUser";
 import { io } from "socket.io-client";
+import Sidebarmui from "../Components/Sidebar/Sidebarmui";
+import {Routes, Route} from "react-router-dom";
 
 const libraries = ["places"];
 
@@ -426,7 +428,26 @@ function App() {
     setSocket(socket);
   }, []);
 
-  return <RouterProvider router={router} />;
+  function checkIfPageHasSidebar() {
+    const pathname = window.location.pathname;
+    if(pathname === "/" || pathname === "/auth/signup") {
+      return false; 
+    } else {
+      return true;
+    }
+  }
+
+  return <>
+  <div className="min-h-screen">
+    <div className="flex">
+        {checkIfPageHasSidebar() && <Sidebarmui/>}
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard/>}/>
+          <Route path="/addlead" element={<AddLead/>}/>
+        </Routes>
+    </div>
+  </div>
+  </>
 }
 
 export default App;

@@ -122,15 +122,12 @@ const Dashboard = () => {
           <div
             className={`${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >
-            <div className="flex" style={{ width: "100vw" }}>
-              <Sidebarmui />
               <div className="w-full">
                 <div className="px-5">
                   <Navbar />
                   <DashboardPanel />
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}
