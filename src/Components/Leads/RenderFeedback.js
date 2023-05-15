@@ -20,6 +20,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import LocationPicker from "../meetings/LocationPicker";
+import dayjs from "dayjs";
 
 const RenderFeedback = ({ cellValues }) => {
   const [btnloading, setbtnloading] = useState(false);
@@ -293,6 +294,7 @@ const RenderFeedback = ({ cellValues }) => {
                             fullWidth
                           />
                         )}
+                        minDate={dayjs().startOf("day").toDate()}
                         InputProps={{ required: true }}
                       />
                     </LocalizationProvider>

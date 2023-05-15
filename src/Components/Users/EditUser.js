@@ -241,8 +241,26 @@ const EditUser = ({ user }) => {
                               position: e.target.value,
                             })
                           }
+                          sx={{
+                            marginBottom: "20px",
+                            "& .Mui-selected": {
+                              color: currentMode === "light" && "#000000",
+                            },
+                          }}
+                          renderValue={(selected) => (
+                            <span
+                              style={{
+                                color:
+                                  currentMode === "dark"
+                                    ? "#ffffff"
+                                    : "#000000",
+                              }}
+                            >
+                              {selected}
+                            </span>
+                          )}
                         >
-                          <MenuItem value="no position" selected>
+                          <MenuItem value="no position">
                             Select Position
                           </MenuItem>
                           <MenuItem value={"IT Administration"}>
