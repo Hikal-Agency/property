@@ -1,12 +1,9 @@
-import axios from "axios";
 
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import Footer from "../../Components/Footer/Footer";
 import LeadNotes from "../../Components/LeadNotes/LeadNotes";
 import Loader from "../../Components/Loader";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const LeadNotesPage = (props) => {
@@ -18,49 +15,12 @@ const LeadNotesPage = (props) => {
     pageSize: 15,
   });
   const [loading, setloading] = useState(true);
-  const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
+  const {currentMode, setopenBackDrop } =
     useStateContext();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const FetchProfile = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setUser(result.data.user[0]);
-        setloading(false);
-      })
-      .catch((err) => {
-        navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again " },
-        });
-      });
-  };
+
   useEffect(() => {
     setopenBackDrop(false);
-    if (User?.uid && User?.loginId) {
-      setloading(false);
-    } else {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        // FetchProfile(token);
-        const user = localStorage.getItem("user");
-        console.log("User in add lead: ", user);
-        setUser(JSON.parse(user));
-        setloading(false);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
+    setloading(false);
     // eslint-disable-next-line
   }, []);
   return (

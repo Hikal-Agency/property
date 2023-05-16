@@ -69,18 +69,7 @@ const UserAllLocation = (props) => {
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
 
-    console.log("User token all locations: ", token);
-
-    if (token) {
       FetchUserLocation(token);
-    } else {
-      navigate("/", {
-        state: {
-          error: "Something Went Wrong! Please Try Again",
-          continueURL: location.pathname,
-        },
-      });
-    }
     // eslint-disable-next-line
   }, []);
 

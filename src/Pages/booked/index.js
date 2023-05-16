@@ -13,62 +13,17 @@ const Booked = () => {
   const location = useLocation();
   const [loading, setloading] = useState(true);
   const {
-    User,
-    setUser,
     currentMode,
     setopenBackDrop,
     BACKEND_URL,
     pageState,
   } = useStateContext();
 
-  // const [pageState, setpageState] = useState({
-  //   isLoading: false,
-  //   data: [],
-  //   total: 0,
-  //   page: 1,
-  //   pageSize: 25,
-  // });
-
   console.log("Booked State: ", pageState);
-  const FetchProfile = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setUser(result.data.user[0]);
-        setloading(false);
-      })
-      .catch((err) => {
-        navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again " },
-        });
-      });
-  };
+
   useEffect(() => {
     setopenBackDrop(false);
-    if (User?.uid && User?.loginId) {
-      setloading(false);
-    } else {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        // FetchProfile(token);
-        const user = localStorage.getItem("user");
-        console.log("User in add lead: ", user);
-        setUser(JSON.parse(user));
-        setloading(false);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
+    setloading(false);
     // eslint-disable-next-line
   }, []);
   return (

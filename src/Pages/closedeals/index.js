@@ -42,26 +42,7 @@ const ClosedealsPage = (props) => {
   };
   useEffect(() => {
     setopenBackDrop(false);
-    if (User?.uid && User?.loginId) {
-      setloading(false);
-    } else {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        // FetchProfile(token);
-        const user = localStorage.getItem("user");
-        console.log("User in add lead: ", user);
-        setUser(JSON.parse(user));
-        setloading(false);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
-    // eslint-disable-next-line
+    setloading(false);
   }, []);
   return (
     <>
@@ -70,7 +51,7 @@ const ClosedealsPage = (props) => {
         <meta name="description" content="User Dashboard - HIKAL CRM" />
       </Head> */}
 
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen w-full">
         {loading ? (
           <Loader />
         ) : (
@@ -79,7 +60,7 @@ const ClosedealsPage = (props) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex" style={{ width: "100vw" }}>
+            <div className="flex w-full">
               <div className={`w-full `}>
                 <div className="px-5">
                   <Navbar />

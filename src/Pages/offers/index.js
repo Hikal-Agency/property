@@ -1,26 +1,19 @@
 import { Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
-import axios from "axios";
 import { Tab, Tabs } from "@mui/material";
 import Footer from "../../Components/Footer/Footer";
 import AllOffers from "../../Components/offers/all_offers";
 import CreateOffer from "../../Components/offers/createoffer";
-import { useNavigate, useLocation } from "react-router-dom";
 import ManagerOffers from "../../Components/offers/manager_offers";
 import SalesPersonOffers from "../../Components/offers/salePerson_offers";
-import {io} from "socket.io-client";
 
 const Offers = () => {
   const {
     currentMode,
     darkModeColors,
-    User,
-    setopenBackDrop,
-    BACKEND_URL,
-    setUser,
+     setopenBackDrop,
   } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
@@ -30,46 +23,8 @@ const Offers = () => {
   const [tabValue, setTabValue] = useState(0);
   const [loading] = useState(false);
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const FetchProfile = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setUser(result.data.user[0]);
-      })
-      .catch((err) => {
-        navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again " },
-        });
-      });
-  };
   useEffect(() => {
     setopenBackDrop(false);
-
-    if (!(User?.uid && User?.loginId)) {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        // FetchProfile(token);
-        const user = localStorage.getItem("user");
-        console.log("User in add lead: ", user);
-        setUser(JSON.parse(user));
-        // setloading(false);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
     // eslint-disable-next-line
   }, []);
 

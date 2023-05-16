@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
 import AddLeadComponent from "../../Components/Leads/AddLeadComponent";
-import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 
 const AddLead = (props) => {

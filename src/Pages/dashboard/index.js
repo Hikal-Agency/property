@@ -52,8 +52,6 @@ const Dashboard = () => {
         console.log("dashboard data is");
         console.log(result.data);
         console.log("User from dashboard: ", result.data.user);
-        setUser(result.data.user);
-        setIsUserSubscribed(checkUser(result.data.user));
 
       axios
         .get(`${BACKEND_URL}/newLeads`, {
@@ -63,28 +61,14 @@ const Dashboard = () => {
           },
         })
         .then((data) => {
-
         setDashboardData({...result.data, newLeads: data.data.leads.total});
-        setloading(false);
+        setTimeout(() => {
+          setloading(false);
+        }, 300);
         })
       })
       .catch((err) => {
         console.log(err);
-        if (err.response.status === 401) {
-          setopenBackDrop(false);
-          setloading(false);
-
-          localStorage.removeItem("auth-token");
-          localStorage.removeItem("user");
-          localStorage.removeItem("leadsData");
-          navigate("/", {
-            state: {
-              error: "Please login to proceed.",
-              continueURL: location.pathname,
-            },
-          });
-          return;
-        }
         toast.error("Sorry something went wrong. Kindly refresh the page.", {
           position: "top-right",
           autoClose: 3000,
@@ -106,20 +90,7 @@ const Dashboard = () => {
   useEffect(() => {
     setopenBackDrop(false);
     const token = localStorage.getItem("auth-token");
-    if (User?.id && User?.loginId) {
-      FetchProfile(token);
-    } else {
-      if (token) {
-        FetchProfile(token);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Please login to proceed.",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
+    FetchProfile(token);
     // eslint-disable-next-line
   }, []);
 
@@ -136,7 +107,7 @@ const Dashboard = () => {
               <div className="w-full overflow-x-hidden">
                 <div className="px-5">
                   <Navbar />
-                  <DashboardPanel />
+                  <DashboardPanel setloading={setloading}/>
                 </div>
               </div>
             <Footer />

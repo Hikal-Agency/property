@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
 import Footer from "../../Components/Footer/Footer";
@@ -9,7 +8,6 @@ import Footer from "../../Components/Footer/Footer";
 import ADDQA from "../../Components/addQA/ADDQA";
 import ListQa from "../../Components/addQA/ListQa";
 import FilterQA from "../../Components/addQA/FilterQA";
-import { useLocation, useNavigate } from "react-router-dom";
 import { Select, MenuItem } from "@mui/material";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,8 +15,6 @@ import { ToastContainer, toast } from "react-toastify";
 const QAForm = () => {
   const {
     darkModeColors,
-    User,
-    setUser,
     currentMode,
     setopenBackDrop,
     BACKEND_URL,
@@ -26,8 +22,6 @@ const QAForm = () => {
   const [value, setValue] = useState(0);
   const [users, setUsers] = useState([]);
   const [selectUserId, setSelectedUserId] = useState({});
-  const navigate = useNavigate();
-  const location = useLocation();
   const handleChange = (event, newValue) => {
     console.log("Tab: ", newValue);
     setValue(newValue);
@@ -77,25 +71,7 @@ const QAForm = () => {
 
   useEffect(() => {
     setopenBackDrop(false);
-    if (User?.uid && User?.loginId) {
-      setloading(false);
-    } else {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        // FetchProfile(token);
-        const user = localStorage.getItem("user");
-        console.log("User in add lead: ", user);
-        setUser(JSON.parse(user));
-        setloading(false);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
+   setloading(false);
     // eslint-disable-next-line
   }, []);
 

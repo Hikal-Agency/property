@@ -473,43 +473,7 @@ const Clients = () => {
       }
     }
   };
-
-  const FetchProfile = async (token) => {
-    await axios
-      // .get(`${BACKEND_URL}/dashboard?page=1`, {
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("User data is");
-        console.log(result.data);
-        // setUser(result.data.user);
-        setUser(result.data.user[0]);
-        // setloading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Sorry something went wrong. Kindly refresh the page.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        // navigate("/", {
-        //   state: {
-        //     error: "Something Went Wrong! Please Try Again",
-        //     continueURL: location.pathname,
-        //   },
-        // });
-      });
-  };
-
+  
   useEffect(() => {
     // const token = localStorage.getItem("auth-token");
     // FetchLeads(token);

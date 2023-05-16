@@ -85,20 +85,9 @@ const Userlocation = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-
+    FetchLocation(token);
     setopenBackDrop(false);
-
-    if (token) {
-      FetchLocation(token);
-      FetchProfile(token);
-    } else {
-      navigate("/", {
-        state: {
-          error: "Something Went Wrong! Please Try Again",
-          continueURL: location.pathname,
-        },
-      });
-    }
+    setloading(false);
     // eslint-disable-next-line
   }, []);
 

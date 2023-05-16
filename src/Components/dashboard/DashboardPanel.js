@@ -20,7 +20,7 @@ import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 
-const DashboardPanel = () => {
+const DashboardPanel = ({setloading}) => {
   const {
     DashboardData,
     currentMode,
@@ -56,8 +56,6 @@ const DashboardPanel = () => {
       
     fetchData();
   }, []);
-
-  console.log("DASHBOARD>>>>>>>", DashboardData)
 
   // COUNTER DATA
   const HeadData = [

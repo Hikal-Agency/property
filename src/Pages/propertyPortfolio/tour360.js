@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import Footer from "../../Components/Footer/Footer";
 import axios from "axios";
 import { useStateContext } from "../../context/ContextProvider";
@@ -12,7 +11,6 @@ const Tour360 = (props) => {
         currentMode,
         ProjectData,
         setProjectData,
-        setopenBackDrop,
         BACKEND_URL
     } = useStateContext();
 
@@ -43,14 +41,7 @@ const Tour360 = (props) => {
 
     useEffect(() => {
         const token = localStorage.getItem("auth-token");
-    
-        if (token) {
-          FetchProject(token);
-        } else {
-          navigate("/", {
-            state: { error: "Something Went Wrong! Please Try Again", continueURL: location.pathname },
-          });
-        }
+        FetchProject(token);
         // eslint-disable-next-line
       }, []);
 

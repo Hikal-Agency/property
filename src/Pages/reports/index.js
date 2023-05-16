@@ -1,5 +1,4 @@
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import Footer from "../../Components/Footer/Footer";
 import ReportProjectBar from "../../Components/charts/ReportProjectBar";

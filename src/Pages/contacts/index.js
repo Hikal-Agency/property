@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import Loader from "../../Components/Loader";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -14,18 +12,12 @@ const Contacts = () => {
   const {
     currentMode,
     BACKEND_URL,
-    User,
-    setUser,
-    setopenBackDrop,
-    setIsUserSubscribed,
   } = useStateContext();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const token = localStorage.getItem("auth-token");
   const [loading, setloading] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [page, setPage] = useState("1");
   const [maxPage, setMaxPage] = useState(0);
+  const token = localStorage.getItem('auth-token');
   //eslint-disable-next-line
   const ContactData = [
     {
@@ -60,64 +52,12 @@ const Contacts = () => {
     },
   ];
 
-  const checkUser = (user) => {
-    const expiry = new Date(user?.expiry_date).getTime();
-    const now = new Date().getTime();
-
-    const isExpired = now > expiry;
-
-    if (user?.role === 1) {
-      return true;
-    } else {
-      return (
-        isExpired === false &&
-        user?.package_name?.length > 0 &&
-        user?.package_name !== "unsubscribed"
-      );
-    }
-  };
-
-  const FetchProfile = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/dashboard?page=1`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        // console.log("dashboard data is");
-        console.log("User data is");
-        console.log(result.data);
-        setIsUserSubscribed(checkUser(result.data.user));
-        setUser(result.data.user);
-        setloading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Sorry something went wrong. Kindly refresh the page.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        // navigate("/", {
-        //   state: {
-        //     error: "Something Went Wrong! Please Try Again",
-        //     continueURL: location.pathname,
-        //   },
-        // });
-      });
-  };
-
   const handlePageChange = (event, value) => {
     setPage(value);
     FetchContacts(token);
   };
   const FetchContacts = async (token) => {
+    setloading(true);
     await axios
       .get(`${BACKEND_URL}/users?page=${page}`, {
         headers: {
@@ -134,7 +74,9 @@ const Contacts = () => {
 
         setContacts(result.data.managers.data);
         setMaxPage(result.data.managers.last_page);
-        setloading(false);
+        setTimeout(() => {
+          setloading(false);
+        }, 500);
       })
       .catch((err) => {
         toast.error("Sorry something went wrong. Kindly refresh the page.", {
@@ -155,25 +97,8 @@ const Contacts = () => {
       });
   };
   useEffect(() => {
-    setopenBackDrop(false);
-    if (User?.uid && User?.loginId) {
-      setloading(false);
-      FetchProfile(token);
-      FetchContacts(token);
-    } else {
-      if (token) {
-        FetchProfile(token);
-        FetchContacts(token);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
-    // eslint-disable-next-line
+    const token = localStorage.getItem("auth-token");
+    FetchContacts(token);
   }, []);
   return (
     <>

@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import CallLogBoard from "./calllogboard";

@@ -1,11 +1,9 @@
 // import Image from "next/image";
 
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import LocationComponent from "../../Components/location/LocationComponent";
-import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 
