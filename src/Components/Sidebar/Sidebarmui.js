@@ -11,7 +11,7 @@ import { GrBitcoin } from "react-icons/gr";
 import { HiTicket, HiDocumentReport, HiUsers } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill } from "react-icons/bs";
-import { FaFacebookSquare } from "react-icons/fa";
+import { FaFacebookSquare, FaChartLine } from "react-icons/fa";
 
 import {
   MdLeaderboard,
@@ -1473,6 +1473,11 @@ const Sidebarmui = () => {
     {
       title: "Social Media",
       links: [
+        {
+          name: "statistics",
+          icon: <FaChartLine />,
+          link: "/statistics",
+        },
         {
           name: "campaigns",
           icon: <FaFacebookSquare />,

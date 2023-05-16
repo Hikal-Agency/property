@@ -11,8 +11,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FaChartLine } from "react-icons/fa";
+import CombinationChart from "../../Components/charts/CombinationChart";
+import SalesAmountChartAdmin from "../charts/SalesAmountChartAdmin";
+import BarChartStatistics from "../charts/statisticsCharts/BarChartStatistics";
+import BubbleChartStat from "../charts/statisticsCharts/BubbleChartStat";
+import DoughnutChart from "../charts/statisticsCharts/DoughnutChartState";
+import AreaChart from "../charts/statisticsCharts/AreaChart";
+import LineChart from "../charts/statisticsCharts/LineChart";
 
-const AllCampaigns = ({ pageState, setpageState }) => {
+const AllStatistics = ({ pageState, setpageState }) => {
   const { currentMode, BACKEND_URL, darkModeColors, graph_api_token } =
     useStateContext();
   // eslint-disable-next-line
@@ -29,6 +37,15 @@ const AllCampaigns = ({ pageState, setpageState }) => {
   // const [LeadModelOpen, setLeadModelOpen] = useState(false);
   // const handleLeadModelOpen = () => setLeadModelOpen(true);
   // const handleLeadModelClose = () => setLeadModelOpen(false);
+
+  const data = [
+    { amount: "10", title: "Fresh Leads", icon: FaChartLine },
+    { amount: "20", title: "Manager Data", icon: FaChartLine },
+    { amount: "30", title: "Agent Data", icon: FaChartLine },
+    { amount: "30", title: "Agent Data", icon: FaChartLine },
+    { amount: "30", title: "Agent Data", icon: FaChartLine },
+    { amount: "30", title: "Agent Data", icon: FaChartLine },
+  ];
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = (e) => {
@@ -327,70 +344,116 @@ const AllCampaigns = ({ pageState, setpageState }) => {
   }
   return (
     <div className="pb-10">
-      <div className={`grid grid-cols-4 gap-3 ${darkModeColors}`}>
-        <div>
-          <label
-            htmlFor="leadOrigin"
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            } `}
-          >
-            Select a campaign
-          </label>
-          <Select
-            id="leadOrigin"
-            value={campaigns}
-            onChange={selectCampaign || "23852162763410143"}
-            size="medium"
-            className={`w-full mt-1 mb-5 `}
-            displayEmpty
-            required
-            sx={{
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-              "&:hover:not (.Mui-disabled):before": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-            }}
-          >
-            <MenuItem value="0" disabled>
-              Select Campaign
-            </MenuItem>
-            {campaigns?.length > 0 ? (
-              campaigns?.map((campaign, index) => (
-                <MenuItem key={index} value={campaign?.id || ""}>
-                  {campaign?.name}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem>No Campaigns found.</MenuItem>
-            )}
-          </Select>
+      <div className=" mb-5">
+        {/* data starts */}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-x-3 gap-y-3 text-center">
+          {data?.map((item, index) => (
+            <div
+              key={index}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-gray-900 text-white "
+                  : "bg-gray-200 text-main-dark-bg"
+              }  h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
+            >
+              {item?.icon && <item.icon className="text-3xl " />}
+
+              <p className="text-2xl font-bold pb-3 text-red-600">
+                {item.amount}
+              </p>
+              <p
+                className={`text-sm ${
+                  currentMode === "dark"
+                    ? "text-white"
+                    : "text-main-dark-bg-2 font-semibold"
+                }`}
+              >
+                {item.title}
+              </p>
+            </div>
+          ))}
         </div>
+
+        <div
+          className={`${
+            currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
+          } h-full w-full rounded-md p-5 cursor-pointer mt-5`}
+        >
+          <div className="justify-between items-center">
+            <h6 className="font-semibold">Performance</h6>
+            {/* <CombinationChart /> */}
+            <LineChart />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-5">
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
+            } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+          >
+            <div className="justify-between items-center">
+              <h6 className="font-semibold pb-3">Sales</h6>
+              <AreaChart />
+            </div>
+          </div>
+
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
+            } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+          >
+            <div className="justify-between items-center">
+              <h6 className="font-semibold pb-3">Closed Projects</h6>
+              <BarChartStatistics />
+            </div>
+          </div>
+        </div>
+        {/* MANAGER TAGET PROGRESS BAR  */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3"></div>
+
+        {/* data ends*/}
       </div>
+
       <Box
         width={"100%"}
         sx={DataGridStyles}
         style={{ width: "100%", overflowX: "auto" }}
       >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-5">
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
+            } col-span-1 h-min w-96 rounded-md p-5 cursor-pointer hover:shadow-sm`}
+            sx={{
+              height: "300px",
+              width: "300px",
+            }}
+          >
+            <div className="justify-between items-center">
+              <h6 className="font-semibold pb-3">Sales</h6>
+              <DoughnutChart />
+            </div>
+          </div>
+
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
+            } col-span-1 h-min w-96 rounded-md p-5 cursor-pointer hover:shadow-sm`}
+          >
+            <div className="justify-between items-center">
+              <h6 className="font-semibold pb-3">Closed Projects</h6>
+              <BubbleChartStat />
+            </div>
+          </div>
+        </div>
+
+        {/* MANAGER TAGET PROGRESS BAR  */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3"></div>
+
         <DataGrid
           autoHeight
           rows={row}
-          // onRowClick={handleRowClick}
-          // rowCount={pageState.total}
-          // loading={pageState.isLoading}
-          // rowsPerPageOptions={[30, 50, 75, 100]}
-          // pagination
-          // paginationMode="server"
-          // page={pageState.page - 1}
-          // pageSize={pageState.pageSize}
-          // onPageChange={(newPage) => {
-          //   setpageState((old) => ({ ...old, page: newPage + 1 }));
-          // }}
-          // onPageSizeChange={(newPageSize) =>
-          //   setpageState((old) => ({ ...old, pageSize: newPageSize }))
-          // }
           columns={columns}
           components={{
             Toolbar: GridToolbar,
@@ -409,13 +472,10 @@ const AllCampaigns = ({ pageState, setpageState }) => {
               cursor: "pointer",
             },
           }}
-          // getRowClassName={(params) =>
-          //   params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-          // }
         />
       </Box>
     </div>
   );
 };
 
-export default AllCampaigns;
+export default AllStatistics;

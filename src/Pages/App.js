@@ -46,6 +46,7 @@ import Campaigns from "./SocialMedia/campaigns";
 import SingleTicket from "./support/SingleTicket";
 import UpdateUser from "./users/updateUser";
 import { io } from "socket.io-client";
+import Statistics from "./SocialMedia/statistics";
 
 const libraries = ["places"];
 
@@ -254,6 +255,11 @@ const routes = [
     path: "/campaigns",
     pageName: "Facebook Campaigns",
     element: <Campaigns />,
+  },
+  {
+    path: "/statistics",
+    pageName: "Campaigns Statistics",
+    element: <Statistics />,
   },
   {
     path: "*",
