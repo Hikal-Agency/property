@@ -301,7 +301,7 @@ const ClientLeads = ({
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
-            <Button
+            {/* <Button
               onClick={() => HandleEditFunc(cellValues)}
               className={`editLeadBtn ${
                 currentMode === "dark"
@@ -309,10 +309,20 @@ const ClientLeads = ({
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
-            </Button>
-            <Link
+            </Button> */}
+            <p
+              onClick={() => HandleEditFunc(cellValues)}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineEdit size={20} />
+            </p>
+
+            {/* <Link
               to={`/timeline/${cellValues.row.lid}`}
               className={`editLeadBtn ${
                 currentMode === "dark"
@@ -320,9 +330,20 @@ const ClientLeads = ({
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
+             
               <AiOutlineHistory size={20} />
-            </Link>
+            </Link> */}
+
+            <p
+              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineHistory size={20} />
+            </p>
           </div>
         );
       },
@@ -468,7 +489,7 @@ const ClientLeads = ({
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
-            <Button
+            {/* <Button
               onClick={() => HandleEditFunc(cellValues)}
               className={`editLeadBtn ${
                 currentMode === "dark"
@@ -476,10 +497,20 @@ const ClientLeads = ({
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
-            </Button>
-            <Button
+            </Button> */}
+            <p
+              onClick={() => HandleEditFunc(cellValues)}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineEdit size={20} />
+            </p>
+
+            {/* <Button
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
                 currentMode === "dark"
@@ -487,9 +518,19 @@ const ClientLeads = ({
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
+             
               <AiOutlineHistory size={20} />
-            </Button>
+            </Button> */}
+            <p
+              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineHistory size={20} />
+            </p>
           </div>
         );
       },
@@ -744,7 +785,7 @@ const ClientLeads = ({
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
-            <Button
+            {/* <Button
               onClick={() => HandleEditFunc(cellValues)}
               className={`${
                 currentMode === "dark"
@@ -752,10 +793,20 @@ const ClientLeads = ({
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
-            </Button>
-            <Button
+            </Button> */}
+            <p
+              onClick={() => HandleEditFunc(cellValues)}
+              className={`${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineEdit size={20} />
+            </p>
+
+            {/* <Button
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
                 currentMode === "dark"
@@ -763,10 +814,24 @@ const ClientLeads = ({
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
               <AiOutlineHistory size={20} />
-            </Button>
-            <Button
+            </Button> */}
+            <Link
+              to={`/timeline/${cellValues.row.lid}`}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              }`}
+            >
+              <AiOutlineHistory
+                size={20}
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              />
+            </Link>
+            {/* <Button
               onClick={() => {
                 setLeadToDelete(cellValues?.row.lid);
                 setDeleteModelOpen(true);
@@ -780,7 +845,23 @@ const ClientLeads = ({
               }`}
             >
               <BsTrash className="deleteLeadBtn" size={18} />
-            </Button>
+            </Button> */}
+
+            <p
+              onClick={() => {
+                setLeadToDelete(cellValues?.row.lid);
+                setDeleteModelOpen(true);
+                setBulkDeleteClicked(false);
+              }}
+              disabled={deleteloading ? true : false}
+              // className={`deleteLeadBtn ${
+              //   currentMode === "dark"
+              //     ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+              //     : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+              // }`}
+            >
+              <BsTrash size={18} color="action" />
+            </p>
           </div>
         );
       },

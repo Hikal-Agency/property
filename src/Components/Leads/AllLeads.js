@@ -313,7 +313,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
               <AiOutlineHistory size={20} />
             </p>
           </div>
@@ -479,7 +478,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
             </p>
             <p
@@ -490,7 +488,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}
               <AiOutlineHistory size={20} />
             </p>
           </div>
