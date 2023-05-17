@@ -12,17 +12,19 @@ const AddLead = (props) => {
         <meta name="description" content="User Dashboard - HIKAL CRM" />
       </Head> */}
       <div className=" min-h-screen">
-        <div className={` ${currentMode === "dark" ? "bg-black" : "bg-white"}`}>
-          <div className={`w-full`}>
-            <div className="px-5 ">
-              <Navbar />
-              <AddLeadComponent BACKEND_URL={BACKEND_URL} User={User} />
+          <div
+            className={` ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
+          >
+              <div className={`w-full`}>
+                <div className="px-5 ">
+                  <Navbar />
+                  <AddLeadComponent BACKEND_URL={BACKEND_URL} User={User} />
+                </div>
             </div>
           </div>
 
           <Footer />
         </div>
-      </div>
     </>
   );
 };

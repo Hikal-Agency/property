@@ -1111,6 +1111,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         .then((result) => {
           const agents = result.data?.team;
           setSalesPerson({ [`manager-${User?.id}`]: agents });
+          console.log("TEAM_MEMBERS_CALLEDTEAM_MEMBERS");
         });
     } else {
       axios.get(`${BACKEND_URL}/managers`).then((result) => {
@@ -1447,7 +1448,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               "& .MuiDataGrid-columnHeaders": {
                 position: "sticky",
                 top: 0,
-                zIndex: 50,
+                zIndex: 10,
               },
             }}
             getRowClassName={(params) =>
