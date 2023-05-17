@@ -1,4 +1,3 @@
-// import { Backdrop, Button, CircularProgress, TextField } from "@mui/material";
 import { useEffect } from "react";
 import AddLead from "./addlead";
 import Signup from "./auth/signup";
@@ -48,6 +47,7 @@ import { io } from "socket.io-client";
 import Sidebarmui from "../Components/Sidebar/Sidebarmui";
 import { Routes, Route } from "react-router-dom";
 import Statistics from "./SocialMedia/statistics";
+import Navbar from "../Components/Navbar/Navbar";
 
 const libraries = ["places"];
 
@@ -416,8 +416,7 @@ const routes = [
 // >>>>>>> Stashed changes
 
 function App() {
-  const { setAllRoutes } = useStateContext();
-  const { setSocket } = useStateContext();
+  const { setAllRoutes, setSocket, currentMode } = useStateContext();
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -432,7 +431,7 @@ function App() {
     setSocket(socket);
   }, []);
 
-  function checkIfPageHasSidebar() {
+  function hasSidebarOrNavbar() {
     const pathname = window.location.pathname;
     if (pathname === "/" || pathname === "/auth/signup") {
       return false;
@@ -444,8 +443,13 @@ function App() {
   return (
     <>
       <div className="flex w-screen">
-        {checkIfPageHasSidebar() && <Sidebarmui />}
+        {hasSidebarOrNavbar() && <Sidebarmui />}
         <div className="w-[100%]">
+          {hasSidebarOrNavbar() && (
+            <div className={`px-5 ${currentMode === "dark" ? "bg-black" : "bg-white"}`} >
+              <Navbar />
+            </div>
+          )}
           <Routes>
             {routes.map((route, index) => {
               return (

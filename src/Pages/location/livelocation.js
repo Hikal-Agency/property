@@ -23,7 +23,7 @@ const Livelocation = () => {
             }`}
           >
             <div className="px-5 ">
-              <Navbar />
+              
               <LocationComponent
                 upcoming_meetings={DashboardData?.upcoming_meetings}
               />

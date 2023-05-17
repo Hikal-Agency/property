@@ -1235,7 +1235,7 @@ const ClientLeads = ({
           <div className="flex pb-10">
             <div className={`w-full`}>
               <div className="px-5">
-                <Navbar />
+                
                 <div className="my-5 mb-10">
                   <div className="my-3">
                     <h2
@@ -1427,7 +1427,7 @@ const ClientLeads = ({
             }`}
           >
               <div className="w-full px-5">
-                <Navbar />
+                
                 <div className="mt-5">
                   <h1
                     className={`text-xl border-l-[4px] ml-1 pl-1 mb-5  font-bold ${

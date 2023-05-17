@@ -106,7 +106,7 @@ const Dashboard = () => {
           >
               <div className="w-full overflow-x-hidden">
                 <div className="px-5">
-                  <Navbar />
+                  
                   <DashboardPanel />
                 </div>
               </div>

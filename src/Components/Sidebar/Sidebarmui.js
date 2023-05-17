@@ -1772,8 +1772,8 @@ const Sidebarmui = () => {
         const user = localStorage.getItem("user");
         console.log("User in add lead: ", user);
         setUser(JSON.parse(user));
-        getAllLeadsMembers(JSON.parse(user));
         setIsUserSubscribed(checkUser(JSON.parse(user)));
+        getAllLeadsMembers(JSON.parse(user));
       } else {
         navigate("/", {
           state: {

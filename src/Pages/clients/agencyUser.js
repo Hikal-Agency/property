@@ -227,7 +227,7 @@ const AgencyUsers = () => {
               }`}
             >
               <div className="px-5">
-                <Navbar />
+                
 
                 <div className="mt-5 md:mt-2">
                   <h1

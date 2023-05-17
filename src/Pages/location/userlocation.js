@@ -101,7 +101,7 @@ const Userlocation = () => {
             }`}
           >
             <div className="px-5 ">
-              <Navbar />
+              
               <UserLocationComponent />
             </div>
           </div>

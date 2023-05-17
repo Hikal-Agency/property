@@ -10,9 +10,7 @@ import {
 import { useStateContext } from "../../context/ContextProvider";
 import {
   Tooltip,
-  Breadcrumbs,
   Link as MuiLink,
-  Typography,
   Button,
 } from "@mui/material";
 import { useProSidebar } from "react-pro-sidebar";
@@ -23,7 +21,7 @@ import { CgLogOut } from "react-icons/cg";
 import { ColorModeContext } from "../../context/theme";
 import NotificationsMenu from "./NotificationsMenu";
 import UpcomingMeetingsMenu from "./UpcomingMeetingsMenu";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import BreadCrumb from "./BreadCrumb";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -50,7 +48,6 @@ const Navbar = () => {
     currentMode,
     setCurrentMode,
     LightIconsColor,
-    setUser,
     User,
     BACKEND_URL,
     isCollapsed,
@@ -73,7 +70,6 @@ const Navbar = () => {
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
   const [loading, setloading] = useState(true);
-  const navigate = useNavigate();
   const handleClick = (event, navBtn) => {
     setAnchorEl(event.currentTarget);
     setOpen(true);
