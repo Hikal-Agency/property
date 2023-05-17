@@ -8,7 +8,7 @@ import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import AllMessages from "./AllMessages";
-import Payments from "./payments";
+import Payments from "./payments"
 import Chat from "./Chat";
 
 const pagesComponents = {
