@@ -4,8 +4,7 @@ import AddLeadComponent from "../../Components/Leads/AddLeadComponent";
 import Footer from "../../Components/Footer/Footer";
 
 const AddLead = (props) => {
-  const { currentMode, User, BACKEND_URL } =
-    useStateContext();
+  const { currentMode, User, BACKEND_URL } = useStateContext();
   return (
     <>
       {/* <Head>
@@ -13,20 +12,16 @@ const AddLead = (props) => {
         <meta name="description" content="User Dashboard - HIKAL CRM" />
       </Head> */}
       <div className=" min-h-screen">
-          <div
-            className={` ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
-          >
-            <div className="flex">
-              <Sidebarmui />
-              <div className={`w-full`}>
-                <div className="px-5 ">
-                  <Navbar />
-                  <AddLeadComponent BACKEND_URL={BACKEND_URL} User={User} />
-                </div>
-              </div>
+        <div className={` ${currentMode === "dark" ? "bg-black" : "bg-white"}`}>
+          <div className={`w-full`}>
+            <div className="px-5 ">
+              <Navbar />
+              <AddLeadComponent BACKEND_URL={BACKEND_URL} User={User} />
             </div>
-            <Footer />
           </div>
+
+          <Footer />
+        </div>
       </div>
     </>
   );
