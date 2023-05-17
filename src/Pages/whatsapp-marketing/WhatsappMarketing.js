@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import MessagesComponent from "./messages";
 import TransactionsComponent from "./transactions";
 import TemplatesComponent from "../../Components/whatsapp-marketing/TemplatesComponent";
 import InstancesComponent from "./Instances";
-import axios from "axios";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -27,7 +25,6 @@ const WhatsappMarketing = () => {
   const {
     currentMode,
     User,
-    setUser,
     setopenBackDrop,
     isUserSubscribed,
   } = useStateContext();
@@ -40,28 +37,11 @@ const WhatsappMarketing = () => {
 
   useEffect(() => {
     setopenBackDrop(false);
-
-    if (!(User?.uid && User?.loginId)) {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        // FetchProfile(token);
-        const user = localStorage.getItem("user");
-        console.log("User in add lead: ", user);
-        setUser(JSON.parse(user));
-        // setloading(false);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
+    console.log(isUserSubscribed);
     if (User && isUserSubscribed != null) {
       if (!isUserSubscribed && page !== "payments") {
         navigate("/dashboard", {

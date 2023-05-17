@@ -28,7 +28,7 @@ const Home = () => {
         // console.log(result);
         if (result.data.success && result.data.data.token) {
           localStorage.setItem("auth-token", result.data.data.token);
-          navigate(location?.state?.continueURL || "/dashboard");
+          document.location.href = (location?.state?.continueURL || "/dashboard");
           toast.success("Login Successfull", {
             position: "top-right",
             autoClose: 3000,

@@ -111,7 +111,7 @@ const Signup = () => {
             });
             localStorage.setItem("auth-token", result.data.data.token);
             // router.push("/dashboard");
-            navigate(location?.state?.continueURL || "/dashboard");
+            window.location.href = (location?.state?.continueURL || "/dashboard");
           }
           setloading(false);
         })

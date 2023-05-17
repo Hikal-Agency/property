@@ -5,7 +5,6 @@ import Avatar from "@mui/material/Avatar";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import Footer from "../../Components/Footer/Footer";
 
