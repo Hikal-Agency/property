@@ -211,73 +211,23 @@ const Sidebarmui = () => {
     }
   };
 
-  const CheckValidToken = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("Valid token");
-      })
-      .catch((err) => {
-        console.log(err);
-        if (err.response.status === 401) {
-          setopenBackDrop(false);
-          setloading(false);
-
-          localStorage.removeItem("auth-token");
-          localStorage.removeItem("user");
-          localStorage.removeItem("leadsData");
-          navigate("/", {
-            state: {
-              error: "Please login to proceed.",
-              continueURL: location.pathname,
-            },
-          });
-          return;
-        }
-        toast.error("Sorry something went wrong. Kindly refresh the page.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
-  };
-
+ 
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("auth-token");
-      const urls = [
-        `${BACKEND_URL}/sidebar/0`,
-        `${BACKEND_URL}/sidebar/1`,
-        `${BACKEND_URL}/sidebar/2`,
-        `${BACKEND_URL}/sidebar/3`,
-        `${BACKEND_URL}/sidebar/4`,
-      ];
-      const responses = await Promise.all(
-        urls.map((url) => {
-          return axios.get(url, {
+      const response = await axios.get(`${BACKEND_URL}/sidebar/1`, {
             headers: {
               "Content-Type": "application/json",
               Authorization: "Bearer " + token,
             },
           });
-        })
-      );
 
-      console.log("Response:::", responses);
-      setHotLeadsCount(responses[0].data["HOT LEADS"]);
-      setColdLeadsCount(responses[1].data["COLD LEADS"]);
-      setPersonalLeadsCount(responses[2].data["PERSONAL LEADS"]);
-      setThirdPartyLeadsCount(responses[3].data["THIRD PARTY LEADS"]);
-      setUnassignedLeadsCount(responses[4].data["UNASSIGNED LEADS"]);
+      console.log("Response:::", response);
+      setHotLeadsCount(response.data.data["HOT LEADS"]);
+      setColdLeadsCount(response.data.data["COLD LEADS"]);
+      setPersonalLeadsCount(response.data.data["PERSONAL LEADS"]);
+      setThirdPartyLeadsCount(response.data.data["THIRD PARTY LEADS"]);
+      setUnassignedLeadsCount(response.data.data["UNASSIGNED LEADS"]);
       setLeadsCount(true);
     } catch (error) {
       console.log(error);
@@ -301,9 +251,12 @@ const Sidebarmui = () => {
   };
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     const token = localStorage.getItem("auth-token");
     if (User?.id && User?.loginId) {
-      CheckValidToken(token);
       FetchProfile(token);
       setloading(false);
     } else {
@@ -319,7 +272,6 @@ const Sidebarmui = () => {
       }
     }
 
-    fetchData();
     // eslint-disable-next-line
   }, []);
 
@@ -1773,7 +1725,6 @@ const Sidebarmui = () => {
         console.log("User in add lead: ", user);
         setUser(JSON.parse(user));
         setIsUserSubscribed(checkUser(JSON.parse(user)));
-        getAllLeadsMembers(JSON.parse(user));
       } else {
         navigate("/", {
           state: {

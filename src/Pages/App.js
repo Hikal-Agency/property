@@ -444,9 +444,9 @@ function App() {
     <>
       <div className="flex w-screen">
         {hasSidebarOrNavbar() && <Sidebarmui />}
-        <div className="w-[100%]">
+        <div className={`w-[100%] ${currentMode === "dark" ? "bg-black" : "bg-white"}`}>
           {hasSidebarOrNavbar() && (
-            <div className={`px-5 ${currentMode === "dark" ? "bg-black" : "bg-white"}`} >
+            <div className={`px-5`} >
               <Navbar />
             </div>
           )}

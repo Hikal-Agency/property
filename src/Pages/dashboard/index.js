@@ -52,20 +52,10 @@ const Dashboard = () => {
         console.log("dashboard data is");
         console.log(result.data);
         console.log("User from dashboard: ", result.data.user);
-
-      axios
-        .get(`${BACKEND_URL}/newLeads`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((data) => {
-        setDashboardData({...result.data, newLeads: data.data.leads.total});
+        setDashboardData({...result.data, newLeads: result.data.lead_status.new});
         setTimeout(() => {
           setloading(false);
         }, 300);
-        })
       })
       .catch((err) => {
         console.log(err);
