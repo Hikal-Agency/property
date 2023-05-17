@@ -42,7 +42,9 @@ const CombinationChart = () => {
         },
       })
       .then((result) => {
-        const {data: {members_deal}} = result;
+        const {
+          data: { members_deal },
+        } = result;
         setPerformanceChartData(members_deal);
       })
       .catch((err) => {
@@ -69,7 +71,9 @@ const CombinationChart = () => {
               {
                 type: "line",
                 label: "Meetings",
-                data: performanceChartData.map((member) => member.total_meetings),
+                data: performanceChartData.map(
+                  (member) => member.total_meetings
+                ),
                 fill: false,
                 backgroundColor: "rgba(0,0,0,0.2)",
                 borderColor: "#ffffff",
@@ -104,7 +108,9 @@ const CombinationChart = () => {
               {
                 type: "line",
                 label: "Meetings",
-                data: performanceChartData.map((member) => member.total_meetings),
+                data: performanceChartData.map(
+                  (member) => member.total_meetings
+                ),
                 // borderWidth: 1,
                 fill: false,
                 backgroundColor: "rgba(0,0,0,0.2)",

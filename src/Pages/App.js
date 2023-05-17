@@ -46,7 +46,8 @@ import SingleTicket from "./support/SingleTicket";
 import UpdateUser from "./users/updateUser";
 import { io } from "socket.io-client";
 import Sidebarmui from "../Components/Sidebar/Sidebarmui";
-import {Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Statistics from "./SocialMedia/statistics";
 
 const libraries = ["places"];
 
@@ -257,6 +258,11 @@ const routes = [
     element: <Campaigns />,
   },
   {
+    path: "/statistics",
+    pageName: "Campaigns Statistics",
+    element: <Statistics />,
+  },
+  {
     path: "*",
     element: <Error />,
   },
@@ -428,25 +434,29 @@ function App() {
 
   function checkIfPageHasSidebar() {
     const pathname = window.location.pathname;
-    if(pathname === "/" || pathname === "/auth/signup") {
-      return false; 
+    if (pathname === "/" || pathname === "/auth/signup") {
+      return false;
     } else {
       return true;
     }
   }
 
-  return <>
-    <div className="flex w-screen">
-        {checkIfPageHasSidebar() && <Sidebarmui/>}
+  return (
+    <>
+      <div className="flex w-screen">
+        {checkIfPageHasSidebar() && <Sidebarmui />}
         <div className="w-[100%]">
           <Routes>
-          {routes.map((route, index) => {
-            return <Route key={index} path={route.path} element={route.element}/>
-          })}
+            {routes.map((route, index) => {
+              return (
+                <Route key={index} path={route.path} element={route.element} />
+              );
+            })}
           </Routes>
         </div>
-    </div>
-  </>
+      </div>
+    </>
+  );
 }
 
 export default App;

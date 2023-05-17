@@ -1,0 +1,49 @@
+import React from "react";
+import { Doughnut } from "react-chartjs-2";
+import { useStateContext } from "../../../context/ContextProvider";
+
+const DoughnutChart = () => {
+  const { currentMode } = useStateContext();
+
+  const chartData = {
+    labels: ["Red", "Blue", "Yellow", "Green", "Purple"],
+    datasets: [
+      {
+        data: [12, 19, 3, 5, 2],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.8)",
+          "rgba(54, 162, 235, 0.8)",
+          "rgba(255, 206, 86, 0.8)",
+          "rgba(75, 192, 192, 0.8)",
+          "rgba(153, 102, 255, 0.8)",
+        ],
+        borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  return (
+    <Doughnut
+      data={chartData}
+      options={{
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: "right",
+            labels: {
+              usePointStyle: true,
+              font: {
+                family: "Arial",
+                size: 14,
+              },
+            },
+          },
+        },
+      }}
+    />
+  );
+};
+
+export default DoughnutChart;

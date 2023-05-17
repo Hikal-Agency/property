@@ -4,8 +4,7 @@ import AddLeadComponent from "../../Components/Leads/AddLeadComponent";
 import Footer from "../../Components/Footer/Footer";
 
 const AddLead = (props) => {
-  const { currentMode, User, BACKEND_URL } =
-    useStateContext();
+  const { currentMode, User, BACKEND_URL } = useStateContext();
   return (
     <>
       {/* <Head>
@@ -22,9 +21,10 @@ const AddLead = (props) => {
                   <AddLeadComponent BACKEND_URL={BACKEND_URL} User={User} />
                 </div>
             </div>
-            <Footer />
           </div>
-      </div>
+
+          <Footer />
+        </div>
     </>
   );
 };
