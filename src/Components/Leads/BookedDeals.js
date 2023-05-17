@@ -1196,7 +1196,7 @@ const BookedDeals = ({
               "& .MuiDataGrid-columnHeaders": {
                 position: "sticky",
                 top: 0,
-                zIndex: 50,
+                zIndex: 10,
               },
             }}
             getRowClassName={(params) =>

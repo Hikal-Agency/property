@@ -13,7 +13,9 @@ root.render(
     <ContextProvider>
       <ProSidebarProvider>
         {/* <Backdrop /> */}
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ProSidebarProvider>
     </ContextProvider>
   </>
