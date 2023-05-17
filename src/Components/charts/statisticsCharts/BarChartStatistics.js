@@ -6,29 +6,19 @@ import { useState } from "react";
 const BarChartStatistics = () => {
   const { currentMode } = useStateContext();
 
-  const [total_projects] = useState([
+  const [totail_projects2] = useState([
     { project: "Riviera", project_count: 4 },
     { project: "Crescent", project_count: 3 },
     { project: "Tiger", project_count: 3 },
   ]);
 
   const data = {
-    labels: total_projects.map((data) => data.project),
+    labels: totail_projects2.map((data) => data.project),
     datasets: [
       {
         label: "Closed Projects",
-        data: total_projects.map((data) => data.project_count),
-        backgroundColor: [
-          "rgba(218, 31, 38, 0.7)",
-          "rgba(79, 129, 189, 0.7)",
-          "rgba(155, 187, 89, 0.7)",
-        ],
-        borderColor: [
-          "rgba(218, 31, 38, 1)",
-          "rgba(79, 129, 189, 1)",
-          "rgba(155, 187, 89, 1)",
-        ],
-        borderWidth: 1,
+        data: totail_projects2.map((data) => data.project_count),
+        backgroundColor: ["rgba(218, 31, 38, 1)"],
       },
     ],
   };
@@ -39,6 +29,11 @@ const BarChartStatistics = () => {
         data={data}
         options={{
           indexAxis: "",
+          elements: {
+            bar: {
+              borderWidth: 0,
+            },
+          },
           responsive: true,
           plugins: {
             legend: {
@@ -48,15 +43,12 @@ const BarChartStatistics = () => {
               display: false,
             },
           },
-          animation: {
-            duration: 2000,
-            easing: "easeInOutQuart",
-          },
           color: currentMode === "dark" ? "#ffffff" : "#000000",
           scales: {
             x: {
               beginAtZero: true,
               ticks: {
+                stepSize: 1,
                 color: currentMode === "dark" ? "#ffffff" : "#000000",
               },
               grid: {
@@ -66,6 +58,7 @@ const BarChartStatistics = () => {
             y: {
               beginAtZero: true,
               ticks: {
+                stepSize: 1,
                 color: currentMode === "dark" ? "#ffffff" : "#000000",
               },
               grid: {
@@ -75,7 +68,7 @@ const BarChartStatistics = () => {
               },
             },
           },
-          barThickness: 30, // Adjust the width of the bars
+          barThickness: 20, // Adjust the width of the bars
           categoryPercentage: 0.7, // Adjust the width of the bars relative to the available space
         }}
       />

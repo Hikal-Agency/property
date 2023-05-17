@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@amcharts/amcharts3-react": "^3.1.1",
+    "@amcharts/amcharts4-geodata": "^4.1.26",
+    "@amcharts/amcharts5": "^5.3.12",
+    "@amcharts/amcharts5-fonts": "^5.0.1",
+    "@amcharts/amcharts5-geodata": "^5.1.0",
     "@emotion/react": "^11.10.5",
     "@material-tailwind/react": "^1.2.5",
     "@mui/material": "^5.11.8",

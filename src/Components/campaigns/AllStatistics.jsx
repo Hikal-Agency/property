@@ -19,6 +19,10 @@ import BubbleChartStat from "../charts/statisticsCharts/BubbleChartStat";
 import DoughnutChart from "../charts/statisticsCharts/DoughnutChartState";
 import AreaChart from "../charts/statisticsCharts/AreaChart";
 import LineChart from "../charts/statisticsCharts/LineChart";
+import HorizontalBarChart from "../charts/statisticsCharts/HorizontalBarChart";
+import CombineChart from "../charts/statisticsCharts/CombineChart";
+import CombinationChartTable from "../charts/statisticsCharts/CombinationTableChart";
+import MapChartStatistics from "../charts/statisticsCharts/MapChartStatistics";
 
 const AllStatistics = ({ pageState, setpageState }) => {
   const { currentMode, BACKEND_URL, darkModeColors, graph_api_token } =
@@ -373,16 +377,17 @@ const AllStatistics = ({ pageState, setpageState }) => {
             </div>
           ))}
         </div>
-
         <div
           className={`${
             currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
           } h-full w-full rounded-md p-5 cursor-pointer mt-5`}
+          style={{ display: "flex", flexDirection: "column" }}
         >
-          <div className="justify-between items-center">
-            <h6 className="font-semibold">Performance</h6>
-            {/* <CombinationChart /> */}
-            <LineChart />
+          <div style={{ flex: "1" }}>
+            <h6 className="font-semibold w-full">Performance</h6>
+            {/* <LineChart /> */}
+            <CombineChart />
+            {/* <CombinationChartTable /> */}
           </div>
         </div>
 
@@ -393,8 +398,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
             } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
           >
             <div className="justify-between items-center">
-              <h6 className="font-semibold pb-3">Sales</h6>
-              <AreaChart />
+              <h6 className="font-semibold pb-3">Demographics</h6>
+              {/* <AreaChart /> */}
+              <HorizontalBarChart />
             </div>
           </div>
 
@@ -404,8 +410,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
             } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
           >
             <div className="justify-between items-center">
-              <h6 className="font-semibold pb-3">Closed Projects</h6>
-              <BarChartStatistics />
+              <h6 className="font-semibold pb-3">Locations</h6>
+              {/* <BarChartStatistics /> */}
+              <MapChartStatistics />
             </div>
           </div>
         </div>
@@ -420,11 +427,11 @@ const AllStatistics = ({ pageState, setpageState }) => {
         sx={DataGridStyles}
         style={{ width: "100%", overflowX: "auto" }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3 mt-5">
           <div
             className={`${
               currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
-            } col-span-1 h-min w-96 rounded-md p-5 cursor-pointer hover:shadow-sm`}
+            } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
             sx={{
               height: "300px",
               width: "300px",
@@ -439,11 +446,24 @@ const AllStatistics = ({ pageState, setpageState }) => {
           <div
             className={`${
               currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
-            } col-span-1 h-min w-96 rounded-md p-5 cursor-pointer hover:shadow-sm`}
+            } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
           >
             <div className="justify-between items-center">
               <h6 className="font-semibold pb-3">Closed Projects</h6>
               <BubbleChartStat />
+              {/* <CombineChart /> */}
+            </div>
+          </div>
+
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
+            } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+          >
+            <div className="justify-between items-center h-80">
+              <h6 className="font-semibold pb-3">Closed Projects</h6>
+              <CombinationChartTable />
+              {/* <CombineChart /> */}
             </div>
           </div>
         </div>

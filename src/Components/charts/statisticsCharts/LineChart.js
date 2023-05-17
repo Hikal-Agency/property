@@ -34,40 +34,42 @@ const LineChart = () => {
   };
 
   return (
-    <Line
-      data={chartData}
-      options={{
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true,
-            labels: {
-              color: currentMode === "dark" ? "#ffffff" : "#000000",
+    <div style={{ flex: "1", width: "100%", overflow: "hidden" }}>
+      <Line
+        data={chartData}
+        options={{
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
             },
           },
-        },
-        scales: {
-          x: {
-            grid: {
-              color: currentMode === "dark" ? "#424242" : "#eeeeee",
-              lineWidth: 0.5,
+          scales: {
+            x: {
+              grid: {
+                color: currentMode === "dark" ? "#424242" : "#eeeeee",
+                lineWidth: 0.5,
+              },
+              ticks: {
+                color: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
             },
-            ticks: {
-              color: currentMode === "dark" ? "#ffffff" : "#000000",
+            y: {
+              grid: {
+                color: currentMode === "dark" ? "#424242" : "#eeeeee",
+                lineWidth: 0.5,
+              },
+              ticks: {
+                color: currentMode === "dark" ? "#ffffff" : "#000000",
+              },
             },
           },
-          y: {
-            grid: {
-              color: currentMode === "dark" ? "#424242" : "#eeeeee",
-              lineWidth: 0.5,
-            },
-            ticks: {
-              color: currentMode === "dark" ? "#ffffff" : "#000000",
-            },
-          },
-        },
-      }}
-    />
+        }}
+      />
+    </div>
   );
 };
 

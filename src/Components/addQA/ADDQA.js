@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { Textarea } from "@material-tailwind/react";
 
 const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
   const { currentMode, darkModeColors, formatNum, BACKEND_URL } =
@@ -202,21 +203,19 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
             key={answerIndex}
             sx={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
-            <TextField
-              label={`Answer ${answerIndex + 1}`}
+            <Textarea
+              // label={`Answer ${answerIndex + 1}`}
               value={answer}
-              // onChange={(event) => {
-              //   const newAnswers = [...answers];
-              //   newAnswers[answerIndex] = event.target.value;
-              //   setAnswers(newAnswers);
-              // }}
               onChange={handleChange}
+              placeholder="Enter your answer here"
               className="w-full mb-3"
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: "20px", height: "150px" }}
               variant="outlined"
               name={`answer-${answerIndex}`}
               size="medium"
+              rows={6}
             />
+
             <Button variant="outlined" size="small" onClick={handleAddAnswer}>
               +
             </Button>
