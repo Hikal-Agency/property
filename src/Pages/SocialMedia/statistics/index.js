@@ -103,7 +103,6 @@ const Statistics = () => {
                 />
               </div>
             </div>
-
             <Footer />
           </div>
         )}
