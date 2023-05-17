@@ -412,7 +412,6 @@ const routes = [
 
 function App() {
   const { setAllRoutes } = useStateContext();
-  const router = createBrowserRouter(routes);
   const { setSocket } = useStateContext();
 
   useJsApiLoader({
@@ -442,8 +441,8 @@ function App() {
         {checkIfPageHasSidebar() && <Sidebarmui/>}
         <div className="w-[100%]">
           <Routes>
-          {routes.map((route) => {
-            return <Route path={route.path} element={route.element}/>
+          {routes.map((route, index) => {
+            return <Route key={index} path={route.path} element={route.element}/>
           })}
           </Routes>
         </div>
