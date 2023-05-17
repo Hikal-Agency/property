@@ -1,0 +1,115 @@
+import { Box } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import Navbar from "../../Components/Navbar/Navbar";
+import { useStateContext } from "../../context/ContextProvider";
+import { Tab, Tabs } from "@mui/material";
+import Footer from "../../Components/Footer/Footer";
+
+import ADDQA from "../../Components/addQA/ADDQA";
+import ListQa from "../../Components/addQA/ListQa";
+import FilterQA from "../../Components/addQA/FilterQA";
+import { Select, MenuItem } from "@mui/material";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+
+const AllQA = () => {
+  const { darkModeColors, currentMode, setopenBackDrop, BACKEND_URL } =
+    useStateContext();
+  const [value, setValue] = useState(0);
+  const [users, setUsers] = useState([]);
+  const [selectUserId, setSelectedUserId] = useState({});
+  const handleChange = (event, newValue) => {
+    console.log("Tab: ", newValue);
+    setValue(newValue);
+  };
+
+  const [tabValue, setTabValue] = useState(0);
+  const [loading, setloading] = useState(false);
+
+  const handleUser = (event) => {
+    const selected_user = users.find((user) => user.id === event.target.value);
+    setSelectedUserId(selected_user);
+    console.log("Selected User: ", selected_user);
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.get(`${BACKEND_URL}/users`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("Users: ", response);
+      setUsers(response?.data?.managers?.data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Unable to fetch users.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (value === 2) {
+      console.log("Tab 2");
+      fetchUsers();
+    }
+  }, [value]);
+
+  useEffect(() => {
+    setopenBackDrop(false);
+    setloading(false);
+    // eslint-disable-next-line
+  }, []);
+
+  return (
+    <>
+      <ToastContainer />
+      <div className="flex min-h-screen">
+        <div
+          className={`w-full ${
+            currentMode === "dark" ? "bg-black" : "bg-white"
+          }`}
+        >
+          <div className={`w-full `}>
+            <div className="px-5">
+              <Navbar />
+              <h4
+                className={`font-semibold p-7 text-center text-2xl ${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                All QA
+              </h4>
+              <div
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-gray-900 text-white"
+                    : "bg-gray-200 text-black"
+                } p-5 rounded-md my-5 mb-10`}
+              >
+                <ListQa />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </>
+  );
+  function TabPanel(props) {
+    const { children, value, index } = props;
+    return <div>{value === index && <div>{children}</div>}</div>;
+  }
+};
+
+export default AllQA;

@@ -38,7 +38,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { ImLock, ImUsers, ImLocation } from "react-icons/im";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 // import { Link as NextLink } from "next/link";
 
 const Sidebarmui = () => {
@@ -51,8 +51,8 @@ const Sidebarmui = () => {
     setopenBackDrop,
     BACKEND_URL,
     isUserSubscribed,
-    setUser, 
-    setIsUserSubscribed
+    setUser,
+    setIsUserSubscribed,
   } = useStateContext();
   const [LeadsCount, setLeadsCount] = useState(false);
   const [HotLeadsCount, setHotLeadsCount] = useState();
@@ -63,7 +63,6 @@ const Sidebarmui = () => {
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
-
 
   const FetchProfile = async (token) => {
     const storedUser = localStorage.getItem("user");
@@ -196,57 +195,56 @@ const Sidebarmui = () => {
       });
   };
 
-      const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("auth-token");
-        const urls = [
-          `${BACKEND_URL}/sidebar/0`,
-          `${BACKEND_URL}/sidebar/1`,
-          `${BACKEND_URL}/sidebar/2`,
-          `${BACKEND_URL}/sidebar/3`,
-          `${BACKEND_URL}/sidebar/4`,
-        ];
-        const responses = await Promise.all(
-          urls.map((url) => {
-            return axios.get(url, {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-              },
-            });
-          })
-        );
-
-        console.log("Response:::", responses);
-        setHotLeadsCount(responses[0].data["HOT LEADS"]);
-        setColdLeadsCount(responses[1].data["COLD LEADS"]);
-        setPersonalLeadsCount(responses[2].data["PERSONAL LEADS"]);
-        setThirdPartyLeadsCount(responses[3].data["THIRD PARTY LEADS"]);
-        setUnassignedLeadsCount(responses[4].data["UNASSIGNED LEADS"]);
-        setLeadsCount(true);
-      } catch (error) {
-        console.log(error);
-
-        if (error.response.status === 401) {
-          setopenBackDrop(false);
-          setloading(false);
-
-          localStorage.removeItem("auth-token");
-          localStorage.removeItem("user");
-          localStorage.removeItem("leadsData");
-          navigate("/", {
-            state: {
-              error: "Please login to proceed.",
-              continueURL: location.pathname,
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const urls = [
+        `${BACKEND_URL}/sidebar/0`,
+        `${BACKEND_URL}/sidebar/1`,
+        `${BACKEND_URL}/sidebar/2`,
+        `${BACKEND_URL}/sidebar/3`,
+        `${BACKEND_URL}/sidebar/4`,
+      ];
+      const responses = await Promise.all(
+        urls.map((url) => {
+          return axios.get(url, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
             },
           });
-          return;
-        }
+        })
+      );
+
+      console.log("Response:::", responses);
+      setHotLeadsCount(responses[0].data["HOT LEADS"]);
+      setColdLeadsCount(responses[1].data["COLD LEADS"]);
+      setPersonalLeadsCount(responses[2].data["PERSONAL LEADS"]);
+      setThirdPartyLeadsCount(responses[3].data["THIRD PARTY LEADS"]);
+      setUnassignedLeadsCount(responses[4].data["UNASSIGNED LEADS"]);
+      setLeadsCount(true);
+    } catch (error) {
+      console.log(error);
+
+      if (error.response.status === 401) {
+        setopenBackDrop(false);
+        setloading(false);
+
+        localStorage.removeItem("auth-token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("leadsData");
+        navigate("/", {
+          state: {
+            error: "Please login to proceed.",
+            continueURL: location.pathname,
+          },
+        });
+        return;
       }
-    };
+    }
+  };
 
   useEffect(() => {
-
     const token = localStorage.getItem("auth-token");
     if (User?.id && User?.loginId) {
       CheckValidToken(token);
@@ -1681,9 +1679,18 @@ const Sidebarmui = () => {
       title: "SUPPORT",
       links: [
         {
-          name: "QA Form",
+          name: "QA ",
           icon: <AiOutlineQuestionCircle />,
-          link: "/qaform",
+          submenu: [
+            {
+              name: "QA Form",
+              link: "/qaform",
+            },
+            {
+              name: "All QA",
+              link: "/allQA",
+            },
+          ],
         },
         {
           name: "Tickets",

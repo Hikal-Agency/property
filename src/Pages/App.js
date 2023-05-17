@@ -48,6 +48,7 @@ import { io } from "socket.io-client";
 import Sidebarmui from "../Components/Sidebar/Sidebarmui";
 import { Routes, Route } from "react-router-dom";
 import Statistics from "./SocialMedia/statistics";
+import AllQA from "./qaform/allQA";
 
 const libraries = ["places"];
 
@@ -226,6 +227,11 @@ const routes = [
     path: "/qaform",
     pageName: "QAForm",
     element: <QAForm />,
+  },
+  {
+    path: "/allQA",
+    pageName: "All QA",
+    element: <AllQA />,
   },
   {
     path: "/support",

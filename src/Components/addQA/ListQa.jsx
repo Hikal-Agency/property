@@ -15,7 +15,7 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import { BsChevronCompactDown } from "react-icons/bs";
+import { BsChevronCompactDown, BsTrash } from "react-icons/bs";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -58,6 +58,10 @@ const ListQa = ({ pageState, setpageState }) => {
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = (e) => {
     console.log(e.target.value);
+  };
+
+  const handleDeleteQuestion = async () => {
+    console.log("Function called");
   };
 
   const columns = [
@@ -344,6 +348,10 @@ const ListQa = ({ pageState, setpageState }) => {
               className={getSummaryBgClass()}
             >
               <Typography>{qa.question}</Typography>
+              <BsTrash
+                className="ml-2  mt-1 cursor-pointer"
+                onClick={handleDeleteQuestion}
+              />
             </AccordionSummary>
 
             <AccordionDetails className={getDetailBgClass()}>
