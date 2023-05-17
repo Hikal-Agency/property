@@ -62,12 +62,10 @@ const Statistics = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
-              <Sidebarmui />
-              <div className={`w-full `}>
-                <div className="px-5">
-                  <Navbar />
-                  {/* <div className="mt-3">
+            <div className={`w-full `}>
+              <div className="px-5">
+                <Navbar />
+                {/* <div className="mt-3">
                     <h1
                       className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
                         currentMode === "dark"
@@ -85,27 +83,27 @@ const Statistics = () => {
                       setpageState={setpageState}
                     />
                   </div> */}
-                  <div className="mt-3 flex justify-between items-center">
-                    <h1
-                      className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                        currentMode === "dark"
-                          ? "text-white border-white"
-                          : "text-red-600 font-bold border-red-600"
-                      }`}
-                    >
-                      Statistics
-                      {/* <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
+                <div className="mt-3 flex justify-between items-center">
+                  <h1
+                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                      currentMode === "dark"
+                        ? "text-white border-white"
+                        : "text-red-600 font-bold border-red-600"
+                    }`}
+                  >
+                    Statistics
+                    {/* <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
                         <span>{pageState?.total}</span>
                       </span> */}
-                    </h1>
-                  </div>
-                  <AllStatistics
-                    pageState={pageState}
-                    setpageState={setpageState}
-                  />
+                  </h1>
                 </div>
+                <AllStatistics
+                  pageState={pageState}
+                  setpageState={setpageState}
+                />
               </div>
             </div>
+
             <Footer />
           </div>
         )}
