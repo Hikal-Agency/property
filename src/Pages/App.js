@@ -1,6 +1,5 @@
 // import { Backdrop, Button, CircularProgress, TextField } from "@mui/material";
 import { useEffect } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AddLead from "./addlead";
 import Signup from "./auth/signup";
 import Booked from "./booked";
@@ -46,6 +45,8 @@ import Campaigns from "./SocialMedia/campaigns";
 import SingleTicket from "./support/SingleTicket";
 import UpdateUser from "./users/updateUser";
 import { io } from "socket.io-client";
+import Sidebarmui from "../Components/Sidebar/Sidebarmui";
+import { Routes, Route } from "react-router-dom";
 import Statistics from "./SocialMedia/statistics";
 
 const libraries = ["places"];
@@ -416,7 +417,6 @@ const routes = [
 
 function App() {
   const { setAllRoutes } = useStateContext();
-  const router = createBrowserRouter(routes);
   const { setSocket } = useStateContext();
 
   useJsApiLoader({
@@ -432,7 +432,31 @@ function App() {
     setSocket(socket);
   }, []);
 
-  return <RouterProvider router={router} />;
+  function checkIfPageHasSidebar() {
+    const pathname = window.location.pathname;
+    if (pathname === "/" || pathname === "/auth/signup") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  return (
+    <>
+      <div className="flex w-screen">
+        {checkIfPageHasSidebar() && <Sidebarmui />}
+        <div className="w-[100%]">
+          <Routes>
+            {routes.map((route, index) => {
+              return (
+                <Route key={index} path={route.path} element={route.element} />
+              );
+            })}
+          </Routes>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default App;

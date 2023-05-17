@@ -59,8 +59,6 @@ const Tour360 = (props) => {
     return (
         <>
             <div className="min-h-screen">
-                <div className="flex">
-                    <Sidebarmui />
                     <div
                         className={`w-full  ${
                         currentMode === "dark" ? "bg-black" : "bg-white"
@@ -84,7 +82,6 @@ const Tour360 = (props) => {
                             </div>
                         </div>
                     </div>
-                </div>
                 <Footer />
             </div>
         </>

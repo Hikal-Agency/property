@@ -1,5 +1,4 @@
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import Footer from "../../Components/Footer/Footer";
 import ReportProjectBar from "../../Components/charts/ReportProjectBar";
@@ -24,8 +23,6 @@ const Reports = () => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <div className="flex">
-            <Sidebarmui />
             <div className={`w-full `}>
               <div className="px-5">
                 <Navbar />
@@ -107,7 +104,6 @@ const Reports = () => {
                 </div>
               </div>
             </div>
-          </div>
           <Footer />
         </div>
       </div>

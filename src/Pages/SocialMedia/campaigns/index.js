@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import Navbar from "../../../Components/Navbar/Navbar";
-import Sidebarmui from "../../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../../context/ContextProvider";
 import Footer from "../../../Components/Footer/Footer";
 import { useEffect } from "react";
 import Loader from "../../../Components/Loader";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import AllCampaigns from "../../../Components/campaigns/AllCampaigns";
 
 const Campaigns = () => {
-  const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
+  const {currentMode, setopenBackDrop } =
     useStateContext();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [loading, setloading] = useState(true);
 
   const [pageState, setpageState] = useState({
@@ -25,25 +21,7 @@ const Campaigns = () => {
 
   useEffect(() => {
     setopenBackDrop(false);
-    if (User?.uid && User?.loginId) {
-      setloading(false);
-    } else {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        // FetchProfile(token);
-        const user = localStorage.getItem("user");
-        console.log("User in add lead: ", user);
-        setUser(JSON.parse(user));
-        setloading(false);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
+    setloading(false);
     // eslint-disable-next-line
   }, []);
 
@@ -62,8 +40,6 @@ const Campaigns = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
-              <Sidebarmui />
               <div className={`w-full `}>
                 <div className="px-5">
                   <Navbar />
@@ -105,7 +81,6 @@ const Campaigns = () => {
                   />
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}

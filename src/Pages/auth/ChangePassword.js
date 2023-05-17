@@ -11,62 +11,24 @@ import { MdEmail } from "react-icons/md";
 import { Button } from "@material-tailwind/react";
 
 const ChangePassword = () => {
-  const { User, setUser, setDashboardData, currentMode, BACKEND_URL } =
+  const { User, currentMode } =
   useStateContext();
-  const loc = useLocation();
   const [loading, setloading] = useState(true);
-  const navigate = useNavigate(); 
-  
-  const FetchProfile = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/dashboard?page=1`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("dashboard data is");
-        console.log(result.data);
-        setUser(result.data.user);
-        setDashboardData(result.data);
-        setloading(false);
-      })
-      .catch((err) => {
-        // console.log(err);
-        navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: loc.pathname },
-        });
-      });
-  };
+
   useEffect(() => {
-    if (User?.uid && User?.loginId) {
-      setloading(false);
-    } else {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        FetchProfile(token);
-      } else {
-        navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again", continueURL: loc.pathname },
-        });
-      }
-    }
-    // eslint-disable-next-line
+    setloading(false);
   }, []);
   return (
     <>
-      <div className="flex min-h-screen overflow-x-hidden">
+      <div className="flex min-h-screen w-full overflow-x-hidden">
         {loading ? (
           <Loader />
         ) : (
           <div
-            className={`${currentMode === "dark" ? "bg-black" : "bg-white"}`}
+            className={`w-full ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >
-            <div className="flex w-screen overflow-x-hidden">
-              <Sidebarmui />
               <div className="w-full">
-                <div className="px-5">
+                <div className="px-5 w-full">
                   <Navbar />
                   <div className="mt-3">
                     <h1
@@ -173,7 +135,6 @@ const ChangePassword = () => {
                   </div>
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}

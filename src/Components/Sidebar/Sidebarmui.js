@@ -7,7 +7,6 @@ import {
   BsCalendarWeekFill,
   BsFillCreditCard2FrontFill,
 } from "react-icons/bs";
-import { GrBitcoin } from "react-icons/gr";
 import { HiTicket, HiDocumentReport, HiUsers } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill } from "react-icons/bs";
@@ -39,7 +38,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { ImLock, ImUsers, ImLocation } from "react-icons/im";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import apiClient from "../../axoisConfig";
+import {toast} from "react-toastify";
 // import { Link as NextLink } from "next/link";
 
 const Sidebarmui = () => {
@@ -52,7 +51,8 @@ const Sidebarmui = () => {
     setopenBackDrop,
     BACKEND_URL,
     isUserSubscribed,
-    setIsUserSubscribed,
+    setUser, 
+    setIsUserSubscribed
   } = useStateContext();
   const [LeadsCount, setLeadsCount] = useState(false);
   const [HotLeadsCount, setHotLeadsCount] = useState();
@@ -64,8 +64,139 @@ const Sidebarmui = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const fetchData = async () => {
+
+  const FetchProfile = async (token) => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      // If user data is stored in local storage, parse and set it in state
+      setUser(JSON.parse(storedUser));
+      console.log("User from navbar", User);
+    } else {
+      await axios
+        .get(`${BACKEND_URL}/profile`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          console.log("User data is");
+          console.log(result.data);
+
+          // Create a new object with only the specific fields you want to store
+          const user = {
+            addedBy: result.data.user[0].addedBy,
+            addedFor: result.data.user[0].addedFor,
+            agency: result.data.user[0].agency,
+            created_at: result.data.user[0].created_at,
+            creationDate: result.data.user[0].creationDate,
+            displayImg: result.data.user[0].displayImg,
+            expiry_date: result.data.user[0].expiry_date,
+            gender: result.data.user[0].gender,
+            id: result.data.user[0].id,
+            idExpiryDate: result.data.user[0].idExpiryDate,
+            isParent: result.data.user[0].isParent,
+            is_online: result.data.user[0].is_online,
+            joiningDate: result.data.user[0].joiningDate,
+            loginId: result.data.user[0].loginId,
+            loginStatus: result.data.user[0].loginStatus,
+            master: result.data.user[0].master,
+            nationality: result.data.user[0].nationality,
+            notes: result.data.user[0].notes,
+            old_password: result.data.user[0].old_password,
+            package_name: result.data.user[0].package_name,
+            plusSales: result.data.user[0].plusSales,
+            position: result.data.user[0].position,
+            profile_picture: result.data.user[0].profile_picture,
+            role: result.data.user[0].role,
+            status: result.data.user[0].status,
+            target: result.data.user[0].target,
+            uid: result.data.user[0].uid,
+            updated_at: result.data.user[0].updated_at,
+            userEmail: result.data.user[0].userEmail,
+            userName: result.data.user[0].userName,
+            userType: result.data.user[0].userType,
+          };
+
+          setUser(user);
+
+          console.log("Localstorage: ", user);
+
+          // Save user data to local storage
+          localStorage.setItem("user", JSON.stringify(user));
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.status === 401) {
+            setopenBackDrop(false);
+            setloading(false);
+
+            localStorage.removeItem("auth-token");
+            localStorage.removeItem("user");
+            localStorage.removeItem("leadsData");
+            navigate("/", {
+              state: {
+                error: "Please login to proceed.",
+                continueURL: location.pathname,
+              },
+            });
+            return;
+          }
+          toast.error("Sorry something went wrong. Kindly refresh the page.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        });
+    }
+  };
+
+  const CheckValidToken = async (token) => {
+    await axios
+      .get(`${BACKEND_URL}/profile`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Valid token");
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 401) {
+          setopenBackDrop(false);
+          setloading(false);
+
+          localStorage.removeItem("auth-token");
+          localStorage.removeItem("user");
+          localStorage.removeItem("leadsData");
+          navigate("/", {
+            state: {
+              error: "Please login to proceed.",
+              continueURL: location.pathname,
+            },
+          });
+          return;
+        }
+        toast.error("Sorry something went wrong. Kindly refresh the page.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  };
+
+      const fetchData = async () => {
       try {
         const token = localStorage.getItem("auth-token");
         const urls = [
@@ -113,6 +244,26 @@ const Sidebarmui = () => {
         }
       }
     };
+
+  useEffect(() => {
+
+    const token = localStorage.getItem("auth-token");
+    if (User?.id && User?.loginId) {
+      CheckValidToken(token);
+      FetchProfile(token);
+      setloading(false);
+    } else {
+      if (token) {
+        FetchProfile(token);
+      } else {
+        navigate("/", {
+          state: {
+            error: "Please login to proceed.",
+            continueURL: location.pathname,
+          },
+        });
+      }
+    }
 
     fetchData();
     // eslint-disable-next-line
@@ -1560,68 +1711,26 @@ const Sidebarmui = () => {
     }
   };
 
-  // useEffect(() => {
-  //       if(isUserSubscribed != null && isUserSubscribed) {
-  //     setAgentData([...agentData, {
-  //     title: "WHATSAPP",
-  //     links: [
-  //       {
-  //         name: "Dashboard",
-  //         icon: <RiWhatsappFill />,
-  //         link: "/whatsapp-marketing/dashboard",
-  //       },
-  //       {
-  //         name: "Messages",
-  //         icon: <AiFillMessage />,
-  //         link: "/whatsapp-marketing/messages",
-  //       },
-  //       {
-  //         name: "Device",
-  //         icon: <FaMobile />,
-  //         link: "/whatsapp-marketing/device",
-  //       },
-  //       {
-  //         name: "Payments",
-  //         icon: <BsFillCreditCard2FrontFill />,
-  //         link: "/whatsapp-marketing/payments",
-  //       },
-  //     ],
-  //   }]);
-  //     setManagerData([...managerData, {
-  //     title: "WHATSAPP",
-  //     links: [
-  //       {
-  //         name: "Dashboard",
-  //         icon: <RiWhatsappFill />,
-  //         link: "/whatsapp-marketing/dashboard",
-  //       },
-  //       {
-  //         name: "Messages",
-  //         icon: <AiFillMessage />,
-  //         link: "/whatsapp-marketing/messages",
-  //       },
-  //       {
-  //         name: "Templates",
-  //         icon: <FaMobile />,
-  //         link: "/whatsapp-marketing/templates",
-  //       },
-  //       {
-  //         name: "Payments",
-  //         icon: <BsFillCreditCard2FrontFill />,
-  //         link: "/whatsapp-marketing/payments",
-  //       },
-  //     ],
-  //   }]);
-  //   }
-  // }, [User, isUserSubscribed]);
-
-  // const [UserLinks, setUserLinks] = useState(
-  //   User.position === "Founder & CEO" ? links : Agentlinks
-  // );
-
   useEffect(() => {
-    // FetchProfile();
-  }, [User]);
+    if (!(User?.uid && User?.loginId)) {
+      const token = localStorage.getItem("auth-token");
+      if (token) {
+        const user = localStorage.getItem("user");
+        console.log("User in add lead: ", user);
+        setUser(JSON.parse(user));
+        setIsUserSubscribed(checkUser(JSON.parse(user)));
+      } else {
+        navigate("/", {
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
+        });
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div
       style={{ display: "flex", height: "100%" }}

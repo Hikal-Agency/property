@@ -85,20 +85,9 @@ const Userlocation = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-
+    FetchLocation(token);
     setopenBackDrop(false);
-
-    if (token) {
-      FetchLocation(token);
-      FetchProfile(token);
-    } else {
-      navigate("/", {
-        state: {
-          error: "Something Went Wrong! Please Try Again",
-          continueURL: location.pathname,
-        },
-      });
-    }
+    setloading(false);
     // eslint-disable-next-line
   }, []);
 
@@ -106,8 +95,6 @@ const Userlocation = () => {
     <>
       <ToastContainer />
       <div className="min-h-screen">
-        <div className="flex">
-          <Sidebarmui />
           <div
             className={`w-full  ${
               currentMode === "dark" ? "bg-black" : "bg-white"
@@ -118,7 +105,6 @@ const Userlocation = () => {
               <UserLocationComponent />
             </div>
           </div>
-        </div>
         <Footer />
       </div>
     </>
