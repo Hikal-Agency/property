@@ -397,7 +397,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
               currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
             } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
           >
-            <div className="justify-between items-center">
+            <div className="justify-between items-center ">
               <h6 className="font-semibold pb-3">Demographics</h6>
               {/* <AreaChart /> */}
               <HorizontalBarChart />
@@ -412,7 +412,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
             <div className="justify-between items-center">
               <h6 className="font-semibold pb-3">Locations</h6>
               {/* <BarChartStatistics /> */}
-              <MapChartStatistics />
+              {/* <MapChartStatistics /> */}
+              <CombinationChartTable />
             </div>
           </div>
         </div>
@@ -462,8 +463,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
           >
             <div className="justify-between items-center h-80">
               <h6 className="font-semibold pb-3">Closed Projects</h6>
-              <CombinationChartTable />
-              {/* <CombineChart /> */}
+              {/* <CombinationChartTable /> */}
+              <MapChartStatistics />
             </div>
           </div>
         </div>
