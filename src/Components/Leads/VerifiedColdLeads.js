@@ -17,13 +17,6 @@ import RenderPriority from "./RenderPriority";
 
 const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
-  const [Priority, setPriority] = useState("");
-  const [Managers, setManagers] = useState([]);
-  const [Agents, setAgents] = useState([]);
-
-  const ChangePriority = (event) => {
-    setPriority(event.target.value);
-  };
   const DataGridStyles = {
     "& .MuiButtonBase-root": {
       color: "white",
@@ -191,19 +184,6 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
         },
       })
       .then(async (result) => {
-        await axios
-          .get(`${BACKEND_URL}/managers`)
-          .then((result) => {
-            console.log("manager response is");
-            console.log(result);
-            setManagers(result?.data?.managers);
-          });
-        await axios
-          .get(`${BACKEND_URL}/agents`)
-          .then((result) => {
-            setAgents(result?.data?.agents);
-          });
-
         console.log("verified cold leads are ");
         console.log(result.data);
         let rowsDataArray = "";
@@ -236,7 +216,6 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
           //   leadSource: row?.leadSource,
           lid: row?.lid,
           //   lastEdited: row?.lastEdited,
-          project: row?.project,
           leadFor: row?.leadFor,
           //   leadStatus: row?.leadStatus,
           //   leadCategory: leadCategory,

@@ -46,18 +46,6 @@ const RenderSalesperson = ({ cellValues }) => {
       border: "none",
     },
   };
-  // await axios
-  //   .get("https://staging.hikalcrm.com/api/managers")
-  //   .then((result) => {
-  //     console.log("manager response is");
-  //     console.log(result);
-  //     setManagers(result?.data?.managers);
-  //   });
-  // await axios
-  //   .get("https://staging.hikalcrm.com/api/agents")
-  //   .then((result) => {
-  //     setAgents(result?.data?.agents);
-  //   });
 
   const ChangeSalesPerson = (e) => {
     console.log(e.target);

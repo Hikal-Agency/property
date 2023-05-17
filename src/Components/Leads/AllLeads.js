@@ -188,8 +188,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       hideable: false,
       renderCell: (cellValues) => (
         <RenderSalesperson
-          setSalesPersons={setSalesPerson}
-          FetchLeads={(token) => FetchLeads(token)}
           cellValues={cellValues}
         />
       ),
