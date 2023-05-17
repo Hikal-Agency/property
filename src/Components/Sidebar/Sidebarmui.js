@@ -124,6 +124,7 @@ const Sidebarmui = () => {
     if (storedUser) {
       // If user data is stored in local storage, parse and set it in state
       setUser(JSON.parse(storedUser));
+      setIsUserSubscribed(JSON.parse(storedUser));
       getAllLeadsMembers(JSON.parse(storedUser));
       console.log("User from navbar", User);
     } else {
@@ -174,6 +175,7 @@ const Sidebarmui = () => {
           };
 
           setUser(user);
+          setIsUserSubscribed(user);
           getAllLeadsMembers(user);
 
           console.log("Localstorage: ", user);
@@ -1722,7 +1724,6 @@ const Sidebarmui = () => {
       const token = localStorage.getItem("auth-token");
       if (token) {
         const user = localStorage.getItem("user");
-        console.log("User in add lead: ", user);
         setUser(JSON.parse(user));
         setIsUserSubscribed(checkUser(JSON.parse(user)));
       } else {
