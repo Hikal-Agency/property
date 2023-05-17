@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import CallLogBoard from "./calllogboard";
@@ -34,8 +33,6 @@ const Leaderboard = () => {
   return (
     <>
       <div className="min-h-screen">
-        <div className="flex">
-          <Sidebarmui />
           <div
             className={`w-full  ${
               currentMode === "dark" ? "bg-black" : "bg-white"
@@ -115,7 +112,6 @@ const Leaderboard = () => {
               </div>
             </div>
           </div>
-        </div>
         <Footer />
       </div>
     </>

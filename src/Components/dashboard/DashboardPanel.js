@@ -13,15 +13,14 @@ import DoughnutChart from "../../Components/charts/DoughnutChart";
 import BarChartProject from "../../Components/charts/BarChartProject";
 import BarChartProjectAdmin from "../../Components/charts/BarChartProjectAdmin";
 import Task from "../../Components/Tasks/Task";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link} from "react-router-dom";
 import UpcomingMeeting from "../meetings/UpcomingMeeting";
 import UpcomingMeetingAgent from "../meetings/UpcomingMeetingAgent";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
-import apiClient from "../../axoisConfig";
+import { ToastContainer } from "react-toastify";
 
-const DashboardPanel = () => {
+const DashboardPanel = ({setloading}) => {
   const {
     DashboardData,
     currentMode,
@@ -30,19 +29,14 @@ const DashboardPanel = () => {
     Sales_chart_data,
     setSales_chart_data,
     BACKEND_URL,
-    setDashboardData,
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
-  const [newLeads, setNewLeads] = useState("");
 
     const fetchData = async () => {
       try {
-        // console.log("Fetching profile...");
-        // await FetchProfile(token);
-
         const token = localStorage.getItem("auth-token");
-        const urls = [`${BACKEND_URL}/newLeads`,`${BACKEND_URL}/memberdeals` ];
+        const urls = [`${BACKEND_URL}/memberdeals`];
         const responses = await Promise.all(urls.map((url) => {
           return axios.get(url, {
         headers: {
@@ -51,17 +45,15 @@ const DashboardPanel = () => {
         },
       })
         }));
-        setSales_chart_data(responses[1].data?.members_deal);
+        setSales_chart_data(responses[0].data?.members_deal);
         setsaleschart_loading(false);
-        setNewLeads(responses[0].data?.leads?.total);
       } catch (error) {
         console.log(error);
       }
     };
-    
+
     useEffect(() => {
       
-      console.log("DASHBOARD PANEL APIS CALLED**********")
     fetchData();
   }, []);
 
@@ -85,7 +77,7 @@ const DashboardPanel = () => {
     },
     {
       icon: <AiOutlineFire />,
-      amount: newLeads,
+      amount: DashboardData?.newLeads,
       percentage: "-12%",
       title: "All New Leads",
     },

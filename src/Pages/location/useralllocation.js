@@ -69,26 +69,13 @@ const UserAllLocation = (props) => {
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
 
-    console.log("User token all locations: ", token);
-
-    if (token) {
       FetchUserLocation(token);
-    } else {
-      navigate("/", {
-        state: {
-          error: "Something Went Wrong! Please Try Again",
-          continueURL: location.pathname,
-        },
-      });
-    }
     // eslint-disable-next-line
   }, []);
 
   return (
     <>
       <div className="min-h-screen">
-        <div className="flex">
-          <Sidebarmui />
           <div
             className={`w-full  ${
               currentMode === "dark" ? "bg-black" : "bg-white"
@@ -192,7 +179,6 @@ const UserAllLocation = (props) => {
               </div>
             </div>
           </div>
-        </div>
         <Footer />
       </div>
     </>

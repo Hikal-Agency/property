@@ -3,7 +3,7 @@ import React from "react";
 const Loader = () => {
   return (
     <>
-      <div className="h-screen w-screen flex space-x-2 items-center justify-center">
+      <div className="w-full h-full flex space-x-2 items-center justify-center">
         <img
           // unoptimized={true}
           height={350}

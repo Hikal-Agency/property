@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "axios";
 import Loader from "../../Components/Loader";
@@ -41,6 +40,7 @@ const Dashboard = () => {
   };
 
   const FetchProfile = (token) => {
+    setloading(true);
     axios
       .get(`${BACKEND_URL}/dashboard?page=1`, {
         headers: {
@@ -52,28 +52,23 @@ const Dashboard = () => {
         console.log("dashboard data is");
         console.log(result.data);
         console.log("User from dashboard: ", result.data.user);
-        setUser(result.data.user);
-        setIsUserSubscribed(checkUser(result.data.user));
-        setDashboardData(result.data);
-        setloading(false);
+
+      axios
+        .get(`${BACKEND_URL}/newLeads`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((data) => {
+        setDashboardData({...result.data, newLeads: data.data.leads.total});
+        setTimeout(() => {
+          setloading(false);
+        }, 300);
+        })
       })
       .catch((err) => {
         console.log(err);
-        if (err.response.status === 401) {
-          setopenBackDrop(false);
-          setloading(false);
-
-          localStorage.removeItem("auth-token");
-          localStorage.removeItem("user");
-          localStorage.removeItem("leadsData");
-          navigate("/", {
-            state: {
-              error: "Please login to proceed.",
-              continueURL: location.pathname,
-            },
-          });
-          return;
-        }
         toast.error("Sorry something went wrong. Kindly refresh the page.", {
           position: "top-right",
           autoClose: 3000,
@@ -91,46 +86,30 @@ const Dashboard = () => {
         // });
       });
   };
+
   useEffect(() => {
     setopenBackDrop(false);
     const token = localStorage.getItem("auth-token");
-    if (User?.id && User?.loginId) {
-      FetchProfile(token);
-      setloading(false);
-    } else {
-      if (token) {
-        FetchProfile(token);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Please login to proceed.",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
+    FetchProfile(token);
     // eslint-disable-next-line
   }, []);
 
   return (
     <>
       <ToastContainer />
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen w-[100%]">
         {loading ? (
           <Loader />
         ) : (
           <div
             className={`${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >
-            <div className="flex" style={{ width: "100vw" }}>
-              <Sidebarmui />
-              <div className="w-full">
+              <div className="w-full overflow-x-hidden">
                 <div className="px-5">
                   <Navbar />
                   <DashboardPanel />
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}

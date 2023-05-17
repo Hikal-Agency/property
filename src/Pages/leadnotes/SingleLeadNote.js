@@ -30,7 +30,7 @@ const SingleLeadNote = (props) => {
   const [LeadData, setLeadData] = useState();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [error404, setError404] = useState(false);
-  const { currentMode, setUser, darkModeColors, User, BACKEND_URL } =
+  const { currentMode, darkModeColors, User, BACKEND_URL } =
     useStateContext();
 
   console.log("ID: ", leadId);
@@ -59,26 +59,7 @@ const SingleLeadNote = (props) => {
         }
       });
   };
-  const FetchProfile = async () => {
-    const token = localStorage.getItem("auth-token");
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("profile: ", result);
-        setUser(result.data.user[0]);
-        fetchLead();
-      })
-      .catch((err) => {
-        navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again " },
-        });
-      });
-  };
+ 
   const AddNote = () => {
     const now = moment();
     const datetimeString = now.format("YYYY/MM/DD  HH:mm:ss ");
@@ -130,10 +111,6 @@ const SingleLeadNote = (props) => {
         });
       });
   };
-  useEffect(() => {
-    FetchProfile();
-    // eslint-disable-next-line
-  }, []);
   return (
     <>
       {/* <Head>
@@ -150,8 +127,6 @@ const SingleLeadNote = (props) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
-              <Sidebarmui />
               <div className={`w-full`}>
                 <div className="px-5 ">
                   <Navbar />
@@ -435,7 +410,6 @@ const SingleLeadNote = (props) => {
                   </div>
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}

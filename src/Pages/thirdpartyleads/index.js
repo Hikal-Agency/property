@@ -44,25 +44,7 @@ const ThirdPartyLeads = () => {
   };
   useEffect(() => {
     setopenBackDrop(false);
-    if (User?.uid && User?.loginId) {
-      setloading(false);
-    } else {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        // FetchProfile(token);
-        const user = localStorage.getItem("user");
-        console.log("User in add lead: ", user);
-        setUser(JSON.parse(user));
-        setloading(false);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
+    setloading(false);
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -85,8 +67,6 @@ const ThirdPartyLeads = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
-              <Sidebarmui />
               <div className={`w-full`}>
                 <div className="px-5">
                   <Navbar />
@@ -113,7 +93,6 @@ const ThirdPartyLeads = () => {
                   </div>
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}

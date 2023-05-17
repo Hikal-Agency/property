@@ -21,7 +21,6 @@ import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import SingleLead from "../../Components/Leads/SingleLead";
 import UpdateLead from "../../Components/Leads/UpdateLead";
 // import UpdateLead from "../../Components/Leads/UpdateClosedLead";
@@ -33,7 +32,6 @@ import RenderManagers from "../../Components/Leads/RenderManagers";
 import RenderSalesperson from "../../Components/Leads/RenderSalesperson";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteLeadModel from "../../Components/Leads/DeleteLead";
-// import BulkImportModel from "./BulkImport";
 import BulkImport from "../../Components/Leads/BulkImport";
 import Footer from "../../Components/Footer/Footer";
 import { Link } from "react-router-dom";
@@ -1290,7 +1288,6 @@ const ClientLeads = ({
           }`}
         >
           <div className="flex pb-10">
-            <Sidebarmui />
             <div className={`w-full`}>
               <div className="px-5">
                 <Navbar />
@@ -1484,8 +1481,6 @@ const ClientLeads = ({
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
-              <Sidebarmui />
               <div className="w-full px-5">
                 <Navbar />
                 <div className="mt-5">
@@ -1826,7 +1821,6 @@ const ClientLeads = ({
                   </Box>
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}

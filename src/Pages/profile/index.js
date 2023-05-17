@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
 import { GeneralInfo as GeneralInfoTab } from "../../Components/profile/GeneralInfo.jsx";
@@ -14,14 +13,13 @@ import { ChangePassword as ChangePasswordTab } from "../../Components/profile/Ch
 import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ImagePicker from "./ImagePicker";
 
 const ProfilePage = () => {
   const [loading, setloading] = useState(true);
   const {
     User,
-    setUser,
     currentMode,
     darkModeColors,
     setopenBackDrop,
@@ -57,7 +55,6 @@ const ProfilePage = () => {
       })
       .then((result) => {
         console.log("fetched profile ", result.data);
-        setUser(result.data.user[0]);
         setGeneralInfo({
           userContact: result.data.user[0].userContact,
           userAltContact: result.data.user[0].userAltContact,
@@ -99,13 +96,7 @@ const ProfilePage = () => {
   useEffect(() => {
     setopenBackDrop(false);
     const token = localStorage.getItem("auth-token");
-    if (token) {
-      FetchProfile(token);
-    } else {
-      navigate("/", {
-        state: { error: "Something Went Wrong! Please Try Again" },
-      });
-    }
+    FetchProfile(token);
     // eslint-disable-next-line
   }, []);
 
@@ -439,8 +430,6 @@ const ProfilePage = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
-              <Sidebarmui />
               <div className={`w-full `}>
                 <div className="px-5">
                   <Navbar />
@@ -599,7 +588,6 @@ const ProfilePage = () => {
                   </div>
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}

@@ -15,7 +15,6 @@ const PropertyPortfolio = () => {
   const { currentMode, DevProData, setDevProData, BACKEND_URL } =
     useStateContext();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const FetchProperty = async (token) => {
     await axios
@@ -56,18 +55,7 @@ const PropertyPortfolio = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-
-    if (token) {
-      FetchProperty(token);
-      console.log(DevProData);
-    } else {
-      navigate("/", {
-        state: {
-          error: "Something Went Wrong! Please Try Again",
-          continueURL: location.pathname,
-        },
-      });
-    }
+    FetchProperty(token);
     // eslint-disable-next-line
   }, []);
 
@@ -75,8 +63,6 @@ const PropertyPortfolio = () => {
     <>
       <ToastContainer />
       <div className="min-h-screen">
-        <div className="flex">
-          <Sidebarmui />
           <div
             className={`w-full  ${
               currentMode === "dark" ? "bg-black" : "bg-white"
@@ -291,7 +277,6 @@ const PropertyPortfolio = () => {
               </div>
             </div>
           </div>
-        </div>
         <Footer />
       </div>
     </>

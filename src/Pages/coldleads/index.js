@@ -1,70 +1,29 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Footer from "../../Components/Footer/Footer";
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
 import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const ColdLeads = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
   var lead_type = lead_type2.replace(/%20/g, " ");
   const pathname2 = location.pathname.split("/")[1];
   const [loading, setloading] = useState(true);
   const {
-    User,
-    setUser,
     currentMode,
     pageState,
     setopenBackDrop,
     BACKEND_URL,
   } = useStateContext();
 
-  const FetchProfile = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setUser(result.data.user[0]);
-        setloading(false);
-      })
-      .catch((err) => {
-        navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again " },
-        });
-      });
-  };
   useEffect(() => {
     setopenBackDrop(false);
-    if (User?.uid && User?.loginId) {
-      setloading(false);
-    } else {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        // FetchProfile(token);
-        const user = localStorage.getItem("user");
-        console.log("User in add lead: ", user);
-        setUser(JSON.parse(user));
-        setloading(false);
-      } else {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
-    // eslint-disable-next-line
+    setloading(false);
   }, []);
+
   useEffect(() => {
     setopenBackDrop(false);
     // eslint-disable-next-line
@@ -85,8 +44,6 @@ const ColdLeads = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex">
-              <Sidebarmui />
               <div className={`w-full `}>
                 <div className="px-5">
                   <Navbar />
@@ -113,7 +70,6 @@ const ColdLeads = () => {
                   </div>
                 </div>
               </div>
-            </div>
             <Footer />
           </div>
         )}
