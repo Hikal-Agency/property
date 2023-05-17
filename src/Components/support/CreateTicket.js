@@ -20,6 +20,8 @@ import axios from "axios";
 
 const CreateTicket = () => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const [newCategory, setNewCategory] = useState();
+  const [showTextInput, setShowTextInput] = useState(false);
   const [categories, setCategories] = useState([]);
   const [values, setValues] = useState({
     ticketCategory: "",
@@ -29,6 +31,87 @@ const CreateTicket = () => {
     ticketStatus: "",
   });
   const [btnloading, setbtnloading] = useState(false);
+
+  const handleAddCategory = (e) => {
+    e.preventDefault();
+    setShowTextInput(true);
+  };
+
+  const handleSubmitCategory = async (e) => {
+    e.preventDefault();
+
+    if (!newCategory) {
+      toast.error("Kindly enter category name.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setbtnloading(false);
+
+      return;
+    }
+
+    setbtnloading(true);
+
+    try {
+      const token = localStorage.getItem("auth-token");
+
+      const NewCategory = new FormData();
+
+      NewCategory.append("status", 1);
+      NewCategory.append("catName", newCategory);
+      NewCategory.append("type", 1);
+      NewCategory.append("is_parent", 1);
+
+      const add_category = await axios.post(
+        `${BACKEND_URL}/categories`,
+        NewCategory,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("Category Added: ", add_category);
+      setbtnloading(false);
+      setShowTextInput(false);
+      setNewCategory("");
+
+      toast.success("Category created successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log("Error : ", error);
+      toast.error("Creating new category failed.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setbtnloading(false);
+    }
+  };
+
+  const handleCreateCategory = (e) => {
+    console.log("NEw Cat: ", e.target.value);
+    setNewCategory(e.target.value);
+  };
 
   const handleSubmit = async (e) => {
     try {
@@ -56,7 +139,7 @@ const CreateTicket = () => {
         ticketDescription: "",
         supportSource: "",
         ticketIssue: "",
-        ticketStatus: ""
+        ticketStatus: "",
       });
       toast.success("Created new ticket successfully", {
         position: "top-right",
@@ -125,7 +208,7 @@ const CreateTicket = () => {
               {/* TICKET CATEGORY  */}
               <FormControl fullWidth>
                 <InputLabel>Ticket Category</InputLabel>
-                <Select
+                {/* <Select
                   label="Ticket Category"
                   size="medium"
                   onChange={(e) =>
@@ -147,6 +230,79 @@ const CreateTicket = () => {
                       );
                     }
                   })}
+                </Select> */}
+                <Select
+                  label="Ticket Category"
+                  size="medium"
+                  onChange={(e) =>
+                    setValues({ ...values, ticketCategory: e.target.value })
+                  }
+                  value={values.ticketCategory}
+                  className="w-full mb-5"
+                  required
+                >
+                  <MenuItem disabled selected value="">
+                    Select Category
+                  </MenuItem>
+                  {categories?.map((category) => {
+                    if (category.catName) {
+                      return (
+                        <MenuItem key={category.id} value={category.catName}>
+                          {category.catName}
+                        </MenuItem>
+                      );
+                    }
+                  })}
+                  {showTextInput && (
+                    <>
+                      <MenuItem onKeyDown={(e) => e.stopPropagation()}>
+                        <TextField
+                          placeholder="New Category"
+                          value={newCategory}
+                          onChange={handleCreateCategory}
+                          fullWidth
+                        />
+                      </MenuItem>
+                      <Button
+                        type="submit"
+                        size="medium"
+                        className="bg-main-red-color text-white rounded-lg py-3 font-semibold mb-3 ml-5"
+                        style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+                        sx={{ marginLeft: "20px" }}
+                        onClick={handleSubmitCategory}
+                        disabled={btnloading ? true : false}
+                      >
+                        {btnloading ? (
+                          <CircularProgress
+                            size={23}
+                            sx={{ color: "white" }}
+                            className="text-white"
+                          />
+                        ) : (
+                          <span> Add</span>
+                        )}
+                      </Button>
+                    </>
+                  )}
+                  {showTextInput || (
+                    <>
+                      {btnloading ? (
+                        <CircularProgress
+                          size={23}
+                          sx={{ color: "white" }}
+                          className="text-white"
+                        />
+                      ) : (
+                        <span
+                          className="fw-bold ml-4 cursor-pointer"
+                          onClick={handleAddCategory}
+                          sx={{ marginLeft: "200px" }}
+                        >
+                          + Add Category
+                        </span>
+                      )}
+                    </>
+                  )}
                 </Select>
               </FormControl>
               <TextField
