@@ -8,6 +8,8 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import { HiBars3BottomLeft } from "react-icons/hi2";
+
 import {
   DataGrid,
   gridPageCountSelector,
@@ -16,7 +18,7 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import { BsChevronCompactDown } from "react-icons/bs";
+import { BsChevronCompactDown, BsTrash } from "react-icons/bs";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -379,7 +381,12 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
                   expandIcon={<BsChevronCompactDown />}
                   className={getSummaryBgClass()}
                 >
+                  <HiBars3BottomLeft className="mr-4 mt-1" size={20} />
                   <Typography>{qa.question}</Typography>
+                  <BsTrash
+                    className="ml-2 mt-1 cursor-pointer"
+                    // onClick={handleDeleteQuestion}
+                  />
                 </AccordionSummary>
 
                 <AccordionDetails className={getDetailBgClass()}>
