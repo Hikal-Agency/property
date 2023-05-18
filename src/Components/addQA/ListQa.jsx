@@ -344,6 +344,18 @@ const ListQa = ({ pageState, setpageState }) => {
         </div>
       )}
 
+      {/* <CSVLink data={exportData} headers={headers}>
+        <Button
+          className="bg-main-red-color  text-white rounded-lg py-3 font-semibold mb-5"
+          style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+          onClick={getExportData}
+          sx={{ marginBottom: "10px" }}
+        >
+          Export Data
+          <FaFileDownload className="ml-2" />
+        </Button>
+      </CSVLink> */}
+
       {!loading && row.length > 0 && (
         <>
           <CSVLink data={exportData} headers={headers}>

@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, InputLabel, styled } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
@@ -13,12 +13,9 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 const QAForm = () => {
-  const {
-    darkModeColors,
-    currentMode,
-    setopenBackDrop,
-    BACKEND_URL,
-  } = useStateContext();
+  const { darkModeColors, currentMode, setopenBackDrop, BACKEND_URL } =
+    useStateContext();
+
   const [value, setValue] = useState(0);
   const [users, setUsers] = useState([]);
   const [selectUserId, setSelectedUserId] = useState({});
@@ -71,7 +68,7 @@ const QAForm = () => {
 
   useEffect(() => {
     setopenBackDrop(false);
-   setloading(false);
+    setloading(false);
     // eslint-disable-next-line
   }, []);
 
@@ -84,68 +81,69 @@ const QAForm = () => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-            <div className={`w-full `}>
-              <div className="px-5">
-                
-                <h4
-                  className={`font-semibold p-7 text-center text-2xl ${
-                    currentMode === "dark" ? "text-white" : "text-dark"
-                  }`}
+          <div className={`w-full `}>
+            <div className="px-5">
+              <h4
+                className={`font-semibold p-7 text-center text-2xl ${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                Add Questions And Relative Answers For Customer Support.
+              </h4>
+              <div
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-gray-900 text-white"
+                    : "bg-gray-200 text-black"
+                } p-5 rounded-md my-5 mb-10`}
+              >
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiTabs-indicator": {
+                      height: "100%",
+                      borderRadius: "5px",
+                      backgroundColor: "#da1f26",
+                    },
+                    "& .Mui-selected": {
+                      color: "white !important",
+                      zIndex: "1",
+                    },
+                  }}
+                  className={`w-full rounded-md overflow-hidden ${
+                    currentMode === "dark" ? "bg-black" : "bg-white"
+                  } `}
                 >
-                  Add Questions And Relative Answers For Customer Support.
-                </h4>
-                <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "bg-gray-900 text-white"
-                      : "bg-gray-200 text-black"
-                  } p-5 rounded-md my-5 mb-10`}
-                >
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiTabs-indicator": {
-                        height: "100%",
-                        borderRadius: "5px",
-                        backgroundColor: "#da1f26",
-                      },
-                      "& .Mui-selected": {
-                        color: "white !important",
-                        zIndex: "1",
-                      },
-                    }}
-                    className={`w-full rounded-md overflow-hidden ${
-                      currentMode === "dark" ? "bg-black" : "bg-white"
-                    } `}
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    variant="standard"
+                    // centered
+                    className="w-full px-1 m-1"
                   >
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      variant="standard"
-                      // centered
-                      className="w-full px-1 m-1"
-                    >
-                      <Tab label="Add QA" />
-                      <Tab label="ALL QA" />
-                      <Tab label="Filter QA"></Tab>
-                    </Tabs>
-                  </Box>
-                  <div className="mt-3 pb-3">
-                    <TabPanel value={value} index={0}>
-                      <ADDQA
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                      />
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
-                      <ListQa
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                      />
-                    </TabPanel>
-                    <TabPanel value={value} index={2}>
+                    <Tab label="Add QA" />
+                    <Tab label="ALL QA" />
+                    <Tab label="Filter QA"></Tab>
+                  </Tabs>
+                </Box>
+                <div className="mt-3 pb-3">
+                  <TabPanel value={value} index={0}>
+                    <ADDQA
+                      isLoading={loading}
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                    />
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                    <ListQa
+                      isLoading={loading}
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                    />
+                  </TabPanel>
+                  <TabPanel value={value} index={2}>
+                    <Box sx={darkModeColors}>
+                      <InputLabel>Select User</InputLabel>
                       <Select
                         id="user"
                         value={selectUserId?.id}
@@ -171,30 +169,31 @@ const QAForm = () => {
                           </MenuItem>
                         )}
                       </Select>
+                    </Box>
 
-                      <h3
-                        className={`font-semibold  text-center  ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        } mb-5`}
-                      >
-                        Data of :{" "}
-                        <span className="text-main-red-color">
-                          {" "}
-                          {selectUserId?.userName || "No User"}
-                        </span>
-                      </h3>
+                    <h3
+                      className={`font-semibold  text-center  ${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } mb-5`}
+                    >
+                      Data of :{" "}
+                      <span className="text-main-red-color">
+                        {" "}
+                        {selectUserId?.userName || "No User"}
+                      </span>
+                    </h3>
 
-                      <FilterQA
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                        user={selectUserId?.id}
-                      />
-                    </TabPanel>
-                  </div>
+                    <FilterQA
+                      isLoading={loading}
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                      user={selectUserId?.id}
+                    />
+                  </TabPanel>
                 </div>
               </div>
             </div>
+          </div>
           <Footer />
         </div>
       </div>

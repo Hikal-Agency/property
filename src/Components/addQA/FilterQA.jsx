@@ -6,6 +6,7 @@ import {
   Box,
   Pagination,
   Typography,
+  Button,
 } from "@mui/material";
 import {
   DataGrid,
@@ -20,17 +21,22 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
+import { CSVLink } from "react-csv";
+import { FaFileDownload } from "react-icons/fa";
 
 const FitlerQA = ({ pageState, setpageState, user }) => {
   console.log("User id : ", user);
   const { currentMode, BACKEND_URL } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
+
   // eslint-disable-next-line
   const navigate = useNavigate();
   const location = useLocation();
   const [row, setRow] = useState([]);
   const [column, setColumns] = useState([]);
+  const [exportData, setExportData] = useState([]);
+
   const [loading, setLoading] = useState(false);
 
   console.log("Rows: ", row);
@@ -60,6 +66,21 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
   const HandleQuicSearch = (e) => {
     console.log(e.target.value);
   };
+
+  const getExportData = () => {
+    const data = row?.map((qa) => ({
+      question: qa.question,
+      answers: qa.answers.join(", "),
+    }));
+
+    console.log("Export: ", data);
+    setExportData(data);
+  };
+
+  const headers = [
+    { label: "Question", key: "question" },
+    { label: "Answers", key: "answers" },
+  ];
 
   const columns = [
     {
@@ -338,41 +359,55 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
             // }
           />
         </Box> */}
-      {!loading &&
-        (row && row?.length > 0 ? (
-          row?.map((qa, index) => (
-            <Accordion key={index} className="mb-4">
-              <AccordionSummary
-                expandIcon={<BsChevronCompactDown />}
-                className={getSummaryBgClass()}
-              >
-                <Typography>{qa.question}</Typography>
-              </AccordionSummary>
+      {!loading && row && row?.length > 0 && (
+        <>
+          <CSVLink data={exportData} headers={headers}>
+            <Button
+              className="bg-main-red-color text-white rounded-lg py-3 font-semibold mb-5"
+              style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+              onClick={getExportData}
+              sx={{ marginBottom: "10px" }}
+            >
+              Export Data <FaFileDownload className="ml-2" />
+            </Button>
+          </CSVLink>
 
-              <AccordionDetails className={getDetailBgClass()}>
-                <Typography>
-                  {qa?.answers.length > 0
-                    ? qa?.answers.map((ans) => (
-                        <>
-                          {ans}
-                          <hr />
-                          <br />
-                        </>
-                      ))
-                    : "No answer."}
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))
-        ) : (
-          <p
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-black"
-            }`}
-          >
-            No data to display.
-          </p>
-        ))}
+          {row && row?.length > 0 ? (
+            row?.map((qa, index) => (
+              <Accordion key={index} className="mb-4">
+                <AccordionSummary
+                  expandIcon={<BsChevronCompactDown />}
+                  className={getSummaryBgClass()}
+                >
+                  <Typography>{qa.question}</Typography>
+                </AccordionSummary>
+
+                <AccordionDetails className={getDetailBgClass()}>
+                  <Typography>
+                    {qa?.answers.length > 0
+                      ? qa?.answers.map((ans) => (
+                          <>
+                            {ans}
+                            <hr />
+                            <br />
+                          </>
+                        ))
+                      : "No answer."}
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            ))
+          ) : (
+            <p
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              }`}
+            >
+              No data to display.
+            </p>
+          )}
+        </>
+      )}
     </div>
   );
 };
