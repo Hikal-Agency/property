@@ -6,7 +6,10 @@ import {
   Box,
   Pagination,
   Typography,
+  Button,
 } from "@mui/material";
+import { FaFileDownload } from "react-icons/fa";
+
 import {
   DataGrid,
   gridPageCountSelector,
@@ -20,6 +23,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
+import { CSVLink } from "react-csv";
 
 const ListQa = ({ pageState, setpageState }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
@@ -29,6 +33,7 @@ const ListQa = ({ pageState, setpageState }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [row, setRow] = useState([]);
+  const [exportData, setExportData] = useState([]);
   const [column, setColumns] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -63,6 +68,33 @@ const ListQa = ({ pageState, setpageState }) => {
   const handleDeleteQuestion = async () => {
     console.log("Function called");
   };
+
+  // const handleExport = () => {
+  //   setLoading(true);
+  //   // Prepare data for export
+  //   const csvData = row?.map((qa) => ({
+  //     question: qa?.question,
+  //     answers: qa?.answers.join(", "),
+  //   }));
+
+  //   setLoading(false);
+  //   return csvData;
+  // };
+
+  const getExportData = () => {
+    const data = row?.map((qa) => ({
+      question: qa.question,
+      answers: qa.answers.join(", "),
+    }));
+
+    console.log("Export: ", data);
+    setExportData(data);
+  };
+
+  const headers = [
+    { label: "Question", key: "question" },
+    { label: "Answers", key: "answers" },
+  ];
 
   const columns = [
     {
@@ -312,66 +344,50 @@ const ListQa = ({ pageState, setpageState }) => {
         </div>
       )}
 
-      {/* <Box width={"100%"} sx={DataGridStyles}>
-        <DataGrid
-          autoHeight
-          rows={row}
-          columns={columns}
-          components={{
-            Toolbar: GridToolbar,
-            // Pagination: CustomPagination,
-          }}
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              value: searchText,
-              onChange: HandleQuicSearch,
-            },
-          }}
-          sx={{
-            boxShadow: 2,
-            "& .MuiDataGrid-cell:hover": {
-              cursor: "pointer",
-            },
-          }}
-          // getRowClassName={(params) =>
-          //   params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-          // }
-        />
-      </Box> */}
-      {!loading &&
-        row.length > 0 &&
-        row?.map((qa, index) => (
-          <Accordion key={index} className="mb-4">
-            <AccordionSummary
-              expandIcon={<BsChevronCompactDown />}
-              className={getSummaryBgClass()}
+      {!loading && row.length > 0 && (
+        <>
+          <CSVLink data={exportData} headers={headers}>
+            <Button
+              className="bg-main-red-color  text-white rounded-lg py-3 font-semibold mb-5"
+              style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+              onClick={getExportData}
+              sx={{ marginBottom: "10px" }}
             >
-              <Typography>{qa.question}</Typography>
-              <BsTrash
-                className="ml-2  mt-1 cursor-pointer"
-                onClick={handleDeleteQuestion}
-              />
-            </AccordionSummary>
+              Export Data
+              <FaFileDownload className="ml-2" />
+            </Button>
+          </CSVLink>
 
-            <AccordionDetails className={getDetailBgClass()}>
-              <Typography>
-                {/* {Array.isArray(qa?.answers)
-                ? qa?.answers.join(", ")
-                : "No answers"} */}
-                {qa?.answers.length > 0
-                  ? qa?.answers.map((ans) => (
-                      <>
-                        {ans}
-                        <hr />
-                        <br />
-                      </>
-                    ))
-                  : "No answer."}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+          {row?.map((qa, index) => (
+            <Accordion key={index} className="mb-4">
+              <AccordionSummary
+                expandIcon={<BsChevronCompactDown />}
+                className={getSummaryBgClass()}
+              >
+                <Typography>{qa.question}</Typography>
+                <BsTrash
+                  className="ml-2 mt-1 cursor-pointer"
+                  onClick={handleDeleteQuestion}
+                />
+              </AccordionSummary>
+
+              <AccordionDetails className={getDetailBgClass()}>
+                <Typography>
+                  {qa?.answers.length > 0
+                    ? qa?.answers.map((ans) => (
+                        <>
+                          {ans}
+                          <hr />
+                          <br />
+                        </>
+                      ))
+                    : "No answer."}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </>
+      )}
     </div>
   );
 };
