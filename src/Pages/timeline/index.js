@@ -114,7 +114,7 @@ const Timeline = () => {
             }`}
           >
             <div className="px-5">
-              <Navbar />
+              
               {error404 ? (
                 <Error />
               ) : (

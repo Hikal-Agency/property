@@ -63,7 +63,7 @@ const ClosedealsPage = (props) => {
             <div className="flex w-full">
               <div className={`w-full `}>
                 <div className="px-5">
-                  <Navbar />
+                  
                   <div className="mt-3">
                     <h1
                       className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${

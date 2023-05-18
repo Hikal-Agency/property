@@ -69,7 +69,7 @@ const PropertyPortfolio = () => {
             }`}
           >
             <div className="px-5">
-              <Navbar />
+              
               <h1
                 className={`font-semibold ${
                   currentMode === "dark" ? "text-white" : "text-red-600"

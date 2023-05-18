@@ -23,7 +23,6 @@ import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "../../Components/Leads/SingleLead";
 import UpdateLead from "../../Components/Leads/UpdateLead";
-// import UpdateLead from "../../Components/Leads/UpdateClosedLead";
 import BulkUpdateLeads from "../../Components/Leads/BulkUpdateLeads";
 import { toast, ToastContainer } from "react-toastify";
 import RenderPriority from "../../Components/Leads/RenderPriority";
@@ -107,8 +106,6 @@ const ClientLeads = ({
     setopenBackDrop,
     User,
     BACKEND_URL,
-    setSalesPerson,
-    setManagers,
   } = useStateContext();
 
   // eslint-disable-next-line
@@ -209,8 +206,6 @@ const ClientLeads = ({
       hideable: false,
       renderCell: (cellValues) => (
         <RenderSalesperson
-          setSalesPersons={setSalesPersons}
-          FetchLeads={(token) => FetchLeads(token)}
           cellValues={cellValues}
         />
       ),
@@ -534,29 +529,6 @@ const ClientLeads = ({
       },
     },
   ];
-
-  async function setSalesPersons(urls) {
-    const token = localStorage.getItem("auth-token");
-    const requests = urls.map((url) =>
-      axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-    );
-    const responses = await Promise.all(requests);
-    const data = {};
-    for (let i = 0; i < responses.length; i++) {
-      const response = responses[i];
-      if (response.data?.team[0]?.isParent) {
-        const name = `manager-${response.data.team[0].isParent}`;
-        data[name] = response.data.team;
-      }
-    }
-    setSalesPerson(data);
-    setCEOColumnsState();
-  }
 
   const columns = [
     {
@@ -1073,33 +1045,6 @@ const ClientLeads = ({
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    if (User?.position !== "Founder & CEO") {
-      axios
-        .get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
-          const agents = result.data?.team;
-          setSalesPerson({ [`manager-${User?.id}`]: agents });
-        });
-    } else {
-      axios.get(`${BACKEND_URL}/managers`).then((result) => {
-        console.log("manager response is");
-        console.log(result);
-        const managers = result?.data?.managers;
-        setManagers(managers || []);
-
-        const urls = managers.map((manager) => {
-          return `${BACKEND_URL}/teamMembers/${manager?.id}`;
-        });
-
-        setSalesPersons(urls || []);
-      });
-    }
-
     FetchLeads(token);
     FetchClient(token);
     setCEOColumns([...CEOColumns]);
@@ -1290,7 +1235,7 @@ const ClientLeads = ({
           <div className="flex pb-10">
             <div className={`w-full`}>
               <div className="px-5">
-                <Navbar />
+                
                 <div className="my-5 mb-10">
                   <div className="my-3">
                     <h2
@@ -1482,7 +1427,7 @@ const ClientLeads = ({
             }`}
           >
               <div className="w-full px-5">
-                <Navbar />
+                
                 <div className="mt-5">
                   <h1
                     className={`text-xl border-l-[4px] ml-1 pl-1 mb-5  font-bold ${

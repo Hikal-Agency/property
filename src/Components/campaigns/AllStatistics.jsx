@@ -350,7 +350,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
     <div className="pb-10">
       <div className=" mb-5">
         {/* data starts */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-x-3 gap-y-3 text-center">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-3 text-center">
           {data?.map((item, index) => (
             <div
               key={index}
@@ -358,11 +358,11 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 currentMode === "dark"
                   ? "bg-gray-900 text-white "
                   : "bg-gray-200 text-main-dark-bg"
-              }  h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
+              } h-auto dark:bg-secondary-dark-bg p-2 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
             >
-              {item?.icon && <item.icon className="text-3xl " />}
+              {item?.icon && <item.icon className="text-2xl" />}
 
-              <p className="text-2xl font-bold pb-3 text-red-600">
+              <p className="text-xl font-bold pb-2 text-red-600">
                 {item.amount}
               </p>
               <p
@@ -377,6 +377,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
             </div>
           ))}
         </div>
+
         <div
           className={`${
             currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
@@ -410,7 +411,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
             } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
           >
             <div className="justify-between items-center">
-              <h6 className="font-semibold pb-3">Locations</h6>
+              <h6 className="font-semibold pb-3">Table Data</h6>
               {/* <BarChartStatistics /> */}
               {/* <MapChartStatistics /> */}
               <CombinationChartTable />
@@ -462,7 +463,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
             } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
           >
             <div className="justify-between items-center h-80">
-              <h6 className="font-semibold pb-3">Closed Projects</h6>
+              <h6 className="font-semibold pb-3">Locations</h6>
               {/* <CombinationChartTable /> */}
               <MapChartStatistics />
             </div>

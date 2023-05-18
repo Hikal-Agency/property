@@ -1,43 +1,19 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "axios";
 import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import DashboardPanel from "../../Components/dashboard/DashboardPanel";
-import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 const Dashboard = () => {
   const {
-    User,
-    setUser,
     setopenBackDrop,
     currentMode,
     setDashboardData,
     BACKEND_URL,
-    setIsUserSubscribed,
   } = useStateContext();
   const [loading, setloading] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const checkUser = (user) => {
-    const expiry = new Date(user?.expiry_date).getTime();
-    const now = new Date().getTime();
-
-    const isExpired = now > expiry;
-
-    if (user?.role === 1) {
-      return true;
-    } else {
-      return (
-        isExpired === false &&
-        user?.package_name?.length > 0 &&
-        user?.package_name !== "unsubscribed"
-      );
-    }
-  };
 
   const FetchProfile = (token) => {
     setloading(true);
@@ -52,20 +28,10 @@ const Dashboard = () => {
         console.log("dashboard data is");
         console.log(result.data);
         console.log("User from dashboard: ", result.data.user);
-
-      axios
-        .get(`${BACKEND_URL}/newLeads`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((data) => {
-        setDashboardData({...result.data, newLeads: data.data.leads.total});
+        setDashboardData({...result.data, newLeads: result.data.lead_status.new});
         setTimeout(() => {
           setloading(false);
         }, 300);
-        })
       })
       .catch((err) => {
         console.log(err);
@@ -106,7 +72,7 @@ const Dashboard = () => {
           >
               <div className="w-full overflow-x-hidden">
                 <div className="px-5">
-                  <Navbar />
+                  
                   <DashboardPanel />
                 </div>
               </div>

@@ -1,10 +1,6 @@
-import { Button } from "@material-tailwind/react";
 import {
   Box,
-  IconButton,
   Button as MuiButton,
-  makeStyles,
-  styled,
   Avatar,
 } from "@mui/material";
 import {
@@ -89,8 +85,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     setopenBackDrop,
     User,
     BACKEND_URL,
-    setSalesPerson,
-    setManagers,
+    setSalesPerson
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -193,8 +188,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       hideable: false,
       renderCell: (cellValues) => (
         <RenderSalesperson
-          setSalesPersons={setSalesPersons}
-          FetchLeads={(token) => FetchLeads(token)}
           cellValues={cellValues}
         />
       ),
@@ -508,28 +501,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       .scrollBy(-140, 0);
   };
 
-  async function setSalesPersons(urls) {
-    const token = localStorage.getItem("auth-token");
-    const requests = urls.map((url) =>
-      axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-    );
-    const responses = await Promise.all(requests);
-    const data = {};
-    for (let i = 0; i < responses.length; i++) {
-      const response = responses[i];
-      if (response.data?.team[0]?.isParent) {
-        const name = `manager-${response.data.team[0].isParent}`;
-        data[name] = response.data.team;
-      }
-    }
-    setSalesPerson(data);
-    setCEOColumnsState();
-  }
 
   const columns = [
     {
@@ -1099,35 +1070,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   }, [lead_type]);
 
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    if (User?.position !== "Founder & CEO") {
-      axios
-        .get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
-          const agents = result.data?.team;
-          setSalesPerson({ [`manager-${User?.id}`]: agents });
-          console.log("TEAM_MEMBERS_CALLEDTEAM_MEMBERS");
-        });
-    } else {
-      axios.get(`${BACKEND_URL}/managers`).then((result) => {
-        console.log("manager response is");
-        console.log(result);
-        const managers = result?.data?.managers;
-        setManagers(managers || []);
-
-        const urls = managers.map((manager) => {
-          return `${BACKEND_URL}/teamMembers/${manager?.id}`;
-        });
-
-        setSalesPersons(urls || []);
-      });
-    }
-
     FetchLeads(token);
     setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line

@@ -82,7 +82,7 @@ const UserAllLocation = (props) => {
             }`}
           >
             <div className="px-5 ">
-              <Navbar />
+              
               <h4 className="text-red-600 font-bold text-xl mb-2 text-center">
                 {UserLocationData?.location?.data?.length > 0 ? (
                   <>{UserLocationData?.locations?.data[0].userName}</>

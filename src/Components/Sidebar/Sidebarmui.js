@@ -53,6 +53,8 @@ const Sidebarmui = () => {
     isUserSubscribed,
     setUser,
     setIsUserSubscribed,
+    setSalesPerson,
+    setManagers,
   } = useStateContext();
   const [LeadsCount, setLeadsCount] = useState(false);
   const [HotLeadsCount, setHotLeadsCount] = useState();
@@ -64,12 +66,66 @@ const Sidebarmui = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  async function setSalesPersons(urls) {
+    const token = localStorage.getItem("auth-token");
+    const requests = urls.map((url) =>
+      axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+    );
+    const responses = await Promise.all(requests);
+    const data = {};
+    for (let i = 0; i < responses.length; i++) {
+      const response = responses[i];
+      if (response.data?.team[0]?.isParent) {
+        const name = `manager-${response.data.team[0].isParent}`;
+        data[name] = response.data.team;
+      }
+    }
+    setSalesPerson(data);
+  }
+
+  const getAllLeadsMembers = (user) => {
+    const token = localStorage.getItem("auth-token");
+    if (user?.position !== "Founder & CEO") {
+      axios
+        .get(`${BACKEND_URL}/teamMembers/${user?.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          const agents = result.data?.team;
+          setSalesPerson({ [`manager-${user?.id}`]: agents });
+        });
+    } else {
+      axios.get(`${BACKEND_URL}/managers`).then((result) => {
+        console.log("manager response is");
+        console.log(result);
+        const managers = result?.data?.managers;
+        setManagers(managers || []);
+
+        const urls = managers.map((manager) => {
+          return `${BACKEND_URL}/teamMembers/${manager?.id}`;
+        });
+
+        setSalesPersons(urls || []);
+      });
+    }
+  };
+
   const FetchProfile = async (token) => {
     const storedUser = localStorage.getItem("user");
 
     if (storedUser) {
       // If user data is stored in local storage, parse and set it in state
       setUser(JSON.parse(storedUser));
+      setIsUserSubscribed(JSON.parse(storedUser));
+      getAllLeadsMembers(JSON.parse(storedUser));
       console.log("User from navbar", User);
     } else {
       await axios
@@ -119,6 +175,8 @@ const Sidebarmui = () => {
           };
 
           setUser(user);
+          setIsUserSubscribed(user);
+          getAllLeadsMembers(user);
 
           console.log("Localstorage: ", user);
 
@@ -155,73 +213,22 @@ const Sidebarmui = () => {
     }
   };
 
-  const CheckValidToken = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.get(`${BACKEND_URL}/sidebar/1`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
-      })
-      .then((result) => {
-        console.log("Valid token");
-      })
-      .catch((err) => {
-        console.log(err);
-        if (err.response.status === 401) {
-          setopenBackDrop(false);
-          setloading(false);
-
-          localStorage.removeItem("auth-token");
-          localStorage.removeItem("user");
-          localStorage.removeItem("leadsData");
-          navigate("/", {
-            state: {
-              error: "Please login to proceed.",
-              continueURL: location.pathname,
-            },
-          });
-          return;
-        }
-        toast.error("Sorry something went wrong. Kindly refresh the page.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
       });
-  };
 
-  const fetchData = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      const urls = [
-        `${BACKEND_URL}/sidebar/0`,
-        `${BACKEND_URL}/sidebar/1`,
-        `${BACKEND_URL}/sidebar/2`,
-        `${BACKEND_URL}/sidebar/3`,
-        `${BACKEND_URL}/sidebar/4`,
-      ];
-      const responses = await Promise.all(
-        urls.map((url) => {
-          return axios.get(url, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          });
-        })
-      );
-
-      console.log("Response:::", responses);
-      setHotLeadsCount(responses[0].data["HOT LEADS"]);
-      setColdLeadsCount(responses[1].data["COLD LEADS"]);
-      setPersonalLeadsCount(responses[2].data["PERSONAL LEADS"]);
-      setThirdPartyLeadsCount(responses[3].data["THIRD PARTY LEADS"]);
-      setUnassignedLeadsCount(responses[4].data["UNASSIGNED LEADS"]);
+      console.log("Response:::", response);
+      setHotLeadsCount(response.data.data["HOT LEADS"]);
+      setColdLeadsCount(response.data.data["COLD LEADS"]);
+      setPersonalLeadsCount(response.data.data["PERSONAL LEADS"]);
+      setThirdPartyLeadsCount(response.data.data["THIRD PARTY LEADS"]);
+      setUnassignedLeadsCount(response.data.data["UNASSIGNED LEADS"]);
       setLeadsCount(true);
     } catch (error) {
       console.log(error);
@@ -245,9 +252,12 @@ const Sidebarmui = () => {
   };
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     const token = localStorage.getItem("auth-token");
     if (User?.id && User?.loginId) {
-      CheckValidToken(token);
       FetchProfile(token);
       setloading(false);
     } else {
@@ -263,7 +273,6 @@ const Sidebarmui = () => {
       }
     }
 
-    fetchData();
     // eslint-disable-next-line
   }, []);
 
@@ -1723,7 +1732,6 @@ const Sidebarmui = () => {
       const token = localStorage.getItem("auth-token");
       if (token) {
         const user = localStorage.getItem("user");
-        console.log("User in add lead: ", user);
         setUser(JSON.parse(user));
         setIsUserSubscribed(checkUser(JSON.parse(user)));
       } else {

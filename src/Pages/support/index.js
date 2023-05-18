@@ -32,7 +32,7 @@ const Tickets = () => {
         >
             <div className={`w-full `}>
               <div className="px-5">
-                <Navbar />
+                
                 <h4 className="font-semibold p-7 text-center text-2xl">Welcome to <span className="text-main-red-color font-bold">HIKAL CRM</span>! We are here to assist you.</h4>
                 <div
                   className={`${

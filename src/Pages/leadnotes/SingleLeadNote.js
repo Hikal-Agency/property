@@ -129,7 +129,7 @@ const SingleLeadNote = (props) => {
           >
               <div className={`w-full`}>
                 <div className="px-5 ">
-                  <Navbar />
+                  
                   <div
                     className={`${
                       currentMode === "dark"

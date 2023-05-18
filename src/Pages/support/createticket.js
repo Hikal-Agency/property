@@ -25,7 +25,7 @@ const CreateTickets = () => {
             }`}
           >
             <div className="px-5 ">
-              <Navbar />
+              
               <CreateTicket />
             </div>
             <Footer />

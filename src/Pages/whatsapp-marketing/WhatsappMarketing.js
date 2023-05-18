@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
 import MessagesComponent from "./messages";
 import TransactionsComponent from "./transactions";
 import TemplatesComponent from "../../Components/whatsapp-marketing/TemplatesComponent";
@@ -41,7 +40,6 @@ const WhatsappMarketing = () => {
   }, []);
 
   useEffect(() => {
-    console.log(isUserSubscribed);
     if (User && isUserSubscribed != null) {
       if (!isUserSubscribed && page !== "payments") {
         navigate("/dashboard", {
@@ -59,7 +57,6 @@ const WhatsappMarketing = () => {
             }`}
           >
             <div className="px-5">
-              <Navbar />
               {pagesComponents[page]}
             </div>
           </div>
