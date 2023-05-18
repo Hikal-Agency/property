@@ -382,7 +382,9 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
                   className={getSummaryBgClass()}
                 >
                   <HiBars3BottomLeft className="mr-4 mt-1" size={20} />
-                  <Typography>{qa.question}</Typography>
+                  <Typography style={{ userSelect: "text" }}>
+                    {qa.question}
+                  </Typography>
                   <BsTrash
                     className="ml-2 mt-1 cursor-pointer"
                     // onClick={handleDeleteQuestion}
