@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Footer from "../../Components/Footer/Footer";
 import LeadNotes from "../../Components/LeadNotes/LeadNotes";
 import Loader from "../../Components/Loader";
-import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
 
 const LeadNotesPage = (props) => {
