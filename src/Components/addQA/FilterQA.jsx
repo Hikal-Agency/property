@@ -38,8 +38,12 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
   const [row, setRow] = useState([]);
   const [column, setColumns] = useState([]);
   const [exportData, setExportData] = useState([]);
+  const [data, setData] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [loading, setLoading] = useState(false);
+
+  console.log("Data: ", data);
 
   console.log("Rows: ", row);
 
@@ -59,15 +63,18 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
     }
   };
 
-  // Model Variables
-  // const [LeadModelOpen, setLeadModelOpen] = useState(false);
-  // const handleLeadModelOpen = () => setLeadModelOpen(true);
-  // const handleLeadModelClose = () => setLeadModelOpen(false);
-
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = (e) => {
     console.log(e.target.value);
   };
+
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page);
+  };
+
+  const renderedData = data?.QAs;
+
+  console.log("render: ", renderedData);
 
   const getExportData = () => {
     const data = row?.map((qa) => ({
@@ -108,23 +115,6 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
       flex: 1,
       headerAlign: "center",
     },
-    // {
-    //   field: "answers",
-    //   headerName: "Answers",
-    //   minWidth: 100,
-    //   flex: 1,
-    //   headerAlign: "center",
-    //   renderCell: (params) => (
-    //     <div style={{ whiteSpace: "pre-wrap" }}>
-    //       {params.row.answers.map((answer, index) => (
-    //         <span key={index}>
-    //           {index > 0 && "\n"}
-    //           {answer}
-    //         </span>
-    //       ))}
-    //     </div>
-    //   ),
-    // },
   ];
 
   //   const FetchQA = async (token) => {
@@ -178,10 +168,10 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
   //       });
   //   };
 
-  const FetchQA = async (token) => {
+  const FetchQA = async (token, page) => {
     setLoading(true);
     axios
-      .get(`${BACKEND_URL}/trainingdata?user_id=${user}`, {
+      .get(`${BACKEND_URL}/trainingdata?user_id=${user}&page=${page}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -193,15 +183,9 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
         console.log(result.data);
         console.log(result?.data?.QAs);
 
+        let res = result?.data;
+
         let data = result?.data?.QAs;
-        // let rowData = data?.map((qa, index) => ({
-        //   id: index + 1,
-        //   question: qa?.question,
-        //   answers:
-        //     qa?.answers.length > 0
-        //       ? qa?.answers.map((ans) => ans?.answer).join(", ")
-        //       : "No answers",
-        // }));
 
         let rowData = data?.map((qa, index) => ({
           id: index + 1,
@@ -211,6 +195,7 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
 
         console.log("Row Data: ", rowData);
 
+        setData(res);
         setRow(rowData);
       })
       .catch((err) => {
@@ -223,10 +208,10 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
   useEffect(() => {
     if (user) {
       const token = localStorage.getItem("auth-token");
-      FetchQA(token);
+      FetchQA(token, currentPage);
     }
     // eslint-disable-next-line
-  }, [user]);
+  }, [user, currentPage]);
 
   // ROW CLICK FUNCTION
   //   const handleRowClick = async (params) => {
@@ -374,7 +359,7 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
             </Button>
           </CSVLink>
 
-          {row && row?.length > 0 ? (
+          {/* {row && row?.length > 0 ? (
             row?.map((qa, index) => (
               <Accordion key={index} className="mb-4">
                 <AccordionSummary
@@ -414,8 +399,74 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
             >
               No data to display.
             </p>
-          )}
+          )} */}
+          {renderedData?.map((qa, index) => (
+            <Accordion key={index} className="mb-4">
+              <AccordionSummary
+                expandIcon={<BsChevronCompactDown />}
+                className={getSummaryBgClass()}
+              >
+                <HiBars3BottomLeft className="mr-4 mt-1" size={20} />
+                <Typography style={{ userSelect: "text" }}>
+                  {qa.question}
+                </Typography>
+                <BsTrash
+                  className="ml-2 mt-1 cursor-pointer"
+                  // onClick={handleDeleteQuestion}
+                />
+              </AccordionSummary>
+
+              <AccordionDetails className={getDetailBgClass()}>
+                <Typography>
+                  {qa?.answers.length > 0 ? (
+                    qa.answers.map((ans, ansIndex) => (
+                      <div key={ansIndex}>
+                        {ans}
+                        <hr />
+                        <br />
+                      </div>
+                    ))
+                  ) : (
+                    <span>No answer.</span>
+                  )}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+
+          {/* <Pagination
+            count={data?.links?.last_page}
+            page={currentPage}
+            onChange={handlePageChange}
+            color={currentMode === "dark" ? "primary" : "secondary"}
+          /> */}
+          <Pagination
+            count={data?.links?.last_page}
+            page={currentPage}
+            onChange={handlePageChange}
+            color={currentMode === "dark" ? "primary" : "secondary"}
+            sx={{
+              "& .Mui-selected": {
+                color: currentMode === "dark" ? "white" : "gray",
+                backgroundColor: currentMode === "dark" ? "black" : "white",
+                "&:hover": {
+                  backgroundColor: currentMode === "dark" ? "black" : "white",
+                },
+              },
+              "& .MuiPaginationItem-root": {
+                color: currentMode === "dark" ? "white" : "gray",
+              },
+            }}
+          />
         </>
+      )}
+
+      {renderedData?.length === 0 && (
+        <p
+          className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
+        >
+          No data to display.
+        </p>
       )}
     </div>
   );
