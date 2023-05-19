@@ -118,7 +118,9 @@ const SingleLead = ({
   };
 
   useEffect(() => {
-    fetchLastNote();
+    if(LeadData?.lid) {
+      fetchLastNote();
+    } 
   }, [LeadData]);
 
   return (
