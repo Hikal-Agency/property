@@ -432,7 +432,7 @@ function App() {
   useEffect(() => {
     setAllRoutes(routes);
 
-    const socketURL = "http://server1.hikalcrm.com:5000";
+    const socketURL = process.env.REACT_APP_SOCKET_URL;
     const socket = io(socketURL);
     setSocket(socket);
   }, []);
