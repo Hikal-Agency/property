@@ -1,8 +1,4 @@
-import {
-  Box,
-  Button as MuiButton,
-  Avatar,
-} from "@mui/material";
+import { Box, Button as MuiButton, Avatar } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -85,7 +81,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     setopenBackDrop,
     User,
     BACKEND_URL,
-    setSalesPerson
+    setSalesPerson,
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -186,11 +182,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 170,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => (
-        <RenderSalesperson
-          cellValues={cellValues}
-        />
-      ),
+      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
     },
     {
       field: "feedback",
@@ -236,33 +228,33 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 110,
       flex: 1,
     },
-    {
-      field: "otp",
-      headerName: "OTP",
-      headerAlign: "center",
-      // width: "130",
-      minWidth: 110,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <>
-            {cellValues.formattedValue === "Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
-              </div>
-            )}
+    // {
+    //   field: "otp",
+    //   headerName: "OTP",
+    //   headerAlign: "center",
+    //   // width: "130",
+    //   minWidth: 110,
+    //   flex: 1,
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <>
+    //         {cellValues.formattedValue === "Verified" && (
+    //           <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
+    //             <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
+    //           </div>
+    //         )}
 
-            {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#ff0000] p-1 rounded-md">
-                  NOT VERIFIED
-                </badge>
-              </div>
-            )}
-          </>
-        );
-      },
-    },
+    //         {cellValues.formattedValue === "Not Verified" && (
+    //           <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
+    //             <badge className="bg-[#ff0000] p-1 rounded-md">
+    //               NOT VERIFIED
+    //             </badge>
+    //           </div>
+    //         )}
+    //       </>
+    //     );
+    //   },
+    // },
     {
       field: "edit",
       headerName: "Edit",
@@ -501,7 +493,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       .scrollBy(-140, 0);
   };
 
-
   const columns = [
     {
       field: "id",
@@ -524,17 +515,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         );
       },
     },
-    {
-      field: "creationDate",
-      headerName: "Date",
-      // width: 150,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
-    },
+
     {
       field: "leadName",
       headerName: "Lead name",
@@ -542,44 +523,175 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 150,
       flex: 1,
       headerAlign: "center",
+      renderCell: (cellValues) => {
+        console.log("LEadname: ", cellValues);
+        return (
+          <div
+          // className="w-full flex flex-col items-center justify-center"
+          // style={{ height: "500px" }}
+          >
+            <p className="text-center font-bold mb-2">
+              {cellValues.formattedValue}
+            </p>
+            <div className="flex flex-row  w-full">
+              <div className="flex items-center w-full">
+                {cellValues?.row?.otp === "Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
+                    <badge className="bg-[#0f9d58] p-1 rounded-md">
+                      VERIFIED
+                    </badge>
+                  </div>
+                )}
+
+                {cellValues?.row?.otp === "Not Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
+                    <badge className="bg-[#ff0000] p-1 rounded-md">
+                      NOT VERIFIED
+                    </badge>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col items-center  justify-between w-full mt-3">
+              <p className=" text-center align-center text-sm font-medium text-gray-500">
+                Source :
+                {cellValues?.row?.leadSource.toLowerCase() ===
+                  "campaign snapchat" && (
+                  <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                    <FaSnapchat size={22} color={"#f6d80a"} />
+                  </div>
+                )}
+                {cellValues?.row?.leadSource.toLowerCase() ===
+                  "campaign facebook" && (
+                  <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                    <FaFacebook size={22} color={"#0e82e1"} />
+                  </div>
+                )}
+                {cellValues?.row?.leadSource.toLowerCase() ===
+                  "campaign tiktok" && (
+                  <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                    <img
+                      src={"/assets/tiktok-app.svg"}
+                      alt=""
+                      height={22}
+                      width={22}
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                {cellValues?.row?.leadSource.toLowerCase() ===
+                  "campaign googleads" && (
+                  <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
+                    <FcGoogle size={22} />
+                  </div>
+                )}
+                {cellValues?.row?.leadSource.toLowerCase() === "campaign" && (
+                  <div className="w-fit rounded-full flex items-center justify-center">
+                    <MdCampaign
+                      size={22}
+                      color={`${
+                        currentMode === "dark" ? "#ffffff" : "#000000"
+                      }`}
+                    />
+                  </div>
+                )}
+                {cellValues?.row?.leadSource.toLowerCase() === "cold" && (
+                  <div className="w-fit rounded-full flex items-center justify-center">
+                    <BsSnow2 size={22} color={"#0ec7ff"} />
+                  </div>
+                )}
+                {cellValues?.row?.leadSource.toLowerCase() === "personal" && (
+                  <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                    <BsPersonCircle size={22} color={"#14539a"} />
+                  </div>
+                )}
+              </p>
+            </div>
+            {/* <div className="flex flex-col items-center  justify-between w-full mt-3">
+              <p className=" text-center align-center text-sm font-medium text-gray-500">
+                Language : <b>{cellValues?.row?.language}</b>
+              </p>
+            </div> */}
+          </div>
+        );
+      },
     },
     {
       field: "leadContact",
       headerName: "Contact",
       // width: 150,
-      minWidth: 150,
+      minWidth: 70,
       flex: 1,
       headerAlign: "center",
+      renderCell: (cellValues) => {
+        console.log("LEadname: ", cellValues);
+        return (
+          <div
+          // className="w-full flex flex-col items-center justify-center"
+          // style={{ height: "500px" }}
+          >
+            <p className="text-center font-bold mb-2">
+              {cellValues.formattedValue}
+            </p>
+
+            <div className=" items-center  justify-between w-full mt-3">
+              <p className=" text-center align-center text-sm font-medium text-gray-500">
+                Language : <br /> <b>{cellValues?.row?.language}</b>
+              </p>
+            </div>
+          </div>
+        );
+      },
     },
     {
       field: "project",
       headerName: "Project",
       // width: 150,
-      minWidth: 110,
+      minWidth: 90,
       flex: 1,
       headerAlign: "center",
+      renderCell: (cellValues) => {
+        console.log("LEadname: ", cellValues);
+        return (
+          <div
+          // className="w-full flex flex-col items-center justify-center"
+          // style={{ height: "500px" }}
+          >
+            <p className="text-center font-bold mb-2">
+              {cellValues.formattedValue}
+            </p>
+
+            <div className=" items-center  justify-between w-full mt-3">
+              <p className=" text-center align-center text-sm font-medium text-gray-500">
+                Enquiry : <br /> <b>{cellValues?.row?.enquiryType}</b>
+              </p>
+            </div>
+          </div>
+        );
+      },
     },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      // width: 150,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "leadType",
-      headerName: "Property",
-      // width: 150,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
+    // {
+    //   field: "enquiryType",
+    //   headerName: "Enquiry",
+    //   // width: 150,
+    //   minWidth: 110,
+    //   flex: 1,
+    //   headerAlign: "center",
+    // },
+    // {
+    //   field: "leadType",
+    //   headerName: "Property",
+    //   // width: 150,
+    //   minWidth: 110,
+    //   flex: 1,
+    //   headerAlign: "center",
+    // },
+
     {
       field: "assignedToManager",
       headerName: "Manager",
       // width: 150,
-      minWidth: 200,
+      minWidth: 100,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
@@ -587,8 +699,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "assignedToSales",
       headerName: "Agent",
-      // width: 150,
-      minWidth: 200,
+      // width: 10,
+      minWidth: 100,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
@@ -597,7 +709,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "feedback",
       headerName: "Feedback",
       // width: 150,
-      minWidth: 160,
+      minWidth: 100,
       flex: 1,
       headerAlign: "center",
       hideable: false,
@@ -608,112 +720,123 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerName: "Priority",
       headerAlign: "center",
       // width: 150,
-      minWidth: 160,
+      minWidth: 100,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
-    {
-      field: "language",
-      headerName: "Language",
-      headerAlign: "center",
-      // width: 130,
-      minWidth: 110,
-      flex: 1,
-    },
-    {
-      field: "leadSource",
-      headerName: "Source",
-      // width: 110,
-      minWidth: 70,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full mx-auto flex justify-center ">
-            {cellValues.row.leadSource.toLowerCase() ===
-              "campaign snapchat" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <FaSnapchat size={22} color={"#f6d80a"} />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() ===
-              "campaign facebook" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <FaFacebook size={22} color={"#0e82e1"} />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <img
-                  src={"/assets/tiktok-app.svg"}
-                  alt=""
-                  height={22}
-                  width={22}
-                  className="object-cover"
-                />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() ===
-              "campaign googleads" && (
-              <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
-                <FcGoogle size={22} />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() === "campaign" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
-                <MdCampaign
-                  size={22}
-                  color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-                />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() === "cold" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
-                <BsSnow2 size={22} color={"#0ec7ff"} />
-              </div>
-            )}
-            {cellValues.row.leadSource.toLowerCase() === "personal" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <BsPersonCircle size={22} color={"#14539a"} />
-              </div>
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      field: "otp",
-      headerName: "OTP",
-      headerAlign: "center",
-      // width: "130",
-      minWidth: 110,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <>
-            {cellValues.formattedValue === "Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
-              </div>
-            )}
+    // {
+    //   field: "language",
+    //   headerName: "Language",
+    //   headerAlign: "center",
+    //   // width: 130,
+    //   minWidth: 70,
+    //   flex: 1,
+    // },
+    // {
+    //   field: "leadSource",
+    //   headerName: "Source",
+    //   // width: 110,
+    //   minWidth: 70,
+    //   flex: 1,
+    //   headerAlign: "center",
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div className="w-full mx-auto flex justify-center ">
+    //         {cellValues.row.leadSource.toLowerCase() ===
+    //           "campaign snapchat" && (
+    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //             <FaSnapchat size={22} color={"#f6d80a"} />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() ===
+    //           "campaign facebook" && (
+    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //             <FaFacebook size={22} color={"#0e82e1"} />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
+    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //             <img
+    //               src={"/assets/tiktok-app.svg"}
+    //               alt=""
+    //               height={22}
+    //               width={22}
+    //               className="object-cover"
+    //             />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() ===
+    //           "campaign googleads" && (
+    //           <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
+    //             <FcGoogle size={22} />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() === "campaign" && (
+    //           <div className="w-fit rounded-full flex items-center justify-center">
+    //             <MdCampaign
+    //               size={22}
+    //               color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+    //             />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() === "cold" && (
+    //           <div className="w-fit rounded-full flex items-center justify-center">
+    //             <BsSnow2 size={22} color={"#0ec7ff"} />
+    //           </div>
+    //         )}
+    //         {cellValues.row.leadSource.toLowerCase() === "personal" && (
+    //           <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //             <BsPersonCircle size={22} color={"#14539a"} />
+    //           </div>
+    //         )}
+    //       </div>
+    //     );
+    //   },
+    // },
+    // {
+    //   field: "otp",
+    //   headerName: "OTP",
+    //   headerAlign: "center",
+    //   // width: "130",
+    //   minWidth: 110,
+    //   flex: 1,
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <>
+    //         {cellValues.formattedValue === "Verified" && (
+    //           <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
+    //             <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
+    //           </div>
+    //         )}
 
-            {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#ff0000] p-1 rounded-md">
-                  NOT VERIFIED
-                </badge>
-              </div>
-            )}
-          </>
-        );
-      },
+    //         {cellValues.formattedValue === "Not Verified" && (
+    //           <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
+    //             <badge className="bg-[#ff0000] p-1 rounded-md">
+    //               NOT VERIFIED
+    //             </badge>
+    //           </div>
+    //         )}
+    //       </>
+    //     );
+    //   },
+    // },
+    {
+      field: "creationDate",
+      headerName: "Date",
+      // width: 150,
+      minWidth: 80,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
     {
       field: "edit",
       headerName: "Edit",
       // width: 150,
-      minWidth: 170,
+      minWidth: 50,
       flex: 1,
       headerAlign: "center",
       sortable: false,
@@ -721,7 +844,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
+          <div className="deleteLeadBtn space-x-2 w-full  items-center justify-center ">
             {/* <Button
               onClick={() => HandleEditFunc(cellValues)}
               className={`${
@@ -1251,6 +1374,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       <ToastContainer />
       <Box
         width={"73vw"}
+        // width={"100%"}
         sx={{
           ...DataGridStyles,
           position: "relative",
@@ -1301,7 +1425,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         <div style={{ position: "relative" }}>
           {pageState.data.length > 0 && (
             <>
-              <div onClick={handleNextArrow}>
+              {/* <div onClick={handleNextArrow}>
                 <Avatar
                   className="shadow-md"
                   style={{
@@ -1322,7 +1446,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 >
                   <GrFormPrevious size={30} />
                 </Avatar>
-              </div>
+              </div> */}
             </>
           )}
           <DataGrid
@@ -1335,7 +1459,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             loading={pageState.isLoading}
             rowsPerPageOptions={[30, 50, 75, 100]}
             pagination
-            width="auto"
+            width="80vw"
+            rowHeight={170}
             paginationMode="server"
             page={pageState.page - 1}
             checkboxSelection
@@ -1392,10 +1517,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 top: 0,
                 zIndex: 10,
               },
+
+              "& .MuiDataGrid-cellCheckbox": {
+                padding: "0 6px", // Adjust the padding as needed
+                width: "10px",
+              },
             }}
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
             }
+            columnWidths={{
+              checkbox: "40px", // Adjust the width as needed
+            }}
           />
         </div>
 

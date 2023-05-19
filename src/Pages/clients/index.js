@@ -473,7 +473,7 @@ const Clients = () => {
       }
     }
   };
-  
+
   useEffect(() => {
     // const token = localStorage.getItem("auth-token");
     // FetchLeads(token);
@@ -727,49 +727,48 @@ const Clients = () => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-            <div className={`w-full `}>
-              <div className="px-5">
-                
-                <div className="my-5 mb-10">
-                  <div className="my-3">
-                    <h2
-                      className={` ${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      } font-semibold text-xl`}
-                    >
-                      Clients
-                    </h2>
-                  </div>
-                  <Box width={"100%"} sx={DataGridStyles}>
-                    <DataGrid
-                      autoHeight
-                      disableSelectionOnClick
-                      onRowClick={handleRowClick}
-                      rowCount={pageState.total}
-                      rowsPerPageOptions={[30, 50, 75, 100]}
-                      pagination
-                      width="auto"
-                      rowHeight={90}
-                      paginationMode="server"
-                      rows={pageState?.data}
-                      loading={pageState.isLoading}
-                      columns={columns}
-                      sx={{
-                        boxShadow: 2,
-                        "& .MuiDataGrid-cell:hover": {
-                          cursor: "pointer",
-                        },
-                      }}
-                      getRowClassName={(params) =>
-                        params.indexRelativeToCurrentPage % 2 === 0
-                          ? "even"
-                          : "odd"
-                      }
-                    />
-                  </Box>
+          <div className={`w-full `}>
+            <div className="px-5">
+              <div className="my-5 mb-10">
+                <div className="my-3">
+                  <h2
+                    className={` ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    } font-semibold text-xl`}
+                  >
+                    Clients
+                  </h2>
                 </div>
+                <Box width={"100%"} sx={DataGridStyles}>
+                  <DataGrid
+                    autoHeight
+                    disableSelectionOnClick
+                    onRowClick={handleRowClick}
+                    rowCount={pageState.total}
+                    rowsPerPageOptions={[30, 50, 75, 100]}
+                    pagination
+                    width="auto"
+                    rowHeight={90}
+                    paginationMode="server"
+                    rows={pageState?.data}
+                    loading={pageState.isLoading}
+                    columns={columns}
+                    sx={{
+                      boxShadow: 2,
+                      "& .MuiDataGrid-cell:hover": {
+                        cursor: "pointer",
+                      },
+                    }}
+                    getRowClassName={(params) =>
+                      params.indexRelativeToCurrentPage % 2 === 0
+                        ? "even"
+                        : "odd"
+                    }
+                  />
+                </Box>
               </div>
             </div>
+          </div>
           <Footer />
         </div>
       </div>
