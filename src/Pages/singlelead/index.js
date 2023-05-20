@@ -101,7 +101,7 @@ const SingleLeadPage = () => {
     try {
       const token = localStorage.getItem("auth-token");
       const result = await axios.get(
-        `${BACKEND_URL}/`,
+        `${BACKEND_URL}/coldLeads/${lid}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -109,6 +109,7 @@ const SingleLeadPage = () => {
           },
         }
       );
+      
       console.log(result);
 
       setloading(false);
