@@ -1,5 +1,6 @@
 import React from "react";
 import { Bar, Line } from "react-chartjs-2";
+import "./styling.css";
 
 const CombineChart = () => {
   const chartData = {
@@ -80,7 +81,8 @@ const CombineChart = () => {
   };
 
   return (
-    <div>
+    <div className="barChartDiv" style={{ height: "300px", width: "100%" }}>
+      {" "}
       <Bar data={chartData} options={chartOptions} />
     </div>
   );

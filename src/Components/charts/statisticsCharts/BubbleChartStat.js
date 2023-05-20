@@ -9,7 +9,8 @@ const BubbleChartStat = () => {
     labels: ["Red", "Blue", "Yellow", "Green", "Purple"],
     datasets: [
       {
-        data: [12, 19, 3, 5, 2],
+        // data: [12, 19, 3, 5, 2],
+        data: [1, 19, 3, 5, 2],
         backgroundColor: [
           currentMode === "dark" ? "#db2828" : "#2185d0",
           currentMode === "dark" ? "#2185d0" : "#f2711c",

@@ -2,21 +2,9 @@ import React, { useEffect } from "react";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5map from "@amcharts/amcharts5/map";
 import am5geodata_worldLow from "@amcharts/amcharts5-geodata/worldLow";
-
+import "./styling.css";
 const MapChartStatistics = () => {
   useEffect(() => {
-    // remove logo
-    const removeSecondCanvas = () => {
-      const chartDiv = document.getElementById("chartDiv");
-      if (chartDiv) {
-        const secondCanvas = chartDiv.querySelector("canvas:nth-child(2)");
-        if (secondCanvas) {
-          secondCanvas.style.display = "none";
-        }
-      }
-    };
-
-    removeSecondCanvas();
     // Create root and chart
     let root = am5.Root.new("chartdiv");
     let chart = root.container.children.push(

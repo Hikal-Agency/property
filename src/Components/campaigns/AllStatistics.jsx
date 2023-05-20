@@ -347,7 +347,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
     );
   }
   return (
-    <div className="pb-10">
+    <div className="pb-10 mb-5">
       <div className=" mb-5">
         {/* data starts */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-3 text-center">

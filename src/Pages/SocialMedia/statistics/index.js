@@ -53,7 +53,7 @@ const Statistics = () => {
         <title>HIKAL CRM - Lead Notes</title>
         <meta name="description" content="Meetings - HIKAL CRM" />
       </Head> */}
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen mb-4">
         {loading ? (
           <Loader />
         ) : (
@@ -64,7 +64,6 @@ const Statistics = () => {
           >
             <div className={`w-full `}>
               <div className="px-5">
-                
                 {/* <div className="mt-3">
                     <h1
                       className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
