@@ -844,7 +844,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn space-x-2 w-full  items-center justify-center ">
+          <div className="deleteLeadBtn space-x-2 w-full  items-center justify-start ">
             {/* <Button
               onClick={() => HandleEditFunc(cellValues)}
               className={`${
@@ -897,9 +897,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
+              } `}
             >
-              <BsTrash className="deleteLeadBtn" size={18} />
+              <BsTrash className="deleteLeadBtn mr-5" size={18} />
             </p>
           </div>
         );
@@ -1459,7 +1459,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             rowsPerPageOptions={[30, 50, 75, 100]}
             pagination
             width="auto"
-            rowHeight={160}
+            // rowHeight={160}
+            getRowHeight={() => "auto"}
             paginationMode="server"
             page={pageState.page - 1}
             checkboxSelection

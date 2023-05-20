@@ -3,6 +3,7 @@ import {
   Box,
   CircularProgress,
   Dialog,
+  FormControl,
   IconButton,
   MenuItem,
   Select,
@@ -148,26 +149,28 @@ const RenderManagers = ({ cellValues }) => {
         )}
       </Select> */}
 
-      <Select
-        id="manager"
-        value={manager2 ?? "select_manager"}
-        label="Manager"
-        onChange={ChangeManager}
-        size="medium"
-        className="w-[100%] h-[75%]"
-        displayEmpty
-        required
-      >
-        {!manager2 && (
-          <MenuItem value="select_manager">Select Manager</MenuItem>
-        )}
-        {Managers?.length > 0 &&
-          Managers.map((manager, index) => (
-            <MenuItem key={index} value={manager?.id}>
-              {manager?.userName}
-            </MenuItem>
-          ))}
-      </Select>
+      <FormControl size="small">
+        <Select
+          id="manager"
+          value={manager2 ?? "select_manager"}
+          label="Manager"
+          onChange={ChangeManager}
+          size="medium"
+          className="w-[100%] h-[2.5rem]"
+          displayEmpty
+          required
+        >
+          {!manager2 && (
+            <MenuItem value="select_manager">Select Manager</MenuItem>
+          )}
+          {Managers?.length > 0 &&
+            Managers.map((manager, index) => (
+              <MenuItem key={index} value={manager?.id}>
+                {manager?.userName}
+              </MenuItem>
+            ))}
+        </Select>
+      </FormControl>
 
       {Dialogue && (
         <>
