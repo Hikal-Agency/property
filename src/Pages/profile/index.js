@@ -4,7 +4,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
-import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
 import { GeneralInfo as GeneralInfoTab } from "../../Components/profile/GeneralInfo.jsx";
@@ -24,6 +23,7 @@ const ProfilePage = () => {
     darkModeColors,
     setopenBackDrop,
     BACKEND_URL,
+    setUser
   } = useStateContext();
   const [GeneralInfoData, setGeneralInfo] = useState({
     userAltContact: "",
@@ -33,7 +33,6 @@ const ProfilePage = () => {
   });
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
-  const [selectedImage, setSelectedImage] = useState(null);
   const [imagePickerModal, setImagePickerModal] = useState(false);
 
   // Btn loading
@@ -43,6 +42,21 @@ const ProfilePage = () => {
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const SetUserProfilePic = (url) => {
+    setUser((user) => ({
+      ...user,
+      displayImg: url,
+    }));
+    const localStorageUser = JSON.parse(localStorage.getItem("user"));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        ...localStorageUser,
+        displayImg: url,
+      })
+    );
   };
 
   const FetchProfile = async (token) => {
@@ -67,6 +81,10 @@ const ProfilePage = () => {
           dob: result.data.user[0].dob,
           gender: result.data.user[0].gender,
         });
+
+        if(result.data.user[0].profile_picture !== User?.displayImg) {
+          SetUserProfilePic(result.data.user[0].profile_picture);
+        }
 
         console.log("Personal info: ", PersonalInfo.address);
         // setgender(User?.gender);
@@ -371,52 +389,6 @@ const ProfilePage = () => {
       });
   };
 
-  const handlePickImage = (e) => {
-    const file = e.target.files[0];
-    console.log("File: ", file);
-    setSelectedImage(file);
-    console.log("Selected: ", selectedImage);
-  };
-
-  const UpdateProfileImage = async (file) => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      const imageData = new FormData();
-      imageData.append("image", selectedImage);
-      // imageData.append("image", file);
-
-      console.log("Image Data: ", imageData);
-
-      const result = await axios.post(
-        `${BACKEND_URL}/user/profile-picture`,
-        imageData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      console.log("Result", result);
-    } catch (err) {
-      console.error(err);
-      toast.error("Error in Updating Profile Image", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
-  // useEffect(() => {
-  //   if (selectedImage) {
-  //     UpdateProfileImage(selectedImage);
-  //   }
-  // }, [selectedImage]);
 
   return (
     <>

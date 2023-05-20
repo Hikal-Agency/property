@@ -477,23 +477,7 @@ const Clients = () => {
     // FetchLeads(token);
     const authToken = localStorage.getItem("auth-token");
     setToken(authToken);
-    if (User?.uid && User?.loginId) {
-      // FetchProfile(authToken);
-      FetchLeads(authToken);
-    } else {
-      if (authToken) {
-        // FetchProfile(authToken);
-        FetchLeads(authToken);
-        console.log("I ma fetching");
-      } else {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
-    }
+    FetchLeads(authToken);
   }, [pageState.page]);
 
   const columns = [

@@ -146,7 +146,7 @@ const Sidebarmui = () => {
             agency: result.data.user[0].agency,
             created_at: result.data.user[0].created_at,
             creationDate: result.data.user[0].creationDate,
-            displayImg: result.data.user[0].displayImg,
+            displayImg: result.data.user[0].profile_picture,
             expiry_date: result.data.user[0].expiry_date,
             gender: result.data.user[0].gender,
             id: result.data.user[0].id,
