@@ -1374,7 +1374,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       <ToastContainer />
       <Box
         width={"73vw"}
-        // width={"100%"}
         sx={{
           ...DataGridStyles,
           position: "relative",
@@ -1459,8 +1458,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             loading={pageState.isLoading}
             rowsPerPageOptions={[30, 50, 75, 100]}
             pagination
-            width="80vw"
-            rowHeight={170}
+            width="auto"
+            rowHeight={160}
             paginationMode="server"
             page={pageState.page - 1}
             checkboxSelection
@@ -1527,7 +1526,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
             }
             columnWidths={{
-              checkbox: "40px", // Adjust the width as needed
+              checkbox: "30px",
             }}
           />
         </div>
