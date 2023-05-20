@@ -48,6 +48,7 @@ import Sidebarmui from "../Components/Sidebar/Sidebarmui";
 import { Routes, Route } from "react-router-dom";
 import Statistics from "./SocialMedia/statistics";
 import AllQA from "./qaform/allQA";
+import SingleLeadPage from "./singlelead";
 import Navbar from "../Components/Navbar/Navbar";
 
 const libraries = ["places"];
@@ -132,6 +133,11 @@ const routes = [
     path: "/leadnotes/:id",
     element: <SingleLeadNote />,
     pageName: "Lead Notes",
+  },
+  {
+    path: "/lead/:lid", 
+    element: <SingleLeadPage/>, 
+    page: "Lead"
   },
   {
     path: "/meetings",
@@ -432,7 +438,7 @@ function App() {
   useEffect(() => {
     setAllRoutes(routes);
 
-    const socketURL = "http://server1.hikalcrm.com:5000";
+    const socketURL = process.env.REACT_APP_SOCKET_URL;
     const socket = io(socketURL);
     setSocket(socket);
   }, []);

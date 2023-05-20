@@ -18,7 +18,6 @@ const LeadNotes = ({ pageState, setpageState }) => {
   const [searchText, setSearchText] = useState("");
   // eslint-disable-next-line
   const navigate = useNavigate();
-  const location = useLocation();
 
   // Model Variables
   // const [LeadModelOpen, setLeadModelOpen] = useState(false);

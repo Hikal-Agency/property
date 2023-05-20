@@ -48,13 +48,13 @@ const arrowStyles = {
   height: 50,
   top: "50%",
   transform: "translateY(-50%)",
-  zIndex: 1000,
+  zIndex: 10,
 };
 
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const token = localStorage.getItem("auth-token");
   const navigate = useNavigate();
-  const [singleLeadData, setsingleLeadData] = useState();
+  const [singleLeadData, setsingleLeadData] = useState({});
   const [deleteloading, setdeleteloading] = useState(false);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
 

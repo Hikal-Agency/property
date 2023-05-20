@@ -48,7 +48,7 @@ const arrowStyles = {
   height: 50,
   top: "50%",
   transform: "translateY(-50%)",
-  zIndex: 1000,
+  zIndex: 10,
 };
 
 const BookedDeals = ({

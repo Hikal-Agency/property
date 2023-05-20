@@ -1,14 +1,11 @@
 import { Button } from "@material-tailwind/react";
 
-import { Box, CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import Footer from "../../Components/Footer/Footer";
 import { RiRadioButtonLine } from "react-icons/ri";
-import { AiOutlineEdit } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 
 import { ImUser } from "react-icons/im";

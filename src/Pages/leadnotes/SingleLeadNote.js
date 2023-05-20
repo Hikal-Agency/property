@@ -13,16 +13,13 @@ import {
 import axios from "axios";
 import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import Footer from "../../Components/Footer/Footer";
 import Loader from "../../Components/Loader";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const SingleLeadNote = (props) => {
-  const navigate = useNavigate();
   const location = useLocation();
   const leadId = location.pathname.split("/")[2];
   const [loading, setloading] = useState(true);
@@ -111,6 +108,12 @@ const SingleLeadNote = (props) => {
         });
       });
   };
+
+  useEffect(() => {
+    if(leadId) {
+      fetchLead();
+    }
+  }, []);
   return (
     <>
       {/* <Head>
