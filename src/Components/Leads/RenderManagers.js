@@ -6,8 +6,10 @@ import {
   FormControl,
   IconButton,
   MenuItem,
-  Select,
+  // Select,
 } from "@mui/material";
+import Select from "@mui/material/Select";
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
@@ -111,9 +113,7 @@ const RenderManagers = ({ cellValues }) => {
 
   return (
     <Box
-      className={`${
-        currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-      } w-full h-full flex items-center justify-center`}
+      className={` w-full h-full flex items-center justify-center`}
       sx={SelectStyles}
     >
       {/* <Select
@@ -149,16 +149,17 @@ const RenderManagers = ({ cellValues }) => {
         )}
       </Select> */}
 
-      <FormControl size="small">
+      <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
         <Select
           id="manager"
           value={manager2 ?? "select_manager"}
           label="Manager"
           onChange={ChangeManager}
           size="medium"
-          className="w-[100%] h-[2.5rem]"
+          className="w-full border border-gray-300 rounded"
           displayEmpty
           required
+          sx={{ border: "1px solid #000000" }}
         >
           {!manager2 && (
             <MenuItem value="select_manager">Select Manager</MenuItem>

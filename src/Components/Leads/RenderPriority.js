@@ -3,10 +3,13 @@ import {
   Box,
   CircularProgress,
   Dialog,
+  FormControl,
   IconButton,
   MenuItem,
-  Select,
+  // Select,
 } from "@mui/material";
+import Select from "@mui/material/Select";
+
 import axios from "axios";
 import React, { useState } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
@@ -91,9 +94,7 @@ const RenderPriority = ({ cellValues }) => {
 
   return (
     <Box
-      className={`${
-        currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-      } w-full h-full flex items-center justify-center`}
+      className={`w-full h-full flex items-center justify-center`}
       sx={SelectStyles}
     >
       {/* <Select
@@ -111,25 +112,27 @@ const RenderPriority = ({ cellValues }) => {
         <MenuItem value={"Medium"}>Medium</MenuItem>
         <MenuItem value={"Low"}>Low</MenuItem>
       </Select> */}
-      <Select
-        id="priority"
-        value={Priority != null ? Priority : "set_priority"}
-        label="Priority"
-        onChange={ChangePriority}
-        size="medium"
-        className="w-[90%] h-[75%]"
-        displayEmpty
-        required
-      >
-        {Priority != null ? (
-          <MenuItem value={Priority}>Priority {Priority}</MenuItem>
-        ) : (
-          <MenuItem value={"set_priority"}>Set Priority</MenuItem>
-        )}
-        <MenuItem value={"High"}>High</MenuItem>
-        <MenuItem value={"Medium"}>Medium</MenuItem>
-        <MenuItem value={"Low"}>Low</MenuItem>
-      </Select>
+      <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
+        <Select
+          id="priority"
+          value={Priority != null ? Priority : "set_priority"}
+          label="Priority"
+          onChange={ChangePriority}
+          size="medium"
+          className="w-[90%] h-[75%]"
+          displayEmpty
+          required
+        >
+          {Priority != null ? (
+            <MenuItem value={Priority}>Priority {Priority}</MenuItem>
+          ) : (
+            <MenuItem value={"set_priority"}>Set Priority</MenuItem>
+          )}
+          <MenuItem value={"High"}>High</MenuItem>
+          <MenuItem value={"Medium"}>Medium</MenuItem>
+          <MenuItem value={"Low"}>Low</MenuItem>
+        </Select>
+      </FormControl>
 
       {PriorityDialogue && (
         <>

@@ -855,14 +855,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <AiOutlineEdit size={20} />
             </Button> */}
-            <p
-              onClick={() => HandleEditFunc(cellValues)}
-              className={`${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
-            >
+            <p onClick={() => HandleEditFunc(cellValues)} className={``}>
               {/* <AiTwotoneEdit size={20} /> */}
               <AiOutlineEdit size={20} />
             </p>
@@ -876,31 +869,26 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <AiOutlineHistory size={20} />
             </p> */}
-            <Link
-              to={`/timeline/${cellValues.row.lid}`}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
+            <div
+              className="items-center mt-4 "
+              sx={{ marginRight: "700px !important" }}
             >
+              <p
+                onClick={() => {
+                  setLeadToDelete(cellValues?.row.lid);
+                  setDeleteModelOpen(true);
+                  setBulkDeleteClicked(false);
+                }}
+                disabled={deleteloading ? true : false}
+                // className="flex items-center"
+                sx={{ marginLeft: "700px !important" }}
+              >
+                <BsTrash size={18} sx={{ marginLeft: "700px !important" }} />
+              </p>
+            </div>
+            <Link to={`/timeline/${cellValues.row.lid}`} className={` `}>
               <AiOutlineHistory size={20} />
             </Link>
-            <p
-              onClick={() => {
-                setLeadToDelete(cellValues?.row.lid);
-                setDeleteModelOpen(true);
-                setBulkDeleteClicked(false);
-              }}
-              disabled={deleteloading ? true : false}
-              className={`deleteLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              } `}
-            >
-              <BsTrash className="deleteLeadBtn mr-5" size={18} />
-            </p>
           </div>
         );
       },

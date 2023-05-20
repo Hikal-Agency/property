@@ -6,9 +6,10 @@ import {
   IconButton,
   InputLabel,
   MenuItem,
-  Select,
+  // Select,
   TextField,
 } from "@mui/material";
+import Select from "@mui/material/Select";
 import { Box } from "@mui/system";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -158,9 +159,7 @@ const RenderFeedback = ({ cellValues }) => {
 
   return (
     <Box
-      className={`relative w-full h-full flex items-center justify-center ${
-        currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-      }`}
+      className={`relative w-full h-full flex items-center justify-center `}
       sx={SelectStyles}
     >
       {/* <Select
@@ -189,32 +188,34 @@ const RenderFeedback = ({ cellValues }) => {
         <MenuItem value={"Not Interested"}>Not Interested</MenuItem>
         <MenuItem value={"Unreachable"}>Unreachable</MenuItem>
       </Select> */}
-      <Select
-        id="feedback"
-        value={Feedback ?? "selected"}
-        label="Feedback"
-        onChange={ChangeFeedback}
-        size="medium"
-        className="w-[100%] h-[75%] border-none"
-        displayEmpty
-        required
-      >
-        {!Feedback ? (
-          <MenuItem value={"selected"} selected>
-            Select Feedback
-          </MenuItem>
-        ) : null}
+      <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
+        <Select
+          id="feedback"
+          value={Feedback ?? "selected"}
+          label="Feedback"
+          onChange={ChangeFeedback}
+          size="medium"
+          className="w-[100%] h-[75%] border-none"
+          displayEmpty
+          required
+        >
+          {!Feedback ? (
+            <MenuItem value={"selected"} selected>
+              Select Feedback
+            </MenuItem>
+          ) : null}
 
-        <MenuItem value={"New"}>New</MenuItem>
-        <MenuItem value={"Follow Up"}>Follow Up</MenuItem>
-        <MenuItem value={"Meeting"}>Meeting</MenuItem>
-        <MenuItem value={"Booked"}>Booked</MenuItem>
-        <MenuItem value={"Duplicate"}>Duplicate</MenuItem>
-        <MenuItem value={"No Answer"}>No Answer</MenuItem>
-        <MenuItem value={"Low Budget"}>Low Budget</MenuItem>
-        <MenuItem value={"Not Interested"}>Not Interested</MenuItem>
-        <MenuItem value={"Unreachable"}>Unreachable</MenuItem>
-      </Select>
+          <MenuItem value={"New"}>New</MenuItem>
+          <MenuItem value={"Follow Up"}>Follow Up</MenuItem>
+          <MenuItem value={"Meeting"}>Meeting</MenuItem>
+          <MenuItem value={"Booked"}>Booked</MenuItem>
+          <MenuItem value={"Duplicate"}>Duplicate</MenuItem>
+          <MenuItem value={"No Answer"}>No Answer</MenuItem>
+          <MenuItem value={"Low Budget"}>Low Budget</MenuItem>
+          <MenuItem value={"Not Interested"}>Not Interested</MenuItem>
+          <MenuItem value={"Unreachable"}>Unreachable</MenuItem>
+        </Select>
+      </FormControl>
 
       {DialogueVal && (
         <>

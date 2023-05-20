@@ -3,10 +3,13 @@ import {
   Box,
   CircularProgress,
   Dialog,
+  FormControl,
   IconButton,
   MenuItem,
-  Select,
+  // Select,
 } from "@mui/material";
+import Select from "@mui/material/Select";
+
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
@@ -129,9 +132,7 @@ const RenderSalesperson = ({ cellValues }) => {
 
   return (
     <Box
-      className={`${
-        currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-      } w-full h-full flex items-center justify-center`}
+      className={`w-full h-full flex items-center justify-center`}
       sx={SelectStyles}
     >
       {noAgents ? (
@@ -139,38 +140,40 @@ const RenderSalesperson = ({ cellValues }) => {
           No Agents
         </p>
       ) : (
-        <Select
-          id="SalesPerson"
-          value={SalesPerson2 ?? "selected_agent"}
-          name="salesperson"
-          label="Salesperson"
-          onChange={ChangeSalesPerson}
-          size="medium"
-          className="w-[100%] h-[75%]"
-          displayEmpty
-          required
-        >
-          {!SalesPerson2 && (
-            <MenuItem value={"selected_agent"} selected>
-              {" "}
-              Select Agent
-            </MenuItem>
-          )}
+        <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
+          <Select
+            id="SalesPerson"
+            value={SalesPerson2 ?? "selected_agent"}
+            name="salesperson"
+            label="Salesperson"
+            onChange={ChangeSalesPerson}
+            size="medium"
+            className="w-[100%] h-[75%]"
+            displayEmpty
+            required
+          >
+            {!SalesPerson2 && (
+              <MenuItem value={"selected_agent"} selected>
+                {" "}
+                Select Agent
+              </MenuItem>
+            )}
 
-          {SalesPersonsList?.length > 0 &&
-            SalesPersonsList?.map((salesperson, index) => {
-              return (
-                <MenuItem
-                  key={index}
-                  value={salesperson?.id}
-                  data
-                  name={salesperson?.userName}
-                >
-                  {salesperson?.userName}
-                </MenuItem>
-              );
-            })}
-        </Select>
+            {SalesPersonsList?.length > 0 &&
+              SalesPersonsList?.map((salesperson, index) => {
+                return (
+                  <MenuItem
+                    key={index}
+                    value={salesperson?.id}
+                    data
+                    name={salesperson?.userName}
+                  >
+                    {salesperson?.userName}
+                  </MenuItem>
+                );
+              })}
+          </Select>
+        </FormControl>
       )}
 
       {Dialogue && (
