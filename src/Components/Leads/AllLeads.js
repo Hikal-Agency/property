@@ -498,7 +498,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "id",
       headerName: "#",
       // width: 150,
-      minWidth: 50,
+      minWidth: 30,
       flex: 1,
       headerAlign: "center",
       renderCell: (cellValues) => {
@@ -844,7 +844,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn space-x-2 w-full  items-center justify-start ">
+          <div
+            className={`deleteLeadBtn space-x-2 w-full  items-center justify-start ${
+              currentMode === "dark"
+                ? "bg-[#000000] text-white"
+                : "bg-[#000000] text-white"
+            }`}
+          >
             {/* <Button
               onClick={() => HandleEditFunc(cellValues)}
               className={`${
@@ -1361,12 +1367,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <div className="pb-10">
       <ToastContainer />
       <Box
-        width={"73vw"}
+        // width={"73vw"}
+        width="78vw"
         sx={{
           ...DataGridStyles,
           position: "relative",
           marginLeft: "auto",
           marginRight: "auto",
+          marginBottom: "100px",
         }}
       >
         {selectedRows.length > 0 && (
@@ -1410,32 +1418,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           id="bulkImport"
         />
         <div style={{ position: "relative" }}>
-          {pageState.data.length > 0 && (
-            <>
-              {/* <div onClick={handleNextArrow}>
-                <Avatar
-                  className="shadow-md"
-                  style={{
-                    ...arrowStyles,
-                    right: -30,
-                  }}
-                >
-                  <GrFormNext size={30} />
-                </Avatar>
-              </div>
-              <div onClick={handlePrevArrow}>
-                <Avatar
-                  className="shadow-md"
-                  style={{
-                    ...arrowStyles,
-                    left: -30,
-                  }}
-                >
-                  <GrFormPrevious size={30} />
-                </Avatar>
-              </div> */}
-            </>
-          )}
+          {pageState.data.length > 0 && <></>}
           <DataGrid
             ref={dataTableRef}
             autoHeight
@@ -1507,8 +1490,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               },
 
               "& .MuiDataGrid-cellCheckbox": {
-                padding: "0 6px", // Adjust the padding as needed
-                width: "10px",
+                padding: "0 ", // Adjust the padding as needed
+                width: "1px",
               },
             }}
             getRowClassName={(params) =>
