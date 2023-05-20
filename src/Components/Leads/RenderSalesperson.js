@@ -136,7 +136,13 @@ const RenderSalesperson = ({ cellValues }) => {
       sx={SelectStyles}
     >
       {noAgents ? (
-        <p style={{ color: "#0000005c", textAlign: "left", width: "85%" }}>
+        <p
+          style={{
+            color: currentMode === "dark" ? "#0000005c" : "#ffffff",
+            textAlign: "left",
+            width: "85%",
+          }}
+        >
           No Agents
         </p>
       ) : (

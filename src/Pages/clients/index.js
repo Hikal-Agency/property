@@ -17,7 +17,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router";
 import DeactivateModel from "./deactivateModel";
-import apiClient from "../../axoisConfig";
+// import axios from "../../axoisConfig";
 
 const Clients = () => {
   // const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
@@ -67,7 +67,7 @@ const Clients = () => {
       //   }
       // );
 
-      const deactivateAccount = await apiClient.get(
+      const deactivateAccount = await axios.get(
         `${BACKEND_URL}/blockagency/${accountDeactivate}`,
         {
           headers: {
@@ -115,7 +115,7 @@ const Clients = () => {
       //     Authorization: "Bearer " + token,
       //   },
       // });
-      accountCount = await apiClient.get(`${BACKEND_URL}/totalUser/${id}`, {
+      accountCount = await axios.get(`${BACKEND_URL}/totalUser/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -149,7 +149,7 @@ const Clients = () => {
       //     Authorization: "Bearer " + token,
       //   },
       // });
-      accounts = await apiClient.get(`${BACKEND_URL}/activeAccounts/${id}`, {
+      accounts = await axios.get(`${BACKEND_URL}/activeAccounts/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -183,7 +183,7 @@ const Clients = () => {
       //     Authorization: "Bearer " + token,
       //   },
       // });
-      userLeads = await apiClient.get(`${BACKEND_URL}/usersleads/${id}`, {
+      userLeads = await axios.get(`${BACKEND_URL}/usersleads/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -215,81 +215,171 @@ const Clients = () => {
   //     isLoading: true,
   //   }));
 
-  //   const MAX_RETRY_COUNT = 50; // maximum number of times to retry the API call
+  //   const MAX_RETRY_COUNT = 5; // maximum number of times to retry the API call
   //   const RETRY_DELAY = 9000; // delay in milliseconds between each retry
+  //   const STORAGE_KEY = "leadsData";
+  //   const EXPIRY_TIME = 10 * 60 * 1000; // 10 minutes expiry time
 
   //   let retryCount = 0;
+  //   let shouldFetchFromApi = true;
 
-  //   while (retryCount < MAX_RETRY_COUNT) {
-  //     try {
-  //       const response = await axios.get(
-  //         `${BACKEND_URL}/clients?page=${pageState.page}`,
-  //         {
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: "Bearer " + token,
-  //           },
-  //         }
-  //       );
-
-  //       console.log("Clients ", response);
-
-  //       const clientsData = response.data.clients.data;
-  //       console.log("clients array is", clientsData);
-
-  //       const rowsdataPromises = clientsData?.map(async (client, index) => ({
-  //         id:
-  //           pageState.page > 1
-  //             ? pageState.page * pageState.pageSize -
-  //               (pageState.pageSize - 1) +
-  //               index
-  //             : index + 1,
-  //         creationDate: client?.creationDate,
-  //         businessName: client?.businessName,
-  //         clientContact: client?.clientContact,
-  //         clientEmail: client?.clientEmail,
-  //         project: client?.website,
-  //         clientName: client?.clientName,
-  //         clientId: client?.id,
-  //         totalLeads: await LeadCount(token, client?.id),
-  //         activeAccounts: await activeAccountCount(token, client?.id),
-  //         totalAccounts: await totalUser(token, client?.id),
-  //       }));
-
-  //       const rowsdata = await Promise.all(rowsdataPromises);
-
-  //       console.log("Rows data here: ", rowsdata);
-
+  //   // Check if data is present in local storage and if it is not expired
+  //   const storedData = localStorage.getItem(STORAGE_KEY);
+  //   if (storedData) {
+  //     const { data, timestamp } = JSON.parse(storedData);
+  //     if (Date.now() - timestamp < EXPIRY_TIME) {
   //       setpageState((old) => ({
   //         ...old,
   //         isLoading: false,
-  //         data: rowsdata,
-  //         total: response.data.clients.total,
+  //         data,
+  //         total: data.length,
   //       }));
+  //       shouldFetchFromApi = false;
+  //     } else {
+  //       localStorage.removeItem(STORAGE_KEY); // remove expired data
+  //     }
+  //   }
 
-  //       return; // exit the function on success
-  //     } catch (error) {
-  //       console.error(error);
+  //   if (shouldFetchFromApi) {
+  //     while (retryCount < MAX_RETRY_COUNT) {
+  //       try {
+  //         // const response = await axios.get(
+  //         //   `${BACKEND_URL}/clients?page=${pageState.page}`,
+  //         //   {
+  //         //     headers: {
+  //         //       "Content-Type": "application/json",
+  //         //       Authorization: "Bearer " + token,
+  //         //     },
+  //         //   }
+  //         // );
+  //         // console.log("Clients ", response);
 
-  //       if (retryCount < MAX_RETRY_COUNT - 1) {
-  //         console.log(`Retrying in ${RETRY_DELAY / 1000} seconds...`);
-  //         await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
-  //         retryCount++;
-  //       } else {
-  //         toast.error("Sorry something went wrong.", {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
+  //         // let response;
+  //         // apiClient
+  //         //   .get(`/clients?page=${pageState.page}`, {
+  //         //     headers: {
+  //         //       "Content-Type": "application/json",
+  //         //       Authorization: "Bearer " + token,
+  //         //     },
+  //         //   })
+  //         //   .then((res) => {
+  //         //     console.log("Clients: ", res);
+  //         //     response = res;
+  //         //   })
+  //         //   .catch((error) => {
+  //         //     console.error("Error: ", error);
+  //         //     toast.error("Sorry something went wrong.", {
+  //         //       position: "top-right",
+  //         //       autoClose: 3000,
+  //         //       hideProgressBar: false,
+  //         //       closeOnClick: true,
+  //         //       draggable: true,
+  //         //       progress: undefined,
+  //         //       theme: "light",
+  //         //     });
+  //         //     setpageState((old) => ({
+  //         //       ...old,
+  //         //       isLoading: false,
+  //         //     }));
+  //         //   });
+
+  //         // console.log("Response: ", response);
+
+  //         const response = await apiClient.get(
+  //           `${BACKEND_URL}/clients?page=${pageState.page}`,
+  //           {
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //               Authorization: "Bearer " + token,
+  //             },
+  //           }
+  //         );
+
+  //         console.log("Clients: ", response);
+
+  //         const clientsData = response.data.clients.data;
+  //         console.log("clients array is", clientsData);
+
+  //         const sortedClients = clientsData?.sort((a, b) => a.id - b.id);
+
+  //         console.log("Sorted: ", sortedClients);
+
+  //         const rowsdataPromises = clientsData?.map(async (client, index) => {
+  //           const totalLeadsPromise = LeadCount(token, client?.id);
+  //           const activeAccountsPromise = activeAccountCount(token, client?.id);
+  //           const totalAccountsPromise = totalUser(token, client?.id);
+
+  //           // Wait for all three promises to complete
+  //           const [totalLeads, activeAccounts, totalAccounts] =
+  //             await Promise.all([
+  //               totalLeadsPromise,
+  //               activeAccountsPromise,
+  //               totalAccountsPromise,
+  //             ]);
+
+  //           return {
+  //             id:
+  //               pageState.page > 1
+  //                 ? pageState.page * pageState.pageSize -
+  //                   (pageState.pageSize - 1) +
+  //                   index
+  //                 : index + 1,
+  //             creationDate: client?.creationDate,
+  //             businessName: client?.businessName,
+  //             clientContact: client?.clientContact,
+  //             clientEmail: client?.clientEmail,
+  //             project: client?.website,
+  //             clientName: client?.clientName,
+  //             clientId: client?.id,
+  //             totalLeads,
+  //             activeAccounts,
+  //             totalAccounts,
+  //           };
   //         });
+
+  //         const rowsdata = await Promise.all(rowsdataPromises);
+  //         console.log("Rows data here: ", rowsdata);
+
   //         setpageState((old) => ({
   //           ...old,
   //           isLoading: false,
+  //           data: rowsdata,
+  //           total: response.data.clients.total,
   //         }));
-  //         return; // exit the function on failure
+
+  //         // Store the data in local storage
+  //         localStorage.setItem(
+  //           STORAGE_KEY,
+  //           JSON.stringify({ data: rowsdata, timestamp: Date.now() })
+  //         );
+
+  //         return; // exit the function on success
+  //       } catch (error) {
+  //         console.error(error);
+
+  //         if (retryCount < MAX_RETRY_COUNT - 1) {
+  //           console.log(`Retrying in ${RETRY_DELAY / 1000} seconds...`);
+  //           await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
+  //           retryCount++;
+  //         } else {
+  //           toast.error(
+  //             "Sorry something went wrong. Kindly refresh the page.",
+  //             {
+  //               position: "top-right",
+  //               autoClose: 3000,
+  //               hideProgressBar: false,
+  //               closeOnClick: true,
+  //               draggable: true,
+  //               progress: undefined,
+  //               theme: "light",
+  //             }
+  //           );
+  //           setpageState((old) => ({
+  //             ...old,
+  //             isLoading: false,
+  //           }));
+  //           return; // exit the function on failure
+  //         }
   //       }
   //     }
   //   }
@@ -301,173 +391,84 @@ const Clients = () => {
       isLoading: true,
     }));
 
-    const MAX_RETRY_COUNT = 5; // maximum number of times to retry the API call
-    const RETRY_DELAY = 9000; // delay in milliseconds between each retry
-    const STORAGE_KEY = "leadsData";
-    const EXPIRY_TIME = 10 * 60 * 1000; // 10 minutes expiry time
-
-    let retryCount = 0;
-    let shouldFetchFromApi = true;
-
-    // Check if data is present in local storage and if it is not expired
-    const storedData = localStorage.getItem(STORAGE_KEY);
-    if (storedData) {
-      const { data, timestamp } = JSON.parse(storedData);
-      if (Date.now() - timestamp < EXPIRY_TIME) {
-        setpageState((old) => ({
-          ...old,
-          isLoading: false,
-          data,
-          total: data.length,
-        }));
-        shouldFetchFromApi = false;
-      } else {
-        localStorage.removeItem(STORAGE_KEY); // remove expired data
-      }
-    }
-
-    if (shouldFetchFromApi) {
-      while (retryCount < MAX_RETRY_COUNT) {
-        try {
-          // const response = await axios.get(
-          //   `${BACKEND_URL}/clients?page=${pageState.page}`,
-          //   {
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //       Authorization: "Bearer " + token,
-          //     },
-          //   }
-          // );
-          // console.log("Clients ", response);
-
-          // let response;
-          // apiClient
-          //   .get(`/clients?page=${pageState.page}`, {
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //       Authorization: "Bearer " + token,
-          //     },
-          //   })
-          //   .then((res) => {
-          //     console.log("Clients: ", res);
-          //     response = res;
-          //   })
-          //   .catch((error) => {
-          //     console.error("Error: ", error);
-          //     toast.error("Sorry something went wrong.", {
-          //       position: "top-right",
-          //       autoClose: 3000,
-          //       hideProgressBar: false,
-          //       closeOnClick: true,
-          //       draggable: true,
-          //       progress: undefined,
-          //       theme: "light",
-          //     });
-          //     setpageState((old) => ({
-          //       ...old,
-          //       isLoading: false,
-          //     }));
-          //   });
-
-          // console.log("Response: ", response);
-
-          const response = await apiClient.get(
-            `${BACKEND_URL}/clients?page=${pageState.page}`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-              },
-            }
-          );
-
-          console.log("Clients: ", response);
-
-          const clientsData = response.data.clients.data;
-          console.log("clients array is", clientsData);
-
-          const sortedClients = clientsData?.sort((a, b) => a.id - b.id);
-
-          console.log("Sorted: ", sortedClients);
-
-          const rowsdataPromises = clientsData?.map(async (client, index) => {
-            const totalLeadsPromise = LeadCount(token, client?.id);
-            const activeAccountsPromise = activeAccountCount(token, client?.id);
-            const totalAccountsPromise = totalUser(token, client?.id);
-
-            // Wait for all three promises to complete
-            const [totalLeads, activeAccounts, totalAccounts] =
-              await Promise.all([
-                totalLeadsPromise,
-                activeAccountsPromise,
-                totalAccountsPromise,
-              ]);
-
-            return {
-              id:
-                pageState.page > 1
-                  ? pageState.page * pageState.pageSize -
-                    (pageState.pageSize - 1) +
-                    index
-                  : index + 1,
-              creationDate: client?.creationDate,
-              businessName: client?.businessName,
-              clientContact: client?.clientContact,
-              clientEmail: client?.clientEmail,
-              project: client?.website,
-              clientName: client?.clientName,
-              clientId: client?.id,
-              totalLeads,
-              activeAccounts,
-              totalAccounts,
-            };
-          });
-
-          const rowsdata = await Promise.all(rowsdataPromises);
-          console.log("Rows data here: ", rowsdata);
-
-          setpageState((old) => ({
-            ...old,
-            isLoading: false,
-            data: rowsdata,
-            total: response.data.clients.total,
-          }));
-
-          // Store the data in local storage
-          localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify({ data: rowsdata, timestamp: Date.now() })
-          );
-
-          return; // exit the function on success
-        } catch (error) {
-          console.error(error);
-
-          if (retryCount < MAX_RETRY_COUNT - 1) {
-            console.log(`Retrying in ${RETRY_DELAY / 1000} seconds...`);
-            await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
-            retryCount++;
-          } else {
-            toast.error(
-              "Sorry something went wrong. Kindly refresh the page.",
-              {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              }
-            );
-            setpageState((old) => ({
-              ...old,
-              isLoading: false,
-            }));
-            return; // exit the function on failure
-          }
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/clients?page=${pageState.page}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
         }
-      }
+      );
+
+      console.log("Clients: ", response);
+
+      const clientsData = response.data.clients.data;
+      console.log("clients array is", clientsData);
+
+      const sortedClients = clientsData?.sort((a, b) => a.id - b.id);
+
+      console.log("Sorted: ", sortedClients);
+
+      const rowsdataPromises = clientsData?.map(async (client, index) => {
+        const totalLeadsPromise = LeadCount(token, client?.id);
+        const activeAccountsPromise = activeAccountCount(token, client?.id);
+        const totalAccountsPromise = totalUser(token, client?.id);
+
+        // Wait for all three promises to complete
+        const [totalLeads, activeAccounts, totalAccounts] = await Promise.all([
+          totalLeadsPromise,
+          activeAccountsPromise,
+          totalAccountsPromise,
+        ]);
+
+        return {
+          id:
+            pageState.page > 1
+              ? pageState.page * pageState.pageSize -
+                (pageState.pageSize - 1) +
+                index
+              : index + 1,
+          creationDate: client?.creationDate,
+          businessName: client?.businessName,
+          clientContact: client?.clientContact,
+          clientEmail: client?.clientEmail,
+          project: client?.website,
+          clientName: client?.clientName,
+          clientId: client?.id,
+          totalLeads,
+          activeAccounts,
+          totalAccounts,
+        };
+      });
+
+      const rowsdata = await Promise.all(rowsdataPromises);
+      console.log("Rows data here: ", rowsdata);
+
+      setpageState((old) => ({
+        ...old,
+        isLoading: false,
+        data: rowsdata,
+        total: response.data.clients.total,
+      }));
+    } catch (error) {
+      console.error(error);
+
+      toast.error("Sorry something went wrong. Kindly refresh the page.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setpageState((old) => ({
+        ...old,
+        isLoading: false,
+      }));
     }
   };
 
@@ -718,7 +719,7 @@ const Clients = () => {
         />
       )}
 
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen mb-5">
         <div
           className={`w-full ${
             currentMode === "dark" ? "bg-black" : "bg-white"
@@ -750,6 +751,17 @@ const Clients = () => {
                     rows={pageState?.data}
                     loading={pageState.isLoading}
                     columns={columns}
+                    page={pageState.page - 1}
+                    pageSize={pageState.pageSize}
+                    onPageChange={(newPage) => {
+                      setpageState((old) => ({ ...old, page: newPage + 1 }));
+                    }}
+                    onPageSizeChange={(newPageSize) =>
+                      setpageState((old) => ({
+                        ...old,
+                        pageSize: newPageSize,
+                      }))
+                    }
                     sx={{
                       boxShadow: 2,
                       "& .MuiDataGrid-cell:hover": {
