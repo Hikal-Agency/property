@@ -103,7 +103,7 @@ const AllQA = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
   function TabPanel(props) {

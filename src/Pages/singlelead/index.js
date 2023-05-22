@@ -100,15 +100,12 @@ const SingleLeadPage = () => {
   const fetchSingleLead = async () => {
     try {
       const token = localStorage.getItem("auth-token");
-      const result = await axios.get(
-        `${BACKEND_URL}/`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const result = await axios.get(`${BACKEND_URL}/`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
       console.log(result);
 
       setloading(false);
@@ -296,7 +293,9 @@ const SingleLeadPage = () => {
                       </div>
                       <div className="grid justify-center space-y-3 text-center">
                         <h6 className="font-bold">How many bedrooms?</h6>
-                        <h6 className="font-semibold">{LeadData?.enquiryType}</h6>
+                        <h6 className="font-semibold">
+                          {LeadData?.enquiryType}
+                        </h6>
                       </div>
                       <div className="grid justify-center space-y-3 text-center">
                         <h6 className="font-bold">Property type</h6>
@@ -364,7 +363,7 @@ const SingleLeadPage = () => {
                 </div>
               </div>
             </div>
-            <Footer />
+            {/* <Footer /> */}
           </div>
         )}
       </div>

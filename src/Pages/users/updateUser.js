@@ -70,31 +70,30 @@ const UpdateUser = () => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-            <div className={`w-full `}>
-              <div className="px-5">
-                
-                <div className="my-5 mb-10">
-                  <div className="my-3">
-                    <h2
-                      className={` ${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      } font-semibold text-xl`}
-                    >
-                      Edit User:{" "}
-                      <span className="text-main-red-color font-bold">
-                        {user?.userName &&
-                          user?.userName.charAt(0).toUpperCase() +
-                            user?.userName.slice(1)}
-                      </span>
-                    </h2>
-                  </div>
-                  <Box width={"100%"} sx={DataGridStyles}>
-                    <EditUser user={user} />
-                  </Box>
+          <div className={`w-full `}>
+            <div className="px-5">
+              <div className="my-5 mb-10">
+                <div className="my-3">
+                  <h2
+                    className={` ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    } font-semibold text-xl`}
+                  >
+                    Edit User:{" "}
+                    <span className="text-main-red-color font-bold">
+                      {user?.userName &&
+                        user?.userName.charAt(0).toUpperCase() +
+                          user?.userName.slice(1)}
+                    </span>
+                  </h2>
                 </div>
+                <Box width={"100%"} sx={DataGridStyles}>
+                  <EditUser user={user} />
+                </Box>
               </div>
             </div>
-          <Footer />
+          </div>
+          {/* <Footer /> */}
         </div>
       </div>
     </>

@@ -69,117 +69,114 @@ const UserAllLocation = (props) => {
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
 
-      FetchUserLocation(token);
+    FetchUserLocation(token);
     // eslint-disable-next-line
   }, []);
 
   return (
     <>
       <div className="min-h-screen">
-          <div
-            className={`w-full  ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
-          >
-            <div className="px-5 ">
-              
-              <h4 className="text-red-600 font-bold text-xl mb-2 text-center">
-                {UserLocationData?.location?.data?.length > 0 ? (
-                  <>{UserLocationData?.locations?.data[0].userName}</>
+        <div
+          className={`w-full  ${
+            currentMode === "dark" ? "bg-black" : "bg-white"
+          }`}
+        >
+          <div className="px-5 ">
+            <h4 className="text-red-600 font-bold text-xl mb-2 text-center">
+              {UserLocationData?.location?.data?.length > 0 ? (
+                <>{UserLocationData?.locations?.data[0].userName}</>
+              ) : (
+                <></>
+              )}
+            </h4>
+            <div className="grid gap-5 pb-3">
+              <div
+                className={`${
+                  currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
+                } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
+              >
+                {/* MAP */}
+                {typeof window.google !== "object" ? (
+                  <div>Your map is loading...</div>
                 ) : (
-                  <></>
-                )}
-              </h4>
-              <div className="grid gap-5 pb-3">
-                <div
-                  className={`${
-                    currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
-                  } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
-                >
-                  {/* MAP */}
-                  {typeof window.google !== "object" ? (
-                    <div>Your map is loading...</div>
-                  ) : (
-                    <GoogleMap
-                      zoom={14}
-                      center={{
-                        lat: 25.22527310000002,
-                        lng: 55.280889615218406,
-                      }}
-                      mapContainerStyle={mapContainerStyle}
-                      options={options}
-                    >
-                      {UserLocationData?.locations?.data?.map((user) => (
-                        <>
-                          <MarkerF
-                            key={user?.user_id}
+                  <GoogleMap
+                    zoom={14}
+                    center={{
+                      lat: 25.22527310000002,
+                      lng: 55.280889615218406,
+                    }}
+                    mapContainerStyle={mapContainerStyle}
+                    options={options}
+                  >
+                    {UserLocationData?.locations?.data?.map((user) => (
+                      <>
+                        <MarkerF
+                          key={user?.user_id}
+                          position={{
+                            lat: parseFloat(user?.latitude),
+                            lng: parseFloat(user?.longitude),
+                          }}
+                          icon={{
+                            url: "/oldpin.svg",
+                            scaledSize: window.google
+                              ? new window.google.maps.Size(30, 30)
+                              : null,
+                          }}
+                          onClick={() => {
+                            setSelectedUser(user);
+                          }}
+                        />
+                        {selectedUser ? (
+                          <InfoWindow
                             position={{
-                              lat: parseFloat(user?.latitude),
-                              lng: parseFloat(user?.longitude),
+                              lat: parseFloat(selectedUser?.latitude),
+                              lng: parseFloat(selectedUser?.longitude),
                             }}
-                            icon={{
-                              url: "/oldpin.svg",
-                              scaledSize: window.google
-                                ? new window.google.maps.Size(30, 30)
-                                : null,
+                            onCloseClick={() => {
+                              setSelectedUser(null);
                             }}
-                            onClick={() => {
-                              setSelectedUser(user);
-                            }}
-                          />
-                          {selectedUser ? (
-                            <InfoWindow
-                              position={{
-                                lat: parseFloat(selectedUser?.latitude),
-                                lng: parseFloat(selectedUser?.longitude),
-                              }}
-                              onCloseClick={() => {
-                                setSelectedUser(null);
-                              }}
-                            >
-                              <div>
-                                <h1 className="font-semibold">
-                                  {selectedUser.userName}
-                                </h1>
-                                <h1>
-                                  LatLong: {selectedUser?.latitude},{" "}
-                                  {selectedUser?.longitude}
-                                </h1>
-                                <h1>
-                                  Last updated: {selectedUser.recorded_at}
-                                </h1>
-                              </div>
-                            </InfoWindow>
-                          ) : null}
-                        </>
-                      ))}
-                      <MarkerF
-                        key={UserLocationData?.locations?.data[0]?.user_id}
-                        position={{
-                          lat: parseFloat(
-                            UserLocationData?.locations?.data[0]?.latitude
-                          ),
-                          lng: parseFloat(
-                            UserLocationData?.locations?.data[0]?.longitude
-                          ),
-                        }}
-                        icon={{
-                          url: "/userpin.svg",
-                          scaledSize: window.google
-                            ? new window.google.maps.Size(50, 50)
-                            : null,
-                        }}
-                        onClick={() => {
-                          setSelectedUser(UserLocationData?.locations?.data[0]);
-                        }}
-                      />
-                    </GoogleMap>
-                  )}
-                </div>
+                          >
+                            <div>
+                              <h1 className="font-semibold">
+                                {selectedUser.userName}
+                              </h1>
+                              <h1>
+                                LatLong: {selectedUser?.latitude},{" "}
+                                {selectedUser?.longitude}
+                              </h1>
+                              <h1>Last updated: {selectedUser.recorded_at}</h1>
+                            </div>
+                          </InfoWindow>
+                        ) : null}
+                      </>
+                    ))}
+                    <MarkerF
+                      key={UserLocationData?.locations?.data[0]?.user_id}
+                      position={{
+                        lat: parseFloat(
+                          UserLocationData?.locations?.data[0]?.latitude
+                        ),
+                        lng: parseFloat(
+                          UserLocationData?.locations?.data[0]?.longitude
+                        ),
+                      }}
+                      icon={{
+                        url: "/userpin.svg",
+                        scaledSize: window.google
+                          ? new window.google.maps.Size(50, 50)
+                          : null,
+                      }}
+                      onClick={() => {
+                        setSelectedUser(UserLocationData?.locations?.data[0]);
+                      }}
+                    />
+                  </GoogleMap>
+                )}
               </div>
             </div>
           </div>
-        <Footer />
+        </div>
+        {/* <Footer /> */}
       </div>
     </>
   );

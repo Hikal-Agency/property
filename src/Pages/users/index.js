@@ -413,7 +413,7 @@ const Users = () => {
               </div>
             </div>
           </div>
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </div>
     </>

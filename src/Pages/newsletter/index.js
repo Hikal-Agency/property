@@ -48,10 +48,9 @@ const Newsletter = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-              <div className={`w-full `}>
-                <div className="px-5">
-                  
-                  {/* <div className="mt-3">
+            <div className={`w-full `}>
+              <div className="px-5">
+                {/* <div className="mt-3">
                     <h1
                       className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
                         currentMode === "dark"
@@ -69,33 +68,33 @@ const Newsletter = () => {
                       setpageState={setpageState}
                     />
                   </div> */}
-                  <div className="mt-3 flex justify-between items-center">
-                    <h1
-                      className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                        currentMode === "dark"
-                          ? "text-white border-white"
-                          : "text-red-600 font-bold border-red-600"
-                      }`}
-                    >
-                      Newsletter{" "}
-                      <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
-                        <span>{pageState?.total}</span>
-                      </span>
-                    </h1>
-                    <Link
-                      to="/newsletter/addnewsletter"
-                      className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-sm"
-                    >
-                      Add Newsletter
-                    </Link>
-                  </div>
-                  <AllNewsletters
-                    pageState={pageState}
-                    setpageState={setpageState}
-                  />
+                <div className="mt-3 flex justify-between items-center">
+                  <h1
+                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                      currentMode === "dark"
+                        ? "text-white border-white"
+                        : "text-red-600 font-bold border-red-600"
+                    }`}
+                  >
+                    Newsletter{" "}
+                    <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
+                      <span>{pageState?.total}</span>
+                    </span>
+                  </h1>
+                  <Link
+                    to="/newsletter/addnewsletter"
+                    className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-sm"
+                  >
+                    Add Newsletter
+                  </Link>
                 </div>
+                <AllNewsletters
+                  pageState={pageState}
+                  setpageState={setpageState}
+                />
               </div>
-            <Footer />
+            </div>
+            {/* <Footer /> */}
           </div>
         )}
       </div>

@@ -7,12 +7,8 @@ import DashboardPanel from "../../Components/dashboard/DashboardPanel";
 import { ToastContainer, toast } from "react-toastify";
 
 const Dashboard = () => {
-  const {
-    setopenBackDrop,
-    currentMode,
-    setDashboardData,
-    BACKEND_URL,
-  } = useStateContext();
+  const { setopenBackDrop, currentMode, setDashboardData, BACKEND_URL } =
+    useStateContext();
   const [loading, setloading] = useState(true);
 
   const FetchProfile = (token) => {
@@ -28,7 +24,10 @@ const Dashboard = () => {
         console.log("dashboard data is");
         console.log(result.data);
         console.log("User from dashboard: ", result.data.user);
-        setDashboardData({...result.data, newLeads: result.data.lead_status.new});
+        setDashboardData({
+          ...result.data,
+          newLeads: result.data.lead_status.new,
+        });
         setTimeout(() => {
           setloading(false);
         }, 300);
@@ -70,13 +69,12 @@ const Dashboard = () => {
           <div
             className={`${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >
-              <div className="w-full overflow-x-hidden">
-                <div className="px-5">
-                  
-                  <DashboardPanel />
-                </div>
+            <div className="w-full overflow-x-hidden">
+              <div className="px-5">
+                <DashboardPanel />
               </div>
-            <Footer />
+            </div>
+            {/* <Footer /> */}
           </div>
         )}
       </div>

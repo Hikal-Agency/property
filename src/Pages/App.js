@@ -50,6 +50,7 @@ import Statistics from "./SocialMedia/statistics";
 import AllQA from "./qaform/allQA";
 import SingleLeadPage from "./singlelead";
 import Navbar from "../Components/Navbar/Navbar";
+import Footer from "../Components/Footer/Footer";
 
 const libraries = ["places"];
 
@@ -454,6 +455,28 @@ function App() {
 
   return (
     <>
+      {/* <div className="flex w-screen">
+        {hasSidebarOrNavbar() && <Sidebarmui />}
+        <div
+          className={`w-[100%] ${
+            currentMode === "dark" ? "bg-black" : "bg-white"
+          }`}
+        >
+          {hasSidebarOrNavbar() && (
+            <div className={`px-5`}>
+              <Navbar />
+            </div>
+          )}
+          <Routes>
+            {routes.map((route, index) => {
+              return (
+                <Route key={index} path={route.path} element={route.element} />
+              );
+            })}
+          </Routes>
+        </div>
+      </div> */}
+
       <div className="flex w-screen">
         {hasSidebarOrNavbar() && <Sidebarmui />}
         <div
@@ -473,6 +496,7 @@ function App() {
               );
             })}
           </Routes>
+          <Footer /> {/* Add the Footer component here */}
         </div>
       </div>
     </>

@@ -17,19 +17,18 @@ const Livelocation = () => {
   return (
     <>
       <div className="min-h-screen">
-          <div
-            className={`w-full  ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
-          >
-            <div className="px-5 ">
-              
-              <LocationComponent
-                upcoming_meetings={DashboardData?.upcoming_meetings}
-              />
-            </div>
+        <div
+          className={`w-full  ${
+            currentMode === "dark" ? "bg-black" : "bg-white"
+          }`}
+        >
+          <div className="px-5 ">
+            <LocationComponent
+              upcoming_meetings={DashboardData?.upcoming_meetings}
+            />
           </div>
-        <Footer />
+        </div>
+        {/* <Footer /> */}
       </div>
     </>
   );

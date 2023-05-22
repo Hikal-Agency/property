@@ -67,33 +67,32 @@ const ThirdPartyLeads = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-              <div className={`w-full`}>
-                <div className="px-5">
-                  
-                  <div className="mt-3">
-                    <h1
-                      className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 font-bold ${
-                        currentMode === "dark"
-                          ? "text-white border-white"
-                          : "text-main-red-color font-bold border-main-red-color"
-                      }`}
-                    >
-                      Third Party Leads -{" "}
-                      <span className="uppercase">{lead_type}</span>{" "}
-                      <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
-                        {pageState?.total}
-                      </span>
-                    </h1>
-                    <AllLeads
-                      BACKEND_URL={BACKEND_URL}
-                      lead_type={lead_type}
-                      lead_origin={pathname2}
-                      leadCategory="thridparty"
-                    />
-                  </div>
+            <div className={`w-full`}>
+              <div className="px-5">
+                <div className="mt-3">
+                  <h1
+                    className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 font-bold ${
+                      currentMode === "dark"
+                        ? "text-white border-white"
+                        : "text-main-red-color font-bold border-main-red-color"
+                    }`}
+                  >
+                    Third Party Leads -{" "}
+                    <span className="uppercase">{lead_type}</span>{" "}
+                    <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+                      {pageState?.total}
+                    </span>
+                  </h1>
+                  <AllLeads
+                    BACKEND_URL={BACKEND_URL}
+                    lead_type={lead_type}
+                    lead_origin={pathname2}
+                    leadCategory="thridparty"
+                  />
                 </div>
               </div>
-            <Footer />
+            </div>
+            {/* <Footer /> */}
           </div>
         )}
       </div>

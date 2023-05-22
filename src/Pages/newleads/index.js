@@ -1,4 +1,3 @@
-
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import Footer from "../../Components/Footer/Footer";
@@ -12,7 +11,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: { BACKEND_URL_2 },
-};
+  };
 }
 
 const NewLeads = (props) => {
@@ -26,7 +25,7 @@ const NewLeads = (props) => {
     page: 1,
     pageSize: 25,
   });
-  
+
   useEffect(() => {
     setopenBackDrop(false);
     setloading(false);
@@ -48,31 +47,30 @@ const NewLeads = (props) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-              <div className={`w-full `}>
-                <div className="px-5">
-                  
-                  <div className="mt-3">
-                    <h1
-                      className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                        currentMode === "dark"
-                          ? "text-white border-white"
-                          : "text-red-600 font-bold border-red-600"
-                      }`}
-                    >
-                      New leads{" "}
-                      <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
-                        <span>{pageState?.total}</span>
-                      </span>
-                    </h1>
-                    <Newleads
-                      BACKEND_URL={props.BACKEND_URL_2}
-                      pageState={pageState}
-                      setpageState={setpageState}
-                    />
-                  </div>
+            <div className={`w-full `}>
+              <div className="px-5">
+                <div className="mt-3">
+                  <h1
+                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                      currentMode === "dark"
+                        ? "text-white border-white"
+                        : "text-red-600 font-bold border-red-600"
+                    }`}
+                  >
+                    New leads{" "}
+                    <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
+                      <span>{pageState?.total}</span>
+                    </span>
+                  </h1>
+                  <Newleads
+                    BACKEND_URL={props.BACKEND_URL_2}
+                    pageState={pageState}
+                    setpageState={setpageState}
+                  />
                 </div>
               </div>
-            <Footer />
+            </div>
+            {/* <Footer /> */}
           </div>
         )}
       </div>

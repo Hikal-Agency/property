@@ -50,31 +50,29 @@ const AllHotLeads = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-              <div className="w-full px-5">
-                
-                <div className="mt-3">
-                  <h1
-                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-red-600 font-bold border-red-600"
-                    }`}
-                  >
-                    Fresh Leads -{" "}
-                    <span className="capitalize">{lead_type}</span>{" "}
-                    <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
-                      {pageState?.total}
-                    </span>
-                  </h1>
-                  <AllLeads
-                    BACKEND_URL={BACKEND_URL}
-                    lead_type={lead_type}
-                    lead_origin={pathname2}
-                    leadCategory="hot"
-                  />
-                </div>
+            <div className="w-full px-5">
+              <div className="mt-3">
+                <h1
+                  className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                    currentMode === "dark"
+                      ? "text-white border-white"
+                      : "text-red-600 font-bold border-red-600"
+                  }`}
+                >
+                  Fresh Leads - <span className="capitalize">{lead_type}</span>{" "}
+                  <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+                    {pageState?.total}
+                  </span>
+                </h1>
+                <AllLeads
+                  BACKEND_URL={BACKEND_URL}
+                  lead_type={lead_type}
+                  lead_origin={pathname2}
+                  leadCategory="hot"
+                />
               </div>
-            <Footer />
+            </div>
+            {/* <Footer /> */}
           </div>
         )}
       </div>

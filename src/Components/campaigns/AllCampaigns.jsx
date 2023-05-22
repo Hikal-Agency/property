@@ -184,7 +184,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
         console.log("ads of campaign ");
         console.log(result.data);
 
-        const adsData = result.data.data;
+        const adsData = result?.data?.data;
         console.log("adsData: ", adsData);
         const adsWithInsights = await Promise.all(
           adsData?.map(async (ad) => {

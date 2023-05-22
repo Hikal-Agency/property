@@ -95,17 +95,16 @@ const Userlocation = () => {
     <>
       <ToastContainer />
       <div className="min-h-screen">
-          <div
-            className={`w-full  ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
-          >
-            <div className="px-5 ">
-              
-              <UserLocationComponent />
-            </div>
+        <div
+          className={`w-full  ${
+            currentMode === "dark" ? "bg-black" : "bg-white"
+          }`}
+        >
+          <div className="px-5 ">
+            <UserLocationComponent />
           </div>
-        <Footer />
+        </div>
+        {/* <Footer /> */}
       </div>
     </>
   );

@@ -7,7 +7,7 @@ import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import AllMessages from "./AllMessages";
-import Payments from "./payments"
+import Payments from "./payments";
 import Chat from "./Chat";
 
 const pagesComponents = {
@@ -17,16 +17,12 @@ const pagesComponents = {
   payments: <Payments />,
   transactions: <TransactionsComponent />,
   all: <AllMessages />,
-  chat: <Chat/>
+  chat: <Chat />,
 };
 
 const WhatsappMarketing = () => {
-  const {
-    currentMode,
-    User,
-    setopenBackDrop,
-    isUserSubscribed,
-  } = useStateContext();
+  const { currentMode, User, setopenBackDrop, isUserSubscribed } =
+    useStateContext();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -51,16 +47,14 @@ const WhatsappMarketing = () => {
   return (
     <>
       <div className="min-h-screen">
-          <div
-            className={`w-full  ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
-          >
-            <div className="px-5">
-              {pagesComponents[page]}
-            </div>
-          </div>
-        <Footer />
+        <div
+          className={`w-full  ${
+            currentMode === "dark" ? "bg-black" : "bg-white"
+          }`}
+        >
+          <div className="px-5">{pagesComponents[page]}</div>
+        </div>
+        {/* <Footer /> */}
       </div>
     </>
   );

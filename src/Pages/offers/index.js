@@ -10,11 +10,7 @@ import ManagerOffers from "../../Components/offers/manager_offers";
 import SalesPersonOffers from "../../Components/offers/salePerson_offers";
 
 const Offers = () => {
-  const {
-    currentMode,
-    darkModeColors,
-     setopenBackDrop,
-  } = useStateContext();
+  const { currentMode, darkModeColors, setopenBackDrop } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -37,84 +33,83 @@ const Offers = () => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-            <div className={`w-full `}>
-              <div className="px-5">
-                
-                <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "bg-gray-900 text-white"
-                      : "bg-gray-200 text-black"
-                  } p-5 rounded-md my-5 mb-10`}
+          <div className={`w-full `}>
+            <div className="px-5">
+              <div
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-gray-900 text-white"
+                    : "bg-gray-200 text-black"
+                } p-5 rounded-md my-5 mb-10`}
+              >
+                <h4 className="font-semibold pb-5">Offers</h4>
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiTabs-indicator": {
+                      height: "100%",
+                      borderRadius: "5px",
+                      backgroundColor: "#da1f26",
+                    },
+                    "& .Mui-selected": {
+                      color: "white !important",
+                      zIndex: "1",
+                    },
+                  }}
+                  className={`w-full rounded-md overflow-hidden ${
+                    currentMode === "dark" ? "bg-black" : "bg-white"
+                  } `}
                 >
-                  <h4 className="font-semibold pb-5">Offers</h4>
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiTabs-indicator": {
-                        height: "100%",
-                        borderRadius: "5px",
-                        backgroundColor: "#da1f26",
-                      },
-                      "& .Mui-selected": {
-                        color: "white !important",
-                        zIndex: "1",
-                      },
-                    }}
-                    className={`w-full rounded-md overflow-hidden ${
-                      currentMode === "dark" ? "bg-black" : "bg-white"
-                    } `}
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    variant="standard"
+                    // centered
+                    className="w-full px-1 m-1"
                   >
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      variant="standard"
-                      // centered
-                      className="w-full px-1 m-1"
-                    >
-                      <Tab label="CREATE NEW OFFER" />
-                      <Tab label="ALL" />
-                      <Tab label="FOR MANAGERS" />
-                      <Tab label="FOR AGENTS" />
-                    </Tabs>
-                  </Box>
-                  <div className="mt-3 pb-3">
-                    <TabPanel value={value} index={0}>
-                      <CreateOffer
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                      />
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
-                      <AllOffers
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                      />
-                    </TabPanel>
-                    <TabPanel value={value} index={2}>
-                      <ManagerOffers
+                    <Tab label="CREATE NEW OFFER" />
+                    <Tab label="ALL" />
+                    <Tab label="FOR MANAGERS" />
+                    <Tab label="FOR AGENTS" />
+                  </Tabs>
+                </Box>
+                <div className="mt-3 pb-3">
+                  <TabPanel value={value} index={0}>
+                    <CreateOffer
                       isLoading={loading}
                       tabValue={tabValue}
                       setTabValue={setTabValue}
-                      />
-                      {/* <div>
+                    />
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                    <AllOffers
+                      isLoading={loading}
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                    />
+                  </TabPanel>
+                  <TabPanel value={value} index={2}>
+                    <ManagerOffers
+                      isLoading={loading}
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                    />
+                    {/* <div>
                         <h1>Hello world 3 </h1>
                       </div> */}
-                    </TabPanel>
-                    <TabPanel value={value} index={3}>
-                     <SalesPersonOffers
+                  </TabPanel>
+                  <TabPanel value={value} index={3}>
+                    <SalesPersonOffers
                       isLoading={loading}
                       tabValue={tabValue}
                       setTabValue={setTabValue}
-                     />
-                    </TabPanel>
-                  </div>
+                    />
+                  </TabPanel>
                 </div>
               </div>
             </div>
-          <Footer />
+          </div>
+          {/* <Footer /> */}
         </div>
       </div>
     </>

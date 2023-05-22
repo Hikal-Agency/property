@@ -10,10 +10,11 @@ const Footer = () => {
         currentMode === "dark" ? "bg-gray-900" : "bg-white"
       }`}
       style={{
-        position: "fixed",
+        position: "sticky",
         bottom: 0,
         left: 0,
         right: 0,
+        marginBottom: "0px",
       }}
     >
       <h1
@@ -25,6 +26,7 @@ const Footer = () => {
         <Link
           to={"https://hikalagency.com/"}
           target="_blank"
+          rel="noopener noreferrer"
           className="text-main-red-color"
         >
           HIKAL

@@ -196,7 +196,7 @@ const QAForm = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
   function TabPanel(props) {

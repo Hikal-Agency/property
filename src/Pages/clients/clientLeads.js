@@ -204,11 +204,7 @@ const ClientLeads = ({
       minWidth: 170,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => (
-        <RenderSalesperson
-          cellValues={cellValues}
-        />
-      ),
+      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
     },
     {
       field: "feedback",
@@ -1426,347 +1422,346 @@ const ClientLeads = ({
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-              <div className="w-full px-5">
-                
-                <div className="mt-5">
-                  <h1
-                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5  font-bold ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-red-600 font-bold border-red-600"
-                    }`}
-                  >
-                    {client?.name} -{" "}
-                    <span className="capitalize mt-5">
-                      {client?.businessName}
-                    </span>{" "}
-                    <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
-                      {pageState?.total}
-                    </span>
-                  </h1>
+            <div className="w-full px-5">
+              <div className="mt-5">
+                <h1
+                  className={`text-xl border-l-[4px] ml-1 pl-1 mb-5  font-bold ${
+                    currentMode === "dark"
+                      ? "text-white border-white"
+                      : "text-red-600 font-bold border-red-600"
+                  }`}
+                >
+                  {client?.name} -{" "}
+                  <span className="capitalize mt-5">
+                    {client?.businessName}
+                  </span>{" "}
+                  <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+                    {pageState?.total}
+                  </span>
+                </h1>
 
-                  <div className=" mb-5">
-                    <div className=" mx-auto px-4 py-8">
-                      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 ">
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            margin: "10px",
-                            borderRadius: "10px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: `${
-                              currentMode === "dark" ? "#202020" : "#fafafa"
-                            }`,
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                            width: "auto",
-                            // maxWidth: "100%",
-                          }}
-                        >
-                          <span>New</span>
-                          <span>{pageState?.newLeads}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            margin: "10px",
-                            borderRadius: "10px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: `${
-                              currentMode === "dark" ? "#202020" : "#fafafa"
-                            }`,
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                          }}
-                        >
-                          <span>No Answer</span>
-                          <span>{pageState?.noAnswer}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            margin: "10px",
-                            borderRadius: "10px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: `${
-                              currentMode === "dark" ? "#202020" : "#fafafa"
-                            }`,
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                          }}
-                        >
-                          <span>Not Interested</span>
-                          <span>{pageState?.notIntrsd}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            margin: "10px",
-                            borderRadius: "10px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: `${
-                              currentMode === "dark" ? "#202020" : "#fafafa"
-                            }`,
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                          }}
-                        >
-                          <span>Unreachable</span>
-                          <span>{pageState?.unreachable}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            margin: "10px",
-                            borderRadius: "10px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: `${
-                              currentMode === "dark" ? "#202020" : "#fafafa"
-                            }`,
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                          }}
-                        >
-                          <span>Low Budget</span>
-                          <span>{pageState?.lowBugt}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            margin: "10px",
-                            borderRadius: "10px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: `${
-                              currentMode === "dark" ? "#202020" : "#fafafa"
-                            }`,
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                          }}
-                        >
-                          <span>Follow Up</span>
-                          <span>{pageState?.followUp}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            margin: "10px",
-                            borderRadius: "10px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: `${
-                              currentMode === "dark" ? "#202020" : "#fafafa"
-                            }`,
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                          }}
-                        >
-                          <span>Meeting</span>
-                          <span>{pageState?.meeting}</span>
-                        </Box>
-                      </div>
+                <div className=" mb-5">
+                  <div className=" mx-auto px-4 py-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 ">
+                      <Box
+                        sx={{
+                          padding: "10px",
+                          margin: "10px",
+                          borderRadius: "10px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          fontWeight: "bold",
+                          background: `${
+                            currentMode === "dark" ? "#202020" : "#fafafa"
+                          }`,
+                          color: `${
+                            currentMode === "dark" ? "#ffffff" : "#000000"
+                          }`,
+                          boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                          width: "auto",
+                          // maxWidth: "100%",
+                        }}
+                      >
+                        <span>New</span>
+                        <span>{pageState?.newLeads}</span>
+                      </Box>
+                      <Box
+                        sx={{
+                          padding: "10px",
+                          margin: "10px",
+                          borderRadius: "10px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          fontWeight: "bold",
+                          background: `${
+                            currentMode === "dark" ? "#202020" : "#fafafa"
+                          }`,
+                          color: `${
+                            currentMode === "dark" ? "#ffffff" : "#000000"
+                          }`,
+                          boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        <span>No Answer</span>
+                        <span>{pageState?.noAnswer}</span>
+                      </Box>
+                      <Box
+                        sx={{
+                          padding: "10px",
+                          margin: "10px",
+                          borderRadius: "10px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          fontWeight: "bold",
+                          background: `${
+                            currentMode === "dark" ? "#202020" : "#fafafa"
+                          }`,
+                          color: `${
+                            currentMode === "dark" ? "#ffffff" : "#000000"
+                          }`,
+                          boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        <span>Not Interested</span>
+                        <span>{pageState?.notIntrsd}</span>
+                      </Box>
+                      <Box
+                        sx={{
+                          padding: "10px",
+                          margin: "10px",
+                          borderRadius: "10px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          fontWeight: "bold",
+                          background: `${
+                            currentMode === "dark" ? "#202020" : "#fafafa"
+                          }`,
+                          color: `${
+                            currentMode === "dark" ? "#ffffff" : "#000000"
+                          }`,
+                          boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        <span>Unreachable</span>
+                        <span>{pageState?.unreachable}</span>
+                      </Box>
+                      <Box
+                        sx={{
+                          padding: "10px",
+                          margin: "10px",
+                          borderRadius: "10px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          fontWeight: "bold",
+                          background: `${
+                            currentMode === "dark" ? "#202020" : "#fafafa"
+                          }`,
+                          color: `${
+                            currentMode === "dark" ? "#ffffff" : "#000000"
+                          }`,
+                          boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        <span>Low Budget</span>
+                        <span>{pageState?.lowBugt}</span>
+                      </Box>
+                      <Box
+                        sx={{
+                          padding: "10px",
+                          margin: "10px",
+                          borderRadius: "10px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          fontWeight: "bold",
+                          background: `${
+                            currentMode === "dark" ? "#202020" : "#fafafa"
+                          }`,
+                          color: `${
+                            currentMode === "dark" ? "#ffffff" : "#000000"
+                          }`,
+                          boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        <span>Follow Up</span>
+                        <span>{pageState?.followUp}</span>
+                      </Box>
+                      <Box
+                        sx={{
+                          padding: "10px",
+                          margin: "10px",
+                          borderRadius: "10px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          fontWeight: "bold",
+                          background: `${
+                            currentMode === "dark" ? "#202020" : "#fafafa"
+                          }`,
+                          color: `${
+                            currentMode === "dark" ? "#ffffff" : "#000000"
+                          }`,
+                          boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                        }}
+                      >
+                        <span>Meeting</span>
+                        <span>{pageState?.meeting}</span>
+                      </Box>
                     </div>
                   </div>
-
-                  <Box
-                    width={"100%"}
-                    sx={{ ...DataGridStyles, position: "relative" }}
-                  >
-                    {selectedRows.length > 0 && (
-                      <MuiButton
-                        size="small"
-                        sx={bulkUpdateBtnStyles}
-                        variant="text"
-                        onClick={handleClickBulkUpdate}
-                      >
-                        <AiFillEdit size={20} />{" "}
-                        <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
-                      </MuiButton>
-                    )}
-                    {selectedRows.length > 0 && (
-                      <MuiButton
-                        size="small"
-                        sx={{ ...bulkUpdateBtnStyles, left: "64%" }}
-                        variant="text"
-                        onClick={handleClickBulkDelete}
-                      >
-                        <BsTrash size={18} />{" "}
-                        <span style={{ paddingLeft: "5px" }}>Bulk Delete</span>
-                      </MuiButton>
-                    )}
-                    <label htmlFor="bulkImport">
-                      <MuiButton
-                        onClick={() => bulkImportRef.current.click()}
-                        size="small"
-                        sx={{ ...bulkUpdateBtnStyles, left: "50.5%" }}
-                        variant="text"
-                      >
-                        <TbFileImport size={18} />{" "}
-                        <span style={{ paddingLeft: "5px" }}>Bulk Import</span>
-                      </MuiButton>
-                    </label>
-                    <input
-                      type="file"
-                      style={{ display: "none" }}
-                      ref={bulkImportRef}
-                      onInput={handleBulkImport}
-                      id="bulkImport"
-                    />
-                    <DataGrid
-                      autoHeight
-                      disableSelectionOnClick
-                      rows={pageState?.data}
-                      onRowClick={handleRowClick}
-                      rowCount={pageState.total}
-                      loading={pageState.isLoading}
-                      rowsPerPageOptions={[30, 50, 75, 100]}
-                      pagination
-                      width="auto"
-                      paginationMode="server"
-                      page={pageState.page - 1}
-                      checkboxSelection
-                      onSelectionModelChange={(ids) => {
-                        setSelectedRows(
-                          ids.map((id) => pageState?.data[id - 1]?.lid)
-                        );
-                      }}
-                      pageSize={pageState.pageSize}
-                      onPageChange={(newPage) => {
-                        setpageState((old) => ({ ...old, page: newPage + 1 }));
-                      }}
-                      onPageSizeChange={(newPageSize) =>
-                        setpageState((old) => ({
-                          ...old,
-                          pageSize: newPageSize,
-                        }))
-                      }
-                      columns={
-                        User?.role === 1
-                          ? CEOColumns
-                          : User?.role === 3
-                          ? ManagerColumns
-                          : AgentColumns
-                      }
-                      // columns={columns}
-                      components={{
-                        Toolbar: GridToolbar,
-                        Pagination: CustomPagination,
-                      }}
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: true,
-                          value: searchText,
-                          onChange: HandleQuicSearch,
-                        },
-                        // columnsPanel: {
-                        //   disableHideAllButton: true,
-                        // }
-                      }}
-                      sx={{
-                        boxShadow: 2,
-                        "& .MuiDataGrid-cell:hover": {
-                          cursor: "pointer",
-                        },
-                      }}
-                      getRowClassName={(params) =>
-                        params.indexRelativeToCurrentPage % 2 === 0
-                          ? "even"
-                          : "odd"
-                      }
-                      // style={{justifyContent: "center", alignItems: "center"}}
-                    />
-
-                    {!UpdateLeadModelOpen && (
-                      <SingleLead
-                        LeadModelOpen={LeadModelOpen}
-                        setLeadModelOpen={setLeadModelOpen}
-                        handleLeadModelOpen={handleLeadModelOpen}
-                        handleLeadModelClose={handleLeadModelClose}
-                        LeadData={singleLeadData}
-                        BACKEND_URL={BACKEND_URL}
-                      />
-                    )}
-
-                    {UpdateLeadModelOpen && (
-                      <UpdateLead
-                        LeadModelOpen={UpdateLeadModelOpen}
-                        setLeadModelOpen={setUpdateLeadModelOpen}
-                        handleLeadModelOpen={handleUpdateLeadModelOpen}
-                        handleLeadModelClose={handleUpdateLeadModelClose}
-                        LeadData={singleLeadData}
-                        BACKEND_URL={BACKEND_URL}
-                        FetchLeads={FetchLeads}
-                      />
-                    )}
-
-                    {bulkUpdateModelOpen && (
-                      <BulkUpdateLeads
-                        handleCloseBulkUpdateModel={handleCloseBulkUpdateModel}
-                        bulkUpdateModelOpen={bulkUpdateModelOpen}
-                        selectedRows={selectedRows}
-                        FetchLeads={FetchLeads}
-                        setSelectedRows={setSelectedRows}
-                      />
-                    )}
-
-                    {deleteModelOpen && (
-                      <DeleteLeadModel
-                        handleCloseDeleteModel={handleCloseDeleteModel}
-                        deleteLead={deleteLead}
-                        deleteModelOpen={deleteModelOpen}
-                        LeadToDelete={LeadToDelete}
-                        deletebtnloading={deletebtnloading}
-                        bulkDeleteClicked={bulkDeleteClicked}
-                        selectedRows={selectedRows}
-                        handleBulkDelete={handleBulkDelete}
-                      />
-                    )}
-
-                    {bulkImportModelOpen && (
-                      <BulkImport
-                        bulkImportModelOpen={bulkImportModelOpen}
-                        handleCloseBulkImportModel={handleCloseBulkImportModel}
-                        FetchLeads={FetchLeads}
-                        CSVData={CSVData}
-                      />
-                    )}
-                  </Box>
                 </div>
+
+                <Box
+                  width={"100%"}
+                  sx={{ ...DataGridStyles, position: "relative" }}
+                >
+                  {selectedRows.length > 0 && (
+                    <MuiButton
+                      size="small"
+                      sx={bulkUpdateBtnStyles}
+                      variant="text"
+                      onClick={handleClickBulkUpdate}
+                    >
+                      <AiFillEdit size={20} />{" "}
+                      <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
+                    </MuiButton>
+                  )}
+                  {selectedRows.length > 0 && (
+                    <MuiButton
+                      size="small"
+                      sx={{ ...bulkUpdateBtnStyles, left: "64%" }}
+                      variant="text"
+                      onClick={handleClickBulkDelete}
+                    >
+                      <BsTrash size={18} />{" "}
+                      <span style={{ paddingLeft: "5px" }}>Bulk Delete</span>
+                    </MuiButton>
+                  )}
+                  <label htmlFor="bulkImport">
+                    <MuiButton
+                      onClick={() => bulkImportRef.current.click()}
+                      size="small"
+                      sx={{ ...bulkUpdateBtnStyles, left: "50.5%" }}
+                      variant="text"
+                    >
+                      <TbFileImport size={18} />{" "}
+                      <span style={{ paddingLeft: "5px" }}>Bulk Import</span>
+                    </MuiButton>
+                  </label>
+                  <input
+                    type="file"
+                    style={{ display: "none" }}
+                    ref={bulkImportRef}
+                    onInput={handleBulkImport}
+                    id="bulkImport"
+                  />
+                  <DataGrid
+                    autoHeight
+                    disableSelectionOnClick
+                    rows={pageState?.data}
+                    onRowClick={handleRowClick}
+                    rowCount={pageState.total}
+                    loading={pageState.isLoading}
+                    rowsPerPageOptions={[30, 50, 75, 100]}
+                    pagination
+                    width="auto"
+                    paginationMode="server"
+                    page={pageState.page - 1}
+                    checkboxSelection
+                    onSelectionModelChange={(ids) => {
+                      setSelectedRows(
+                        ids.map((id) => pageState?.data[id - 1]?.lid)
+                      );
+                    }}
+                    pageSize={pageState.pageSize}
+                    onPageChange={(newPage) => {
+                      setpageState((old) => ({ ...old, page: newPage + 1 }));
+                    }}
+                    onPageSizeChange={(newPageSize) =>
+                      setpageState((old) => ({
+                        ...old,
+                        pageSize: newPageSize,
+                      }))
+                    }
+                    columns={
+                      User?.role === 1
+                        ? CEOColumns
+                        : User?.role === 3
+                        ? ManagerColumns
+                        : AgentColumns
+                    }
+                    // columns={columns}
+                    components={{
+                      Toolbar: GridToolbar,
+                      Pagination: CustomPagination,
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: true,
+                        value: searchText,
+                        onChange: HandleQuicSearch,
+                      },
+                      // columnsPanel: {
+                      //   disableHideAllButton: true,
+                      // }
+                    }}
+                    sx={{
+                      boxShadow: 2,
+                      "& .MuiDataGrid-cell:hover": {
+                        cursor: "pointer",
+                      },
+                    }}
+                    getRowClassName={(params) =>
+                      params.indexRelativeToCurrentPage % 2 === 0
+                        ? "even"
+                        : "odd"
+                    }
+                    // style={{justifyContent: "center", alignItems: "center"}}
+                  />
+
+                  {!UpdateLeadModelOpen && (
+                    <SingleLead
+                      LeadModelOpen={LeadModelOpen}
+                      setLeadModelOpen={setLeadModelOpen}
+                      handleLeadModelOpen={handleLeadModelOpen}
+                      handleLeadModelClose={handleLeadModelClose}
+                      LeadData={singleLeadData}
+                      BACKEND_URL={BACKEND_URL}
+                    />
+                  )}
+
+                  {UpdateLeadModelOpen && (
+                    <UpdateLead
+                      LeadModelOpen={UpdateLeadModelOpen}
+                      setLeadModelOpen={setUpdateLeadModelOpen}
+                      handleLeadModelOpen={handleUpdateLeadModelOpen}
+                      handleLeadModelClose={handleUpdateLeadModelClose}
+                      LeadData={singleLeadData}
+                      BACKEND_URL={BACKEND_URL}
+                      FetchLeads={FetchLeads}
+                    />
+                  )}
+
+                  {bulkUpdateModelOpen && (
+                    <BulkUpdateLeads
+                      handleCloseBulkUpdateModel={handleCloseBulkUpdateModel}
+                      bulkUpdateModelOpen={bulkUpdateModelOpen}
+                      selectedRows={selectedRows}
+                      FetchLeads={FetchLeads}
+                      setSelectedRows={setSelectedRows}
+                    />
+                  )}
+
+                  {deleteModelOpen && (
+                    <DeleteLeadModel
+                      handleCloseDeleteModel={handleCloseDeleteModel}
+                      deleteLead={deleteLead}
+                      deleteModelOpen={deleteModelOpen}
+                      LeadToDelete={LeadToDelete}
+                      deletebtnloading={deletebtnloading}
+                      bulkDeleteClicked={bulkDeleteClicked}
+                      selectedRows={selectedRows}
+                      handleBulkDelete={handleBulkDelete}
+                    />
+                  )}
+
+                  {bulkImportModelOpen && (
+                    <BulkImport
+                      bulkImportModelOpen={bulkImportModelOpen}
+                      handleCloseBulkImportModel={handleCloseBulkImportModel}
+                      FetchLeads={FetchLeads}
+                      CSVData={CSVData}
+                    />
+                  )}
+                </Box>
               </div>
-            <Footer />
+            </div>
+            {/* <Footer /> */}
           </div>
         )}
       </div>

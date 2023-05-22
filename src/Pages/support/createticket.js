@@ -1,5 +1,6 @@
 import Image from "next/image";
-import React from "react";import { useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import CreateTicket from "../../Components/support/CreateTicket";
@@ -19,20 +20,18 @@ const CreateTickets = () => {
         <meta name="description" content="Location - HIKAL CRM" />
       </Head>
       <div className="min-h-screen">
-          <div
-            className={`w-full  ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
-          >
-            <div className="px-5 ">
-              
-              <CreateTicket />
-            </div>
-            <Footer />
+        <div
+          className={`w-full  ${
+            currentMode === "dark" ? "bg-black" : "bg-white"
+          }`}
+        >
+          <div className="px-5 ">
+            <CreateTicket />
           </div>
+          {/* <Footer /> */}
+        </div>
       </div>
     </>
-    
   );
 };
 

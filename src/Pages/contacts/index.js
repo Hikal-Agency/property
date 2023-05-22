@@ -172,7 +172,7 @@ const Contacts = () => {
             </Stack>
           </div>
         )}
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   );
