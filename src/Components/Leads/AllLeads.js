@@ -722,7 +722,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       flex: 0.5,
       headerAlign: "center",
       renderCell: (cellValues) => {
-        console.log("Contact: ", cellValues);
         return (
           <div className="flex flex-col items-start my-4">
             <p className="text-center font-bold mb-2 overflow-wrap break-word">

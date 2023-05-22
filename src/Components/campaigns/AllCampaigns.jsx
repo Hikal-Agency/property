@@ -56,7 +56,20 @@ const AllCampaigns = ({ pageState, setpageState }) => {
       minWidth: 150,
       flex: 1,
       headerAlign: "center",
+      renderCell: (cellValues) => {
+        return (
+          <div>
+            {cellValues?.formattedValue === "ACTIVE" && (
+              <p className="text-green-600">{cellValues?.formattedValue}</p>
+            )}
+            {cellValues?.formattedValue === "PAUSED" && (
+              <p className="text-red-600">{cellValues?.formattedValue}</p>
+            )}
+          </div>
+        );
+      },
     },
+
     {
       field: "adset",
       headerName: "Adset",
@@ -408,6 +421,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
             },
+            overflowX: "auto",
           }}
           // getRowClassName={(params) =>
           //   params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
