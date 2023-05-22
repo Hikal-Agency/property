@@ -109,19 +109,11 @@ const SingleLeadPage = () => {
         },
       });
 
-      console.log("SINGLE LEAD: ", result);
-      if (result?.data?.status) {
-        if (!result.data.status) {
-          setLeadNotFound(true);
-        } else {
+          console.log("SINGLE LEAD: ", result.status);
           setLeadData(result.data.data);
-        }
-      } else {
-        setLeadData(result.data.data);
-      }
-
       setloading(false);
     } catch (error) {
+      console.log(error)
       if (error?.response?.status === 404) {
         setLeadNotFound(true);
       } else {
