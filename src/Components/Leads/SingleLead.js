@@ -5,6 +5,7 @@ import {
   Modal,
   TextField,
   IconButton,
+  Button,
   Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -17,6 +18,7 @@ import axios from "axios";
 import moment from "moment";
 import { IoMdClose } from "react-icons/io";
 import { toast, ToastContainer } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -144,7 +146,7 @@ const SingleLead = ({
           style={style}
           className={`w-[calc(100%-20px)] md:w-[900px]  ${
             currentMode === "dark" ? "bg-gray-900 text-white" : "bg-white"
-          } absolute top-1/2 left-1/2 p-10 rounded-md`}
+          } absolute top-1/2 left-1/2 px-10 py-5 rounded-md`}
         >
           <IconButton
             sx={{
@@ -290,8 +292,13 @@ const SingleLead = ({
             </div>
           </div>
 
-          <div className="bg-main-red-color h-0.5 w-full my-7"></div>
-          <div className={`rounded-md mt-5`}>
+          <div className="bg-main-red-color h-0.5 w-full mt-6 mb-4"></div>
+          <div className="flex my-0 w-full">
+            <Link sx={{my: 0, w: "100%"}} to={`/leads/${LeadData?.lid}`}>
+              <Button fullWidth sx={{my: 0}} variant="contained" size="small">View Lead Details</Button>
+            </Link>
+          </div>
+          <div className={`rounded-md mt-2`}>
             <h1 className="font-bold text-lg text-center">Lead Notes</h1>
             {lastNote && (
               <Box className="bg-gray-300 rounded px-2 py-1 mt-3">

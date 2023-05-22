@@ -1,129 +1,150 @@
 (() => {
-  const e = "bp-web-widget",
-    t = {};
-  function n(t) {
-    return t ? `${t}-container` : e;
+  const chatContainerId = "bp-web-widget";
+  const chatInstances = {};
+
+  function getContainerId(chatId) {
+    return chatId ? `${chatId}-container` : chatContainerId;
   }
-  function o(e) {
-    return e || "bp-widget";
+
+  function getFrameId(chatId) {
+    return chatId || "bp-widget";
   }
-  function i(e, t, n = {}) {
-    const o = document.createElement(e);
-    Object.entries(n).forEach(([e, t]) => (o[e] = t));
-    const i = document.querySelector(t);
-    if (!i) throw new Error(`No element correspond to ${t}`);
-    return i.appendChild(o), o;
+
+  function createElement(tag, parentSelector, attributes = {}) {
+    const element = document.createElement(tag);
+    Object.entries(attributes).forEach(([key, value]) => {
+      element[key] = value;
+    });
+    const parentElement = document.querySelector(parentSelector);
+    if (!parentElement) {
+      throw new Error(`No element corresponds to ${parentSelector}`);
+    }
+    parentElement.appendChild(element);
+    return element;
   }
-  function r(e, t) {
-    const n = `bp-chat-key-${t.clientId}`;
-    let i = localStorage.getItem(n);
-    i ||
-      ((i = (function (e) {
-        const t =
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        let n = "";
-        for (let o = 0; o < e; o++)
-          n += t.charAt(Math.floor(Math.random() * t.length));
-        return n;
-      })(32)),
-      localStorage.setItem(n, i));
-    const r = encodeURIComponent(
-        JSON.stringify({
-          config: Object.assign(Object.assign({}, t), { encryptionKey: i }),
-        })
-      ),
-      a = encodeURIComponent(
-        t.botConversationDescription || t.botName || "Chatbot"
-      ),
-      c = e + "/index.html?options=" + r;
-    return `<iframe id="${o(
-      t.chatId
-    )}" title="${a}" frameborder="0" src="${c}" class="bp-widget-web"/>`;
+
+  function generateChatKey(clientId) {
+    const chatKey = `bp-chat-key-${clientId}`;
+    let encryptionKey = localStorage.getItem(chatKey);
+    if (!encryptionKey) {
+      encryptionKey = Array.from(Array(32))
+        .map(() => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(Math.floor(Math.random() * 62)))
+        .join("");
+      localStorage.setItem(chatKey, encryptionKey);
+    }
+    return encodeURIComponent(JSON.stringify({ config: { ...clientId, encryptionKey } }));
   }
-  function a(e, t) {
-    return new Proxy(t, {
-      get: (t, n) =>
-        t[n]
-          ? t[n]
-          : "iframeWindow" === n
-          ? () => {
-              console.warn(
-                `No webchat with id ${e} has been initialized. \n Please use window.botpressWebChat.init first.`
-              );
-            }
-          : "eventListener" === n
-          ? { handler: () => {}, types: [] }
-          : void 0,
-      set: (e, t, n) => ((e[t] = n), !0),
+
+  function generateFrameSrc(hostUrl, clientId) {
+    const encodedOptions = generateChatKey(clientId);
+    const encodedTitle = encodeURIComponent(clientId.botConversationDescription || clientId.botName || "Chatbot");
+    return `${hostUrl}/index.html?options=${encodedOptions}`;
+  }
+
+  function createChatInstance(chatId, instance) {
+    const chatElement = { iframeWindow: getFrame(chatId)?.contentWindow };
+    if (chatInstances[chatId]) {
+      Object.assign(chatInstances[chatId], chatElement);
+    } else {
+      chatInstances[chatId] = createProxy(chatId, chatElement);
+    }
+  }
+
+  function getChatInstance(chatId) {
+    return chatInstances[chatId] || createProxy(chatId, {});
+  }
+
+  function createProxy(chatId, instance) {
+    return new Proxy(instance, {
+      get(target, property) {
+        if (target[property]) {
+          return target[property];
+        }
+        if (property === "iframeWindow") {
+          return () => {
+            console.warn(`No webchat with id ${chatId} has been initialized. \n Please use window.botpressWebChat.init first.`);
+          };
+        }
+        if (property === "eventListener") {
+          return { handler: () => {}, topics: [] };
+        }
+      },
+      set(target, property, value) {
+        target[property] = value;
+        return true;
+      },
     });
   }
-  function c(n) {
-    return t[(n = n || e)];
+
+  function getChatInstanceById(chatId) {
+    return chatInstances[chatId];
   }
-  function s(e, t) {
-    return document.querySelector(`#${e} #${t}`);
+
+  function getFrame(containerId, frameId) {
+    return document.querySelector(`#${containerId} #${frameId}`);
   }
-  window.addEventListener("message", function ({ data: e }) {
-    if (
-      !(function (e) {
-        return e && "string" == typeof e.type && "string" == typeof e.chatId;
-      })(e)
-    )
+
+  window.addEventListener("message", function ({ data: event }) {
+    if (!event || typeof event.type !== "string" || typeof event.chatId !== "string") {
       return;
-    if ("UI.RESIZE" === e.type) {
-      const t = "number" == typeof e.value ? e.value + "px" : e.value;
-      s(n(e.chatId), o(e.chatId)).style.width = t;
     }
-    if ("UI.SET-CLASS" === e.type) {
-      s(n(e.chatId), o(e.chatId)).setAttribute("class", e.value);
+
+    const { type, value, chatId } = event;
+
+    if (type === "UI.RESIZE") {
+      const width = typeof value === "number" ? value + "px" : value;
+      const chatFrame = getFrame(getContainerId(chatId), getFrameId(chatId));
+      chatFrame.style.width = width;
     }
-    const t = c(e.chatId);
-    t &&
-      t.eventListener?.topics?.some((t) => "*" === t || t === e.type) &&
-      t.eventListener.handler(e);
-  }),
-    (window.botpressWebChat = {
-      init: function (c, d) {
-        (d = d || "body"), (c.chatId = c.chatId || e);
-        const f = c.hostUrl || "";
-        i("link", "head", { rel: "stylesheet", href: `${f}/inject.css` });
-        const u = r(f, c),
-          l = n(c.chatId),
-          h = o(c.chatId);
-        i("div", d, { id: l, innerHTML: u });
-        const p = { iframeWindow: s(l, h).contentWindow };
-        t[c.chatId]
-          ? Object.assign(t[c.chatId], p)
-          : (t[c.chatId] = a(c.chatId, p));
-      },
-      configure: function (e, t) {
-        c(t).iframeWindow.postMessage({ action: "configure", payload: e }, "*");
-      },
-      sendEvent: function (e, t) {
-        c(t).iframeWindow.postMessage({ action: "event", payload: e }, "*");
-      },
-      mergeConfig: function (e, t) {
-        c(t).iframeWindow.postMessage(
-          { action: "mergeConfig", payload: e },
-          "*"
-        );
-      },
-      sendPayload: function (e, t) {
-        c(t).iframeWindow.postMessage(
-          { action: "sendPayload", payload: e },
-          "*"
-        );
-      },
-      onEvent: function (n, o = [], i) {
-        if ("function" != typeof n)
-          throw new Error(
-            "EventHandler is not a function, please provide a function"
-          );
-        if (!Array.isArray(o))
-          throw new Error("Topics should be an array of supported event types");
-        const r = { eventListener: { handler: n, topics: o } };
-        t[(i = i || e)] ? Object.assign(t[i], r) : (t[i] = a(i, r));
-      },
-    });
+
+    if (type === "UI.SET-CLASS") {
+      const chatFrame = getFrame(getContainerId(chatId), getFrameId(chatId));
+      chatFrame.setAttribute("class", value);
+    }
+
+    const chatInstance = getChatInstance(chatId);
+    if (chatInstance.eventListener?.topics?.some(topic => topic === "*" || topic === type)) {
+      chatInstance.eventListener.handler(event);
+    }
+  });
+
+  window.botpressWebChat = {
+    init: function (config, parentElementId) {
+      parentElementId = parentElementId || "body";
+      config.chatId = config.chatId || chatContainerId;
+      const hostUrl = config.hostUrl || "";
+      createElement("link", "head", { rel: "stylesheet", href: `${hostUrl}/inject.css` });
+      const frameSrc = generateFrameSrc(hostUrl, config);
+      const containerId = getContainerId(config.chatId);
+      const frameId = getFrameId(config.chatId);
+      createElement("div", parentElementId, { id: containerId, innerHTML: `<iframe id="${frameId}" title="${encodeURIComponent(config.botConversationDescription || config.botName || "Chatbot")}" frameborder="0" src="${frameSrc}" class="bp-widget-web"/>` });
+      createChatInstance(config.chatId);
+    },
+    configure: function (payload, chatId) {
+      getChatInstanceById(chatId).iframeWindow.postMessage({ action: "configure", payload }, "*");
+    },
+    sendEvent: function (payload, chatId) {
+      getChatInstanceById(chatId).iframeWindow.postMessage({ action: "event", payload }, "*");
+    },
+    mergeConfig: function (payload, chatId) {
+      getChatInstanceById(chatId).iframeWindow.postMessage({ action: "mergeConfig", payload }, "*");
+    },
+    sendPayload: function (payload, chatId) {
+      getChatInstanceById(chatId).iframeWindow.postMessage({ action: "sendPayload", payload }, "*");
+    },
+    onEvent: function (handler, topics = [], chatId) {
+      if (typeof handler !== "function") {
+        throw new Error("EventHandler is not a function, please provide a function");
+      }
+      if (!Array.isArray(topics)) {
+        throw new Error("Topics should be an array of supported event types");
+      }
+      const eventListener = { handler, topics };
+      if (chatInstances[chatId]) {
+        Object.assign(chatInstances[chatId].eventListener, eventListener);
+      } else {
+        chatInstances[chatId] = createProxy(chatId, { eventListener });
+      }
+    },
+  };
 })();
-//# sourceMappingURL=inject.js.map
