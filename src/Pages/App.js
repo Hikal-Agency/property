@@ -135,9 +135,9 @@ const routes = [
     pageName: "Lead Notes",
   },
   {
-    path: "/lead/:lid", 
-    element: <SingleLeadPage/>, 
-    page: "Lead"
+    path: "/lead/:lid",
+    element: <SingleLeadPage />,
+    page: "Lead",
   },
   {
     path: "/meetings",
