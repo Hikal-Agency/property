@@ -20,7 +20,7 @@ const Reports = () => {
           }`}
         >
           <div className={`w-full `}>
-            <div className="px-5">
+            <div className="pl-3">
               <div className="my-5 mb-10">
                 <div className="grid grid-cols-4 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
                   <div

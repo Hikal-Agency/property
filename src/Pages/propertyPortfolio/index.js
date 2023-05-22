@@ -68,7 +68,7 @@ const PropertyPortfolio = () => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <div className="px-5">
+          <div className="pl-3">
             <h1
               className={`font-semibold ${
                 currentMode === "dark" ? "text-white" : "text-red-600"

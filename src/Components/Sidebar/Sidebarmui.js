@@ -1749,7 +1749,7 @@ const Sidebarmui = () => {
   return (
     <div
       style={{ display: "flex", height: "100%" }}
-      className={`max-w-[220px] sticky top-0 left-0 `}
+      className={`max-w-[200px] sticky top-0 left-0 `}
     >
       <Sidebar
         rootStyles={{

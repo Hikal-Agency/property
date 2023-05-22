@@ -172,7 +172,7 @@ const Home = () => {
         <div
           className={`LoginWrapper md:h-screen w-screen flex items-center justify-center `}
         >
-          <div className="flex min-h-screen items-center justify-center mt-5 px-2">
+          <div className="flex min-h-screen items-center justify-center mt-5 pl-3">
             <div className="w-[calc(100vw-50px)] md:max-w-[500px] space-y-4 md:space-y-6 bg-white py-8 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
               <div>
                 <Link to={"/"} className="cursor-pointer">
