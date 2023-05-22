@@ -496,9 +496,9 @@ function App() {
               );
             })}
           </Routes>
-          <Footer /> {/* Add the Footer component here */}
         </div>
       </div>
+      <Footer />
     </>
   );
 }
