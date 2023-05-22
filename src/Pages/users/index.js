@@ -1,8 +1,8 @@
-import { Button } from "@material-tailwind/react";
+import { Button, TabPanel } from "@material-tailwind/react";
 import Switch from "@mui/material/Switch";
 import Avatar from "@mui/material/Avatar";
 
-import { Box } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
@@ -14,12 +14,26 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import UserTable from "../../Components/Users/UserTable";
 
 const Users = () => {
-  const { currentMode, DataGridStyles, BACKEND_URL, pageState, setpageState } =
-    useStateContext();
+  const {
+    currentMode,
+    DataGridStyles,
+    BACKEND_URL,
+    pageState,
+    setpageState,
+    darkModeColors,
+  } = useStateContext();
 
   const [user, setUser] = useState([]);
+  const [tabValue, setTabValue] = useState(0);
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    console.log("Tab: ", newValue);
+    setValue(newValue);
+  };
 
   const handleTrainerSwitchChange = async (cellValues) => {
     console.log("Id: ", cellValues?.id);
@@ -374,7 +388,86 @@ const Users = () => {
                     </span>
                   </h2>
                 </div>
-                <Box width={"100%"} sx={DataGridStyles}>
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiTabs-indicator": {
+                      height: "100%",
+                      borderRadius: "5px",
+                      backgroundColor: "#da1f26",
+                    },
+                    "& .Mui-selected": {
+                      color: "white !important",
+                      zIndex: "1",
+                    },
+                  }}
+                  className={`w-full rounded-md overflow-hidden ${
+                    currentMode === "dark" ? "bg-black" : "bg-white"
+                  } `}
+                >
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    variant="standard"
+                    // centered
+                    className="w-full px-1 m-1"
+                  >
+                    <Tab label="Table View" />
+                    <Tab label="Grid View" />
+                  </Tabs>
+                </Box>
+                <div className="mt-3 pb-3">
+                  <TabPanel value={value} index={0}>
+                    <Box width={"100%"} sx={DataGridStyles}>
+                      <DataGrid
+                        autoHeight
+                        disableSelectionOnClick
+                        rows={pageState.data}
+                        columns={columns}
+                        rowCount={pageState.total}
+                        loading={pageState.isLoading}
+                        rowsPerPageOptions={[30, 50, 75, 100]}
+                        pagination
+                        width="auto"
+                        paginationMode="server"
+                        page={pageState.page - 1}
+                        pageSize={pageState.pageSize}
+                        onPageChange={(newPage) => {
+                          setpageState((old) => ({
+                            ...old,
+                            page: newPage + 1,
+                          }));
+                        }}
+                        onPageSizeChange={(newPageSize) =>
+                          setpageState((old) => ({
+                            ...old,
+                            pageSize: newPageSize,
+                          }))
+                        }
+                        sx={{
+                          boxShadow: 2,
+                          "& .MuiDataGrid-cell:hover": {
+                            cursor: "pointer",
+                          },
+                        }}
+                        getRowClassName={(params) =>
+                          params.indexRelativeToCurrentPage % 2 === 0
+                            ? "even"
+                            : "odd"
+                        }
+                      />
+                    </Box>
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                    {/* <ListQa
+                      isLoading={loading}
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                    /> */}
+                    <UserTable tabValue={tabValue} setTabValue={setTabValue} />
+                  </TabPanel>
+                </div>
+                {/* <Box width={"100%"} sx={DataGridStyles}>
                   <DataGrid
                     autoHeight
                     disableSelectionOnClick
@@ -409,7 +502,7 @@ const Users = () => {
                         : "odd"
                     }
                   />
-                </Box>
+                </Box> */}
               </div>
             </div>
           </div>
@@ -418,6 +511,11 @@ const Users = () => {
       </div>
     </>
   );
+
+  function TabPanel(props) {
+    const { children, value, index } = props;
+    return <div>{value === index && <div>{children}</div>}</div>;
+  }
 };
 
 export default Users;
