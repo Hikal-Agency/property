@@ -588,7 +588,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "leadSource",
       headerName: "Source",
-      minWidth: 40,
+      minWidth: 38,
       flex: 1,
       
       renderCell: (cellValues) => {
@@ -649,20 +649,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "otp",
       headerName: "OTP",
       
-      minWidth: 65,
+      minWidth: 62,
       flex: 1,
       renderCell: (cellValues) => {
         return (
           <div style={{fontSize: 10}}>
             {cellValues.formattedValue === "Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
+                <badge className="bg-[#0f9d58] py-1 rounded-md">VERIFIED</badge>
               </div>
             )}
 
             {cellValues.formattedValue === "Not Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className="bg-[#ff0000] p-1 rounded-md">
+                <badge className="bg-[#ff0000] py-1 rounded-md">
                   NOT VERIFIED
                 </badge>
               </div>

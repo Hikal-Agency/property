@@ -477,7 +477,7 @@ function App() {
         </div>
       </div> */}
 
-      <div className="flex w-screen">
+      <div className="flex" style={{width: "99vw"}}>
         {hasSidebarOrNavbar() && <Sidebarmui />}
         <div
           className={`w-[100%] ${
