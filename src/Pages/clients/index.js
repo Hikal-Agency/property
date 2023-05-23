@@ -710,7 +710,7 @@ const Clients = () => {
           }`}
         >
           <div className={`w-full `}>
-            <div className="px-5">
+            <div className="pl-3">
               <div className="my-5 mb-10">
                 <div className="my-3">
                   <h2

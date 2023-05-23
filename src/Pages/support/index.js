@@ -28,7 +28,7 @@ const Tickets = () => {
           }`}
         >
           <div className={`w-full `}>
-            <div className="px-5">
+            <div className="pl-3">
               <h4 className="font-semibold p-7 text-center text-2xl">
                 Welcome to{" "}
                 <span className="text-main-red-color font-bold">HIKAL CRM</span>

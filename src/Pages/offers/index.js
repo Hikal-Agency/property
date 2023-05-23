@@ -34,7 +34,7 @@ const Offers = () => {
           }`}
         >
           <div className={`w-full `}>
-            <div className="px-5">
+            <div className="pl-3">
               <div
                 className={`${
                   currentMode === "dark"

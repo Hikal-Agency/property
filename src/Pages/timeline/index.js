@@ -113,7 +113,7 @@ const Timeline = () => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <div className="px-5">
+          <div className="pl-3">
             {error404 ? (
               <Error />
             ) : (

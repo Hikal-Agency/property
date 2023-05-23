@@ -50,7 +50,7 @@ const AllHotLeads = () => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="w-full px-5">
+            <div className="w-full pl-3">
               <div className="mt-3">
                 <h1
                   className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${

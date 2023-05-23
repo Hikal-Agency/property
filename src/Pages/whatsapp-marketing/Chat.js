@@ -185,7 +185,7 @@ const Chat = () => {
                           style={{ background: "#000000c2" }}
                           className="px-1 w-[250px] pt-4"
                         >
-                          <div className="bg-white py-3 rounded cursor-pointer mx-2 px-2">
+                          <div className="bg-white py-3 rounded cursor-pointer mx-2 pl-3">
                             <strong>
                               {searchParams.get("phoneNumber")}
                             </strong>
