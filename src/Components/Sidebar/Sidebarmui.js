@@ -1749,7 +1749,7 @@ const Sidebarmui = () => {
   return (
     <div
       style={{ display: "flex", height: "100%" }}
-      className={`max-w-[250px] sticky top-0 left-0 `}
+      className={`max-w-[220px] sticky top-0 left-0 `}
     >
       <Sidebar
         rootStyles={{
@@ -1759,7 +1759,7 @@ const Sidebarmui = () => {
         }}
         className="h-screen sticky top-0"
       >
-        <div className="px-2 mt-3">
+        <div className="mt-3">
           <div className="flex justify-between items-center h-[50px]">
             <a
               href="/dashboard"
