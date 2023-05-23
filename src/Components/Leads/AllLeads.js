@@ -587,7 +587,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "leadSource",
-      headerName: "Source",
+      headerName: "Src",
       minWidth: 38,
       flex: 1,
       
