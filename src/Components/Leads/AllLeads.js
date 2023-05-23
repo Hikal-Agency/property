@@ -496,7 +496,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "id",
       headerName: "#",
       flex: 1,
-      minWidth: 28,
+      width: 40,
       renderCell: (cellValues) => {
         return <div><strong>{cellValues.formattedValue}</strong></div>;
       },
@@ -1425,6 +1425,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 }
               },
               "& .MuiDataGrid-columnHeader[data-field='id']": {
+
                 "& .MuiDataGrid-columnHeaderDraggableContainer": {
                   width: "70%",
                   "& .MuiDataGrid-columnHeaderTitleContainer": {
@@ -1436,6 +1437,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 paddingLeft: "2px", 
                 width: "100%", 
                 textAlign: "center"
+              },
+              "& .MuiDataGrid-cell[data-field='id']": {
+                width: '45px !important', 
+                minWidth: "45px !important"
               },
               "& .MuiDataGrid-cell[data-field='creationDate']": {
                 textAlign: "center"
