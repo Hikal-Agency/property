@@ -52,7 +52,7 @@ const WhatsappMarketing = () => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <div className="px-5">{pagesComponents[page]}</div>
+          <div className="pl-3">{pagesComponents[page]}</div>
         </div>
         {/* <Footer /> */}
       </div>

@@ -84,7 +84,7 @@ const ActivityLog = () => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <div className="px-5">
+          <div className="pl-3">
             <div className="mt-5 md:mt-2">
               <h1
                 className={`font-semibold ${

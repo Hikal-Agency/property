@@ -70,7 +70,7 @@ const Dashboard = () => {
             className={`${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >
             <div className="w-full overflow-x-hidden">
-              <div className="px-5">
+              <div className="pl-3">
                 <DashboardPanel />
               </div>
             </div>
