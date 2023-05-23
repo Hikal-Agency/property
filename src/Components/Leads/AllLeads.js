@@ -412,21 +412,21 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <>
+          <div style={{fontSize: 11}}>
             {cellValues.formattedValue === "Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
+              <div className="w-full h-full flex justify-center items-center text-white font-semibold">
                 <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
               </div>
             )}
 
             {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
+              <div className="w-full h-full flex justify-center items-center text-white font-semibold">
                 <badge className="bg-[#ff0000] p-1 rounded-md">
                   NOT VERIFIED
                 </badge>
               </div>
             )}
-          </>
+          </div>
         );
       },
     },
@@ -549,7 +549,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "assignedToManager",
       headerName: "Manager",
-      minWidth: 95,
+      minWidth: 85,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
@@ -557,7 +557,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "assignedToSales",
       headerName: "Agent",
-      minWidth: 95,
+      minWidth: 85,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
@@ -565,7 +565,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "feedback",
       headerName: "Feedback",
-      minWidth: 90,
+      minWidth: 85,
       flex: 1,
       
       hideable: false,
@@ -574,7 +574,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "priority",
       headerName: "Priority",
-      minWidth: 90,
+      minWidth: 85,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
@@ -582,13 +582,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "language",
       headerName: "Lang",
-      minWidth: 45,
+      minWidth: 55,
       flex: 1,
     },
     {
       field: "leadSource",
       headerName: "Source",
-      minWidth: 50,
+      minWidth: 40,
       flex: 1,
       
       renderCell: (cellValues) => {
@@ -649,49 +649,39 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "otp",
       headerName: "OTP",
       
-      minWidth: 60,
+      minWidth: 65,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <>
+          <div style={{fontSize: 10}}>
             {cellValues.formattedValue === "Verified" && (
-              <div style={{fontSize: 11}} className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
                 <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
               </div>
             )}
 
             {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white text-center px-5 text-xs font-semibold">
+              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
                 <badge className="bg-[#ff0000] p-1 rounded-md">
                   NOT VERIFIED
                 </badge>
               </div>
             )}
-          </>
+          </div>
         );
       },
     },
     {
       field: "edit",
       headerName: "Edit",
-      minWidth: 100,
+      minWidth: 70,
       flex: 1,
       sortable: false,
       filterable: false,
 
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
-            {/* <Button
-              onClick={() => HandleEditFunc(cellValues)}
-              className={`${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
-            >
-              <AiOutlineEdit size={20} />
-            </Button> */}
+          <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
             <p
               onClick={() => HandleEditFunc(cellValues)}
               className={`${
@@ -1355,6 +1345,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               },
               "& .MuiDataGrid-row": {
                 paddingLeft: "2px",
+                paddingTop: "10px", 
+                paddingBottom: "10px",
               },
               "& .MuiDataGrid-main": {
                 overflowY: "scroll",
@@ -1400,8 +1392,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 width: "100%"
               },
               "& .MuiSelect-select": {
-                padding: "3px 4px !important",
-                paddingRight: "15px !important",
+                padding: "3px 2px !important",
+                paddingRight: "8px !important",
               },
               "& .MuiDataGrid-columnHeader .MuiDataGrid-columnSeparator":
                 {
