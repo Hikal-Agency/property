@@ -30,6 +30,8 @@ const Users = () => {
   const [tabValue, setTabValue] = useState(0);
   const [value, setValue] = useState(0);
 
+  console.log("User: ", user);
+
   const handleChange = (event, newValue) => {
     console.log("Tab: ", newValue);
     setValue(newValue);
@@ -139,7 +141,7 @@ const Users = () => {
         total: response?.data?.managers?.total,
       }));
 
-      setUser(response?.data?.managers?.data);
+      setUser(response?.data);
     } catch (error) {
       console.log(error);
       toast.error("Unable to fetch users.", {
@@ -464,7 +466,11 @@ const Users = () => {
                       tabValue={tabValue}
                       setTabValue={setTabValue}
                     /> */}
-                    <UserTable tabValue={tabValue} setTabValue={setTabValue} />
+                    <UserTable
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                      user={user}
+                    />
                   </TabPanel>
                 </div>
                 {/* <Box width={"100%"} sx={DataGridStyles}>
