@@ -1,7 +1,8 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 
-const HorizontalBarChart = () => {
+const HorizontalBarChart = ({ barCharData }) => {
+  console.log("HorizaontalBarChart: ", barCharData);
   const chartData = {
     labels: ["Dataset 1", "Dataset 2", "Dataset 3", "Dataset 4", "Dataset 5"],
     datasets: [

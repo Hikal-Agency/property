@@ -189,10 +189,16 @@ const AllCampaigns = ({ pageState, setpageState }) => {
         const adsWithInsights = await Promise.all(
           adsData?.map(async (ad) => {
             const insightsResult = await axios.get(
-              `https://graph.facebook.com/v16.0/${ad.id}/insights?fields=spend,clicks,cpc,cpm,impressions&date_preset=maximum&access_token=${graph_api_token}`
+              `https://graph.facebook.com/v16.0/${ad.id}/insights?fields=spend,clicks,cpc,cpm,impressions,conversions&date_preset=maximum&access_token=${graph_api_token}`
             );
             console.log("Insights result: ", insightsResult);
             const insightsData = insightsResult.data.data[0];
+            const conversions = insightsData?.conversions || [];
+            const conversionValues = conversions.map(
+              (conversion) => conversion.value
+            );
+
+            console.log("Conversinos: ", conversionValues);
             return {
               ...ad,
               adset: ad?.adset?.name,
@@ -201,6 +207,8 @@ const AllCampaigns = ({ pageState, setpageState }) => {
               cpc: insightsData?.cpc,
               cpm: insightsData?.cpm,
               impressions: insightsData?.impressions,
+              conversions: conversionValues,
+              clicks: insightsData?.clicks,
             };
           })
         );

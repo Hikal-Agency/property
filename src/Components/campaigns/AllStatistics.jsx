@@ -34,7 +34,11 @@ const AllStatistics = ({ pageState, setpageState }) => {
   const [selectedCampaign, setSelectedCampaigns] = useState({});
   const [campaignStats, setCampaignStats] = useState(null);
   const [ads, setAds] = useState();
-  // eslint-disable-next-line
+  const [chartData, setChartData] = useState();
+  const [horizontalBarChart, sethorizontalBarChart] = useState();
+
+  console.log("ChartData: ", chartData);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -207,6 +211,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
       cpc: ad?.cpc || "No Data",
       cpm: ad?.cpm || "No Data",
       impressions: ad?.impressions || "No Data",
+      clicks: ad?.clicks || "No Data",
     }));
 
   const FetchCampaigns = async (e) => {
@@ -253,6 +258,73 @@ const AllStatistics = ({ pageState, setpageState }) => {
     FetchSingleCampaign(selectedCampaignId);
   };
 
+  // const FetchSingleCampaign = async (selectedCampaign) => {
+  //   setpageState((old) => ({
+  //     ...old,
+  //     isLoading: true,
+  //   }));
+
+  //   axios
+  //     .get(
+  //       `https://graph.facebook.com/v16.0/${selectedCampaign}/ads?fields=id,name,adset{id,name,daily_budget},status&date_preset=last_year&limit=1000&access_token=${graph_api_token}`
+  //     )
+  //     .then(async (result) => {
+  //       console.log("ads of campaign ");
+  //       console.log(result.data);
+
+  //       const adsData = result.data.data;
+  //       console.log("adsData: ", adsData);
+  //       const adsWithInsights = await Promise.all(
+  //         adsData?.map(async (ad) => {
+  //           const insightsResult = await axios.get(
+  //             `https://graph.facebook.com/v16.0/${ad.id}/insights?fields=spend,cpc,cpm,impressions&date_preset=maximum&access_token=${graph_api_token}`
+  //           );
+  //           console.log("Insights result: ", insightsResult);
+  //           const insightsData = insightsResult.data.data[0];
+  //           return {
+  //             ...ad,
+  //             adset: ad?.adset?.name,
+  //             dailyBudget: ad?.adset?.daily_budget,
+  //             spend: insightsData?.spend,
+  //             cpc: insightsData?.cpc,
+  //             cpm: insightsData?.cpm,
+  //             impressions: insightsData?.impressions,
+  //           };
+  //         })
+  //       );
+
+  //       console.log("Insights Data: ", adsWithInsights);
+
+  //       setAds(adsWithInsights);
+  //       FetchCampaignStats(selectedCampaign);
+
+  //       const rowsdata = adsWithInsights.map((row, index) => ({
+  //         id: index + 1,
+  //         campaignName: row?.name,
+  //         status: row?.status,
+  //         adset: row?.adset,
+  //         dailyBudget: row?.dailyBudget,
+  //         spend: row?.spend,
+  //         cpc: row?.cpc,
+  //         cpm: row?.cpm,
+  //         impressions: row?.impressions,
+  //         Cid: row?.id,
+  //       }));
+
+  //       setpageState((old) => ({
+  //         ...old,
+  //         isLoading: false,
+  //         data: rowsdata,
+  //         total: rowsdata.length,
+  //         pageSize: 10,
+  //       }));
+  //     })
+  //     .catch((err) => {
+  //       console.log("error occured", err);
+  //       console.log(err);
+  //     });
+  // };
+
   const FetchSingleCampaign = async (selectedCampaign) => {
     setpageState((old) => ({
       ...old,
@@ -267,15 +339,21 @@ const AllStatistics = ({ pageState, setpageState }) => {
         console.log("ads of campaign ");
         console.log(result.data);
 
-        const adsData = result.data.data;
+        const adsData = result?.data?.data;
         console.log("adsData: ", adsData);
         const adsWithInsights = await Promise.all(
           adsData?.map(async (ad) => {
             const insightsResult = await axios.get(
-              `https://graph.facebook.com/v16.0/${ad.id}/insights?fields=spend,cpc,cpm,impressions&date_preset=maximum&access_token=${graph_api_token}`
+              `https://graph.facebook.com/v16.0/${ad.id}/insights?fields=spend,clicks,cpc,cpm,impressions,conversions&date_preset=maximum&access_token=${graph_api_token}`
             );
             console.log("Insights result: ", insightsResult);
             const insightsData = insightsResult.data.data[0];
+            const conversions = insightsData?.conversions || [];
+            const conversionValues = conversions.map(
+              (conversion) => conversion.value
+            );
+
+            console.log("Conversinos: ");
             return {
               ...ad,
               adset: ad?.adset?.name,
@@ -284,14 +362,49 @@ const AllStatistics = ({ pageState, setpageState }) => {
               cpc: insightsData?.cpc,
               cpm: insightsData?.cpm,
               impressions: insightsData?.impressions,
+              conversions: conversionValues,
+              clicks: insightsData?.clicks,
             };
           })
         );
 
         console.log("Insights Data: ", adsWithInsights);
 
-        setAds(adsWithInsights);
+        const conversionsData = adsWithInsights
+          .map((row) => row.conversions)
+          .filter((conversions) => conversions.length > 0)
+          .map((conversions) => conversions);
+
+        console.log(conversionsData);
+
+        const spendData = adsWithInsights
+          .map((row) => row.spend)
+          .filter((spend) => spend !== undefined);
+
+        setChartData({
+          conversions: conversionsData,
+          spend: spendData,
+        });
+
+        const impressionsData = adsWithInsights
+          .map((row) => row.impressions)
+          .filter((impressions) => impressions)
+          .map((impressions) => impressions);
+
+        const clicksData = adsWithInsights
+          .map((row) => row.clicks)
+          .filter((clicks) => clicks)
+          .map((clicks) => clicks);
+
+        console.log("CLicks, impr: ", clicksData, impressionsData);
+
+        sethorizontalBarChart({
+          impressions: impressionsData,
+          clicks: clicksData,
+        });
+
         FetchCampaignStats(selectedCampaign);
+        setAds(adsWithInsights);
 
         const rowsdata = adsWithInsights.map((row, index) => ({
           id: index + 1,
@@ -528,7 +641,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
               <div style={{ flex: "1" }}>
                 <h6 className="font-semibold w-full">Performance</h6>
                 {/* <LineChart /> */}
-                <CombineChart />
+                <CombineChart combineData={chartData} />
                 {/* <CombinationChartTable /> */}
               </div>
             </div>
@@ -544,7 +657,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 <div className="justify-between items-center ">
                   <h6 className="font-semibold pb-3">Demographics</h6>
                   {/* <AreaChart /> */}
-                  <HorizontalBarChart />
+                  <HorizontalBarChart barCharData={horizontalBarChart} />
                 </div>
               </div>
 
@@ -559,7 +672,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   <h6 className="font-semibold pb-3">Table Data</h6>
                   {/* <BarChartStatistics /> */}
                   {/* <MapChartStatistics /> */}
-                  <CombinationChartTable />
+                  <CombinationChartTable tablData={row} />
                 </div>
               </div>
             </div>
