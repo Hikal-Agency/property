@@ -23,6 +23,7 @@ import HorizontalBarChart from "../charts/statisticsCharts/HorizontalBarChart";
 import CombineChart from "../charts/statisticsCharts/CombineChart";
 import CombinationChartTable from "../charts/statisticsCharts/CombinationTableChart";
 import MapChartStatistics from "../charts/statisticsCharts/MapChartStatistics";
+import { FaAd, FaThList, FaCheckCircle } from "react-icons/fa";
 
 const AllStatistics = ({ pageState, setpageState }) => {
   const { currentMode, BACKEND_URL, darkModeColors, graph_api_token } =
@@ -31,21 +32,87 @@ const AllStatistics = ({ pageState, setpageState }) => {
   const [searchText, setSearchText] = useState("");
   const [campaigns, setCampaigns] = useState([]);
   const [selectedCampaign, setSelectedCampaigns] = useState({});
+  const [campaignStats, setCampaignStats] = useState(null);
   const [ads, setAds] = useState();
   // eslint-disable-next-line
   const navigate = useNavigate();
   const location = useLocation();
 
+  console.log();
   console.log("Ads: ", ads);
 
   const data = [
-    { amount: "10", title: "Fresh Leads", icon: FaChartLine },
-    { amount: "20", title: "Manager Data", icon: FaChartLine },
-    { amount: "30", title: "Agent Data", icon: FaChartLine },
-    { amount: "30", title: "Agent Data", icon: FaChartLine },
-    { amount: "30", title: "Agent Data", icon: FaChartLine },
-    { amount: "30", title: "Agent Data", icon: FaChartLine },
+    { amount: campaignStats?.adsCount, title: "Ads", icon: FaAd },
+    { amount: campaignStats?.adsetsCount, title: "Adsets", icon: FaThList },
+    {
+      amount: campaignStats?.activeAdsCount,
+      title: "Active Ads",
+      icon: FaCheckCircle,
+    },
+    {
+      amount: campaignStats?.activeAdsetCount,
+      title: "Active Adsets",
+      icon: FaCheckCircle,
+    },
   ];
+
+  // count of ads adsets
+  const FetchCampaignStats = async (campaignId) => {
+    try {
+      const adsetsPromise = axios.get(
+        `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
+      );
+
+      const adsPromise = axios.get(
+        `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
+      );
+
+      const [adsetsResult, adsResult] = await Promise.all([
+        adsetsPromise,
+        adsPromise,
+      ]);
+
+      console.log("ADRESUKTS: ", adsetsResult);
+
+      const adsetsCount = adsetsResult.data.summary.total_count;
+      const adsCount = adsResult.data.summary.total_count;
+
+      const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
+        if (ad.status === "ACTIVE") {
+          count++;
+        }
+        return count;
+      }, 0);
+
+      const activeAdsetsCount = adsetsResult.data.data.reduce(
+        (count, adset) => {
+          if (adset.status === "ACTIVE") {
+            count++;
+          }
+          return count;
+        },
+        0
+      );
+
+      console.log("Ad Sets Count: ", adsetsCount);
+      console.log("Ads Count: ", adsCount);
+      console.log("Active Ads Count: ", activeAdsCount);
+      console.log("Active Adset Count: ", activeAdsetsCount);
+
+      // Set the fetched counts to state or use them as needed
+      const campaignStats = {
+        adsetsCount: adsetsCount,
+        adsCount: adsCount,
+        activeAdsCount: activeAdsCount,
+        activeAdsetCount: activeAdsetsCount,
+      };
+
+      // Set the campaign stats state with the fetched data
+      setCampaignStats(campaignStats);
+    } catch (error) {
+      console.log("Error occurred while fetching campaign stats: ", error);
+    }
+  };
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = (e) => {
@@ -224,6 +291,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
         console.log("Insights Data: ", adsWithInsights);
 
         setAds(adsWithInsights);
+        FetchCampaignStats(selectedCampaign);
 
         const rowsdata = adsWithInsights.map((row, index) => ({
           id: index + 1,
