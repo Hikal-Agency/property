@@ -669,7 +669,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
               >
                 <div className="justify-between items-center">
-                  <h6 className="font-semibold pb-3">Table Data</h6>
+                  <h6 className="font-semibold pb-3">Ads Data</h6>
                   {/* <BarChartStatistics /> */}
                   {/* <MapChartStatistics /> */}
                   <CombinationChartTable tablData={row} />
