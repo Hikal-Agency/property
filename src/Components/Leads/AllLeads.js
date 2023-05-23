@@ -496,20 +496,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "id",
       headerName: "#",
       flex: 1,
-      minWidth: 40,
+      minWidth: 28,
       renderCell: (cellValues) => {
         return <div><strong>{cellValues.formattedValue}</strong></div>;
       },
-    },
-    {
-      field: "creationDate",
-      headerName: "Date",
-      flex: 1,
-      
-      sortable: false,
-      minWidth: 50,
-      filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
     {
       field: "leadName",
@@ -640,7 +630,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "language",
       headerName: "Lang",
-      minWidth: 55,
+      minWidth: 45,
       flex: 1,
     },
     // {
@@ -707,7 +697,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "otp",
       headerName: "OTP",
       
-      minWidth: 62,
+      minWidth: 72,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -728,6 +718,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           </div>
         );
       },
+    },
+    {
+      field: "creationDate",
+      headerName: "Date",
+      flex: 1,
+      
+      sortable: false,
+      minWidth: 50,
+      filterable: false,
+      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
     {
       field: "edit",
@@ -1433,7 +1433,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 },
               },
               "& .MuiDataGrid-cell[data-field='language'] div": {
-                paddingLeft: "2px"
+                paddingLeft: "2px", 
+                width: "100%", 
+                textAlign: "center"
+              },
+              "& .MuiDataGrid-cell[data-field='creationDate']": {
+                textAlign: "center"
               },
               "& .MuiDataGrid-cell": {
                 padding: "0 3px !important",
