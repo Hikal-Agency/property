@@ -113,7 +113,7 @@ const SingleLeadPage = () => {
           setLeadData(result.data.data);
       setloading(false);
     } catch (error) {
-      console.log(error)
+      console.log('Error', error)
       if (error?.response?.status === 404) {
         setLeadNotFound(true);
       } else {

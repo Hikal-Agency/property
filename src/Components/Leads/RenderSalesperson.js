@@ -138,7 +138,7 @@ const RenderSalesperson = ({ cellValues }) => {
       {noAgents ? (
         <p
           style={{
-            color: currentMode === "dark" ? "#0000005c" : "#ffffff",
+            color: currentMode === "light" ? "#0000005c" : "#ffffff",
             textAlign: "left",
             width: "85%",
           }}
