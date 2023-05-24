@@ -480,7 +480,7 @@ function App() {
       <div className="flex" style={{ width: "99vw" }}>
         {hasSidebarOrNavbar() && <Sidebarmui />}
         <div
-          className={`w-[100%] pt-14 ${
+          className={`w-[100%] pt-16 ${
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >

@@ -210,6 +210,9 @@ const Navbar = () => {
           left: 200,
           right: 0,
           zIndex: "9999",
+          backgroundColor: currentMode !== "dark" ? "#f5f5f5" : "transparent",
+          boxShadow:
+            currentMode !== "dark" ? "0 2px 4px rgba(0, 0, 0, 0.1)" : "none",
         }}
       >
         <div className="flex items-center">
