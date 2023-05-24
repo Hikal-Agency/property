@@ -24,6 +24,7 @@ import CombineChart from "../charts/statisticsCharts/CombineChart";
 import CombinationChartTable from "../charts/statisticsCharts/CombinationTableChart";
 import MapChartStatistics from "../charts/statisticsCharts/MapChartStatistics";
 import { FaAd, FaThList, FaCheckCircle } from "react-icons/fa";
+import TopCampaignsTable from "../charts/statisticsCharts/TopCampaignsTable";
 
 const AllStatistics = ({ pageState, setpageState }) => {
   const { currentMode, BACKEND_URL, darkModeColors, graph_api_token } =
@@ -313,7 +314,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
         {
           params: {
             fields:
-              "name,bid_strategy,daily_budget,special_ad_category,ads{name,adset,bid_amount,status}",
+              "name,bid_strategy,daily_budget,special_ad_category,ads{name,adset,bid_amount,status,insights{clicks}}",
             access_token: graph_api_token,
           },
         }
@@ -744,22 +745,45 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 ))}
             </div>
 
-            <div
-              className={`${
-                currentMode === "dark"
-                  ? "bg-gray-900 text-white "
-                  : "bg-gray-200"
-              } h-full w-full rounded-md p-5 cursor-pointer mt-5`}
-              style={{ display: "flex", flexDirection: "column" }}
-            >
-              <div style={{ flex: "1" }}>
+            <div>
+              {/* <div style={{ flex: "1" }}>
                 <h6 className="font-semibold w-full">Performance</h6>
-                {/* <LineChart /> */}
+              
                 <CombineChart combineData={chartData} />
-                {/* <CombinationChartTable /> */}
-              </div>
+                
+              </div> */}
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-5">
+              <div
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-gray-900 text-white "
+                    : "bg-gray-200"
+                } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+              >
+                <div className="justify-between items-center ">
+                  <h6 className="font-semibold pb-3">Performance</h6>
+                  {/* <AreaChart /> */}
+                  <CombineChart combineData={chartData} />
+                </div>
+              </div>
+
+              <div
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-gray-900 text-white "
+                    : "bg-gray-200"
+                } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+              >
+                <div className="justify-between items-center">
+                  <h6 className="font-semibold pb-3">Top Campaigns</h6>
+                  {/* <BarChartStatistics /> */}
+                  {/* <MapChartStatistics /> */}
+                  <TopCampaignsTable tablData={campaigns} />
+                </div>
+              </div>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-5">
               <div
                 className={`${
