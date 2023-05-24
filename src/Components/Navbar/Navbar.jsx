@@ -8,11 +8,7 @@ import {
   MdOutlineLightMode,
 } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
-import {
-  Tooltip,
-  Link as MuiLink,
-  Button,
-} from "@mui/material";
+import { Tooltip, Link as MuiLink, Button } from "@mui/material";
 import { useProSidebar } from "react-pro-sidebar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -206,7 +202,16 @@ const Navbar = () => {
   return (
     <>
       <ToastContainer />
-      <div className="flex justify-between p-2  relative">
+      <div
+        className="flex justify-between p-2  relative mb-5"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 200,
+          right: 0,
+          zIndex: "9999",
+        }}
+      >
         <div className="flex items-center">
           <div
             onClick={() => {

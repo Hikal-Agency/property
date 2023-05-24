@@ -10,7 +10,7 @@ const Footer = () => {
         currentMode === "dark" ? "bg-gray-900" : "bg-white"
       }`}
       style={{
-        position: "sticky",
+        // position: "sticky",
         bottom: 0,
         left: 0,
         right: 0,
