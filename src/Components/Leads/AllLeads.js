@@ -480,24 +480,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   ];
 
   const columns = [
+
     {
-      field: "id",
-      headerName: "#",
-      flex: 1,
-      minWidth: 40,
-      width: 40,
+      field: "leadSource", 
+      headerName: "Src", 
+      flex: 1, 
+      minWidth: 45, 
       renderCell: (cellValues) => {
-        return <div><strong>{cellValues.formattedValue}</strong></div>;
-      },
-    },
-    {
-      field: "leadName",
-      headerName: "Name",
-      flex: 1,
-      minWidth: 110,
-       renderCell: (cellValues) => {
-        return <div className="flex flex-wrap items-center">
-            <div className="mr-1">
+        return <>
               {cellValues.row.leadSource.toLowerCase() ===
                 "campaign snapchat" && (
                 <div className="bg-white w-max rounded-full flex items-center justify-center">
@@ -545,8 +535,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   <BsPersonCircle size={22} color={"#14539a"} />
                 </div>
               )}
-            </div>
-            <span>{cellValues.row.leadName}</span>
+            </>;
+      }
+    }, 
+    {
+      field: "leadName",
+      headerName: "Name",
+      flex: 1,
+      minWidth: 85,
+       renderCell: (cellValues) => {
+        return <div className="flex flex-wrap items-center">
+          <span>{cellValues.row.leadName}</span>
         </div>;
        }
     },
@@ -1422,7 +1421,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   padding: "0 !important",
                 }
               },
-              "& .MuiDataGrid-columnHeader[data-field='id']": {
+              "& .MuiDataGrid-columnHeader[data-field='leadSource']": {
                   width: "45px !important", 
                   minWidth: '45px !important',
                 "& .MuiDataGrid-columnHeaderDraggableContainer": {
@@ -1437,9 +1436,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 width: "100%", 
                 textAlign: "center"
               },
-              "& .MuiDataGrid-cell[data-field='id']": {
+              "& .MuiDataGrid-cell[data-field='leadSource']": {
                 width: '45px !important', 
-                minWidth: "45px !important"
+                minWidth: "45px !important",
+                justifyContent: "center"
               },
               "& .MuiDataGrid-cell[data-field='edit']": {
                 width: "100% !important",
