@@ -742,16 +742,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <AiOutlineHistory size={20} />
             </p> */}
-            <Link
-              to={`/timeline/${cellValues.row.lid}`}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </Link>
+            {cellValues.row.lid !== null && (
+              <Link
+                to={`/timeline/${cellValues.row.lid}`}
+                className={`editLeadBtn ${
+                  currentMode === "dark"
+                    ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                    : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                }`}
+              >
+                <AiOutlineHistory size={20} />
+              </Link>
+            )}
+
             <p
               onClick={() => {
                 setLeadToDelete(cellValues?.row.lid);
