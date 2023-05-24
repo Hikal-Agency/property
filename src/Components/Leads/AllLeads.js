@@ -80,7 +80,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     setopenBackDrop,
     User,
     BACKEND_URL,
-    setSalesPerson,
+    isCollapsed
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -478,18 +478,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       },
     },
   ];
-
-  const handleNextArrow = () => {
-    dataTableRef.current
-      .querySelector(".MuiDataGrid-virtualScroller")
-      .scrollBy(140, 0);
-  };
-
-  const handlePrevArrow = () => {
-    dataTableRef.current
-      .querySelector(".MuiDataGrid-virtualScroller")
-      .scrollBy(-140, 0);
-  };
 
   const columns = [
     {
@@ -1263,7 +1251,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           ...DataGridStyles,
           position: "relative",
           marginBottom: "50px",
-          width: "calc(100vw - 225px)"
+          width: !isCollapsed ? "calc(100vw - 100px)": "calc(100vw - 225px)"
         }}
       >
         {selectedRows.length > 0 && (

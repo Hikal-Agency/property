@@ -107,6 +107,6 @@ input[type=number] {
 }
 
 aside.ps-sidebar-root {
-  width: 200px !important; 
-  min-width: 200px !important;
+  width: 200px; 
+  min-width: 200px;
 }
