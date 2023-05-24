@@ -19,7 +19,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
   const [singleLeadData, setsingleLeadData] = useState();
   const [openEditModal, setOpenEditModal] = useState({
     open: false,
-    id: null
+    id: null,
   });
   const { currentMode } = useStateContext();
   //eslint-disable-next-line
@@ -30,23 +30,27 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
     console.log(e.target.value);
   };
 
-  const handleEditMeeting = ({row}) => {
+  const handleEditMeeting = ({ row }) => {
+    console.log("ID: ", row.meetingId);
+    if (!row?.meetingId) {
+      return;
+    }
     setOpenEditModal({
       open: true,
-      id: row.meetingId
+      id: row.meetingId,
     });
-  }
+  };
 
   const handleMeetingModalClose = () => {
     setOpenEditModal({
-      open: false
+      open: false,
     });
-  }
+  };
 
   const columns = [
-    { 
-      field: "id", 
-      headerName: "#", 
+    {
+      field: "id",
+      headerName: "#",
       minWidth: 50,
       flex: 1,
       headerAlign: "center",
@@ -158,7 +162,8 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center align-center">
-            <Button onClick={() => handleEditMeeting(cellValues)}
+            <Button
+              onClick={() => handleEditMeeting(cellValues)}
               // onClick={() => HandleEditFunc(cellValues)}
               className={`${
                 currentMode === "dark"
@@ -170,9 +175,9 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
               <AiOutlineEdit size={20} />
             </Button>
           </div>
-        )
-      }
-    }
+        );
+      },
+    },
   ];
 
   //eslint-disable-next-line
@@ -382,10 +387,13 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
         />
       </Box>
 
-      {openEditModal.open && <UpdateMeeting FetchLeads={FetchLeads}
+      {openEditModal.open && (
+        <UpdateMeeting
+          FetchLeads={FetchLeads}
           meetingModalOpen={openEditModal}
           handleMeetingModalClose={handleMeetingModalClose}
-      />}
+        />
+      )}
     </div>
   );
 };

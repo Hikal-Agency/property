@@ -27,6 +27,7 @@ const UpdateMeeting = ({
   handleMeetingModalClose,
   FetchLeads,
 }) => {
+  console.log("Update lead: ", meetingModalOpen);
   // eslint-disable-next-line
   const { darkModeColors, currentMode, User, BACKEND_URL, formatNum } =
     useStateContext();
