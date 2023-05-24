@@ -91,6 +91,7 @@ import "./styling.css";
 
 const CombineChart = ({ combineData }) => {
   console.log("CombineData: ", combineData);
+
   const chartData = {
     labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
@@ -101,18 +102,18 @@ const CombineChart = ({ combineData }) => {
         fill: false,
         borderColor: "#2185d0",
         backgroundColor: "#2185d0",
-        pointRadius: 4,
-        pointBackgroundColor: "#ffffff",
-        pointBorderColor: "#2185d0",
-        pointBorderWidth: 2,
+        pointRadius: 0,
         tension: 0.4,
       },
       {
-        type: "bar",
+        type: "line",
         label: "Spend",
         data: combineData?.spend,
+        fill: false,
+        borderColor: "#f2711c",
         backgroundColor: "#f2711c",
-        barPercentage: 0.4,
+        pointRadius: 0,
+        tension: 0.4,
       },
     ],
   };
@@ -149,8 +150,8 @@ const CombineChart = ({ combineData }) => {
   };
 
   return (
-    <div className="barChartDiv" style={{ height: "300px", width: "100%" }}>
-      <Bar data={chartData} options={chartOptions} />
+    <div className="lineChartDiv" style={{ height: "300px", width: "100%" }}>
+      <Line data={chartData} options={chartOptions} />
     </div>
   );
 };
