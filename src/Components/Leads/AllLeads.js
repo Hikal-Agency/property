@@ -496,6 +496,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "id",
       headerName: "#",
       flex: 1,
+      minWidth: 40,
       width: 40,
       renderCell: (cellValues) => {
         return <div><strong>{cellValues.formattedValue}</strong></div>;
@@ -505,7 +506,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "leadName",
       headerName: "Name",
       flex: 1,
-      minWidth: 90,
+      minWidth: 110,
        renderCell: (cellValues) => {
         return <div className="flex flex-wrap items-center">
             <div className="mr-1">
@@ -597,7 +598,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "assignedToManager",
       headerName: "Manager",
-      minWidth: 85,
+      minWidth: 90,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
@@ -605,7 +606,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "assignedToSales",
       headerName: "Agent",
-      minWidth: 85,
+      minWidth: 90,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
@@ -732,8 +733,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "edit",
       headerName: "Edit",
-      minWidth: 90,
       flex: 1,
+      width: "100%",
       sortable: false,
       filterable: false,
 
@@ -1388,6 +1389,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               },
               "& .MuiDataGrid-columnHeadersInner": {
                 paddingLeft: "3px !important",
+                width: "100%", 
+                "& > div": {
+                  width: '100%'
+                }, 
               },
               "& .MuiDataGrid-cellCheckbox": {
                 minWidth: "22px !important",
@@ -1400,11 +1405,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               "& .MuiDataGrid-virtualScroller": {
                 scrollBehavior: "smooth",
                 marginTop: "0 !important",
+
+                "& .MuiDataGrid-virtualScrollerRenderZone" :{
+                  width: '100%'
+                }
               },
               "& .MuiDataGrid-row": {
                 paddingLeft: "2px",
                 paddingTop: "10px", 
                 paddingBottom: "10px",
+                width: "100%",
               },
               "& .MuiDataGrid-main": {
                 overflowY: "scroll",
@@ -1425,7 +1435,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 }
               },
               "& .MuiDataGrid-columnHeader[data-field='id']": {
-
+                  width: "45px !important", 
+                  minWidth: '45px !important',
                 "& .MuiDataGrid-columnHeaderDraggableContainer": {
                   width: "70%",
                   "& .MuiDataGrid-columnHeaderTitleContainer": {
@@ -1441,6 +1452,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               "& .MuiDataGrid-cell[data-field='id']": {
                 width: '45px !important', 
                 minWidth: "45px !important"
+              },
+              "& .MuiDataGrid-cell[data-field='edit']": {
+                width: "100% !important",
+                maxWidth: "100% !important"
               },
               "& .MuiDataGrid-cell[data-field='creationDate']": {
                 textAlign: "center"
@@ -1466,6 +1481,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               "& .MuiDataGrid-columnHeader .MuiDataGrid-columnSeparator":
                 {
                   display: "none",
+                },
+                "& .MuiDataGrid-columnHeader[data-field='edit'] .MuiDataGrid-columnHeaderTitleContainerContent": {
+                  width: '100%', 
+                  "& .MuiDataGrid-columnHeaderTitle": {
+                    width: "100%", 
+                    textAlign: "center"
+                  },
                 },
             }}
             getRowClassName={(params) =>
