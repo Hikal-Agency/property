@@ -24,6 +24,7 @@ import CombineChart from "../charts/statisticsCharts/CombineChart";
 import CombinationChartTable from "../charts/statisticsCharts/CombinationTableChart";
 import MapChartStatistics from "../charts/statisticsCharts/MapChartStatistics";
 import { FaAd, FaThList, FaCheckCircle } from "react-icons/fa";
+import TopCampaignsTable from "../charts/statisticsCharts/TopCampaignsTable";
 
 const AllStatistics = ({ pageState, setpageState }) => {
   const { currentMode, BACKEND_URL, darkModeColors, graph_api_token } =
@@ -46,20 +47,20 @@ const AllStatistics = ({ pageState, setpageState }) => {
   console.log();
   console.log("Ads: ", ads);
 
-  const data = [
-    { amount: campaignStats?.adsCount, title: "Ads", icon: FaAd },
-    { amount: campaignStats?.adsetsCount, title: "Adsets", icon: FaThList },
-    {
-      amount: campaignStats?.activeAdsCount,
-      title: "Active Ads",
-      icon: FaCheckCircle,
-    },
-    {
-      amount: campaignStats?.activeAdsetCount,
-      title: "Active Adsets",
-      icon: FaCheckCircle,
-    },
-  ];
+  // const data = [
+  //   { amount: campaignStats?.adsCount, title: "Ads", icon: FaAd },
+  //   { amount: campaignStats?.adsetsCount, title: "Adsets", icon: FaThList },
+  //   {
+  //     amount: campaignStats?.activeAdsCount,
+  //     title: "Active Ads",
+  //     icon: FaCheckCircle,
+  //   },
+  //   {
+  //     amount: campaignStats?.activeAdsetCount,
+  //     title: "Active Adsets",
+  //     icon: FaCheckCircle,
+  //   },
+  // ];
 
   // count of ads adsets
   const FetchCampaignStats = async (campaignId) => {
@@ -266,7 +267,41 @@ const AllStatistics = ({ pageState, setpageState }) => {
       cpm: ad?.cpm || "No Data",
       impressions: ad?.impressions || "No Data",
       clicks: ad?.clicks || "No Data",
+      conversions: ad?.consversions || "No Conversions",
     }));
+
+  console.log("Row: ", row);
+
+  const totalCounts = {
+    cpc:
+      row?.length > 0 &&
+      row?.reduce((total, ad) => total + (ad?.cpc !== "No Data" ? 1 : 0), 0),
+    cpm:
+      row?.length > 0 &&
+      row?.reduce((total, ad) => total + (ad?.cpm !== "No Data" ? 1 : 0), 0),
+    impressions:
+      row?.length > 0 &&
+      row?.reduce(
+        (total, ad) => total + (ad?.impressions !== "No Data" ? 1 : 0),
+        0
+      ),
+    conversions:
+      row?.length > 0 &&
+      row.reduce(
+        (total, ad) =>
+          total + (ad.conversions.length !== 0 ? ad.conversions.length : 0),
+        0
+      ),
+  };
+
+  const data = [
+    { amount: totalCounts.cpc, title: "CPC" },
+    { amount: totalCounts.cpm, title: "CPM" },
+    { amount: totalCounts.impressions, title: "Impressions" },
+    { amount: totalCounts.conversions, title: "Conversions" },
+  ];
+
+  console.log("Data", data);
 
   const FetchCampaigns = async (e) => {
     try {
@@ -279,7 +314,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
         {
           params: {
             fields:
-              "name,bid_strategy,daily_budget,special_ad_category,ads{name,adset,bid_amount,status}",
+              "name,bid_strategy,daily_budget,special_ad_category,ads{name,adset,bid_amount,status,insights{clicks}}",
             access_token: graph_api_token,
           },
         }
@@ -398,7 +433,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
         const adsWithInsights = await Promise.all(
           adsData?.map(async (ad) => {
             const insightsResult = await axios.get(
-              `https://graph.facebook.com/v16.0/${ad.id}/insights?fields=spend,clicks,cpc,cpm,impressions,conversions&date_preset=maximum&access_token=${graph_api_token}`
+              `https://graph.facebook.com/v16.0/${ad.id}/insights?fields=spend,clicks,cpc,cpm,impressions,conversions,gender_targeting
+              &date_preset=maximum&access_token=${graph_api_token}`
             );
             console.log("Insights result: ", insightsResult);
             const insightsData = insightsResult.data.data[0];
@@ -658,7 +694,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
 
             {/* data starts */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-3 text-center">
-              {data?.map((item, index) => (
+              {/* {data?.map((item, index) => (
                 <div
                   key={index}
                   className={`${
@@ -670,7 +706,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   {item?.icon && <item.icon className="text-2xl" />}
 
                   <p className="text-xl font-bold pb-2 text-red-600">
-                    {item.amount}
+                    {row?.amount}
                   </p>
                   <p
                     className={`text-sm ${
@@ -682,25 +718,72 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     {item.title}
                   </p>
                 </div>
-              ))}
+              ))} */}
+              {data?.length > 0 &&
+                data?.map((item, index) => (
+                  <div
+                    key={index}
+                    className={`${
+                      currentMode === "dark"
+                        ? "bg-gray-900 text-white "
+                        : "bg-gray-200 text-main-dark-bg"
+                    } h-auto dark:bg-secondary-dark-bg p-2 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
+                  >
+                    <p className="text-xl font-bold pb-2 text-red-600">
+                      {item?.amount}
+                    </p>
+                    <p
+                      className={`text-sm ${
+                        currentMode === "dark"
+                          ? "text-white"
+                          : "text-main-dark-bg-2 font-semibold"
+                      }`}
+                    >
+                      {item?.title}
+                    </p>
+                  </div>
+                ))}
             </div>
 
-            <div
-              className={`${
-                currentMode === "dark"
-                  ? "bg-gray-900 text-white "
-                  : "bg-gray-200"
-              } h-full w-full rounded-md p-5 cursor-pointer mt-5`}
-              style={{ display: "flex", flexDirection: "column" }}
-            >
-              <div style={{ flex: "1" }}>
+            <div>
+              {/* <div style={{ flex: "1" }}>
                 <h6 className="font-semibold w-full">Performance</h6>
-                {/* <LineChart /> */}
+              
                 <CombineChart combineData={chartData} />
-                {/* <CombinationChartTable /> */}
+                
+              </div> */}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-5">
+              <div
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-gray-900 text-white "
+                    : "bg-gray-200"
+                } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+              >
+                <div className="justify-between items-center ">
+                  <h6 className="font-semibold pb-3">Performance</h6>
+                  {/* <AreaChart /> */}
+                  <CombineChart combineData={chartData} />
+                </div>
+              </div>
+
+              <div
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-gray-900 text-white "
+                    : "bg-gray-200"
+                } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+              >
+                <div className="justify-between items-center">
+                  <h6 className="font-semibold pb-3">Top Campaigns</h6>
+                  {/* <BarChartStatistics /> */}
+                  {/* <MapChartStatistics /> */}
+                  <TopCampaignsTable tablData={campaigns} />
+                </div>
               </div>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-5">
               <div
                 className={`${
