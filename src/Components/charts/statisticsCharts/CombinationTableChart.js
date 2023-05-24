@@ -69,10 +69,10 @@ const CombinationChartTable = ({ tablData }) => {
                   {data?.campaignName}
                 </td>
                 <td className="border-b border-gray-300 py-2 text-center">
-                  {data?.impressions ? `${data?.impressions}%` : "No data"}
+                  {data?.impressions ? `${data?.impressions}` : "No data"}
                 </td>
                 <td className="border-b border-gray-300 py-2 text-center">
-                  {data?.clicks ? `${data?.clicks}%` : "No data"}
+                  {data?.clicks ? `${data?.clicks}` : "No data"}
                 </td>
               </tr>
             ))

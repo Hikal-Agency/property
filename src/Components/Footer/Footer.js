@@ -15,6 +15,7 @@ const Footer = () => {
         left: 0,
         right: 0,
         marginBottom: "0px",
+        zIndex: "9999",
       }}
     >
       <h1

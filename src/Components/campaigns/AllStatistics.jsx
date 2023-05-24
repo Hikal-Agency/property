@@ -36,6 +36,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
   const [ads, setAds] = useState();
   const [chartData, setChartData] = useState();
   const [horizontalBarChart, sethorizontalBarChart] = useState();
+  const [doughnutChart, setDoughnut] = useState();
 
   console.log("ChartData: ", chartData);
 
@@ -76,7 +77,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
         adsPromise,
       ]);
 
-      console.log("ADRESUKTS: ", adsetsResult);
+      console.log("ADSERRESULT: ", adsetsResult);
 
       const adsetsCount = adsetsResult.data.summary.total_count;
       const adsCount = adsResult.data.summary.total_count;
@@ -115,6 +116,59 @@ const AllStatistics = ({ pageState, setpageState }) => {
       setCampaignStats(campaignStats);
     } catch (error) {
       console.log("Error occurred while fetching campaign stats: ", error);
+    }
+  };
+
+  // adseet stats
+  const FetchAdsetStats = async (campaignId) => {
+    try {
+      const adsetsPromise = axios.get(
+        `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
+      );
+
+      const adsetStatsPromises = adsetsPromise.then(async (adsetsResult) => {
+        const adsets = adsetsResult.data.data;
+        const adsetStatsPromises = adsets?.map((adset) =>
+          axios.get(
+            `https://graph.facebook.com/v16.0/${adset.id}/insights?fields=clicks&access_token=${graph_api_token}`
+          )
+        );
+        return Promise.all(adsetStatsPromises);
+      });
+
+      const [adsetsResult, adsetStatsResults] = await Promise.all([
+        adsetsPromise,
+        adsetStatsPromises,
+      ]);
+
+      console.log("Ad Sets Result: ", adsetsResult);
+      console.log("Adset Stats Results: ", adsetStatsResults);
+
+      const adsetsCount = adsetsResult.data.summary.total_count;
+      const adsetClicksData = adsetStatsResults.map((statsResult) => {
+        console.log("STatsresult: ", statsResult);
+        const adsetClicks = statsResult.data.data.reduce(
+          (totalClicks, stats) => totalClicks + stats.clicks,
+          0
+        );
+
+        console.log("total clicks: ", adsetClicks);
+        return adsetClicks;
+      });
+
+      console.log("Ad Sets Count: ", adsetsCount);
+      console.log("Adset Clicks Data: ", adsetClicksData);
+
+      const adsetNames = adsetsResult?.data?.data?.map((adset) => adset.name);
+
+      console.log("Names: ", adsetNames);
+
+      setDoughnut({
+        adsetclicks: adsetClicksData,
+        adsetData: adsetNames,
+      });
+    } catch (error) {
+      console.log("Error occurred while fetching adset stats: ", error);
     }
   };
 
@@ -404,6 +458,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
         });
 
         FetchCampaignStats(selectedCampaign);
+        FetchAdsetStats(selectedCampaign);
         setAds(adsWithInsights);
 
         const rowsdata = adsWithInsights.map((row, index) => ({
@@ -700,8 +755,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 }}
               >
                 <div className="justify-between items-center">
-                  <h6 className="font-semibold pb-3">Sales</h6>
-                  <DoughnutChart />
+                  <h6 className="font-semibold pb-3">Adsets Clicks</h6>
+                  <DoughnutChart doughnutChart={doughnutChart} />
                 </div>
               </div>
 
