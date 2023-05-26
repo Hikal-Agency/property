@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AddLead from "./addlead";
 import Signup from "./auth/signup";
 import Booked from "./booked";
@@ -51,6 +51,7 @@ import AllQA from "./qaform/allQA";
 import SingleLeadPage from "./singlelead";
 import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
+import { useLocation } from "react-router-dom";
 
 const libraries = ["places"];
 
@@ -430,6 +431,7 @@ const routes = [
 
 function App() {
   const { setAllRoutes, setSocket, currentMode } = useStateContext();
+  const location = useLocation();
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -441,11 +443,12 @@ function App() {
 
     const socketURL = process.env.REACT_APP_SOCKET_URL;
     const socket = io(socketURL);
-    setSocket(socket);
+    setSocket(socket);    
   }, []);
 
   function hasSidebarOrNavbar() {
-    const pathname = window.location.pathname;
+    const pathname = location.pathname;
+    console.log("PTHNAME", pathname)
     if (pathname === "/" || pathname === "/auth/signup") {
       return false;
     } else {
@@ -455,27 +458,6 @@ function App() {
 
   return (
     <>
-      {/* <div className="flex w-screen">
-        {hasSidebarOrNavbar() && <Sidebarmui />}
-        <div
-          className={`w-[100%] ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
-          }`}
-        >
-          {hasSidebarOrNavbar() && (
-            <div className={`px-5`}>
-              <Navbar />
-            </div>
-          )}
-          <Routes>
-            {routes.map((route, index) => {
-              return (
-                <Route key={index} path={route.path} element={route.element} />
-              );
-            })}
-          </Routes>
-        </div>
-      </div> */}
 
       <div className="flex" style={{ width: "99vw" }}>
         {hasSidebarOrNavbar() && <Sidebarmui />}

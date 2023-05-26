@@ -10,9 +10,6 @@ const BreadCrumb = ({ allroutes, currentMode }) => {
 
   const breadcrumbItems = pathnames.map((value, index) => {
     const to = `/${pathnames.slice(0, index + 1).join("/")}`;
-    const formattedLastURL = `${pathnames[index][0].toUpperCase()}${pathnames[
-      index
-    ].slice(1, pathnames[index].length)}`.replace("%20", " ");
 
     if (index === 0) {
       return (
@@ -23,9 +20,9 @@ const BreadCrumb = ({ allroutes, currentMode }) => {
     }
 
     const parentPage = `/${pathnames.slice(0, index).join("/")}`;
-    const parentPageName = `${pathnames[index - 1][0].toUpperCase()}${pathnames[
+    const parentPageName = `${pathnames[index - 1][0]?.toUpperCase()}${pathnames[
       index - 1
-    ].slice(1, pathnames[index - 1].length)}`.replace("%20", " ");
+    ]?.slice(1, pathnames[index - 1].length)}`?.replace("%20", " ");
     // const allRoutes = []; // Add your routes here
 
     if (allroutes.find((route) => route.path === parentPage)) {
@@ -48,10 +45,10 @@ const BreadCrumb = ({ allroutes, currentMode }) => {
 
   const formattedLastURL = `${pathnames[
     pathnames.length - 1
-  ][0].toUpperCase()}${pathnames[pathnames.length - 1].slice(
+  ][0]?.toUpperCase()}${pathnames[pathnames.length - 1]?.slice(
     1,
     pathnames[pathnames.length - 1].length
-  )}`.replace("%20", " ");
+  )}`?.replace("%20", " ");
 
   return (
     <Breadcrumbs
