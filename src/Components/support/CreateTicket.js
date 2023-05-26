@@ -77,9 +77,9 @@ const CreateTicket = ({categories, setCategories}) => {
         }
       );
 
-      console.log("Category Added: ", add_category);
+      console.log("Category Added: ", add_category.data.categories);
       setbtnloading(false);
-      setCategories((categories) => [...categories, NewCategory]);
+      setCategories([...categories, add_category.data.categories]);
       setShowTextInput(false);
       setNewCategory("");
 

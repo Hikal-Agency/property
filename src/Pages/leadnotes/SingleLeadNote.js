@@ -18,6 +18,7 @@ import { toast, ToastContainer } from "react-toastify";
 import Footer from "../../Components/Footer/Footer";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
+import Error from "../Error";
 
 const SingleLeadNote = (props) => {
   const location = useLocation();
@@ -129,6 +130,7 @@ const SingleLeadNote = (props) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
+          {error404 ? <Error/> :
             <div className={`w-full`}>
               <div className="px-5 ">
                 <div
@@ -409,6 +411,7 @@ const SingleLeadNote = (props) => {
                 </div>
               </div>
             </div>
+          }
             {/* <Footer /> */}
           </div>
         )}

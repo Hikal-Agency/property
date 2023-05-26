@@ -1,13 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Footer from "../../Components/Footer/Footer";
 import Loader from "../../Components/Loader";
 import AllMeetings from "../../Components/meetings/AllMeetings";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
-import GoogleCalendarAppointment from "../../Components/appointments/GoogleCalendarAppointment";
 
 const Meetings = () => {
   const [loading, setloading] = useState(true);
@@ -80,7 +76,6 @@ const Meetings = () => {
                     pageState={pageState}
                     setpageState={setpageState}
                   />
-                  <GoogleCalendarAppointment/>
                 </div>
               </div>
             </div>
