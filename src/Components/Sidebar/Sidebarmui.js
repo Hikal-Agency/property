@@ -866,9 +866,18 @@ const Sidebarmui = () => {
       title: "Apps",
       links: [
         {
-          name: "Meetings",
+          name: "Appointments",
           icon: <BsCalendarWeekFill />,
-          link: "/meetings",
+          submenu: [
+            {
+              name: "Meetings",
+              link: "/appointments/meetings",
+            },
+            {
+              name: "Create Appointment",
+              link: "/appointments/create",
+            },
+          ],
         },
 
         {
@@ -1216,9 +1225,18 @@ const Sidebarmui = () => {
       title: "Apps",
       links: [
         {
-          name: "Meetings",
+          name: "Appointments",
           icon: <BsCalendarWeekFill />,
-          link: "/meetings",
+          submenu: [
+            {
+              name: "Meetings",
+              link: "/appointments/meetings",
+            },
+            {
+              name: "Create Appointment",
+              link: "/appointments/create",
+            },
+          ],
         },
 
         {
@@ -1581,9 +1599,18 @@ const Sidebarmui = () => {
       title: "Apps",
       links: [
         {
-          name: "Meetings",
+          name: "Appointments",
           icon: <BsCalendarWeekFill />,
-          link: "/meetings",
+          submenu: [
+            {
+              name: "Meetings",
+              link: "/appointments/meetings",
+            },
+            {
+              name: "Create Appointment",
+              link: "/appointments/create",
+            },
+          ],
         },
         {
           name: "Reports",

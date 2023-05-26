@@ -13,7 +13,8 @@ import AllHotLeads from "./hotleads";
 import AllUnassignedLeads from "./unassigned";
 import LeadNotesPage from "./leadnotes";
 import SingleLeadNote from "./leadnotes/SingleLeadNote";
-import Meetings from "./meetings";
+import Meetings from "./appointments/meetings";
+import CreateAppointment from "./appointments/createAppointment";
 import PersonaLeads from "./personalleads";
 import ProfilePage from "./profile";
 import ThirdPartyLeads from "./thirdpartyleads";
@@ -142,9 +143,14 @@ const routes = [
     page: "Lead",
   },
   {
-    path: "/meetings",
+    path: "/appointments/meetings",
     element: <Meetings />,
     pageName: "Meetings",
+  },
+  {
+    path: "/appointments/create",
+    element: <CreateAppointment />,
+    pageName: "Create Appointment",
   },
   {
     path: "/booked",
