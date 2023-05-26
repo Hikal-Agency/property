@@ -133,7 +133,6 @@ aside.ps-sidebar-root {
   width: 100% !important;
 }
 
-
 .MuiDataGrid-cellCheckbox {
   min-width: 22px !important;
   width: 22px !important;
@@ -226,10 +225,12 @@ aside.ps-sidebar-root {
   margin: 8px 0 !important;
   width: 100% !important;
 }
-.MuiSelect-select {
+.MuiBox-root .MuiSelect-select {
   padding: 3px 2px !important;
   padding-right: 8px !important;
+  width: 70% !important;
 }
+
 .MuiDataGrid-columnHeader .MuiDataGrid-columnSeparator {
   display: none !important;
 }

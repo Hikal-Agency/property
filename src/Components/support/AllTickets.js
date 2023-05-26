@@ -23,7 +23,7 @@ const AllTickets = () => {
       field: "id",
       headerName: "ID",
       headerAlign: "center",
-      minWidth: 50,
+      minWidth: 40,
       flex: 1,
     },
     {
@@ -31,7 +31,7 @@ const AllTickets = () => {
       headerName: "Ticket Date",
       headerAlign: "center",
       editable: false,
-      minWidth: 130,
+      minWidth: 60,
       flex: 1,
     },
     {
@@ -39,7 +39,7 @@ const AllTickets = () => {
       headerName: "User Name",
       headerAlign: "center",
       editable: false,
-      minWidth: 150,
+      minWidth: 120,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -56,7 +56,7 @@ const AllTickets = () => {
       headerName: "Category",
       headerAlign: "center",
       editable: false,
-      minWidth: 130,
+      minWidth: 40,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -73,7 +73,7 @@ const AllTickets = () => {
       headerName: "Description",
       headerAlign: "center",
       editable: false,
-      minWidth: 300,
+      minWidth: 150,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -90,7 +90,7 @@ const AllTickets = () => {
       headerName: "Issue",
       headerAlign: "center",
       editable: false,
-      minWidth: 200,
+      minWidth: 130,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -107,7 +107,7 @@ const AllTickets = () => {
       headerName: "Status",
       headerAlign: "center",
       editable: false,
-      minWidth: 110,
+      minWidth: 50,
       flex: 1,
       renderCell: (cellValues) => {
         return (
