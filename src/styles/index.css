@@ -110,3 +110,8 @@ aside.ps-sidebar-root {
   width: 200px; 
   min-width: 200px;
 }
+
+.css-b3tsul.ps-collapsed {
+  width: 65px !important;
+  min-width: 65px !important;
+}

@@ -207,7 +207,7 @@ const Navbar = () => {
         style={{
           position: "fixed",
           top: 0,
-          left: 200,
+          left: !isCollapsed ? 65 : 200,
           right: 0,
           zIndex: "50",
           backgroundColor: currentMode !== "dark" ? "#f5f5f5" : "transparent",
