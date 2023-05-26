@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import axios from "axios";
 
-const CreateTicket = ({categories, fetchCategories}) => {
+const CreateTicket = ({categories, setCategories}) => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
   const [newCategory, setNewCategory] = useState();
   const [showTextInput, setShowTextInput] = useState(false);
@@ -79,7 +79,7 @@ const CreateTicket = ({categories, fetchCategories}) => {
 
       console.log("Category Added: ", add_category);
       setbtnloading(false);
-      fetchCategories();
+      setCategories((categories) => [...categories, NewCategory]);
       setShowTextInput(false);
       setNewCategory("");
 
@@ -243,7 +243,6 @@ const CreateTicket = ({categories, fetchCategories}) => {
                         />
                       </MenuItem>
                       <Button
-                        type="submit"
                         size="medium"
                         className="bg-main-red-color text-white rounded-lg py-3 font-semibold mb-3 ml-5"
                         style={{ backgroundColor: "#da1f26", color: "#ffffff" }}

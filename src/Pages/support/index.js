@@ -97,7 +97,7 @@ const Tickets = () => {
                   <TabPanel value={value} index={0}>
                     <CreateTicket
                       categories={categories}
-                      fetchCategories={fetchCategories}s
+                      setCategories={setCategories}
                     />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
