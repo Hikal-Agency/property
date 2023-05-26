@@ -1258,11 +1258,13 @@ const Sidebarmui = () => {
     },
   ];
 
-  const [agentData, setAgentData] = useState(
-    isUserSubscribed === true
-      ? [
-          ...Agentlinks,
-          {
+  const [agentData, setAgentData] = useState(Agentlinks);
+
+  const [managerData, setManagerData] = useState(Managerlinks);
+
+  useEffect(() => {
+    if(isUserSubscribed) {
+      setAgentData([...Agentlinks,   {
             title: "WHATSAPP",
             links: [
               {
@@ -1286,15 +1288,8 @@ const Sidebarmui = () => {
                 link: "/whatsapp-marketing/payments",
               },
             ],
-          },
-        ]
-      : Agentlinks
-  );
-  const [managerData, setManagerData] = useState(
-    isUserSubscribed === true
-      ? [
-          ...Managerlinks,
-          {
+          },])
+      setManagerData([...Managerlinks,   {
             title: "WHATSAPP",
             links: [
               {
@@ -1318,24 +1313,10 @@ const Sidebarmui = () => {
                 link: "/whatsapp-marketing/payments",
               },
             ],
-          },
-        ]
-      : Managerlinks
-  );
+          },])
+    }
+  }, [isUserSubscribed]);
 
-  // useEffect(() => {
-  //   if (!LeadsCount) {
-  //     const token = localStorage.getItem("auth-token");
-  //     fetchHotLeads(token);
-  //     fetchColdLeads(token);
-  //     fetchPersonalLeads(token);
-  //     fetchthirdpartyleads(token);
-  //     fetchunassignedleads(token);
-  //     setLeadsCount(true);
-
-  //     console.log(User);
-  //   }
-  // }, []);
 
   //  DATA
   const links = [
