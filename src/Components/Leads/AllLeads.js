@@ -558,19 +558,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <>
-            {cellValues.row.leadSource.toLowerCase() ===
+            {cellValues.row.leadSource?.toLowerCase() ===
               "campaign snapchat" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <FaSnapchat size={22} color={"#f6d80a"} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() ===
+            {cellValues.row.leadSource?.toLowerCase() ===
               "campaign facebook" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <FaFacebook size={22} color={"#0e82e1"} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
+            {cellValues.row.leadSource?.toLowerCase() === "campaign tiktok" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <img
                   src={"/assets/tiktok-app.svg"}
@@ -581,13 +581,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() ===
+            {cellValues.row.leadSource?.toLowerCase() ===
               "campaign googleads" && (
               <div className="bg-white w-max rounded-full text-white flex items-center justify-center">
                 <FcGoogle size={22} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "campaign" && (
+            {cellValues.row.leadSource?.toLowerCase() === "campaign" && (
               <div className="w-max rounded-full flex items-center justify-center">
                 <MdCampaign
                   size={22}
@@ -595,12 +595,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "cold" && (
+            {cellValues.row.leadSource?.toLowerCase() === "cold" && (
               <div className="w-max rounded-full flex items-center justify-center">
                 <BsSnow2 size={22} color={"#0ec7ff"} />
               </div>
             )}
-            {cellValues.row.leadSource.toLowerCase() === "personal" && (
+            {cellValues.row.leadSource?.toLowerCase() === "personal" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <BsPersonCircle size={22} color={"#14539a"} />
               </div>
@@ -1484,108 +1484,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               "& .MuiDataGrid-virtualScrollerContent .MuiSvgIcon-root": {
                 color: currentMode === "dark" ? "#ffffff" : "#000000",
               },
-              "& .MuiDataGrid-columnHeadersInner": {
-                paddingLeft: "3px !important",
-                width: "100%",
-                "& > div": {
-                  width: "100%",
-                },
-              },
-              "& .MuiDataGrid-cellCheckbox": {
-                minWidth: "22px !important",
-                width: "22px !important",
-                "& .MuiButtonBase-root": {
-                  padding: "0 !important",
-                  paddingLeft: "5px !important",
-                },
-              },
-              "& .MuiDataGrid-virtualScroller": {
-                scrollBehavior: "smooth",
-                marginTop: "0 !important",
-
-                "& .MuiDataGrid-virtualScrollerRenderZone": {
-                  width: "100%",
-                },
-              },
-              "& .MuiDataGrid-row": {
-                paddingLeft: "2px",
-                paddingTop: "10px",
-                paddingBottom: "10px",
-                width: "100%",
-              },
               "& .MuiDataGrid-main": {
                 overflowY: "scroll",
                 height: pageState.data.length > 0 ? "475px" : "auto",
               },
-              "& .MuiDataGrid-columnHeaders": {
-                position: "sticky",
-                top: 0,
-                zIndex: 10,
-                minHeight: "45px !important",
-                fontSize: "13px !important",
-              },
-              "& .MuiDataGrid-columnHeaderCheckbox": {
-                minWidth: "22px !important",
-                width: "22px !important",
-                "& .MuiButtonBase-root": {
-                  padding: "0 !important",
-                },
-              },
-              "& .MuiDataGrid-columnHeader[data-field='leadSource']": {
-                width: "45px !important",
-                minWidth: "45px !important",
-                "& .MuiDataGrid-columnHeaderDraggableContainer": {
-                  width: "70%",
-                  "& .MuiDataGrid-columnHeaderTitleContainer": {
-                    justifyContent: "center",
-                  },
-                },
-              },
-              "& .MuiDataGrid-cell[data-field='language'] div": {
-                paddingLeft: "4px",
-                width: "100%",
-              },
-              "& .MuiDataGrid-cell[data-field='leadSource']": {
-                width: "45px !important",
-                minWidth: "45px !important",
-                justifyContent: "center",
-              },
-              "& .MuiDataGrid-cell[data-field='edit']": {
-                width: "100% !important",
-                maxWidth: "100% !important",
-              },
-              "& .MuiDataGrid-cell[data-field='creationDate']": {
-                textAlign: "center",
-              },
-              "& .MuiDataGrid-cell": {
-                padding: "0 3px !important",
-                "&[data-field='id'] div": {
-                  width: "100%",
-                  textAlign: "center",
-                },
-              },
-              "& .MuiDataGrid-columnHeader": {
-                padding: "0 !important",
-              },
-              "& .MuiDataGrid-cell .MuiFormControl-root": {
-                margin: "8px 0 !important",
-                width: "100%",
-              },
-              "& .MuiSelect-select": {
-                padding: "3px 2px !important",
-                paddingRight: "8px !important",
-              },
-              "& .MuiDataGrid-columnHeader .MuiDataGrid-columnSeparator": {
-                display: "none",
-              },
-              "& .MuiDataGrid-columnHeader[data-field='edit'] .MuiDataGrid-columnHeaderTitleContainerContent":
-                {
-                  width: "100%",
-                  "& .MuiDataGrid-columnHeaderTitle": {
-                    width: "100%",
-                    textAlign: "center",
-                  },
-                },
             }}
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

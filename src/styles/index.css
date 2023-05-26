@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
 
-body{
-    margin: 0;
-    padding:0;
-    font-family: "Open Sans", sans-serif;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif;
 }
 @tailwind base;
 @tailwind components;
@@ -17,14 +17,12 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
-
-
 /* SYNCFUSION COMPONENTS CSS */
-@import url('https://cdn.syncfusion.com/ej2/material.css');
+@import url("https://cdn.syncfusion.com/ej2/material.css");
 
 .sidebar {
   box-shadow: rgb(113 122 131 / 11%) 0px 7px 30px 0px;
@@ -33,20 +31,21 @@ input[type=number] {
   color: black !important;
 }
 
-.ps-submenu-content ul a:hover .leads_counter{
+.ps-submenu-content ul a:hover .leads_counter {
   color: black !important;
 }
 .nav-item,
 .navbar {
   z-index: 10000;
 }
-@media  screen and (max-width:800px) {
-  .sidebar{
+@media screen and (max-width: 800px) {
+  .sidebar {
     z-index: 10000000;
   }
 }
 
-.e-dlg-center-center, .e-quick-popup-wrapper.e-device{
+.e-dlg-center-center,
+.e-quick-popup-wrapper.e-device {
   z-index: 1000000 !important;
 }
 
@@ -63,9 +62,9 @@ input[type=number] {
 
 /* color-picker style  */
 
- #preview {
+#preview {
   background: transparent
-    url('https://ej2.syncfusion.com/react/demos/src/color-picker/images/pen.png')
+    url("https://ej2.syncfusion.com/react/demos/src/color-picker/images/pen.png")
     no-repeat;
   display: inline-block;
   height: 80px;
@@ -75,7 +74,14 @@ input[type=number] {
   background-color: #008000;
 }
 
-.e-input-group:not(.e-float-icon-left), .e-input-group.e-success:not(.e-float-icon-left), .e-input-group.e-warning:not(.e-float-icon-left), .e-input-group.e-error:not(.e-float-icon-left), .e-input-group.e-control-wrapper:not(.e-float-icon-left), .e-input-group.e-control-wrapper.e-success:not(.e-float-icon-left), .e-input-group.e-control-wrapper.e-warning:not(.e-float-icon-left), .e-input-group.e-control-wrapper.e-error:not(.e-float-icon-left){
+.e-input-group:not(.e-float-icon-left),
+.e-input-group.e-success:not(.e-float-icon-left),
+.e-input-group.e-warning:not(.e-float-icon-left),
+.e-input-group.e-error:not(.e-float-icon-left),
+.e-input-group.e-control-wrapper:not(.e-float-icon-left),
+.e-input-group.e-control-wrapper.e-success:not(.e-float-icon-left),
+.e-input-group.e-control-wrapper.e-warning:not(.e-float-icon-left),
+.e-input-group.e-control-wrapper.e-error:not(.e-float-icon-left) {
   border: none;
 }
 
@@ -96,22 +102,145 @@ input[type=number] {
   background-color: white;
 }
 
-  .image-picker .progress-bar {
+.image-picker .progress-bar {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-    z-index: 50000;
-    transition: all 1.2s ease-in-out;
-    display: flex;justify-content: center;
-    align-items: center;
+  z-index: 50000;
+  transition: all 1.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 aside.ps-sidebar-root {
-  width: 200px; 
+  width: 200px;
   min-width: 200px;
 }
 
 .css-b3tsul.ps-collapsed {
   width: 65px !important;
   min-width: 65px !important;
+}
+
+/* Data tables stylings */
+.MuiDataGrid-columnHeadersInner {
+  padding-left: 3px !important;
+  width: 100% !important;
+}
+
+.MuiDataGrid-columnHeadersInner > div {
+  width: 100% !important;
+}
+
+
+.MuiDataGrid-cellCheckbox {
+  min-width: 22px !important;
+  width: 22px !important;
+}
+
+.MuiDataGrid-main .MuiDataGrid-cellCheckbox .MuiButtonBase-root {
+  padding: 0 !important;
+}
+
+.MuiDataGrid-virtualScroller {
+  scroll-behavior: smooth !important;
+  margin-top: 0 !important;
+}
+
+.MuiDataGrid-virtualScrollerRenderZone {
+  width: 100% !important;
+}
+
+.MuiDataGrid-row {
+  padding-left: 2px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  width: 100% !important;
+}
+.MuiDataGrid-columnHeaders {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10 !important;
+  min-height: 45px !important;
+  font-size: 13px !important;
+}
+
+.MuiDataGrid-columnHeaderCheckbox {
+  min-width: 22px !important;
+  width: 22px !important;
+}
+.MuiDataGrid-main .MuiButtonBase-root {
+  padding: 0 !important;
+}
+
+.MuiDataGrid-columnHeader[data-field="leadSource"] {
+  width: 45px !important;
+  min-width: 45px !important;
+}
+
+.MuiDataGrid-columnHeader[data-field="leadSource"]
+  .MuiDataGrid-columnHeaderDraggableContainer {
+  width: 70% !important;
+}
+
+.MuiDataGrid-columnHeader[data-field="leadSource"]
+  .MuiDataGrid-columnHeaderDraggableContainer
+  .MuiDataGrid-columnHeaderTitleContainer {
+  justify-content: center !important;
+}
+
+.MuiDataGrid-cell[data-field="language"] div {
+  padding-left: 4px !important;
+  width: 100% !important;
+}
+.MuiDataGrid-cell[data-field="leadSource"] {
+  width: 45px !important;
+  min-width: 45px !important;
+  justify-content: center !important;
+}
+.MuiDataGrid-cell[data-field="leadSource"] div{
+  width: 100% !important; 
+  justify-content: center !important;
+}
+.MuiDataGrid-cell[data-field="edit"] {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.MuiDataGrid-cell[data-field="creationDate"] {
+  text-align: center !important;
+}
+.MuiDataGrid-cell {
+  padding: 0 3px !important;
+}
+
+.MuiDataGrid-cell[data-field="id"] div {
+  width: 100% !important;
+  text-align: center !important;
+}
+
+.MuiDataGrid-columnHeader {
+  padding: 0 !important;
+}
+.MuiDataGrid-cell .MuiFormControl-root {
+  margin: 8px 0 !important;
+  width: 100% !important;
+}
+.MuiSelect-select {
+  padding: 3px 2px !important;
+  padding-right: 8px !important;
+}
+.MuiDataGrid-columnHeader .MuiDataGrid-columnSeparator {
+  display: none !important;
+}
+.MuiDataGrid-columnHeader[data-field="edit"]
+  .MuiDataGrid-columnHeaderTitleContainerContent {
+  width: 100% !important;
+}
+
+.MuiDataGrid-columnHeader[data-field="edit"]
+  .MuiDataGrid-columnHeaderTitleContainerContent
+  .MuiDataGrid-columnHeaderTitle {
+  width: 100% !important;
+  text-align: center !important;
 }
