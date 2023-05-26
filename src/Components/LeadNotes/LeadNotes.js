@@ -1,4 +1,4 @@
-import { Box, Pagination } from "@mui/material";
+import { Box, Pagination, Tab, Tabs } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -11,18 +11,27 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
+import { TabPanel } from "@material-tailwind/react";
+import NotesGrid from "./NotesGrid";
 
 const LeadNotes = ({ pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, darkModeColors } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
   // eslint-disable-next-line
   const navigate = useNavigate();
+  const [tabValue, setTabValue] = useState(0);
+  const [value, setValue] = useState(0);
 
   // Model Variables
   // const [LeadModelOpen, setLeadModelOpen] = useState(false);
   // const handleLeadModelOpen = () => setLeadModelOpen(true);
   // const handleLeadModelClose = () => setLeadModelOpen(false);
+
+  const handleChange = (event, newValue) => {
+    console.log("Tab: ", newValue);
+    setValue(newValue);
+  };
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = (e) => {
@@ -65,21 +74,21 @@ const LeadNotes = ({ pageState, setpageState }) => {
       flex: 1,
       headerAlign: "center",
     },
-    {
-      field: "leadNote",
-      headerName: "Note",
-      minWidth: 400,
-      flex: 1,
-      headerAlign: "center",
-    },
+    // {
+    //   field: "leadNote",
+    //   headerName: "Note",
+    //   minWidth: 400,
+    //   flex: 1,
+    //   headerAlign: "center",
+    // },
 
-    {
-      field: "userName",
-      headerName: "Added by",
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-    },
+    // {
+    //   field: "userName",
+    //   headerName: "Added by",
+    //   minWidth: 150,
+    //   flex: 1,
+    //   headerAlign: "center",
+    // },
   ];
 
   const FetchLeads = async (token) => {
@@ -239,49 +248,94 @@ const LeadNotes = ({ pageState, setpageState }) => {
   }
   return (
     <div className="pb-10">
-      <Box width={"100%"} sx={DataGridStyles}>
-        <DataGrid
-          autoHeight
-          rows={pageState.data}
-          onRowClick={handleRowClick}
-          rowCount={pageState.total}
-          loading={pageState.isLoading}
-          rowsPerPageOptions={[30, 50, 75, 100]}
-          pagination
-          paginationMode="server"
-          page={pageState.page - 1}
-          pageSize={pageState.pageSize}
-          onPageChange={(newPage) => {
-            setpageState((old) => ({ ...old, page: newPage + 1 }));
-          }}
-          onPageSizeChange={(newPageSize) =>
-            setpageState((old) => ({ ...old, pageSize: newPageSize }))
-          }
-          columns={columns}
-          components={{
-            Toolbar: GridToolbar,
-            Pagination: CustomPagination,
-          }}
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              value: searchText,
-              onChange: HandleQuicSearch,
-            },
-          }}
-          sx={{
-            boxShadow: 2,
-            "& .MuiDataGrid-cell:hover": {
-              cursor: "pointer",
-            },
-          }}
-          getRowClassName={(params) =>
-            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-          }
-        />
+      <Box
+        sx={{
+          ...darkModeColors,
+          "& .MuiTabs-indicator": {
+            height: "100%",
+            borderRadius: "5px",
+            backgroundColor: "#da1f26",
+          },
+          "& .Mui-selected": {
+            color: "white !important",
+            zIndex: "1",
+          },
+        }}
+        className={`w-full rounded-md overflow-hidden ${
+          currentMode === "dark" ? "bg-black" : "bg-white"
+        } `}
+      >
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="standard"
+          // centered
+          className="w-full px-1 m-1"
+        >
+          <Tab label="Grid View" />
+          <Tab label="Table View" />
+        </Tabs>
       </Box>
+      <div className="mt-3 pb-3">
+        <TabPanel value={value} index={1}>
+          <Box width={"100%"} sx={DataGridStyles}>
+            <DataGrid
+              autoHeight
+              rows={pageState.data}
+              onRowClick={handleRowClick}
+              rowCount={pageState.total}
+              loading={pageState.isLoading}
+              rowsPerPageOptions={[30, 50, 75, 100]}
+              pagination
+              paginationMode="server"
+              page={pageState.page - 1}
+              pageSize={pageState.pageSize}
+              onPageChange={(newPage) => {
+                setpageState((old) => ({ ...old, page: newPage + 1 }));
+              }}
+              onPageSizeChange={(newPageSize) =>
+                setpageState((old) => ({ ...old, pageSize: newPageSize }))
+              }
+              columns={columns}
+              components={{
+                Toolbar: GridToolbar,
+                Pagination: CustomPagination,
+              }}
+              componentsProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                  value: searchText,
+                  onChange: HandleQuicSearch,
+                },
+              }}
+              sx={{
+                boxShadow: 2,
+                "& .MuiDataGrid-cell:hover": {
+                  cursor: "pointer",
+                },
+              }}
+              getRowClassName={(params) =>
+                params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+              }
+            />
+          </Box>
+        </TabPanel>
+        <TabPanel value={value} index={0}>
+          <NotesGrid
+            tabValue={tabValue}
+            setTabValue={setTabValue}
+            pageState={pageState}
+            setpageState={setpageState}
+          />
+        </TabPanel>
+      </div>
     </div>
   );
+
+  function TabPanel(props) {
+    const { children, value, index } = props;
+    return <div>{value === index && <div>{children}</div>}</div>;
+  }
 };
 
 export default LeadNotes;
