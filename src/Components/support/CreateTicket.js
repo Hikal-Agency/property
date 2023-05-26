@@ -13,7 +13,6 @@ import { useStateContext } from "../../context/ContextProvider";
 import { BiSupport, BiMailSend } from "react-icons/bi";
 import { BsWhatsapp } from "react-icons/bs";
 import { MdVideoCameraFront } from "react-icons/md";
-import { RiWhatsappFill } from "react-icons/ri";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import axios from "axios";

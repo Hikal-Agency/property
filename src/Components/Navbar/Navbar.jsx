@@ -210,7 +210,7 @@ const Navbar = () => {
           left: !isCollapsed ? 65 : 200,
           right: 0,
           zIndex: "50",
-          backgroundColor: currentMode !== "dark" ? "#f5f5f5" : "transparent",
+          backgroundColor: currentMode === "dark" ? "black" : "#d5d5d5",
           boxShadow:
             currentMode !== "dark" ? "0 2px 4px rgba(0, 0, 0, 0.1)" : "none",
         }}

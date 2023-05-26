@@ -1,13 +1,6 @@
-import Image from "next/image";
 import React from "react";
-import { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import CreateTicket from "../../Components/support/CreateTicket";
 import Head from "next/head";
-import Loader from "../../Components/Loader";
-import Footer from "../../Components/Footer/Footer";
-import UserImage from "../../public/favicon.png";
 import { useStateContext } from "../../context/ContextProvider";
 
 const CreateTickets = () => {
