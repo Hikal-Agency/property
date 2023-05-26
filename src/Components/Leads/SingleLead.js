@@ -120,9 +120,9 @@ const SingleLead = ({
   };
 
   useEffect(() => {
-    if(LeadData?.lid) {
+    if (LeadData?.lid) {
       fetchLastNote();
-    } 
+    }
   }, [LeadData]);
 
   return (
@@ -294,8 +294,10 @@ const SingleLead = ({
 
           <div className="bg-main-red-color h-0.5 w-full mt-6 mb-4"></div>
           <div className="flex my-0 w-full">
-            <Link sx={{my: 0, w: "100%"}} to={`/leads/${LeadData?.lid}`}>
-              <Button fullWidth sx={{my: 0}} variant="contained" size="small">View Lead Details</Button>
+            <Link sx={{ my: 0, w: "100%" }} to={`/lead/${LeadData?.lid}`}>
+              <Button fullWidth sx={{ my: 0 }} variant="contained" size="small">
+                View Lead Details
+              </Button>
             </Link>
           </div>
           <div className={`rounded-md mt-2`}>
