@@ -354,7 +354,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
             htmlFor="leadOrigin"
             className={`${
               currentMode === "dark" ? "text-white" : "text-dark"
-            } `}
+            } capitalize `}
           >
             Select a campaign
           </label>

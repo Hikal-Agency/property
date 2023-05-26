@@ -101,7 +101,10 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                     : "bg-white text-black"
                 } p-5 rounded-md h-fit`}
               >
-                <h1 className="bg-main-red-color text-white font-semibold rounded-md p-2 mb-3">
+                <h1
+                  className="bg-main-red-color text-white font-semibold rounded-md p-2 mb-3"
+                  style={{ textTransform: "capitalize" }}
+                >
                   {offer?.offerTitle}
                 </h1>
                 <h6 className="mb-3 p-2">{offer?.offerDescription}</h6>
@@ -110,7 +113,10 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                   Valid from {offer?.validFrom} to {offer?.validTill}
                 </h1>
                 <hr className="mb-3"></hr>
-                <h6 className="mb-3 bg-main-red-color text-white p-2 rounded-md">
+                <h6
+                  className="mb-3 bg-main-red-color text-white p-2 rounded-md"
+                  style={{ textTransform: "capitalize" }}
+                >
                   Offer from Mr. {offer?.offerFrom}
                 </h6>
               </div>

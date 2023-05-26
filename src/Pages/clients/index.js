@@ -522,7 +522,7 @@ const Clients = () => {
           // className="w-full flex flex-col items-center justify-center"
           // style={{ height: "500px" }}
           >
-            <p className="text-center font-bold mb-2">
+            <p className="text-center font-bold mb-2 capitalize">
               {cellValues.formattedValue}
             </p>
             <div className="flex flex-row  w-full">
@@ -594,8 +594,10 @@ const Clients = () => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues.formattedValue}</p>
+          <div className="w-full flex items-center justify-center ">
+            <p className="text-center capitalize">
+              {cellValues.formattedValue}
+            </p>
           </div>
         );
       },

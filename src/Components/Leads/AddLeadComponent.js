@@ -13,6 +13,8 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
 import "react-phone-number-input/style.css";
+import { camelCase } from "lodash";
+
 import PhoneInput, {
   formatPhoneNumber,
   formatPhoneNumberIntl,
@@ -339,8 +341,10 @@ const AddLeadComponent = () => {
                               ? "text-white "
                               : "text-black"
                           } `}
+                          style={{ textTransform: "capitalize" }}
                         >
                           Add new lead details
+                          {/* {camelCase("Add new lead details")} */}
                         </h3>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5">
@@ -352,6 +356,7 @@ const AddLeadComponent = () => {
                                   ? "text-red-600"
                                   : "text-red-600"
                               } text-center font-bold pb-5`}
+                              style={{ textTransform: "capitalize" }}
                             >
                               Agent details
                             </h4>
@@ -427,6 +432,7 @@ const AddLeadComponent = () => {
                                   ? "text-red-600"
                                   : "text-red-600"
                               } text-center font-bold pb-5`}
+                              style={{ textTransform: "capitalize" }}
                             >
                               Project details
                             </h4>
@@ -528,6 +534,7 @@ const AddLeadComponent = () => {
                                   ? "text-red-600"
                                   : "text-red-600"
                               } text-center font-bold pb-5`}
+                              style={{ textTransform: "capitalize" }}
                             >
                               Lead details
                             </h4>

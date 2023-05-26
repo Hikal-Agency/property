@@ -12,12 +12,21 @@ const Subscriber = ({ data }) => {
           alt=""
         />
         <Box className="flex flex-col justify-between w-[100%]">
-            <small style={{color: "red"}}>{data.package_name}</small>
+          <small style={{ color: "red" }} className="capitalize">
+            {data.package_name}
+          </small>
           <Box className="flex justify-between">
             <strong>{data.userName}</strong>
-            <strong style={{ color: "blue", paddingRight: 10 }}>{data.nationality}</strong>
+            <strong
+              style={{ color: "blue", paddingRight: 10 }}
+              className="capitalize"
+            >
+              {data.nationality}
+            </strong>
           </Box>
-          <p style={{color: "grey", fontWeight: "light"}}>{data.position ? `(${data.position})`: " "}</p>
+          <p style={{ color: "grey", fontWeight: "light" }}>
+            {data.position ? `(${data.position})` : " "}
+          </p>
         </Box>
       </Box>
     </>

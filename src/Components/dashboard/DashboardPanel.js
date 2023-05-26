@@ -13,14 +13,14 @@ import DoughnutChart from "../../Components/charts/DoughnutChart";
 import BarChartProject from "../../Components/charts/BarChartProject";
 import BarChartProjectAdmin from "../../Components/charts/BarChartProjectAdmin";
 import Task from "../../Components/Tasks/Task";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import UpcomingMeeting from "../meetings/UpcomingMeeting";
 import UpcomingMeetingAgent from "../meetings/UpcomingMeetingAgent";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 
-const DashboardPanel = ({setloading}) => {
+const DashboardPanel = ({ setloading }) => {
   const {
     DashboardData,
     currentMode,
@@ -33,27 +33,28 @@ const DashboardPanel = ({setloading}) => {
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
 
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("auth-token");
-        const urls = [`${BACKEND_URL}/memberdeals`];
-        const responses = await Promise.all(urls.map((url) => {
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const urls = [`${BACKEND_URL}/memberdeals`];
+      const responses = await Promise.all(
+        urls.map((url) => {
           return axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-        }));
-        setSales_chart_data(responses[0].data?.members_deal);
-        setsaleschart_loading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          });
+        })
+      );
+      setSales_chart_data(responses[0].data?.members_deal);
+      setsaleschart_loading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    useEffect(() => {
-      
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -523,7 +524,12 @@ const DashboardPanel = ({setloading}) => {
         >
           {/* {console.log("User is")}
           {console.log(User)} */}
-          <h4 className="font-semibold pb-5">Upcoming meetings</h4>
+          <h4
+            className="font-semibold pb-5"
+            style={{ textTransform: "capitalize" }}
+          >
+            Upcoming meetings
+          </h4>
           {User?.role === 1 && (
             <UpcomingMeeting
               upcoming_meetings={DashboardData?.upcoming_meetings}

@@ -177,8 +177,10 @@ const UserTable = ({ user }) => {
                           />
                         )}
                         <div className="mt-2 space-y-1 overflow-hidden">
-                          <h1 className="font-bold">{item?.userName}</h1>
-                          <p className="text-sm font-semibold text-red-600">
+                          <h1 className="font-bold capitalize">
+                            {item?.userName}
+                          </h1>
+                          <p className="text-sm font-semibold text-red-600 capitalize">
                             {item?.position}
                           </p>
                           <hr />

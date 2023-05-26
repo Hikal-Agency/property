@@ -407,7 +407,10 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
                 className={getSummaryBgClass()}
               >
                 <HiBars3BottomLeft className="mr-4 mt-1" size={20} />
-                <Typography style={{ userSelect: "text" }}>
+                <Typography
+                  style={{ userSelect: "text" }}
+                  className="capitalize"
+                >
                   {qa.question}
                 </Typography>
                 <BsTrash
@@ -417,7 +420,7 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
               </AccordionSummary>
 
               <AccordionDetails className={getDetailBgClass()}>
-                <Typography>
+                <Typography className="capitalize">
                   {qa?.answers.length > 0 ? (
                     qa.answers.map((ans, ansIndex) => (
                       <div key={ansIndex}>

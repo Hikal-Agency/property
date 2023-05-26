@@ -97,7 +97,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
 
     {
       field: "meetingBy",
-      headerName: "Meeting by",
+      headerName: "Meeting By",
       minWidth: 170,
       flex: 1,
       headerAlign: "center",
@@ -105,21 +105,21 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
 
     {
       field: "meetingDate",
-      headerName: "Meeting date",
+      headerName: "Meeting Date",
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
     },
     {
       field: "meetingTime",
-      headerName: "Meeting time",
+      headerName: "Meeting Time",
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
     },
     {
       field: "meetingStatus",
-      headerName: "Meeting status",
+      headerName: "Meeting Status",
       width: 150,
       flex: 1,
       headerAlign: "center",

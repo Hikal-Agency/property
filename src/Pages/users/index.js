@@ -230,6 +230,15 @@ const Users = () => {
       editable: false,
       minWidth: 130,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "userEmail",
@@ -257,7 +266,7 @@ const Users = () => {
         console.log("Trainer: ", cellValues);
 
         return (
-          <div className="w-full flex items-center justify-center">
+          <div className="w-full flex items-center justify-center capitalize">
             <Switch
               defaultChecked={cellValues?.formattedValue === 1}
               onChange={() => handleTrainerSwitchChange(cellValues)}

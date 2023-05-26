@@ -41,6 +41,15 @@ const AllTickets = () => {
       editable: false,
       minWidth: 150,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "category",
@@ -49,6 +58,15 @@ const AllTickets = () => {
       editable: false,
       minWidth: 130,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "description",
@@ -57,6 +75,15 @@ const AllTickets = () => {
       editable: false,
       minWidth: 300,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "issue",
@@ -65,6 +92,15 @@ const AllTickets = () => {
       editable: false,
       minWidth: 200,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "status",

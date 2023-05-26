@@ -142,11 +142,13 @@ const Contacts = () => {
                           alt=""
                         />
                         <div className="mt-2 space-y-1 overflow-hidden">
-                          <h1 className="font-bold">{item.userName}</h1>
-                          <p className="text-sm">{item.position}</p>
-                          <p className="text-sm font-semibold text-red-600">
+                          <h1 className="font-bold capitalize">
                             {item.userName}
-                          </p>
+                          </h1>
+                          <p className="text-sm capitalize">{item.position}</p>
+                          {/* <p className="text-sm font-semibold text-red-600">
+                            {item.userName}
+                          </p> */}
                           <p className="text-sm">{item.userPhone}</p>
                           <p className="text-sm">{item.userEmail}</p>
                           {item?.status === 0 ? (

@@ -20,7 +20,7 @@ import Pagination from "@mui/material/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh Leads" },
@@ -85,12 +85,12 @@ const AllLeads = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [leadOriginSelected, setLeadOriginSelected] = useState(leadOrigins[0]);
   const [leadTypeSelected, setLeadTypeSelected] = useState(leadTypes[0]);
-  const [enquiryTypeSelected, setEnquiryTypeSelected] = useState({id: 0});
+  const [enquiryTypeSelected, setEnquiryTypeSelected] = useState({ id: 0 });
   const [managerSelected, setManagerSelected] = useState("");
   const [agentSelected, setAgentSelected] = useState("");
   const [projectNameTyped, setProjectNameTyped] = useState("");
   const [managers, setManagers] = useState([]);
-  const [agents, setAgents] = useState([])
+  const [agents, setAgents] = useState([]);
   const [openMessageModal, setOpenMessageModal] = useState({
     open: false,
     isWhatsapp: false,
@@ -144,6 +144,15 @@ const AllLeads = () => {
       headerName: "Lead name",
       minWidth: 150,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "leadContact",
@@ -159,6 +168,15 @@ const AllLeads = () => {
       minWidth: 110,
       flex: 1,
       headerAlign: "left",
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "enquiryType",
@@ -175,6 +193,15 @@ const AllLeads = () => {
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "leadSource",
@@ -254,9 +281,12 @@ const AllLeads = () => {
             <BsWhatsapp
               size={24}
               onClick={() => {
-                window.open(`https://wa.me/${cellValues.row.leadContact.slice(1).replaceAll(" ", "")}`)
-              }
-              }
+                window.open(
+                  `https://wa.me/${cellValues.row.leadContact
+                    .slice(1)
+                    .replaceAll(" ", "")}`
+                );
+              }}
               color="green"
             />
           </div>
@@ -471,19 +501,19 @@ const AllLeads = () => {
     console.log("fetch lead url is");
     console.log(FetchLeads_url);
 
-    if(projectName) {
+    if (projectName) {
       FetchLeads_url += `&project=${projectName}`;
     }
 
-    if(enquiryType) {
+    if (enquiryType) {
       FetchLeads_url += `&enquiryType=${enquiryType}`;
     }
 
-    if(assignedManager) {
+    if (assignedManager) {
       FetchLeads_url += `&managerAssigned=${assignedManager}`;
     }
 
-    if(assignedAgent) {
+    if (assignedAgent) {
       FetchLeads_url += `&agentAssigned=${assignedAgent}`;
     }
 
@@ -630,7 +660,16 @@ const AllLeads = () => {
     );
     setColumnsArr([...columnsArr]);
     // eslint-disable-next-line
-  }, [pageState.page, leadTypeSelected, managerSelected, agentSelected, leadOriginSelected, projectNameTyped, enquiryTypeSelected, reloadDataGrid]);
+  }, [
+    pageState.page,
+    leadTypeSelected,
+    managerSelected,
+    agentSelected,
+    leadOriginSelected,
+    projectNameTyped,
+    enquiryTypeSelected,
+    reloadDataGrid,
+  ]);
 
   const handleRowClick = async (params, event) => {
     if (!event.target.closest(".whatsapp-web-link")) {
@@ -665,41 +704,43 @@ const AllLeads = () => {
   }
 
   const getManagers = () => {
-      axios.get(`${BACKEND_URL}/managers`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }).then((result) => {
+    axios
+      .get(`${BACKEND_URL}/managers`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
         const managers = result?.data?.managers;
-        console.log("Managers: ", managers)
+        console.log("Managers: ", managers);
         setManagers(managers || []);
       });
-  }
+  };
 
   const getAgents = (managerId) => {
-      axios.get(`${BACKEND_URL}/teamMembers/${managerId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }).then((result) => {
+    axios
+      .get(`${BACKEND_URL}/teamMembers/${managerId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
         const agents = result?.data?.team;
-          setAgents(agents || []);
+        setAgents(agents || []);
       });
-  }
+  };
 
   useEffect(() => {
     getManagers();
-
   }, []);
 
   useEffect(() => {
-    if(managerSelected){
+    if (managerSelected) {
       getAgents(managerSelected);
       setAgentSelected("");
     }
-
   }, [managerSelected]);
 
   return (
@@ -868,15 +909,24 @@ const AllLeads = () => {
             ))}
           </Select>
         </div>
-        <div style={{position: "relative"}}>
-           <label
+        <div style={{ position: "relative" }}>
+          <label
             htmlFor="enquiryType"
-            style={{position: "absolute", top: "-20px", right: 0}}
+            style={{ position: "absolute", top: "-20px", right: 0 }}
             className={`flex justify-end items-center ${
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
           >
-             {enquiryTypeSelected?.id ? <strong className="ml-4 text-red-600 cursor-pointer" onClick={() => setEnquiryTypeSelected({id: 0})}>Clear</strong> : ""}
+            {enquiryTypeSelected?.id ? (
+              <strong
+                className="ml-4 text-red-600 cursor-pointer"
+                onClick={() => setEnquiryTypeSelected({ id: 0 })}
+              >
+                Clear
+              </strong>
+            ) : (
+              ""
+            )}
           </label>
           <Select
             id="enquiryType"
@@ -915,7 +965,7 @@ const AllLeads = () => {
             ))}
           </Select>
         </div>
-      <div className="mt-1">
+        <div className="mt-1">
           <TextField
             className={`w-full`}
             id="Project"
@@ -927,24 +977,29 @@ const AllLeads = () => {
             required
           />
         </div>
-        <div style={{position: "relative"}}>
+        <div style={{ position: "relative" }}>
           <label
-          style={{position: "absolute", top: "-20px", right: 0}}
+            style={{ position: "absolute", top: "-20px", right: 0 }}
             htmlFor="Manager"
             className={`flex justify-end items-center ${
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
           >
-             {managerSelected ? <strong className="ml-4 text-red-600 cursor-pointer" onClick={() => setManagerSelected("")}>Clear</strong> : ""}
+            {managerSelected ? (
+              <strong
+                className="ml-4 text-red-600 cursor-pointer"
+                onClick={() => setManagerSelected("")}
+              >
+                Clear
+              </strong>
+            ) : (
+              ""
+            )}
           </label>
           <Select
             id="Manager"
             value={managerSelected || ""}
-            onChange={(event) =>
-              setManagerSelected(
-                event.target.value
-              )
-            }
+            onChange={(event) => setManagerSelected(event.target.value)}
             size="small"
             className={`w-full mt-1 mb-5 `}
             displayEmpty
@@ -968,27 +1023,32 @@ const AllLeads = () => {
             ))}
           </Select>
         </div>
-        <div style={{position: "relative"}}>
+        <div style={{ position: "relative" }}>
           <label
-            style={{position: "absolute", top: "-20px", right: 0}}
+            style={{ position: "absolute", top: "-20px", right: 0 }}
             htmlFor="Agent"
             className={`flex justify-end items-center ${
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
           >
-             {agentSelected ? <strong className="ml-4 text-red-600 cursor-pointer" onClick={() => {
-              setAgentSelected("");
-              setAgents([]);
-              }}>Clear</strong> : ""}
+            {agentSelected ? (
+              <strong
+                className="ml-4 text-red-600 cursor-pointer"
+                onClick={() => {
+                  setAgentSelected("");
+                  setAgents([]);
+                }}
+              >
+                Clear
+              </strong>
+            ) : (
+              ""
+            )}
           </label>
           <Select
             id="Agent"
             value={agentSelected || ""}
-            onChange={(event) =>
-              setAgentSelected(
-                event.target.value
-              )
-            }
+            onChange={(event) => setAgentSelected(event.target.value)}
             size="small"
             className={`w-full mt-1 mb-5 `}
             displayEmpty
@@ -1220,19 +1280,22 @@ const AllLeads = () => {
             <MdSend style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp Image
           </Button>
 
-      {selectedRows.length === 1 && 
-          <Button
-            onClick={() => window.location.href=`/whatsapp-marketing/chat?phoneNumber=${selectedRows[0].slice(1).replaceAll(" ", "")}`}
-            type="button"
-            variant="contained"
-            sx={{ padding: "12px", mb: 2, mr: 2 }}
-            color="warning"
-            size="lg"
-          >
-          Open Chat
-          </Button>
-      }
-
+          {selectedRows.length === 1 && (
+            <Button
+              onClick={() =>
+                (window.location.href = `/whatsapp-marketing/chat?phoneNumber=${selectedRows[0]
+                  .slice(1)
+                  .replaceAll(" ", "")}`)
+              }
+              type="button"
+              variant="contained"
+              sx={{ padding: "12px", mb: 2, mr: 2 }}
+              color="warning"
+              size="lg"
+            >
+              Open Chat
+            </Button>
+          )}
 
           <input
             onInput={handleInputChange}

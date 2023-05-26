@@ -44,6 +44,7 @@ const LeadNotesPage = (props) => {
                         ? "text-white border-white"
                         : "text-red-600 font-bold border-red-600"
                     }`}
+                    style={{ textTransform: "capitalize" }}
                   >
                     Lead notes{" "}
                     <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">

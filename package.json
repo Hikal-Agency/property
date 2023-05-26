@@ -24,6 +24,7 @@
     "dayjs": "^1.11.7",
     "eslint": "^8.33.0",
     "libphonenumber-js": "^1.10.28",
+    "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.2.0",
     "moment": "^2.29.4",
     "qrcode.react": "^3.1.0",

@@ -188,7 +188,9 @@ const UserLocationComponent = () => {
                         : "bg-gray-200 text-black"
                     } rounded-md space-y-2 p-3`}
                   >
-                    <h1 className="font-semibold">{location?.userName}</h1>
+                    <h1 className="font-semibold capitalize">
+                      {location?.userName}
+                    </h1>
                     <hr></hr>
                     <div className="flex gap-3">
                       <BsPinMap size={20} color="#da1f26" />
