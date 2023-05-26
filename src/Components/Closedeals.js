@@ -13,7 +13,7 @@ import axios from "axios";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { AiOutlineHistory, AiOutlineEdit } from "react-icons/ai";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useStateContext } from "../context/ContextProvider";
 import UpdateClosedLead from "./Leads/UpdateClosedLead";
@@ -21,7 +21,7 @@ import UpdateClosedLead from "./Leads/UpdateClosedLead";
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
   const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -39,61 +39,41 @@ const Closedeals = ({ pageState, setpageState }) => {
 
   const columns = [
     {
-      field: "id",
-      headerName: "#",
-      minWidth: 50,
-      flex: 1,
-      headerAlign: "center",
-    },
-    // {
-    // field: "leads.creationDate",
-    // headerName: "Lead Creation",
-    // width: 150,
-    // headerAlign: "center",
-    // valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
-    // },
-    {
       field: "dealDate",
       headerName: "Deal date",
-      minWidth: 90,
+      minWidth: 50,
       flex: 1,
-      headerAlign: "center",
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
     {
       field: "leadName",
       headerName: "Lead name",
-      headerAlign: "center",
-      minWidth: 150,
+      minWidth: 60,
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
-      headerAlign: "center",
-      minWidth: 110,
+      minWidth: 60,
       flex: 1,
     },
     {
       field: "enquiryType",
       headerName: "Enquiry",
-      headerAlign: "center",
-      minWidth: 110,
+      minWidth: 60,
       flex: 1,
     },
     {
       field: "leadType",
       headerName: "Property",
-      headerAlign: "center",
-      minWidth: 110,
+      minWidth: 60,
       flex: 1,
     },
 
     {
       field: "amount",
       headerName: "Amount in AED",
-      headerAlign: "center",
-      minWidth: 110,
+      minWidth: 40,
       flex: 1,
     },
     // {
@@ -113,9 +93,8 @@ const Closedeals = ({ pageState, setpageState }) => {
     {
       field: "",
       headerName: "Action",
-      minWidth: 150,
+      minWidth: 80,
       flex: 1,
-      headerAlign: "center",
       sortable: false,
       filterable: false,
       renderCell: (cellValues) => {
@@ -249,11 +228,10 @@ const Closedeals = ({ pageState, setpageState }) => {
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box width={"100%"} sx={DataGridStyles}>
+      <Box sx={{...DataGridStyles, position: "relative", marginBottom: "50px"}}>
         <DataGrid
           autoHeight
           rows={pageState.data}
-          // onRowClick={handleRowClick}
           rowCount={pageState.total}
           loading={pageState.isLoading}
           rowsPerPageOptions={[30, 50, 75, 100]}
@@ -284,6 +262,10 @@ const Closedeals = ({ pageState, setpageState }) => {
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
             },
+              "& .MuiDataGrid-main": {
+                overflowY: "scroll",
+                height: pageState.data.length > 0 ? "475px" : "auto",
+              },
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

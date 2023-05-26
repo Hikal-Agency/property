@@ -51,7 +51,7 @@ const ClosedealsPage = (props) => {
         <meta name="description" content="User Dashboard - HIKAL CRM" />
       </Head> */}
 
-      <div className="flex min-h-screen w-full">
+      <div className="flex min-h-screen">
         {loading ? (
           <Loader />
         ) : (
@@ -60,9 +60,7 @@ const ClosedealsPage = (props) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="flex w-full">
-              <div className={`w-full `}>
-                <div className="pl-3">
+            <div className="pl-3 w-full">
                   <div className="mt-3">
                     <h1
                       className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
@@ -82,9 +80,7 @@ const ClosedealsPage = (props) => {
                       pageState={pageState}
                       setpageState={setpageState}
                     />
-                  </div>
                 </div>
-              </div>
             </div>
             {/* <Footer /> */}
           </div>
