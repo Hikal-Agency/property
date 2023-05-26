@@ -721,17 +721,53 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
-            <p
-              onClick={() => HandleEditFunc(cellValues)}
-              className={`${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
-            >
-              {/* <AiTwotoneEdit size={20} /> */}
-              <AiOutlineEdit size={20} />
-            </p>
+            {currentMode === "dark" ? (
+              <p
+                onClick={() => HandleEditFunc(cellValues)}
+                // className={`${
+                //   currentMode === "dark"
+                //     ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                //     : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                // }`}
+              >
+                <AiOutlineEdit size={20} color="white" />
+
+                {/* {currentMode === "dark" ? (
+                  <AiOutlineEdit
+                    size={20}
+                    color="white"
+                    // sx={{ color: "red" }}
+                  />
+                ) : (
+                  <AiOutlineEdit size={20} color="black" />
+                )} */}
+              </p>
+            ) : (
+              <p
+                onClick={() => HandleEditFunc(cellValues)}
+                // className={`${
+                //   currentMode === "dark"
+                //     ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                //     : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                // }`}
+              >
+                <AiOutlineEdit
+                  size={20}
+                  color="black"
+                  // sx={{ color: "red" }}
+                />
+                {/* {currentMode === "dark" ? (
+                  <AiOutlineEdit
+                    size={20}
+                    color="white"
+                    // sx={{ color: "red" }}
+                  />
+                ) : (
+                  <AiOutlineEdit size={20} color="black" />
+                )} */}
+              </p>
+            )}
+
             {/* <p
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${

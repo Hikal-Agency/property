@@ -330,7 +330,7 @@ const AddLeadComponent = () => {
                     <div
                       className={`${
                         currentMode === "dark" ? "bg-black" : "bg-white"
-                      } py-10 px-4 md:px-10 `}
+                      }  px-4 md:px-10 `}
                     >
                       <div className="mb-10">
                         <h3
@@ -695,10 +695,10 @@ const AddLeadComponent = () => {
                   <div
                     className={`${
                       currentMode === "dark" ? "bg-black" : "bg-white"
-                    } px-4 py-3 text-right sm:px-6`}
+                    } px-4 text-center sm:px-6`}
                   >
                     <Button
-                      className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                      className={`min-w-fit w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
                       ripple={true}
                       size="lg"
                       type="submit"
