@@ -1285,7 +1285,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           ...DataGridStyles,
           position: "relative",
           marginBottom: "50px",
-          width: !isCollapsed ? "calc(100vw - 100px)" : "calc(100vw - 225px)",
         }}
       >
         {selectedRows.length > 0 && (

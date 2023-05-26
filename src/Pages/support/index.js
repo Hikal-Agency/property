@@ -1,27 +1,48 @@
 import { Box } from "@mui/material";
-import React, { useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
+import React, { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
-import Footer from "../../Components/Footer/Footer";
 import CreateTicket from "../../Components/support/CreateTicket";
 import AllTickets from "../../Components/support/AllTickets";
+import Loader from "../../Components/Loader";
+import axios from "axios";
 
 const Tickets = () => {
-  const { currentMode, darkModeColors } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const [tabValue, setTabValue] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+
+    const fetchCategories = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.get(`${BACKEND_URL}/categories`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      const data = response.data.cagtegories.data;
+      setCategories(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   return (
     <>
       {/* <ToastContainer/> */}
       <div className="flex min-h-screen">
+      {loading ? <Loader/> :
         <div
           className={`w-full ${
             currentMode === "dark" ? "bg-black" : "bg-white"
@@ -29,7 +50,7 @@ const Tickets = () => {
         >
           <div className={`w-full `}>
             <div className="pl-3">
-              <h4 className="font-semibold p-7 text-center text-2xl">
+              <h4 className={`font-semibold p-7 text-center text-2xl ${currentMode === "dark" ? "text-white" : "text-black"}`}>
                 Welcome to{" "}
                 <span className="text-main-red-color font-bold">HIKAL CRM</span>
                 ! We are here to assist you.
@@ -75,16 +96,12 @@ const Tickets = () => {
                 <div className="mt-3 pb-3">
                   <TabPanel value={value} index={0}>
                     <CreateTicket
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
+                      categories={categories}
+                      setCategories={setCategories}
                     />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
                     <AllTickets
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
                     />
                   </TabPanel>
                 </div>
@@ -93,6 +110,7 @@ const Tickets = () => {
           </div>
           {/* <Footer /> */}
         </div>
+      }
       </div>
     </>
   );

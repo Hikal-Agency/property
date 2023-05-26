@@ -13,16 +13,14 @@ import { useStateContext } from "../../context/ContextProvider";
 import { BiSupport, BiMailSend } from "react-icons/bi";
 import { BsWhatsapp } from "react-icons/bs";
 import { MdVideoCameraFront } from "react-icons/md";
-import { RiWhatsappFill } from "react-icons/ri";
 import { toast } from "react-toastify";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 
-const CreateTicket = () => {
+const CreateTicket = ({categories, setCategories}) => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
   const [newCategory, setNewCategory] = useState();
   const [showTextInput, setShowTextInput] = useState(false);
-  const [categories, setCategories] = useState([]);
   const [values, setValues] = useState({
     ticketCategory: "",
     ticketDescription: "",
@@ -79,8 +77,9 @@ const CreateTicket = () => {
         }
       );
 
-      console.log("Category Added: ", add_category);
+      console.log("Category Added: ", add_category.data.categories);
       setbtnloading(false);
+      setCategories([...categories, add_category.data.categories]);
       setShowTextInput(false);
       setNewCategory("");
 
@@ -166,26 +165,6 @@ const CreateTicket = () => {
     }
   };
 
-  const fetchCategories = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      const response = await axios.get(`${BACKEND_URL}/categories`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      const data = response.data.cagtegories.data;
-      setCategories(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
   return (
     <div
       className={`${
@@ -264,7 +243,6 @@ const CreateTicket = () => {
                         />
                       </MenuItem>
                       <Button
-                        type="submit"
                         size="medium"
                         className="bg-main-red-color text-white rounded-lg py-3 font-semibold mb-3 ml-5"
                         style={{ backgroundColor: "#da1f26", color: "#ffffff" }}

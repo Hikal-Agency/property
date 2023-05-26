@@ -193,7 +193,7 @@ const UpdateLead = ({
         const managers = result?.data?.managers;
         setManager2(managers || []);
 
-        const urls = managers.map((manager) => {
+        const urls = managers?.map((manager) => {
           return `${BACKEND_URL}/teamMembers/${manager?.id}`;
         });
 

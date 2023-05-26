@@ -205,7 +205,7 @@ const AddLeadComponent = () => {
     LeadData.append("leadSource", LeadSource);
     LeadData.append("feedback", Feedback);
     LeadData.append("notes", LeadNotes);
-    if (User.role === 1 || User.role === 3) {
+    if (User?.role === 1 || User?.role === 3) {
       LeadData.append("assignedToManager", Manager);
       LeadData.append("assignedToSales", SalesPerson2);
     }
@@ -273,7 +273,7 @@ const AddLeadComponent = () => {
     const token = localStorage.getItem("auth-token");
     console.log(User);
     axios
-      .get(`${BACKEND_URL}/teamMembers/${User.id}`, {
+      .get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -282,7 +282,7 @@ const AddLeadComponent = () => {
       .then((result) => {
         console.log(result);
         setManager2(result.data.team);
-        if (User.role === 3) {
+        if (User?.role === 3) {
           setfilter_manager(
             result.data.team.filter((manager) => {
               return manager.id === User?.id;
@@ -360,15 +360,15 @@ const AddLeadComponent = () => {
                             >
                               Agent details
                             </h4>
-                            {(User.role === 1 || User.role === 3) && (
+                            {(User?.role === 1 || User?.role === 3) && (
                               <Select
                                 id="Manager"
                                 value={
-                                  User.role === 3
+                                  User?.role === 3
                                     ? filter_manager[0]?.id
                                     : Manager
                                 }
-                                disabled={User.role === 3 && true}
+                                disabled={User?.role === 3 && true}
                                 label="Manager"
                                 onChange={ChangeManager}
                                 size="medium"
@@ -388,7 +388,7 @@ const AddLeadComponent = () => {
                               </Select>
                             )}
 
-                            {(User.role === 1 || User.role === 3) && (
+                            {(User?.role === 1 || User?.role === 3) && (
                               <Select
                                 id="SalesPerson"
                                 value={SalesPerson2}

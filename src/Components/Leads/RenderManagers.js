@@ -165,7 +165,7 @@ const RenderManagers = ({ cellValues }) => {
             <MenuItem value="select_manager">Select Manager</MenuItem>
           )}
           {Managers?.length > 0 &&
-            Managers.map((manager, index) => (
+            Managers?.map((manager, index) => (
               <MenuItem key={index} value={manager?.id}>
                 {manager?.userName}
               </MenuItem>

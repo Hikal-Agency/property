@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { ChangePassword as ChangePasswordComponent } from "../../Components/profile/ChangePassword";
-import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import { MdEmail } from "react-icons/md";
 import { Button } from "@material-tailwind/react";
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AddLead from "./addlead";
 import Signup from "./auth/signup";
 import Booked from "./booked";
@@ -13,7 +13,8 @@ import AllHotLeads from "./hotleads";
 import AllUnassignedLeads from "./unassigned";
 import LeadNotesPage from "./leadnotes";
 import SingleLeadNote from "./leadnotes/SingleLeadNote";
-import Meetings from "./meetings";
+import Meetings from "./appointments/meetings";
+import CreateAppointment from "./appointments/createAppointment";
 import PersonaLeads from "./personalleads";
 import ProfilePage from "./profile";
 import ThirdPartyLeads from "./thirdpartyleads";
@@ -51,6 +52,7 @@ import AllQA from "./qaform/allQA";
 import SingleLeadPage from "./singlelead";
 import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
+import { useLocation } from "react-router-dom";
 
 const libraries = ["places"];
 
@@ -141,9 +143,14 @@ const routes = [
     page: "Lead",
   },
   {
-    path: "/meetings",
+    path: "/appointments/meetings",
     element: <Meetings />,
     pageName: "Meetings",
+  },
+  {
+    path: "/appointments/create",
+    element: <CreateAppointment />,
+    pageName: "Create Appointment",
   },
   {
     path: "/booked",
@@ -430,6 +437,7 @@ const routes = [
 
 function App() {
   const { setAllRoutes, setSocket, currentMode } = useStateContext();
+  const location = useLocation();
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -441,11 +449,11 @@ function App() {
 
     const socketURL = process.env.REACT_APP_SOCKET_URL;
     const socket = io(socketURL);
-    setSocket(socket);
+    setSocket(socket);    
   }, []);
 
   function hasSidebarOrNavbar() {
-    const pathname = window.location.pathname;
+    const pathname = location.pathname;
     if (pathname === "/" || pathname === "/auth/signup") {
       return false;
     } else {
@@ -455,32 +463,11 @@ function App() {
 
   return (
     <>
-      {/* <div className="flex w-screen">
-        {hasSidebarOrNavbar() && <Sidebarmui />}
-        <div
-          className={`w-[100%] ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
-          }`}
-        >
-          {hasSidebarOrNavbar() && (
-            <div className={`px-5`}>
-              <Navbar />
-            </div>
-          )}
-          <Routes>
-            {routes.map((route, index) => {
-              return (
-                <Route key={index} path={route.path} element={route.element} />
-              );
-            })}
-          </Routes>
-        </div>
-      </div> */}
 
       <div className="flex" style={{ width: "99vw" }}>
         {hasSidebarOrNavbar() && <Sidebarmui />}
         <div
-          className={`w-[100%] pt-16 ${
+          className={`w-[100%] ${hasSidebarOrNavbar() ? "pt-20" : "pt-0"} ${
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
