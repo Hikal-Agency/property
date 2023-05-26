@@ -14,14 +14,13 @@ import { BiSupport, BiMailSend } from "react-icons/bi";
 import { BsWhatsapp } from "react-icons/bs";
 import { MdVideoCameraFront } from "react-icons/md";
 import { toast } from "react-toastify";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 
-const CreateTicket = () => {
+const CreateTicket = ({categories, fetchCategories}) => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
   const [newCategory, setNewCategory] = useState();
   const [showTextInput, setShowTextInput] = useState(false);
-  const [categories, setCategories] = useState([]);
   const [values, setValues] = useState({
     ticketCategory: "",
     ticketDescription: "",
@@ -80,6 +79,7 @@ const CreateTicket = () => {
 
       console.log("Category Added: ", add_category);
       setbtnloading(false);
+      fetchCategories();
       setShowTextInput(false);
       setNewCategory("");
 
@@ -164,26 +164,6 @@ const CreateTicket = () => {
       setbtnloading(false);
     }
   };
-
-  const fetchCategories = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      const response = await axios.get(`${BACKEND_URL}/categories`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      const data = response.data.cagtegories.data;
-      setCategories(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
   return (
     <div

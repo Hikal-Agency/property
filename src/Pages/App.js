@@ -448,7 +448,6 @@ function App() {
 
   function hasSidebarOrNavbar() {
     const pathname = location.pathname;
-    console.log("PTHNAME", pathname)
     if (pathname === "/" || pathname === "/auth/signup") {
       return false;
     } else {
