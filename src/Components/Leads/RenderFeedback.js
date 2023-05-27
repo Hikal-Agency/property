@@ -195,7 +195,7 @@ const RenderFeedback = ({ cellValues }) => {
           label="Feedback"
           onChange={ChangeFeedback}
           size="medium"
-          className="w-[100%] h-[75%] border-none"
+          className="w-[100%] h-[75%] border-none render"
           displayEmpty
           required
         >

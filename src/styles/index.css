@@ -89,6 +89,10 @@ input[type="number"] {
   color: #fff;
 }
 
+.PhoneInput{
+  padding : 14px 4px !important;
+}
+
 .image-picker .progress-bar-wrapper {
   display: flex;
   justify-content: center;
@@ -225,11 +229,18 @@ aside.ps-sidebar-root {
   margin: 8px 0 !important;
   width: 100% !important;
 }
-.MuiBox-root .MuiSelect-select {
+
+.MuiSelect-select .render  {
   padding: 3px 2px !important;
   padding-right: 8px !important;
   width: 70% !important;
 }
+/* .MuiBox-root .MuiSelect-select {
+  padding: 3px 2px !important;
+  padding-right: 8px !important;
+  width: 70% !important;
+} */
+
 
 .MuiDataGrid-columnHeader .MuiDataGrid-columnSeparator {
   display: none !important;
