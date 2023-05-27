@@ -40,17 +40,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import RenderSalesperson from "./RenderSalesperson";
 
-const arrowStyles = {
-  position: "absolute",
-  background: "red",
-  cursor: "pointer",
-  width: 50,
-  height: 50,
-  top: "50%",
-  transform: "translateY(-50%)",
-  zIndex: 10,
-};
-
 const BookedDeals = ({
   BACKEND_URL,
   lead_type,
@@ -88,18 +77,6 @@ const BookedDeals = ({
 
   const handleCloseDialog = () => {
     setopenDialog(false);
-  };
-
-  const handleNextArrow = () => {
-    dataTableRef.current
-      .querySelector(".MuiDataGrid-virtualScroller")
-      .scrollBy(140, 0);
-  };
-
-  const handlePrevArrow = () => {
-    dataTableRef.current
-      .querySelector(".MuiDataGrid-virtualScroller")
-      .scrollBy(-140, 0);
   };
 
   //View LEAD MODAL VARIABLES
@@ -353,162 +330,15 @@ const BookedDeals = ({
     );
   };
 
-  // ROLE 7
-  const AgentColumns = [
-    {
-      field: "id",
-      headerName: "#",
-      minWidth: 50,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
-    },
-    {
-      field: "creationDate",
-      headerName: "Date",
-      // width: 120,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
-    },
-    {
-      field: "leadName",
-      headerName: "Lead name",
-      // width: 170,
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "leadContact",
-      headerName: "Contact",
-      // width: 150,
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "project",
-      headerName: "Project",
-      // width: 110,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      // width: 110,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "leadType",
-      headerName: "Property",
-      // width: 100,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "feedback",
-      headerName: "Feedback",
-      // width: 150,
-      minWidth: 160,
-      flex: 1,
-      headerAlign: "center",
-      hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
-    },
-    {
-      field: "language",
-      headerName: "Language",
-      headerAlign: "center",
-      // width: 130,
-      minWidth: 110,
-      flex: 1,
-    },
-    {
-      field: "edit",
-      headerName: "Edit",
-      // width: 150,
-      minWidth: 170,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-
-      renderCell: (cellValues) => {
-        return (
-          <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
-            <Button
-              onClick={() => HandleEditFunc(cellValues)}
-              className={`${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
-            >
-              {/* <AiTwotoneEdit size={20} /> */}
-              <AiOutlineEdit size={20} />
-            </Button>
-            <Button
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </Button>
-          </div>
-        );
-      },
-    },
-  ];
-
   // ROLE 3
-  const ManagerColumns = [
-    {
-      field: "id",
-      headerName: "#",
-      minWidth: 50,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
-    },
+   const AgentColumns = [
     {
       field: "creationDate",
       headerName: "Date",
       // width: 120,
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
+
       sortable: false,
       filterable: false,
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
@@ -519,7 +349,6 @@ const BookedDeals = ({
       // width: 170,
       minWidth: 150,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "leadContact",
@@ -527,7 +356,6 @@ const BookedDeals = ({
       // width: 150,
       minWidth: 150,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "project",
@@ -535,7 +363,6 @@ const BookedDeals = ({
       // width: 110,
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "enquiryType",
@@ -543,7 +370,6 @@ const BookedDeals = ({
       // width: 110,
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "leadType",
@@ -551,16 +377,6 @@ const BookedDeals = ({
       // width: 100,
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "assignedToSales",
-      headerName: "Agent",
-      // width: 150,
-      minWidth: 200,
-      flex: 1,
-      hideable: false,
-      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
     },
     {
       field: "feedback",
@@ -568,190 +384,44 @@ const BookedDeals = ({
       // width: 150,
       minWidth: 160,
       flex: 1,
-      headerAlign: "center",
+
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
     {
       field: "language",
       headerName: "Language",
-      headerAlign: "center",
+
       // width: 130,
       minWidth: 110,
       flex: 1,
     },
-    {
-      field: "edit",
-      headerName: "Edit",
-      // width: 150,
-      minWidth: 170,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
 
-      renderCell: (cellValues) => {
-        return (
-          <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
-            <Button
-              onClick={() => HandleEditFunc(cellValues)}
-              className={`${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
-            >
-              {/* <AiTwotoneEdit size={20} /> */}
-              <AiOutlineEdit size={20} />
-            </Button>
-            <Button
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </Button>
-          </div>
-        );
-      },
-    },
   ];
 
   const columns = [
     {
-      field: "id",
-      headerName: "ID",
-      // width: 150,
-      minWidth: 50,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
-    },
-    {
-      field: "creationDate",
-      headerName: "Date",
-      // width: 150,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
-    },
-    {
-      field: "leadName",
-      headerName: "Lead name",
-      // width: 150,
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "leadContact",
-      headerName: "Contact",
-      // width: 150,
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "project",
-      headerName: "Project",
-      // width: 150,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      // width: 150,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "leadType",
-      headerName: "Property",
-      // width: 150,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "assignedToManager",
-      headerName: "Manager",
-      // width: 150,
-      minWidth: 200,
-      flex: 1,
-      hideable: false,
-      renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
-    },
-    {
-      field: "assignedToSales",
-      headerName: "Agent",
-      // width: 150,
-      minWidth: 200,
-      flex: 1,
-      hideable: false,
-      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
-    },
-    {
-      field: "feedback",
-      headerName: "Feedback",
-      // width: 150,
-      minWidth: 160,
-      flex: 1,
-      headerAlign: "center",
-      hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
-    },
-    {
-      field: "language",
-      headerName: "Language",
-      headerAlign: "center",
-      // width: 130,
-      minWidth: 110,
-      flex: 1,
-    },
-    {
       field: "leadSource",
-      headerName: "Source",
-      // width: 110,
-      minWidth: 70,
+      headerName: "Src",
       flex: 1,
-      headerAlign: "center",
+      minWidth: 45,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full mx-auto flex justify-center ">
-            {cellValues?.row?.leadSource?.toLowerCase() ===
+          <>
+            {cellValues.row.leadSource?.toLowerCase() ===
               "campaign snapchat" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <FaSnapchat size={22} color={"#f6d80a"} />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
+            {cellValues.row.leadSource?.toLowerCase() ===
               "campaign facebook" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <FaFacebook size={22} color={"#0e82e1"} />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
-              "campaign tiktok" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+            {cellValues.row.leadSource?.toLowerCase() === "campaign tiktok" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <img
                   src={"/assets/tiktok-app.svg"}
                   alt=""
@@ -761,79 +431,185 @@ const BookedDeals = ({
                 />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
+            {cellValues.row.leadSource?.toLowerCase() ===
               "campaign googleads" && (
-              <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
+              <div className="bg-white w-max rounded-full text-white flex items-center justify-center">
                 <FcGoogle size={22} />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "campaign" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
+            {cellValues.row.leadSource?.toLowerCase() === "campaign" && (
+              <div className="w-max rounded-full flex items-center justify-center">
                 <MdCampaign
                   size={22}
                   color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
                 />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "cold" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
+            {cellValues.row.leadSource?.toLowerCase() === "cold" && (
+              <div className="w-max rounded-full flex items-center justify-center">
                 <BsSnow2 size={22} color={"#0ec7ff"} />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "personal" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+            {cellValues.row.leadSource?.toLowerCase() === "personal" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <BsPersonCircle size={22} color={"#14539a"} />
               </div>
             )}
+          </>
+        );
+      },
+    },
+    {
+      field: "leadName",
+      headerName: "Name",
+      flex: 1,
+      minWidth: 85,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-wrap items-center">
+            <span>{cellValues.row.leadName}</span>
           </div>
         );
       },
     },
     {
-      field: "edit",
-      headerName: "Edit",
-      // width: 150,
-      minWidth: 170,
+      field: "leadContact",
+      headerName: "Contact",
+      minWidth: 105,
       flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
+    },
+    {
+      field: "project",
+      headerName: "Project",
+      minWidth: 55,
+      flex: 1,
+    },
+    // {
+    //   field: "enquiryType",
+    //   headerName: "Enquiry",
+    //   minWidth: 75,
+    //   flex: 1,
 
+    // },
+    {
+      field: "leadType",
+      headerName: "Property",
+      minWidth: 100,
+      flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
-            <Button
-              onClick={() => HandleEditFunc(cellValues)}
-              className={`${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
-            >
-              {/* <AiTwotoneEdit size={20} /> */}
-              <AiOutlineEdit size={20} />
-            </Button>
-            <Button
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </Button>
+          <div className="flex flex-col">
+            <p>{cellValues.row.leadType}</p>
+            <p>{cellValues.row.enquiryType}</p>
           </div>
         );
       },
     },
+    {
+      field: "assignedToManager",
+      headerName: "Manager",
+      minWidth: 120,
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
+    },
+    {
+      field: "assignedToSales",
+      headerName: "Agent",
+      minWidth: 120,
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
+    },
+    {
+      field: "feedback",
+      headerName: "Feedback",
+      minWidth: 160,
+      flex: 1,
+
+      hideable: false,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
+    },
+
+    {
+      field: "language",
+      headerName: "Lang",
+      minWidth: 45,
+      flex: 1,
+    },
+    // {
+    //   field: "leadSource",
+    //   headerName: "Src",
+    //   minWidth: 38,
+    //   flex: 1,
+
+    //   renderCell: (cellValues) => {
+    //     return (
+    // <div className="w-full mx-auto flex justify-center ">
+    //   {cellValues.row.leadSource.toLowerCase() ===
+    //     "campaign snapchat" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <FaSnapchat size={22} color={"#f6d80a"} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() ===
+    //     "campaign facebook" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <FaFacebook size={22} color={"#0e82e1"} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <img
+    //         src={"/assets/tiktok-app.svg"}
+    //         alt=""
+    //         height={22}
+    //         width={22}
+    //         className="object-cover"
+    //       />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() ===
+    //     "campaign googleads" && (
+    //     <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
+    //       <FcGoogle size={22} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "campaign" && (
+    //     <div className="w-fit rounded-full flex items-center justify-center">
+    //       <MdCampaign
+    //         size={22}
+    //         color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+    //       />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "cold" && (
+    //     <div className="w-fit rounded-full flex items-center justify-center">
+    //       <BsSnow2 size={22} color={"#0ec7ff"} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "personal" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <BsPersonCircle size={22} color={"#14539a"} />
+    //     </div>
+    //   )}
+    //       </div>
+    //     );
+    //   },
+    // },
+
+    {
+      field: "creationDate",
+      headerName: "Date",
+      flex: 1,
+
+      sortable: false,
+      minWidth: 50,
+      filterable: false,
+      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+    },
+
   ];
-
-  const [CEOColumns, setCEOColumns] = useState(columns);
-
-  function setCEOColumnsState() {
-    setCEOColumns([...CEOColumns]);
-  }
 
   const FetchLeads = async (token) => {
     console.log("lead type is");
@@ -1070,36 +846,9 @@ const BookedDeals = ({
     <div className="pb-10">
       <ToastContainer />
       <Box
-        width={"73vw"}
-        sx={{ ...DataGridStyles, marginLeft: "auto", marginRight: "auto" }}
+        sx={{ ...DataGridStyles, position: "relative", marginBottom: 50}}
       >
         <div style={{ position: "relative" }}>
-        {pageState.data.length > 0 &&
-        <>
-          <div onClick={handleNextArrow}>
-            <Avatar
-              className="shadow-md"
-              style={{
-                ...arrowStyles,
-                right: -30,
-              }}
-            >
-              <GrFormNext size={30} />
-            </Avatar>
-          </div>
-          <div onClick={handlePrevArrow}>
-            <Avatar
-              className="shadow-md"
-              style={{
-                ...arrowStyles,
-                left: -30,
-              }}
-            >
-              <GrFormPrevious size={30} />
-            </Avatar>
-          </div>
-          </>
-        }
           <DataGrid
             ref={dataTableRef}
             autoHeight
@@ -1141,30 +890,14 @@ const BookedDeals = ({
             }}
             sx={{
               boxShadow: 2,
-              "& .MuiDataGrid-cell:hover": {
-                cursor: "pointer",
-              },
-              "& .MuiDataGrid-cellCheckbox": {
-                paddingLeft: "28px",
-              },
-              "& .MuiDataGrid-virtualScroller": {
-                scrollBehavior: "smooth",
-                marginTop: "0 !important",
-              },
               "& .MuiDataGrid-main": {
                 overflowY: "scroll",
                 height: pageState.data.length > 0 ? 475 : "auto",
-              },
-              "& .MuiDataGrid-columnHeaders": {
-                position: "sticky",
-                top: 0,
-                zIndex: 10,
               },
             }}
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
             }
-            // style={{justifyContent: "center", alignItems: "center"}}
           />
         </div>
 
