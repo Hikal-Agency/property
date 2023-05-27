@@ -51,12 +51,12 @@ const GridNewsletter = ({ pageState, setpageState }) => {
                           } p-3 rounded-md `}
                         >
                           <div className="mt-2 space-y-1 overflow-hidden">
-                            <h1 className="font-bold capitalize">
+                            <h1 className="font-bold ">
                               <b>Email: </b> {item?.email}
                             </h1>
 
                             <p className="text-sm">
-                              <b>Added At: </b> {item?.created_at}
+                              <b>Added At: </b> {item?.creationDate}
                             </p>
                             <hr />
                             <p className="text-sm font-semibold text-red-600 ">
@@ -71,7 +71,6 @@ const GridNewsletter = ({ pageState, setpageState }) => {
                                 </span>
                               )}
                             </p>
-                            <p className="text-sm">{item.userEmail}</p>
                           </div>
                         </div>
                       );
