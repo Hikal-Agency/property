@@ -801,73 +801,28 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
-            {currentMode === "dark" ? (
-              <p
-                onClick={() => HandleEditFunc(cellValues)}
-                // className={`${
-                //   currentMode === "dark"
-                //     ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                //     : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-                // }`}
-              >
-                <AiOutlineEdit size={20} color="white" />
-
-                {/* {currentMode === "dark" ? (
-                  <AiOutlineEdit
-                    size={20}
-                    color="white"
-                    // sx={{ color: "red" }}
-                  />
-                ) : (
-                  <AiOutlineEdit size={20} color="black" />
-                )} */}
-              </p>
-            ) : (
-              <p
-                onClick={() => HandleEditFunc(cellValues)}
-                // className={`${
-                //   currentMode === "dark"
-                //     ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                //     : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-                // }`}
-              >
-                <AiOutlineEdit
-                  size={20}
-                  color="black"
-                  // sx={{ color: "red" }}
-                />
-                {/* {currentMode === "dark" ? (
-                  <AiOutlineEdit
-                    size={20}
-                    color="white"
-                    // sx={{ color: "red" }}
-                  />
-                ) : (
-                  <AiOutlineEdit size={20} color="black" />
-                )} */}
-              </p>
-            )}
-
-            {/* <p
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              className={`editLeadBtn ${
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
+              onClick={() => HandleEditFunc(cellValues)}
             >
-              <AiOutlineHistory size={20} />
-            </p> */}
+              <AiOutlineEdit size={20} style={{ color: "inherit"}} />
+            </p>
+
             {cellValues.row.lid !== null && (
               <Link
                 to={`/timeline/${cellValues.row.lid}`}
-                className={`editLeadBtn ${
+                className={`editLeadBtn cursor-pointer ${
                   currentMode === "dark"
                     ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
                     : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
                 }`}
               >
-                <AiOutlineHistory size={20} />
+                <AiOutlineHistory size={20} style={{ color: "inherit" }} />
               </Link>
             )}
 
@@ -878,13 +833,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 setBulkDeleteClicked(false);
               }}
               disabled={deleteloading ? true : false}
-              className={`deleteLeadBtn ${
+              className={`deleteLeadBtn cursor-pointer ${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
                   : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              <BsTrash className="deleteLeadBtn" size={18} />
+              <BsTrash
+                className="deleteLeadBtn"
+                size={18}
+                style={{ color: "inherit" }}
+              />
             </p>
           </div>
         );

@@ -252,3 +252,7 @@ aside.ps-sidebar-root {
 label[for="bulkImport"] .MuiButtonBase-root{
   z-index: 5 !important;
 }
+
+.MuiDataGrid-main .MuiDataGrid-cell {
+  overflow-wrap: anywhere;
+}

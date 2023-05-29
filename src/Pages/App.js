@@ -54,6 +54,11 @@ import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
 import { useLocation } from "react-router-dom";
 import AdminSignup from "./auth/adminSignup";
+import Loader from "../Components/Loader";
+import {toast} from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
+import axios from 'axios';
 
 const libraries = ["places"];
 
@@ -442,13 +447,125 @@ const routes = [
 // >>>>>>> Stashed changes
 
 function App() {
-  const { setAllRoutes, setSocket, currentMode } = useStateContext();
+  const { setAllRoutes, setSocket, currentMode, setUser, setopenBackDrop, setIsUserSubscribed,  appLoading, User, setAppLoading, setSalesPerson, setManagers, BACKEND_URL  } = useStateContext();
   const location = useLocation();
+
+  const navigate = useNavigate();
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
     libraries,
   });
+
+   async function setSalesPersons(urls) {
+    const token = localStorage.getItem("auth-token");
+    const requests = urls.map((url) =>
+      axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+    );
+    const responses = await Promise.all(requests);
+    const data = {};
+    for (let i = 0; i < responses.length; i++) {
+      const response = responses[i];
+      if (response.data?.team[0]?.isParent) {
+        const name = `manager-${response.data.team[0].isParent}`;
+        data[name] = response.data.team;
+      }
+    }
+    setSalesPerson(data);
+    setAppLoading(false);
+  }
+
+  const getAllLeadsMembers = (user) => {
+    const token = localStorage.getItem("auth-token");
+    if (user?.position !== "Founder & CEO") {
+      axios
+        .get(`${BACKEND_URL}/teamMembers/${user?.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          const agents = result.data?.team;
+          setSalesPerson({ [`manager-${user?.id}`]: agents });
+        });
+    } else {
+      axios.get(`${BACKEND_URL}/managers`).then((result) => {
+        console.log("manager response is");
+        console.log(result);
+        const managers = result?.data?.managers;
+        setManagers(managers || []);
+
+        const urls = managers?.map((manager) => {
+          return `${BACKEND_URL}/teamMembers/${manager?.id}`;
+        });
+
+        setSalesPersons(urls || []);
+      });
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    if (User?.id && User?.loginId) {
+      FetchProfile(token);
+    } else {
+      if (token) {
+        FetchProfile(token);
+      } else {
+        navigate("/", {
+          state: {
+            error: "Please login to proceed.",
+            continueURL: location.pathname,
+          },
+        });
+      }
+    }
+
+    // eslint-disable-next-line
+  }, []);
+
+   const checkUser = (user) => {
+    const expiry = new Date(user?.expiry_date).getTime();
+    const now = new Date().getTime();
+
+    const isExpired = now > expiry;
+
+    if (user?.role === 1) {
+      return true;
+    } else {
+      return (
+        isExpired === false &&
+        user?.package_name?.length > 0 &&
+        user?.package_name !== "unsubscribed"
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (!(User?.uid && User?.loginId)) {
+      const token = localStorage.getItem("auth-token");
+      if (token) {
+        const user = localStorage.getItem("user");
+        setUser(JSON.parse(user));
+        setIsUserSubscribed(checkUser(JSON.parse(user)));
+      } else {
+        navigate("/", {
+          state: {
+            error: "Something Went Wrong! Please Try Again",
+            continueURL: location.pathname,
+          },
+        });
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
+
 
   useEffect(() => {
     setAllRoutes(routes);
@@ -456,7 +573,107 @@ function App() {
     const socketURL = process.env.REACT_APP_SOCKET_URL;
     const socket = io(socketURL);
     setSocket(socket);
+
   }, []);
+
+    const FetchProfile = async (token) => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      // If user data is stored in local storage, parse and set it in state
+      setUser(JSON.parse(storedUser));
+      setIsUserSubscribed(JSON.parse(storedUser));
+      console.log("User from navbar", User);
+    } else {
+      await axios
+        .get(`${BACKEND_URL}/profile`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          console.log("User data is");
+          console.log(result.data);
+
+          // Create a new object with only the specific fields you want to store
+          const user = {
+            addedBy: result.data.user[0].addedBy,
+            addedFor: result.data.user[0].addedFor,
+            agency: result.data.user[0].agency,
+            created_at: result.data.user[0].created_at,
+            creationDate: result.data.user[0].creationDate,
+            displayImg: result.data.user[0].profile_picture,
+            expiry_date: result.data.user[0].expiry_date,
+            gender: result.data.user[0].gender,
+            id: result.data.user[0].id,
+            idExpiryDate: result.data.user[0].idExpiryDate,
+            isParent: result.data.user[0].isParent,
+            is_online: result.data.user[0].is_online,
+            joiningDate: result.data.user[0].joiningDate,
+            loginId: result.data.user[0].loginId,
+            loginStatus: result.data.user[0].loginStatus,
+            master: result.data.user[0].master,
+            nationality: result.data.user[0].nationality,
+            notes: result.data.user[0].notes,
+            old_password: result.data.user[0].old_password,
+            package_name: result.data.user[0].package_name,
+            plusSales: result.data.user[0].plusSales,
+            position: result.data.user[0].position,
+            profile_picture: result.data.user[0].profile_picture,
+            role: result.data.user[0].role,
+            status: result.data.user[0].status,
+            target: result.data.user[0].target,
+            uid: result.data.user[0].uid,
+            updated_at: result.data.user[0].updated_at,
+            userEmail: result.data.user[0].userEmail,
+            userName: result.data.user[0].userName,
+            userType: result.data.user[0].userType,
+          };
+
+          setUser(user);
+          setIsUserSubscribed(user);
+
+          console.log("Localstorage: ", user);
+
+          // Save user data to local storage
+          localStorage.setItem("user", JSON.stringify(user));
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.status === 401) {
+            setopenBackDrop(false);
+            // setloading(false);
+
+            localStorage.removeItem("auth-token");
+            localStorage.removeItem("user");
+            localStorage.removeItem("leadsData");
+            navigate("/", {
+              state: {
+                error: "Please login to proceed.",
+                continueURL: location.pathname,
+              },
+            });
+            return;
+          }
+          toast.error("Sorry something went wrong. Kindly refresh the page.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        });
+    }
+  };
+
+  useEffect(() => {
+    if(User?.id) {
+      getAllLeadsMembers(User);
+    }
+  }, [User]);
 
   function hasSidebarOrNavbar() {
     const pathname = location.pathname;
@@ -466,6 +683,10 @@ function App() {
       return true;
     }
   }
+
+  if(appLoading && hasSidebarOrNavbar()) {
+    return <Loader/>;
+  } else {
 
   return (
     <>
@@ -493,6 +714,7 @@ function App() {
       <Footer />
     </>
   );
+          }
 }
 
 export default App;

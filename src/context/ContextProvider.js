@@ -43,6 +43,7 @@ export const ContextProvider = ({ children }) => {
   const [allRoutes, setAllRoutes] = useState([]);
   const [isUserSubscribed, setIsUserSubscribed] = useState(null);
   const [socket, setSocket] = useState(null);
+  const [appLoading, setAppLoading] = useState(true);
 
   // DATA GRID
   const [pageState, setpageState] = useState({
@@ -249,7 +250,9 @@ export const ContextProvider = ({ children }) => {
         isUserSubscribed,
         setIsUserSubscribed,
         socket, 
-        setSocket
+        setSocket, 
+        appLoading,
+        setAppLoading
       }}
     >
       {children}
