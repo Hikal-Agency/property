@@ -127,14 +127,6 @@ const InstancesTable = ({ pageState, setpageState }) => {
 
   const columns = [
     {
-      field: "id",
-      headerName: "#",
-      minWidth: "50",
-      flex: 1,
-      headerAlign: "center",
-    },
-
-    {
       field: "instance_name",
       headerName: "Instance name",
       minWidth: 150,

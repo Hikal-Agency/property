@@ -165,24 +165,7 @@ const Users = () => {
   }, [pageState.page]);
 
   const columns = [
-    {
-      field: "id",
-      headerName: "#",
-      headerAlign: "center",
-      maxWidth: 90,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
-    },
+
     {
       field: "displayImg",
       headerName: "Image",

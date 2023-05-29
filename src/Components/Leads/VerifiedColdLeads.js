@@ -1,4 +1,4 @@
-import { Box, MenuItem, Pagination, Select } from "@mui/material";
+import { Box, Pagination } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -9,7 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import axios from "axios";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import RenderFeedback from "./RenderFeedback";
@@ -87,21 +87,8 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       // backgroundColor: "red",
     },
   };
-  const SelectStyles = {
-    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium,& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
-      {
-        color: currentMode === "dark" ? "white" : "black",
-        borderColor: currentMode === "dark" ? "white" : "black",
-        fontSize: "0.9rem",
-        fontWeight: "500",
-      },
-    "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: currentMode === "dark" ? "white" : "black",
-    },
-  };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70, headerAlign: "left" },
     {
       field: "creationDate",
       headerName: "Date",

@@ -137,79 +137,13 @@ const AllLeads = () => {
     //       </div>
     //     );
     //   },
-    // },
-    {
-      field: "leadName",
-      headerAlign: "left",
-      headerName: "Lead name",
-      minWidth: 150,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full ">
-            <p className="text-center capitalize">
-              {cellValues?.formattedValue}
-            </p>
-          </div>
-        );
-      },
-    },
-    {
-      field: "leadContact",
-      headerName: "Contact",
-      minWidth: 150,
-      headerAlign: "left",
-      flex: 1,
-    },
-    {
-      field: "project",
-      headerName: "Project",
-      // width: 150,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "left",
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full ">
-            <p className="text-center capitalize">
-              {cellValues?.formattedValue}
-            </p>
-          </div>
-        );
-      },
-    },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      // width: 110,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "leadType",
-      headerName: "Property",
-      // width: 100,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full">
-            <p className="text-center capitalize">
-              {cellValues?.formattedValue}
-            </p>
-          </div>
-        );
-      },
-    },
+    // },   
     {
       field: "leadSource",
-      headerName: "Source",
-      // width: 110,
-      minWidth: 70,
-      flex: 1,
+      headerName: "Src",
+      minWidth: 140,
       headerAlign: "center",
+      flex: 1,
       renderCell: (cellValues) => {
         return (
           <div className="w-full mx-auto flex justify-center ">
@@ -266,12 +200,71 @@ const AllLeads = () => {
       },
     },
     {
-      field: "whatsapp-web",
-      headerName: "",
-      // width: 150,
+      field: "leadName",
+      headerAlign: "center",
+      headerName: "Lead name",
+      minWidth: 240,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "leadContact",
+      headerName: "Contact",
+      minWidth: 150,
+      flex: 1,
+    },
+    {
+      field: "project",
+      headerName: "Project",
+      minWidth: 140,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "enquiryType",
+      headerName: "Enquiry",
+      // width: 110,
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
+    },
+
+    {
+      field: "leadType",
+      headerName: "Property",
+      minWidth: 140,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full">
+            <p className="capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
+    },
+ 
+    {
+      field: "whatsapp-web",
+      headerName: "",
+      minWidth: 110,
+      flex: 1,
       renderCell: (cellValues) => {
         return (
           <div
@@ -703,42 +696,8 @@ const AllLeads = () => {
     );
   }
 
-  const getManagers = () => {
-    axios
-      .get(`${BACKEND_URL}/managers`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        const managers = result?.data?.managers;
-        console.log("Managers: ", managers);
-        setManagers(managers || []);
-      });
-  };
-
-  const getAgents = (managerId) => {
-    axios
-      .get(`${BACKEND_URL}/teamMembers/${managerId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        const agents = result?.data?.team;
-        setAgents(agents || []);
-      });
-  };
-
-  useEffect(() => {
-    getManagers();
-  }, []);
-
   useEffect(() => {
     if (managerSelected) {
-      getAgents(managerSelected);
       setAgentSelected("");
     }
   }, [managerSelected]);
