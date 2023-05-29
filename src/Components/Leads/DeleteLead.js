@@ -41,7 +41,9 @@ const DeleteLeadModel = ({
         <div className="flex flex-col justify-center items-center">
           <IoIosAlert size={50} className="text-main-red-color text-2xl" />
           <h1 className="font-semibold pt-3 text-lg">
-          {bulkDeleteClicked ? "Do You Really Want to delete these Leads?" : "Do You Really Want to delete this Lead?"}
+            {bulkDeleteClicked
+              ? "Do You Really Want to delete these Leads?"
+              : "Do You Really Want to delete this Lead?"}
           </h1>
         </div>
 
@@ -50,7 +52,11 @@ const DeleteLeadModel = ({
             className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
             ripple="true"
             size="lg"
-            onClick={bulkDeleteClicked ? handleBulkDelete : () => deleteLead(LeadToDelete)}
+            onClick={
+              bulkDeleteClicked
+                ? handleBulkDelete
+                : () => deleteLead(LeadToDelete)
+            }
           >
             {deletebtnloading ? (
               <CircularProgress size={18} sx={{ color: "blue" }} />

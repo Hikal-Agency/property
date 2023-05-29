@@ -53,7 +53,6 @@ import SingleLeadPage from "./singlelead";
 import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
 import { useLocation } from "react-router-dom";
-import AdminSignup from "./auth/adminSignup";
 
 const libraries = ["places"];
 
@@ -68,11 +67,7 @@ const routes = [
     pageName: "Sign Up",
     element: <Signup />,
   },
-  {
-    path: "/adminAuth/signup",
-    pageName: "Admin Sign Up",
-    element: <AdminSignup />,
-  },
+
   // {
   //   path: "/auth/forgot-password",
   //   pageName: "Sign Up",

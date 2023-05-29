@@ -4,7 +4,6 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 import { useStateContext } from "../../context/ContextProvider";
-import Footer from "../../Components/Footer/Footer";
 import { RiRadioButtonLine } from "react-icons/ri";
 import { toast, ToastContainer } from "react-toastify";
 

@@ -1,6 +1,10 @@
 import axios from "axios";
 import { Button } from "@material-tailwind/react";
-import { AiOutlineEdit } from "react-icons/ai";
+import {
+  AiOutlineAppstore,
+  AiOutlineEdit,
+  AiOutlineTable,
+} from "react-icons/ai";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Loader from "../../Components/Loader";
@@ -394,28 +398,44 @@ const Meetings = () => {
                   sx={{
                     ...darkModeColors,
                     "& .MuiTabs-indicator": {
-                      height: "100%",
                       borderRadius: "5px",
                       backgroundColor: "#da1f26",
                     },
                     "& .Mui-selected": {
-                      color: "white !important",
+                      color: "white",
                       zIndex: "1",
                     },
+                    "& .MuiSvgIcon-root": {
+                      // Customize icon styles here
+                      color: "red",
+                    },
                   }}
-                  className={`w-full rounded-md overflow-hidden ${
+                  className={`rounded-md overflow-hidden ${
                     currentMode === "dark" ? "bg-black" : "bg-white"
-                  } `}
+                  }`}
                 >
                   <Tabs
                     value={value}
                     onChange={handleChange}
                     variant="standard"
-                    // centered
                     className="w-full px-1 m-1"
                   >
-                    <Tab label="GRID VIEW" />
-                    <Tab label="TABLE VIEW" />
+                    <Tab
+                      icon={
+                        <AiOutlineTable
+                          style={{
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          }}
+                        />
+                      }
+                    />
+                    <Tab
+                      icon={<AiOutlineAppstore />}
+                      style={{
+                        color: currentMode === "dark" ? "#ffffff" : "#000000",
+                      }}
+                    />
                   </Tabs>
                 </Box>
                 <div className="mt-3 pb-3">
