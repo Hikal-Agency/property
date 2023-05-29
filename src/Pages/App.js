@@ -53,7 +53,6 @@ import SingleLeadPage from "./singlelead";
 import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
 import { useLocation } from "react-router-dom";
-import AdminSignup from "./auth/adminSignup";
 import Loader from "../Components/Loader";
 import {toast} from "react-toastify";
 import { useNavigate } from "react-router-dom";
