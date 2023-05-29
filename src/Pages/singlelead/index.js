@@ -24,6 +24,8 @@ const SingleLeadPage = () => {
 
   const { lid } = useParams();
 
+  console.log("LID: ", lid);
+
   const handleRowClick = async (params) => {
     window.open(`/leadnotes/${params}`);
   };
@@ -109,11 +111,11 @@ const SingleLeadPage = () => {
         },
       });
 
-          console.log("SINGLE LEAD: ", result.status);
-          setLeadData(result.data.data);
+      console.log("SINGLE LEAD: ", result.status);
+      setLeadData(result.data.data);
       setloading(false);
     } catch (error) {
-      console.log('Error', error)
+      console.log("Error", error);
       if (error?.response?.status === 404) {
         setLeadNotFound(true);
       } else {
