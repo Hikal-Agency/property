@@ -416,6 +416,7 @@ import {
   Typography,
   Button,
   CircularProgress,
+  styled,
 } from "@mui/material";
 import { BsChevronCompactDown, BsTrash } from "react-icons/bs";
 import { FaFileDownload } from "react-icons/fa";
@@ -432,6 +433,16 @@ const ListQa = ({ pageState, setpageState }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   console.log("Data: ", data);
+
+  const useStyles = styled(() => ({
+    ul: {
+      "& .MuiPaginationItem-root": {
+        color: "#000",
+      },
+    },
+  }));
+
+  const classes = useStyles();
 
   const getSummaryBgClass = () => {
     return currentMode === "dark"
@@ -593,17 +604,18 @@ const ListQa = ({ pageState, setpageState }) => {
             count={data?.links?.last_page}
             page={currentPage}
             onChange={handlePageChange}
-            color={currentMode === "dark" ? "primary" : "secondary"}
+            color="secondary"
+            className={{ ul: classes.ul }}
             sx={{
               "& .Mui-selected": {
-                color: currentMode === "dark" ? "white" : "gray",
-                backgroundColor: currentMode === "dark" ? "black" : "white",
+                color: "white",
+                backgroundColor: currentMode === "dark" ? "red" : "red",
                 "&:hover": {
                   backgroundColor: currentMode === "dark" ? "black" : "white",
                 },
               },
               "& .MuiPaginationItem-root": {
-                color: currentMode === "dark" ? "white" : "gray",
+                color: "white",
               },
             }}
           />
