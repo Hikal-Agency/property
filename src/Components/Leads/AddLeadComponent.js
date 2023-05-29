@@ -565,7 +565,7 @@ const AddLeadComponent = () => {
                                 "& .PhoneInputCountryIconImg": {
                                   color: "#fff",
                                 },
-                                padding: "10px",
+                                padding: "10",
                                 border: `1px solid ${
                                   currentMode === "dark" ? "#fff" : "#ccc"
                                 }`,
@@ -704,7 +704,7 @@ const AddLeadComponent = () => {
                     } px-4 text-center sm:px-6`}
                   >
                     <Button
-                      className={`min-w-fit w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                      className={`min-w-fit mb-5 w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
                       ripple={true}
                       size="lg"
                       type="submit"
