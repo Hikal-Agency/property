@@ -20,6 +20,7 @@ const RenderSalesperson = ({ cellValues }) => {
   const [SalesPerson2, setSalesPerson2] = useState(
     cellValues?.row?.assignedToSales
   );
+  console.log("Agent : ", SalesPerson2);
 
   const [SalesPersonsList, setSalesPersonsList] = useState([]);
   const [SalesPerson3, setSalesPerson3] = useState();
@@ -115,7 +116,7 @@ const RenderSalesperson = ({ cellValues }) => {
   useEffect(() => {
     const managerId = cellValues?.row?.assignedToManager;
     const agents = SalesPerson[`manager-${managerId}`];
-    if (agents === undefined) {
+    if (agents === undefined || SalesPerson2 === 0) {
       setNoAgents(true);
     } else {
       setNoAgents(false);

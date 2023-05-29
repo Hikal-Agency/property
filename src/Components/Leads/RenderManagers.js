@@ -111,6 +111,8 @@ const RenderManagers = ({ cellValues }) => {
       });
   };
 
+  console.log("Manager: ", manager2);
+
   return (
     <Box
       className={` w-full h-full flex items-center justify-center`}
@@ -156,7 +158,7 @@ const RenderManagers = ({ cellValues }) => {
           label="Manager"
           onChange={ChangeManager}
           size="medium"
-          className="w-full border border-gray-300 rounded"
+          className="w-full border border-gray-300 rounded "
           displayEmpty
           required
           sx={{ border: "1px solid #000000" }}
