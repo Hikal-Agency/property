@@ -207,15 +207,15 @@ const UserTable = ({ user }) => {
                 style={{ margin: "auto" }}
                 sx={{
                   "& .Mui-selected": {
-                    color: currentMode === "dark" ? "white" : "gray",
-                    backgroundColor: currentMode === "dark" ? "black" : "white",
+                    color: "white",
+                    backgroundColor: currentMode === "dark" ? "red" : "red",
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",
                     },
                   },
                   "& .MuiPaginationItem-root": {
-                    color: currentMode === "dark" ? "white" : "gray",
+                    color: "white",
                   },
                 }}
               />

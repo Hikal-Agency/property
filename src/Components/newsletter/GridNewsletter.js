@@ -86,44 +86,44 @@ const GridNewsletter = ({ pageState, setpageState }) => {
                 style={{ margin: "auto" }}
                 sx={{
                   "& .Mui-selected": {
-                    color: currentMode === "dark" ? "white" : "gray",
-                    backgroundColor: currentMode === "dark" ? "black" : "white",
+                    color: "white",
+                    backgroundColor: currentMode === "dark" ? "red" : "red",
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",
                     },
                   },
                   "& .MuiPaginationItem-root": {
-                    color: currentMode === "dark" ? "white" : "gray",
+                    color: "white",
                   },
                 }}
-                renderItem={(item) => {
-                  const isEllipsis =
-                    item.type === "start-ellipsis" ||
-                    item.type === "end-ellipsis";
+                // renderItem={(item) => {
+                //   const isEllipsis =
+                //     item.type === "start-ellipsis" ||
+                //     item.type === "end-ellipsis";
 
-                  return (
-                    <PaginationItem
-                      {...item}
-                      sx={{
-                        color: isEllipsis
-                          ? currentMode === "dark"
-                            ? "white"
-                            : "gray"
-                          : undefined,
-                        backgroundColor: isEllipsis
-                          ? undefined
-                          : currentMode === "dark"
-                          ? "black"
-                          : "white",
-                        "&:hover": {
-                          backgroundColor:
-                            currentMode === "dark" ? "black" : "white",
-                        },
-                      }}
-                    />
-                  );
-                }}
+                //   return (
+                //     <PaginationItem
+                //       {...item}
+                //       sx={{
+                //         color: isEllipsis
+                //           ? currentMode === "dark"
+                //             ? "white"
+                //             : "gray"
+                //           : undefined,
+                //         backgroundColor: isEllipsis
+                //           ? undefined
+                //           : currentMode === "dark"
+                //           ? "black"
+                //           : "white",
+                //         "&:hover": {
+                //           backgroundColor:
+                //             currentMode === "dark" ? "black" : "white",
+                //         },
+                //       }}
+                //     />
+                //   );
+                // }}
               />
             </Stack>
           </div>

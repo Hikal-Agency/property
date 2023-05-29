@@ -6,7 +6,7 @@ import { Box, Tab, Tabs } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
 
-import { AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlinePlus } from "react-icons/ai";
 import SingleUser from "../../Components/Users/SingleUser";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -412,9 +412,12 @@ const Users = () => {
                   </h1>
                   <Link
                     to="/adminAuth/signup"
-                    className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-sm"
+                    className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md "
                   >
-                    Add User
+                    <span className="flex justify-between items-center">
+                      <AiOutlinePlus style={{ marginRight: "0.5em" }} />
+                      Add User
+                    </span>
                   </Link>
                 </div>
                 <Box
