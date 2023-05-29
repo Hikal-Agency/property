@@ -8,6 +8,7 @@ import {
 } from "@mui/x-data-grid";
 import "./messages.css";
 import axios from "axios";
+import moment from "moment";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { MdCampaign, MdSend } from "react-icons/md";
@@ -20,7 +21,6 @@ import Pagination from "@mui/material/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
-import { Link } from "react-router-dom";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh Leads" },
@@ -141,7 +141,7 @@ const AllLeads = () => {
     {
       field: "leadSource",
       headerName: "Src",
-      minWidth: 140,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -203,7 +203,7 @@ const AllLeads = () => {
       field: "leadName",
       headerAlign: "center",
       headerName: "Lead name",
-      minWidth: 240,
+      minWidth: 180,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -218,13 +218,13 @@ const AllLeads = () => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 150,
+      minWidth: 120,
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
-      minWidth: 140,
+      minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -235,6 +235,12 @@ const AllLeads = () => {
           </div>
         );
       },
+    },
+    {
+      field: "language",
+      headerName: "Lang",
+      minWidth: 35,
+      flex: 1,
     },
     {
       field: "enquiryType",
@@ -258,6 +264,16 @@ const AllLeads = () => {
           </div>
         );
       },
+    },
+    {
+      field: "creationDate",
+      headerName: "Date",
+      flex: 1,
+
+      sortable: false,
+      minWidth: 90,
+      filterable: false,
+      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
  
     {
@@ -543,6 +559,7 @@ const AllLeads = () => {
           leadContact: row?.leadContact,
           project: row?.project,
           leadType: row?.leadType,
+            language: row?.language || "No Language",
           enquiryType: row?.enquiryType,
           leadSource: row?.leadSource,
         }));
@@ -620,6 +637,7 @@ const AllLeads = () => {
             leadName: row?.leadName,
             leadContact: row?.leadContact,
             project: row?.project,
+            language: row?.language || "No Language",
             leadType: row?.leadType,
             leadSource: row?.leadSource,
             lid: row?.id,
