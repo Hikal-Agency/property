@@ -34,7 +34,7 @@ const UpdateLead = ({
   LeadData,
   FetchLeads,
 }) => {
-  // eslint-disable-next-line
+  console.log("Single Lead: ", LeadData);
   const {
     darkModeColors,
     currentMode,
