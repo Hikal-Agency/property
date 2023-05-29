@@ -30,7 +30,7 @@ const Error = () => {
           The page you are looking for doesn't exist or <br />
           has been removed.
         </p>
-        <Link to={"/"}>
+        <Link to={"/dashboard"}>
           <Button variant="text" className="text-lg underline">
             Return To Home
           </Button>
