@@ -198,6 +198,12 @@ const RenderFeedback = ({ cellValues }) => {
           className="w-[100%] h-[75%] border-none render"
           displayEmpty
           required
+          sx={{
+            color: currentMode === "dark" ? "#ffffff" : "#000000",
+            "& .MuiSelect-icon": {
+              color: currentMode === "dark" ? "#ffffff" : "#000000",
+            },
+          }}
         >
           {!Feedback ? (
             <MenuItem value={"selected"} selected>
