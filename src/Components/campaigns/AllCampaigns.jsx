@@ -1,4 +1,10 @@
-import { Box, MenuItem, Pagination, Select } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  MenuItem,
+  Pagination,
+  Select,
+} from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -19,6 +25,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
   const [searchText, setSearchText] = useState("");
   const [campaigns, setCampaigns] = useState([]);
   const [ads, setAds] = useState();
+  const [loading, setLoading] = useState(false);
   // eslint-disable-next-line
   const navigate = useNavigate();
   const location = useLocation();
@@ -144,6 +151,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
       //   `https://graph.facebook.com/v16.0/act_967421490560096/campaigns?fields=name,bid_strategy,daily_budget,special_ad_category,ads{name,adset,bid_amount,status}&access_token=${graph_api_token}`
       // );
 
+      setLoading(true);
       const relative_campaigns = await axios.get(
         "https://graph.facebook.com/v16.0/act_967421490560096/campaigns",
         {
@@ -156,10 +164,12 @@ const AllCampaigns = ({ pageState, setpageState }) => {
       );
 
       setCampaigns(relative_campaigns?.data?.data);
+      setLoading(false);
 
       console.log("Relative Campaigns:  ", relative_campaigns);
     } catch (error) {
       console.error("Error: ", error);
+      setLoading(false);
     }
   };
 
@@ -358,36 +368,43 @@ const AllCampaigns = ({ pageState, setpageState }) => {
           >
             Select a campaign
           </label>
-          <Select
-            id="leadOrigin"
-            value={campaigns}
-            onChange={selectCampaign || "23852162763410143"}
-            size="medium"
-            className={`w-full mt-1 mb-5 `}
-            displayEmpty
-            required
-            sx={{
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-              "&:hover:not (.Mui-disabled):before": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-            }}
-          >
-            <MenuItem value="0" disabled>
-              Select Campaign
-            </MenuItem>
-            {campaigns?.length > 0 ? (
-              campaigns?.map((campaign, index) => (
-                <MenuItem key={index} value={campaign?.id || ""}>
-                  {campaign?.name}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem>No Campaigns found.</MenuItem>
-            )}
-          </Select>
+          {loading ? (
+            <>
+              <br />
+              <CircularProgress />
+            </>
+          ) : (
+            <Select
+              id="leadOrigin"
+              value={campaigns}
+              onChange={selectCampaign || "23852162763410143"}
+              size="medium"
+              className={`w-full mt-1 mb-5 `}
+              displayEmpty
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem value="0" disabled>
+                Select Campaign
+              </MenuItem>
+              {campaigns?.length > 0 ? (
+                campaigns?.map((campaign, index) => (
+                  <MenuItem key={index} value={campaign?.id || ""}>
+                    {campaign?.name}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem>No Campaigns found.</MenuItem>
+              )}
+            </Select>
+          )}
         </div>
       </div>
       <Box

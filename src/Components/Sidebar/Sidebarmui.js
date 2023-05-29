@@ -10,7 +10,7 @@ import {
 import { HiTicket, HiDocumentReport, HiUsers } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill } from "react-icons/bs";
-import { FaFacebookSquare, FaChartLine } from "react-icons/fa";
+import { FaFacebookSquare, FaChartLine, FaUser } from "react-icons/fa";
 
 import {
   MdLeaderboard,
@@ -1263,60 +1263,65 @@ const Sidebarmui = () => {
   const [managerData, setManagerData] = useState(Managerlinks);
 
   useEffect(() => {
-    if(isUserSubscribed) {
-      setAgentData([...Agentlinks,   {
-            title: "WHATSAPP",
-            links: [
-              {
-                name: "Instances",
-                icon: <RiWhatsappFill />,
-                link: "/whatsapp-marketing/instances",
-              },
-              {
-                name: "Messages",
-                icon: <AiFillMessage />,
-                link: "/whatsapp-marketing/messages",
-              },
-              {
-                name: "Templates",
-                icon: <FaMobile />,
-                link: "/whatsapp-marketing/templates",
-              },
-              {
-                name: "Payments",
-                icon: <BsFillCreditCard2FrontFill />,
-                link: "/whatsapp-marketing/payments",
-              },
-            ],
-          },])
-      setManagerData([...Managerlinks,   {
-            title: "WHATSAPP",
-            links: [
-              {
-                name: "Instances",
-                icon: <RiWhatsappFill />,
-                link: "/whatsapp-marketing/instances",
-              },
-              {
-                name: "Messages",
-                icon: <AiFillMessage />,
-                link: "/whatsapp-marketing/messages",
-              },
-              {
-                name: "Templates",
-                icon: <FaMobile />,
-                link: "/whatsapp-marketing/templates",
-              },
-              {
-                name: "Payments",
-                icon: <BsFillCreditCard2FrontFill />,
-                link: "/whatsapp-marketing/payments",
-              },
-            ],
-          },])
+    if (isUserSubscribed) {
+      setAgentData([
+        ...Agentlinks,
+        {
+          title: "WHATSAPP",
+          links: [
+            {
+              name: "Instances",
+              icon: <RiWhatsappFill />,
+              link: "/whatsapp-marketing/instances",
+            },
+            {
+              name: "Messages",
+              icon: <AiFillMessage />,
+              link: "/whatsapp-marketing/messages",
+            },
+            {
+              name: "Templates",
+              icon: <FaMobile />,
+              link: "/whatsapp-marketing/templates",
+            },
+            {
+              name: "Payments",
+              icon: <BsFillCreditCard2FrontFill />,
+              link: "/whatsapp-marketing/payments",
+            },
+          ],
+        },
+      ]);
+      setManagerData([
+        ...Managerlinks,
+        {
+          title: "WHATSAPP",
+          links: [
+            {
+              name: "Instances",
+              icon: <RiWhatsappFill />,
+              link: "/whatsapp-marketing/instances",
+            },
+            {
+              name: "Messages",
+              icon: <AiFillMessage />,
+              link: "/whatsapp-marketing/messages",
+            },
+            {
+              name: "Templates",
+              icon: <FaMobile />,
+              link: "/whatsapp-marketing/templates",
+            },
+            {
+              name: "Payments",
+              icon: <BsFillCreditCard2FrontFill />,
+              link: "/whatsapp-marketing/payments",
+            },
+          ],
+        },
+      ]);
     }
   }, [isUserSubscribed]);
-
 
   //  DATA
   const links = [
@@ -1592,6 +1597,11 @@ const Sidebarmui = () => {
               link: "/appointments/create",
             },
           ],
+        },
+        {
+          name: "Add Users",
+          icon: <FaUser />,
+          link: "/adminAuth/signup",
         },
         {
           name: "Reports",

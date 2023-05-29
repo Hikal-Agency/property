@@ -53,6 +53,7 @@ import SingleLeadPage from "./singlelead";
 import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
 import { useLocation } from "react-router-dom";
+import AdminSignup from "./auth/adminSignup";
 
 const libraries = ["places"];
 
@@ -66,6 +67,11 @@ const routes = [
     path: "/auth/signup",
     pageName: "Sign Up",
     element: <Signup />,
+  },
+  {
+    path: "/adminAuth/signup",
+    pageName: "Admin Sign Up",
+    element: <AdminSignup />,
   },
   // {
   //   path: "/auth/forgot-password",
@@ -449,7 +455,7 @@ function App() {
 
     const socketURL = process.env.REACT_APP_SOCKET_URL;
     const socket = io(socketURL);
-    setSocket(socket);    
+    setSocket(socket);
   }, []);
 
   function hasSidebarOrNavbar() {
@@ -463,13 +469,12 @@ function App() {
 
   return (
     <>
-
       <div className="flex" style={{ width: "99vw" }}>
         {hasSidebarOrNavbar() && <Sidebarmui />}
         <div
-          className={`w-[99%] overflow-x-hidden ${hasSidebarOrNavbar() ? "pt-20" : "pt-0"} ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
-          }`}
+          className={`w-[99%] overflow-x-hidden ${
+            hasSidebarOrNavbar() ? "pt-20" : "pt-0"
+          } ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
         >
           {hasSidebarOrNavbar() && (
             <div className={`px-5`}>

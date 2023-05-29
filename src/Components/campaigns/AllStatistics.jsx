@@ -1,4 +1,10 @@
-import { Box, MenuItem, Pagination, Select } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  MenuItem,
+  Pagination,
+  Select,
+} from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -31,6 +37,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
     useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
+  const [loading, setLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
   const [selectedCampaign, setSelectedCampaigns] = useState({});
   const [campaignStats, setCampaignStats] = useState(null);
@@ -309,6 +316,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
       //   `https://graph.facebook.com/v16.0/act_967421490560096/campaigns?fields=name,bid_strategy,daily_budget,special_ad_category,ads{name,adset,bid_amount,status}&access_token=${graph_api_token}`
       // );
 
+      setLoading(true);
       const relative_campaigns = await axios.get(
         "https://graph.facebook.com/v16.0/act_967421490560096/campaigns",
         {
@@ -321,9 +329,11 @@ const AllStatistics = ({ pageState, setpageState }) => {
       );
 
       setCampaigns(relative_campaigns?.data?.data);
+      setLoading(false);
 
       console.log("Relative Campaigns:  ", relative_campaigns);
     } catch (error) {
+      setLoading(false);
       console.error("Error: ", error);
     }
   };
@@ -638,40 +648,48 @@ const AllStatistics = ({ pageState, setpageState }) => {
           >
             Select a campaign
           </label>
-          <Select
-            id="leadOrigin"
-            value={selectedCampaign.SelectedCampaign}
-            onChange={(event) => selectCampaign(event, event.target.value)}
-            size="medium"
-            className={`w-full mt-1 mb-5 `}
-            displayEmpty
-            required
-            sx={{
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-              "&:hover:not (.Mui-disabled):before": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-            }}
-          >
-            <MenuItem value="0" disabled>
-              Select Campaign
-            </MenuItem>
-            {campaigns?.length > 0 ? (
-              campaigns?.map((campaign, index) => (
-                <MenuItem
-                  key={index}
-                  value={campaign?.id || ""}
-                  name={campaign?.name}
-                >
-                  {campaign?.name}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem>No Campaigns found.</MenuItem>
-            )}
-          </Select>
+
+          {loading ? (
+            <>
+              <br />
+              <CircularProgress />
+            </>
+          ) : (
+            <Select
+              id="leadOrigin"
+              value={selectedCampaign.SelectedCampaign}
+              onChange={(event) => selectCampaign(event, event.target.value)}
+              size="medium"
+              className={`w-full mt-1 mb-5 `}
+              displayEmpty
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem value="0" selected>
+                Select Campaign
+              </MenuItem>
+              {campaigns?.length > 0 ? (
+                campaigns?.map((campaign, index) => (
+                  <MenuItem
+                    key={index}
+                    value={campaign?.id || ""}
+                    name={campaign?.name}
+                  >
+                    {campaign?.name}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem>No Campaigns found.</MenuItem>
+              )}
+            </Select>
+          )}
         </div>
       </div>
       {selectedCampaign.SelectedCampaign && (
