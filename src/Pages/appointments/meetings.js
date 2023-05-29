@@ -69,51 +69,30 @@ const Meetings = () => {
   });
 
   const columns = [
-    {
-      field: "id",
-      headerName: "#",
-      minWidth: 50,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
-    },
+
     {
       field: "leadName",
       headerName: "Lead name",
       minWidth: 150,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "project",
       headerName: "Project",
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "enquiryType",
       headerName: "Enquiry",
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "leadType",
       headerName: "Property",
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
 
     {
@@ -121,7 +100,6 @@ const Meetings = () => {
       headerName: "Meeting By",
       minWidth: 170,
       flex: 1,
-      headerAlign: "center",
     },
 
     {
@@ -129,21 +107,18 @@ const Meetings = () => {
       headerName: "Meeting Date",
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "meetingTime",
       headerName: "Meeting Time",
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "meetingStatus",
       headerName: "Meeting Status",
       width: 150,
       flex: 1,
-      headerAlign: "center",
       sortable: false,
       filterable: false,
       renderCell: (cellValues) => {
@@ -177,7 +152,6 @@ const Meetings = () => {
     {
       field: "edit",
       headerName: "Actions",
-      headerAlign: "center",
       minWidth: "110",
       flex: 1,
       renderCell: (cellValues) => {

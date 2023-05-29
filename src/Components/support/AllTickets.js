@@ -20,13 +20,6 @@ const AllTickets = () => {
 
   const columns = [
     {
-      field: "id",
-      headerName: "ID",
-      headerAlign: "center",
-      minWidth: 40,
-      flex: 1,
-    },
-    {
       field: "creationDate",
       headerName: "Ticket Date",
       headerAlign: "center",

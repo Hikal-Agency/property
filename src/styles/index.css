@@ -234,12 +234,6 @@ aside.ps-sidebar-root {
   padding-right: 8px !important;
   width: 70% !important;
 }
-/* .MuiBox-root .MuiSelect-select {
-  padding: 3px 2px !important;
-  padding-right: 8px !important;
-  width: 70% !important;
-} */
-
 
 .MuiDataGrid-columnHeader .MuiDataGrid-columnSeparator {
   display: none !important;
@@ -254,4 +248,8 @@ aside.ps-sidebar-root {
   .MuiDataGrid-columnHeaderTitle {
   width: 100% !important;
   text-align: center !important;
+}
+
+label[for="bulkImport"] .MuiButtonBase-root{
+  z-index: 5 !important;
 }

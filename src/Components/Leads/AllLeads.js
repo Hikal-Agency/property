@@ -1038,7 +1038,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     }
 
     console.log("fetch lead url is");
-    console.log(FetchLeads_url);
+    console.log(FetchLeads_url, lead_type);
 
     axios
       .get(FetchLeads_url, {

@@ -12,13 +12,6 @@ const Transactions = () => {
   } = useStateContext();
 
   const columns = [
-    { 
-      field: 'id', 
-      headerName: 'Transaction ID', 
-      headerAlign: 'center',
-      minWidth: 50,
-      flex: 1 
-    },
     {
       field: 'creationDate',
       headerName: 'Transaction Date',
