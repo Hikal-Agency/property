@@ -11,6 +11,7 @@ import { HiTicket, HiDocumentReport, HiUsers } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill } from "react-icons/bs";
 import { FaFacebookSquare, FaChartLine, FaUser } from "react-icons/fa";
+import { RiRadioButtonLine } from "react-icons/ri";
 
 import {
   MdLeaderboard,
@@ -1500,16 +1501,22 @@ const Sidebarmui = () => {
               name: "Cold: Verified",
               count: ColdLeadsCount?.verified, //TODO
               link: "/coldleads/coldLeadsVerified",
+              icon: <RiRadioButtonLine style={{ color: "green" }} />,
+              countColor: "#008000",
             },
             {
               name: "Cold: Invalid",
               count: ColdLeadsCount?.unverified, //TODO
               link: "/coldleads/coldLeadsInvalid",
+              icon: <RiRadioButtonLine style={{ color: "red" }} />,
+              countColor: "#FF0000",
             },
             {
               name: "Cold: Not Checked",
               count: ColdLeadsCount?.unchecked, //TODO
               link: "/coldleads/coldLeadsNotChecked",
+              icon: <RiRadioButtonLine style={{ color: "orange" }} />,
+              countColor: "#FFA500",
             },
             {
               name: "No Answer",
@@ -1960,11 +1967,18 @@ const Sidebarmui = () => {
                                               color: "white",
                                             },
                                             "& .leads_counter": {
-                                              color:
-                                                currentMode === "dark"
-                                                  ? "white"
-                                                  : "black",
+                                              color: menu?.countColor
+                                                ? menu?.countColor
+                                                : currentMode === "dark"
+                                                ? "white"
+                                                : "black",
                                             },
+                                            // "& .leads_counter": {
+                                            //   color:
+                                            //     currentMode === "dark"
+                                            //       ? "white"
+                                            //       : "black",
+                                            // },
                                           }}
                                           className="relative my-1"
                                         >
@@ -1974,9 +1988,15 @@ const Sidebarmui = () => {
                                               setSelected(menu.name)
                                             }
                                           >
+                                            {menu?.icon}
                                             {menu?.name || ""}
                                           </MenuItem>
-                                          <span className="leads_counter block absolute right-5 top-5">
+                                          <span
+                                            className="leads_counter block absolute right-5 top-5"
+                                            // sx={{
+                                            //   color: menu?.countColor,
+                                            // }}
+                                          >
                                             {menu?.count || ""}
                                           </span>
                                         </Box>
@@ -2136,7 +2156,7 @@ const Sidebarmui = () => {
                                             "& .leads_counter": {
                                               color:
                                                 currentMode === "dark"
-                                                  ? "white"
+                                                  ? menu?.countColor
                                                   : "black",
                                             },
                                           }}
