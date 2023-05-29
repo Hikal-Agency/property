@@ -173,10 +173,10 @@ aside.ps-sidebar-root {
   min-width: 22px !important;
   width: 22px !important;
 }
-.MuiDataGrid-main .MuiButtonBase-root {
+.MuiDataGrid-columnHeader .MuiButtonBase-root {
   padding: 0 !important;
 }
-
+ 
 .MuiDataGrid-columnHeader[data-field="leadSource"] {
   width: 45px !important;
   min-width: 45px !important;
