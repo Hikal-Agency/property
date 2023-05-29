@@ -157,7 +157,6 @@ aside.ps-sidebar-root {
 
 .MuiDataGrid-row {
   padding-left: 2px !important;
-  padding-top: 10px !important;
   padding-bottom: 10px !important;
   width: 100% !important;
 }
@@ -173,10 +172,10 @@ aside.ps-sidebar-root {
   min-width: 22px !important;
   width: 22px !important;
 }
-.MuiDataGrid-main .MuiButtonBase-root {
+.MuiDataGrid-columnHeader .MuiButtonBase-root {
   padding: 0 !important;
 }
-
+ 
 .MuiDataGrid-columnHeader[data-field="leadSource"] {
   width: 45px !important;
   min-width: 45px !important;
@@ -234,12 +233,6 @@ aside.ps-sidebar-root {
   padding-right: 8px !important;
   width: 70% !important;
 }
-/* .MuiBox-root .MuiSelect-select {
-  padding: 3px 2px !important;
-  padding-right: 8px !important;
-  width: 70% !important;
-} */
-
 
 .MuiDataGrid-columnHeader .MuiDataGrid-columnSeparator {
   display: none !important;
@@ -254,4 +247,8 @@ aside.ps-sidebar-root {
   .MuiDataGrid-columnHeaderTitle {
   width: 100% !important;
   text-align: center !important;
+}
+
+label[for="bulkImport"] .MuiButtonBase-root{
+  z-index: 5 !important;
 }

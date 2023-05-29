@@ -1,11 +1,8 @@
 import { Button } from "@material-tailwind/react";
 import {
-  Backdrop,
   Box,
   CircularProgress,
-  Dialog,
-  MenuItem,
-  Select,
+  Dialog
 } from "@mui/material";
 import {
   DataGrid,
@@ -18,32 +15,25 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { BiEdit } from "react-icons/bi";
-import { AiTwotoneEdit, AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineEdit } from "react-icons/ai";
 import {
-  MdDeleteOutline,
-  MdCampaign,
-  MdOutlineNoEncryptionGmailerrorred,
+  MdCampaign
 } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { IoIosAlert } from "react-icons/io";
-import { BsSnapchat } from "react-icons/bs";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
 
 import SingleLead from "./SingleLead";
 import UpdateLead from "./UpdateLead";
 import Image from "next/image";
 import { toast, ToastContainer } from "react-toastify";
-import { FaUser } from "react-icons/fa";
 import RenderPriority from "./RenderPriority";
 import RenderFeedback from "./RenderFeedback";
 import RenderManagers from "./RenderManagers";
-import UpdateBookedDeal from "./UpdateBookedDeal";
 
 const Newleads = ({
   BACKEND_URL,
@@ -103,29 +93,8 @@ const Newleads = ({
     setUpdateLeadModelOpen(false);
   };
 
-  // ROLE 3
-  const ManagerColumns = [];
-
   // ROLE 7
   const AgentColumns = [
-    {
-      field: "id",
-      headerName: "#",
-      minWidth: 50,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
-    },
     {
       field: "creationDate",
       headerName: "Date",
@@ -263,25 +232,6 @@ const Newleads = ({
   ];
 
   const columns = [
-    {
-      field: "id",
-      headerName: "ID",
-      // width: 150,
-      minWidth: 50,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
-    },
     {
       field: "creationDate",
       headerName: "Date",

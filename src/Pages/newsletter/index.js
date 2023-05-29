@@ -52,25 +52,16 @@ const Newsletter = () => {
 
   const columns = [
     {
-      field: "id",
-      headerName: "#",
-      minWidth: "10",
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
       field: "creationDate",
       headerName: "Date",
       minWidth: 50,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "email",
       headerName: "Email",
       minWidth: 150,
       flex: 1,
-      headerAlign: "center",
     },
 
     {
@@ -78,7 +69,6 @@ const Newsletter = () => {
       headerName: "Note",
       minWidth: 100,
       flex: 1,
-      headerAlign: "center",
     },
   ];
 

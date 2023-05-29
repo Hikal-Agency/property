@@ -26,7 +26,7 @@ const Chat = () => {
 
   const messagesContainerRef = useRef();
 
-  const socketURL = "http://localhost:5000";
+  const socketURL = process.env.REACT_APP_SOCKET_URL;
 
   const fetchChatMessages = async (contact) => {
     const messages = await axios.get(

@@ -187,60 +187,46 @@ const AllStatistics = ({ pageState, setpageState }) => {
 
   const columns = [
     {
-      field: "id",
-      headerName: "#",
-      minWidth: "50",
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
       field: "campaignName",
       headerName: "Ad Name",
       minWidth: 170,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "status",
       headerName: "Status",
       minWidth: 150,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "adset",
       headerName: "Adset",
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "dailyBudget",
       headerName: "Daily Budget",
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "spend",
       headerName: "Spend",
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "cpc",
       headerName: "Cost Per Click",
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
     {
       field: "cpm",
       headerName: "CPM",
       minWidth: 110,
       flex: 1,
-      headerAlign: "center",
     },
     // {
     //   field: "impressions",
