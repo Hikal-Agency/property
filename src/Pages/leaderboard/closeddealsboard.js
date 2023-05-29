@@ -221,9 +221,24 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                             className={`absolute left-0 top-0 h-5 ${barColor}`}
                             style={{ width: barWidth }}
                           ></div>
-                          <div className="p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 relative z-10">
+                          <div
+                            className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-dark-600"
+                            }`}
+                          >
                             Total Closed Deals: {item?.total_closed_deals} /
-                            Direct deals: {item?.total_sales || 0}
+                            Direct deals:{" "}
+                            <span
+                              className={
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-dark-600"
+                              }
+                            >
+                              {item?.total_sales || 0}
+                            </span>
                           </div>
                         </div>
                         <img
