@@ -18,6 +18,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import UserTable from "../../Components/Users/UserTable";
+import AddUserModel from "../../Components/addUser/AddUserModel";
 
 const Users = () => {
   const {
@@ -32,12 +33,24 @@ const Users = () => {
   const [user, setUser] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const [value, setValue] = useState(0);
+  const [model, setModel] = useState(false);
 
   console.log("User: ", user);
 
   const handleChange = (event, newValue) => {
     console.log("Tab: ", newValue);
     setValue(newValue);
+  };
+
+  const HandleOpenModel = () => {
+    console.log("Model Open:");
+    setModel(true);
+  };
+
+  const HandleModelClose = () => {
+    console.log("Model Close:");
+
+    setModel(false);
   };
 
   const handleTrainerSwitchChange = async (cellValues) => {
@@ -373,18 +386,12 @@ const Users = () => {
           <div className={`w-full `}>
             <div className="pl-3">
               <div className="my-5 mb-10">
-                {/* <div className="my-3">
-                  <h2
-                    className={` ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    } font-semibold text-xl`}
-                  >
-                    Users :{" "}
-                    <span className="text-main-red-color font-bold">
-                      {pageState?.total}
-                    </span>
-                  </h2>
-                </div> */}
+                {model && (
+                  <AddUserModel
+                    handleOpenModel={HandleOpenModel}
+                    addUserModelClose={HandleModelClose}
+                  />
+                )}
                 <div className="mt-3 flex justify-between items-center">
                   <h1
                     className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
@@ -398,7 +405,7 @@ const Users = () => {
                       <span>{pageState?.total}</span>
                     </span>
                   </h1>
-                  <Link
+                  {/* <Link
                     to="/adminAuth/signup"
                     className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md "
                   >
@@ -406,7 +413,16 @@ const Users = () => {
                       <AiOutlinePlus style={{ marginRight: "0.5em" }} />
                       Add User
                     </span>
-                  </Link>
+                  </Link> */}
+                  <Button
+                    className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md "
+                    onClick={HandleOpenModel}
+                  >
+                    <span className="flex justify-between items-center">
+                      <AiOutlinePlus style={{ marginRight: "0.5em" }} />
+                      Add User
+                    </span>
+                  </Button>
                 </div>
                 <Box
                   sx={{

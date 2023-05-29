@@ -114,7 +114,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                 sx={{
                   "& .Mui-selected": {
                     color: currentMode === "dark" ? "white" : "gray",
-                    backgroundColor: currentMode === "dark" ? "black" : "white",
+                    backgroundColor: "red !important",
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",

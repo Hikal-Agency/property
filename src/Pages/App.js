@@ -73,11 +73,7 @@ const routes = [
     pageName: "Sign Up",
     element: <Signup />,
   },
-  {
-    path: "/adminAuth/signup",
-    pageName: "Admin Sign Up",
-    element: <AdminSignup />,
-  },
+
   // {
   //   path: "/auth/forgot-password",
   //   pageName: "Sign Up",
