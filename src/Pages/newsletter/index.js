@@ -8,14 +8,10 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 import React, { useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
+import { AiOutlineTable, AiOutlineAppstore } from "react-icons/ai";
 import { Tab, Tabs } from "@mui/material";
-import Footer from "../../Components/Footer/Footer";
-import ADDQA from "../../Components/addQA/ADDQA";
 import { useEffect } from "react";
-import AllNewsletters from "../../Components/newsletter/AllNewsletters";
 import Loader from "../../Components/Loader";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import GridNewsletter from "../../Components/newsletter/GridNewsletter";
@@ -276,7 +272,7 @@ const Newsletter = () => {
                   sx={{
                     ...darkModeColors,
                     "& .MuiTabs-indicator": {
-                      height: "100%",
+                      // height: "100%",
                       borderRadius: "5px",
                       backgroundColor: "#da1f26",
                     },
@@ -293,11 +289,10 @@ const Newsletter = () => {
                     value={value}
                     onChange={handleChange}
                     variant="standard"
-                    // centered
                     className="w-full px-1 m-1"
                   >
-                    <Tab label="GRID VIEW" />
-                    <Tab label="TABLE VIEW" />
+                    <Tab icon={<AiOutlineTable />} />
+                    <Tab icon={<AiOutlineAppstore />} />
                   </Tabs>
                 </Box>
 

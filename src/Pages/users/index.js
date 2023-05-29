@@ -6,7 +6,12 @@ import { Box, Tab, Tabs } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
 
-import { AiOutlineEdit, AiOutlinePlus } from "react-icons/ai";
+import {
+  AiOutlineEdit,
+  AiOutlinePlus,
+  AiOutlineTable,
+  AiOutlineAppstore,
+} from "react-icons/ai";
 import SingleUser from "../../Components/Users/SingleUser";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -424,7 +429,7 @@ const Users = () => {
                   sx={{
                     ...darkModeColors,
                     "& .MuiTabs-indicator": {
-                      height: "100%",
+                      // height: "100%",
                       borderRadius: "5px",
                       backgroundColor: "#da1f26",
                     },
@@ -433,7 +438,7 @@ const Users = () => {
                       zIndex: "1",
                     },
                   }}
-                  className={`w-full rounded-md overflow-hidden ${
+                  className={` rounded-md overflow-hidden ${
                     currentMode === "dark" ? "bg-black" : "bg-white"
                   } `}
                 >
@@ -441,11 +446,10 @@ const Users = () => {
                     value={value}
                     onChange={handleChange}
                     variant="standard"
-                    // centered
                     className="w-full px-1 m-1"
                   >
-                    <Tab label="Table View" />
-                    <Tab label="Grid View" />
+                    <Tab icon={<AiOutlineTable />} />
+                    <Tab icon={<AiOutlineAppstore />} />
                   </Tabs>
                 </Box>
                 <div className="mt-3 pb-3">
