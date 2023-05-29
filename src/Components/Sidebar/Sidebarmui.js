@@ -1605,11 +1605,11 @@ const Sidebarmui = () => {
             },
           ],
         },
-        {
-          name: "Add Users",
-          icon: <FaUser />,
-          link: "/adminAuth/signup",
-        },
+        // {
+        //   name: "Add Users",
+        //   icon: <FaUser />,
+        //   link: "/adminAuth/signup",
+        // },
         {
           name: "Reports",
           icon: <HiDocumentReport />,

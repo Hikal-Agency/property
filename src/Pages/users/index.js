@@ -1,12 +1,10 @@
-import { Button, TabPanel } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import Switch from "@mui/material/Switch";
 import Avatar from "@mui/material/Avatar";
 
 import { Box, Tab, Tabs } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
-import Footer from "../../Components/Footer/Footer";
 
 import { AiOutlineEdit } from "react-icons/ai";
 import SingleUser from "../../Components/Users/SingleUser";
@@ -387,7 +385,7 @@ const Users = () => {
           <div className={`w-full `}>
             <div className="pl-3">
               <div className="my-5 mb-10">
-                <div className="my-3">
+                {/* <div className="my-3">
                   <h2
                     className={` ${
                       currentMode === "dark" ? "text-white" : "text-black"
@@ -398,6 +396,26 @@ const Users = () => {
                       {pageState?.total}
                     </span>
                   </h2>
+                </div> */}
+                <div className="mt-3 flex justify-between items-center">
+                  <h1
+                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                      currentMode === "dark"
+                        ? "text-white border-white"
+                        : "text-red-600 font-bold border-red-600"
+                    }`}
+                  >
+                    Users{" "}
+                    <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
+                      <span>{pageState?.total}</span>
+                    </span>
+                  </h1>
+                  <Link
+                    to="/adminAuth/signup"
+                    className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-sm"
+                  >
+                    Add User
+                  </Link>
                 </div>
                 <Box
                   sx={{
