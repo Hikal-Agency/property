@@ -291,8 +291,26 @@ const Newsletter = () => {
                     variant="standard"
                     className="w-full px-1 m-1"
                   >
-                    <Tab icon={<AiOutlineTable />} />
-                    <Tab icon={<AiOutlineAppstore />} />
+                    <Tab
+                      icon={
+                        <AiOutlineTable
+                          style={{
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          }}
+                        />
+                      }
+                    />
+                    <Tab
+                      icon={
+                        <AiOutlineAppstore
+                          style={{
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          }}
+                        />
+                      }
+                    />
                   </Tabs>
                 </Box>
 

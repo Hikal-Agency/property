@@ -13,6 +13,12 @@ import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
 import { TabPanel } from "@material-tailwind/react";
 import NotesGrid from "./NotesGrid";
+import {
+  AiOutlineEdit,
+  AiOutlinePlus,
+  AiOutlineTable,
+  AiOutlineAppstore,
+} from "react-icons/ai";
 
 const LeadNotes = ({ pageState, setpageState }) => {
   const { currentMode, BACKEND_URL, darkModeColors } = useStateContext();
@@ -248,28 +254,30 @@ const LeadNotes = ({ pageState, setpageState }) => {
         sx={{
           ...darkModeColors,
           "& .MuiTabs-indicator": {
-            height: "100%",
             borderRadius: "5px",
             backgroundColor: "#da1f26",
           },
           "& .Mui-selected": {
-            color: "white !important",
+            color: "white",
             zIndex: "1",
           },
+          "& .MuiSvgIcon-root": {
+            // Customize icon styles here
+            color: "red",
+          },
         }}
-        className={`w-full rounded-md overflow-hidden ${
+        className={`rounded-md overflow-hidden ${
           currentMode === "dark" ? "bg-black" : "bg-white"
-        } `}
+        }`}
       >
         <Tabs
           value={value}
           onChange={handleChange}
           variant="standard"
-          // centered
           className="w-full px-1 m-1"
         >
-          <Tab label="Grid View" />
-          <Tab label="Table View" />
+          <Tab icon={<AiOutlineTable />} />
+          <Tab icon={<AiOutlineAppstore />} />
         </Tabs>
       </Box>
       <div className="mt-3 pb-3">

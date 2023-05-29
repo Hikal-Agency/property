@@ -111,7 +111,7 @@ const RenderManagers = ({ cellValues }) => {
       });
   };
 
-  console.log("Manager: ", manager2);
+  console.log("manger2: ", manager2);
 
   return (
     <Box
@@ -154,7 +154,10 @@ const RenderManagers = ({ cellValues }) => {
       <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
         <Select
           id="manager"
-          value={manager2 ?? "select_manager"}
+          // value={manager2 ?? "select_manager"}
+          value={
+            manager2 === 102 ? "select_manager" : manager2 || "select_manager"
+          }
           label="Manager"
           onChange={ChangeManager}
           size="medium"
@@ -163,8 +166,10 @@ const RenderManagers = ({ cellValues }) => {
           required
           sx={{ border: "1px solid #000000" }}
         >
-          {!manager2 && (
-            <MenuItem value="select_manager">Select Manager</MenuItem>
+          {manager2 && (
+            <MenuItem value="select_manager" selected>
+              Select Manager
+            </MenuItem>
           )}
           {Managers?.length > 0 &&
             Managers?.map((manager, index) => (

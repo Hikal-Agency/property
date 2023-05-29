@@ -87,7 +87,7 @@ const GridNewsletter = ({ pageState, setpageState }) => {
                 sx={{
                   "& .Mui-selected": {
                     color: "white",
-                    backgroundColor: currentMode === "dark" ? "red" : "red",
+                    backgroundColor: "red !important",
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",
