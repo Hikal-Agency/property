@@ -757,7 +757,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "otp",
       headerName: "OTP",
-
       minWidth: 72,
       flex: 1,
       renderCell: (cellValues) => {
@@ -776,6 +775,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 </badge>
               </div>
             )}
+
+            {cellValues.formattedValue !== "Not Verified" &&
+              cellValues.formattedValue !== "Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <badge className=" p-1 rounded-md">
+                    {cellValues.formattedValue}
+                  </badge>
+                </div>
+              )}
           </div>
         );
       },
@@ -810,7 +818,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               }`}
               onClick={() => HandleEditFunc(cellValues)}
             >
-              <AiOutlineEdit size={20} style={{ color: "inherit"}} />
+              <AiOutlineEdit size={20} style={{ color: "inherit" }} />
             </p>
 
             {cellValues.row.lid !== null && (
