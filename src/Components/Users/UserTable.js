@@ -5,6 +5,8 @@ import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import axios from "axios";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 // const UserTable = ({ user }) => {
 //   const [loading, setloading] = useState(false);
@@ -150,6 +152,54 @@ const UserTable = ({ user }) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
+            {/* <div className="px-5">
+              <div className="mt-5 md:mt-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
+                  {userData?.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-gray-900 text-white"
+                            : "bg-gray-200 text-black"
+                        } p-3 rounded-md `}
+                      >
+                        {item?.displayImg ? (
+                          <img
+                            src={item?.displayImg}
+                            className="rounded-md cursor-pointer h-[50px] w-[50px] object-cover"
+                            alt=""
+                          />
+                        ) : (
+                          <Avatar
+                            alt="User"
+                            variant="circular"
+                            style={{ width: "30px", height: "30px" }}
+                          />
+                        )}
+                        <div className="mt-2 space-y-1 overflow-hidden">
+                          <h1 className="font-bold capitalize">
+                            {item?.userName}
+                          </h1>
+                          <p className="text-sm font-semibold text-red-600 capitalize">
+                            {item?.position}
+                          </p>
+                          <hr />
+                          <p className="text-sm">{item?.userContact}</p>
+                          <p className="text-sm">{item?.userEmail}</p>
+                          {item?.status === 0 ? (
+                            <p className="text-sm text-red-600">Deactive</p>
+                          ) : (
+                            <p className="text-sm text-green-600">Active</p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div> */}
             <div className="px-5">
               <div className="mt-5 md:mt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
@@ -191,6 +241,21 @@ const UserTable = ({ user }) => {
                           ) : (
                             <p className="text-sm text-green-600">Active</p>
                           )}
+                        </div>
+
+                        <div className="flex  justify-between space-x-2 mt-2">
+                          <Link
+                            to={`/updateuser/${item?.id}`}
+                            className="text-blue-500"
+                          >
+                            <FaEdit />
+                          </Link>
+                          <Link href="#" className="text-green-500">
+                            <FaEye />
+                          </Link>
+                          <Link href="#" className="text-red-500">
+                            <FaTrash />
+                          </Link>
                         </div>
                       </div>
                     );
