@@ -476,17 +476,17 @@ const NotesGrid = ({ pageState, setpageState }) => {
                       sx={{
                         color: isEllipsis
                           ? currentMode === "dark"
-                            ? "white"
-                            : "gray"
+                            ? "red"
+                            : "red"
                           : undefined,
                         backgroundColor: isEllipsis
                           ? undefined
                           : currentMode === "dark"
-                          ? "black"
-                          : "white",
+                          ? "red"
+                          : "red",
                         "&:hover": {
                           backgroundColor:
-                            currentMode === "dark" ? "black" : "white",
+                            currentMode === "dark" ? "red" : "red",
                         },
                       }}
                     />

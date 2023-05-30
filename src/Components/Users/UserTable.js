@@ -223,7 +223,7 @@ const UserTable = ({ user }) => {
                           <Avatar
                             alt="User"
                             variant="circular"
-                            style={{ width: "30px", height: "30px" }}
+                            style={{ width: "50px", height: "50px" }}
                           />
                         )}
                         <div className="mt-2 space-y-1 overflow-hidden">
