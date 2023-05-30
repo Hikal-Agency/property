@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { useStateContext } from "../../../context/ContextProvider";
 import OfficeSettings from "../../../Components/attendance/OfficeSettings";
+import EmployeesList from "../../../Components/attendance/EmployeesList";
 
 const Employees = () => {
   const {
@@ -29,7 +30,7 @@ const Employees = () => {
           }`}
         >
           <div className="px-5 ">
-            <OfficeSettings />
+            <EmployeesList />
           </div>
         </div>
         {/* <Footer /> */}

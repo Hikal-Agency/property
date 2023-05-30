@@ -13,6 +13,7 @@ import { BsEnvelopeFill } from "react-icons/bs";
 import { FaFacebookSquare, FaChartLine, FaUser } from "react-icons/fa";
 import { RiRadioButtonLine } from "react-icons/ri";
 import { BiCalendar } from "react-icons/bi";
+import { FiUsers } from "react-icons/fi";
 
 import {
   MdLeaderboard,
@@ -1575,11 +1576,11 @@ const Sidebarmui = () => {
           icon: <BiCalendar />,
           link: "/attendance/officeSettings",
         },
-        // {
-        //   name: "Tickets",
-        //   icon: <HiTicket />,
-        //   link: "/support",
-        // },
+        {
+          name: "Employees List",
+          icon: <FiUsers />,
+          link: "/attendance/employeesList",
+        },
       ],
     },
   ];
