@@ -30,6 +30,15 @@ const Employees = () => {
           }`}
         >
           <div className="px-5 ">
+            <h1
+              className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                currentMode === "dark"
+                  ? "text-white border-white"
+                  : "text-red-600 font-bold border-red-600"
+              }`}
+            >
+              Employees
+            </h1>
             <EmployeesList />
           </div>
         </div>
