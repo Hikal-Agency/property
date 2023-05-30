@@ -2,6 +2,7 @@ import { Button } from "@material-tailwind/react";
 import { Box, TextField, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
+import { toast, ToastContainer } from "react-toastify";
 
 export const GeneralInfo = ({
   GeneralInfoData,
@@ -10,6 +11,7 @@ export const GeneralInfo = ({
   btnloading,
 }) => {
   const [emailError, setEmailError] = useState(false);
+  const [contactError, setContactError] = useState(false);
   const [GeneralInfo, setGeneralInfo] = useState(GeneralInfoData);
   const { currentMode, darkModeColors } = useStateContext();
   // eslint-disable-next-line
@@ -23,15 +25,19 @@ export const GeneralInfo = ({
   };
 
   const handlePhone = (e) => {
+    setContactError(false);
     const value = e.target.value;
     const onlyDigitsAndPlus = /^[0-9+]*$/;
     if (onlyDigitsAndPlus.test(value)) {
-      setGeneralInfo({
-        ...GeneralInfo,
-        userAltContact: e.target.value,
-      });
+      setContactError(false);
+    } else {
+      setContactError("Kindly enter a valid contact number with country code.");
     }
-    console.log(GeneralInfo?.userAltContact);
+
+    setGeneralInfo({
+      ...GeneralInfo,
+      userAltContact: e.target.value,
+    });
   };
 
   const handleContact = (e) => {
@@ -66,11 +72,25 @@ export const GeneralInfo = ({
   };
 
   const UpdateProfileFunc = () => {
+    if (contactError !== false) {
+      toast.error("Kindly enter a valid contact number.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      return;
+    }
     UpdateProfile(GeneralInfo);
   };
 
   return (
     <>
+      <ToastContainer />
       <div className="relative w-full">
         <form action="">
           <Box sx={darkModeColors} className="grid grid-cols-6 gap-x-3 gap-y-5">
@@ -108,6 +128,8 @@ export const GeneralInfo = ({
                 //     userAltContact: e.target.value,
                 //   })
                 // }
+                error={contactError && contactError}
+                helperText={contactError && contactError}
                 onInput={handlePhone}
               />
             </div>
