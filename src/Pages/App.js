@@ -54,10 +54,12 @@ import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
 import { useLocation } from "react-router-dom";
 import Loader from "../Components/Loader";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-import axios from 'axios';
+import axios from "axios";
+import Settings from "./attendanceModule/officeSettings";
+import Employees from "./attendanceModule/employeesList";
 
 const libraries = ["places"];
 
@@ -289,6 +291,16 @@ const routes = [
     element: <Statistics />,
   },
   {
+    path: "/attendance/officeSettings",
+    pageName: "Office Settings",
+    element: <Settings />,
+  },
+  {
+    path: "/attendance/employeesList",
+    pageName: "Employees",
+    element: <Employees />,
+  },
+  {
     path: "*",
     element: <Error />,
   },
@@ -442,7 +454,20 @@ const routes = [
 // >>>>>>> Stashed changes
 
 function App() {
-  const { setAllRoutes, setSocket, currentMode, setUser, setopenBackDrop, setIsUserSubscribed,  appLoading, User, setAppLoading, setSalesPerson, setManagers, BACKEND_URL  } = useStateContext();
+  const {
+    setAllRoutes,
+    setSocket,
+    currentMode,
+    setUser,
+    setopenBackDrop,
+    setIsUserSubscribed,
+    appLoading,
+    User,
+    setAppLoading,
+    setSalesPerson,
+    setManagers,
+    BACKEND_URL,
+  } = useStateContext();
   const location = useLocation();
 
   const navigate = useNavigate();
@@ -452,7 +477,7 @@ function App() {
     libraries,
   });
 
-   async function setSalesPersons(urls) {
+  async function setSalesPersons(urls) {
     const token = localStorage.getItem("auth-token");
     const requests = urls.map((url) =>
       axios.get(url, {
@@ -525,7 +550,7 @@ function App() {
     // eslint-disable-next-line
   }, []);
 
-   const checkUser = (user) => {
+  const checkUser = (user) => {
     const expiry = new Date(user?.expiry_date).getTime();
     const now = new Date().getTime();
 
@@ -561,17 +586,15 @@ function App() {
     // eslint-disable-next-line
   }, []);
 
-
   useEffect(() => {
     setAllRoutes(routes);
 
     const socketURL = process.env.REACT_APP_SOCKET_URL;
     const socket = io(socketURL);
     setSocket(socket);
-
   }, []);
 
-    const FetchProfile = async (token) => {
+  const FetchProfile = async (token) => {
     const storedUser = localStorage.getItem("user");
 
     if (storedUser) {
@@ -665,7 +688,7 @@ function App() {
   };
 
   useEffect(() => {
-    if(User?.id) {
+    if (User?.id) {
       getAllLeadsMembers(User);
     }
   }, [User]);
@@ -679,37 +702,40 @@ function App() {
     }
   }
 
-  if(appLoading && hasSidebarOrNavbar()) {
-    return <Loader/>;
+  if (appLoading && hasSidebarOrNavbar()) {
+    return <Loader />;
   } else {
-
-  return (
-    <>
-      <div className="flex" style={{ width: "99vw" }}>
-        {hasSidebarOrNavbar() && <Sidebarmui />}
-        <div
-          className={`w-[99%] overflow-x-hidden ${
-            hasSidebarOrNavbar() ? "pt-20" : "pt-0"
-          } ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
-        >
-          {hasSidebarOrNavbar() && (
-            <div className={`px-5`}>
-              <Navbar />
-            </div>
-          )}
-          <Routes>
-            {routes.map((route, index) => {
-              return (
-                <Route key={index} path={route.path} element={route.element} />
-              );
-            })}
-          </Routes>
+    return (
+      <>
+        <div className="flex" style={{ width: "99vw" }}>
+          {hasSidebarOrNavbar() && <Sidebarmui />}
+          <div
+            className={`w-[99%] overflow-x-hidden ${
+              hasSidebarOrNavbar() ? "pt-20" : "pt-0"
+            } ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
+          >
+            {hasSidebarOrNavbar() && (
+              <div className={`px-5`}>
+                <Navbar />
+              </div>
+            )}
+            <Routes>
+              {routes.map((route, index) => {
+                return (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={route.element}
+                  />
+                );
+              })}
+            </Routes>
+          </div>
         </div>
-      </div>
-      <Footer />
-    </>
-  );
-          }
+        <Footer />
+      </>
+    );
+  }
 }
 
 export default App;

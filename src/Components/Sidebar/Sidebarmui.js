@@ -12,6 +12,7 @@ import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill } from "react-icons/bs";
 import { FaFacebookSquare, FaChartLine, FaUser } from "react-icons/fa";
 import { RiRadioButtonLine } from "react-icons/ri";
+import { BiCalendar } from "react-icons/bi";
 
 import {
   MdLeaderboard,
@@ -56,7 +57,7 @@ const Sidebarmui = () => {
     setIsUserSubscribed,
     setSalesPerson,
     setManagers,
-    setAppLoading
+    setAppLoading,
   } = useStateContext();
   const [LeadsCount, setLeadsCount] = useState(false);
   const [HotLeadsCount, setHotLeadsCount] = useState();
@@ -109,7 +110,6 @@ const Sidebarmui = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
 
   //  DATA
   // const links = [
@@ -1567,9 +1567,23 @@ const Sidebarmui = () => {
         },
       ],
     },
+    {
+      title: "ATTENDANCE",
+      links: [
+        {
+          name: "Office Settings ",
+          icon: <BiCalendar />,
+          link: "/attendance/officeSettings",
+        },
+        // {
+        //   name: "Tickets",
+        //   icon: <HiTicket />,
+        //   link: "/support",
+        // },
+      ],
+    },
   ];
 
- 
   return (
     <div
       style={{ display: "flex", height: "100%" }}
