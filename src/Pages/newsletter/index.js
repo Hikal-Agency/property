@@ -31,7 +31,7 @@ const Newsletter = () => {
   const [loading, setloading] = useState(true);
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setValue(value === 0 ? 1 : 0);
   };
 
   const [searchText, setSearchText] = useState("");
@@ -275,7 +275,7 @@ const Newsletter = () => {
                     currentMode === "dark" ? "bg-black" : "bg-white"
                   } `}
                 >
-                  <Tabs
+                  {/* <Tabs
                     value={value}
                     onChange={handleChange}
                     variant="standard"
@@ -299,6 +299,27 @@ const Newsletter = () => {
                               currentMode === "dark" ? "#ffffff" : "#000000",
                           }}
                         />
+                      }
+                    />
+                  </Tabs> */}
+                  <Tabs value={value} onClick={handleChange} variant="standard">
+                    <Tab
+                      icon={
+                        value === 0 ? (
+                          <AiOutlineAppstore
+                            style={{
+                              color:
+                                currentMode === "dark" ? "#ffffff" : "#000000",
+                            }}
+                          />
+                        ) : (
+                          <AiOutlineTable
+                            style={{
+                              color:
+                                currentMode === "dark" ? "#ffffff" : "#000000",
+                            }}
+                          />
+                        )
                       }
                     />
                   </Tabs>

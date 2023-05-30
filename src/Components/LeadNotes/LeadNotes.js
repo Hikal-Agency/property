@@ -35,8 +35,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
   // const handleLeadModelClose = () => setLeadModelOpen(false);
 
   const handleChange = (event, newValue) => {
-    console.log("Tab: ", newValue);
-    setValue(newValue);
+    setValue(value === 0 ? 1 : 0);
   };
 
   // TOOLBAR SEARCH FUNC
@@ -270,14 +269,24 @@ const LeadNotes = ({ pageState, setpageState }) => {
           currentMode === "dark" ? "bg-black" : "bg-white"
         }`}
       >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          variant="standard"
-          className="w-full px-1 m-1"
-        >
-          <Tab icon={<AiOutlineTable />} />
-          <Tab icon={<AiOutlineAppstore />} />
+        <Tabs value={value} onClick={handleChange} variant="standard">
+          <Tab
+            icon={
+              value === 0 ? (
+                <AiOutlineAppstore
+                  style={{
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  }}
+                />
+              ) : (
+                <AiOutlineTable
+                  style={{
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  }}
+                />
+              )
+            }
+          />
         </Tabs>
       </Box>
       <div className="mt-3 pb-3">

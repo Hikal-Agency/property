@@ -36,10 +36,8 @@ const Users = () => {
   const [model, setModel] = useState(false);
 
   console.log("User: ", user);
-
   const handleChange = (event, newValue) => {
-    console.log("Tab: ", newValue);
-    setValue(newValue);
+    setValue(value === 0 ? 1 : 0);
   };
 
   const HandleOpenModel = () => {
@@ -178,7 +176,6 @@ const Users = () => {
   }, [pageState.page]);
 
   const columns = [
-
     {
       field: "displayImg",
       headerName: "Image",
@@ -441,30 +438,24 @@ const Users = () => {
                     currentMode === "dark" ? "bg-black" : "bg-white"
                   } `}
                 >
-                  <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    variant="standard"
-                    className="w-full px-1 m-1"
-                  >
+                  <Tabs value={value} onClick={handleChange} variant="standard">
                     <Tab
                       icon={
-                        <AiOutlineTable
-                          style={{
-                            color:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          }}
-                        />
-                      }
-                    />
-                    <Tab
-                      icon={
-                        <AiOutlineAppstore
-                          style={{
-                            color:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          }}
-                        />
+                        value === 0 ? (
+                          <AiOutlineAppstore
+                            style={{
+                              color:
+                                currentMode === "dark" ? "#ffffff" : "#000000",
+                            }}
+                          />
+                        ) : (
+                          <AiOutlineTable
+                            style={{
+                              color:
+                                currentMode === "dark" ? "#ffffff" : "#000000",
+                            }}
+                          />
+                        )
                       }
                     />
                   </Tabs>
