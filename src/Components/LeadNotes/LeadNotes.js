@@ -326,6 +326,9 @@ const LeadNotes = ({ pageState, setpageState }) => {
                 "& .MuiDataGrid-cell:hover": {
                   cursor: "pointer",
                 },
+              "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                color: currentMode === "dark" ? "white !important" : "black !important"
+              }
               }}
               getRowClassName={(params) =>
                 params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

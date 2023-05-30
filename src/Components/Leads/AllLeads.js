@@ -1469,8 +1469,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 overflowY: "scroll",
                 height: pageState.data.length > 0 ? "475px" : "auto",
               },
-              "& .edit-lead-btns button": {
-                color: currentMode === "dark" ? "white" : "black"
+              "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                color: currentMode === "dark" ? "white !important" : "black !important"
               }
             }}
             getRowClassName={(params) =>
