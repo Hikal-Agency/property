@@ -1235,9 +1235,8 @@ const Sidebarmui = () => {
       axios.get(`${BACKEND_URL}/managers`).then((result) => {
         console.log("manager response is");
         console.log(result);
-        const managers = result?.data?.managers;
+        const managers = result?.data?.managers.data;
         setManagers(managers || []);
-
         const urls = managers?.map((manager) => {
           return `${BACKEND_URL}/teamMembers/${manager?.id}`;
         });
