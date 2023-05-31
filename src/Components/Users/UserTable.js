@@ -8,6 +8,7 @@ import axios from "axios";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import SingleUser from "./SingleUser";
+import DeleteUser from "./DeleteUser";
 
 // const UserTable = ({ user }) => {
 //   const [loading, setloading] = useState(false);
@@ -112,7 +113,9 @@ const UserTable = ({ user }) => {
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
   const [openModel, setOpenModel] = useState(false);
+  const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [singleUser, setSingleUserData] = useState({});
+  const [userID, setUserId] = useState();
   const token = localStorage.getItem("auth-token");
 
   const handlePageChange = (event, value) => {
@@ -125,6 +128,15 @@ const UserTable = ({ user }) => {
     console.log("Selected User: ", selectedUser);
     setSingleUserData(selectedUser);
     setOpenModel(true);
+  };
+
+  const handleDelete = (id) => {
+    console.log("Delete id: ", id);
+    setUserId(id);
+    setOpenDeleteModel(true);
+  };
+  const handleDeleteModelClose = () => {
+    setOpenDeleteModel(false);
   };
 
   const handleModelClose = () => {
@@ -163,6 +175,13 @@ const UserTable = ({ user }) => {
           <SingleUser
             UserModelOpen={handleModel}
             handleUserModelClose={handleModelClose}
+            UserData={singleUser}
+          />
+        )}
+        {openDeleteModel && (
+          <DeleteUser
+            UserModelOpen={handleDelete}
+            handleUserModelClose={handleDeleteModelClose}
             UserData={singleUser}
           />
         )}
@@ -272,12 +291,7 @@ const UserTable = ({ user }) => {
                           >
                             <FaEdit />
                           </Link>
-                          {/* <Link
-                            to={`/users/${item?.id}`}
-                            className="text-green-500"
-                          >
-                            <FaEye />
-                          </Link> */}
+
                           <Button
                             className="text-green-500"
                             onClick={() => handleModel(item?.id)}
@@ -285,9 +299,12 @@ const UserTable = ({ user }) => {
                             <FaEye />
                           </Button>
 
-                          <Link href="#" className="text-red-500">
+                          <Button
+                            className="text-red-500"
+                            onClick={() => handleDelete(item?.id)}
+                          >
                             <FaTrash />
-                          </Link>
+                          </Button>
                         </div>
                       </div>
                     );
