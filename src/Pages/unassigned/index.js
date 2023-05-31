@@ -25,24 +25,6 @@ const AllUnassignedLeads = () => {
   const [loading, setloading] = useState(true);
   const [dataTableChanged, setDataTableChanged] = useState(false);
 
-  const FetchProfile = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setUser(result.data.user[0]);
-        setloading(false);
-      })
-      .catch((err) => {
-        navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again " },
-        });
-      });
-  };
   useEffect(() => {
     setopenBackDrop(false);
     setloading(false);

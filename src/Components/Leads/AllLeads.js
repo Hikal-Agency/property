@@ -982,7 +982,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&coldCall=0&leadStatus=Transferred`;
     } else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0`;
       } else if (lead_type === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=New`;
       } else if (lead_type === "no answer") {
@@ -998,9 +998,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       } else if (lead_type === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Unreachable`;
       } else if (lead_type === "cold") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=1`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1`;
       } else if (lead_type === "warm") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=4`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4`;
       }
     }
 
@@ -1026,7 +1026,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           rowsDataArray = result.data.coldLeads.data;
         }
 
-        let rowsdata = rowsDataArray.map((row, index) => ({
+        let filteredData = rowsDataArray;
+        if (lead_origin === "unassigned") {
+          console.log("Hi, I am unassigned. Please assign me to someone 😢");
+
+          filteredData = rowsDataArray.filter(
+            (item) => !item.assignedToManager || item.assignedToManager === 102
+          );
+
+          console.log("Unassigned rows data: ", filteredData);
+        }
+
+        let rowsdata = filteredData.map((row, index) => ({
           id:
             pageState.page > 1
               ? pageState.page * pageState.pageSize -

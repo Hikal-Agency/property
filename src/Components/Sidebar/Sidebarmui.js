@@ -1098,7 +1098,7 @@ const Sidebarmui = () => {
 
   const [managerData, setManagerData] = useState(Managerlinks);
 
-    const FetchProfile = async (token) => {
+  const FetchProfile = async (token) => {
     const storedUser = localStorage.getItem("user");
 
     if (storedUser) {
@@ -1192,7 +1192,6 @@ const Sidebarmui = () => {
     }
   };
 
-
   async function setSalesPersons(urls) {
     const token = localStorage.getItem("auth-token");
     const requests = urls.map((url) =>
@@ -1246,7 +1245,6 @@ const Sidebarmui = () => {
       });
     }
   };
-
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
@@ -1609,6 +1607,11 @@ const Sidebarmui = () => {
               name: "Cold leads",
               count: UnassignedLeadsCount?.cold,
               link: "/unassigned/cold",
+            },
+            {
+              name: "Warm leads",
+              count: UnassignedLeadsCount?.warm,
+              link: "/unassigned/warm",
             },
           ],
         },
