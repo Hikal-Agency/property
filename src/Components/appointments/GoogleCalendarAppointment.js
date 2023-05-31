@@ -16,7 +16,7 @@ const GoogleCalendarAppointment = () => {
   const [gapiInited, setGapiInited] = useState(false);
   const [gisInited, setGisInited] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState('');
+  const [data, setData] = useState("");
 
   const [session, setSession] = useState({
     expiresIn: localStorage.getItem("expires_in"),
@@ -105,7 +105,7 @@ const GoogleCalendarAppointment = () => {
       localStorage.removeItem("expires_in");
       setSession({
         accessToken: "",
-        expiresIn: ""
+        expiresIn: "",
       });
       setData("");
     }
@@ -185,50 +185,55 @@ const GoogleCalendarAppointment = () => {
     );
   }
 
+  const isLoggedIn = session.accessToken && session.expiresIn;
+
   if (loading) {
     return <Loader />;
   } else {
     return (
       <div>
-      {!(session.accessToken && session.expiresIn) &&
-        <Button
-          color="success"
-          sx={{ marginRight: "4px" }}
-          variant="contained"
-          id="authorize_button"
-          onClick={handleAuthClick}
-        >
-          Authorize
-        </Button>
-      }
-        {(session.accessToken && session.expiresIn) &&
-        <Button
-          color="error"
-          sx={{ marginRight: "4px" }}
-          variant="contained"
-          id="signout_button"
-          onClick={handleSignoutClick}
-        >
-          Sign Out
-        </Button>
-        }
+        {!isLoggedIn && (
+          <Button
+            color="success"
+            sx={{ marginRight: "4px" }}
+            variant="contained"
+            id="authorize_button"
+            onClick={handleAuthClick}
+          >
+            Authorize
+          </Button>
+        )}
+        {isLoggedIn && (
+          <>
+            <Button
+              color="error"
+              sx={{ marginRight: "4px" }}
+              variant="contained"
+              id="signout_button"
+              onClick={handleSignoutClick}
+            >
+              Sign Out
+            </Button>
 
-        {(session.accessToken && session.expiresIn) &&
-        <Button
-          color="primary"
-          variant="contained"
-          sx={{ marginRight: "4px" }}
-          id="add_manual_event"
-          onClick={addManualEvent}
-        >
-          Add Event
-        </Button>
-        }
-        <pre
-          className="mt-3"
-          id="content"
-          style={{ whiteSpace: "pre-wrap" }}
-        >{data}</pre>
+            <Button
+              color="primary"
+              variant="contained"
+              sx={{ marginRight: "4px" }}
+              id="add_manual_event"
+              onClick={addManualEvent}
+            >
+              Add Event
+            </Button>
+
+            <pre
+              className="mt-3"
+              id="content"
+              style={{ whiteSpace: "pre-wrap" }}
+            >
+              {data}
+            </pre>
+          </>
+        )}
       </div>
     );
   }
