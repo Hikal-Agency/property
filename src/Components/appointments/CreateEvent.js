@@ -46,44 +46,62 @@ const CreateEvent = ({
     try {
       var event = {
         kind: "calendar#event",
-        summary: "Hikal Event",
-        location: "I8 Islamabad",
-        description: "Pizza Party",
+        summary: values.appointmentTitle,
+        // location: "",
+        description: values.appointmentDescription,
         start: {
-          dateTime: "2023-06-10T01:05:00.000Z",
+          dateTime: dateTime.from,
         },
         end: {
-          dateTime: "2023-06-30T01:35:00.000Z",
+          dateTime: dateTime.to,
         },
-        attendees: [
-          { email: "mjunaid.swe@gmail.com.com", responseStatus: "needsAction" },
-        ],
+        // attendees: [
+        //   { email: "mjunaid.swe@gmail.com.com", responseStatus: "needsAction" },
+        // ],
         reminders: {
           useDefault: true,
         },
         guestsCanSeeOtherGuests: true,
       };
 
-      console.log({
-        ...values, ...dateTimeValues
-      })
-
-      // var request = gapi.client.calendar.events.insert({
-      //   calendarId: "primary",
-      //   resource: event,
-      //   sendUpdates: "all",
-      // });
-      // request.execute(
-      //   (event) => {
-      //     console.log(event);
-      //     listUpcomingEvents();
-      //     window.open(event.htmlLink);
-      //   },
-      //   (error) => {
-      //     console.error(error);
-      //   }
-      // );
-      setbtnloading(true);
+      var request = gapi.client.calendar.events.insert({
+        calendarId: "primary",
+        resource: event,
+        sendUpdates: "all",
+      });
+      request.execute(
+        (event) => {
+          console.log(event);
+          listUpcomingEvents();
+          setbtnloading(false);
+          toast.success("Appointment Created Successfuly", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          navigator.clipboard.writeText(event.htmlLink);
+          setTimeout(() => {
+            toast.success("Link of Appointment Copied to clipboard", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }, 2000);
+        },
+        (error) => {
+          console.error(error);
+          setbtnloading(false);
+        }
+      );
+      setbtnloading(false);
     } catch (error) {
       console.log(error);
       setbtnloading(false);
@@ -116,9 +134,9 @@ const CreateEvent = ({
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] md:w-[50%]  ${
+          className={`w-[calc(100%-20px)] md:w-[40%]  ${
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
-          } absolute top-1/2 left-1/2 p-5 rounded-md`}
+          } absolute top-[45%] left-1/2 p-5 rounded-md`}
         >
           <IconButton
             sx={{
@@ -172,7 +190,7 @@ const CreateEvent = ({
                 onChange={(newValue) => {
                   setDateTimeValues({
                     ...dateTimeValues,
-                    from: new Date(newValue.$d),
+                    from: new Date(newValue.$d).toISOString(),
                   });
                   setDateTime({ ...dateTime, from: dayjs(newValue) });
                 }}
@@ -180,7 +198,7 @@ const CreateEvent = ({
                 renderInput={(params) => (
                   <TextField
                     required
-                  style={{ marginBottom: "10px" }}
+                    style={{ marginBottom: "10px" }}
                     fullWidth
                     {...params}
                     onKeyDown={(e) => e.preventDefault()}
@@ -197,14 +215,14 @@ const CreateEvent = ({
                 onChange={(newValue) => {
                   setDateTimeValues({
                     ...dateTimeValues,
-                    to: new Date(newValue.$d),
+                    to: new Date(newValue.$d).toISOString(),
                   });
                   setDateTime({ ...dateTime, to: dayjs(newValue) });
                 }}
                 renderInput={(params) => (
                   <TextField
                     fullWidth
-                  style={{ marginBottom: "10px" }}
+                    style={{ marginBottom: "10px" }}
                     {...params}
                     onKeyDown={(e) => e.preventDefault()}
                     readOnly={true}
