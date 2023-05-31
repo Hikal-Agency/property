@@ -1,4 +1,4 @@
-import { Pagination, Stack } from "@mui/material";
+import { Button, Pagination, Stack } from "@mui/material";
 import React, { useEffect } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
@@ -7,6 +7,7 @@ import Avatar from "@mui/material/Avatar";
 import axios from "axios";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import SingleUser from "./SingleUser";
 
 // const UserTable = ({ user }) => {
 //   const [loading, setloading] = useState(false);
@@ -110,10 +111,24 @@ const UserTable = ({ user }) => {
     useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
+  const [openModel, setOpenModel] = useState(false);
+  const [singleUser, setSingleUserData] = useState({});
   const token = localStorage.getItem("auth-token");
 
   const handlePageChange = (event, value) => {
     setpageState({ ...pageState, page: value });
+  };
+
+  const handleModel = (id) => {
+    console.log("SU ID: ", id);
+    const selectedUser = userData?.find((user) => user.id === id);
+    console.log("Selected User: ", selectedUser);
+    setSingleUserData(selectedUser);
+    setOpenModel(true);
+  };
+
+  const handleModelClose = () => {
+    setOpenModel(false);
   };
 
   useEffect(() => {
@@ -144,6 +159,13 @@ const UserTable = ({ user }) => {
   return (
     <>
       <div className="min-h-screen">
+        {openModel && (
+          <SingleUser
+            UserModelOpen={handleModel}
+            handleUserModelClose={handleModelClose}
+            UserData={singleUser}
+          />
+        )}
         {loading ? (
           <Loader />
         ) : (
@@ -250,9 +272,19 @@ const UserTable = ({ user }) => {
                           >
                             <FaEdit />
                           </Link>
-                          <Link href="#" className="text-green-500">
+                          {/* <Link
+                            to={`/users/${item?.id}`}
+                            className="text-green-500"
+                          >
                             <FaEye />
-                          </Link>
+                          </Link> */}
+                          <Button
+                            className="text-green-500"
+                            onClick={() => handleModel(item?.id)}
+                          >
+                            <FaEye />
+                          </Button>
+
                           <Link href="#" className="text-red-500">
                             <FaTrash />
                           </Link>

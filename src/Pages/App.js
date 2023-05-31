@@ -61,6 +61,7 @@ import axios from "axios";
 import Settings from "./attendanceModule/officeSettings";
 import Employees from "./attendanceModule/employeesList";
 import Employee from "./attendanceModule/singleEmployee";
+import SingleUser from "../Components/Users/SingleUser";
 
 const libraries = ["places"];
 
@@ -226,6 +227,7 @@ const routes = [
     pageName: "Users",
     element: <Users />,
   },
+
   {
     path: "/offers",
     pageName: "Offers",
