@@ -90,7 +90,7 @@ const Sidebarmui = () => {
     } catch (error) {
       console.log(error);
 
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         setopenBackDrop(false);
         setloading(false);
 
@@ -1156,6 +1156,7 @@ const Sidebarmui = () => {
 
           setUser(user);
           setIsUserSubscribed(user);
+          getAllLeadsMembers(JSON.parse(storedUser));
 
           console.log("Localstorage: ", user);
 
@@ -1164,7 +1165,7 @@ const Sidebarmui = () => {
         })
         .catch((err) => {
           console.log(err);
-          if (err.response.status === 401) {
+          if (err.response?.status === 401) {
             setopenBackDrop(false);
             // setloading(false);
 

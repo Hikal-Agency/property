@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
+import GoogleCalendarAppointment from "../../Components/appointments/GoogleCalendarAppointment";
 
 const CreateAppointment = () => {
   const [loading, setloading] = useState(true);
@@ -35,7 +36,7 @@ const CreateAppointment = () => {
                     Create Appointment
                   </h1>
 
-                    {/* <GoogleCalendarAppointment/> */}
+                    <GoogleCalendarAppointment/>
                 </div>
               </div>
             </div>

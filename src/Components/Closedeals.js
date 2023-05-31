@@ -266,6 +266,9 @@ const Closedeals = ({ pageState, setpageState }) => {
                 overflowY: "scroll",
                 height: pageState.data.length > 0 ? "475px" : "auto",
               },
+              "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                color: currentMode === "dark" ? "white !important" : "black !important"
+              }
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

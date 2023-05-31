@@ -1,4 +1,4 @@
-import { Box, Button as MuiButton, Avatar } from "@mui/material";
+import { Box, Button as MuiButton, Avatar, IconButton } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -808,17 +808,21 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
+          <div className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}>
             <p
               style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
               onClick={() => HandleEditFunc(cellValues)}
             >
-              <AiOutlineEdit size={20} style={{ color: "inherit" }} />
+              <IconButton
+                sx={{ padding: 0}}
+              >
+                <AiOutlineEdit size={20} />
+              </IconButton>
             </p>
 
             {cellValues.row.lid !== null && (
@@ -826,11 +830,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 to={`/timeline/${cellValues.row.lid}`}
                 className={`editLeadBtn cursor-pointer ${
                   currentMode === "dark"
-                    ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                    : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                    ? "bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                    : "bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
                 }`}
               >
-                <AiOutlineHistory size={20} style={{ color: "inherit" }} />
+                <IconButton
+                  sx={{ padding: 0 }}
+                  color={currentMode === "dark" ? "black" : "white"}
+                >
+                  <AiOutlineHistory size={20} style={{ color: "inherit" }} />
+                </IconButton>
               </Link>
             )}
 
@@ -843,15 +852,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               disabled={deleteloading ? true : false}
               className={`deleteLeadBtn cursor-pointer ${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? " bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
+                  : "bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              <BsTrash
-                className="deleteLeadBtn"
-                size={18}
-                style={{ color: "inherit" }}
-              />
+              <IconButton
+                sx={{ padding: 0 }}
+                color={currentMode === "dark" ? "black" : "white"}
+              >
+                <BsTrash
+                  className="deleteLeadBtn"
+                  size={18}
+                  style={{ color: "inherit" }}
+                />
+              </IconButton>
             </p>
           </div>
         );
@@ -1466,6 +1480,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 overflowY: "scroll",
                 height: pageState.data.length > 0 ? "475px" : "auto",
               },
+              "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                color: currentMode === "dark" ? "white !important" : "black !important"
+              }
             }}
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

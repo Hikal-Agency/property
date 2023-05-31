@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Button, Avatar } from "@mui/material";
+import { Box, Button, Avatar, Card, CardHeader, CardContent, Typography, IconButton} from "@mui/material";
 import CreateTemplateModal from "./CreateTemplateModal";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "axios";
@@ -8,12 +8,14 @@ import Markdown from 'markdown-to-jsx';
 import {FaTrash} from "react-icons/fa";
 import {toast} from "react-toastify";
 import UpdateTemplateModal from "./UpdateTemplateModal";
+import Loader from "../Loader";
 
 const TemplatesComponent = () => {
-  const { BACKEND_URL } = useStateContext();
+  const { BACKEND_URL, currentMode } = useStateContext();
   const [createTemplateModal, setCreateTemplateModal] = useState({
     isOpen: false,
   });
+  const [loading, setLoading] = useState(false);
   const [updateTemplateModal, setUpdateTemplateModal] = useState({
     isOpen: false,
     template: {},
@@ -21,7 +23,7 @@ const TemplatesComponent = () => {
   const [templates, setTemplates] = useState([]);
 
   const handleUpdateTemplate = (e, template) => {
-    if(!e.target.closest(".delete-icon")) {
+    if(!e.target.closest(".delete-btn")) {
       setUpdateTemplateModal({
         isOpen: true, 
         template
@@ -31,6 +33,7 @@ const TemplatesComponent = () => {
 
   const fetchTemplates = async () => {
     try {
+      setLoading(true);
       const token = localStorage.getItem("auth-token");
       const response = await axios.get(`${BACKEND_URL}/templates`, {
         headers: {
@@ -39,6 +42,7 @@ const TemplatesComponent = () => {
         },
       });
       setTemplates(response.data.templates.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -50,6 +54,7 @@ const TemplatesComponent = () => {
 
   const handleDelete = async (templateId) => {
     try {
+      setLoading(true);
       const token = localStorage.getItem("auth-token");
         await axios.delete(`${BACKEND_URL}/templates/${templateId}`, {
         headers: {
@@ -58,6 +63,7 @@ const TemplatesComponent = () => {
         },
       });
         fetchTemplates();
+      setLoading(false);
         toast.success("Template Deleted Successfully", {
           position: "top-right",
           autoClose: 3000,
@@ -85,21 +91,22 @@ const TemplatesComponent = () => {
 
   return (
     <>
+    {loading ? <Loader/> :
       <Box className="min-h-screen">
         <Button
-          sx={{ mt: 4 }}
+          sx={{ mt: 2, padding: "10px", ml: 1}}
           onClick={() => setCreateTemplateModal({ isOpen: true })}
           variant="contained"
         >
           <BiPen size={18} style={{ marginRight: 5 }} />
           Create New
         </Button>
-        <h4 className="font-semibold p-3 mt-5 mb-1">All Templates</h4>
-        <Box className="flex flex-wrap">
+        <Box className="flex flex-wrap mt-3">
           {templates.length > 0 ? (
             templates.map((template) => {
               return (
-                <Box
+                <>
+                {/* <Box
                 onClick={(e) => handleUpdateTemplate(e, template)}
                   key={template.name}
                   className="w-[45%] max-h-[200px] overflow-y-scroll bg-slate-600 m-3 text-white cursor-pointer p-4 rounded"
@@ -120,7 +127,28 @@ const TemplatesComponent = () => {
                   <p className="border rounded border-gray-100 p-3" style={{ marginTop: 10, whiteSpace: "pre-wrap" }}>
                     <Markdown>{template.body}</Markdown>
                   </p>
-                </Box>
+                </Box> */}
+                  <Card
+                  key={template.name}
+                  className={`w-[45%] max-h-[200px] border ${currentMode === "dark" ? "border-white" : "border-red-600"} mx-2 my-1 overflow-y-scroll cursor-pointer`}
+                    onClick={(e) => handleUpdateTemplate(e, template)}
+                   sx={{ bgcolor: currentMode === "dark" ? "#111827" : '#eee', color: currentMode === "dark" ? "white": "black", marginBottom: 2 }}>
+                <CardHeader
+                  titleTypographyProps={{sx: { fontWeight: 'bold' } }}
+                  title={template.name}
+                  action={
+                    <div className="delete-btn" onClick={() => handleDelete(template.id)}>
+                    <IconButton>
+                      <FaTrash size={16} color={currentMode === "dark" ? "white" : "red"}/>
+                    </IconButton>
+                    </div>
+                  }
+                />
+                <CardContent>
+                  <Typography variant="body1"><Markdown>{template.body}</Markdown></Typography>
+                </CardContent>
+              </Card>
+                </>
               );
             })
           ) : (
@@ -141,6 +169,7 @@ const TemplatesComponent = () => {
         />
         }
       </Box>
+    }
     </>
   );
 };

@@ -433,6 +433,9 @@ const AllCampaigns = ({ pageState, setpageState }) => {
               cursor: "pointer",
             },
             overflowX: "auto",
+              "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                color: currentMode === "dark" ? "white !important" : "black !important"
+              }
           }}
           // getRowClassName={(params) =>
           //   params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

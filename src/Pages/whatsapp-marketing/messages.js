@@ -81,6 +81,18 @@ const enquiryTypes = [
 ];
 
 const AllLeads = () => {
+  const {
+    currentMode,
+    pageState,
+    setpageState,
+    reloadDataGrid,
+    DataGridStyles,
+    setopenBackDrop,
+    BACKEND_URL,
+    darkModeColors,
+    Managers, 
+    SalesPerson
+  } = useStateContext();
   const token = localStorage.getItem("auth-token");
   const [selectedRows, setSelectedRows] = useState([]);
   const [leadOriginSelected, setLeadOriginSelected] = useState(leadOrigins[0]);
@@ -89,8 +101,8 @@ const AllLeads = () => {
   const [managerSelected, setManagerSelected] = useState("");
   const [agentSelected, setAgentSelected] = useState("");
   const [projectNameTyped, setProjectNameTyped] = useState("");
-  const [managers, setManagers] = useState([]);
-  const [agents, setAgents] = useState([]);
+  const [managers, setManagers] = useState(Managers);
+  const [agents, setAgents] = useState(SalesPerson);
   const [openMessageModal, setOpenMessageModal] = useState({
     open: false,
     isWhatsapp: false,
@@ -103,17 +115,6 @@ const AllLeads = () => {
   const imagePickerRef = useRef();
 
   // const [openMessageModal, setOpenMessageModal] = useState(false);
-
-  const {
-    currentMode,
-    pageState,
-    setpageState,
-    reloadDataGrid,
-    DataGridStyles,
-    setopenBackDrop,
-    BACKEND_URL,
-    darkModeColors,
-  } = useStateContext();
 
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -1335,6 +1336,9 @@ const AllLeads = () => {
             "& .MuiSvgIcon-root": {
               color: currentMode === "dark" ? "#ffffff" : "#000000",
             },
+              "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                color: currentMode === "dark" ? "white !important" : "black !important"
+              }
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
