@@ -5,10 +5,13 @@ import { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 const OfficeSettings = () => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, formatNum } = useStateContext();
 
   const [loading, setloading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -88,7 +91,7 @@ const OfficeSettings = () => {
                     Start Time
                   </p>
                   {isEditing ? (
-                    <input type="text" defaultValue="9:30AM" />
+                    <input type="time" defaultValue="09:30" />
                   ) : (
                     <p>9:30AM</p>
                   )}
@@ -96,7 +99,7 @@ const OfficeSettings = () => {
                 <div className="flex justify-between mb-3">
                   <p>End Time</p>
                   {isEditing ? (
-                    <input type="text" defaultValue="6:30PM" />
+                    <input type="time" defaultValue="06:30" />
                   ) : (
                     <p>6:30PM</p>
                   )}
@@ -106,6 +109,29 @@ const OfficeSettings = () => {
                   {isEditing ? (
                     <input type="text" defaultValue="Sunday" />
                   ) : (
+                    // <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    //   <TimePicker
+                    //     ampm={false}
+                    //     label="Meeting Time"
+                    //     format="HH:mm"
+                    //     // value={meetingTimeValue}
+                    //     // onChange={(newValue) => {
+                    //     //   setMeetingTime(
+                    //     //     formatNum(newValue?.$d?.getHours()) +
+                    //     //       ":" +
+                    //     //       formatNum(newValue?.$d?.getMinutes())
+                    //     //   );
+                    //     //   setMeetingTimeValue(newValue);
+                    //     // }}
+                    //     renderInput={(params) => (
+                    //       <TextField
+                    //         {...params}
+                    //         onKeyDown={(e) => e.preventDefault()}
+                    //         readOnly={true}
+                    //       />
+                    //     )}
+                    //   />
+                    // </LocalizationProvider>
                     <p>Sunday</p>
                   )}
                 </div>
@@ -120,7 +146,7 @@ const OfficeSettings = () => {
                 <div className="flex justify-between mb-3">
                   <p>Maximum Late Time</p>
                   {isEditing ? (
-                    <input type="text" defaultValue="10:45AM" />
+                    <input type="time" defaultValue="10:45" />
                   ) : (
                     <p>10:45AM</p>
                   )}
@@ -128,7 +154,7 @@ const OfficeSettings = () => {
                 <div className="flex justify-between mb-3">
                   <p>Overtime After</p>
                   {isEditing ? (
-                    <input type="text" defaultValue="08:00AM" />
+                    <input type="time" defaultValue="08:00" />
                   ) : (
                     <p>08:00AM</p>
                   )}

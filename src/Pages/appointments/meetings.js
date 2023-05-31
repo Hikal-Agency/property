@@ -8,7 +8,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Loader from "../../Components/Loader";
-import AllMeetings from "../../Components/meetings/AllMeetings";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
 import { Box, Pagination } from "@mui/material";
@@ -73,7 +72,6 @@ const Meetings = () => {
   });
 
   const columns = [
-
     {
       field: "leadName",
       headerName: "Lead name",
@@ -464,9 +462,12 @@ const Meetings = () => {
                           "& .MuiDataGrid-cell:hover": {
                             cursor: "pointer",
                           },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+                          "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                            color:
+                              currentMode === "dark"
+                                ? "white !important"
+                                : "black !important",
+                          },
                         }}
                         getRowClassName={(params) =>
                           params.indexRelativeToCurrentPage % 2 === 0
