@@ -8,6 +8,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import CreateEvent from "./CreateEvent";
+import {toast} from "react-toastify";
 
 const GoogleCalendarAppointment = () => {
   const gapi = window.gapi;
@@ -135,6 +136,17 @@ const GoogleCalendarAppointment = () => {
       response = await gapi.client.calendar.events.list(request);
     } catch (err) {
       setMessageText(err.message);
+      if(err.status === 401) {
+      toast.error("Session Expired! You need to Sign in again", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      }
       return;
     }
 

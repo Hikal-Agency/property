@@ -165,6 +165,7 @@ const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
               position: "absolute",
               right: 5,
               top: 2,
+              zIndex: 10000,
               color: (theme) => theme.palette.grey[500],
             }}
             onClick={() => setImagePickerModal({ isOpen: false })}
