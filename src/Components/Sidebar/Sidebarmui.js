@@ -1997,6 +1997,10 @@ const Sidebarmui = () => {
                                                 ? "white"
                                                 : "black",
                                             },
+                                            "& .css-cveggr-MuiListItemIcon-root":
+                                              {
+                                                minWidth: "20px",
+                                              },
                                           }}
                                           className="relative my-1"
                                         >
@@ -2005,10 +2009,14 @@ const Sidebarmui = () => {
                                             onClick={() =>
                                               setSelected(menu.name)
                                             }
-                                            className="block m-0 p-0 absolute"
+                                            className="flex"
                                           >
                                             {menu?.icon && (
-                                              <ListItemIcon>
+                                              <ListItemIcon
+                                                style={{
+                                                  minWidth: "23px !important",
+                                                }}
+                                              >
                                                 {menu?.icon}
                                               </ListItemIcon>
                                             )}{" "}
