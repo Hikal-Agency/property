@@ -8,9 +8,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import { Button } from "@mui/material";
 
 const OfficeSettings = () => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode } = useStateContext();
 
-  const [loading, setloading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEditClick = () => {

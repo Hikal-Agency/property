@@ -9,12 +9,7 @@ const Settings = () => {
   const {
     currentMode,
     setopenBackDrop,
-    setLocationData,
-    BACKEND_URL,
-    setUser,
-    User,
   } = useStateContext();
-
   useEffect(() => {
     setopenBackDrop(false);
     // eslint-disable-next-line

@@ -1,8 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "../Loader";
 import { Button, Typography } from "@mui/material";
-import {AiOutlineGoogle} from "react-icons/ai";
-import {FaSignOutAlt} from "react-icons/fa";
+import { AiOutlineGoogle } from "react-icons/ai";
+import { FaSignOutAlt } from "react-icons/fa";
+import { IoMdAdd } from "react-icons/io";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import CreateEvent from "./CreateEvent";
 
 const GoogleCalendarAppointment = () => {
   const gapi = window.gapi;
@@ -20,6 +25,9 @@ const GoogleCalendarAppointment = () => {
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [messageText, setMessageText] = useState("");
+  const [createEventModal, setCreateEventModal] = useState({
+    isOpen: false,
+  });
 
   const [session, setSession] = useState({
     expiresIn: localStorage.getItem("expires_in"),
@@ -122,7 +130,6 @@ const GoogleCalendarAppointment = () => {
         timeMin: new Date().toISOString(),
         showDeleted: false,
         singleEvents: true,
-        maxResults: 10,
         orderBy: "startTime",
       };
       response = await gapi.client.calendar.events.list(request);
@@ -139,48 +146,18 @@ const GoogleCalendarAppointment = () => {
     }
     // Flatten to string to display
     setMessageText("");
-    setEvents(events);
+    const fullCalendarEvents = events.map((event) => ({
+      title: event.summary,
+      start: new Date(event.start.dateTime).toISOString(),
+      end: new Date(event.end.dateTime).toISOString(),
+      description: event.description,
+      url: event.htmlLink,
+    }));
+    setEvents(fullCalendarEvents);
   }
 
   function addManualEvent() {
-    var event = {
-      kind: "calendar#event",
-      summary: "Hikal Event",
-      location: "I8 Islamabad",
-      description: "Pizza Party",
-      start: {
-        dateTime: "2023-06-10T01:05:00.000Z",
-        timeZone: "UTC",
-      },
-      end: {
-        dateTime: "2023-06-30T01:35:00.000Z",
-        timeZone: "UTC",
-      },
-      recurrence: ["RRULE:FREQ=DAILY;COUNT=1"],
-      attendees: [
-        { email: "mjunaid.swe@gmail.com.com", responseStatus: "needsAction" },
-      ],
-      reminders: {
-        useDefault: true,
-      },
-      guestsCanSeeOtherGuests: true,
-    };
-
-    var request = gapi.client.calendar.events.insert({
-      calendarId: "primary",
-      resource: event,
-      sendUpdates: "all",
-    });
-    request.execute(
-      (event) => {
-        console.log(event);
-        listUpcomingEvents();
-        window.open(event.htmlLink);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    setCreateEventModal({ isOpen: true });
   }
 
   const isLoggedIn = session.accessToken && session.expiresIn;
@@ -191,7 +168,9 @@ const GoogleCalendarAppointment = () => {
       <div>
         {!isLoggedIn && (
           <div className="min-h-[50vh] flex flex-col justify-center items-center">
-            <Typography variant="h5">Create and Manage Appointments on the Go!</Typography>
+            <Typography variant="h5">
+              Create and Manage Appointments on the Go!
+            </Typography>
             <Button
               color="primary"
               sx={{ marginRight: "4px", marginTop: "12px" }}
@@ -199,7 +178,8 @@ const GoogleCalendarAppointment = () => {
               id="authorize_button"
               onClick={handleAuthClick}
             >
-              <AiOutlineGoogle size={18}/> {" "} <span style={{paddingLeft: "8px"}}>Sign In With Google</span>
+              <AiOutlineGoogle size={18} />{" "}
+              <span style={{ paddingLeft: "8px" }}>Sign In With Google</span>
             </Button>
           </div>
         )}
@@ -207,22 +187,24 @@ const GoogleCalendarAppointment = () => {
           <>
             <Button
               color="error"
-              sx={{ marginRight: "4px" }}
+              sx={{ marginRight: "7px" }}
               variant="contained"
               id="signout_button"
               onClick={handleSignoutClick}
             >
-              <FaSignOutAlt size={18}/> <span style={{paddingLeft: "8px"}}>Sign Out</span>
+              <FaSignOutAlt size={18} />{" "}
+              <span style={{ paddingLeft: "8px" }}>Sign Out</span>
             </Button>
 
             <Button
               color="success"
               variant="contained"
-              sx={{ marginRight: "4px" }}
+              sx={{ marginRight: "6px" }}
               id="add_manual_event"
               onClick={addManualEvent}
             >
-              Add Event
+              <IoMdAdd size={18} style={{ color: "white" }} />{" "}
+              <span style={{ paddingLeft: "8px" }}>Add Event</span>
             </Button>
 
             <pre
@@ -232,7 +214,29 @@ const GoogleCalendarAppointment = () => {
             >
               {messageText}
             </pre>
+
+            <div className="my-12">
+              <FullCalendar
+                headerToolbar={{
+                  start: "title",
+                  center: "",
+                  end: "today dayGridMonth,dayGridWeek,dayGridDay prev,next",
+                }}
+                events={events}
+                plugins={[dayGridPlugin, timeGridPlugin]}
+                initialView="dayGridMonth"
+              />
+            </div>
           </>
+        )}
+
+        {createEventModal.isOpen && (
+          <CreateEvent
+            createEventModal={createEventModal}
+            gapi={gapi}
+            listUpcomingEvents={listUpcomingEvents}
+            setCreateEventModal={setCreateEventModal}
+          />
         )}
       </div>
     );
