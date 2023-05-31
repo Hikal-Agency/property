@@ -557,6 +557,8 @@ const AddLeadComponent = () => {
                               error={error}
                               className={classNames({
                                 "dark-mode": currentMode === "dark",
+                                "phone-input-light": currentMode !== "dark",
+                                "phone-input-dark": currentMode === "dark",
                               })}
                               style={{
                                 background: `${
@@ -565,6 +567,7 @@ const AddLeadComponent = () => {
                                 "& .PhoneInputCountryIconImg": {
                                   color: "#fff",
                                 },
+                                color: "#808080",
                                 padding: "10",
                                 border: `1px solid ${
                                   currentMode === "dark" ? "#fff" : "#ccc"

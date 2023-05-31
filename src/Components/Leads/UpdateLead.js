@@ -691,6 +691,7 @@ const UpdateLead = ({
                           border: `1px solid ${
                             currentMode === "dark" ? "#fff" : "#ccc"
                           }`,
+                          // color: "#808080",
                           borderRadius: "3px",
                           outline: "none",
                         }}

@@ -256,3 +256,13 @@ label[for="bulkImport"] .MuiButtonBase-root{
 .MuiDataGrid-main .MuiDataGrid-cell {
   overflow-wrap: anywhere;
 }
+
+.phone-input-light .PhoneInputInput{
+  background-color: #fff;
+  color:"#000 !important"
+}
+
+.phone-input-dark .PhoneInputInput {
+  background-color: #000;
+  color:"white !important"
+}

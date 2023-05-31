@@ -1,4 +1,4 @@
-import { Box, Tooltip } from "@mui/material";
+import { Box, ListItemIcon, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { AiFillGift, AiFillMessage } from "react-icons/ai";
 import { FaLink, FaSnowflake, FaMobile } from "react-icons/fa";
@@ -1538,21 +1538,21 @@ const Sidebarmui = () => {
               link: "/coldleads/new",
             },
             {
-              name: "Cold: Verified",
+              name: "Verified",
               count: ColdLeadsCount?.verified, //TODO
               link: "/coldleads/coldLeadsVerified",
               icon: <RiRadioButtonLine style={{ color: "green" }} />,
               countColor: "#008000",
             },
             {
-              name: "Cold: Invalid",
+              name: "Invalid",
               count: ColdLeadsCount?.unverified, //TODO
               link: "/coldleads/coldLeadsInvalid",
               icon: <RiRadioButtonLine style={{ color: "red" }} />,
               countColor: "#FF0000",
             },
             {
-              name: "Cold: Not Checked",
+              name: "Not Checked",
               count: ColdLeadsCount?.unchecked, //TODO
               link: "/coldleads/coldLeadsNotChecked",
               icon: <RiRadioButtonLine style={{ color: "orange" }} />,
@@ -1997,12 +1997,6 @@ const Sidebarmui = () => {
                                                 ? "white"
                                                 : "black",
                                             },
-                                            // "& .leads_counter": {
-                                            //   color:
-                                            //     currentMode === "dark"
-                                            //       ? "white"
-                                            //       : "black",
-                                            // },
                                           }}
                                           className="relative my-1"
                                         >
@@ -2011,9 +2005,17 @@ const Sidebarmui = () => {
                                             onClick={() =>
                                               setSelected(menu.name)
                                             }
+                                            className="block m-0 p-0 absolute"
                                           >
-                                            {menu?.icon}
-                                            {menu?.name || ""}
+                                            {menu?.icon && (
+                                              <ListItemIcon>
+                                                {menu?.icon}
+                                              </ListItemIcon>
+                                            )}{" "}
+                                            <span className=" ">
+                                              {" "}
+                                              {menu?.name || ""}
+                                            </span>
                                           </MenuItem>
                                           <span
                                             className="leads_counter block absolute right-5 top-5"
