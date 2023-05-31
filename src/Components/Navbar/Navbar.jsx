@@ -237,7 +237,7 @@ const Navbar = () => {
           <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
         </div>
         <div className="flex">
-          {isUserSubscribed === false && (
+          {(isUserSubscribed === false && isUserSubscribed !== null) && (
             <Button
               variant="contained"
               style={{ background: "red" }}
