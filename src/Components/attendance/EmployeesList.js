@@ -89,7 +89,7 @@ const EmployeesList = ({ user }) => {
                         </div>
                         <div className="text-center mt-3">
                           <h4 className="font-bold text-lg capitalize">
-                            Employee Name
+                            {item?.userName}
                           </h4>
                           <p className="text-sm">{item?.position}</p>
                           <p className="text-sm">{item?.department}</p>

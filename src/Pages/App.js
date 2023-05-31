@@ -60,6 +60,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Settings from "./attendanceModule/officeSettings";
 import Employees from "./attendanceModule/employeesList";
+import Employee from "./attendanceModule/singleEmployee";
 
 const libraries = ["places"];
 
@@ -301,6 +302,11 @@ const routes = [
     element: <Employees />,
   },
   {
+    path: "/attendance/singleEmployee",
+    pageName: "Employees",
+    element: <Employee />,
+  },
+  {
     path: "*",
     element: <Error />,
   },
@@ -494,41 +500,37 @@ function App() {
     }
   }
 
-    return (
-      <>
-        {/* {appLoading && hasSidebarOrNavbar() &&
+  return (
+    <>
+      {/* {appLoading && hasSidebarOrNavbar() &&
       <div style={{width: "100vw", height: "100vh", zIndex: 10000, position: "fixed", top: 0, left: 0}}>
         <Loader/>
       </div>
         } */}
-        <div className="flex" style={{ width: "99vw" }}>
-          {hasSidebarOrNavbar() && <Sidebarmui />}
-          <div
-            className={`w-[99%] overflow-x-hidden ${
-              hasSidebarOrNavbar() ? "pt-20" : "pt-0"
-            } ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
-          >
-            {hasSidebarOrNavbar() && (
-              <div className={`px-5`}>
-                <Navbar />
-              </div>
-            )}
-            <Routes>
-              {routes.map((route, index) => {
-                return (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={route.element}
-                  />
-                );
-              })}
-            </Routes>
-          </div>
+      <div className="flex" style={{ width: "99vw" }}>
+        {hasSidebarOrNavbar() && <Sidebarmui />}
+        <div
+          className={`w-[99%] overflow-x-hidden ${
+            hasSidebarOrNavbar() ? "pt-20" : "pt-0"
+          } ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
+        >
+          {hasSidebarOrNavbar() && (
+            <div className={`px-5`}>
+              <Navbar />
+            </div>
+          )}
+          <Routes>
+            {routes.map((route, index) => {
+              return (
+                <Route key={index} path={route.path} element={route.element} />
+              );
+            })}
+          </Routes>
         </div>
-        <Footer />
-      </>
-    );
+      </div>
+      <Footer />
+    </>
+  );
 }
 
 export default App;
