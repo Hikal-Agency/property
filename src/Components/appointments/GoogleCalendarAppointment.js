@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "../Loader";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import {AiOutlineGoogle} from "react-icons/ai";
+import {FaSignOutAlt} from "react-icons/fa";
 
 const GoogleCalendarAppointment = () => {
   const gapi = window.gapi;
@@ -16,7 +18,8 @@ const GoogleCalendarAppointment = () => {
   const [gapiInited, setGapiInited] = useState(false);
   const [gisInited, setGisInited] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState("");
+  const [events, setEvents] = useState([]);
+  const [messageText, setMessageText] = useState("");
 
   const [session, setSession] = useState({
     expiresIn: localStorage.getItem("expires_in"),
@@ -107,7 +110,7 @@ const GoogleCalendarAppointment = () => {
         accessToken: "",
         expiresIn: "",
       });
-      setData("");
+      setMessageText("");
     }
   }
 
@@ -124,24 +127,19 @@ const GoogleCalendarAppointment = () => {
       };
       response = await gapi.client.calendar.events.list(request);
     } catch (err) {
-      setData(err.message);
+      setMessageText(err.message);
       return;
     }
 
     const events = response.result.items;
+    console.log(events);
     if (!events || events.length === 0) {
-      setData("No events found.");
+      setMessageText("No events found.");
       return;
     }
     // Flatten to string to display
-    const output = events.reduce(
-      (str, event) =>
-        `${str}${event.summary} (${
-          event.start.dateTime || event.start.date
-        })\n`,
-      "Events:\n"
-    );
-    setData(output);
+    setMessageText("");
+    setEvents(events);
   }
 
   function addManualEvent() {
@@ -186,22 +184,24 @@ const GoogleCalendarAppointment = () => {
   }
 
   const isLoggedIn = session.accessToken && session.expiresIn;
-
   if (loading) {
     return <Loader />;
   } else {
     return (
       <div>
         {!isLoggedIn && (
-          <Button
-            color="success"
-            sx={{ marginRight: "4px" }}
-            variant="contained"
-            id="authorize_button"
-            onClick={handleAuthClick}
-          >
-            Authorize
-          </Button>
+          <div className="min-h-[50vh] flex flex-col justify-center items-center">
+            <Typography variant="h5">Create and Manage Appointments on the Go!</Typography>
+            <Button
+              color="primary"
+              sx={{ marginRight: "4px", marginTop: "12px" }}
+              variant="contained"
+              id="authorize_button"
+              onClick={handleAuthClick}
+            >
+              <AiOutlineGoogle size={18}/> {" "} <span style={{paddingLeft: "8px"}}>Sign In With Google</span>
+            </Button>
+          </div>
         )}
         {isLoggedIn && (
           <>
@@ -212,11 +212,11 @@ const GoogleCalendarAppointment = () => {
               id="signout_button"
               onClick={handleSignoutClick}
             >
-              Sign Out
+              <FaSignOutAlt size={18}/> <span style={{paddingLeft: "8px"}}>Sign Out</span>
             </Button>
 
             <Button
-              color="primary"
+              color="success"
               variant="contained"
               sx={{ marginRight: "4px" }}
               id="add_manual_event"
@@ -230,7 +230,7 @@ const GoogleCalendarAppointment = () => {
               id="content"
               style={{ whiteSpace: "pre-wrap" }}
             >
-              {data}
+              {messageText}
             </pre>
           </>
         )}
