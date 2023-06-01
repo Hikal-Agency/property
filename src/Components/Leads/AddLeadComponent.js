@@ -15,7 +15,6 @@ import moment from "moment";
 import "react-phone-number-input/style.css";
 
 import PhoneInput, {
-  formatPhoneNumber,
   formatPhoneNumberIntl,
   isValidPhoneNumber,
   isPossiblePhoneNumber,
@@ -287,10 +286,8 @@ const AddLeadComponent = () => {
               return manager.id === User?.id;
             })
           );
-          const SalesPerson = result.data.team.filter((manager) => {
-            return manager.id === User?.id;
-          });
-          setSalesPerson(SalesPerson[0]?.child ? SalesPerson[0].child : []);
+          const SalesPerson = result.data.team;
+          setSalesPerson(SalesPerson || []);
         }
         setpageloading(false);
       })
@@ -359,7 +356,7 @@ const AddLeadComponent = () => {
                             >
                               Agent details
                             </h4>
-                            {(User?.role === 1 || User?.role === 3) && (
+                            {(User?.role === 1) && (
                               <Select
                                 id="Manager"
                                 value={

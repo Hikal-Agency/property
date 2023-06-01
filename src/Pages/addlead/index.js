@@ -1,7 +1,5 @@
-import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
 import AddLeadComponent from "../../Components/Leads/AddLeadComponent";
-import Footer from "../../Components/Footer/Footer";
 
 const AddLead = (props) => {
   const { currentMode, User, BACKEND_URL } = useStateContext();
