@@ -65,14 +65,22 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
 
   const ChangeUserRole = (event) => {
     setUserRole(event.target.value);
-    if (event.target.value === "manager") {
+    if (event.target.value === "head of sales") {
+      setformdata({ ...formdata, isParent: 2 });
+    } else if (event.target.value === "manager") {
       setformdata({ ...formdata, isParent: 3 });
-    } else if (event.target.value === "agent") {
-      setformdata({ ...formdata, isParent: 7 });
+    } else if (event.target.value === "marketing") {
+      setformdata({ ...formdata, isParent: 4 });
     } else if (event.target.value === "accounts") {
       setformdata({ ...formdata, isParent: 5 });
+    } else if (event.target.value === "user") {
+      setformdata({ ...formdata, isParent: 6 });
+    } else if (event.target.value === "agent") {
+      setformdata({ ...formdata, isParent: 7 });
     } else if (event.target.value === "dataEntry") {
       setformdata({ ...formdata, isParent: 8 });
+    } else if (event.target.value === "officeboy") {
+      setformdata({ ...formdata, isParent: 9 });
     }
   };
 
@@ -273,6 +281,12 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                         <MenuItem value={"agent"}>Agent</MenuItem>
                         <MenuItem value={"accounts"}>Accounts</MenuItem>
                         <MenuItem value={"dataEntry"}>Data Entry</MenuItem>
+                        <MenuItem value={"head of sales"}>
+                          Head Of Sales
+                        </MenuItem>
+                        <MenuItem value={"marketing"}>Marketing</MenuItem>
+                        <MenuItem value={"user"}>General User</MenuItem>
+                        <MenuItem value={"officeboy"}>Office Boy</MenuItem>
                       </Select>
                     </div>
                     <div className="col-span-3">
@@ -289,6 +303,25 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                           setformdata({
                             ...formdata,
                             userName: e.target.value,
+                          });
+                        }}
+                      />
+                    </div>
+                    <div className="col-span-6">
+                      <TextField
+                        id="postion"
+                        type="text"
+                        label="User Position"
+                        className="w-full"
+                        variant="outlined"
+                        size="medium"
+                        // error={!!emailError}
+                        required
+                        value={formdata?.position}
+                        onChange={(e) => {
+                          setformdata({
+                            ...formdata,
+                            position: e.target.value,
                           });
                         }}
                       />

@@ -3,8 +3,6 @@ import React, { useEffect } from "react";
 import Loader from "../Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import axios from "axios";
 
 // const UserTable = ({ user }) => {
 //   const [loading, setloading] = useState(false);
@@ -397,7 +395,8 @@ const NotesGrid = ({ pageState, setpageState }) => {
 
     const { data, isLoading, page, pageSize, total } = pageState;
     setUserData(data);
-    setMaxPage(Math.ceil(total / pageSize));
+    // setMaxPage(Math.ceil(total / pageSize));
+    setMaxPage(pageSize);
     setLoading(isLoading);
   }, [pageState.page]);
 
