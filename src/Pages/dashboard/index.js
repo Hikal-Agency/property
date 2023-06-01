@@ -67,7 +67,7 @@ const Dashboard = () => {
           <Loader />
         ) : (
           <div
-            className={`${currentMode === "dark" ? "bg-black" : "bg-white"}`}
+            className={`w-full ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >
             <div className="w-full overflow-x-hidden">
               <div className="pl-3">
