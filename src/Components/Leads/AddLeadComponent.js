@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Box,
   Typography,
+  InputLabel
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -269,7 +270,6 @@ const AddLeadComponent = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    console.log(User);
     axios
       .get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
         headers: {
@@ -357,7 +357,9 @@ const AddLeadComponent = () => {
                               Agent details
                             </h4>
                             {(User?.role === 1) && (
-                              <Select
+                              <>
+                                <InputLabel id="manager-label">Select Manager</InputLabel>
+                                <Select
                                 id="Manager"
                                 value={
                                   User?.role === 3
@@ -365,8 +367,9 @@ const AddLeadComponent = () => {
                                     : Manager
                                 }
                                 disabled={User?.role === 3 && true}
-                                label="Manager"
-                                onChange={ChangeManager}
+                                // label="Manager"
+                                labelId="Select Manager"
+                              onChange={ChangeManager}
                                 size="medium"
                                 className="w-full mb-5"
                                 displayEmpty
@@ -382,18 +385,22 @@ const AddLeadComponent = () => {
                                   </MenuItem>
                                 ))}
                               </Select>
+                              </>
                             )}
+                            
 
                             {(User?.role === 1 || User?.role === 3) && (
+                              <>
+                              <InputLabel id="sales-person-label">Select Sales Person</InputLabel>
                               <Select
                                 id="SalesPerson"
+                                labelId="sales-person-label"
                                 value={SalesPerson2}
-                                label="SalesPerson"
+                                // label="SalesPerson"
                                 onChange={ChangeSalesPerson}
                                 size="medium"
                                 className="w-full mb-5"
                                 displayEmpty
-                                // required={SalesPerson.length > 0 ? true : false}
                               >
                                 <MenuItem value="" disabled>
                                   Sales Person
@@ -404,6 +411,7 @@ const AddLeadComponent = () => {
                                   </MenuItem>
                                 ))}
                               </Select>
+                              </>
                             )}
 
                             <TextField

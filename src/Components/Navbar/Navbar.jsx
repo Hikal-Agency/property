@@ -237,7 +237,8 @@ const Navbar = () => {
           <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
         </div>
         <div className="flex">
-          {(isUserSubscribed === false && isUserSubscribed !== null) && (
+        {isUserSubscribed !== null &&
+          [(isUserSubscribed === false) && (
             <Button
               variant="contained"
               style={{ background: "red" }}
@@ -245,7 +246,8 @@ const Navbar = () => {
             >
               <a href="/whatsapp-marketing/payments">Upgrade</a>
             </Button>
-          )}
+          )]
+        }
           <NavButton
             title="Meetings"
             dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
