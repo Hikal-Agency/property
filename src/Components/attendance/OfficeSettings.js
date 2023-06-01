@@ -11,9 +11,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 const OfficeSettings = () => {
-  const { currentMode, BACKEND_URL, formatNum } = useStateContext();
+  const { currentMode, formatNum } = useStateContext();
 
-  const [loading, setloading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEditClick = () => {

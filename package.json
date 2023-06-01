@@ -9,6 +9,7 @@
     "@fullcalendar/core": "^6.1.8",
     "@fullcalendar/daygrid": "^6.1.8",
     "@fullcalendar/react": "^6.1.8",
+    "@fullcalendar/timegrid": "^6.1.8",
     "@material-tailwind/react": "^1.2.5",
     "@mui/material": "^5.11.8",
     "@mui/x-data-grid": "^5.17.23",

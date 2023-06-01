@@ -32,7 +32,7 @@ const RenderManagers = ({ cellValues }) => {
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium,& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
       {
-        color: currentMode === "dark" ? "white" : "black",
+        color: currentMode === "dark" ? "white !important" : "black !important",
         // borderColor: currentMode === "dark" ? "white" : "black",
         border: "none",
         fontSize: "0.9rem",
