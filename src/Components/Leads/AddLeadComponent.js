@@ -207,6 +207,9 @@ const AddLeadComponent = () => {
     if (User?.role === 1 || User?.role === 3) {
       LeadData.append("assignedToManager", Manager);
       LeadData.append("assignedToSales", SalesPerson2);
+    } else if (User?.role === 7) {
+      LeadData.append("assignedToManager", User?.isParent);
+      LeadData.append("assignedToSales", User?.id);
     }
     LeadData.append(
       "creationDate",

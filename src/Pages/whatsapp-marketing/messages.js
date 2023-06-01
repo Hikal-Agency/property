@@ -91,7 +91,8 @@ const AllLeads = () => {
     BACKEND_URL,
     darkModeColors,
     Managers, 
-    SalesPerson
+    SalesPerson,
+    User,
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
   const [selectedRows, setSelectedRows] = useState([]);
@@ -200,6 +201,113 @@ const AllLeads = () => {
         );
       },
     },
+    {
+      field: "leadName",
+      headerAlign: "center",
+      headerName: "Lead name",
+      minWidth: 180,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "leadContact",
+      headerName: "Contact",
+      minWidth: 120,
+      flex: 1,
+    },
+    {
+      field: "project",
+      headerName: "Project",
+      minWidth: 100,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "language",
+      headerName: "Lang",
+      minWidth: 35,
+      flex: 1,
+    },
+    {
+      field: "enquiryType",
+      headerName: "Enquiry",
+      // width: 110,
+      minWidth: 110,
+      flex: 1,
+    },
+
+    {
+      field: "leadType",
+      headerName: "Property",
+      minWidth: 140,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full">
+            <p className="capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "creationDate",
+      headerName: "Date",
+      flex: 1,
+
+      sortable: false,
+      minWidth: 90,
+      filterable: false,
+      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+    },
+ 
+    {
+      field: "whatsapp-web",
+      headerName: "",
+      minWidth: 110,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className="whatsapp-web-link"
+            style={{ display: "flex", justifyContent: "center", width: "100%" }}
+          >
+            <BsWhatsapp
+              size={24}
+              onClick={() => {
+                window.open(
+                  `https://wa.me/${cellValues.row.leadContact
+                    .slice(1)
+                    .replaceAll(" ", "")}`
+                );
+              }}
+              color="green"
+            />
+          </div>
+        );
+      },
+    },
+  ];
+
+   const managerColumns = [ 
+
     {
       field: "leadName",
       headerAlign: "center",
@@ -1310,7 +1418,7 @@ const AllLeads = () => {
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-          columns={columns}
+          columns={User?.role === 3 ? managerColumns : columns}
           components={{
             // Toolbar: GridToolbar,
             Pagination: CustomPagination,
