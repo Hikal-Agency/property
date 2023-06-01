@@ -62,6 +62,7 @@ import Settings from "./attendanceModule/officeSettings";
 import Employees from "./attendanceModule/employeesList";
 import Employee from "./attendanceModule/singleEmployee";
 import SingleUser from "../Components/Users/SingleUser";
+import AllWarmLeads from "./warmleads";
 
 const libraries = ["places"];
 
@@ -101,6 +102,11 @@ const routes = [
     path: "/unassigned/:lead_type",
     element: <AllUnassignedLeads />,
     pageName: "Unassigned Leads",
+  },
+  {
+    path: "/warmleads/:lead_type",
+    element: <AllWarmLeads />,
+    pageName: "Warm Leads",
   },
   {
     path: "/hotleads/:lead_type",

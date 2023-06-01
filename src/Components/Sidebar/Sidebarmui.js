@@ -14,6 +14,7 @@ import { FaFacebookSquare, FaChartLine, FaUser } from "react-icons/fa";
 import { RiRadioButtonLine } from "react-icons/ri";
 import { BiCalendar } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
+import { FaFire } from "react-icons/fa";
 
 import {
   MdLeaderboard,
@@ -66,6 +67,7 @@ const Sidebarmui = () => {
   const [PersonalLeadsCount, setPersonalLeadsCount] = useState();
   const [ThirdPartLeadsCount, setThirdPartyLeadsCount] = useState();
   const [UnassignedLeadsCount, setUnassignedLeadsCount] = useState();
+  const [WarmLeadCount, setWarmLeadCount] = useState();
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
@@ -86,6 +88,7 @@ const Sidebarmui = () => {
       setPersonalLeadsCount(response.data.data["PERSONAL LEADS"]);
       setThirdPartyLeadsCount(response.data.data["THIRD PARTY LEADS"]);
       setUnassignedLeadsCount(response.data.data["UNASSIGNED LEADS"]);
+      setWarmLeadCount(response.data.data["WARM LEADS"]);
       setLeadsCount(true);
     } catch (error) {
       console.log(error);
@@ -1612,6 +1615,52 @@ const Sidebarmui = () => {
               name: "Warm leads",
               count: UnassignedLeadsCount?.warm,
               link: "/unassigned/warm",
+            },
+          ],
+        },
+        {
+          name: "Warm Leads",
+          icon: <FaFire />,
+          submenu: [
+            {
+              name: "All Leads",
+              count: WarmLeadCount?.all,
+              link: "/warmleads/all",
+            },
+            {
+              name: "New Leads",
+              count: WarmLeadCount?.new,
+              link: "/warmleads/new",
+            },
+            {
+              name: "No Answer",
+              count: WarmLeadCount?.no_nswer,
+              link: "/warmleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: WarmLeadCount?.Meeting,
+              link: "/warmleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: WarmLeadCount?.follow_up,
+              link: "/warmleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: WarmLeadCount?.low_budget,
+              link: "/warmleads/low budget",
+            },
+            {
+              name: "Not Intrested",
+              count: WarmLeadCount?.not_interested,
+              link: "/warmleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: WarmLeadCount?.unreachable,
+              link: "/warmleads/unreachable",
             },
           ],
         },
