@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
+import axios from "axios";
 
 const StateContext = createContext();
 
@@ -44,6 +45,7 @@ export const ContextProvider = ({ children }) => {
   const [isUserSubscribed, setIsUserSubscribed] = useState(null);
   const [socket, setSocket] = useState(null);
   const [appLoading, setAppLoading] = useState(false);
+  const [sidebarData, setSidebarData] = useState({});
 
   // DATA GRID
   const [pageState, setpageState] = useState({
@@ -188,6 +190,29 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
+  const fetchSidebarData = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.get(`${BACKEND_URL}/sidebar/1`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      setSidebarData({
+        HotLeadsCount: response.data.data["HOT LEADS"],
+        ColdLeadsCount: response.data.data["COLD LEADS"],
+        PersonalLeadsCount: response.data.data["PERSONAL LEADS"],
+        ThirdPartyLeadsCount: response.data.data["THIRD PARTY LEADS"],
+        UnassignedLeadsCount: response.data.data["UNASSIGNED LEADS"],
+        WarmLeadCount: response.data.data["WARM LEADS"],
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <StateContext.Provider
@@ -249,10 +274,12 @@ export const ContextProvider = ({ children }) => {
         setAllRoutes,
         isUserSubscribed,
         setIsUserSubscribed,
-        socket, 
-        setSocket, 
+        socket,
+        setSocket,
         appLoading,
-        setAppLoading
+        setAppLoading,
+        sidebarData,
+        fetchSidebarData,
       }}
     >
       {children}

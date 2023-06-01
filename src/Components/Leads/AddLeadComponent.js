@@ -32,7 +32,7 @@ function isEmailValid(email) {
 const AddLeadComponent = () => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
-  const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, User, BACKEND_URL, fetchSidebarData } = useStateContext();
   const [Manager2, setManager2] = useState([]);
   const [SalesPerson, setSalesPerson] = useState([]);
   const [filter_manager, setfilter_manager] = useState();
@@ -43,7 +43,6 @@ const AddLeadComponent = () => {
   const [LanguagePrefered, setLanguagePrefered] = useState("");
   const [LeadStatus, setLeadStatus] = useState("");
   const [LeadSource, setLeadSource] = useState("");
-  const [Feedback, setFeedback] = useState("");
   const [Manager, setManager] = useState("");
 
   const [SalesPerson2, setSalesPerson2] = useState("");
@@ -142,9 +141,6 @@ const AddLeadComponent = () => {
     setLeadSource(event.target.value);
   };
   // eslint-disable-next-line
-  const ChangeFeedback = (event) => {
-    setFeedback(event.target.value);
-  };
   const ChangeManager = (event) => {
     setManager(event.target.value);
     const SalesPersons = Manager2.filter(function (el) {
@@ -202,7 +198,7 @@ const AddLeadComponent = () => {
     LeadData.append("language", LanguagePrefered);
     LeadData.append("leadStatus", LeadStatus);
     LeadData.append("leadSource", LeadSource);
-    LeadData.append("feedback", Feedback);
+    LeadData.append("feedback", "New");
     LeadData.append("notes", LeadNotes);
     if (User?.role === 1 || User?.role === 3) {
       LeadData.append("assignedToManager", Manager);
@@ -240,6 +236,7 @@ const AddLeadComponent = () => {
           progress: undefined,
           theme: "light",
         });
+        fetchSidebarData();
         setLeadName("");
         setLeadContact("");
         setLeadEmail("");
@@ -249,7 +246,6 @@ const AddLeadComponent = () => {
         setForType("");
         setLanguagePrefered("");
         setLeadSource("");
-        setFeedback("");
         setLeadNotes("");
         setManager("");
         setSalesPerson2("");
@@ -272,6 +268,7 @@ const AddLeadComponent = () => {
   };
 
   useEffect(() => {
+    setpageloading(true);
     const token = localStorage.getItem("auth-token");
     axios
       .get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
@@ -296,6 +293,7 @@ const AddLeadComponent = () => {
       })
       .catch((err) => {
         console.log(err);
+        setpageloading(false);
       });
     // eslint-disable-next-line
   }, []);
@@ -689,7 +687,9 @@ const AddLeadComponent = () => {
                               </MenuItem>
                               <MenuItem value={"Campaign"}>Campaign</MenuItem>
                               <MenuItem value={"Personal"}>Personal</MenuItem>
-                              <MenuItem value={"Cold"}>Cold</MenuItem>
+                              <MenuItem value={"Whatsapp"}>Whatsapp</MenuItem>
+                              <MenuItem value={"Comment"}>Comment</MenuItem>
+                              <MenuItem value={"Message"}>Message</MenuItem>
                               <MenuItem value={"Campaign Snapchat"}>
                                 Campaign Snapchat
                               </MenuItem>

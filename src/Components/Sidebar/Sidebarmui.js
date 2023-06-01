@@ -60,59 +60,14 @@ const Sidebarmui = () => {
     setSalesPerson,
     setManagers,
     setAppLoading,
+    fetchSidebarData, 
+    sidebarData
   } = useStateContext();
-  const [LeadsCount, setLeadsCount] = useState(false);
-  const [HotLeadsCount, setHotLeadsCount] = useState();
-  const [ColdLeadsCount, setColdLeadsCount] = useState();
-  const [PersonalLeadsCount, setPersonalLeadsCount] = useState();
-  const [ThirdPartLeadsCount, setThirdPartyLeadsCount] = useState();
-  const [UnassignedLeadsCount, setUnassignedLeadsCount] = useState();
-  const [WarmLeadCount, setWarmLeadCount] = useState();
-  const [loading, setloading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fetchData = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      const response = await axios.get(`${BACKEND_URL}/sidebar/1`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      console.log("Response:::", response);
-      setHotLeadsCount(response.data.data["HOT LEADS"]);
-      setColdLeadsCount(response.data.data["COLD LEADS"]);
-      setPersonalLeadsCount(response.data.data["PERSONAL LEADS"]);
-      setThirdPartyLeadsCount(response.data.data["THIRD PARTY LEADS"]);
-      setUnassignedLeadsCount(response.data.data["UNASSIGNED LEADS"]);
-      setWarmLeadCount(response.data.data["WARM LEADS"]);
-      setLeadsCount(true);
-    } catch (error) {
-      console.log(error);
-
-      if (error.response?.status === 401) {
-        setopenBackDrop(false);
-        setloading(false);
-
-        localStorage.removeItem("auth-token");
-        localStorage.removeItem("user");
-        localStorage.removeItem("leadsData");
-        navigate("/", {
-          state: {
-            error: "Please login to proceed.",
-            continueURL: location.pathname,
-          },
-        });
-        return;
-      }
-    }
-  };
-
   useEffect(() => {
-    fetchData();
+    fetchSidebarData();
   }, []);
 
   //  DATA
@@ -142,42 +97,42 @@ const Sidebarmui = () => {
   //         submenu: [
   //           {
   //             name: "All",
-  //             count: HotLeadsCount?.hot,
+  //             count: sidebarData?.HotLeadsCount?.hot,
   //             link: "/hotleads/all",
   //           },
   //           {
   //             name: "New",
-  //             count: HotLeadsCount?.new,
+  //             count: sidebarData?.HotLeadsCount?.new,
   //             link: "/hotleads/new",
   //           },
   //           {
   //             name: "No Answer",
-  //             count: HotLeadsCount?.no_nswer,
+  //             count: sidebarData?.HotLeadsCount?.no_nswer,
   //             link: "/hotleads/no answer",
   //           },
   //           {
   //             name: "Meeting",
-  //             count: HotLeadsCount?.Meeting,
+  //             count: sidebarData?.HotLeadsCount?.Meeting,
   //             link: "/hotleads/meeting",
   //           },
   //           {
   //             name: "Follow Up",
-  //             count: HotLeadsCount?.follow_up,
+  //             count: sidebarData?.HotLeadsCount?.follow_up,
   //             link: "/hotleads/follow up",
   //           },
   //           {
   //             name: "Low Budget",
-  //             count: HotLeadsCount?.low_budget,
+  //             count: sidebarData?.HotLeadsCount?.low_budget,
   //             link: "/hotleads/low budget",
   //           },
   //           {
   //             name: "Not Interested",
-  //             count: HotLeadsCount?.not_interested,
+  //             count: sidebarData?.HotLeadsCount?.not_interested,
   //             link: "/hotleads/not interested",
   //           },
   //           {
   //             name: "Unreachable",
-  //             count: HotLeadsCount?.unreachable,
+  //             count: sidebarData?.HotLeadsCount?.unreachable,
   //             link: "/hotleads/unreachable",
   //           },
   //         ],
@@ -188,42 +143,42 @@ const Sidebarmui = () => {
   //         submenu: [
   //           {
   //             name: "All",
-  //             count: PersonalLeadsCount?.all,
+  //             count: sidebarData?.PersonalLeadsCount?.all,
   //             link: "/personalleads/all",
   //           },
   //           {
   //             name: "New",
-  //             count: PersonalLeadsCount?.new,
+  //             count: sidebarData?.PersonalLeadsCount?.new,
   //             link: "/personalleads/new",
   //           },
   //           {
   //             name: "No Answer",
-  //             count: PersonalLeadsCount?.no_nswer,
+  //             count: sidebarData?.PersonalLeadsCount?.no_nswer,
   //             link: "/personalleads/no answer",
   //           },
   //           {
   //             name: "Meeting",
-  //             count: PersonalLeadsCount?.Meeting,
+  //             count: sidebarData?.PersonalLeadsCount?.Meeting,
   //             link: "/personalleads/meeting",
   //           },
   //           {
   //             name: "Follow Up",
-  //             count: PersonalLeadsCount?.follow_up,
+  //             count: sidebarData?.PersonalLeadsCount?.follow_up,
   //             link: "/personalleads/follow up",
   //           },
   //           {
   //             name: "Low Budget",
-  //             count: PersonalLeadsCount?.low_budget,
+  //             count: sidebarData?.PersonalLeadsCount?.low_budget,
   //             link: "/personalleads/low budget",
   //           },
   //           {
   //             name: "Not Interested",
-  //             count: PersonalLeadsCount?.not_interested,
+  //             count: sidebarData?.PersonalLeadsCount?.not_interested,
   //             link: "/personalleads/not interested",
   //           },
   //           {
   //             name: "Unreachable",
-  //             count: PersonalLeadsCount?.unreachable,
+  //             count: sidebarData?.PersonalLeadsCount?.unreachable,
   //             link: "/personalleads/unreachable",
   //           },
   //         ],
@@ -234,42 +189,42 @@ const Sidebarmui = () => {
   //         submenu: [
   //           {
   //             name: "All",
-  //             count: ThirdPartLeadsCount?.all,
+  //             count: sidebarData?.ThirdPartyLeadsCount?.all,
   //             link: "/thirdpartyleads/all",
   //           },
   //           {
   //             name: "New",
-  //             count: ThirdPartLeadsCount?.new,
+  //             count: sidebarData?.ThirdPartyLeadsCount?.new,
   //             link: "/thirdpartyleads/new",
   //           },
   //           {
   //             name: "No Answer",
-  //             count: ThirdPartLeadsCount?.no_nswer,
+  //             count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
   //             link: "/thirdpartyleads/no answer",
   //           },
   //           {
   //             name: "Meeting",
-  //             count: ThirdPartLeadsCount?.Meeting,
+  //             count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
   //             link: "/thirdpartyleads/meeting",
   //           },
   //           {
   //             name: "Follow Up",
-  //             count: ThirdPartLeadsCount?.follow_up,
+  //             count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
   //             link: "/thirdpartyleads/follow up",
   //           },
   //           {
   //             name: "Low Budget",
-  //             count: ThirdPartLeadsCount?.low_budget,
+  //             count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
   //             link: "/thirdpartyleads/low budget",
   //           },
   //           {
   //             name: "Not Interested ",
-  //             count: ThirdPartLeadsCount?.not_interested,
+  //             count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
   //             link: "/thirdpartyleads/not interested",
   //           },
   //           {
   //             name: "Unreachable",
-  //             count: ThirdPartLeadsCount?.unreachable,
+  //             count: sidebarData?.ThirdPartyLeadsCount?.unreachable,
   //             link: "/thirdpartyleads/unreachable",
   //           },
   //         ],
@@ -280,60 +235,60 @@ const Sidebarmui = () => {
   //         submenu: [
   //           {
   //             name: "All",
-  //             count: ColdLeadsCount?.all,
+  //             count: sidebarData?.ColdLeadsCount?.all,
   //             link: "/coldleads/all",
   //           },
   //           {
   //             name: "New",
-  //             count: ColdLeadsCount?.new,
+  //             count: sidebarData?.ColdLeadsCount?.new,
   //             link: "/coldleads/new",
   //           },
   //           {
   //             name: "Cold: Verified",
-  //             count: ColdLeadsCount?.verified, //TODO
+  //             count: sidebarData?.ColdLeadsCount?.verified, //TODO
   //             link: "/coldleads/coldLeadsVerified",
   //           },
   //           {
   //             name: "Cold: Invalid",
-  //             count: ColdLeadsCount?.unverified, //TODO
+  //             count: sidebarData?.ColdLeadsCount?.unverified, //TODO
   //             link: "/coldleads/coldLeadsInvalid",
   //           },
   //           {
   //             name: "Cold: Not Checked",
-  //             count: ColdLeadsCount?.unchecked, //TODO
+  //             count: sidebarData?.ColdLeadsCount?.unchecked, //TODO
   //             link: "/coldleads/coldLeadsNotChecked",
   //           },
 
   //           {
   //             name: "No Answer",
-  //             count: ColdLeadsCount?.no_nswer,
+  //             count: sidebarData?.ColdLeadsCount?.no_nswer,
   //             link: "/coldleads/no answer",
   //           },
   //           {
   //             name: "Meeting",
-  //             count: ColdLeadsCount?.Meeting,
+  //             count: sidebarData?.ColdLeadsCount?.Meeting,
   //             link: "/coldleads/meeting",
   //           },
   //           {
   //             name: "Follow Up",
-  //             count: ColdLeadsCount?.follow_up,
+  //             count: sidebarData?.ColdLeadsCount?.follow_up,
   //             link: "/coldleads/follow up",
   //           },
   //           {
   //             name: "Low Budget",
-  //             count: ColdLeadsCount?.low_budget,
+  //             count: sidebarData?.ColdLeadsCount?.low_budget,
   //             link: "/coldleads/low budget",
   //           },
   //           {
   //             name: "Not Interested  ",
-  //             count: ColdLeadsCount?.not_interested
-  //               ? ColdLeadsCount?.not_interested
+  //             count: sidebarData?.ColdLeadsCount?.not_interested
+  //               ? sidebarData?.ColdLeadsCount?.not_interested
   //               : "0",
   //             link: "/coldleads/not interested",
   //           },
   //           {
   //             name: "Unreachable",
-  //             count: ColdLeadsCount?.unreachable,
+  //             count: sidebarData?.ColdLeadsCount?.unreachable,
   //             link: "/coldleads/unreachable",
   //           },
   //         ],
@@ -349,12 +304,12 @@ const Sidebarmui = () => {
   //         submenu: [
   //           {
   //             name: "Hot leads",
-  //             count: UnassignedLeadsCount?.hot,
+  //             count: sidebarData?.UnassignedLeadsCount?.hot,
   //             link: "/unassigned/fresh",
   //           },
   //           {
   //             name: "Cold leads",
-  //             count: UnassignedLeadsCount?.cold,
+  //             count: sidebarData?.UnassignedLeadsCount?.cold,
   //             link: "/unassigned/cold",
   //           },
   //         ],
@@ -500,42 +455,42 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: HotLeadsCount?.all,
+              count: sidebarData?.HotLeadsCount?.all,
               link: "/hotleads/all",
             },
             {
               name: "New",
-              count: HotLeadsCount?.new,
+              count: sidebarData?.HotLeadsCount?.new,
               link: "/hotleads/new",
             },
             {
               name: "No Answer",
-              count: HotLeadsCount?.no_nswer,
+              count: sidebarData?.HotLeadsCount?.no_nswer,
               link: "/hotleads/no answer",
             },
             {
               name: "Meeting",
-              count: HotLeadsCount?.Meeting,
+              count: sidebarData?.HotLeadsCount?.Meeting,
               link: "/hotleads/meeting",
             },
             {
               name: "Follow Up",
-              count: HotLeadsCount?.follow_up,
+              count: sidebarData?.HotLeadsCount?.follow_up,
               link: "/hotleads/follow up",
             },
             {
               name: "Low Budget",
-              count: HotLeadsCount?.low_budget,
+              count: sidebarData?.HotLeadsCount?.low_budget,
               link: "/hotleads/low budget",
             },
             {
               name: "Not Interested",
-              count: HotLeadsCount?.not_interested,
+              count: sidebarData?.HotLeadsCount?.not_interested,
               link: "/hotleads/not interested",
             },
             {
               name: "Unreachable",
-              count: HotLeadsCount?.unreachable,
+              count: sidebarData?.HotLeadsCount?.unreachable,
               link: "/hotleads/unreachable",
             },
           ],
@@ -546,42 +501,42 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: PersonalLeadsCount?.all,
+              count: sidebarData?.PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
               name: "New",
-              count: PersonalLeadsCount?.new,
+              count: sidebarData?.PersonalLeadsCount?.new,
               link: "/personalleads/new",
             },
             {
               name: "No Answer",
-              count: PersonalLeadsCount?.no_nswer,
+              count: sidebarData?.PersonalLeadsCount?.no_nswer,
               link: "/personalleads/no answer",
             },
             {
               name: "Meeting",
-              count: PersonalLeadsCount?.Meeting,
+              count: sidebarData?.PersonalLeadsCount?.Meeting,
               link: "/personalleads/meeting",
             },
             {
               name: "Follow Up",
-              count: PersonalLeadsCount?.follow_up,
+              count: sidebarData?.PersonalLeadsCount?.follow_up,
               link: "/personalleads/follow up",
             },
             {
               name: "Low Budget",
-              count: PersonalLeadsCount?.low_budget,
+              count: sidebarData?.PersonalLeadsCount?.low_budget,
               link: "/personalleads/low budget",
             },
             {
               name: "Not Interested",
-              count: PersonalLeadsCount?.not_interested,
+              count: sidebarData?.PersonalLeadsCount?.not_interested,
               link: "/personalleads/not interested",
             },
             {
               name: "Unreachable",
-              count: PersonalLeadsCount?.unreachable,
+              count: sidebarData?.PersonalLeadsCount?.unreachable,
               link: "/personalleads/unreachable",
             },
           ],
@@ -592,42 +547,42 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: ThirdPartLeadsCount?.all,
+              count: sidebarData?.ThirdPartyLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
               name: "New",
-              count: ThirdPartLeadsCount?.new,
+              count: sidebarData?.ThirdPartyLeadsCount?.new,
               link: "/thirdpartyleads/new",
             },
             {
               name: "No Answer",
-              count: ThirdPartLeadsCount?.no_nswer,
+              count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
               link: "/thirdpartyleads/no answer",
             },
             {
               name: "Meeting",
-              count: ThirdPartLeadsCount?.Meeting,
+              count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
               link: "/thirdpartyleads/meeting",
             },
             {
               name: "Follow Up",
-              count: ThirdPartLeadsCount?.follow_up,
+              count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
               link: "/thirdpartyleads/follow up",
             },
             {
               name: "Low Budget",
-              count: ThirdPartLeadsCount?.low_budget,
+              count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
               link: "/thirdpartyleads/low budget",
             },
             {
               name: "Not Interested",
-              count: ThirdPartLeadsCount?.not_interested,
+              count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
               link: "/thirdpartyleads/not interested",
             },
             {
               name: "Unreachable",
-              count: ThirdPartLeadsCount?.unreachable,
+              count: sidebarData?.ThirdPartyLeadsCount?.unreachable,
               link: "/thirdpartyleads/unreachable",
             },
           ],
@@ -638,43 +593,43 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: ColdLeadsCount?.all,
+              count: sidebarData?.ColdLeadsCount?.all,
               link: "/coldleads/all",
             },
             {
               name: "New",
-              count: ColdLeadsCount?.new,
+              count: sidebarData?.ColdLeadsCount?.new,
               link: "/coldleads/new",
             },
 
             {
               name: "No Answer",
-              count: ColdLeadsCount?.no_nswer,
+              count: sidebarData?.ColdLeadsCount?.no_nswer,
               link: "/coldleads/no answer",
             },
             {
               name: "Meeting",
-              count: ColdLeadsCount?.Meeting,
+              count: sidebarData?.ColdLeadsCount?.Meeting,
               link: "/coldleads/meeting",
             },
             {
               name: "Follow Up",
-              count: ColdLeadsCount?.follow_up,
+              count: sidebarData?.ColdLeadsCount?.follow_up,
               link: "/coldleads/follow up",
             },
             {
               name: "Low Budget",
-              count: ColdLeadsCount?.low_budget,
+              count: sidebarData?.ColdLeadsCount?.low_budget,
               link: "/coldleads/low budget",
             },
             {
               name: "Not Interested",
-              count: ColdLeadsCount?.not_interested,
+              count: sidebarData?.ColdLeadsCount?.not_interested,
               link: "/coldleads/not interested",
             },
             {
               name: "Unreachable",
-              count: ColdLeadsCount?.unreachable,
+              count: sidebarData?.ColdLeadsCount?.unreachable,
               link: "/coldleads/unreachable",
             },
           ],
@@ -798,57 +753,57 @@ const Sidebarmui = () => {
               // submenu: [
               //   {
               name: "Fresh Unassigned",
-              count: UnassignedLeadsCount?.hot,
+              count: sidebarData?.UnassignedLeadsCount?.hot,
               // count:
-              //   UnassignedLeadsCount?.new +
-              //   UnassignedLeadsCount?.no_nswer +
-              //   UnassignedLeadsCount?.Meeting +
-              //   UnassignedLeadsCount?.follow_up +
-              //   UnassignedLeadsCount?.low_budget +
-              //   UnassignedLeadsCount?.not_interested +
-              //   UnassignedLeadsCount?.unreachable,
+              //   sidebarData?.UnassignedLeadsCount?.new +
+              //   sidebarData?.UnassignedLeadsCount?.no_nswer +
+              //   sidebarData?.UnassignedLeadsCount?.Meeting +
+              //   sidebarData?.UnassignedLeadsCount?.follow_up +
+              //   sidebarData?.UnassignedLeadsCount?.low_budget +
+              //   sidebarData?.UnassignedLeadsCount?.not_interested +
+              //   sidebarData?.UnassignedLeadsCount?.unreachable,
               link: "/unassigned/fresh",
             },
             {
               name: "New",
-              count: UnassignedLeadsCount?.new,
+              count: sidebarData?.UnassignedLeadsCount?.new,
               link: "/unassigned/new",
             },
             {
               name: "No Answer",
-              count: UnassignedLeadsCount?.no_nswer,
+              count: sidebarData?.UnassignedLeadsCount?.no_nswer,
               link: "/unassigned/no answer",
             },
             {
               name: "Meeting",
-              count: UnassignedLeadsCount?.Meeting,
+              count: sidebarData?.UnassignedLeadsCount?.Meeting,
               link: "/unassigned/meeting",
             },
             {
               name: "Follow Up",
-              count: UnassignedLeadsCount?.follow_up,
+              count: sidebarData?.UnassignedLeadsCount?.follow_up,
               link: "/unassigned/follow up",
             },
             {
               name: "Low Budget",
-              count: UnassignedLeadsCount?.low_budget,
+              count: sidebarData?.UnassignedLeadsCount?.low_budget,
               link: "/unassigned/low budget",
             },
             {
               name: "Not Interested",
-              count: UnassignedLeadsCount?.not_interested,
+              count: sidebarData?.UnassignedLeadsCount?.not_interested,
               link: "/unassigned/not interested",
             },
             {
               name: "Unreachable",
-              count: UnassignedLeadsCount?.unreachable,
+              count: sidebarData?.UnassignedLeadsCount?.unreachable,
               link: "/unassigned/unreachable",
             },
             // ],
             // },
             {
               name: "Cold Unassigned",
-              count: UnassignedLeadsCount?.cold,
+              count: sidebarData?.UnassignedLeadsCount?.cold,
               link: "/unassigned/cold",
             },
           ],
@@ -859,42 +814,42 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: HotLeadsCount?.hot,
+              count: sidebarData?.HotLeadsCount?.hot,
               link: "/hotleads/all",
             },
             {
               name: "New",
-              count: HotLeadsCount?.new,
+              count: sidebarData?.HotLeadsCount?.new,
               link: "/hotleads/new",
             },
             {
               name: "No Answer",
-              count: HotLeadsCount?.no_nswer,
+              count: sidebarData?.HotLeadsCount?.no_nswer,
               link: "/hotleads/no answer",
             },
             {
               name: "Meeting",
-              count: HotLeadsCount?.Meeting,
+              count: sidebarData?.HotLeadsCount?.Meeting,
               link: "/hotleads/meeting",
             },
             {
               name: "Follow Up",
-              count: HotLeadsCount?.follow_up,
+              count: sidebarData?.HotLeadsCount?.follow_up,
               link: "/hotleads/follow up",
             },
             {
               name: "Low Budget",
-              count: HotLeadsCount?.low_budget,
+              count: sidebarData?.HotLeadsCount?.low_budget,
               link: "/hotleads/low budget",
             },
             {
               name: "Not Interested",
-              count: HotLeadsCount?.not_interested,
+              count: sidebarData?.HotLeadsCount?.not_interested,
               link: "/hotleads/not interested",
             },
             {
               name: "Unreachable",
-              count: HotLeadsCount?.unreachable,
+              count: sidebarData?.HotLeadsCount?.unreachable,
               link: "/hotleads/unreachable",
             },
           ],
@@ -905,42 +860,42 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: PersonalLeadsCount?.all,
+              count: sidebarData?.PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
               name: "New",
-              count: PersonalLeadsCount?.new,
+              count: sidebarData?.PersonalLeadsCount?.new,
               link: "/personalleads/new",
             },
             {
               name: "No Answer",
-              count: PersonalLeadsCount?.no_nswer,
+              count: sidebarData?.PersonalLeadsCount?.no_nswer,
               link: "/personalleads/no answer",
             },
             {
               name: "Meeting",
-              count: PersonalLeadsCount?.Meeting,
+              count: sidebarData?.PersonalLeadsCount?.Meeting,
               link: "/personalleads/meeting",
             },
             {
               name: "Follow Up",
-              count: PersonalLeadsCount?.follow_up,
+              count: sidebarData?.PersonalLeadsCount?.follow_up,
               link: "/personalleads/follow up",
             },
             {
               name: "Low Budget",
-              count: PersonalLeadsCount?.low_budget,
+              count: sidebarData?.PersonalLeadsCount?.low_budget,
               link: "/personalleads/low budget",
             },
             {
               name: "Not Interested",
-              count: PersonalLeadsCount?.not_interested,
+              count: sidebarData?.PersonalLeadsCount?.not_interested,
               link: "/personalleads/not interested",
             },
             {
               name: "Unreachable",
-              count: PersonalLeadsCount?.unreachable,
+              count: sidebarData?.PersonalLeadsCount?.unreachable,
               link: "/personalleads/unreachable",
             },
           ],
@@ -951,42 +906,42 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: ThirdPartLeadsCount?.all,
+              count: sidebarData?.ThirdPartyLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
               name: "New",
-              count: ThirdPartLeadsCount?.new,
+              count: sidebarData?.ThirdPartyLeadsCount?.new,
               link: "/thirdpartyleads/new",
             },
             {
               name: "No Answer",
-              count: ThirdPartLeadsCount?.no_nswer,
+              count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
               link: "/thirdpartyleads/no answer",
             },
             {
               name: "Meeting",
-              count: ThirdPartLeadsCount?.Meeting,
+              count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
               link: "/thirdpartyleads/meeting",
             },
             {
               name: "Follow Up",
-              count: ThirdPartLeadsCount?.follow_up,
+              count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
               link: "/thirdpartyleads/follow up",
             },
             {
               name: "Low Budget",
-              count: ThirdPartLeadsCount?.low_budget,
+              count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
               link: "/thirdpartyleads/low budget",
             },
             {
               name: "Not Interested",
-              count: ThirdPartLeadsCount?.not_interested,
+              count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
               link: "/thirdpartyleads/not interested",
             },
             {
               name: "Unreachable",
-              count: ThirdPartLeadsCount?.unreachable,
+              count: sidebarData?.ThirdPartyLeadsCount?.unreachable,
               link: "/thirdpartyleads/unreachable",
             },
           ],
@@ -997,43 +952,43 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: ColdLeadsCount?.hot,
+              count: sidebarData?.ColdLeadsCount?.hot,
               link: "/coldleads/all",
             },
             {
               name: "New",
-              count: ColdLeadsCount?.new,
+              count: sidebarData?.ColdLeadsCount?.new,
               link: "/coldleads/new",
             },
 
             {
               name: "No Answer",
-              count: ColdLeadsCount?.no_nswer,
+              count: sidebarData?.ColdLeadsCount?.no_nswer,
               link: "/coldleads/no answer",
             },
             {
               name: "Meeting",
-              count: ColdLeadsCount?.Meeting,
+              count: sidebarData?.ColdLeadsCount?.Meeting,
               link: "/coldleads/meeting",
             },
             {
               name: "Follow Up",
-              count: ColdLeadsCount?.follow_up,
+              count: sidebarData?.ColdLeadsCount?.follow_up,
               link: "/coldleads/follow up",
             },
             {
               name: "Low Budget",
-              count: ColdLeadsCount?.low_budget,
+              count: sidebarData?.ColdLeadsCount?.low_budget,
               link: "/coldleads/low budget",
             },
             {
               name: "Not Interested",
-              count: ColdLeadsCount?.not_interested,
+              count: sidebarData?.ColdLeadsCount?.not_interested,
               link: "/coldleads/not interested",
             },
             {
               name: "Unreachable",
-              count: ColdLeadsCount?.unreachable,
+              count: sidebarData?.ColdLeadsCount?.unreachable,
               link: "/coldleads/unreachable",
             },
           ],
@@ -1393,42 +1348,42 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: HotLeadsCount?.hot,
+              count: sidebarData?.HotLeadsCount?.hot,
               link: "/hotleads/all",
             },
             {
               name: "New",
-              count: HotLeadsCount?.new,
+              count: sidebarData?.HotLeadsCount?.new,
               link: "/hotleads/new",
             },
             {
               name: "No Answer",
-              count: HotLeadsCount?.no_nswer,
+              count: sidebarData?.HotLeadsCount?.no_nswer,
               link: "/hotleads/no answer",
             },
             {
               name: "Meeting",
-              count: HotLeadsCount?.Meeting,
+              count: sidebarData?.HotLeadsCount?.Meeting,
               link: "/hotleads/meeting",
             },
             {
               name: "Follow Up",
-              count: HotLeadsCount?.follow_up,
+              count: sidebarData?.HotLeadsCount?.follow_up,
               link: "/hotleads/follow up",
             },
             {
               name: "Low Budget",
-              count: HotLeadsCount?.low_budget,
+              count: sidebarData?.HotLeadsCount?.low_budget,
               link: "/hotleads/low budget",
             },
             {
               name: "Not Interested",
-              count: HotLeadsCount?.not_interested,
+              count: sidebarData?.HotLeadsCount?.not_interested,
               link: "/hotleads/not interested",
             },
             {
               name: "Unreachable",
-              count: HotLeadsCount?.unreachable,
+              count: sidebarData?.HotLeadsCount?.unreachable,
               link: "/hotleads/unreachable",
             },
           ],
@@ -1439,42 +1394,42 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: PersonalLeadsCount?.all,
+              count: sidebarData?.PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
               name: "New",
-              count: PersonalLeadsCount?.new,
+              count: sidebarData?.PersonalLeadsCount?.new,
               link: "/personalleads/new",
             },
             {
               name: "No Answer",
-              count: PersonalLeadsCount?.no_nswer,
+              count: sidebarData?.PersonalLeadsCount?.no_nswer,
               link: "/personalleads/no answer",
             },
             {
               name: "Meeting",
-              count: PersonalLeadsCount?.Meeting,
+              count: sidebarData?.PersonalLeadsCount?.Meeting,
               link: "/personalleads/meeting",
             },
             {
               name: "Follow Up",
-              count: PersonalLeadsCount?.follow_up,
+              count: sidebarData?.PersonalLeadsCount?.follow_up,
               link: "/personalleads/follow up",
             },
             {
               name: "Low Budget",
-              count: PersonalLeadsCount?.low_budget,
+              count: sidebarData?.PersonalLeadsCount?.low_budget,
               link: "/personalleads/low budget",
             },
             {
               name: "Not Interested",
-              count: PersonalLeadsCount?.not_interested,
+              count: sidebarData?.PersonalLeadsCount?.not_interested,
               link: "/personalleads/not interested",
             },
             {
               name: "Unreachable",
-              count: PersonalLeadsCount?.unreachable,
+              count: sidebarData?.PersonalLeadsCount?.unreachable,
               link: "/personalleads/unreachable",
             },
           ],
@@ -1485,42 +1440,42 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: ThirdPartLeadsCount?.all,
+              count: sidebarData?.ThirdPartyLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
               name: "New",
-              count: ThirdPartLeadsCount?.new,
+              count: sidebarData?.ThirdPartyLeadsCount?.new,
               link: "/thirdpartyleads/new",
             },
             {
               name: "No Answer",
-              count: ThirdPartLeadsCount?.no_nswer,
+              count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
               link: "/thirdpartyleads/no answer",
             },
             {
               name: "Meeting",
-              count: ThirdPartLeadsCount?.Meeting,
+              count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
               link: "/thirdpartyleads/meeting",
             },
             {
               name: "Follow Up",
-              count: ThirdPartLeadsCount?.follow_up,
+              count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
               link: "/thirdpartyleads/follow up",
             },
             {
               name: "Low Budget",
-              count: ThirdPartLeadsCount?.low_budget,
+              count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
               link: "/thirdpartyleads/low budget",
             },
             {
               name: "Not Interested",
-              count: ThirdPartLeadsCount?.not_interested,
+              count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
               link: "/thirdpartyleads/not interested",
             },
             {
               name: "Unreachable",
-              count: ThirdPartLeadsCount?.unreachable,
+              count: sidebarData?.ThirdPartyLeadsCount?.unreachable,
               link: "/thirdpartyleads/unreachable",
             },
           ],
@@ -1531,63 +1486,63 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All",
-              count: ColdLeadsCount?.all,
+              count: sidebarData?.ColdLeadsCount?.all,
               link: "/coldleads/all",
             },
             {
               name: "New",
-              count: ColdLeadsCount?.new,
+              count: sidebarData?.ColdLeadsCount?.new,
               link: "/coldleads/new",
             },
             {
               name: "Verified",
-              count: ColdLeadsCount?.verified, //TODO
+              count: sidebarData?.ColdLeadsCount?.verified, //TODO
               link: "/coldleads/coldLeadsVerified",
               icon: <RiRadioButtonLine style={{ color: "green" }} />,
               countColor: "#008000",
             },
             {
               name: "Invalid",
-              count: ColdLeadsCount?.unverified, //TODO
+              count: sidebarData?.ColdLeadsCount?.unverified, //TODO
               link: "/coldleads/coldLeadsInvalid",
               icon: <RiRadioButtonLine style={{ color: "red" }} />,
               countColor: "#FF0000",
             },
             {
               name: "Not Checked",
-              count: ColdLeadsCount?.unchecked, //TODO
+              count: sidebarData?.ColdLeadsCount?.unchecked, //TODO
               link: "/coldleads/coldLeadsNotChecked",
               icon: <RiRadioButtonLine style={{ color: "orange" }} />,
               countColor: "#FFA500",
             },
             {
               name: "No Answer",
-              count: ColdLeadsCount?.no_nswer,
+              count: sidebarData?.ColdLeadsCount?.no_nswer,
               link: "/coldleads/no answer",
             },
             {
               name: "Meeting",
-              count: ColdLeadsCount?.Meeting,
+              count: sidebarData?.ColdLeadsCount?.Meeting,
               link: "/coldleads/meeting",
             },
             {
               name: "Follow Up",
-              count: ColdLeadsCount?.follow_up,
+              count: sidebarData?.ColdLeadsCount?.follow_up,
               link: "/coldleads/follow up",
             },
             {
               name: "Low Budget",
-              count: ColdLeadsCount?.low_budget,
+              count: sidebarData?.ColdLeadsCount?.low_budget,
               link: "/coldleads/low budget",
             },
             {
               name: "Not Interested",
-              count: ColdLeadsCount?.not_interested,
+              count: sidebarData?.ColdLeadsCount?.not_interested,
               link: "/coldleads/not interested",
             },
             {
               name: "Unreachable",
-              count: ColdLeadsCount?.unreachable,
+              count: sidebarData?.ColdLeadsCount?.unreachable,
               link: "/coldleads/unreachable",
             },
           ],
@@ -1603,17 +1558,17 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "Hot leads",
-              count: UnassignedLeadsCount?.hot,
+              count: sidebarData?.UnassignedLeadsCount?.hot,
               link: "/unassigned/fresh",
             },
             {
               name: "Cold leads",
-              count: UnassignedLeadsCount?.cold,
+              count: sidebarData?.UnassignedLeadsCount?.cold,
               link: "/unassigned/cold",
             },
             {
               name: "Warm leads",
-              count: UnassignedLeadsCount?.warm,
+              count: sidebarData?.UnassignedLeadsCount?.warm,
               link: "/unassigned/warm",
             },
           ],
@@ -1624,42 +1579,42 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "All Leads",
-              count: WarmLeadCount?.all,
+              count: sidebarData?.WarmLeadCount?.all,
               link: "/warmleads/all",
             },
             {
               name: "New Leads",
-              count: WarmLeadCount?.new,
+              count: sidebarData?.WarmLeadCount?.new,
               link: "/warmleads/new",
             },
             {
               name: "No Answer",
-              count: WarmLeadCount?.no_nswer,
+              count: sidebarData?.WarmLeadCount?.no_nswer,
               link: "/warmleads/no answer",
             },
             {
               name: "Meeting",
-              count: WarmLeadCount?.Meeting,
+              count: sidebarData?.WarmLeadCount?.Meeting,
               link: "/warmleads/meeting",
             },
             {
               name: "Follow Up",
-              count: WarmLeadCount?.follow_up,
+              count: sidebarData?.WarmLeadCount?.follow_up,
               link: "/warmleads/follow up",
             },
             {
               name: "Low Budget",
-              count: WarmLeadCount?.low_budget,
+              count: sidebarData?.WarmLeadCount?.low_budget,
               link: "/warmleads/low budget",
             },
             {
               name: "Not Intrested",
-              count: WarmLeadCount?.not_interested,
+              count: sidebarData?.WarmLeadCount?.not_interested,
               link: "/warmleads/not interested",
             },
             {
               name: "Unreachable",
-              count: WarmLeadCount?.unreachable,
+              count: sidebarData?.WarmLeadCount?.unreachable,
               link: "/warmleads/unreachable",
             },
           ],
