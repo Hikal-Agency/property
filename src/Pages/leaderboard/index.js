@@ -76,21 +76,21 @@ const Leaderboard = () => {
                       variant="standard"
                       className="w-full px-1 m-1"
                     >
-                      <Tab label="Closed Deals" />
                       <Tab label="Call Logs" />
+                      <Tab label="Closed Deals" />
                       <Tab label="Target" />
                     </Tabs>
                   </Box>
                   <div className="mt-3 pb-3">
                     <TabPanel value={value} index={0}>
-                      <ClosedDealsBoard
+                      <CallLogBoard
                         isLoading={loading}
                         tabValue={tabValue}
                         setTabValue={setTabValue}
                       />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                      <CallLogBoard
+                      <ClosedDealsBoard
                         isLoading={loading}
                         tabValue={tabValue}
                         setTabValue={setTabValue}
