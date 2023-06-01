@@ -399,7 +399,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
     setUserData(data);
     setMaxPage(Math.ceil(total / pageSize));
     setLoading(isLoading);
-  }, [pageState]);
+  }, [pageState.page]);
 
   return (
     <>
@@ -473,6 +473,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
                   return (
                     <PaginationItem
                       {...item}
+                      // page={pageState.page}
                       sx={{
                         color: isEllipsis
                           ? currentMode === "dark"

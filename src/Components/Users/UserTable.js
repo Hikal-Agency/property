@@ -116,10 +116,12 @@ const UserTable = ({ user }) => {
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [singleUser, setSingleUserData] = useState({});
   const [userID, setUserId] = useState();
+  const [currentPage, setCurrentPage] = useState();
   const token = localStorage.getItem("auth-token");
 
   const handlePageChange = (event, value) => {
     setpageState({ ...pageState, page: value });
+    setCurrentPage();
   };
 
   const handleModel = (id) => {
@@ -158,6 +160,7 @@ const UserTable = ({ user }) => {
         );
         setUserData(response.data?.managers?.data);
         setMaxPage(response.data?.managers?.last_page);
+        setCurrentPage(response.data?.managers?.currentPage);
       } catch (error) {
         console.error("Error fetching users:", error);
       } finally {
@@ -319,6 +322,7 @@ const UserTable = ({ user }) => {
                 // color={currentMode === "dark" ? "primary" : "secondary"}
                 onChange={handlePageChange}
                 style={{ margin: "auto" }}
+                page={pageState.page}
                 sx={{
                   "& .Mui-selected": {
                     color: "white",
