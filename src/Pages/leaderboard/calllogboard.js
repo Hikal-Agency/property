@@ -141,7 +141,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
             <Loader />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
-              {calldata.map((call, index) => {
+              {/* {calldata.map((call, index) => {
                 return (
                   <div
                     className={`${
@@ -227,7 +227,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     </div>
                   </div>
                 );
-              })}
+              })} */}
               <div
                 className={`${
                   currentMode === "dark"
@@ -321,7 +321,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
             <Loader />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
-              {calldata.map((call, index) => {
+              {/* {calldata.map((call, index) => {
                 return (
                   <div
                     className={`${
@@ -407,7 +407,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     </div>
                   </div>
                 );
-              })}
+              })} */}
               <div
                 className={`${
                   currentMode === "dark"
@@ -501,7 +501,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
             <Loader />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
-              {calldata.map((call, index) => {
+              {/* {calldata.map((call, index) => {
                 return (
                   <div
                     className={`${
@@ -587,7 +587,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     </div>
                   </div>
                 );
-              })}
+              })} */}
               <div
                 className={`${
                   currentMode === "dark"
