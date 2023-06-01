@@ -5,10 +5,12 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import Loader from "../../Components/Loader";
 
 const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
 
+  const [loading, setLoading] = useState(false);
   const [leaderboard, setLeaderboard] = useState();
   const [manager, setManagers] = useState();
   const [agents, setAgents] = useState();
@@ -18,6 +20,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
   console.log("Manager here: ", manager);
   console.log("Agents here: ", agents);
   const FetchLeaderboard = async (token) => {
+    setLoading(true);
     let apiUrl =
       tabValue === 0
         ? "leaderboard"
@@ -70,8 +73,11 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
       setAgents(agents);
       setManagers(managers);
 
+      setLoading(false);
+
       //   console.log("total deals & sales: ", { total_sales, total_closed_deals });
     } catch (error) {
+      setLoading(false);
       console.log("Leaderboard not fetched. ", error);
       toast.error("Unable to fetch leaderboard data.", {
         position: "top-right",
@@ -171,187 +177,199 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
         }
       >
         {/* ALL-TIME */}
-        <TabPanel
-          value={tabValue}
-          index={0}
-          className="h-[100px] overflow-y-scroll"
-        >
-          <div className="mb-10 mx-3">
-            <h1
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-dark"
-              }  font-semibold text-center`}
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <TabPanel
+              value={tabValue}
+              index={0}
+              className="h-[100px] overflow-y-scroll"
             >
-              <span className="font-bold">{count?.total_closed_deals}</span>
-              &nbsp;&nbsp;Closed Deals of&nbsp;
-              <span className="font-bold">AED {count?.total_sales}</span>
-            </h1>
-          </div>
-          <div
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-black"
-            } p-3 rounded-md`}
-          >
-            <div
-              className={`${
-                currentMode === "dark" ? "text-red-600" : "text-red-500"
-              } text-xl font-bold`}
-            >
-              Sales Manager
-            </div>
-            <div className="h-[300px] overflow-y-scroll">
-              {manager?.length > 0 ? (
-                manager?.map((item, index) => {
-                  const barWidth = `${item.total_closed_deals}%`;
+              <div className="mb-10 mx-3">
+                <h1
+                  className={`${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  }  font-semibold text-center`}
+                >
+                  <span className="font-bold">{count?.total_closed_deals}</span>
+                  &nbsp;&nbsp;Closed Deals of&nbsp;
+                  <span className="font-bold">AED {count?.total_sales}</span>
+                </h1>
+              </div>
+              <div
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                } p-3 rounded-md`}
+              >
+                <div
+                  className={`${
+                    currentMode === "dark" ? "text-red-600" : "text-red-500"
+                  } text-xl font-bold`}
+                >
+                  Sales Manager
+                </div>
+                <div className="h-[300px] overflow-y-scroll">
+                  {manager?.length > 0 ? (
+                    manager?.map((item, index) => {
+                      const barWidth = `${item.total_closed_deals}%`;
 
-                  const barColor =
-                    item.total_closed_deals >= 5 ? "bg-red-500" : "bg-gray-800";
+                      const barColor =
+                        item.total_closed_deals >= 5
+                          ? "bg-red-500"
+                          : "bg-gray-800";
 
-                  return (
-                    <div
-                      key={index}
-                      className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
-                    >
-                      <div className="col-span-2">
-                        <h4 className="font-bold my-1">{item?.userName}</h4>
-                      </div>
-                      <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                        <div className="relative flex-1">
-                          <div
-                            className={`absolute left-0 top-0 h-5 ${barColor}`}
-                            style={{ width: barWidth }}
-                          ></div>
-                          <div
-                            className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-dark-600"
-                            }`}
-                          >
-                            Total Closed Deals: {item?.total_closed_deals} /
-                            Direct deals:{" "}
-                            <span
-                              className={
-                                currentMode === "dark"
-                                  ? "text-white"
-                                  : "text-dark-600"
-                              }
-                            >
-                              {item?.total_sales || 0}
-                            </span>
+                      return (
+                        <div
+                          key={index}
+                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                        >
+                          <div className="col-span-2">
+                            <h4 className="font-bold my-1">{item?.userName}</h4>
                           </div>
+                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                            <div className="relative flex-1">
+                              <div
+                                className={`absolute left-0 top-0 h-5 ${barColor}`}
+                                style={{ width: barWidth }}
+                              ></div>
+                              <div
+                                className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-dark-600"
+                                }`}
+                              >
+                                Total Closed Deals: {item?.total_closed_deals} /
+                                Direct deals:{" "}
+                                <span
+                                  className={
+                                    currentMode === "dark"
+                                      ? "text-white"
+                                      : "text-dark-600"
+                                  }
+                                >
+                                  {item?.total_sales || 0}
+                                </span>
+                              </div>
+                            </div>
+                            <img
+                              src="/favicon.png"
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          </div>
+                          <div></div>
                         </div>
-                        <img
-                          src="/favicon.png"
-                          height={50}
-                          width={50}
-                          className="rounded-full cursor-pointer"
-                          alt=""
-                        />
+                      );
+                    })
+                  ) : (
+                    <h2>No data for this month.</h2>
+                  )}
+                </div>
+              </div>
+
+              <div
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                } p-3 rounded-md`}
+              >
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-red-600"
+                      : "text-main-red-color"
+                  } text-xl font-bold`}
+                >
+                  Sales Agent
+                </div>
+                <div className="h-[300px] overflow-y-scroll">
+                  {agents?.map((item, index) => {
+                    const barWidth = `${item.total_closed_deals}%`;
+
+                    const barColor =
+                      item.total_closed_deals >= 5
+                        ? "bg-red-500"
+                        : "bg-gray-800";
+
+                    return (
+                      <div
+                        key={index}
+                        className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                      >
+                        <div className="col-span-2">
+                          <h4 className="font-bold my-1">{item?.userName}</h4>
+                        </div>
+                        <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                          <div className="relative w-full">
+                            <div
+                              className={`absolute left-0 top-0 h-5 ${barColor}`}
+                              style={{ width: barWidth }}
+                            ></div>
+                            <div className="p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 relative z-10">
+                              Closed deals: {item?.total_closed_deals || 0}
+                            </div>
+                          </div>
+                          <img
+                            src="/favicon.png"
+                            height={50}
+                            width={50}
+                            className="rounded-full cursor-pointer"
+                            alt=""
+                          />
+                        </div>
+                        <div></div>
                       </div>
-                      <div></div>
-                    </div>
-                  );
-                })
-              ) : (
-                <h2>No data for this month.</h2>
-              )}
-            </div>
-          </div>
-
-          <div
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-black"
-            } p-3 rounded-md`}
-          >
-            <div
-              className={`${
-                currentMode === "dark" ? "text-red-600" : "text-main-red-color"
-              } text-xl font-bold`}
+                    );
+                  })}
+                </div>
+              </div>
+            </TabPanel>
+            <TabPanel
+              value={tabValue}
+              index={1}
+              className="h-[100px] overflow-y-scroll"
             >
-              Sales Agent
-            </div>
-            <div className="h-[300px] overflow-y-scroll">
-              {agents?.map((item, index) => {
-                const barWidth = `${item.total_closed_deals}%`;
-
-                const barColor =
-                  item.total_closed_deals >= 5 ? "bg-red-500" : "bg-gray-800";
-
-                return (
-                  <div
-                    key={index}
-                    className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
-                  >
-                    <div className="col-span-2">
-                      <h4 className="font-bold my-1">{item?.userName}</h4>
-                    </div>
-                    <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                      <div className="relative w-full">
+              <div className="mb-10 mx-3">
+                <h1
+                  className={`${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  }  font-semibold text-center`}
+                >
+                  <span className="font-bold">{count?.total_closed_deals}</span>
+                  &nbsp;&nbsp;Closed Deals of&nbsp;
+                  <span className="font-bold">AED {count?.total_sales}</span>
+                </h1>
+              </div>
+              <div
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                } p-3 rounded-md`}
+              >
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-red-600"
+                      : "text-main-red-color"
+                  } text-xl font-bold`}
+                >
+                  Sales Manager
+                </div>
+                <div className="h-[300px] overflow-y-scroll">
+                  {manager?.length > 0 ? (
+                    manager?.map((item, index) => {
+                      return (
                         <div
-                          className={`absolute left-0 top-0 h-5 ${barColor}`}
-                          style={{ width: barWidth }}
-                        ></div>
-                        <div className="p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 relative z-10">
-                          Closed deals: {item?.total_closed_deals || 0}
-                        </div>
-                      </div>
-                      <img
-                        src="/favicon.png"
-                        height={50}
-                        width={50}
-                        className="rounded-full cursor-pointer"
-                        alt=""
-                      />
-                    </div>
-                    <div></div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel
-          value={tabValue}
-          index={1}
-          className="h-[100px] overflow-y-scroll"
-        >
-          <div className="mb-10 mx-3">
-            <h1
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-dark"
-              }  font-semibold text-center`}
-            >
-              <span className="font-bold">{count?.total_closed_deals}</span>
-              &nbsp;&nbsp;Closed Deals of&nbsp;
-              <span className="font-bold">AED {count?.total_sales}</span>
-            </h1>
-          </div>
-          <div
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-black"
-            } p-3 rounded-md`}
-          >
-            <div
-              className={`${
-                currentMode === "dark" ? "text-red-600" : "text-main-red-color"
-              } text-xl font-bold`}
-            >
-              Sales Manager
-            </div>
-            <div className="h-[300px] overflow-y-scroll">
-              {manager?.length > 0 ? (
-                manager?.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
-                    >
-                      <div className="col-span-2">
-                        <h4 className="font-bold my-1">{item?.userName}</h4>
-                      </div>
-                      <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                        {/* {item.achieved >= item.target ? (
+                          key={index}
+                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                        >
+                          <div className="col-span-2">
+                            <h4 className="font-bold my-1">{item?.userName}</h4>
+                          </div>
+                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                            {/* {item.achieved >= item.target ? (
                         <span
                           className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
                         >
@@ -371,60 +389,62 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                       ) : (
                         <></>
                       )} */}
-                        <span
-                          className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
-                        >
-                          Total Closed Deals: {item?.total_closed_deals} /
-                          Direct deals: {item?.total_sales || 0}
-                        </span>
-                        <img
-                          src="/favicon.png"
-                          height={50}
-                          width={50}
-                          className="rounded-full cursor-pointer"
-                          alt=""
-                        />
-                      </div>
-                      <div></div>
-                    </div>
-                  );
-                })
-              ) : (
-                <h2
-                  className={`${
-                    currentMode === "dark" ? "text-white" : "text-dark"
-                  } text-xl font-bold mt-5`}
-                >
-                  No data for this month.
-                </h2>
-              )}
-            </div>
-          </div>
-          <div
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-black"
-            } p-3 rounded-md`}
-          >
-            <div
-              className={`${
-                currentMode === "dark" ? "text-red-600" : "text-main-red-color"
-              } text-xl font-bold`}
-            >
-              Sales Agent
-            </div>
-            <div className="h-[300px] overflow-y-scroll">
-              {agents?.length > 0 ? (
-                agents?.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                            <span
+                              className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
+                            >
+                              Total Closed Deals: {item?.total_closed_deals} /
+                              Direct deals: {item?.total_sales || 0}
+                            </span>
+                            <img
+                              src="/favicon.png"
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          </div>
+                          <div></div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <h2
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-dark"
+                      } text-xl font-bold mt-5`}
                     >
-                      <div className="col-span-2">
-                        <h4 className="font-bold my-1">{item?.userName}</h4>
-                      </div>
-                      <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                        {/* {item.achieved >= item.target ? (
+                      No data for this month.
+                    </h2>
+                  )}
+                </div>
+              </div>
+              <div
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                } p-3 rounded-md`}
+              >
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-red-600"
+                      : "text-main-red-color"
+                  } text-xl font-bold`}
+                >
+                  Sales Agent
+                </div>
+                <div className="h-[300px] overflow-y-scroll">
+                  {agents?.length > 0 ? (
+                    agents?.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                        >
+                          <div className="col-span-2">
+                            <h4 className="font-bold my-1">{item?.userName}</h4>
+                          </div>
+                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                            {/* {item.achieved >= item.target ? (
                         <span
                           className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
                         >
@@ -442,73 +462,75 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                       ) : (
                         <></>
                       )} */}
-                        <span
-                          className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
-                        >
-                          Closed deals: {item?.total_closed_deals || 0}
-                        </span>
-                        <img
-                          src="/favicon.png"
-                          height={50}
-                          width={50}
-                          className="rounded-full cursor-pointer"
-                          alt=""
-                        />
-                      </div>
-                      <div></div>
-                    </div>
-                  );
-                })
-              ) : (
-                <h2
+                            <span
+                              className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
+                            >
+                              Closed deals: {item?.total_closed_deals || 0}
+                            </span>
+                            <img
+                              src="/favicon.png"
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          </div>
+                          <div></div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <h2
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-dark"
+                      } text-xl font-bold mt-5`}
+                    >
+                      No data for this month.
+                    </h2>
+                  )}
+                </div>
+              </div>
+            </TabPanel>
+            {/* <TabPanel value={tabValue} index={1}></TabPanel> */}
+            <TabPanel value={tabValue} index={2}>
+              <div className="mb-10 mx-3">
+                <h1
                   className={`${
                     currentMode === "dark" ? "text-white" : "text-dark"
-                  } text-xl font-bold mt-5`}
+                  }  font-semibold text-center`}
                 >
-                  No data for this month.
-                </h2>
-              )}
-            </div>
-          </div>
-        </TabPanel>
-        {/* <TabPanel value={tabValue} index={1}></TabPanel> */}
-        <TabPanel value={tabValue} index={2}>
-          <div className="mb-10 mx-3">
-            <h1
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-dark"
-              }  font-semibold text-center`}
-            >
-              <span className="font-bold">{count?.total_closed_deals}</span>
-              &nbsp;&nbsp;Closed Deals of&nbsp;
-              <span className="font-bold">AED {count?.total_sales}</span>
-            </h1>
-          </div>
-          <div
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-black"
-            } p-3 rounded-md`}
-          >
-            <div
-              className={`${
-                currentMode === "dark" ? "text-red-600" : "text-main-red-color"
-              } text-xl font-bold`}
-            >
-              Sales Manager
-            </div>
-            <div className="h-[300px] overflow-y-scroll">
-              {manager?.length > 0 ? (
-                manager?.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
-                    >
-                      <div className="col-span-2">
-                        <h4 className="font-bold my-1">{item?.userName}</h4>
-                      </div>
-                      <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                        {/* {item.achieved >= item.target ? (
+                  <span className="font-bold">{count?.total_closed_deals}</span>
+                  &nbsp;&nbsp;Closed Deals of&nbsp;
+                  <span className="font-bold">AED {count?.total_sales}</span>
+                </h1>
+              </div>
+              <div
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                } p-3 rounded-md`}
+              >
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-red-600"
+                      : "text-main-red-color"
+                  } text-xl font-bold`}
+                >
+                  Sales Manager
+                </div>
+                <div className="h-[300px] overflow-y-scroll">
+                  {manager?.length > 0 ? (
+                    manager?.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                        >
+                          <div className="col-span-2">
+                            <h4 className="font-bold my-1">{item?.userName}</h4>
+                          </div>
+                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                            {/* {item.achieved >= item.target ? (
                         <span
                           className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
                         >
@@ -528,60 +550,62 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                       ) : (
                         <></>
                       )} */}
-                        <span
-                          className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
-                        >
-                          Total Closed Deals: {item?.total_closed_deals} /
-                          Direct deals: {item?.total_sales || 0}
-                        </span>
-                        <img
-                          src="/favicon.png"
-                          height={50}
-                          width={50}
-                          className="rounded-full cursor-pointer"
-                          alt=""
-                        />
-                      </div>
-                      <div></div>
-                    </div>
-                  );
-                })
-              ) : (
-                <h2
-                  className={`${
-                    currentMode === "dark" ? "text-white" : "text-dark"
-                  } text-xl font-bold mt-5`}
-                >
-                  No data for this month.
-                </h2>
-              )}
-            </div>
-          </div>
-          <div
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-black"
-            } p-3 rounded-md`}
-          >
-            <div
-              className={`${
-                currentMode === "dark" ? "text-red-600" : "text-main-red-color"
-              } text-xl font-bold`}
-            >
-              Sales Agent
-            </div>
-            <div className="h-[300px] overflow-y-scroll">
-              {agents?.length > 0 ? (
-                agents?.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                            <span
+                              className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
+                            >
+                              Total Closed Deals: {item?.total_closed_deals} /
+                              Direct deals: {item?.total_sales || 0}
+                            </span>
+                            <img
+                              src="/favicon.png"
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          </div>
+                          <div></div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <h2
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-dark"
+                      } text-xl font-bold mt-5`}
                     >
-                      <div className="col-span-2">
-                        <h4 className="font-bold my-1">{item?.userName}</h4>
-                      </div>
-                      <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                        {/* {item.achieved >= item.target ? (
+                      No data for this month.
+                    </h2>
+                  )}
+                </div>
+              </div>
+              <div
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                } p-3 rounded-md`}
+              >
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-red-600"
+                      : "text-main-red-color"
+                  } text-xl font-bold`}
+                >
+                  Sales Agent
+                </div>
+                <div className="h-[300px] overflow-y-scroll">
+                  {agents?.length > 0 ? (
+                    agents?.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                        >
+                          <div className="col-span-2">
+                            <h4 className="font-bold my-1">{item?.userName}</h4>
+                          </div>
+                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                            {/* {item.achieved >= item.target ? (
                         <span
                           className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
                         >
@@ -599,35 +623,37 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                       ) : (
                         <></>
                       )} */}
-                        <span
-                          className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
-                        >
-                          Closed deals: {item?.total_closed_deals || 0}
-                        </span>
-                        <img
-                          src="/favicon.png"
-                          height={50}
-                          width={50}
-                          className="rounded-full cursor-pointer"
-                          alt=""
-                        />
-                      </div>
-                      <div></div>
-                    </div>
-                  );
-                })
-              ) : (
-                <h2
-                  className={`${
-                    currentMode === "dark" ? "text-white" : "text-dark"
-                  } text-xl font-bold mt-5`}
-                >
-                  No data for this month.
-                </h2>
-              )}
-            </div>
-          </div>
-        </TabPanel>
+                            <span
+                              className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
+                            >
+                              Closed deals: {item?.total_closed_deals || 0}
+                            </span>
+                            <img
+                              src="/favicon.png"
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          </div>
+                          <div></div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <h2
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-dark"
+                      } text-xl font-bold mt-5`}
+                    >
+                      No data for this month.
+                    </h2>
+                  )}
+                </div>
+              </div>
+            </TabPanel>
+          </>
+        )}
       </Box>
     </div>
   );
