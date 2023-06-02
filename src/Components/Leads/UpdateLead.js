@@ -189,8 +189,8 @@ const UpdateLead = ({
         },
       })
       .then((result) => {
-        // console.log(result);
-        const managers = result?.data?.managers;
+        console.log(result);
+        const managers = result?.data?.managers?.data;
         setManager2(managers || []);
 
         const urls = managers?.map((manager) => {
@@ -215,6 +215,7 @@ const UpdateLead = ({
         setloading(false);
       })
       .catch((err) => {
+        setloading(false);
         console.log(err);
       });
   }, []);
@@ -224,7 +225,7 @@ const UpdateLead = ({
 
     // GETTING LEAD DETAILS
     axios
-      .get(`${BACKEND_URL}/leads/${LeadData.lid}`, {
+      .get(`${BACKEND_URL}/leads/${LeadData.leadId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -350,7 +351,7 @@ const UpdateLead = ({
     );
 
     await axios
-      .post(`${BACKEND_URL}/leads/${LeadData.lid}`, UpdateLeadData, {
+      .post(`${BACKEND_URL}/leads/${LeadData.leadId}`, UpdateLeadData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

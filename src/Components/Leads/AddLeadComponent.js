@@ -5,7 +5,7 @@ import {
   CircularProgress,
   Box,
   Typography,
-  InputLabel
+  InputLabel,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -32,7 +32,8 @@ function isEmailValid(email) {
 const AddLeadComponent = () => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
-  const { currentMode, darkModeColors, User, BACKEND_URL, fetchSidebarData } = useStateContext();
+  const { currentMode, darkModeColors, User, BACKEND_URL, fetchSidebarData } =
+    useStateContext();
   const [Manager2, setManager2] = useState([]);
   const [SalesPerson, setSalesPerson] = useState([]);
   const [filter_manager, setfilter_manager] = useState();
@@ -359,61 +360,70 @@ const AddLeadComponent = () => {
                             >
                               Agent details
                             </h4>
-                            {(User?.role === 1) && (
+                            {User?.role === 1 && (
                               <>
-                                <InputLabel id="manager-label">Select Manager</InputLabel>
+                                {/* <InputLabel id="manager-label">
+                                  Select Manager
+                                </InputLabel> */}
                                 <Select
-                                id="Manager"
-                                value={
-                                  User?.role === 3
-                                    ? filter_manager[0]?.id
-                                    : Manager
-                                }
-                                disabled={User?.role === 3 && true}
-                                // label="Manager"
-                                labelId="Select Manager"
-                              onChange={ChangeManager}
-                                size="medium"
-                                className="w-full mb-5"
-                                displayEmpty
-                                required
-                              >
-                                <MenuItem value="" disabled>
-                                  Manager
-                                </MenuItem>
-
-                                {Manager2.map((person, index) => (
-                                  <MenuItem key={index} value={person?.id}>
-                                    {person?.userName}
+                                  id="Manager"
+                                  value={
+                                    User?.role === 3
+                                      ? filter_manager[0]?.id
+                                      : Manager
+                                  }
+                                  disabled={User?.role === 3 && true}
+                                  // label="Manager"
+                                  labelId="Select Manager"
+                                  onChange={ChangeManager}
+                                  size="medium"
+                                  className="w-full mb-5"
+                                  displayEmpty
+                                  required
+                                >
+                                  <MenuItem value="" disabled>
+                                    Select Manager
+                                    <span
+                                      className="ml-1"
+                                      style={{ color: "red" }}
+                                    >
+                                      *
+                                    </span>
                                   </MenuItem>
-                                ))}
-                              </Select>
+
+                                  {Manager2.map((person, index) => (
+                                    <MenuItem key={index} value={person?.id}>
+                                      {person?.userName}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
                               </>
                             )}
-                            
 
                             {(User?.role === 1 || User?.role === 3) && (
                               <>
-                              <InputLabel id="sales-person-label">Select Sales Person</InputLabel>
-                              <Select
-                                id="SalesPerson"
-                                labelId="sales-person-label"
-                                value={SalesPerson2}
-                                // label="SalesPerson"
-                                onChange={ChangeSalesPerson}
-                                size="medium"
-                                className="w-full mb-5"
-                                displayEmpty
-                              >
-                                <MenuItem value="" disabled>
-                                  Sales Person
-                                </MenuItem>
-                                {SalesPerson.map((person, index) => (
-                                  <MenuItem key={index} value={person?.id}>
-                                    {person?.userName}
+                                {/* <InputLabel id="sales-person-label">
+                                  Select Sales Person
+                                </InputLabel> */}
+                                <Select
+                                  id="SalesPerson"
+                                  labelId="sales-person-label"
+                                  value={SalesPerson2}
+                                  // label="SalesPerson"
+                                  onChange={ChangeSalesPerson}
+                                  size="medium"
+                                  className="w-full mb-5"
+                                  displayEmpty
+                                >
+                                  <MenuItem value="" disabled>
+                                    Select Sales Person
                                   </MenuItem>
-                                ))}
-                              </Select>
+                                  {SalesPerson.map((person, index) => (
+                                    <MenuItem key={index} value={person?.id}>
+                                      {person?.userName}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
                               </>
                             )}
 
@@ -467,6 +477,9 @@ const AddLeadComponent = () => {
                             >
                               <MenuItem value="" disabled>
                                 Enquiry about
+                                <span className="ml-1" style={{ color: "red" }}>
+                                  *
+                                </span>
                               </MenuItem>
                               <MenuItem value={"Studio"}>Studio</MenuItem>
                               <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
@@ -501,6 +514,9 @@ const AddLeadComponent = () => {
                             >
                               <MenuItem value="" disabled>
                                 Property type
+                                <span className="ml-1" style={{ color: "red" }}>
+                                  *
+                                </span>
                               </MenuItem>
                               <MenuItem value={"Apartment"}>
                                 Appartment
@@ -524,6 +540,9 @@ const AddLeadComponent = () => {
                             >
                               <MenuItem value="" disabled>
                                 Purpose of enquiry
+                                <span className="ml-1" style={{ color: "red" }}>
+                                  *
+                                </span>
                               </MenuItem>
                               <MenuItem value={"Investment"}>
                                 Investment
@@ -558,7 +577,7 @@ const AddLeadComponent = () => {
                               onChange={(e) => setLeadName(e.target.value)}
                             />
                             <PhoneInput
-                              placeholder="Enter phone number"
+                              placeholder="Enter phone number *"
                               value={value}
                               onChange={(value) => setValue(value)}
                               onKeyUp={handleContact}
@@ -589,6 +608,7 @@ const AddLeadComponent = () => {
                               }}
                               required
                             />
+
                             {error && (
                               <Typography variant="body2" color="error">
                                 {error}
@@ -659,6 +679,9 @@ const AddLeadComponent = () => {
                             >
                               <MenuItem value="" disabled>
                                 Preferred language
+                                <span className="ml-1" style={{ color: "red" }}>
+                                  *
+                                </span>
                               </MenuItem>
                               <MenuItem value={"Arabic"}>Arabic</MenuItem>
                               <MenuItem value={"English"}>English</MenuItem>
@@ -682,6 +705,9 @@ const AddLeadComponent = () => {
                             >
                               <MenuItem value="" disabled>
                                 Source
+                                <span className="ml-1" style={{ color: "red" }}>
+                                  *
+                                </span>
                               </MenuItem>
                               <MenuItem value={"Website"}>Website</MenuItem>
                               <MenuItem value={"Propety Finder"}>

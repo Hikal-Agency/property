@@ -67,9 +67,10 @@ const RenderManagers = ({ cellValues }) => {
   };
   const UpdateManager = async () => {
     setbtnloading(true);
+    console.log("Update manager: ", cellValues);
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
-    UpdateLeadData.append("lid", cellValues?.row?.lid);
+    UpdateLeadData.append("lid", cellValues?.row?.leadId);
     UpdateLeadData.append("assignedToManager", newManager?.id);
 
     await axios

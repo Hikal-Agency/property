@@ -302,9 +302,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <AiOutlineHistory size={20} />
             </p> */}
-            {cellValues.row.lid !== null && (
+            {cellValues.row.leadId !== null && (
               <Link
-                to={`/timeline/${cellValues.row.lid}`}
+                to={`/timeline/${cellValues.row.leadId}`}
                 className={`editLeadBtn ${
                   currentMode === "dark"
                     ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
@@ -475,7 +475,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <AiOutlineEdit size={20} />
             </p>
             <p
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              onClick={() => navigate(`/timeline/${cellValues.row.leadId}`)}
               className={`editLeadBtn ${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
@@ -749,7 +749,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
       renderCell: (cellValues) => {
         return (
-          <div className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}>
+          <div
+            className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
+          >
             <p
               style={{ cursor: "pointer" }}
               className={`${
@@ -759,16 +761,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               }`}
               onClick={() => HandleEditFunc(cellValues)}
             >
-              <IconButton
-                sx={{ padding: 0}}
-              >
+              <IconButton sx={{ padding: 0 }}>
                 <AiOutlineEdit size={20} />
               </IconButton>
             </p>
 
-            {cellValues.row.lid !== null && (
+            {cellValues.row.leadId !== null && (
               <Link
-                to={`/timeline/${cellValues.row.lid}`}
+                to={`/timeline/${cellValues.row.leadId}`}
                 className={`editLeadBtn cursor-pointer ${
                   currentMode === "dark"
                     ? "bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
@@ -786,7 +786,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
             <p
               onClick={() => {
-                setLeadToDelete(cellValues?.row.lid);
+                setLeadToDelete(cellValues?.row.leadId);
                 setDeleteModelOpen(true);
                 setBulkDeleteClicked(false);
               }}
@@ -973,6 +973,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         console.log("the user leads are ");
         console.log(result.data);
 
+        let total = result.data.coldLeads.total;
+        let pageSize;
+
         let rowsDataArray = "";
         if (result.data.coldLeads.current_page > 1) {
           const theme_values = Object.values(result.data.coldLeads.data);
@@ -984,10 +987,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         let filteredData = rowsDataArray;
         if (lead_origin === "unassigned") {
           console.log("Hi, I am unassigned. Please assign me to someone 😢");
-          console.log(rowsDataArray)
+          console.log(rowsDataArray);
           filteredData = rowsDataArray.filter(
             (item) => !item.assignedToManager || item.assignedToManager === 102
           );
+
+          total = filteredData?.length;
+          console.log("Total: ", total);
 
           console.log("Unassigned rows data: ", filteredData);
         }
@@ -999,6 +1005,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 (pageState.pageSize - 1) +
                 index
               : index + 1,
+          leadId: row?.id,
           creationDate: row?.creationDate,
           leadName: row?.leadName || "No Name",
           leadContact:
@@ -1029,7 +1036,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           isLoading: false,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
-          total: result.data.coldLeads.total,
+          // total: result.data.coldLeads.total,
+          total: total,
         }));
         setCEOColumns([...CEOColumns]);
       })
@@ -1069,6 +1077,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   (pageState.pageSize - 1) +
                   index
                 : index + 1,
+            leadId: row?.id,
             creationDate: row?.creationDate,
             leadName: row?.leadName || "No Name",
             leadContact:
@@ -1422,8 +1431,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 height: pageState.data.length > 0 ? "475px" : "auto",
               },
               "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+                color:
+                  currentMode === "dark"
+                    ? "white !important"
+                    : "black !important",
+              },
             }}
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
