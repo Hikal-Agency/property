@@ -190,7 +190,7 @@ const UpdateLead = ({
       })
       .then((result) => {
         console.log(result);
-        const managers = result?.data?.managers;
+        const managers = result?.data?.managers?.data;
         setManager2(managers || []);
 
         const urls = managers?.map((manager) => {
