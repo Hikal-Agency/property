@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../../Components/Footer/Footer";
-import { Box, TextField, CircularProgress } from "@mui/material";
+import {
+  Box,
+  TextField,
+  CircularProgress,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import Loader from "../../Components/Loader";
 import { FiLink } from "react-icons/fi";
-import { BsSnow2, BsPatchQuestion } from "react-icons/bs";
+import { BsSnow2, BsPatchQuestion, BsFire, BsSun } from "react-icons/bs";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
@@ -17,6 +28,7 @@ const SingleLeadPage = () => {
   const [LeadData, setLeadData] = useState({});
   const [lastNote, setLastNote] = useState("");
   const [AddNoteTxt, setAddNoteTxt] = useState("");
+  const [LeadNotesData, setLeadNotesData] = useState(null);
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [addNoteloading, setaddNoteloading] = useState(false);
   const { currentMode, setopenBackDrop, User, BACKEND_URL, darkModeColors } =
@@ -29,6 +41,27 @@ const SingleLeadPage = () => {
   const handleRowClick = async (params) => {
     window.open(`/leadnotes/${params}`);
   };
+
+  const fetchLeadNotes = async () => {
+    const token = localStorage.getItem("auth-token");
+    await axios
+      .get(`${BACKEND_URL}/leadNotes/${lid}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("lead notes are given below");
+        console.log(result);
+        setLeadNotesData(result.data);
+        setloading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
 
   const AddNote = () => {
     setaddNoteloading(true);
@@ -82,27 +115,9 @@ const SingleLeadPage = () => {
       });
   };
 
-  const fetchLastNote = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      const result = await axios.get(
-        `${BACKEND_URL}/lastnote/${LeadData?.lid}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      const lastNoteText = result.data?.notes?.data[0]?.leadNote;
-      setLastNote(lastNoteText);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const fetchSingleLead = async () => {
     try {
+      setloading(true);
       const token = localStorage.getItem("auth-token");
       const result = await axios.get(`${BACKEND_URL}/leads/${lid}`, {
         headers: {
@@ -113,7 +128,6 @@ const SingleLeadPage = () => {
 
       console.log("SINGLE LEAD: ", result.status);
       setLeadData(result.data.data);
-      setloading(false);
     } catch (error) {
       console.log("Error", error);
       if (error?.response?.status === 404) {
@@ -130,12 +144,12 @@ const SingleLeadPage = () => {
           theme: "light",
         });
       }
-      setloading(false);
     }
   };
   useEffect(() => {
     if (LeadData?.lid) {
-      fetchLastNote();
+      fetchLeadNotes();
+      console.log(LeadData);
     }
   }, [LeadData]);
 
@@ -263,12 +277,16 @@ const SingleLeadPage = () => {
                               {LeadData?.feedback ?? "No Feedback"}
                             </span>
                             <span className="float-right">
-                              {LeadData?.coldcall === "1" ? (
+                              {LeadData?.coldcall === 0 ? (
+                                <BsFire size={25} />
+                              ) : LeadData?.coldcall === 1 ? (
                                 <BsSnow2 size={25} />
-                              ) : LeadData?.coldcall === "2" ? (
+                              ) : LeadData?.coldcall === 2 ? (
                                 <HiOutlineUserCircle size={25} />
-                              ) : LeadData?.coldcall === "3" ? (
+                              ) : LeadData?.coldcall === 3 ? (
                                 <FiLink size={25} />
+                              ) : LeadData?.coldcall === 4 ? (
+                                <BsSun size={25} />
                               ) : (
                                 <BsPatchQuestion size={25} />
                                 // <FaHotjar size={25} />
@@ -330,18 +348,90 @@ const SingleLeadPage = () => {
                         <h1 className="font-bold text-lg text-center">
                           Lead Notes
                         </h1>
-                        {lastNote && (
-                          <Box className="bg-gray-300 rounded px-2 py-1 mt-3">
-                            {lastNote}
-                          </Box>
+
+                        {LeadNotesData?.notes?.data?.length === 0 ? (
+                          <p
+                            className={`mt-3 italic ${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-main-red-color"
+                            }`}
+                          >
+                            No notes to show
+                          </p>
+                        ) : (
+                          <TableContainer component={Paper}>
+                            <Table
+                              sx={{
+                                minWidth: 650,
+                                "& .MuiTableCell-root": {
+                                  color: currentMode === "dark" && "white",
+                                },
+                              }}
+                              size="small"
+                              aria-label="simple table"
+                            >
+                              <TableHead
+                                sx={{
+                                  "& .MuiTableCell-head": {
+                                    color: "white",
+                                    fontWeight: "600",
+                                  },
+                                }}
+                                className="bg-black"
+                              >
+                                <TableRow>
+                                  <TableCell align="center">#</TableCell>
+                                  <TableCell align="center">Added On</TableCell>
+                                  <TableCell align="center">Added By</TableCell>
+                                  <TableCell align="center">Note</TableCell>
+                                </TableRow>
+                              </TableHead>
+
+                              <TableBody
+                                sx={{
+                                  "& .MuiTableRow-root:nth-of-type(odd)": {
+                                    backgroundColor:
+                                      currentMode === "dark" && "#212121",
+                                  },
+                                  "& .MuiTableRow-root:nth-of-type(even)": {
+                                    backgroundColor:
+                                      currentMode === "dark" && "#3b3d44",
+                                  },
+                                }}
+                              >
+                                {LeadNotesData?.notes?.data?.map((row, index) => (
+                                  <TableRow
+                                    key={index}
+                                    sx={{
+                                      "&:last-child td, &:last-child th": {
+                                        border: 0,
+                                      },
+                                    }}
+                                  >
+                                    <TableCell
+                                      component="th"
+                                      scope="row"
+                                      align="center"
+                                    >
+                                      {index + 1}
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      {row?.creationDate}
+                                    </TableCell>
+                                    <TableCell align="center">
+                                      {row?.userName}
+                                    </TableCell>
+                                    <TableCell align="left">
+                                      {row?.leadNote}
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </TableContainer>
                         )}
-                        <button
-                          type="button"
-                          className="btn btn-sm p-2 text-main-red-color text-italic font-semibold"
-                          onClick={() => handleRowClick(LeadData.lid)}
-                        >
-                          View all notes
-                        </button>
+
                         <form
                           className="mt-5"
                           onSubmit={(e) => {

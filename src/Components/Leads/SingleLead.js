@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { FiLink } from "react-icons/fi";
-import { BsSnow2, BsPatchQuestion } from "react-icons/bs";
+import { BsSnow2, BsPatchQuestion, BsFire, BsSun } from "react-icons/bs";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { useStateContext } from "../../context/ContextProvider";
 import { camelCase } from "lodash";
@@ -125,6 +125,8 @@ const SingleLead = ({
     if (LeadData?.lid) {
       fetchLastNote();
     }
+
+    console.log(LeadData);
   }, [LeadData]);
 
   return (
@@ -240,12 +242,16 @@ const SingleLead = ({
                   {LeadData?.feedback ?? "No Feedback"}
                 </span>
                 <span className="float-right">
-                  {LeadData?.coldcall === "1" ? (
+                  {LeadData?.leadCategory === "hot" ? (
+                    <BsFire size={25} />
+                  ) : LeadData?.leadCategory === "cold" ? (
                     <BsSnow2 size={25} />
-                  ) : LeadData?.coldcall === "2" ? (
+                  ) : LeadData?.leadCategory === "personal" ? (
                     <HiOutlineUserCircle size={25} />
-                  ) : LeadData?.coldcall === "3" ? (
+                  ) : LeadData?.leadCategory === "thridparty" ? (
                     <FiLink size={25} />
+                  ) : LeadData?.leadCategory === "warm" ? (
+                    <BsSun size={25} />
                   ) : (
                     <BsPatchQuestion size={25} />
                     // <FaHotjar size={25} />
@@ -297,25 +303,23 @@ const SingleLead = ({
           <div className="bg-main-red-color h-0.5 w-full mt-6 mb-4"></div>
           <div className="flex my-0 w-full">
             <Link sx={{ my: 0, w: "100%" }} to={`/lead/${LeadData?.lid}`}>
-              <Button fullWidth sx={{ my: 0 }} variant="contained" size="small">
+              <Button
+                fullWidth
+                sx={{ my: 0 }}
+                variant="contained"
+                color="error"
+                size="medium"
+              >
                 View Lead Details
               </Button>
             </Link>
           </div>
           <div className={`rounded-md mt-2`}>
-            <h1 className="font-bold text-lg text-center">Lead Notes</h1>
             {lastNote && (
               <Box className="bg-gray-300 rounded px-2 py-1 mt-3">
                 {lastNote}
               </Box>
             )}
-            <button
-              type="button"
-              className="btn btn-sm p-2 text-main-red-color text-italic font-semibold"
-              onClick={() => handleRowClick(LeadData.lid)}
-            >
-              View all notes
-            </button>
             <form
               className="mt-5"
               onSubmit={(e) => {
