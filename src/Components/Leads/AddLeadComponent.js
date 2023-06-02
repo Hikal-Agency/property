@@ -518,6 +518,9 @@ const AddLeadComponent = () => {
                             >
                               <MenuItem value="" disabled>
                                 Property type
+                                <span className="ml-1" style={{ color: "red" }}>
+                                  *
+                                </span>
                               </MenuItem>
                               <MenuItem value={"Apartment"}>
                                 Appartment
@@ -541,6 +544,9 @@ const AddLeadComponent = () => {
                             >
                               <MenuItem value="" disabled>
                                 Purpose of enquiry
+                                <span className="ml-1" style={{ color: "red" }}>
+                                  *
+                                </span>
                               </MenuItem>
                               <MenuItem value={"Investment"}>
                                 Investment
@@ -677,6 +683,9 @@ const AddLeadComponent = () => {
                             >
                               <MenuItem value="" disabled>
                                 Preferred language
+                                <span className="ml-1" style={{ color: "red" }}>
+                                  *
+                                </span>
                               </MenuItem>
                               <MenuItem value={"Arabic"}>Arabic</MenuItem>
                               <MenuItem value={"English"}>English</MenuItem>
@@ -700,6 +709,9 @@ const AddLeadComponent = () => {
                             >
                               <MenuItem value="" disabled>
                                 Source
+                                <span className="ml-1" style={{ color: "red" }}>
+                                  *
+                                </span>
                               </MenuItem>
                               <MenuItem value={"Website"}>Website</MenuItem>
                               <MenuItem value={"Propety Finder"}>
