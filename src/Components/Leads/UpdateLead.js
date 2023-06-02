@@ -189,7 +189,7 @@ const UpdateLead = ({
         },
       })
       .then((result) => {
-        // console.log(result);
+        console.log(result);
         const managers = result?.data?.managers;
         setManager2(managers || []);
 
@@ -225,7 +225,7 @@ const UpdateLead = ({
 
     // GETTING LEAD DETAILS
     axios
-      .get(`${BACKEND_URL}/leads/${LeadData.id}`, {
+      .get(`${BACKEND_URL}/leads/${LeadData.leadId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
