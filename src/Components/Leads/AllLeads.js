@@ -491,7 +491,65 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   ];
 
   const columns = [
-
+     {
+      field: "leadSource",
+      headerName: "Src",
+      flex: 1,
+      minWidth: 45,
+      renderCell: (cellValues) => {
+        return (
+          <>
+            {cellValues.row.leadSource?.toLowerCase() ===
+              "campaign snapchat" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaSnapchat size={22} color={"#f6d80a"} />
+              </div>
+            )}
+            {cellValues.row.leadSource?.toLowerCase() ===
+              "campaign facebook" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaFacebook size={22} color={"#0e82e1"} />
+              </div>
+            )}
+            {cellValues.row.leadSource?.toLowerCase() === "campaign tiktok" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <img
+                  src={"/assets/tiktok-app.svg"}
+                  alt=""
+                  height={22}
+                  width={22}
+                  className="object-cover"
+                />
+              </div>
+            )}
+            {cellValues.row.leadSource?.toLowerCase() ===
+              "campaign googleads" && (
+              <div className="bg-white w-max rounded-full text-white flex items-center justify-center">
+                <FcGoogle size={22} />
+              </div>
+            )}
+            {cellValues.row.leadSource?.toLowerCase() === "campaign" && (
+              <div className="w-max rounded-full flex items-center justify-center">
+                <MdCampaign
+                  size={22}
+                  color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+                />
+              </div>
+            )}
+            {cellValues.row.leadSource?.toLowerCase() === "cold" && (
+              <div className="w-max rounded-full flex items-center justify-center">
+                <BsSnow2 size={22} color={"#0ec7ff"} />
+              </div>
+            )}
+            {cellValues.row.leadSource?.toLowerCase() === "personal" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <BsPersonCircle size={22} color={"#14539a"} />
+              </div>
+            )}
+          </>
+        );
+      },
+    },
     {
       field: "leadName",
       headerName: "Name",

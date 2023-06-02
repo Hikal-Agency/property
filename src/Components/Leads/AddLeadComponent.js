@@ -216,6 +216,8 @@ const AddLeadComponent = () => {
       moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
     );
 
+    console.log(LeadData)
+
     await axios
       .post(`${BACKEND_URL}/leads`, LeadData, {
         headers: {
