@@ -705,13 +705,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <div style={{ fontSize: 10 }}>
             {cellValues.formattedValue === "Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
+                <badge className="bg-[#0f9d58] p-1 rounded-md available">VERIFIED</badge>
               </div>
             )}
 
             {cellValues.formattedValue === "Not Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className="bg-[#ff0000] p-1 rounded-md">
+                <badge className="bg-[#ff0000] p-1 rounded-md available">
                   NOT VERIFIED
                 </badge>
               </div>
