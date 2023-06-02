@@ -225,7 +225,7 @@ const UpdateLead = ({
 
     // GETTING LEAD DETAILS
     axios
-      .get(`${BACKEND_URL}/leads/${LeadData.leadId}`, {
+      .get(`${BACKEND_URL}/leads/${LeadData.id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

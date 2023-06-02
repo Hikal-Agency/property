@@ -415,12 +415,6 @@ const AddLeadComponent = () => {
                                 >
                                   <MenuItem value="" disabled>
                                     Select Sales Person
-                                    <span
-                                      className="ml-1"
-                                      style={{ color: "red" }}
-                                    >
-                                      *
-                                    </span>
                                   </MenuItem>
                                   {SalesPerson.map((person, index) => (
                                     <MenuItem key={index} value={person?.id}>
