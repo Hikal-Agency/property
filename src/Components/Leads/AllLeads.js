@@ -914,6 +914,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         console.log("the user leads are ");
         console.log(result.data);
 
+        let total = result.data.coldLeads.total;
+        let pageSize;
+
         let rowsDataArray = "";
         if (result.data.coldLeads.current_page > 1) {
           const theme_values = Object.values(result.data.coldLeads.data);
@@ -929,6 +932,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           filteredData = rowsDataArray.filter(
             (item) => !item.assignedToManager || item.assignedToManager === 102
           );
+
+          total = filteredData?.length;
+          console.log("Total: ", total);
 
           console.log("Unassigned rows data: ", filteredData);
         }
@@ -971,7 +977,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           isLoading: false,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
-          total: result.data.coldLeads.total,
+          // total: result.data.coldLeads.total,
+          total: total,
         }));
         setCEOColumns([...CEOColumns]);
       })

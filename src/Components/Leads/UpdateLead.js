@@ -215,6 +215,7 @@ const UpdateLead = ({
         setloading(false);
       })
       .catch((err) => {
+        setloading(false);
         console.log(err);
       });
   }, []);
