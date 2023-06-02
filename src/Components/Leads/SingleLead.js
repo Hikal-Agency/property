@@ -54,7 +54,7 @@ const SingleLead = ({
     // const datetimeString = now.format("YYYY/MM/DD hh:mm:ss A");
 
     const data = {
-      leadId: LeadData.lid,
+      leadId: LeadData.leadId,
       leadNote: AddNoteTxt,
       addedBy: User?.id,
       creationDate: moment(new Date()).format("YYYY/MM/DD"),
@@ -106,7 +106,7 @@ const SingleLead = ({
     try {
       const token = localStorage.getItem("auth-token");
       const result = await axios.get(
-        `${BACKEND_URL}/lastnote/${LeadData?.lid}`,
+        `${BACKEND_URL}/lastnote/${LeadData?.leadId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -122,7 +122,7 @@ const SingleLead = ({
   };
 
   useEffect(() => {
-    if (LeadData?.lid) {
+    if (LeadData?.leadId) {
       fetchLastNote();
     }
 
@@ -302,7 +302,7 @@ const SingleLead = ({
 
           <div className="bg-main-red-color h-0.5 w-full mt-6 mb-4"></div>
           <div className="flex my-0 w-full">
-            <Link sx={{ my: 0, w: "100%" }} to={`/lead/${LeadData?.lid}`}>
+            <Link sx={{ my: 0, w: "100%" }} to={`/lead/${LeadData?.leadId}`}>
               <Button
                 fullWidth
                 sx={{ my: 0 }}

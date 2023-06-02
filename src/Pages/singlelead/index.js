@@ -62,12 +62,11 @@ const SingleLeadPage = () => {
       });
   };
 
-
   const AddNote = () => {
     setaddNoteloading(true);
     const token = localStorage.getItem("auth-token");
     const data = {
-      leadId: LeadData.lid,
+      leadId: LeadData.id,
       leadNote: AddNoteTxt,
       addedBy: User?.id,
       creationDate: moment(new Date()).format("YYYY/MM/DD"),
@@ -128,7 +127,9 @@ const SingleLeadPage = () => {
 
       console.log("SINGLE LEAD: ", result.status);
       setLeadData(result.data.data);
+      setloading(false);
     } catch (error) {
+      setloading(false);
       console.log("Error", error);
       if (error?.response?.status === 404) {
         setLeadNotFound(true);
@@ -188,7 +189,7 @@ const SingleLeadPage = () => {
                     >
                       Lead Details{" "}
                       <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
-                        <span>{LeadData?.lid}</span>
+                        <span>{LeadData?.id}</span>
                       </span>
                     </h1>
                     {/* Lead Info */}
@@ -400,33 +401,35 @@ const SingleLeadPage = () => {
                                   },
                                 }}
                               >
-                                {LeadNotesData?.notes?.data?.map((row, index) => (
-                                  <TableRow
-                                    key={index}
-                                    sx={{
-                                      "&:last-child td, &:last-child th": {
-                                        border: 0,
-                                      },
-                                    }}
-                                  >
-                                    <TableCell
-                                      component="th"
-                                      scope="row"
-                                      align="center"
+                                {LeadNotesData?.notes?.data?.map(
+                                  (row, index) => (
+                                    <TableRow
+                                      key={index}
+                                      sx={{
+                                        "&:last-child td, &:last-child th": {
+                                          border: 0,
+                                        },
+                                      }}
                                     >
-                                      {index + 1}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      {row?.creationDate}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      {row?.userName}
-                                    </TableCell>
-                                    <TableCell align="left">
-                                      {row?.leadNote}
-                                    </TableCell>
-                                  </TableRow>
-                                ))}
+                                      <TableCell
+                                        component="th"
+                                        scope="row"
+                                        align="center"
+                                      >
+                                        {index + 1}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {row?.creationDate}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {row?.userName}
+                                      </TableCell>
+                                      <TableCell align="left">
+                                        {row?.leadNote}
+                                      </TableCell>
+                                    </TableRow>
+                                  )
+                                )}
                               </TableBody>
                             </Table>
                           </TableContainer>
@@ -473,7 +476,7 @@ const SingleLeadPage = () => {
                 </div>
               </div>
             )}
-            <Footer />
+            {/* <Footer /> */}
           </div>
         )}
       </div>
