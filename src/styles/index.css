@@ -276,5 +276,14 @@ label[for="bulkImport"] .MuiButtonBase-root{
   top: 0 !important; 
   left: 0 !important;
   margin: 0 !important; 
-  
+
+}
+
+/* Loader */
+.spinner-container circle[fill='#8C37F7'], .spinner-container circle[fill='#8C37F6'], .spinner-container circle[fill='#DABDFF']{
+  fill: #da1f26 !important;
+}
+
+.spinner-container g > circle:first-child {
+  stroke: #ff6a6f !important;
 }

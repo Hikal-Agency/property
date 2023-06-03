@@ -6,7 +6,7 @@ const Footer = () => {
   const { currentMode } = useStateContext();
   return (
     <div
-      className={`border-t-2  border-main-red-color flex justify-between items-center px-5 py-4 ${
+      className={`border-t-2  border-main-red-color flex justify-between items-center px-5 py-2 ${
         currentMode === "dark" ? "bg-gray-900" : "bg-white"
       }`}
       style={{
