@@ -52,18 +52,20 @@ const RenderManagers = ({ cellValues }) => {
   //   setDialogue(true);
   // };
   const ChangeManager = (e) => {
+    console.log(manager2);
     console.log("New Manager", e.target);
     let selectedItem;
     selectedItem = Managers.find((item) => item.id === Number(e.target.value));
+    setnewManager(selectedItem);
+
     let old_selectedItem;
 
     old_selectedItem = Managers.find((item) => item.id === Number(manager2));
     console.log("old: ", old_selectedItem);
-    console.log("new: ", old_selectedItem);
+    console.log("new: ", selectedItem);
 
-    setnewManager(selectedItem);
-    setmanager2(old_selectedItem);
     setDialogue(true);
+    // setmanager2(old_selectedItem);
   };
   const UpdateManager = async () => {
     setbtnloading(true);
@@ -71,9 +73,8 @@ const RenderManagers = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.leadId);
-    console.log(newManager === undefined);
     if(newManager === undefined) {
-      UpdateLeadData.append("assignedToManager", "0");
+      UpdateLeadData.append("assignedToManager", 0);
     } else {
       UpdateLeadData.append("assignedToManager", newManager?.id);
     }
@@ -227,7 +228,7 @@ const RenderManagers = ({ cellValues }) => {
                 <h1 className="font-semibold pt-3 text-lg text-center">
                   Do You Really Want Change the Manager from{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {manager2?.userName ?? "No manager"}
+                    {Managers.find((item) => item.id === Number(manager2))?.userName ?? "No manager"}
                   </span>{" "}
                   to{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">

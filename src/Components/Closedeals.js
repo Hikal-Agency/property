@@ -104,8 +104,8 @@ const Closedeals = ({ pageState, setpageState }) => {
               // onClick={() => HandleEditFunc(cellValues)}
               className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
               <AiOutlineHistory
@@ -117,8 +117,8 @@ const Closedeals = ({ pageState, setpageState }) => {
               onClick={() => HandleEditFunc(cellValues)}
               className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
               <AiOutlineEdit size={20} />
@@ -269,7 +269,7 @@ const Closedeals = ({ pageState, setpageState }) => {
             },
             "& .MuiDataGrid-main": {
               overflowY: "scroll",
-              height: pageState.data.length > 0 ? "475px" : "auto",
+              height: "auto",
             },
             "& .MuiDataGrid-cell[data-field='edit'] svg": {
               color:

@@ -155,8 +155,8 @@ const AllTickets = () => {
     //           onClick={() => HandleEditFunc(cellValues)}
     //           className={`editLeadBtn ${
     //             currentMode === "dark"
-    //               ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-    //               : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+    //               ? "text-white bg-transparent rounded-md p-1 shadow-none "
+    //               : "text-black bg-transparent rounded-md p-1 shadow-none "
     //           }`}
     //         >
     //           <AiOutlineEdit size={20} />
@@ -166,8 +166,8 @@ const AllTickets = () => {
     //           onClick={() => HandleEditFunc(cellValues)}
     //           className={`editLeadBtn ${
     //             currentMode === "dark"
-    //               ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-    //               : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+    //               ? "text-white bg-transparent rounded-md p-1 shadow-none "
+    //               : "text-black bg-transparent rounded-md p-1 shadow-none "
     //           }`}
     //         >
     //           <AiOutlineEdit size={20} />
@@ -177,8 +177,8 @@ const AllTickets = () => {
     //           onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
     //           className={`editLeadBtn ${
     //             currentMode === "dark"
-    //               ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-    //               : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+    //               ? "text-white bg-transparent rounded-md p-1 shadow-none "
+    //               : "text-black bg-transparent rounded-md p-1 shadow-none "
     //           }`}
     //         >
     //           {/* <AiTwotAiOutlineHistoryoneEdit size={20} /> */}

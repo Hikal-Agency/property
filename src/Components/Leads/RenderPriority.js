@@ -50,11 +50,14 @@ const RenderPriority = ({ cellValues }) => {
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
-    UpdateLeadData.append("lid", cellValues?.row?.lid);
+    UpdateLeadData.append("id", cellValues?.row?.leadId);
+    UpdateLeadData.append("lid", cellValues?.row?.leadId);
     UpdateLeadData.append("priority", newPriority);
 
+    console.log(cellValues)
+
     await axios
-      .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {
+      .post(`${BACKEND_URL}/leads/${cellValues?.row?.leadId}`, UpdateLeadData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

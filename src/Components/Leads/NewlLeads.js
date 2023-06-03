@@ -218,8 +218,8 @@ const Newleads = ({
               onClick={() => HandleEditFunc(cellValues)}
               className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
               {/* <AiTwotoneEdit size={20} /> */}
@@ -426,8 +426,8 @@ const Newleads = ({
               onClick={() => HandleEditFunc(cellValues)}
               className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
               {/* <AiTwotoneEdit size={20} /> */}
@@ -443,8 +443,8 @@ const Newleads = ({
                   disabled={deleteloading ? true : false}
                   className={`deleteLeadBtn ${
                     currentMode === "dark"
-                      ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                      : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                      ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                      : "text-black bg-transparent rounded-md p-1 shadow-none "
                   }`}
                 >
                   <BsTrash className="deleteLeadBtn" size={18} />
