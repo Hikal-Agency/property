@@ -38,7 +38,6 @@ const AddLeadComponent = () => {
     useStateContext();
   const [Manager2, setManager2] = useState([]);
   const [SalesPerson, setSalesPerson] = useState([]);
-  const [filter_manager, setfilter_manager] = useState();
 
   const [PropertyType, setPropertyType] = useState("");
   const [EnquiryType, setEnquiryType] = useState("");
@@ -57,8 +56,6 @@ const AddLeadComponent = () => {
   const [LeadNotes, setLeadNotes] = useState("");
   const [value, setValue] = useState();
   const [error, setError] = useState(false);
-
-  console.log("User in add lead component: ", User);
 
   // const handleEmail = (e) => {
   //   setEmailError(false);
@@ -211,10 +208,15 @@ const AddLeadComponent = () => {
     LeadData.append("feedback", "New");
     LeadData.append("coldCall", coldCall);
     LeadData.append("notes", LeadNotes);
-    if (User?.role === 1 || User?.role === 3) {
+    if (User?.role === 1) {
       if(Manager) {
         LeadData.append("assignedToManager", Manager);
       }
+      if(SalesPerson2) {
+        LeadData.append("assignedToSales", SalesPerson2);
+      }
+    } else if(User?.role === 3) {
+      LeadData.append("assignedToManager", User?.id);
       if(SalesPerson2) {
         LeadData.append("assignedToSales", SalesPerson2);
       }
@@ -231,7 +233,9 @@ const AddLeadComponent = () => {
       moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
     );
 
-    console.log(LeadData)
+    for (var pair of LeadData.entries()) {
+    console.log(pair[0]+ ', ' + pair[1]); 
+}
 
     await axios
       .post(`${BACKEND_URL}/leads`, LeadData, {
@@ -298,11 +302,6 @@ const AddLeadComponent = () => {
         console.log(result);
         setManager2(result.data.team);
         if (User?.role === 3) {
-          setfilter_manager(
-            result.data.team.filter((manager) => {
-              return manager.id === User?.id;
-            })
-          );
           const SalesPerson = result.data.team;
           setSalesPerson(SalesPerson || []);
         }
@@ -322,8 +321,6 @@ const AddLeadComponent = () => {
         <Loader/>
       ) : (
         <div className="pt-0 pb-5 mx-4 rounded-md sm:mx-6 lg:mx-auto ">
-          {console.log("filtered managers are ")}
-          {console.log(filter_manager)}
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -378,9 +375,7 @@ const AddLeadComponent = () => {
                                   marginBottom: "1.25rem !important"
                                 }}}
                                   value={
-                                    User?.role === 3
-                                      ? filter_manager[0]?.id
-                                      : Manager
+                                    Manager
                                   }
                                   disabled={User?.role === 3 && true}
                                   label="Manager"

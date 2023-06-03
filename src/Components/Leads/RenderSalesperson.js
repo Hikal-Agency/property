@@ -115,7 +115,7 @@ const RenderSalesperson = ({ cellValues }) => {
   useEffect(() => {
     const managerId = cellValues?.row?.assignedToManager;
     const agents = SalesPerson[`manager-${managerId}`];
-    if (agents === undefined || SalesPerson2 === 0) {
+    if (agents === undefined || agents.length === 0) {
       setNoAgents(true);
     } else {
       setNoAgents(false);
