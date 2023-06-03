@@ -383,7 +383,6 @@ const AddLeadComponent = () => {
                                   size="medium"
                                   className="w-full mb-5"
                                   displayEmpty
-                                  required
                                 >
                                   <MenuItem value="">
                                     Select Manager
@@ -485,7 +484,6 @@ const AddLeadComponent = () => {
                                 }}}
                                 displayEmpty
                                 select
-                                required
                               >
                                 <MenuItem value="" disabled>
                                   Enquiry about
@@ -526,7 +524,6 @@ const AddLeadComponent = () => {
                                   marginBottom: "1.25rem !important"
                                 }}}
                                 select
-                                required
                               >
                                 <MenuItem value="" disabled>
                                   Property type
@@ -556,7 +553,6 @@ const AddLeadComponent = () => {
                                 }}}
                                 displayEmpty
                                 select
-                                required
                               >
                                 <MenuItem value="" disabled>
                                   Purpose of enquiry
@@ -699,7 +695,6 @@ const AddLeadComponent = () => {
                                 }}}
                                 displayEmpty
                                 select
-                                required
                               >
                                 <MenuItem value="" disabled>
                                   Preferred language
