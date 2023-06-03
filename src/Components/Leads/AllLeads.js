@@ -1,4 +1,4 @@
-import { Box, Button as MuiButton, IconButton } from "@mui/material";
+import { Box, Button as MuiButton, IconButton, LinearProgress } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -32,6 +32,7 @@ import DeleteLeadModel from "./DeleteLead";
 import BulkImport from "./BulkImport";
 import { RiMessage2Line } from "react-icons/ri";
 import { FaWhatsapp } from "react-icons/fa";
+import Loader from "../Loader";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",

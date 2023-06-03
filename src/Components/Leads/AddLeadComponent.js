@@ -5,6 +5,8 @@ import {
   CircularProgress,
   Box,
   Typography,
+  FormControl, 
+  InputLabel
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -369,16 +371,19 @@ const AddLeadComponent = () => {
                                 {/* <InputLabel id="manager-label">
                                   Select Manager
                                 </InputLabel> */}
-                                <Select
+                                <TextField
                                   id="Manager"
+                                  select
+                                sx={{"&": {
+                                  marginBottom: "1.25rem !important"
+                                }}}
                                   value={
                                     User?.role === 3
                                       ? filter_manager[0]?.id
                                       : Manager
                                   }
                                   disabled={User?.role === 3 && true}
-                                  // label="Manager"
-                                  labelId="Select Manager"
+                                  label="Manager"
                                   onChange={ChangeManager}
                                   size="medium"
                                   className="w-full mb-5"
@@ -400,7 +405,7 @@ const AddLeadComponent = () => {
                                       {person?.userName}
                                     </MenuItem>
                                   ))}
-                                </Select>
+                                </TextField>
                               </>
                             )}
 
@@ -409,13 +414,16 @@ const AddLeadComponent = () => {
                                 {/* <InputLabel id="sales-person-label">
                                   Select Sales Person
                                 </InputLabel> */}
-                                <Select
+                                <TextField
+                                sx={{"&": {
+                                  marginBottom: "1.25rem !important"
+                                }}}
                                   id="SalesPerson"
-                                  labelId="sales-person-label"
+                                  label="Sales Person"
                                   value={SalesPerson2}
-                                  // label="SalesPerson"
                                   onChange={ChangeSalesPerson}
                                   size="medium"
+                                  select
                                   className="w-full mb-5"
                                   displayEmpty
                                 >
@@ -427,7 +435,7 @@ const AddLeadComponent = () => {
                                       {person?.userName}
                                     </MenuItem>
                                   ))}
-                                </Select>
+                                </TextField>
                               </>
                             )}
 
@@ -469,90 +477,103 @@ const AddLeadComponent = () => {
                               onChange={(e) => setLeadProject(e.target.value)}
                             />
 
-                            <Select
-                              id="enquiry"
-                              value={EnquiryType}
-                              label="Enquiry Type"
-                              onChange={ChangeEnquiryType}
-                              size="medium"
-                              className="w-full mb-5"
-                              displayEmpty
-                              required
-                            >
-                              <MenuItem value="" disabled>
-                                Enquiry about
-                                <span className="ml-1" style={{ color: "red" }}>
-                                  *
-                                </span>
-                              </MenuItem>
-                              <MenuItem value={"Studio"}>Studio</MenuItem>
-                              <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
-                              <MenuItem value={"2 Bedrooms"}>
-                                2 Bedrooms
-                              </MenuItem>
-                              <MenuItem value={"3 Bedrooms"}>
-                                3 Bedrooms
-                              </MenuItem>
-                              <MenuItem value={"4 Bedrooms"}>
-                                4 Bedrooms
-                              </MenuItem>
-                              <MenuItem value={"5 Bedrooms"}>
-                                5 Bedrooms
-                              </MenuItem>
-                              <MenuItem value={"6 Bedrooms"}>
-                                6 Bedrooms
-                              </MenuItem>
-                              <MenuItem value={"Retail"}>Retail</MenuItem>
-                              <MenuItem value={"Other"}>Others</MenuItem>
-                            </Select>
 
-                            <Select
-                              id="property-type"
-                              value={PropertyType}
-                              label="Property type"
-                              onChange={ChangePropertyType}
-                              size="medium"
-                              className="w-full mb-5"
-                              displayEmpty
-                              required
-                            >
-                              <MenuItem value="" disabled>
-                                Property type
-                                <span className="ml-1" style={{ color: "red" }}>
-                                  *
-                                </span>
-                              </MenuItem>
-                              <MenuItem value={"Apartment"}>
-                                Appartment
-                              </MenuItem>
-                              <MenuItem value={"Villa"}>Villa</MenuItem>
-                              <MenuItem value={"Commercial"}>
-                                Commercial
-                              </MenuItem>
-                              <MenuItem value={"Townhouse"}>TownHouse</MenuItem>
-                            </Select>
+                              <TextField
+                                id="enquiry"
+                                label="Enquiry"
+                                value={EnquiryType}
+                                onChange={ChangeEnquiryType}
+                                size="medium"
+                                className="w-full"
+                                sx={{"&": {
+                                  marginBottom: "1.25rem !important"
+                                }}}
+                                displayEmpty
+                                select
+                                required
+                              >
+                                <MenuItem value="" disabled>
+                                  Enquiry about
+                                  <span className="ml-1" style={{ color: "red" }}>
+                                    *
+                                  </span>
+                                </MenuItem>
+                                <MenuItem value={"Studio"}>Studio</MenuItem>
+                                <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
+                                <MenuItem value={"2 Bedrooms"}>
+                                  2 Bedrooms
+                                </MenuItem>
+                                <MenuItem value={"3 Bedrooms"}>
+                                  3 Bedrooms
+                                </MenuItem>
+                                <MenuItem value={"4 Bedrooms"}>
+                                  4 Bedrooms
+                                </MenuItem>
+                                <MenuItem value={"5 Bedrooms"}>
+                                  5 Bedrooms
+                                </MenuItem>
+                                <MenuItem value={"6 Bedrooms"}>
+                                  6 Bedrooms
+                                </MenuItem>
+                                <MenuItem value={"Retail"}>Retail</MenuItem>
+                                <MenuItem value={"Other"}>Others</MenuItem>
+                              </TextField>
 
-                            <Select
-                              id="for"
-                              value={ForType}
-                              label="Purpose of enquiry"
-                              onChange={ChangeForType}
-                              size="medium"
-                              className="w-full"
-                              displayEmpty
-                              required
-                            >
-                              <MenuItem value="" disabled>
-                                Purpose of enquiry
-                                <span className="ml-1" style={{ color: "red" }}>
-                                  *
-                                </span>
-                              </MenuItem>
-                              <MenuItem value={"Investment"}>
-                                Investment
-                              </MenuItem>
-                              <MenuItem value={"End-user"}>End-User</MenuItem>
-                            </Select>
+                              <TextField
+                                id="property-type"
+                                value={PropertyType}
+                                label="Property Type"
+                                onChange={ChangePropertyType}
+                                size="medium"
+                                className="w-full mb-5"
+                                displayEmpty
+                                sx={{"&": {
+                                  marginBottom: "1.25rem !important"
+                                }}}
+                                select
+                                required
+                              >
+                                <MenuItem value="" disabled>
+                                  Property type
+                                  <span className="ml-1" style={{ color: "red" }}>
+                                    *
+                                  </span>
+                                </MenuItem>
+                                <MenuItem value={"Apartment"}>
+                                  Apartment
+                                </MenuItem>
+                                <MenuItem value={"Villa"}>Villa</MenuItem>
+                                <MenuItem value={"Commercial"}>
+                                  Commercial
+                                </MenuItem>
+                                <MenuItem value={"Townhouse"}>TownHouse</MenuItem>
+                              </TextField>
+        
+                              <TextField
+                                id="for"
+                                value={ForType}
+                                label="Purpose"
+                                onChange={ChangeForType}
+                                size="medium"
+                                className="w-full"
+                                sx={{"&": {
+                                  marginBottom: "1.25rem !important"
+                                }}}
+                                displayEmpty
+                                select
+                                required
+                              >
+                                <MenuItem value="" disabled>
+                                  Purpose of enquiry
+                                  <span className="ml-1" style={{ color: "red" }}>
+                                    *
+                                  </span>
+                                </MenuItem>
+                                <MenuItem value={"Investment"}>
+                                  Investment
+                                </MenuItem>
+                                <MenuItem value={"End-user"}>End-User</MenuItem>
+                              </TextField>
                           </Box>
                         </div>
 
@@ -671,70 +692,78 @@ const AddLeadComponent = () => {
                               onChange={handleEmail}
                             /> */}
 
-                            <Select
-                              id="LanguagePrefered"
-                              value={LanguagePrefered}
-                              label="Preferred language"
-                              onChange={ChangeLanguagePrefered}
-                              size="medium"
-                              className="w-full mb-5"
-                              displayEmpty
-                              required
-                            >
-                              <MenuItem value="" disabled>
-                                Preferred language
-                                <span className="ml-1" style={{ color: "red" }}>
-                                  *
-                                </span>
-                              </MenuItem>
-                              <MenuItem value={"Arabic"}>Arabic</MenuItem>
-                              <MenuItem value={"English"}>English</MenuItem>
-                              <MenuItem value={"Farsi"}>Farsi</MenuItem>
-                              <MenuItem value={"French"}>French</MenuItem>
-                              <MenuItem value={"Hindi"}>Hindi</MenuItem>
-                              <MenuItem value={"Russian"}>Russian</MenuItem>
-                              <MenuItem value={"Spanish"}>Spanish</MenuItem>
-                              <MenuItem value={"Urdu"}>Urdu</MenuItem>
-                            </Select>
+                              <TextField
+                                id="LanguagePrefered"
+                                value={LanguagePrefered}
+                                onChange={ChangeLanguagePrefered}
+                                size="medium"
+                                className="w-full mb-5"
+                                label="Language"
+                                sx={{"&": {
+                                  marginBottom: "1.25rem !important"
+                                }}}
+                                displayEmpty
+                                select
+                                required
+                              >
+                                <MenuItem value="" disabled>
+                                  Preferred language
+                                  <span className="ml-1" style={{ color: "red" }}>
+                                    *
+                                  </span>
+                                </MenuItem>
+                                <MenuItem value={"Arabic"}>Arabic</MenuItem>
+                                <MenuItem value={"English"}>English</MenuItem>
+                                <MenuItem value={"Farsi"}>Farsi</MenuItem>
+                                <MenuItem value={"French"}>French</MenuItem>
+                                <MenuItem value={"Hindi"}>Hindi</MenuItem>
+                                <MenuItem value={"Russian"}>Russian</MenuItem>
+                                <MenuItem value={"Spanish"}>Spanish</MenuItem>
+                                <MenuItem value={"Urdu"}>Urdu</MenuItem>
+                            </TextField>
 
-                            <Select
-                              id="LeadSource"
-                              value={LeadSource}
-                              label="Source"
-                              onChange={ChangeLeadSource}
-                              size="medium"
-                              className="w-full mb-5"
-                              displayEmpty
-                              required
-                            >
-                              <MenuItem value="" disabled>
-                                Source
-                                <span className="ml-1" style={{ color: "red" }}>
-                                  *
-                                </span>
-                              </MenuItem>
-                              <MenuItem value={"Website"}>Website</MenuItem>
-                              <MenuItem value={"Property Finder"}>
-                                Property Finder
-                              </MenuItem>
-                              <MenuItem value={"Campaign"}>Campaign</MenuItem>
-                              <MenuItem value={"Personal"}>Personal</MenuItem>
-                              <MenuItem value={"Whatsapp"}>Whatsapp</MenuItem>
-                              <MenuItem value={"Comment"}>Comment</MenuItem>
-                              <MenuItem value={"Message"}>Message</MenuItem>
-                              <MenuItem value={"Campaign Snapchat"}>
-                                Campaign Snapchat
-                              </MenuItem>
-                              <MenuItem value={"Campaign Tiktok"}>
-                                Campaign Tiktok
-                              </MenuItem>
-                              <MenuItem value={"Campaign Facebook"}>
-                                Campaign Facebook
-                              </MenuItem>
-                              <MenuItem value={"Campaign GoogleAds"}>
-                                Campaign GoogleAds
-                              </MenuItem>
-                            </Select>
+                              <TextField
+                                id="LeadSource"
+                                value={LeadSource}
+                                label="Source"
+                                onChange={ChangeLeadSource}
+                                size="medium"
+                                className="w-full mb-5"
+                                sx={{"&": {
+                                  marginBottom: "1.25rem !important"
+                                }}}
+                                displayEmpty
+                                select
+                                required
+                              >
+                                <MenuItem value="" disabled>
+                                  Source
+                                  <span className="ml-1" style={{ color: "red" }}>
+                                    *
+                                  </span>
+                                </MenuItem>
+                                <MenuItem value={"Website"}>Website</MenuItem>
+                                <MenuItem value={"Property Finder"}>
+                                  Property Finder
+                                </MenuItem>
+                                <MenuItem value={"Campaign"}>Campaign</MenuItem>
+                                <MenuItem value={"Personal"}>Personal</MenuItem>
+                                <MenuItem value={"Whatsapp"}>Whatsapp</MenuItem>
+                                <MenuItem value={"Comment"}>Comment</MenuItem>
+                                <MenuItem value={"Message"}>Message</MenuItem>
+                                <MenuItem value={"Campaign Snapchat"}>
+                                  Campaign Snapchat
+                                </MenuItem>
+                                <MenuItem value={"Campaign Tiktok"}>
+                                  Campaign Tiktok
+                                </MenuItem>
+                                <MenuItem value={"Campaign Facebook"}>
+                                  Campaign Facebook
+                                </MenuItem>
+                                <MenuItem value={"Campaign GoogleAds"}>
+                                  Campaign GoogleAds
+                                </MenuItem>
+                              </TextField>
                           </Box>
                         </div>
                       </div>
