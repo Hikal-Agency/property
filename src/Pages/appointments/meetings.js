@@ -34,8 +34,11 @@ const Meetings = () => {
   });
 
   const [value, setValue] = useState(0);
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setValue(value === 0 ? 1 : 0);
   };
 
   const [searchText, setSearchText] = useState("");
@@ -346,7 +349,7 @@ const Meetings = () => {
           >
             <div className={`w-full`}>
               <div className="pl-3">
-                <div className="mt-3">
+                <div className="mt-3 flex justify-between">
                   <h1
                     className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
                       currentMode === "dark"
@@ -359,57 +362,58 @@ const Meetings = () => {
                       <span>{pageState?.total}</span>
                     </span>
                   </h1>
-
-                  {/* <AllMeetings
-                    BACKEND_URL={BACKEND_URL}
-                    pageState={pageState}
-                    setpageState={setpageState}
-                  /> */}
-                </div>
-                <Box
-                  sx={{
-                    ...darkModeColors,
-                    "& .MuiTabs-indicator": {
-                      borderRadius: "5px",
-                      backgroundColor: "#da1f26",
-                    },
-                    "& .Mui-selected": {
-                      color: "white",
-                      zIndex: "1",
-                    },
-                    "& .MuiSvgIcon-root": {
-                      // Customize icon styles here
-                      color: "red",
-                    },
-                  }}
-                  className={`rounded-md overflow-hidden ${
-                    currentMode === "dark" ? "bg-black" : "bg-white"
-                  }`}
-                >
-                  <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    variant="standard"
-                    className="w-full px-1 m-1"
+                  <Box
+                    sx={{
+                      ...darkModeColors,
+                      "& .MuiTabs-indicator": {
+                        borderRadius: "5px",
+                        backgroundColor: "#da1f26",
+                      },
+                      "& .Mui-selected": {
+                        color: "white",
+                        zIndex: "1",
+                      },
+                      "& .MuiSvgIcon-root": {
+                        // Customize icon styles here
+                        color: "red",
+                      },
+                    }}
+                    className={`rounded-md overflow-hidden ${
+                      currentMode === "dark" ? "bg-black" : "bg-white"
+                    }`}
                   >
-                    <Tab
-                      icon={
-                        <AiOutlineTable
-                          style={{
-                            color:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          }}
-                        />
-                      }
-                    />
-                    <Tab
-                      icon={<AiOutlineAppstore />}
-                      style={{
-                        color: currentMode === "dark" ? "#ffffff" : "#000000",
-                      }}
-                    />
-                  </Tabs>
-                </Box>
+                    <Tabs
+                      value={value}
+                      onClick={handleChange}
+                      variant="standard"
+                    >
+                      <Tab
+                        icon={
+                          value === 0 ? (
+                            <AiOutlineAppstore
+                              style={{
+                                color:
+                                  currentMode === "dark"
+                                    ? "#ffffff"
+                                    : "#000000",
+                              }}
+                            />
+                          ) : (
+                            <AiOutlineTable
+                              style={{
+                                color:
+                                  currentMode === "dark"
+                                    ? "#ffffff"
+                                    : "#000000",
+                              }}
+                            />
+                          )
+                        }
+                      />
+                    </Tabs>
+                  </Box>
+                </div>
+
                 <div className="mt-3 pb-3">
                   <TabPanel value={value} index={0}>
                     <GridMeeting
@@ -425,7 +429,6 @@ const Meetings = () => {
                       <DataGrid
                         autoHeight
                         rows={pageState.data}
-                        // onRowClick={handleRowClick}
                         rowCount={pageState.total}
                         loading={pageState.isLoading}
                         rowsPerPageOptions={[30, 50, 75, 100]}
