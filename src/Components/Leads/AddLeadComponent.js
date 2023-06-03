@@ -210,8 +210,12 @@ const AddLeadComponent = () => {
     LeadData.append("coldCall", coldCall);
     LeadData.append("notes", LeadNotes);
     if (User?.role === 1 || User?.role === 3) {
-      LeadData.append("assignedToManager", Manager);
-      LeadData.append("assignedToSales", SalesPerson2);
+      if(Manager) {
+        LeadData.append("assignedToManager", Manager);
+      }
+      if(SalesPerson2) {
+        LeadData.append("assignedToSales", SalesPerson2);
+      }
     } else if (User?.role === 7) {
       LeadData.append("assignedToManager", User?.isParent);
       LeadData.append("assignedToSales", User?.id);
@@ -300,7 +304,7 @@ const AddLeadComponent = () => {
           const SalesPerson = result.data.team;
           setSalesPerson(SalesPerson || []);
         }
-        setpageloading(false);
+        // setpageloading(false);
       })
       .catch((err) => {
         console.log(err);
