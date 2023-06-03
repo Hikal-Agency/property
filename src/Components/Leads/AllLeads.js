@@ -30,6 +30,8 @@ import RenderSalesperson from "./RenderSalesperson";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteLeadModel from "./DeleteLead";
 import BulkImport from "./BulkImport";
+import { RiMessage2Line } from "react-icons/ri";
+import { FaWhatsapp } from "react-icons/fa";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -544,6 +546,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             {cellValues.row.leadSource?.toLowerCase() === "personal" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <BsPersonCircle size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() === "whatsapp" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaWhatsapp size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() === "message" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <RiMessage2Line size={22} color={"#14539a"} />
               </div>
             )}
           </>
@@ -1070,17 +1084,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         const pCount = personal.length;
 
         const message = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "Message"
+          (row) => row?.leadSource.toLowerCase() === "message"
         );
         const mCount = message.length;
 
         const whatsapp = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "Whatsapp"
+          (row) => row?.leadSource.toLowerCase() === "whatsapp"
         );
         const wCount = whatsapp.length;
 
         const comment = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "Comment"
+          (row) => row?.leadSource.toLowerCase() === "comment"
         );
         const comCount = comment.length;
 
@@ -1101,7 +1115,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           coCount: coCount,
           mCount: mCount,
           wCount: wCount,
-          comment: wCount,
+          comment: comCount,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
           // total: result.data.coldLeads.total,
