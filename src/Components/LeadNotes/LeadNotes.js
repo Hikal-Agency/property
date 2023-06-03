@@ -139,8 +139,8 @@ const LeadNotes = ({ pageState, setpageState }) => {
           isLoading: false,
           data: rowsdata,
           total: result.data.logs.total,
-          // pageSize: result.data.logs.per_page,
-          pageSize: result.data.logs.last_page,
+          pageSize: result.data.logs.per_page,
+          gridPageSize: result.data.logs.last_page,
           currentPage: result.data.logs.current_page,
         }));
       })

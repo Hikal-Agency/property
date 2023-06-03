@@ -393,10 +393,10 @@ const NotesGrid = ({ pageState, setpageState }) => {
   useEffect(() => {
     setLoading(true);
 
-    const { data, isLoading, page, pageSize, total } = pageState;
+    const { data, isLoading, page, pageSize, total, gridPageSize } = pageState;
     setUserData(data);
     // setMaxPage(Math.ceil(total / pageSize));
-    setMaxPage(pageSize);
+    setMaxPage(gridPageSize);
     setLoading(isLoading);
   }, [pageState.page]);
 
