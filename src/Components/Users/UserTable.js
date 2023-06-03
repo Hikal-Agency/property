@@ -244,7 +244,7 @@ const UserTable = ({ user }) => {
                 </div>
               </div>
             </div> */}
-            <div className="px-5">
+            {/* <div className="px-5">
               <div className="mt-5 md:mt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
                   {userData?.map((item, index) => {
@@ -307,6 +307,78 @@ const UserTable = ({ user }) => {
                             onClick={() => handleDelete(item?.id)}
                           >
                             <FaTrash />
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div> */}
+
+            <div className="px-5">
+              <div className="mt-5 md:mt-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
+                  {userData?.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-gray-900 text-white"
+                            : "bg-gray-200 text-black"
+                        } p-3 rounded-md relative`}
+                      >
+                        {item?.displayImg ? (
+                          <img
+                            src={item?.displayImg}
+                            className="rounded-md cursor-pointer h-[50px] w-[50px] object-cover"
+                            alt=""
+                          />
+                        ) : (
+                          <Avatar
+                            alt="User"
+                            variant="circular"
+                            style={{ width: "50px", height: "50px" }}
+                          />
+                        )}
+                        <div className="mt-2 space-y-1 overflow-hidden">
+                          <h1 className="font-bold capitalize">
+                            {item?.userName}
+                          </h1>
+                          <p className="text-sm font-semibold text-red-600 capitalize">
+                            {item?.position}
+                          </p>
+                          <hr />
+                          <p className="text-sm">{item?.userContact}</p>
+                          <p className="text-sm">{item?.userEmail}</p>
+                          {item?.status === 0 ? (
+                            <p className="text-sm text-red-600">Deactive</p>
+                          ) : (
+                            <p className="text-sm text-green-600">Active</p>
+                          )}
+                        </div>
+
+                        <div className="absolute top-2 items-center right-2 flex flex-col">
+                          <Link
+                            to={`/updateuser/${item?.id}`}
+                            className="text-blue-500"
+                          >
+                            <FaEdit style={{ color: "blue" }} />
+                          </Link>
+
+                          <Button
+                            className="text-green-500"
+                            onClick={() => handleModel(item?.id)}
+                          >
+                            <FaEye style={{ color: "green" }} />
+                          </Button>
+
+                          <Button
+                            className="text-red-500"
+                            onClick={() => handleDelete(item?.id)}
+                          >
+                            <FaTrash style={{ color: "red" }} />
                           </Button>
                         </div>
                       </div>
