@@ -71,9 +71,9 @@ const RenderManagers = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.leadId);
-    console.log(newManager);
+    console.log(newManager === undefined);
     if(newManager === undefined) {
-      UpdateLeadData.append("assignedToManager", 0);
+      UpdateLeadData.append("assignedToManager", 132);
     } else {
       UpdateLeadData.append("assignedToManager", newManager?.id);
     }

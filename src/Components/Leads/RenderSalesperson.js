@@ -20,7 +20,6 @@ const RenderSalesperson = ({ cellValues }) => {
   const [SalesPerson2, setSalesPerson2] = useState(
     cellValues?.row?.assignedToSales
   );
-  console.log("Agent : ", SalesPerson2);
 
   const [SalesPersonsList, setSalesPersonsList] = useState([]);
   const [SalesPerson3, setSalesPerson3] = useState();
@@ -121,7 +120,6 @@ const RenderSalesperson = ({ cellValues }) => {
     } else {
       setNoAgents(false);
       setSalesPersonsList(agents);
-      setSalesPerson2(cellValues?.row?.assignedToSales);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -130,6 +128,10 @@ const RenderSalesperson = ({ cellValues }) => {
     cellValues?.row?.assignedToSales,
     SalesPerson,
   ]);
+
+  useEffect(() => {
+    setSalesPerson2("selected_agent");
+  }, [cellValues?.row?.assignedToManager]);
 
   return (
     <Box
@@ -150,7 +152,7 @@ const RenderSalesperson = ({ cellValues }) => {
         <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
           <Select
             id="SalesPerson"
-            value={SalesPerson2 ?? "selected_agent"}
+            value={SalesPerson2 || "selected_agent"}
             name="salesperson"
             label="Salesperson"
             onChange={ChangeSalesPerson}
@@ -159,7 +161,7 @@ const RenderSalesperson = ({ cellValues }) => {
             displayEmpty
             required
           >
-            {!SalesPerson2 && (
+            {(!SalesPerson2 || SalesPerson2 === "selected_agent") && (
               <MenuItem value={"selected_agent"} selected>
                 {" "}
                 Select Agent
