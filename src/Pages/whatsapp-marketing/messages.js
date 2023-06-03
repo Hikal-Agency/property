@@ -90,10 +90,11 @@ const AllLeads = () => {
     setopenBackDrop,
     BACKEND_URL,
     darkModeColors,
-    Managers, 
+    Managers,
     SalesPerson,
     User,
   } = useStateContext();
+  console.log("salesperson: ", SalesPerson);
   const token = localStorage.getItem("auth-token");
   const [selectedRows, setSelectedRows] = useState([]);
   const [leadOriginSelected, setLeadOriginSelected] = useState(leadOrigins[0]);
@@ -139,7 +140,7 @@ const AllLeads = () => {
     //       </div>
     //     );
     //   },
-    // },   
+    // },
     {
       field: "leadSource",
       headerName: "Src",
@@ -231,9 +232,7 @@ const AllLeads = () => {
       renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="capitalize">
-              {cellValues?.formattedValue}
-            </p>
+            <p className="capitalize">{cellValues?.formattedValue}</p>
           </div>
         );
       },
@@ -260,9 +259,7 @@ const AllLeads = () => {
       renderCell: (cellValues) => {
         return (
           <div className="w-full">
-            <p className="capitalize">
-              {cellValues?.formattedValue}
-            </p>
+            <p className="capitalize">{cellValues?.formattedValue}</p>
           </div>
         );
       },
@@ -277,7 +274,7 @@ const AllLeads = () => {
       filterable: false,
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
- 
+
     {
       field: "whatsapp-web",
       headerName: "",
@@ -306,8 +303,7 @@ const AllLeads = () => {
     },
   ];
 
-   const managerColumns = [ 
-
+  const managerColumns = [
     {
       field: "leadName",
       headerAlign: "center",
@@ -338,9 +334,7 @@ const AllLeads = () => {
       renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="capitalize">
-              {cellValues?.formattedValue}
-            </p>
+            <p className="capitalize">{cellValues?.formattedValue}</p>
           </div>
         );
       },
@@ -367,9 +361,7 @@ const AllLeads = () => {
       renderCell: (cellValues) => {
         return (
           <div className="w-full">
-            <p className="capitalize">
-              {cellValues?.formattedValue}
-            </p>
+            <p className="capitalize">{cellValues?.formattedValue}</p>
           </div>
         );
       },
@@ -384,7 +376,7 @@ const AllLeads = () => {
       filterable: false,
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
- 
+
     {
       field: "whatsapp-web",
       headerName: "",
@@ -668,7 +660,7 @@ const AllLeads = () => {
           leadContact: row?.leadContact,
           project: row?.project,
           leadType: row?.leadType,
-            language: row?.language || "No Language",
+          language: row?.language || "No Language",
           enquiryType: row?.enquiryType,
           leadSource: row?.leadSource,
         }));
@@ -1444,9 +1436,12 @@ const AllLeads = () => {
             "& .MuiSvgIcon-root": {
               color: currentMode === "dark" ? "#ffffff" : "#000000",
             },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+            "& .MuiDataGrid-cell[data-field='edit'] svg": {
+              color:
+                currentMode === "dark"
+                  ? "white !important"
+                  : "black !important",
+            },
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

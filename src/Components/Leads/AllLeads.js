@@ -491,7 +491,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   ];
 
   const columns = [
-     {
+    {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
@@ -705,7 +705,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <div style={{ fontSize: 10 }}>
             {cellValues.formattedValue === "Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md available">VERIFIED</badge>
+                <badge className="bg-[#0f9d58] p-1 rounded-md available">
+                  VERIFIED
+                </badge>
               </div>
             )}
 
@@ -1031,9 +1033,55 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
         console.log("Rows Data: ", rowsdata);
 
+        // count of leads per source
+        const facebook = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "campaign facebook"
+        );
+        const fbCounts = facebook.length;
+
+        const snapchat = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "campaign snapchat"
+        );
+        const spCount = snapchat.length;
+
+        const tiktok = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "campaign tiktok"
+        );
+        const ttCount = tiktok.length;
+
+        const googleads = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "campaign googleads"
+        );
+        const gCount = googleads.length;
+
+        const campaign = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "campaign"
+        );
+        const cCount = campaign.length;
+
+        const cold = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "cold"
+        );
+        const coCount = cold.length;
+
+        const personal = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "personal"
+        );
+        const pCount = personal.length;
+
+        console.log("FB: ", fbCounts);
+        console.log("Snap: ", spCount);
+
         setpageState((old) => ({
           ...old,
           isLoading: false,
+          fbCounts: fbCounts,
+          spCount: spCount,
+          ttCount: ttCount,
+          gCount: gCount,
+          cCount: cCount,
+          pCount: pCount,
+          coCount: coCount,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
           // total: result.data.coldLeads.total,
@@ -1298,6 +1346,155 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   return (
     <div className="pb-10">
       <ToastContainer />
+
+      <div className=" mb-5">
+        <div className=" mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 ">
+            <Box
+              sx={{
+                padding: "10px",
+                margin: "10px",
+                borderRadius: "10px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontWeight: "bold",
+                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
+                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
+                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                width: "auto",
+              }}
+            >
+              <span>
+                <FaFacebook size={22} color={"#0e82e1"} />
+              </span>
+              <span>{pageState?.fbCounts}</span>
+            </Box>
+            <Box
+              sx={{
+                padding: "10px",
+                margin: "10px",
+                borderRadius: "10px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontWeight: "bold",
+                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
+                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
+                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              }}
+            >
+              <span>
+                <FaSnapchat size={22} color={"#f6d80a"} />
+              </span>
+              <span>{pageState?.spCount}</span>
+            </Box>
+            <Box
+              sx={{
+                padding: "10px",
+                margin: "10px",
+                borderRadius: "10px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontWeight: "bold",
+                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
+                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
+                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              }}
+            >
+              <span>
+                <img
+                  src={"/assets/tiktok-app.svg"}
+                  alt=""
+                  height={22}
+                  width={22}
+                  className="object-cover"
+                />
+              </span>
+              <span>{pageState?.ttCount}</span>
+            </Box>
+            <Box
+              sx={{
+                padding: "10px",
+                margin: "10px",
+                borderRadius: "10px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontWeight: "bold",
+                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
+                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
+                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              }}
+            >
+              <span>
+                <FcGoogle size={22} />
+              </span>
+              <span>{pageState?.gCount}</span>
+            </Box>
+            <Box
+              sx={{
+                padding: "10px",
+                margin: "10px",
+                borderRadius: "10px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontWeight: "bold",
+                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
+                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
+                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              }}
+            >
+              <span>
+                <MdCampaign
+                  size={22}
+                  color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+                />
+              </span>
+              <span>{pageState?.cCount}</span>
+            </Box>
+            <Box
+              sx={{
+                padding: "10px",
+                margin: "10px",
+                borderRadius: "10px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontWeight: "bold",
+                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
+                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
+                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              }}
+            >
+              <span>
+                <BsSnow2 size={22} color={"#0ec7ff"} />
+              </span>
+              <span>{pageState?.coCount}</span>
+            </Box>
+            {/* <Box
+              sx={{
+                padding: "10px",
+                margin: "10px",
+                borderRadius: "10px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontWeight: "bold",
+                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
+                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
+                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              }}
+            >
+              <span>Meeting</span>
+              <span>Static Text</span>
+            </Box> */}
+          </div>
+        </div>
+      </div>
+
       <Box
         sx={{
           ...DataGridStyles,
