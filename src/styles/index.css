@@ -267,6 +267,6 @@ label[for="bulkImport"] .MuiButtonBase-root{
   color:"white !important"
 }
 
-.MuiDataGrid-cell badge {
+.MuiDataGrid-cell badge:not(badge.available) {
   background: #ff0000;
 }
