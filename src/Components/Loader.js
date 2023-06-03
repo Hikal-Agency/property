@@ -1,18 +1,11 @@
-import React from "react";
+import { DoubleBubble } from 'react-spinner-animated';
+import 'react-spinner-animated/dist/index.css';
 
 const Loader = () => {
   return (
     <>
       <div className="w-full h-full flex items-center space-x-2 justify-center">
-        <img
-          // unoptimized={true}
-          height={320}
-          style={{position: "relative", bottom: 60}}
-          width={350}
-          src={"/assets/loading/hikalloading.gif"}
-          alt=""
-          // className="h-[200px] w-[200px] object-cover"
-        />
+       <DoubleBubble text="Loading.." width="80px" height="80px"/>
       </div>
       {/* <div className="h-screen w-screen overflow-hidden flex space-x-2 items-center justify-center">
       <CircularProgress /><h1>Loading</h1>
