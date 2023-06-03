@@ -1,4 +1,4 @@
-import { Box, Button as MuiButton, Avatar, IconButton } from "@mui/material";
+import { Box, Button as MuiButton, IconButton } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -53,6 +53,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
   const [bulkDeleteClicked, setBulkDeleteClicked] = useState(false);
   const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
+  const [hovered, setHovered] = useState("");
   const [CSVData, setCSVData] = useState({
     keys: [],
     rows: [],
@@ -769,35 +770,41 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
             <p
+            onMouseEnter={() => setHovered("edit")}
+            onMouseLeave={() => setHovered("")}
               style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
-                  ? "bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
               }`}
               onClick={() => HandleEditFunc(cellValues)}
             >
-              <IconButton sx={{ padding: 0 }}>
+              <IconButton
+                sx={{ padding: 0}}
+              >
                 <AiOutlineEdit size={20} />
               </IconButton>
             </p>
 
             {cellValues.row.leadId !== null && (
-              <Link
-                to={`/timeline/${cellValues.row.leadId}`}
-                className={`editLeadBtn cursor-pointer ${
-                  currentMode === "dark"
-                    ? "bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                    : "bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
-                }`}
-              >
-                <IconButton
-                  sx={{ padding: 0 }}
-                  color={currentMode === "dark" ? "black" : "white"}
+              <p>
+                <Link
+                  to={`/timeline/${cellValues.row.leadId}`}
+                  className={`editLeadBtn cursor-pointer ${
+                    currentMode === "dark"
+                      ? "bg-transparent rounded-md shadow-none"
+                      : "bg-transparent rounded-md shadow-none"
+                  }`}
                 >
-                  <AiOutlineHistory size={20} style={{ color: "inherit" }} />
-                </IconButton>
-              </Link>
+                  <IconButton
+                    sx={{ padding: 0 }}
+                    color={currentMode === "dark" ? "black" : "white"}
+                  >
+                    <AiOutlineHistory size={20} style={{ color: "inherit" }} />
+                  </IconButton>
+                </Link>
+              </p>
             )}
 
             <p
@@ -809,8 +816,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               disabled={deleteloading ? true : false}
               className={`deleteLeadBtn cursor-pointer ${
                 currentMode === "dark"
-                  ? " bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? " bg-transparent rounded-md shadow-none"
+                  : "bg-transparent rounded-md shadow-none"
               }`}
             >
               <IconButton
@@ -1511,9 +1518,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 },
                 "& .MuiDataGrid-main": {
                   overflowY: "scroll",
-                  height: pageState.data.length > 0 ? "475px" : "auto",
+                  height: "auto",
                 },
-                "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                "& .MuiDataGrid-cell[data-field='edit'] .edit-icon svg": {
                   color:
                     currentMode === "dark"
                       ? "white !important"

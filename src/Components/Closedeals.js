@@ -269,7 +269,7 @@ const Closedeals = ({ pageState, setpageState }) => {
             },
             "& .MuiDataGrid-main": {
               overflowY: "scroll",
-              height: pageState.data.length > 0 ? "475px" : "auto",
+              height: "auto",
             },
             "& .MuiDataGrid-cell[data-field='edit'] svg": {
               color:
