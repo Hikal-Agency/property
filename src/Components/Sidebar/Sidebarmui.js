@@ -60,8 +60,8 @@ const Sidebarmui = () => {
     setSalesPerson,
     setManagers,
     setAppLoading,
-    fetchSidebarData, 
-    sidebarData
+    fetchSidebarData,
+    sidebarData,
   } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();

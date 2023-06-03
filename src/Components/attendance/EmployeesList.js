@@ -67,7 +67,7 @@ const EmployeesList = ({ user }) => {
                             : "bg-gray-200 text-black"
                         }  rounded-md`}
                       >
-                        <div className="bg-green-500 py-2 px-4 rounded-md mb-3">
+                        <div className="bg-red-500 py-2 px-4 rounded-md mb-3">
                           <p className="text-sm text-white text-center">
                             Checked-in
                           </p>
@@ -94,7 +94,7 @@ const EmployeesList = ({ user }) => {
                           <p className="text-sm">{item?.position}</p>
                           <p className="text-sm">{item?.department}</p>
                         </div>
-                        <div className="bg-green-500 rounded-md p-2 mt-3 text-center">
+                        <div className="bg-red-500 rounded-md p-2 mt-3 text-center">
                           <p className="text-xs">Checked-Out</p>
                           <p className="text-xs">2023-05-30 06:30</p>
                         </div>
