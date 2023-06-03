@@ -253,8 +253,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 onClick={() => HandleEditFunc(cellValues)}
                 // className={`${
                 //   currentMode === "dark"
-                //     ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                //     : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                //     ? "text-white bg-transparent rounded-md shadow-none "
+                //     : "text-black bg-transparent rounded-md shadow-none "
                 // }`}
               >
                 <AiOutlineEdit size={20} color="white" />
@@ -274,8 +274,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 onClick={() => HandleEditFunc(cellValues)}
                 // className={`${
                 //   currentMode === "dark"
-                //     ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                //     : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                //     ? "text-white bg-transparent rounded-md shadow-none "
+                //     : "text-black bg-transparent rounded-md shadow-none "
                 // }`}
               >
                 <AiOutlineEdit
@@ -299,8 +299,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
               className={`editLeadBtn ${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
               <AiOutlineHistory size={20} />
@@ -310,8 +310,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 to={`/timeline/${cellValues.row.leadId}`}
                 className={`editLeadBtn ${
                   currentMode === "dark"
-                    ? "text-white bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                    : "text-black bg-transparent rounded-md shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                    ? "text-white bg-transparent rounded-md shadow-none "
+                    : "text-black bg-transparent rounded-md shadow-none "
                 }`}
               >
                 <AiOutlineHistory size={20} />
@@ -461,8 +461,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               onClick={() => HandleEditFunc(cellValues)}
               className={`editLeadBtn ${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
               <AiOutlineEdit size={20} />
@@ -471,8 +471,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               onClick={() => HandleEditFunc(cellValues)}
               className={`editLeadBtn ${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
               <AiOutlineEdit size={20} />
@@ -481,8 +481,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               onClick={() => navigate(`/timeline/${cellValues.row.leadId}`)}
               className={`editLeadBtn ${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
               <AiOutlineHistory size={20} />
@@ -1520,7 +1520,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   overflowY: "scroll",
                   height: "auto",
                 },
-                "& .MuiDataGrid-cell[data-field='edit'] .edit-icon svg": {
+                "& .MuiDataGrid-cell[data-field='edit'] svg": {
                   color:
                     currentMode === "dark"
                       ? "white !important"

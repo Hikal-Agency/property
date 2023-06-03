@@ -646,8 +646,8 @@ const Clients = () => {
               title="View User Accounts of the Client"
               className={` ${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
               <ImUser size={20} />
@@ -657,8 +657,8 @@ const Clients = () => {
               title="View Leads of the Client"
               className={` ${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
               <HiUsers size={20} />
@@ -671,8 +671,8 @@ const Clients = () => {
               title="Deactivate All User Accounts of the Client"
               className={` ${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-white hover:text-red-600"
-                  : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
               <FaBan size={20} color={"#DA1F26"} />
