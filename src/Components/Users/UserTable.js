@@ -319,7 +319,7 @@ const UserTable = ({ user }) => {
             <Stack spacing={2} marginTop={2}>
               <Pagination
                 count={maxPage}
-                // color={currentMode === "dark" ? "primary" : "secondary"}
+                color={currentMode === "dark" ? "primary" : "secondary"}
                 onChange={handlePageChange}
                 style={{ margin: "auto" }}
                 page={pageState.page}

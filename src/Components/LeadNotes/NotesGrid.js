@@ -449,49 +449,50 @@ const NotesGrid = ({ pageState, setpageState }) => {
               <Pagination
                 count={maxPage}
                 color={currentMode === "dark" ? "primary" : "secondary"}
+                page={pageState.page}
                 onChange={handlePageChange}
                 style={{ margin: "auto" }}
                 sx={{
                   "& .Mui-selected": {
-                    color: currentMode === "dark" ? "white" : "gray",
-                    backgroundColor: "red",
+                    color: "white",
+                    backgroundColor: "red !important",
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",
                     },
                   },
                   "& .MuiPaginationItem-root": {
-                    color: currentMode === "dark" ? "white" : "gray",
+                    color: "white",
                   },
                 }}
-                renderItem={(item) => {
-                  const isEllipsis =
-                    item.type === "start-ellipsis" ||
-                    item.type === "end-ellipsis";
+                // renderItem={(item) => {
+                //   const isEllipsis =
+                //     item.type === "start-ellipsis" ||
+                //     item.type === "end-ellipsis";
 
-                  return (
-                    <PaginationItem
-                      {...item}
-                      // page={pageState.page}
-                      sx={{
-                        color: isEllipsis
-                          ? currentMode === "dark"
-                            ? "red"
-                            : "red"
-                          : undefined,
-                        backgroundColor: isEllipsis
-                          ? undefined
-                          : currentMode === "dark"
-                          ? "red"
-                          : "red",
-                        "&:hover": {
-                          backgroundColor:
-                            currentMode === "dark" ? "red" : "red",
-                        },
-                      }}
-                    />
-                  );
-                }}
+                //   return (
+                //     <PaginationItem
+                //       {...item}
+                //       // page={pageState.page}
+                //       sx={{
+                //         color: isEllipsis
+                //           ? currentMode === "dark"
+                //             ? "red"
+                //             : "red"
+                //           : undefined,
+                //         backgroundColor: isEllipsis
+                //           ? undefined
+                //           : currentMode === "dark"
+                //           ? "red"
+                //           : "red",
+                //         "&:hover": {
+                //           backgroundColor:
+                //             currentMode === "dark" ? "red" : "red",
+                //         },
+                //       }}
+                //     />
+                //   );
+                // }}
               />
             </Stack>
           </div>
