@@ -1069,8 +1069,25 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         );
         const pCount = personal.length;
 
+        const message = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "Message"
+        );
+        const mCount = message.length;
+
+        const whatsapp = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "Whatsapp"
+        );
+        const wCount = whatsapp.length;
+
+        const comment = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "Comment"
+        );
+        const comCount = comment.length;
+
         console.log("FB: ", fbCounts);
         console.log("Snap: ", spCount);
+        console.log("wa: ", wCount);
+        console.log("ms: ", mCount);
 
         setpageState((old) => ({
           ...old,
@@ -1082,6 +1099,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           cCount: cCount,
           pCount: pCount,
           coCount: coCount,
+          mCount: mCount,
+          wCount: wCount,
+          comment: wCount,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
           // total: result.data.coldLeads.total,
