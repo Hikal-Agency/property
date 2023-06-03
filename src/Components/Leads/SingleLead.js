@@ -236,22 +236,6 @@ const SingleLead = ({
                 <span className="p-2 bg-main-red-color text-white rounded-md">
                   {LeadData?.feedback ?? "No Feedback"}
                 </span>
-                <span className="float-right">
-                  {LeadData?.leadCategory === "hot" ? (
-                    <BsFire size={25} />
-                  ) : LeadData?.leadCategory === "cold" ? (
-                    <BsSnow2 size={25} />
-                  ) : LeadData?.leadCategory === "personal" ? (
-                    <HiOutlineUserCircle size={25} />
-                  ) : LeadData?.leadCategory === "thridparty" ? (
-                    <FiLink size={25} />
-                  ) : LeadData?.leadCategory === "warm" ? (
-                    <BsSun size={25} />
-                  ) : (
-                    <BsPatchQuestion size={25} />
-                    // <FaHotjar size={25} />
-                  )}
-                </span>
               </div>
               <p
                 className={`italic text-sm ${
