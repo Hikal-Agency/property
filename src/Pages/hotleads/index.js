@@ -63,7 +63,7 @@ const AllHotLeads = () => {
               <div className="w-full">
                 <div className=" w-full flex items-center justify-between">
                   <h1
-                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                    className={`text-xl border-l-[4px] ml-1 pl-1  font-bold ${
                       currentMode === "dark"
                         ? "text-white border-white"
                         : "text-red-600 font-bold border-red-600"
@@ -76,7 +76,7 @@ const AllHotLeads = () => {
                     </span>
                   </h1>
                   <div className="justify-self-end">
-                    <div className=" px-4 py-8">
+                    <div className=" px-4 py-5">
                       <div className="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-8 gap-4">
                         <Box
                           sx={{
@@ -87,9 +87,7 @@ const AllHotLeads = () => {
                             alignItems: "center",
                             fontWeight: "bold",
                             background: " #da1f26",
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
+                            color: "#ffffff",
                             boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
                             height: "40px",
                             width: "70px",
@@ -118,9 +116,7 @@ const AllHotLeads = () => {
                             alignItems: "center",
                             fontWeight: "bold",
                             background: "#da1f26",
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
+                            color: "#ffffff",
                             boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
                             height: "40px",
                             width: "70px",
@@ -147,9 +143,7 @@ const AllHotLeads = () => {
                             alignItems: "center",
                             fontWeight: "bold",
                             background: "#da1f26",
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
+                            color: "#ffffff",
                             boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
                             height: "40px",
                             width: "70px",
@@ -184,9 +178,7 @@ const AllHotLeads = () => {
                             alignItems: "center",
                             fontWeight: "bold",
                             background: "#da1f26",
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
+                            color: "#ffffff",
                             boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
                             height: "40px",
                             width: "70px",
@@ -213,9 +205,7 @@ const AllHotLeads = () => {
                             alignItems: "center",
                             fontWeight: "bold",
                             background: "#da1f26",
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
+                            color: "#ffffff",
                             boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
                             height: "40px",
                             width: "70px",
@@ -242,9 +232,7 @@ const AllHotLeads = () => {
                             alignItems: "center",
                             fontWeight: "bold",
                             background: "#da1f26",
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
+                            color: "#ffffff",
                             boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
                             justifySelf: "end",
                             height: "40px",
@@ -271,9 +259,7 @@ const AllHotLeads = () => {
                             alignItems: "center",
                             fontWeight: "bold",
                             background: "#da1f26",
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
+                            color: "#ffffff",
                             boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
                             justifySelf: "end",
                             height: "40px",
@@ -300,9 +286,7 @@ const AllHotLeads = () => {
                             alignItems: "center",
                             fontWeight: "bold",
                             background: "#da1f26",
-                            color: `${
-                              currentMode === "dark" ? "#ffffff" : "#000000"
-                            }`,
+                            color: "#ffffff",
                             boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
                             justifySelf: "end",
                             height: "40px",
