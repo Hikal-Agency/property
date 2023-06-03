@@ -331,7 +331,7 @@ const BookedDeals = ({
   };
 
   // ROLE 3
-   const AgentColumns = [
+  const AgentColumns = [
     {
       field: "creationDate",
       headerName: "Date",
@@ -396,7 +396,6 @@ const BookedDeals = ({
       minWidth: 110,
       flex: 1,
     },
-
   ];
 
   const columns = [
@@ -608,11 +607,9 @@ const BookedDeals = ({
       filterable: false,
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
-
   ];
 
-    const managerColumns = [
-
+  const managerColumns = [
     {
       field: "leadName",
       headerName: "Name",
@@ -762,7 +759,6 @@ const BookedDeals = ({
       filterable: false,
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
-
   ];
 
   const FetchLeads = async (token) => {
@@ -824,8 +820,69 @@ const BookedDeals = ({
           edit: "edit",
         }));
 
+        // count of leads per source
+        const facebook = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "campaign facebook"
+        );
+        const fbCounts = facebook.length;
+
+        const snapchat = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "campaign snapchat"
+        );
+        const spCount = snapchat.length;
+
+        const tiktok = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "campaign tiktok"
+        );
+        const ttCount = tiktok.length;
+
+        const googleads = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "campaign googleads"
+        );
+        const gCount = googleads.length;
+
+        const campaign = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "campaign"
+        );
+        const cCount = campaign.length;
+
+        const cold = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "cold"
+        );
+        const coCount = cold.length;
+
+        const personal = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "personal"
+        );
+        const pCount = personal.length;
+
+        const message = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "Message"
+        );
+        const mCount = message.length;
+
+        const whatsapp = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "Whatsapp"
+        );
+        const wCount = whatsapp.length;
+
+        const comment = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "Comment"
+        );
+        const comCount = comment.length;
+
         setpageState((old) => ({
           ...old,
+          fbCounts: fbCounts,
+          spCount: spCount,
+          ttCount: ttCount,
+          gCount: gCount,
+          cCount: cCount,
+          pCount: pCount,
+          coCount: coCount,
+          mCount: mCount,
+          wCount: wCount,
+          comment: wCount,
           isLoading: false,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
@@ -999,9 +1056,7 @@ const BookedDeals = ({
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box
-        sx={{ ...DataGridStyles, position: "relative", marginBottom: 50}}
-      >
+      <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
         <div style={{ position: "relative" }}>
           <DataGrid
             ref={dataTableRef}
@@ -1049,8 +1104,11 @@ const BookedDeals = ({
                 height: pageState.data.length > 0 ? 475 : "auto",
               },
               "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+                color:
+                  currentMode === "dark"
+                    ? "white !important"
+                    : "black !important",
+              },
             }}
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

@@ -21,7 +21,9 @@ const GridMeeting = ({ pageState, setpageState }) => {
 
     const { data, isLoading, page, pageSize, total } = pageState;
     setUserData(data);
-    setMaxPage(Math.ceil(total / pageSize));
+    // setMaxPage(Math.ceil(total / pageSize));
+    setMaxPage(pageSize);
+
     setLoading(isLoading);
   }, [pageState]);
 
@@ -112,6 +114,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
               <Pagination
                 count={maxPage}
                 color={currentMode === "dark" ? "primary" : "secondary"}
+                page={pageState.page}
                 onChange={handlePageChange}
                 style={{ margin: "auto" }}
                 sx={{
