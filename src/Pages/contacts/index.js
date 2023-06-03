@@ -136,11 +136,19 @@ const Contacts = () => {
                             : "bg-gray-200 text-black"
                         } p-3 rounded-md `}
                       >
-                        <img
-                          src="/favicon.png"
-                          className="rounded-md cursor-pointer h-[50px] w-[50px] object-cover"
-                          alt=""
-                        />
+                        {item?.profile_picture ? (
+                          <img
+                            src={`${item?.profile_picture}`}
+                            className="rounded-md cursor-pointer h-[50px] w-[50px] object-cover"
+                            alt=""
+                          />
+                        ) : (
+                          <img
+                            src="/favicon.png"
+                            className="rounded-md cursor-pointer h-[50px] w-[50px] object-cover"
+                            alt=""
+                          />
+                        )}
                         <div className="mt-2 space-y-1 overflow-hidden">
                           <h1 className="font-bold capitalize">
                             {item.userName}
@@ -151,6 +159,7 @@ const Contacts = () => {
                           </p> */}
                           <p className="text-sm">{item.userPhone}</p>
                           <p className="text-sm">{item.userEmail}</p>
+                          <p className="text-sm">{item.userContact}</p>
                           {item?.status === 0 ? (
                             <p className="text-sm text-red-600">Deactive</p>
                           ) : (

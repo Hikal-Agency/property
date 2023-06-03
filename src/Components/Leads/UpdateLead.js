@@ -328,19 +328,19 @@ const UpdateLead = ({
     UpdateLeadData.append("leadStatus", LeadStatus);
     UpdateLeadData.append("notes", LeadNotes);
     if (User.role === 1 || User.role === 3) {
-      if (!Manager || !SalesPerson2) {
-        toast.error("Manager and sales field is required", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        setbtnloading(false);
-        return;
-      }
+      // if (!Manager || !SalesPerson2) {
+      //   toast.error("Manager and sales field is required", {
+      //     position: "top-right",
+      //     autoClose: 3000,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //     theme: "light",
+      //   });
+      //   setbtnloading(false);
+      //   return;
+      // }
       UpdateLeadData.append("assignedToManager", Manager);
       UpdateLeadData.append("assignedToSales", SalesPerson2);
       console.log("manager and salesperson ", Manager, SalesPerson2);
