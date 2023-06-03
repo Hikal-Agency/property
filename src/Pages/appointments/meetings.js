@@ -223,7 +223,8 @@ const Meetings = () => {
           ...old,
           isLoading: false,
           data: rowsdata,
-          pageSize: result.data.leads.last_page,
+          pageSize: result.data.leads.per_page,
+          gridDataSize: result.data.leads.last_page,
           total: result.data.leads.total,
         }));
       })

@@ -19,10 +19,10 @@ const GridMeeting = ({ pageState, setpageState }) => {
   useEffect(() => {
     setLoading(true);
 
-    const { data, isLoading, page, pageSize, total } = pageState;
+    const { data, isLoading, page, pageSize, total, gridDataSize } = pageState;
     setUserData(data);
     // setMaxPage(Math.ceil(total / pageSize));
-    setMaxPage(pageSize);
+    setMaxPage(gridDataSize);
 
     setLoading(isLoading);
   }, [pageState]);

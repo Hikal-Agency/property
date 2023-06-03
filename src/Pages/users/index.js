@@ -151,7 +151,7 @@ const Users = () => {
         ...old,
         isLoading: false,
         data: rowsdata,
-        pageSize: response?.data?.managers?.last,
+        pageSize: response?.data?.managers?.per_page,
         total: response?.data?.managers?.total,
       }));
 
