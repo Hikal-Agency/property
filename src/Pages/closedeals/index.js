@@ -61,26 +61,26 @@ const ClosedealsPage = (props) => {
             }`}
           >
             <div className="pl-3 w-full">
-                  <div className="mt-3">
-                    <h1
-                      className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                        currentMode === "dark"
-                          ? "text-white border-white"
-                          : "text-red-600 font-bold border-red-600"
-                      }`}
-                      style={{ textTransform: "capitalize" }}
-                    >
-                      Closed deals{" "}
-                      <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
-                        <span>{pageState?.total}</span>
-                      </span>
-                    </h1>
-                    <Closedeals
-                      BACKEND_URL={BACKEND_URL}
-                      pageState={pageState}
-                      setpageState={setpageState}
-                    />
-                </div>
+              <div className="mt-3">
+                <h1
+                  className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                    currentMode === "dark"
+                      ? "text-white border-white"
+                      : "text-red-600 font-bold border-red-600"
+                  }`}
+                  style={{ textTransform: "capitalize" }}
+                >
+                  Closed deals{" "}
+                  <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
+                    <span>{pageState?.total}</span>
+                  </span>
+                </h1>
+                <Closedeals
+                  BACKEND_URL={BACKEND_URL}
+                  pageState={pageState}
+                  setpageState={setpageState}
+                />
+              </div>
             </div>
             {/* <Footer /> */}
           </div>

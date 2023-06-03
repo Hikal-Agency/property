@@ -108,7 +108,10 @@ const Closedeals = ({ pageState, setpageState }) => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none hover:shadow-red-600 hover:bg-black hover:text-white"
               }`}
             >
-              <AiOutlineHistory size={20} onClick={()=>navigate(`/timeline/${cellValues.row.lid}`)} />
+              <AiOutlineHistory
+                size={20}
+                onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              />
             </Button>
             <Button
               onClick={() => HandleEditFunc(cellValues)}
@@ -228,7 +231,9 @@ const Closedeals = ({ pageState, setpageState }) => {
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box sx={{...DataGridStyles, position: "relative", marginBottom: "50px"}}>
+      <Box
+        sx={{ ...DataGridStyles, position: "relative", marginBottom: "50px" }}
+      >
         <DataGrid
           autoHeight
           rows={pageState.data}
@@ -262,13 +267,16 @@ const Closedeals = ({ pageState, setpageState }) => {
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
             },
-              "& .MuiDataGrid-main": {
-                overflowY: "scroll",
-                height: pageState.data.length > 0 ? "475px" : "auto",
-              },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+            "& .MuiDataGrid-main": {
+              overflowY: "scroll",
+              height: pageState.data.length > 0 ? "475px" : "auto",
+            },
+            "& .MuiDataGrid-cell[data-field='edit'] svg": {
+              color:
+                currentMode === "dark"
+                  ? "white !important"
+                  : "black !important",
+            },
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
