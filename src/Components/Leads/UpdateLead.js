@@ -279,21 +279,21 @@ const UpdateLead = ({
   const UpdateLeadFunc = async () => {
     setbtnloading(true);
 
-    if (emailError !== false) {
-      toast.error("Kindly enter a valid email.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setbtnloading(false);
-      setloading(false);
-      return;
-    }
+    // if (emailError !== false) {
+    //   toast.error("Kindly enter a valid email.", {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "light",
+    //   });
+    //   setbtnloading(false);
+    //   setloading(false);
+    //   return;
+    // }
 
     if (!LeadContact) {
       setloading(false);
@@ -502,13 +502,14 @@ const UpdateLead = ({
                             {/* <label className="text-sm text-gray-500">
                               Sales Agent
                             </label> */}
-                      <FormHelperText
-                        sx={{
-                          color: currentMode === "dark" ? "white" : "black",
-                        }}
-                      >
-                        SalesPerson
-                      </FormHelperText>
+                            <FormHelperText
+                              sx={{
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
+                              }}
+                            >
+                              SalesPerson
+                            </FormHelperText>
                             <Select
                               id="SalesPerson"
                               value={SalesPerson2 || ""}
@@ -518,9 +519,7 @@ const UpdateLead = ({
                               displayEmpty
                               // required={SalesPerson.length > 0 ? true : false}
                             >
-                              <MenuItem value="">
-                                Sales Person
-                              </MenuItem>
+                              <MenuItem value="">Sales Person</MenuItem>
                               {SalesPerson?.map((person, index) => (
                                 <MenuItem key={index} value={person?.id || ""}>
                                   {person?.userName}
