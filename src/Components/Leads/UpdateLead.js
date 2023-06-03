@@ -279,21 +279,21 @@ const UpdateLead = ({
   const UpdateLeadFunc = async () => {
     setbtnloading(true);
 
-    if (emailError !== false) {
-      toast.error("Kindly enter a valid email.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setbtnloading(false);
-      setloading(false);
-      return;
-    }
+    // if (emailError !== false) {
+    //   toast.error("Kindly enter a valid email.", {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "light",
+    //   });
+    //   setbtnloading(false);
+    //   setloading(false);
+    //   return;
+    // }
 
     if (!LeadContact) {
       setloading(false);
@@ -328,19 +328,19 @@ const UpdateLead = ({
     UpdateLeadData.append("leadStatus", LeadStatus);
     UpdateLeadData.append("notes", LeadNotes);
     if (User.role === 1 || User.role === 3) {
-      if (!Manager || !SalesPerson2) {
-        toast.error("Manager and sales field is required", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        setbtnloading(false);
-        return;
-      }
+      // if (!Manager || !SalesPerson2) {
+      //   toast.error("Manager and sales field is required", {
+      //     position: "top-right",
+      //     autoClose: 3000,
+      //     hideProgressBar: false,
+      //     closeOnClick: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //     theme: "light",
+      //   });
+      //   setbtnloading(false);
+      //   return;
+      // }
       UpdateLeadData.append("assignedToManager", Manager);
       UpdateLeadData.append("assignedToSales", SalesPerson2);
       console.log("manager and salesperson ", Manager, SalesPerson2);
@@ -502,13 +502,14 @@ const UpdateLead = ({
                             {/* <label className="text-sm text-gray-500">
                               Sales Agent
                             </label> */}
-                      <FormHelperText
-                        sx={{
-                          color: currentMode === "dark" ? "white" : "black",
-                        }}
-                      >
-                        SalesPerson
-                      </FormHelperText>
+                            <FormHelperText
+                              sx={{
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
+                              }}
+                            >
+                              SalesPerson
+                            </FormHelperText>
                             <Select
                               id="SalesPerson"
                               value={SalesPerson2 || ""}
@@ -518,9 +519,7 @@ const UpdateLead = ({
                               displayEmpty
                               // required={SalesPerson.length > 0 ? true : false}
                             >
-                              <MenuItem value="">
-                                Sales Person
-                              </MenuItem>
+                              <MenuItem value="">Sales Person</MenuItem>
                               {SalesPerson?.map((person, index) => (
                                 <MenuItem key={index} value={person?.id || ""}>
                                   {person?.userName}

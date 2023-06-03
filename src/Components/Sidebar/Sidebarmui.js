@@ -66,6 +66,8 @@ const Sidebarmui = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  console.log("SidebarData: ", sidebarData);
+
   useEffect(() => {
     fetchSidebarData();
   }, []);
@@ -743,6 +745,53 @@ const Sidebarmui = () => {
           icon: <MdPersonAdd />,
           link: "/addlead",
         },
+
+        {
+          name: "Fresh",
+          icon: <SiHotjar />,
+          submenu: [
+            {
+              name: "All",
+              count: sidebarData?.HotLeadsCount?.hot,
+              link: "/freshleads/all",
+            },
+            {
+              name: "New",
+              count: sidebarData?.HotLeadsCount?.new,
+              link: "/freshleads/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.HotLeadsCount?.no_nswer,
+              link: "/freshleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.HotLeadsCount?.Meeting,
+              link: "/freshleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.HotLeadsCount?.follow_up,
+              link: "/freshleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.HotLeadsCount?.low_budget,
+              link: "/freshleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: sidebarData?.HotLeadsCount?.not_interested,
+              link: "/freshleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.HotLeadsCount?.unreachable,
+              link: "/freshleads/unreachable",
+            },
+          ],
+        },
         {
           name: "Unassigned",
           icon: <BsStopCircleFill />,
@@ -805,52 +854,6 @@ const Sidebarmui = () => {
               name: "Cold Unassigned",
               count: sidebarData?.UnassignedLeadsCount?.cold,
               link: "/unassigned/cold",
-            },
-          ],
-        },
-        {
-          name: "Fresh",
-          icon: <SiHotjar />,
-          submenu: [
-            {
-              name: "All",
-              count: sidebarData?.HotLeadsCount?.hot,
-              link: "/freshleads/all",
-            },
-            {
-              name: "New",
-              count: sidebarData?.HotLeadsCount?.new,
-              link: "/freshleads/new",
-            },
-            {
-              name: "No Answer",
-              count: sidebarData?.HotLeadsCount?.no_nswer,
-              link: "/freshleads/no answer",
-            },
-            {
-              name: "Meeting",
-              count: sidebarData?.HotLeadsCount?.Meeting,
-              link: "/freshleads/meeting",
-            },
-            {
-              name: "Follow Up",
-              count: sidebarData?.HotLeadsCount?.follow_up,
-              link: "/freshleads/follow up",
-            },
-            {
-              name: "Low Budget",
-              count: sidebarData?.HotLeadsCount?.low_budget,
-              link: "/freshleads/low budget",
-            },
-            {
-              name: "Not Interested",
-              count: sidebarData?.HotLeadsCount?.not_interested,
-              link: "/freshleads/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: sidebarData?.HotLeadsCount?.unreachable,
-              link: "/freshleads/unreachable",
             },
           ],
         },
@@ -2401,6 +2404,10 @@ const Sidebarmui = () => {
                                               setSelected(menu.name)
                                             }
                                           >
+                                            {console.log(
+                                              "Menudetail: ",
+                                              menu?.count
+                                            )}
                                             {menu?.name || ""}
                                           </MenuItem>
                                           <span className="leads_counter block absolute right-5 top-5">
