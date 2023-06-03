@@ -139,7 +139,9 @@ const LeadNotes = ({ pageState, setpageState }) => {
           isLoading: false,
           data: rowsdata,
           total: result.data.logs.total,
-          pageSize: result.data.logs.per_page,
+          // pageSize: result.data.logs.per_page,
+          pageSize: result.data.logs.last_page,
+          currentPage: result.data.logs.current_page,
         }));
       })
       .catch((err) => {
@@ -326,9 +328,12 @@ const LeadNotes = ({ pageState, setpageState }) => {
                 "& .MuiDataGrid-cell:hover": {
                   cursor: "pointer",
                 },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+                "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                  color:
+                    currentMode === "dark"
+                      ? "white !important"
+                      : "black !important",
+                },
               }}
               getRowClassName={(params) =>
                 params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

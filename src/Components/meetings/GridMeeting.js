@@ -52,7 +52,10 @@ const GridMeeting = ({ pageState, setpageState }) => {
                         >
                           <div className="mt-2 space-y-1 overflow-hidden">
                             <h1 className="font-bold capitalize">
-                              <b>Lead Name: </b> {item?.leadName}
+                              <b>Lead Name: </b>{" "}
+                              <span className="text-red-600">
+                                {item?.leadName}
+                              </span>
                             </h1>
 
                             <p className="text-sm">
