@@ -1349,7 +1349,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
       <div className=" mb-5">
         <div className=" mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 ">
+          <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 ">
             <Box
               sx={{
                 padding: "10px",
