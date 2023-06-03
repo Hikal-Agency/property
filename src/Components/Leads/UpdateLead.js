@@ -454,17 +454,17 @@ const UpdateLead = ({
 
                       {User.role === 1 && (
                         <>
-                          <FormHelperText
+                          {/* <FormHelperText
                             sx={{
                               color: currentMode === "dark" ? "white" : "black",
                             }}
                           >
                             Manager
-                          </FormHelperText>
+                          </FormHelperText> */}
                           {/* <label className="text-sm text-gray-500">
                             Manager
                           </label> */}
-                          <Select
+                          {/* <Select
                             id="Manager"
                             value={User?.role === 1 ? Manager : ""}
                             disabled={User?.role !== 1 && true}
@@ -483,7 +483,21 @@ const UpdateLead = ({
                                 {person?.userName}
                               </MenuItem>
                             ))}
-                          </Select>
+                          </Select> */}
+                          <TextField
+                            id="Manager"
+                            type="text"
+                            className="w-full mb-5"
+                            style={{ marginBottom: "20px", color: "#ffffff" }}
+                            variant="outlined"
+                            size="medium"
+                            required
+                            value={
+                              Manager2?.find((person) => person?.id === Manager)
+                                ?.userName || ""
+                            }
+                            disabled={true}
+                          />
                         </>
                       )}
                       {noAgents ? (
@@ -502,7 +516,7 @@ const UpdateLead = ({
                             {/* <label className="text-sm text-gray-500">
                               Sales Agent
                             </label> */}
-                            <FormHelperText
+                            {/* <FormHelperText
                               sx={{
                                 color:
                                   currentMode === "dark" ? "white" : "black",
@@ -525,7 +539,22 @@ const UpdateLead = ({
                                   {person?.userName}
                                 </MenuItem>
                               ))}
-                            </Select>
+                            </Select> */}
+                            <TextField
+                              id="Salesperson"
+                              type="text"
+                              className="w-full mb-5"
+                              style={{ marginBottom: "20px", color: "#ffffff" }}
+                              variant="outlined"
+                              size="medium"
+                              required
+                              value={
+                                SalesPerson?.find(
+                                  (person) => person?.id === SalesPerson2
+                                )?.userName || ""
+                              }
+                              disabled={true}
+                            />
                           </>
                         )
                       )}
