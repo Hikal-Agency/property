@@ -497,32 +497,29 @@ const UpdateLead = ({
                           No Agents
                         </p>
                       ) : (
-                        User.role === 1 && (
+                        (User.role === 1 || User.role === 3) && (
                           <>
-                            <FormHelperText
-                              sx={{
-                                color:
-                                  currentMode === "dark" ? "white" : "black",
-                              }}
-                            >
-                              Sales Agent
-                            </FormHelperText>
                             {/* <label className="text-sm text-gray-500">
                               Sales Agent
                             </label> */}
+                      <FormHelperText
+                        sx={{
+                          color: currentMode === "dark" ? "white" : "black",
+                        }}
+                      >
+                        SalesPerson
+                      </FormHelperText>
                             <Select
                               id="SalesPerson"
                               value={SalesPerson2 || ""}
-                              label="SalesPerson"
                               onChange={ChangeSalesPerson}
                               size="medium"
                               className="w-full mb-5"
                               displayEmpty
-                              disabled={User?.role !== 1 && true}
                               // required={SalesPerson.length > 0 ? true : false}
                             >
-                              <MenuItem value="0" disabled>
-                                Sales Person-
+                              <MenuItem value="">
+                                Sales Person
                               </MenuItem>
                               {SalesPerson?.map((person, index) => (
                                 <MenuItem key={index} value={person?.id || ""}>
@@ -547,10 +544,16 @@ const UpdateLead = ({
                       >
                         Project details
                       </h4>
+                      <FormHelperText
+                        sx={{
+                          color: currentMode === "dark" ? "white" : "black",
+                        }}
+                      >
+                        Project Name
+                      </FormHelperText>
                       <TextField
                         id="Project"
                         type={"text"}
-                        label="Project name"
                         className="w-full mb-5"
                         style={{ marginBottom: "20px" }}
                         variant="outlined"
@@ -579,7 +582,7 @@ const UpdateLead = ({
                         displayEmpty
                         required
                       >
-                        <MenuItem value="0" disabled>
+                        <MenuItem value="" disabled>
                           Enquiry about
                         </MenuItem>
                         <MenuItem value={"Studio"}>Studio</MenuItem>
@@ -660,10 +663,16 @@ const UpdateLead = ({
                       >
                         Lead details
                       </h4>
+                      <FormHelperText
+                        sx={{
+                          color: currentMode === "dark" ? "white" : "black",
+                        }}
+                      >
+                        Lead Name
+                      </FormHelperText>
                       <TextField
                         id="LeadName"
                         type={"text"}
-                        label="Lead name"
                         className="w-full mb-5"
                         style={{ marginBottom: "20px" }}
                         variant="outlined"
@@ -672,6 +681,13 @@ const UpdateLead = ({
                         value={LeadName}
                         onChange={(e) => setLeadName(e.target.value)}
                       />
+                      <FormHelperText
+                        sx={{
+                          color: currentMode === "dark" ? "white" : "black",
+                        }}
+                      >
+                        Phone No
+                      </FormHelperText>
                       <PhoneInput
                         placeholder="Enter phone number"
                         value={LeadContact}
@@ -729,10 +745,16 @@ const UpdateLead = ({
                         onChange={handleContact}
                         autoComplete
                       /> */}
+                      <FormHelperText
+                        sx={{
+                          color: currentMode === "dark" ? "white" : "black",
+                        }}
+                      >
+                        Email Address
+                      </FormHelperText>
                       <TextField
                         id="LeadEmailAddress"
                         type={"email"}
-                        label="Email address"
                         className="w-full mb-5"
                         style={{ marginBottom: "20px" }}
                         variant="outlined"
@@ -748,12 +770,11 @@ const UpdateLead = ({
                           color: currentMode === "dark" ? "white" : "black",
                         }}
                       >
-                        For
+                        Language
                       </FormHelperText>
                       <Select
                         id="LanguagePrefered"
                         value={LanguagePrefered}
-                        label="Prefered language"
                         onChange={ChangeLanguagePrefered}
                         size="medium"
                         className="w-full mb-5"

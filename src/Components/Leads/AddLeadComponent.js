@@ -304,7 +304,7 @@ const AddLeadComponent = () => {
           const SalesPerson = result.data.team;
           setSalesPerson(SalesPerson || []);
         }
-        // setpageloading(false);
+        setpageloading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -385,7 +385,7 @@ const AddLeadComponent = () => {
                                   displayEmpty
                                   required
                                 >
-                                  <MenuItem value="" disabled>
+                                  <MenuItem value="">
                                     Select Manager
                                     <span
                                       className="ml-1"
@@ -419,7 +419,7 @@ const AddLeadComponent = () => {
                                   className="w-full mb-5"
                                   displayEmpty
                                 >
-                                  <MenuItem value="" disabled>
+                                  <MenuItem value="">
                                     Select Sales Person
                                   </MenuItem>
                                   {SalesPerson.map((person, index) => (
