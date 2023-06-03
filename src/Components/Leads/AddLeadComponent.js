@@ -5,7 +5,6 @@ import {
   CircularProgress,
   Box,
   Typography,
-  InputLabel,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -21,6 +20,7 @@ import PhoneInput, {
   isPossiblePhoneNumber,
 } from "react-phone-number-input";
 import classNames from "classnames";
+import Loader from "../Loader";
 
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -189,6 +189,13 @@ const AddLeadComponent = () => {
     const token = localStorage.getItem("auth-token");
     const creationDate = new Date();
     const LeadData = new FormData();
+    let coldCall = "0";
+    if(LeadSource.toLowerCase() === "property finder") {
+      coldCall = 3;
+    } else if(LeadSource.toLowerCase() === "personal") {
+      coldCall = 2;
+    }
+
     LeadData.append("leadName", LeadName);
     LeadData.append("leadContact", LeadContact);
     LeadData.append("leadEmail", LeadEmail);
@@ -200,10 +207,15 @@ const AddLeadComponent = () => {
     LeadData.append("leadStatus", LeadStatus);
     LeadData.append("leadSource", LeadSource);
     LeadData.append("feedback", "New");
+    LeadData.append("coldCall", coldCall);
     LeadData.append("notes", LeadNotes);
     if (User?.role === 1 || User?.role === 3) {
-      LeadData.append("assignedToManager", Manager);
-      LeadData.append("assignedToSales", SalesPerson2);
+      if(Manager) {
+        LeadData.append("assignedToManager", Manager);
+      }
+      if(SalesPerson2) {
+        LeadData.append("assignedToSales", SalesPerson2);
+      }
     } else if (User?.role === 7) {
       LeadData.append("assignedToManager", User?.isParent);
       LeadData.append("assignedToSales", User?.id);
@@ -292,7 +304,7 @@ const AddLeadComponent = () => {
           const SalesPerson = result.data.team;
           setSalesPerson(SalesPerson || []);
         }
-        setpageloading(false);
+        // setpageloading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -305,15 +317,7 @@ const AddLeadComponent = () => {
     <>
       <ToastContainer />
       {pageloading ? (
-        <div className="h-full w-full flex items-center justify-center">
-          <img
-            height={350}
-            width={350}
-            src={"/assets/loading/hikalloading.gif"}
-            alt=""
-            // className="h-[200px] w-[200px] object-cover"
-          />
-        </div>
+        <Loader/>
       ) : (
         <div className="pt-0 pb-5 mx-4 rounded-md sm:mx-6 lg:mx-auto ">
           {console.log("filtered managers are ")}
@@ -710,7 +714,7 @@ const AddLeadComponent = () => {
                                 </span>
                               </MenuItem>
                               <MenuItem value={"Website"}>Website</MenuItem>
-                              <MenuItem value={"Propety Finder"}>
+                              <MenuItem value={"Property Finder"}>
                                 Property Finder
                               </MenuItem>
                               <MenuItem value={"Campaign"}>Campaign</MenuItem>

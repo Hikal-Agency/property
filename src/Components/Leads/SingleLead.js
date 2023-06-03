@@ -39,11 +39,6 @@ const SingleLead = ({
     boxShadow: 24,
   };
 
-  // ROW CLICK FUNCTION
-  const handleRowClick = async (params) => {
-    window.open(`/leadnotes/${params}`);
-  };
-
   const AddNote = () => {
     setaddNoteloading(true);
     const token = localStorage.getItem("auth-token");
@@ -126,7 +121,7 @@ const SingleLead = ({
       fetchLastNote();
     }
 
-    console.log(LeadData);
+    console.log("LeadData::", LeadData);
   }, [LeadData]);
 
   return (
