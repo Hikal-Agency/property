@@ -171,7 +171,7 @@ const DashboardPanel = ({ setloading }) => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 text-center">
           {/* {DashboardData?.designation === "Head" && ( */}
           <Link
-            to={"/hotleads/all"}
+            to={"/freshleads/all"}
             className={`${
               currentMode === "dark"
                 ? "bg-gray-900 text-white "

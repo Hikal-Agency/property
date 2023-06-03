@@ -203,7 +203,7 @@ const Navbar = () => {
     <>
       <ToastContainer />
       <div
-        className="flex justify-between p-2  relative mb-5"
+        className="flex justify-between p-2  relative "
         style={{
           position: "fixed",
           top: 0,
@@ -237,17 +237,17 @@ const Navbar = () => {
           <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
         </div>
         <div className="flex">
-        {isUserSubscribed !== null &&
-          [(isUserSubscribed === false) && (
-            <Button
-              variant="contained"
-              style={{ background: "red" }}
-              sx={{ mr: 2 }}
-            >
-              <a href="/whatsapp-marketing/payments">Upgrade</a>
-            </Button>
-          )]
-        }
+          {isUserSubscribed !== null && [
+            isUserSubscribed === false && (
+              <Button
+                variant="contained"
+                style={{ background: "red" }}
+                sx={{ mr: 2 }}
+              >
+                <a href="/whatsapp-marketing/payments">Upgrade</a>
+              </Button>
+            ),
+          ]}
           <NavButton
             title="Meetings"
             dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}

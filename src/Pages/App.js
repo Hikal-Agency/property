@@ -109,7 +109,7 @@ const routes = [
     pageName: "Warm Leads",
   },
   {
-    path: "/hotleads/:lead_type",
+    path: "/freshleads/:lead_type",
     element: <AllHotLeads />,
     pageName: "Hot Leads",
   },
@@ -519,7 +519,7 @@ function App() {
         {hasSidebarOrNavbar() && <Sidebarmui />}
         <div
           className={`w-[99%] overflow-x-hidden ${
-            hasSidebarOrNavbar() ? "pt-20" : "pt-0"
+            hasSidebarOrNavbar() ? "pt-12" : "pt-0"
           } ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
         >
           {hasSidebarOrNavbar() && (

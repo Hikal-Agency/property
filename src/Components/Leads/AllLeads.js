@@ -831,7 +831,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     // LEADS URL GENERATON FOR HOT LEADS SECTION
 
     // LEADS URL GENERATON FOR HOT LEADS SECTION
-    if (lead_origin === "hotleads") {
+    if (lead_origin === "freshleads") {
       if (lead_type === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0`;
       } else if (lead_type === "new") {
@@ -1344,361 +1344,214 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     reader.readAsText(file);
   };
   return (
-    <div className="pb-10">
+    <>
       <ToastContainer />
-
-      <div className=" mb-5">
-        <div className=" mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 ">
-            <Box
-              sx={{
-                padding: "10px",
-                margin: "10px",
-                borderRadius: "10px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                fontWeight: "bold",
-                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
-                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
-                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                width: "auto",
-              }}
+      <div className="pb-10">
+        <Box
+          sx={{
+            ...DataGridStyles,
+            position: "relative",
+            marginBottom: "50px",
+          }}
+        >
+          {selectedRows.length > 0 && (
+            <MuiButton
+              size="small"
+              sx={{ ...bulkUpdateBtnStyles, left: "564px" }}
+              variant="text"
+              onClick={handleClickBulkUpdate}
             >
-              <span>
-                <FaFacebook size={22} color={"#0e82e1"} />
-              </span>
-              <span>{pageState?.fbCounts}</span>
-            </Box>
-            <Box
-              sx={{
-                padding: "10px",
-                margin: "10px",
-                borderRadius: "10px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                fontWeight: "bold",
-                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
-                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
-                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-              }}
+              <AiFillEdit size={20} />{" "}
+              <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
+            </MuiButton>
+          )}
+          {selectedRows.length > 0 && (
+            <MuiButton
+              size="small"
+              sx={{ ...bulkUpdateBtnStyles, left: "685px" }}
+              variant="text"
+              onClick={handleClickBulkDelete}
             >
-              <span>
-                <FaSnapchat size={22} color={"#f6d80a"} />
-              </span>
-              <span>{pageState?.spCount}</span>
-            </Box>
-            <Box
-              sx={{
-                padding: "10px",
-                margin: "10px",
-                borderRadius: "10px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                fontWeight: "bold",
-                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
-                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
-                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-              }}
+              <BsTrash size={18} />{" "}
+              <span style={{ paddingLeft: "5px" }}>Bulk Delete</span>
+            </MuiButton>
+          )}
+          <label htmlFor="bulkImport">
+            <MuiButton
+              onClick={() => bulkImportRef.current.click()}
+              size="small"
+              sx={{ ...bulkUpdateBtnStyles, left: "444px" }}
+              variant="text"
             >
-              <span>
-                <img
-                  src={"/assets/tiktok-app.svg"}
-                  alt=""
-                  height={22}
-                  width={22}
-                  className="object-cover"
-                />
-              </span>
-              <span>{pageState?.ttCount}</span>
-            </Box>
-            <Box
-              sx={{
-                padding: "10px",
-                margin: "10px",
-                borderRadius: "10px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                fontWeight: "bold",
-                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
-                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
-                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              <TbFileImport size={18} />{" "}
+              <span style={{ paddingLeft: "5px" }}>Bulk Import</span>
+            </MuiButton>
+          </label>
+          <input
+            type="file"
+            style={{ display: "none" }}
+            ref={bulkImportRef}
+            onInput={handleBulkImport}
+            id="bulkImport"
+          />
+          <div style={{ position: "relative" }}>
+            {/* {pageState.data.length > 0 && (
+      <>
+        <div onClick={handleNextArrow}>
+          <Avatar
+            className="shadow-md"
+            style={{
+              ...arrowStyles,
+              right: -30,
+            }}
+          >
+            <GrFormNext size={30} />
+          </Avatar>
+        </div>
+        <div onClick={handlePrevArrow}>
+          <Avatar
+            className="shadow-md"
+            style={{
+              ...arrowStyles,
+              left: -30,
+            }}
+          >
+            <GrFormPrevious size={30} />
+          </Avatar>
+        </div>
+      </>
+    )} */}
+            {pageState.data.length > 0 && <></>}
+            <DataGrid
+              ref={dataTableRef}
+              autoHeight
+              disableSelectionOnClick
+              rows={pageState.data}
+              onRowClick={handleRowClick}
+              rowCount={pageState.total}
+              loading={pageState.isLoading}
+              rowsPerPageOptions={[30, 50, 75, 100]}
+              pagination
+              width="auto"
+              // rowHeight={160}
+              getRowHeight={() => "auto"}
+              paginationMode="server"
+              page={pageState.page - 1}
+              checkboxSelection
+              onSelectionModelChange={(ids) => {
+                setSelectedRows(ids.map((id) => pageState?.data[id - 1]?.lid));
               }}
-            >
-              <span>
-                <FcGoogle size={22} />
-              </span>
-              <span>{pageState?.gCount}</span>
-            </Box>
-            <Box
-              sx={{
-                padding: "10px",
-                margin: "10px",
-                borderRadius: "10px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                fontWeight: "bold",
-                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
-                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
-                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              pageSize={pageState.pageSize}
+              onPageChange={(newPage) => {
+                setpageState((old) => ({ ...old, page: newPage + 1 }));
               }}
-            >
-              <span>
-                <MdCampaign
-                  size={22}
-                  color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-                />
-              </span>
-              <span>{pageState?.cCount}</span>
-            </Box>
-            <Box
-              sx={{
-                padding: "10px",
-                margin: "10px",
-                borderRadius: "10px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                fontWeight: "bold",
-                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
-                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
-                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              onPageSizeChange={(newPageSize) =>
+                setpageState((old) => ({ ...old, pageSize: newPageSize }))
+              }
+              columns={
+                User?.role === 1
+                  ? CEOColumns
+                  : User?.role === 3
+                  ? ManagerColumns
+                  : AgentColumns
+              }
+              // columns={columns}
+              components={{
+                Toolbar: GridToolbar,
+                Pagination: CustomPagination,
               }}
-            >
-              <span>
-                <BsSnow2 size={22} color={"#0ec7ff"} />
-              </span>
-              <span>{pageState?.coCount}</span>
-            </Box>
-            {/* <Box
-              sx={{
-                padding: "10px",
-                margin: "10px",
-                borderRadius: "10px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                fontWeight: "bold",
-                background: `${currentMode === "dark" ? "#202020" : "#fafafa"}`,
-                color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
-                boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+              componentsProps={{
+                toolbar: {
+                  showQuickFilter: true,
+                  value: searchText,
+                  onChange: HandleQuicSearch,
+                },
+                // columnsPanel: {
+                //   disableHideAllButton: true,
+                // }
               }}
-            >
-              <span>Meeting</span>
-              <span>Static Text</span>
-            </Box> */}
+              sx={{
+                boxShadow: 2,
+                "& .MuiDataGrid-virtualScrollerContent .MuiSvgIcon-root": {
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "& .MuiDataGrid-main": {
+                  overflowY: "scroll",
+                  height: pageState.data.length > 0 ? "475px" : "auto",
+                },
+                "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                  color:
+                    currentMode === "dark"
+                      ? "white !important"
+                      : "black !important",
+                },
+              }}
+              getRowClassName={(params) =>
+                params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+              }
+              columnWidths={{
+                checkbox: "30px",
+              }}
+            />
           </div>
-        </div>
+
+          {!UpdateLeadModelOpen && (
+            <SingleLead
+              LeadModelOpen={LeadModelOpen}
+              setLeadModelOpen={setLeadModelOpen}
+              handleLeadModelOpen={handleLeadModelOpen}
+              handleLeadModelClose={handleLeadModelClose}
+              LeadData={singleLeadData}
+              BACKEND_URL={BACKEND_URL}
+            />
+          )}
+
+          {UpdateLeadModelOpen && (
+            <UpdateLead
+              LeadModelOpen={UpdateLeadModelOpen}
+              setLeadModelOpen={setUpdateLeadModelOpen}
+              handleLeadModelOpen={handleUpdateLeadModelOpen}
+              handleLeadModelClose={handleUpdateLeadModelClose}
+              LeadData={singleLeadData}
+              BACKEND_URL={BACKEND_URL}
+              FetchLeads={FetchLeads}
+            />
+          )}
+
+          {bulkUpdateModelOpen && (
+            <BulkUpdateLeads
+              handleCloseBulkUpdateModel={handleCloseBulkUpdateModel}
+              bulkUpdateModelOpen={bulkUpdateModelOpen}
+              selectedRows={selectedRows}
+              FetchLeads={FetchLeads}
+              setSelectedRows={setSelectedRows}
+            />
+          )}
+
+          {deleteModelOpen && (
+            <DeleteLeadModel
+              handleCloseDeleteModel={handleCloseDeleteModel}
+              deleteLead={deleteLead}
+              deleteModelOpen={deleteModelOpen}
+              LeadToDelete={LeadToDelete}
+              deletebtnloading={deletebtnloading}
+              bulkDeleteClicked={bulkDeleteClicked}
+              selectedRows={selectedRows}
+              handleBulkDelete={handleBulkDelete}
+            />
+          )}
+
+          {bulkImportModelOpen && (
+            <BulkImport
+              bulkImportModelOpen={bulkImportModelOpen}
+              handleCloseBulkImportModel={handleCloseBulkImportModel}
+              FetchLeads={FetchLeads}
+              CSVData={CSVData}
+            />
+          )}
+        </Box>
       </div>
-
-      <Box
-        sx={{
-          ...DataGridStyles,
-          position: "relative",
-          marginBottom: "50px",
-        }}
-      >
-        {selectedRows.length > 0 && (
-          <MuiButton
-            size="small"
-            sx={{ ...bulkUpdateBtnStyles, left: "564px" }}
-            variant="text"
-            onClick={handleClickBulkUpdate}
-          >
-            <AiFillEdit size={20} />{" "}
-            <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
-          </MuiButton>
-        )}
-        {selectedRows.length > 0 && (
-          <MuiButton
-            size="small"
-            sx={{ ...bulkUpdateBtnStyles, left: "685px" }}
-            variant="text"
-            onClick={handleClickBulkDelete}
-          >
-            <BsTrash size={18} />{" "}
-            <span style={{ paddingLeft: "5px" }}>Bulk Delete</span>
-          </MuiButton>
-        )}
-        <label htmlFor="bulkImport">
-          <MuiButton
-            onClick={() => bulkImportRef.current.click()}
-            size="small"
-            sx={{ ...bulkUpdateBtnStyles, left: "444px" }}
-            variant="text"
-          >
-            <TbFileImport size={18} />{" "}
-            <span style={{ paddingLeft: "5px" }}>Bulk Import</span>
-          </MuiButton>
-        </label>
-        <input
-          type="file"
-          style={{ display: "none" }}
-          ref={bulkImportRef}
-          onInput={handleBulkImport}
-          id="bulkImport"
-        />
-        <div style={{ position: "relative" }}>
-          {/* {pageState.data.length > 0 && (
-            <>
-              <div onClick={handleNextArrow}>
-                <Avatar
-                  className="shadow-md"
-                  style={{
-                    ...arrowStyles,
-                    right: -30,
-                  }}
-                >
-                  <GrFormNext size={30} />
-                </Avatar>
-              </div>
-              <div onClick={handlePrevArrow}>
-                <Avatar
-                  className="shadow-md"
-                  style={{
-                    ...arrowStyles,
-                    left: -30,
-                  }}
-                >
-                  <GrFormPrevious size={30} />
-                </Avatar>
-              </div>
-            </>
-          )} */}
-          {pageState.data.length > 0 && <></>}
-          <DataGrid
-            ref={dataTableRef}
-            autoHeight
-            disableSelectionOnClick
-            rows={pageState.data}
-            onRowClick={handleRowClick}
-            rowCount={pageState.total}
-            loading={pageState.isLoading}
-            rowsPerPageOptions={[30, 50, 75, 100]}
-            pagination
-            width="auto"
-            // rowHeight={160}
-            getRowHeight={() => "auto"}
-            paginationMode="server"
-            page={pageState.page - 1}
-            checkboxSelection
-            onSelectionModelChange={(ids) => {
-              setSelectedRows(ids.map((id) => pageState?.data[id - 1]?.lid));
-            }}
-            pageSize={pageState.pageSize}
-            onPageChange={(newPage) => {
-              setpageState((old) => ({ ...old, page: newPage + 1 }));
-            }}
-            onPageSizeChange={(newPageSize) =>
-              setpageState((old) => ({ ...old, pageSize: newPageSize }))
-            }
-            columns={
-              User?.role === 1
-                ? CEOColumns
-                : User?.role === 3
-                ? ManagerColumns
-                : AgentColumns
-            }
-            // columns={columns}
-            components={{
-              Toolbar: GridToolbar,
-              Pagination: CustomPagination,
-            }}
-            componentsProps={{
-              toolbar: {
-                showQuickFilter: true,
-                value: searchText,
-                onChange: HandleQuicSearch,
-              },
-              // columnsPanel: {
-              //   disableHideAllButton: true,
-              // }
-            }}
-            sx={{
-              boxShadow: 2,
-              "& .MuiDataGrid-virtualScrollerContent .MuiSvgIcon-root": {
-                color: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-              "& .MuiDataGrid-main": {
-                overflowY: "scroll",
-                height: pageState.data.length > 0 ? "475px" : "auto",
-              },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color:
-                  currentMode === "dark"
-                    ? "white !important"
-                    : "black !important",
-              },
-            }}
-            getRowClassName={(params) =>
-              params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-            }
-            columnWidths={{
-              checkbox: "30px",
-            }}
-          />
-        </div>
-
-        {!UpdateLeadModelOpen && (
-          <SingleLead
-            LeadModelOpen={LeadModelOpen}
-            setLeadModelOpen={setLeadModelOpen}
-            handleLeadModelOpen={handleLeadModelOpen}
-            handleLeadModelClose={handleLeadModelClose}
-            LeadData={singleLeadData}
-            BACKEND_URL={BACKEND_URL}
-          />
-        )}
-
-        {UpdateLeadModelOpen && (
-          <UpdateLead
-            LeadModelOpen={UpdateLeadModelOpen}
-            setLeadModelOpen={setUpdateLeadModelOpen}
-            handleLeadModelOpen={handleUpdateLeadModelOpen}
-            handleLeadModelClose={handleUpdateLeadModelClose}
-            LeadData={singleLeadData}
-            BACKEND_URL={BACKEND_URL}
-            FetchLeads={FetchLeads}
-          />
-        )}
-
-        {bulkUpdateModelOpen && (
-          <BulkUpdateLeads
-            handleCloseBulkUpdateModel={handleCloseBulkUpdateModel}
-            bulkUpdateModelOpen={bulkUpdateModelOpen}
-            selectedRows={selectedRows}
-            FetchLeads={FetchLeads}
-            setSelectedRows={setSelectedRows}
-          />
-        )}
-
-        {deleteModelOpen && (
-          <DeleteLeadModel
-            handleCloseDeleteModel={handleCloseDeleteModel}
-            deleteLead={deleteLead}
-            deleteModelOpen={deleteModelOpen}
-            LeadToDelete={LeadToDelete}
-            deletebtnloading={deletebtnloading}
-            bulkDeleteClicked={bulkDeleteClicked}
-            selectedRows={selectedRows}
-            handleBulkDelete={handleBulkDelete}
-          />
-        )}
-
-        {bulkImportModelOpen && (
-          <BulkImport
-            bulkImportModelOpen={bulkImportModelOpen}
-            handleCloseBulkImportModel={handleCloseBulkImportModel}
-            FetchLeads={FetchLeads}
-            CSVData={CSVData}
-          />
-        )}
-      </Box>
-    </div>
+    </>
   );
 };
 
