@@ -199,9 +199,9 @@ const RenderFeedback = ({ cellValues }) => {
           displayEmpty
           required
           sx={{
-            color: currentMode === "dark" ? "#ffffff" : "#000000",
+            color: currentMode === "dark" ? "#ffffff !important" : "#000000 !important",
             "& .MuiSelect-icon": {
-              color: currentMode === "dark" ? "#ffffff" : "#000000",
+              color: currentMode === "dark" ? "#ffffff !important" : "#000000 !important",
             },
           }}
         >

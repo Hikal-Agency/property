@@ -52,7 +52,7 @@ const RenderManagers = ({ cellValues }) => {
   //   setDialogue(true);
   // };
   const ChangeManager = (e) => {
-    console.log(e.target);
+    console.log("New Manager", e.target);
     let selectedItem;
     selectedItem = Managers.find((item) => item.id === Number(e.target.value));
     let old_selectedItem;
@@ -71,7 +71,12 @@ const RenderManagers = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.leadId);
-    UpdateLeadData.append("assignedToManager", newManager?.id);
+    console.log(newManager);
+    if(newManager === undefined) {
+      UpdateLeadData.append("assignedToManager", 0);
+    } else {
+      UpdateLeadData.append("assignedToManager", newManager?.id);
+    }
 
     await axios
       .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {

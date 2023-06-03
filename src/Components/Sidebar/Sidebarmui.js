@@ -1114,7 +1114,7 @@ const Sidebarmui = () => {
 
           setUser(user);
           setIsUserSubscribed(user);
-          getAllLeadsMembers(JSON.parse(storedUser));
+          getAllLeadsMembers(user);
 
           console.log("Localstorage: ", user);
 
