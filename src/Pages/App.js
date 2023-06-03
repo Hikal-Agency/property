@@ -519,7 +519,7 @@ function App() {
         {hasSidebarOrNavbar() && <Sidebarmui />}
         <div
           className={`w-[99%] overflow-x-hidden ${
-            hasSidebarOrNavbar() ? "pt-12" : "pt-0"
+            hasSidebarOrNavbar() ? "pt-16" : "pt-0"
           } ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
         >
           {hasSidebarOrNavbar() && (
