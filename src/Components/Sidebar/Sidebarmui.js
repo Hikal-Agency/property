@@ -1543,7 +1543,7 @@ const Sidebarmui = () => {
     if (storedUser) {
       // If user data is stored in local storage, parse and set it in state
       setUser(JSON.parse(storedUser));
-      setIsUserSubscribed(JSON.parse(storedUser));
+      setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
       console.log("User from navbar", User);
     } else {
@@ -1594,7 +1594,7 @@ const Sidebarmui = () => {
           };
 
           setUser(user);
-          setIsUserSubscribed(user);
+          setIsUserSubscribed(checkUser(user));
           getAllLeadsMembers(user);
 
           console.log("Localstorage: ", user);
@@ -1742,7 +1742,7 @@ const Sidebarmui = () => {
   }, []);
 
   useEffect(() => {
-    if (isUserSubscribed) {
+    if (isUserSubscribed !== null && isUserSubscribed === true) {
       setAgentData([
         ...Agentlinks,
         {

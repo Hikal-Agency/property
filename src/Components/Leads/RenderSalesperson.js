@@ -32,6 +32,7 @@ const RenderSalesperson = ({ cellValues }) => {
     setreloadDataGrid,
     SalesPerson,
     BACKEND_URL,
+    Managers
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -130,16 +131,17 @@ const RenderSalesperson = ({ cellValues }) => {
   ]);
 
   useEffect(() => {
-    const findAgent = SalesPerson[`manager-${cellValues?.row?.assignedToManager}`]?.filter((agent) => {
-      return String(agent.id) === String(cellValues?.row?.assignedToSales);
-    });
-  console.log(findAgent)
-    if(findAgent || findAgent?.length> 0) {
-      setSalesPerson2(findAgent[0]?.id);
-    } else {
-      setSalesPerson2("selected_agent");
-    }    
-  }, [cellValues?.row?.assignedToManager, SalesPerson]);
+    if(Managers.length > 0 && Object.values(SalesPerson).length > 0) {
+      const findAgent = SalesPerson[`manager-${cellValues?.row?.assignedToManager}`]?.filter((agent) => {
+        return String(agent.id) === String(cellValues?.row?.assignedToSales);
+      });
+      if(findAgent || findAgent?.length> 0) {
+        setSalesPerson2(findAgent[0]?.id);
+      } else {
+        setSalesPerson2("selected_agent");
+      }    
+    }
+  }, [cellValues?.row?.assignedToManager, SalesPerson, Managers]);
 
   return (
     <Box
