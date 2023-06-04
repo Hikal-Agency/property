@@ -334,8 +334,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
   ];
 
-
-    const AgentColumns = [
+  const AgentColumns = [
     {
       field: "leadName",
       headerName: "Name",
@@ -646,7 +645,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </div>
             )}
 
-            {cellValues.row.leadSource?.toLowerCase() === "propety finder" && (
+            {(cellValues.row.leadSource?.toLowerCase() === "property finder" ||
+              cellValues.row.leadSource?.toLowerCase() ===
+                "another condition") && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <GiMagnifyingGlass size={22} color={"#14539a"} />
               </div>
