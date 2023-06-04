@@ -633,7 +633,7 @@ const UpdateLead = ({
                         <MenuItem value="">
                           Property type
                         </MenuItem>
-                        <MenuItem value={"Apartment"}>Appartment</MenuItem>
+                        <MenuItem value={"Apartment"}>Apartment</MenuItem>
                         <MenuItem value={"Villa"}>Villa</MenuItem>
                         <MenuItem value={"Commercial"}>Commercial</MenuItem>
                         <MenuItem value={"Townhouse"}>TownHouse</MenuItem>

@@ -101,21 +101,21 @@ const Meetings = () => {
     },
 
     {
-      field: "By",
-      headerName: "Meeting By",
+      field: "meetingBy",
+      headerName: "By",
       minWidth: 130,
       flex: 1,
     },
 
     {
-      field: "Date",
-      headerName: "Meeting Date",
+      field: "meetingDate",
+      headerName: "Date",
       minWidth: 80,
       flex: 1,
     },
     {
-      field: "Time",
-      headerName: "Meeting Time",
+      field: "meetingTime",
+      headerName: "Time",
       minWidth: 70,
       flex: 1,
     },

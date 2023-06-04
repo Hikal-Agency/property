@@ -93,7 +93,7 @@ const AddLead = () => {
                           <MenuItem value="" disabled>
                             Property Type
                           </MenuItem>
-                          <MenuItem value={"appartment"}>Apartment</MenuItem>
+                          <MenuItem value={"apartment"}>Apartment</MenuItem>
                           <MenuItem value={"villa"}>Villa</MenuItem>
                           <MenuItem value={"commercial"}>Commercial</MenuItem>
                           <MenuItem value={"townhouse"}>TownHouse</MenuItem>

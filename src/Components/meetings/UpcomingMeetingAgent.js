@@ -15,7 +15,7 @@ const UpcomingMeetingAgent = () => {
           return (
             <div
               key={index}
-              className={`${
+              className={`max-w-[500px] flex flex-col justify-between ${
                 currentMode === "dark"
                   ? "bg-black text-white"
                   : "bg-white text-black"
