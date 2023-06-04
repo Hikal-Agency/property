@@ -130,6 +130,8 @@ const UpdateLead = ({
     setSalesPerson2(event.target.value);
   };
 
+  console.log("salesperson: ", SalesPerson2);
+
   const handleContact = (e) => {
     const value = e.target.value;
     const onlyDigitsAndPlus = /^[0-9+]*$/;
@@ -316,7 +318,8 @@ const UpdateLead = ({
     const creationDate = new Date();
     const UpdateLeadData = new FormData();
     // UpdateLeadData.append("id", User.id);
-    UpdateLeadData.append("lid", LeadData.lid);
+    UpdateLeadData.append("id", LeadData.leadId);
+    UpdateLeadData.append("lid", LeadData.leadId);
     UpdateLeadData.append("leadName", LeadName);
     UpdateLeadData.append("leadContact", LeadContact);
     UpdateLeadData.append("leadEmail", LeadEmail);
@@ -342,7 +345,7 @@ const UpdateLead = ({
       //   return;
       // }
       UpdateLeadData.append("assignedToManager", Manager);
-      UpdateLeadData.append("assignedToSales", SalesPerson2);
+      UpdateLeadData.append("assignedToSales", SalesPerson2 || " ");
       console.log("manager and salesperson ", Manager, SalesPerson2);
     }
     UpdateLeadData.append(
