@@ -90,38 +90,38 @@ const Meetings = () => {
     {
       field: "enquiryType",
       headerName: "Enquiry",
-      minWidth: 110,
+      minWidth: 100,
       flex: 1,
     },
     {
       field: "leadType",
       headerName: "Property",
-      minWidth: 110,
+      minWidth: 100,
       flex: 1,
     },
 
     {
-      field: "meetingBy",
+      field: "By",
       headerName: "Meeting By",
-      minWidth: 170,
+      minWidth: 130,
       flex: 1,
     },
 
     {
-      field: "meetingDate",
+      field: "Date",
       headerName: "Meeting Date",
-      minWidth: 110,
+      minWidth: 80,
       flex: 1,
     },
     {
-      field: "meetingTime",
+      field: "Time",
       headerName: "Meeting Time",
-      minWidth: 110,
+      minWidth: 70,
       flex: 1,
     },
     {
       field: "meetingStatus",
-      headerName: "Meeting Status",
+      headerName: "Status",
       width: 150,
       flex: 1,
       sortable: false,

@@ -572,45 +572,35 @@ const UpdateLead = ({
                       >
                         Project details
                       </h4>
-                      <FormHelperText
-                        sx={{
-                          color: currentMode === "dark" ? "white" : "black",
-                        }}
-                      >
-                        Project Name
-                      </FormHelperText>
                       <TextField
                         id="Project"
                         type={"text"}
                         className="w-full mb-5"
                         style={{ marginBottom: "20px" }}
+                        label="Project"
                         variant="outlined"
                         size="medium"
                         value={LeadProject}
                         onChange={(e) => setLeadProject(e.target.value)}
                       />
 
-                      <FormHelperText
-                        sx={{
-                          color: currentMode === "dark" ? "white" : "black",
-                        }}
-                      >
-                        Enquiry About
-                      </FormHelperText>
                       {/* <label className="text-sm text-gray-500">
                         Enquiry About
                       </label> */}
-                      <Select
+                      <TextField
                         id="enquiry"
                         value={EnquiryType}
                         label="Enquiry Type"
                         onChange={ChangeEnquiryType}
                         size="medium"
                         className="w-full mb-5"
+                        sx={{
+                          marginBottom: "1.25rem",
+                        }}
                         displayEmpty
-                        required
+                        select
                       >
-                        <MenuItem value="" disabled>
+                        <MenuItem value="">
                           Enquiry about
                         </MenuItem>
                         <MenuItem value={"Studio"}>Studio</MenuItem>
@@ -622,61 +612,53 @@ const UpdateLead = ({
                         <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
                         <MenuItem value={"Retail"}>Retail</MenuItem>
                         <MenuItem value={"Other"}>Others</MenuItem>
-                      </Select>
+                      </TextField>
 
-                      <FormHelperText
-                        sx={{
-                          color: currentMode === "dark" ? "white" : "black",
-                        }}
-                      >
-                        Property Type
-                      </FormHelperText>
                       {/* <label className="text-sm text-gray-500">
                         Property Type
                       </label> */}
-                      <Select
+                      <TextField
                         id="property-type"
                         value={PropertyType}
                         label="Property type"
+                        sx={{
+                          marginBottom: "1.25rem",
+                        }}
                         onChange={ChangePropertyType}
                         size="medium"
                         className="w-full mb-5"
                         displayEmpty
-                        required
+                        select
                       >
-                        <MenuItem value="0" disabled>
+                        <MenuItem value="">
                           Property type
                         </MenuItem>
                         <MenuItem value={"Apartment"}>Appartment</MenuItem>
                         <MenuItem value={"Villa"}>Villa</MenuItem>
                         <MenuItem value={"Commercial"}>Commercial</MenuItem>
                         <MenuItem value={"Townhouse"}>TownHouse</MenuItem>
-                      </Select>
+                      </TextField>
 
-                      <FormHelperText
-                        sx={{
-                          color: currentMode === "dark" ? "white" : "black",
-                        }}
-                      >
-                        For
-                      </FormHelperText>
                       {/* <label className="text-sm text-gray-500">For</label> */}
-                      <Select
+                      <TextField
                         id="for"
+                        sx={{
+                          marginBottom: "1.25rem",
+                        }}
                         value={ForType}
                         label="Purpose of enquiry"
                         onChange={ChangeForType}
                         size="medium"
                         className="w-full mb-3 "
                         displayEmpty
-                        required
+                        select
                       >
-                        <MenuItem value="0" disabled>
+                        <MenuItem value="" selected>
                           For
                         </MenuItem>
                         <MenuItem value={"Investment"}>Investment</MenuItem>
                         <MenuItem value={"End-user"}>End-User</MenuItem>
-                      </Select>
+                      </TextField>
                     </Box>
                   </div>
 
@@ -691,13 +673,6 @@ const UpdateLead = ({
                       >
                         Lead details
                       </h4>
-                      <FormHelperText
-                        sx={{
-                          color: currentMode === "dark" ? "white" : "black",
-                        }}
-                      >
-                        Lead Name
-                      </FormHelperText>
                       <TextField
                         id="LeadName"
                         type={"text"}
@@ -709,18 +684,13 @@ const UpdateLead = ({
                         value={LeadName}
                         onChange={(e) => setLeadName(e.target.value)}
                       />
-                      <FormHelperText
-                        sx={{
-                          color: currentMode === "dark" ? "white" : "black",
-                        }}
-                      >
-                        Phone No
-                      </FormHelperText>
                       <PhoneInput
                         placeholder="Enter phone number"
                         value={LeadContact}
                         onChange={(value) => setValue(value)}
                         onKeyUp={handlePhone}
+                        required
+                        label="Phone No"
                         error={error}
                         className={classNames({
                           "dark-mode": currentMode === "dark",
@@ -773,17 +743,12 @@ const UpdateLead = ({
                         onChange={handleContact}
                         autoComplete
                       /> */}
-                      <FormHelperText
-                        sx={{
-                          color: currentMode === "dark" ? "white" : "black",
-                        }}
-                      >
-                        Email Address
-                      </FormHelperText>
+
                       <TextField
                         id="LeadEmailAddress"
                         type={"email"}
                         className="w-full mb-5"
+                        label="Email Address"
                         style={{ marginBottom: "20px" }}
                         variant="outlined"
                         size="medium"
@@ -793,23 +758,22 @@ const UpdateLead = ({
                         helperText={emailError && emailError}
                         onChange={handleEmail}
                       />
-                      <FormHelperText
+          
+                      <TextField
                         sx={{
-                          color: currentMode === "dark" ? "white" : "black",
+                          marginBottom: "1.25rem",
                         }}
-                      >
-                        Language
-                      </FormHelperText>
-                      <Select
                         id="LanguagePrefered"
                         value={LanguagePrefered}
                         onChange={ChangeLanguagePrefered}
+                        label="Language"
                         size="medium"
                         className="w-full mb-5"
+                        select
                         displayEmpty
-                        required
+                        
                       >
-                        <MenuItem value="0" disabled>
+                        <MenuItem value="" selected>
                           Prefered language
                         </MenuItem>
                         <MenuItem value={"Arabic"}>Arabic</MenuItem>
@@ -820,7 +784,7 @@ const UpdateLead = ({
                         <MenuItem value={"Russian"}>Russian</MenuItem>
                         <MenuItem value={"Spanish"}>Spanish</MenuItem>
                         <MenuItem value={"Urdu"}>Urdu</MenuItem>
-                      </Select>
+                      </TextField>
                     </Box>
                   </div>
                 </div>
