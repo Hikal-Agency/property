@@ -647,7 +647,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
             {(cellValues.row.leadSource?.toLowerCase() === "property finder" ||
               cellValues.row.leadSource?.toLowerCase() ===
-                "another condition") && (
+                "propety finder") && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <GiMagnifyingGlass size={22} color={"#14539a"} />
               </div>

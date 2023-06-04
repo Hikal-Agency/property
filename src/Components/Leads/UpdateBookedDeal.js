@@ -251,7 +251,7 @@ const UpdateBookedDeal = ({
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] md:w-[85%]  ${
+          className={`  ${
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-7 rounded-md`}
         >
@@ -286,8 +286,8 @@ const UpdateBookedDeal = ({
                   UpdateLeadFunc();
                 }}
               >
-                <div className="mb-5 grid grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-10">
-                  <div>
+                <div className="mb-5 grid grid-cols-1 md:grid-cols-1 sm:grid-cols-1">
+                  {/* <div>
                     <Box sx={darkModeColors}>
                       <h4
                         className={`${
@@ -361,7 +361,7 @@ const UpdateBookedDeal = ({
                         </Select>
                       </FormControl>
                     </Box>
-                  </div>
+                  </div> */}
 
                   <div>
                     <Box sx={darkModeColors}>
@@ -455,7 +455,7 @@ const UpdateBookedDeal = ({
                     </Box>
                   </div>
 
-                  <div>
+                  {/* <div>
                     <Box sx={darkModeColors}>
                       <h4
                         className={`${
@@ -487,7 +487,7 @@ const UpdateBookedDeal = ({
                         </Select>
                       </FormControl>
                     </Box>
-                  </div>
+                  </div> */}
                 </div>
 
                 <Button

@@ -3,12 +3,9 @@ import {
   Backdrop,
   Box,
   CircularProgress,
-  FormHelperText,
   IconButton,
-  InputLabel,
   MenuItem,
   Modal,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -20,7 +17,6 @@ import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import "react-phone-number-input/style.css";
 import PhoneInput, {
-  formatPhoneNumber,
   formatPhoneNumberIntl,
   isValidPhoneNumber,
   isPossiblePhoneNumber,
@@ -492,34 +488,42 @@ const UpdateLead = ({
                           type="text"
                           label="Manager"
                           className="w-full mb-5"
-                          style={{ marginBottom: "20px", color: "#ffffff" }}
+                          sx={{
+                            marginBottom: "20px",
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                            pointerEvents: "none",
+                          }}
                           variant="outlined"
                           size="medium"
                           value={
                             Manager2?.find((person) => person?.id === Manager)
                               ?.userName || "No manager"
                           }
-                          disabled={true}
+                          onChange={(e) => {
+                            e.preventDefault();
+                          }}
+                          readOnly={true}
                         />
                       </>
 
-                      {noAgents ? (
-                        <p
-                          style={{
-                            color: "#0000005c",
-                            textAlign: "left",
-                            width: "85%",
-                          }}
-                        >
-                          No Agents
-                        </p>
-                      ) : (
-                        (User.role === 1 || User.role === 3) && (
-                          <>
-                            {/* <label className="text-sm text-gray-500">
+                      {noAgents
+                        ? ""
+                        : // <p
+                          //   style={{
+                          //     color: "#0000005c",
+                          //     textAlign: "left",
+                          //     width: "85%",
+                          //   }}
+                          // >
+                          //   No Agents
+                          // </p>
+                          (User.role === 1 || User.role === 3) && (
+                            <>
+                              {/* <label className="text-sm text-gray-500">
                               Sales Agent
                             </label> */}
-                            {/* <FormHelperText
+                              {/* <FormHelperText
                               sx={{
                                 color:
                                   currentMode === "dark" ? "white" : "black",
@@ -543,36 +547,46 @@ const UpdateLead = ({
                                 </MenuItem>
                               ))}
                             </Select> */}
-                            <TextField
-                              id="Salesperson"
-                              type="text"
-                              label="Agent"
-                              className="w-full mb-5"
-                              style={{ marginBottom: "20px", color: "#ffffff" }}
-                              variant="outlined"
-                              size="medium"
-                              value={
-                                SalesPerson?.find(
-                                  (person) => person?.id === SalesPerson2
-                                )?.userName || "No Agent Assigned"
-                              }
-                              disabled={true}
-                            />
-                          </>
-                        )
-                      )}
+                              <TextField
+                                id="Salesperson"
+                                type="text"
+                                label="Agent"
+                                className="w-full mb-5"
+                                style={{
+                                  marginBottom: "20px",
+                                  color: "#ffffff",
+                                  pointerEvents: "none",
+                                }}
+                                variant="outlined"
+                                size="medium"
+                                value={
+                                  SalesPerson?.find(
+                                    (person) => person?.id === SalesPerson2
+                                  )?.userName || "No Agent Assigned"
+                                }
+                                onChange={(e) => {
+                                  e.preventDefault();
+                                }}
+                                readOnly={true}
+                              />
+                            </>
+                          )}
 
                       {User.role === 7 && (
                         <TextField
                           id="Salesperson"
+                          label="Agent"
                           type="text"
                           className="w-full mb-5"
-                          style={{ marginBottom: "20px", color: "#ffffff" }}
+                          style={{
+                            marginBottom: "20px",
+                            color: "#ffffff",
+                            pointerEvents: "none",
+                          }}
                           variant="outlined"
                           size="medium"
-                          required
                           value={User?.userName}
-                          disabled={true}
+                          readOnly={true}
                         />
                       )}
                     </Box>

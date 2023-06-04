@@ -5,6 +5,8 @@ import {
   Select,
   TextField,
   CircularProgress,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import React, { useState } from "react";
@@ -116,24 +118,30 @@ export const PersonalInfo = ({
             </LocalizationProvider>
           </div>
           <div className="col-span-3 w-full">
-            <Select
-              id="gender"
-              value={PersonalInfo?.gender}
-              label="Gender"
-              onChange={(event) =>
-                setPersonalInfo({ ...PersonalInfo, gender: event.target.value })
-              }
-              size="medium"
-              className="w-full"
-              displayEmpty
-              required
-            >
-              <MenuItem value="" disabled>
-                Select Gender
-              </MenuItem>
-              <MenuItem value={"Male"}>Male</MenuItem>
-              <MenuItem value={"Female"}>Female</MenuItem>
-            </Select>
+            <FormControl className="w-full">
+              <TextField
+                id="gender"
+                label="Gender"
+                value={PersonalInfo?.gender}
+                onChange={(event) =>
+                  setPersonalInfo({
+                    ...PersonalInfo,
+                    gender: event.target.value,
+                  })
+                }
+                size="medium"
+                className="w-full"
+                select
+                displayEmpty
+                required
+              >
+                <MenuItem value="" disabled>
+                  Select Gender
+                </MenuItem>
+                <MenuItem value={"Male"}>Male</MenuItem>
+                <MenuItem value={"Female"}>Female</MenuItem>
+              </TextField>
+            </FormControl>
           </div>
           <div className="col-span-3 w-full">
             {/* <TextField
