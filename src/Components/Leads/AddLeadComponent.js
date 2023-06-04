@@ -46,7 +46,6 @@ const AddLeadComponent = () => {
   console.log("Salesperson: ", SalesPerson);
   const [Manager2, setManager2] = useState([]);
   // const [SalesPerson, setSalesPerson] = useState([]);
-  console.log("managers: ", Managers);
 
   const [PropertyType, setPropertyType] = useState("");
   const [EnquiryType, setEnquiryType] = useState("");
@@ -55,7 +54,6 @@ const AddLeadComponent = () => {
   const [LeadStatus, setLeadStatus] = useState("");
   const [LeadSource, setLeadSource] = useState("");
   const [Manager, setManager] = useState("");
-
   const [SalesPerson2, setSalesPerson2] = useState("");
   const [LeadName, setLeadName] = useState("");
   const [LeadContact, setLeadContact] = useState("");
@@ -298,53 +296,99 @@ const AddLeadComponent = () => {
       });
   };
 
+  // useEffect(() => {
+  //   setpageloading(true);
+  //   const token = localStorage.getItem("auth-token");
+  //   console.log("USerID: ", User?.id);
+  //   axios
+  //     .get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log("team: ", result);
+  //       setManager2(result.data.team);
+  //       if (User?.role === 3) {
+  //         const SalesPerson = result.data.team;
+  //         // setSalesPerson(SalesPerson || []);
+  //       }
+  //       setpageloading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setpageloading(false);
+  //     });
+  //   // eslint-disable-next-line
+  // }, []);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("auth-token");
+  //   axios
+  //     .get(`${BACKEND_URL}/managers`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log(result);
+  //       const managers = result?.data?.managers?.data;
+  //       setManager(managers || []);
+  //       setloading(false);
+  //     })
+  //     .catch((err) => {
+  //       setloading(false);
+  //       console.log(err);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    setpageloading(true);
-    const token = localStorage.getItem("auth-token");
-    console.log("USerID: ", User?.id);
-    axios
-      .get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("team: ", result);
-        setManager2(result.data.team);
+    const fetchData = async () => {
+      try {
+        setpageloading(true);
+        const token = localStorage.getItem("auth-token");
+        console.log("UserID: ", User?.id);
+
+        const [teamResponse, managersResponse] = await Promise.all([
+          axios.get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }),
+          axios.get(`${BACKEND_URL}/managers`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }),
+        ]);
+
+        console.log("team: ", teamResponse);
+        setManager2(teamResponse.data.team);
         if (User?.role === 3) {
-          const SalesPerson = result.data.team;
+          const SalesPerson = teamResponse.data.team;
           // setSalesPerson(SalesPerson || []);
         }
+
+        console.log(managersResponse);
+        const managers = managersResponse?.data?.managers?.data;
+        setManager(managers || []);
+
         setpageloading(false);
-      })
-      .catch((err) => {
-        console.log(err);
+      } catch (error) {
+        console.log(error);
         setpageloading(false);
-      });
+      }
+    };
+
+    fetchData();
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    axios
-      .get(`${BACKEND_URL}/managers`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log(result);
-        const managers = result?.data?.managers?.data;
-        setManager(managers || []);
-        setloading(false);
-      })
-      .catch((err) => {
-        setloading(false);
-        console.log(err);
-      });
-  }, []);
+  console.log("Manager: ", Manager);
 
   return (
     <>

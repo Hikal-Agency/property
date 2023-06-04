@@ -562,7 +562,7 @@ const UpdateLead = ({
                                 value={
                                   SalesPerson?.find(
                                     (person) => person?.id === SalesPerson2
-                                  )?.userName || "No agent"
+                                  )?.userName || "No Agent Assigned"
                                 }
                                 onChange={(e) => {
                                   e.preventDefault();
