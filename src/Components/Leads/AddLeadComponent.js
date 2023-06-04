@@ -41,10 +41,12 @@ const AddLeadComponent = () => {
     BACKEND_URL,
     fetchSidebarData,
     SalesPerson,
+    Managers,
   } = useStateContext();
   console.log("Salesperson: ", SalesPerson);
   const [Manager2, setManager2] = useState([]);
   // const [SalesPerson, setSalesPerson] = useState([]);
+  console.log("managers: ", Managers);
 
   const [PropertyType, setPropertyType] = useState("");
   const [EnquiryType, setEnquiryType] = useState("");
@@ -400,7 +402,7 @@ const AddLeadComponent = () => {
                                     </span>
                                   </MenuItem>
 
-                                  {Manager2.map((person, index) => (
+                                  {Managers?.map((person, index) => (
                                     <MenuItem key={index} value={person?.id}>
                                       {person?.userName}
                                     </MenuItem>
@@ -455,20 +457,27 @@ const AddLeadComponent = () => {
                                   <MenuItem value="">
                                     Select Sales Person
                                   </MenuItem>
-                                  {Object.entries(SalesPerson).map(
-                                    ([managerId, managerData]) => (
-                                      <div key={managerId}>
-                                        {managerData.map((person, index) => (
+                                  {User.role === 1
+                                    ? SalesPerson[`manager-${Manager}`]?.map(
+                                        (agent, index) => (
                                           <MenuItem
                                             key={index}
-                                            value={person?.id}
+                                            value={agent?.id}
                                           >
-                                            {person?.userName}
+                                            {agent?.userName}
                                           </MenuItem>
-                                        ))}
-                                      </div>
-                                    )
-                                  )}
+                                        )
+                                      )
+                                    : SalesPerson[`manager-${User?.id}`]?.map(
+                                        (agent, index) => (
+                                          <MenuItem
+                                            key={index}
+                                            value={agent?.id}
+                                          >
+                                            {agent?.userName}
+                                          </MenuItem>
+                                        )
+                                      )}
                                 </Select>
                               </>
                             )}
