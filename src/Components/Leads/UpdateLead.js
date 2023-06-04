@@ -497,7 +497,7 @@ const UpdateLead = ({
                             required
                             value={
                               Manager2?.find((person) => person?.id === Manager)
-                                ?.userName || ""
+                                ?.userName || "No manager"
                             }
                             disabled={true}
                           />
@@ -554,12 +554,26 @@ const UpdateLead = ({
                               value={
                                 SalesPerson?.find(
                                   (person) => person?.id === SalesPerson2
-                                )?.userName || ""
+                                )?.userName || "No agent"
                               }
                               disabled={true}
                             />
                           </>
                         )
+                      )}
+
+                      {User.role === 7 && (
+                        <TextField
+                          id="Salesperson"
+                          type="text"
+                          className="w-full mb-5"
+                          style={{ marginBottom: "20px", color: "#ffffff" }}
+                          variant="outlined"
+                          size="medium"
+                          required
+                          value={User?.userName}
+                          disabled={true}
+                        />
                       )}
                     </Box>
                   </div>
@@ -603,9 +617,7 @@ const UpdateLead = ({
                         displayEmpty
                         select
                       >
-                        <MenuItem value="">
-                          Enquiry about
-                        </MenuItem>
+                        <MenuItem value="">Enquiry about</MenuItem>
                         <MenuItem value={"Studio"}>Studio</MenuItem>
                         <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
                         <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
@@ -633,9 +645,7 @@ const UpdateLead = ({
                         displayEmpty
                         select
                       >
-                        <MenuItem value="">
-                          Property type
-                        </MenuItem>
+                        <MenuItem value="">Property type</MenuItem>
                         <MenuItem value={"Apartment"}>Appartment</MenuItem>
                         <MenuItem value={"Villa"}>Villa</MenuItem>
                         <MenuItem value={"Commercial"}>Commercial</MenuItem>
@@ -761,7 +771,7 @@ const UpdateLead = ({
                         helperText={emailError && emailError}
                         onChange={handleEmail}
                       />
-          
+
                       <TextField
                         sx={{
                           marginBottom: "1.25rem",
@@ -774,7 +784,6 @@ const UpdateLead = ({
                         className="w-full mb-5"
                         select
                         displayEmpty
-                        
                       >
                         <MenuItem value="" selected>
                           Prefered language
