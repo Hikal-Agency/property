@@ -1127,7 +1127,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           } else {
             filteredData = rowsDataArray.filter(
               (item) =>
-                !item.assignedToManager || item.assignedToManager === 102
+                !item.assignedToManager || item.assignedToManager === 102 || item.assignedToManager === 0
             );
           }
 
