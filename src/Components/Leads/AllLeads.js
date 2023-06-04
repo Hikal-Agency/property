@@ -1264,7 +1264,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
       const coldCallCode = pageState?.data[0]?.coldCall;
       let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=${lead_type}`;
-      if(coldCallCode) {
+      if (coldCallCode) {
         url += `&coldCall=${coldCallCode}`;
       }
       await axios
