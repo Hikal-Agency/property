@@ -219,20 +219,20 @@ const AddLeadComponent = () => {
     LeadData.append("coldCall", coldCall);
     LeadData.append("notes", LeadNotes);
     if (User?.role === 1) {
-      if (Manager) {
-        LeadData.append("assignedToManager", Manager);
+      if(Manager) {
+        LeadData.append("assignedToManager", Number(Manager));
       }
-      if (SalesPerson2) {
-        LeadData.append("assignedToSales", SalesPerson2);
+      if(SalesPerson2) {
+        LeadData.append("assignedToSales", Number(SalesPerson2));
       }
-    } else if (User?.role === 3) {
-      LeadData.append("assignedToManager", User?.id);
-      if (SalesPerson2) {
-        LeadData.append("assignedToSales", SalesPerson2);
+    } else if(User?.role === 3) {
+      LeadData.append("assignedToManager", Number(User?.id));
+      if(SalesPerson2) {
+        LeadData.append("assignedToSales", Number(SalesPerson2));
       }
     } else if (User?.role === 7) {
-      LeadData.append("assignedToManager", User?.isParent);
-      LeadData.append("assignedToSales", User?.id);
+      LeadData.append("assignedToManager", Number(User?.isParent));
+      LeadData.append("assignedToSales", Number(User?.id));
     }
     LeadData.append(
       "creationDate",
@@ -440,12 +440,13 @@ const AddLeadComponent = () => {
                                     </MenuItem>
                                   ))}
                                 </TextField> */}
-                                <Select
+                                <TextField
                                   sx={{
                                     "&": {
                                       marginBottom: "1.25rem !important",
                                     },
                                   }}
+                                  select
                                   id="SalesPerson"
                                   label="Sales Person"
                                   value={SalesPerson2}
@@ -478,7 +479,7 @@ const AddLeadComponent = () => {
                                           </MenuItem>
                                         )
                                       )}
-                                </Select>
+                                </TextField>
                               </>
                             )}
 
