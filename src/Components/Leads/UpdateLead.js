@@ -699,10 +699,6 @@ const UpdateLead = ({
                         onChange={(e) => setLeadName(e.target.value)}
                       />
 
-                      <InputLabel htmlFor="phone-input" shrink>
-                        Phone No
-                      </InputLabel>
-
                       <PhoneInput
                         placeholder="Enter phone number"
                         value={LeadContact}
