@@ -74,7 +74,8 @@ const Signup = () => {
   }
 
   const RegisterUser = async () => {
-    const { userName, userEmail, password, c_password, loginId } = formdata;
+    const { userName, userEmail, password, c_password, loginId, managerId } =
+      formdata;
     if (
       !isSafeInput(userName) ||
       !isSafeInput(userEmail) ||
@@ -253,12 +254,13 @@ const Signup = () => {
                         className="w-full mb-3"
                         variant="outlined"
                         size="medium"
+                        sx={{ marginBottom: "7px" }}
                         required
-                        value={formdata?.managerId}
+                        value={formdata?.isParent}
                         onChange={(e) => {
                           setformdata({
                             ...formdata,
-                            managerId: e.target.value,
+                            isParent: e.target.value,
                           });
                         }}
                       />

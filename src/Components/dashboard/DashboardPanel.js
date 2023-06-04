@@ -140,7 +140,7 @@ const DashboardPanel = ({ setloading }) => {
       icon: <AiOutlineFire />,
       amount: DashboardData?.lead_status?.meeting,
       title: "Meeting",
-      link: "/meetings",
+      link: "/appointments/meetings",
     },
     {
       icon: <AiOutlineFire />,
