@@ -74,7 +74,8 @@ const Signup = () => {
   }
 
   const RegisterUser = async () => {
-    const { userName, userEmail, password, c_password, loginId } = formdata;
+    const { userName, userEmail, password, c_password, loginId, managerId } =
+      formdata;
     if (
       !isSafeInput(userName) ||
       !isSafeInput(userEmail) ||
