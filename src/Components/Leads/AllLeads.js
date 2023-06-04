@@ -1,4 +1,9 @@
-import { Box, Button as MuiButton, IconButton, LinearProgress } from "@mui/material";
+import {
+  Box,
+  Button as MuiButton,
+  IconButton,
+  LinearProgress,
+} from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -8,6 +13,8 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 import axios from "axios";
+import { FaComment } from "react-icons/fa";
+import { FaGlobe } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
@@ -15,6 +22,9 @@ import { MdCampaign } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { GiMagnifyingGlass } from "react-icons/gi";
+import { FaUser } from "react-icons/fa";
+
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
 import moment from "moment/moment";
@@ -562,6 +572,30 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 <RiMessage2Line size={22} color={"#14539a"} />
               </div>
             )}
+
+            {cellValues.row.leadSource?.toLowerCase() === "comment" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaComment size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() === "website" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaGlobe size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() === "propety finder" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <GiMagnifyingGlass size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() === "self" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaUser size={22} color={"#14539a"} />
+              </div>
+            )}
           </>
         );
       },
@@ -771,8 +805,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
             <p
-            onMouseEnter={() => setHovered("edit")}
-            onMouseLeave={() => setHovered("")}
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
               style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
@@ -781,9 +815,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               }`}
               onClick={() => HandleEditFunc(cellValues)}
             >
-              <IconButton
-                sx={{ padding: 0}}
-              >
+              <IconButton sx={{ padding: 0 }}>
                 <AiOutlineEdit size={20} />
               </IconButton>
             </p>

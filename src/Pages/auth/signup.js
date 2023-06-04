@@ -17,6 +17,8 @@ const Signup = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  console.log("role: ", UserRole);
+
   const handlePassword = (e) => {
     setPasswordError(false);
     const password = e.target.value;
@@ -111,7 +113,7 @@ const Signup = () => {
             });
             localStorage.setItem("auth-token", result.data.data.token);
             // router.push("/dashboard");
-            window.location.href = (location?.state?.continueURL || "/dashboard");
+            window.location.href = location?.state?.continueURL || "/dashboard";
           }
           setloading(false);
         })
@@ -243,11 +245,29 @@ const Signup = () => {
                     </Select>
                   </div>
                   <div className="col-span-3">
+                    {UserRole === "agent" && (
+                      <TextField
+                        id="managerId"
+                        type={"text"}
+                        label="Enter your managers code"
+                        className="w-full mb-3"
+                        variant="outlined"
+                        size="medium"
+                        required
+                        value={formdata?.managerId}
+                        onChange={(e) => {
+                          setformdata({
+                            ...formdata,
+                            managerId: e.target.value,
+                          });
+                        }}
+                      />
+                    )}
                     <TextField
                       id="username"
                       type={"text"}
                       label="Username"
-                      className="w-full"
+                      className="w-full mt-3"
                       variant="outlined"
                       size="medium"
                       required
