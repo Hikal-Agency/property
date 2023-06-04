@@ -105,7 +105,7 @@ const SingleUser = ({ UserModelOpen, handleUserModelClose, UserData }) => {
                       {UserData?.userContact}
                     </h6>
                     <h6 className={`font-semibold `}>
-                      {UserData?.userAltContact || "(No alternative contact.)"}
+                      {UserData?.userAltContact || ""}
                     </h6>
                   </div>
                 </div>
@@ -114,7 +114,7 @@ const SingleUser = ({ UserModelOpen, handleUserModelClose, UserData }) => {
                     <h6 className={`font-bold`}>Email Address:</h6>
                     <h6 className={`font-semibold `}>{UserData?.userEmail}</h6>
                     <h6 className={`font-semibold `}>
-                      {UserData?.userAltEmail || "(No alternative email)"}
+                      {UserData?.userAltEmail || ""}
                     </h6>
                   </div>
                 </div>
