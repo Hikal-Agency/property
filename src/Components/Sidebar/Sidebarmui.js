@@ -1658,7 +1658,6 @@ const Sidebarmui = () => {
   const getAllLeadsMembers = (user) => {
     setAppLoading(true);
     const token = localStorage.getItem("auth-token");
-    if (user?.position !== "Founder & CEO") {
       axios
         .get(`${BACKEND_URL}/teamMembers/${user?.id}`, {
           headers: {
@@ -1670,7 +1669,6 @@ const Sidebarmui = () => {
           const agents = result.data?.team;
           setSalesPerson({ [`manager-${user?.id}`]: agents });
         });
-    } else {
       axios.get(`${BACKEND_URL}/managers`).then((result) => {
         console.log("manager response is");
         console.log(result);
@@ -1682,7 +1680,6 @@ const Sidebarmui = () => {
 
         setSalesPersons(urls || []);
       });
-    }
   };
 
   useEffect(() => {

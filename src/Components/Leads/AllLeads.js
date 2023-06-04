@@ -1163,6 +1163,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           leadFor: row?.leadFor || "No lead",
           leadStatus: row?.leadStatus || "No status",
           leadCategory: leadCategory || "No category",
+          coldCall: row?.coldcall,
           notes: row?.notes || "No notes",
           otp: row?.otp || "No otp",
           edit: "edit",
@@ -1253,7 +1254,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
-    console.log(e.target.value);
     if (e.target.value === "") {
       FetchLeads(token);
     } else {
@@ -1261,12 +1261,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         ...old,
         isLoading: true,
       }));
-      console.log("the search lead  url is ");
-      console.log(
-        `${BACKEND_URL}/search?title=${e.target.value}&page=${pageState.page}`
-      );
+
+      const coldCallCode = pageState?.data[0]?.coldCall;
+      let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=${lead_type}`;
+      if(coldCallCode) {
+        url += `&coldCall=${coldCallCode}`;
+      }
       await axios
-        .get(`${BACKEND_URL}/search?title=${e.target.value}`, {
+        .get(url, {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
@@ -1300,6 +1302,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             lastEdited: row?.lastEdited || "No Date",
             leadFor: row?.leadFor || "No Lead",
             leadStatus: row?.leadStatus || "No Status",
+            coldCall: row?.coldcall,
             leadCategory: leadCategory || "No Category",
             notes: row?.notes || "No notes",
             otp: row?.otp || "No otp",

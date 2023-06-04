@@ -565,6 +565,7 @@ const Newleads = ({
           assignedToManager: row.assignedToManager,
           assignedToSales: row.assignedToSales,
           feedback: row?.feedback,
+          coldCall: row?.coldcall,
           priority: row.priority,
           language: row.language,
           leadSource: row?.leadSource,
@@ -606,8 +607,13 @@ const Newleads = ({
       console.log(
         `${BACKEND_URL}/search?title=${e.target.value}&page=${pageState.page}`
       );
+      const coldCallCode = pageState?.data[0]?.coldCall;
+      let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=New`;
+      if(coldCallCode) {
+        url += `&coldCall=${coldCallCode}`;
+      }
       await axios
-        .get(`${BACKEND_URL}/search?title=${e.target.value}`, {
+        .get(url, {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
@@ -637,7 +643,7 @@ const Newleads = ({
             leadSource: row?.leadSource,
             lid: row?.lid,
             lastEdited: row?.lastEdited,
-            project: row?.project,
+            coldCall: row?.coldcall,
             leadFor: row?.leadFor,
             leadStatus: row?.leadStatus,
             leadCategory: leadCategory,

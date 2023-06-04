@@ -1064,6 +1064,7 @@ const BookedDeals = ({
           //eslint-disable-next-line
           project: row?.project,
           leadFor: row?.leadFor,
+          coldCall: row?.coldcall,
           leadStatus: row?.leadStatus,
           leadCategory: leadCategory,
           notes: row?.notes,
@@ -1157,12 +1158,13 @@ const BookedDeals = ({
         ...old,
         isLoading: true,
       }));
-      console.log("the search lead  url is ");
-      console.log(
-        `${BACKEND_URL}/search?title=${e.target.value}&page=${pageState.page}`
-      );
+      const coldCallCode = pageState?.data[0]?.coldCall;
+      let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=Booked`;
+      if(coldCallCode) {
+        url += `&coldCall=${coldCallCode}`;
+      }
       await axios
-        .get(`${BACKEND_URL}/search?title=${e.target.value}`, {
+        .get(url, {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
@@ -1188,6 +1190,7 @@ const BookedDeals = ({
             assignedToSales: row.assignedToSales,
             feedback: row?.feedback,
             priority: row.priority,
+            coldCall: row?.coldcall,
             language: row.language,
             leadSource: row?.leadSource,
             lid: row?.lid,
