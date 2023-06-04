@@ -101,7 +101,6 @@ const RenderFeedback = ({ cellValues }) => {
       UpdateLeadData.append("mLat", String(meetingLocation.lat));
       UpdateLeadData.append("mLong", String(meetingLocation.lng));
       UpdateLeadData.append("meetingLocation", meetingLocation.addressText);
-      console.log(meetingLocation.addressText);
     }
 
     await axios
@@ -147,16 +146,31 @@ const RenderFeedback = ({ cellValues }) => {
     setFeedback(cellValues?.row?.feedback);
   }, [cellValues]);
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setMeetingLocation({
-        lat: Number(position.coords.latitude),
-        lng: Number(position.coords.longitude),
-        addressText: "",
-      });
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   const geocoder = new window.google.maps.Geocoder();
+  //   navigator.geolocation.getCurrentPosition((position) => {
+  //     geocoder.geocode(
+  //       {
+  //         location: {
+  //           lat: Number(position.coords.latitude),
+  //           lng: Number(position.coords.longitude),
+  //         },
+  //       },
+  //       (results, status) => {
+  //         if (status === "OK") {
+  //           setMeetingLocation({
+  //             lat: Number(position.coords.latitude),
+  //             lng: Number(position.coords.longitude),
+  //             addressText: results[0].formatted_address,
+  //           });
+  //         } else {
+  //           console.log("Getting address failed due to: " + status);
+  //         }
+  //       }
+  //     );
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <Box
@@ -200,9 +214,15 @@ const RenderFeedback = ({ cellValues }) => {
           displayEmpty
           required
           sx={{
-            color: currentMode === "dark" ? "#ffffff !important" : "#000000 !important",
+            color:
+              currentMode === "dark"
+                ? "#ffffff !important"
+                : "#000000 !important",
             "& .MuiSelect-icon": {
-              color: currentMode === "dark" ? "#ffffff !important" : "#000000 !important",
+              color:
+                currentMode === "dark"
+                  ? "#ffffff !important"
+                  : "#000000 !important",
             },
           }}
         >
@@ -347,15 +367,11 @@ const RenderFeedback = ({ cellValues }) => {
                       </Select>
                     </FormControl>
 
-                    {meetingLocation.lat && meetingLocation.lng ? (
                       <LocationPicker
                         meetingLocation={meetingLocation}
-                        currLocByDefault
+                        currLocByDefault={true}
                         setMeetingLocation={setMeetingLocation}
                       />
-                    ) : (
-                      <></>
-                    )}
                   </div>
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                     <Button

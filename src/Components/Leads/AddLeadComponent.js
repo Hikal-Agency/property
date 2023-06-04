@@ -210,19 +210,20 @@ const AddLeadComponent = () => {
     LeadData.append("notes", LeadNotes);
     if (User?.role === 1) {
       if(Manager) {
-        LeadData.append("assignedToManager", Manager);
+        LeadData.append("assignedToManager", Number(Manager));
       }
       if(SalesPerson2) {
-        LeadData.append("assignedToSales", SalesPerson2);
+        LeadData.append("assignedToSales", Number(SalesPerson2));
       }
     } else if(User?.role === 3) {
-      LeadData.append("assignedToManager", User?.id);
+      LeadData.append("assignedToManager", Number(121));
+      console.log("SENT");
       if(SalesPerson2) {
-        LeadData.append("assignedToSales", SalesPerson2);
+        LeadData.append("assignedToSales", Number(SalesPerson2));
       }
     } else if (User?.role === 7) {
-      LeadData.append("assignedToManager", User?.isParent);
-      LeadData.append("assignedToSales", User?.id);
+      LeadData.append("assignedToManager", Number(User?.isParent));
+      LeadData.append("assignedToSales", Number(User?.id));
     }
     LeadData.append(
       "creationDate",

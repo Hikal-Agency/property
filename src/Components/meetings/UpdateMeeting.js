@@ -85,6 +85,7 @@ const UpdateMeeting = ({
         } else {
           const { meetingStatus, meetingDate, mLat, mLong, meetingTime } =
             response.data.meeting;
+            console.log(response.data.meeting);
           setMeetingStatus(meetingStatus);
           setMeetingDateValue(dayjs(meetingDate));
           setMeetingTimeValue(dayjs("2023-01-01 " + meetingTime));
@@ -223,7 +224,7 @@ const UpdateMeeting = ({
         FetchLeads(token);
         setTimeout(() => {
           handleMeetingModalClose();
-        }, 3000); // delay the modal closing by 1 second (1000 milliseconds)
+        }, 1000); // delay the modal closing by 1 second (1000 milliseconds)
       }
     } catch (error) {
       console.log("error in updating meeting: ", error);
@@ -370,14 +371,12 @@ const UpdateMeeting = ({
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </Select>
                     </FormControl>
-                    {meetingLocation.lat && meetingLocation.lng ? (
+                    {(meetingLocation.lat && meetingLocation.lng) &&
                       <LocationPicker
                         meetingLocation={meetingLocation}
                         setMeetingLocation={setMeetingLocation}
                       />
-                    ) : (
-                      <></>
-                    )}
+                    }
                   </div>
                 </div>
 
