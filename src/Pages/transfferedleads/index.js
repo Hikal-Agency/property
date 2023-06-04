@@ -73,7 +73,7 @@ const TransferredLeads = (props) => {
               <div className="pl-3">
                 <div className=" w-full flex items-center justify-between">
                   <h1
-                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 my-5 font-bold ${
                       currentMode === "dark"
                         ? "text-white border-white"
                         : "text-red-600 font-bold border-red-600"
@@ -81,11 +81,11 @@ const TransferredLeads = (props) => {
                   >
                     Transffered Leads -{" "}
                     {/* <span className="capitalize">{lead_type}</span>{" "} */}
-                    <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+                    <span className="bg-main-red-color text-white px-3 py-3 rounded-sm my-auto">
                       {pageState?.total}
                     </span>
                   </h1>
-                  <div className="justify-self-end">
+                  {/* <div className="justify-self-end">
                     <div className=" px-4 py-8">
                       <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-4">
                         <Box
@@ -250,7 +250,7 @@ const TransferredLeads = (props) => {
                         </Box>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <AllLeads
                   BACKEND_URL={BACKEND_URL}

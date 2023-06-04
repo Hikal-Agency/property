@@ -1106,9 +1106,30 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         if (lead_origin === "unassigned") {
           console.log("Hi, I am unassigned. Please assign me to someone 😢");
           console.log(rowsDataArray);
-          filteredData = rowsDataArray.filter(
-            (item) => !item.assignedToManager || item.assignedToManager === 102
-          );
+
+          if (User?.role === 3) {
+            console.log("ROLE: ", User?.role);
+            console.log(
+              "Sales assignes: ",
+              rowsDataArray.filter(
+                (item) =>
+                  !item.assignedToSales ||
+                  !item.assignedToSales === 0 ||
+                  item.assignedToSales === 102
+              )
+            );
+            filteredData = rowsDataArray.filter(
+              (item) =>
+                !item.assignedToSales ||
+                !item.assignedToSales === 0 ||
+                item.assignedToSales === 102
+            );
+          } else {
+            filteredData = rowsDataArray.filter(
+              (item) =>
+                !item.assignedToManager || item.assignedToManager === 102
+            );
+          }
 
           total = filteredData?.length;
           console.log("Total: ", total);
