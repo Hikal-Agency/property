@@ -254,6 +254,7 @@ const Signup = () => {
                         className="w-full mb-3"
                         variant="outlined"
                         size="medium"
+                        sx={{ marginBottom: "7px" }}
                         required
                         value={formdata?.isParent}
                         onChange={(e) => {
