@@ -3,15 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import BookedDeals from "../../Components/Leads/BookedDeals";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
-import { MdCampaign } from "react-icons/md";
-import { FaSnapchat } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { BsSnow2 } from "react-icons/bs";
-import { Box } from "@mui/material";
-import { FaTiktok } from "react-icons/fa";
-import { RiMessage2Line } from "react-icons/ri";
-import { FaWhatsapp } from "react-icons/fa";
 
 const Booked = () => {
   const navigate = useNavigate();

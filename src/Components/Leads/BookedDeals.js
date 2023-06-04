@@ -47,6 +47,8 @@ const BookedDeals = ({
   leadCategory,
   DashboardData,
 }) => {
+  const [hovered, setHovered] = useState("");
+
   const token = localStorage.getItem("auth-token");
   const [singleLeadData, setsingleLeadData] = useState();
   const navigate = useNavigate();
@@ -194,9 +196,15 @@ const BookedDeals = ({
           className="w-[100%] h-[75%] border-none"
           displayEmpty
           sx={{
-            color: currentMode === "dark" ? "#ffffff !important" : "#000000 !important",
+            color:
+              currentMode === "dark"
+                ? "#ffffff !important"
+                : "#000000 !important",
             "& .MuiSelect-icon": {
-              color: currentMode === "dark" ? "#ffffff !important" : "#000000 !important",
+              color:
+                currentMode === "dark"
+                  ? "#ffffff !important"
+                  : "#000000 !important",
             },
           }}
           required
@@ -402,8 +410,7 @@ const BookedDeals = ({
     },
   ];
 
-    const AgentColumns = [
-
+  const AgentColumns = [
     {
       field: "leadName",
       headerName: "Name",
@@ -543,6 +550,38 @@ const BookedDeals = ({
       minWidth: 50,
       filterable: false,
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+    },
+    {
+      field: "edit",
+      headerName: "Edit",
+      flex: 1,
+      width: "100%",
+      sortable: false,
+      filterable: false,
+
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
+          >
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleEditFunc(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <AiOutlineEdit size={20} />
+              </IconButton>
+            </p>
+          </div>
+        );
+      },
     },
   ];
 
@@ -755,6 +794,38 @@ const BookedDeals = ({
       filterable: false,
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
+    {
+      field: "edit",
+      headerName: "Edit",
+      flex: 1,
+      width: "100%",
+      sortable: false,
+      filterable: false,
+
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
+          >
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleEditFunc(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <AiOutlineEdit size={20} />
+              </IconButton>
+            </p>
+          </div>
+        );
+      },
+    },
   ];
 
   const managerColumns = [
@@ -906,6 +977,38 @@ const BookedDeals = ({
       minWidth: 50,
       filterable: false,
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+    },
+    {
+      field: "edit",
+      headerName: "Edit",
+      flex: 1,
+      width: "100%",
+      sortable: false,
+      filterable: false,
+
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
+          >
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleEditFunc(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <AiOutlineEdit size={20} />
+              </IconButton>
+            </p>
+          </div>
+        );
+      },
     },
   ];
 
