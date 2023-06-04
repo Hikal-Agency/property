@@ -182,9 +182,7 @@ const BookedDeals = ({
     };
     return (
       <Box
-        className={`w-full h-full flex items-center justify-center ${
-          currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-        }`}
+        className={`w-full h-full flex items-center justify-center`}
         sx={SelectStyles}
       >
         <Select
@@ -195,6 +193,12 @@ const BookedDeals = ({
           size="medium"
           className="w-[100%] h-[75%] border-none"
           displayEmpty
+          sx={{
+            color: currentMode === "dark" ? "#ffffff !important" : "#000000 !important",
+            "& .MuiSelect-icon": {
+              color: currentMode === "dark" ? "#ffffff !important" : "#000000 !important",
+            },
+          }}
           required
         >
           <MenuItem value={null} disabled>
@@ -331,7 +335,7 @@ const BookedDeals = ({
   };
 
   // ROLE 3
-  const AgentColumns = [
+  const AgentColumns2 = [
     {
       field: "creationDate",
       headerName: "Date",
@@ -395,6 +399,150 @@ const BookedDeals = ({
       // width: 130,
       minWidth: 110,
       flex: 1,
+    },
+  ];
+
+    const AgentColumns = [
+
+    {
+      field: "leadName",
+      headerName: "Name",
+      flex: 1,
+      minWidth: 85,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-wrap items-center">
+            <span>{cellValues.row.leadName}</span>
+          </div>
+        );
+      },
+    },
+    {
+      field: "leadContact",
+      headerName: "Contact",
+      minWidth: 105,
+      flex: 1,
+    },
+    {
+      field: "project",
+      headerName: "Project",
+      minWidth: 55,
+      flex: 1,
+    },
+    // {
+    //   field: "enquiryType",
+    //   headerName: "Enquiry",
+    //   minWidth: 75,
+    //   flex: 1,
+
+    // },
+    {
+      field: "leadType",
+      headerName: "Property",
+      minWidth: 100,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-col">
+            <p>{cellValues.row.leadType}</p>
+            <p>{cellValues.row.enquiryType}</p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "enquiryType",
+      headerName: "Enquiry",
+      // width: 110,
+      minWidth: 110,
+      flex: 1,
+    },
+    {
+      field: "feedback",
+      headerName: "Feedback",
+      minWidth: 160,
+      flex: 1,
+
+      hideable: false,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
+    },
+
+    {
+      field: "language",
+      headerName: "Lang",
+      minWidth: 45,
+      flex: 1,
+    },
+    // {
+    //   field: "leadSource",
+    //   headerName: "Src",
+    //   minWidth: 38,
+    //   flex: 1,
+
+    //   renderCell: (cellValues) => {
+    //     return (
+    // <div className="w-full mx-auto flex justify-center ">
+    //   {cellValues.row.leadSource.toLowerCase() ===
+    //     "campaign snapchat" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <FaSnapchat size={22} color={"#f6d80a"} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() ===
+    //     "campaign facebook" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <FaFacebook size={22} color={"#0e82e1"} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <img
+    //         src={"/assets/tiktok-app.svg"}
+    //         alt=""
+    //         height={22}
+    //         width={22}
+    //         className="object-cover"
+    //       />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() ===
+    //     "campaign googleads" && (
+    //     <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
+    //       <FcGoogle size={22} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "campaign" && (
+    //     <div className="w-fit rounded-full flex items-center justify-center">
+    //       <MdCampaign
+    //         size={22}
+    //         color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+    //       />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "cold" && (
+    //     <div className="w-fit rounded-full flex items-center justify-center">
+    //       <BsSnow2 size={22} color={"#0ec7ff"} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "personal" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <BsPersonCircle size={22} color={"#14539a"} />
+    //     </div>
+    //   )}
+    //       </div>
+    //     );
+    //   },
+    // },
+
+    {
+      field: "creationDate",
+      headerName: "Date",
+      flex: 1,
+
+      sortable: false,
+      minWidth: 50,
+      filterable: false,
+      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
   ];
 

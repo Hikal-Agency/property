@@ -339,30 +339,11 @@ const ClientLeads = ({
     },
   ];
 
-  // ROLE 7
-  const AgentColumns = [
-    {
-      field: "id",
-      headerName: "#",
-      minWidth: 50,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
-          </div>
-        );
-      },
-    },
+   const AgentColumns = [
     {
       field: "creationDate",
       headerName: "Date",
-      // width: 120,
+      // width: 150,
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
@@ -373,7 +354,7 @@ const ClientLeads = ({
     {
       field: "leadName",
       headerName: "Lead name",
-      // width: 170,
+      // width: 150,
       minWidth: 150,
       flex: 1,
       headerAlign: "center",
@@ -389,7 +370,7 @@ const ClientLeads = ({
     {
       field: "project",
       headerName: "Project",
-      // width: 110,
+      // width: 150,
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
@@ -397,7 +378,7 @@ const ClientLeads = ({
     {
       field: "enquiryType",
       headerName: "Enquiry",
-      // width: 110,
+      // width: 150,
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
@@ -405,7 +386,7 @@ const ClientLeads = ({
     {
       field: "leadType",
       headerName: "Property",
-      // width: 100,
+      // width: 150,
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
@@ -477,10 +458,10 @@ const ClientLeads = ({
 
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
+          <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
             {/* <Button
               onClick={() => HandleEditFunc(cellValues)}
-              className={`editLeadBtn ${
+              className={`${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none "
                   : "text-black bg-transparent rounded-md p-1 shadow-none "
@@ -490,7 +471,7 @@ const ClientLeads = ({
             </Button> */}
             <p
               onClick={() => HandleEditFunc(cellValues)}
-              className={`editLeadBtn ${
+              className={`${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none "
                   : "text-black bg-transparent rounded-md p-1 shadow-none "
@@ -507,19 +488,38 @@ const ClientLeads = ({
                   : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
-             
               <AiOutlineHistory size={20} />
             </Button> */}
-            <p
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+            <Link
+              to={`/timeline/${cellValues.row.lid}`}
               className={`editLeadBtn ${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none "
                   : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
-              <AiOutlineHistory size={20} />
-            </p>
+              <AiOutlineHistory
+                size={20}
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              />
+            </Link>
+            {/* <Button
+              onClick={() => {
+                setLeadToDelete(cellValues?.row.lid);
+                setDeleteModelOpen(true);
+                setBulkDeleteClicked(false);
+              }}
+              disabled={deleteloading ? true : false}
+              className={`deleteLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
+              }`}
+            >
+              <BsTrash className="deleteLeadBtn" size={18} />
+            </Button> */}
           </div>
         );
       },
