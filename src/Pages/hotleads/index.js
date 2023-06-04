@@ -66,7 +66,7 @@ const AllHotLeads = () => {
                     className={`text-xl border-l-[4px] ml-1 pl-1  font-bold ${
                       currentMode === "dark"
                         ? "text-white border-white"
-                        : "text-red-600 font-bold border-red-600"
+                        : "text-red-600 font-bold border-red-600 py-3 pb-4"
                     }`}
                   >
                     Fresh Leads -{" "}
@@ -75,238 +75,261 @@ const AllHotLeads = () => {
                       {pageState?.total}
                     </span>
                   </h1>
-                  <div className="justify-self-end">
-                    <div className=" px-4 py-5">
-                      <div className="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-8 gap-4">
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            borderRadius: "7px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: " #da1f26",
-                            color: "#ffffff",
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                            height: "40px",
-                            width: "70px",
-                          }}
-                        >
-                          <span
-                            style={{
-                              background: "white",
-                              borderRadius: "50%",
+                  {User?.role === 1 && (
+                    <div className="justify-self-end">
+                      <div className=" px-4 py-5">
+                        <div className="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-8 gap-4">
+                          <Box
+                            sx={{
+                              padding: "10px",
+                              borderRadius: "7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              fontWeight: "bold",
+                              background: " #da1f26",
+                              color: "#ffffff",
+                              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                              height: "40px",
+                              width: "70px",
                             }}
                           >
-                            <FaFacebook
-                              size={22}
-                              color={"#0e82e1"}
-                              style={{ padding: "3px" }}
-                            />
-                          </span>
-                          <span>{pageState?.fbCounts}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            borderRadius: "7px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: "#da1f26",
-                            color: "#ffffff",
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                            height: "40px",
-                            width: "70px",
-                            justifySelf: "end",
-                          }}
-                        >
-                          <span
-                            style={{ background: "white", borderRadius: "50%" }}
+                            <span
+                              style={{
+                                background: "white",
+                                borderRadius: "50%",
+                              }}
+                            >
+                              <FaFacebook
+                                size={22}
+                                color={"#0e82e1"}
+                                style={{ padding: "3px" }}
+                              />
+                            </span>
+                            <span>{pageState?.fbCounts}</span>
+                          </Box>
+                          <Box
+                            sx={{
+                              padding: "10px",
+                              borderRadius: "7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              fontWeight: "bold",
+                              background: "#da1f26",
+                              color: "#ffffff",
+                              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                              height: "40px",
+                              width: "70px",
+                              justifySelf: "end",
+                            }}
                           >
-                            <FaSnapchat
-                              size={22}
-                              color={"#f6d80a"}
-                              style={{ padding: "3px" }}
-                            />
-                          </span>
-                          <span>{pageState?.spCount}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            borderRadius: "7px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: "#da1f26",
-                            color: "#ffffff",
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                            height: "40px",
-                            width: "70px",
-                            justifySelf: "end",
-                          }}
-                        >
-                          <span
-                            style={{ background: "white", borderRadius: "50%" }}
+                            <span
+                              style={{
+                                background: "white",
+                                borderRadius: "50%",
+                              }}
+                            >
+                              <FaSnapchat
+                                size={22}
+                                color={"#f6d80a"}
+                                style={{ padding: "3px" }}
+                              />
+                            </span>
+                            <span>{pageState?.spCount}</span>
+                          </Box>
+                          <Box
+                            sx={{
+                              padding: "10px",
+                              borderRadius: "7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              fontWeight: "bold",
+                              background: "#da1f26",
+                              color: "#ffffff",
+                              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                              height: "40px",
+                              width: "70px",
+                              justifySelf: "end",
+                            }}
                           >
-                            <FaTiktok
-                              size={22}
-                              color={"#f6d80a"}
-                              style={{ padding: "3px" }}
-                            />
+                            <span
+                              style={{
+                                background: "white",
+                                borderRadius: "50%",
+                              }}
+                            >
+                              <FaTiktok
+                                size={22}
+                                color={"#f6d80a"}
+                                style={{ padding: "3px" }}
+                              />
 
-                            {/* <img
+                              {/* <img
                               src={"/assets/tiktok-app.svg"}
                               alt=""
                               height={22}
                               width={22}
                               className="object-cover"
                             /> */}
-                          </span>
-                          <span>{pageState?.ttCount}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            borderRadius: "7px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: "#da1f26",
-                            color: "#ffffff",
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                            height: "40px",
-                            width: "70px",
-                            justifySelf: "end",
-                          }}
-                        >
-                          <span
-                            style={{ background: "white", borderRadius: "50%" }}
+                            </span>
+                            <span>{pageState?.ttCount}</span>
+                          </Box>
+                          <Box
+                            sx={{
+                              padding: "10px",
+                              borderRadius: "7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              fontWeight: "bold",
+                              background: "#da1f26",
+                              color: "#ffffff",
+                              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                              height: "40px",
+                              width: "70px",
+                              justifySelf: "end",
+                            }}
                           >
-                            <FcGoogle
-                              size={22}
-                              color={"#0e82e1"}
-                              style={{ padding: "3px" }}
-                            />
-                          </span>
-                          <span>{pageState?.gCount}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            borderRadius: "7px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: "#da1f26",
-                            color: "#ffffff",
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                            height: "40px",
-                            width: "70px",
-                            justifySelf: "end",
-                          }}
-                        >
-                          <span
-                            style={{ background: "white", borderRadius: "50%" }}
+                            <span
+                              style={{
+                                background: "white",
+                                borderRadius: "50%",
+                              }}
+                            >
+                              <FcGoogle
+                                size={22}
+                                color={"#0e82e1"}
+                                style={{ padding: "3px" }}
+                              />
+                            </span>
+                            <span>{pageState?.gCount}</span>
+                          </Box>
+                          <Box
+                            sx={{
+                              padding: "10px",
+                              borderRadius: "7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              fontWeight: "bold",
+                              background: "#da1f26",
+                              color: "#ffffff",
+                              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                              height: "40px",
+                              width: "70px",
+                              justifySelf: "end",
+                            }}
                           >
-                            <MdCampaign
-                              size={22}
-                              color={"#0e82e1"}
-                              style={{ padding: "3px" }}
-                            />
-                          </span>
-                          <span>{pageState?.cCount}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            borderRadius: "7px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: "#da1f26",
-                            color: "#ffffff",
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                            justifySelf: "end",
-                            height: "40px",
-                            width: "70px",
-                          }}
-                        >
-                          <span
-                            style={{ background: "white", borderRadius: "50%" }}
+                            <span
+                              style={{
+                                background: "white",
+                                borderRadius: "50%",
+                              }}
+                            >
+                              <MdCampaign
+                                size={22}
+                                color={"#0e82e1"}
+                                style={{ padding: "3px" }}
+                              />
+                            </span>
+                            <span>{pageState?.cCount}</span>
+                          </Box>
+                          <Box
+                            sx={{
+                              padding: "10px",
+                              borderRadius: "7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              fontWeight: "bold",
+                              background: "#da1f26",
+                              color: "#ffffff",
+                              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                              justifySelf: "end",
+                              height: "40px",
+                              width: "70px",
+                            }}
                           >
-                            <BsSnow2
-                              size={22}
-                              color={"#0e82e1"}
-                              style={{ padding: "3px" }}
-                            />
-                          </span>
-                          <span>{pageState?.coCount}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            borderRadius: "7px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: "#da1f26",
-                            color: "#ffffff",
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                            justifySelf: "end",
-                            height: "40px",
-                            width: "70px",
-                          }}
-                        >
-                          <span
-                            style={{ background: "white", borderRadius: "50%" }}
+                            <span
+                              style={{
+                                background: "white",
+                                borderRadius: "50%",
+                              }}
+                            >
+                              <BsSnow2
+                                size={22}
+                                color={"#0e82e1"}
+                                style={{ padding: "3px" }}
+                              />
+                            </span>
+                            <span>{pageState?.coCount}</span>
+                          </Box>
+                          <Box
+                            sx={{
+                              padding: "10px",
+                              borderRadius: "7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              fontWeight: "bold",
+                              background: "#da1f26",
+                              color: "#ffffff",
+                              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                              justifySelf: "end",
+                              height: "40px",
+                              width: "70px",
+                            }}
                           >
-                            <RiMessage2Line
-                              size={22}
-                              color={"#0e82e1"}
-                              style={{ padding: "3px" }}
-                            />
-                          </span>
-                          <span>{pageState?.mCount}</span>
-                        </Box>
-                        <Box
-                          sx={{
-                            padding: "10px",
-                            borderRadius: "7px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            fontWeight: "bold",
-                            background: "#da1f26",
-                            color: "#ffffff",
-                            boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                            justifySelf: "end",
-                            height: "40px",
-                            width: "70px",
-                          }}
-                        >
-                          <span
-                            style={{ background: "white", borderRadius: "50%" }}
+                            <span
+                              style={{
+                                background: "white",
+                                borderRadius: "50%",
+                              }}
+                            >
+                              <RiMessage2Line
+                                size={22}
+                                color={"#0e82e1"}
+                                style={{ padding: "3px" }}
+                              />
+                            </span>
+                            <span>{pageState?.mCount}</span>
+                          </Box>
+                          <Box
+                            sx={{
+                              padding: "10px",
+                              borderRadius: "7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              fontWeight: "bold",
+                              background: "#da1f26",
+                              color: "#ffffff",
+                              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                              justifySelf: "end",
+                              height: "40px",
+                              width: "70px",
+                            }}
                           >
-                            <FaWhatsapp
-                              size={22}
-                              color={"#0e82e1"}
-                              style={{ padding: "3px" }}
-                            />
-                          </span>
-                          <span>{pageState?.wCount}</span>
-                        </Box>
+                            <span
+                              style={{
+                                background: "white",
+                                borderRadius: "50%",
+                              }}
+                            >
+                              <FaWhatsapp
+                                size={22}
+                                color={"#0e82e1"}
+                                style={{ padding: "3px" }}
+                              />
+                            </span>
+                            <span>{pageState?.wCount}</span>
+                          </Box>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
                 <AllLeads
                   BACKEND_URL={BACKEND_URL}
