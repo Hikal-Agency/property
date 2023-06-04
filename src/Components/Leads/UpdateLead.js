@@ -3,12 +3,9 @@ import {
   Backdrop,
   Box,
   CircularProgress,
-  FormHelperText,
   IconButton,
-  InputLabel,
   MenuItem,
   Modal,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -20,7 +17,6 @@ import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import "react-phone-number-input/style.css";
 import PhoneInput, {
-  formatPhoneNumber,
   formatPhoneNumberIntl,
   isValidPhoneNumber,
   isPossiblePhoneNumber,
