@@ -334,77 +334,58 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
   ];
 
-  // ROLE 7
-  const AgentColumns = [
-    {
-      field: "id",
-      headerName: "#",
-      minWidth: 50,
-      flex: 1,
 
+    const AgentColumns = [
+    {
+      field: "leadName",
+      headerName: "Name",
+      flex: 1,
+      minWidth: 85,
       renderCell: (cellValues) => {
         return (
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
-          >
-            {cellValues.formattedValue}
+          <div className="flex flex-wrap items-center">
+            <span>{cellValues.row.leadName}</span>
           </div>
         );
       },
     },
     {
-      field: "creationDate",
-      headerName: "Date",
-      // width: 120,
-      minWidth: 110,
-      flex: 1,
-
-      sortable: false,
-      filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
-    },
-    {
-      field: "leadName",
-      headerName: "Lead name",
-      // width: 170,
-      minWidth: 150,
-      flex: 1,
-    },
-    {
       field: "leadContact",
       headerName: "Contact",
-      // width: 150,
-      minWidth: 150,
+      minWidth: 105,
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
-      // width: 110,
-      minWidth: 110,
+      minWidth: 55,
       flex: 1,
     },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      // width: 110,
-      minWidth: 110,
-      flex: 1,
-    },
+    // {
+    //   field: "enquiryType",
+    //   headerName: "Enquiry",
+    //   minWidth: 75,
+    //   flex: 1,
+
+    // },
     {
       field: "leadType",
       headerName: "Property",
-      // width: 100,
-      minWidth: 110,
+      minWidth: 100,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-col">
+            <p>{cellValues.row.leadType}</p>
+            <p>{cellValues.row.enquiryType}</p>
+          </div>
+        );
+      },
     },
     {
       field: "feedback",
       headerName: "Feedback",
-      // width: 150,
-      minWidth: 160,
+      minWidth: 85,
       flex: 1,
 
       hideable: false,
@@ -413,91 +394,171 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "priority",
       headerName: "Priority",
-
-      // width: 150,
-      minWidth: 160,
+      minWidth: 85,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
     {
       field: "language",
-      headerName: "Language",
-
-      // width: 130,
-      minWidth: 110,
+      headerName: "Lang",
+      minWidth: 45,
       flex: 1,
     },
+    // {
+    //   field: "leadSource",
+    //   headerName: "Src",
+    //   minWidth: 38,
+    //   flex: 1,
+
+    //   renderCell: (cellValues) => {
+    //     return (
+    // <div className="w-full mx-auto flex justify-center ">
+    //   {cellValues.row.leadSource.toLowerCase() ===
+    //     "campaign snapchat" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <FaSnapchat size={22} color={"#f6d80a"} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() ===
+    //     "campaign facebook" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <FaFacebook size={22} color={"#0e82e1"} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <img
+    //         src={"/assets/tiktok-app.svg"}
+    //         alt=""
+    //         height={22}
+    //         width={22}
+    //         className="object-cover"
+    //       />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() ===
+    //     "campaign googleads" && (
+    //     <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
+    //       <FcGoogle size={22} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "campaign" && (
+    //     <div className="w-fit rounded-full flex items-center justify-center">
+    //       <MdCampaign
+    //         size={22}
+    //         color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+    //       />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "cold" && (
+    //     <div className="w-fit rounded-full flex items-center justify-center">
+    //       <BsSnow2 size={22} color={"#0ec7ff"} />
+    //     </div>
+    //   )}
+    //   {cellValues.row.leadSource.toLowerCase() === "personal" && (
+    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
+    //       <BsPersonCircle size={22} color={"#14539a"} />
+    //     </div>
+    //   )}
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       field: "otp",
       headerName: "OTP",
-
-      // width: "130",
-      minWidth: 110,
+      minWidth: 72,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div style={{ fontSize: 11 }}>
+          <div style={{ fontSize: 10 }}>
             {cellValues.formattedValue === "Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
+              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                <badge className="bg-[#0f9d58] p-1 rounded-md available">
+                  VERIFIED
+                </badge>
               </div>
             )}
 
             {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white font-semibold">
-                <badge className="bg-[#ff0000] p-1 rounded-md">
+              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                <badge className="bg-[#ff0000] p-1 rounded-md available">
                   NOT VERIFIED
                 </badge>
               </div>
             )}
+
+            {cellValues.formattedValue !== "Not Verified" &&
+              cellValues.formattedValue !== "Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <badge className=" p-1 rounded-md">
+                    {cellValues.formattedValue}
+                  </badge>
+                </div>
+              )}
           </div>
         );
       },
     },
     {
-      field: "edit",
-      headerName: "Edit",
-      // width: 150,
-      minWidth: 170,
+      field: "creationDate",
+      headerName: "Date",
       flex: 1,
 
+      sortable: false,
+      minWidth: 50,
+      filterable: false,
+      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+    },
+    {
+      field: "edit",
+      headerName: "Edit",
+      flex: 1,
+      width: "100%",
       sortable: false,
       filterable: false,
 
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
-            {/* <Button
-              onClick={() => HandleEditFunc(cellValues)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineEdit size={20} />
-            </Button> */}
+          <div
+            className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
+          >
             <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
               onClick={() => HandleEditFunc(cellValues)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
             >
-              <AiOutlineEdit size={20} />
+              <IconButton sx={{ padding: 0 }}>
+                <AiOutlineEdit size={20} />
+              </IconButton>
             </p>
-            <p
-              onClick={() => navigate(`/timeline/${cellValues.row.leadId}`)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </p>
+
+            {cellValues.row.leadId !== null && (
+              <p>
+                <Link
+                  to={`/timeline/${cellValues.row.leadId}`}
+                  className={`editLeadBtn cursor-pointer ${
+                    currentMode === "dark"
+                      ? "bg-transparent rounded-md shadow-none"
+                      : "bg-transparent rounded-md shadow-none"
+                  }`}
+                >
+                  <IconButton
+                    sx={{ padding: 0 }}
+                    color={currentMode === "dark" ? "black" : "white"}
+                  >
+                    <AiOutlineHistory size={20} style={{ color: "inherit" }} />
+                  </IconButton>
+                </Link>
+              </p>
+            )}
           </div>
         );
       },

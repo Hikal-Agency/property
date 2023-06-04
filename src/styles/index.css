@@ -268,7 +268,7 @@ label[for="bulkImport"] .MuiButtonBase-root{
 }
 
 .MuiDataGrid-cell badge:not(badge.available) {
-  background: #ff0000;
+  background: #000000c7 !important;
 }
 
 .spinner-container {
@@ -286,4 +286,13 @@ label[for="bulkImport"] .MuiButtonBase-root{
 
 .spinner-container g > circle:first-child {
   stroke: #ff6a6f !important;
+}
+
+.MuiDataGrid-columnHeader[aria-label='Action'] .MuiDataGrid-columnHeaderTitleContainerContent{
+  width: 100% !important;
+}
+
+.MuiDataGrid-columnHeader[aria-label='Action'] .MuiDataGrid-columnHeaderTitle {
+  width: 100% !important;
+  text-align: center;
 }
