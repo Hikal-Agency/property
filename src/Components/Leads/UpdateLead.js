@@ -5,6 +5,7 @@ import {
   CircularProgress,
   FormHelperText,
   IconButton,
+  InputLabel,
   MenuItem,
   Modal,
   Select,
@@ -344,8 +345,8 @@ const UpdateLead = ({
       //   setbtnloading(false);
       //   return;
       // }
-      UpdateLeadData.append("assignedToManager", Manager);
-      UpdateLeadData.append("assignedToSales", SalesPerson2 || " ");
+      // UpdateLeadData.append("assignedToManager", Manager);
+      // UpdateLeadData.append("assignedToSales", SalesPerson2 || " ");
       console.log("manager and salesperson ", Manager, SalesPerson2);
     }
     UpdateLeadData.append(
@@ -455,19 +456,18 @@ const UpdateLead = ({
                         Agent details
                       </h4>
 
-                      {User.role === 1 && (
-                        <>
-                          {/* <FormHelperText
+                      <>
+                        {/* <FormHelperText
                             sx={{
                               color: currentMode === "dark" ? "white" : "black",
                             }}
                           >
                             Manager
                           </FormHelperText> */}
-                          {/* <label className="text-sm text-gray-500">
+                        {/* <label className="text-sm text-gray-500">
                             Manager
                           </label> */}
-                          {/* <Select
+                        {/* <Select
                             id="Manager"
                             value={User?.role === 1 ? Manager : ""}
                             disabled={User?.role !== 1 && true}
@@ -487,22 +487,22 @@ const UpdateLead = ({
                               </MenuItem>
                             ))}
                           </Select> */}
-                          <TextField
-                            id="Manager"
-                            type="text"
-                            className="w-full mb-5"
-                            style={{ marginBottom: "20px", color: "#ffffff" }}
-                            variant="outlined"
-                            size="medium"
-                            required
-                            value={
-                              Manager2?.find((person) => person?.id === Manager)
-                                ?.userName || "No manager"
-                            }
-                            disabled={true}
-                          />
-                        </>
-                      )}
+                        <TextField
+                          id="Manager"
+                          type="text"
+                          label="Manager"
+                          className="w-full mb-5"
+                          style={{ marginBottom: "20px", color: "#ffffff" }}
+                          variant="outlined"
+                          size="medium"
+                          value={
+                            Manager2?.find((person) => person?.id === Manager)
+                              ?.userName || "No manager"
+                          }
+                          disabled={true}
+                        />
+                      </>
+
                       {noAgents ? (
                         <p
                           style={{
@@ -546,11 +546,11 @@ const UpdateLead = ({
                             <TextField
                               id="Salesperson"
                               type="text"
+                              label="Agent"
                               className="w-full mb-5"
                               style={{ marginBottom: "20px", color: "#ffffff" }}
                               variant="outlined"
                               size="medium"
-                              required
                               value={
                                 SalesPerson?.find(
                                   (person) => person?.id === SalesPerson2
@@ -645,9 +645,7 @@ const UpdateLead = ({
                         displayEmpty
                         select
                       >
-                        <MenuItem value="">
-                          Property type
-                        </MenuItem>
+                        <MenuItem value="">Property type</MenuItem>
                         <MenuItem value={"Apartment"}>Apartment</MenuItem>
                         <MenuItem value={"Villa"}>Villa</MenuItem>
                         <MenuItem value={"Commercial"}>Commercial</MenuItem>
@@ -691,6 +689,7 @@ const UpdateLead = ({
                       <TextField
                         id="LeadName"
                         type={"text"}
+                        label="LeadName"
                         className="w-full mb-5"
                         style={{ marginBottom: "20px" }}
                         variant="outlined"
@@ -699,13 +698,18 @@ const UpdateLead = ({
                         value={LeadName}
                         onChange={(e) => setLeadName(e.target.value)}
                       />
+
+                      <InputLabel htmlFor="phone-input" shrink>
+                        Phone No
+                      </InputLabel>
+
                       <PhoneInput
                         placeholder="Enter phone number"
                         value={LeadContact}
                         onChange={(value) => setValue(value)}
                         onKeyUp={handlePhone}
                         required
-                        label="Phone No"
+                        labels={"Phone No"}
                         error={error}
                         className={classNames({
                           "dark-mode": currentMode === "dark",
