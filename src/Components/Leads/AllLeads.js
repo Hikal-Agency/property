@@ -1246,7 +1246,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       if(coldCallCode) {
         url += `&coldCall=${coldCallCode}`;
       }
-      console.log("URL: ", url);
       await axios
         .get(url, {
           headers: {
