@@ -60,7 +60,7 @@ const UpcomingMeetingAgent = () => {
                         currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                     />
-                    <p className="text-sm mr-3">---</p>
+                    <p className="text-sm mr-3">{meeting?.meetingLocation || "Not Updated"}</p>
                   </div>
                 </div>
               </div>
