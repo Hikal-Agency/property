@@ -219,7 +219,6 @@ const AddLeadComponent = () => {
     LeadData.append("coldCall", coldCall);
     LeadData.append("notes", LeadNotes);
     if (User?.role === 1) {
-<<<<<<< HEAD
       if(Manager) {
         LeadData.append("assignedToManager", Number(Manager));
       }
@@ -231,18 +230,6 @@ const AddLeadComponent = () => {
       console.log("SENT");
       if(SalesPerson2) {
         LeadData.append("assignedToSales", Number(SalesPerson2));
-=======
-      if (Manager) {
-        LeadData.append("assignedToManager", Manager);
-      }
-      if (SalesPerson2) {
-        LeadData.append("assignedToSales", SalesPerson2);
-      }
-    } else if (User?.role === 3) {
-      LeadData.append("assignedToManager", User?.id);
-      if (SalesPerson2) {
-        LeadData.append("assignedToSales", SalesPerson2);
->>>>>>> 6d2fa9ec111295e38fe7dac99244f2099925f106
       }
     } else if (User?.role === 7) {
       LeadData.append("assignedToManager", Number(User?.isParent));
