@@ -255,11 +255,11 @@ const Signup = () => {
                         variant="outlined"
                         size="medium"
                         required
-                        value={formdata?.managerId}
+                        value={formdata?.isParent}
                         onChange={(e) => {
                           setformdata({
                             ...formdata,
-                            managerId: e.target.value,
+                            isParent: e.target.value,
                           });
                         }}
                       />
