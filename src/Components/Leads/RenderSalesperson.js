@@ -130,8 +130,16 @@ const RenderSalesperson = ({ cellValues }) => {
   ]);
 
   useEffect(() => {
-    setSalesPerson2("selected_agent");
-  }, [cellValues?.row?.assignedToManager]);
+    const findAgent = SalesPerson[`manager-${cellValues?.row?.assignedToManager}`]?.filter((agent) => {
+      return String(agent.id) === String(cellValues?.row?.assignedToSales);
+    });
+  console.log(findAgent)
+    if(findAgent || findAgent?.length> 0) {
+      setSalesPerson2(findAgent[0]?.id);
+    } else {
+      setSalesPerson2("selected_agent");
+    }    
+  }, [cellValues?.row?.assignedToManager, SalesPerson]);
 
   return (
     <Box

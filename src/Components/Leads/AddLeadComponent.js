@@ -226,8 +226,7 @@ const AddLeadComponent = () => {
         LeadData.append("assignedToSales", Number(SalesPerson2));
       }
     } else if(User?.role === 3) {
-      LeadData.append("assignedToManager", Number(121));
-      console.log("SENT");
+      LeadData.append("assignedToManager", Number(User?.id));
       if(SalesPerson2) {
         LeadData.append("assignedToSales", Number(SalesPerson2));
       }
@@ -441,12 +440,13 @@ const AddLeadComponent = () => {
                                     </MenuItem>
                                   ))}
                                 </TextField> */}
-                                <Select
+                                <TextField
                                   sx={{
                                     "&": {
                                       marginBottom: "1.25rem !important",
                                     },
                                   }}
+                                  select
                                   id="SalesPerson"
                                   label="Sales Person"
                                   value={SalesPerson2}
@@ -479,7 +479,7 @@ const AddLeadComponent = () => {
                                           </MenuItem>
                                         )
                                       )}
-                                </Select>
+                                </TextField>
                               </>
                             )}
 
