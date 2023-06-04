@@ -102,7 +102,7 @@ const Meetings = () => {
 
     {
       field: "meetingBy",
-      headerName: "By",
+      headerName: "Meeting By",
       minWidth: 130,
       flex: 1,
     },
