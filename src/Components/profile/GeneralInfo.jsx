@@ -159,7 +159,6 @@ export const GeneralInfo = ({
                 className="w-full"
                 variant="outlined"
                 size="medium"
-                required
                 value={GeneralInfo?.userAltEmail}
                 error={emailError && emailError}
                 helperText={emailError && emailError}
