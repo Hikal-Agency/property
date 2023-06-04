@@ -234,8 +234,8 @@ const AddLeadComponent = () => {
     );
 
     for (var pair of LeadData.entries()) {
-    console.log(pair[0]+ ', ' + pair[1]); 
-}
+      console.log(pair[0]+ ', ' + pair[1]); 
+    }
 
     await axios
       .post(`${BACKEND_URL}/leads`, LeadData, {
