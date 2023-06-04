@@ -141,7 +141,7 @@ const RenderSalesperson = ({ cellValues }) => {
         setSalesPerson2("selected_agent");
       }    
     }
-  }, [cellValues?.row?.assignedToManager, SalesPerson, Managers]);
+  }, [cellValues?.row?.assignedToManager, cellValues?.row?.assignedToSales, SalesPerson, Managers]);
 
   return (
     <Box
