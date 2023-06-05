@@ -276,9 +276,12 @@ const AddLeadComponent = () => {
         setLanguagePrefered("");
         setLeadSource("");
         setLeadNotes("");
-        setManager("");
         setSalesPerson2("");
         setValue("");
+
+        if (!User?.role === 1 && !User?.role === 3) {
+          setManager("");
+        }
       })
       .catch((err) => {
         console.log(err);
