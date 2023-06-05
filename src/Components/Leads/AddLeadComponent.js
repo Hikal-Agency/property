@@ -218,7 +218,7 @@ const AddLeadComponent = () => {
     LeadData.append("notes", LeadNotes);
     if (User?.role === 1) {
       if (Manager) {
-        LeadData.append("assignedToManager", Number(Manager));
+        LeadData.append("assignedToManager", Number(Manager) || "");
       }
       if (SalesPerson2) {
         LeadData.append("assignedToSales", Number(SalesPerson2));
@@ -299,6 +299,8 @@ const AddLeadComponent = () => {
       });
   };
 
+  console.log("manager: ", Manager);
+
   // useEffect(() => {
   //   setpageloading(true);
   //   const token = localStorage.getItem("auth-token");
@@ -378,8 +380,10 @@ const AddLeadComponent = () => {
 
         console.log(managersResponse);
         const managers = managersResponse?.data?.managers?.data;
-        setManager(managers || []);
 
+        if (User?.role !== 1) {
+          setManager(managers || []);
+        }
         setpageloading(false);
       } catch (error) {
         console.log(error);
