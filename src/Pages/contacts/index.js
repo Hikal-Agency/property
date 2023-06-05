@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
 import Loader from "../../Components/Loader";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,7 +10,7 @@ const Contacts = () => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [loading, setloading] = useState(true);
   const [contacts, setContacts] = useState([]);
-  const [page, setPage] = useState("1");
+  const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(0);
   const token = localStorage.getItem("auth-token");
   //eslint-disable-next-line
@@ -51,7 +49,7 @@ const Contacts = () => {
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    FetchContacts(token);
+    // FetchContacts(token);
   };
   const FetchContacts = async (token) => {
     setloading(true);
@@ -96,7 +94,7 @@ const Contacts = () => {
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchContacts(token);
-  }, []);
+  }, [page]);
   return (
     <>
       <ToastContainer />
@@ -175,10 +173,24 @@ const Contacts = () => {
 
             <Stack spacing={2} marginTop={2}>
               <Pagination
+                page={page}
                 count={maxPage}
-                color="error"
+                color={currentMode === "dark" ? "primary" : "secondary"}
                 onChange={handlePageChange}
-                style={{ margin: "auto" }}
+                style={{ margin: "auto", marginBottom: "10px" }}
+                sx={{
+                  "& .Mui-selected": {
+                    color: "white !important",
+                    backgroundColor: "red !important",
+                    "&:hover": {
+                      backgroundColor:
+                        currentMode === "dark" ? "black" : "white",
+                    },
+                  },
+                  "& .MuiPaginationItem-root": {
+                    color: currentMode === "dark" ? "white" : "black",
+                  },
+                }}
               />
             </Stack>
           </div>
