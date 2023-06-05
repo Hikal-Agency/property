@@ -1071,13 +1071,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       } else if (lead_type === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Unreachable`;
       } else if (lead_type === "cold") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=1`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=1`;
       } else if (lead_type === "warm") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=4`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=4`;
       } else if (lead_type === "personal") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=2`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=2`;
       } else if (lead_type === "thirdpartyleads") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=3`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=3`;
       }
     }
 
