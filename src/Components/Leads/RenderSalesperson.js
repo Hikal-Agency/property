@@ -162,7 +162,7 @@ const RenderSalesperson = ({ cellValues }) => {
         <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
           <Select
             id="SalesPerson"
-            value={SalesPerson2 || "selected_agent"}
+            value={(!SalesPerson2 || SalesPerson2 === "0" || SalesPerson === 102) ? "selected_agent" : SalesPerson2}
             name="salesperson"
             label="Salesperson"
             onChange={ChangeSalesPerson}
@@ -183,12 +183,10 @@ const RenderSalesperson = ({ cellValues }) => {
             displayEmpty
             required
           >
-            {(!SalesPerson2 || SalesPerson2 === "selected_agent") && (
               <MenuItem value={"selected_agent"} selected>
                 {" "}
                 Select Agent
               </MenuItem>
-            )}
 
             {SalesPersonsList?.length > 0 &&
               SalesPersonsList?.map((salesperson, index) => {

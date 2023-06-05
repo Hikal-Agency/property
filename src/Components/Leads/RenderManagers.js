@@ -163,7 +163,7 @@ const RenderManagers = ({ cellValues }) => {
           id="manager"
           // value={manager2 ?? "select_manager"}
           value={
-            manager2 === 102 ? "select_manager" : manager2 || "select_manager"
+            (manager2 === 102 || !manager2 || manager2 === "0") ? "select_manager" : manager2
           }
           label="Manager"
           onChange={ChangeManager}
@@ -173,11 +173,9 @@ const RenderManagers = ({ cellValues }) => {
           required
           sx={{ border: "1px solid #000000" }}
         >
-          {manager2 && (
             <MenuItem value="select_manager" selected>
               Select Manager
             </MenuItem>
-          )}
           {Managers?.length > 0 &&
             Managers?.map((manager, index) => (
               <MenuItem

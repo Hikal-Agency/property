@@ -122,13 +122,13 @@ const MapContainer = ({ meeting_location }) => {
       >
         {meetingData.map(meeting => (
           <>
-            {meeting.meetingStatus === "Attended" ? (
+            {meeting.meetingStatus === "Attended" && window?.google?.maps ? (
               <MarkerF
               key={meeting.id} 
               position={{ lat: parseFloat(meeting.mLat), lng: parseFloat(meeting.mLong)}}
               icon={{
                 url: "/meetingpinattended.svg",
-                scaledSize: window.google ? new window.google.maps.Size(50,50) : null,
+                scaledSize: window?.google ? new window.google.maps.Size(50,50) : null,
               }}
               onClick={() => {
                 setSelectedMeeting(meeting);
