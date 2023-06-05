@@ -1265,7 +1265,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       }));
 
       const coldCallCode = pageState?.data[0]?.coldCall;
-      let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=${lead_type}`;
+      // let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=${lead_type}`;
+      let url = `${BACKEND_URL}/search?title=${e.target.value}${
+        lead_type !== "all" ? `&feedback=${lead_type}` : ""
+      }`;
+
       if (coldCallCode) {
         url += `&coldCall=${coldCallCode}`;
       }
@@ -1527,7 +1531,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
             </MuiButton>
           )}
-          {selectedRows.length > 0 && (
+          {selectedRows.length > 0 && User?.role === 1 && (
             <MuiButton
               size="small"
               sx={{ ...bulkUpdateBtnStyles, left: "685px" }}
