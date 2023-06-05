@@ -111,7 +111,7 @@ const DashboardPanel = ({ setloading }) => {
     {
       amount: DashboardData?.lead_status?.closed,
       title: "Closed deal",
-      link: "/coldleads/all",
+      link: "/closedeals",
     },
     {
       amount: DashboardData?.lead_status?.meeting,
@@ -126,7 +126,7 @@ const DashboardPanel = ({ setloading }) => {
     {
       amount: DashboardData?.lead_status?.new,
       title: "New lead",
-      link: "/addlead",
+      link: "/freshleads/all",
     },
     {
       amount: DashboardData?.isAdmin?.total_agents,
