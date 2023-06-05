@@ -937,72 +937,28 @@ const Sidebarmui = () => {
           icon: <BsStopCircleFill />,
           submenu: [
             {
-              // name: "Hot leads",
-              // count: 10,
-              // submenu: [
-              //   {
-              name: "Fresh Unassigned",
-              count: sidebarData?.UnassignedLeadsCount?.hot,
-              // count:
-              //   sidebarData?.UnassignedLeadsCount?.new +
-              //   sidebarData?.UnassignedLeadsCount?.no_nswer +
-              //   sidebarData?.UnassignedLeadsCount?.Meeting +
-              //   sidebarData?.UnassignedLeadsCount?.follow_up +
-              //   sidebarData?.UnassignedLeadsCount?.low_budget +
-              //   sidebarData?.UnassignedLeadsCount?.not_interested +
-              //   sidebarData?.UnassignedLeadsCount?.unreachable,
+              name: "Hot leads",
+              count: sidebarData?.HotLeadsCount?.unassigned,
               link: "/unassigned/fresh",
             },
             {
-              name: "New",
-              count: sidebarData?.UnassignedLeadsCount?.new,
-              link: "/unassigned/new",
-            },
-            {
-              name: "No Answer",
-              count: sidebarData?.UnassignedLeadsCount?.no_nswer,
-              link: "/unassigned/no answer",
-            },
-            {
-              name: "Meeting",
-              count: sidebarData?.UnassignedLeadsCount?.Meeting,
-              link: "/unassigned/meeting",
-            },
-            {
-              name: "Follow Up",
-              count: sidebarData?.UnassignedLeadsCount?.follow_up,
-              link: "/unassigned/follow up",
-            },
-            {
-              name: "Low Budget",
-              count: sidebarData?.UnassignedLeadsCount?.low_budget,
-              link: "/unassigned/low budget",
-            },
-            {
-              name: "Not Interested",
-              count: sidebarData?.UnassignedLeadsCount?.not_interested,
-              link: "/unassigned/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: sidebarData?.UnassignedLeadsCount?.unreachable,
-              link: "/unassigned/unreachable",
-            },
-            // ],
-            // },
-            {
-              name: "Cold Unassigned",
-              count: sidebarData?.UnassignedLeadsCount?.cold,
+              name: "Cold leads",
+              count: sidebarData?.ColdLeadsCount?.unassigned,
               link: "/unassigned/cold",
             },
             {
+              name: "Warm leads",
+              count: sidebarData?.WarmLeadCount?.unassigned,
+              link: "/unassigned/warm",
+            },
+            {
               name: "Personal leads",
-              count: sidebarData?.UnassignedLeadsCount?.warm,
+              count: sidebarData?.PersonalLeadsCount?.unassigned,
               link: "/unassigned/personal",
             },
             {
               name: "Third Party leads",
-              count: sidebarData?.UnassignedLeadsCount?.warm,
+              count: sidebarData?.ThirdPartyLeadsCount?.unassigned,
               link: "/unassigned/thirdpartyleads",
             },
           ],
@@ -1302,27 +1258,27 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "Hot leads",
-              count: sidebarData?.UnassignedLeadsCount?.hot,
+              count: sidebarData?.HotLeadsCount?.unassigned,
               link: "/unassigned/fresh",
             },
             {
               name: "Cold leads",
-              count: sidebarData?.UnassignedLeadsCount?.cold,
+              count: sidebarData?.ColdLeadsCount?.unassigned,
               link: "/unassigned/cold",
             },
             {
               name: "Warm leads",
-              count: sidebarData?.UnassignedLeadsCount?.warm,
+              count: sidebarData?.WarmLeadCount?.unassigned,
               link: "/unassigned/warm",
             },
             {
               name: "Personal leads",
-              count: sidebarData?.UnassignedLeadsCount?.warm,
+              count: sidebarData?.PersonalLeadsCount?.unassigned,
               link: "/unassigned/personal",
             },
             {
               name: "Third Party leads",
-              count: sidebarData?.UnassignedLeadsCount?.warm,
+              count: sidebarData?.ThirdPartyLeadsCount?.unassigned,
               link: "/unassigned/thirdpartyleads",
             },
           ],
@@ -1878,7 +1834,7 @@ const Sidebarmui = () => {
               )}
             </a>
           </div>
-          <div className="profile-section border-t border-b mt-5 mb-5 pt-3 pb-3">
+          <div className="profile-section border-t border-b mt-5 px-1 mb-5 pt-3 pb-3">
             {isCollapsed ? (
               <>
                 <Link
@@ -1940,6 +1896,19 @@ const Sidebarmui = () => {
                 ...(User?.position === "Founder & CEO"
                   ? linksData.map((item, index) => (
                       <div key={index}>
+                      {!isCollapsed ?
+                      <Tooltip placement="right" title={item.title}>
+                        <p
+                          className={`font-bold m-3 mt-4 uppercase ${
+                            index === 0 && "hidden"
+                          } ${
+                            currentMode === "dark"
+                              ? "text-red-600"
+                              : "text-red-600"
+                          } ${!isCollapsed ? "w-[16px] h-[16px] ml-[22px] rounded-sm bg-red-600" : ""}`}
+                        >
+                        </p>
+                        </Tooltip> : 
                         <p
                           className={`font-bold m-3 mt-4 uppercase ${
                             index === 0 && "hidden"
@@ -1951,6 +1920,7 @@ const Sidebarmui = () => {
                         >
                           {item.title}
                         </p>
+                      }
                         {item.links.map((link) => (
                           <Tooltip
                             title={link.name}
@@ -2060,7 +2030,7 @@ const Sidebarmui = () => {
                                             //   color: menu?.countColor,
                                             // }}
                                           >
-                                            {menu?.count || ""}
+                                            {menu?.count !== null ? menu?.count : ""}
                                           </span>
                                         </Box>
                                       </Link>
@@ -2137,6 +2107,19 @@ const Sidebarmui = () => {
                   : User?.position === "Sales Manager"
                   ? managerData.map((item, index) => (
                       <div key={index}>
+                      {!isCollapsed ?
+                      <Tooltip placement="right" title={item.title}>
+                        <p
+                          className={`font-bold m-3 mt-4 uppercase ${
+                            index === 0 && "hidden"
+                          } ${
+                            currentMode === "dark"
+                              ? "text-red-600"
+                              : "text-red-600"
+                          } ${!isCollapsed ? "w-[16px] h-[16px] ml-[22px] rounded-sm bg-red-600" : ""}`}
+                        >
+                        </p>
+                        </Tooltip> : 
                         <p
                           className={`font-bold m-3 mt-4 uppercase ${
                             index === 0 && "hidden"
@@ -2148,6 +2131,7 @@ const Sidebarmui = () => {
                         >
                           {item.title}
                         </p>
+                      }
                         {item.links.map((link) => (
                           <Tooltip
                             title={link.name}
@@ -2234,7 +2218,7 @@ const Sidebarmui = () => {
                                             {menu?.name}
                                           </MenuItem>
                                           <span className="leads_counter block absolute right-5 top-5">
-                                            {menu?.count || ""}
+                                            {menu?.count !== null ? menu?.count : ""}
                                           </span>
                                         </Box>
                                       </Link>
@@ -2335,17 +2319,31 @@ const Sidebarmui = () => {
                       console.log(item);
                       return (
                         <div key={index}>
-                          <p
-                            className={`font-bold m-3 mt-4 uppercase ${
-                              index === 0 && "hidden"
-                            } ${
-                              currentMode === "dark"
-                                ? "text-red-600"
-                                : "text-red-600"
-                            }`}
-                          >
-                            {item.title}
-                          </p>
+                      {!isCollapsed ?
+                      <Tooltip placement="right" title={item.title}>
+                        <p
+                          className={`font-bold m-3 mt-4 uppercase ${
+                            index === 0 && "hidden"
+                          } ${
+                            currentMode === "dark"
+                              ? "text-red-600"
+                              : "text-red-600"
+                          } ${!isCollapsed ? "w-[16px] h-[16px] ml-[22px] rounded-sm bg-red-600" : ""}`}
+                        >
+                        </p>
+                        </Tooltip> : 
+                        <p
+                          className={`font-bold m-3 mt-4 uppercase ${
+                            index === 0 && "hidden"
+                          } ${
+                            currentMode === "dark"
+                              ? "text-red-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {item.title}
+                        </p>
+                      }
                           {item.links.map((link) => (
                             <Tooltip
                               title={link.name}
@@ -2439,7 +2437,7 @@ const Sidebarmui = () => {
                                               {menu?.name || ""}
                                             </MenuItem>
                                             <span className="leads_counter block absolute right-5 top-5">
-                                              {menu?.count || ""}
+                                              {menu?.count !== null ? menu?.count : ""}
                                             </span>
                                           </Box>
                                         </Link>

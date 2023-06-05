@@ -20,7 +20,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
   const [openEditModal, setOpenEditModal] = useState({
     open: false,
     id: null,
-  });
+  })
   const { currentMode } = useStateContext();
   //eslint-disable-next-line
   const [searchText, setSearchText] = useState("");

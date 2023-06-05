@@ -207,6 +207,7 @@ export const ContextProvider = ({ children }) => {
         ThirdPartyLeadsCount: response.data.data["THIRD PARTY LEADS"],
         UnassignedLeadsCount: response.data.data["UNASSIGNED LEADS"],
         WarmLeadCount: response.data.data["WARM LEADS"],
+        UNASSIGNED: response.data.data["unassigned"]
       });
     } catch (error) {
       console.log(error);
