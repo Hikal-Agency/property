@@ -1055,7 +1055,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&coldCall=0&leadStatus=Transferred`;
     } else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}}&unassigned=1&coldCall=0`;
       } else if (lead_type === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=New`;
       } else if (lead_type === "no answer") {
@@ -1071,9 +1071,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       } else if (lead_type === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Unreachable`;
       } else if (lead_type === "cold") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=1`;
       } else if (lead_type === "warm") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=4`;
+      } else if (lead_type === "personal") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=2`;
+      } else if (lead_type === "thirdpartyleads") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=3`;
       }
     }
 
@@ -1103,41 +1107,41 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }
 
         let filteredData = rowsDataArray;
-        if (lead_origin === "unassigned") {
-          console.log("Hi, I am unassigned. Please assign me to someone 😢");
-          console.log(rowsDataArray);
+        // if (lead_origin === "unassigned") {
+        //   console.log("Hi, I am unassigned. Please assign me to someone 😢");
+        //   console.log(rowsDataArray);
 
-          if (User?.role === 3) {
-            console.log("ROLE: ", User?.role);
-            console.log(
-              "Sales assignes: ",
-              rowsDataArray.filter(
-                (item) =>
-                  !item.assignedToSales ||
-                  !item.assignedToSales === 0 ||
-                  item.assignedToSales === 102
-              )
-            );
-            filteredData = rowsDataArray.filter(
-              (item) =>
-                !item.assignedToSales ||
-                !item.assignedToSales === 0 ||
-                item.assignedToSales === 102
-            );
-          } else {
-            filteredData = rowsDataArray.filter(
-              (item) =>
-                !item.assignedToManager ||
-                item.assignedToManager === 102 ||
-                item.assignedToManager === 0
-            );
-          }
+        //   if (User?.role === 3) {
+        //     console.log("ROLE: ", User?.role);
+        //     console.log(
+        //       "Sales assignes: ",
+        //       rowsDataArray.filter(
+        //         (item) =>
+        //           !item.assignedToSales ||
+        //           !item.assignedToSales === 0 ||
+        //           item.assignedToSales === 102
+        //       )
+        //     );
+        //     filteredData = rowsDataArray.filter(
+        //       (item) =>
+        //         !item.assignedToSales ||
+        //         !item.assignedToSales === 0 ||
+        //         item.assignedToSales === 102
+        //     );
+        //   } else {
+        //     filteredData = rowsDataArray.filter(
+        //       (item) =>
+        //         !item.assignedToManager ||
+        //         item.assignedToManager === 102 ||
+        //         item.assignedToManager === 0
+        //     );
+        //   }
 
-          total = filteredData?.length;
-          console.log("Total: ", total);
+        //   total = filteredData?.length;
+        //   console.log("Total: ", total);
 
-          console.log("Unassigned rows data: ", filteredData);
-        }
+        //   console.log("Unassigned rows data: ", filteredData);
+        // }
 
         let rowsdata = filteredData.map((row, index) => ({
           id:
