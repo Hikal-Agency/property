@@ -1827,7 +1827,7 @@ const Sidebarmui = () => {
   return (
     <div
       style={{ display: "flex", height: "100%" }}
-      className={`max-w-[200px] sticky top-0 left-0 `}
+      className={`max-w-[200px] z-[50000] sticky top-0 left-0 `}
     >
       <Sidebar
         rootStyles={{
@@ -2389,7 +2389,10 @@ const Sidebarmui = () => {
                                         <Link
                                           key={index}
                                           to={`${menu.link}`}
-                                          onClick={() => setopenBackDrop(true)}
+                                          onClick={() => {
+                                              setopenBackDrop(true);
+                                              console.log("Clicked")
+                                          }}
                                         >
                                           <Box
                                             sx={{
