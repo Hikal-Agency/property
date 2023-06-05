@@ -168,6 +168,18 @@ const RenderSalesperson = ({ cellValues }) => {
             onChange={ChangeSalesPerson}
             size="medium"
             className="w-[100%] h-[75%]"
+          sx={{
+            color:
+              currentMode === "dark"
+                ? "#ffffff !important"
+                : "#000000 !important",
+            "& .MuiSelect-icon": {
+              color:
+                currentMode === "dark"
+                  ? "#ffffff !important"
+                  : "#000000 !important",
+            },
+          }}
             displayEmpty
             required
           >
