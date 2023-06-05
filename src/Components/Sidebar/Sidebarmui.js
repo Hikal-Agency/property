@@ -2030,7 +2030,7 @@ const Sidebarmui = () => {
                                             //   color: menu?.countColor,
                                             // }}
                                           >
-                                            {menu?.count || ""}
+                                            {menu?.count !== null ? menu?.count : ""}
                                           </span>
                                         </Box>
                                       </Link>
@@ -2218,7 +2218,7 @@ const Sidebarmui = () => {
                                             {menu?.name}
                                           </MenuItem>
                                           <span className="leads_counter block absolute right-5 top-5">
-                                            {menu?.count || ""}
+                                            {menu?.count !== null ? menu?.count : ""}
                                           </span>
                                         </Box>
                                       </Link>
@@ -2437,7 +2437,7 @@ const Sidebarmui = () => {
                                               {menu?.name || ""}
                                             </MenuItem>
                                             <span className="leads_counter block absolute right-5 top-5">
-                                              {menu?.count || ""}
+                                              {menu?.count !== null ? menu?.count : ""}
                                             </span>
                                           </Box>
                                         </Link>
