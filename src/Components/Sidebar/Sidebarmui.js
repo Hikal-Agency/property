@@ -72,7 +72,6 @@ const Sidebarmui = () => {
     fetchSidebarData();
   }, []);
 
-
   //  DATA
   // const links = [
   //   {
@@ -793,71 +792,7 @@ const Sidebarmui = () => {
             },
           ],
         },
-        {
-          name: "Unassigned",
-          icon: <BsStopCircleFill />,
-          submenu: [
-            {
-              // name: "Hot leads",
-              // count: 10,
-              // submenu: [
-              //   {
-              name: "Fresh Unassigned",
-              count: sidebarData?.UnassignedLeadsCount?.hot,
-              // count:
-              //   sidebarData?.UnassignedLeadsCount?.new +
-              //   sidebarData?.UnassignedLeadsCount?.no_nswer +
-              //   sidebarData?.UnassignedLeadsCount?.Meeting +
-              //   sidebarData?.UnassignedLeadsCount?.follow_up +
-              //   sidebarData?.UnassignedLeadsCount?.low_budget +
-              //   sidebarData?.UnassignedLeadsCount?.not_interested +
-              //   sidebarData?.UnassignedLeadsCount?.unreachable,
-              link: "/unassigned/fresh",
-            },
-            {
-              name: "New",
-              count: sidebarData?.UnassignedLeadsCount?.new,
-              link: "/unassigned/new",
-            },
-            {
-              name: "No Answer",
-              count: sidebarData?.UnassignedLeadsCount?.no_nswer,
-              link: "/unassigned/no answer",
-            },
-            {
-              name: "Meeting",
-              count: sidebarData?.UnassignedLeadsCount?.Meeting,
-              link: "/unassigned/meeting",
-            },
-            {
-              name: "Follow Up",
-              count: sidebarData?.UnassignedLeadsCount?.follow_up,
-              link: "/unassigned/follow up",
-            },
-            {
-              name: "Low Budget",
-              count: sidebarData?.UnassignedLeadsCount?.low_budget,
-              link: "/unassigned/low budget",
-            },
-            {
-              name: "Not Interested",
-              count: sidebarData?.UnassignedLeadsCount?.not_interested,
-              link: "/unassigned/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: sidebarData?.UnassignedLeadsCount?.unreachable,
-              link: "/unassigned/unreachable",
-            },
-            // ],
-            // },
-            {
-              name: "Cold Unassigned",
-              count: sidebarData?.UnassignedLeadsCount?.cold,
-              link: "/unassigned/cold",
-            },
-          ],
-        },
+
         {
           name: "Personal",
           icon: <HiUsers />,
@@ -998,6 +933,71 @@ const Sidebarmui = () => {
           ],
         },
         {
+          name: "Unassigned",
+          icon: <BsStopCircleFill />,
+          submenu: [
+            {
+              // name: "Hot leads",
+              // count: 10,
+              // submenu: [
+              //   {
+              name: "Fresh Unassigned",
+              count: sidebarData?.UnassignedLeadsCount?.hot,
+              // count:
+              //   sidebarData?.UnassignedLeadsCount?.new +
+              //   sidebarData?.UnassignedLeadsCount?.no_nswer +
+              //   sidebarData?.UnassignedLeadsCount?.Meeting +
+              //   sidebarData?.UnassignedLeadsCount?.follow_up +
+              //   sidebarData?.UnassignedLeadsCount?.low_budget +
+              //   sidebarData?.UnassignedLeadsCount?.not_interested +
+              //   sidebarData?.UnassignedLeadsCount?.unreachable,
+              link: "/unassigned/fresh",
+            },
+            {
+              name: "New",
+              count: sidebarData?.UnassignedLeadsCount?.new,
+              link: "/unassigned/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.UnassignedLeadsCount?.no_nswer,
+              link: "/unassigned/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.UnassignedLeadsCount?.Meeting,
+              link: "/unassigned/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.UnassignedLeadsCount?.follow_up,
+              link: "/unassigned/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.UnassignedLeadsCount?.low_budget,
+              link: "/unassigned/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: sidebarData?.UnassignedLeadsCount?.not_interested,
+              link: "/unassigned/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.UnassignedLeadsCount?.unreachable,
+              link: "/unassigned/unreachable",
+            },
+            // ],
+            // },
+            {
+              name: "Cold Unassigned",
+              count: sidebarData?.UnassignedLeadsCount?.cold,
+              link: "/unassigned/cold",
+            },
+          ],
+        },
+        {
           name: "Transferred",
           icon: <RiFileTransferFill />,
           link: "/transfferedleads",
@@ -1055,7 +1055,7 @@ const Sidebarmui = () => {
       ],
     },
   ];
-    //  DATA
+  //  DATA
   const links = [
     {
       title: "Dashboard",
@@ -1531,7 +1531,6 @@ const Sidebarmui = () => {
       ],
     },
   ];
-  
 
   const [agentData, setAgentData] = useState(Agentlinks);
   const [linksData, setLinksData] = useState(links);
@@ -1658,28 +1657,28 @@ const Sidebarmui = () => {
   const getAllLeadsMembers = (user) => {
     setAppLoading(true);
     const token = localStorage.getItem("auth-token");
-      axios
-        .get(`${BACKEND_URL}/teamMembers/${user?.id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
-          const agents = result.data?.team;
-          setSalesPerson({ [`manager-${user?.id}`]: agents });
-        });
-      axios.get(`${BACKEND_URL}/managers`).then((result) => {
-        console.log("manager response is");
-        console.log(result);
-        const managers = result?.data?.managers.data;
-        setManagers(managers || []);
-        const urls = managers?.map((manager) => {
-          return `${BACKEND_URL}/teamMembers/${manager?.id}`;
-        });
-
-        setSalesPersons(urls || []);
+    axios
+      .get(`${BACKEND_URL}/teamMembers/${user?.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        const agents = result.data?.team;
+        setSalesPerson({ [`manager-${user?.id}`]: agents });
       });
+    axios.get(`${BACKEND_URL}/managers`).then((result) => {
+      console.log("manager response is");
+      console.log(result);
+      const managers = result?.data?.managers.data;
+      setManagers(managers || []);
+      const urls = managers?.map((manager) => {
+        return `${BACKEND_URL}/teamMembers/${manager?.id}`;
+      });
+
+      setSalesPersons(urls || []);
+    });
   };
 
   useEffect(() => {
@@ -1798,8 +1797,6 @@ const Sidebarmui = () => {
       ]);
     }
   }, [isUserSubscribed]);
-
-
 
   useEffect(() => {
     setAgentData([...Agentlinks]);
@@ -2315,206 +2312,208 @@ const Sidebarmui = () => {
                       </div>
                     ))
                   : agentData.map((item, index) => {
-                    console.log(item)
-                     return <div key={index}>
-                        <p
-                          className={`font-bold m-3 mt-4 uppercase ${
-                            index === 0 && "hidden"
-                          } ${
-                            currentMode === "dark"
-                              ? "text-red-600"
-                              : "text-red-600"
-                          }`}
-                        >
-                          {item.title}
-                        </p>
-                        {item.links.map((link) => (
-                          <Tooltip
-                            title={link.name}
-                            key={link.name}
-                            placement="right"
+                      console.log(item);
+                      return (
+                        <div key={index}>
+                          <p
+                            className={`font-bold m-3 mt-4 uppercase ${
+                              index === 0 && "hidden"
+                            } ${
+                              currentMode === "dark"
+                                ? "text-red-600"
+                                : "text-red-600"
+                            }`}
                           >
-                            {link.submenu ? (
-                              <Box
-                                sx={{
-                                  // FOR DARK MODE MENU SETTINGS
-                                  "& .css-1mfnem1": { borderRadius: "5px" },
-                                  "& .css-1mfnem1:hover": {
-                                    backgroundColor: "#DA1F26",
-                                  },
-                                  // submenu containerr color
-                                  "& .css-z5rm24": {
-                                    backgroundColor:
-                                      currentMode === "dark" && "#3b3d44",
-                                    borderRadius: "5px",
-                                  },
-                                  // Submenu count color
-                                  "& .css-1rnkhs0": {
-                                    color: currentMode === "dark" && "white",
-                                  },
-                                  // LIGHT MODE SETTINGS
-                                  "& .css-1ohfb25:hover": {
-                                    backgroundColor: "#DA1F26",
-                                    color: "white",
-                                    borderRadius: "5px",
-                                  },
-                                  "& .css-wx7wi4": {
-                                    width: "18px",
-                                    minWidth: "18px",
-                                  },
-                                }}
-                                className="my-1"
-                              >
-                                <SubMenu label={link.name} icon={link.icon}>
-                                  {link.submenu.map((menu, index) => {
-                                    return (
-                                      <Link
-                                        key={index}
-                                        to={`${menu.link}`}
+                            {item.title}
+                          </p>
+                          {item.links.map((link) => (
+                            <Tooltip
+                              title={link.name}
+                              key={link.name}
+                              placement="right"
+                            >
+                              {link.submenu ? (
+                                <Box
+                                  sx={{
+                                    // FOR DARK MODE MENU SETTINGS
+                                    "& .css-1mfnem1": { borderRadius: "5px" },
+                                    "& .css-1mfnem1:hover": {
+                                      backgroundColor: "#DA1F26",
+                                    },
+                                    // submenu containerr color
+                                    "& .css-z5rm24": {
+                                      backgroundColor:
+                                        currentMode === "dark" && "#3b3d44",
+                                      borderRadius: "5px",
+                                    },
+                                    // Submenu count color
+                                    "& .css-1rnkhs0": {
+                                      color: currentMode === "dark" && "white",
+                                    },
+                                    // LIGHT MODE SETTINGS
+                                    "& .css-1ohfb25:hover": {
+                                      backgroundColor: "#DA1F26",
+                                      color: "white",
+                                      borderRadius: "5px",
+                                    },
+                                    "& .css-wx7wi4": {
+                                      width: "18px",
+                                      minWidth: "18px",
+                                    },
+                                  }}
+                                  className="my-1"
+                                >
+                                  <SubMenu label={link.name} icon={link.icon}>
+                                    {link.submenu.map((menu, index) => {
+                                      return (
+                                        <Link
+                                          key={index}
+                                          to={`${menu.link}`}
+                                          onClick={() => setopenBackDrop(true)}
+                                        >
+                                          <Box
+                                            sx={{
+                                              // STYLING FOR LIGHT MODE
+                                              "& .css-1mfnem1": {
+                                                borderRadius: "5px",
+                                              },
+                                              "& .css-1mfnem1:hover": {
+                                                backgroundColor: "#DA1F26",
+                                              },
+                                              "& .css-1ogoo8i": {
+                                                backgroundColor: "#DA1F26",
+                                              },
+
+                                              // STYLING FOR DARK MODE
+                                              "& .css-yktbuo": {
+                                                backgroundColor: "#DA1F26",
+                                              },
+                                              "& .css-yktbuo:hover": {
+                                                backgroundColor: "#DA1F26",
+                                              },
+                                              "& .css-1v6ithu": {
+                                                color: "white",
+                                              },
+                                              "& .leads_counter": {
+                                                color:
+                                                  currentMode === "dark"
+                                                    ? "white"
+                                                    : "black",
+                                              },
+                                            }}
+                                            className="relative my-1"
+                                          >
+                                            <MenuItem
+                                              active={selected === menu.name}
+                                              onClick={() =>
+                                                setSelected(menu.name)
+                                              }
+                                            >
+                                              {console.log(
+                                                "Menudetail: ",
+                                                menu?.count
+                                              )}
+                                              {menu?.name || ""}
+                                            </MenuItem>
+                                            <span className="leads_counter block absolute right-5 top-5">
+                                              {menu?.count || ""}
+                                            </span>
+                                          </Box>
+                                        </Link>
+                                      );
+                                    })}
+                                  </SubMenu>
+                                </Box>
+                              ) : (
+                                <Box
+                                  sx={{
+                                    "& .css-1mfnem1": { borderRadius: "5px" },
+                                    // hover bg color for dark mode
+                                    "& .css-1mfnem1:hover": {
+                                      backgroundColor: "#DA1F26",
+                                    },
+                                    // hover bg-color for light mode
+                                    "& .css-1ohfb25:hover": {
+                                      backgroundColor: "#DA1F26",
+                                      color: "white",
+                                      borderRadius: "5px",
+                                    },
+                                    // ACTIVE MENU ITEM STYLING FOR LIGHT MODE
+                                    "& .css-xsmbnq": {
+                                      backgroundColor: "#DA1F26",
+                                      color: "white",
+                                      borderRadius: "5px",
+                                    },
+                                    "& .css-xsmbnq:hover": {
+                                      backgroundColor: "#DA1F26",
+                                      color: "white",
+                                      borderRadius: "5px",
+                                    },
+                                    // ACTIVE MENU STYLING FOR DARK MODE
+                                    "& .css-yktbuo": {
+                                      backgroundColor: "#DA1F26",
+                                      borderRadius: "5px",
+                                    },
+                                    "& .css-yktbuo:hover": {
+                                      backgroundColor: "#DA1F26",
+                                    },
+                                  }}
+                                  className="my-1"
+                                >
+                                  <MenuItem
+                                    active={selected === link.name}
+                                    onClick={() => setSelected(link.name)}
+                                  >
+                                    {link.link === "/contacts" ||
+                                    link.link === "/dashboard" ? (
+                                      <a
+                                        href={link.link}
                                         onClick={() => setopenBackDrop(true)}
                                       >
-                                        <Box
-                                          sx={{
-                                            // STYLING FOR LIGHT MODE
-                                            "& .css-1mfnem1": {
-                                              borderRadius: "5px",
-                                            },
-                                            "& .css-1mfnem1:hover": {
-                                              backgroundColor: "#DA1F26",
-                                            },
-                                            "& .css-1ogoo8i": {
-                                              backgroundColor: "#DA1F26",
-                                            },
-
-                                            // STYLING FOR DARK MODE
-                                            "& .css-yktbuo": {
-                                              backgroundColor: "#DA1F26",
-                                            },
-                                            "& .css-yktbuo:hover": {
-                                              backgroundColor: "#DA1F26",
-                                            },
-                                            "& .css-1v6ithu": {
-                                              color: "white",
-                                            },
-                                            "& .leads_counter": {
-                                              color:
-                                                currentMode === "dark"
-                                                  ? "white"
-                                                  : "black",
-                                            },
-                                          }}
-                                          className="relative my-1"
-                                        >
-                                          <MenuItem
-                                            active={selected === menu.name}
-                                            onClick={() =>
-                                              setSelected(menu.name)
-                                            }
+                                        <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                          <span
+                                            className={`${
+                                              !isCollapsed && "text-xl"
+                                            }`}
                                           >
-                                            {console.log(
-                                              "Menudetail: ",
-                                              menu?.count
-                                            )}
-                                            {menu?.name || ""}
-                                          </MenuItem>
-                                          <span className="leads_counter block absolute right-5 top-5">
-                                            {menu?.count || ""}
+                                            {link.icon}
                                           </span>
-                                        </Box>
+                                          {isCollapsed && (
+                                            <span className="capitalize">
+                                              {link.name}
+                                            </span>
+                                          )}
+                                        </div>
+                                      </a>
+                                    ) : (
+                                      <Link
+                                        to={link.link}
+                                        onClick={() => setopenBackDrop(true)}
+                                      >
+                                        <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                          <span
+                                            className={`${
+                                              !isCollapsed && "text-xl"
+                                            }`}
+                                          >
+                                            {link?.icon || ""}
+                                          </span>
+                                          {isCollapsed && (
+                                            <span className="capitalize">
+                                              {link?.name || ""}
+                                            </span>
+                                          )}
+                                        </div>
                                       </Link>
-                                    );
-                                  })}
-                                </SubMenu>
-                              </Box>
-                            ) : (
-                              <Box
-                                sx={{
-                                  "& .css-1mfnem1": { borderRadius: "5px" },
-                                  // hover bg color for dark mode
-                                  "& .css-1mfnem1:hover": {
-                                    backgroundColor: "#DA1F26",
-                                  },
-                                  // hover bg-color for light mode
-                                  "& .css-1ohfb25:hover": {
-                                    backgroundColor: "#DA1F26",
-                                    color: "white",
-                                    borderRadius: "5px",
-                                  },
-                                  // ACTIVE MENU ITEM STYLING FOR LIGHT MODE
-                                  "& .css-xsmbnq": {
-                                    backgroundColor: "#DA1F26",
-                                    color: "white",
-                                    borderRadius: "5px",
-                                  },
-                                  "& .css-xsmbnq:hover": {
-                                    backgroundColor: "#DA1F26",
-                                    color: "white",
-                                    borderRadius: "5px",
-                                  },
-                                  // ACTIVE MENU STYLING FOR DARK MODE
-                                  "& .css-yktbuo": {
-                                    backgroundColor: "#DA1F26",
-                                    borderRadius: "5px",
-                                  },
-                                  "& .css-yktbuo:hover": {
-                                    backgroundColor: "#DA1F26",
-                                  },
-                                }}
-                                className="my-1"
-                              >
-                                <MenuItem
-                                  active={selected === link.name}
-                                  onClick={() => setSelected(link.name)}
-                                >
-                                  {link.link === "/contacts" ||
-                                  link.link === "/dashboard" ? (
-                                    <a
-                                      href={link.link}
-                                      onClick={() => setopenBackDrop(true)}
-                                    >
-                                      <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
-                                        <span
-                                          className={`${
-                                            !isCollapsed && "text-xl"
-                                          }`}
-                                        >
-                                          {link.icon}
-                                        </span>
-                                        {isCollapsed && (
-                                          <span className="capitalize">
-                                            {link.name}
-                                          </span>
-                                        )}
-                                      </div>
-                                    </a>
-                                  ) : (
-                                    <Link
-                                      to={link.link}
-                                      onClick={() => setopenBackDrop(true)}
-                                    >
-                                      <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
-                                        <span
-                                          className={`${
-                                            !isCollapsed && "text-xl"
-                                          }`}
-                                        >
-                                          {link?.icon || ""}
-                                        </span>
-                                        {isCollapsed && (
-                                          <span className="capitalize">
-                                            {link?.name || ""}
-                                          </span>
-                                        )}
-                                      </div>
-                                    </Link>
-                                  )}
-                                </MenuItem>
-                              </Box>
-                            )}
-                          </Tooltip>
-                        ))}
-                      </div>
-              })),
+                                    )}
+                                  </MenuItem>
+                                </Box>
+                              )}
+                            </Tooltip>
+                          ))}
+                        </div>
+                      );
+                    })),
               ]}
             </Menu>
           </div>
