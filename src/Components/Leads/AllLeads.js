@@ -1074,6 +1074,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=1`;
       } else if (lead_type === "warm") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=4`;
+      } else if (lead_type === "personal") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=2`;
+      } else if (lead_type === "thirdpartyleads") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned&coldCall=3`;
       }
     }
 

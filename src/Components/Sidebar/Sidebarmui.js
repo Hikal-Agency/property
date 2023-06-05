@@ -995,6 +995,16 @@ const Sidebarmui = () => {
               count: sidebarData?.UnassignedLeadsCount?.cold,
               link: "/unassigned/cold",
             },
+            {
+              name: "Personal leads",
+              count: sidebarData?.UnassignedLeadsCount?.warm,
+              link: "/unassigned/personal",
+            },
+            {
+              name: "Third Party leads",
+              count: sidebarData?.UnassignedLeadsCount?.warm,
+              link: "/unassigned/thirdpartyleads",
+            },
           ],
         },
         {
@@ -1304,6 +1314,16 @@ const Sidebarmui = () => {
               name: "Warm leads",
               count: sidebarData?.UnassignedLeadsCount?.warm,
               link: "/unassigned/warm",
+            },
+            {
+              name: "Personal leads",
+              count: sidebarData?.UnassignedLeadsCount?.warm,
+              link: "/unassigned/personal",
+            },
+            {
+              name: "Third Party leads",
+              count: sidebarData?.UnassignedLeadsCount?.warm,
+              link: "/unassigned/thirdpartyleads",
             },
           ],
         },
