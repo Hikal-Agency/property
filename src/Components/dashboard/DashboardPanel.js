@@ -111,7 +111,7 @@ const DashboardPanel = ({ setloading }) => {
     {
       amount: DashboardData?.lead_status?.closed,
       title: "Closed deal",
-      link: "/coldleads/all",
+      link: "/closedeals",
     },
     {
       amount: DashboardData?.lead_status?.meeting,
@@ -126,7 +126,7 @@ const DashboardPanel = ({ setloading }) => {
     {
       amount: DashboardData?.lead_status?.new,
       title: "New lead",
-      link: "/addlead",
+      link: "/freshleads/all",
     },
     {
       amount: DashboardData?.isAdmin?.total_agents,
@@ -341,9 +341,9 @@ const DashboardPanel = ({ setloading }) => {
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
                     : "bg-gray-200"
-                } h-full w-full rounded-md p-5 cursor-pointer`}
+                } h-full w-full rounded-md p-5 cursor-pointe w-fullr`}
               >
-                <div className="justify-between items-center">
+                <div className="justify-between items-center w-full">
                   <h6 className="font-semibold">Performance</h6>
                   <CombinationChart />
                 </div>
