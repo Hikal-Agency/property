@@ -64,6 +64,7 @@ const DashboardPanel = ({ setloading }) => {
       icon: <FaHandshake />,
       amount: DashboardData?.lead_status?.closed,
       title: "Closed deal",
+      link: "/closedeals",
     },
     {
       icon: <ImUser />,
@@ -81,24 +82,28 @@ const DashboardPanel = ({ setloading }) => {
       amount: DashboardData?.newLeads,
       percentage: "-12%",
       title: "All New Leads",
+      link: "/freshleads/all",
     },
     {
       icon: <GiThermometerCold />,
       amount: DashboardData?.isAdmin?.verified_cold_leads,
       percentage: "-12%",
       title: "Verified cold leads",
+      link: "/coldleads/coldLeadsVerified",
     },
     {
       icon: <FiUsers />,
       amount: DashboardData?.isAdmin?.personal_leads,
       percentage: "-12%",
       title: "Personal leads",
+      link: "/personalleads/all",
     },
     {
       icon: <MdLeaderboard />,
       amount: DashboardData?.isAdmin?.thirdparty,
       percentage: "-12%",
       title: "Third party leads",
+      link: "/thirdpartyleads/all",
     },
   ];
 
@@ -106,18 +111,22 @@ const DashboardPanel = ({ setloading }) => {
     {
       amount: DashboardData?.lead_status?.closed,
       title: "Closed deal",
+      link: "/coldleads/all",
     },
     {
       amount: DashboardData?.lead_status?.meeting,
       title: "Meeting",
+      link: "/appointments/meetings",
     },
     {
       amount: DashboardData?.lead_status?.followup,
       title: "Follow up",
+      link: "/freshleads/follow up",
     },
     {
       amount: DashboardData?.lead_status?.new,
       title: "New lead",
+      link: "/addlead",
     },
     {
       amount: DashboardData?.isAdmin?.total_agents,
@@ -147,13 +156,13 @@ const DashboardPanel = ({ setloading }) => {
       amount: DashboardData?.lead_status?.followup,
       percentage: "-12%",
       title: "Follow up",
-      link: "/hotleads/follow up",
+      link: "/freshleads/follow up",
     },
     {
       icon: <AiOutlineFire />,
       amount: DashboardData?.lead_status?.new,
       title: "New lead",
-      link: "/hotleads/new",
+      link: "/freshleads/new",
     },
   ];
 
@@ -211,13 +220,35 @@ const DashboardPanel = ({ setloading }) => {
           {DashboardData?.designation === "Head" ? (
             HeadData.map((item, index) => {
               return (
-                <div
+                // <div
+                //   key={index}
+                //   className={`${
+                //     currentMode === "dark"
+                //       ? "bg-gray-900 text-white "
+                //       : "bg-gray-200 text-main-dark-bg"
+                //   }  h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
+                // >
+                //   <p className="text-2xl font-bold pb-3 text-red-600">
+                //     {item.amount}
+                //   </p>
+                //   <p
+                //     className={`text-sm ${
+                //       currentMode === "dark"
+                //         ? "text-white"
+                //         : "text-main-dark-bg-2 font-semibold"
+                //     }   `}
+                //   >
+                //     {item?.title}
+                //   </p>
+                // </div>
+                <Link
                   key={index}
+                  to={item?.link}
                   className={`${
                     currentMode === "dark"
                       ? "bg-gray-900 text-white "
                       : "bg-gray-200 text-main-dark-bg"
-                  }  h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
+                  } h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
                 >
                   <p className="text-2xl font-bold pb-3 text-red-600">
                     {item.amount}
@@ -227,25 +258,25 @@ const DashboardPanel = ({ setloading }) => {
                       currentMode === "dark"
                         ? "text-white"
                         : "text-main-dark-bg-2 font-semibold"
-                    }   `}
+                    }`}
                   >
                     {item?.title}
                   </p>
-                </div>
+                </Link>
               );
             })
           ) : DashboardData?.designation === "Manager" ? (
             <>
               {ManagerData.map((item, index) => {
                 return (
-                  <div
-                    to={item.link}
+                  <Link
+                    to={item?.link}
                     key={index}
                     className={`${
                       currentMode === "dark"
                         ? "bg-gray-900 text-white "
                         : "bg-gray-200 text-main-dark-bg"
-                    }  h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
+                    } h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
@@ -262,7 +293,7 @@ const DashboardPanel = ({ setloading }) => {
                         {item?.title}
                       </p>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </>
