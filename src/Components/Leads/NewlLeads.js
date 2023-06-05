@@ -608,7 +608,7 @@ const Newleads = ({
         `${BACKEND_URL}/search?title=${e.target.value}&page=${pageState.page}`
       );
       const coldCallCode = pageState?.data[0]?.coldCall;
-      let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=New`;
+      let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=Booked`;
       if(coldCallCode) {
         url += `&coldCall=${coldCallCode}`;
       }

@@ -1158,9 +1158,30 @@ const BookedDeals = ({
         ...old,
         isLoading: true,
       }));
-      const coldCallCode = pageState?.data[0]?.coldCall;
-      let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=Booked`;
-      if(coldCallCode) {
+      let coldCallCode = "";
+    if (lead_origin === "freshleads") {
+      coldCallCode = 0;
+    }
+    else if (lead_origin === "coldleads") {
+      coldCallCode = 1;
+    }
+    else if (lead_origin === "thirdpartyleads") {
+      coldCallCode = 3;
+    }
+    else if (lead_origin === "personalleads") {
+      coldCallCode = 2;
+    }
+    else if (lead_origin === "warmleads") {
+      coldCallCode = 4;
+    } else if (lead_origin === "transfferedleads") {
+      coldCallCode = 0;
+    }
+
+      let url = `${BACKEND_URL}/search?title=${e.target.value}${
+        lead_type !== "all" ? `&feedback=${lead_type}` : ""
+      }`;
+
+      if (coldCallCode !== "") {
         url += `&coldCall=${coldCallCode}`;
       }
       await axios
