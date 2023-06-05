@@ -82,7 +82,7 @@ const DashboardPanel = ({ setloading }) => {
       amount: DashboardData?.newLeads,
       percentage: "-12%",
       title: "All New Leads",
-      link: "/freshleads/all",
+      // link: "/freshleads/all",
     },
     {
       icon: <GiThermometerCold />,
@@ -126,7 +126,7 @@ const DashboardPanel = ({ setloading }) => {
     {
       amount: DashboardData?.lead_status?.new,
       title: "New lead",
-      link: "/freshleads/all",
+      // link: "/freshleads/all",
     },
     {
       amount: DashboardData?.isAdmin?.total_agents,
@@ -162,7 +162,7 @@ const DashboardPanel = ({ setloading }) => {
       icon: <AiOutlineFire />,
       amount: DashboardData?.lead_status?.new,
       title: "New lead",
-      link: "/freshleads/new",
+      // link: "/freshleads/new",
     },
   ];
 
