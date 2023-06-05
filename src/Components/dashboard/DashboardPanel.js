@@ -341,9 +341,9 @@ const DashboardPanel = ({ setloading }) => {
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
                     : "bg-gray-200"
-                } h-full w-full rounded-md p-5 cursor-pointer`}
+                } h-full w-full rounded-md p-5 cursor-pointe w-fullr`}
               >
-                <div className="justify-between items-center">
+                <div className="justify-between items-center w-full">
                   <h6 className="font-semibold">Performance</h6>
                   <CombinationChart />
                 </div>
