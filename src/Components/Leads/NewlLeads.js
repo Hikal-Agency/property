@@ -46,6 +46,7 @@ const Newleads = ({
   const [singleLeadData, setsingleLeadData] = useState();
   const [deleteloading, setdeleteloading] = useState(false);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const {
     currentMode,
@@ -593,23 +594,37 @@ const Newleads = ({
         console.log(err);
       });
   };
-  // TOOLBAR SEARCH FUNC
-  const HandleQuicSearch = async (e) => {
-    console.log(e.target.value);
-    if (e.target.value === "") {
-      FetchLeads(token);
-    } else {
-      setpageState((old) => ({
+
+     const FetchSearchedLeads = async (token, term) => {
+         setpageState((old) => ({
         ...old,
         isLoading: true,
       }));
-      console.log("the search lead  url is ");
-      console.log(
-        `${BACKEND_URL}/search?title=${e.target.value}&page=${pageState.page}`
-      );
-      const coldCallCode = pageState?.data[0]?.coldCall;
-      let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=Booked`;
-      if(coldCallCode) {
+
+      let coldCallCode = "";
+    if (lead_origin === "freshleads") {
+      coldCallCode = 0;
+    }
+    else if (lead_origin === "coldleads") {
+      coldCallCode = 1;
+    }
+    else if (lead_origin === "thirdpartyleads") {
+      coldCallCode = 3;
+    }
+    else if (lead_origin === "personalleads") {
+      coldCallCode = 2;
+    }
+    else if (lead_origin === "warmleads") {
+      coldCallCode = 4;
+    } else if (lead_origin === "transfferedleads") {
+      coldCallCode = 0;
+    }
+
+      let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}${
+        lead_type !== "all" ? `&feedback=${lead_type}` : ""
+      }`;
+
+      if (coldCallCode !== "") {
         url += `&coldCall=${coldCallCode}`;
       }
       await axios
@@ -629,38 +644,49 @@ const Newleads = ({
                   (pageState.pageSize - 1) +
                   index
                 : index + 1,
+            leadId: row?.id,
             creationDate: row?.creationDate,
-            leadName: row?.leadName,
-            leadContact: row?.leadContact,
-            project: row?.project,
-            enquiryType: row?.enquiryType,
-            leadType: row?.leadType,
-            assignedToManager: row.assignedToManager,
-            assignedToSales: row.assignedToSales,
-            feedback: row?.feedback,
-            priority: row.priority,
-            language: row.language,
-            leadSource: row?.leadSource,
-            lid: row?.lid,
-            lastEdited: row?.lastEdited,
+            leadName: row?.leadName || "No Name",
+            leadContact:
+              row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
+            project: row?.project || "No Project",
+            enquiryType: row?.enquiryType || "No Type",
+            leadType: row?.leadType || "No Type",
+            assignedToManager: row?.assignedToManager || null,
+            assignedToSales: row?.assignedToSales || null,
+            feedback: row?.feedback || null,
+            priority: row?.priority || null,
+            language: row?.language || "No Language",
+            leadSource: row?.leadSource || "No Source",
+            lid: row?.lid || "No id",
+            lastEdited: row?.lastEdited || "No Date",
+            leadFor: row?.leadFor || "No Lead",
+            leadStatus: row?.leadStatus || "No Status",
             coldCall: row?.coldcall,
-            leadFor: row?.leadFor,
-            leadStatus: row?.leadStatus,
-            leadCategory: leadCategory,
-            notes: row?.notes,
-            otp: row?.otp,
+            leadCategory: leadCategory || "No Category",
+            notes: row?.notes || "No notes",
+            otp: row?.otp || "No otp",
             edit: "edit",
           }));
           setpageState((old) => ({
             ...old,
-            isLoading: false,
             data: rowsdata,
             pageSize: result.data.result.per_page,
             total: result.data.result.total,
           }));
+         setpageState((old) => ({
+        ...old,
+        isLoading: false,
+        page: pageState.page
+      }));
+
         })
         .catch((err) => console.log(err));
-    }
+  }
+
+  // TOOLBAR SEARCH FUNC
+  const HandleQuicSearch = async (e) => {
+    setSearchTerm(e.target.value);
   };
   useEffect(() => {
     setopenBackDrop(false);
@@ -668,9 +694,14 @@ const Newleads = ({
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    FetchLeads(token);
+    if(searchTerm) {
+      FetchSearchedLeads(token, searchTerm);
+    } else {
+      FetchLeads(token);
+    }
+    // setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
-  }, [pageState.page, lead_type, reloadDataGrid]);
+  }, [pageState.page, lead_type, reloadDataGrid, searchTerm]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {

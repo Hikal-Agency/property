@@ -56,9 +56,7 @@ const Booked = () => {
                 </div>
                 <BookedDeals
                   BACKEND_URL={BACKEND_URL}
-                  // lead_type={lead_type}
-                  // lead_origin={pathname2}
-                  // leadCategory="hot"
+                  lead_type={"booked"}
                 />
               </div>
             </div>

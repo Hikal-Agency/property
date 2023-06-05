@@ -1349,7 +1349,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = (e) => {
-    //  setSearchTerm(e.target.value);
+     setSearchTerm(e.target.value);
   };
 
   useEffect(() => {
@@ -1359,7 +1359,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   useEffect(() => {
     if(searchTerm) {
-      // FetchSearchedLeads(token, searchTerm);
+      FetchSearchedLeads(token, searchTerm);
     } else {
       FetchLeads(token);
     }

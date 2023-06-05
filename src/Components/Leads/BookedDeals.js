@@ -55,6 +55,7 @@ const BookedDeals = ({
   const location = useLocation();
   //eslint-disable-next-line
   const [deleteloading, setdeleteloading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   //eslint-disable-next-line
   const [deletebtnloading, setdeletebtnloading] = useState(false);
 
@@ -1148,16 +1149,13 @@ const BookedDeals = ({
         console.log(err);
       });
   };
-  // TOOLBAR SEARCH FUNC
-  const HandleQuicSearch = async (e) => {
-    console.log(e.target.value);
-    if (e.target.value === "") {
-      FetchLeads(token);
-    } else {
-      setpageState((old) => ({
+
+    const FetchSearchedLeads = async (token, term) => {
+         setpageState((old) => ({
         ...old,
         isLoading: true,
       }));
+
       let coldCallCode = "";
     if (lead_origin === "freshleads") {
       coldCallCode = 0;
@@ -1177,7 +1175,7 @@ const BookedDeals = ({
       coldCallCode = 0;
     }
 
-      let url = `${BACKEND_URL}/search?title=${e.target.value}${
+      let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}${
         lead_type !== "all" ? `&feedback=${lead_type}` : ""
       }`;
 
@@ -1201,50 +1199,65 @@ const BookedDeals = ({
                   (pageState.pageSize - 1) +
                   index
                 : index + 1,
+            leadId: row?.id,
             creationDate: row?.creationDate,
-            leadName: row?.leadName,
-            leadContact: row?.leadContact,
-            project: row?.project,
-            enquiryType: row?.enquiryType,
-            leadType: row?.leadType,
-            assignedToManager: row.assignedToManager,
-            assignedToSales: row.assignedToSales,
-            feedback: row?.feedback,
-            priority: row.priority,
+            leadName: row?.leadName || "No Name",
+            leadContact:
+              row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
+            project: row?.project || "No Project",
+            enquiryType: row?.enquiryType || "No Type",
+            leadType: row?.leadType || "No Type",
+            assignedToManager: row?.assignedToManager || null,
+            assignedToSales: row?.assignedToSales || null,
+            feedback: row?.feedback || null,
+            priority: row?.priority || null,
+            language: row?.language || "No Language",
+            leadSource: row?.leadSource || "No Source",
+            lid: row?.lid || "No id",
+            lastEdited: row?.lastEdited || "No Date",
+            leadFor: row?.leadFor || "No Lead",
+            leadStatus: row?.leadStatus || "No Status",
             coldCall: row?.coldcall,
-            language: row.language,
-            leadSource: row?.leadSource,
-            lid: row?.lid,
-            lastEdited: row?.lastEdited,
-            //eslint-disable-next-line
-            project: row?.project,
-            leadFor: row?.leadFor,
-            leadStatus: row?.leadStatus,
-            leadCategory: leadCategory,
-            notes: row?.notes,
-            otp: row?.otp,
+            leadCategory: leadCategory || "No Category",
+            notes: row?.notes || "No notes",
+            otp: row?.otp || "No otp",
             edit: "edit",
           }));
           setpageState((old) => ({
             ...old,
-            isLoading: false,
             data: rowsdata,
             pageSize: result.data.result.per_page,
             total: result.data.result.total,
           }));
+         setpageState((old) => ({
+        ...old,
+        isLoading: false,
+        page: pageState.page
+      }));
+
         })
         .catch((err) => console.log(err));
-    }
-  };
+  }
+
+  // TOOLBAR SEARCH FUNC
+  const HandleQuicSearch = async (e) => {
+    setSearchTerm(e.target.value);
+  }
+
   useEffect(() => {
     setopenBackDrop(false);
     //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    FetchLeads(token);
+    if(searchTerm) {
+      FetchSearchedLeads(token, searchTerm);
+    } else {
+      FetchLeads(token);
+    }
+    // setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
-  }, [pageState.page, lead_type, reloadDataGrid]);
+  }, [pageState.page, lead_type, reloadDataGrid, searchTerm]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {

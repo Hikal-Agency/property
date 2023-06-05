@@ -58,6 +58,7 @@ const ClientLeads = ({
   const [singleLeadData, setsingleLeadData] = useState();
   const [deleteloading, setdeleteloading] = useState(false);
   const { client_id } = useParams();
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [deletebtnloading, setdeletebtnloading] = useState(false);
 
@@ -970,68 +971,11 @@ const ClientLeads = ({
         console.log(err);
       });
   };
+
+   
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
-    console.log(e.target.value);
-    if (e.target.value === "") {
-      FetchLeads(token);
-    } else {
-      setpageState((old) => ({
-        ...old,
-        isLoading: true,
-      }));
-      console.log("the search lead  url is ");
-      console.log(
-        `${BACKEND_URL}/search?title=${e.target.value}&page=${pageState.page}`
-      );
-      await axios
-        .get(`${BACKEND_URL}/search?title=${e.target.value}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
-          console.log("search result is");
-          console.log(result.data);
-          let rowsdata = result.data.result.data.map((row, index) => ({
-            id:
-              pageState.page > 1
-                ? pageState.page * pageState.pageSize -
-                  (pageState.pageSize - 1) +
-                  index
-                : index + 1,
-            creationDate: row?.creationDate,
-            leadName: row?.leadName,
-            leadContact: row?.leadContact,
-            project: row?.project,
-            enquiryType: row?.enquiryType,
-            leadType: row?.leadType,
-            assignedToManager: row.assignedToManager,
-            assignedToSales: row.assignedToSales,
-            feedback: row?.feedback,
-            priority: row.priority,
-            language: row.language,
-            leadSource: row?.leadSource,
-            lid: row?.id,
-            lastEdited: row?.lastEdited,
-            leadFor: row?.leadFor,
-            leadStatus: row?.leadStatus,
-            leadCategory: leadCategory,
-            notes: row?.notes,
-            otp: row?.otp,
-            edit: "edit",
-          }));
-          setpageState((old) => ({
-            ...old,
-            isLoading: false,
-            data: rowsdata,
-            pageSize: result.data.result.per_page,
-            total: result.data.result.total,
-          }));
-        })
-        .catch((err) => console.log(err));
-    }
+    // setSearchTerm(e.target.value);
   };
 
   useEffect(() => {
@@ -1041,11 +985,11 @@ const ClientLeads = ({
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    FetchLeads(token);
+      FetchLeads(token);
     FetchClient(token);
     setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
-  }, [pageState.page, lead_type, reloadDataGrid]);
+  }, [pageState.page, lead_type, reloadDataGrid, searchTerm]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
