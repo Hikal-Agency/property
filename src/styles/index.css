@@ -129,7 +129,6 @@ aside.ps-sidebar-root {
 
 /* Data tables stylings */
 .MuiDataGrid-columnHeadersInner {
-  padding-left: 3px !important;
   width: 100% !important;
 }
 
@@ -294,4 +293,32 @@ label[for="bulkImport"] .MuiButtonBase-root{
 .MuiDataGrid-columnHeader[aria-label='Action'] .MuiDataGrid-columnHeaderTitle {
   width: 100% !important;
   text-align: center;
+}
+
+.MuiDataGrid-columnHeader:first-child .MuiDataGrid-columnHeaderDraggableContainer, .MuiDataGrid-main .MuiDataGrid-row > div:first-child .MuiDataGrid-cellContent {
+  padding-left: 10px;
+}
+
+.MuiDataGrid-main .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderDraggableContainer {
+  padding-left: 0 !important;
+}
+
+.light-mode-datatable .MuiDataGrid-cell[data-field="leadName"] .MuiDataGrid-cellContent {
+  color: #da1f26;
+  font-weight: 500;
+}
+
+.dark-mode-datatable .MuiDataGrid-cell[data-field="leadName"] .MuiDataGrid-cellContent {
+  color: white;
+  font-weight: 500;
+}
+
+.MuiDataGrid-columnHeaders {
+  max-height: 45px;
+  height: 45px;
+  line-height: 45px;
+}
+
+.MuiDataGrid-cell {
+  border-right: 1px solid rgba(224, 224, 224, 1);
 }

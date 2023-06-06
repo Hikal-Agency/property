@@ -722,7 +722,7 @@ const Clients = () => {
                     Clients
                   </h2>
                 </div>
-                <Box width={"100%"} sx={DataGridStyles}>
+                <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
                   <DataGrid
                     autoHeight
                     disableSelectionOnClick

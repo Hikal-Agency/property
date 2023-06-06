@@ -81,7 +81,7 @@ const Transactions = () => {
   return (
     <div className={`${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"} rounded-md`}>
 
-      <Box width={"100%"} sx={DataGridStyles}>
+      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
         <DataGrid
           autoHeight
           disableSelectionOnClick

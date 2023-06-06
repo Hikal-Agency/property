@@ -437,7 +437,7 @@ const InstancesTable = ({ pageState, setpageState }) => {
         </div>
       </Modal> */}
 
-      <Box width={"100%"} sx={DataGridStyles}>
+      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
         <DataGrid
           autoHeight
           rows={pageState.data}

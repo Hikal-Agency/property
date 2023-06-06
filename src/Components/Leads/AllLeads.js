@@ -1574,6 +1574,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             position: "relative",
             marginBottom: "50px",
           }}
+          className={`${currentMode}-mode-datatable`}
         >
           {selectedRows.length > 0 && (
             <MuiButton

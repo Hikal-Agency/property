@@ -1369,7 +1369,7 @@ const BookedDeals = ({
           <div className="absolute top-[7px] right-[20px] z-[500]">
             <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} onKeyUp={handleKeyUp} value={searchTerm} onInput={handleSearch}/>
           </div>
-        <div style={{ position: "relative" }}>
+        <div className={`${currentMode}-mode-datatable`} style={{ position: "relative" }}>
           <DataGrid
             ref={dataTableRef}
             autoHeight

@@ -877,7 +877,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
             </div>
 
             {/* MANAGER TAGET PROGRESS BAR  */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3"></div>
+            <div  className={`${currentMode}-mode-datatable grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3`}></div>
 
             <DataGrid
               autoHeight

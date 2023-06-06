@@ -937,7 +937,7 @@ const Sidebarmui = () => {
           icon: <BsStopCircleFill />,
           submenu: [
             {
-              name: "Hot leads",
+              name: "Fresh leads",
               count: sidebarData?.HotLeadsCount?.unassigned,
               link: "/unassigned/fresh",
             },
@@ -1257,7 +1257,7 @@ const Sidebarmui = () => {
           icon: <BsStopCircleFill />,
           submenu: [
             {
-              name: "Hot leads",
+              name: "Fresh leads",
               count: sidebarData?.HotLeadsCount?.unassigned,
               link: "/unassigned/fresh",
             },

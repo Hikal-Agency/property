@@ -396,6 +396,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
       <Box
         width={"100%"}
         sx={DataGridStyles}
+         className={`${currentMode}-mode-datatable`}
         style={{ width: "100%", overflowX: "auto" }}
       >
         <DataGrid

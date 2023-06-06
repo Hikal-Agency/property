@@ -807,7 +807,7 @@ const Newleads = ({
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box width={"100%"} sx={{...DataGridStyles, position: "relative"}}>
+      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={{...DataGridStyles, position: "relative"}}>
 
           <div className="absolute top-[7px] right-[20px] z-[500]">
             <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} onKeyUp={handleKeyUp} value={searchTerm} onInput={handleSearch}/>

@@ -637,7 +637,7 @@ const SingleEmployee = ({ user }) => {
                     </div>
                     {/* section 2 */}
                     <div className="col-span-6 ">
-                      <Box width={"100%"} sx={DataGridStyles}>
+                      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
                         <DataGrid
                           autoHeight
                           disableSelectionOnClick

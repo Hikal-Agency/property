@@ -257,7 +257,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
     <div className="pb-10">
       <ToastContainer />
 
-      <Box width={"100%"} sx={DataGridStyles}>
+      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
         <DataGrid
           autoHeight
           disableSelectionOnClick

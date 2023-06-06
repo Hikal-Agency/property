@@ -293,7 +293,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
       </Box>
       <div className="mt-3 pb-3">
         <TabPanel value={value} index={1}>
-          <Box width={"100%"} sx={DataGridStyles}>
+          <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
             <DataGrid
               autoHeight
               rows={pageState.data}

@@ -462,7 +462,7 @@ const Users = () => {
                 </Box>
                 <div className="mt-3 pb-3">
                   <TabPanel value={value} index={0}>
-                    <Box width={"100%"} sx={DataGridStyles}>
+                    <Box className={`${currentMode}-mode-datatable`} width={"100%"} sx={DataGridStyles}>
                       <DataGrid
                         autoHeight
                         disableSelectionOnClick
