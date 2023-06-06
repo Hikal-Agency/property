@@ -1358,14 +1358,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   }, [lead_type]);
 
   useEffect(() => {
-    if(searchTerm) {
-      FetchSearchedLeads(token, searchTerm);
-    } else {
+    setpageState((oldPageState) => ({...oldPageState, page: 0}))
+  }, [lead_type, lead_origin]);
+
+  useEffect(() => {
       FetchLeads(token);
-    }
     // setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
-  }, [pageState.page, lead_type, reloadDataGrid, searchTerm]);
+  }, [pageState.page, lead_type, reloadDataGrid]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
