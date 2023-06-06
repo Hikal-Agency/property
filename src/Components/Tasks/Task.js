@@ -35,8 +35,7 @@ const data = [
 ];
 
 const Task = () => {
-  const { currentMode, darkModeColors, BACKEND_URL } =
-    useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -68,7 +67,7 @@ const Task = () => {
 
       const { call_logs } = await response.json();
       console.log(call_logs);
-      setCallLogsData({...call_logs});
+      setCallLogsData({ ...call_logs });
       setLoading(false);
     } catch (error) {
       console.log("Error in Setting call logs ", error);
