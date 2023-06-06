@@ -5,11 +5,12 @@ import {
   Backdrop,
   IconButton,
   TextField,
-  CircularProgress
+  CircularProgress,
 } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
-import axios from "axios";
-import {toast, ToastContainer} from "react-toastify";
+// import axios from "axios";
+import axios from "../../axoisConfig";
+import { toast, ToastContainer } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import RichEditor from "./richEditorComp/RichEditor";
 
@@ -21,7 +22,7 @@ const style = {
 const CreateTemplateModal = ({
   createTemplateModal,
   setCreateTemplateModal,
-  fetchTemplates
+  fetchTemplates,
 }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [templateTitle, setTemplateTitle] = useState("");
@@ -30,50 +31,54 @@ const CreateTemplateModal = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   try {
-    setbtnloading(true);
+    try {
+      setbtnloading(true);
       const token = localStorage.getItem("auth-token");
-      await axios.post(`${BACKEND_URL}/templates`, JSON.stringify({
-        name: templateTitle,
-        body: templateBody,
-        status: "active",
-      }), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
+      await axios.post(
+        `${BACKEND_URL}/templates`,
+        JSON.stringify({
+          name: templateTitle,
+          body: templateBody,
+          status: "active",
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      toast.success("Template created Successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
-        toast.success("Template created Successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        setCreateTemplateModal({isOpen: false});
-        fetchTemplates();
-        setbtnloading(false);
-   } catch (error) {
-    console.log(error);
-        toast.error("Template creation failed", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        setbtnloading(false);
-   } 
-  }
+      setCreateTemplateModal({ isOpen: false });
+      fetchTemplates();
+      setbtnloading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Template creation failed", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setbtnloading(false);
+    }
+  };
   return (
     <>
-          <ToastContainer/>
+      <ToastContainer />
       <Modal
         keepMounted
         open={createTemplateModal.isOpen}
@@ -103,21 +108,21 @@ const CreateTemplateModal = ({
           >
             <IoMdClose size={18} />
           </IconButton>
-            <h1>Create template</h1>
-            <form onSubmit={handleSubmit} className="mt-8">
-              <TextField
-                id="templateTitle"
-                type={"text"}
-                label="Template Title"
-                className="w-full mb-5"
-                style={{ marginBottom: "10px" }}
-                variant="outlined"
-                size="medium"
-                required
-                value={templateTitle}
-                onChange={(e) => setTemplateTitle(e.target.value)}
-              />
-              {/* <TextareaAutosize
+          <h1>Create template</h1>
+          <form onSubmit={handleSubmit} className="mt-8">
+            <TextField
+              id="templateTitle"
+              type={"text"}
+              label="Template Title"
+              className="w-full mb-5"
+              style={{ marginBottom: "10px" }}
+              variant="outlined"
+              size="medium"
+              required
+              value={templateTitle}
+              onChange={(e) => setTemplateTitle(e.target.value)}
+            />
+            {/* <TextareaAutosize
                 id="template-body"
                 placeholder="Template Body"
                 type={"text"}
@@ -137,23 +142,23 @@ const CreateTemplateModal = ({
                 value={templateBody}
                 onInput={(e) => setTemplateBody(e.target.value)}
               /> */}
-              <div style={{height: 200, overflowY: "scroll"}}>
-                <RichEditor setMessageValue={setTemplateBody}/>
-              </div>
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                style={{ padding: "10px 0" }}
-              >
-                {btnloading ? (
-                  <CircularProgress size={18} sx={{ color: "white" }} />
-                ) : (
-                  <span>Create Template</span>
-                )}
-              </Button>
-            </form>
-          </div>
+            <div style={{ height: 200, overflowY: "scroll" }}>
+              <RichEditor setMessageValue={setTemplateBody} />
+            </div>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              style={{ padding: "10px 0" }}
+            >
+              {btnloading ? (
+                <CircularProgress size={18} sx={{ color: "white" }} />
+              ) : (
+                <span>Create Template</span>
+              )}
+            </Button>
+          </form>
+        </div>
       </Modal>
     </>
   );

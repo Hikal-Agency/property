@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import DashboardPanel from "../../Components/dashboard/DashboardPanel";
@@ -67,7 +68,9 @@ const Dashboard = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
+            className={`w-full ${
+              currentMode === "dark" ? "bg-black" : "bg-white"
+            }`}
           >
             <div className="w-full overflow-x-hidden">
               <div className="pl-3">

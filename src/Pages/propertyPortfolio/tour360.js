@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Footer from "../../Components/Footer/Footer";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 
 import { useLocation, useNavigate } from "react-router-dom";

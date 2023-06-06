@@ -1,5 +1,6 @@
 import { Button } from "@material-tailwind/react";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
 import { BsFillPlusCircleFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";

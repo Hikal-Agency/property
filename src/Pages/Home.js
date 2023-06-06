@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 import { useStateContext } from "../context/ContextProvider";
 import "../styles/app.css";
@@ -9,7 +10,8 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   let canvas = useRef();
-  const navigate = useNavigate(); const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { BACKEND_URL } = useStateContext();
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
@@ -28,7 +30,7 @@ const Home = () => {
         // console.log(result);
         if (result.data.success && result.data.data.token) {
           localStorage.setItem("auth-token", result.data.data.token);
-          document.location.href = (location?.state?.continueURL || "/dashboard");
+          document.location.href = location?.state?.continueURL || "/dashboard";
           toast.success("Login Successfull", {
             position: "top-right",
             autoClose: 3000,
@@ -266,7 +268,7 @@ const Home = () => {
                     <div className="flex justify-center">
                       <Link
                         to={"/auth/signup"}
-                        state={{continueURL: location?.state?.continueURL}}
+                        state={{ continueURL: location?.state?.continueURL }}
                         onClick={() => setOpenBackDrop(true)}
                       >
                         <button className="mt-1 h-10 rounded-md bg-transparent text-sm font-medium text-main_bg_color hover:text-hover_color focus:outline-none">

@@ -11,7 +11,8 @@ import {
   IconButton,
   InputLabel,
 } from "@mui/material";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";

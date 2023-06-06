@@ -13,7 +13,8 @@ import {
 import { useStateContext } from "../../context/ContextProvider";
 import { IoMdClose } from "react-icons/io";
 import { BiRefresh } from "react-icons/bi";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import MessageLogsList from "./MessageLogsList";
 
 const style = {
@@ -65,23 +66,19 @@ const MessageLogs = ({
   }, []);
 
   useEffect(() => {
-      const leadContact = messageLogsModal.data.row.leadContact;
-      const sentMessages = allMessages.filter((message) => {
-        return (
-          message.source === alignment &&
-          message.msg_to === leadContact &&
-          message.userID === String(User?.id)
-        );
-      });
-      setSent(sentMessages);
-      const receivedMessages = allMessages.filter((message) => {
-        return (
-          message.msg_from === leadContact &&
-          message.source === alignment
-        );
-      });
-      setReceived(receivedMessages);
-
+    const leadContact = messageLogsModal.data.row.leadContact;
+    const sentMessages = allMessages.filter((message) => {
+      return (
+        message.source === alignment &&
+        message.msg_to === leadContact &&
+        message.userID === String(User?.id)
+      );
+    });
+    setSent(sentMessages);
+    const receivedMessages = allMessages.filter((message) => {
+      return message.msg_from === leadContact && message.source === alignment;
+    });
+    setReceived(receivedMessages);
   }, [alignment, allMessages]);
   return (
     <>
@@ -114,9 +111,13 @@ const MessageLogs = ({
           >
             <IoMdClose size={18} />
           </IconButton>
-          <Box className="flex" style={{marginBottom: 15}}>
-            <h2 style={{marginRight: 8}}>{messageLogsModal.data?.row?.leadName}</h2>
-            <strong style={{color: "grey"}}>+{messageLogsModal.data?.row?.leadContact}</strong>
+          <Box className="flex" style={{ marginBottom: 15 }}>
+            <h2 style={{ marginRight: 8 }}>
+              {messageLogsModal.data?.row?.leadName}
+            </h2>
+            <strong style={{ color: "grey" }}>
+              +{messageLogsModal.data?.row?.leadContact}
+            </strong>
           </Box>
           <ToggleButtonGroup
             style={{ marginBottom: 15 }}

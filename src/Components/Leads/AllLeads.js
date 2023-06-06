@@ -12,7 +12,8 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { FaComment } from "react-icons/fa";
 import { FaGlobe } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
@@ -1088,7 +1089,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       .get(FetchLeads_url, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+          // Authorization: "Bearer " + token,
         },
       })
       .then(async (result) => {

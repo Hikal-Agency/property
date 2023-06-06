@@ -9,7 +9,8 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
@@ -339,7 +340,7 @@ const ClientLeads = ({
     },
   ];
 
-   const AgentColumns = [
+  const AgentColumns = [
     {
       field: "creationDate",
       headerName: "Date",
@@ -1695,9 +1696,12 @@ const ClientLeads = ({
                       "& .MuiDataGrid-cell:hover": {
                         cursor: "pointer",
                       },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+                      "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                        color:
+                          currentMode === "dark"
+                            ? "white !important"
+                            : "black !important",
+                      },
                     }}
                     getRowClassName={(params) =>
                       params.indexRelativeToCurrentPage % 2 === 0

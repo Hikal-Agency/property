@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import {ToggleButtonGroup, IconButton, ToggleButton, CircularProgress, Box} from "@mui/material";
+// import axios from "axios";
+import axios from "../../axoisConfig";
+import {
+  ToggleButtonGroup,
+  IconButton,
+  ToggleButton,
+  CircularProgress,
+  Box,
+} from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import {BiRefresh} from "react-icons/bi";
+import { BiRefresh } from "react-icons/bi";
 import AllMessagesItem from "../../Components/whatsapp-marketing/AllMessagesItem";
 
 const AllMessages = () => {
-    const {BACKEND_URL} = useStateContext();
-    const [allMessages, setAllMessages] = useState([]);
-    const [alignment, setAlignment] = useState("whatsapp");
-    const [loading, setLoading] = useState(false);
+  const { BACKEND_URL } = useStateContext();
+  const [allMessages, setAllMessages] = useState([]);
+  const [alignment, setAlignment] = useState("whatsapp");
+  const [loading, setLoading] = useState(false);
 
   const handleChangeToggle = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -33,35 +40,45 @@ const AllMessages = () => {
     }
   };
 
-  useEffect(() =>{
+  useEffect(() => {
     fetchMessageLogs(alignment);
   }, [alignment]);
 
-    return (
-        <>
+  return (
+    <>
+      <div className="pb-10">
+        <ToggleButtonGroup
+          style={{ marginBottom: 15 }}
+          color="primary"
+          value={alignment}
+          exclusive
+          onChange={handleChangeToggle}
+          aria-label="Source"
+        >
+          <ToggleButton value="whatsapp">Whatsapp</ToggleButton>
+          <ToggleButton value="sms">SMS</ToggleButton>
+        </ToggleButtonGroup>
+        <IconButton
+          style={{ marginLeft: 10 }}
+          onClick={() => fetchMessageLogs(alignment)}
+        >
+          <BiRefresh />
+        </IconButton>
 
-     <div className="pb-10">
-          <ToggleButtonGroup
-            style={{ marginBottom: 15 }}
-            color="primary"
-            value={alignment}
-            exclusive
-            onChange={handleChangeToggle}
-            aria-label="Source"
-          >
-            <ToggleButton value="whatsapp">Whatsapp</ToggleButton>
-            <ToggleButton value="sms">SMS</ToggleButton>
-          </ToggleButtonGroup>
-          <IconButton style={{marginLeft: 10}} onClick={() => fetchMessageLogs(alignment)}><BiRefresh/></IconButton>
-
-            {loading ? <Box className="mt-[100px] flex justify-center"><CircularProgress/></Box> :
-                [allMessages.map((message) => {
-                  return <AllMessagesItem content={message}/>;
-                })]
-            }
+        {loading ? (
+          <Box className="mt-[100px] flex justify-center">
+            <CircularProgress />
+          </Box>
+        ) : (
+          [
+            allMessages.map((message) => {
+              return <AllMessagesItem content={message} />;
+            }),
+          ]
+        )}
       </div>
-        </>
-    );
-}
+    </>
+  );
+};
 
 export default AllMessages;

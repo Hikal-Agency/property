@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { DataGrid } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
 
 const AllTickets = () => {
@@ -259,9 +260,12 @@ const AllTickets = () => {
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
             },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+            "& .MuiDataGrid-cell[data-field='edit'] svg": {
+              color:
+                currentMode === "dark"
+                  ? "white !important"
+                  : "black !important",
+            },
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

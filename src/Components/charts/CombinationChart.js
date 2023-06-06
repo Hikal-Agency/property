@@ -13,7 +13,8 @@ import {
   BarController,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 // import faker from 'faker';
 
 ChartJS.register(

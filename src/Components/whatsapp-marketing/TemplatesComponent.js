@@ -1,12 +1,22 @@
 import { useState, useEffect } from "react";
-import { Box, Button, Avatar, Card, CardHeader, CardContent, Typography, IconButton} from "@mui/material";
+import {
+  Box,
+  Button,
+  Avatar,
+  Card,
+  CardHeader,
+  CardContent,
+  Typography,
+  IconButton,
+} from "@mui/material";
 import CreateTemplateModal from "./CreateTemplateModal";
 import { useStateContext } from "../../context/ContextProvider";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { BiPen } from "react-icons/bi";
-import Markdown from 'markdown-to-jsx';
-import {FaTrash} from "react-icons/fa";
-import {toast} from "react-toastify";
+import Markdown from "markdown-to-jsx";
+import { FaTrash } from "react-icons/fa";
+import { toast } from "react-toastify";
 import UpdateTemplateModal from "./UpdateTemplateModal";
 import Loader from "../Loader";
 
@@ -23,13 +33,13 @@ const TemplatesComponent = () => {
   const [templates, setTemplates] = useState([]);
 
   const handleUpdateTemplate = (e, template) => {
-    if(!e.target.closest(".delete-btn")) {
+    if (!e.target.closest(".delete-btn")) {
       setUpdateTemplateModal({
-        isOpen: true, 
-        template
+        isOpen: true,
+        template,
       });
     }
-  }
+  };
 
   const fetchTemplates = async () => {
     try {
@@ -56,57 +66,59 @@ const TemplatesComponent = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("auth-token");
-        await axios.delete(`${BACKEND_URL}/templates/${templateId}`, {
+      await axios.delete(`${BACKEND_URL}/templates/${templateId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       });
-        fetchTemplates();
+      fetchTemplates();
       setLoading(false);
-        toast.success("Template Deleted Successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+      toast.success("Template Deleted Successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } catch (error) {
       console.log(error);
-        toast.error("Couldn't delete template", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+      toast.error("Couldn't delete template", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
-  }
+  };
 
   return (
     <>
-    {loading ? <Loader/> :
-      <Box className="min-h-screen">
-        <Button
-          sx={{ mt: 2, padding: "10px", ml: 1}}
-          onClick={() => setCreateTemplateModal({ isOpen: true })}
-          variant="contained"
-        >
-          <BiPen size={18} style={{ marginRight: 5 }} />
-          Create New
-        </Button>
-        <Box className="flex flex-wrap mt-3">
-          {templates.length > 0 ? (
-            templates.map((template) => {
-              return (
-                <>
-                {/* <Box
+      {loading ? (
+        <Loader />
+      ) : (
+        <Box className="min-h-screen">
+          <Button
+            sx={{ mt: 2, padding: "10px", ml: 1 }}
+            onClick={() => setCreateTemplateModal({ isOpen: true })}
+            variant="contained"
+          >
+            <BiPen size={18} style={{ marginRight: 5 }} />
+            Create New
+          </Button>
+          <Box className="flex flex-wrap mt-3">
+            {templates.length > 0 ? (
+              templates.map((template) => {
+                return (
+                  <>
+                    {/* <Box
                 onClick={(e) => handleUpdateTemplate(e, template)}
                   key={template.name}
                   className="w-[45%] max-h-[200px] overflow-y-scroll bg-slate-600 m-3 text-white cursor-pointer p-4 rounded"
@@ -128,48 +140,67 @@ const TemplatesComponent = () => {
                     <Markdown>{template.body}</Markdown>
                   </p>
                 </Box> */}
-                  <Card
-                  key={template.name}
-                  className={`w-[45%] max-h-[200px] border ${currentMode === "dark" ? "border-white" : "border-red-600"} mx-2 my-1 overflow-y-scroll cursor-pointer`}
-                    onClick={(e) => handleUpdateTemplate(e, template)}
-                   sx={{ bgcolor: currentMode === "dark" ? "#111827" : '#eee', color: currentMode === "dark" ? "white": "black", marginBottom: 2 }}>
-                <CardHeader
-                  titleTypographyProps={{sx: { fontWeight: 'bold' } }}
-                  title={template.name}
-                  action={
-                    <div className="delete-btn" onClick={() => handleDelete(template.id)}>
-                    <IconButton>
-                      <FaTrash size={16} color={currentMode === "dark" ? "white" : "red"}/>
-                    </IconButton>
-                    </div>
-                  }
-                />
-                <CardContent>
-                  <Typography variant="body1"><Markdown>{template.body}</Markdown></Typography>
-                </CardContent>
-              </Card>
-                </>
-              );
-            })
-          ) : (
-            <p style={{ color: "red", textAlign: "center" }}>Nothing to show</p>
+                    <Card
+                      key={template.name}
+                      className={`w-[45%] max-h-[200px] border ${
+                        currentMode === "dark"
+                          ? "border-white"
+                          : "border-red-600"
+                      } mx-2 my-1 overflow-y-scroll cursor-pointer`}
+                      onClick={(e) => handleUpdateTemplate(e, template)}
+                      sx={{
+                        bgcolor: currentMode === "dark" ? "#111827" : "#eee",
+                        color: currentMode === "dark" ? "white" : "black",
+                        marginBottom: 2,
+                      }}
+                    >
+                      <CardHeader
+                        titleTypographyProps={{ sx: { fontWeight: "bold" } }}
+                        title={template.name}
+                        action={
+                          <div
+                            className="delete-btn"
+                            onClick={() => handleDelete(template.id)}
+                          >
+                            <IconButton>
+                              <FaTrash
+                                size={16}
+                                color={currentMode === "dark" ? "white" : "red"}
+                              />
+                            </IconButton>
+                          </div>
+                        }
+                      />
+                      <CardContent>
+                        <Typography variant="body1">
+                          <Markdown>{template.body}</Markdown>
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </>
+                );
+              })
+            ) : (
+              <p style={{ color: "red", textAlign: "center" }}>
+                Nothing to show
+              </p>
+            )}
+          </Box>
+
+          <CreateTemplateModal
+            createTemplateModal={createTemplateModal}
+            setCreateTemplateModal={setCreateTemplateModal}
+            fetchTemplates={fetchTemplates}
+          />
+          {updateTemplateModal.isOpen && (
+            <UpdateTemplateModal
+              updateTemplateModal={updateTemplateModal}
+              setUpdateTemplateModal={setUpdateTemplateModal}
+              fetchTemplates={fetchTemplates}
+            />
           )}
         </Box>
-
-        <CreateTemplateModal
-          createTemplateModal={createTemplateModal}
-          setCreateTemplateModal={setCreateTemplateModal}
-          fetchTemplates={fetchTemplates}
-        />
-        {updateTemplateModal.isOpen &&
-        <UpdateTemplateModal
-          updateTemplateModal={updateTemplateModal}
-          setUpdateTemplateModal={setUpdateTemplateModal}
-          fetchTemplates={fetchTemplates}
-        />
-        }
-      </Box>
-    }
+      )}
     </>
   );
 };

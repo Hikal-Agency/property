@@ -2,7 +2,8 @@ import React from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { ToastContainer, toast } from "react-toastify";
 import { Textarea } from "@material-tailwind/react";
 

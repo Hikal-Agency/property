@@ -1,46 +1,25 @@
 import axios from "axios";
 import { useStateContext } from "./context/ContextProvider";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const { BACKEND_URL } = useStateContext;
+// const { BACKEND_URL } = useStateContext;
+const axiosInstance = axios.create();
 
-// const apiClient = axios.create();
-const apiClient = axios.create({
-  baseURL: BACKEND_URL,
-});
+const showToastMessage = (message) => {
+  toast.error(message);
+};
 
-console.log("BACKEND_URL: ", BACKEND_URL);
-apiClient.interceptors.request.use(
-  (config) => {
-    console.log("API Client: ", config);
-    return config;
-  },
+axiosInstance.interceptors.response.use(
+  (response) => response,
   (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// apiClient.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response && error.response.status === 429) {
-//       window.location.reload();
-//     }
-//     return Promise.reject(error);
-//   }
-// );
-
-apiClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response && error.response.status === 429) {
-      window.location.reload();
+    if (error.response && error.response.status === 401) {
+      // Show toast message here
+      console.log("Unauth::::::::");
+      showToastMessage("System updated. Kindly logout and login again.");
     }
     return Promise.reject(error);
   }
 );
 
-export default apiClient;
+export default axiosInstance;

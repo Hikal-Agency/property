@@ -10,7 +10,8 @@ import {
 } from "@mui/material";
 import Select from "@mui/material/Select";
 
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import React, { useState, useEffect } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
@@ -32,7 +33,7 @@ const RenderSalesperson = ({ cellValues }) => {
     setreloadDataGrid,
     SalesPerson,
     BACKEND_URL,
-    Managers
+    Managers,
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -131,17 +132,24 @@ const RenderSalesperson = ({ cellValues }) => {
   ]);
 
   useEffect(() => {
-    if(Managers.length > 0 && Object.values(SalesPerson).length > 0) {
-      const findAgent = SalesPerson[`manager-${cellValues?.row?.assignedToManager}`]?.filter((agent) => {
+    if (Managers.length > 0 && Object.values(SalesPerson).length > 0) {
+      const findAgent = SalesPerson[
+        `manager-${cellValues?.row?.assignedToManager}`
+      ]?.filter((agent) => {
         return String(agent.id) === String(cellValues?.row?.assignedToSales);
       });
-      if(findAgent || findAgent?.length> 0) {
+      if (findAgent || findAgent?.length > 0) {
         setSalesPerson2(findAgent[0]?.id);
       } else {
         setSalesPerson2("selected_agent");
-      }    
+      }
     }
-  }, [cellValues?.row?.assignedToManager, cellValues?.row?.assignedToSales, SalesPerson, Managers]);
+  }, [
+    cellValues?.row?.assignedToManager,
+    cellValues?.row?.assignedToSales,
+    SalesPerson,
+    Managers,
+  ]);
 
   return (
     <Box
@@ -162,31 +170,35 @@ const RenderSalesperson = ({ cellValues }) => {
         <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
           <Select
             id="SalesPerson"
-            value={(!SalesPerson2 || SalesPerson2 === "0" || SalesPerson === 102) ? "selected_agent" : SalesPerson2}
+            value={
+              !SalesPerson2 || SalesPerson2 === "0" || SalesPerson === 102
+                ? "selected_agent"
+                : SalesPerson2
+            }
             name="salesperson"
             label="Salesperson"
             onChange={ChangeSalesPerson}
             size="medium"
             className="w-[100%] h-[75%]"
-          sx={{
-            color:
-              currentMode === "dark"
-                ? "#ffffff !important"
-                : "#000000 !important",
-            "& .MuiSelect-icon": {
+            sx={{
               color:
                 currentMode === "dark"
                   ? "#ffffff !important"
                   : "#000000 !important",
-            },
-          }}
+              "& .MuiSelect-icon": {
+                color:
+                  currentMode === "dark"
+                    ? "#ffffff !important"
+                    : "#000000 !important",
+              },
+            }}
             displayEmpty
             required
           >
-              <MenuItem value={"selected_agent"} selected>
-                {" "}
-                Select Agent
-              </MenuItem>
+            <MenuItem value={"selected_agent"} selected>
+              {" "}
+              Select Agent
+            </MenuItem>
 
             {SalesPersonsList?.length > 0 &&
               SalesPersonsList?.map((salesperson, index) => {

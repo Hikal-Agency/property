@@ -17,7 +17,8 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
@@ -1160,7 +1161,7 @@ const BookedDeals = ({
       }));
       const coldCallCode = pageState?.data[0]?.coldCall;
       let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=Booked`;
-      if(coldCallCode) {
+      if (coldCallCode) {
         url += `&coldCall=${coldCallCode}`;
       }
       await axios

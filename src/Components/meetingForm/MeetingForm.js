@@ -7,7 +7,8 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { IoMdClose } from "react-icons/io";
@@ -33,27 +34,24 @@ const MeetingForm = ({
     // console.log("User is");
     // console.log(User);
 
-    axios
-      .get(`${BACKEND_URL}/teamMembers/${User.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
+    axios.get(`${BACKEND_URL}/teamMembers/${User.id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
 
     // GETTING LEAD DETAILS
-    axios
-      .get(`${BACKEND_URL}/leads/${LeadData.lid}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-    })
+    axios.get(`${BACKEND_URL}/leads/${LeadData.lid}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
   }, []);
 
   return (
     <>
-      
       <Modal
         keepMounted
         open={LeadModelOpen}
@@ -79,17 +77,17 @@ const MeetingForm = ({
             </div>
           ) : (
             <>
-          <IconButton
-            sx={{
-              position: "absolute",
-              right: 12,
-              top: 10,
-              color: (theme) => theme.palette.grey[500],
-            }}
-            onClick={handleLeadModelClose}
-          >
-            <IoMdClose size={18} />
-          </IconButton>
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  right: 12,
+                  top: 10,
+                  color: (theme) => theme.palette.grey[500],
+                }}
+                onClick={handleLeadModelClose}
+              >
+                <IoMdClose size={18} />
+              </IconButton>
               <h1
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-black"
@@ -104,56 +102,56 @@ const MeetingForm = ({
                 }}
               >
                 <div className="space-y-5">
-                    <Box sx={darkModeColors}>
-                        <TextField
-                            InputProps={{
-                            disableUnderline: true,
-                            }}
-                            sx={{borderBottom: "1px solid #DA1F26"}}
-                            id="meetingDate"
-                            type={"date"}
-                            label="Meeting date"
-                            className="w-full mb-5 py-2"
-                            variant="standard"
-                            size="small"
-                        />
-                        <TextField
-                            InputProps={{
-                            disableUnderline: true,
-                            }}
-                            sx={{borderBottom: "1px solid #DA1F26"}}
-                            id="meetingTime"
-                            type={"time"}
-                            label="Meeting time"
-                            className="w-full mb-5 py-2"
-                            variant="standard"
-                            size="small"
-                        />
-                        <TextField
-                            InputProps={{
-                            disableUnderline: true,
-                            }}
-                            sx={{borderBottom: "1px solid #DA1F26"}}
-                            id="meetingLocation"
-                            type={"text"}
-                            label="Meeting location"
-                            className="w-full mb-5 py-2"
-                            variant="standard"
-                            size="small"
-                        />
-                        <TextField
-                            InputProps={{
-                            disableUnderline: true,
-                            }}
-                            sx={{borderBottom: "1px solid #DA1F26"}}
-                            id="meetingNote"
-                            type={"text"}
-                            label="Meeting Note"
-                            className="w-full mb-5 py-2"
-                            variant="standard"
-                            size="small"
-                        />
-                    </Box>
+                  <Box sx={darkModeColors}>
+                    <TextField
+                      InputProps={{
+                        disableUnderline: true,
+                      }}
+                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      id="meetingDate"
+                      type={"date"}
+                      label="Meeting date"
+                      className="w-full mb-5 py-2"
+                      variant="standard"
+                      size="small"
+                    />
+                    <TextField
+                      InputProps={{
+                        disableUnderline: true,
+                      }}
+                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      id="meetingTime"
+                      type={"time"}
+                      label="Meeting time"
+                      className="w-full mb-5 py-2"
+                      variant="standard"
+                      size="small"
+                    />
+                    <TextField
+                      InputProps={{
+                        disableUnderline: true,
+                      }}
+                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      id="meetingLocation"
+                      type={"text"}
+                      label="Meeting location"
+                      className="w-full mb-5 py-2"
+                      variant="standard"
+                      size="small"
+                    />
+                    <TextField
+                      InputProps={{
+                        disableUnderline: true,
+                      }}
+                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      id="meetingNote"
+                      type={"text"}
+                      label="Meeting Note"
+                      className="w-full mb-5 py-2"
+                      variant="standard"
+                      size="small"
+                    />
+                  </Box>
                 </div>
 
                 <Button

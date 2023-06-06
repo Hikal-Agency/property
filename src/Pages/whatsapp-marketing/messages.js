@@ -7,7 +7,8 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 import "./messages.css";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import moment from "moment";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";

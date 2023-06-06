@@ -54,7 +54,9 @@ import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
 import { useLocation } from "react-router-dom";
 import Loader from "../Components/Loader";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
@@ -510,6 +512,7 @@ function App() {
 
   return (
     <>
+      <ToastContainer />
       {/* {appLoading && hasSidebarOrNavbar() &&
       <div style={{width: "100vw", height: "100vh", zIndex: 10000, position: "fixed", top: 0, left: 0}}>
         <Loader/>

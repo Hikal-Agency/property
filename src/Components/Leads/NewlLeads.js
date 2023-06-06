@@ -1,9 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import {
-  Box,
-  CircularProgress,
-  Dialog
-} from "@mui/material";
+import { Box, CircularProgress, Dialog } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -12,13 +8,12 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit } from "react-icons/ai";
-import {
-  MdCampaign
-} from "react-icons/md";
+import { MdCampaign } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -609,7 +604,7 @@ const Newleads = ({
       );
       const coldCallCode = pageState?.data[0]?.coldCall;
       let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=New`;
-      if(coldCallCode) {
+      if (coldCallCode) {
         url += `&coldCall=${coldCallCode}`;
       }
       await axios
@@ -794,9 +789,12 @@ const Newleads = ({
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
             },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+            "& .MuiDataGrid-cell[data-field='edit'] svg": {
+              color:
+                currentMode === "dark"
+                  ? "white !important"
+                  : "black !important",
+            },
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

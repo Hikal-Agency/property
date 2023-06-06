@@ -11,7 +11,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { Button } from "@material-tailwind/react";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
 import "react-phone-number-input/style.css";

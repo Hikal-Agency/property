@@ -13,7 +13,8 @@ import {
   BarController,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 // import faker from 'faker';
 
 ChartJS.register(
@@ -42,13 +43,15 @@ const ReportMeetingsClosed = () => {
         },
       })
       .then((result) => {
-        const {data: {members_deal}} = result;
+        const {
+          data: { members_deal },
+        } = result;
         setPerformanceChartData(members_deal);
       })
       .catch((err) => {
         console.log(err);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -70,7 +73,9 @@ const ReportMeetingsClosed = () => {
               {
                 type: "line",
                 label: "Meetings",
-                data: performanceChartData.map((member) => member.total_meetings),
+                data: performanceChartData.map(
+                  (member) => member.total_meetings
+                ),
                 fill: false,
                 backgroundColor: "rgba(0,0,0,0.2)",
                 borderColor: "#ffffff",
@@ -106,7 +111,9 @@ const ReportMeetingsClosed = () => {
               {
                 type: "line",
                 label: "Meetings",
-                data: performanceChartData.map((member) => member.total_meetings),
+                data: performanceChartData.map(
+                  (member) => member.total_meetings
+                ),
                 // borderWidth: 1,
                 fill: false,
                 backgroundColor: "rgba(0,0,0,0.2)",

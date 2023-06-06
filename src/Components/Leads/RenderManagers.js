@@ -10,7 +10,8 @@ import {
 } from "@mui/material";
 import Select from "@mui/material/Select";
 
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
@@ -73,7 +74,7 @@ const RenderManagers = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.leadId);
-    if(newManager === undefined) {
+    if (newManager === undefined) {
       UpdateLeadData.append("assignedToManager", 0);
     } else {
       UpdateLeadData.append("assignedToManager", newManager?.id);
@@ -163,7 +164,9 @@ const RenderManagers = ({ cellValues }) => {
           id="manager"
           // value={manager2 ?? "select_manager"}
           value={
-            (manager2 === 102 || !manager2 || manager2 === "0") ? "select_manager" : manager2
+            manager2 === 102 || !manager2 || manager2 === "0"
+              ? "select_manager"
+              : manager2
           }
           label="Manager"
           onChange={ChangeManager}
@@ -173,9 +176,9 @@ const RenderManagers = ({ cellValues }) => {
           required
           sx={{ border: "1px solid #000000" }}
         >
-            <MenuItem value="select_manager" selected>
-              Select Manager
-            </MenuItem>
+          <MenuItem value="select_manager" selected>
+            Select Manager
+          </MenuItem>
           {Managers?.length > 0 &&
             Managers?.map((manager, index) => (
               <MenuItem
@@ -226,7 +229,8 @@ const RenderManagers = ({ cellValues }) => {
                 <h1 className="font-semibold pt-3 text-lg text-center">
                   Do You Really Want Change the Manager from{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {Managers.find((item) => item.id === Number(manager2))?.userName ?? "No manager"}
+                    {Managers.find((item) => item.id === Number(manager2))
+                      ?.userName ?? "No manager"}
                   </span>{" "}
                   to{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
