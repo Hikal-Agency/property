@@ -51,6 +51,7 @@ const Calls = ({
           <Tabs value={tabValue} onChange={handleChange} variant="standard">
             <Tab label="TODAY" />
             <Tab label="THIS MONTH" />
+             <Tab label="ALL TIME" />
           </Tabs>
         </Box>
         <Box
@@ -141,6 +142,82 @@ const Calls = ({
             <div className="mb-10 mx-3">
               <h1 className="font-semibold text-center">
                 This month total calls: <span>{callLogsData?.all_calls}</span>
+              </h1>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-y-5 gap-x-5">
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <VscCallOutgoing
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Outgoing calls:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{callLogsData?.dialed}</span>
+                </p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <h2>Answered:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{callLogsData?.answered}</span>
+                </p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneMissed
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Not answered:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{callLogsData?.notanswered}</span>
+                </p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <VscCallIncoming
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Incoming calls:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{callLogsData?.recieved}</span>
+                </p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <h2>Recieved:</h2>
+                </div>
+                <p className="font-bold">
+                  {/* {call_logs?.recieved - call_logs?.missed} */}
+                  <span>{callLogsData?.recieved}</span>
+                </p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1">
+                  <FiPhoneMissed
+                    size={20}
+                    className="text-main-red-color mr-3"
+                  />
+                  <h2>Missed:</h2>
+                </div>
+                <p className="font-bold">
+                  <span>{callLogsData?.missed}</span>
+                </p>
+              </div>
+            </div>
+          </TabPanel>
+           <TabPanel value={tabValue} index={2}>
+            <div className="mb-10 mx-3">
+              <h1 className="font-semibold text-center">
+                All-time total calls: <span>{callLogsData?.all_calls}</span>
               </h1>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-y-5 gap-x-5">
