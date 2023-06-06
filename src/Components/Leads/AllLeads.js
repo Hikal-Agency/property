@@ -65,6 +65,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
   const [bulkDeleteClicked, setBulkDeleteClicked] = useState(false);
   const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [hovered, setHovered] = useState("");
   const [CSVData, setCSVData] = useState({
     keys: [],
@@ -89,7 +90,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   console.log("Path in alleads component: ", lead_origin);
 
   // eslint-disable-next-line
-  const [searchText, setSearchText] = useState("");
   const [LeadToDelete, setLeadToDelete] = useState();
 
   //View LEAD MODAL VARIABLES
@@ -1097,7 +1097,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         console.log(result.data);
 
         let total = result.data.coldLeads.total;
-        let pageSize;
 
         let rowsDataArray = "";
         if (result.data.coldLeads.current_page > 1) {
@@ -1259,23 +1258,37 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         console.log(err);
       });
   };
-  // TOOLBAR SEARCH FUNC
-  const HandleQuicSearch = async (e) => {
-    if (e.target.value === "") {
-      FetchLeads(token);
-    } else {
-      setpageState((old) => ({
+
+  const FetchSearchedLeads = async (token, term) => {
+         setpageState((old) => ({
         ...old,
         isLoading: true,
       }));
 
-      const coldCallCode = pageState?.data[0]?.coldCall;
-      // let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=${lead_type}`;
-      let url = `${BACKEND_URL}/search?title=${e.target.value}${
+      let coldCallCode = "";
+    if (lead_origin === "freshleads") {
+      coldCallCode = 0;
+    }
+    else if (lead_origin === "coldleads") {
+      coldCallCode = 1;
+    }
+    else if (lead_origin === "thirdpartyleads") {
+      coldCallCode = 3;
+    }
+    else if (lead_origin === "personalleads") {
+      coldCallCode = 2;
+    }
+    else if (lead_origin === "warmleads") {
+      coldCallCode = 4;
+    } else if (lead_origin === "transfferedleads") {
+      coldCallCode = 0;
+    }
+
+      let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}${
         lead_type !== "all" ? `&feedback=${lead_type}` : ""
       }`;
 
-      if (coldCallCode) {
+      if (coldCallCode !== "") {
         url += `&coldCall=${coldCallCode}`;
       }
       await axios
@@ -1321,14 +1334,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }));
           setpageState((old) => ({
             ...old,
-            isLoading: false,
             data: rowsdata,
             pageSize: result.data.result.per_page,
             total: result.data.result.total,
           }));
+         setpageState((old) => ({
+        ...old,
+        isLoading: false,
+        page: pageState.page
+      }));
+
         })
         .catch((err) => console.log(err));
-    }
+  }
+
+  // TOOLBAR SEARCH FUNC
+  const HandleQuicSearch = (e) => {
+     setSearchTerm(e.target.value);
   };
 
   useEffect(() => {
@@ -1337,10 +1359,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   }, [lead_type]);
 
   useEffect(() => {
-    FetchLeads(token);
-    setCEOColumns([...CEOColumns]);
+    if(searchTerm) {
+      FetchSearchedLeads(token, searchTerm);
+    } else {
+      FetchLeads(token);
+    }
+    // setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
-  }, [pageState.page, lead_type, reloadDataGrid]);
+  }, [pageState.page, lead_type, reloadDataGrid, searchTerm]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
@@ -1634,7 +1660,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               componentsProps={{
                 toolbar: {
                   showQuickFilter: true,
-                  value: searchText,
                   onChange: HandleQuicSearch,
                 },
                 // columnsPanel: {
