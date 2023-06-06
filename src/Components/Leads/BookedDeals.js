@@ -1239,6 +1239,27 @@ const BookedDeals = ({
         .catch((err) => console.log(err));
   }
 
+
+  const handleSearch = (e) => {
+    
+    if(e.target.value === "") {
+            setpageState((oldPageState) => ({...oldPageState, page: 1}));
+      FetchLeads(token);
+    }
+    setSearchTerm(e.target.value);
+  }
+
+  const handleKeyUp = (e) => {
+    if(searchTerm) {
+
+          if (e.key === 'Enter' || e.keyCode === 13) {
+            setpageState((oldPageState) => ({...oldPageState, page: 1}));
+            FetchSearchedLeads(token, e.target.value);
+      }
+    }
+  }
+
+
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
     setSearchTerm(e.target.value);
@@ -1257,7 +1278,7 @@ const BookedDeals = ({
     }
     // setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
-  }, [pageState.page, lead_type, reloadDataGrid, searchTerm]);
+  }, [pageState.page, lead_type, reloadDataGrid]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
@@ -1345,6 +1366,9 @@ const BookedDeals = ({
     <div className="pb-10">
       <ToastContainer />
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
+          <div className="absolute top-[7px] right-[20px] z-[500]">
+            <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} onKeyUp={handleKeyUp} value={searchTerm} onInput={handleSearch}/>
+          </div>
         <div style={{ position: "relative" }}>
           <DataGrid
             ref={dataTableRef}
@@ -1380,9 +1404,9 @@ const BookedDeals = ({
             }}
             componentsProps={{
               toolbar: {
-                showQuickFilter: true,
-                value: searchText,
-                onChange: HandleQuicSearch,
+                showQuickFilter: false,
+                // value: searchText,
+                // onChange: HandleQuicSearch,
               },
             }}
             sx={{

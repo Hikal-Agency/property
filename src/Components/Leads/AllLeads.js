@@ -3,6 +3,7 @@ import {
   Button as MuiButton,
   IconButton,
   LinearProgress,
+  TextField,
 } from "@mui/material";
 import {
   DataGrid,
@@ -106,6 +107,25 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   // ROLE 3
   // eslint-disable-next-line
+
+  const handleSearch = (e) => {
+    
+    if(e.target.value === "") {
+            setpageState((oldPageState) => ({...oldPageState, page: 1}));
+      FetchLeads(token);
+    }
+    setSearchTerm(e.target.value);
+  }
+
+  const handleKeyUp = (e) => {
+    if(searchTerm) {
+
+          if (e.key === 'Enter' || e.keyCode === 13) {
+            setpageState((oldPageState) => ({...oldPageState, page: 1}));
+            FetchSearchedLeads(token, e.target.value);
+      }
+    }
+  }
 
   const ManagerColumns = [
     {
@@ -1349,7 +1369,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = (e) => {
-     setSearchTerm(e.target.value);
+    e.preventDefault();
+    //  setSearchTerm(e.target.value);
   };
 
   useEffect(() => {
@@ -1362,7 +1383,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   }, [lead_type, lead_origin]);
 
   useEffect(() => {
+    if(searchTerm) {
+      FetchSearchedLeads(token, searchTerm);
+    } else {
       FetchLeads(token);
+    }
     // setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
   }, [pageState.page, lead_type, reloadDataGrid]);
@@ -1590,10 +1615,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             onInput={handleBulkImport}
             id="bulkImport"
           />
+
+          <div className="absolute top-[7px] right-[20px] z-[500]">
+            <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} onKeyUp={handleKeyUp} value={searchTerm} onInput={handleSearch}/>
+          </div>
           <div style={{ position: "relative" }}>
             {/* {pageState.data.length > 0 && (
       <>
-        <div onClick={handleNextArrow}>
+        <div onClick={handleNextArrow}> 
           <Avatar
             className="shadow-md"
             style={{
@@ -1658,8 +1687,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               }}
               componentsProps={{
                 toolbar: {
-                  showQuickFilter: true,
-                  onChange: HandleQuicSearch,
+                  showQuickFilter: false,
+                  // value: searchTerm,
+                  // onChange: HandleQuicSearch,
                 },
                 // columnsPanel: {
                 //   disableHideAllButton: true,
