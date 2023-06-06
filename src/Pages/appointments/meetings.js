@@ -130,23 +130,23 @@ const Meetings = () => {
         return (
           <div className="text-white w-[100%] flex justify-center">
             {cellValues.formattedValue === "Cancelled" && (
-              <div className="w-full h-full flex align-center items-center bg-[#ff0000] rounded-sm">
+              <div className="w-full h-full flex align-center items-center bg-[#ff0000] rounded-lg">
                 CANCELLED
               </div>
             )}
 
             {cellValues.formattedValue === "Pending" && (
-              <div className="w-full h-full flex align-center p-2 items-center bg-[#f27f25] rounded-sm">
+              <div className="w-full h-full flex align-center p-2 items-center bg-[#f27f25] rounded-lg">
                 PENDING
               </div>
             )}
             {cellValues.formattedValue === "Postponed" && (
-              <div className="w-full h-full flex align-center p-2 items-center bg-[#f27f25] rounded-sm">
+              <div className="w-full h-full flex align-center p-2 items-center bg-[#f27f25] rounded-lg">
                 POSTPONED
               </div>
             )}
             {cellValues.formattedValue === "Attended" && (
-              <div className="w-full h-full flex align-center p-2 items-center bg-[#0f9d58] rounded-sm">
+              <div className="w-full h-full flex align-center p-2 items-center bg-[#0f9d58] rounded-lg">
                 ATTENDED
               </div>
             )}
