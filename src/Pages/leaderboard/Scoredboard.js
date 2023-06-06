@@ -6,7 +6,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import Loader from "../../Components/Loader";
-import CombinationChart from "../../Components/charts/CombinationChart";
+
 import CallsGraph from "../../Components/charts/CallsGraph";
 
 const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
