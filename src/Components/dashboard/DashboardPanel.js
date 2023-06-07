@@ -16,7 +16,8 @@ import Task from "../../Components/Tasks/Task";
 import { Link } from "react-router-dom";
 import UpcomingMeeting from "../meetings/UpcomingMeeting";
 import UpcomingMeetingAgent from "../meetings/UpcomingMeetingAgent";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { CircularProgress } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 

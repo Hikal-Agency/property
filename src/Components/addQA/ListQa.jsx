@@ -407,7 +407,8 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { CSVLink } from "react-csv";
 import {
   Accordion,

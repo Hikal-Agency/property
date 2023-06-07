@@ -8,7 +8,8 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import UpdateMeeting from "./UpdateMeeting";
 import { AiOutlineEdit } from "react-icons/ai";
 import { useEffect, useState } from "react";
@@ -20,7 +21,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
   const [openEditModal, setOpenEditModal] = useState({
     open: false,
     id: null,
-  })
+  });
   const { currentMode } = useStateContext();
   //eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -362,9 +363,12 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
             },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+            "& .MuiDataGrid-cell[data-field='edit'] svg": {
+              color:
+                currentMode === "dark"
+                  ? "white !important"
+                  : "black !important",
+            },
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

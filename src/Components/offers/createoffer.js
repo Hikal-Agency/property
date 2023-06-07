@@ -15,13 +15,14 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { ToastContainer, toast } from "react-toastify";
 
 const currentDate = dayjs();
 
 const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, formatNum, BACKEND_URL } =
+  const { currentMode, darkModeColors, formatNum, BACKEND_URL, User } =
     useStateContext();
   const [validFromDate, setValidFromDate] = useState("");
   const [validFromDateValue, setValidFromDateValue] = useState({});
@@ -91,8 +92,8 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     Offer.append("status", "Open");
     Offer.append("validFrom", validFromDate);
     Offer.append("validTill", validToDate);
-    Offer.append("offerFrom", user?.id);
-    Offer.append("offerAgency", user?.agency);
+    Offer.append("offerFrom", User?.id);
+    Offer.append("offerAgency", User?.agency);
     Offer.append("validToManager", offerData.validToManager);
     Offer.append("validToSales", offerData.validToSales);
 

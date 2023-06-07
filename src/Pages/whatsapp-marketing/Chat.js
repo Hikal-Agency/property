@@ -1,12 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { QRCodeCanvas } from "qrcode.react";
-import {
-  Box,
-  CircularProgress,
-  Button,
-  TextField,
-} from "@mui/material";
-import axios from "axios";
+import { Box, CircularProgress, Button, TextField } from "@mui/material";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 import { toast } from "react-toastify";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
@@ -75,54 +71,54 @@ const Chat = () => {
     //     });
   };
 
-    if (socket && User) {
-      socket.on("connect", () => {
-        console.log("Client Connected");
-        setServerDisconnected(false);
-        socket.on("get_qr", (data) => {
-          const qrCode = data;
-          setQr(qrCode);
+  if (socket && User) {
+    socket.on("connect", () => {
+      console.log("Client Connected");
+      setServerDisconnected(false);
+      socket.on("get_qr", (data) => {
+        const qrCode = data;
+        setQr(qrCode);
 
-          console.log("QR REceived");
-          setloading(false);
-        });
-
-        socket.on("user_disconnected", () => {
-          alert("Disconnected Device");
-          document.location.reload();
-        });
-
-        socket.on("message_received", () => {
-          fetchChatMessages(searchParams.get("phoneNumber"));
-        });
-        console.log(searchParams.get("phoneNumber"))
-
-        socket.on("user_ready", async (clientInfo) => {
-          console.log("User ready");
-
-          setloading(true);
-          const profileImage = await axios.get(
-            `${socketURL}/user-profilepic/${User?.id}`
-          );
-          setData({
-            userInfo: clientInfo,
-            userProfilePic: profileImage.data,
-          });
-          setReady(true);
-          setloading(false);
-        });
+        console.log("QR REceived");
+        setloading(false);
       });
 
-      socket.on("disconnect", () => {
-        setServerDisconnected(true);
+      socket.on("user_disconnected", () => {
+        alert("Disconnected Device");
+        document.location.reload();
       });
-    }
+
+      socket.on("message_received", () => {
+        fetchChatMessages(searchParams.get("phoneNumber"));
+      });
+      console.log(searchParams.get("phoneNumber"));
+
+      socket.on("user_ready", async (clientInfo) => {
+        console.log("User ready");
+
+        setloading(true);
+        const profileImage = await axios.get(
+          `${socketURL}/user-profilepic/${User?.id}`
+        );
+        setData({
+          userInfo: clientInfo,
+          userProfilePic: profileImage.data,
+        });
+        setReady(true);
+        setloading(false);
+      });
+    });
+
+    socket.on("disconnect", () => {
+      setServerDisconnected(true);
+    });
+  }
 
   useEffect(() => {
     if (User && ready) {
       fetchChatMessages(searchParams.get("phoneNumber"));
     }
-  }, [User, ready])
+  }, [User, ready]);
 
   useEffect(() => {
     const cb = () => {
@@ -186,9 +182,7 @@ const Chat = () => {
                           className="px-1 w-[250px] pt-4"
                         >
                           <div className="bg-white py-3 rounded cursor-pointer mx-2 pl-3">
-                            <strong>
-                              {searchParams.get("phoneNumber")}
-                            </strong>
+                            <strong>{searchParams.get("phoneNumber")}</strong>
                           </div>
                         </div>
                         <div className="flex-1">
@@ -200,7 +194,8 @@ const Chat = () => {
                               {chatMessages?.map((message, index) => {
                                 if (
                                   message.id.fromMe &&
-                                  message.to === searchParams.get("phoneNumber") + "@c.us"
+                                  message.to ===
+                                    searchParams.get("phoneNumber") + "@c.us"
                                 ) {
                                   return (
                                     <div
@@ -236,7 +231,8 @@ const Chat = () => {
                                   );
                                 } else {
                                   if (
-                                    message.from === searchParams.get("phoneNumber") + "@c.us"
+                                    message.from ===
+                                    searchParams.get("phoneNumber") + "@c.us"
                                   ) {
                                     return (
                                       <div

@@ -10,7 +10,8 @@ import {
 } from "@mui/material";
 import Select from "@mui/material/Select";
 
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import React, { useState } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
@@ -54,7 +55,7 @@ const RenderPriority = ({ cellValues }) => {
     UpdateLeadData.append("lid", cellValues?.row?.leadId);
     UpdateLeadData.append("priority", newPriority);
 
-    console.log(cellValues)
+    console.log(cellValues);
 
     await axios
       .post(`${BACKEND_URL}/leads/${cellValues?.row?.leadId}`, UpdateLeadData, {

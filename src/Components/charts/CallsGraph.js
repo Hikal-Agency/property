@@ -29,30 +29,29 @@ ChartJS.register(
   BarController
 );
 
-const ReportMeetingsClosed = () => {
+const CallsGraph = ({ outgoing }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
-  const [performanceChartData, setPerformanceChartData] = useState([]);
+  //   const [performanceChartData, setPerformanceChartData] = useState([]);
 
-  useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    axios
-      .get(`${BACKEND_URL}/performance`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        const {
-          data: { members_deal },
-        } = result;
-        setPerformanceChartData(members_deal);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   useEffect(() => {
+  //     const token = localStorage.getItem("auth-token");
+  //     axios
+  //       .get(`${BACKEND_URL}/performance`, {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       })
+  //       .then((result) => {
+  //         const {
+  //           data: { members_deal },
+  //         } = result;
+  //         setPerformanceChartData(members_deal);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }, []);
 
   return (
     <span>
@@ -60,26 +59,26 @@ const ReportMeetingsClosed = () => {
         <Chart
           type="bar"
           data={{
-            labels: performanceChartData.map((member) => member.userName),
+            // labels: performanceChartData.map((member) => member.userName),
             datasets: [
               {
                 type: "line",
-                label: "Closed deals",
-                data: performanceChartData.map((member) => member.total_sales),
+                label: "Outgoing calls",
+                data: outgoing,
                 fill: true,
                 backgroundColor: "rgba(225,0,0,0.4)",
                 borderColor: "#da1f26",
               },
-              {
-                type: "line",
-                label: "Meetings",
-                data: performanceChartData.map(
-                  (member) => member.total_meetings
-                ),
-                fill: false,
-                backgroundColor: "rgba(0,0,0,0.2)",
-                borderColor: "#ffffff",
-              },
+              //   {
+              //     type: "line",
+              //     label: "Meetings",
+              //     data: performanceChartData.map(
+              //       (member) => member.total_meetings
+              //     ),
+              //     fill: false,
+              //     backgroundColor: "rgba(0,0,0,0.2)",
+              //     borderColor: "#ffffff",
+              //   },
             ],
           }}
           options={{
@@ -91,34 +90,38 @@ const ReportMeetingsClosed = () => {
               x: { ticks: { color: "#ffffff" }, grid: { color: "#424242" } },
             },
             responsive: true,
-            aspectRatio: 4,
+            width: "100%",
+          }}
+          style={{
+            height: "100%",
+            width: "100%",
           }}
         />
       ) : (
         <Chart
           type="bar"
           data={{
-            labels: performanceChartData.map((member) => member.userName),
+            // labels: performanceChartData.map((member) => member.userName),
             datasets: [
               {
                 type: "line",
-                label: "Closed deals",
-                data: performanceChartData.map((member) => member.total_sales),
+                label: "Outgoing calls",
+                data: outgoing,
                 fill: true,
                 backgroundColor: "rgba(225,0,0,0.4)",
                 borderColor: "#da1f26",
               },
-              {
-                type: "line",
-                label: "Meetings",
-                data: performanceChartData.map(
-                  (member) => member.total_meetings
-                ),
-                // borderWidth: 1,
-                fill: false,
-                backgroundColor: "rgba(0,0,0,0.2)",
-                borderColor: "#020202",
-              },
+              //   {
+              //     type: "line",
+              //     label: "Meetings",
+              //     data: performanceChartData.map(
+              //       (member) => member.total_meetings
+              //     ),
+              //     // borderWidth: 1,
+              //     fill: false,
+              //     backgroundColor: "rgba(0,0,0,0.2)",
+              //     borderColor: "#020202",
+              //   },
             ],
           }}
           options={{
@@ -130,7 +133,6 @@ const ReportMeetingsClosed = () => {
               x: { ticks: { color: "#000000" } },
             },
             responsive: true,
-            aspectRatio: 4,
           }}
         />
       )}
@@ -138,4 +140,4 @@ const ReportMeetingsClosed = () => {
   );
 };
 
-export default ReportMeetingsClosed;
+export default CallsGraph;

@@ -1,7 +1,8 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useEffect } from "react";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";

@@ -7,7 +7,8 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import moment from "moment";
 import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
@@ -147,14 +148,14 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       width: 150,
       headerAlign: "center",
       hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
     {
       field: "priority",
       headerName: "Priority",
       width: 150,
       hideable: false,
-      renderCell: (cellValues) => <RenderPriority cellValues={cellValues}/>,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
   ];
 
@@ -293,9 +294,12 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
             },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+            "& .MuiDataGrid-cell[data-field='edit'] svg": {
+              color:
+                currentMode === "dark"
+                  ? "white !important"
+                  : "black !important",
+            },
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

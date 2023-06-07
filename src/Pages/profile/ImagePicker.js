@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import {
   Modal,
   Backdrop,
@@ -180,7 +181,9 @@ const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
                   background: `radial-gradient(closest-side, white 79%, transparent 80% 100%),
     conic-gradient(hotpink ${uploadProgress}%, pink 0)`,
                 }}
-              >{uploadProgress}%</div>
+              >
+                {uploadProgress}%
+              </div>
             </div>
           )}
           {!selectedImage && (

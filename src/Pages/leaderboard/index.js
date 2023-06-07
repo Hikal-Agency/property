@@ -7,6 +7,8 @@ import { useStateContext } from "../../context/ContextProvider";
 import CallLogBoard from "./calllogboard";
 import ClosedDealsBoard from "./closeddealsboard";
 import TargetBoard from "./targetboard";
+import Scoreboard from "./Scoredboard";
+import ClosedealsboardUpdated from "./closeddealsboardUpdated";
 
 const Leaderboard = () => {
   const { currentMode, darkModeColors } = useStateContext();
@@ -79,6 +81,7 @@ const Leaderboard = () => {
                       <Tab label="Call Logs" />
                       <Tab label="Closed Deals" />
                       <Tab label="Target" />
+                      {/* <Tab label="Scoreboard" /> */}
                     </Tabs>
                   </Box>
                   <div className="mt-3 pb-3">
@@ -90,7 +93,12 @@ const Leaderboard = () => {
                       />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                      <ClosedDealsBoard
+                      {/* <ClosedDealsBoard
+                        isLoading={loading}
+                        tabValue={tabValue}
+                        setTabValue={setTabValue}
+                      /> */}
+                      <ClosedealsboardUpdated
                         isLoading={loading}
                         tabValue={tabValue}
                         setTabValue={setTabValue}
@@ -98,6 +106,13 @@ const Leaderboard = () => {
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                       <TargetBoard
+                        isLoading={loading}
+                        tabValue={tabValue}
+                        setTabValue={setTabValue}
+                      />
+                    </TabPanel>
+                    <TabPanel value={value} index={3}>
+                      <Scoreboard
                         isLoading={loading}
                         tabValue={tabValue}
                         setTabValue={setTabValue}

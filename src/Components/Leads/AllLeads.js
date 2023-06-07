@@ -13,7 +13,8 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { FaComment } from "react-icons/fa";
 import { FaGlobe } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
@@ -109,23 +110,21 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   // eslint-disable-next-line
 
   const handleSearch = (e) => {
-    
-    if(e.target.value === "") {
-            setpageState((oldPageState) => ({...oldPageState, page: 1}));
+    if (e.target.value === "") {
+      setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
       FetchLeads(token);
     }
     setSearchTerm(e.target.value);
-  }
+  };
 
   const handleKeyUp = (e) => {
-    if(searchTerm) {
-
-          if (e.key === 'Enter' || e.keyCode === 13) {
-            // setpageState((oldPageState) => ({...oldPageState, page: 1}));
-            FetchSearchedLeads(token, e.target.value);
+    if (searchTerm) {
+      if (e.key === "Enter" || e.keyCode === 13) {
+        // setpageState((oldPageState) => ({...oldPageState, page: 1}));
+        FetchSearchedLeads(token, e.target.value);
       }
     }
-  }
+  };
 
   const ManagerColumns = [
     {
@@ -1075,7 +1074,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&coldCall=0&leadStatus=Transferred`;
     } else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}}&unassigned=1&coldCall=0`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0`;
       } else if (lead_type === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=New`;
       } else if (lead_type === "no answer") {
@@ -1279,91 +1278,87 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
 
   const FetchSearchedLeads = async (token, term) => {
-         setpageState((old) => ({
-        ...old,
-        isLoading: true,
-      }));
+    setpageState((old) => ({
+      ...old,
+      isLoading: true,
+    }));
 
-      let coldCallCode = "";
+    let coldCallCode = "";
     if (lead_origin === "freshleads") {
       coldCallCode = 0;
-    }
-    else if (lead_origin === "coldleads") {
+    } else if (lead_origin === "coldleads") {
       coldCallCode = 1;
-    }
-    else if (lead_origin === "thirdpartyleads") {
+    } else if (lead_origin === "thirdpartyleads") {
       coldCallCode = 3;
-    }
-    else if (lead_origin === "personalleads") {
+    } else if (lead_origin === "personalleads") {
       coldCallCode = 2;
-    }
-    else if (lead_origin === "warmleads") {
+    } else if (lead_origin === "warmleads") {
       coldCallCode = 4;
     } else if (lead_origin === "transfferedleads") {
       coldCallCode = 0;
     }
 
-      let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}${
-        lead_type !== "all" ? `&feedback=${lead_type}` : ""
-      }`;
+    let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}${
+      lead_type !== "all" ? `&feedback=${lead_type}` : ""
+    }`;
 
-      if (coldCallCode !== "") {
-        url += `&coldCall=${coldCallCode}`;
-      }
-      await axios
-        .get(url, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
-          console.log("search result is");
-          console.log(result.data);
-          let rowsdata = result.data.result.data.map((row, index) => ({
-            id:
-              pageState.page > 1
-                ? pageState.page * pageState.pageSize -
-                  (pageState.pageSize - 1) +
-                  index
-                : index + 1,
-            leadId: row?.id,
-            creationDate: row?.creationDate,
-            leadName: row?.leadName || "No Name",
-            leadContact:
-              row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
-            project: row?.project || "No Project",
-            enquiryType: row?.enquiryType || "No Type",
-            leadType: row?.leadType || "No Type",
-            assignedToManager: row?.assignedToManager || null,
-            assignedToSales: row?.assignedToSales || null,
-            feedback: row?.feedback || null,
-            priority: row?.priority || null,
-            language: row?.language || "No Language",
-            leadSource: row?.leadSource || "No Source",
-            lid: row?.lid || "No id",
-            lastEdited: row?.lastEdited || "No Date",
-            leadFor: row?.leadFor || "No Lead",
-            leadStatus: row?.leadStatus || "No Status",
-            coldCall: row?.coldcall,
-            leadCategory: leadCategory || "No Category",
-            notes: row?.notes || "No notes",
-            otp: row?.otp || "No otp",
-            edit: "edit",
-          }));
-          setpageState((old) => ({
-            ...old,
-            data: rowsdata,
-            pageSize: result.data.result.per_page,
-            total: result.data.result.total,
-          }));
-         setpageState((old) => ({
-        ...old,
-        isLoading: false,
-      }));
-        })
-        .catch((err) => console.log(err));
-  }
+    if (coldCallCode !== "") {
+      url += `&coldCall=${coldCallCode}`;
+    }
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("search result is");
+        console.log(result.data);
+        let rowsdata = result.data.result.data.map((row, index) => ({
+          id:
+            pageState.page > 1
+              ? pageState.page * pageState.pageSize -
+                (pageState.pageSize - 1) +
+                index
+              : index + 1,
+          leadId: row?.id,
+          creationDate: row?.creationDate,
+          leadName: row?.leadName || "No Name",
+          leadContact:
+            row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
+          project: row?.project || "No Project",
+          enquiryType: row?.enquiryType || "No Type",
+          leadType: row?.leadType || "No Type",
+          assignedToManager: row?.assignedToManager || null,
+          assignedToSales: row?.assignedToSales || null,
+          feedback: row?.feedback || null,
+          priority: row?.priority || null,
+          language: row?.language || "No Language",
+          leadSource: row?.leadSource || "No Source",
+          lid: row?.lid || "No id",
+          lastEdited: row?.lastEdited || "No Date",
+          leadFor: row?.leadFor || "No Lead",
+          leadStatus: row?.leadStatus || "No Status",
+          coldCall: row?.coldcall,
+          leadCategory: leadCategory || "No Category",
+          notes: row?.notes || "No notes",
+          otp: row?.otp || "No otp",
+          edit: "edit",
+        }));
+        setpageState((old) => ({
+          ...old,
+          data: rowsdata,
+          pageSize: result.data.result.per_page,
+          total: result.data.result.total,
+        }));
+        setpageState((old) => ({
+          ...old,
+          isLoading: false,
+        }));
+      })
+      .catch((err) => console.log(err));
+  };
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = (e) => {
@@ -1377,11 +1372,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   }, [lead_type]);
 
   useEffect(() => {
-    setpageState((oldPageState) => ({...oldPageState, page: 0}))
+    setpageState((oldPageState) => ({ ...oldPageState, page: 0 }));
   }, [lead_type, lead_origin]);
 
   useEffect(() => {
-    if(searchTerm) {
+    if (searchTerm) {
       FetchSearchedLeads(token, searchTerm);
     } else {
       FetchLeads(token);
@@ -1614,7 +1609,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           />
 
           <div className="absolute top-[7px] right-[20px] z-[500]">
-            <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} onKeyUp={handleKeyUp} value={searchTerm} onInput={handleSearch}/>
+            <TextField
+              placeholder="Search.."
+              variant="standard"
+              sx={{ borderBottom: "2px solid white" }}
+              onKeyUp={handleKeyUp}
+              value={searchTerm}
+              onInput={handleSearch}
+            />
           </div>
           <div style={{ position: "relative" }}>
             {/* {pageState.data.length > 0 && (

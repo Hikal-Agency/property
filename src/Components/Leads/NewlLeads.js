@@ -1,10 +1,14 @@
 import { Button } from "@material-tailwind/react";
+<<<<<<< HEAD
+import { Box, CircularProgress, Dialog } from "@mui/material";
+=======
 import {
   Box,
   CircularProgress,
   Dialog, 
   TextField
 } from "@mui/material";
+>>>>>>> 6386bbe4580e910e298a74c747eab9eb59946618
 import {
   DataGrid,
   gridPageCountSelector,
@@ -13,13 +17,12 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit } from "react-icons/ai";
-import {
-  MdCampaign
-} from "react-icons/md";
+import { MdCampaign } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -601,6 +604,15 @@ const Newleads = ({
         ...old,
         isLoading: true,
       }));
+<<<<<<< HEAD
+      console.log("the search lead  url is ");
+      console.log(
+        `${BACKEND_URL}/search?title=${e.target.value}&page=${pageState.page}`
+      );
+      const coldCallCode = pageState?.data[0]?.coldCall;
+      let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=New`;
+      if (coldCallCode) {
+=======
 
       let coldCallCode = "";
     if (lead_origin === "freshleads") {
@@ -626,6 +638,7 @@ const Newleads = ({
       }`;
 
       if (coldCallCode !== "") {
+>>>>>>> 671040e9488470b271cd6c9a7d4e840d487a2ee7
         url += `&coldCall=${coldCallCode}`;
       }
       await axios
@@ -849,9 +862,12 @@ const Newleads = ({
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
             },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+            "& .MuiDataGrid-cell[data-field='edit'] svg": {
+              color:
+                currentMode === "dark"
+                  ? "white !important"
+                  : "black !important",
+            },
           }}
           getRowClassName={(params) =>
             params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

@@ -4,7 +4,8 @@ import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import SingleUser from "./SingleUser";
@@ -397,7 +398,7 @@ const UserTable = ({ user }) => {
                 page={pageState.page}
                 sx={{
                   "& .Mui-selected": {
-                    color: "white",
+                    color: "white !important",
                     backgroundColor: "red !important",
                     "&:hover": {
                       backgroundColor:
@@ -405,7 +406,7 @@ const UserTable = ({ user }) => {
                     },
                   },
                   "& .MuiPaginationItem-root": {
-                    color: "white",
+                    color: currentMode === "dark" ? "white" : "black",
                   },
                 }}
               />

@@ -13,8 +13,9 @@ import { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import axios from "axios";
+// import axios from "axios";
 import { toast } from "react-toastify";
+import axios from "../../axoisConfig";
 
 const EditUser = ({ user }) => {
   console.log("Edit User: ", user);

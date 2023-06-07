@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { IoMdClose } from "react-icons/io";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 
 const allKeys = {

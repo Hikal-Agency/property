@@ -1,4 +1,5 @@
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { Button } from "@material-tailwind/react";
 import {
   AiOutlineAppstore,

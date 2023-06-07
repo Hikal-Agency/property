@@ -454,7 +454,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
                 style={{ margin: "auto" }}
                 sx={{
                   "& .Mui-selected": {
-                    color: "white",
+                    color: "white !important",
                     backgroundColor: "red !important",
                     "&:hover": {
                       backgroundColor:
@@ -462,7 +462,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
                     },
                   },
                   "& .MuiPaginationItem-root": {
-                    color: "white",
+                    color: currentMode === "dark" ? "white" : "black",
                   },
                 }}
                 // renderItem={(item) => {

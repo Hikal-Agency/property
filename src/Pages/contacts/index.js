@@ -3,7 +3,8 @@ import Loader from "../../Components/Loader";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useStateContext } from "../../context/ContextProvider";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { ToastContainer, toast } from "react-toastify";
 
 const Contacts = () => {

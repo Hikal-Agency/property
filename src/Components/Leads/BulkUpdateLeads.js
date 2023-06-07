@@ -10,7 +10,8 @@ import {
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { IoMdClose } from "react-icons/io";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 
 const style = {
@@ -61,27 +62,31 @@ const BulkUpdateLeads = ({
       }
 
       const urls = selectedRows.map((id) =>
-        axios.post(`${BACKEND_URL}/leads/${id}`, JSON.stringify({...UpdateLeadData, lid: id}), {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
+        axios.post(
+          `${BACKEND_URL}/leads/${id}`,
+          JSON.stringify({ ...UpdateLeadData, lid: id }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
       );
 
       setbtnloading(true);
       await Promise.all(urls);
-        toast.success("Leads Updated Successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-       setbtnloading(false);
-        FetchLeads(token);
+      toast.success("Leads Updated Successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setbtnloading(false);
+      FetchLeads(token);
       handleCloseBulkUpdateModel();
     } catch (error) {
       toast.error("Error in Updating Leads", {
@@ -119,7 +124,7 @@ const BulkUpdateLeads = ({
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
         >
-        <ToastContainer />
+          <ToastContainer />
           <IconButton
             sx={{
               position: "absolute",

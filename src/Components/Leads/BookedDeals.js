@@ -17,7 +17,8 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
@@ -1150,94 +1151,89 @@ const BookedDeals = ({
       });
   };
 
-    const FetchSearchedLeads = async (token, term) => {
-         setpageState((old) => ({
-        ...old,
-        isLoading: true,
-      }));
+  const FetchSearchedLeads = async (token, term) => {
+    setpageState((old) => ({
+      ...old,
+      isLoading: true,
+    }));
 
-      let coldCallCode = "";
+    let coldCallCode = "";
     if (lead_origin === "freshleads") {
       coldCallCode = 0;
-    }
-    else if (lead_origin === "coldleads") {
+    } else if (lead_origin === "coldleads") {
       coldCallCode = 1;
-    }
-    else if (lead_origin === "thirdpartyleads") {
+    } else if (lead_origin === "thirdpartyleads") {
       coldCallCode = 3;
-    }
-    else if (lead_origin === "personalleads") {
+    } else if (lead_origin === "personalleads") {
       coldCallCode = 2;
-    }
-    else if (lead_origin === "warmleads") {
+    } else if (lead_origin === "warmleads") {
       coldCallCode = 4;
     } else if (lead_origin === "transfferedleads") {
       coldCallCode = 0;
     }
 
-      let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}${
-        lead_type !== "all" ? `&feedback=${lead_type}` : ""
-      }`;
+    let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}${
+      lead_type !== "all" ? `&feedback=${lead_type}` : ""
+    }`;
 
-      if (coldCallCode !== "") {
-        url += `&coldCall=${coldCallCode}`;
-      }
-      await axios
-        .get(url, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
-          console.log("search result is");
-          console.log(result.data);
-          let rowsdata = result.data.result.data.map((row, index) => ({
-            id:
-              pageState.page > 1
-                ? pageState.page * pageState.pageSize -
-                  (pageState.pageSize - 1) +
-                  index
-                : index + 1,
-            leadId: row?.id,
-            creationDate: row?.creationDate,
-            leadName: row?.leadName || "No Name",
-            leadContact:
-              row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
-            project: row?.project || "No Project",
-            enquiryType: row?.enquiryType || "No Type",
-            leadType: row?.leadType || "No Type",
-            assignedToManager: row?.assignedToManager || null,
-            assignedToSales: row?.assignedToSales || null,
-            feedback: row?.feedback || null,
-            priority: row?.priority || null,
-            language: row?.language || "No Language",
-            leadSource: row?.leadSource || "No Source",
-            lid: row?.lid || "No id",
-            lastEdited: row?.lastEdited || "No Date",
-            leadFor: row?.leadFor || "No Lead",
-            leadStatus: row?.leadStatus || "No Status",
-            coldCall: row?.coldcall,
-            leadCategory: leadCategory || "No Category",
-            notes: row?.notes || "No notes",
-            otp: row?.otp || "No otp",
-            edit: "edit",
-          }));
-          setpageState((old) => ({
-            ...old,
-            data: rowsdata,
-            pageSize: result.data.result.per_page,
-            total: result.data.result.total,
-          }));
-         setpageState((old) => ({
-        ...old,
-        isLoading: false,
-        page: pageState.page
-      }));
-
-        })
-        .catch((err) => console.log(err));
-  }
+    if (coldCallCode !== "") {
+      url += `&coldCall=${coldCallCode}`;
+    }
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("search result is");
+        console.log(result.data);
+        let rowsdata = result.data.result.data.map((row, index) => ({
+          id:
+            pageState.page > 1
+              ? pageState.page * pageState.pageSize -
+                (pageState.pageSize - 1) +
+                index
+              : index + 1,
+          leadId: row?.id,
+          creationDate: row?.creationDate,
+          leadName: row?.leadName || "No Name",
+          leadContact:
+            row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
+          project: row?.project || "No Project",
+          enquiryType: row?.enquiryType || "No Type",
+          leadType: row?.leadType || "No Type",
+          assignedToManager: row?.assignedToManager || null,
+          assignedToSales: row?.assignedToSales || null,
+          feedback: row?.feedback || null,
+          priority: row?.priority || null,
+          language: row?.language || "No Language",
+          leadSource: row?.leadSource || "No Source",
+          lid: row?.lid || "No id",
+          lastEdited: row?.lastEdited || "No Date",
+          leadFor: row?.leadFor || "No Lead",
+          leadStatus: row?.leadStatus || "No Status",
+          coldCall: row?.coldcall,
+          leadCategory: leadCategory || "No Category",
+          notes: row?.notes || "No notes",
+          otp: row?.otp || "No otp",
+          edit: "edit",
+        }));
+        setpageState((old) => ({
+          ...old,
+          data: rowsdata,
+          pageSize: result.data.result.per_page,
+          total: result.data.result.total,
+        }));
+        setpageState((old) => ({
+          ...old,
+          isLoading: false,
+          page: pageState.page,
+        }));
+      })
+      .catch((err) => console.log(err));
+  };
 
 
   const handleSearch = (e) => {
@@ -1263,7 +1259,7 @@ const BookedDeals = ({
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
     setSearchTerm(e.target.value);
-  }
+  };
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -1271,7 +1267,7 @@ const BookedDeals = ({
   }, []);
 
   useEffect(() => {
-    if(searchTerm) {
+    if (searchTerm) {
       FetchSearchedLeads(token, searchTerm);
     } else {
       FetchLeads(token);

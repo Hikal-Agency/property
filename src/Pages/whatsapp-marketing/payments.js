@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
 import NewPayment from "../../Components/whatsapp-marketing/NewPayment";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import Transactions from "../../Components/whatsapp-marketing/Transactions";
 import { toast } from "react-toastify";
 import Subscriber from "../../Components/whatsapp-marketing/Subscriber";
@@ -68,7 +69,8 @@ const Payments = () => {
     } catch (error) {
       console.log(error);
       toast.error("Sorry, something went wrong", {
-        position: "top-right", autoClose: 3000,
+        position: "top-right",
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

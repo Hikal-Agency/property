@@ -16,7 +16,8 @@ import { useStateContext } from "../../context/ContextProvider";
 import { camelCase } from "lodash";
 
 // import LeadNotes from "../LeadNotes/LeadNotes";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import moment from "moment";
 import { IoMdClose } from "react-icons/io";
 import { toast, ToastContainer } from "react-toastify";

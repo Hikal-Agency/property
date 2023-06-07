@@ -15,7 +15,8 @@ import { useEffect } from "react";
 import Loader from "../../Components/Loader";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import GridNewsletter from "../../Components/newsletter/GridNewsletter";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 
 const Newsletter = () => {
   const {
@@ -379,9 +380,12 @@ const Newsletter = () => {
                           "& .MuiDataGrid-cell": {
                             textAlign: "center",
                           },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+                          "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                            color:
+                              currentMode === "dark"
+                                ? "white !important"
+                                : "black !important",
+                          },
                         }}
                         getRowClassName={(params) =>
                           params.indexRelativeToCurrentPage % 2 === 0

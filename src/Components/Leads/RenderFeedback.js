@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 import Select from "@mui/material/Select";
 import { Box } from "@mui/system";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import React, { useState, useEffect } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
@@ -367,11 +368,11 @@ const RenderFeedback = ({ cellValues }) => {
                       </Select>
                     </FormControl>
 
-                      <LocationPicker
-                        meetingLocation={meetingLocation}
-                        currLocByDefault={true}
-                        setMeetingLocation={setMeetingLocation}
-                      />
+                    <LocationPicker
+                      meetingLocation={meetingLocation}
+                      currLocByDefault={true}
+                      setMeetingLocation={setMeetingLocation}
+                    />
                   </div>
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                     <Button

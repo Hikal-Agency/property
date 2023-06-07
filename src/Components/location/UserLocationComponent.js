@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 
 import { BsPinMap, BsCircleFill } from "react-icons/bs";

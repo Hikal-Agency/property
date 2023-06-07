@@ -13,7 +13,8 @@ import { FaBan } from "react-icons/fa";
 import SingleUser from "../../Components/Users/SingleUser";
 import { useState } from "react";
 import { useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useNavigate, useLocation } from "react-router";
 import DeactivateModel from "./deactivateModel";
 // import axios from "../../axoisConfig";
@@ -752,9 +753,12 @@ const Clients = () => {
                       "& .MuiDataGrid-cell:hover": {
                         cursor: "pointer",
                       },
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+                      "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                        color:
+                          currentMode === "dark"
+                            ? "white !important"
+                            : "black !important",
+                      },
                     }}
                     getRowClassName={(params) =>
                       params.indexRelativeToCurrentPage % 2 === 0

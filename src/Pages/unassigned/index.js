@@ -1,18 +1,9 @@
-import axios from "axios";
+// import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Footer from "../../Components/Footer/Footer";
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
-import { MdCampaign } from "react-icons/md";
-import { FaSnapchat } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { BsSnow2 } from "react-icons/bs";
-import { Box } from "@mui/material";
 
 const AllUnassignedLeads = () => {
   const {

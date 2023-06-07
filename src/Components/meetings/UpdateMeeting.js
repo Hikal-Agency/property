@@ -10,7 +10,8 @@ import {
   IconButton,
   MenuItem,
 } from "@mui/material";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
@@ -85,7 +86,7 @@ const UpdateMeeting = ({
         } else {
           const { meetingStatus, meetingDate, mLat, mLong, meetingTime } =
             response.data.meeting;
-            console.log(response.data.meeting);
+          console.log(response.data.meeting);
           setMeetingStatus(meetingStatus);
           setMeetingDateValue(dayjs(meetingDate));
           setMeetingTimeValue(dayjs("2023-01-01 " + meetingTime));
@@ -371,12 +372,12 @@ const UpdateMeeting = ({
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </Select>
                     </FormControl>
-                    {(meetingLocation.lat && meetingLocation.lng) &&
+                    {meetingLocation.lat && meetingLocation.lng && (
                       <LocationPicker
                         meetingLocation={meetingLocation}
                         setMeetingLocation={setMeetingLocation}
                       />
-                    }
+                    )}
                   </div>
                 </div>
 

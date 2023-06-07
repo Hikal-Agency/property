@@ -4,7 +4,8 @@ import { Container, CircularProgress } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { BsBuilding } from "react-icons/bs";
 import { ImLocation, ImClock } from "react-icons/im";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 
 const UpcomingMeetingsMenu = () => {
   const { currentMode, BACKEND_URL } = useStateContext();
@@ -32,7 +33,7 @@ const UpcomingMeetingsMenu = () => {
   }, []);
   return (
     <>
-      <Container  sx={{ maxHeight: 500, width: 400}}>
+      <Container sx={{ maxHeight: 500, width: 400 }}>
         {upcomingMeetings.length > 0 ? (
           upcomingMeetings.map((meeting, index) => {
             return (
@@ -106,8 +107,15 @@ const UpcomingMeetingsMenu = () => {
             );
           })
         ) : (
-          <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100%"}}>
-              <CircularProgress size={30} />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            <CircularProgress size={30} />
           </div>
         )}
       </Container>

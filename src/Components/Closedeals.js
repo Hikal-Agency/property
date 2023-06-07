@@ -9,7 +9,8 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../axoisConfig";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { AiOutlineHistory, AiOutlineEdit } from "react-icons/ai";

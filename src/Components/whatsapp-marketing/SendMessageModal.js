@@ -14,11 +14,12 @@ import { useStateContext } from "../../context/ContextProvider";
 import { MdSend } from "react-icons/md";
 import Base64 from "Base64";
 import { Box } from "@mui/system";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import RichEditor from "./richEditorComp/RichEditor";
-import TurndownService from 'turndown';
+import TurndownService from "turndown";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -181,7 +182,7 @@ const SendMessageModal = ({
 
   const saveMessages = async (allSentMessages) => {
     try {
-      const token = localStorage.getItem('auth-token'); 
+      const token = localStorage.getItem("auth-token");
       await Promise.all(
         allSentMessages.map((msg) => {
           return axios.post(`${BACKEND_URL}/messages`, JSON.stringify(msg), {
@@ -206,7 +207,9 @@ const SendMessageModal = ({
           urlencoded.append("token", ULTRA_MSG_TOKEN);
           urlencoded.append("to", "+" + contact);
 
-          const modifiedMessageText = messageText.toString().replaceAll("**", "*");
+          const modifiedMessageText = messageText
+            .toString()
+            .replaceAll("**", "*");
           urlencoded.append("body", modifiedMessageText);
 
           var myHeaders = new Headers();
@@ -218,7 +221,7 @@ const SendMessageModal = ({
           }).then((response) => response.json());
         })
       );
-        console.log(responses)
+      console.log(responses);
       const allSentMessages = [];
       responses.forEach((response, index) => {
         if (!response?.error) {
@@ -266,13 +269,13 @@ const SendMessageModal = ({
   const handleSendMessage = (event) => {
     event.preventDefault();
     // sendWhatsappMessages(messageValue, selectedContacts)
-    turndownService.addRule('strikethrough', {
-        filter: ['del', 's', 'strike'],
-        replacement: function (content) {
-          return '~' + content + '~'
-        }
-      })
-      console.log(messageValue);
+    turndownService.addRule("strikethrough", {
+      filter: ["del", "s", "strike"],
+      replacement: function (content) {
+        return "~" + content + "~";
+      },
+    });
+    console.log(messageValue);
     const messageText = turndownService.turndown(messageValue);
     if (sendMessageModal.isWhatsapp) {
       sendWhatsappUltraMsg(messageText, selectedContacts);
@@ -355,7 +358,7 @@ const SendMessageModal = ({
           </Tabs>
           <form onSubmit={handleSendMessage} action="">
             {tabValue === 0 && (
-              <div style={{height: 200, overflowY: "scroll"}}>
+              <div style={{ height: 200, overflowY: "scroll" }}>
                 {/* <TextareaAutosize
                   id="message"
                   placeholder="Type here"
@@ -375,7 +378,10 @@ const SendMessageModal = ({
                   value={messageValue}
                   onInput={(e) => setMessageValue(e.target.value)}
                 /> */}
-                <RichEditor messageValue={defaultMessageValue} setMessageValue={setMessageValue}/>
+                <RichEditor
+                  messageValue={defaultMessageValue}
+                  setMessageValue={setMessageValue}
+                />
               </div>
             )}
 
@@ -402,8 +408,11 @@ const SendMessageModal = ({
                     value={messageValue}
                     onInput={(e) => setMessageValue(e.target.value)}
                   /> */}
-                  <div style={{height: 200, overflowY: "scroll"}}>
-                    <RichEditor messageValue={defaultMessageValue} setMessageValue={setMessageValue}/>
+                  <div style={{ height: 200, overflowY: "scroll" }}>
+                    <RichEditor
+                      messageValue={defaultMessageValue}
+                      setMessageValue={setMessageValue}
+                    />
                   </div>
                 </>
               ) : (

@@ -15,7 +15,6 @@ import { RiRadioButtonLine } from "react-icons/ri";
 import { BiCalendar } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { FaFire } from "react-icons/fa";
-
 import {
   MdLeaderboard,
   MdPersonAdd,
@@ -40,7 +39,8 @@ import {
 } from "react-pro-sidebar";
 import { useStateContext } from "../../context/ContextProvider";
 import { ImLock, ImUsers, ImLocation } from "react-icons/im";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 // import { Link as NextLink } from "next/link";
@@ -1896,31 +1896,35 @@ const Sidebarmui = () => {
                 ...(User?.position === "Founder & CEO"
                   ? linksData.map((item, index) => (
                       <div key={index}>
-                      {!isCollapsed ?
-                      <Tooltip placement="right" title={item.title}>
-                        <p
-                          className={`font-bold m-3 mt-4 uppercase ${
-                            index === 0 && "hidden"
-                          } ${
-                            currentMode === "dark"
-                              ? "text-red-600"
-                              : "text-red-600"
-                          } ${!isCollapsed ? "w-[16px] h-[16px] ml-[22px] rounded-sm bg-red-600" : ""}`}
-                        >
-                        </p>
-                        </Tooltip> : 
-                        <p
-                          className={`font-bold m-3 mt-4 uppercase ${
-                            index === 0 && "hidden"
-                          } ${
-                            currentMode === "dark"
-                              ? "text-red-600"
-                              : "text-red-600"
-                          }`}
-                        >
-                          {item.title}
-                        </p>
-                      }
+                        {!isCollapsed ? (
+                          <Tooltip placement="right" title={item.title}>
+                            <p
+                              className={`font-bold m-3 mt-4 uppercase ${
+                                index === 0 && "hidden"
+                              } ${
+                                currentMode === "dark"
+                                  ? "text-red-600"
+                                  : "text-red-600"
+                              } ${
+                                !isCollapsed
+                                  ? "w-[16px] h-[16px] ml-[22px] rounded-sm bg-red-600"
+                                  : ""
+                              }`}
+                            ></p>
+                          </Tooltip>
+                        ) : (
+                          <p
+                            className={`font-bold m-3 mt-4 uppercase ${
+                              index === 0 && "hidden"
+                            } ${
+                              currentMode === "dark"
+                                ? "text-red-600"
+                                : "text-red-600"
+                            }`}
+                          >
+                            {item.title}
+                          </p>
+                        )}
                         {item.links.map((link) => (
                           <Tooltip
                             title={link.name}
@@ -2030,7 +2034,9 @@ const Sidebarmui = () => {
                                             //   color: menu?.countColor,
                                             // }}
                                           >
-                                            {menu?.count !== null ? menu?.count : ""}
+                                            {menu?.count !== null
+                                              ? menu?.count
+                                              : ""}
                                           </span>
                                         </Box>
                                       </Link>
@@ -2107,31 +2113,35 @@ const Sidebarmui = () => {
                   : User?.position === "Sales Manager"
                   ? managerData.map((item, index) => (
                       <div key={index}>
-                      {!isCollapsed ?
-                      <Tooltip placement="right" title={item.title}>
-                        <p
-                          className={`font-bold m-3 mt-4 uppercase ${
-                            index === 0 && "hidden"
-                          } ${
-                            currentMode === "dark"
-                              ? "text-red-600"
-                              : "text-red-600"
-                          } ${!isCollapsed ? "w-[16px] h-[16px] ml-[22px] rounded-sm bg-red-600" : ""}`}
-                        >
-                        </p>
-                        </Tooltip> : 
-                        <p
-                          className={`font-bold m-3 mt-4 uppercase ${
-                            index === 0 && "hidden"
-                          } ${
-                            currentMode === "dark"
-                              ? "text-red-600"
-                              : "text-red-600"
-                          }`}
-                        >
-                          {item.title}
-                        </p>
-                      }
+                        {!isCollapsed ? (
+                          <Tooltip placement="right" title={item.title}>
+                            <p
+                              className={`font-bold m-3 mt-4 uppercase ${
+                                index === 0 && "hidden"
+                              } ${
+                                currentMode === "dark"
+                                  ? "text-red-600"
+                                  : "text-red-600"
+                              } ${
+                                !isCollapsed
+                                  ? "w-[16px] h-[16px] ml-[22px] rounded-sm bg-red-600"
+                                  : ""
+                              }`}
+                            ></p>
+                          </Tooltip>
+                        ) : (
+                          <p
+                            className={`font-bold m-3 mt-4 uppercase ${
+                              index === 0 && "hidden"
+                            } ${
+                              currentMode === "dark"
+                                ? "text-red-600"
+                                : "text-red-600"
+                            }`}
+                          >
+                            {item.title}
+                          </p>
+                        )}
                         {item.links.map((link) => (
                           <Tooltip
                             title={link.name}
@@ -2218,7 +2228,9 @@ const Sidebarmui = () => {
                                             {menu?.name}
                                           </MenuItem>
                                           <span className="leads_counter block absolute right-5 top-5">
-                                            {menu?.count !== null ? menu?.count : ""}
+                                            {menu?.count !== null
+                                              ? menu?.count
+                                              : ""}
                                           </span>
                                         </Box>
                                       </Link>
@@ -2319,31 +2331,35 @@ const Sidebarmui = () => {
                       console.log(item);
                       return (
                         <div key={index}>
-                      {!isCollapsed ?
-                      <Tooltip placement="right" title={item.title}>
-                        <p
-                          className={`font-bold m-3 mt-4 uppercase ${
-                            index === 0 && "hidden"
-                          } ${
-                            currentMode === "dark"
-                              ? "text-red-600"
-                              : "text-red-600"
-                          } ${!isCollapsed ? "w-[16px] h-[16px] ml-[22px] rounded-sm bg-red-600" : ""}`}
-                        >
-                        </p>
-                        </Tooltip> : 
-                        <p
-                          className={`font-bold m-3 mt-4 uppercase ${
-                            index === 0 && "hidden"
-                          } ${
-                            currentMode === "dark"
-                              ? "text-red-600"
-                              : "text-red-600"
-                          }`}
-                        >
-                          {item.title}
-                        </p>
-                      }
+                          {!isCollapsed ? (
+                            <Tooltip placement="right" title={item.title}>
+                              <p
+                                className={`font-bold m-3 mt-4 uppercase ${
+                                  index === 0 && "hidden"
+                                } ${
+                                  currentMode === "dark"
+                                    ? "text-red-600"
+                                    : "text-red-600"
+                                } ${
+                                  !isCollapsed
+                                    ? "w-[16px] h-[16px] ml-[22px] rounded-sm bg-red-600"
+                                    : ""
+                                }`}
+                              ></p>
+                            </Tooltip>
+                          ) : (
+                            <p
+                              className={`font-bold m-3 mt-4 uppercase ${
+                                index === 0 && "hidden"
+                              } ${
+                                currentMode === "dark"
+                                  ? "text-red-600"
+                                  : "text-red-600"
+                              }`}
+                            >
+                              {item.title}
+                            </p>
+                          )}
                           {item.links.map((link) => (
                             <Tooltip
                               title={link.name}
@@ -2388,8 +2404,8 @@ const Sidebarmui = () => {
                                           key={index}
                                           to={`${menu.link}`}
                                           onClick={() => {
-                                              setopenBackDrop(true);
-                                              console.log("Clicked")
+                                            setopenBackDrop(true);
+                                            console.log("Clicked");
                                           }}
                                         >
                                           <Box
@@ -2437,7 +2453,9 @@ const Sidebarmui = () => {
                                               {menu?.name || ""}
                                             </MenuItem>
                                             <span className="leads_counter block absolute right-5 top-5">
-                                              {menu?.count !== null ? menu?.count : ""}
+                                              {menu?.count !== null
+                                                ? menu?.count
+                                                : ""}
                                             </span>
                                           </Box>
                                         </Link>

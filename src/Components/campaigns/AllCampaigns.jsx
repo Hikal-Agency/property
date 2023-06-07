@@ -13,7 +13,8 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -434,9 +435,12 @@ const AllCampaigns = ({ pageState, setpageState }) => {
               cursor: "pointer",
             },
             overflowX: "auto",
-              "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                color: currentMode === "dark" ? "white !important" : "black !important"
-              }
+            "& .MuiDataGrid-cell[data-field='edit'] svg": {
+              color:
+                currentMode === "dark"
+                  ? "white !important"
+                  : "black !important",
+            },
           }}
           // getRowClassName={(params) =>
           //   params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"

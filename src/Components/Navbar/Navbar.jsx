@@ -19,7 +19,8 @@ import NotificationsMenu from "./NotificationsMenu";
 import UpcomingMeetingsMenu from "./UpcomingMeetingsMenu";
 import { Link, useLocation } from "react-router-dom";
 import BreadCrumb from "./BreadCrumb";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../axoisConfig";
 import { ToastContainer, toast } from "react-toastify";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
