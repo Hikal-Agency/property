@@ -169,11 +169,11 @@ const DashboardPanel = ({ setloading }) => {
 
   function formatNumber(number) {
   if (number >= 1000000) {
-    const formattedNumber = (number / 1000000).toFixed(1);
-    return formattedNumber.replace('.0', '') + 'M';
+    const formattedNumber = (number / 1000000).toFixed(2);
+    return formattedNumber.replace('.00', '') + 'M';
   } else if (number >= 1000) {
-    const formattedNumber = (number / 1000).toFixed(1);
-    return formattedNumber.replace('.0', '') + 'K';
+    const formattedNumber = (number / 1000).toFixed(2);
+    return formattedNumber.replace('.00', '') + 'K';
   } else {
     return number.toString();
   }
