@@ -7,6 +7,7 @@ import {
   Select,
   Tab,
   Tabs,
+  TextField,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { ToastContainer, toast } from "react-toastify";
@@ -63,14 +64,8 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
   };
   const FetchLeaderboard = async (token) => {
     setLoading(true);
-    // let apiUrl =
-    //   tabValue === 0
-    //     ? "leaderboard"
-    //     : tabValue === 1
-    //     ? "leaderboard?last_month"
-    //     : "leaderboard?current_month";
-
     let apiUrl = period ? `leaderboard?${period}` : "leaderboard";
+
     try {
       const all_leaderboard = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
         headers: {
@@ -79,19 +74,16 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
         },
       });
 
-      setLeaderboard(all_leaderboard?.data?.user);
-
       const leaderboard = all_leaderboard?.data?.user;
 
-      //   const get_managers = leaderboard?.filter(
-      //     (manager) => manager?.role === 3
-      //   );
-      //   setManagers(get_managers);
+      const sortedLeaderboard = leaderboard.sort((a, b) => {
+        // Sort in descending order based on total_sales
+        return b.total_sales - a.total_sales;
+      });
 
-      //   const get_agents = leaderboard?.filter((agent) => agent?.role === 7);
-      //   setAgents(get_agents);
+      setLeaderboard(sortedLeaderboard);
 
-      const leadCount = leaderboard.reduce(
+      const leadCount = sortedLeaderboard.reduce(
         (acc, cur) => {
           if (cur.total_sales) {
             acc.total_sales += Number(cur.total_sales);
@@ -106,7 +98,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
 
       setCount(leadCount);
 
-      const { agents = [], managers = [] } = leaderboard.reduce(
+      const { agents = [], managers = [] } = sortedLeaderboard.reduce(
         (acc, cur) => ({
           agents: [...acc.agents, ...(cur.role === 7 ? [cur] : [])],
           managers: [...acc.managers, ...(cur.role === 3 ? [cur] : [])],
@@ -118,8 +110,6 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
       setManagers(managers);
 
       setLoading(false);
-
-      //   console.log("total deals & sales: ", { total_sales, total_closed_deals });
     } catch (error) {
       setLoading(false);
       console.log("Leaderboard not fetched. ", error);
@@ -135,7 +125,6 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
       });
     }
   };
-
   console.log("acitve: ", active);
 
   const handleClick = async (id, e) => {
@@ -173,20 +162,23 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
           <div className="mb-3">
             <Box sx={SelectStyles}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
+                {/* <InputLabel id="demo-simple-select-label">
                   Select a time period
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
+                </InputLabel> */}
+                <TextField
+                  // labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={period}
-                  label="Age"
+                  label="Select a time period"
                   onChange={handlePeriod}
+                  displayEmtpy
+                  select
+                  variant="standard"
                 >
                   <MenuItem value="last_month">Last Month</MenuItem>
                   <MenuItem value="current_month">Current Month</MenuItem>
                   <MenuItem value="">All time</MenuItem>
-                </Select>
+                </TextField>
               </FormControl>
             </Box>
           </div>
@@ -223,6 +215,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                           } rounded-md p-2 w-full`}
                           onClick={(e) => handleClick(item?.id, e)}
                           key={index}
+                          style={{ cursor: "pointer" }}
                         >
                           <div className="flex items-center">
                             {/* User Image */}
