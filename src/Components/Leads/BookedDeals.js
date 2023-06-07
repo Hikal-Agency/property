@@ -1409,7 +1409,7 @@ const BookedDeals = ({
               boxShadow: 2,
               "& .MuiDataGrid-main": {
                 overflowY: "scroll",
-                height: pageState.data.length > 0 ? 475 : "auto",
+                height: "auto",
               },
               "& .MuiDataGrid-cell[data-field='edit'] svg": {
                 color:
