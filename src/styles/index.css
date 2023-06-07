@@ -305,12 +305,12 @@ label[for="bulkImport"] .MuiButtonBase-root{
   padding-left: 0 !important;
 }
 
-.light-mode-datatable .MuiDataGrid-cell[data-field="leadName"] .MuiDataGrid-cellContent {
+.light-mode-datatable .MuiDataGrid-cell[data-field="leadName"] {
   color: #da1f26;
   font-weight: 500;
 }
 
-.dark-mode-datatable .MuiDataGrid-cell[data-field="leadName"] .MuiDataGrid-cellContent {
+.dark-mode-datatable .MuiDataGrid-cell[data-field="leadName"] {
   color: white;
   font-weight: 500;
 }
