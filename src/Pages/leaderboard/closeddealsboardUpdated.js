@@ -1,5 +1,13 @@
 import React from "react";
-import { Box, Tab, Tabs } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Tab,
+  Tabs,
+} from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
@@ -18,6 +26,19 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
     setTabValue(newValue);
   };
 
+  const SelectStyles = {
+    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline":
+      {
+        color: currentMode === "dark" ? "white !important" : "black !important",
+        fontSize: "0.9rem",
+        fontWeight: "500",
+      },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor:
+        currentMode === "dark" ? "white !important" : "black !important",
+    },
+  };
+
   console.log("log:::: ", callLogs);
 
   const [leaderboard, setLeaderboard] = useState();
@@ -26,18 +47,27 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
   const [filteredAgent, setFilterAgent] = useState();
   const [active, setActive] = useState(false);
   const [count, setCount] = useState();
+  const [period, setPeriod] = useState();
 
   console.log("Leaderboard here: ", leaderboard);
   console.log("Manager here: ", manager);
   console.log("Agents here: ", agents);
+
+  const handlePeriod = (e) => {
+    console.log(e.target.value);
+    setPeriod(e.target.value);
+    // FetchLeaderboard();
+  };
   const FetchLeaderboard = async (token) => {
     setLoading(true);
-    let apiUrl =
-      tabValue === 0
-        ? "leaderboard"
-        : tabValue === 1
-        ? "leaderboard?last_month"
-        : "leaderboard?current_month";
+    // let apiUrl =
+    //   tabValue === 0
+    //     ? "leaderboard"
+    //     : tabValue === 1
+    //     ? "leaderboard?last_month"
+    //     : "leaderboard?current_month";
+
+    let apiUrl = period ? `leaderboard?${period}` : "leaderboard";
     try {
       const all_leaderboard = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
         headers: {
@@ -121,7 +151,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchLeaderboard(token);
-  }, []);
+  }, [period]);
 
   return (
     <div>
@@ -137,6 +167,26 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
             }
           }
         >
+          <div className="mb-3">
+            <Box sx={SelectStyles}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">
+                  Select a time period
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={period}
+                  label="Age"
+                  onChange={handlePeriod}
+                >
+                  <MenuItem value="last_month">Last Month</MenuItem>
+                  <MenuItem value="current_month">Current Month</MenuItem>
+                  <MenuItem value="">All time</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </div>
           <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-3 ">
             <div
               className={`${
@@ -158,62 +208,72 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
               <div className="grid  gap-4">
                 <div className="rounded-md px-2 mb-2 w-full">
                   <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-1 2xl:grid-cols-2 gap-4">
-                    {manager?.map((item, index) => (
-                      <div
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-black text-white"
-                            : "bg-white text-black"
-                        } ${
-                          active === item?.id ? "border border-red-500" : ""
-                        } rounded-md p-2 w-full`}
-                        onClick={(e) => handleClick(item?.id, e)}
-                        key={index}
-                      >
-                        <div className="flex items-center">
-                          {/* User Image */}
-                          {item?.img ? (
-                            <img
-                              src={item?.img}
-                              alt="User Image"
-                              className="w-16 h-16 rounded-full mr-4"
-                            />
-                          ) : (
-                            <img
-                              src="/favicon.png"
-                              alt="User Image"
-                              className="w-16 h-16 rounded-full mr-4"
-                            />
-                          )}
-
-                          {/* User Details */}
-                          <div>
-                            <h2 className="text-xl font-bold">
-                              {item?.userName}
-                            </h2>
-                            {item?.total_closed_deals > 0 && (
-                              <p className="text-gray-500">
-                                Deals Closed:{" "}
-                                <span className="text-red-600">
-                                  {item?.total_closed_deals}
-                                </span>
-                              </p>
+                    {manager?.length > 0 ? (
+                      manager?.map((item, index) => (
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black"
+                          } ${
+                            active === item?.id ? "border border-red-500" : ""
+                          } rounded-md p-2 w-full`}
+                          onClick={(e) => handleClick(item?.id, e)}
+                          key={index}
+                        >
+                          <div className="flex items-center">
+                            {/* User Image */}
+                            {item?.img ? (
+                              <img
+                                src={item?.img}
+                                alt="User Image"
+                                className="w-16 h-16 rounded-full mr-4"
+                              />
+                            ) : (
+                              <img
+                                src="/favicon.png"
+                                alt="User Image"
+                                className="w-16 h-16 rounded-full mr-4"
+                              />
                             )}
-                            {item?.total_closed_deals > 0 &&
-                              item?.total_closed_deals !== null && (
+
+                            {/* User Details */}
+                            <div>
+                              <h2 className="text-xl font-bold">
+                                {item?.userName}
+                              </h2>
+                              {item?.total_closed_deals > 0 && (
                                 <p className="text-gray-500">
-                                  Total Sales:{" "}
+                                  Deals Closed:{" "}
                                   <span className="text-red-600">
-                                    {item?.total_sales}
+                                    {item?.total_closed_deals}
                                   </span>
                                 </p>
                               )}
-                            {/* Additional user details */}
-                            {/* ... */}
+                              {item?.total_closed_deals > 0 &&
+                                item?.total_closed_deals !== null && (
+                                  <p className="text-gray-500">
+                                    Total Sales:{" "}
+                                    <span className="text-red-600">
+                                      {item?.total_sales}
+                                    </span>
+                                  </p>
+                                )}
+                              {/* Additional user details */}
+                              {/* ... */}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))
+                    ) : (
+                      <h2
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-red"
+                        } text-center`}
+                      >
+                        No data found
+                      </h2>
+                    )}
                   </div>
                   <div></div>
                 </div>
@@ -240,8 +300,9 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
               <div className="grid  gap-4">
                 <div className="rounded-md px-2 mb-2 w-full">
                   <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-1 2xl:grid-cols-2 gap-4">
-                    {active === false
-                      ? agents?.map((item, index) => (
+                    {active === false ? (
+                      agents?.length > 0 ? (
+                        agents?.map((item, index) => (
                           <div
                             className={`${
                               currentMode === "dark"
@@ -289,46 +350,65 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                             </div>
                           </div>
                         ))
-                      : filteredAgent?.map((item, index) => (
-                          <div
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
-                            } rounded-md p-2 w-full`}
-                            key={index}
-                          >
-                            <div className="flex items-start">
-                              {/* User Image */}
+                      ) : (
+                        <h2
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-red"
+                          } text-center`}
+                        >
+                          No data found
+                        </h2>
+                      )
+                    ) : (
+                      filteredAgent?.map((item, index) => (
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black"
+                          } rounded-md p-2 w-full`}
+                          key={index}
+                        >
+                          <div className="flex items-start">
+                            {/* User Image */}
+                            {item?.img ? (
                               <img
-                                src=""
+                                src={item?.img}
                                 alt="User Image"
                                 className="w-16 h-16 rounded-full mr-4"
                               />
+                            ) : (
+                              <img
+                                src="/favicon.png"
+                                alt="User Image"
+                                className="w-16 h-16 rounded-full mr-4"
+                              />
+                            )}
 
-                              {/* User Details */}
-                              <div>
-                                <h2 className="text-xl font-bold">
-                                  {item?.userName}
-                                </h2>
-                                <p className="text-gray-500">
-                                  Deals Closed:{" "}
-                                  <span className="text-red-600">
-                                    {item?.total_closed_deals}
-                                  </span>
-                                </p>
-                                <p className="text-gray-500">
-                                  Total Sales:{" "}
-                                  <span className="text-red-600">
-                                    {item?.total_sales || 0} AED
-                                  </span>
-                                </p>
-                                {/* Additional user details */}
-                                {/* ... */}
-                              </div>
+                            {/* User Details */}
+                            <div>
+                              <h2 className="text-xl font-bold">
+                                {item?.userName}
+                              </h2>
+                              <p className="text-gray-500">
+                                Deals Closed:{" "}
+                                <span className="text-red-600">
+                                  {item?.total_closed_deals}
+                                </span>
+                              </p>
+                              <p className="text-gray-500">
+                                Total Sales:{" "}
+                                <span className="text-red-600">
+                                  {item?.total_sales || 0} AED
+                                </span>
+                              </p>
+                              {/* Additional user details */}
+                              {/* ... */}
                             </div>
                           </div>
-                        ))}
+                        </div>
+                      ))
+                    )}
                   </div>
                   <div></div>
                 </div>
