@@ -120,7 +120,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const handleKeyUp = (e) => {
     if (searchTerm) {
       if (e.key === "Enter" || e.keyCode === 13) {
-        setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
+        // setpageState((oldPageState) => ({...oldPageState, page: 1}));
         FetchSearchedLeads(token, e.target.value);
       }
     }
@@ -1355,7 +1355,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         setpageState((old) => ({
           ...old,
           isLoading: false,
-          page: pageState.page,
         }));
       })
       .catch((err) => console.log(err));
@@ -1382,8 +1381,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     } else {
       FetchLeads(token);
     }
-    // setCEOColumns([...CEOColumns]);
-    // eslint-disable-next-line
   }, [pageState.page, lead_type, reloadDataGrid]);
 
   // ROW CLICK FUNCTION
@@ -1568,6 +1565,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             position: "relative",
             marginBottom: "50px",
           }}
+          className={`${currentMode}-mode-datatable`}
         >
           {selectedRows.length > 0 && (
             <MuiButton

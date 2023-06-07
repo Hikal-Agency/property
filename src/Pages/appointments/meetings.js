@@ -75,17 +75,17 @@ const Meetings = () => {
     pageSize: 15,
   });
 
-  const columns = [
+ const columns = [
     {
       field: "leadName",
       headerName: "Lead name",
-      minWidth: 150,
+      minWidth: 160,
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
-      minWidth: 110,
+      minWidth: 100,
       flex: 1,
     },
     {
@@ -104,20 +104,20 @@ const Meetings = () => {
     {
       field: "meetingBy",
       headerName: "Meeting By",
-      minWidth: 130,
+      minWidth: 160,
       flex: 1,
     },
 
     {
       field: "meetingDate",
       headerName: "Date",
-      minWidth: 80,
+      minWidth: 110,
       flex: 1,
     },
     {
       field: "meetingTime",
       headerName: "Time",
-      minWidth: 70,
+      minWidth: 50,
       flex: 1,
     },
     {
@@ -129,29 +129,29 @@ const Meetings = () => {
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          <>
+          <div className="text-white w-[100%] flex justify-center">
             {cellValues.formattedValue === "Cancelled" && (
-              <div className="w-full h-full flex justify-center align-center items-center text-[#ff0000]">
+              <div className="w-full h-full flex align-center items-center bg-[#ff0000] rounded-lg">
                 CANCELLED
               </div>
             )}
 
             {cellValues.formattedValue === "Pending" && (
-              <div className="w-full h-full flex justify-center align-center items-center text-[#f27f25]">
+              <div className="w-full h-full flex align-center p-2 items-center bg-[#f27f25] rounded-lg">
                 PENDING
               </div>
             )}
             {cellValues.formattedValue === "Postponed" && (
-              <div className="w-full h-full flex justify-center align-center items-center text-[#f27f25]">
+              <div className="w-full h-full flex align-center p-2 items-center bg-[#f27f25] rounded-lg">
                 POSTPONED
               </div>
             )}
             {cellValues.formattedValue === "Attended" && (
-              <div className="w-full h-full flex justify-center align-center items-center text-[#0f9d58]">
+              <div className="w-full h-full flex align-center p-2 items-center bg-[#0f9d58] rounded-lg">
                 ATTENDED
               </div>
             )}
-          </>
+          </div>
         );
       },
     },
@@ -256,6 +256,10 @@ const Meetings = () => {
       paddingRight: "20px",
     },
 
+    "& .MuiDataGrid-cell[data-field='meetingTime']": {
+      display: "flex", 
+      justifyContent: "center"
+    },
     "& .MuiInputBase-root": {
       color: "white",
     },
@@ -428,7 +432,7 @@ const Meetings = () => {
                     />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <Box width={"100%"} sx={DataGridStyles}>
+                    <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
                       <DataGrid
                         autoHeight
                         rows={pageState.data}

@@ -209,7 +209,7 @@ const AllNewsletters = ({ pageState, setpageState }) => {
   }
   return (
     <div className="pb-10">
-      <Box width={"100%"} sx={DataGridStyles}>
+      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
         <DataGrid
           autoHeight
           rows={pageState.data}

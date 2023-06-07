@@ -242,7 +242,7 @@ const AllTickets = () => {
         />
       </Box> */}
 
-      <Box width={"100%"} sx={DataGridStyles}>
+      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
         <DataGrid
           autoHeight
           onRowClick={handleRowClick}

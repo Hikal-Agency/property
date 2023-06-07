@@ -1542,6 +1542,7 @@ const ClientLeads = ({
                 </div>
 
                 <Box
+                className={`${currentMode}-mode-datatable`}
                   width={"100%"}
                   sx={{ ...DataGridStyles, position: "relative" }}
                 >

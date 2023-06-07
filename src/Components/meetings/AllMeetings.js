@@ -49,49 +49,31 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
   };
 
   const columns = [
-    // {
-    //   field: "id",
-    //   headerName: "#",
-    //   minWidth: 50,
-    //   flex: 1,
-    //   headerAlign: "center",
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div
-    //         className={`${
-    //           currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-    //         } w-full h-full flex justify-center items-center px-5 font-semibold`}
-    //       >
-    //         {cellValues.formattedValue}
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       field: "leadName",
       headerName: "Lead name",
-      minWidth: 150,
+      minWidth: 160,
       flex: 1,
       headerAlign: "center",
     },
     {
       field: "project",
       headerName: "Project",
-      minWidth: 110,
+      minWidth: 90,
       flex: 1,
       headerAlign: "center",
     },
     {
       field: "enquiryType",
       headerName: "Enquiry",
-      minWidth: 110,
+      minWidth: 90,
       flex: 1,
       headerAlign: "center",
     },
     {
       field: "leadType",
       headerName: "Property",
-      minWidth: 110,
+      minWidth: 90,
       flex: 1,
       headerAlign: "center",
     },
@@ -99,7 +81,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
     {
       field: "meetingBy",
       headerName: "Meeting By",
-      minWidth: 170,
+      minWidth: 160,
       flex: 1,
       headerAlign: "center",
     },
@@ -114,7 +96,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
     {
       field: "meetingTime",
       headerName: "Meeting Time",
-      minWidth: 110,
+      minWidth: 90,
       flex: 1,
       headerAlign: "center",
     },
@@ -130,23 +112,23 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
         return (
           <>
             {cellValues.formattedValue === "Cancelled" && (
-              <div className="w-full h-full flex justify-center align-center items-center text-[#ff0000]">
+              <div className="w-full h-full flex align-center items-center text-[#ff0000]">
                 CANCELLED
               </div>
             )}
 
             {cellValues.formattedValue === "Pending" && (
-              <div className="w-full h-full flex justify-center align-center items-center text-[#f27f25]">
+              <div className="w-full h-full flex align-center items-center text-[#f27f25]">
                 PENDING
               </div>
             )}
             {cellValues.formattedValue === "Postponed" && (
-              <div className="w-full h-full flex justify-center align-center items-center text-[#f27f25]">
+              <div className="w-full h-full flex align-center items-center text-[#f27f25]">
                 POSTPONED
               </div>
             )}
             {cellValues.formattedValue === "Attended" && (
-              <div className="w-full h-full flex justify-center align-center items-center text-[#0f9d58]">
+              <div className="w-full h-full flex align-center items-center text-[#0f9d58]">
                 ATTENDED
               </div>
             )}
@@ -346,7 +328,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
   }
   return (
     <div className="pb-10">
-      <Box width={"100%"} sx={DataGridStyles}>
+      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
         <DataGrid
           autoHeight
           rows={pageState.data}

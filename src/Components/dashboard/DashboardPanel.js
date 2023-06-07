@@ -167,6 +167,17 @@ const DashboardPanel = ({ setloading }) => {
     },
   ];
 
+  function formatNumber(number) {
+  if (number >= 1000000) {
+    const formattedNumber = (number / 1000000).toFixed(1);
+    return formattedNumber.replace('.0', '') + 'M';
+  } else if (number >= 1000) {
+    const formattedNumber = (number / 1000).toFixed(1);
+    return formattedNumber.replace('.0', '') + 'K';
+  } else {
+    return number.toString();
+  }
+}
   return (
     <div className="mt-5 md:mt-2">
       <ToastContainer />
@@ -500,47 +511,36 @@ const DashboardPanel = ({ setloading }) => {
       {/* 3RD ROW [REVENUE, TOTAL SALES] */}
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-3 pb-3">
         <div
-          className={`${
-            currentMode === "dark" ? "bg-red-600" : "bg-gray-200"
-          } h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
+          className={`
+           bg-red-600 h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
         >
           <div>
             <p
-              className={`text-sm font-semibold ${
-                currentMode === "dark" ? "text-white" : "text-gray-900"
-              } `}
+            className={`text-sm font-semibold text-white `}
             >
               Deal drawn in the month
             </p>
             <p
-              className={`text-4xl font-bold mt-2 ${
-                currentMode === "dark" ? "text-white" : "text-red-600"
-              } `}
+              className={`text-4xl font-bold mt-2 text-white`}
             >
-              AED {DashboardData?.target_reached}
+              AED {formatNumber(Number(DashboardData?.target_reached))}
             </p>
           </div>
         </div>
 
         <div
-          className={`${
-            currentMode === "dark" ? "bg-red-600" : "bg-gray-200"
-          } h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
+          className={`bg-red-600 h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
         >
           <div>
             <p
-              className={`text-sm font-semibold ${
-                currentMode === "dark" ? "text-white" : "text-gray-900"
-              } `}
+              className={`text-sm font-semibold text-white`}
             >
               All time revenue
             </p>
             <p
-              className={`text-4xl font-bold mt-2 ${
-                currentMode === "dark" ? "text-white" : "text-red-600"
-              } `}
+              className={`text-4xl font-bold mt-2 text-white`}
             >
-              AED {DashboardData?.total_closed}
+              AED {formatNumber(Number(DashboardData?.total_closed))}
             </p>
           </div>
         </div>

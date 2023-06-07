@@ -1385,7 +1385,7 @@ const AllLeads = () => {
         </Box>
       )}
 
-      <Box width={"100%"} sx={{ ...DataGridStyles, position: "relative" }}>
+      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={{ ...DataGridStyles, position: "relative" }}>
         <DataGrid
           autoHeight
           disableSelectionOnClick
