@@ -1,5 +1,14 @@
 import { Button } from "@material-tailwind/react";
+<<<<<<< HEAD
 import { Box, CircularProgress, Dialog } from "@mui/material";
+=======
+import {
+  Box,
+  CircularProgress,
+  Dialog, 
+  TextField
+} from "@mui/material";
+>>>>>>> 6386bbe4580e910e298a74c747eab9eb59946618
 import {
   DataGrid,
   gridPageCountSelector,
@@ -689,6 +698,25 @@ const Newleads = ({
         .catch((err) => console.log(err));
   }
 
+   const handleSearch = (e) => {
+    
+    if(e.target.value === "") {
+            setpageState((oldPageState) => ({...oldPageState, page: 1}));
+      FetchLeads(token);
+    }
+    setSearchTerm(e.target.value);
+  }
+
+  const handleKeyUp = (e) => {
+    if(searchTerm) {
+
+          if (e.key === 'Enter' || e.keyCode === 13) {
+            setpageState((oldPageState) => ({...oldPageState, page: 1}));
+            FetchSearchedLeads(token, e.target.value);
+      }
+    }
+  }
+
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
     setSearchTerm(e.target.value);
@@ -706,7 +734,7 @@ const Newleads = ({
     }
     // setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
-  }, [pageState.page, lead_type, reloadDataGrid, searchTerm]);
+  }, [pageState.page, lead_type, reloadDataGrid]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
@@ -792,7 +820,11 @@ const Newleads = ({
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box width={"100%"} sx={DataGridStyles}>
+      <Box width={"100%"} sx={{...DataGridStyles, position: "relative"}}>
+
+          <div className="absolute top-[7px] right-[20px] z-[500]">
+            <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} onKeyUp={handleKeyUp} value={searchTerm} onInput={handleSearch}/>
+          </div>
         <DataGrid
           autoHeight
           disableSelectionOnClick
@@ -820,9 +852,9 @@ const Newleads = ({
           }}
           componentsProps={{
             toolbar: {
-              showQuickFilter: true,
-              value: searchText,
-              onChange: HandleQuicSearch,
+              showQuickFilter: false,
+              // value: searchText,
+              // onChange: HandleQuicSearch,
             },
           }}
           sx={{
