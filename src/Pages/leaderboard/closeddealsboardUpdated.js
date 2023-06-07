@@ -172,29 +172,42 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                       >
                         <div className="flex items-center">
                           {/* User Image */}
-                          <img
-                            src=""
-                            alt="User Image"
-                            className="w-16 h-16 rounded-full mr-4"
-                          />
+                          {item?.img ? (
+                            <img
+                              src={item?.img}
+                              alt="User Image"
+                              className="w-16 h-16 rounded-full mr-4"
+                            />
+                          ) : (
+                            <img
+                              src="/favicon.png"
+                              alt="User Image"
+                              className="w-16 h-16 rounded-full mr-4"
+                            />
+                          )}
 
                           {/* User Details */}
                           <div>
                             <h2 className="text-xl font-bold">
                               {item?.userName}
                             </h2>
-                            <p className="text-gray-500">
-                              Deals Closed:{" "}
-                              <span className="text-red-600">
-                                {item?.total_closed_deals}
-                              </span>
-                            </p>
-                            <p className="text-gray-500">
-                              Total Sales:{" "}
-                              <span className="text-red-600">
-                                {item?.total_sales || 0} AED
-                              </span>
-                            </p>
+                            {item?.total_closed_deals > 0 && (
+                              <p className="text-gray-500">
+                                Deals Closed:{" "}
+                                <span className="text-red-600">
+                                  {item?.total_closed_deals}
+                                </span>
+                              </p>
+                            )}
+                            {item?.total_closed_deals > 0 &&
+                              item?.total_closed_deals !== null && (
+                                <p className="text-gray-500">
+                                  Total Sales:{" "}
+                                  <span className="text-red-600">
+                                    {item?.total_sales}
+                                  </span>
+                                </p>
+                              )}
                             {/* Additional user details */}
                             {/* ... */}
                           </div>
@@ -239,11 +252,19 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             <div className="flex items-start">
                               {/* User Image */}
-                              <img
-                                src=""
-                                alt="User Image"
-                                className="w-16 h-16 rounded-full mr-4"
-                              />
+                              {item?.img ? (
+                                <img
+                                  src={item?.img}
+                                  alt="User Image"
+                                  className="w-16 h-16 rounded-full mr-4"
+                                />
+                              ) : (
+                                <img
+                                  src="/favicon.png"
+                                  alt="User Image"
+                                  className="w-16 h-16 rounded-full mr-4"
+                                />
+                              )}
 
                               {/* User Details */}
                               <div>

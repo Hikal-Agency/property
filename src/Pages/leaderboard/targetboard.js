@@ -1,9 +1,98 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+
+  const [loading, setLoading] = useState(false);
+  const [leaderboard, setLeaderboard] = useState();
+  const [manager, setManagers] = useState();
+  const [agents, setAgents] = useState();
+  const [count, setCount] = useState();
+
+  console.log("Leaderboard here: ", leaderboard);
+  console.log("Manager here: ", manager);
+  console.log("Agents here: ", agents);
+  const FetchLeaderboard = async (token) => {
+    setLoading(true);
+    let apiUrl =
+      tabValue === 0
+        ? "leaderboard"
+        : tabValue === 1
+        ? "leaderboard?last_month"
+        : "leaderboard?current_month";
+    try {
+      const all_leaderboard = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      setLeaderboard(all_leaderboard?.data?.user);
+
+      const leaderboard = all_leaderboard?.data?.user;
+
+      //   const get_managers = leaderboard?.filter(
+      //     (manager) => manager?.role === 3
+      //   );
+      //   setManagers(get_managers);
+
+      //   const get_agents = leaderboard?.filter((agent) => agent?.role === 7);
+      //   setAgents(get_agents);
+
+      const leadCount = leaderboard.reduce(
+        (acc, cur) => {
+          if (cur.total_sales) {
+            acc.total_sales += Number(cur.total_sales);
+          }
+          if (cur.total_closed_deals) {
+            acc.total_closed_deals += cur.total_closed_deals;
+          }
+          return acc;
+        },
+        { total_sales: 0, total_closed_deals: 0 }
+      );
+
+      setCount(leadCount);
+
+      const { agents = [], managers = [] } = leaderboard.reduce(
+        (acc, cur) => ({
+          agents: [...acc.agents, ...(cur.role === 7 ? [cur] : [])],
+          managers: [...acc.managers, ...(cur.role === 3 ? [cur] : [])],
+        }),
+        { agents: [], managers: [] }
+      );
+
+      setAgents(agents);
+      setManagers(managers);
+
+      setLoading(false);
+
+      //   console.log("total deals & sales: ", { total_sales, total_closed_deals });
+    } catch (error) {
+      setLoading(false);
+      console.log("Leaderboard not fetched. ", error);
+      toast.error("Unable to fetch leaderboard data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    FetchLeaderboard(token);
+  }, []);
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -68,6 +157,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
 
   return (
     <div>
+      <ToastContainer />
       <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={tabValue} onChange={handleChange} variant="standard">
           <Tab label="THIS MONTH" />
@@ -101,7 +191,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                 MANAGER
               </div>
               <div>
-                {Manager.map((item, index) => {
+                {Manager?.map((item, index) => {
                   return (
                     <div
                       key={index}
