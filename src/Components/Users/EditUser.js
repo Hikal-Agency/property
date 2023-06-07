@@ -314,6 +314,12 @@ const EditUser = ({ user }) => {
                                         : "#000000"
                                     }`,
                                   },
+                                  svg: {
+                                    color:
+                                      currentMode === "dark"
+                                        ? "#ffffff !important"
+                                        : "#000000 !important",
+                                  },
                                 }}
                                 onKeyDown={(e) => e.preventDefault()}
                                 readOnly={true}
@@ -335,6 +341,9 @@ const EditUser = ({ user }) => {
                                 color: `${
                                   currentMode === "dark" ? "#ffffff" : "#000000"
                                 }`,
+                              },
+                              "& .MuiSvgIcon-root": {
+                                color: "red",
                               },
                             }}
                             invalidDateMessage="Invalid date"
