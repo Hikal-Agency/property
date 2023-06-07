@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment-timezone';
 import { MenuItem, Select } from '@mui/material';
+import { useStateContext } from "../../context/ContextProvider";
 
 const Clock = () => {
   const [currentTime, setCurrentTime] = useState(moment().tz(moment.tz.guess()).format('D/MM/YYYY, h:mm:ss a [GMT]Z'));
   const [timezones, setTimezones] = useState([]);
   const [selectedTimezone, setSelectedTimezone] = useState(moment.tz.guess());
+  const {currentMode} = useStateContext();
 
   useEffect(() => {
     // Fetch all timezones
@@ -30,11 +32,32 @@ const Clock = () => {
     setSelectedTimezone(e.target.value);
   };
 
+  const SelectStyles = {
+    "&": {
+        color: currentMode === "dark" ? "white !important" : "black !important",
+        fontSize: "0.9rem",
+        fontWeight: "500",
+    },
+    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline":
+      {
+        color: currentMode === "dark" ? "white !important" : "black !important",
+        fontSize: "0.9rem",
+        fontWeight: "500",
+      },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor:
+        currentMode === "dark" ? "white !important" : "black !important",
+    },
+    "& .MuiFormLabel-root": {
+      color: currentMode === "dark" ? "white" : "black",
+},
+};
+
   return (
     <div>
       <div className="flex items-center mr-2">
-        <h2 style={{marginRight: 8, fontSize: 14}}>{currentTime}</h2>
-         <Select className='time-zone-select' sx={{padding: 0, "& .MuiSelect-select": {
+        <h2 style={{marginRight: 8, fontSize: 14, color: currentMode === "dark" ? "white" : "black"}}>{currentTime}</h2>
+         <Select className='time-zone-select' sx={{...SelectStyles, padding: 0, "& .MuiSelect-select": {
             padding: "0 25px 0 5px !important", 
          }}} size="small" value={selectedTimezone} onChange={handleTimezoneChange}>
           {timezones?.map((timezone) => (
