@@ -1074,7 +1074,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&coldCall=0&leadStatus=Transferred`;
     } else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}}&unassigned=1&coldCall=0`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0`;
       } else if (lead_type === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=New`;
       } else if (lead_type === "no answer") {
