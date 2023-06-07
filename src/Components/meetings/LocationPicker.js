@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import AutoComplete from "./AutoComplete";
+import { useStateContext } from "../../context/ContextProvider";
 import { BiCurrentLocation } from "react-icons/bi";
 
 const mapContainerStyle = {
@@ -19,6 +20,7 @@ const LocationPicker = ({
   showOnly = false,
   currLocByDefault
 }) => {
+  const {currentMode} = useStateContext();
   const geocoder = new window.google.maps.Geocoder();
 
   const [map, setMap] = useState({
@@ -89,7 +91,9 @@ const LocationPicker = ({
   return (
     <>
       {typeof window.google === "object" ? (
-        <div style={{ width: "100%" }}>
+        <Box sx={{"& ul": {
+          color: currentMode === "dark" ? "white" : "black"
+        }}} style={{ width: "100%" }}>
           <AutoComplete
             defaultLocation={meetingLocation.addressText}
             setMeetingLocation={setMeetingLocation}
@@ -108,7 +112,7 @@ const LocationPicker = ({
 
             <Button onClick={handleCurrentLocationClick} variant="contained" sx={currentLocBtnStyle}><BiCurrentLocation color="white" size={25}/></Button>
           </GoogleMap>
-        </div>
+        </Box>
       ) : (
         <div>Your map is loading...</div>
       )}

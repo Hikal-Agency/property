@@ -22,6 +22,7 @@ import BreadCrumb from "./BreadCrumb";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import { ToastContainer, toast } from "react-toastify";
+import Clock from "./Clock";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <Tooltip title={title} arrow placement="bottom">
@@ -204,7 +205,7 @@ const Navbar = () => {
     <>
       <ToastContainer />
       <div
-        className="flex justify-between p-2  relative "
+        className="flex justify-between items-center p-2 relative "
         style={{
           position: "fixed",
           top: 0,
@@ -222,7 +223,7 @@ const Navbar = () => {
               collapseSidebar();
               setIsCollapsed(!isCollapsed);
             }}
-            className="flex items-center rounded-lg px-5 cursor-pointer"
+            className="flex items-center rounded-lg pl-1 cursor-pointer"
           >
             <button
               type="button"
@@ -236,6 +237,9 @@ const Navbar = () => {
             </button>
           </div>
           <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
+        </div>
+        <div>
+          <Clock/>
         </div>
         <div className="flex">
           {isUserSubscribed !== null && [

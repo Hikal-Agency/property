@@ -32,6 +32,7 @@
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.2.0",
     "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",

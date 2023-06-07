@@ -110,13 +110,13 @@ const Meetings = () => {
 
     {
       field: "meetingDate",
-      headerName: "Date",
+      headerName: "Meeting Date",
       minWidth: 110,
       flex: 1,
     },
     {
       field: "meetingTime",
-      headerName: "Time",
+      headerName: "Meeting Time",
       minWidth: 50,
       flex: 1,
     },
@@ -398,6 +398,7 @@ const Meetings = () => {
                         icon={
                           value === 0 ? (
                             <AiOutlineAppstore
+                            size={22}
                               style={{
                                 color:
                                   currentMode === "dark"
@@ -407,6 +408,7 @@ const Meetings = () => {
                             />
                           ) : (
                             <AiOutlineTable
+                            size={22}
                               style={{
                                 color:
                                   currentMode === "dark"

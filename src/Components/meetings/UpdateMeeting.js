@@ -149,6 +149,23 @@ const UpdateMeeting = ({
     //eslint-disable-next-line
   }, []);
 
+  const SelectStyles = {
+    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline":
+      {
+        color: currentMode === "dark" ? "white !important" : "black !important",
+        fontSize: "0.9rem",
+        fontWeight: "500",
+      },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor:
+        currentMode === "dark" ? "white !important" : "black !important",
+    },
+    "& .MuiFormLabel-root": {
+      color: currentMode === "dark" ? "white" : "black",
+  },
+  };
+
+
   const update = async () => {
     try {
       setbtnloading(true);
@@ -305,7 +322,6 @@ const UpdateMeeting = ({
                   <div className="flex flex-col justify-center items-center gap-4 mt-2 mb-4">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
-                        label="Meeting Date"
                         value={meetingDateValue}
                         views={["year", "month", "day"]}
                         onChange={(newValue) => {
@@ -321,7 +337,20 @@ const UpdateMeeting = ({
                         format="yyyy-MM-dd"
                         renderInput={(params) => (
                           <TextField
+                            sx={{
+                              "& input": {
+                                color: currentMode === "dark" ? "white" : "black"
+                              },
+                              "&": {
+                                borderRadius: "4px",
+                                border: currentMode === "dark" ? "1px solid white" : "1px solid black"
+                              },
+                              "& .MuiSvgIcon-root" :{
+                                color: currentMode === "dark" ? "white" : "black",
+                              },
+                            }}
                             fullWidth
+                            label="Meeting Date"
                             {...params}
                             onKeyDown={(e) => e.preventDefault()}
                             readOnly={true}
@@ -333,7 +362,6 @@ const UpdateMeeting = ({
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <TimePicker
                         ampm={false}
-                        label="Meeting Time"
                         format="HH:mm"
                         value={meetingTimeValue}
                         onChange={(newValue) => {
@@ -348,6 +376,26 @@ const UpdateMeeting = ({
                           <TextField
                             {...params}
                             fullWidth
+                            label="Meeting Time"
+                            sx={{
+                              "& .MuiFormLabel-root": {
+                                background: currentMode === "dark" ? "#111827" : "",
+                                color: currentMode === "dark" ? "white" : "",
+                              },
+                              "& input": {
+                                color: currentMode === "dark" ? "white" : "black"
+                              },
+                              "& .MuiSvgIcon-root" :{
+                                color: currentMode === "dark" ? "white" : "black",
+                              },
+                              "&": {
+                                borderRadius: "4px",
+                                border: currentMode === "dark" ? "1px solid white" : ""
+                              },
+                              "&:focus": {
+                                border: "",
+                              }
+                            }}
                             onKeyDown={(e) => e.preventDefault()}
                             readOnly={true}
                           />
@@ -355,10 +403,9 @@ const UpdateMeeting = ({
                       />
                     </LocalizationProvider>
                     <FormControl fullWidth>
-                      <InputLabel id="meeting-status">
-                        Meeting Status
-                      </InputLabel>
-                      <Select
+                      <TextField
+                        sx={SelectStyles}
+                        select
                         labelId="meeting-status"
                         label="Meeting Status"
                         value={meetingStatus}
@@ -370,7 +417,7 @@ const UpdateMeeting = ({
                         <MenuItem value={"Postponed"}>Postponed</MenuItem>
                         <MenuItem value={"Attended"}>Attended</MenuItem>
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
-                      </Select>
+                      </TextField>
                     </FormControl>
                     {meetingLocation.lat && meetingLocation.lng && (
                       <LocationPicker

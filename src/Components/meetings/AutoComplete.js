@@ -5,6 +5,7 @@ import usePlacesAutocomplete, {
   getLatLng,
 } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
+import { useStateContext } from "../../context/ContextProvider";
 
 const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
   const {
@@ -16,6 +17,7 @@ const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
   } = usePlacesAutocomplete({
     debounce: 300,
   });
+  const {currentMode} = useStateContext();
   const ref = useOnclickOutside(() => {
     clearSuggestions();
   });
@@ -63,6 +65,7 @@ const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
         <TextField
             type={"text"}
             fullWidth
+            sx={{"& input": {color: currentMode === "dark" ? "white" : "black"}}}
             disabled={isDisabled ? true : !ready}
             onChange={handleInput}
             required
