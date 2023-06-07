@@ -398,7 +398,7 @@ const UserTable = ({ user }) => {
                 page={pageState.page}
                 sx={{
                   "& .Mui-selected": {
-                    color: "white",
+                    color: "white !important",
                     backgroundColor: "red !important",
                     "&:hover": {
                       backgroundColor:
@@ -406,7 +406,7 @@ const UserTable = ({ user }) => {
                     },
                   },
                   "& .MuiPaginationItem-root": {
-                    color: "white",
+                    color: currentMode === "dark" ? "white" : "black",
                   },
                 }}
               />
