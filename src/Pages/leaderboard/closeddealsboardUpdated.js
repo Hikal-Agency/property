@@ -7,6 +7,7 @@ import {
   Select,
   Tab,
   Tabs,
+  TextField,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { ToastContainer, toast } from "react-toastify";
@@ -161,20 +162,23 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
           <div className="mb-3">
             <Box sx={SelectStyles}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
+                {/* <InputLabel id="demo-simple-select-label">
                   Select a time period
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
+                </InputLabel> */}
+                <TextField
+                  // labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={period}
-                  label="Age"
+                  label="Select a time period"
                   onChange={handlePeriod}
+                  displayEmtpy
+                  select
+                  variant="standard"
                 >
                   <MenuItem value="last_month">Last Month</MenuItem>
                   <MenuItem value="current_month">Current Month</MenuItem>
                   <MenuItem value="">All time</MenuItem>
-                </Select>
+                </TextField>
               </FormControl>
             </Box>
           </div>
@@ -211,6 +215,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                           } rounded-md p-2 w-full`}
                           onClick={(e) => handleClick(item?.id, e)}
                           key={index}
+                          style={{ cursor: "pointer" }}
                         >
                           <div className="flex items-center">
                             {/* User Image */}
