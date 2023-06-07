@@ -37,6 +37,9 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
       borderColor:
         currentMode === "dark" ? "white !important" : "black !important",
     },
+    "& .MuiFormLabel-root": {
+      color: currentMode === "dark" ? "white" : "black",
+    },
   };
 
   console.log("log:::: ", callLogs);
