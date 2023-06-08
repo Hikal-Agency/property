@@ -61,6 +61,7 @@ const BookedDeals = ({
   const [deletebtnloading, setdeletebtnloading] = useState(false);
 
   const dataTableRef = useRef();
+  const searchRef = useRef();
 
   const {
     currentMode,
@@ -1241,7 +1242,6 @@ const BookedDeals = ({
         setpageState((old) => ({
           ...old,
           isLoading: false,
-          page: pageState.page,
         }));
       })
       .catch((err) => console.log(err));
@@ -1251,14 +1251,14 @@ const BookedDeals = ({
   const handleSearch = (e) => {
     
     if(e.target.value === "") {
-            setpageState((oldPageState) => ({...oldPageState, page: 1}));
+      setpageState((oldPageState) => ({...oldPageState, page: 1}));
       FetchLeads(token);
     }
-    setSearchTerm(e.target.value);
+    // setSearchTerm(e.target.value);
   }
 
   const handleKeyUp = (e) => {
-    if(searchTerm) {
+    if(searchRef.current.querySelector("input").value) {
 
           if (e.key === 'Enter' || e.keyCode === 13) {
             setpageState((oldPageState) => ({...oldPageState, page: 1}));
@@ -1375,7 +1375,7 @@ const BookedDeals = ({
       <ToastContainer />
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
           <div className="absolute top-[7px] right-[20px] z-[500]">
-            <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} onKeyUp={handleKeyUp} value={searchTerm} onInput={handleSearch}/>
+            <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} ref={searchRef} onKeyUp={handleKeyUp} onInput={handleSearch}/>
           </div>
         <div className={`${currentMode}-mode-datatable`} style={{ position: "relative" }}>
           <DataGrid
