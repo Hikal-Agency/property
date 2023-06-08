@@ -181,11 +181,7 @@ const RenderManagers = ({ cellValues }) => {
           </MenuItem>
           {Managers?.length > 0 &&
             Managers?.map((manager, index) => (
-              <MenuItem
-                key={index}
-                value={manager?.id}
-                sx={{ color: currentMode === "dark" ? "#ffffff" : "#000000" }}
-              >
+              <MenuItem key={index} value={manager?.id} sx={{ color: "black" }}>
                 {manager?.userName}
               </MenuItem>
             ))}
