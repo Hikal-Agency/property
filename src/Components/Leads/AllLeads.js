@@ -1405,6 +1405,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       !event.target.closest(".editLeadBtn") &&
       !event.target.closest(".deleteLeadBtn")
     ) {
+      console.log("Single lead clicked::::::: ", params.row);
       setsingleLeadData(params.row);
       handleLeadModelOpen();
     }
