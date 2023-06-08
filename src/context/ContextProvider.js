@@ -208,7 +208,13 @@ export const ContextProvider = ({ children }) => {
         ThirdPartyLeadsCount: response.data.data["THIRD PARTY LEADS"],
         UnassignedLeadsCount: response.data.data["UNASSIGNED LEADS"],
         WarmLeadCount: response.data.data["WARM LEADS"],
-        UNASSIGNED: response.data.data["unassigned"],
+        UNASSIGNED: {
+          fresh: response.data.data['unassigned']["HOT LEADS"], 
+          cold: response.data.data['unassigned']["COLD LEADS"], 
+          personal: response.data.data['unassigned']["PERSONAL LEADS"], 
+          third_party: response.data.data['unassigned']["THIRD PARTY LEADS"], 
+          warm: response.data.data['unassigned']["WARM LEADS"], 
+        },
       });
     } catch (error) {
       console.log(error);
