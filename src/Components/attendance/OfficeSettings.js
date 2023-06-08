@@ -65,21 +65,22 @@ const OfficeSettings = () => {
           //   style={{ height: "700px" }}
         >
           <div>
-            <FullCalendar
-              plugins={[dayGridPlugin]}
-              initialView="dayGridMonth"
-              height={"90vh"}
-            />
             {/* <FullCalendar
               plugins={[dayGridPlugin]}
               initialView="dayGridMonth"
               height={"90vh"}
-              // eventClick={handleEventClick}
-              eventClick = function(start,end,allDays){
-                console.log("...clicked....")
-              },
             /> */}
-            {/* <MyCalendar/> */}
+            {/* <FullCalendar
+              plugins={[dayGridPlugin]}
+              initialView="dayGridMonth"
+              height={"90vh"}
+              selectable={true}
+              // eventClick={handleEventClick}
+              select={function (start, end, allDays) {
+                console.log("...clicked....");
+              }}
+            /> */}
+            <MyCalendar />
           </div>
         </div>
         <div className="h-full w-full">

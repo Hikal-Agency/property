@@ -10,8 +10,9 @@ const MyCalendar = () => {
       plugins: [dayGridPlugin],
       initialView: "dayGridMonth",
       height: "90vh",
-      eventClick: function(start,end,allDays){
-        console.log("...clicked....")
+      selectable: true,
+      select: function (start, end, allDays) {
+        console.log("...clicked....");
       },
     });
     calendar.render();
