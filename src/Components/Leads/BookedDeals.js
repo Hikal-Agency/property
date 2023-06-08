@@ -1288,6 +1288,11 @@ const BookedDeals = ({
     // eslint-disable-next-line
   }, [pageState.page, lead_type, reloadDataGrid]);
 
+  useEffect(() => {
+    setpageState((oldPageState) => ({ ...oldPageState, page: 0 }));
+    searchRef.current.querySelector("input").value = "";
+  }, [lead_type, lead_origin]);
+
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
     if (!event.target.classList.contains("deleteLeadBtn")) {

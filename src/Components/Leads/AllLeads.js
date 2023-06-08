@@ -1399,6 +1399,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   useEffect(() => {
     setpageState((oldPageState) => ({ ...oldPageState, page: 0 }));
+    searchRef.current.querySelector("input").value = "";
   }, [lead_type, lead_origin]);
 
   useEffect(() => {
