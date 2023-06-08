@@ -681,6 +681,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             )}
 
             {cellValues.row.leadSource?.toLowerCase() ===
+              "campaign youtube" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaYoutube size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() ===
               "campaign twitter" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <FaTwitter size={22} color={"#14539a"} />
