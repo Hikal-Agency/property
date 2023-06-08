@@ -2002,7 +2002,7 @@ const Sidebarmui = () => {
                                             },
                                             "& .css-cveggr-MuiListItemIcon-root":
                                               {
-                                                minWidth: "20px",
+                                                minWidth: "10px !important",
                                               },
                                           }}
                                           className="relative my-1"
@@ -2033,6 +2033,7 @@ const Sidebarmui = () => {
                                             // sx={{
                                             //   color: menu?.countColor,
                                             // }}
+                                            style={{ marginTop: "-4px" }}
                                           >
                                             {menu?.count !== null
                                               ? menu?.count

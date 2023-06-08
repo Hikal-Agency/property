@@ -9,11 +9,18 @@ import { Button, TextField } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { useEffect } from "react";
+import moment from "moment";
+import { Calendar } from "@fullcalendar/core";
+import MyCalendar from "./MyCalendar";
 
 const OfficeSettings = () => {
   const { currentMode, formatNum } = useStateContext();
 
   const [isEditing, setIsEditing] = useState(false);
+  const handleEventClick = (eventClickInfo) => {
+    console.log("Event clicked:", eventClickInfo.event);
+  };
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -58,17 +65,21 @@ const OfficeSettings = () => {
           //   style={{ height: "700px" }}
         >
           <div>
-            {/* <FullCalendar
-              plugins={[dayGridPlugin]}
-              initialView="dayGridMonth"
-              height={"90vh"}
-
-            /> */}
             <FullCalendar
               plugins={[dayGridPlugin]}
               initialView="dayGridMonth"
               height={"90vh"}
             />
+            {/* <FullCalendar
+              plugins={[dayGridPlugin]}
+              initialView="dayGridMonth"
+              height={"90vh"}
+              // eventClick={handleEventClick}
+              eventClick = function(start,end,allDays){
+                console.log("...clicked....")
+              },
+            /> */}
+            {/* <MyCalendar/> */}
           </div>
         </div>
         <div className="h-full w-full">
