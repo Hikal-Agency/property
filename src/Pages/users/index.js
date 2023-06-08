@@ -264,13 +264,38 @@ const Users = () => {
 
         return (
           <div className="w-full flex items-center justify-center capitalize">
-            <Switch
+            {/* <Switch
               defaultChecked={cellValues?.formattedValue === 1}
               onChange={() => handleTrainerSwitchChange(cellValues)}
               color={"default"}
               sx={{
                 "&.Mui-checked": {
                   color: "#fff",
+                },
+              }}
+            /> */}
+            <Switch
+              defaultChecked={cellValues?.formattedValue === 1}
+              onChange={() => handleTrainerSwitchChange(cellValues)}
+              sx={{
+                color: "green !important",
+                "& .MuiSwitch-thumb": {
+                  color:
+                    cellValues?.formattedValue === 1
+                      ? "green !important"
+                      : "#B91C1C !important",
+                },
+                "& .Mui-checked": {
+                  color:
+                    cellValues?.formattedValue === 1
+                      ? "green !important"
+                      : "#B91C1C !important",
+                },
+                "& .MuiSwitch-track": {
+                  backgroundColor:
+                    cellValues?.formattedValue === 1
+                      ? "green !important"
+                      : "#B91C1C !important",
                 },
               }}
             />
