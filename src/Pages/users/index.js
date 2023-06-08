@@ -2,7 +2,7 @@ import { Button } from "@material-tailwind/react";
 import Switch from "@mui/material/Switch";
 import Avatar from "@mui/material/Avatar";
 
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
 
@@ -264,10 +264,40 @@ const Users = () => {
 
         return (
           <div className="w-full flex items-center justify-center capitalize">
-            <Switch
+            {/* <Switch
               defaultChecked={cellValues?.formattedValue === 1}
               onChange={() => handleTrainerSwitchChange(cellValues)}
               color={"default"}
+              sx={{
+                "&.Mui-checked": {
+                  color: "#fff",
+                },
+              }}
+            /> */}
+            <Switch
+              defaultChecked={cellValues?.formattedValue === 1}
+              onChange={() => handleTrainerSwitchChange(cellValues)}
+              sx={{
+                color: "green !important",
+                "& .MuiSwitch-thumb": {
+                  color:
+                    cellValues?.formattedValue === 1
+                      ? "green !important"
+                      : "#B91C1C !important",
+                },
+                "& .Mui-checked": {
+                  color:
+                    cellValues?.formattedValue === 1
+                      ? "green !important"
+                      : "#B91C1C !important",
+                },
+                "& .MuiSwitch-track": {
+                  backgroundColor:
+                    cellValues?.formattedValue === 1
+                      ? "green !important"
+                      : "#B91C1C !important",
+                },
+              }}
             />
           </div>
         );
@@ -413,57 +443,87 @@ const Users = () => {
                     </span>
                   </Link> */}
                   <Button
-                    className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md "
+                    className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
                     onClick={HandleOpenModel}
                   >
-                    <span className="flex justify-between items-center">
+                    <span className="flex justify-between items-center ">
                       <AiOutlinePlus style={{ marginRight: "0.5em" }} />
                       Add User
                     </span>
                   </Button>
                 </div>
-                <Box
-                  sx={{
-                    ...darkModeColors,
-                    "& .MuiTabs-indicator": {
-                      // height: "100%",
-                      borderRadius: "5px",
-                      backgroundColor: "#da1f26",
-                    },
-                    "& .Mui-selected": {
-                      color: "white !important",
-                      zIndex: "1",
-                    },
-                  }}
-                  className={` rounded-md overflow-hidden ${
-                    currentMode === "dark" ? "bg-black" : "bg-white"
-                  } `}
-                >
-                  <Tabs value={value} onClick={handleChange} variant="standard">
-                    <Tab
-                      icon={
-                        value === 0 ? (
-                          <AiOutlineAppstore
-                            style={{
-                              color:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                            }}
-                          />
-                        ) : (
-                          <AiOutlineTable
-                            style={{
-                              color:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                            }}
-                          />
-                        )
-                      }
+                <div className="flex items-center justify-between">
+                  <Box
+                    sx={{
+                      ...darkModeColors,
+                      "& .MuiTabs-indicator": {
+                        // height: "100%",
+                        borderRadius: "5px",
+                        backgroundColor: "#da1f26",
+                      },
+                      "& .Mui-selected": {
+                        color: "white !important",
+                        zIndex: "1",
+                      },
+                    }}
+                    className={` rounded-md overflow-hidden ${
+                      currentMode === "dark" ? "bg-black" : "bg-white"
+                    } `}
+                  >
+                    <Tabs
+                      value={value}
+                      onClick={handleChange}
+                      variant="standard"
+                    >
+                      <Tab
+                        icon={
+                          value === 0 ? (
+                            <AiOutlineAppstore
+                              style={{
+                                color:
+                                  currentMode === "dark"
+                                    ? "#ffffff"
+                                    : "#000000",
+                              }}
+                            />
+                          ) : (
+                            <AiOutlineTable
+                              style={{
+                                color:
+                                  currentMode === "dark"
+                                    ? "#ffffff"
+                                    : "#000000",
+                              }}
+                            />
+                          )
+                        }
+                      />
+                    </Tabs>
+                  </Box>
+                  <div className="">
+                    <TextField
+                      placeholder="Search.."
+                      variant="standard"
+                      inputProps={{
+                        style: {
+                          borderBottom: "2px solid white",
+                          marginRight: "10px",
+                          color: currentMode === "dark" ? "#ffffff" : "#000000",
+                        },
+                      }}
+                      // onKeyUp={handleKeyUp}
+                      // value={searchTerm}
+                      // onInput={handleSearch}
                     />
-                  </Tabs>
-                </Box>
+                  </div>
+                </div>
                 <div className="mt-3 pb-3">
                   <TabPanel value={value} index={0}>
-                    <Box className={`${currentMode}-mode-datatable`} width={"100%"} sx={DataGridStyles}>
+                    <Box
+                      className={`${currentMode}-mode-datatable`}
+                      width={"100%"}
+                      sx={DataGridStyles}
+                    >
                       <DataGrid
                         autoHeight
                         disableSelectionOnClick

@@ -168,16 +168,16 @@ const DashboardPanel = ({ setloading }) => {
   ];
 
   function formatNumber(number) {
-  if (number >= 1000000) {
-    const formattedNumber = (number / 1000000).toFixed(2);
-    return formattedNumber.replace('.00', '') + 'M';
-  } else if (number >= 1000) {
-    const formattedNumber = (number / 1000).toFixed(2);
-    return formattedNumber.replace('.00', '') + 'K';
-  } else {
-    return number.toString();
+    if (number >= 1000000) {
+      const formattedNumber = (number / 1000000).toFixed(2);
+      return formattedNumber.replace(".00", "") + "M";
+    } else if (number >= 1000) {
+      const formattedNumber = (number / 1000).toFixed(2);
+      return formattedNumber.replace(".00", "") + "K";
+    } else {
+      return number.toString();
+    }
   }
-}
   return (
     <div className="mt-5 md:mt-2">
       <ToastContainer />
@@ -515,14 +515,10 @@ const DashboardPanel = ({ setloading }) => {
            bg-red-600 h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
         >
           <div>
-            <p
-            className={`text-sm font-semibold text-white `}
-            >
+            <p className={`text-sm font-semibold text-white `}>
               Deal drawn in the month
             </p>
-            <p
-              className={`text-4xl font-bold mt-2 text-white`}
-            >
+            <p className={`text-4xl font-bold mt-2 text-white`}>
               AED {formatNumber(Number(DashboardData?.target_reached))}
             </p>
           </div>
@@ -532,14 +528,10 @@ const DashboardPanel = ({ setloading }) => {
           className={`bg-red-600 h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
         >
           <div>
-            <p
-              className={`text-sm font-semibold text-white`}
-            >
+            <p className={`text-sm font-semibold text-white`}>
               All time revenue
             </p>
-            <p
-              className={`text-4xl font-bold mt-2 text-white`}
-            >
+            <p className={`text-4xl font-bold mt-2 text-white`}>
               AED {formatNumber(Number(DashboardData?.total_closed))}
             </p>
           </div>

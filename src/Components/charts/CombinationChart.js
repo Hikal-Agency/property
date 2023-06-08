@@ -57,6 +57,7 @@ const CombinationChart = () => {
     <span>
       {currentMode === "dark" ? (
         <Chart
+          key="dark-chart"
           type="bar"
           data={{
             labels: performanceChartData.map((member) => member.userName),
@@ -99,6 +100,7 @@ const CombinationChart = () => {
         />
       ) : (
         <Chart
+          key="light-chart"
           type="bar"
           data={{
             labels: performanceChartData.map((member) => member.userName),

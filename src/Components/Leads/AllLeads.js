@@ -45,6 +45,8 @@ import BulkImport from "./BulkImport";
 import { RiMessage2Line } from "react-icons/ri";
 import { FaWhatsapp } from "react-icons/fa";
 import Loader from "../Loader";
+import { FaYoutube } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -682,6 +684,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             {cellValues.row.leadSource?.toLowerCase() === "self" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <FaUser size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() ===
+              "campaign youtube" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaYoutube size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() ===
+              "campaign twitter" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaTwitter size={22} color={"#14539a"} />
               </div>
             )}
           </>
@@ -1399,6 +1415,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       !event.target.closest(".editLeadBtn") &&
       !event.target.closest(".deleteLeadBtn")
     ) {
+      console.log("Single lead clicked::::::: ", params.row);
       setsingleLeadData(params.row);
       handleLeadModelOpen();
     }
