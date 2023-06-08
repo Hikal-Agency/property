@@ -105,7 +105,10 @@ const Newleads = ({
       headerAlign: "center",
       sortable: false,
       filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+                  renderCell: (params) => <div className="flex flex-col">
+        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+      </div>,
     },
     {
       field: "leadName",
@@ -242,7 +245,10 @@ const Newleads = ({
       headerAlign: "center",
       sortable: false,
       filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+                  renderCell: (params) => <div className="flex flex-col">
+        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+      </div>,
     },
     {
       field: "leadName",
@@ -602,10 +608,10 @@ const Newleads = ({
       }));
       console.log("the search lead  url is ");
       console.log(
-        `${BACKEND_URL}/search?title=${e.target.value}&page=${pageState.page}`
+        `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`
       );
       const coldCallCode = pageState?.data[0]?.coldCall;
-      let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=New`;
+      let url = `${BACKEND_URL}/search?title=${term}&feedback=New`;
       if (coldCallCode) {
         url += `&coldCall=${coldCallCode}`;
       }
