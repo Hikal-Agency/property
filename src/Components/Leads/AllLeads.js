@@ -46,6 +46,7 @@ import { RiMessage2Line } from "react-icons/ri";
 import { FaWhatsapp } from "react-icons/fa";
 import Loader from "../Loader";
 import { FaYoutube } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -680,9 +681,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             )}
 
             {cellValues.row.leadSource?.toLowerCase() ===
-              "campaign youtube" && (
+              "campaign twitter" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaYoutube size={22} color={"#14539a"} />
+                <FaTwitter size={22} color={"#14539a"} />
               </div>
             )}
           </>
