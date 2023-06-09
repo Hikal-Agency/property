@@ -2280,7 +2280,7 @@ const Sidebarmui = () => {
                             title={link.name}
                             key={link.name}
                             placement="right"
-                            onClick={() => setOpenedSubMenu({menuIndex: menuIndex + 1, linkIndex})}
+                            onClick={(e) => handleExpand(e, {menuIndex: menuIndex+1, linkIndex}, link)}
                           >
                             {link.submenu ? (
                               <Box
@@ -2499,7 +2499,7 @@ const Sidebarmui = () => {
                               title={link.name}
                               key={link.name}
                               placement="right"
-                              onClick={() => setOpenedSubMenu({menuIndex: menuIndex + 1, linkIndex})}
+                            onClick={(e) => handleExpand(e, {menuIndex: menuIndex+1, linkIndex}, link)}
                             >
                               {link.submenu ? (
                                 <Box
