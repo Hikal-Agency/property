@@ -1862,6 +1862,7 @@ const Sidebarmui = () => {
         className="h-screen sticky top-0"
       >
         <div className="mt-3">
+        <div className="sidebar-top" style={{position: "sticky", top: 0, background: currentMode === "dark" ? "black" : "white", zIndex: 1000, }}>
           <div className="flex justify-between items-center h-[50px]">
             <a
               href="/dashboard"
@@ -1946,6 +1947,7 @@ const Sidebarmui = () => {
                 />
               </Link>
             )}
+          </div>
           </div>
           <div className="mt-5 mb-5">
             <Menu
