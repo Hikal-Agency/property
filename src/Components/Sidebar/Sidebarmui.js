@@ -93,6 +93,7 @@ const Sidebarmui = () => {
     fetchSidebarData();
   }, []);
 
+
   //  DATA
   // const links = [
   //   {
@@ -1621,6 +1622,8 @@ const Sidebarmui = () => {
     },
   ];
 
+  console.log(selected);
+
   const [agentData, setAgentData] = useState(Agentlinks);
   const [linksData, setLinksData] = useState(links);
   const [managerData, setManagerData] = useState(Managerlinks);
@@ -1904,7 +1907,7 @@ const Sidebarmui = () => {
             backgroundColor: currentMode === "dark" ? "#000000" : "#ffffff",
           },
         }}
-        className="h-screen sticky top-0"
+        className={`h-screen sticky top-0`}
       >
         <div className="mt-3">
           <div
@@ -1921,7 +1924,7 @@ const Sidebarmui = () => {
                 href="/dashboard"
                 className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
                 onClick={() => {
-                  setSelected("Dashboard");
+                  setSelected({name: "Dashboard", index: 0});
                   setopenBackDrop(true);
                 }}
               >
@@ -2094,7 +2097,6 @@ const Sidebarmui = () => {
                                   open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex}
                                 >
                                   {link.submenu.map((menu, index) => {
-                                    console.log(menu);
                                     return (
                                       <Link
                                         key={index}
@@ -2141,10 +2143,7 @@ const Sidebarmui = () => {
                                           className="relative my-1"
                                         >
                                           <MenuItem
-                                            active={selected === menu.name}
-                                            onClick={() =>
-                                              setSelected(menu.name)
-                                            }
+                                            active={menu.link === window.location.pathname.replaceAll("%20", " ")}
                                             className="flex"
                                           >
                                             {menu?.icon && (
@@ -2162,11 +2161,11 @@ const Sidebarmui = () => {
                                             </span>
                                           </MenuItem>
                                           <span
-                                            className="leads_counter block absolute right-5 top-5"
+                                            className="leads_counter block absolute right-5"
                                             // sx={{
                                             //   color: menu?.countColor,
                                             // }}
-                                            style={{ marginTop: "-4px" }}
+                                            style={{ top: "50%", transform: "translateY(-50%)" }}
                                           >
                                             {menu?.count !== null
                                               ? menu?.count
@@ -2215,8 +2214,7 @@ const Sidebarmui = () => {
                                 className="my-1"
                               >
                                 <MenuItem
-                                  active={selected === link.name}
-                                  onClick={() => setSelected(link.name)}
+                                 active={link.link === window.location.pathname.replaceAll("%20", " ")} 
                                 >
                                   <Link
                                     to={`${link.link}`}
@@ -2355,14 +2353,13 @@ const Sidebarmui = () => {
                                           className="relative my-1"
                                         >
                                           <MenuItem
-                                            active={selected === menu.name}
-                                            onClick={() =>
-                                              setSelected(menu.name)
-                                            }
+                                            active={menu.link === window.location.pathname.replaceAll("%20", " ")} 
                                           >
                                             {menu?.name}
                                           </MenuItem>
-                                          <span className="leads_counter block absolute right-5 top-5">
+                                          <span className="leads_counter block absolute right-5" 
+                                            style={{ top: "50%", transform: "translateY(-50%)" }}
+                                          >
                                             {menu?.count !== null
                                               ? menu?.count
                                               : ""}
@@ -2410,8 +2407,7 @@ const Sidebarmui = () => {
                                 className="my-1"
                               >
                                 <MenuItem
-                                  active={selected === link.name}
-                                  onClick={() => setSelected(link.name)}
+                                active={link.link === window.location.pathname.replaceAll("%20", " ")}
                                 >
                                   {link.link === "/contacts" ||
                                   link.link === "/dashboard" ? (
@@ -2463,7 +2459,6 @@ const Sidebarmui = () => {
                       </div>
                     ))
                   : agentData.map((item, linkIndex) => {
-                      console.log(item);
                       return (
                         <div key={linkIndex}>
                           {!isCollapsed ? (
@@ -2541,7 +2536,6 @@ const Sidebarmui = () => {
                                           to={`${menu.link}`}
                                           onClick={() => {
                                             setopenBackDrop(true);
-                                            console.log("Clicked");
                                           }}
                                         >
                                           <Box
@@ -2577,10 +2571,7 @@ const Sidebarmui = () => {
                                             className="relative my-1"
                                           >
                                             <MenuItem
-                                              active={selected === menu.name}
-                                              onClick={() =>
-                                                setSelected(menu.name)
-                                              }
+                                            active={window.location.pathname.replaceAll("%20", " ") === menu.link}
                                             >
                                               {console.log(
                                                 "Menudetail: ",
@@ -2588,7 +2579,9 @@ const Sidebarmui = () => {
                                               )}
                                               {menu?.name || ""}
                                             </MenuItem>
-                                            <span className="leads_counter block absolute right-5 top-5">
+                                            <span className="leads_counter block absolute right-5"
+                                            style={{ top: "50%", transform: "translateY(-50%)" }}
+                                            >
                                               {menu?.count !== null
                                                 ? menu?.count
                                                 : ""}
@@ -2636,8 +2629,7 @@ const Sidebarmui = () => {
                                   className="my-1"
                                 >
                                   <MenuItem
-                                    active={selected === link.name}
-                                    onClick={() => setSelected(link.name)}
+                                  active={link.link === window.location.pathname.replaceAll("%20", " ")}
                                   >
                                     {link.link === "/contacts" ||
                                     link.link === "/dashboard" ? (

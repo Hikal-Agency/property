@@ -16,8 +16,6 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-
-
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
@@ -91,8 +89,8 @@ input[type="number"] {
   color: #fff;
 }
 
-.PhoneInput{
-  padding : 14px 4px !important;
+.PhoneInput {
+  padding: 14px 4px !important;
 }
 
 .image-picker .progress-bar-wrapper {
@@ -175,7 +173,7 @@ aside.ps-sidebar-root {
 .MuiDataGrid-columnHeader .MuiButtonBase-root {
   padding: 0 !important;
 }
- 
+
 .MuiDataGrid-columnHeader[data-field="leadSource"] {
   width: 45px !important;
   min-width: 45px !important;
@@ -201,8 +199,8 @@ aside.ps-sidebar-root {
   min-width: 45px !important;
   justify-content: center !important;
 }
-.MuiDataGrid-cell[data-field="leadSource"] div{
-  width: 100% !important; 
+.MuiDataGrid-cell[data-field="leadSource"] div {
+  width: 100% !important;
   justify-content: center !important;
 }
 .MuiDataGrid-cell[data-field="edit"] {
@@ -249,7 +247,7 @@ aside.ps-sidebar-root {
   text-align: center !important;
 }
 
-label[for="bulkImport"] .MuiButtonBase-root{
+label[for="bulkImport"] .MuiButtonBase-root {
   z-index: 5 !important;
 }
 
@@ -257,14 +255,14 @@ label[for="bulkImport"] .MuiButtonBase-root{
   overflow-wrap: anywhere;
 }
 
-.phone-input-light .PhoneInputInput{
+.phone-input-light .PhoneInputInput {
   background-color: #fff;
-  color:"#000 !important"
+  color: "#000 !important";
 }
 
 .phone-input-dark .PhoneInputInput {
   background-color: #000;
-  color:"white !important"
+  color: "white !important";
 }
 
 .MuiDataGrid-cell badge:not(badge.available) {
@@ -273,14 +271,15 @@ label[for="bulkImport"] .MuiButtonBase-root{
 
 .spinner-container {
   position: relative !important;
-  top: 0 !important; 
+  top: 0 !important;
   left: 0 !important;
-  margin: 0 !important; 
-
+  margin: 0 !important;
 }
 
 /* Loader */
-.spinner-container circle[fill='#8C37F7'], .spinner-container circle[fill='#8C37F6'], .spinner-container circle[fill='#DABDFF']{
+.spinner-container circle[fill="#8C37F7"],
+.spinner-container circle[fill="#8C37F6"],
+.spinner-container circle[fill="#DABDFF"] {
   fill: #da1f26 !important;
 }
 
@@ -288,20 +287,25 @@ label[for="bulkImport"] .MuiButtonBase-root{
   stroke: #ff6a6f !important;
 }
 
-.MuiDataGrid-columnHeader[aria-label='Action'] .MuiDataGrid-columnHeaderTitleContainerContent{
+.MuiDataGrid-columnHeader[aria-label="Action"]
+  .MuiDataGrid-columnHeaderTitleContainerContent {
   width: 100% !important;
 }
 
-.MuiDataGrid-columnHeader[aria-label='Action'] .MuiDataGrid-columnHeaderTitle {
+.MuiDataGrid-columnHeader[aria-label="Action"] .MuiDataGrid-columnHeaderTitle {
   width: 100% !important;
   text-align: center;
 }
 
-.MuiDataGrid-columnHeader:first-child .MuiDataGrid-columnHeaderDraggableContainer, .MuiDataGrid-main .MuiDataGrid-row > div:first-child .MuiDataGrid-cellContent {
+.MuiDataGrid-columnHeader:first-child
+  .MuiDataGrid-columnHeaderDraggableContainer,
+.MuiDataGrid-main .MuiDataGrid-row > div:first-child .MuiDataGrid-cellContent {
   padding-left: 10px;
 }
 
-.MuiDataGrid-main .MuiDataGrid-columnHeaderCheckbox .MuiDataGrid-columnHeaderDraggableContainer {
+.MuiDataGrid-main
+  .MuiDataGrid-columnHeaderCheckbox
+  .MuiDataGrid-columnHeaderDraggableContainer {
   padding-left: 0 !important;
 }
 
@@ -331,6 +335,19 @@ label[for="bulkImport"] .MuiButtonBase-root{
   text-align: center;
 }
 
+.ps-menuitem-root.ps-active a,
+.ps-menuitem-root.ps-active a:hover {
+  background: #da1f26;
+  border-top-right-radius: 8px;
+}
+
+.ps-menuitem-root.ps-active .ps-menu-label,
+.ps-menuitem-root.ps-active .ps-menu-label:hover,
+.ps-menuitem-root.ps-active + .leads_counter,
+.ps-menuitem-root.ps-active:hover + .leads_counter,
+.ps-menuitem-root.ps-active + .leads_counter:hover {
+  color: white !important;
+}
 
 @media all and (max-width: 1300px) {
   .MuiDataGrid-cell[data-field="creationDate"] p {
@@ -339,8 +356,7 @@ label[for="bulkImport"] .MuiButtonBase-root{
 }
 
 @media all and (max-width: 1500px) {
-.time-zone-select {
-  width: 115px !important;
-}
-
+  .time-zone-select {
+    width: 115px !important;
+  }
 }
