@@ -74,7 +74,12 @@ const RenderSalesperson = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.leadId);
-    UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
+    if(newSalesPerson === undefined) {
+      UpdateLeadData.append("assignedToSales", 102);
+    } else {
+      UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
+    }
+
     await axios
       .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {
         headers: {

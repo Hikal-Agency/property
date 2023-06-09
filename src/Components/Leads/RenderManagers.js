@@ -75,7 +75,7 @@ const RenderManagers = ({ cellValues }) => {
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.leadId);
     if (newManager === undefined) {
-      UpdateLeadData.append("assignedToManager", 0);
+      UpdateLeadData.append("assignedToManager", 102);
     } else {
       UpdateLeadData.append("assignedToManager", newManager?.id);
     }
