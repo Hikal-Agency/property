@@ -1,6 +1,11 @@
 import {Box, Card, Button} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const PricingTable = ({allPlans, setPlan}) => {
+const PricingTable = ({allPlans}) => {
+  const navigate = useNavigate();
+  const setPlan = (plan) => {
+    navigate("?plan=" + plan);
+  }
     return (
         <>
             <Box className="flex justify-center items-center">

@@ -3,6 +3,8 @@ import { Card, Box, Button, IconButton } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import PricingTable from "./PricingTable";
 import Checkout from "./Checkout";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const allPlans = [{
   name: "Basic",
@@ -17,7 +19,14 @@ const allPlans = [{
 
 const NewPayment = () => {
   const { currentMode } = useStateContext();
-  const [plan, setPlan] = useState("");
+  const location = useLocation();
+  const [plan, setPlan] = useState(new URLSearchParams(location.search).get("plan") || "");
+
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    setPlan(params.get("plan"));
+  }, [location.search]);
 
   return (
     <div
@@ -25,10 +34,10 @@ const NewPayment = () => {
         currentMode === "dark" ? "text-white" : "text-black"
       } w-full h-full rounded-md p-5`}
     >
-    {plan ? <Box>
-      <Checkout allPlans={allPlans} plan={plan} setPlan={setPlan}/>
-    </Box> :
-      <PricingTable allPlans={allPlans} setPlan={setPlan}/>
+    {plan ? ((plan.toLowerCase() === "basic" || plan.toLowerCase() === "pro") ? <Box>
+      <Checkout allPlans={allPlans} plan={plan} />
+    </Box> : <PricingTable allPlans={allPlans}/> ):
+      <PricingTable allPlans={allPlans}/>
     }
     </div>
   );

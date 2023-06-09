@@ -67,7 +67,16 @@ const Sidebarmui = () => {
   } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
-  const [openDropdown, setOpenDropdown] = useState(null);
+
+  const [openedSubMenu, setOpenSubMenu] = useState(0);
+
+  const setOpenedSubMenu = (index) => {
+    if (openedSubMenu === index) {
+      setOpenSubMenu(0);
+    } else {
+      setOpenSubMenu(index);
+    }
+  };
 
   const handleMenuItemClick = (menuName) => {
     console.log("menuitem: ", menuName);
@@ -1907,17 +1916,47 @@ const Sidebarmui = () => {
         className="h-screen sticky top-0"
       >
         <div className="mt-3">
-          <div className="flex justify-between items-center h-[50px]">
-            <a
-              href="/dashboard"
-              className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
-              onClick={() => {
-                setSelected("Dashboard");
-                setopenBackDrop(true);
-              }}
-            >
-              {isCollapsed ? (
-                <div className="flex items-center space-x-2">
+          <div
+            className="sidebar-top"
+            style={{
+              position: "sticky",
+              top: 0,
+              background: currentMode === "dark" ? "black" : "white",
+              zIndex: 1000,
+            }}
+          >
+            <div className="flex justify-between items-center h-[50px]">
+              <a
+                href="/dashboard"
+                className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
+                onClick={() => {
+                  setSelected("Dashboard");
+                  setopenBackDrop(true);
+                }}
+              >
+                {isCollapsed ? (
+                  <div className="flex items-center space-x-2">
+                    <img
+                      height={100}
+                      width={100}
+                      className="h-[40px] w-auto"
+                      src="/favicon.png"
+                      alt=""
+                    />
+
+                    <div className="relative">
+                      <h1
+                        className={`overflow-hidden ${
+                          currentMode === "dark"
+                            ? "text-white"
+                            : "text-gray-900"
+                        }`}
+                      >
+                        HIKAL CRM
+                      </h1>
+                    </div>
+                  </div>
+                ) : (
                   <img
                     height={100}
                     width={100}
@@ -1925,72 +1964,54 @@ const Sidebarmui = () => {
                     src="/favicon.png"
                     alt=""
                   />
-
-                  <div className="relative">
+                )}
+              </a>
+            </div>
+            <div className="profile-section border-t border-b mt-5 px-1 mb-5 pt-3 pb-3">
+              {isCollapsed ? (
+                <>
+                  <Link
+                    to={"/profile"}
+                    onClick={() => setopenBackDrop(true)}
+                    className="flex flex-col items-center justify-center"
+                  >
+                    <img
+                      src={
+                        User?.displayImg ? User?.displayImg : "/assets/user.png"
+                      }
+                      height={60}
+                      width={60}
+                      className="rounded-full object-cover"
+                      alt=""
+                    />
                     <h1
-                      className={`overflow-hidden ${
-                        currentMode === "dark" ? "text-white" : "text-gray-900"
+                      className={`my-2 font-bold text-lg ${
+                        currentMode === "dark"
+                          ? "text-white"
+                          : "text-main-dark-bg"
                       }`}
                     >
-                      HIKAL CRM
+                      {User?.userName ? User?.userName : "No username"}
                     </h1>
-                  </div>
-                </div>
+                    <span
+                      className={`block rounded-md px-2 py-1 text-sm  bg-main-red-color text-white`}
+                    >
+                      {User?.position || ""}
+                    </span>
+                  </Link>
+                </>
               ) : (
-                <img
-                  height={100}
-                  width={100}
-                  className="h-[40px] w-auto"
-                  src="/favicon.png"
-                  alt=""
-                />
-              )}
-            </a>
-          </div>
-          <div className="profile-section border-t border-b mt-5 px-1 mb-5 pt-3 pb-3">
-            {isCollapsed ? (
-              <>
-                <Link
-                  to={"/profile"}
-                  onClick={() => setopenBackDrop(true)}
-                  className="flex flex-col items-center justify-center"
-                >
+                <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
                   <img
-                    src={
-                      User?.displayImg ? User?.displayImg : "/assets/user.png"
-                    }
+                    src={User?.displayImg}
                     height={60}
                     width={60}
-                    className="rounded-full object-cover"
+                    className="rounded-full cursor-pointer"
                     alt=""
                   />
-                  <h1
-                    className={`my-2 font-bold text-lg ${
-                      currentMode === "dark"
-                        ? "text-white"
-                        : "text-main-dark-bg"
-                    }`}
-                  >
-                    {User?.userName ? User?.userName : "No username"}
-                  </h1>
-                  <span
-                    className={`block rounded-md px-2 py-1 text-sm  bg-main-red-color text-white`}
-                  >
-                    {User?.position || ""}
-                  </span>
                 </Link>
-              </>
-            ) : (
-              <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-                <img
-                  src={User?.displayImg}
-                  height={60}
-                  width={60}
-                  className="rounded-full cursor-pointer"
-                  alt=""
-                />
-              </Link>
-            )}
+              )}
+            </div>
           </div>
           <div className="mt-5 mb-5">
             <Menu
@@ -2046,6 +2067,7 @@ const Sidebarmui = () => {
                           >
                             {link.submenu ? (
                               <Box
+                                onClick={() => setOpenedSubMenu(index + 1)}
                                 sx={{
                                   // FOR DARK MODE MENU SETTINGS
                                   "& .css-1mfnem1": { borderRadius: "5px" },
@@ -2078,7 +2100,8 @@ const Sidebarmui = () => {
                                 <SubMenu
                                   label={link.name}
                                   icon={link.icon}
-                                  // open={setopenBackDrop === index}
+                                  open={openedSubMenu === index + 1}
+                                  // open={openBackDrop === index}
                                   // onClick={() =>
                                   //   handleDropdownClick(`${index}`)
                                   // }
@@ -2266,11 +2289,12 @@ const Sidebarmui = () => {
                             {item.title}
                           </p>
                         )}
-                        {item.links.map((link) => (
+                        {item.links.map((link, index) => (
                           <Tooltip
                             title={link.name}
                             key={link.name}
                             placement="right"
+                            onClick={() => setOpenedSubMenu(index + 1)}
                           >
                             {link.submenu ? (
                               <Box
@@ -2303,7 +2327,11 @@ const Sidebarmui = () => {
                                 }}
                                 className="my-1"
                               >
-                                <SubMenu label={link.name} icon={link.icon}>
+                                <SubMenu
+                                  open={openedSubMenu === index + 1}
+                                  label={link.name}
+                                  icon={link.icon}
+                                >
                                   {link.submenu.map((menu, index) => {
                                     return (
                                       <Link
@@ -2484,11 +2512,12 @@ const Sidebarmui = () => {
                               {item.title}
                             </p>
                           )}
-                          {item.links.map((link) => (
+                          {item.links.map((link, index) => (
                             <Tooltip
                               title={link.name}
                               key={link.name}
                               placement="right"
+                              onClick={() => setOpenedSubMenu(index + 1)}
                             >
                               {link.submenu ? (
                                 <Box
@@ -2521,7 +2550,11 @@ const Sidebarmui = () => {
                                   }}
                                   className="my-1"
                                 >
-                                  <SubMenu label={link.name} icon={link.icon}>
+                                  <SubMenu
+                                    open={openedSubMenu === index + 1}
+                                    label={link.name}
+                                    icon={link.icon}
+                                  >
                                     {link.submenu.map((menu, index) => {
                                       return (
                                         <Link

@@ -4,13 +4,16 @@ import { BiArrowBack } from "react-icons/bi";
 import axios from "axios";
 import {toast, ToastContainer} from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
+import { useNavigate } from "react-router-dom";
 
 const productIds = {
   "Basic": "prod_NhMOVUa2pkVdli",
   "Pro": "prod_NhMP8zMuo2V7FB"
 };
 
-const Checkout = ({ allPlans, plan, setPlan }) => {
+const Checkout = ({ allPlans, plan }) => {
+
+  const navigate = useNavigate();
   const selectedPlan = allPlans.find((p) => p.name === plan);
   const [formValues, setFormValues] = useState({
     cardNumber: "",
@@ -19,7 +22,7 @@ const Checkout = ({ allPlans, plan, setPlan }) => {
     cvc: "",
   });
   const [btnloading, setbtnloading] = useState(false);
-  const {BACKEND_URL, User} = useStateContext();
+  const {BACKEND_URL, User, darkModeColors, currentMode} = useStateContext();
 
   const subscribe = async (data) => {
     try {
@@ -77,15 +80,15 @@ const Checkout = ({ allPlans, plan, setPlan }) => {
   };
   return (
     <>
-      <IconButton onClick={() => setPlan("")}>
-        <BiArrowBack/>
+      <IconButton onClick={() => navigate("")}>
+        <BiArrowBack color={currentMode === "dark" ? "white" : "black"}/>
       </IconButton>
 
       <ToastContainer/>
 
       <Box className="flex justify-center items-start mt-4">
         <Box className="flex flex-col items-center h-[100%] mr-12">
-          <Box className="p-5 bg-white rounded-md h-[100%]">
+          <Box className="p-5 bg-white rounded-md h-[100%] text-black">
             <h1>Subscribe to {selectedPlan.name}</h1>
             <Box className="flex items-center mt-2">
               <h1 className="font-black" style={{ fontSize: 40 }}>
@@ -99,7 +102,7 @@ const Checkout = ({ allPlans, plan, setPlan }) => {
           </Box>
         </Box>
 
-        <Box className="w-[50%]">
+        <Box className="w-[50%]" sx={darkModeColors}>
           <form onSubmit={handleSubmit}>
             <TextField
               id="cardNumber"
