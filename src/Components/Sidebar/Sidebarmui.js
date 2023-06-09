@@ -959,7 +959,7 @@ const Sidebarmui = () => {
               link: "/unassigned/cold",
             },
             {
-              name: "Warm leads",
+              name: "Reshuffle Leads",
               count: sidebarData?.UNASSIGNED?.warm,
               link: "/unassigned/warm",
             },
@@ -972,6 +972,52 @@ const Sidebarmui = () => {
               name: "Third Party",
               count: sidebarData?.UNASSIGNED?.third_party,
               link: "/unassigned/thirdpartyleads",
+            },
+          ],
+        },
+        {
+          name: "Reshuffle",
+          icon: <FaFire />,
+          submenu: [
+            {
+              name: "All Leads",
+              count: sidebarData?.WarmLeadCount?.all,
+              link: "/warmleads/all",
+            },
+            {
+              name: "New Leads",
+              count: sidebarData?.WarmLeadCount?.new,
+              link: "/warmleads/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.WarmLeadCount?.no_nswer,
+              link: "/warmleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.WarmLeadCount?.Meeting,
+              link: "/warmleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.WarmLeadCount?.follow_up,
+              link: "/warmleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.WarmLeadCount?.low_budget,
+              link: "/warmleads/low budget",
+            },
+            {
+              name: "Not Intrested",
+              count: sidebarData?.WarmLeadCount?.not_interested,
+              link: "/warmleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.WarmLeadCount?.unreachable,
+              link: "/warmleads/unreachable",
             },
           ],
         },
@@ -1279,7 +1325,7 @@ const Sidebarmui = () => {
               link: "/unassigned/cold",
             },
             {
-              name: "Warm leads",
+              name: "Reshuffle Leads",
               count: sidebarData?.UNASSIGNED?.warm,
               link: "/unassigned/warm",
             },
@@ -1296,7 +1342,7 @@ const Sidebarmui = () => {
           ],
         },
         {
-          name: "Warm Leads",
+          name: "Reshuffle",
           icon: <FaFire />,
           submenu: [
             {
