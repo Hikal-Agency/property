@@ -81,7 +81,7 @@ const Sidebarmui = () => {
   }
 
   const handleExpand = (e, obj, link) => {
-    console.log(e.target.closest(".ps-menu-button"));
+    console.log(e.target.closest(".ps-submenu-content"));
     if(link.submenu) {
       setOpenedSubMenu(obj);
     }
