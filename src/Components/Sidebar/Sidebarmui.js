@@ -88,13 +88,6 @@ const Sidebarmui = () => {
     }
   }
 
-  const handleExpand = (e, obj, link) => {
-    console.log(e.target.closest(".ps-submenu-content"));
-    if(link.submenu) {
-      setOpenedSubMenu(obj);
-    }
-  }
-
   const handleDropdownClick = (menuKey) => {
     console.log("menukey: ", menuKey);
     setopenBackDrop(false);
@@ -2326,7 +2319,7 @@ const Sidebarmui = () => {
                                 }}
                                 className="my-1"
                               >
-                                <SubMenu open={openedSubMenu === index+ 1} label={link.name} icon={link.icon}>
+                                <SubMenu open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex} label={link.name} icon={link.icon}>
                                   {link.submenu.map((menu, index) => {
                                     return (
                                       <Link
