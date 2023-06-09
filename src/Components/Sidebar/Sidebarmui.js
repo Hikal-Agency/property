@@ -66,6 +66,7 @@ const Sidebarmui = () => {
   } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   const handleMenuItemClick = (menuName) => {
     console.log("menuitem: ", menuName);
@@ -73,10 +74,17 @@ const Sidebarmui = () => {
     setopenBackDrop(true);
   };
 
-  const handleDropdownClick = (menuKey) => {
-    console.log("menukey: ", menuKey);
-    setopenBackDrop(false);
-  };
+  // const handleDropdownClick = (menuKey) => {
+  //   console.log("menukey: ", menuKey);
+  //   setopenBackDrop(false);
+  // };
+
+  // const handleDropdownClick = (menuKey) => {
+  //   console.log("menukey: ", menuKey);
+  //   setopenBackDrop((prevDropdown) =>
+  //     prevDropdown === menuKey ? null : menuKey
+  //   );
+  // };
 
   console.log("SidebarData: ", sidebarData);
 
@@ -2023,10 +2031,10 @@ const Sidebarmui = () => {
                                 <SubMenu
                                   label={link.name}
                                   icon={link.icon}
-                                  // open={openBackDrop === index}
-                                  onClick={() =>
-                                    handleDropdownClick(`${index}`)
-                                  }
+                                  // open={setopenBackDrop === index}
+                                  // onClick={() =>
+                                  //   handleDropdownClick(`${index}`)
+                                  // }
                                 >
                                   {link.submenu.map((menu, index) => {
                                     return (
