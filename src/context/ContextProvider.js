@@ -206,14 +206,14 @@ export const ContextProvider = ({ children }) => {
         ColdLeadsCount: response.data.data["COLD LEADS"],
         PersonalLeadsCount: response.data.data["PERSONAL LEADS"],
         ThirdPartyLeadsCount: response.data.data["THIRD PARTY LEADS"],
-        UnassignedLeadsCount: response.data.data["UNASSIGNED LEADS"],
+        UnassignedLeadsCount: response.data.data["unassigned"],
         WarmLeadCount: response.data.data["WARM LEADS"],
         UNASSIGNED: {
-          fresh: response.data.data['unassigned']["HOT LEADS"], 
-          cold: response.data.data['unassigned']["COLD LEADS"], 
-          personal: response.data.data['unassigned']["PERSONAL LEADS"], 
-          third_party: response.data.data['unassigned']["THIRD PARTY LEADS"], 
-          warm: response.data.data['unassigned']["WARM LEADS"], 
+          fresh: response.data.data["unassigned"]["HOT LEADS"],
+          cold: response.data.data["unassigned"]["COLD LEADS"],
+          personal: response.data.data["unassigned"]["PERSONAL LEADS"],
+          third_party: response.data.data["unassigned"]["THIRD PARTY LEADS"],
+          warm: response.data.data["unassigned"]["WARM LEADS"],
         },
       });
     } catch (error) {

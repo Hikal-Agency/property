@@ -944,7 +944,7 @@ const Sidebarmui = () => {
             },
           ],
         },
-            {
+        {
           name: "Unassigned",
           icon: <BsStopCircleFill />,
           submenu: [
@@ -2005,6 +2005,9 @@ const Sidebarmui = () => {
                                             // STYLING FOR DARK MODE
                                             "& .css-yktbuo": {
                                               backgroundColor: "#DA1F26",
+                                            },
+                                            "& .css-1f8bwsm": {
+                                              minWidth: "10px !important",
                                             },
                                             "& .css-yktbuo:hover": {
                                               backgroundColor: "#DA1F26",
