@@ -748,6 +748,16 @@ const Clients = () => {
                         pageSize: newPageSize,
                       }))
                     }
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: false,
+                                  printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
+                // value: searchText,
+                // onChange: HandleQuicSearch,
+              },
+            }}
+
                     sx={{
                       boxShadow: 2,
                       "& .MuiDataGrid-cell:hover": {

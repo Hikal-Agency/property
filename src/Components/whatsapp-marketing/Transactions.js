@@ -3,7 +3,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { DataGrid } from "@mui/x-data-grid";
 
 const Transactions = () => {
-  const { currentMode, DataGridStyles } = useStateContext();
+  const { currentMode, DataGridStyles, User } = useStateContext();
 
   const columns = [
     {
@@ -119,6 +119,15 @@ const Transactions = () => {
           width="auto"
           paginationMode="server"
           rows={rows}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: false,
+                                  printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
+                // value: searchText,
+                // onChange: HandleQuicSearch,
+              },
+            }}
           columns={columns}
           sx={{
             boxShadow: 2,

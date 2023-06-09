@@ -23,7 +23,7 @@ const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
   const navigate = useNavigate();
-  const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
+  const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
   //Update LEAD MODAL VARIABLES
@@ -259,6 +259,8 @@ const Closedeals = ({ pageState, setpageState }) => {
           }}
           componentsProps={{
             toolbar: {
+                                printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
               showQuickFilter: true,
               value: searchText,
               onChange: HandleQuicSearch,

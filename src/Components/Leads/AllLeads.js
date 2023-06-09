@@ -1651,7 +1651,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             <MuiButton
               onClick={() => bulkImportRef.current.click()}
               size="small"
-              sx={{ ...bulkUpdateBtnStyles, left: "444px" }}
+              sx={{ ...bulkUpdateBtnStyles, left: User?.role === 1 ? "444px" : "355px" }}
               variant="text"
             >
               <TbFileImport size={18} />{" "}
@@ -1745,6 +1745,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               componentsProps={{
                 toolbar: {
                   showQuickFilter: false,
+                  printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
                   // value: searchTerm,
                   // onChange: HandleQuicSearch,
                 },

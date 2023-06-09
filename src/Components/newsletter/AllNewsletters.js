@@ -14,7 +14,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const AllNewsletters = ({ pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, User } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
   // eslint-disable-next-line
@@ -234,6 +234,8 @@ const AllNewsletters = ({ pageState, setpageState }) => {
           }}
           componentsProps={{
             toolbar: {
+                                printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
               showQuickFilter: true,
               value: searchText,
               onChange: HandleQuicSearch,

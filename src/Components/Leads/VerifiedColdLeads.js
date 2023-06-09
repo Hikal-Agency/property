@@ -17,7 +17,7 @@ import RenderFeedback from "./RenderFeedback";
 import RenderPriority from "./RenderPriority";
 
 const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, User } = useStateContext();
   const DataGridStyles = {
     "& .MuiButtonBase-root": {
       color: "white",
@@ -287,6 +287,8 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
           }}
           componentsProps={{
             toolbar: {
+                                printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
               showQuickFilter: true,
               //   value: searchText,
               //   onChange: HandleQuicSearch,

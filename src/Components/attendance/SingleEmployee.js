@@ -648,6 +648,15 @@ const SingleEmployee = ({ user }) => {
                           // loading={pageState.isLoading}
                           rowsPerPageOptions={[30, 50, 75, 100]}
                           pagination
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: false,
+              printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
+                // value: searchText,
+                // onChange: HandleQuicSearch,
+              },
+            }}
                           width="auto"
                           paginationMode="server"
                           // page={pageState.page - 1}

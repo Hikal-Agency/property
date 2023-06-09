@@ -2094,6 +2094,7 @@ const Sidebarmui = () => {
                                   open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex}
                                 >
                                   {link.submenu.map((menu, index) => {
+                                    console.log(menu);
                                     return (
                                       <Link
                                         key={index}

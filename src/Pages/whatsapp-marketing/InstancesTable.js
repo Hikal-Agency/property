@@ -31,7 +31,7 @@ import { toast, ToastContainer } from "react-toastify";
 const InstancesTable = ({ pageState, setpageState }) => {
   const [loading, setloading] = useState(false);
 
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, User } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
   // eslint-disable-next-line
@@ -463,6 +463,8 @@ const InstancesTable = ({ pageState, setpageState }) => {
           }}
           componentsProps={{
             toolbar: {
+                                printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
               showQuickFilter: true,
               value: searchText,
               onChange: HandleQuicSearch,
