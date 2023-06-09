@@ -67,28 +67,25 @@ const Sidebarmui = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [openedSubMenu, setOpenSubMenu] = useState(0);
+  const [openedSubMenu, setOpenSubMenu] = useState({
+    menuIndex: 0, 
+    linkIndex: 0
+  });
 
-  const setOpenedSubMenu = (index) => {
-    if(openedSubMenu === index) {
+  const setOpenedSubMenu = ({menuIndex, linkIndex}) => {
+    if(openedSubMenu.menuIndex === menuIndex && openedSubMenu.linkIndex === linkIndex) {
       setOpenSubMenu(0);
     } else {
-      setOpenSubMenu(index);
+      setOpenSubMenu({menuIndex, linkIndex});
     }
   }
 
-  const handleMenuItemClick = (menuName) => {
-    console.log("menuitem: ", menuName);
-    setSelected(menuName);
-    setopenBackDrop(true);
-  };
-
-  const handleDropdownClick = (menuKey) => {
-    console.log("menukey: ", menuKey);
-    setopenBackDrop(false);
-  };
-
-  console.log("SidebarData: ", sidebarData);
+  const handleExpand = (e, obj, link) => {
+    console.log(e.target.closest(".ps-menu-button"));
+    if(link.submenu) {
+      setOpenedSubMenu(obj);
+    }
+  }
 
   useEffect(() => {
     fetchSidebarData();
@@ -1964,13 +1961,13 @@ const Sidebarmui = () => {
             >
               {[
                 ...(User?.position === "Founder & CEO"
-                  ? linksData.map((item, index) => (
-                      <div key={index}>
+                  ? linksData.map((item, linkIndex) => (
+                      <div key={linkIndex}>
                         {!isCollapsed ? (
                           <Tooltip placement="right" title={item.title}>
                             <p
                               className={`font-bold m-3 mt-4 uppercase ${
-                                index === 0 && "hidden"
+                                linkIndex === 0 && "hidden"
                               } ${
                                 currentMode === "dark"
                                   ? "text-red-600"
@@ -1985,7 +1982,7 @@ const Sidebarmui = () => {
                         ) : (
                           <p
                             className={`font-bold m-3 mt-4 uppercase ${
-                              index === 0 && "hidden"
+                              linkIndex === 0 && "hidden"
                             } ${
                               currentMode === "dark"
                                 ? "text-red-600"
@@ -1995,15 +1992,15 @@ const Sidebarmui = () => {
                             {item.title}
                           </p>
                         )}
-                        {item.links.map((link, index) => (
+                        {item.links.map((link, menuIndex) => (
                           <Tooltip
                             title={link.name}
                             key={link.name}
                             placement="right"
+                            onClick={(e) => handleExpand(e, {menuIndex: menuIndex+1, linkIndex}, link)}
                           >
                             {link.submenu ? (
                               <Box
-                              onClick={() => setOpenedSubMenu(index + 1)}
                                 sx={{
                                   // FOR DARK MODE MENU SETTINGS
                                   "& .css-1mfnem1": { borderRadius: "5px" },
@@ -2036,18 +2033,13 @@ const Sidebarmui = () => {
                                 <SubMenu
                                   label={link.name}
                                   icon={link.icon}
-                                  open={openedSubMenu === index + 1}
-                                  // open={openBackDrop === index}
-                                  onClick={() =>
-                                    handleDropdownClick(`${index}`)
-                                  }
+                                  open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex}
                                 >
                                   {link.submenu.map((menu, index) => {
                                     return (
                                       <Link
                                         key={index}
                                         to={`${menu.link}`}
-                                        // onClick={() => setopenBackDrop(true)}
                                       >
                                         <Box
                                           sx={{
@@ -2194,13 +2186,13 @@ const Sidebarmui = () => {
                       </div>
                     ))
                   : User?.position === "Sales Manager"
-                  ? managerData.map((item, index) => (
-                      <div key={index}>
+                  ? managerData.map((item, linkIndex) => (
+                      <div key={linkIndex}>
                         {!isCollapsed ? (
                           <Tooltip placement="right" title={item.title}>
                             <p
                               className={`font-bold m-3 mt-4 uppercase ${
-                                index === 0 && "hidden"
+                                linkIndex === 0 && "hidden"
                               } ${
                                 currentMode === "dark"
                                   ? "text-red-600"
@@ -2215,7 +2207,7 @@ const Sidebarmui = () => {
                         ) : (
                           <p
                             className={`font-bold m-3 mt-4 uppercase ${
-                              index === 0 && "hidden"
+                              linkIndex === 0 && "hidden"
                             } ${
                               currentMode === "dark"
                                 ? "text-red-600"
@@ -2225,12 +2217,12 @@ const Sidebarmui = () => {
                             {item.title}
                           </p>
                         )}
-                        {item.links.map((link, index) => (
+                        {item.links.map((link, menuIndex) => (
                           <Tooltip
                             title={link.name}
                             key={link.name}
                             placement="right"
-                            onClick={() => setOpenedSubMenu(index + 1)}
+                            onClick={() => setOpenedSubMenu({menuIndex: menuIndex + 1, linkIndex})}
                           >
                             {link.submenu ? (
                               <Box
@@ -2263,7 +2255,7 @@ const Sidebarmui = () => {
                                 }}
                                 className="my-1"
                               >
-                                <SubMenu open={openedSubMenu === index+ 1} label={link.name} icon={link.icon}>
+                                <SubMenu open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex} label={link.name} icon={link.icon}>
                                   {link.submenu.map((menu, index) => {
                                     return (
                                       <Link
@@ -2411,15 +2403,15 @@ const Sidebarmui = () => {
                         ))}
                       </div>
                     ))
-                  : agentData.map((item, index) => {
+                  : agentData.map((item, linkIndex) => {
                       console.log(item);
                       return (
-                        <div key={index}>
+                        <div key={linkIndex}>
                           {!isCollapsed ? (
                             <Tooltip placement="right" title={item.title}>
                               <p
                                 className={`font-bold m-3 mt-4 uppercase ${
-                                  index === 0 && "hidden"
+                                  linkIndex === 0 && "hidden"
                                 } ${
                                   currentMode === "dark"
                                     ? "text-red-600"
@@ -2434,7 +2426,7 @@ const Sidebarmui = () => {
                           ) : (
                             <p
                               className={`font-bold m-3 mt-4 uppercase ${
-                                index === 0 && "hidden"
+                                linkIndex === 0 && "hidden"
                               } ${
                                 currentMode === "dark"
                                   ? "text-red-600"
@@ -2444,12 +2436,12 @@ const Sidebarmui = () => {
                               {item.title}
                             </p>
                           )}
-                          {item.links.map((link, index) => (
+                          {item.links.map((link, menuIndex) => (
                             <Tooltip
                               title={link.name}
                               key={link.name}
                               placement="right"
-                              onClick={() => setOpenedSubMenu(index + 1)}
+                              onClick={() => setOpenedSubMenu({menuIndex: menuIndex + 1, linkIndex})}
                             >
                               {link.submenu ? (
                                 <Box
@@ -2482,7 +2474,7 @@ const Sidebarmui = () => {
                                   }}
                                   className="my-1"
                                 >
-                                  <SubMenu open={openedSubMenu === index + 1} label={link.name} icon={link.icon}>
+                                  <SubMenu open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex} label={link.name} icon={link.icon}>
                                     {link.submenu.map((menu, index) => {
                                       return (
                                         <Link
