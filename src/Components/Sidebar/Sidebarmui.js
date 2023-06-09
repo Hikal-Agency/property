@@ -82,16 +82,10 @@ const Sidebarmui = () => {
   }
 
   const handleExpand = (e, obj, link) => {
-    console.log(e.target.closest(".ps-submenu-content"));
-    if(link.submenu) {
-      setOpenedSubMenu(obj);
+    if(!e.target.closest(".ps-submenu-content")) {
+        setOpenedSubMenu(obj);
     }
   }
-
-  const handleDropdownClick = (menuKey) => {
-    console.log("menukey: ", menuKey);
-    setopenBackDrop(false);
-  };
 
   console.log("SidebarData: ", sidebarData);
 
