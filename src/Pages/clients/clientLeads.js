@@ -157,7 +157,10 @@ const ClientLeads = ({
       headerAlign: "center",
       sortable: false,
       filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+                  renderCell: (params) => <div className="flex flex-col">
+        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+      </div>,
     },
     {
       field: "leadName",
@@ -351,7 +354,10 @@ const ClientLeads = ({
       headerAlign: "center",
       sortable: false,
       filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+                  renderCell: (params) => <div className="flex flex-col">
+        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+      </div>,
     },
     {
       field: "leadName",
@@ -559,7 +565,10 @@ const ClientLeads = ({
       headerAlign: "center",
       sortable: false,
       filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+                  renderCell: (params) => <div className="flex flex-col">
+        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+      </div>,
     },
     {
       field: "leadName",

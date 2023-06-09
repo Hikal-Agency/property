@@ -69,7 +69,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
   const [bulkDeleteClicked, setBulkDeleteClicked] = useState(false);
   const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
+  const searchRef = useRef();
   const [hovered, setHovered] = useState("");
   const [CSVData, setCSVData] = useState({
     keys: [],
@@ -117,11 +118,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
       FetchLeads(token);
     }
-    setSearchTerm(e.target.value);
+    // setSearchTerm(e.target.value);
   };
 
   const handleKeyUp = (e) => {
-    if (searchTerm) {
+    if (searchRef.current.querySelector("input").value) {
       if (e.key === "Enter" || e.keyCode === 13) {
         // setpageState((oldPageState) => ({...oldPageState, page: 1}));
         FetchSearchedLeads(token, e.target.value);
@@ -268,7 +269,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       sortable: false,
       minWidth: 45,
       filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+            renderCell: (params) => <div className="flex flex-col">
+        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+      </div>,
     },
     {
       field: "edit",
@@ -530,7 +534,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       sortable: false,
       minWidth: 50,
       filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+      renderCell: (params) => <div className="flex flex-col">
+        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+      </div>,
     },
     {
       field: "edit",
@@ -910,7 +917,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       sortable: false,
       minWidth: 50,
       filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+            renderCell: (params) => <div className="flex flex-col">
+        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+      </div>,
     },
     {
       field: "edit",
@@ -1413,11 +1423,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   useEffect(() => {
     setpageState((oldPageState) => ({ ...oldPageState, page: 0 }));
+    searchRef.current.querySelector("input").value = "";
   }, [lead_type, lead_origin]);
 
   useEffect(() => {
-    if (searchTerm) {
-      FetchSearchedLeads(token, searchTerm);
+    if (searchRef.current.querySelector("input").value) {
+      FetchSearchedLeads(token, searchRef.current.querySelector("input").value);
     } else {
       FetchLeads(token);
     }
@@ -1652,10 +1663,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <div className="absolute top-[7px] right-[20px] z-[500]">
             <TextField
               placeholder="Search.."
+              ref={searchRef}
               variant="standard"
               sx={{ borderBottom: "2px solid white" }}
               onKeyUp={handleKeyUp}
-              value={searchTerm}
               onInput={handleSearch}
             />
           </div>

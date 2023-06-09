@@ -15,7 +15,7 @@ import {
 } from "@mui/x-data-grid";
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
@@ -78,6 +78,8 @@ const Newleads = ({
     },
   };
 
+  const searchRef = useRef();
+
   const handleCloseDialog = () => {
     setopenDialog(false);
   };
@@ -105,7 +107,10 @@ const Newleads = ({
       headerAlign: "center",
       sortable: false,
       filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+                  renderCell: (params) => <div className="flex flex-col">
+        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+      </div>,
     },
     {
       field: "leadName",
@@ -242,7 +247,10 @@ const Newleads = ({
       headerAlign: "center",
       sortable: false,
       filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+                  renderCell: (params) => <div className="flex flex-col">
+        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+      </div>,
     },
     {
       field: "leadName",
@@ -602,10 +610,10 @@ const Newleads = ({
       }));
       console.log("the search lead  url is ");
       console.log(
-        `${BACKEND_URL}/search?title=${e.target.value}&page=${pageState.page}`
+        `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`
       );
       const coldCallCode = pageState?.data[0]?.coldCall;
-      let url = `${BACKEND_URL}/search?title=${e.target.value}&feedback=New`;
+      let url = `${BACKEND_URL}/search?title=${term}&feedback=New`;
       if (coldCallCode) {
         url += `&coldCall=${coldCallCode}`;
       }
@@ -659,7 +667,6 @@ const Newleads = ({
          setpageState((old) => ({
         ...old,
         isLoading: false,
-        page: pageState.page
       }));
 
         })
@@ -669,17 +676,17 @@ const Newleads = ({
    const handleSearch = (e) => {
     
     if(e.target.value === "") {
-            setpageState((oldPageState) => ({...oldPageState, page: 1}));
+      setpageState((oldPageState) => ({...oldPageState, page: 1}));
       FetchLeads(token);
     }
-    setSearchTerm(e.target.value);
+    // setSearchTerm(e.target.value);
   }
 
   const handleKeyUp = (e) => {
-    if(searchTerm) {
+    if(searchRef.current.querySelector("input").value) {
 
           if (e.key === 'Enter' || e.keyCode === 13) {
-            setpageState((oldPageState) => ({...oldPageState, page: 1}));
+            // setpageState((oldPageState) => ({...oldPageState, page: 1}));
             FetchSearchedLeads(token, e.target.value);
       }
     }
@@ -703,6 +710,11 @@ const Newleads = ({
     // setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
   }, [pageState.page, lead_type, reloadDataGrid]);
+
+  useEffect(() => {
+    setpageState((oldPageState) => ({ ...oldPageState, page: 0 }));
+    searchRef.current.querySelector("input").value = "";
+  }, [lead_type, lead_origin]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
@@ -791,7 +803,7 @@ const Newleads = ({
       <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={{...DataGridStyles, position: "relative"}}>
 
           <div className="absolute top-[7px] right-[20px] z-[500]">
-            <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} onKeyUp={handleKeyUp} value={searchTerm} onInput={handleSearch}/>
+            <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} onKeyUp={handleKeyUp} ref={searchRef} onInput={handleSearch}/>
           </div>
         <DataGrid
           autoHeight

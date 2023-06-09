@@ -944,33 +944,33 @@ const Sidebarmui = () => {
             },
           ],
         },
-        {
+            {
           name: "Unassigned",
           icon: <BsStopCircleFill />,
           submenu: [
             {
               name: "Fresh leads",
-              count: sidebarData?.HotLeadsCount?.unassigned,
+              count: sidebarData?.UNASSIGNED?.fresh,
               link: "/unassigned/fresh",
             },
             {
               name: "Cold leads",
-              count: sidebarData?.ColdLeadsCount?.unassigned,
+              count: sidebarData?.UNASSIGNED?.cold,
               link: "/unassigned/cold",
             },
             {
               name: "Warm leads",
-              count: sidebarData?.WarmLeadCount?.unassigned,
+              count: sidebarData?.UNASSIGNED?.warm,
               link: "/unassigned/warm",
             },
             {
               name: "Personal leads",
-              count: sidebarData?.PersonalLeadsCount?.unassigned,
+              count: sidebarData?.UNASSIGNED?.personal,
               link: "/unassigned/personal",
             },
             {
-              name: "Third Party leads",
-              count: sidebarData?.ThirdPartyLeadsCount?.unassigned,
+              name: "Third Party",
+              count: sidebarData?.UNASSIGNED?.third_party,
               link: "/unassigned/thirdpartyleads",
             },
           ],
@@ -1270,27 +1270,27 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "Fresh leads",
-              count: sidebarData?.HotLeadsCount?.unassigned,
+              count: sidebarData?.UNASSIGNED?.fresh,
               link: "/unassigned/fresh",
             },
             {
               name: "Cold leads",
-              count: sidebarData?.ColdLeadsCount?.unassigned,
+              count: sidebarData?.UNASSIGNED?.cold,
               link: "/unassigned/cold",
             },
             {
               name: "Warm leads",
-              count: sidebarData?.WarmLeadCount?.unassigned,
+              count: sidebarData?.UNASSIGNED?.warm,
               link: "/unassigned/warm",
             },
             {
               name: "Personal leads",
-              count: sidebarData?.PersonalLeadsCount?.unassigned,
+              count: sidebarData?.UNASSIGNED?.personal,
               link: "/unassigned/personal",
             },
             {
-              name: "Third Party leads",
-              count: sidebarData?.ThirdPartyLeadsCount?.unassigned,
+              name: "Third Party",
+              count: sidebarData?.UNASSIGNED?.third_party,
               link: "/unassigned/thirdpartyleads",
             },
           ],

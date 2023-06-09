@@ -97,7 +97,10 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       headerAlign: "left",
       sortable: false,
       filterable: false,
-      valueFormatter: (params) => moment(params?.value).format("DD/MM/YYYY"),
+                  renderCell: (params) => <div className="flex flex-col">
+        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+      </div>,
     },
     {
       field: "city",
