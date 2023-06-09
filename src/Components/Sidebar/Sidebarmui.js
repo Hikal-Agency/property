@@ -67,6 +67,16 @@ const Sidebarmui = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [openedSubMenu, setOpenSubMenu] = useState(0);
+
+  const setOpenedSubMenu = (index) => {
+    if(openedSubMenu === index) {
+      setOpenSubMenu(0);
+    } else {
+      setOpenSubMenu(index);
+    }
+  }
+
   const handleMenuItemClick = (menuName) => {
     console.log("menuitem: ", menuName);
     setSelected(menuName);
@@ -1991,6 +2001,7 @@ const Sidebarmui = () => {
                           >
                             {link.submenu ? (
                               <Box
+                              onClick={() => setOpenedSubMenu(index + 1)}
                                 sx={{
                                   // FOR DARK MODE MENU SETTINGS
                                   "& .css-1mfnem1": { borderRadius: "5px" },
@@ -2023,6 +2034,7 @@ const Sidebarmui = () => {
                                 <SubMenu
                                   label={link.name}
                                   icon={link.icon}
+                                  open={openedSubMenu === index + 1}
                                   // open={openBackDrop === index}
                                   onClick={() =>
                                     handleDropdownClick(`${index}`)
@@ -2211,11 +2223,12 @@ const Sidebarmui = () => {
                             {item.title}
                           </p>
                         )}
-                        {item.links.map((link) => (
+                        {item.links.map((link, index) => (
                           <Tooltip
                             title={link.name}
                             key={link.name}
                             placement="right"
+                            onClick={() => setOpenedSubMenu(index + 1)}
                           >
                             {link.submenu ? (
                               <Box
@@ -2248,7 +2261,7 @@ const Sidebarmui = () => {
                                 }}
                                 className="my-1"
                               >
-                                <SubMenu label={link.name} icon={link.icon}>
+                                <SubMenu open={openedSubMenu === index+ 1} label={link.name} icon={link.icon}>
                                   {link.submenu.map((menu, index) => {
                                     return (
                                       <Link
@@ -2429,11 +2442,12 @@ const Sidebarmui = () => {
                               {item.title}
                             </p>
                           )}
-                          {item.links.map((link) => (
+                          {item.links.map((link, index) => (
                             <Tooltip
                               title={link.name}
                               key={link.name}
                               placement="right"
+                              onClick={() => setOpenedSubMenu(index + 1)}
                             >
                               {link.submenu ? (
                                 <Box
@@ -2466,7 +2480,7 @@ const Sidebarmui = () => {
                                   }}
                                   className="my-1"
                                 >
-                                  <SubMenu label={link.name} icon={link.icon}>
+                                  <SubMenu open={openedSubMenu === index + 1} label={link.name} icon={link.icon}>
                                     {link.submenu.map((menu, index) => {
                                       return (
                                         <Link
