@@ -59,6 +59,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 import OfficeSettings from "./attendanceModule/officeSettings";
+import Settings from "./settings";
 import Employees from "./attendanceModule/employeesList";
 import AllWarmLeads from "./warmleads";
 
@@ -310,7 +311,7 @@ const routes = [
   {
     path: "/settings",
     pageName: "Settings",
-    element: <OfficeSettings />,
+    element: <Settings />,
   },
   {
     path: "*",

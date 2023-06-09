@@ -27,14 +27,15 @@ const Settings = () => {
         >
           <div className={`w-full `}>
             <div className="pl-3">
-              <h4
-                className={`font-semibold p-7 text-center text-2xl ${
-                  currentMode === "dark" ? "text-white" : "text-dark"
+              <h1
+                className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
+                  currentMode === "dark"
+                    ? "text-white border-white"
+                    : "text-main-red-color font-bold border-main-red-color"
                 }`}
               >
-                Add Questions And Relative Answers For Customer Support.
-              </h4>
-             
+                Settings
+              </h1>
             </div>
           </div>
         </div>
