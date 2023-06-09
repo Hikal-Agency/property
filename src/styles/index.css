@@ -355,14 +355,18 @@ label[for="bulkImport"] .MuiButtonBase-root {
 
 .ps-menuitem-root .ps-menu-button {
   height: 40px !important;
-}.MuiBox-root
+}
 
-.ps-open .MuiBox-root {
+.light-mode-sidebar .ps-open .MuiBox-root {
   background: #f3f3f3;
   margin: 0 !important;
 }
 
-.ps-menu-button.ps-open {
+.light-mode-sidebar .ps-open .ps-menu-button:not(.ps-active):hover {
+  background: #c5c5c5;
+}
+
+.light-mode-sidebar .ps-menu-button.ps-open {
   margin-bottom: 4px;
 }
 

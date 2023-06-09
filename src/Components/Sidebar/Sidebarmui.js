@@ -1567,7 +1567,7 @@ const Sidebarmui = () => {
             backgroundColor: currentMode === "dark" ? "#000000" : "#ffffff",
           },
         }}
-        className={`h-screen sticky top-0`}
+        className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
       >
         <div className="mt-3">
           <div
