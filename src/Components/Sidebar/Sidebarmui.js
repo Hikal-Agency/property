@@ -56,6 +56,7 @@ const Sidebarmui = () => {
     BACKEND_URL,
     isUserSubscribed,
     setUser,
+    openBackDrop,
     setIsUserSubscribed,
     setSalesPerson,
     setManagers,
@@ -65,6 +66,17 @@ const Sidebarmui = () => {
   } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleMenuItemClick = (menuName) => {
+    console.log("menuitem: ", menuName);
+    setSelected(menuName);
+    setopenBackDrop(true);
+  };
+
+  const handleDropdownClick = (menuKey) => {
+    console.log("menukey: ", menuKey);
+    setopenBackDrop(false);
+  };
 
   console.log("SidebarData: ", sidebarData);
 
@@ -1925,7 +1937,7 @@ const Sidebarmui = () => {
                             {item.title}
                           </p>
                         )}
-                        {item.links.map((link) => (
+                        {item.links.map((link, index) => (
                           <Tooltip
                             title={link.name}
                             key={link.name}
@@ -1962,13 +1974,20 @@ const Sidebarmui = () => {
                                 }}
                                 className="my-1"
                               >
-                                <SubMenu label={link.name} icon={link.icon}>
+                                <SubMenu
+                                  label={link.name}
+                                  icon={link.icon}
+                                  // open={openBackDrop === index}
+                                  onClick={() =>
+                                    handleDropdownClick(`${index}`)
+                                  }
+                                >
                                   {link.submenu.map((menu, index) => {
                                     return (
                                       <Link
                                         key={index}
                                         to={`${menu.link}`}
-                                        onClick={() => setopenBackDrop(true)}
+                                        // onClick={() => setopenBackDrop(true)}
                                       >
                                         <Box
                                           sx={{

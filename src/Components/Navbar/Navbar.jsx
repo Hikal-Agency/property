@@ -7,6 +7,8 @@ import {
   MdKeyboardArrowDown,
   MdOutlineLightMode,
 } from "react-icons/md";
+import { FaRegClock } from 'react-icons/fa';
+
 import { useStateContext } from "../../context/ContextProvider";
 import { Tooltip, Link as MuiLink, Button } from "@mui/material";
 import { useProSidebar } from "react-pro-sidebar";
@@ -239,7 +241,7 @@ const Navbar = () => {
           <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
         </div>
         <div>
-          <Clock/>
+          {/* <Clock/> */}
         </div>
         <div className="flex">
           {isUserSubscribed !== null && [
@@ -253,6 +255,13 @@ const Navbar = () => {
               </Button>
             ),
           ]}
+          <NavButton
+            title="Clock"
+            dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
+            customFunc={(event) => handleClick(event, "Clock")}
+            color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
+            icon={<FaRegClock />}
+          />
           <NavButton
             title="Meetings"
             dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
@@ -352,7 +361,11 @@ const Navbar = () => {
                 <NotificationsMenu />
               ) : currNavBtn === "Meetings" ? (
                 <UpcomingMeetingsMenu />
-              ) : (
+              ) : currNavBtn === "Clock" ? (
+                // <UpcomingMeetingsMenu />
+                <Clock/>
+              )
+               : (
                 <MenuItem />
               )
             ) : (

@@ -26,6 +26,7 @@ import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
+import { FaFire } from "react-icons/fa";
 
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
@@ -693,6 +694,29 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 <FaTwitter size={22} color={"#14539a"} />
               </div>
             )}
+
+            {/* {cellValues.row.leadSource?.toLowerCase() ===
+              "warm (Hubspot: shery@hikalagency.ae)" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaFire size={22} color={"#14539a"} />
+              </div>
+            )} */}
+
+            {(() => {
+              const leadSource = cellValues.row.leadSource?.toLowerCase();
+
+              if (leadSource && leadSource.startsWith("warm")) {
+                const firstWord = leadSource.split(" ")[0];
+
+                return (
+                  <div className="bg-white w-max rounded-full flex items-center justify-center">
+                    <FaFire size={22} color={"#14539a"} />
+                  </div>
+                );
+              }
+
+              return null; // Return null if the condition is not met
+            })()}
           </>
         );
       },
