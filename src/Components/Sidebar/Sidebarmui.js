@@ -15,6 +15,7 @@ import { RiRadioButtonLine } from "react-icons/ri";
 import { BiCalendar } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { FaFire } from "react-icons/fa";
+import { FaRandom } from "react-icons/fa";
 import {
   MdLeaderboard,
   MdPersonAdd,
@@ -86,6 +87,20 @@ const Sidebarmui = () => {
       setOpenedSubMenu(obj);
     }
   }
+
+  const handleExpand = (e, obj, link) => {
+    console.log(e.target.closest(".ps-submenu-content"));
+    if(link.submenu) {
+      setOpenedSubMenu(obj);
+    }
+  }
+
+  const handleDropdownClick = (menuKey) => {
+    console.log("menukey: ", menuKey);
+    setopenBackDrop(false);
+  };
+
+  console.log("SidebarData: ", sidebarData);
 
   useEffect(() => {
     fetchSidebarData();
@@ -671,6 +686,52 @@ const Sidebarmui = () => {
           link: "/closedeals",
         },
         {
+          name: "Reshuffle",
+          icon: <FaRandom />,
+          submenu: [
+            {
+              name: "All Leads",
+              count: sidebarData?.WarmLeadCount?.all,
+              link: "/reshuffle/all",
+            },
+            {
+              name: "New Leads",
+              count: sidebarData?.WarmLeadCount?.new,
+              link: "/reshuffle/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.WarmLeadCount?.no_nswer,
+              link: "/reshuffle/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.WarmLeadCount?.Meeting,
+              link: "/reshuffle/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.WarmLeadCount?.follow_up,
+              link: "/reshuffle/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.WarmLeadCount?.low_budget,
+              link: "/reshuffle/low budget",
+            },
+            {
+              name: "Not Intrested",
+              count: sidebarData?.WarmLeadCount?.not_interested,
+              link: "/reshuffle/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.WarmLeadCount?.unreachable,
+              link: "/reshuffle/unreachable",
+            },
+          ],
+        },
+        {
           name: "Notes",
           icon: <MdSpeakerNotes />,
           link: "/leadnotes",
@@ -984,47 +1045,47 @@ const Sidebarmui = () => {
         },
         {
           name: "Reshuffle",
-          icon: <FaFire />,
+          icon: <FaRandom />,
           submenu: [
             {
               name: "All Leads",
               count: sidebarData?.WarmLeadCount?.all,
-              link: "/warmleads/all",
+              link: "/reshuffle/all",
             },
             {
               name: "New Leads",
               count: sidebarData?.WarmLeadCount?.new,
-              link: "/warmleads/new",
+              link: "/reshuffle/new",
             },
             {
               name: "No Answer",
               count: sidebarData?.WarmLeadCount?.no_nswer,
-              link: "/warmleads/no answer",
+              link: "/reshuffle/no answer",
             },
             {
               name: "Meeting",
               count: sidebarData?.WarmLeadCount?.Meeting,
-              link: "/warmleads/meeting",
+              link: "/reshuffle/meeting",
             },
             {
               name: "Follow Up",
               count: sidebarData?.WarmLeadCount?.follow_up,
-              link: "/warmleads/follow up",
+              link: "/reshuffle/follow up",
             },
             {
               name: "Low Budget",
               count: sidebarData?.WarmLeadCount?.low_budget,
-              link: "/warmleads/low budget",
+              link: "/reshuffle/low budget",
             },
             {
               name: "Not Intrested",
               count: sidebarData?.WarmLeadCount?.not_interested,
-              link: "/warmleads/not interested",
+              link: "/reshuffle/not interested",
             },
             {
               name: "Unreachable",
               count: sidebarData?.WarmLeadCount?.unreachable,
-              link: "/warmleads/unreachable",
+              link: "/reshuffle/unreachable",
             },
           ],
         },
@@ -1350,47 +1411,47 @@ const Sidebarmui = () => {
         },
         {
           name: "Reshuffle",
-          icon: <FaFire />,
+          icon: <FaRandom />,
           submenu: [
             {
               name: "All Leads",
               count: sidebarData?.WarmLeadCount?.all,
-              link: "/warmleads/all",
+              link: "/reshuffle/all",
             },
             {
               name: "New Leads",
               count: sidebarData?.WarmLeadCount?.new,
-              link: "/warmleads/new",
+              link: "/reshuffle/new",
             },
             {
               name: "No Answer",
               count: sidebarData?.WarmLeadCount?.no_nswer,
-              link: "/warmleads/no answer",
+              link: "/reshuffle/no answer",
             },
             {
               name: "Meeting",
               count: sidebarData?.WarmLeadCount?.Meeting,
-              link: "/warmleads/meeting",
+              link: "/reshuffle/meeting",
             },
             {
               name: "Follow Up",
               count: sidebarData?.WarmLeadCount?.follow_up,
-              link: "/warmleads/follow up",
+              link: "/reshuffle/follow up",
             },
             {
               name: "Low Budget",
               count: sidebarData?.WarmLeadCount?.low_budget,
-              link: "/warmleads/low budget",
+              link: "/reshuffle/low budget",
             },
             {
               name: "Not Intrested",
               count: sidebarData?.WarmLeadCount?.not_interested,
-              link: "/warmleads/not interested",
+              link: "/reshuffle/not interested",
             },
             {
               name: "Unreachable",
               count: sidebarData?.WarmLeadCount?.unreachable,
-              link: "/warmleads/unreachable",
+              link: "/reshuffle/unreachable",
             },
           ],
         },
@@ -1859,18 +1920,47 @@ const Sidebarmui = () => {
         className="h-screen sticky top-0"
       >
         <div className="mt-3">
-        <div className="sidebar-top" style={{position: "sticky", top: 0, background: currentMode === "dark" ? "black" : "white", zIndex: 1000, }}>
-          <div className="flex justify-between items-center h-[50px]">
-            <a
-              href="/dashboard"
-              className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
-              onClick={() => {
-                setSelected("Dashboard");
-                setopenBackDrop(true);
-              }}
-            >
-              {isCollapsed ? (
-                <div className="flex items-center space-x-2">
+          <div
+            className="sidebar-top"
+            style={{
+              position: "sticky",
+              top: 0,
+              background: currentMode === "dark" ? "black" : "white",
+              zIndex: 1000,
+            }}
+          >
+            <div className="flex justify-between items-center h-[50px]">
+              <a
+                href="/dashboard"
+                className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
+                onClick={() => {
+                  setSelected("Dashboard");
+                  setopenBackDrop(true);
+                }}
+              >
+                {isCollapsed ? (
+                  <div className="flex items-center space-x-2">
+                    <img
+                      height={100}
+                      width={100}
+                      className="h-[40px] w-auto"
+                      src="/favicon.png"
+                      alt=""
+                    />
+
+                    <div className="relative">
+                      <h1
+                        className={`overflow-hidden ${
+                          currentMode === "dark"
+                            ? "text-white"
+                            : "text-gray-900"
+                        }`}
+                      >
+                        HIKAL CRM
+                      </h1>
+                    </div>
+                  </div>
+                ) : (
                   <img
                     height={100}
                     width={100}
@@ -1878,73 +1968,54 @@ const Sidebarmui = () => {
                     src="/favicon.png"
                     alt=""
                   />
-
-                  <div className="relative">
+                )}
+              </a>
+            </div>
+            <div className="profile-section border-t border-b mt-5 px-1 mb-5 pt-3 pb-3">
+              {isCollapsed ? (
+                <>
+                  <Link
+                    to={"/profile"}
+                    onClick={() => setopenBackDrop(true)}
+                    className="flex flex-col items-center justify-center"
+                  >
+                    <img
+                      src={
+                        User?.displayImg ? User?.displayImg : "/assets/user.png"
+                      }
+                      height={60}
+                      width={60}
+                      className="rounded-full object-cover"
+                      alt=""
+                    />
                     <h1
-                      className={`overflow-hidden ${
-                        currentMode === "dark" ? "text-white" : "text-gray-900"
+                      className={`my-2 font-bold text-lg ${
+                        currentMode === "dark"
+                          ? "text-white"
+                          : "text-main-dark-bg"
                       }`}
                     >
-                      HIKAL CRM
+                      {User?.userName ? User?.userName : "No username"}
                     </h1>
-                  </div>
-                </div>
+                    <span
+                      className={`block rounded-md px-2 py-1 text-sm  bg-main-red-color text-white`}
+                    >
+                      {User?.position || ""}
+                    </span>
+                  </Link>
+                </>
               ) : (
-                <img
-                  height={100}
-                  width={100}
-                  className="h-[40px] w-auto"
-                  src="/favicon.png"
-                  alt=""
-                />
-              )}
-            </a>
-          </div>
-          <div className="profile-section border-t border-b mt-5 px-1 mb-5 pt-3 pb-3">
-            {isCollapsed ? (
-              <>
-                <Link
-                  to={"/profile"}
-                  onClick={() => setopenBackDrop(true)}
-                  className="flex flex-col items-center justify-center"
-                >
+                <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
                   <img
-                    src={
-                      User?.displayImg ? User?.displayImg : "/assets/user.png"
-                    }
+                    src={User?.displayImg}
                     height={60}
                     width={60}
-                    className="rounded-full object-cover"
+                    className="rounded-full cursor-pointer"
                     alt=""
                   />
-                  <h1
-                    className={`my-2 font-bold text-lg ${
-                      currentMode === "dark"
-                        ? "text-white"
-                        : "text-main-dark-bg"
-                    }`}
-                  >
-                    {User?.userName ? User?.userName : "No username"}
-                  </h1>
-                  <span
-                    className={`block rounded-md px-2 py-1 text-sm  bg-main-red-color text-white`}
-                  >
-                    {User?.position || ""}
-                  </span>
                 </Link>
-              </>
-            ) : (
-              <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-                <img
-                  src={User?.displayImg}
-                  height={60}
-                  width={60}
-                  className="rounded-full cursor-pointer"
-                  alt=""
-                />
-              </Link>
-            )}
-          </div>
+              )}
+            </div>
           </div>
           <div className="mt-5 mb-5">
             <Menu
@@ -2255,7 +2326,7 @@ const Sidebarmui = () => {
                                 }}
                                 className="my-1"
                               >
-                                <SubMenu open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex} label={link.name} icon={link.icon}>
+                                <SubMenu open={openedSubMenu === index+ 1} label={link.name} icon={link.icon}>
                                   {link.submenu.map((menu, index) => {
                                     return (
                                       <Link

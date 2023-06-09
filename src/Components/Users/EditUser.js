@@ -330,7 +330,7 @@ const EditUser = ({ user }) => {
                                 ? "text-white"
                                 : "text-black"
                             }`}
-                            required
+                            // required
                             // maxDate={currentDate}
                             // minDate={minDate}
                             // inputFormat="MM/dd/yyyy"

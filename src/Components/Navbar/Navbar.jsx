@@ -257,7 +257,7 @@ const Navbar = () => {
           ]}
           <NavButton
             title="Clock"
-            dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
+            // dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
             customFunc={(event) => handleClick(event, "Clock")}
             color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
             icon={<FaRegClock />}
@@ -316,7 +316,14 @@ const Navbar = () => {
             </div>
           </Tooltip>
           {/* Submenu */}
-          <Menu
+        
+         {currNavBtn === "Clock" ? (
+          <div className="bg-main-red-color" 
+          // sx={{
+          //     background:"#DA1F26 !important"
+          // }}
+          >
+             <Menu
             anchorEl={anchorEl}
             id="account-menu"
             open={open}
@@ -330,7 +337,8 @@ const Navbar = () => {
                 overflowY: "scroll",
                 filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
                 mt: 1.5,
-                background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
+                // background: currentMode === "dark" ? "#DA1F26" : "#eef1ff",
+                background:"#DA1F26",
                 color: currentMode === "dark" ? "#ffffff" : "black",
                 minWidth: 300,
                 "& .MuiAvatar-root": {
@@ -356,50 +364,98 @@ const Navbar = () => {
             transformOrigin={{ horizontal: "center", vertical: "top" }}
             anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
           >
-            {currNavBtn ? (
-              currNavBtn === "Notifications" ? (
-                <NotificationsMenu />
-              ) : currNavBtn === "Meetings" ? (
-                <UpcomingMeetingsMenu />
-              ) : currNavBtn === "Clock" ? (
-                // <UpcomingMeetingsMenu />
-                <Clock/>
-              )
-               : (
-                <MenuItem />
-              )
-            ) : (
-              <div className="menu-wrapper">
-                <MenuItem>
-                  <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-                    <div className="flex items-center space-x-2">
-                      <Avatar src={User?.displayImg} className="inline-block" />
-                      <span>Profile</span>
-                    </div>
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <Link
-                    to={"/change-password"}
-                    onClick={() => setopenBackDrop(true)}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RiLockPasswordFill className="inline-block" />
-                      <span>Change Password</span>
-                    </div>
-                  </Link>
-                </MenuItem>
-                {User?.role !== 1 && isUserSubscribed && (
-                  <MenuItem onClick={UnsubscribeUser}>
-                    <MdUnsubscribe className="mr-3 text-lg" /> Unsubscribe
-                  </MenuItem>
-                )}
-                <MenuItem onClick={LogoutUser}>
-                  <CgLogOut className="mr-3 text-lg" /> Logout
-                </MenuItem>
-              </div>
-            )}
+            <Clock/>
+           
+           
           </Menu>
+          </div>
+
+         ):(
+          <Menu
+          anchorEl={anchorEl}
+          id="account-menu"
+          open={open}
+          onClose={handleClose}
+          onClick={handleClose}
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              height: "auto",
+              overflow: "visible",
+              overflowY: "scroll",
+              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+              mt: 1.5,
+              background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
+              color: currentMode === "dark" ? "#ffffff" : "black",
+              minWidth: 300,
+              "& .MuiAvatar-root": {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 1,
+              },
+              "&:before": {
+                content: '""',
+                display: "block",
+                position: "absolute",
+                top: 0,
+                right: 66,
+                width: 10,
+                height: 10,
+                background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
+                transform: "translateY(-50%) rotate(45deg)",
+                zIndex: 0,
+              },
+            },
+          }}
+          transformOrigin={{ horizontal: "center", vertical: "top" }}
+          anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+        >
+          {currNavBtn ? (
+            currNavBtn === "Notifications" ? (
+              <NotificationsMenu />
+            ) : currNavBtn === "Meetings" ? (
+              <UpcomingMeetingsMenu />
+            ) 
+            // : currNavBtn === "Clock" ? (
+            //   <Clock/>
+            // )
+             : (
+              <MenuItem />
+            )
+          ) : (
+            <div className="menu-wrapper">
+              <MenuItem>
+                <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
+                  <div className="flex items-center space-x-2">
+                    <Avatar src={User?.displayImg} className="inline-block" />
+                    <span>Profile</span>
+                  </div>
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link
+                  to={"/change-password"}
+                  onClick={() => setopenBackDrop(true)}
+                >
+                  <div className="flex items-center space-x-2">
+                    <RiLockPasswordFill className="inline-block" />
+                    <span>Change Password</span>
+                  </div>
+                </Link>
+              </MenuItem>
+              {User?.role !== 1 && isUserSubscribed && (
+                <MenuItem onClick={UnsubscribeUser}>
+                  <MdUnsubscribe className="mr-3 text-lg" /> Unsubscribe
+                </MenuItem>
+              )}
+              <MenuItem onClick={LogoutUser}>
+                <CgLogOut className="mr-3 text-lg" /> Logout
+              </MenuItem>
+            </div>
+          )}
+        </Menu>
+         )}
           {/* {isClicked.cart && <Cart />} */}
           {/* {isClicked.chat && <Chat />} */}
           {/* {isClicked.notification && <Notification />} */}

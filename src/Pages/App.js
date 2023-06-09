@@ -106,7 +106,7 @@ const routes = [
     pageName: "Unassigned Leads",
   },
   {
-    path: "/warmleads/:lead_type",
+    path: "/reshuffle/:lead_type",
     element: <AllWarmLeads />,
     pageName: "Warm Leads",
   },
