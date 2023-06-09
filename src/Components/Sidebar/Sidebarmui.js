@@ -1621,7 +1621,7 @@ const Sidebarmui = () => {
                 )}
               </a>
             </div>
-            <div className="profile-section border-t border-b mt-5 px-1 mb-5 pt-3 pb-3">
+            <div className="profile-section border-t border-b mt-2 px-1 py-2">
               {isCollapsed ? (
                 <>
                   <Link
@@ -1667,7 +1667,7 @@ const Sidebarmui = () => {
               )}
             </div>
           </div>
-          <div className="mt-5 mb-5">
+          <div className="mt-4 mb-4">
             <Menu
               menuItemStyles={{
                 button: ({ level, active, disabled }) => {
@@ -1880,7 +1880,7 @@ const Sidebarmui = () => {
                                     to={`${link.link}`}
                                     onClick={() => setopenBackDrop(true)}
                                   >
-                                    <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                    <div className="flex items-center gap-4  rounded-lg text-md  ">
                                       <span
                                         className={`${
                                           !isCollapsed && "text-xl"
@@ -2075,7 +2075,7 @@ const Sidebarmui = () => {
                                       href={link.link}
                                       onClick={() => setopenBackDrop(true)}
                                     >
-                                      <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                      <div className="flex items-center gap-4  rounded-lg text-md  ">
                                         <span
                                           className={`${
                                             !isCollapsed && "text-xl"
@@ -2095,7 +2095,7 @@ const Sidebarmui = () => {
                                       to={link.link}
                                       onClick={() => setopenBackDrop(true)}
                                     >
-                                      <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                      <div className="flex items-center gap-4  rounded-lg text-md  ">
                                         <span
                                           className={`${
                                             !isCollapsed && "text-xl"
@@ -2297,7 +2297,7 @@ const Sidebarmui = () => {
                                         href={link.link}
                                         onClick={() => setopenBackDrop(true)}
                                       >
-                                        <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                        <div className="flex items-center gap-4  rounded-lg text-md  ">
                                           <span
                                             className={`${
                                               !isCollapsed && "text-xl"
@@ -2317,7 +2317,7 @@ const Sidebarmui = () => {
                                         to={link.link}
                                         onClick={() => setopenBackDrop(true)}
                                       >
-                                        <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                        <div className="flex items-center gap-4  rounded-lg text-md  ">
                                           <span
                                             className={`${
                                               !isCollapsed && "text-xl"

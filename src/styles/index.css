@@ -349,6 +349,23 @@ label[for="bulkImport"] .MuiButtonBase-root {
   color: white !important;
 }
 
+.ps-menuitem-root .ps-menu-button {
+  height: 40px !important;
+}
+
+.ps-menuitem-root .ps-menu-button {
+  height: 40px !important;
+}.MuiBox-root
+
+.ps-open .MuiBox-root {
+  background: #f3f3f3;
+  margin: 0 !important;
+}
+
+.ps-menu-button.ps-open {
+  margin-bottom: 4px;
+}
+
 @media all and (max-width: 1300px) {
   .MuiDataGrid-cell[data-field="creationDate"] p {
     font-size: 12px;
