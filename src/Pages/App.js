@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AddLead from "./addlead";
 import Signup from "./auth/signup";
 import Booked from "./booked";
@@ -53,17 +53,13 @@ import SingleLeadPage from "./singlelead";
 import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
 import { useLocation } from "react-router-dom";
-import Loader from "../Components/Loader";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useNavigate } from "react-router-dom";
 
-import axios from "axios";
-import Settings from "./attendanceModule/officeSettings";
+import OfficeSettings from "./attendanceModule/officeSettings";
 import Employees from "./attendanceModule/employeesList";
-import Employee from "./attendanceModule/singleEmployee";
-import SingleUser from "../Components/Users/SingleUser";
 import AllWarmLeads from "./warmleads";
 
 const libraries = ["places"];
@@ -304,7 +300,7 @@ const routes = [
   {
     path: "/attendance/officeSettings",
     pageName: "Office Settings",
-    element: <Settings />,
+    element: <OfficeSettings />,
   },
   {
     path: "/attendance/employeesList",
@@ -312,162 +308,15 @@ const routes = [
     element: <Employees />,
   },
   {
-    path: "/attendance/singleEmployee",
-    pageName: "Employees",
-    element: <Employee />,
+    path: "/settings",
+    pageName: "Settings",
+    element: <OfficeSettings />,
   },
   {
     path: "*",
     element: <Error />,
   },
 ];
-// =======
-//     {
-//       path: "/",
-//       element: <Home />,
-//       pageName: "Home",
-//     },
-//     {
-//       path: "/auth/signup",
-//       pageName: "Sign Up",
-//       element: <Signup />,
-//     },
-//     {
-//       path: "/change-password",
-//       element: <ChangePassword />,
-//       pageName: "Change Password",
-//     },
-//     {
-//       path: "/dashboard",
-//       element: <Dashboard />,
-//       pageName: "Dashboard",
-//     },
-//     {
-//       path: "/addlead",
-//       element: <AddLead />,
-//       pageName: "Add Lead",
-//     },
-//     {
-//       path: "/unassigned/:lead_type",
-//       element: <AllUnassignedLeads />,
-//       pageName: "Unassigned Leads",
-//     },
-//     {
-//       path: "/hotleads/:lead_type",
-//       element: <AllHotLeads />,
-//       pageName: "Hot Leads",
-//     },
-//     {
-//       path: "/personalleads/:lead_type",
-//       element: <PersonaLeads />,
-//       pageName: "Personal Leads",
-//     },
-//     {
-//       path: "/thirdpartyleads/:lead_type",
-//       element: <ThirdPartyLeads />,
-//       pageName: "Third-party Leads",
-//     },
-//     {
-//       path: "/coldleads/:lead_type",
-//       element: <ColdLeads />,
-//       pageName: "Cold Leads",
-//     },
-//     {
-//       path: "/transfferedleads",
-//       element: <TransferredLeads />,
-//       pageName: "Transferred Leads",
-//     },
-//     {
-//       path: "/closedeals",
-//       pageName: "Close Deals",
-//       element: <ClosedealsPage />,
-//     },
-
-//     {
-//       path: "/timeline/:id",
-//       element: <TimelinePage />,
-//       pageName: "Timeline",
-//     },
-//     {
-//       path: "/leadnotes",
-//       element: <LeadNotesPage />,
-//       pageName: "Lead Notes",
-//     },
-//     {
-//       path: "/leadnotes/:id",
-//       element: <SingleLeadNote />,
-//       pageName: "Lead Notes",
-//     },
-//     {
-//       path: "/meetings",
-//       element: <Meetings />,
-//       pageName: "Meetings",
-//     },
-//     {
-//       path: "/booked",
-//       element: <Booked />,
-//       pageName: "Booked",
-//     },
-//     {
-//       path: "/contacts",
-//       element: <Contacts />,
-//       pageName: "Contacts",
-//     },
-//     {
-//       path: "/clients",
-//       element: <Clients />,
-//       pageName: "Clients",
-//     },
-//     {
-//       path: "/leaderboard",
-//       element: <Leaderboard />,
-//       pageName: "Leaderboard",
-//     },
-//     {
-//       path: "/profile",
-//       element: <ProfilePage />,
-//       pageName: "Profile",
-//     },
-//     {
-//       path: "/whatsapp-marketing/:page",
-//       element: <WhatsappMarketing/>,
-//       pageName: "Whatsapp Marketing",
-//     },
-//     {
-//       path: "/location/livelocation",
-//       pageName: "Live Location",
-//       element: <Livelocation />
-//     },
-//     {
-//       path: "/users",
-//       pageName: "Users",
-//       element: <Users />
-//     },
-//     {
-//       path: "/activity",
-//       pageName: "Activity Log",
-//       element: <ActivityLog />
-//     },
-//     {
-//       path: "/offers",
-//       pageName: "Offers",
-//       element: <Offers />
-//     },
-//     {
-//       path: "/reports",
-//       pageName: "Reports",
-//       element: <Reports />
-//     },
-//     // {
-//     //   path: "/support",
-//     //   element: <Tickets />
-//     // },
-//     {
-//       path: "*",
-//       element: <Error />
-//     },
-//   ];
-// >>>>>>> Stashed changes
 
 function App() {
   const {

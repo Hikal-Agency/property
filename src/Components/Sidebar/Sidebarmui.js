@@ -2,6 +2,7 @@ import { Box, ListItemIcon, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { AiFillGift, AiFillMessage } from "react-icons/ai";
 import { FaLink, FaSnowflake, FaMobile } from "react-icons/fa";
+import {FiSettings} from "react-icons/fi";
 import {
   BsStopCircleFill,
   BsCalendarWeekFill,
@@ -92,366 +93,6 @@ const Sidebarmui = () => {
   useEffect(() => {
     fetchSidebarData();
   }, []);
-
-
-  //  DATA
-  // const links = [
-  //   {
-  //     title: "Dashboard",
-  //     links: [
-  //       {
-  //         name: "Dashboard",
-  //         icon: <RiDashboardFill />,
-  //         link: "/dashboard",
-  //       },
-  //     ],
-  //   },
-
-  //   {
-  //     title: "LEADS",
-  //     links: [
-  //       {
-  //         name: "Add lead",
-  //         icon: <MdPersonAdd />,
-  //         link: "/addlead",
-  //       },
-  //       {
-  //         name: "Hot",
-  //         icon: <SiHotjar />,
-  //         submenu: [
-  //           {
-  //             name: "All",
-  //             count: sidebarData?.HotLeadsCount?.hot,
-  //             link: "/hotleads/all",
-  //           },
-  //           {
-  //             name: "New",
-  //             count: sidebarData?.HotLeadsCount?.new,
-  //             link: "/hotleads/new",
-  //           },
-  //           {
-  //             name: "No Answer",
-  //             count: sidebarData?.HotLeadsCount?.no_nswer,
-  //             link: "/hotleads/no answer",
-  //           },
-  //           {
-  //             name: "Meeting",
-  //             count: sidebarData?.HotLeadsCount?.Meeting,
-  //             link: "/hotleads/meeting",
-  //           },
-  //           {
-  //             name: "Follow Up",
-  //             count: sidebarData?.HotLeadsCount?.follow_up,
-  //             link: "/hotleads/follow up",
-  //           },
-  //           {
-  //             name: "Low Budget",
-  //             count: sidebarData?.HotLeadsCount?.low_budget,
-  //             link: "/hotleads/low budget",
-  //           },
-  //           {
-  //             name: "Not Interested",
-  //             count: sidebarData?.HotLeadsCount?.not_interested,
-  //             link: "/hotleads/not interested",
-  //           },
-  //           {
-  //             name: "Unreachable",
-  //             count: sidebarData?.HotLeadsCount?.unreachable,
-  //             link: "/hotleads/unreachable",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         name: "Personal",
-  //         icon: <HiUsers />,
-  //         submenu: [
-  //           {
-  //             name: "All",
-  //             count: sidebarData?.PersonalLeadsCount?.all,
-  //             link: "/personalleads/all",
-  //           },
-  //           {
-  //             name: "New",
-  //             count: sidebarData?.PersonalLeadsCount?.new,
-  //             link: "/personalleads/new",
-  //           },
-  //           {
-  //             name: "No Answer",
-  //             count: sidebarData?.PersonalLeadsCount?.no_nswer,
-  //             link: "/personalleads/no answer",
-  //           },
-  //           {
-  //             name: "Meeting",
-  //             count: sidebarData?.PersonalLeadsCount?.Meeting,
-  //             link: "/personalleads/meeting",
-  //           },
-  //           {
-  //             name: "Follow Up",
-  //             count: sidebarData?.PersonalLeadsCount?.follow_up,
-  //             link: "/personalleads/follow up",
-  //           },
-  //           {
-  //             name: "Low Budget",
-  //             count: sidebarData?.PersonalLeadsCount?.low_budget,
-  //             link: "/personalleads/low budget",
-  //           },
-  //           {
-  //             name: "Not Interested",
-  //             count: sidebarData?.PersonalLeadsCount?.not_interested,
-  //             link: "/personalleads/not interested",
-  //           },
-  //           {
-  //             name: "Unreachable",
-  //             count: sidebarData?.PersonalLeadsCount?.unreachable,
-  //             link: "/personalleads/unreachable",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         name: "Third party",
-  //         icon: <FaLink />,
-  //         submenu: [
-  //           {
-  //             name: "All",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.all,
-  //             link: "/thirdpartyleads/all",
-  //           },
-  //           {
-  //             name: "New",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.new,
-  //             link: "/thirdpartyleads/new",
-  //           },
-  //           {
-  //             name: "No Answer",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
-  //             link: "/thirdpartyleads/no answer",
-  //           },
-  //           {
-  //             name: "Meeting",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
-  //             link: "/thirdpartyleads/meeting",
-  //           },
-  //           {
-  //             name: "Follow Up",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
-  //             link: "/thirdpartyleads/follow up",
-  //           },
-  //           {
-  //             name: "Low Budget",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
-  //             link: "/thirdpartyleads/low budget",
-  //           },
-  //           {
-  //             name: "Not Interested ",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
-  //             link: "/thirdpartyleads/not interested",
-  //           },
-  //           {
-  //             name: "Unreachable",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.unreachable,
-  //             link: "/thirdpartyleads/unreachable",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         name: "Cold",
-  //         icon: <FaSnowflake />,
-  //         submenu: [
-  //           {
-  //             name: "All",
-  //             count: sidebarData?.ColdLeadsCount?.all,
-  //             link: "/coldleads/all",
-  //           },
-  //           {
-  //             name: "New",
-  //             count: sidebarData?.ColdLeadsCount?.new,
-  //             link: "/coldleads/new",
-  //           },
-  //           {
-  //             name: "Cold: Verified",
-  //             count: sidebarData?.ColdLeadsCount?.verified, //TODO
-  //             link: "/coldleads/coldLeadsVerified",
-  //           },
-  //           {
-  //             name: "Cold: Invalid",
-  //             count: sidebarData?.ColdLeadsCount?.unverified, //TODO
-  //             link: "/coldleads/coldLeadsInvalid",
-  //           },
-  //           {
-  //             name: "Cold: Not Checked",
-  //             count: sidebarData?.ColdLeadsCount?.unchecked, //TODO
-  //             link: "/coldleads/coldLeadsNotChecked",
-  //           },
-
-  //           {
-  //             name: "No Answer",
-  //             count: sidebarData?.ColdLeadsCount?.no_nswer,
-  //             link: "/coldleads/no answer",
-  //           },
-  //           {
-  //             name: "Meeting",
-  //             count: sidebarData?.ColdLeadsCount?.Meeting,
-  //             link: "/coldleads/meeting",
-  //           },
-  //           {
-  //             name: "Follow Up",
-  //             count: sidebarData?.ColdLeadsCount?.follow_up,
-  //             link: "/coldleads/follow up",
-  //           },
-  //           {
-  //             name: "Low Budget",
-  //             count: sidebarData?.ColdLeadsCount?.low_budget,
-  //             link: "/coldleads/low budget",
-  //           },
-  //           {
-  //             name: "Not Interested  ",
-  //             count: sidebarData?.ColdLeadsCount?.not_interested
-  //               ? sidebarData?.ColdLeadsCount?.not_interested
-  //               : "0",
-  //             link: "/coldleads/not interested",
-  //           },
-  //           {
-  //             name: "Unreachable",
-  //             count: sidebarData?.ColdLeadsCount?.unreachable,
-  //             link: "/coldleads/unreachable",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         name: "Transffered",
-  //         icon: <RiFileTransferFill />,
-  //         link: "/transfferedleads",
-  //       },
-  //       {
-  //         name: "Unassigned",
-  //         icon: <BsStopCircleFill />,
-  //         submenu: [
-  //           {
-  //             name: "Hot leads",
-  //             count: sidebarData?.UnassignedLeadsCount?.hot,
-  //             link: "/unassigned/fresh",
-  //           },
-  //           {
-  //             name: "Cold leads",
-  //             count: sidebarData?.UnassignedLeadsCount?.cold,
-  //             link: "/unassigned/cold",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         name: "Booked deals",
-  //         icon: <ImBookmark />,
-  //         link: "/booked",
-  //       },
-  //       {
-  //         name: "Closed deals",
-  //         icon: <ImLock />,
-  //         link: "/closedeals",
-  //       },
-  //       {
-  //         name: "Notes",
-  //         icon: <MdSpeakerNotes />,
-  //         link: "/leadnotes",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: "Apps",
-  //     links: [
-  //       {
-  //         name: "Meetings",
-  //         icon: <BsCalendarWeekFill />,
-  //         link: "/meetings",
-  //       },
-  //       {
-  //         name: "Reports",
-  //         icon: <HiDocumentReport />,
-  //         link: "/reports",
-  //       },
-  //       {
-  //         name: "Offers",
-  //         icon: <AiFillGift />,
-  //         link: "/offers",
-  //       },
-  //       {
-  //         name: "Users",
-  //         icon: <ImUsers />,
-  //         link: "/users",
-  //       },
-  //       {
-  //         name: "Clients",
-  //         icon: <ImUsers />,
-  //         link: "/clients",
-  //       },
-  //       {
-  //         name: "Contacts",
-  //         icon: <MdContactPage />,
-  //         link: "/contacts",
-  //       },
-  //       {
-  //         name: "Property Portfolio",
-  //         icon: <RiBuilding2Fill />,
-  //         link: "/propertyPortfolio",
-  //       },
-  //       {
-  //         name: "Leaderboard",
-  //         icon: <MdLeaderboard />,
-  //         link: "/leaderboard",
-  //       },
-  //       // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
-  //     ],
-  //   },
-  //   {
-  //     title: "WHATSAPP",
-  //     links: [
-  //       {
-  //         name: "Dashboard",
-  //         icon: <RiWhatsappFill />,
-  //         link: "/whatsapp-marketing/dashboard",
-  //       },
-  //       {
-  //         name: "Messages",
-  //         icon: <AiFillMessage />,
-  //         link: "/whatsapp-marketing/messages",
-  //       },
-  //       {
-  //         name: "Device",
-  //         icon: <FaMobile />,
-  //         link: "/whatsapp-marketing/device",
-  //       },
-  //       {
-  //         name: "Payments",
-  //         icon: <BsFillCreditCard2FrontFill />,
-  //         link: "/whatsapp-marketing/payments",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: "LOCATION",
-  //     links: [
-  //       {
-  //         name: "Meetings",
-  //         icon: <ImLocation size={20} />,
-  //         link: "/location/livelocation",
-  //       },
-  //       {
-  //         name: "Live",
-  //         icon: <MdPersonPinCircle size={22} />,
-  //         link: "/location/userlocation",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: "SUPPORT",
-  //     links: [
-  //       {
-  //         name: "Tickets",
-  //         icon: <HiTicket />,
-  //         link: "/support",
-  //       },
-  //     ],
-  //   },
-  // ];
 
   const Agentlinks = [
     {
@@ -758,6 +399,16 @@ const Sidebarmui = () => {
           name: "QA Form",
           icon: <AiOutlineQuestionCircle />,
           link: "/qaform",
+        },
+      ],
+    },
+     {
+      title: "MISC",
+      links: [
+        {
+          name: "Settings",
+          icon: <FiSettings />,
+          link: "/settings",
         },
       ],
     },
@@ -1131,6 +782,16 @@ const Sidebarmui = () => {
           name: "QA Form",
           icon: <AiOutlineQuestionCircle />,
           link: "/qaform",
+        },
+      ],
+    },
+     {
+      title: "MISC",
+      links: [
+        {
+          name: "Settings",
+          icon: <FiSettings />,
+          link: "/settings",
         },
       ],
     },
@@ -1620,6 +1281,16 @@ const Sidebarmui = () => {
         },
       ],
     },
+     {
+      title: "MISC",
+      links: [
+        {
+          name: "Settings",
+          icon: <FiSettings />,
+          link: "/settings",
+        },
+      ],
+    },
   ];
 
   console.log(selected);
@@ -1742,24 +1413,13 @@ const Sidebarmui = () => {
         data[name] = response.data.team;
       }
     }
+    console.log("State: ", data);
     setSalesPerson(data);
     setAppLoading(false);
   }
 
   const getAllLeadsMembers = (user) => {
     setAppLoading(true);
-    const token = localStorage.getItem("auth-token");
-    axios
-      .get(`${BACKEND_URL}/teamMembers/${user?.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        const agents = result.data?.team;
-        setSalesPerson({ [`manager-${user?.id}`]: agents });
-      });
     axios.get(`${BACKEND_URL}/managers`).then((result) => {
       console.log("manager response is");
       console.log(result);
