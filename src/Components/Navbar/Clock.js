@@ -38,19 +38,22 @@ const Clock = () => {
 
   const SelectStyles = {
     "&": {
-      color: currentMode === "dark" ? "white !important" : "black !important",
+      // color: currentMode === "dark" ? "white !important" : "black !important",
+      color: "#ffffff",
       fontSize: "0.9rem",
       fontWeight: "500",
     },
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline":
       {
-        color: currentMode === "dark" ? "white !important" : "black !important",
+        // color: currentMode === "dark" ? "white !important" : "black !important",
+        color: "#ffffff",
         fontSize: "0.9rem",
         fontWeight: "500",
       },
     "& .MuiOutlinedInput-notchedOutline": {
-      borderColor:
-        currentMode === "dark" ? "white !important" : "black !important",
+      // borderColor:
+      //   currentMode === "dark" ? "white !important" : "black !important",
+      borderColor: "#ffffff",
     },
     "& .MuiFormLabel-root": {
       color: currentMode === "dark" ? "white" : "black",
@@ -69,7 +72,8 @@ const Clock = () => {
           style={{
             marginRight: 8,
             fontSize: 14,
-            color: currentMode === "dark" ? "white" : "black",
+            // color: currentMode === "dark" ? "white" : "black",
+            color: "#ffffff",
           }}
         >
           {currentTime}
@@ -82,6 +86,7 @@ const Clock = () => {
             "& .MuiSelect-select": {
               padding: "0 25px 0 5px !important",
             },
+            color: "#ffffff",
           }}
           size="small"
           value={selectedTimezone}

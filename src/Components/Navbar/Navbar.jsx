@@ -337,7 +337,8 @@ const Navbar = () => {
                 overflowY: "scroll",
                 filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
                 mt: 1.5,
-                background: currentMode === "dark" ? "#DA1F26" : "#eef1ff",
+                // background: currentMode === "dark" ? "#DA1F26" : "#eef1ff",
+                background:"#DA1F26",
                 color: currentMode === "dark" ? "#ffffff" : "black",
                 minWidth: 300,
                 "& .MuiAvatar-root": {

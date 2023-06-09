@@ -15,6 +15,7 @@ import { RiRadioButtonLine } from "react-icons/ri";
 import { BiCalendar } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { FaFire } from "react-icons/fa";
+import { FaRandom } from "react-icons/fa";
 import {
   MdLeaderboard,
   MdPersonAdd,
@@ -672,6 +673,52 @@ const Sidebarmui = () => {
           link: "/closedeals",
         },
         {
+          name: "Reshuffle",
+          icon: <FaRandom />,
+          submenu: [
+            {
+              name: "All Leads",
+              count: sidebarData?.WarmLeadCount?.all,
+              link: "/reshuffle/all",
+            },
+            {
+              name: "New Leads",
+              count: sidebarData?.WarmLeadCount?.new,
+              link: "/reshuffle/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.WarmLeadCount?.no_nswer,
+              link: "/reshuffle/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.WarmLeadCount?.Meeting,
+              link: "/reshuffle/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.WarmLeadCount?.follow_up,
+              link: "/reshuffle/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.WarmLeadCount?.low_budget,
+              link: "/reshuffle/low budget",
+            },
+            {
+              name: "Not Intrested",
+              count: sidebarData?.WarmLeadCount?.not_interested,
+              link: "/reshuffle/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.WarmLeadCount?.unreachable,
+              link: "/reshuffle/unreachable",
+            },
+          ],
+        },
+        {
           name: "Notes",
           icon: <MdSpeakerNotes />,
           link: "/leadnotes",
@@ -985,47 +1032,47 @@ const Sidebarmui = () => {
         },
         {
           name: "Reshuffle",
-          icon: <FaFire />,
+          icon: <FaRandom />,
           submenu: [
             {
               name: "All Leads",
               count: sidebarData?.WarmLeadCount?.all,
-              link: "/warmleads/all",
+              link: "/reshuffle/all",
             },
             {
               name: "New Leads",
               count: sidebarData?.WarmLeadCount?.new,
-              link: "/warmleads/new",
+              link: "/reshuffle/new",
             },
             {
               name: "No Answer",
               count: sidebarData?.WarmLeadCount?.no_nswer,
-              link: "/warmleads/no answer",
+              link: "/reshuffle/no answer",
             },
             {
               name: "Meeting",
               count: sidebarData?.WarmLeadCount?.Meeting,
-              link: "/warmleads/meeting",
+              link: "/reshuffle/meeting",
             },
             {
               name: "Follow Up",
               count: sidebarData?.WarmLeadCount?.follow_up,
-              link: "/warmleads/follow up",
+              link: "/reshuffle/follow up",
             },
             {
               name: "Low Budget",
               count: sidebarData?.WarmLeadCount?.low_budget,
-              link: "/warmleads/low budget",
+              link: "/reshuffle/low budget",
             },
             {
               name: "Not Intrested",
               count: sidebarData?.WarmLeadCount?.not_interested,
-              link: "/warmleads/not interested",
+              link: "/reshuffle/not interested",
             },
             {
               name: "Unreachable",
               count: sidebarData?.WarmLeadCount?.unreachable,
-              link: "/warmleads/unreachable",
+              link: "/reshuffle/unreachable",
             },
           ],
         },
@@ -1351,47 +1398,47 @@ const Sidebarmui = () => {
         },
         {
           name: "Reshuffle",
-          icon: <FaFire />,
+          icon: <FaRandom />,
           submenu: [
             {
               name: "All Leads",
               count: sidebarData?.WarmLeadCount?.all,
-              link: "/warmleads/all",
+              link: "/reshuffle/all",
             },
             {
               name: "New Leads",
               count: sidebarData?.WarmLeadCount?.new,
-              link: "/warmleads/new",
+              link: "/reshuffle/new",
             },
             {
               name: "No Answer",
               count: sidebarData?.WarmLeadCount?.no_nswer,
-              link: "/warmleads/no answer",
+              link: "/reshuffle/no answer",
             },
             {
               name: "Meeting",
               count: sidebarData?.WarmLeadCount?.Meeting,
-              link: "/warmleads/meeting",
+              link: "/reshuffle/meeting",
             },
             {
               name: "Follow Up",
               count: sidebarData?.WarmLeadCount?.follow_up,
-              link: "/warmleads/follow up",
+              link: "/reshuffle/follow up",
             },
             {
               name: "Low Budget",
               count: sidebarData?.WarmLeadCount?.low_budget,
-              link: "/warmleads/low budget",
+              link: "/reshuffle/low budget",
             },
             {
               name: "Not Intrested",
               count: sidebarData?.WarmLeadCount?.not_interested,
-              link: "/warmleads/not interested",
+              link: "/reshuffle/not interested",
             },
             {
               name: "Unreachable",
               count: sidebarData?.WarmLeadCount?.unreachable,
-              link: "/warmleads/unreachable",
+              link: "/reshuffle/unreachable",
             },
           ],
         },

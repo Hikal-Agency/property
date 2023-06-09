@@ -269,10 +269,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       sortable: false,
       minWidth: 45,
       filterable: false,
-            renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
     },
     {
       field: "edit",
@@ -534,10 +536,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       sortable: false,
       minWidth: 50,
       filterable: false,
-      renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
     },
     {
       field: "edit",
@@ -917,10 +921,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       sortable: false,
       minWidth: 50,
       filterable: false,
-            renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
     },
     {
       field: "edit",
@@ -1102,7 +1108,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       }
     }
     // LEADS URL GENERATON FOR WARM LEADS PAGE
-    else if (lead_origin === "warmleads") {
+    else if (lead_origin === "reshuffle") {
       if (lead_type === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4`;
       } else if (lead_type === "new") {
