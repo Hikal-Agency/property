@@ -1,10 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import {
-  Box,
-  CircularProgress,
-  Dialog, 
-  TextField
-} from "@mui/material";
+import { Box, CircularProgress, Dialog, TextField, IconButton, InputAdornment } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -19,6 +14,7 @@ import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
+import {BiSearch} from "react-icons/bi";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -107,10 +103,12 @@ const Newleads = ({
       headerAlign: "center",
       sortable: false,
       filterable: false,
-                  renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
     },
     {
       field: "leadName",
@@ -247,10 +245,12 @@ const Newleads = ({
       headerAlign: "center",
       sortable: false,
       filterable: false,
-                  renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
     },
     {
       field: "leadName",
@@ -603,94 +603,89 @@ const Newleads = ({
       });
   };
 
-     const FetchSearchedLeads = async (token, term) => {
-         setpageState((old) => ({
-        ...old,
-        isLoading: true,
-      }));
-      console.log("the search lead  url is ");
-      console.log(
-        `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`
-      );
-      const coldCallCode = pageState?.data[0]?.coldCall;
-      let url = `${BACKEND_URL}/search?title=${term}&feedback=New`;
-      if (coldCallCode) {
-        url += `&coldCall=${coldCallCode}`;
-      }
-      await axios
-        .get(url, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
-          console.log("search result is");
-          console.log(result.data);
-          let rowsdata = result.data.result.data.map((row, index) => ({
-            id:
-              pageState.page > 1
-                ? pageState.page * pageState.pageSize -
-                  (pageState.pageSize - 1) +
-                  index
-                : index + 1,
-            leadId: row?.id,
-            creationDate: row?.creationDate,
-            leadName: row?.leadName || "No Name",
-            leadContact:
-              row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
-            project: row?.project || "No Project",
-            enquiryType: row?.enquiryType || "No Type",
-            leadType: row?.leadType || "No Type",
-            assignedToManager: row?.assignedToManager || null,
-            assignedToSales: row?.assignedToSales || null,
-            feedback: row?.feedback || null,
-            priority: row?.priority || null,
-            language: row?.language || "No Language",
-            leadSource: row?.leadSource || "No Source",
-            lid: row?.lid || "No id",
-            lastEdited: row?.lastEdited || "No Date",
-            leadFor: row?.leadFor || "No Lead",
-            leadStatus: row?.leadStatus || "No Status",
-            coldCall: row?.coldcall,
-            leadCategory: leadCategory || "No Category",
-            notes: row?.notes || "No notes",
-            otp: row?.otp || "No otp",
-            edit: "edit",
-          }));
-          setpageState((old) => ({
-            ...old,
-            data: rowsdata,
-            pageSize: result.data.result.per_page,
-            total: result.data.result.total,
-          }));
-         setpageState((old) => ({
-        ...old,
-        isLoading: false,
-      }));
+  const FetchSearchedLeads = async (token, term) => {
+    setpageState((old) => ({
+      ...old,
+      isLoading: true,
+    }));
+    console.log("the search lead  url is ");
+    console.log(`${BACKEND_URL}/search?title=${term}&page=${pageState.page}`);
+    const coldCallCode = pageState?.data[0]?.coldCall;
+    let url = `${BACKEND_URL}/search?title=${term}&feedback=New`;
+    if (coldCallCode) {
+      url += `&coldCall=${coldCallCode}`;
+    }
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("search result is");
+        console.log(result.data);
+        let rowsdata = result.data.result.data.map((row, index) => ({
+          id:
+            pageState.page > 1
+              ? pageState.page * pageState.pageSize -
+                (pageState.pageSize - 1) +
+                index
+              : index + 1,
+          leadId: row?.id,
+          creationDate: row?.creationDate,
+          leadName: row?.leadName || "No Name",
+          leadContact:
+            row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
+          project: row?.project || "No Project",
+          enquiryType: row?.enquiryType || "No Type",
+          leadType: row?.leadType || "No Type",
+          assignedToManager: row?.assignedToManager || null,
+          assignedToSales: row?.assignedToSales || null,
+          feedback: row?.feedback || null,
+          priority: row?.priority || null,
+          language: row?.language || "No Language",
+          leadSource: row?.leadSource || "No Source",
+          lid: row?.lid || "No id",
+          lastEdited: row?.lastEdited || "No Date",
+          leadFor: row?.leadFor || "No Lead",
+          leadStatus: row?.leadStatus || "No Status",
+          coldCall: row?.coldcall,
+          leadCategory: leadCategory || "No Category",
+          notes: row?.notes || "No notes",
+          otp: row?.otp || "No otp",
+          edit: "edit",
+        }));
+        setpageState((old) => ({
+          ...old,
+          data: rowsdata,
+          pageSize: result.data.result.per_page,
+          total: result.data.result.total,
+        }));
+        setpageState((old) => ({
+          ...old,
+          isLoading: false,
+        }));
+      })
+      .catch((err) => console.log(err));
+  };
 
-        })
-        .catch((err) => console.log(err));
-  }
-
-   const handleSearch = (e) => {
-    
-    if(e.target.value === "") {
-      setpageState((oldPageState) => ({...oldPageState, page: 1}));
+  const handleSearch = (e) => {
+    if (e.target.value === "") {
+      setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
       FetchLeads(token);
     }
     // setSearchTerm(e.target.value);
-  }
+  };
 
   const handleKeyUp = (e) => {
-    if(searchRef.current.querySelector("input").value) {
-
-          if (e.key === 'Enter' || e.keyCode === 13) {
-            // setpageState((oldPageState) => ({...oldPageState, page: 1}));
-            FetchSearchedLeads(token, e.target.value);
+    if (searchRef.current.querySelector("input").value) {
+      if (e.key === "Enter" || e.keyCode === 13) {
+        // setpageState((oldPageState) => ({...oldPageState, page: 1}));
+        FetchSearchedLeads(token, e.target.value);
       }
     }
-  }
+  };
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
@@ -702,7 +697,7 @@ const Newleads = ({
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    if(searchTerm) {
+    if (searchTerm) {
       FetchSearchedLeads(token, searchTerm);
     } else {
       FetchLeads(token);
@@ -800,10 +795,31 @@ const Newleads = ({
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={{...DataGridStyles, position: "relative"}}>
-
-          <div className="absolute top-[7px] right-[20px] z-[500]">
-            <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} onKeyUp={handleKeyUp} ref={searchRef} onInput={handleSearch}/>
+      <Box
+        width={"100%"}
+        className={`${currentMode}-mode-datatable`}
+        sx={{ ...DataGridStyles, position: "relative" }}
+      >
+                    <div className="absolute top-[7px] right-[20px] z-[500]">
+            <TextField
+              placeholder="Search.."
+              ref={searchRef}
+              sx={{"& input": {
+                borderBottom: "2px solid #ffffff6e"
+              }}}
+              variant="standard"
+              onKeyUp={handleKeyUp}
+              onInput={handleSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton sx={{padding: 0}}>
+                      <BiSearch size={17} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </div>
         <DataGrid
           autoHeight
@@ -833,8 +849,8 @@ const Newleads = ({
           componentsProps={{
             toolbar: {
               showQuickFilter: false,
-            printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+              printOptions: { disableToolbarButton: User?.role !== 1 },
+              csvOptions: { disableToolbarButton: User?.role !== 1 },
               // value: searchText,
               // onChange: HandleQuicSearch,
             },

@@ -1674,16 +1674,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             <TextField
               placeholder="Search.."
               ref={searchRef}
+              sx={{"& input": {
+                borderBottom: "2px solid #ffffff6e"
+              }}}
               variant="standard"
-              sx={{ borderBottom: "2px solid white", "&::placeholder": {
-                color: "white"
-              } }}
               onKeyUp={handleKeyUp}
               onInput={handleSearch}
               InputProps={{
-                endAdornment: (
-                  <InputAdornment>
-                    <IconButton>
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton sx={{padding: 0}}>
                       <BiSearch size={17} />
                     </IconButton>
                   </InputAdornment>

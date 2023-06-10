@@ -6,7 +6,7 @@ import {
   IconButton,
   MenuItem,
   Select,
-  Avatar,
+  InputAdornment,
   TextField,
   FormControl,
 } from "@mui/material";
@@ -24,6 +24,7 @@ import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
+import {BiSearch} from "react-icons/bi";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { FaSnapchat } from "react-icons/fa";
@@ -1386,16 +1387,27 @@ const BookedDeals = ({
     <div className="pb-10">
       <ToastContainer />
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
-        <div className="absolute top-[7px] right-[20px] z-[500]">
-          <TextField
-            placeholder="Search.."
-            variant="standard"
-            sx={{ borderBottom: "2px solid white" }}
-            ref={searchRef}
-            onKeyUp={handleKeyUp}
-            onInput={handleSearch}
-          />
-        </div>
+                <div className="absolute top-[7px] right-[20px] z-[500]">
+            <TextField
+              placeholder="Search.."
+              ref={searchRef}
+              sx={{"& input": {
+                borderBottom: "2px solid #ffffff6e"
+              }}}
+              variant="standard"
+              onKeyUp={handleKeyUp}
+              onInput={handleSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton sx={{padding: 0}}>
+                      <BiSearch size={17} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
         <div
           className={`${currentMode}-mode-datatable`}
           style={{ position: "relative" }}
