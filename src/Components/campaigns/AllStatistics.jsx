@@ -48,6 +48,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
   const [horizontalBarChart, sethorizontalBarChart] = useState();
   const [doughnutChart, setDoughnut] = useState();
   const [ageGender, setAgeGender] = useState([]);
+  const [locations, setLocations] = useState([]);
 
   console.log("ChartData: ", chartData);
 
@@ -129,6 +130,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
   //     console.log("Error occurred while fetching campaign stats: ", error);
   //   }
   // };
+
+  console.log("age,gender: ",ageGender)
   const FetchCampaignStats = async (campaignId) => {
     try {
       const adsetsPromise = axios.get(
@@ -155,6 +158,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
   
       const adsetsCount = adsetsResult.data.summary.total_count;
       const adsCount = adsResult.data.summary.total_count;
+
+      setAgeGender(insightsResult?.data?.data)
   
       const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
         if (ad.status === "ACTIVE") {
@@ -335,6 +340,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
       impressions: ad?.impressions || "No Data",
       clicks: ad?.clicks || "No Data",
       conversions: ad?.consversions || "No Conversions",
+      reach: ad?.reach || "No Reach",
+      frequency: ad?.frequency || "No Frequency",
     }));
 
   console.log("Row: ", row);
@@ -492,7 +499,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
 
     axios
       .get(
-        `https://graph.facebook.com/v16.0/${selectedCampaign}/ads?fields=id,name,adset{id,name,daily_budget},status&date_preset=last_year&limit=1000&access_token=${graph_api_token}`
+        `https://graph.facebook.com/v16.0/${selectedCampaign}/ads?fields=id,name,adset{id,name,daily_budget,targeting},status&date_preset=last_year&limit=1000&access_token=${graph_api_token}`
       )
       .then(async (result) => {
         console.log("ads of campaign ");
@@ -503,7 +510,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
         const adsWithInsights = await Promise.all(
           adsData?.map(async (ad) => {
             const insightsResult = await axios.get(
-              `https://graph.facebook.com/v16.0/${ad.id}/insights?fields=spend,clicks,cpc,cpm,impressions,conversions,gender_targeting
+              `https://graph.facebook.com/v16.0/${ad.id}/insights?fields=spend,clicks,cpc,cpm,impressions,conversions,gender_targeting,reach,frequency
               &date_preset=maximum&access_token=${graph_api_token}`
             );
             console.log("Insights result: ", insightsResult);
@@ -513,22 +520,33 @@ const AllStatistics = ({ pageState, setpageState }) => {
               (conversion) => conversion.value
             );
 
-            console.log("Conversinos: ");
+            console.log("Conversions: ");
             return {
               ...ad,
               adset: ad?.adset?.name,
               dailyBudget: ad?.adset?.daily_budget,
+              targeting: ad?.adset?.targeting,
               spend: insightsData?.spend,
               cpc: insightsData?.cpc,
               cpm: insightsData?.cpm,
               impressions: insightsData?.impressions,
               conversions: conversionValues,
               clicks: insightsData?.clicks,
+              reach: insightsData?.reach,  
+              frequency: insightsData?.frequency
             };
           })
         );
 
         console.log("Insights Data: ", adsWithInsights);
+
+        const filterTargetting = [...new Set(adsWithInsights.map((item) => item.targeting))];
+
+        setLocations(filterTargetting)
+
+
+        console.log("location: ",filterTargetting)
+         
 
         const conversionsData = adsWithInsights
           .map((row) => row.conversions)
@@ -556,7 +574,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
           .filter((clicks) => clicks)
           .map((clicks) => clicks);
 
-        console.log("CLicks, impr: ", clicksData, impressionsData);
+        console.log("Clicks, impressions: ", clicksData, impressionsData);
 
         sethorizontalBarChart({
           impressions: impressionsData,
@@ -573,12 +591,17 @@ const AllStatistics = ({ pageState, setpageState }) => {
           status: row?.status,
           adset: row?.adset,
           dailyBudget: row?.dailyBudget,
+          targeting: row?.targeting, // Add this line
           spend: row?.spend,
           cpc: row?.cpc,
           cpm: row?.cpm,
           impressions: row?.impressions,
           Cid: row?.id,
+          reach: row?.reach, 
+          frequency: row?.frequency,
         }));
+
+        console.log("rowdata: ",rowsdata)
 
         setpageState((old) => ({
           ...old,
@@ -593,6 +616,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
         console.log(err);
       });
   };
+
 
   useEffect(() => {
     // const token = localStorage.getItem("auth-token");
@@ -909,7 +933,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 <div className="justify-between items-center ">
                   <h6 className="font-semibold pb-3">Demographics</h6>
                   {/* <AreaChart /> */}
-                  <HorizontalBarChart barCharData={horizontalBarChart} />
+                  <HorizontalBarChart barCharData={ageGender} />
                 </div>
               </div>
 
@@ -954,6 +978,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 <div className="justify-between items-center">
                   <h6 className="font-semibold pb-3">Adsets Clicks</h6>
                   <DoughnutChart doughnutChart={doughnutChart} />
+                  {/* <DoughnutChart doughnutChart={doughnutChart} /> */}
                 </div>
               </div>
 
@@ -981,7 +1006,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 <div className="justify-between items-center h-80">
                   <h6 className="font-semibold pb-3">Locations</h6>
                   {/* <CombinationChartTable /> */}
-                  <MapChartStatistics />
+                  <MapChartStatistics locationData={locations} />
                 </div>
               </div>
             </div>

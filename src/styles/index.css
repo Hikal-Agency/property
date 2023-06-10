@@ -21,6 +21,10 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+.css-1ycxvqq-MuiSwitch-root .MuiSwitch-thumb .MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
+  color : "#DA1F26 !important"
+}
+
 /* SYNCFUSION COMPONENTS CSS */
 @import url("https://cdn.syncfusion.com/ej2/material.css");
 

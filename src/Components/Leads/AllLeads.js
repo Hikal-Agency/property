@@ -1772,13 +1772,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       ? "white !important"
                       : "black !important",
                 },
-                "& .MuiButtonBase-root .MuiSwitch-thumb": {
-                  color: "red !important",
-                  display: "none",
-                },
-                "& .MuiSwitch-track": {
-                  backgroundColor: "red !important",
-                },
+                "& .PrivateSwitchBase-input .css-1ycxvqq-MuiSwitch-root .MuiSwitch-thumb":
+                  {
+                    color: "#DA1F26 !important",
+                  },
+                "&  .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track":
+                  {
+                    backgroundColor: "#DA1F26 !important",
+                  },
               }}
               getRowClassName={(params) =>
                 params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
