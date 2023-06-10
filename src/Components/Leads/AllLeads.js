@@ -380,13 +380,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 105,
+      minWidth: 115,
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
-      minWidth: 55,
+      minWidth: 40,
       flex: 1,
     },
     // {
@@ -399,7 +399,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "leadType",
       headerName: "Property",
-      minWidth: 100,
+      minWidth: 85,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -749,13 +749,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 105,
+      minWidth: 115,
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
-      minWidth: 55,
+      minWidth: 40,
       flex: 1,
     },
     // {
@@ -768,7 +768,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "leadType",
       headerName: "Property",
-      minWidth: 100,
+      minWidth: 85,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -815,7 +815,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "language",
       headerName: "Lang",
-      minWidth: 45,
+      minWidth: 40,
       flex: 1,
     },
     // {
