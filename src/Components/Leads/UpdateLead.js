@@ -138,6 +138,8 @@ const UpdateLead = ({
     }
   };
 
+      console.log("Time:", moment().format("YYYY/MM/DD HH:mm:ss"));
+
   const handleEmail = (e) => {
     setEmailError(false);
     const value = e.target.value;
@@ -348,7 +350,7 @@ const UpdateLead = ({
     }
     UpdateLeadData.append(
       "lastEdited",
-      moment().format("YYYY/MM/DD HH:mm:ss")
+      moment(new Date()).format("YYYY/MM/DD HH:mm:ss")
     );
 
     await axios
