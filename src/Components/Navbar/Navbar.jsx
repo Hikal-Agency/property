@@ -14,6 +14,11 @@ import { Tooltip, Link as MuiLink, Button } from "@mui/material";
 import { useProSidebar } from "react-pro-sidebar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+
+import {AiFillCalendar} from "react-icons/ai";
+import {FaClock} from "react-icons/fa";
+import {RiNotification3Fill} from "react-icons/ri";
+
 import Avatar from "@mui/material/Avatar";
 import { CgLogOut } from "react-icons/cg";
 import { ColorModeContext } from "../../context/theme";
@@ -260,21 +265,21 @@ const Navbar = () => {
             // dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
             customFunc={(event) => handleClick(event, "Clock")}
             color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
-            icon={<FaRegClock />}
+            icon={ open && currNavBtn === "Clock" ? <FaClock/> : <FaRegClock/>}
           />
           <NavButton
             title="Meetings"
             dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
             customFunc={(event) => handleClick(event, "Meetings")}
             color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
-            icon={<AiOutlineCalendar />}
+            icon={open && currNavBtn === "Meetings" ? <AiFillCalendar/> : <AiOutlineCalendar />}
           />
           <NavButton
             title="Notification"
             dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
             customFunc={(event) => handleClick(event, "Notifications")}
             color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
-            icon={<RiNotification3Line />}
+            icon={open && currNavBtn === "Notifications" ? <RiNotification3Fill/> : <RiNotification3Line />}
           />
           <Tooltip
             title={currentMode === "dark" ? "light mode" : "dark mode"}
