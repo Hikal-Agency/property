@@ -347,7 +347,7 @@ function App() {
     setAllRoutes(routes);
 
     const socketURL = process.env.REACT_APP_SOCKET_URL;
-    const socket = io(socketURL);
+    const socket = io("http://localhost:5000");
     setSocket(socket);
   }, []);
 

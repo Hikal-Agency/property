@@ -22,7 +22,7 @@ const Chat = () => {
 
   const messagesContainerRef = useRef();
 
-  const socketURL = process.env.REACT_APP_SOCKET_URL;
+  const socketURL = "http://localhost:5000";
 
   const fetchChatMessages = async (contact) => {
     const messages = await axios.get(
@@ -71,48 +71,54 @@ const Chat = () => {
     //     });
   };
 
-  if (socket && User) {
-    socket.on("connect", () => {
-      console.log("Client Connected");
-      setServerDisconnected(false);
-      socket.on("get_qr", (data) => {
-        const qrCode = data;
-        setQr(qrCode);
+  useEffect(() => {
+    if (socket && User) {
+      socket.on("connect", () => {
+        console.log("Client Connected");
+        setServerDisconnected(false);
+        socket.on("get_qr", (data) => {
+          const qrCode = data;
+          setQr(qrCode);
 
-        console.log("QR REceived");
-        setloading(false);
-      });
-
-      socket.on("user_disconnected", () => {
-        alert("Disconnected Device");
-        document.location.reload();
-      });
-
-      socket.on("message_received", () => {
-        fetchChatMessages(searchParams.get("phoneNumber"));
-      });
-      console.log(searchParams.get("phoneNumber"));
-
-      socket.on("user_ready", async (clientInfo) => {
-        console.log("User ready");
-
-        setloading(true);
-        const profileImage = await axios.get(
-          `${socketURL}/user-profilepic/${User?.id}`
-        );
-        setData({
-          userInfo: clientInfo,
-          userProfilePic: profileImage.data,
+          console.log("QR REceived");
+          setloading(false);
         });
-        setReady(true);
-        setloading(false);
-      });
-    });
 
-    socket.on("disconnect", () => {
-      setServerDisconnected(true);
-    });
-  }
+        socket.on("user_disconnected", () => {
+          alert("Disconnected Device");
+          document.location.reload();
+        });
+
+        socket.on("message_received", () => {
+          fetchChatMessages(searchParams.get("phoneNumber"));
+        });
+        console.log(searchParams.get("phoneNumber"));
+
+        socket.on("user_ready", async (clientInfo) => {
+          console.log("User ready");
+
+          setloading(true);
+          const profileImage = await axios.get(
+            `${socketURL}/user-profilepic/${User?.id}`
+          );
+          setData({
+            userInfo: clientInfo,
+            userProfilePic: profileImage.data,
+          });
+          setReady(true);
+          setloading(false);
+        });
+      });
+
+      socket.on("disconnect", () => {
+        setServerDisconnected(true);
+      });
+    }
+
+    return () => {
+      socket.disconnect();
+    }
+  }, []);
 
   useEffect(() => {
     if (User && ready) {
