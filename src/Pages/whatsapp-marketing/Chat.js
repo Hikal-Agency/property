@@ -1,15 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { Box, CircularProgress, Button, TextField } from "@mui/material";
-// import axios from "axios";
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 import { toast } from "react-toastify";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
 import { useSearchParams } from "react-router-dom";
+import Loader from "../../Components/Loader";
 
 const Chat = () => {
-  const { socket, User } = useStateContext();
+  const { socket, User, currentMode } = useStateContext();
   const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
   const [ready, setReady] = useState(false);
@@ -25,11 +25,10 @@ const Chat = () => {
   const socketURL = process.env.REACT_APP_SOCKET_URL;
 
   const fetchChatMessages = async (contact) => {
-    const messages = await axios.get(
-      `${socketURL}/user-chat-messages/${contact}/${User?.id}`
-    );
-    console.log("Messages Data: ", messages.data);
-    setChatMessages(messages.data);
+    socket.emit("get_chat", { id: User?.id, contact: contact });
+    socket.on("chat", (data) => {
+      setChatMessages(data);
+    });
   };
 
   const handleSendMessage = async (e) => {
@@ -59,28 +58,31 @@ const Chat = () => {
   };
 
   const handleLogout = async () => {
-    // await axios.post(`${socketURL}/logout/${User?.id}`);
-    //     toast.success("Logged out", {
-    //       position: "top-right",
-    //       autoClose: 3000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "light",
-    //     });
+    socket.emit("logout", {id: User?.id});
   };
 
-  if (socket && User) {
-    socket.on("connect", () => {
-      console.log("Client Connected");
-      setServerDisconnected(false);
-      socket.on("get_qr", (data) => {
-        const qrCode = data;
-        setQr(qrCode);
-
-        console.log("QR REceived");
+  useEffect(() => {
+    if (socket && User) {
+      socket.emit("create_session", { id: User?.id });
+      socket.on("qr", (qr) => {
+        setQr(qr);
         setloading(false);
+      });
+
+      socket.on("user_ready", (info) => {
+        socket.emit("get_profile_picture", User?.id);
+        socket.on("profile_picture", (url) => {
+          setData({
+            userInfo: info,
+            userProfilePic: url,
+          });
+          setReady(true);
+          setloading(false);
+        });
+      });
+
+      socket.on("msg_received", () => {
+        fetchChatMessages(searchParams.get("phoneNumber"));
       });
 
       socket.on("user_disconnected", () => {
@@ -88,31 +90,11 @@ const Chat = () => {
         document.location.reload();
       });
 
-      socket.on("message_received", () => {
-        fetchChatMessages(searchParams.get("phoneNumber"));
+      socket.on("disconnect", () => {
+        setServerDisconnected(true);
       });
-      console.log(searchParams.get("phoneNumber"));
-
-      socket.on("user_ready", async (clientInfo) => {
-        console.log("User ready");
-
-        setloading(true);
-        const profileImage = await axios.get(
-          `${socketURL}/user-profilepic/${User?.id}`
-        );
-        setData({
-          userInfo: clientInfo,
-          userProfilePic: profileImage.data,
-        });
-        setReady(true);
-        setloading(false);
-      });
-    });
-
-    socket.on("disconnect", () => {
-      setServerDisconnected(true);
-    });
-  }
+    }
+  }, [socket]);
 
   useEffect(() => {
     if (User && ready) {
@@ -146,12 +128,21 @@ const Chat = () => {
         ) : (
           <>
             {loading ? (
-              <div className="flex justify-center mt-16">
-                <CircularProgress size={40} />
+              <div className="flex justify-center">
+                <Loader />
               </div>
             ) : (
               <>
-                <h1>Whatsapp</h1>
+                <h1
+                  className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
+                    currentMode === "dark"
+                      ? "text-white border-white"
+                      : "text-main-red-color font-bold border-main-red-color"
+                  }`}
+                >
+                  Whatsapp
+                </h1>
+
                 {ready ? (
                   <div className="mt-5">
                     <h1 style={{ fontSize: "38px", fontWeight: "bold" }}>
@@ -294,10 +285,22 @@ const Chat = () => {
                   </div>
                 ) : (
                   qr && (
-                    <QRCodeCanvas
-                      style={{ width: 150, height: 150 }}
-                      value={qr}
-                    />
+                    <div className="h-[60vh] flex flex-col justify-center pt-8 text-center">
+                      <h1
+                        style={{
+                          color: currentMode === "dark" ? "white" : "black",
+                          fontWeight: "bold",
+                          fontSize: 26,
+                          marginBottom: 25,
+                        }}
+                      >
+                        Go to Whatsapp and Scan your device
+                      </h1>
+                      <QRCodeCanvas
+                        style={{ width: 170, height: 170, margin: "0 auto" }}
+                        value={qr}
+                      />
+                    </div>
                   )
                 )}
               </>

@@ -348,7 +348,12 @@ function App() {
 
     const socketURL = process.env.REACT_APP_SOCKET_URL;
     const socket = io(socketURL);
+    console.log("Socket URL: " , socket);
     setSocket(socket);
+
+    return () => {
+      socket.disconnect();
+    }
   }, []);
 
   function hasSidebarOrNavbar() {
