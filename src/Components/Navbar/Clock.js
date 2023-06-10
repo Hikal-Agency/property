@@ -63,7 +63,7 @@ const Clock = () => {
   return (
     <div
       style={{
-        background: "#4F5159",
+        background: "#ffffff",
       }}
       className="py-2 px-3 ml-3"
     >
@@ -73,7 +73,7 @@ const Clock = () => {
             marginRight: 8,
             fontSize: 14,
             // color: currentMode === "dark" ? "white" : "black",
-            color: "#ffffff",
+            color: "#000000",
           }}
         >
           {currentTime}
@@ -86,7 +86,7 @@ const Clock = () => {
             "& .MuiSelect-select": {
               padding: "0 25px 0 5px !important",
             },
-            color: "#ffffff",
+            color: "#000000 !important",
           }}
           size="small"
           value={selectedTimezone}
