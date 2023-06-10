@@ -1651,7 +1651,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             <MuiButton
               onClick={() => bulkImportRef.current.click()}
               size="small"
-              sx={{ ...bulkUpdateBtnStyles, left: User?.role === 1 ? "444px" : "355px" }}
+              sx={{
+                ...bulkUpdateBtnStyles,
+                left: User?.role === 1 ? "444px" : "355px",
+              }}
               variant="text"
             >
               <TbFileImport size={18} />{" "}
@@ -1746,7 +1749,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 toolbar: {
                   showQuickFilter: false,
                   printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+                  csvOptions: { disableToolbarButton: User?.role !== 1 },
                   // value: searchTerm,
                   // onChange: HandleQuicSearch,
                 },
@@ -1768,6 +1771,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     currentMode === "dark"
                       ? "white !important"
                       : "black !important",
+                },
+                "& .MuiSwitch-thumb": {
+                  color: "red !important",
+                  display: "none",
+                },
+                "& .MuiSwitch-track": {
+                  backgroundColor: "red !important",
                 },
               }}
               getRowClassName={(params) =>

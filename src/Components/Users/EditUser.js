@@ -48,27 +48,27 @@ const EditUser = ({ user }) => {
 
     const updated_data = new FormData();
 
-    if (!userData?.expiry_date) {
-      setloading(false);
+    // if (!userData?.expiry_date) {
+    //   setloading(false);
 
-      toast.error("Kindly enter a valid date..", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    //   toast.error("Kindly enter a valid date..", {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "light",
+    //   });
 
-      return;
-    }
+    //   return;
+    // }
 
     updated_data.append("master", userData?.master);
     updated_data.append("package_name", userData?.package_name || "");
     updated_data.append("position", userData?.position);
-    updated_data.append("expiry_date", userData?.expiry_date);
+    updated_data.append("expiry_date", userData?.expiry_date || "0000-00-00");
     updated_data.append("target", userData?.target);
 
     try {

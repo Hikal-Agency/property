@@ -318,58 +318,58 @@ const Navbar = () => {
           {/* Submenu */}
         
          {currNavBtn === "Clock" ? (
-          <div className="bg-main-red-color" 
-          // sx={{
-          //     background:"#DA1F26 !important"
-          // }}
-          >
-             <Menu
-            anchorEl={anchorEl}
-            id="account-menu"
-            open={open}
-            onClose={handleClose}
-            onClick={handleClose}
-            PaperProps={{
-              elevation: 0,
-              sx: {
-                height: "auto",
-                overflow: "visible",
-                overflowY: "scroll",
-                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                mt: 1.5,
-                // background: currentMode === "dark" ? "#DA1F26" : "#eef1ff",
-                background:"#DA1F26",
-                color: currentMode === "dark" ? "#ffffff" : "black",
-                minWidth: 300,
-                "& .MuiAvatar-root": {
-                  width: 32,
-                  height: 32,
-                  ml: -0.5,
-                  mr: 1,
-                },
-                "&:before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                  top: 0,
-                  right: 66,
-                  width: 10,
-                  height: 10,
-                  background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
-                  transform: "translateY(-50%) rotate(45deg)",
-                  zIndex: 0,
-                },
-              },
-            }}
-            transformOrigin={{ horizontal: "center", vertical: "top" }}
-            anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-          >
-            <Clock/>
-           
-           
-          </Menu>
-          </div>
-
+       <div className="bg-main-red-color"  style={{ margin: 0, padding: 0, overflow: "hidden" }}
+       >
+       <Menu
+         anchorEl={anchorEl}
+         id="account-menu"
+         open={open}
+         onClose={handleClose}
+         onClick={handleClose}
+         PaperProps={{
+           elevation: 0,
+           sx: {
+            //  height: "auto",
+             overflow: "visible",
+            //  overflowY: "scroll",
+             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+             mt: 1.5,
+             background: "#DA1F26",
+             color: currentMode === "dark" ? "#ffffff" : "black",
+             minWidth: 300,
+             padding:0 ,
+             "& .MuiAvatar-root": {
+               width: 32,
+               height: 32,
+               ml: -0.5,
+               mr: 1,
+             },
+             "& .MuiList-root": {
+              padding:"3px"
+             },
+             "& .MuiList-root .clock-div": {
+              background: currentMode === "dark" ? "#E5E7EB " : "#FFFFFF",
+             },
+            //  "&:before": {
+            //    content: '""',
+            //    display: "block",
+            //    position: "absolute",
+            //    top: 0,
+            //    right: 66,
+            //    width: 10,
+            //    height: 10,
+            //    background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
+            //    transform: "translateY(-50%) rotate(45deg)",
+            //    zIndex: 0,
+            //  },
+           },
+         }}
+         transformOrigin={{ horizontal: "center", vertical: "top" }}
+         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+       >
+         <Clock />
+       </Menu>
+     </div>
          ):(
           <Menu
           anchorEl={anchorEl}

@@ -11,6 +11,8 @@ const Clock = () => {
   const [selectedTimezone, setSelectedTimezone] = useState(moment.tz.guess());
   const { currentMode } = useStateContext();
 
+  console.log("mode: ", currentMode);
+
   useEffect(() => {
     // Fetch all timezones
     const fetchedTimezones = moment.tz.names();
@@ -63,16 +65,23 @@ const Clock = () => {
   return (
     <div
       style={{
-        background: "#ffffff",
+        background: currentMode === "dark" ? "#E5E7EB !important" : "#FFFFFF",
+        margin: 0,
+        padding: "0.5rem 0.75rem",
+        "& .MuiList-root": {
+          background:
+            currentMode === "dark"
+              ? "#F6F6F6 !important"
+              : "#ffffff !important",
+        },
       }}
-      className="py-2 px-3 ml-3 mr-1"
+      className="clock-div"
     >
-      <div className="flex items-center  ">
+      <div className="flex items-center">
         <h2
           style={{
             marginRight: 8,
             fontSize: 14,
-            // color: currentMode === "dark" ? "white" : "black",
             color: "#000000",
           }}
         >
@@ -81,7 +90,6 @@ const Clock = () => {
         <Select
           className="time-zone-select"
           sx={{
-            ...SelectStyles,
             padding: 0,
             "& .MuiSelect-select": {
               padding: "0 25px 0 5px !important",
