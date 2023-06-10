@@ -8,6 +8,7 @@ import {
   Select,
   Avatar,
   TextField,
+  FormControl,
 } from "@mui/material";
 import {
   DataGrid,
@@ -190,35 +191,37 @@ const BookedDeals = ({
         className={`w-full h-full flex items-center justify-center`}
         sx={SelectStyles}
       >
-        <Select
-          id="feedback"
-          value={Feedback}
-          label="Feedback"
-          onChange={ChangeFeedback}
-          size="medium"
-          className="w-[100%] h-[75%] border-none"
-          displayEmpty
-          sx={{
-            color:
-              currentMode === "dark"
-                ? "#ffffff !important"
-                : "#000000 !important",
-            "& .MuiSelect-icon": {
+        <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
+          <Select
+            id="feedback"
+            value={Feedback}
+            label="Feedback"
+            onChange={ChangeFeedback}
+            size="medium"
+            className="w-[100%] h-[75%] border-none"
+            displayEmpty
+            sx={{
               color:
                 currentMode === "dark"
                   ? "#ffffff !important"
                   : "#000000 !important",
-            },
-          }}
-          required
-        >
-          <MenuItem value={null} disabled>
-            ---SELECT---
-          </MenuItem>
-          <MenuItem value={"Booked"}>Booked</MenuItem>
-          <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
-          <MenuItem value={"Closed"}>Closed</MenuItem>
-        </Select>
+              "& .MuiSelect-icon": {
+                color:
+                  currentMode === "dark"
+                    ? "#ffffff !important"
+                    : "#000000 !important",
+              },
+            }}
+            required
+          >
+            <MenuItem value={null} disabled>
+              ---SELECT---
+            </MenuItem>
+            <MenuItem value={"Booked"}>Booked</MenuItem>
+            <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+            <MenuItem value={"Closed"}>Closed</MenuItem>
+          </Select>
+        </FormControl>
         {DialogueVal && (
           <>
             <Dialog
@@ -356,10 +359,12 @@ const BookedDeals = ({
 
       sortable: false,
       filterable: false,
-            renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
     },
     {
       field: "leadName",
@@ -555,10 +560,12 @@ const BookedDeals = ({
       sortable: false,
       minWidth: 50,
       filterable: false,
-            renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
     },
     {
       field: "edit",
@@ -801,10 +808,12 @@ const BookedDeals = ({
       sortable: false,
       minWidth: 50,
       filterable: false,
-            renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
     },
     {
       field: "edit",
@@ -988,10 +997,12 @@ const BookedDeals = ({
       sortable: false,
       minWidth: 50,
       filterable: false,
-            renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
     },
     {
       field: "edit",
@@ -1247,26 +1258,22 @@ const BookedDeals = ({
       .catch((err) => console.log(err));
   };
 
-
   const handleSearch = (e) => {
-    
-    if(e.target.value === "") {
-      setpageState((oldPageState) => ({...oldPageState, page: 1}));
+    if (e.target.value === "") {
+      setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
       FetchLeads(token);
     }
     // setSearchTerm(e.target.value);
-  }
+  };
 
   const handleKeyUp = (e) => {
-    if(searchRef.current.querySelector("input").value) {
-
-          if (e.key === 'Enter' || e.keyCode === 13) {
-            setpageState((oldPageState) => ({...oldPageState, page: 1}));
-            FetchSearchedLeads(token, e.target.value);
+    if (searchRef.current.querySelector("input").value) {
+      if (e.key === "Enter" || e.keyCode === 13) {
+        setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
+        FetchSearchedLeads(token, e.target.value);
       }
     }
-  }
-
+  };
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
@@ -1379,10 +1386,20 @@ const BookedDeals = ({
     <div className="pb-10">
       <ToastContainer />
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
-          <div className="absolute top-[7px] right-[20px] z-[500]">
-            <TextField placeholder="Search.." variant="standard" sx={{borderBottom: "2px solid white"}} ref={searchRef} onKeyUp={handleKeyUp} onInput={handleSearch}/>
-          </div>
-        <div className={`${currentMode}-mode-datatable`} style={{ position: "relative" }}>
+        <div className="absolute top-[7px] right-[20px] z-[500]">
+          <TextField
+            placeholder="Search.."
+            variant="standard"
+            sx={{ borderBottom: "2px solid white" }}
+            ref={searchRef}
+            onKeyUp={handleKeyUp}
+            onInput={handleSearch}
+          />
+        </div>
+        <div
+          className={`${currentMode}-mode-datatable`}
+          style={{ position: "relative" }}
+        >
           <DataGrid
             ref={dataTableRef}
             autoHeight
