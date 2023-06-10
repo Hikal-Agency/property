@@ -1,19 +1,20 @@
-import { Modal, Backdrop, IconButton } from "@mui/material"
+import { Modal, Backdrop, IconButton } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import LocationPicker from "./LocationPicker";
 import { IoMdClose } from "react-icons/io";
 
-const ShowLocation = ({isModalOpened, handleModalClose, meetingLocation,}) => {
-  const {currentMode } = useStateContext();
+const ShowLocation = ({ isModalOpened, handleModalClose, meetingLocation }) => {
+  const { currentMode } = useStateContext();
 
   const style = {
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
-    height: "90vh",
+    height: "60vh",
     overflowY: "scroll",
-    position: "relative"
+    position: "relative",
   };
-    return (<>
+  return (
+    <>
       <Modal
         keepMounted
         open={isModalOpened}
@@ -32,28 +33,29 @@ const ShowLocation = ({isModalOpened, handleModalClose, meetingLocation,}) => {
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md`}
         >
-              <h1
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                } text-center font-bold text-xl pb-10`}
-              >
-                Meeting Location
-              </h1>
-              <LocationPicker showOnly={true} meetingLocation={meetingLocation}/>
-              <IconButton
-                sx={{
-                  position: "absolute",
-                  right: 12,
-                  top: 10,
-                  color: (theme) => theme.palette.grey[500],
-                }}
-                onClick={handleModalClose}
-              >
-                <IoMdClose size={18} />
-              </IconButton>
-          </div>
-          </Modal>
-    </>);
-}
+          <h1
+            className={`${
+              currentMode === "dark" ? "text-white" : "text-black"
+            } text-center font-bold text-xl pb-2`}
+          >
+            Meeting Location
+          </h1>
+          <LocationPicker showOnly={true} meetingLocation={meetingLocation} />
+          <IconButton
+            sx={{
+              position: "absolute",
+              right: 12,
+              top: 10,
+              color: (theme) => theme.palette.grey[500],
+            }}
+            onClick={handleModalClose}
+          >
+            <IoMdClose size={18} />
+          </IconButton>
+        </div>
+      </Modal>
+    </>
+  );
+};
 
 export default ShowLocation;

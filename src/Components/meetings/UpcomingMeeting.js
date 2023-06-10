@@ -26,18 +26,18 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
       lng: Number(meeting.mLong),
       addressText: meeting.meetingLocation,
     });
-  }
+  };
 
-  const handleModalClose = () => {  
+  const handleModalClose = () => {
     setIsModalOpened(false);
-  }
+  };
   return (
     // <div className="overflow-x-scroll snap-x auto-cols-min">
     <div className="overflow-x-scroll snap-x grid grid-flow-col auto-cols-max gap-x-3 scrollbar-thin">
       {upcoming_meetings?.map((meeting, index) => {
         return (
           <div
-          onClick={() => handleCardClick(meeting)}
+            onClick={() => handleCardClick(meeting)}
             key={index}
             className={`max-w-[500px] flex flex-col justify-between ${
               currentMode === "dark" ? "bg-black" : "bg-white"
@@ -88,7 +88,10 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   />
-                  <p className="text-sm mr-3"> {meeting?.meetingLocation || "Not Updated"}</p>
+                  <p className="text-sm mr-3">
+                    {" "}
+                    {meeting?.meetingLocation || "Not Updated"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -98,10 +101,15 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
           </div>
         );
       })}
-      {(meetingLocation.lat && meetingLocation.lng) && isModalOpened ? 
-      <ShowLocation isModalOpened={isModalOpened} meetingLocation={meetingLocation} handleModalClose={handleModalClose}/>
-      : <></>
-      }
+      {meetingLocation.lat && meetingLocation.lng && isModalOpened ? (
+        <ShowLocation
+          isModalOpened={isModalOpened}
+          meetingLocation={meetingLocation}
+          handleModalClose={handleModalClose}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
