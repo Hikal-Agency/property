@@ -68,7 +68,7 @@ const EditUser = ({ user }) => {
     updated_data.append("master", userData?.master);
     updated_data.append("package_name", userData?.package_name || "");
     updated_data.append("position", userData?.position);
-    updated_data.append("expiry_date", userData?.expiry_date || "0000-00-00");
+    updated_data.append("expiry_date", userData?.expiry_date || "");
     updated_data.append("target", userData?.target);
 
     try {

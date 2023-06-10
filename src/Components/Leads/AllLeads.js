@@ -1772,7 +1772,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       ? "white !important"
                       : "black !important",
                 },
-                "& .MuiSwitch-thumb": {
+                "& .MuiButtonBase-root .MuiSwitch-thumb": {
                   color: "red !important",
                   display: "none",
                 },
