@@ -1,6 +1,8 @@
 import {
   Box,
   CircularProgress,
+  FormControl,
+  InputLabel,
   MenuItem,
   Pagination,
   Select,
@@ -45,6 +47,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
   const [chartData, setChartData] = useState();
   const [horizontalBarChart, sethorizontalBarChart] = useState();
   const [doughnutChart, setDoughnut] = useState();
+  const [ageGender, setAgeGender] = useState([]);
 
   console.log("ChartData: ", chartData);
 
@@ -70,62 +73,133 @@ const AllStatistics = ({ pageState, setpageState }) => {
   // ];
 
   // count of ads adsets
+  // const FetchCampaignStats = async (campaignId) => {
+  //   try {
+  //     const adsetsPromise = axios.get(
+  //       `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
+  //     );
+
+  //     const adsPromise = axios.get(
+  //       `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
+  //     );
+
+  //     const [adsetsResult, adsResult] = await Promise.all([
+  //       adsetsPromise,
+  //       adsPromise,
+  //     ]);
+
+  //     console.log("ADSERRESULT: ", adsetsResult);
+
+  //     const adsetsCount = adsetsResult.data.summary.total_count;
+  //     const adsCount = adsResult.data.summary.total_count;
+
+  //     const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
+  //       if (ad.status === "ACTIVE") {
+  //         count++;
+  //       }
+  //       return count;
+  //     }, 0);
+
+  //     const activeAdsetsCount = adsetsResult.data.data.reduce(
+  //       (count, adset) => {
+  //         if (adset.status === "ACTIVE") {
+  //           count++;
+  //         }
+  //         return count;
+  //       },
+  //       0
+  //     );
+
+  //     console.log("Ad Sets Count: ", adsetsCount);
+  //     console.log("Ads Count: ", adsCount);
+  //     console.log("Active Ads Count: ", activeAdsCount);
+  //     console.log("Active Adset Count: ", activeAdsetsCount);
+
+  //     // Set the fetched counts to state or use them as needed
+  //     const campaignStats = {
+  //       adsetsCount: adsetsCount,
+  //       adsCount: adsCount,
+  //       activeAdsCount: activeAdsCount,
+  //       activeAdsetCount: activeAdsetsCount,
+  //     };
+
+  //     // Set the campaign stats state with the fetched data
+  //     setCampaignStats(campaignStats);
+  //   } catch (error) {
+  //     console.log("Error occurred while fetching campaign stats: ", error);
+  //   }
+  // };
   const FetchCampaignStats = async (campaignId) => {
     try {
       const adsetsPromise = axios.get(
         `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
       );
-
+  
       const adsPromise = axios.get(
         `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
       );
-
-      const [adsetsResult, adsResult] = await Promise.all([
+  
+      const insightsPromise = axios.get(
+        `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&breakdowns=gender,age`
+      );
+  
+      const [adsetsResult, adsResult, insightsResult] = await Promise.all([
         adsetsPromise,
         adsPromise,
+        insightsPromise,
       ]);
-
-      console.log("ADSERRESULT: ", adsetsResult);
-
+  
+      console.log("ADSET RESULT: ", adsetsResult);
+      console.log("ADS RESULT: ", adsResult);
+      console.log("INSIGHTS RESULTsss: ", insightsResult);
+  
       const adsetsCount = adsetsResult.data.summary.total_count;
       const adsCount = adsResult.data.summary.total_count;
-
+  
       const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
         if (ad.status === "ACTIVE") {
           count++;
         }
         return count;
       }, 0);
-
-      const activeAdsetsCount = adsetsResult.data.data.reduce(
-        (count, adset) => {
-          if (adset.status === "ACTIVE") {
-            count++;
-          }
-          return count;
-        },
-        0
+  
+      const activeAdsetsCount = adsetsResult.data.data.reduce((count, adset) => {
+        if (adset.status === "ACTIVE") {
+          count++;
+        }
+        return count;
+      }, 0);
+  
+      const genderData = insightsResult.data.data.map(
+        (insight) => insight.gender
       );
-
+      const ageData = insightsResult.data.data.map((insight) => insight.age);
+  
       console.log("Ad Sets Count: ", adsetsCount);
       console.log("Ads Count: ", adsCount);
       console.log("Active Ads Count: ", activeAdsCount);
       console.log("Active Adset Count: ", activeAdsetsCount);
-
-      // Set the fetched counts to state or use them as needed
+      console.log("Gender Data: ", genderData);
+      console.log("Age Data: ", ageData);
+  
+      // Set the fetched counts, genders, and ages to state or use them as needed
       const campaignStats = {
         adsetsCount: adsetsCount,
         adsCount: adsCount,
         activeAdsCount: activeAdsCount,
         activeAdsetCount: activeAdsetsCount,
+        genderData: genderData,
+        ageData: ageData,
       };
-
+  
       // Set the campaign stats state with the fetched data
       setCampaignStats(campaignStats);
     } catch (error) {
       console.log("Error occurred while fetching campaign stats: ", error);
     }
   };
+  
+  
 
   // adseet stats
   const FetchAdsetStats = async (campaignId) => {
@@ -626,14 +700,14 @@ const AllStatistics = ({ pageState, setpageState }) => {
     <div className="pb-10 mb-5">
       <div className={`grid grid-cols-4 gap-3 ${darkModeColors}`}>
         <div>
-          <label
+          {/* <label
             htmlFor="leadOrigin"
             className={`${
               currentMode === "dark" ? "text-white" : "text-dark"
             } capitalize`}
           >
             Select a campaign
-          </label>
+          </label> */}
 
           {loading ? (
             <>
@@ -641,47 +715,83 @@ const AllStatistics = ({ pageState, setpageState }) => {
               <CircularProgress />
             </>
           ) : (
+            // <Select
+            //   id="leadOrigin"
+            //   value={selectedCampaign.SelectedCampaign}
+            //   onChange={(event) => selectCampaign(event, event.target.value)}
+            //   size="medium"
+            //   className={`w-full mt-1 mb-5 `}
+            //   displayEmpty
+            //   required
+            //   sx={{
+            //     "& .MuiOutlinedInput-notchedOutline": {
+            //       borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+            //     },
+            //     "&:hover:not (.Mui-disabled):before": {
+            //       borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+            //     },
+            //   }}
+            // >
+            //   <MenuItem value="0" selected>
+            //     Select Campaign
+            //   </MenuItem>
+            //   {campaigns?.length > 0 ? (
+            //     campaigns?.map((campaign, index) => (
+            //       <MenuItem
+            //         key={index}
+            //         value={campaign?.id || ""}
+            //         name={campaign?.name}
+            //       >
+            //         {campaign?.name}
+            //       </MenuItem>
+            //     ))
+            //   ) : (
+            //     <MenuItem>No Campaigns found.</MenuItem>
+            //   )}
+            // </Select>
+            <FormControl className="w-full mt-1 mb-5" variant="outlined" required
+           
+            >
+            <InputLabel id="campaign-label"
+             sx={{color: currentMode === "dark" ? "#ffffff !important" : "#000000 !important"}}
+            >Select Campaign</InputLabel>
             <Select
               id="leadOrigin"
               value={selectedCampaign.SelectedCampaign}
               onChange={(event) => selectCampaign(event, event.target.value)}
+              labelId="campaign-label"
+              label="Select Campaign"
               size="medium"
-              className={`w-full mt-1 mb-5 `}
-              displayEmpty
-              required
               sx={{
                 "& .MuiOutlinedInput-notchedOutline": {
                   borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
                 },
-                "&:hover:not (.Mui-disabled):before": {
+                "&:hover:not(.Mui-disabled):before": {
                   borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
                 },
               }}
             >
-              <MenuItem value="0" selected>
+              <MenuItem value="0" disabled>
                 Select Campaign
               </MenuItem>
               {campaigns?.length > 0 ? (
                 campaigns?.map((campaign, index) => (
-                  <MenuItem
-                    key={index}
-                    value={campaign?.id || ""}
-                    name={campaign?.name}
-                  >
+                  <MenuItem key={index} value={campaign?.id || ""} name={campaign?.name}>
                     {campaign?.name}
                   </MenuItem>
                 ))
               ) : (
-                <MenuItem>No Campaigns found.</MenuItem>
+                <MenuItem disabled>No Campaigns found.</MenuItem>
               )}
             </Select>
+          </FormControl>
           )}
         </div>
       </div>
       {selectedCampaign.SelectedCampaign && (
         <>
           <div className=" mb-5">
-            <div className="mb-4 ml-0">
+            <div className="mb-4 mt-5 ml-0">
               {selectedCampaign.SelectedCampaign && (
                 <h2
                   className={`${
