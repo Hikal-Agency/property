@@ -79,7 +79,6 @@ const RenderManagers = ({ cellValues }) => {
     } else {
       UpdateLeadData.append("assignedToManager", newManager?.id);
     }
-    UpdateLeadData.append("assignedToSales", 102);
 
     await axios
       .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {

@@ -22,7 +22,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
     open: false,
     id: null,
   });
-  const { currentMode } = useStateContext();
+  const { currentMode, User } = useStateContext();
   //eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
 
@@ -353,6 +353,8 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
           }}
           componentsProps={{
             toolbar: {
+                                printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
               showQuickFilter: true,
               value: searchText,
               onChange: HandleQuicSearch,

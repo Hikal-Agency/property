@@ -93,9 +93,9 @@ const AllLeads = () => {
     darkModeColors,
     Managers,
     SalesPerson,
-    User,
+    User
   } = useStateContext();
-  console.log("salesperson: ", SalesPerson);
+  console.log("Managers: ", Managers);
   const token = localStorage.getItem("auth-token");
   const [selectedRows, setSelectedRows] = useState([]);
   const [leadOriginSelected, setLeadOriginSelected] = useState(leadOrigins[0]);
@@ -104,8 +104,8 @@ const AllLeads = () => {
   const [managerSelected, setManagerSelected] = useState("");
   const [agentSelected, setAgentSelected] = useState("");
   const [projectNameTyped, setProjectNameTyped] = useState("");
-  const [managers, setManagers] = useState(Managers);
-  const [agents, setAgents] = useState(SalesPerson);
+  const [managers, setManagers] = useState(Managers || []);
+  const [agents, setAgents] = useState(SalesPerson || {});
   const [openMessageModal, setOpenMessageModal] = useState({
     open: false,
     isWhatsapp: false,
@@ -768,6 +768,11 @@ const AllLeads = () => {
   }, [leadTypeSelected, leadOriginSelected]);
 
   useEffect(() => {
+    setManagers(Managers);
+    setAgents(SalesPerson);
+  }, [Managers, SalesPerson]);
+
+  useEffect(() => {
     FetchLeads(
       token,
       leadOriginSelected?.id || "hotleads",
@@ -831,98 +836,6 @@ const AllLeads = () => {
   return (
     <div className="pb-10">
       <ToastContainer />
-      {/* <Box
-        className={darkModeColors}
-        sx={{ display: "flex", alignItems: "center", width: "100%" }}
-      >
-        <div>
-          <label
-            htmlFor="leadOrigin"
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            } `}
-          >
-            Lead Origin
-          </label>
-          <Select
-            id="leadOrigin"
-            value={leadOriginSelected?.id || "hotleads"}
-            onChange={(event) =>
-              setLeadOriginSelected(
-                leadOrigins.find((origin) => origin.id === event.target.value)
-              )
-            }
-            size="small"
-            className={`w-full mt-1 mb-5 `}
-            displayEmpty
-            required
-            sx={{
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-              "&:hover:not (.Mui-disabled):before": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-            }}
-          >
-            <MenuItem value="0" disabled>
-              Lead Origin
-            </MenuItem>
-            {leadOrigins?.map((origin, index) => (
-              <MenuItem key={index} value={origin?.id || ""}>
-                {origin?.formattedValue}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-        <div>
-          <label
-            htmlFor="leadType"
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            } `}
-          >
-            Lead Type
-          </label>
-          <Select
-            id="leadType"
-            value={leadTypeSelected?.id || "all"}
-            onChange={(event) =>
-              setLeadTypeSelected(
-                leadTypes.find((type) => type.id === event.target.value)
-              )
-            }
-            size="small"
-            className={`w-full mt-1 mb-5`}
-            displayEmpty
-            required
-            sx={{
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-              "&:hover:not (.Mui-disabled):before": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-            }}
-          >
-            <MenuItem
-              value="0"
-              disabled
-              sx={{
-                color: currentMode === "dark" ? "#ffffff" : "#000000",
-              }}
-            >
-              Lead Type
-            </MenuItem>
-            {leadTypes?.map((type, index) => (
-              <MenuItem key={index} value={type?.id || ""}>
-                {type?.formattedValue}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-      </Box> */}
-
       <div className={`grid grid-cols-6 mt-6 gap-1 ${darkModeColors}`}>
         <div>
           <Select
@@ -1150,7 +1063,7 @@ const AllLeads = () => {
             <MenuItem selected value="" disabled>
               Agent
             </MenuItem>
-            {agents?.map((agent, index) => (
+            {agents[`manager-${managerSelected}`]?.map((agent, index) => (
               <MenuItem key={index} value={agent?.id || ""}>
                 {agent?.userName}
               </MenuItem>
@@ -1424,6 +1337,8 @@ const AllLeads = () => {
           }}
           componentsProps={{
             toolbar: {
+                                printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
               showQuickFilter: true,
               value: searchText,
               onChange: HandleQuicSearch,

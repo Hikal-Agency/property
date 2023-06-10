@@ -2,6 +2,7 @@ import { Box, ListItemIcon, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { AiFillGift, AiFillMessage } from "react-icons/ai";
 import { FaLink, FaSnowflake, FaMobile } from "react-icons/fa";
+import {FiSettings} from "react-icons/fi";
 import {
   BsStopCircleFill,
   BsCalendarWeekFill,
@@ -68,398 +69,30 @@ const Sidebarmui = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [openedSubMenu, setOpenSubMenu] = useState(0);
+  const [openedSubMenu, setOpenSubMenu] = useState({
+    menuIndex: 0, 
+    linkIndex: 0
+  });
 
-  const setOpenedSubMenu = (index) => {
-    if (openedSubMenu === index) {
+  const setOpenedSubMenu = ({menuIndex, linkIndex}) => {
+    if(openedSubMenu.menuIndex === menuIndex && openedSubMenu.linkIndex === linkIndex) {
       setOpenSubMenu(0);
     } else {
-      setOpenSubMenu(index);
+      setOpenSubMenu({menuIndex, linkIndex});
     }
-  };
+  }
 
-  const handleMenuItemClick = (menuName) => {
-    console.log("menuitem: ", menuName);
-    setSelected(menuName);
-    setopenBackDrop(true);
-  };
-
-  // const handleDropdownClick = (menuKey) => {
-  //   console.log("menukey: ", menuKey);
-  //   setopenBackDrop(false);
-  // };
-
-  // const handleDropdownClick = (menuKey) => {
-  //   console.log("menukey: ", menuKey);
-  //   setopenBackDrop((prevDropdown) =>
-  //     prevDropdown === menuKey ? null : menuKey
-  //   );
-  // };
+  const handleExpand = (e, obj, link) => {
+    if(!e.target.closest(".ps-submenu-content")) {
+        setOpenedSubMenu(obj);
+    }
+  }
 
   console.log("SidebarData: ", sidebarData);
 
   useEffect(() => {
     fetchSidebarData();
   }, []);
-
-  //  DATA
-  // const links = [
-  //   {
-  //     title: "Dashboard",
-  //     links: [
-  //       {
-  //         name: "Dashboard",
-  //         icon: <RiDashboardFill />,
-  //         link: "/dashboard",
-  //       },
-  //     ],
-  //   },
-
-  //   {
-  //     title: "LEADS",
-  //     links: [
-  //       {
-  //         name: "Add lead",
-  //         icon: <MdPersonAdd />,
-  //         link: "/addlead",
-  //       },
-  //       {
-  //         name: "Hot",
-  //         icon: <SiHotjar />,
-  //         submenu: [
-  //           {
-  //             name: "All",
-  //             count: sidebarData?.HotLeadsCount?.hot,
-  //             link: "/hotleads/all",
-  //           },
-  //           {
-  //             name: "New",
-  //             count: sidebarData?.HotLeadsCount?.new,
-  //             link: "/hotleads/new",
-  //           },
-  //           {
-  //             name: "No Answer",
-  //             count: sidebarData?.HotLeadsCount?.no_nswer,
-  //             link: "/hotleads/no answer",
-  //           },
-  //           {
-  //             name: "Meeting",
-  //             count: sidebarData?.HotLeadsCount?.Meeting,
-  //             link: "/hotleads/meeting",
-  //           },
-  //           {
-  //             name: "Follow Up",
-  //             count: sidebarData?.HotLeadsCount?.follow_up,
-  //             link: "/hotleads/follow up",
-  //           },
-  //           {
-  //             name: "Low Budget",
-  //             count: sidebarData?.HotLeadsCount?.low_budget,
-  //             link: "/hotleads/low budget",
-  //           },
-  //           {
-  //             name: "Not Interested",
-  //             count: sidebarData?.HotLeadsCount?.not_interested,
-  //             link: "/hotleads/not interested",
-  //           },
-  //           {
-  //             name: "Unreachable",
-  //             count: sidebarData?.HotLeadsCount?.unreachable,
-  //             link: "/hotleads/unreachable",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         name: "Personal",
-  //         icon: <HiUsers />,
-  //         submenu: [
-  //           {
-  //             name: "All",
-  //             count: sidebarData?.PersonalLeadsCount?.all,
-  //             link: "/personalleads/all",
-  //           },
-  //           {
-  //             name: "New",
-  //             count: sidebarData?.PersonalLeadsCount?.new,
-  //             link: "/personalleads/new",
-  //           },
-  //           {
-  //             name: "No Answer",
-  //             count: sidebarData?.PersonalLeadsCount?.no_nswer,
-  //             link: "/personalleads/no answer",
-  //           },
-  //           {
-  //             name: "Meeting",
-  //             count: sidebarData?.PersonalLeadsCount?.Meeting,
-  //             link: "/personalleads/meeting",
-  //           },
-  //           {
-  //             name: "Follow Up",
-  //             count: sidebarData?.PersonalLeadsCount?.follow_up,
-  //             link: "/personalleads/follow up",
-  //           },
-  //           {
-  //             name: "Low Budget",
-  //             count: sidebarData?.PersonalLeadsCount?.low_budget,
-  //             link: "/personalleads/low budget",
-  //           },
-  //           {
-  //             name: "Not Interested",
-  //             count: sidebarData?.PersonalLeadsCount?.not_interested,
-  //             link: "/personalleads/not interested",
-  //           },
-  //           {
-  //             name: "Unreachable",
-  //             count: sidebarData?.PersonalLeadsCount?.unreachable,
-  //             link: "/personalleads/unreachable",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         name: "Third party",
-  //         icon: <FaLink />,
-  //         submenu: [
-  //           {
-  //             name: "All",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.all,
-  //             link: "/thirdpartyleads/all",
-  //           },
-  //           {
-  //             name: "New",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.new,
-  //             link: "/thirdpartyleads/new",
-  //           },
-  //           {
-  //             name: "No Answer",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
-  //             link: "/thirdpartyleads/no answer",
-  //           },
-  //           {
-  //             name: "Meeting",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
-  //             link: "/thirdpartyleads/meeting",
-  //           },
-  //           {
-  //             name: "Follow Up",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
-  //             link: "/thirdpartyleads/follow up",
-  //           },
-  //           {
-  //             name: "Low Budget",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
-  //             link: "/thirdpartyleads/low budget",
-  //           },
-  //           {
-  //             name: "Not Interested ",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
-  //             link: "/thirdpartyleads/not interested",
-  //           },
-  //           {
-  //             name: "Unreachable",
-  //             count: sidebarData?.ThirdPartyLeadsCount?.unreachable,
-  //             link: "/thirdpartyleads/unreachable",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         name: "Cold",
-  //         icon: <FaSnowflake />,
-  //         submenu: [
-  //           {
-  //             name: "All",
-  //             count: sidebarData?.ColdLeadsCount?.all,
-  //             link: "/coldleads/all",
-  //           },
-  //           {
-  //             name: "New",
-  //             count: sidebarData?.ColdLeadsCount?.new,
-  //             link: "/coldleads/new",
-  //           },
-  //           {
-  //             name: "Cold: Verified",
-  //             count: sidebarData?.ColdLeadsCount?.verified, //TODO
-  //             link: "/coldleads/coldLeadsVerified",
-  //           },
-  //           {
-  //             name: "Cold: Invalid",
-  //             count: sidebarData?.ColdLeadsCount?.unverified, //TODO
-  //             link: "/coldleads/coldLeadsInvalid",
-  //           },
-  //           {
-  //             name: "Cold: Not Checked",
-  //             count: sidebarData?.ColdLeadsCount?.unchecked, //TODO
-  //             link: "/coldleads/coldLeadsNotChecked",
-  //           },
-
-  //           {
-  //             name: "No Answer",
-  //             count: sidebarData?.ColdLeadsCount?.no_nswer,
-  //             link: "/coldleads/no answer",
-  //           },
-  //           {
-  //             name: "Meeting",
-  //             count: sidebarData?.ColdLeadsCount?.Meeting,
-  //             link: "/coldleads/meeting",
-  //           },
-  //           {
-  //             name: "Follow Up",
-  //             count: sidebarData?.ColdLeadsCount?.follow_up,
-  //             link: "/coldleads/follow up",
-  //           },
-  //           {
-  //             name: "Low Budget",
-  //             count: sidebarData?.ColdLeadsCount?.low_budget,
-  //             link: "/coldleads/low budget",
-  //           },
-  //           {
-  //             name: "Not Interested  ",
-  //             count: sidebarData?.ColdLeadsCount?.not_interested
-  //               ? sidebarData?.ColdLeadsCount?.not_interested
-  //               : "0",
-  //             link: "/coldleads/not interested",
-  //           },
-  //           {
-  //             name: "Unreachable",
-  //             count: sidebarData?.ColdLeadsCount?.unreachable,
-  //             link: "/coldleads/unreachable",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         name: "Transffered",
-  //         icon: <RiFileTransferFill />,
-  //         link: "/transfferedleads",
-  //       },
-  //       {
-  //         name: "Unassigned",
-  //         icon: <BsStopCircleFill />,
-  //         submenu: [
-  //           {
-  //             name: "Hot leads",
-  //             count: sidebarData?.UnassignedLeadsCount?.hot,
-  //             link: "/unassigned/fresh",
-  //           },
-  //           {
-  //             name: "Cold leads",
-  //             count: sidebarData?.UnassignedLeadsCount?.cold,
-  //             link: "/unassigned/cold",
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         name: "Booked deals",
-  //         icon: <ImBookmark />,
-  //         link: "/booked",
-  //       },
-  //       {
-  //         name: "Closed deals",
-  //         icon: <ImLock />,
-  //         link: "/closedeals",
-  //       },
-  //       {
-  //         name: "Notes",
-  //         icon: <MdSpeakerNotes />,
-  //         link: "/leadnotes",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: "Apps",
-  //     links: [
-  //       {
-  //         name: "Meetings",
-  //         icon: <BsCalendarWeekFill />,
-  //         link: "/meetings",
-  //       },
-  //       {
-  //         name: "Reports",
-  //         icon: <HiDocumentReport />,
-  //         link: "/reports",
-  //       },
-  //       {
-  //         name: "Offers",
-  //         icon: <AiFillGift />,
-  //         link: "/offers",
-  //       },
-  //       {
-  //         name: "Users",
-  //         icon: <ImUsers />,
-  //         link: "/users",
-  //       },
-  //       {
-  //         name: "Clients",
-  //         icon: <ImUsers />,
-  //         link: "/clients",
-  //       },
-  //       {
-  //         name: "Contacts",
-  //         icon: <MdContactPage />,
-  //         link: "/contacts",
-  //       },
-  //       {
-  //         name: "Property Portfolio",
-  //         icon: <RiBuilding2Fill />,
-  //         link: "/propertyPortfolio",
-  //       },
-  //       {
-  //         name: "Leaderboard",
-  //         icon: <MdLeaderboard />,
-  //         link: "/leaderboard",
-  //       },
-  //       // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
-  //     ],
-  //   },
-  //   {
-  //     title: "WHATSAPP",
-  //     links: [
-  //       {
-  //         name: "Dashboard",
-  //         icon: <RiWhatsappFill />,
-  //         link: "/whatsapp-marketing/dashboard",
-  //       },
-  //       {
-  //         name: "Messages",
-  //         icon: <AiFillMessage />,
-  //         link: "/whatsapp-marketing/messages",
-  //       },
-  //       {
-  //         name: "Device",
-  //         icon: <FaMobile />,
-  //         link: "/whatsapp-marketing/device",
-  //       },
-  //       {
-  //         name: "Payments",
-  //         icon: <BsFillCreditCard2FrontFill />,
-  //         link: "/whatsapp-marketing/payments",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: "LOCATION",
-  //     links: [
-  //       {
-  //         name: "Meetings",
-  //         icon: <ImLocation size={20} />,
-  //         link: "/location/livelocation",
-  //       },
-  //       {
-  //         name: "Live",
-  //         icon: <MdPersonPinCircle size={22} />,
-  //         link: "/location/userlocation",
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     title: "SUPPORT",
-  //     links: [
-  //       {
-  //         name: "Tickets",
-  //         icon: <HiTicket />,
-  //         link: "/support",
-  //       },
-  //     ],
-  //   },
-  // ];
 
   const Agentlinks = [
     {
@@ -766,6 +399,16 @@ const Sidebarmui = () => {
           name: "QA Form",
           icon: <AiOutlineQuestionCircle />,
           link: "/qaform",
+        },
+      ],
+    },
+     {
+      title: "MISC",
+      links: [
+        {
+          name: "Settings",
+          icon: <FiSettings />,
+          link: "/settings",
         },
       ],
     },
@@ -1139,6 +782,16 @@ const Sidebarmui = () => {
           name: "QA Form",
           icon: <AiOutlineQuestionCircle />,
           link: "/qaform",
+        },
+      ],
+    },
+     {
+      title: "MISC",
+      links: [
+        {
+          name: "Settings",
+          icon: <FiSettings />,
+          link: "/settings",
         },
       ],
     },
@@ -1628,7 +1281,19 @@ const Sidebarmui = () => {
         },
       ],
     },
+     {
+      title: "MISC",
+      links: [
+        {
+          name: "Settings",
+          icon: <FiSettings />,
+          link: "/settings",
+        },
+      ],
+    },
   ];
+
+  console.log(selected);
 
   const [agentData, setAgentData] = useState(Agentlinks);
   const [linksData, setLinksData] = useState(links);
@@ -1748,24 +1413,13 @@ const Sidebarmui = () => {
         data[name] = response.data.team;
       }
     }
+    console.log("State: ", data);
     setSalesPerson(data);
     setAppLoading(false);
   }
 
   const getAllLeadsMembers = (user) => {
     setAppLoading(true);
-    const token = localStorage.getItem("auth-token");
-    axios
-      .get(`${BACKEND_URL}/teamMembers/${user?.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        const agents = result.data?.team;
-        setSalesPerson({ [`manager-${user?.id}`]: agents });
-      });
     axios.get(`${BACKEND_URL}/managers`).then((result) => {
       console.log("manager response is");
       console.log(result);
@@ -1913,7 +1567,7 @@ const Sidebarmui = () => {
             backgroundColor: currentMode === "dark" ? "#000000" : "#ffffff",
           },
         }}
-        className="h-screen sticky top-0"
+        className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
       >
         <div className="mt-3">
           <div
@@ -1930,7 +1584,7 @@ const Sidebarmui = () => {
                 href="/dashboard"
                 className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
                 onClick={() => {
-                  setSelected("Dashboard");
+                  setSelected({name: "Dashboard", index: 0});
                   setopenBackDrop(true);
                 }}
               >
@@ -1967,7 +1621,7 @@ const Sidebarmui = () => {
                 )}
               </a>
             </div>
-            <div className="profile-section border-t border-b mt-5 px-1 mb-5 pt-3 pb-3">
+            <div className="profile-section border-t border-b mt-2 px-1 py-2">
               {isCollapsed ? (
                 <>
                   <Link
@@ -2013,7 +1667,7 @@ const Sidebarmui = () => {
               )}
             </div>
           </div>
-          <div className="mt-5 mb-5">
+          <div className="mt-4 mb-4">
             <Menu
               menuItemStyles={{
                 button: ({ level, active, disabled }) => {
@@ -2028,13 +1682,13 @@ const Sidebarmui = () => {
             >
               {[
                 ...(User?.position === "Founder & CEO"
-                  ? linksData.map((item, index) => (
-                      <div key={index}>
+                  ? linksData.map((item, linkIndex) => (
+                      <div key={linkIndex}>
                         {!isCollapsed ? (
                           <Tooltip placement="right" title={item.title}>
                             <p
                               className={`font-bold m-3 mt-4 uppercase ${
-                                index === 0 && "hidden"
+                                linkIndex === 0 && "hidden"
                               } ${
                                 currentMode === "dark"
                                   ? "text-red-600"
@@ -2049,7 +1703,7 @@ const Sidebarmui = () => {
                         ) : (
                           <p
                             className={`font-bold m-3 mt-4 uppercase ${
-                              index === 0 && "hidden"
+                              linkIndex === 0 && "hidden"
                             } ${
                               currentMode === "dark"
                                 ? "text-red-600"
@@ -2059,15 +1713,15 @@ const Sidebarmui = () => {
                             {item.title}
                           </p>
                         )}
-                        {item.links.map((link, index) => (
+                        {item.links.map((link, menuIndex) => (
                           <Tooltip
                             title={link.name}
                             key={link.name}
                             placement="right"
+                            onClick={(e) => handleExpand(e, {menuIndex: menuIndex+1, linkIndex}, link)}
                           >
                             {link.submenu ? (
                               <Box
-                                onClick={() => setOpenedSubMenu(index + 1)}
                                 sx={{
                                   // FOR DARK MODE MENU SETTINGS
                                   "& .css-1mfnem1": { borderRadius: "5px" },
@@ -2100,18 +1754,13 @@ const Sidebarmui = () => {
                                 <SubMenu
                                   label={link.name}
                                   icon={link.icon}
-                                  open={openedSubMenu === index + 1}
-                                  // open={openBackDrop === index}
-                                  // onClick={() =>
-                                  //   handleDropdownClick(`${index}`)
-                                  // }
+                                  open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex}
                                 >
                                   {link.submenu.map((menu, index) => {
                                     return (
                                       <Link
                                         key={index}
                                         to={`${menu.link}`}
-                                        // onClick={() => setopenBackDrop(true)}
                                       >
                                         <Box
                                           sx={{
@@ -2154,10 +1803,7 @@ const Sidebarmui = () => {
                                           className="relative my-1"
                                         >
                                           <MenuItem
-                                            active={selected === menu.name}
-                                            onClick={() =>
-                                              setSelected(menu.name)
-                                            }
+                                            active={menu.link === window.location.pathname.replaceAll("%20", " ")}
                                             className="flex"
                                           >
                                             {menu?.icon && (
@@ -2175,11 +1821,11 @@ const Sidebarmui = () => {
                                             </span>
                                           </MenuItem>
                                           <span
-                                            className="leads_counter block absolute right-5 top-5"
+                                            className="leads_counter block absolute right-5"
                                             // sx={{
                                             //   color: menu?.countColor,
                                             // }}
-                                            style={{ marginTop: "-4px" }}
+                                            style={{ top: "50%", transform: "translateY(-50%)" }}
                                           >
                                             {menu?.count !== null
                                               ? menu?.count
@@ -2228,14 +1874,13 @@ const Sidebarmui = () => {
                                 className="my-1"
                               >
                                 <MenuItem
-                                  active={selected === link.name}
-                                  onClick={() => setSelected(link.name)}
+                                 active={link.link === window.location.pathname.replaceAll("%20", " ")} 
                                 >
                                   <Link
                                     to={`${link.link}`}
                                     onClick={() => setopenBackDrop(true)}
                                   >
-                                    <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                    <div className="flex items-center gap-4  rounded-lg text-md  ">
                                       <span
                                         className={`${
                                           !isCollapsed && "text-xl"
@@ -2258,13 +1903,13 @@ const Sidebarmui = () => {
                       </div>
                     ))
                   : User?.position === "Sales Manager"
-                  ? managerData.map((item, index) => (
-                      <div key={index}>
+                  ? managerData.map((item, linkIndex) => (
+                      <div key={linkIndex}>
                         {!isCollapsed ? (
                           <Tooltip placement="right" title={item.title}>
                             <p
                               className={`font-bold m-3 mt-4 uppercase ${
-                                index === 0 && "hidden"
+                                linkIndex === 0 && "hidden"
                               } ${
                                 currentMode === "dark"
                                   ? "text-red-600"
@@ -2279,7 +1924,7 @@ const Sidebarmui = () => {
                         ) : (
                           <p
                             className={`font-bold m-3 mt-4 uppercase ${
-                              index === 0 && "hidden"
+                              linkIndex === 0 && "hidden"
                             } ${
                               currentMode === "dark"
                                 ? "text-red-600"
@@ -2289,12 +1934,12 @@ const Sidebarmui = () => {
                             {item.title}
                           </p>
                         )}
-                        {item.links.map((link, index) => (
+                        {item.links.map((link, menuIndex) => (
                           <Tooltip
                             title={link.name}
                             key={link.name}
                             placement="right"
-                            onClick={() => setOpenedSubMenu(index + 1)}
+                            onClick={(e) => handleExpand(e, {menuIndex: menuIndex+1, linkIndex}, link)}
                           >
                             {link.submenu ? (
                               <Box
@@ -2327,11 +1972,7 @@ const Sidebarmui = () => {
                                 }}
                                 className="my-1"
                               >
-                                <SubMenu
-                                  open={openedSubMenu === index + 1}
-                                  label={link.name}
-                                  icon={link.icon}
-                                >
+                                <SubMenu open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex} label={link.name} icon={link.icon}>
                                   {link.submenu.map((menu, index) => {
                                     return (
                                       <Link
@@ -2372,14 +2013,13 @@ const Sidebarmui = () => {
                                           className="relative my-1"
                                         >
                                           <MenuItem
-                                            active={selected === menu.name}
-                                            onClick={() =>
-                                              setSelected(menu.name)
-                                            }
+                                            active={menu.link === window.location.pathname.replaceAll("%20", " ")} 
                                           >
                                             {menu?.name}
                                           </MenuItem>
-                                          <span className="leads_counter block absolute right-5 top-5">
+                                          <span className="leads_counter block absolute right-5" 
+                                            style={{ top: "50%", transform: "translateY(-50%)" }}
+                                          >
                                             {menu?.count !== null
                                               ? menu?.count
                                               : ""}
@@ -2427,8 +2067,7 @@ const Sidebarmui = () => {
                                 className="my-1"
                               >
                                 <MenuItem
-                                  active={selected === link.name}
-                                  onClick={() => setSelected(link.name)}
+                                active={link.link === window.location.pathname.replaceAll("%20", " ")}
                                 >
                                   {link.link === "/contacts" ||
                                   link.link === "/dashboard" ? (
@@ -2436,7 +2075,7 @@ const Sidebarmui = () => {
                                       href={link.link}
                                       onClick={() => setopenBackDrop(true)}
                                     >
-                                      <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                      <div className="flex items-center gap-4  rounded-lg text-md  ">
                                         <span
                                           className={`${
                                             !isCollapsed && "text-xl"
@@ -2456,7 +2095,7 @@ const Sidebarmui = () => {
                                       to={link.link}
                                       onClick={() => setopenBackDrop(true)}
                                     >
-                                      <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                      <div className="flex items-center gap-4  rounded-lg text-md  ">
                                         <span
                                           className={`${
                                             !isCollapsed && "text-xl"
@@ -2479,15 +2118,14 @@ const Sidebarmui = () => {
                         ))}
                       </div>
                     ))
-                  : agentData.map((item, index) => {
-                      console.log(item);
+                  : agentData.map((item, linkIndex) => {
                       return (
-                        <div key={index}>
+                        <div key={linkIndex}>
                           {!isCollapsed ? (
                             <Tooltip placement="right" title={item.title}>
                               <p
                                 className={`font-bold m-3 mt-4 uppercase ${
-                                  index === 0 && "hidden"
+                                  linkIndex === 0 && "hidden"
                                 } ${
                                   currentMode === "dark"
                                     ? "text-red-600"
@@ -2502,7 +2140,7 @@ const Sidebarmui = () => {
                           ) : (
                             <p
                               className={`font-bold m-3 mt-4 uppercase ${
-                                index === 0 && "hidden"
+                                linkIndex === 0 && "hidden"
                               } ${
                                 currentMode === "dark"
                                   ? "text-red-600"
@@ -2512,12 +2150,12 @@ const Sidebarmui = () => {
                               {item.title}
                             </p>
                           )}
-                          {item.links.map((link, index) => (
+                          {item.links.map((link, menuIndex) => (
                             <Tooltip
                               title={link.name}
                               key={link.name}
                               placement="right"
-                              onClick={() => setOpenedSubMenu(index + 1)}
+                            onClick={(e) => handleExpand(e, {menuIndex: menuIndex+1, linkIndex}, link)}
                             >
                               {link.submenu ? (
                                 <Box
@@ -2550,11 +2188,7 @@ const Sidebarmui = () => {
                                   }}
                                   className="my-1"
                                 >
-                                  <SubMenu
-                                    open={openedSubMenu === index + 1}
-                                    label={link.name}
-                                    icon={link.icon}
-                                  >
+                                  <SubMenu open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex} label={link.name} icon={link.icon}>
                                     {link.submenu.map((menu, index) => {
                                       return (
                                         <Link
@@ -2562,7 +2196,6 @@ const Sidebarmui = () => {
                                           to={`${menu.link}`}
                                           onClick={() => {
                                             setopenBackDrop(true);
-                                            console.log("Clicked");
                                           }}
                                         >
                                           <Box
@@ -2598,10 +2231,7 @@ const Sidebarmui = () => {
                                             className="relative my-1"
                                           >
                                             <MenuItem
-                                              active={selected === menu.name}
-                                              onClick={() =>
-                                                setSelected(menu.name)
-                                              }
+                                            active={window.location.pathname.replaceAll("%20", " ") === menu.link}
                                             >
                                               {console.log(
                                                 "Menudetail: ",
@@ -2609,7 +2239,9 @@ const Sidebarmui = () => {
                                               )}
                                               {menu?.name || ""}
                                             </MenuItem>
-                                            <span className="leads_counter block absolute right-5 top-5">
+                                            <span className="leads_counter block absolute right-5"
+                                            style={{ top: "50%", transform: "translateY(-50%)" }}
+                                            >
                                               {menu?.count !== null
                                                 ? menu?.count
                                                 : ""}
@@ -2657,8 +2289,7 @@ const Sidebarmui = () => {
                                   className="my-1"
                                 >
                                   <MenuItem
-                                    active={selected === link.name}
-                                    onClick={() => setSelected(link.name)}
+                                  active={link.link === window.location.pathname.replaceAll("%20", " ")}
                                   >
                                     {link.link === "/contacts" ||
                                     link.link === "/dashboard" ? (
@@ -2666,7 +2297,7 @@ const Sidebarmui = () => {
                                         href={link.link}
                                         onClick={() => setopenBackDrop(true)}
                                       >
-                                        <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                        <div className="flex items-center gap-4  rounded-lg text-md  ">
                                           <span
                                             className={`${
                                               !isCollapsed && "text-xl"
@@ -2686,7 +2317,7 @@ const Sidebarmui = () => {
                                         to={link.link}
                                         onClick={() => setopenBackDrop(true)}
                                       >
-                                        <div className="flex items-center gap-4 pt-2 pb-2 rounded-lg text-md  ">
+                                        <div className="flex items-center gap-4  rounded-lg text-md  ">
                                           <span
                                             className={`${
                                               !isCollapsed && "text-xl"

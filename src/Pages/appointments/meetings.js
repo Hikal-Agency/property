@@ -25,7 +25,7 @@ import UpdateMeeting from "../../Components/meetings/UpdateMeeting";
 
 const Meetings = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, BACKEND_URL, darkModeColors } =
+  const { currentMode, setopenBackDrop, BACKEND_URL,User, darkModeColors } =
     useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
@@ -465,6 +465,8 @@ const Meetings = () => {
                         componentsProps={{
                           toolbar: {
                             showQuickFilter: true,
+                                              printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
                             value: searchText,
                             onChange: HandleQuicSearch,
                           },

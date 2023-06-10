@@ -348,7 +348,7 @@ const UpdateLead = ({
     }
     UpdateLeadData.append(
       "lastEdited",
-      moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
+      moment().format("YYYY/MM/DD HH:mm:ss")
     );
 
     await axios

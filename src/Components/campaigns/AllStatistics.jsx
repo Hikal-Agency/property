@@ -35,7 +35,7 @@ import { FaAd, FaThList, FaCheckCircle } from "react-icons/fa";
 import TopCampaignsTable from "../charts/statisticsCharts/TopCampaignsTable";
 
 const AllStatistics = ({ pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL, darkModeColors, graph_api_token } =
+  const { currentMode, User, darkModeColors, graph_api_token } =
     useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -999,6 +999,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
               }}
               componentsProps={{
                 toolbar: {
+                                    printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
                   showQuickFilter: true,
                   value: searchText,
                   onChange: HandleQuicSearch,

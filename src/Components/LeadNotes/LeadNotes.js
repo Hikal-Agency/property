@@ -22,7 +22,7 @@ import {
 } from "react-icons/ai";
 
 const LeadNotes = ({ pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL, darkModeColors } = useStateContext();
+  const { currentMode, BACKEND_URL, User, darkModeColors } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
   // eslint-disable-next-line
@@ -319,6 +319,8 @@ const LeadNotes = ({ pageState, setpageState }) => {
               }}
               componentsProps={{
                 toolbar: {
+                                    printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
                   showQuickFilter: true,
                   value: searchText,
                   onChange: HandleQuicSearch,

@@ -7,7 +7,7 @@ import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
 
 const AllTickets = () => {
-  const { currentMode, DataGridStyles, BACKEND_URL } = useStateContext();
+  const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -254,6 +254,15 @@ const AllTickets = () => {
           paginationMode="server"
           rows={rows}
           columns={columns}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: false,
+                                  printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
+                // value: searchText,
+                // onChange: HandleQuicSearch,
+              },
+            }}
           // checkboxSelection
           sx={{
             boxShadow: 2,

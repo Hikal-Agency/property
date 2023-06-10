@@ -20,7 +20,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const AllCampaigns = ({ pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL, darkModeColors, graph_api_token } =
+  const { currentMode, User, darkModeColors, graph_api_token } =
     useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -424,6 +424,8 @@ const AllCampaigns = ({ pageState, setpageState }) => {
           }}
           componentsProps={{
             toolbar: {
+                                printOptions: { disableToolbarButton: User?.role !== 1 },
+            csvOptions: { disableToolbarButton: User?.role !==  1},
               showQuickFilter: true,
               value: searchText,
               onChange: HandleQuicSearch,
