@@ -19,6 +19,7 @@ import UpcomingMeetingAgent from "../meetings/UpcomingMeetingAgent";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import { CircularProgress } from "@mui/material";
+import {motion} from "framer-motion";
 import { ToastContainer } from "react-toastify";
 
 const DashboardPanel = ({ setloading }) => {
@@ -189,7 +190,7 @@ const DashboardPanel = ({ setloading }) => {
         Overview
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 text-center">
+        <motion.div transition={{duration: 0.6}} initial={{y: -120}} animate={{y: [20, 30, 0]}} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 text-center">
           {/* {DashboardData?.designation === "Head" && ( */}
           <Link
             to={"/freshleads/all"}
@@ -342,13 +343,13 @@ const DashboardPanel = ({ setloading }) => {
               })}
             </>
           )}
-        </div>
+        </motion.div>
 
         {/* CHART  */}
         <>
           {DashboardData?.designation === "Head" ? (
             <>
-              <div
+              <motion.div initial={{x: 120}} transition={{duration: 0.7}} animate={{x: [-20, 30, 0]}}
                 className={`${
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
@@ -359,7 +360,7 @@ const DashboardPanel = ({ setloading }) => {
                   <h6 className="font-semibold">Performance</h6>
                   <CombinationChart />
                 </div>
-              </div>
+              </motion.div>
             </>
           ) : DashboardData?.designation === "Manager" ? (
             <>
@@ -510,7 +511,7 @@ const DashboardPanel = ({ setloading }) => {
 
       {/* 3RD ROW [REVENUE, TOTAL SALES] */}
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-3 pb-3">
-        <div
+        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{margin: "-70px"}}
           className={`
            bg-red-600 h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
         >
@@ -522,9 +523,9 @@ const DashboardPanel = ({ setloading }) => {
               AED {formatNumber(Number(DashboardData?.target_reached))}
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        <div
+        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{margin: "-70px"}}
           className={`bg-red-600 h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
         >
           <div>
@@ -535,13 +536,13 @@ const DashboardPanel = ({ setloading }) => {
               AED {formatNumber(Number(DashboardData?.total_closed))}
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
       {/* 3RD ROW END [REVENUE, TOTAL SALES] */}
 
       {/* 4TH ROW [UPCOMING MEETING] */}
       <div className="grid grid-cols-1 pb-3">
-        <div
+        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{margin: "-70px"}}
           className={`${
             currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
           } col-span-1 h-fit rounded-md p-5 cursor-pointer hover:shadow-sm`}
@@ -570,14 +571,14 @@ const DashboardPanel = ({ setloading }) => {
             />
           )}
           {/* <UserLocation /> */}
-        </div>
+        </motion.div>
       </div>
       {/* 4TH ROW END [UPCOMING MEETING] */}
 
       {/* 5TH ROW [TODO + SHORTCUTS] */}
-      <div className="grid grid-cols-1 pb-3">
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{margin: "-70px"}}  className="grid grid-cols-1 pb-3">
         <Task />
-      </div>
+      </motion.div>
       {/* 5TH ROW END [TODO + SHORTCUTS] */}
     </div>
   );

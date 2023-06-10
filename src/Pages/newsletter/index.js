@@ -337,7 +337,11 @@ const Newsletter = () => {
                     />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
+                    <Box
+                      width={"100%"}
+                      className={`${currentMode}-mode-datatable`}
+                      sx={DataGridStyles}
+                    >
                       <DataGrid
                         autoHeight
                         rows={pageState.data}
@@ -368,8 +372,12 @@ const Newsletter = () => {
                         }}
                         componentsProps={{
                           toolbar: {
-                                              printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+                            printOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
+                            csvOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
                             showQuickFilter: true,
                             value: searchText,
                             onChange: HandleQuicSearch,
