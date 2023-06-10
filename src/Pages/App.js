@@ -347,8 +347,13 @@ function App() {
     setAllRoutes(routes);
 
     const socketURL = process.env.REACT_APP_SOCKET_URL;
-    const socket = io("http://localhost:5000");
+    const socket = io(socketURL);
+    console.log("Socket URL: " , socket);
     setSocket(socket);
+
+    return () => {
+      socket.disconnect();
+    }
   }, []);
 
   function hasSidebarOrNavbar() {
