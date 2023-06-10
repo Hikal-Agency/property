@@ -401,6 +401,10 @@ label[for="bulkImport"] .MuiButtonBase-root {
   margin-bottom: 4px;
 }
 
+.grid.gap-4 {
+  gap: 0.4rem !important;
+}
+
 @media all and (max-width: 1300px) {
   .MuiDataGrid-cell[data-field="creationDate"] p {
     font-size: 12px;
