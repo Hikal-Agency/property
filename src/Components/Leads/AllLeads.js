@@ -2,7 +2,7 @@ import {
   Box,
   Button as MuiButton,
   IconButton,
-  LinearProgress,
+  InputAdornment,
   TextField,
 } from "@mui/material";
 import {
@@ -21,6 +21,7 @@ import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
+import {BiSearch} from "react-icons/bi";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -1674,9 +1675,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               placeholder="Search.."
               ref={searchRef}
               variant="standard"
-              sx={{ borderBottom: "2px solid white" }}
+              sx={{ borderBottom: "2px solid white", "&::placeholder": {
+                color: "white"
+              } }}
               onKeyUp={handleKeyUp}
               onInput={handleSearch}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment>
+                    <IconButton>
+                      <BiSearch size={17} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </div>
           <div style={{ position: "relative" }}>

@@ -36,8 +36,9 @@ input[type="number"] {
 }
 
 .ps-submenu-content ul a:hover .leads_counter {
-  color: black !important;
+  color: white !important;
 }
+
 .nav-item,
 .navbar {
   z-index: 10000;
@@ -353,12 +354,27 @@ label[for="bulkImport"] .MuiButtonBase-root {
   color: white !important;
 }
 
-.ps-menuitem-root .ps-menu-button {
-  height: 40px !important;
+.leads_counter {
+   color: white !important;
+  font-weight: bold;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 2px;
+  width: 37px;
+  right: 6px;
+  padding: 3px 0px;
+}
+
+.light-mode-sidebar .leads_counter {
+  background: #da1f26 !important;
+}
+
+.dark-mode-sidebar .leads_counter {
+  background: black !important;
 }
 
 .ps-menuitem-root .ps-menu-button {
-  height: 40px !important;
+  height: 38px !important;
 }
 
 .light-mode-sidebar .ps-open .MuiBox-root {
