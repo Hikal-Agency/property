@@ -65,7 +65,7 @@ const Clock = () => {
       style={{
         background: "#ffffff",
       }}
-      className="py-2 px-3 ml-3"
+      className="py-2 px-3 ml-3 mr-1"
     >
       <div className="flex items-center  ">
         <h2
