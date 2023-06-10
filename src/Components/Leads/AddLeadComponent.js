@@ -204,19 +204,33 @@ const AddLeadComponent = () => {
       coldCall = 2;
     }
 
-    LeadData.append("leadName", LeadName);
-    LeadData.append("leadContact", LeadContact);
-    LeadData.append("leadEmail", LeadEmail);
-    LeadData.append("enquiryType", EnquiryType);
-    LeadData.append("leadType", PropertyType);
-    LeadData.append("project", LeadProject);
-    LeadData.append("leadFor", ForType);
-    LeadData.append("language", LanguagePrefered);
-    LeadData.append("leadStatus", LeadStatus);
-    LeadData.append("leadSource", LeadSource);
-    LeadData.append("feedback", "New");
-    LeadData.append("coldCall", coldCall);
-    LeadData.append("notes", LeadNotes);
+    // LeadData.append("leadName", LeadName);
+    // LeadData.append("leadContact", LeadContact);
+    // LeadData.append("leadEmail", LeadEmail);
+    // LeadData.append("enquiryType", EnquiryType);
+    // LeadData.append("leadType", PropertyType);
+    // LeadData.append("project", LeadProject);
+    // LeadData.append("leadFor", ForType);
+    // LeadData.append("language", LanguagePrefered);
+    // LeadData.append("leadStatus", LeadStatus);
+    // LeadData.append("leadSource", LeadSource);
+    // LeadData.append("feedback", "New");
+    // LeadData.append("coldCall", coldCall);
+    // LeadData.append("notes", LeadNotes);
+    if (LeadName) LeadData.append("leadName", LeadName);
+    if (LeadContact) LeadData.append("leadContact", LeadContact);
+    if (LeadEmail) LeadData.append("leadEmail", LeadEmail);
+    if (EnquiryType) LeadData.append("enquiryType", EnquiryType);
+    if (PropertyType) LeadData.append("leadType", PropertyType);
+    if (LeadProject) LeadData.append("project", LeadProject);
+    if (ForType) LeadData.append("leadFor", ForType);
+    if (LanguagePrefered) LeadData.append("language", LanguagePrefered);
+    if (LeadStatus) LeadData.append("leadStatus", LeadStatus);
+    if (LeadSource) LeadData.append("leadSource", LeadSource);
+    LeadData.append("feedback", "New"); //Always appended
+    if (coldCall) LeadData.append("coldCall", coldCall);
+    if (LeadNotes) LeadData.append("notes", LeadNotes);
+
     if (User?.role === 1) {
       if (Manager) {
         LeadData.append("assignedToManager", Number(Manager) || "");
