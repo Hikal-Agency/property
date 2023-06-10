@@ -1736,7 +1736,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               page={pageState.page - 1}
               checkboxSelection
               onSelectionModelChange={(ids) => {
-                setSelectedRows(ids.map((id) => pageState?.data[id - 1]?.lid));
+                setSelectedRows(ids.map((id) => pageState?.data[id - 1]?.leadId));
               }}
               pageSize={pageState.pageSize}
               onPageChange={(newPage) => {
