@@ -39,7 +39,7 @@ const RenderFeedback = ({ cellValues }) => {
     lng: 0,
     addressText: "",
   });
-  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL } =
+  const { currentMode, setreloadDataGrid, reloadDataGrid, fetchSidebarData, BACKEND_URL } =
     useStateContext();
   const ChangeFeedback = (e) => {
     setnewFeedback(e.target.value);
@@ -112,6 +112,7 @@ const RenderFeedback = ({ cellValues }) => {
         },
       })
       .then((result) => {
+        fetchSidebarData();
         console.log("Feedback Updated successfull");
         console.log(result);
         toast.success("Feedback Updated Successfully", {

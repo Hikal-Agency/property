@@ -90,6 +90,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     DataGridStyles,
     setopenBackDrop,
     User,
+    fetchSidebarData,
     BACKEND_URL,
   } = useStateContext();
 
@@ -1481,6 +1482,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       setreloadDataGrid(!reloadDataGrid);
       FetchLeads(token);
       setDeleteModelOpen(false);
+      fetchSidebarData();
       toast.success("Leads Deleted Successfull", {
         position: "top-right",
         autoClose: 3000,
@@ -1522,6 +1524,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         setreloadDataGrid(!reloadDataGrid);
         FetchLeads(token);
         setDeleteModelOpen(false);
+        fetchSidebarData();
         toast.success("Lead Deleted Successfull", {
           position: "top-right",
           autoClose: 3000,
