@@ -12,6 +12,7 @@ const CreateAppointment = () => {
     setloading(false);
     // eslint-disable-next-line
   }, []);
+
   return (
     <>
       <div className="flex min-h-screen">
@@ -35,7 +36,6 @@ const CreateAppointment = () => {
                   >
                     Create Appointment
                   </h1>
-
                     <GoogleCalendarAppointment/>
                 </div>
               </div>

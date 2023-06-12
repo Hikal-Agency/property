@@ -183,6 +183,7 @@ const GoogleCalendarAppointment = () => {
               Create and Manage Appointments on the Go!
             </Typography>
             <Button
+            disabled={!window.google}
               color="primary"
               sx={{ marginRight: "4px", marginTop: "12px" }}
               variant="contained"

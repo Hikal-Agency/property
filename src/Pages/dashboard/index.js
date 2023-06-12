@@ -29,9 +29,7 @@ const Dashboard = () => {
           ...result.data,
           newLeads: result.data.lead_status.new,
         });
-        setTimeout(() => {
-          setloading(false);
-        }, 300);
+        setloading(false);
       })
       .catch((err) => {
         console.log(err);
