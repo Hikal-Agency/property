@@ -1621,12 +1621,11 @@ const Sidebarmui = () => {
             }}
           >
             <div className="flex justify-between items-center h-[50px]">
-              <a
-                href="/dashboard"
+              <Link
+                to="/dashboard"
                 className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
                 onClick={() => {
                   setSelected({ name: "Dashboard", index: 0 });
-                  setopenBackDrop(true);
                 }}
               >
                 {isCollapsed ? (
@@ -1660,7 +1659,7 @@ const Sidebarmui = () => {
                     alt=""
                   />
                 )}
-              </a>
+              </Link>
             </div>
             <div className="profile-section border-t border-b mt-2 px-1 py-2">
               {isCollapsed ? (
@@ -2166,8 +2165,8 @@ const Sidebarmui = () => {
                                 >
                                   {link.link === "/contacts" ||
                                   link.link === "/dashboard" ? (
-                                    <a
-                                      href={link.link}
+                                    <Link
+                                      to={link.link}
                                       onClick={() => setopenBackDrop(true)}
                                     >
                                       <div className="flex items-center gap-4  rounded-lg text-md  ">
@@ -2184,7 +2183,7 @@ const Sidebarmui = () => {
                                           </span>
                                         )}
                                       </div>
-                                    </a>
+                                    </Link>
                                   ) : (
                                     <Link
                                       to={link.link}
@@ -2419,8 +2418,8 @@ const Sidebarmui = () => {
                                   >
                                     {link.link === "/contacts" ||
                                     link.link === "/dashboard" ? (
-                                      <a
-                                        href={link.link}
+                                      <Link
+                                        to={link.link}
                                         onClick={() => setopenBackDrop(true)}
                                       >
                                         <div className="flex items-center gap-4  rounded-lg text-md  ">
@@ -2437,7 +2436,7 @@ const Sidebarmui = () => {
                                             </span>
                                           )}
                                         </div>
-                                      </a>
+                                      </Link>
                                     ) : (
                                       <Link
                                         to={link.link}
