@@ -1370,13 +1370,22 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       coldCallCode = 0;
     }
 
-    let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}${
-      lead_type !== "all" ? `&feedback=${lead_type}` : ""
-    }`;
+    let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`;
+
+    if(lead_type) {
+      if(lead_type !== "all") {
+        url += `&feedback=${lead_type}`;
+      }
+    }
 
     if (coldCallCode !== "") {
       url += `&coldCall=${coldCallCode}`;
     }
+
+    if(lead_origin === "transfferedleads") {
+      url += `&status=Transferred`;
+    }
+
     await axios
       .get(url, {
         headers: {
@@ -1646,7 +1655,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           {selectedRows.length > 0 && (
             <MuiButton
               size="small"
-              sx={{ ...bulkUpdateBtnStyles, left: "564px" }}
+              sx={{ ...bulkUpdateBtnStyles, left: "564px", zIndex: "5 !important" }}
               variant="text"
               onClick={handleClickBulkUpdate}
             >
@@ -1657,7 +1666,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           {selectedRows.length > 0 && User?.role === 1 && (
             <MuiButton
               size="small"
-              sx={{ ...bulkUpdateBtnStyles, left: "685px" }}
+              sx={{ ...bulkUpdateBtnStyles, left: "685px", zIndex: "5 !important" }}
               variant="text"
               onClick={handleClickBulkDelete}
             >
@@ -1687,7 +1696,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             id="bulkImport"
           />
 
-          <div className="absolute top-[7px] right-[20px] z-[500]">
+          <div style={{zIndex: "5 !important"}} className="absolute top-[7px] right-[20px] z-[5]">
             <TextField
               placeholder="Search.."
               ref={searchRef}
@@ -1783,12 +1792,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   showQuickFilter: false,
                   printOptions: { disableToolbarButton: User?.role !== 1 },
                   csvOptions: { disableToolbarButton: User?.role !== 1 },
-                  // value: searchTerm,
-                  // onChange: HandleQuicSearch,
                 },
-                // columnsPanel: {
-                //   disableHideAllButton: true,
-                // }
               }}
               sx={{
                 boxShadow: 2,

@@ -1197,13 +1197,23 @@ const BookedDeals = ({
       coldCallCode = 0;
     }
 
-    let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}${
-      lead_type !== "all" ? `&feedback=${lead_type}` : ""
-    }`;
+    let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`;
+
+    if(lead_type) {
+      if(lead_type !== "all") {
+        url += `&feedback=${lead_type}`;
+      }
+    }
+
 
     if (coldCallCode !== "") {
       url += `&coldCall=${coldCallCode}`;
     }
+
+    if(lead_origin === "transfferedleads") {
+      url += `&status=Transferred`;
+    }
+
     await axios
       .get(url, {
         headers: {
@@ -1387,7 +1397,7 @@ const BookedDeals = ({
     <div className="pb-10">
       <ToastContainer />
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
-                <div className="absolute top-[7px] right-[20px] z-[500]">
+                <div className="absolute top-[7px] right-[20px] z-[5]">
             <TextField
               placeholder="Search.."
               ref={searchRef}

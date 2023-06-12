@@ -1558,7 +1558,7 @@ const ClientLeads = ({
                   {selectedRows.length > 0 && (
                     <MuiButton
                       size="small"
-                      sx={bulkUpdateBtnStyles}
+                      sx={{...bulkUpdateBtnStyles, zIndex: "5 !important"}}
                       variant="text"
                       onClick={handleClickBulkUpdate}
                     >
@@ -1569,7 +1569,7 @@ const ClientLeads = ({
                   {selectedRows.length > 0 && (
                     <MuiButton
                       size="small"
-                      sx={{ ...bulkUpdateBtnStyles, left: "64%" }}
+                      sx={{ ...bulkUpdateBtnStyles, left: "64%", zIndex: "5 !important" }}
                       variant="text"
                       onClick={handleClickBulkDelete}
                     >
@@ -1581,7 +1581,7 @@ const ClientLeads = ({
                     <MuiButton
                       onClick={() => bulkImportRef.current.click()}
                       size="small"
-                      sx={{ ...bulkUpdateBtnStyles, left: "50.5%" }}
+                      sx={{ ...bulkUpdateBtnStyles, left: "50.5%", zIndex: "5 !important" }}
                       variant="text"
                     >
                       <TbFileImport size={18} />{" "}
