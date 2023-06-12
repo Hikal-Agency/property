@@ -62,6 +62,69 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
     setPeriod(e.target.value);
     // FetchLeaderboard();
   };
+  // const FetchLeaderboard = async (token) => {
+  //   setLoading(true);
+  //   let apiUrl = period ? `leaderboard?${period}` : "leaderboard";
+
+  //   try {
+  //     const all_leaderboard = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     });
+
+  //     const leaderboard = all_leaderboard?.data?.user;
+
+  //     const sortedLeaderboard = leaderboard.sort((a, b) => {
+  //       return b.total_sales - a.total_sales;
+  //     });
+
+  //     setLeaderboard(sortedLeaderboard);
+
+  //     const leadCount = sortedLeaderboard.reduce(
+  //       (acc, cur) => {
+  //         if (cur.total_sales) {
+  //           acc.total_sales += Number(cur.total_sales);
+  //         }
+  //         if (cur.total_closed_deals) {
+  //           acc.total_closed_deals += cur.total_closed_deals;
+  //         }
+  //         return acc;
+  //       },
+  //       { total_sales: 0, total_closed_deals: 0 }
+  //     );
+
+  //     setCount(leadCount);
+
+  //     const { agents = [], managers = [] } = sortedLeaderboard.reduce(
+  //       (acc, cur) => ({
+  //         agents: [...acc.agents, ...(cur.role === 7 ? [cur] : [])],
+  //         managers: [...acc.managers, ...(cur.role === 3 ? [cur] : [])],
+  //       }),
+  //       { agents: [], managers: [] }
+  //     );
+
+  //     setAgents(agents);
+  //     setManagers(managers);
+
+  //     setLoading(false);
+  //   } catch (error) {
+  //     setLoading(false);
+  //     console.log("Leaderboard not fetched. ", error);
+  //     toast.error("Unable to fetch leaderboard data.", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   }
+  // };
+
   const FetchLeaderboard = async (token) => {
     setLoading(true);
     let apiUrl = period ? `leaderboard?${period}` : "leaderboard";
@@ -77,7 +140,6 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
       const leaderboard = all_leaderboard?.data?.user;
 
       const sortedLeaderboard = leaderboard.sort((a, b) => {
-        // Sort in descending order based on total_sales
         return b.total_sales - a.total_sales;
       });
 
@@ -106,8 +168,15 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
         { agents: [], managers: [] }
       );
 
-      setAgents(agents);
-      setManagers(managers);
+      const filteredAgents = agents.filter(
+        (agent) => agent.total_sales > 0 && agent.total_closed_deals > 0
+      );
+      const filteredManagers = managers.filter(
+        (manager) => manager.total_sales > 0 && manager.total_closed_deals > 0
+      );
+
+      setAgents(filteredAgents);
+      setManagers(filteredManagers);
 
       setLoading(false);
     } catch (error) {
@@ -125,6 +194,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
       });
     }
   };
+
   console.log("acitve: ", active);
 
   const handleClick = async (id, e) => {
@@ -324,6 +394,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                               )}
 
                               {/* User Details */}
+
                               <div>
                                 <h2 className="text-xl font-bold">
                                   {item?.userName}
