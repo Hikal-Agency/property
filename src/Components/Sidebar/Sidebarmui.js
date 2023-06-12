@@ -2,7 +2,7 @@ import { Box, ListItemIcon, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { AiFillGift, AiFillMessage } from "react-icons/ai";
 import { FaLink, FaSnowflake, FaMobile } from "react-icons/fa";
-import {FiSettings} from "react-icons/fi";
+import { FiSettings } from "react-icons/fi";
 import {
   BsStopCircleFill,
   BsCalendarWeekFill,
@@ -70,23 +70,26 @@ const Sidebarmui = () => {
   const location = useLocation();
 
   const [openedSubMenu, setOpenSubMenu] = useState({
-    menuIndex: 0, 
-    linkIndex: 0
+    menuIndex: 0,
+    linkIndex: 0,
   });
 
-  const setOpenedSubMenu = ({menuIndex, linkIndex}) => {
-    if(openedSubMenu.menuIndex === menuIndex && openedSubMenu.linkIndex === linkIndex) {
+  const setOpenedSubMenu = ({ menuIndex, linkIndex }) => {
+    if (
+      openedSubMenu.menuIndex === menuIndex &&
+      openedSubMenu.linkIndex === linkIndex
+    ) {
       setOpenSubMenu(0);
     } else {
-      setOpenSubMenu({menuIndex, linkIndex});
+      setOpenSubMenu({ menuIndex, linkIndex });
     }
-  }
+  };
 
   const handleExpand = (e, obj, link) => {
-    if(!e.target.closest(".ps-submenu-content")) {
-        setOpenedSubMenu(obj);
+    if (!e.target.closest(".ps-submenu-content")) {
+      setOpenedSubMenu(obj);
     }
-  }
+  };
 
   console.log("SidebarData: ", sidebarData);
 
@@ -402,7 +405,7 @@ const Sidebarmui = () => {
         },
       ],
     },
-     {
+    {
       title: "MISC",
       links: [
         {
@@ -658,7 +661,45 @@ const Sidebarmui = () => {
             {
               name: "Fresh leads",
               count: sidebarData?.UNASSIGNED?.fresh,
-              link: "/unassigned/fresh",
+              // link: "/unassigned/fresh",
+              childMenu: [
+                {
+                  name: "All ",
+                  // count: sidebarData?.UNASSIGNED?.cold,
+                  link: "/unassigned/new",
+                },
+
+                {
+                  name: "No Answer ",
+                  // count: sidebarData?.UNASSIGNED?.cold,
+                  link: "/unassigned/no answer",
+                },
+                {
+                  name: "Meetings ",
+                  // count: sidebarData?.UNASSIGNED?.cold,
+                  link: "/unassigned/meeting",
+                },
+                {
+                  name: "Follow Up",
+                  // count: sidebarData?.UNASSIGNED?.cold,
+                  link: "/unassigned/follow up",
+                },
+                {
+                  name: "Low Budget",
+                  // count: sidebarData?.UNASSIGNED?.cold,
+                  link: "/unassigned/low budget",
+                },
+                {
+                  name: "Not Interested",
+                  // count: sidebarData?.UNASSIGNED?.cold,
+                  link: "/unassigned/not interested",
+                },
+                {
+                  name: "Unreachable",
+                  // count: sidebarData?.UNASSIGNED?.cold,
+                  link: "/unassigned/unreachable",
+                },
+              ],
             },
             {
               name: "Cold leads",
@@ -785,7 +826,7 @@ const Sidebarmui = () => {
         },
       ],
     },
-     {
+    {
       title: "MISC",
       links: [
         {
@@ -1281,7 +1322,7 @@ const Sidebarmui = () => {
         },
       ],
     },
-     {
+    {
       title: "MISC",
       links: [
         {
@@ -1584,7 +1625,7 @@ const Sidebarmui = () => {
                 href="/dashboard"
                 className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
                 onClick={() => {
-                  setSelected({name: "Dashboard", index: 0});
+                  setSelected({ name: "Dashboard", index: 0 });
                   setopenBackDrop(true);
                 }}
               >
@@ -1718,7 +1759,13 @@ const Sidebarmui = () => {
                             title={link.name}
                             key={link.name}
                             placement="right"
-                            onClick={(e) => handleExpand(e, {menuIndex: menuIndex+1, linkIndex}, link)}
+                            onClick={(e) =>
+                              handleExpand(
+                                e,
+                                { menuIndex: menuIndex + 1, linkIndex },
+                                link
+                              )
+                            }
                           >
                             {link.submenu ? (
                               <Box
@@ -1754,14 +1801,14 @@ const Sidebarmui = () => {
                                 <SubMenu
                                   label={link.name}
                                   icon={link.icon}
-                                  open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex}
+                                  open={
+                                    openedSubMenu.menuIndex === menuIndex + 1 &&
+                                    openedSubMenu.linkIndex === linkIndex
+                                  }
                                 >
                                   {link.submenu.map((menu, index) => {
                                     return (
-                                      <Link
-                                        key={index}
-                                        to={`${menu.link}`}
-                                      >
+                                      <Link key={index} to={`${menu.link}`}>
                                         <Box
                                           sx={{
                                             // STYLING FOR LIGHT MODE
@@ -1803,7 +1850,13 @@ const Sidebarmui = () => {
                                           className="relative my-1"
                                         >
                                           <MenuItem
-                                            active={menu.link === window.location.pathname.replaceAll("%20", " ")}
+                                            active={
+                                              menu.link ===
+                                              window.location.pathname.replaceAll(
+                                                "%20",
+                                                " "
+                                              )
+                                            }
                                             className="flex"
                                           >
                                             {menu?.icon && (
@@ -1820,19 +1873,22 @@ const Sidebarmui = () => {
                                               {menu?.name || ""}
                                             </span>
                                           </MenuItem>
-                                          {menu?.count != null &&
-                                          <span
-                                            className="leads_counter block absolute right-5"
-                                            // sx={{
-                                            //   color: menu?.countColor,
-                                            // }}
-                                            style={{ top: "50%", transform: "translateY(-50%)" }}
-                                          >
-                                            {menu?.count !== null
-                                              ? menu?.count
-                                              : ""}
-                                          </span>
-                                          }
+                                          {menu?.count != null && (
+                                            <span
+                                              className="leads_counter block absolute right-5"
+                                              // sx={{
+                                              //   color: menu?.countColor,
+                                              // }}
+                                              style={{
+                                                top: "50%",
+                                                transform: "translateY(-50%)",
+                                              }}
+                                            >
+                                              {menu?.count !== null
+                                                ? menu?.count
+                                                : ""}
+                                            </span>
+                                          )}
                                         </Box>
                                       </Link>
                                     );
@@ -1876,7 +1932,13 @@ const Sidebarmui = () => {
                                 className="my-1"
                               >
                                 <MenuItem
-                                 active={link.link === window.location.pathname.replaceAll("%20", " ")} 
+                                  active={
+                                    link.link ===
+                                    window.location.pathname.replaceAll(
+                                      "%20",
+                                      " "
+                                    )
+                                  }
                                 >
                                   <Link
                                     to={`${link.link}`}
@@ -1941,7 +2003,13 @@ const Sidebarmui = () => {
                             title={link.name}
                             key={link.name}
                             placement="right"
-                            onClick={(e) => handleExpand(e, {menuIndex: menuIndex+1, linkIndex}, link)}
+                            onClick={(e) =>
+                              handleExpand(
+                                e,
+                                { menuIndex: menuIndex + 1, linkIndex },
+                                link
+                              )
+                            }
                           >
                             {link.submenu ? (
                               <Box
@@ -1974,7 +2042,14 @@ const Sidebarmui = () => {
                                 }}
                                 className="my-1"
                               >
-                                <SubMenu open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex} label={link.name} icon={link.icon}>
+                                <SubMenu
+                                  open={
+                                    openedSubMenu.menuIndex === menuIndex + 1 &&
+                                    openedSubMenu.linkIndex === linkIndex
+                                  }
+                                  label={link.name}
+                                  icon={link.icon}
+                                >
                                   {link.submenu.map((menu, index) => {
                                     return (
                                       <Link
@@ -2015,19 +2090,29 @@ const Sidebarmui = () => {
                                           className="relative my-1"
                                         >
                                           <MenuItem
-                                            active={menu.link === window.location.pathname.replaceAll("%20", " ")} 
+                                            active={
+                                              menu.link ===
+                                              window.location.pathname.replaceAll(
+                                                "%20",
+                                                " "
+                                              )
+                                            }
                                           >
                                             {menu?.name}
                                           </MenuItem>
-                                          {menu?.count !== null &&
-                                          <span className="leads_counter block absolute right-5" 
-                                            style={{ top: "50%", transform: "translateY(-50%)" }}
-                                          >
-                                            {menu?.count !== null
-                                              ? menu?.count
-                                              : ""}
-                                          </span>
-                                          }
+                                          {menu?.count !== null && (
+                                            <span
+                                              className="leads_counter block absolute right-5"
+                                              style={{
+                                                top: "50%",
+                                                transform: "translateY(-50%)",
+                                              }}
+                                            >
+                                              {menu?.count !== null
+                                                ? menu?.count
+                                                : ""}
+                                            </span>
+                                          )}
                                         </Box>
                                       </Link>
                                     );
@@ -2071,7 +2156,13 @@ const Sidebarmui = () => {
                                 className="my-1"
                               >
                                 <MenuItem
-                                active={link.link === window.location.pathname.replaceAll("%20", " ")}
+                                  active={
+                                    link.link ===
+                                    window.location.pathname.replaceAll(
+                                      "%20",
+                                      " "
+                                    )
+                                  }
                                 >
                                   {link.link === "/contacts" ||
                                   link.link === "/dashboard" ? (
@@ -2159,7 +2250,13 @@ const Sidebarmui = () => {
                               title={link.name}
                               key={link.name}
                               placement="right"
-                            onClick={(e) => handleExpand(e, {menuIndex: menuIndex+1, linkIndex}, link)}
+                              onClick={(e) =>
+                                handleExpand(
+                                  e,
+                                  { menuIndex: menuIndex + 1, linkIndex },
+                                  link
+                                )
+                              }
                             >
                               {link.submenu ? (
                                 <Box
@@ -2192,7 +2289,15 @@ const Sidebarmui = () => {
                                   }}
                                   className="my-1"
                                 >
-                                  <SubMenu open={openedSubMenu.menuIndex === menuIndex + 1 && openedSubMenu.linkIndex === linkIndex} label={link.name} icon={link.icon}>
+                                  <SubMenu
+                                    open={
+                                      openedSubMenu.menuIndex ===
+                                        menuIndex + 1 &&
+                                      openedSubMenu.linkIndex === linkIndex
+                                    }
+                                    label={link.name}
+                                    icon={link.icon}
+                                  >
                                     {link.submenu.map((menu, index) => {
                                       return (
                                         <Link
@@ -2235,7 +2340,12 @@ const Sidebarmui = () => {
                                             className="relative my-1"
                                           >
                                             <MenuItem
-                                            active={window.location.pathname.replaceAll("%20", " ") === menu.link}
+                                              active={
+                                                window.location.pathname.replaceAll(
+                                                  "%20",
+                                                  " "
+                                                ) === menu.link
+                                              }
                                             >
                                               {console.log(
                                                 "Menudetail: ",
@@ -2243,15 +2353,19 @@ const Sidebarmui = () => {
                                               )}
                                               {menu?.name || ""}
                                             </MenuItem>
-                                            {menu?.count !== null && 
-                                            <span className="leads_counter block absolute right-5"
-                                            style={{ top: "50%", transform: "translateY(-50%)" }}
-                                            >
-                                              {menu?.count !== null
-                                                ? menu?.count
-                                                : ""}
-                                            </span>
-                                            }
+                                            {menu?.count !== null && (
+                                              <span
+                                                className="leads_counter block absolute right-5"
+                                                style={{
+                                                  top: "50%",
+                                                  transform: "translateY(-50%)",
+                                                }}
+                                              >
+                                                {menu?.count !== null
+                                                  ? menu?.count
+                                                  : ""}
+                                              </span>
+                                            )}
                                           </Box>
                                         </Link>
                                       );
@@ -2295,7 +2409,13 @@ const Sidebarmui = () => {
                                   className="my-1"
                                 >
                                   <MenuItem
-                                  active={link.link === window.location.pathname.replaceAll("%20", " ")}
+                                    active={
+                                      link.link ===
+                                      window.location.pathname.replaceAll(
+                                        "%20",
+                                        " "
+                                      )
+                                    }
                                   >
                                     {link.link === "/contacts" ||
                                     link.link === "/dashboard" ? (

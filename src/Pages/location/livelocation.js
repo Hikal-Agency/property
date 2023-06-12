@@ -14,6 +14,8 @@ const Livelocation = () => {
     // eslint-disable-next-line
   }, []);
 
+  console.log("meetinglocations:: ", DashboardData);
+
   return (
     <>
       <div className="min-h-screen">

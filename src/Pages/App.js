@@ -348,12 +348,12 @@ function App() {
 
     const socketURL = process.env.REACT_APP_SOCKET_URL;
     const socket = io(socketURL);
-    console.log("Socket URL: " , socket);
+    console.log("Socket URL: ", socket);
     setSocket(socket);
 
     return () => {
       socket.disconnect();
-    }
+    };
   }, []);
 
   function hasSidebarOrNavbar() {
@@ -367,34 +367,46 @@ function App() {
 
   return (
     <>
-      <ToastContainer />
-      {/* {appLoading && hasSidebarOrNavbar() &&
+      <div
+        style={{
+          margin: 0,
+          padding: 0,
+          background: currentMode === "dark" ? "#000000" : "#ffffff",
+        }}
+      >
+        <ToastContainer />
+        {/* {appLoading && hasSidebarOrNavbar() &&
       <div style={{width: "100vw", height: "100vh", zIndex: 10000, position: "fixed", top: 0, left: 0}}>
         <Loader/>
       </div>
         } */}
-      <div className="flex" style={{ width: "99vw" }}>
-        {hasSidebarOrNavbar() && <Sidebarmui />}
-        <div
-          className={`w-[99%] overflow-x-hidden ${
-            hasSidebarOrNavbar() ? "pt-16" : "pt-0"
-          } ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
-        >
-          {hasSidebarOrNavbar() && (
-            <div className={`px-5`}>
-              <Navbar />
-            </div>
-          )}
-          <Routes>
-            {routes.map((route, index) => {
-              return (
-                <Route key={index} path={route.path} element={route.element} />
-              );
-            })}
-          </Routes>
+        <div className="flex" style={{ width: "99vw" }}>
+          {hasSidebarOrNavbar() && <Sidebarmui />}
+          <div
+            className={`w-[99%] overflow-x-hidden ${
+              hasSidebarOrNavbar() ? "pt-16" : "pt-0"
+            } ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
+          >
+            {hasSidebarOrNavbar() && (
+              <div className={`px-5`}>
+                <Navbar />
+              </div>
+            )}
+            <Routes>
+              {routes.map((route, index) => {
+                return (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={route.element}
+                  />
+                );
+              })}
+            </Routes>
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 }
