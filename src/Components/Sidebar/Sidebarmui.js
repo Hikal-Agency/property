@@ -1883,7 +1883,7 @@ const Sidebarmui = () => {
                                                 transform: "translateY(-50%)",
                                               }}
                                             >
-                                              {menu?.count !== null
+                                              {menu?.count !== null && menu?.count !== undefined
                                                 ? menu?.count
                                                 : ""}
                                             </span>
@@ -2099,7 +2099,8 @@ const Sidebarmui = () => {
                                           >
                                             {menu?.name}
                                           </MenuItem>
-                                          {menu?.count !== null && (
+                                          {console.log(menu?.name, menu?.count)}
+                                          {menu?.count !== null && menu?.count !== undefined && (
                                             <span
                                               className="leads_counter block absolute right-5"
                                               style={{
@@ -2107,7 +2108,7 @@ const Sidebarmui = () => {
                                                 transform: "translateY(-50%)",
                                               }}
                                             >
-                                              {menu?.count !== null
+                                              {menu?.count !== null && menu?.count !== undefined
                                                 ? menu?.count
                                                 : ""}
                                             </span>
@@ -2352,7 +2353,7 @@ const Sidebarmui = () => {
                                               )}
                                               {menu?.name || ""}
                                             </MenuItem>
-                                            {menu?.count !== null && (
+                                            {menu?.count !== null && menu?.count !== undefined && (
                                               <span
                                                 className="leads_counter block absolute right-5"
                                                 style={{
@@ -2360,7 +2361,7 @@ const Sidebarmui = () => {
                                                   transform: "translateY(-50%)",
                                                 }}
                                               >
-                                                {menu?.count !== null
+                                                {menu?.count !== null && menu?.count !== undefined
                                                   ? menu?.count
                                                   : ""}
                                               </span>
