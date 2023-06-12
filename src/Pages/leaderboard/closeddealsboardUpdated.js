@@ -130,6 +130,12 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
     let apiUrl = period ? `leaderboard?${period}` : "leaderboard";
 
     try {
+      let apiUrl =
+        tabValue === 0
+          ? "leaderboard"
+          : tabValue === 1
+          ? "leaderboard?last_month"
+          : "leaderboard?current_month";
       const all_leaderboard = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
         headers: {
           "Content-Type": "application/json",
@@ -230,13 +236,16 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
           }
         >
           <div className="mb-3">
-            <Box sx={SelectStyles}>
+            <Box sx={darkModeColors} className="font-semibold">
+              <Tabs value={tabValue} onChange={handleChange} variant="standard">
+                <Tab label="All TIME" />
+                <Tab label="LAST MONTH" />
+                <Tab label="THIS MONTH" />
+              </Tabs>
+            </Box>
+            {/* <Box sx={SelectStyles}>
               <FormControl fullWidth>
-                {/* <InputLabel id="demo-simple-select-label">
-                  Select a time period
-                </InputLabel> */}
                 <TextField
-                  // labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={period}
                   label="Select a time period"
@@ -250,7 +259,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                   <MenuItem value="">All time</MenuItem>
                 </TextField>
               </FormControl>
-            </Box>
+            </Box> */}
           </div>
           <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-3 ">
             <div
