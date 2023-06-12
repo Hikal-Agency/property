@@ -4,7 +4,10 @@ import {
   IconButton,
   InputAdornment,
   TextField,
+  styled,
+  Switch,
 } from "@mui/material";
+import "../../styles/index.css";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -21,7 +24,7 @@ import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
-import {BiSearch} from "react-icons/bi";
+import { BiSearch } from "react-icons/bi";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -111,6 +114,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     setLeadModelOpen(false);
     setUpdateLeadModelOpen(false);
   };
+
+  const CustomColorSwitch = styled(() => ({
+    "& .MuiSwitch-switchBase.Mui-checked": {
+      color: "green",
+    },
+    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+      backgroundColor: "green",
+    },
+    "& .MuiSwitch-switchBase": {
+      color: "pink",
+    },
+  }));
+
+  const classes = CustomColorSwitch();
 
   // ROLE 3
   // eslint-disable-next-line
@@ -638,15 +655,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </div>
             )}
             {cellValues.row.leadSource?.toLowerCase() === "campaign" && (
-              <div className="w-max rounded-full flex items-center justify-center">
-                <MdCampaign
-                  size={22}
-                  color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-                />
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <MdCampaign size={22} color={"#000000"} />
               </div>
             )}
             {cellValues.row.leadSource?.toLowerCase() === "cold" && (
-              <div className="w-max rounded-full flex items-center justify-center">
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <BsSnow2 size={22} color={"#0ec7ff"} />
               </div>
             )}
@@ -1677,16 +1691,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             <TextField
               placeholder="Search.."
               ref={searchRef}
-              sx={{"& input": {
-                borderBottom: "2px solid #ffffff6e"
-              }}}
+              sx={{
+                "& input": {
+                  borderBottom: "2px solid #ffffff6e",
+                },
+              }}
               variant="standard"
               onKeyUp={handleKeyUp}
               onInput={handleSearch}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <IconButton sx={{padding: 0}}>
+                    <IconButton sx={{ padding: 0 }}>
                       <BiSearch size={17} />
                     </IconButton>
                   </InputAdornment>
@@ -1739,7 +1755,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               page={pageState.page - 1}
               checkboxSelection
               onSelectionModelChange={(ids) => {
-                setSelectedRows(ids.map((id) => pageState?.data[id - 1]?.leadId));
+                setSelectedRows(
+                  ids.map((id) => pageState?.data[id - 1]?.leadId)
+                );
               }}
               pageSize={pageState.pageSize}
               onPageChange={(newPage) => {
@@ -1787,11 +1805,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       ? "white !important"
                       : "black !important",
                 },
-                "& .PrivateSwitchBase-input .css-1ycxvqq-MuiSwitch-root .MuiSwitch-thumb":
-                  {
-                    color: "#DA1F26 !important",
-                  },
-                "&  .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track":
+                "& .MuiDataGrid-main .MuiSwitch-switchBase": {
+                  color: "#DA1F26 !important",
+                },
+                "& .MuiDataGrid-main .MuiSwitch-switchBase.Mui-checked": {
+                  color: "#DA1F26 !important",
+                },
+                "& .MuiDataGrid-main .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
                   {
                     backgroundColor: "#DA1F26 !important",
                   },
@@ -1802,6 +1822,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               columnWidths={{
                 checkbox: "30px",
               }}
+              className={{ classes }}
             />
           </div>
 

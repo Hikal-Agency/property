@@ -21,6 +21,10 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+.MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
+  color :"red !important"
+}
+
 .css-1ycxvqq-MuiSwitch-root .MuiSwitch-thumb .MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
   color : "#DA1F26 !important"
 }

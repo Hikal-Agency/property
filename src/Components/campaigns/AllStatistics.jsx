@@ -49,6 +49,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
   const [doughnutChart, setDoughnut] = useState();
   const [ageGender, setAgeGender] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [selectedAd, setSelectedAd] = useState();
+  const [selectedAdset, setSelectedAdset] = useState();
 
   console.log("ChartData: ", chartData);
 
@@ -57,6 +59,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
 
   console.log();
   console.log("Ads: ", ads);
+
+  console.log("campaign stats: ", campaignStats);
 
   // const data = [
   //   { amount: campaignStats?.adsCount, title: "Ads", icon: FaAd },
@@ -131,82 +135,263 @@ const AllStatistics = ({ pageState, setpageState }) => {
   //   }
   // };
 
-  console.log("age,gender: ",ageGender)
+  console.log("age,gender: ", ageGender);
+  // const FetchCampaignStats = async (campaignId) => {
+  //   try {
+  //     const adsetsPromise = axios.get(
+  //       `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
+  //     );
+
+  //     const adsPromise = axios.get(
+  //       `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
+  //     );
+
+  //     const insightsPromise = axios.get(
+  //       `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&breakdowns=gender,age`
+  //     );
+
+  //     const [adsetsResult, adsResult, insightsResult] = await Promise.all([
+  //       adsetsPromise,
+  //       adsPromise,
+  //       insightsPromise,
+  //     ]);
+
+  //     console.log("ADSET RESULT: ", adsetsResult);
+  //     console.log("ADS RESULT: ", adsResult);
+  //     console.log("INSIGHTS RESULTsss: ", insightsResult);
+
+  //     const adsetsCount = adsetsResult.data.summary.total_count;
+  //     const adsCount = adsResult.data.summary.total_count;
+
+  //     setAgeGender(insightsResult?.data?.data)
+
+  //     const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
+  //       if (ad.status === "ACTIVE") {
+  //         count++;
+  //       }
+  //       return count;
+  //     }, 0);
+
+  //     const activeAdsetsCount = adsetsResult.data.data.reduce((count, adset) => {
+  //       if (adset.status === "ACTIVE") {
+  //         count++;
+  //       }
+  //       return count;
+  //     }, 0);
+
+  //     const genderData = insightsResult.data.data.map(
+  //       (insight) => insight.gender
+  //     );
+  //     const ageData = insightsResult.data.data.map((insight) => insight.age);
+
+  //     console.log("Ad Sets Count: ", adsetsCount);
+  //     console.log("Ads Count: ", adsCount);
+  //     console.log("Active Ads Count: ", activeAdsCount);
+  //     console.log("Active Adset Count: ", activeAdsetsCount);
+  //     console.log("Gender Data: ", genderData);
+  //     console.log("Age Data: ", ageData);
+
+  //     // Set the fetched counts, genders, and ages to state or use them as needed
+  //     const campaignStats = {
+  //       adsetsCount: adsetsCount,
+  //       adsCount: adsCount,
+  //       activeAdsCount: activeAdsCount,
+  //       activeAdsetCount: activeAdsetsCount,
+  //       genderData: genderData,
+  //       ageData: ageData,
+  //     };
+
+  //     // Set the campaign stats state with the fetched data
+  //     setCampaignStats(campaignStats);
+  //   } catch (error) {
+  //     console.log("Error occurred while fetching campaign stats: ", error);
+  //   }
+  // };
+
+  // adseet stats
+
+  // const FetchCampaignStats = async (campaignId) => {
+  //   try {
+  //     const adsetsPromise = axios.get(
+  //       `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
+  //     );
+
+  //     const adsPromise = axios.get(
+  //       `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
+  //     );
+
+  //     const insightsPromise = axios.get(
+  //       `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&breakdowns=gender,age&fields=impressions,clicks,cpc,cpm,actions`
+  //     );
+
+  //     const [adsetsResult, adsResult, insightsResult] = await Promise.all([
+  //       adsetsPromise,
+  //       adsPromise,
+  //       insightsPromise,
+  //     ]);
+
+  //     console.log("ADSET RESULT: ", adsetsResult);
+  //     console.log("ADS RESULT: ", adsResult);
+  //     console.log("INSIGHTS RESULT: ", insightsResult);
+
+  //     const adsetsCount = adsetsResult.data.summary.total_count;
+  //     const adsCount = adsResult.data.summary.total_count;
+
+  //     setAgeGender(insightsResult?.data?.data);
+
+  //     const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
+  //       if (ad.status === "ACTIVE") {
+  //         count++;
+  //       }
+  //       return count;
+  //     }, 0);
+
+  //     const activeAdsetsCount = adsetsResult.data.data.reduce(
+  //       (count, adset) => {
+  //         if (adset.status === "ACTIVE") {
+  //           count++;
+  //         }
+  //         return count;
+  //       },
+  //       0
+  //     );
+
+  //     const genderData = insightsResult.data.data.map(
+  //       (insight) => insight.gender
+  //     );
+  //     const ageData = insightsResult.data.data.map((insight) => insight.age);
+
+  //     const campaignInsights = insightsResult.data.data;
+  //     const cpc = campaignInsights?.cpc?.length;
+  //     const cpm = campaignInsights?.cpm;
+  //     const impressions = campaignInsights?.impressions;
+  //     const clicks = campaignInsights?.clicks;
+  //     const conversions = campaignInsights?.actions?.find(
+  //       (action) => action.action_type === "conversion"
+  //     )?.value;
+
+  //     console.log("CPC: ", cpc);
+  //     console.log("CPM: ", cpm);
+  //     console.log("Impressions: ", impressions);
+  //     console.log("Clicks: ", clicks);
+  //     console.log("Conversions: ", conversions);
+  //     console.log("Ad Sets Count: ", adsetsCount);
+  //     console.log("Ads Count: ", adsCount);
+  //     // console.log("Active Ads Count: ", activeAdsCount);
+  //     // console.log("Active Adset Count: ", activeAdsetCount);
+  //     console.log("Gender Data: ", genderData);
+  //     console.log("Age Data: ", ageData);
+
+  //     // Set the fetched counts, genders, and ages to state or use them as needed
+  //     const campaignStats = {
+  //       adsetsCount: adsetsCount,
+  //       adsCount: adsCount,
+  //       activeAdsCount: activeAdsCount,
+  //       // activeAdsetCount: activeAdsetCount,
+  //       genderData: genderData,
+  //       ageData: ageData,
+  //       cpc: cpc,
+  //       cpm: cpm,
+  //       impressions: impressions,
+  //       clicks: clicks,
+  //       conversions: conversions,
+  //     };
+
+  //     // Set the campaign stats state with the fetched data
+  //     setCampaignStats(campaignStats);
+  //   } catch (error) {
+  //     console.log("Error occurred while fetching campaign stats: ", error);
+  //   }
+  // };
+
   const FetchCampaignStats = async (campaignId) => {
     try {
       const adsetsPromise = axios.get(
         `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
       );
-  
+
       const adsPromise = axios.get(
         `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
       );
-  
-      const insightsPromise = axios.get(
+
+      const insightsWithBreakdownsPromise = axios.get(
         `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&breakdowns=gender,age`
       );
-  
-      const [adsetsResult, adsResult, insightsResult] = await Promise.all([
+
+      const overallInsightsPromise = axios.get(
+        `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&fields=impressions,clicks,cpc,cpm,actions`
+      );
+
+      const [
+        adsetsResult,
+        adsResult,
+        insightsWithBreakdownsResult,
+        overallInsightsResult,
+      ] = await Promise.all([
         adsetsPromise,
         adsPromise,
-        insightsPromise,
+        insightsWithBreakdownsPromise,
+        overallInsightsPromise,
       ]);
-  
-      console.log("ADSET RESULT: ", adsetsResult);
-      console.log("ADS RESULT: ", adsResult);
-      console.log("INSIGHTS RESULTsss: ", insightsResult);
-  
+
       const adsetsCount = adsetsResult.data.summary.total_count;
       const adsCount = adsResult.data.summary.total_count;
 
-      setAgeGender(insightsResult?.data?.data)
-  
       const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
         if (ad.status === "ACTIVE") {
           count++;
         }
         return count;
       }, 0);
-  
-      const activeAdsetsCount = adsetsResult.data.data.reduce((count, adset) => {
-        if (adset.status === "ACTIVE") {
-          count++;
-        }
-        return count;
-      }, 0);
-  
-      const genderData = insightsResult.data.data.map(
+
+      const activeAdsetsCount = adsetsResult.data.data.reduce(
+        (count, adset) => {
+          if (adset.status === "ACTIVE") {
+            count++;
+          }
+          return count;
+        },
+        0
+      );
+
+      const genderData = insightsWithBreakdownsResult.data.data.map(
         (insight) => insight.gender
       );
-      const ageData = insightsResult.data.data.map((insight) => insight.age);
-  
-      console.log("Ad Sets Count: ", adsetsCount);
-      console.log("Ads Count: ", adsCount);
-      console.log("Active Ads Count: ", activeAdsCount);
-      console.log("Active Adset Count: ", activeAdsetsCount);
-      console.log("Gender Data: ", genderData);
-      console.log("Age Data: ", ageData);
-  
-      // Set the fetched counts, genders, and ages to state or use them as needed
+      const ageData = insightsWithBreakdownsResult.data.data.map(
+        (insight) => insight.age
+      );
+
+      const campaignInsights = overallInsightsResult.data.data[0];
+      const cpc = campaignInsights.cpc;
+      const cpm = campaignInsights.cpm;
+      const impressions = campaignInsights.impressions;
+      const clicks = campaignInsights.clicks;
+      const conversions = campaignInsights?.actions?.find(
+        (action) => action.action_type === "conversion"
+      )?.value;
+
       const campaignStats = {
         adsetsCount: adsetsCount,
         adsCount: adsCount,
         activeAdsCount: activeAdsCount,
-        activeAdsetCount: activeAdsetsCount,
+        // activeAdsetCount: activeAdsetCount,
         genderData: genderData,
         ageData: ageData,
+        cpc: cpc,
+        cpm: cpm,
+        impressions: impressions,
+        clicks: clicks,
+        conversions: conversions,
       };
-  
-      // Set the campaign stats state with the fetched data
+
+      setAgeGender([campaignStats?.ageData, campaignStats?.genderData]);
+
       setCampaignStats(campaignStats);
     } catch (error) {
       console.log("Error occurred while fetching campaign stats: ", error);
     }
   };
-  
-  
 
-  // adseet stats
   const FetchAdsetStats = async (campaignId) => {
     try {
       const adsetsPromise = axios.get(
@@ -347,32 +532,40 @@ const AllStatistics = ({ pageState, setpageState }) => {
   console.log("Row: ", row);
 
   const totalCounts = {
-    cpc:
-      row?.length > 0 &&
-      row?.reduce((total, ad) => total + (ad?.cpc !== "No Data" ? 1 : 0), 0),
-    cpm:
-      row?.length > 0 &&
-      row?.reduce((total, ad) => total + (ad?.cpm !== "No Data" ? 1 : 0), 0),
-    impressions:
-      row?.length > 0 &&
-      row?.reduce(
-        (total, ad) => total + (ad?.impressions !== "No Data" ? 1 : 0),
-        0
-      ),
-    conversions:
-      row?.length > 0 &&
-      row.reduce(
-        (total, ad) =>
-          total + (ad.conversions.length !== 0 ? ad.conversions.length : 0),
-        0
-      ),
+    cpc: campaignStats?.cpc || "No cpc",
+    cpm: campaignStats?.cpm || "No cpm",
+    impressions: campaignStats?.impressions || "No impressions",
+    conversions: campaignStats?.conversion || "No conversions",
+    clicks: campaignStats?.clicks || "No clicks",
   };
+  // const totalCounts = {
+  //   cpc:
+  //     row?.length > 0 &&
+  //     row?.reduce((total, ad) => total + (ad?.cpc !== "No Data" ? 1 : 0), 0),
+  //   cpm:
+  //     row?.length > 0 &&
+  //     row?.reduce((total, ad) => total + (ad?.cpm !== "No Data" ? 1 : 0), 0),
+  //   impressions:
+  //     row?.length > 0 &&
+  //     row?.reduce(
+  //       (total, ad) => total + (ad?.impressions !== "No Data" ? 1 : 0),
+  //       0
+  //     ),
+  //   conversions:
+  //     row?.length > 0 &&
+  //     row.reduce(
+  //       (total, ad) =>
+  //         total + (ad.conversions.length !== 0 ? ad.conversions.length : 0),
+  //       0
+  //     ),
+  // };
 
   const data = [
     { amount: totalCounts.cpc, title: "CPC" },
     { amount: totalCounts.cpm, title: "CPM" },
     { amount: totalCounts.impressions, title: "Impressions" },
-    { amount: totalCounts.conversions, title: "Conversions" },
+    // { amount: totalCounts.conversions, title: "Conversions" },
+    { amount: totalCounts.clicks, title: "Clicks" },
   ];
 
   console.log("Data", data);
@@ -389,7 +582,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
         {
           params: {
             fields:
-              "name,bid_strategy,daily_budget,special_ad_category,ads{name,adset,bid_amount,status,insights{clicks}}",
+              "name,bid_strategy,daily_budget,special_ad_category,ads{name,adset{id,name},bid_amount,status,insights{clicks}}",
             access_token: graph_api_token,
           },
         }
@@ -405,24 +598,42 @@ const AllStatistics = ({ pageState, setpageState }) => {
     }
   };
 
-  const selectCampaign = (e, id, name) => {
-    console.log("Selected campaign ID: ", e.target.value);
-    console.log("Selected campaign name: ", name);
+  console.log("slectecampaign data:  ", selectedCampaign);
 
-    const selectedCampaignId = e.target.value;
+  const handleselectedAdset = (e) => {
+    console.log("id: ", e);
+    // setSelectedAdset(e);
 
-    const selectedCampaign = campaigns.find(
-      (campaign) => campaign.id === selectedCampaignId
+    const filteredAds = selectedCampaign?.ads.filter(
+      (ad) => ad.adset.id === e.target.value
     );
-    const selectedCampaignName = selectedCampaign ? selectedCampaign.name : "";
 
-    setSelectedCampaigns({
-      SelectedCampaign: selectedCampaignId,
-      CampaignName: selectedCampaignName,
-    });
+    setSelectedCampaigns((prevState) => ({
+      ...prevState,
+      ads: filteredAds,
+    }));
 
-    FetchSingleCampaign(selectedCampaignId);
+    console.log("ads<-adsets: ", filteredAds);
   };
+
+  // const selectCampaign = (e, id, name) => {
+  //   console.log("Selected campaign ID: ", e.target.value);
+  //   console.log("Selected campaign name: ", name);
+
+  //   const selectedCampaignId = e.target.value;
+
+  //   const selectedCampaign = campaigns.find(
+  //     (campaign) => campaign.id === selectedCampaignId
+  //   );
+  //   const selectedCampaignName = selectedCampaign ? selectedCampaign.name : "";
+
+  //   setSelectedCampaigns({
+  //     SelectedCampaign: selectedCampaignId,
+  //     CampaignName: selectedCampaignName,
+  //   });
+
+  //   FetchSingleCampaign(selectedCampaignId);
+  // };
 
   // const FetchSingleCampaign = async (selectedCampaign) => {
   //   setpageState((old) => ({
@@ -491,6 +702,34 @@ const AllStatistics = ({ pageState, setpageState }) => {
   //     });
   // };
 
+  const selectCampaign = (e, id, name) => {
+    console.log("Selected campaign ID: ", e.target.value);
+    console.log("Selected campaign name: ", name);
+
+    const selectedCampaignId = e.target.value;
+
+    const selectedCampaign = campaigns.find(
+      (campaign) => campaign.id === selectedCampaignId
+    );
+
+    if (selectedCampaign) {
+      const selectedCampaignName = selectedCampaign.name;
+      const selectedAds = selectedCampaign.ads.data;
+      const selectedAdsets = selectedAds.map((ad) => ad.adset);
+
+      setSelectedCampaigns({
+        SelectedCampaign: selectedCampaignId,
+        CampaignName: selectedCampaignName,
+        ads: selectedAds,
+        adsets: selectedAdsets,
+      });
+
+      FetchSingleCampaign(selectedCampaignId);
+    } else {
+      console.log("Campaign not found");
+    }
+  };
+
   const FetchSingleCampaign = async (selectedCampaign) => {
     setpageState((old) => ({
       ...old,
@@ -532,21 +771,21 @@ const AllStatistics = ({ pageState, setpageState }) => {
               impressions: insightsData?.impressions,
               conversions: conversionValues,
               clicks: insightsData?.clicks,
-              reach: insightsData?.reach,  
-              frequency: insightsData?.frequency
+              reach: insightsData?.reach,
+              frequency: insightsData?.frequency,
             };
           })
         );
 
         console.log("Insights Data: ", adsWithInsights);
 
-        const filterTargetting = [...new Set(adsWithInsights.map((item) => item.targeting))];
+        const filterTargetting = [
+          ...new Set(adsWithInsights.map((item) => item.targeting)),
+        ];
 
-        setLocations(filterTargetting)
+        setLocations(filterTargetting);
 
-
-        console.log("location: ",filterTargetting)
-         
+        console.log("location: ", filterTargetting);
 
         const conversionsData = adsWithInsights
           .map((row) => row.conversions)
@@ -597,11 +836,11 @@ const AllStatistics = ({ pageState, setpageState }) => {
           cpm: row?.cpm,
           impressions: row?.impressions,
           Cid: row?.id,
-          reach: row?.reach, 
+          reach: row?.reach,
           frequency: row?.frequency,
         }));
 
-        console.log("rowdata: ",rowsdata)
+        console.log("rowdata: ", rowsdata);
 
         setpageState((old) => ({
           ...old,
@@ -616,7 +855,6 @@ const AllStatistics = ({ pageState, setpageState }) => {
         console.log(err);
       });
   };
-
 
   useEffect(() => {
     // const token = localStorage.getItem("auth-token");
@@ -722,7 +960,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
   }
   return (
     <div className="pb-10 mb-5">
-      <div className={`grid grid-cols-4 gap-3 ${darkModeColors}`}>
+      <div className={`grid  gap-3 ${darkModeColors}`}>
         <div>
           {/* <label
             htmlFor="leadOrigin"
@@ -739,76 +977,307 @@ const AllStatistics = ({ pageState, setpageState }) => {
               <CircularProgress />
             </>
           ) : (
-            // <Select
-            //   id="leadOrigin"
-            //   value={selectedCampaign.SelectedCampaign}
-            //   onChange={(event) => selectCampaign(event, event.target.value)}
-            //   size="medium"
-            //   className={`w-full mt-1 mb-5 `}
-            //   displayEmpty
-            //   required
-            //   sx={{
-            //     "& .MuiOutlinedInput-notchedOutline": {
-            //       borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-            //     },
-            //     "&:hover:not (.Mui-disabled):before": {
-            //       borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-            //     },
-            //   }}
-            // >
-            //   <MenuItem value="0" selected>
-            //     Select Campaign
-            //   </MenuItem>
-            //   {campaigns?.length > 0 ? (
-            //     campaigns?.map((campaign, index) => (
-            //       <MenuItem
-            //         key={index}
-            //         value={campaign?.id || ""}
-            //         name={campaign?.name}
-            //       >
-            //         {campaign?.name}
+            // <>
+            //   <FormControl
+            //     className="w-full mt-1 mb-5"
+            //     variant="outlined"
+            //     required
+            //   >
+            //     <InputLabel
+            //       id="campaign-label"
+            //       sx={{
+            //         color:
+            //           currentMode === "dark"
+            //             ? "#ffffff !important"
+            //             : "#000000 !important",
+            //       }}
+            //     >
+            //       Select Campaign
+            //     </InputLabel>
+            //     <Select
+            //       id="leadOrigin"
+            //       value={selectedCampaign.SelectedCampaign}
+            //       onChange={(event) =>
+            //         selectCampaign(event, event.target.value)
+            //       }
+            //       labelId="campaign-label"
+            //       label="Select Campaign"
+            //       size="medium"
+            //       sx={{
+            //         "& .MuiOutlinedInput-notchedOutline": {
+            //           borderColor:
+            //             currentMode === "dark" ? "#ffffff" : "#000000",
+            //         },
+            //         "&:hover:not(.Mui-disabled):before": {
+            //           borderColor:
+            //             currentMode === "dark" ? "#ffffff" : "#000000",
+            //         },
+            //       }}
+            //     >
+            //       <MenuItem value="0" disabled>
+            //         Select Campaign
             //       </MenuItem>
-            //     ))
-            //   ) : (
-            //     <MenuItem>No Campaigns found.</MenuItem>
+            //       {campaigns?.length > 0 ? (
+            //         campaigns?.map((campaign, index) => (
+            //           <MenuItem
+            //             key={index}
+            //             value={campaign?.id || ""}
+            //             name={campaign?.name}
+            //           >
+            //             {campaign?.name}
+            //           </MenuItem>
+            //         ))
+            //       ) : (
+            //         <MenuItem disabled>No Campaigns found.</MenuItem>
+            //       )}
+            //     </Select>
+            //   </FormControl>
+
+            //   {selectedCampaign && (
+            //     <>
+            //       <FormControl
+            //         className="w-full mt-1 mb-5"
+            //         variant="outlined"
+            //         required
+            //         sx={{
+            //           "& .MuiOutlinedInput-notchedOutline": {
+            //             borderColor:
+            //               currentMode === "dark" ? "#ffffff" : "#000000",
+            //           },
+            //           "&:hover:not(.Mui-disabled):before": {
+            //             borderColor:
+            //               currentMode === "dark" ? "#ffffff" : "#000000",
+            //           },
+            //         }}
+            //       >
+            //         <InputLabel id="ad-label">Select Ad</InputLabel>
+            //         <Select
+            //           // value={selectedAd}
+            //           // onChange={(event) => selectAd(event, event.target.value)}
+            //           labelId="ad-label"
+            //           label="Select Ad"
+            //         >
+            //           <MenuItem value="0" disabled>
+            //             Select Ad
+            //           </MenuItem>
+            //           {selectedCampaign?.ads?.length > 0 ? (
+            //             selectedCampaign?.ads?.map((ad, index) => (
+            //               <MenuItem key={index} value={ad?.id || ""}>
+            //                 {ad?.name}
+            //               </MenuItem>
+            //             ))
+            //           ) : (
+            //             <MenuItem disabled>No Ads found.</MenuItem>
+            //           )}
+            //         </Select>
+            //       </FormControl>
+
+            //       <FormControl
+            //         className="w-full mt-1 mb-5"
+            //         variant="outlined"
+            //         required
+            //         sx={{
+            //           "& .MuiOutlinedInput-notchedOutline": {
+            //             borderColor:
+            //               currentMode === "dark" ? "#ffffff" : "#000000",
+            //           },
+            //           "&:hover:not(.Mui-disabled):before": {
+            //             borderColor:
+            //               currentMode === "dark" ? "#ffffff" : "#000000",
+            //           },
+            //         }}
+            //       >
+            //         <InputLabel id="adset-label">Select Ad Set</InputLabel>
+            //         <Select
+            //           // value={selectedAdset}
+            //           // onChange={(event) =>
+            //           //   selectAdset(event, event.target.value)
+            //           // }
+            //           labelId="adset-label"
+            //           label="Select Ad Set"
+            //         >
+            //           <MenuItem value="0" disabled>
+            //             Select Ad Set
+            //           </MenuItem>
+            //           {selectedCampaign?.adsets?.length > 0 ? (
+            //             selectedCampaign?.adsets?.map((adset, index) => (
+            //               <MenuItem key={index} value={adset?.id || ""}>
+            //                 {adset?.name}
+            //               </MenuItem>
+            //             ))
+            //           ) : (
+            //             <MenuItem disabled>No Ad Sets found.</MenuItem>
+            //           )}
+            //         </Select>
+            //       </FormControl>
+            //     </>
             //   )}
-            // </Select>
-            <FormControl className="w-full mt-1 mb-5" variant="outlined" required
-           
-            >
-            <InputLabel id="campaign-label"
-             sx={{color: currentMode === "dark" ? "#ffffff !important" : "#000000 !important"}}
-            >Select Campaign</InputLabel>
-            <Select
-              id="leadOrigin"
-              value={selectedCampaign.SelectedCampaign}
-              onChange={(event) => selectCampaign(event, event.target.value)}
-              labelId="campaign-label"
-              label="Select Campaign"
-              size="medium"
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-                "&:hover:not(.Mui-disabled):before": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-              }}
-            >
-              <MenuItem value="0" disabled>
-                Select Campaign
-              </MenuItem>
-              {campaigns?.length > 0 ? (
-                campaigns?.map((campaign, index) => (
-                  <MenuItem key={index} value={campaign?.id || ""} name={campaign?.name}>
-                    {campaign?.name}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No Campaigns found.</MenuItem>
-              )}
-            </Select>
-          </FormControl>
+            // </>
+            <>
+              <div className="w-full flex  -mx-2">
+                <div className="w-full  px-2">
+                  <FormControl
+                    className="w-full mt-1 mb-5"
+                    variant="outlined"
+                    required
+                  >
+                    <InputLabel
+                      id="campaign-label"
+                      sx={{
+                        color:
+                          currentMode === "dark"
+                            ? "#ffffff !important"
+                            : "#000000 !important",
+                      }}
+                    >
+                      Select Campaign
+                    </InputLabel>
+                    <Select
+                      id="leadOrigin"
+                      value={selectedCampaign.SelectedCampaign}
+                      onChange={(event) =>
+                        selectCampaign(event, event.target.value)
+                      }
+                      labelId="campaign-label"
+                      label="Select Campaign"
+                      size="medium"
+                      sx={{
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor:
+                            currentMode === "dark" ? "#ffffff" : "#000000",
+                        },
+                        "&:hover:not(.Mui-disabled):before": {
+                          borderColor:
+                            currentMode === "dark" ? "#ffffff" : "#000000",
+                        },
+                      }}
+                    >
+                      <MenuItem value="0" disabled>
+                        Select Campaign
+                      </MenuItem>
+                      {campaigns?.length > 0 ? (
+                        campaigns?.map((campaign, index) => (
+                          <MenuItem
+                            key={index}
+                            value={campaign?.id || ""}
+                            name={campaign?.name}
+                          >
+                            {campaign?.name}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>No Campaigns found.</MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
+                </div>
+
+                {selectedCampaign.SelectedCampaign && (
+                  <>
+                    <div className="w-full px-2">
+                      <FormControl
+                        className="w-full mt-1 mb-5"
+                        variant="outlined"
+                        required
+                        value={selectedAdset}
+                        sx={{
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          },
+                          "&:hover:not(.Mui-disabled):before": {
+                            borderColor:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          },
+                        }}
+                      >
+                        <InputLabel
+                          id="adset-label"
+                          sx={{
+                            color:
+                              currentMode === "dark"
+                                ? "#ffffff !important"
+                                : "#000000 !important",
+                          }}
+                        >
+                          Select Ad Set
+                        </InputLabel>
+                        <Select
+                          // value={selectedAdset}
+                          // onChange={(event) => selectAdset(event, event.target.value)}
+                          labelId="adset-label"
+                          label="Select Ad Set"
+                          onChange={handleselectedAdset}
+                        >
+                          <MenuItem value="0" disabled>
+                            Select Ad Set
+                          </MenuItem>
+                          {selectedCampaign?.adsets?.length > 0 ? (
+                            selectedCampaign?.adsets?.map((adset, index) => (
+                              <MenuItem key={index} value={adset?.id || ""}>
+                                {adset?.name}
+                              </MenuItem>
+                            ))
+                          ) : (
+                            <MenuItem disabled>No Ad Sets found.</MenuItem>
+                          )}
+                        </Select>
+                      </FormControl>
+                    </div>
+
+                    <div className="w-full  px-2">
+                      <FormControl
+                        className="w-full mt-1 mb-5"
+                        variant="outlined"
+                        required
+                        sx={{
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          },
+                          "&:hover:not(.Mui-disabled):before": {
+                            borderColor:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          },
+                        }}
+                      >
+                        <InputLabel
+                          id="ad-label"
+                          sx={{
+                            color:
+                              currentMode === "dark"
+                                ? "#ffffff !important"
+                                : "#000000 !important",
+                          }}
+                        >
+                          Select Ad
+                        </InputLabel>
+                        <Select
+                          // value={selectedAd}
+                          // onChange={(event) => selectAd(event, event.target.value)}
+                          labelId="ad-label"
+                          label="Select Ad"
+                          value={selectedAd}
+                        >
+                          <MenuItem value="0" disabled>
+                            Select Ad
+                          </MenuItem>
+                          {selectedCampaign?.ads?.length > 0 ? (
+                            selectedCampaign?.ads?.map((ad, index) => (
+                              <MenuItem key={index} value={ad?.id || ""}>
+                                {ad?.name}
+                              </MenuItem>
+                            ))
+                          ) : (
+                            <MenuItem disabled>No Ads found.</MenuItem>
+                          )}
+                        </Select>
+                      </FormControl>
+                    </div>
+                  </>
+                )}
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -828,6 +1297,22 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   </span>
                 </h2>
               )}
+            </div>
+
+            <div
+              style={{
+                width: "80%",
+                backgroundColor: "#DA1F26",
+                padding: "10px",
+              }}
+              className="my-3 rounded-lg mx-auto"
+            >
+              <h2
+                style={{ textAlign: "center" }}
+                className="text-white font-bold text-lg"
+              >
+                Overview
+              </h2>
             </div>
 
             {/* data starts */}
@@ -857,6 +1342,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   </p>
                 </div>
               ))} */}
+
               {data?.length > 0 &&
                 data?.map((item, index) => (
                   <div
@@ -865,7 +1351,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       currentMode === "dark"
                         ? "bg-gray-900 text-white "
                         : "bg-gray-200 text-main-dark-bg"
-                    } h-auto dark:bg-secondary-dark-bg p-2 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
+                    } border-2 border-red-600 rounded-lg h-40 dark:bg-secondary-dark-bg p-2 cursor-pointer hover:shadow-sm grid content-center`}
                   >
                     <p className="text-xl font-bold pb-2 text-red-600">
                       {item?.amount}
@@ -931,7 +1417,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
               >
                 <div className="justify-between items-center ">
-                  <h6 className="font-semibold pb-3">Demographics</h6>
+                  <h6 className="font-semibold pb-3">Audience</h6>
                   {/* <AreaChart /> */}
                   <HorizontalBarChart barCharData={ageGender} />
                 </div>
@@ -990,8 +1476,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
               >
                 <div className="justify-between items-center">
-                  <h6 className="font-semibold pb-3">Closed Projects</h6>
-                  <BubbleChartStat />
+                  <h6 className="font-semibold pb-3">Frequency And Reach</h6>
+                  <BubbleChartStat bubbleChartData={row} />
                   {/* <CombineChart /> */}
                 </div>
               </div>
@@ -1012,7 +1498,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
             </div>
 
             {/* MANAGER TAGET PROGRESS BAR  */}
-            <div  className={`${currentMode}-mode-datatable grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3`}></div>
+            <div
+              className={`${currentMode}-mode-datatable grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3`}
+            ></div>
 
             <DataGrid
               autoHeight
@@ -1024,8 +1512,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
               }}
               componentsProps={{
                 toolbar: {
-                                    printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+                  printOptions: { disableToolbarButton: User?.role !== 1 },
+                  csvOptions: { disableToolbarButton: User?.role !== 1 },
                   showQuickFilter: true,
                   value: searchText,
                   onChange: HandleQuicSearch,
