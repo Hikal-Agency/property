@@ -1372,8 +1372,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
     let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`;
 
-    if(lead_type) {
-      if(lead_type !== "all") {
+    if (lead_type) {
+      if (
+        lead_type !== "all" &&
+        lead_type !== "coldLeadsVerified" &&
+        lead_type !== "coldLeadsInvalid" &&
+        lead_type !== "coldLeadsNotChecked"
+      ) {
         url += `&feedback=${lead_type}`;
       }
     }
@@ -1382,15 +1387,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       url += `&coldCall=${coldCallCode}`;
     }
 
-       if (lead_type === "coldLeadsVerified") {
-        url += `&is_whatsapp=1`;
-      } else if (lead_type === "coldLeadsInvalid") {
-        url += `&is_whatsapp=2`;
-      } else if (lead_type === "coldLeadsNotChecked") {
-        url += `&is_whatsapp=0`;
-      }
+    if (lead_type === "coldLeadsVerified") {
+      url += `&is_whatsapp=1`;
+    } else if (lead_type === "coldLeadsInvalid") {
+      url += `&is_whatsapp=2`;
+    } else if (lead_type === "coldLeadsNotChecked") {
+      url += `&is_whatsapp=0`;
+    }
 
-    if(lead_origin === "transfferedleads") {
+    if (lead_origin === "transfferedleads") {
       url += `&status=Transferred`;
     }
 
@@ -1663,7 +1668,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           {selectedRows.length > 0 && (
             <MuiButton
               size="small"
-              sx={{ ...bulkUpdateBtnStyles, left: "564px", zIndex: "5 !important" }}
+              sx={{
+                ...bulkUpdateBtnStyles,
+                left: "564px",
+                zIndex: "5 !important",
+              }}
               variant="text"
               onClick={handleClickBulkUpdate}
             >
@@ -1674,7 +1683,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           {selectedRows.length > 0 && User?.role === 1 && (
             <MuiButton
               size="small"
-              sx={{ ...bulkUpdateBtnStyles, left: "685px", zIndex: "5 !important" }}
+              sx={{
+                ...bulkUpdateBtnStyles,
+                left: "685px",
+                zIndex: "5 !important",
+              }}
               variant="text"
               onClick={handleClickBulkDelete}
             >
@@ -1704,7 +1717,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             id="bulkImport"
           />
 
-          <div style={{zIndex: "5 !important"}} className="absolute top-[7px] right-[20px] z-[5]">
+          <div
+            style={{ zIndex: "5 !important" }}
+            className="absolute top-[7px] right-[20px] z-[5]"
+          >
             <TextField
               placeholder="Search.."
               ref={searchRef}
