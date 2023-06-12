@@ -52,27 +52,28 @@ const BulkUpdateLeads = ({
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem("auth-token");
-      const UpdateLeadData = {};
 
-      if (User.role === 1) {
-        UpdateLeadData.assignedToManager = Manager;
-        UpdateLeadData.assignedToSales = SalesPerson2;
-      } else {
-        UpdateLeadData.assignedToSales = SalesPerson2;
-      }
+      const urls = selectedRows.map((id) => {
+        const UpdateLeadData = new FormData();
+        UpdateLeadData.append("lid", id);
+        UpdateLeadData.append("id", id);
 
-      const urls = selectedRows.map((id) =>
-        axios.post(
-          `${BACKEND_URL}/leads/${id}`,
-          JSON.stringify({ ...UpdateLeadData, lid: id }),
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
+        if (User.role === 1) {
+          if (Manager) {
+            UpdateLeadData.append("assignedToManager", Manager);
           }
-        )
-      );
+
+          if (SalesPerson2) {
+            UpdateLeadData.append("assignedToSales", SalesPerson2);
+          }
+        }
+        return axios.post(`${BACKEND_URL}/leads/${id}`, UpdateLeadData, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+      });
 
       setbtnloading(true);
       await Promise.all(urls);

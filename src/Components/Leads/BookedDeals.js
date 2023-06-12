@@ -1387,7 +1387,7 @@ const BookedDeals = ({
     <div className="pb-10">
       <ToastContainer />
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
-                <div className="absolute top-[7px] right-[20px] z-[500]">
+                <div className="absolute top-[7px] right-[20px] z-[5]">
             <TextField
               placeholder="Search.."
               ref={searchRef}

@@ -800,7 +800,7 @@ const Newleads = ({
         className={`${currentMode}-mode-datatable`}
         sx={{ ...DataGridStyles, position: "relative" }}
       >
-                    <div className="absolute top-[7px] right-[20px] z-[500]">
+                    <div className="absolute top-[7px] right-[20px] z-[5]">
             <TextField
               placeholder="Search.."
               ref={searchRef}
