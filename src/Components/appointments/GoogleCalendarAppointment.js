@@ -14,9 +14,8 @@ const GoogleCalendarAppointment = () => {
   const gapi = window.gapi;
   const google = window.google;
 
-  const CLIENT_ID =
-    "108967934345-qmc2aeu201lkd11okq1u7ce02p0453p0.apps.googleusercontent.com";
-  const API_KEY = "AIzaSyAw3D7ewU2csP8e6B5Fc5EuBnkxAG_j0BI";
+  const CLIENT_ID = process.env.REACT_APP_GC_CLIENT_ID;
+  const API_KEY = process.env.REACT_APP_GC_API;
   const DISCOVERY_DOC =
     "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
   const SCOPES = "https://www.googleapis.com/auth/calendar";

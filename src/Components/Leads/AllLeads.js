@@ -1363,6 +1363,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     if (coldCallCode !== "") {
       url += `&coldCall=${coldCallCode}`;
     }
+
+    if(lead_origin === "transfferedleads") {
+      url += `&status=Transferred`;
+    }
+
     await axios
       .get(url, {
         headers: {
