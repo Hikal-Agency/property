@@ -661,7 +661,7 @@ const Sidebarmui = () => {
             {
               name: "Fresh leads",
               count: sidebarData?.UNASSIGNED?.fresh,
-              // link: "/unassigned/fresh",
+              link: "/unassigned/fresh",
               childMenu: [
                 {
                   name: "All ",
