@@ -616,6 +616,15 @@ const Newleads = ({
       url += `&coldCall=${coldCallCode}`;
     }
 
+
+       if (lead_type === "coldLeadsVerified") {
+        url += `&is_whatsapp=1`;
+      } else if (lead_type === "coldLeadsInvalid") {
+        url += `&is_whatsapp=2`;
+      } else if (lead_type === "coldLeadsNotChecked") {
+        url += `&is_whatsapp=0`;
+      }
+
     if(lead_origin === "transfferedleads") {
       url += `&status=Transferred`;
     }
