@@ -102,21 +102,22 @@ const HorizontalBarChart = ({ barCharData }) => {
   console.log("ageGender chart: ", barCharData);
 
   // Prepare labels and datasets
-  const labels = [...new Set(barCharData.map((item) => item.age))];
+  const labels = [...new Set(barCharData[0])];
+  const gender = barCharData[1];
 
-  const femaleData = labels.map((label) => {
-    const filteredData = barCharData.filter(
-      (item) => item.age === label && item.gender === "female"
-    );
-    return filteredData.length;
+  const femaleData = labels.map((label, index) => {
+    return gender[index] === "female" ? 1 : 0;
   });
 
-  const maleData = labels.map((label) => {
-    const filteredData = barCharData.filter(
-      (item) => item.age === label && item.gender === "male"
-    );
-    return filteredData.length;
+  const maleData = labels.map((label, index) => {
+    return gender[index] === "male" ? 0.8 : 0;
   });
+
+  const unknownData = labels.map((label, index) => {
+    return gender[index] === "unknown" ? 0.6 : 0;
+  });
+
+  console.log("female,male,unknown:::: ", femaleData, maleData, unknownData);
 
   const chartData = {
     labels: labels,
@@ -130,6 +131,11 @@ const HorizontalBarChart = ({ barCharData }) => {
         label: "Male",
         data: maleData,
         backgroundColor: "#36A2EB",
+      },
+      {
+        label: "Unknown",
+        data: unknownData,
+        backgroundColor: "#FFCE56",
       },
     ],
   };

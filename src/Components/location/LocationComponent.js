@@ -33,7 +33,7 @@ const LocationComponent = ({ upcoming_meetings }) => {
           } w-full h-[85vh]`}
         >
           {/* MAP */}
-          <MapContainer />
+          <MapContainer location={upcoming_meetings} />
         </div>
         <div className="h-full w-full mt-5">
           <h4 className="text-red-600 font-bold text-xl mb-2">Meetings</h4>

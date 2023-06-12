@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
-import { Container, CircularProgress } from "@mui/material";
+import { Container, CircularProgress, Button } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { BsBuilding } from "react-icons/bs";
 import { ImLocation, ImClock } from "react-icons/im";
 // import axios from "axios";
 import axios from "../../axoisConfig";
+import { Link } from "react-router-dom";
 
 const UpcomingMeetingsMenu = () => {
   const { currentMode, BACKEND_URL } = useStateContext();
@@ -118,6 +119,26 @@ const UpcomingMeetingsMenu = () => {
             <CircularProgress size={30} />
           </div>
         )}
+
+        <div
+          style={{
+            position: "sticky",
+            bottom: 0,
+            // width: "100%",
+            textAlign: "center",
+            zIndex: "9999",
+          }}
+        >
+          <Button
+            variant="contained"
+            style={{ background: "#FF0000", color: "white" }}
+            component={Link}
+            to="/appointments/meetings"
+            // className="w-full"
+          >
+            View all meetings
+          </Button>
+        </div>
       </Container>
     </>
   );

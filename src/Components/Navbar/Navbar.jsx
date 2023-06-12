@@ -7,7 +7,7 @@ import {
   MdKeyboardArrowDown,
   MdOutlineLightMode,
 } from "react-icons/md";
-import { FaRegClock } from 'react-icons/fa';
+import { FaRegClock } from "react-icons/fa";
 
 import { useStateContext } from "../../context/ContextProvider";
 import { Tooltip, Link as MuiLink, Button } from "@mui/material";
@@ -15,9 +15,9 @@ import { useProSidebar } from "react-pro-sidebar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-import {AiFillCalendar} from "react-icons/ai";
-import {FaClock} from "react-icons/fa";
-import {RiNotification3Fill} from "react-icons/ri";
+import { AiFillCalendar } from "react-icons/ai";
+import { FaClock } from "react-icons/fa";
+import { RiNotification3Fill } from "react-icons/ri";
 
 import Avatar from "@mui/material/Avatar";
 import { CgLogOut } from "react-icons/cg";
@@ -219,7 +219,8 @@ const Navbar = () => {
           left: !isCollapsed ? 65 : 200,
           right: 0,
           zIndex: "20",
-          backgroundColor: currentMode === "dark" ? "black" : "rgb(229 231 235)",
+          backgroundColor:
+            currentMode === "dark" ? "black" : "rgb(229 231 235)",
           boxShadow:
             currentMode !== "dark" ? "0 2px 4px rgba(0, 0, 0, 0.1)" : "none",
         }}
@@ -245,9 +246,7 @@ const Navbar = () => {
           </div>
           <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
         </div>
-        <div>
-          {/* <Clock/> */}
-        </div>
+        <div>{/* <Clock/> */}</div>
         <div className="flex">
           {isUserSubscribed !== null && [
             isUserSubscribed === false && (
@@ -265,21 +264,33 @@ const Navbar = () => {
             // dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
             customFunc={(event) => handleClick(event, "Clock")}
             color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
-            icon={ open && currNavBtn === "Clock" ? <FaClock/> : <FaRegClock/>}
+            icon={open && currNavBtn === "Clock" ? <FaClock /> : <FaRegClock />}
           />
           <NavButton
             title="Meetings"
             dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
             customFunc={(event) => handleClick(event, "Meetings")}
             color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
-            icon={open && currNavBtn === "Meetings" ? <AiFillCalendar/> : <AiOutlineCalendar />}
+            icon={
+              open && currNavBtn === "Meetings" ? (
+                <AiFillCalendar />
+              ) : (
+                <AiOutlineCalendar />
+              )
+            }
           />
           <NavButton
             title="Notification"
             dotColor={currentMode === "dark" ? "#ffffff" : LightIconsColor}
             customFunc={(event) => handleClick(event, "Notifications")}
             color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
-            icon={open && currNavBtn === "Notifications" ? <RiNotification3Fill/> : <RiNotification3Line />}
+            icon={
+              open && currNavBtn === "Notifications" ? (
+                <RiNotification3Fill />
+              ) : (
+                <RiNotification3Line />
+              )
+            }
           />
           <Tooltip
             title={currentMode === "dark" ? "light mode" : "dark mode"}
@@ -321,146 +332,149 @@ const Navbar = () => {
             </div>
           </Tooltip>
           {/* Submenu */}
-        
-         {currNavBtn === "Clock" ? (
-       <div className="bg-main-red-color"  style={{ margin: 0, padding: 0, overflow: "hidden" }}
-       >
-       <Menu
-         anchorEl={anchorEl}
-         id="account-menu"
-         open={open}
-         onClose={handleClose}
-         onClick={handleClose}
-         PaperProps={{
-           elevation: 0,
-           sx: {
-            //  height: "auto",
-             overflow: "visible",
-            //  overflowY: "scroll",
-             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-             mt: 1.5,
-             background: "#DA1F26",
-             color: currentMode === "dark" ? "#ffffff" : "black",
-             minWidth: 300,
-             padding:0 ,
-             "& .MuiAvatar-root": {
-               width: 32,
-               height: 32,
-               ml: -0.5,
-               mr: 1,
-             },
-             "& .MuiList-root": {
-              padding:"3px"
-             },
-             "& .MuiList-root .clock-div": {
-              background: currentMode === "dark" ? "#E5E7EB " : "#FFFFFF",
-             },
-            //  "&:before": {
-            //    content: '""',
-            //    display: "block",
-            //    position: "absolute",
-            //    top: 0,
-            //    right: 66,
-            //    width: 10,
-            //    height: 10,
-            //    background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
-            //    transform: "translateY(-50%) rotate(45deg)",
-            //    zIndex: 0,
-            //  },
-           },
-         }}
-         transformOrigin={{ horizontal: "center", vertical: "top" }}
-         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-       >
-         <Clock />
-       </Menu>
-     </div>
-         ):(
-          <Menu
-          anchorEl={anchorEl}
-          id="account-menu"
-          open={open}
-          onClose={handleClose}
-          onClick={handleClose}
-          PaperProps={{
-            elevation: 0,
-            sx: {
-              height: "auto",
-              overflow: "visible",
-              overflowY: "scroll",
-              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-              mt: 1.5,
-              background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
-              color: currentMode === "dark" ? "#ffffff" : "black",
-              minWidth: 300,
-              "& .MuiAvatar-root": {
-                width: 32,
-                height: 32,
-                ml: -0.5,
-                mr: 1,
-              },
-              "&:before": {
-                content: '""',
-                display: "block",
-                position: "absolute",
-                top: 0,
-                right: 66,
-                width: 10,
-                height: 10,
-                background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
-                transform: "translateY(-50%) rotate(45deg)",
-                zIndex: 0,
-              },
-            },
-          }}
-          transformOrigin={{ horizontal: "center", vertical: "top" }}
-          anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-        >
-          {currNavBtn ? (
-            currNavBtn === "Notifications" ? (
-              <NotificationsMenu />
-            ) : currNavBtn === "Meetings" ? (
-              <UpcomingMeetingsMenu />
-            ) 
-            // : currNavBtn === "Clock" ? (
-            //   <Clock/>
-            // )
-             : (
-              <MenuItem />
-            )
-          ) : (
-            <div className="menu-wrapper">
-              <MenuItem>
-                <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-                  <div className="flex items-center space-x-2">
-                    <Avatar src={User?.displayImg} className="inline-block" />
-                    <span>Profile</span>
-                  </div>
-                </Link>
-              </MenuItem>
-              <MenuItem>
-                <Link
-                  to={"/change-password"}
-                  onClick={() => setopenBackDrop(true)}
-                >
-                  <div className="flex items-center space-x-2">
-                    <RiLockPasswordFill className="inline-block" />
-                    <span>Change Password</span>
-                  </div>
-                </Link>
-              </MenuItem>
-              {User?.role !== 1 && isUserSubscribed && (
-                <MenuItem onClick={UnsubscribeUser}>
-                  <MdUnsubscribe className="mr-3 text-lg" /> Unsubscribe
-                </MenuItem>
-              )}
-              <MenuItem onClick={LogoutUser}>
-                <CgLogOut className="mr-3 text-lg" /> Logout
-              </MenuItem>
+
+          {currNavBtn === "Clock" ? (
+            <div
+              className="bg-main-red-color"
+              style={{ margin: 0, padding: 0, overflow: "hidden" }}
+            >
+              <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    //  height: "auto",
+                    overflow: "visible",
+                    //  overflowY: "scroll",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    background: "#DA1F26",
+                    color: currentMode === "dark" ? "#ffffff" : "black",
+                    minWidth: 300,
+                    padding: 0,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    "& .MuiList-root": {
+                      padding: "3px",
+                    },
+                    "& .MuiList-root .clock-div": {
+                      background:
+                        currentMode === "dark" ? "#E5E7EB " : "#FFFFFF",
+                    },
+                    //  "&:before": {
+                    //    content: '""',
+                    //    display: "block",
+                    //    position: "absolute",
+                    //    top: 0,
+                    //    right: 66,
+                    //    width: 10,
+                    //    height: 10,
+                    //    background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
+                    //    transform: "translateY(-50%) rotate(45deg)",
+                    //    zIndex: 0,
+                    //  },
+                  },
+                }}
+                transformOrigin={{ horizontal: "center", vertical: "top" }}
+                anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+              >
+                <Clock />
+              </Menu>
             </div>
+          ) : (
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              onClick={handleClose}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: "visible",
+                  overflowY: "scroll",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 1.5,
+                  background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
+                  color: currentMode === "dark" ? "#ffffff" : "black",
+                  minWidth: 300,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  "&:before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 66,
+                    width: 10,
+                    height: 10,
+                    background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: "center", vertical: "top" }}
+              anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+            >
+              {currNavBtn ? (
+                currNavBtn === "Notifications" ? (
+                  <NotificationsMenu />
+                ) : currNavBtn === "Meetings" ? (
+                  <>
+                    <UpcomingMeetingsMenu />
+                  </>
+                ) : (
+                  <MenuItem />
+                )
+              ) : (
+                <div className="menu-wrapper">
+                  <MenuItem>
+                    <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
+                      <div className="flex items-center space-x-2">
+                        <Avatar
+                          src={User?.displayImg}
+                          className="inline-block"
+                        />
+                        <span>Profile</span>
+                      </div>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      to={"/change-password"}
+                      onClick={() => setopenBackDrop(true)}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RiLockPasswordFill className="inline-block" />
+                        <span>Change Password</span>
+                      </div>
+                    </Link>
+                  </MenuItem>
+                  {User?.role !== 1 && isUserSubscribed && (
+                    <MenuItem onClick={UnsubscribeUser}>
+                      <MdUnsubscribe className="mr-3 text-lg" /> Unsubscribe
+                    </MenuItem>
+                  )}
+                  <MenuItem onClick={LogoutUser}>
+                    <CgLogOut className="mr-3 text-lg" /> Logout
+                  </MenuItem>
+                </div>
+              )}
+            </Menu>
           )}
-        </Menu>
-         )}
           {/* {isClicked.cart && <Cart />} */}
           {/* {isClicked.chat && <Chat />} */}
           {/* {isClicked.notification && <Notification />} */}
