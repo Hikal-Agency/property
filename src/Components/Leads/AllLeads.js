@@ -1356,9 +1356,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       coldCallCode = 0;
     }
 
-    let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}${
-      lead_type !== "all" ? `&feedback=${lead_type}` : ""
-    }`;
+    let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`;
+
+    if(lead_type) {
+      if(lead_type !== "all") {
+        url += `&feedback=${lead_type}`;
+      }
+    }
 
     if (coldCallCode !== "") {
       url += `&coldCall=${coldCallCode}`;
