@@ -672,7 +672,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
             {cellValues.row.leadSource?.toLowerCase() === "whatsapp" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaWhatsapp size={22} color={"#14539a"} />
+                <FaWhatsapp size={22} color={"#29EC62"} />
               </div>
             )}
 
@@ -711,7 +711,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             {cellValues.row.leadSource?.toLowerCase() ===
               "campaign youtube" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaYoutube size={22} color={"#14539a"} />
+                <FaYoutube size={22} color={"#FF0000"} />
               </div>
             )}
 
