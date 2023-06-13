@@ -428,6 +428,10 @@ label[for="bulkImport"] .MuiButtonBase-root {
   border-bottom: 0 !important;
 }
 
+ .css-otzuo3-MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: 1px solid #da1f26 !important;
+ }
+
 @media all and (max-width: 1300px) {
   .MuiDataGrid-cell[data-field="creationDate"] p {
     font-size: 12px;
