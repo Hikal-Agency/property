@@ -74,14 +74,15 @@ const RenderManagers = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.leadId);
+    UpdateLeadData.append("id", cellValues?.row?.leadId);
     if (newManager === undefined) {
-      UpdateLeadData.append("assignedToManager", 102);
+      UpdateLeadData.append("assignedToManager", 1);
     } else {
       UpdateLeadData.append("assignedToManager", newManager?.id);
     }
 
     await axios
-      .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {
+      .post(`${BACKEND_URL}/leads/${cellValues?.row?.leadId}`, UpdateLeadData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -164,7 +165,7 @@ const RenderManagers = ({ cellValues }) => {
           id="manager"
           // value={manager2 ?? "select_manager"}
           value={
-            manager2 === 102 || !manager2 || manager2 === "0"
+            String(manager2) === "1" || !manager2 || manager2 === "0"
               ? "select_manager"
               : manager2
           }

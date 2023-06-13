@@ -35,6 +35,15 @@ const UpcomingMeetingsMenu = () => {
   return (
     <>
       <Container sx={{ maxHeight: 500, width: 400 }}>
+          <Button
+            variant="contained"
+            style={{ background: "#FF0000", color: "white", marginBottom: "15px", marginTop: "10px" }}
+            component={Link}
+            to="/appointments/meetings"
+            // className="w-full"
+          >
+            View all meetings
+          </Button>
         {upcomingMeetings.length > 0 ? (
           upcomingMeetings.map((meeting, index) => {
             return (
@@ -47,12 +56,6 @@ const UpcomingMeetingsMenu = () => {
                 }`}
               >
                 <div className="px-5 py-5 space-y-3">
-                  {/* <div className="w-full flex justify-between items-center">
-                <div className="flex items-center space-x-1">
-                  <GrStatusGoodSmall className={`mr-2 ${meeting?.meetingStatus === "Pending" ? "text-[#e4b115]" : meeting?.meetingStatus === "Postponed" ? "text-[#e4b115]" : meeting?.meetingStatus === "Attended" ? "text-[#0f9d58]" : meeting?.meetingStatus === "Cancelled" ? "text-[#ff0000]" : "text-[#eeeeee]"}`} size={18} />
-                <p className="text-sm font-bold mr-3">{meeting?.meetingStatus}</p>
-                </div>
-              </div> */}
                   <h2 className="text-main-red-color text-md font-bold">
                     {meeting?.leadName}
                   </h2>
@@ -119,26 +122,6 @@ const UpcomingMeetingsMenu = () => {
             <CircularProgress size={30} />
           </div>
         )}
-
-        <div
-          style={{
-            position: "sticky",
-            bottom: 0,
-            // width: "100%",
-            textAlign: "center",
-            zIndex: "9999",
-          }}
-        >
-          <Button
-            variant="contained"
-            style={{ background: "#FF0000", color: "white" }}
-            component={Link}
-            to="/appointments/meetings"
-            // className="w-full"
-          >
-            View all meetings
-          </Button>
-        </div>
       </Container>
     </>
   );

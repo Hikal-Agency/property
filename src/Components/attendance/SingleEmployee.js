@@ -13,7 +13,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, IconButton } from "@mui/material";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
-import { AiOutlineDown } from "react-icons/ai";
 
 const SingleEmployee = ({ user }) => {
   const [loading, setloading] = useState(true);

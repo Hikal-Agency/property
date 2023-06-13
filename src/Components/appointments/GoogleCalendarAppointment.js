@@ -8,7 +8,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import CreateEvent from "./CreateEvent";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 const GoogleCalendarAppointment = () => {
   const gapi = window.gapi;
