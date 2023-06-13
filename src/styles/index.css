@@ -424,6 +424,10 @@ label[for="bulkImport"] .MuiButtonBase-root {
   background-color: #da1f26 !important;
 }
 
+.css-v4u5dn-MuiInputBase-root-MuiInput-root:after {
+  border-bottom: 0 !important;
+}
+
 @media all and (max-width: 1300px) {
   .MuiDataGrid-cell[data-field="creationDate"] p {
     font-size: 12px;
