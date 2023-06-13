@@ -3,7 +3,8 @@ import {
   CircularProgress,
   FormControl,
   InputLabel,
-  MenuItem, Select
+  MenuItem,
+  Select,
 } from "@mui/material";
 import {
   DataGrid,
@@ -712,8 +713,10 @@ const AllStatistics = ({ pageState, setpageState }) => {
 
     if (selectedCampaign) {
       const selectedCampaignName = selectedCampaign.name;
-      const selectedAds = selectedCampaign.ads.data;
-      const selectedAdsets = selectedAds.map((ad) => ad.adset);
+      const selectedAds = selectedCampaign?.ads?.data;
+      const selectedAdsets = selectedAds?.map((ad) => ad.adset);
+
+      console.log("selected adset: ", selectedAdsets);
 
       setSelectedCampaigns({
         SelectedCampaign: selectedCampaignId,
@@ -1467,7 +1470,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 backgroundColor: "#DA1F26",
                 padding: "10px",
               }}
-              className=" rounded-lg mx-auto"
+              className=" rounded-lg mx-auto mb-3"
             >
               <h2
                 style={{ textAlign: "center" }}
@@ -1476,7 +1479,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 Audience
               </h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3 mt-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3 ">
               {/* <div
                 className={`${
                   currentMode === "dark"
@@ -1528,6 +1531,22 @@ const AllStatistics = ({ pageState, setpageState }) => {
             <div
               className={`${currentMode}-mode-datatable grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3`}
             ></div>
+
+            <div
+              style={{
+                width: "80%",
+                backgroundColor: "#DA1F26",
+                padding: "10px",
+              }}
+              className=" rounded-lg mx-auto mb-3"
+            >
+              <h2
+                style={{ textAlign: "center" }}
+                className="text-white font-bold text-lg"
+              >
+                Ads Details
+              </h2>
+            </div>
 
             <DataGrid
               autoHeight
