@@ -1200,7 +1200,10 @@ const BookedDeals = ({
     let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`;
 
     if(lead_type) {
-      if(lead_type !== "all") {
+      if(lead_type !== "all" &&
+        lead_type !== "coldLeadsVerified" &&
+        lead_type !== "coldLeadsInvalid" &&
+        lead_type !== "coldLeadsNotChecked") {
         url += `&feedback=${lead_type}`;
       }
     }
