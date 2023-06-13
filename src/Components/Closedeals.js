@@ -182,6 +182,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           ...old,
           isLoading: false,
           data: rowsdata,
+          pageSize: result.data.leads.per_page,
           total: result.data.leads.total,
         }));
       })
@@ -233,7 +234,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     <div className="pb-10">
       <ToastContainer />
       <Box
-       className={`${currentMode}-mode-datatable`}
+        className={`${currentMode}-mode-datatable`}
         sx={{ ...DataGridStyles, position: "relative", marginBottom: "50px" }}
       >
         <DataGrid
@@ -259,8 +260,8 @@ const Closedeals = ({ pageState, setpageState }) => {
           }}
           componentsProps={{
             toolbar: {
-                                printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+              printOptions: { disableToolbarButton: User?.role !== 1 },
+              csvOptions: { disableToolbarButton: User?.role !== 1 },
               showQuickFilter: true,
               value: searchText,
               onChange: HandleQuicSearch,

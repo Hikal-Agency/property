@@ -40,6 +40,7 @@ const DoughnutChart = ({ doughnutChart }) => {
               font: {
                 family: "Arial",
                 size: 14,
+                color: "#fffff",
               },
             },
           },

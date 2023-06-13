@@ -33,6 +33,7 @@ import CombinationChartTable from "../charts/statisticsCharts/CombinationTableCh
 import MapChartStatistics from "../charts/statisticsCharts/MapChartStatistics";
 import { FaAd, FaThList, FaCheckCircle } from "react-icons/fa";
 import TopCampaignsTable from "../charts/statisticsCharts/TopCampaignsTable";
+import { Line } from "react-chartjs-2";
 
 const AllStatistics = ({ pageState, setpageState }) => {
   const { currentMode, User, darkModeColors, graph_api_token } =
@@ -319,7 +320,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
       );
 
       const overallInsightsPromise = axios.get(
-        `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&fields=impressions,clicks,cpc,cpm,actions`
+        `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&fields=impressions,clicks,cpc,cpm,ctr,website_ctr,actions`
       );
 
       const [
@@ -366,9 +367,12 @@ const AllStatistics = ({ pageState, setpageState }) => {
       const cpm = campaignInsights.cpm;
       const impressions = campaignInsights.impressions;
       const clicks = campaignInsights.clicks;
-      const conversions = campaignInsights?.actions?.find(
-        (action) => action.action_type === "conversion"
+      const ctr = campaignInsights.ctr;
+      const link_clicks = campaignInsights?.actions?.find(
+        (action) => action.action_type === "link_click"
       )?.value;
+
+      console.log("linkclicks: ", link_clicks);
 
       const campaignStats = {
         adsetsCount: adsetsCount,
@@ -381,7 +385,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
         cpm: cpm,
         impressions: impressions,
         clicks: clicks,
-        conversions: conversions,
+        ctr: ctr,
+        link_clicks: link_clicks,
       };
 
       setAgeGender([campaignStats?.ageData, campaignStats?.genderData]);
@@ -524,7 +529,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
       cpm: ad?.cpm || "No Data",
       impressions: ad?.impressions || "No Data",
       clicks: ad?.clicks || "No Data",
-      conversions: ad?.consversions || "No Conversions",
+      ctr: ad?.ctr || "No CTR",
+      link_clicks: ad?.link_clicks || "No link clicks",
       reach: ad?.reach || "No Reach",
       frequency: ad?.frequency || "No Frequency",
     }));
@@ -535,8 +541,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
     cpc: campaignStats?.cpc || "No cpc",
     cpm: campaignStats?.cpm || "No cpm",
     impressions: campaignStats?.impressions || "No impressions",
-    conversions: campaignStats?.conversion || "No conversions",
+    link_clicks: campaignStats?.link_clicks || "No link clicks",
     clicks: campaignStats?.clicks || "No clicks",
+    ctr: campaignStats?.ctr || "No CTR",
   };
   // const totalCounts = {
   //   cpc:
@@ -564,8 +571,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
     { amount: totalCounts.cpc, title: "CPC" },
     { amount: totalCounts.cpm, title: "CPM" },
     { amount: totalCounts.impressions, title: "Impressions" },
-    // { amount: totalCounts.conversions, title: "Conversions" },
+    { amount: totalCounts.link_clicks, title: "Link clicks" },
     { amount: totalCounts.clicks, title: "Clicks" },
+    { amount: totalCounts.ctr, title: "CTR" },
   ];
 
   console.log("Data", data);
@@ -792,11 +800,17 @@ const AllStatistics = ({ pageState, setpageState }) => {
           .filter((conversions) => conversions.length > 0)
           .map((conversions) => conversions);
 
-        console.log(conversionsData);
+        console.log("conversionsdata: ", conversionsData);
 
         const spendData = adsWithInsights
           .map((row) => row.spend)
           .filter((spend) => spend !== undefined);
+
+        console.log(
+          "spenddata, conversions data: ",
+          spendData,
+          conversionsData
+        );
 
         setChartData({
           conversions: conversionsData,
@@ -1316,33 +1330,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
             </div>
 
             {/* data starts */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-3 text-center">
-              {/* {data?.map((item, index) => (
-                <div
-                  key={index}
-                  className={`${
-                    currentMode === "dark"
-                      ? "bg-gray-900 text-white "
-                      : "bg-gray-200 text-main-dark-bg"
-                  } h-auto dark:bg-secondary-dark-bg p-2 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
-                >
-                  {item?.icon && <item.icon className="text-2xl" />}
-
-                  <p className="text-xl font-bold pb-2 text-red-600">
-                    {row?.amount}
-                  </p>
-                  <p
-                    className={`text-sm ${
-                      currentMode === "dark"
-                        ? "text-white"
-                        : "text-main-dark-bg-2 font-semibold"
-                    }`}
-                  >
-                    {item.title}
-                  </p>
-                </div>
-              ))} */}
-
+            <div className="grid md:grid-cols-2 lg:grid-cols-6 xl:grid-cols-6 gap-x-3 gap-y-3 text-center">
               {data?.length > 0 &&
                 data?.map((item, index) => (
                   <div
@@ -1351,7 +1339,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       currentMode === "dark"
                         ? "bg-gray-900 text-white "
                         : "bg-gray-200 text-main-dark-bg"
-                    } border-2 border-red-600 rounded-lg h-40 dark:bg-secondary-dark-bg p-2 cursor-pointer hover:shadow-sm grid content-center`}
+                    } border-2 border-red-600 rounded-lg h-20 dark:bg-secondary-dark-bg p-2 cursor-pointer hover:shadow-sm grid content-center`}
                   >
                     <p className="text-xl font-bold pb-2 text-red-600">
                       {item?.amount}
