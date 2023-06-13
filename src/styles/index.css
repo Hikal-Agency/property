@@ -25,6 +25,13 @@ input[type="number"] {
   color :"red !important"
 }
 
+.MuiButtonBase-root .MuiSwitch-switchBase{
+  color: "red";
+}
+
+.MuiSwitch-root .MuiSwitch-track {
+background-color: "red";
+}
 .css-1ycxvqq-MuiSwitch-root .MuiSwitch-thumb .MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
   color : "#DA1F26 !important"
 }

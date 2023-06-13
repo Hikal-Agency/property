@@ -1835,16 +1835,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       ? "white !important"
                       : "black !important",
                 },
-                "& .MuiDataGrid-main .MuiSwitch-switchBase": {
-                  color: "#DA1F26 !important",
+                // "& .MuiDataGrid-main .MuiSwitch-switchBase": {
+                //   color: "#DA1F26 !important",
+                // },
+                // "& .MuiDataGrid-main .MuiSwitch-switchBase.Mui-checked": {
+                //   color: "#DA1F26 !important",
+                // },
+                // "& .MuiDataGrid-main .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
+                //   {
+                //     backgroundColor: "#DA1F26 !important",
+                //   },
+                "& .MuiButtonBase-root .MuiSwitch-switchBase": {
+                  color: "red !important",
                 },
-                "& .MuiDataGrid-main .MuiSwitch-switchBase.Mui-checked": {
-                  color: "#DA1F26 !important",
+
+                "& .MuiSwitch-root .MuiSwitch-track": {
+                  backgroundColor: "red !important",
                 },
-                "& .MuiDataGrid-main .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
-                  {
-                    backgroundColor: "#DA1F26 !important",
-                  },
               }}
               getRowClassName={(params) =>
                 params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
