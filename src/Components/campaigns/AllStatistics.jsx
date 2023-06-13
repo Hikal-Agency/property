@@ -3,9 +3,7 @@ import {
   CircularProgress,
   FormControl,
   InputLabel,
-  MenuItem,
-  Pagination,
-  Select,
+  MenuItem, Select
 } from "@mui/material";
 import {
   DataGrid,
@@ -19,21 +17,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaChartLine } from "react-icons/fa";
-import CombinationChart from "../../Components/charts/CombinationChart";
-import SalesAmountChartAdmin from "../charts/SalesAmountChartAdmin";
-import BarChartStatistics from "../charts/statisticsCharts/BarChartStatistics";
 import BubbleChartStat from "../charts/statisticsCharts/BubbleChartStat";
 import DoughnutChart from "../charts/statisticsCharts/DoughnutChartState";
-import AreaChart from "../charts/statisticsCharts/AreaChart";
-import LineChart from "../charts/statisticsCharts/LineChart";
 import HorizontalBarChart from "../charts/statisticsCharts/HorizontalBarChart";
 import CombineChart from "../charts/statisticsCharts/CombineChart";
 import CombinationChartTable from "../charts/statisticsCharts/CombinationTableChart";
 import MapChartStatistics from "../charts/statisticsCharts/MapChartStatistics";
-import { FaAd, FaThList, FaCheckCircle } from "react-icons/fa";
 import TopCampaignsTable from "../charts/statisticsCharts/TopCampaignsTable";
-import { Line } from "react-chartjs-2";
 
 const AllStatistics = ({ pageState, setpageState }) => {
   const { currentMode, User, darkModeColors, graph_api_token } =

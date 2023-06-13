@@ -3,15 +3,7 @@ import React from "react";
 import { useState } from "react";
 
 import { useStateContext } from "../../context/ContextProvider";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import { Button, TextField } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { useEffect } from "react";
-import moment from "moment";
-import { Calendar } from "@fullcalendar/core";
+import { Button } from "@mui/material";
 import MyCalendar from "./MyCalendar";
 
 const OfficeSettings = () => {

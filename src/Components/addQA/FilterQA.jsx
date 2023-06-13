@@ -2,21 +2,16 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  CircularProgress,
-  Box,
-  Pagination,
+  CircularProgress, Pagination,
   Typography,
-  Button,
+  Button
 } from "@mui/material";
 import { HiBars3BottomLeft } from "react-icons/hi2";
 
 import {
-  DataGrid,
   gridPageCountSelector,
-  gridPageSelector,
-  GridToolbar,
-  useGridApiContext,
-  useGridSelector,
+  gridPageSelector, useGridApiContext,
+  useGridSelector
 } from "@mui/x-data-grid";
 import { BsChevronCompactDown, BsTrash } from "react-icons/bs";
 // import axios from "axios";

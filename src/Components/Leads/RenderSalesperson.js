@@ -74,14 +74,15 @@ const RenderSalesperson = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.leadId);
+    UpdateLeadData.append("id", cellValues?.row?.leadId);
     if(newSalesPerson === undefined) {
-      UpdateLeadData.append("assignedToSales", 102);
+      UpdateLeadData.append("assignedToSales", 1);
     } else {
       UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
     }
 
     await axios
-      .post(`${BACKEND_URL}/leads/${cellValues?.row?.lid}`, UpdateLeadData, {
+      .post(`${BACKEND_URL}/leads/${cellValues?.row?.leadId}`, UpdateLeadData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -176,7 +177,7 @@ const RenderSalesperson = ({ cellValues }) => {
           <Select
             id="SalesPerson"
             value={
-              !SalesPerson2 || SalesPerson2 === "0" || SalesPerson === 102
+              !SalesPerson2 || SalesPerson2 === "0" || String(SalesPerson) === "1"
                 ? "selected_agent"
                 : SalesPerson2
             }
