@@ -35,6 +35,15 @@ const UpcomingMeetingsMenu = () => {
   return (
     <>
       <Container sx={{ maxHeight: 500, width: 400 }}>
+          <Button
+            variant="contained"
+            style={{ background: "#FF0000", color: "white", marginBottom: "15px", marginTop: "10px" }}
+            component={Link}
+            to="/appointments/meetings"
+            // className="w-full"
+          >
+            View all meetings
+          </Button>
         {upcomingMeetings.length > 0 ? (
           upcomingMeetings.map((meeting, index) => {
             return (
@@ -119,26 +128,6 @@ const UpcomingMeetingsMenu = () => {
             <CircularProgress size={30} />
           </div>
         )}
-
-        <div
-          style={{
-            position: "sticky",
-            bottom: 0,
-            // width: "100%",
-            textAlign: "center",
-            zIndex: "9999",
-          }}
-        >
-          <Button
-            variant="contained"
-            style={{ background: "#FF0000", color: "white" }}
-            component={Link}
-            to="/appointments/meetings"
-            // className="w-full"
-          >
-            View all meetings
-          </Button>
-        </div>
       </Container>
     </>
   );
