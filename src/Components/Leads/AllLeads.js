@@ -31,6 +31,7 @@ import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
 import { FaFire } from "react-icons/fa";
+import { FaRandom } from "react-icons/fa";
 
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
@@ -737,7 +738,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
                 return (
                   <div className="bg-white w-max rounded-full flex items-center justify-center">
-                    <FaFire size={22} color={"#14539a"} />
+                    <FaRandom size={22} color={"#14539a"} />
                   </div>
                 );
               }
