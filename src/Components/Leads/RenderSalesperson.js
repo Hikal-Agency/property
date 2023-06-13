@@ -34,9 +34,11 @@ const RenderSalesperson = ({ cellValues }) => {
     SalesPerson,
     BACKEND_URL,
     Managers,
+    User,
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
+  console.log("agents list: ", SalesPerson);
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium,& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
       {
@@ -70,13 +72,14 @@ const RenderSalesperson = ({ cellValues }) => {
     setDialogue(true);
   };
   const UpdateSalesPerson = async () => {
+    const managerId = cellValues?.row?.assignedToManager;
+
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.leadId);
-    UpdateLeadData.append("id", cellValues?.row?.leadId);
-    if(newSalesPerson === undefined) {
-      UpdateLeadData.append("assignedToSales", 1);
+    if (newSalesPerson === undefined) {
+      UpdateLeadData.append("assignedToSales", 102);
     } else {
       UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
     }
@@ -122,11 +125,23 @@ const RenderSalesperson = ({ cellValues }) => {
 
   useEffect(() => {
     const managerId = cellValues?.row?.assignedToManager;
+    console.log("managerID: ", managerId);
     const agents = SalesPerson[`manager-${managerId}`];
-    if (agents === undefined || agents.length === 0) {
-      setNoAgents(true);
-    } else {
+    if (managerId && managerId !== 102) {
+      if (agents === undefined || agents.length === 0) {
+        setNoAgents(true);
+      } else {
+        setNoAgents(false);
+        setSalesPersonsList(agents);
+      }
+    } else if ((!managerId || managerId === 102) && User?.role === 1) {
+      if (managerId === 102) {
+        console.log("102;;jklsd;fjl;;sd;fjklfjsd;fkljsd;fl");
+      }
       setNoAgents(false);
+      const agents = Object.values(SalesPerson).flat();
+      console.log("Agents extracted: ", agents);
+
       setSalesPersonsList(agents);
     }
 
@@ -177,7 +192,7 @@ const RenderSalesperson = ({ cellValues }) => {
           <Select
             id="SalesPerson"
             value={
-              !SalesPerson2 || SalesPerson2 === "0" || String(SalesPerson) === "1"
+              !SalesPerson2 || SalesPerson2 === "0" || SalesPerson === 102
                 ? "selected_agent"
                 : SalesPerson2
             }
