@@ -416,6 +416,22 @@ label[for="bulkImport"] .MuiButtonBase-root {
   gap: 0.4rem !important;
 }
 
+.css-jsexje-MuiSwitch-thumb{
+    background-color: #da1f26 !important;
+}
+
+.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track{
+  background-color: #da1f26 !important;
+}
+
+.css-v4u5dn-MuiInputBase-root-MuiInput-root:after {
+  border-bottom: 0 !important;
+}
+
+ .css-otzuo3-MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: 1px solid #da1f26 !important;
+ }
+
 @media all and (max-width: 1300px) {
   .MuiDataGrid-cell[data-field="creationDate"] p {
     font-size: 12px;
