@@ -1420,8 +1420,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           leadId: row?.id,
           creationDate: row?.creationDate,
           leadName: row?.leadName || "No Name",
-          leadContact:
-            row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
+          // leadContact:
+          //   row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
+          leadContact: row?.leadContact?.replaceAll(" ", "") || "No Contact",
           project: row?.project || "No Project",
           enquiryType: row?.enquiryType || "No Type",
           leadType: row?.leadType || "No Type",
