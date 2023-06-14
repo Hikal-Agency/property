@@ -480,6 +480,7 @@ const Users = () => {
                         icon={
                           value === 0 ? (
                             <AiOutlineAppstore
+                            size={22}
                               style={{
                                 color:
                                   currentMode === "dark"
@@ -489,6 +490,7 @@ const Users = () => {
                             />
                           ) : (
                             <AiOutlineTable
+                            size={22}
                               style={{
                                 color:
                                   currentMode === "dark"

@@ -18,6 +18,7 @@ import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
 import { BsWhatsapp } from "react-icons/bs";
+import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
@@ -1279,20 +1280,17 @@ const AllLeads = () => {
           </Button>
 
           {selectedRows.length === 1 && (
-            <Button
-              onClick={() =>
-                (window.location.href = `/whatsapp-marketing/chat?phoneNumber=${selectedRows[0]
-                  .slice(1)
-                  .replaceAll(" ", "")}`)
-              }
-              type="button"
-              variant="contained"
-              sx={{ padding: "12px", mb: 2, mr: 2 }}
-              color="warning"
-              size="lg"
-            >
-              Open Chat
-            </Button>
+            <Link to={`/whatsapp-marketing/chat?phoneNumber=${selectedRows[0].slice(1).replaceAll(" ", "")}`}>
+              <Button
+                type="button"
+                variant="contained"
+                sx={{ padding: "12px", mb: 2, mr: 2 }}
+                color="warning"
+                size="lg"
+              >
+                Open Chat
+              </Button>
+            </Link>
           )}
 
           <input

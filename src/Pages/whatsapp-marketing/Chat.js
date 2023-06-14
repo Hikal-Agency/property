@@ -13,6 +13,7 @@ const Chat = () => {
   const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
   const [ready, setReady] = useState(false);
+  const [deviceName, setDeviceName] = useState("");
   const [data, setData] = useState([]);
   const [serverDisconnected, setServerDisconnected] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
@@ -23,11 +24,20 @@ const Chat = () => {
   const messagesContainerRef = useRef();
 
   const socketURL = process.env.REACT_APP_SOCKET_URL;
+  const sessionId = `${deviceName.toLowerCase().replaceAll(" ", "-")}`;
 
-  const fetchChatMessages = async (contact) => {
-    socket.emit("get_chat", { id: User?.id, contact: contact });
+  const fetchChatMessages = async (contact, afterSendMessage) => {
+    socket.emit("get_chat", { id: sessionId, contact: contact });
     socket.on("chat", (data) => {
-      setChatMessages(data);
+      setChatMessages(() => {
+      //   if (messagesContainerRef.current && afterSendMessage === "true") {
+      //   messagesContainerRef.current.scrollBy(
+      //     0,
+      //     messagesContainerRef.current.scrollHeight
+      //   );
+      // }
+        return [...data];
+      });
     });
   };
 
@@ -35,12 +45,12 @@ const Chat = () => {
     try {
       e.preventDefault();
       if (chatMessageInputVal) {
-        await axios.post(`${socketURL}/send-message/${User?.id}`, {
+        await axios.post(`${socketURL}/send-message/${sessionId}`, {
           to: searchParams.get("phoneNumber") + "@c.us",
           msg: chatMessageInputVal,
         });
 
-        fetchChatMessages(searchParams.get("phoneNumber"));
+        fetchChatMessages(searchParams.get("phoneNumber"), "true");
         setChatMessageInputVal("");
       }
     } catch (error) {
@@ -58,43 +68,113 @@ const Chat = () => {
   };
 
   const handleLogout = async () => {
-    socket.emit("logout", {id: User?.id});
+    // socket.emit("logout", { id: sessionId });
+    localStorage.removeItem("authenticated-wa-device");
+    localStorage.removeItem("authenticated-wa-account");
+    toast.success("You are logged out successfully!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+    setReady(false);
+    setloading(false);
+    setQr(null);
+    setDeviceName("");
   };
 
   useEffect(() => {
-    if (socket && User) {
-      socket.emit("create_session", { id: User?.id });
+    const waDevice = localStorage.getItem("authenticated-wa-device");
+    const waAccount = JSON.parse(
+      localStorage.getItem("authenticated-wa-account")
+    );
+    if (User && socket) {
+        if (waDevice) {
+          setDeviceName(waDevice);
+          setData({
+            userInfo: waAccount?.info,
+            userProfilePic: waAccount?.profile_pic_url,
+          });
+          setReady(true);
+          setloading(false);
+        } else {
+          setloading(false);
+          setQr(null);
+          setReady(false);
+        }
+    } 
+  }, [User, socket]);
+
+  useEffect(() => {
+    if (socket && socket.connected && User) {
       socket.on("qr", (qr) => {
         setQr(qr);
         setloading(false);
       });
 
       socket.on("user_ready", (info) => {
-        socket.emit("get_profile_picture", User?.id);
+        setDeviceName(info.sessionId);
+        console.log(info.sessionId);
+        socket.emit("get_profile_picture", { id: info.sessionId });
         socket.on("profile_picture", (url) => {
-          setData({
-            userInfo: info,
-            userProfilePic: url,
-          });
-          setReady(true);
-          setloading(false);
+          localStorage.setItem("authenticated-wa-device", info.sessionId);
+          console.log("url: ", url);
+          if (url !== null) {
+            setData({
+              userInfo: info,
+              userProfilePic: url,
+            });
+            localStorage.setItem(
+              "authenticated-wa-account",
+              JSON.stringify({
+                info: info,
+                profile_pic_url: url,
+              })
+            );
+            setReady(true);
+            setloading(false);
+          }
         });
       });
 
-      socket.on("msg_received", () => {
+      socket.on("new_message", () => {
         fetchChatMessages(searchParams.get("phoneNumber"));
       });
 
       socket.on("user_disconnected", () => {
-        alert("Disconnected Device");
-        document.location.reload();
+        handleLogout();
       });
 
+      // socket.on("logout", (data) => {
+      //   if (data) {
+      //     localStorage.removeItem("authenticated-wa-device");
+      //     localStorage.removeItem("authenticated-wa-account");
+      //     toast.success("You are logged out successfully!", {
+      //       position: "top-right",
+      //       autoClose: 3000,
+      //       hideProgressBar: false,
+      //       closeOnClick: true,
+      //       draggable: true,
+      //       progress: undefined,
+      //       theme: "light",
+      //     });
+
+      //     setReady(false);
+      //     setloading(false);
+      //     setQr(null);
+      //   }
+      // });
+
       socket.on("disconnect", () => {
-        setServerDisconnected(true);
+        // setServerDisconnected(true);
+        handleLogout();
       });
     }
-  }, [socket]);
+  }, [socket, deviceName]);
 
   useEffect(() => {
     if (User && ready) {
@@ -115,6 +195,13 @@ const Chat = () => {
     };
   }, [User, ready]);
 
+  const handleAddDevice = () => {
+    if (deviceName) {
+      setloading(true);
+      socket.emit("create_session", { id: `${User?.id}-${sessionId}` });
+    }
+  };
+
   return (
     <>
       <Box className="min-h-screen">
@@ -123,7 +210,7 @@ const Chat = () => {
             className="text-red-600 text-center mt-12"
             style={{ fontSize: "38px" }}
           >
-            Server Disconnected!
+            Something went wrong!
           </h1>
         ) : (
           <>
@@ -142,6 +229,26 @@ const Chat = () => {
                 >
                   Whatsapp
                 </h1>
+
+                <div
+                  style={{ display: qr || ready ? "none" : "flex" }}
+                  className="flex flex-col w-[230px]"
+                >
+                  <TextField
+                    value={deviceName}
+                    onInput={(e) => setDeviceName(e.target.value)}
+                    sx={{ mb: 1 }}
+                    type="text"
+                    label="Device Name"
+                  ></TextField>
+                  <Button
+                    onClick={handleAddDevice}
+                    variant="contained"
+                    color="error"
+                  >
+                    Add Device
+                  </Button>
+                </div>
 
                 {ready ? (
                   <div className="mt-5">
@@ -294,7 +401,7 @@ const Chat = () => {
                           marginBottom: 25,
                         }}
                       >
-                        Go to Whatsapp and Scan your device
+                        Go to Whatsapp and Scan this QR
                       </h1>
                       <QRCodeCanvas
                         style={{ width: 170, height: 170, margin: "0 auto" }}

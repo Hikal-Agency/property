@@ -350,7 +350,7 @@ const UserTable = ({ user }) => {
                           <p className="text-sm font-semibold text-red-600 capitalize">
                             {item?.position}
                           </p>
-                          <hr />
+                          {/* <hr /> */}
                           <p className="text-sm">{item?.userContact}</p>
                           <p className="text-sm">{item?.userEmail}</p>
                           {item?.status === 0 ? (
