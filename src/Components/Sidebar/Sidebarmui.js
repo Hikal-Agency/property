@@ -1721,7 +1721,7 @@ const Sidebarmui = () => {
               }}
             >
               {[
-                ...(User?.position === "Founder & CEO"
+                ...(User?.role === 1
                   ? linksData.map((item, linkIndex) => (
                       <div key={linkIndex}>
                         {!isCollapsed ? (
@@ -1965,7 +1965,7 @@ const Sidebarmui = () => {
                         ))}
                       </div>
                     ))
-                  : User?.position === "Sales Manager"
+                  : User?.role === 3
                   ? managerData.map((item, linkIndex) => (
                       <div key={linkIndex}>
                         {!isCollapsed ? (
