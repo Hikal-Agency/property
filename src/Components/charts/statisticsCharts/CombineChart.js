@@ -157,39 +157,120 @@ import { useStateContext } from "../../../context/ContextProvider";
 //   );
 // };
 
+// const CombineChart = ({ combineData }) => {
+//   const { currentMode } = useStateContext();
+//   console.log("CombineData: ", combineData);
+
+//   // Check if there's no conversion or spend data
+//   if (!combineData?.conversions?.length || !combineData?.spend?.length) {
+//     return <div>No data to display.</div>;
+//   }
+
+//   const chartData = {
+//     labels: [...combineData?.conversions, ...combineData?.spend],
+//     datasets: [
+//       {
+//         type: "line",
+//         label: "Conversions",
+//         data: combineData?.conversions,
+//         fill: false,
+//         borderColor: "#2185d0",
+//         backgroundColor: "#2185d0",
+//         pointRadius: 0,
+//         tension: 0.4,
+//       },
+//       {
+//         type: "line",
+//         label: "Spend",
+//         data: combineData?.spend,
+//         fill: false,
+//         borderColor: "#f2711c",
+//         backgroundColor: "#f2711c",
+//         pointRadius: 0,
+//         tension: 0.4,
+//       },
+//     ],
+//   };
+
+//   const chartOptions = {
+//     responsive: true,
+//     plugins: {
+//       legend: {
+//         position: "top",
+//         labels: {
+//           color: currentMode === "dark" ? "#ffffff" : "#000000",
+//         },
+//       },
+//     },
+//     scales: {
+//       x: {
+//         grid: {
+//           display: false,
+//         },
+//         ticks: {
+//           color: currentMode === "dark" ? "#ffffff" : "#000000",
+//         },
+//       },
+//       y: {
+//         grid: {
+//           color: currentMode === "dark" ? "#ffffff" : "#000000",
+//           lineWidth: 0.5,
+//         },
+//         ticks: {
+//           color: currentMode === "dark" ? "#ffffff" : "#000000",
+//         },
+//       },
+//     },
+//   };
+
+//   return (
+//     <div className="lineChartDiv" style={{ height: "300px", width: "100%" }}>
+//       <Line data={chartData} options={chartOptions} />
+//     </div>
+//   );
+// };
+
 const CombineChart = ({ combineData }) => {
   const { currentMode } = useStateContext();
   console.log("CombineData: ", combineData);
 
-  // Check if there's no conversion or spend data
-  if (!combineData?.conversions?.length || !combineData?.spend?.length) {
+  // Check if there's no spend data
+  if (!combineData?.spend?.length) {
     return <div>No data to display.</div>;
   }
 
+  // Create an array of datasets, including the conversions dataset if it exists
+  const datasets = [
+    {
+      type: "line",
+      label: "Spend",
+      data: combineData?.spend,
+      fill: false,
+      borderColor: "#f2711c",
+      backgroundColor: "#f2711c",
+      pointRadius: 0,
+      tension: 0.4,
+    },
+  ];
+
+  if (combineData?.conversions?.length) {
+    datasets.unshift({
+      type: "line",
+      label: "Conversions",
+      data: combineData?.conversions,
+      fill: false,
+      borderColor: "#2185d0",
+      backgroundColor: "#2185d0",
+      pointRadius: 0,
+      tension: 0.4,
+    });
+  }
+
   const chartData = {
-    labels: [...combineData?.conversions, ...combineData?.spend],
-    datasets: [
-      {
-        type: "line",
-        label: "Conversions",
-        data: combineData?.conversions,
-        fill: false,
-        borderColor: "#2185d0",
-        backgroundColor: "#2185d0",
-        pointRadius: 0,
-        tension: 0.4,
-      },
-      {
-        type: "line",
-        label: "Spend",
-        data: combineData?.spend,
-        fill: false,
-        borderColor: "#f2711c",
-        backgroundColor: "#f2711c",
-        pointRadius: 0,
-        tension: 0.4,
-      },
-    ],
+    labels: combineData?.conversions?.length
+      ? [...combineData?.conversions, ...combineData?.spend]
+      : [...combineData?.spend],
+    datasets,
   };
 
   const chartOptions = {

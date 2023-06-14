@@ -311,7 +311,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
       );
 
       const overallInsightsPromise = axios.get(
-        `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&fields=impressions,clicks,cpc,cpm,ctr,website_ctr,actions`
+        `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&fields=impressions,clicks,cpc,cpm,ctr,spend,website_ctr,actions`
       );
 
       const [
@@ -359,6 +359,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
       const impressions = campaignInsights.impressions;
       const clicks = campaignInsights.clicks;
       const ctr = campaignInsights.ctr;
+      const spend = campaignInsights.spend;
       const link_clicks = campaignInsights?.actions?.find(
         (action) => action.action_type === "link_click"
       )?.value;
@@ -374,11 +375,14 @@ const AllStatistics = ({ pageState, setpageState }) => {
         ageData: ageData,
         cpc: cpc,
         cpm: cpm,
+        spend: spend,
         impressions: impressions,
         clicks: clicks,
         ctr: ctr,
         link_clicks: link_clicks,
       };
+
+      console.log("campstats: ", campaignStats);
 
       setAgeGender([campaignStats?.ageData, campaignStats?.genderData]);
 
@@ -535,6 +539,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
     link_clicks: campaignStats?.link_clicks || "No link clicks",
     clicks: campaignStats?.clicks || "No clicks",
     ctr: campaignStats?.ctr || "No CTR",
+    spend: campaignStats?.spend || "No amount",
   };
   // const totalCounts = {
   //   cpc:
@@ -565,6 +570,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
     { amount: totalCounts.link_clicks, title: "Link clicks" },
     { amount: totalCounts.clicks, title: "Clicks" },
     { amount: totalCounts.ctr, title: "CTR" },
+    { amount: totalCounts.spend, title: "Spend" },
   ];
 
   console.log("Data", data);
@@ -1201,7 +1207,6 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       <FormControl
                         className="w-full mt-1 mb-5"
                         variant="outlined"
-                        required
                         value={selectedAdset}
                         sx={{
                           "& .MuiOutlinedInput-notchedOutline": {
@@ -1223,7 +1228,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                                 : "#000000 !important",
                           }}
                         >
-                          Select Ad Set
+                          Ad Set
                         </InputLabel>
                         <Select
                           // value={selectedAdset}
@@ -1233,7 +1238,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                           onChange={handleselectedAdset}
                         >
                           <MenuItem value="0" disabled>
-                            Select Ad Set
+                            Ad Set
                           </MenuItem>
                           {selectedCampaign?.adsets?.length > 0 ? (
                             selectedCampaign?.adsets?.map((adset, index) => (
@@ -1253,7 +1258,6 @@ const AllStatistics = ({ pageState, setpageState }) => {
                         <FormControl
                           className="w-full mt-1 mb-5"
                           variant="outlined"
-                          required
                           sx={{
                             "& .MuiOutlinedInput-notchedOutline": {
                               borderColor:
@@ -1274,7 +1278,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                                   : "#000000 !important",
                             }}
                           >
-                            Select Ad
+                            Ad
                           </InputLabel>
                           <Select
                             // value={selectedAd}
@@ -1284,7 +1288,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                             value={selectedAd}
                           >
                             <MenuItem value="0" disabled>
-                              Select Ad
+                              Ad
                             </MenuItem>
                             {selectedAd.length > 0 ? (
                               selectedAd?.map((ad, index) => (
@@ -1301,7 +1305,6 @@ const AllStatistics = ({ pageState, setpageState }) => {
                         <FormControl
                           className="w-full mt-1 mb-5"
                           variant="outlined"
-                          required
                           sx={{
                             "& .MuiOutlinedInput-notchedOutline": {
                               borderColor:
@@ -1322,7 +1325,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                                   : "#000000 !important",
                             }}
                           >
-                            Select Ad
+                            Ad
                           </InputLabel>
                           <Select
                             // value={selectedAd}
@@ -1389,7 +1392,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
             </div>
 
             {/* data starts */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-6 xl:grid-cols-6 gap-x-3 gap-y-3 text-center">
+            <div className="grid md:grid-cols-2 lg:grid-cols-6 xl:grid-cols-7 gap-x-3 gap-y-3 text-center">
               {data?.length > 0 &&
                 data?.map((item, index) => (
                   <div
