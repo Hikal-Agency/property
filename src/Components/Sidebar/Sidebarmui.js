@@ -1346,6 +1346,7 @@ const Sidebarmui = () => {
     if (storedUser) {
       // If user data is stored in local storage, parse and set it in state
       setUser(JSON.parse(storedUser));
+      console.log(JSON.parse(storedUser))
       setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
       console.log("User from navbar", User);
@@ -1532,35 +1533,8 @@ const Sidebarmui = () => {
 
   useEffect(() => {
     if (isUserSubscribed !== null && isUserSubscribed === true) {
-      setAgentData([
-        ...Agentlinks,
-        {
-          title: "WHATSAPP",
-          links: [
-            {
-              name: "Instances",
-              icon: <RiWhatsappFill />,
-              link: "/whatsapp-marketing/instances",
-            },
-            {
-              name: "Messages",
-              icon: <AiFillMessage />,
-              link: "/whatsapp-marketing/messages",
-            },
-            {
-              name: "Templates",
-              icon: <FaMobile />,
-              link: "/whatsapp-marketing/templates",
-            },
-            {
-              name: "Payments",
-              icon: <BsFillCreditCard2FrontFill />,
-              link: "/whatsapp-marketing/payments",
-            },
-          ],
-        },
-      ]);
-      setManagerData([
+      if(User?.role === 3) {
+    setManagerData([
         ...Managerlinks,
         {
           title: "WHATSAPP",
@@ -1588,14 +1562,42 @@ const Sidebarmui = () => {
           ],
         },
       ]);
+      } else {
+  setAgentData([
+        ...Agentlinks,
+        {
+          title: "WHATSAPP",
+          links: [
+            {
+              name: "Instances",
+              icon: <RiWhatsappFill />,
+              link: "/whatsapp-marketing/instances",
+            },
+            {
+              name: "Messages",
+              icon: <AiFillMessage />,
+              link: "/whatsapp-marketing/messages",
+            },
+            {
+              name: "Templates",
+              icon: <FaMobile />,
+              link: "/whatsapp-marketing/templates",
+            },
+            {
+              name: "Payments",
+              icon: <BsFillCreditCard2FrontFill />,
+              link: "/whatsapp-marketing/payments",
+            },
+          ],
+        },
+      ]);
+      }
+    } else {
+      setAgentData([...Agentlinks]);
+      setManagerData([...Managerlinks]);
+      setLinksData([...links]);
     }
-  }, [isUserSubscribed]);
-
-  useEffect(() => {
-    setAgentData([...Agentlinks]);
-    setManagerData([...Managerlinks]);
-    setLinksData([...links]);
-  }, [sidebarData]);
+  }, [sidebarData, isUserSubscribed]);
 
   return (
     <div
