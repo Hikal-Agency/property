@@ -1386,6 +1386,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       }
     }
 
+    if(lead_origin === "unassigned") {
+      url += "&unassigned=1";
+       if (lead_type === "cold") {
+        coldCallCode = 1;
+      } else if (lead_type === "warm") {
+        coldCallCode= 4;
+      } else if (lead_type === "personal") {
+        coldCallCode = 2;
+      } else if (lead_type === "thirdpartyleads") {
+        coldCallCode = 3;
+      }
+    }
+
     if (coldCallCode !== "") {
       url += `&coldCall=${coldCallCode}`;
     }
