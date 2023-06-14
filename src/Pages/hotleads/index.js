@@ -163,7 +163,7 @@ const AllHotLeads = () => {
                             >
                               <FaTiktok
                                 size={22}
-                                color={"#f6d80a"}
+                                color={"#000000"}
                                 style={{ padding: "3px" }}
                               />
 
@@ -321,7 +321,7 @@ const AllHotLeads = () => {
                             >
                               <FaWhatsapp
                                 size={22}
-                                color={"#0e82e1"}
+                                color={"#29EC62"}
                                 style={{ padding: "3px" }}
                               />
                             </span>
