@@ -3,7 +3,8 @@ import {
   CircularProgress,
   FormControl,
   InputLabel,
-  MenuItem, Select
+  MenuItem,
+  Select,
 } from "@mui/material";
 import {
   DataGrid,
@@ -712,8 +713,10 @@ const AllStatistics = ({ pageState, setpageState }) => {
 
     if (selectedCampaign) {
       const selectedCampaignName = selectedCampaign.name;
-      const selectedAds = selectedCampaign.ads.data;
-      const selectedAdsets = selectedAds.map((ad) => ad.adset);
+      const selectedAds = selectedCampaign?.ads?.data;
+      const selectedAdsets = selectedAds?.map((ad) => ad.adset);
+
+      console.log("selected adset: ", selectedAdsets);
 
       setSelectedCampaigns({
         SelectedCampaign: selectedCampaignId,
@@ -1356,7 +1359,23 @@ const AllStatistics = ({ pageState, setpageState }) => {
               </div> */}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-5">
+            <div
+              style={{
+                width: "80%",
+                backgroundColor: "#DA1F26",
+                padding: "10px",
+              }}
+              className="my-5 rounded-lg mx-auto"
+            >
+              <h2
+                style={{ textAlign: "center" }}
+                className="text-white font-bold text-lg"
+              >
+                Performance & Interations
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3 mt-5">
               <div
                 className={`${
                   currentMode === "dark"
@@ -1385,6 +1404,24 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   <TopCampaignsTable tablData={campaigns} />
                 </div>
               </div>
+
+              <div
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-gray-900 text-white "
+                    : "bg-gray-200"
+                } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                sx={{
+                  height: "300px",
+                  width: "300px",
+                }}
+              >
+                <div className="justify-between items-center">
+                  <h6 className="font-semibold pb-3">Adsets Clicks</h6>
+                  <DoughnutChart doughnutChart={doughnutChart} />
+                  {/* <DoughnutChart doughnutChart={doughnutChart} /> */}
+                </div>
+              </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-5">
               <div
@@ -1392,12 +1429,12 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
                     : "bg-gray-200"
-                } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
               >
-                <div className="justify-between items-center ">
-                  <h6 className="font-semibold pb-3">Audience</h6>
-                  {/* <AreaChart /> */}
-                  <HorizontalBarChart barCharData={ageGender} />
+                <div className="justify-between items-center">
+                  <h6 className="font-semibold pb-3">Frequency And Reach</h6>
+                  <BubbleChartStat bubbleChartData={row} />
+                  {/* <CombineChart /> */}
                 </div>
               </div>
 
@@ -1427,8 +1464,23 @@ const AllStatistics = ({ pageState, setpageState }) => {
             sx={DataGridStyles}
             style={{ width: "100%", overflowX: "auto" }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3 mt-5">
-              <div
+            <div
+              style={{
+                width: "80%",
+                backgroundColor: "#DA1F26",
+                padding: "10px",
+              }}
+              className=" rounded-lg mx-auto mb-3"
+            >
+              <h2
+                style={{ textAlign: "center" }}
+                className="text-white font-bold text-lg"
+              >
+                Audience
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3 ">
+              {/* <div
                 className={`${
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
@@ -1442,21 +1494,21 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 <div className="justify-between items-center">
                   <h6 className="font-semibold pb-3">Adsets Clicks</h6>
                   <DoughnutChart doughnutChart={doughnutChart} />
-                  {/* <DoughnutChart doughnutChart={doughnutChart} /> */}
+                  
                 </div>
-              </div>
+              </div> */}
 
               <div
                 className={`${
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
                     : "bg-gray-200"
-                } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
               >
-                <div className="justify-between items-center">
-                  <h6 className="font-semibold pb-3">Frequency And Reach</h6>
-                  <BubbleChartStat bubbleChartData={row} />
-                  {/* <CombineChart /> */}
+                <div className="justify-between items-center ">
+                  <h6 className="font-semibold pb-3">Audience</h6>
+                  {/* <AreaChart /> */}
+                  <HorizontalBarChart barCharData={ageGender} />
                 </div>
               </div>
 
@@ -1479,6 +1531,22 @@ const AllStatistics = ({ pageState, setpageState }) => {
             <div
               className={`${currentMode}-mode-datatable grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3`}
             ></div>
+
+            <div
+              style={{
+                width: "80%",
+                backgroundColor: "#DA1F26",
+                padding: "10px",
+              }}
+              className=" rounded-lg mx-auto mb-3"
+            >
+              <h2
+                style={{ textAlign: "center" }}
+                className="text-white font-bold text-lg"
+              >
+                Ads Details
+              </h2>
+            </div>
 
             <DataGrid
               autoHeight

@@ -30,7 +30,7 @@ ChartJS.register(
 );
 
 const CombinationChart = () => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, User } = useStateContext();
   const [performanceChartData, setPerformanceChartData] = useState([]);
 
   useEffect(() => {
@@ -46,6 +46,18 @@ const CombinationChart = () => {
         const {
           data: { members_deal },
         } = result;
+
+        console.log("members_deal value: ", members_deal);
+
+        if (User?.role === 3) {
+          const filteredMembersDeal = members_deal.filter(
+            (member) => member.role !== 3
+          );
+
+          console.log("filterperformance: ", filteredMembersDeal);
+          setPerformanceChartData(filteredMembersDeal);
+          return;
+        }
         setPerformanceChartData(members_deal);
       })
       .catch((err) => {
