@@ -28,6 +28,7 @@ import { BiSearch } from "react-icons/bi";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { FaArchive } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
 import { FaFire } from "react-icons/fa";
@@ -738,7 +739,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
                 return (
                   <div className="bg-white w-max rounded-full flex items-center justify-center">
-                    <FaRandom size={22} color={"#14539a"} />
+                    <FaArchive size={22} color={"#14539a"} />
                   </div>
                 );
               }
@@ -1125,7 +1126,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       }
     }
     // LEADS URL GENERATON FOR WARM LEADS PAGE
-    else if (lead_origin === "reshuffle") {
+    else if (lead_origin === "archive") {
       if (lead_type === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4`;
       } else if (lead_type === "new") {

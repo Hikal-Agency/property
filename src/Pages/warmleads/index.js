@@ -68,7 +68,7 @@ const AllWarmLeads = () => {
                         : "text-red-600 font-bold border-red-600"
                     }`}
                   >
-                    Reshuffle Leads -{" "}
+                    Archived Leads -{" "}
                     <span className="capitalize">{lead_type}</span>{" "}
                     <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
                       {pageState?.total}
