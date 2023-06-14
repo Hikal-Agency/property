@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import {
   Box,
   Button,
-  Avatar,
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
+  Table,
+  Paper,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
   IconButton,
 } from "@mui/material";
 import CreateTemplateModal from "./CreateTemplateModal";
@@ -14,10 +16,10 @@ import { useStateContext } from "../../context/ContextProvider";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import { BiPen } from "react-icons/bi";
-import Markdown from "markdown-to-jsx";
-import { FaTrash } from "react-icons/fa";
-import {MdEmail, MdSms} from "react-icons/md";
-import {HiTemplate} from "react-icons/hi";
+import { MdEmail, MdSms, MdTitle } from "react-icons/md";
+import { HiTemplate } from "react-icons/hi";
+import { AiFillEdit, AiOutlineEdit } from "react-icons/ai";
+import { BsTrash } from "react-icons/bs";
 import { toast } from "react-toastify";
 import UpdateTemplateModal from "./UpdateTemplateModal";
 import Loader from "../Loader";
@@ -36,12 +38,10 @@ const TemplatesComponent = () => {
   const [templates, setTemplates] = useState([]);
 
   const handleUpdateTemplate = (e, template) => {
-    if (!e.target.closest(".delete-btn")) {
       setUpdateTemplateModal({
         isOpen: true,
         template,
       });
-    }
   };
 
   const fetchTemplates = async () => {
@@ -127,9 +127,9 @@ const TemplatesComponent = () => {
                 color: "#da1f26",
                 fontSize: 13,
                 "&:hover": {
-                  background: "#da1f26", 
-                  color: "white"
-                }
+                  background: "#da1f26",
+                  color: "white",
+                },
               }}
               onClick={() => setCreateTemplateModal({ isOpen: true })}
               variant="contained"
@@ -138,15 +138,30 @@ const TemplatesComponent = () => {
               Create New
             </Button>
           </Box>
-          <Box className="flex items-center justify-around my-6" sx={{color: currentMode === "dark" ? "white" : "black"}}>
-              <TemplatesCountCard icon={<HiTemplate size={28}/>} type="All Templates" count={templates?.length}/>
-              <TemplatesCountCard icon={<MdEmail size={28}/>} type="Email Templates" count={templates?.length}/>
-              <TemplatesCountCard icon={<MdSms size={28}/>} type="Message Templates" count={templates?.length}/>
+          <Box
+            className="flex items-center justify-around my-6"
+            sx={{ color: currentMode === "dark" ? "white" : "black" }}
+          >
+            <TemplatesCountCard
+              icon={<HiTemplate size={28} />}
+              type="All Templates"
+              count={templates?.length}
+            />
+            <TemplatesCountCard
+              icon={<MdEmail size={28} />}
+              type="Email Templates"
+              count={0}
+            />
+            <TemplatesCountCard
+              icon={<MdSms size={28} />}
+              type="Message Templates"
+              count={templates?.length}
+            />
           </Box>
           <Box className="flex flex-wrap mt-3">
             {templates.length > 0 ? (
               <>
-              {/* templates.map((template) => {
+                {/* templates.map((template) => {
                 return (
                   <>
                     <Card
@@ -189,7 +204,74 @@ const TemplatesComponent = () => {
                   </>
                 );
               }) */}
-              
+                <TableContainer component={Paper}>
+                  <Table aria-label="simple table" sx={{ maxWidth: "100%" }}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>
+                          <Box className="flex items-center">
+                            <MdTitle />
+                            <span style={{ marginLeft: 5 }}> Title</span>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box className="flex items-center">
+                            <span>Type</span>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box className="flex items-center">
+                            <AiFillEdit />{" "}
+                            <span style={{ marginLeft: 5 }}>Edit</span>
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {templates.map((template) => (
+                        <TableRow
+                          key={template?.id}
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell component="th" scope="row">
+                            {template?.name}
+                          </TableCell>
+                          <TableCell>plain-text</TableCell>
+                          <TableCell>
+                            <Box className="flex items-center">
+                              <IconButton
+                              onClick={(e) => handleUpdateTemplate(e, template)}
+                                sx={{ padding: 0, mr: 1 }}
+                                color={
+                                  currentMode === "dark" ? "black" : "white"
+                                }
+                              >
+                                <AiOutlineEdit
+                                  size={20}
+                                  style={{ color: "inherit" }}
+                                />
+                              </IconButton>
+                              <IconButton
+                                onClick={() => handleDelete(template.id)}
+                                sx={{ padding: 0 }}
+                                color={
+                                  currentMode === "dark" ? "black" : "white"
+                                }
+                              >
+                                <BsTrash
+                                  size={18}
+                                  style={{ color: "inherit" }}
+                                />
+                              </IconButton>
+                            </Box>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </>
             ) : (
               <p style={{ color: "red", textAlign: "center" }}>
