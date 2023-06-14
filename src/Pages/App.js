@@ -103,7 +103,7 @@ const routes = [
     pageName: "Unassigned Leads",
   },
   {
-    path: "/reshuffle/:lead_type",
+    path: "/archive/:lead_type",
     element: <AllWarmLeads />,
     pageName: "Warm Leads",
   },
@@ -128,7 +128,7 @@ const routes = [
     pageName: "Cold Leads",
   },
   {
-    path: "/transfferedleads",
+    path: "/reshuffleleads",
     element: <TransferredLeads />,
     pageName: "Transferred Leads",
   },

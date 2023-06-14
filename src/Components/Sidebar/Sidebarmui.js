@@ -45,6 +45,8 @@ import { ImLock, ImUsers, ImLocation } from "react-icons/im";
 import axios from "../../axoisConfig";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaArchive } from "react-icons/fa";
+
 // import { Link as NextLink } from "next/link";
 
 const Sidebarmui = () => {
@@ -303,9 +305,9 @@ const Sidebarmui = () => {
           ],
         },
         {
-          name: "Transferred",
-          icon: <RiFileTransferFill />,
-          link: "/transfferedleads",
+          name: "Reshuffle Leads",
+          icon: <FaRandom />,
+          link: "/reshuffleleads",
         },
         {
           name: "Booked deals",
@@ -318,48 +320,48 @@ const Sidebarmui = () => {
           link: "/closedeals",
         },
         {
-          name: "Reshuffle",
-          icon: <FaRandom />,
+          name: "Archived Leads",
+          icon: <FaArchive />,
           submenu: [
             {
               name: "All Leads",
               count: sidebarData?.WarmLeadCount?.all,
-              link: "/reshuffle/all",
+              link: "/archive/all",
             },
             {
               name: "New Leads",
               count: sidebarData?.WarmLeadCount?.new,
-              link: "/reshuffle/new",
+              link: "/archive/new",
             },
             {
               name: "No Answer",
               count: sidebarData?.WarmLeadCount?.no_nswer,
-              link: "/reshuffle/no answer",
+              link: "/archive/no answer",
             },
             {
               name: "Meeting",
               count: sidebarData?.WarmLeadCount?.Meeting,
-              link: "/reshuffle/meeting",
+              link: "/archive/meeting",
             },
             {
               name: "Follow Up",
               count: sidebarData?.WarmLeadCount?.follow_up,
-              link: "/reshuffle/follow up",
+              link: "/archive/follow up",
             },
             {
               name: "Low Budget",
               count: sidebarData?.WarmLeadCount?.low_budget,
-              link: "/reshuffle/low budget",
+              link: "/archive/low budget",
             },
             {
               name: "Not Intrested",
               count: sidebarData?.WarmLeadCount?.not_interested,
-              link: "/reshuffle/not interested",
+              link: "/archive/not interested",
             },
             {
               name: "Unreachable",
               count: sidebarData?.WarmLeadCount?.unreachable,
-              link: "/reshuffle/unreachable",
+              link: "/archive/unreachable",
             },
           ],
         },
@@ -707,7 +709,7 @@ const Sidebarmui = () => {
               link: "/unassigned/cold",
             },
             {
-              name: "Reshuffle Leads",
+              name: "Archived Leads",
               count: sidebarData?.UNASSIGNED?.warm,
               link: "/unassigned/warm",
             },
@@ -724,55 +726,55 @@ const Sidebarmui = () => {
           ],
         },
         {
-          name: "Reshuffle",
-          icon: <FaRandom />,
+          name: "Archived",
+          icon: <FaArchive />,
           submenu: [
             {
               name: "All Leads",
               count: sidebarData?.WarmLeadCount?.all,
-              link: "/reshuffle/all",
+              link: "/archive/all",
             },
             {
               name: "New Leads",
               count: sidebarData?.WarmLeadCount?.new,
-              link: "/reshuffle/new",
+              link: "/archive/new",
             },
             {
               name: "No Answer",
               count: sidebarData?.WarmLeadCount?.no_nswer,
-              link: "/reshuffle/no answer",
+              link: "/archive/no answer",
             },
             {
               name: "Meeting",
               count: sidebarData?.WarmLeadCount?.Meeting,
-              link: "/reshuffle/meeting",
+              link: "/archive/meeting",
             },
             {
               name: "Follow Up",
               count: sidebarData?.WarmLeadCount?.follow_up,
-              link: "/reshuffle/follow up",
+              link: "/archive/follow up",
             },
             {
               name: "Low Budget",
               count: sidebarData?.WarmLeadCount?.low_budget,
-              link: "/reshuffle/low budget",
+              link: "/archive/low budget",
             },
             {
               name: "Not Intrested",
               count: sidebarData?.WarmLeadCount?.not_interested,
-              link: "/reshuffle/not interested",
+              link: "/archive/not interested",
             },
             {
               name: "Unreachable",
               count: sidebarData?.WarmLeadCount?.unreachable,
-              link: "/reshuffle/unreachable",
+              link: "/archive/unreachable",
             },
           ],
         },
         {
-          name: "Transferred",
-          icon: <RiFileTransferFill />,
-          link: "/transfferedleads",
+          name: "Reshuffle",
+          icon: <FaRandom />,
+          link: "/reshuffleleads",
         },
         {
           name: "Booked deals",
@@ -1064,9 +1066,9 @@ const Sidebarmui = () => {
           ],
         },
         {
-          name: "Transffered",
-          icon: <RiFileTransferFill />,
-          link: "/transfferedleads",
+          name: "Reshuffle",
+          icon: <FaRandom />,
+          link: "/reshuffleleads",
         },
         {
           name: "Unassigned",
@@ -1083,7 +1085,7 @@ const Sidebarmui = () => {
               link: "/unassigned/cold",
             },
             {
-              name: "Reshuffle Leads",
+              name: "Archived Leads",
               count: sidebarData?.UNASSIGNED?.warm,
               link: "/unassigned/warm",
             },
@@ -1100,48 +1102,48 @@ const Sidebarmui = () => {
           ],
         },
         {
-          name: "Reshuffle",
-          icon: <FaRandom />,
+          name: "Archived Leads",
+          icon: <FaArchive />,
           submenu: [
             {
               name: "All Leads",
               count: sidebarData?.WarmLeadCount?.all,
-              link: "/reshuffle/all",
+              link: "/archive/all",
             },
             {
               name: "New Leads",
               count: sidebarData?.WarmLeadCount?.new,
-              link: "/reshuffle/new",
+              link: "/archive/new",
             },
             {
               name: "No Answer",
               count: sidebarData?.WarmLeadCount?.no_nswer,
-              link: "/reshuffle/no answer",
+              link: "/archive/no answer",
             },
             {
               name: "Meeting",
               count: sidebarData?.WarmLeadCount?.Meeting,
-              link: "/reshuffle/meeting",
+              link: "/archive/meeting",
             },
             {
               name: "Follow Up",
               count: sidebarData?.WarmLeadCount?.follow_up,
-              link: "/reshuffle/follow up",
+              link: "/archive/follow up",
             },
             {
               name: "Low Budget",
               count: sidebarData?.WarmLeadCount?.low_budget,
-              link: "/reshuffle/low budget",
+              link: "/archive/low budget",
             },
             {
               name: "Not Intrested",
               count: sidebarData?.WarmLeadCount?.not_interested,
-              link: "/reshuffle/not interested",
+              link: "/archive/not interested",
             },
             {
               name: "Unreachable",
               count: sidebarData?.WarmLeadCount?.unreachable,
-              link: "/reshuffle/unreachable",
+              link: "/archive/unreachable",
             },
           ],
         },
@@ -1346,7 +1348,6 @@ const Sidebarmui = () => {
     if (storedUser) {
       // If user data is stored in local storage, parse and set it in state
       setUser(JSON.parse(storedUser));
-      console.log(JSON.parse(storedUser))
       setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
       console.log("User from navbar", User);
@@ -1533,37 +1534,7 @@ const Sidebarmui = () => {
 
   useEffect(() => {
     if (isUserSubscribed !== null && isUserSubscribed === true) {
-      if(User?.role === 3) {
-    setManagerData([
-        ...Managerlinks,
-        {
-          title: "WHATSAPP",
-          links: [
-            {
-              name: "Instances",
-              icon: <RiWhatsappFill />,
-              link: "/whatsapp-marketing/instances",
-            },
-            {
-              name: "Messages",
-              icon: <AiFillMessage />,
-              link: "/whatsapp-marketing/messages",
-            },
-            {
-              name: "Templates",
-              icon: <FaMobile />,
-              link: "/whatsapp-marketing/templates",
-            },
-            {
-              name: "Payments",
-              icon: <BsFillCreditCard2FrontFill />,
-              link: "/whatsapp-marketing/payments",
-            },
-          ],
-        },
-      ]);
-      } else {
-  setAgentData([
+      setAgentData([
         ...Agentlinks,
         {
           title: "WHATSAPP",
@@ -1591,13 +1562,42 @@ const Sidebarmui = () => {
           ],
         },
       ]);
-      }
-    } else {
-      setAgentData([...Agentlinks]);
-      setManagerData([...Managerlinks]);
-      setLinksData([...links]);
+      setManagerData([
+        ...Managerlinks,
+        {
+          title: "WHATSAPP",
+          links: [
+            {
+              name: "Instances",
+              icon: <RiWhatsappFill />,
+              link: "/whatsapp-marketing/instances",
+            },
+            {
+              name: "Messages",
+              icon: <AiFillMessage />,
+              link: "/whatsapp-marketing/messages",
+            },
+            {
+              name: "Templates",
+              icon: <FaMobile />,
+              link: "/whatsapp-marketing/templates",
+            },
+            {
+              name: "Payments",
+              icon: <BsFillCreditCard2FrontFill />,
+              link: "/whatsapp-marketing/payments",
+            },
+          ],
+        },
+      ]);
     }
-  }, [sidebarData, isUserSubscribed]);
+  }, [isUserSubscribed]);
+
+  useEffect(() => {
+    setAgentData([...Agentlinks]);
+    setManagerData([...Managerlinks]);
+    setLinksData([...links]);
+  }, [sidebarData]);
 
   return (
     <div
@@ -1723,7 +1723,7 @@ const Sidebarmui = () => {
               }}
             >
               {[
-                ...(User?.role === 1
+                ...(User?.position === "Founder & CEO"
                   ? linksData.map((item, linkIndex) => (
                       <div key={linkIndex}>
                         {!isCollapsed ? (
@@ -1885,7 +1885,8 @@ const Sidebarmui = () => {
                                                 transform: "translateY(-50%)",
                                               }}
                                             >
-                                              {menu?.count !== null && menu?.count !== undefined
+                                              {menu?.count !== null &&
+                                              menu?.count !== undefined
                                                 ? menu?.count
                                                 : ""}
                                             </span>
@@ -1967,7 +1968,7 @@ const Sidebarmui = () => {
                         ))}
                       </div>
                     ))
-                  : User?.role === 3
+                  : User?.position === "Sales Manager"
                   ? managerData.map((item, linkIndex) => (
                       <div key={linkIndex}>
                         {!isCollapsed ? (
@@ -2102,19 +2103,21 @@ const Sidebarmui = () => {
                                             {menu?.name}
                                           </MenuItem>
                                           {console.log(menu?.name, menu?.count)}
-                                          {menu?.count !== null && menu?.count !== undefined && (
-                                            <span
-                                              className="leads_counter block absolute right-5"
-                                              style={{
-                                                top: "50%",
-                                                transform: "translateY(-50%)",
-                                              }}
-                                            >
-                                              {menu?.count !== null && menu?.count !== undefined
-                                                ? menu?.count
-                                                : ""}
-                                            </span>
-                                          )}
+                                          {menu?.count !== null &&
+                                            menu?.count !== undefined && (
+                                              <span
+                                                className="leads_counter block absolute right-5"
+                                                style={{
+                                                  top: "50%",
+                                                  transform: "translateY(-50%)",
+                                                }}
+                                              >
+                                                {menu?.count !== null &&
+                                                menu?.count !== undefined
+                                                  ? menu?.count
+                                                  : ""}
+                                              </span>
+                                            )}
                                         </Box>
                                       </Link>
                                     );
@@ -2355,19 +2358,22 @@ const Sidebarmui = () => {
                                               )}
                                               {menu?.name || ""}
                                             </MenuItem>
-                                            {menu?.count !== null && menu?.count !== undefined && (
-                                              <span
-                                                className="leads_counter block absolute right-5"
-                                                style={{
-                                                  top: "50%",
-                                                  transform: "translateY(-50%)",
-                                                }}
-                                              >
-                                                {menu?.count !== null && menu?.count !== undefined
-                                                  ? menu?.count
-                                                  : ""}
-                                              </span>
-                                            )}
+                                            {menu?.count !== null &&
+                                              menu?.count !== undefined && (
+                                                <span
+                                                  className="leads_counter block absolute right-5"
+                                                  style={{
+                                                    top: "50%",
+                                                    transform:
+                                                      "translateY(-50%)",
+                                                  }}
+                                                >
+                                                  {menu?.count !== null &&
+                                                  menu?.count !== undefined
+                                                    ? menu?.count
+                                                    : ""}
+                                                </span>
+                                              )}
                                           </Box>
                                         </Link>
                                       );
