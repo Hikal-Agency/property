@@ -105,14 +105,25 @@ const TemplatesComponent = () => {
         <Loader />
       ) : (
         <Box className="min-h-screen">
-          <Button
-            sx={{ mt: 2, padding: "10px", ml: 1 }}
-            onClick={() => setCreateTemplateModal({ isOpen: true })}
-            variant="contained"
-          >
-            <BiPen size={18} style={{ marginRight: 5 }} />
-            Create New
-          </Button>
+          <Box className="flex items-center justify-between mt-3">
+                  <h1
+                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                      currentMode === "dark"
+                        ? "text-white border-white"
+                        : "text-red-600 font-bold border-red-600"
+                    }`}
+                  >
+                    Templates
+                  </h1>
+            <Button
+              sx={{padding: "10px", ml: 1 }}
+              onClick={() => setCreateTemplateModal({ isOpen: true })}
+              variant="contained"
+            >
+              <BiPen size={18} style={{ marginRight: 5 }} />
+              Create New
+            </Button>
+          </Box>
           <Box className="flex flex-wrap mt-3">
             {templates.length > 0 ? (
               templates.map((template) => {

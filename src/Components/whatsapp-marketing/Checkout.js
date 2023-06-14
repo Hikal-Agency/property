@@ -57,7 +57,10 @@ const Checkout = ({ allPlans, plan }) => {
           progress: undefined,
           theme: "light",
         });
-        window.location.href = "/dashboard";
+        setTimeout(() => {
+          localStorage.removeItem("user");
+          window.location.href = "/dashboard";
+        }, 2000);
     } catch (error) {
       console.log(error);
         toast.error("Subscription Failed!!", {
