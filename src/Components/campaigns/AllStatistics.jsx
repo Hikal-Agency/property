@@ -1441,13 +1441,13 @@ const AllStatistics = ({ pageState, setpageState }) => {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3 mt-5">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3  mt-5">
               <div
                 className={`${
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
                     : "bg-gray-200"
-                } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
               >
                 <div className="justify-between items-center ">
                   <h6 className="font-semibold pb-3">Performance</h6>
@@ -1461,7 +1461,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
                     : "bg-gray-200"
-                } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
               >
                 <div className="justify-between items-center">
                   <h6 className="font-semibold pb-3">Top Campaigns</h6>
@@ -1476,7 +1476,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
                     : "bg-gray-200"
-                } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                } col-span-1 h-96 w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                 sx={{
                   height: "300px",
                   width: "300px",
@@ -1495,7 +1495,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
                     : "bg-gray-200"
-                } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
               >
                 <div className="justify-between items-center">
                   <h6 className="font-semibold pb-3">Frequency And Reach</h6>
@@ -1509,7 +1509,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
                     : "bg-gray-200"
-                } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
               >
                 <div className="justify-between items-center">
                   <h6 className="font-semibold pb-3">Ads Data</h6>

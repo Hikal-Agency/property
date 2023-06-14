@@ -117,8 +117,8 @@ const MapChartStatistics = ({ locationData }) => {
 //       };
 //     });
 
-//     let markerData = locationData.flatMap((item) =>
-//       item.geo_locations.places.map((place) => ({
+//     let markerData = locationData?.flatMap((item) =>
+//       item.geo_locations?.places?.map((place) => ({
 //         latitude: place.latitude,
 //         longitude: place.longitude,
 //       }))
