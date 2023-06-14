@@ -1495,10 +1495,10 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
                     : "bg-gray-200"
-                } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm flex flex-col justify-start`}
               >
-                <div className="justify-between items-center">
-                  <h6 className="font-semibold pb-3">Frequency And Reach</h6>
+                <h6 className="font-semibold pb-3">Frequency And Reach</h6>
+                <div className="flex-grow flex items-center justify-center">
                   <BubbleChartStat bubbleChartData={row} />
                   {/* <CombineChart /> */}
                 </div>

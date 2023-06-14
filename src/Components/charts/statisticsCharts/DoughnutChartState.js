@@ -27,26 +27,28 @@ const DoughnutChart = ({ doughnutChart }) => {
   };
 
   return (
-    <Doughnut
-      data={chartData}
-      options={{
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true,
-            position: "right",
-            labels: {
-              usePointStyle: true,
-              font: {
-                family: "Arial",
-                size: 14,
-                color: "#fffff",
+    <div style={{ height: "400px", width: "400px" }}>
+      <Doughnut
+        data={chartData}
+        options={{
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: "right",
+              labels: {
+                usePointStyle: true,
+                font: {
+                  family: "Arial",
+                  size: 14,
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
               },
             },
           },
-        },
-      }}
-    />
+        }}
+      />
+    </div>
   );
 };
 

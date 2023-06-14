@@ -79,7 +79,7 @@ const RenderSalesperson = ({ cellValues }) => {
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("lid", cellValues?.row?.leadId);
     if (newSalesPerson === undefined) {
-      UpdateLeadData.append("assignedToSales", 102);
+      UpdateLeadData.append("assignedToSales", 1);
     } else {
       UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
     }

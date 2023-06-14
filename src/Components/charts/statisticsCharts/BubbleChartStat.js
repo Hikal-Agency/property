@@ -96,38 +96,40 @@ const BubbleChartStat = ({ bubbleChartData }) => {
   };
 
   return (
-    <PolarArea
-      data={chartData}
-      options={{
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true, // Display legend to differentiate between Reach and Frequency
-          },
-        },
-        scales: {
-          r: {
-            grid: {
-              color: currentMode === "dark" ? "#424242" : "#eeeeee",
-              lineWidth: 0.5,
-            },
-            ticks: {
-              color: currentMode === "dark" ? "#ffffff" : "#000000",
-              zIndex: 5000,
-              margin: "200px !important",
+    <div style={{ height: "330px", width: "400px" }}>
+      <PolarArea
+        data={chartData}
+        options={{
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true, // Display legend to differentiate between Reach and Frequency
             },
           },
-        },
-        layout: {
-          padding: {
-            top: 20,
-            left: 20,
-            right: 20,
-            bottom: 20,
+          scales: {
+            r: {
+              grid: {
+                color: currentMode === "dark" ? "#424242" : "#eeeeee",
+                lineWidth: 0.5,
+              },
+              ticks: {
+                color: currentMode === "dark" ? "#ffffff" : "#000000",
+                zIndex: 5000,
+                margin: "200px !important",
+              },
+            },
           },
-        },
-      }}
-    />
+          layout: {
+            padding: {
+              top: 20,
+              left: 20,
+              right: 20,
+              bottom: 20,
+            },
+          },
+        }}
+      />
+    </div>
   );
 };
 
