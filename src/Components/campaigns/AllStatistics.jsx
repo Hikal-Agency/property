@@ -603,14 +603,18 @@ const AllStatistics = ({ pageState, setpageState }) => {
     console.log("id: ", e);
     // setSelectedAdset(e);
 
+    console.log("selectedCamp: ", selectedCampaign);
+
     const filteredAds = selectedCampaign?.ads.filter(
       (ad) => ad.adset.id === e.target.value
     );
 
-    setSelectedCampaigns((prevState) => ({
-      ...prevState,
-      ads: filteredAds,
-    }));
+    // setSelectedCampaigns((prevState) => ({
+    //   ...prevState,
+    //   ads: filteredAds,
+    // }));
+
+    setSelectedAd(filteredAds);
 
     console.log("ads<-adsets: ", filteredAds);
   };
@@ -714,16 +718,28 @@ const AllStatistics = ({ pageState, setpageState }) => {
     if (selectedCampaign) {
       const selectedCampaignName = selectedCampaign.name;
       const selectedAds = selectedCampaign?.ads?.data;
-      const selectedAdsets = selectedAds?.map((ad) => ad.adset);
+      // const selectedAdsets = selectedAds?.map((ad) => ad.adset);
 
-      console.log("selected adset: ", selectedAdsets);
+      const uniqueAdsetsMap = new Map();
+      selectedAds?.forEach((ad) => {
+        if (!uniqueAdsetsMap.has(ad.adset.name)) {
+          uniqueAdsetsMap.set(ad.adset.name, ad.adset);
+        }
+      });
+
+      const uniqueAdsets = Array.from(uniqueAdsetsMap.values());
+
+      console.log("selected ads: ", selectedAds);
+      console.log("selected adset: ", uniqueAdsets);
 
       setSelectedCampaigns({
         SelectedCampaign: selectedCampaignId,
         CampaignName: selectedCampaignName,
         ads: selectedAds,
-        adsets: selectedAdsets,
+        adsets: uniqueAdsets,
       });
+
+      setSelectedAd([]);
 
       FetchSingleCampaign(selectedCampaignId);
     } else {
@@ -1233,53 +1249,103 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     </div>
 
                     <div className="w-full  px-2">
-                      <FormControl
-                        className="w-full mt-1 mb-5"
-                        variant="outlined"
-                        required
-                        sx={{
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          },
-                          "&:hover:not(.Mui-disabled):before": {
-                            borderColor:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          },
-                        }}
-                      >
-                        <InputLabel
-                          id="ad-label"
+                      {selectedAd?.length > 0 ? (
+                        <FormControl
+                          className="w-full mt-1 mb-5"
+                          variant="outlined"
+                          required
                           sx={{
-                            color:
-                              currentMode === "dark"
-                                ? "#ffffff !important"
-                                : "#000000 !important",
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor:
+                                currentMode === "dark" ? "#ffffff" : "#000000",
+                            },
+                            "&:hover:not(.Mui-disabled):before": {
+                              borderColor:
+                                currentMode === "dark" ? "#ffffff" : "#000000",
+                            },
                           }}
                         >
-                          Select Ad
-                        </InputLabel>
-                        <Select
-                          // value={selectedAd}
-                          // onChange={(event) => selectAd(event, event.target.value)}
-                          labelId="ad-label"
-                          label="Select Ad"
-                          value={selectedAd}
-                        >
-                          <MenuItem value="0" disabled>
+                          <InputLabel
+                            id="ad-label"
+                            sx={{
+                              color:
+                                currentMode === "dark"
+                                  ? "#ffffff !important"
+                                  : "#000000 !important",
+                            }}
+                          >
                             Select Ad
-                          </MenuItem>
-                          {selectedCampaign?.ads?.length > 0 ? (
-                            selectedCampaign?.ads?.map((ad, index) => (
-                              <MenuItem key={index} value={ad?.id || ""}>
-                                {ad?.name}
-                              </MenuItem>
-                            ))
-                          ) : (
-                            <MenuItem disabled>No Ads found.</MenuItem>
-                          )}
-                        </Select>
-                      </FormControl>
+                          </InputLabel>
+                          <Select
+                            // value={selectedAd}
+                            // onChange={(event) => selectAd(event, event.target.value)}
+                            labelId="ad-label"
+                            label="Select Ad"
+                            value={selectedAd}
+                          >
+                            <MenuItem value="0" disabled>
+                              Select Ad
+                            </MenuItem>
+                            {selectedAd.length > 0 ? (
+                              selectedAd?.map((ad, index) => (
+                                <MenuItem key={index} value={ad?.id || ""}>
+                                  {ad?.name}
+                                </MenuItem>
+                              ))
+                            ) : (
+                              <MenuItem disabled>No Ads found.</MenuItem>
+                            )}
+                          </Select>
+                        </FormControl>
+                      ) : (
+                        <FormControl
+                          className="w-full mt-1 mb-5"
+                          variant="outlined"
+                          required
+                          sx={{
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor:
+                                currentMode === "dark" ? "#ffffff" : "#000000",
+                            },
+                            "&:hover:not(.Mui-disabled):before": {
+                              borderColor:
+                                currentMode === "dark" ? "#ffffff" : "#000000",
+                            },
+                          }}
+                        >
+                          <InputLabel
+                            id="ad-label"
+                            sx={{
+                              color:
+                                currentMode === "dark"
+                                  ? "#ffffff !important"
+                                  : "#000000 !important",
+                            }}
+                          >
+                            Select Ad
+                          </InputLabel>
+                          <Select
+                            // value={selectedAd}
+                            // onChange={(event) => selectAd(event, event.target.value)}
+                            labelId="ad-label"
+                            label="Select Ad"
+                            value={selectedAd}
+                          >
+                            <MenuItem value="0" disabled>
+                              Select Ad
+                            </MenuItem>
+                            {selectedCampaign?.ads?.length > 0 ? (
+                              selectedCampaign?.ads?.map((ad, index) => (
+                                <MenuItem key={index} value={ad?.id || ""}>
+                                  {ad?.name}
+                                </MenuItem>
+                              ))
+                            ) : (
+                              <MenuItem disabled>No Ads found.</MenuItem>
+                            )}
+                          </Select>
+                        </FormControl>
+                      )}
                     </div>
                   </>
                 )}
