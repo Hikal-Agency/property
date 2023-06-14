@@ -143,7 +143,7 @@ const Users = () => {
         userEmail: row?.userEmail || "No Email",
         status: row?.status,
         is_trainer: row?.is_trainer,
-        displayImg: row?.displayImg,
+        profile_picture: row?.profile_picture,
         edit: "edit",
       }));
 
@@ -179,7 +179,7 @@ const Users = () => {
 
   const columns = [
     {
-      field: "displayImg",
+      field: "profile_picture",
       headerName: "Image",
       headerAlign: "center",
       align: "center",
@@ -480,7 +480,7 @@ const Users = () => {
                         icon={
                           value === 0 ? (
                             <AiOutlineAppstore
-                            size={22}
+                              size={22}
                               style={{
                                 color:
                                   currentMode === "dark"
@@ -490,7 +490,7 @@ const Users = () => {
                             />
                           ) : (
                             <AiOutlineTable
-                            size={22}
+                              size={22}
                               style={{
                                 color:
                                   currentMode === "dark"
@@ -542,8 +542,12 @@ const Users = () => {
                         pageSize={pageState.pageSize}
                         componentsProps={{
                           toolbar: {
-                                              printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+                            printOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
+                            csvOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
                             showQuickFilter: true,
                           },
                         }}

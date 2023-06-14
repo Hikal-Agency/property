@@ -330,9 +330,9 @@ const UserTable = ({ user }) => {
                             : "bg-gray-200 text-black"
                         } p-3 rounded-md relative`}
                       >
-                        {item?.displayImg ? (
+                        {item?.profile_picture ? (
                           <img
-                            src={item?.displayImg}
+                            src={item?.profile_picture}
                             className="rounded-md cursor-pointer h-[50px] w-[50px] object-cover"
                             alt=""
                           />
