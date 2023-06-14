@@ -1147,6 +1147,17 @@ const Sidebarmui = () => {
             },
           ],
         },
+
+        {
+          name: "Notes",
+          icon: <MdSpeakerNotes />,
+          link: "/leadnotes",
+        },
+      ],
+    },
+    {
+      title: "New",
+      links: [
         {
           name: "Booked deals",
           icon: <ImBookmark />,
@@ -1156,11 +1167,6 @@ const Sidebarmui = () => {
           name: "Closed deals",
           icon: <ImLock />,
           link: "/closedeals",
-        },
-        {
-          name: "Notes",
-          icon: <MdSpeakerNotes />,
-          link: "/leadnotes",
         },
       ],
     },
