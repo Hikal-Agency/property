@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useRef } from "react";
 // import axios from "axios";
 import axios from "../axoisConfig";
 
@@ -44,7 +44,6 @@ export const ContextProvider = ({ children }) => {
   const [Managers, setManagers] = useState([]);
   const [allRoutes, setAllRoutes] = useState([]);
   const [isUserSubscribed, setIsUserSubscribed] = useState(null);
-  const [socket, setSocket] = useState(null);
   const [appLoading, setAppLoading] = useState(false);
   const [sidebarData, setSidebarData] = useState({});
 
@@ -285,8 +284,6 @@ export const ContextProvider = ({ children }) => {
         setAllRoutes,
         isUserSubscribed,
         setIsUserSubscribed,
-        socket,
-        setSocket,
         appLoading,
         setAppLoading,
         sidebarData,

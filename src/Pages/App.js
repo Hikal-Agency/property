@@ -56,8 +56,6 @@ import { useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useNavigate } from "react-router-dom";
-
 import OfficeSettings from "./attendanceModule/officeSettings";
 import Settings from "./settings";
 import Employees from "./attendanceModule/employeesList";
@@ -319,15 +317,15 @@ const routes = [
   },
 ];
 
+// export const socket = io(process.env.REACT_APP_SOCKET_URL)
+
 function App() {
   const {
     setAllRoutes,
-    setSocket,
+    socketRef,
     currentMode,
   } = useStateContext();
   const location = useLocation();
-
-  const navigate = useNavigate();
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -336,16 +334,8 @@ function App() {
 
   useEffect(() => {
     setAllRoutes(routes);
-
-    const socketURL = process.env.REACT_APP_SOCKET_URL;
-    const socket = io(socketURL);
-    console.log("Socket URL: ", socket);
-    setSocket(socket);
-
-    return () => {
-      socket.disconnect();
-    };
   }, []);
+
 
   function hasSidebarOrNavbar() {
     const pathname = location.pathname;

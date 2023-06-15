@@ -24,7 +24,7 @@ const BulkUpdateLeads = ({
   handleCloseBulkUpdateModel,
   selectedRows,
   FetchLeads,
-  setSelectedRows,
+selectionModelRef
 }) => {
   const { currentMode, Managers, User, SalesPerson, BACKEND_URL } =
     useStateContext();
@@ -51,32 +51,30 @@ const BulkUpdateLeads = ({
 
   const handleSubmit = async () => {
     try {
+      if (User.role === 1 && Manager) {
       const token = localStorage.getItem("auth-token");
 
-      const urls = selectedRows.map((id) => {
-        const UpdateLeadData = new FormData();
-        UpdateLeadData.append("lid", id);
-        UpdateLeadData.append("id", id);
+       const UpdateLeadData = {
+        ids: selectedRows, 
+        action: "update",
+       };
 
-        if (User.role === 1) {
-          if (Manager) {
-            UpdateLeadData.append("assignedToManager", Manager);
+          if (Manager && !SalesPerson2) {
+            UpdateLeadData["role"] = "manager";
+            UpdateLeadData["user_id"] = Manager;
+          } else if(Manager && SalesPerson2) {
+            UpdateLeadData["role"] = "agent";
+            UpdateLeadData["user_id"] = SalesPerson2;
           }
 
-          if (SalesPerson2) {
-            UpdateLeadData.append("assignedToSales", SalesPerson2);
-          }
-        }
-        return axios.post(`${BACKEND_URL}/leads/${id}`, UpdateLeadData, {
-          headers: {
+          await axios.post(`${BACKEND_URL}/bulkaction`, JSON.stringify(UpdateLeadData), {
+            headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
         });
-      });
 
       setbtnloading(true);
-      await Promise.all(urls);
       toast.success("Leads Updated Successfully", {
         position: "top-right",
         autoClose: 3000,
@@ -88,7 +86,9 @@ const BulkUpdateLeads = ({
       });
       setbtnloading(false);
       FetchLeads(token);
+      selectionModelRef.current = [];
       handleCloseBulkUpdateModel();
+    }
     } catch (error) {
       toast.error("Error in Updating Leads", {
         position: "top-right",

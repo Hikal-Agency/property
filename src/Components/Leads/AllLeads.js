@@ -84,6 +84,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
   // const [searchTerm, setSearchTerm] = useState("");
   const searchRef = useRef();
+  const selectionModelRef = useRef([]);
   const [hovered, setHovered] = useState("");
   const [CSVData, setCSVData] = useState({
     keys: [],
@@ -1478,23 +1479,22 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     try {
       setdeleteloading(true);
       setdeletebtnloading(true);
-
-      console.log("delete leads: ", selectedRows);
-
-      const urls = selectedRows.map((lead) =>
-        axios.delete(`${BACKEND_URL}/leads/${lead}`, {
+      const Data = {
+        action: 'delete', 
+        ids: selectedRows
+      };
+        await axios.post(`${BACKEND_URL}/bulkaction`, JSON.stringify(Data), {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
         })
-      );
 
-      await Promise.all(urls);
       setdeleteloading(false);
       setdeletebtnloading(false);
       setreloadDataGrid(!reloadDataGrid);
       FetchLeads(token);
+      selectionModelRef.current = [];
       setDeleteModelOpen(false);
       fetchSidebarData();
       toast.success("Leads Deleted Successfull", {
@@ -1848,7 +1848,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               paginationMode="server"
               page={pageState.page - 1}
               checkboxSelection
+              selectionModel={selectionModelRef.current}
               onSelectionModelChange={(ids) => {
+                selectionModelRef.current = ids;
                 setSelectedRows(
                   ids.map((id) => pageState?.data[id - 1]?.leadId)
                 );
@@ -1961,6 +1963,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               selectedRows={selectedRows}
               FetchLeads={FetchLeads}
               setSelectedRows={setSelectedRows}
+              selectionModelRef={selectionModelRef}
             />
           )}
 

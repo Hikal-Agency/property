@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { Box, CircularProgress, Button, TextField } from "@mui/material";
-import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 import { toast } from "react-toastify";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
@@ -9,7 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import Loader from "../../Components/Loader";
 
 const Chat = () => {
-  const { socket, User, currentMode } = useStateContext();
+  const { socketRef, User, currentMode, darkModeColors, } = useStateContext();
   const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
   const [chatLoading, setChatLoading] = useState(true);
@@ -25,12 +24,11 @@ const Chat = () => {
 
   const messagesContainerRef = useRef();
 
-  const socketURL = process.env.REACT_APP_SOCKET_URL;
   const waDevice = localStorage.getItem("authenticated-wa-device");
 
   const fetchChatMessages = async (contact, afterSendMessage) => {
-    socket.emit("get_chat", { id: waDevice, contact: contact });
-    socket.on("chat", (data) => {
+    socketRef.current.emit("get_chat", { id: waDevice, contact: contact });
+    socketRef.current.on("chat", (data) => {
       setChatMessages(() => {
         return [...data];
       });
@@ -42,19 +40,19 @@ const Chat = () => {
     e.preventDefault();
     setBtnLoading(true);
     if (chatMessageInputVal) {
-      socket.emit("send-message", {
+      socketRef.current.emit("send-message", {
         id: waDevice,
         to: searchParams.get("phoneNumber") + "@c.us",
         msg: chatMessageInputVal,
       });
 
-      socket.on("sent", () => {
+      socketRef.current.on("sent", () => {
         fetchChatMessages(searchParams.get("phoneNumber"));
         setChatMessageInputVal("");
         setBtnLoading(false);
       });
 
-      socket.on("failed", () => {
+      socketRef.current.on("failed", () => {
         toast.error("Message Couldn't be sent", {
           position: "top-right",
           autoClose: 3000,
@@ -69,14 +67,14 @@ const Chat = () => {
   };
 
   const handleLogout = () => {
-    socket.emit("logout-user", { id: waDevice });
+    socketRef.current.emit("logout-user", { id: waDevice });
   };
 
   useEffect(() => {
     const waAccount = JSON.parse(
       localStorage.getItem("authenticated-wa-account")
     );
-    if (User && socket) {
+    if (User && socketRef.current) {
       if (waDevice) {
         setDeviceName(waDevice);
         setData({
@@ -91,22 +89,23 @@ const Chat = () => {
         setReady(false);
       }
     }
-  }, [User, socket]);
+  }, [User, socketRef.current]);
 
   useEffect(() => {
-    if (socket && User) {
-      if(socket.connected) {
-
-      socket.on("qr", (qr) => {
+    if (socketRef.current && User) {
+      console.log("SOck::",socketRef.current);
+      if(socketRef.current.connected) {
+        setServerDisconnected(false);
+      socketRef.current.on("qr", (qr) => {
         setQr(qr);
         setloading(false);
       });
 
-      socket.on("user_ready", (info) => {
+      socketRef.current.on("user_ready", (info) => {
         setDeviceName(info.sessionId);
         console.log(info.sessionId);
-        socket.emit("get_profile_picture", { id: info.sessionId });
-        socket.on("profile_picture", (url) => {
+        socketRef.current.emit("get_profile_picture", { id: info.sessionId });
+        socketRef.current.on("profile_picture", (url) => {
           localStorage.setItem("authenticated-wa-device", info.sessionId);
           console.log("url: ", url);
           if (url !== null) {
@@ -127,15 +126,15 @@ const Chat = () => {
         });
       });
 
-      socket.on("new_message", () => {
+      socketRef.current.on("new_message", () => {
         fetchChatMessages(searchParams.get("phoneNumber"));
       });
 
-      socket.on("user_disconnected", () => {
+      socketRef.current.on("user_disconnected", () => {
         handleLogout();
       });
 
-      socket.on("logged-out", (data) => {
+      socketRef.current.on("logged-out", (data) => {
         if (data) {
           localStorage.removeItem("authenticated-wa-device");
           localStorage.removeItem("authenticated-wa-account");
@@ -156,14 +155,12 @@ const Chat = () => {
         }
       });
 
-      socket.on("disconnect", () => {
+      socketRef.current.on("disconnect", () => {
         setServerDisconnected(true);
       });
-      } else {
-        setServerDisconnected(true);
       }
     }
-  }, [socket]);
+  }, [socketRef.current]);
 
   useEffect(() => {
     if (User && ready) {
@@ -190,13 +187,13 @@ const Chat = () => {
       const sessionId = `${User?.id}-${deviceName
         .toLowerCase()
         .replaceAll(" ", "-")}`;
-      socket.emit("create_session", { id: sessionId });
+      socketRef.current.emit("create_session", { id: sessionId });
     }
   };
 
   return (
     <>
-      <Box className="min-h-screen">
+      <Box className="min-h-screen" sx={darkModeColors}>
         {serverDisconnected ? (
           <h1
             className="text-red-600 text-center mt-12"
@@ -413,10 +410,12 @@ const Chat = () => {
                       >
                         Go to Whatsapp and Scan this QR
                       </h1>
-                      <QRCodeCanvas
-                        style={{ width: 170, height: 170, margin: "0 auto" }}
-                        value={qr}
-                      />
+                      <Box className="p-1 bg-white rounded">
+                        <QRCodeCanvas
+                          style={{ width: 170, height: 170, margin: "0 auto" }}
+                          value={qr}
+                        />
+                      </Box>
                     </div>
                   )
                 )}
