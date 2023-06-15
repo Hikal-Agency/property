@@ -1534,6 +1534,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       setdeleteloading(true);
       setdeletebtnloading(true);
 
+      console.log("delete leads: ", selectedRows);
+
       const urls = selectedRows.map((lead) =>
         axios.delete(`${BACKEND_URL}/leads/${lead}`, {
           headers: {
