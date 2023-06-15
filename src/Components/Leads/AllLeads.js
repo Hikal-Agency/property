@@ -1056,7 +1056,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     // LEADS URL GENERATON FOR HOT LEADS SECTION
     if (lead_origin === "freshleads") {
       if (lead_type === "all") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=0`;
       } else if (lead_type === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=New`;
       } else if (lead_type === "no answer") {
@@ -1853,8 +1853,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 );
               }}
               pageSize={pageState.pageSize}
+              // onPageChange={(newPage) => {
+              //   setpageState((old) => ({ ...old, page: newPage + 1 }));
+              // }}
               onPageChange={(newPage) => {
-                setpageState((old) => ({ ...old, page: newPage + 1 }));
+                const newPerPage = pageRange;
+                console.log("change page range: ", newPerPage);
+                setpageState((old) => ({
+                  ...old,
+                  page: newPage + 1,
+                  perpage: newPerPage,
+                }));
               }}
               onPageSizeChange={(newPageSize) =>
                 setpageState((old) => ({ ...old, pageSize: newPageSize }))
