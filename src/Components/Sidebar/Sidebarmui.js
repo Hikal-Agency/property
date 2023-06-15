@@ -1239,15 +1239,16 @@ const Sidebarmui = () => {
       title: "Social Media",
       links: [
         {
-          name: "statistics",
-          icon: <FaChartLine />,
+          name: "Facebook",
+          // icon: <FaChartLine />,
+          icon: <FaFacebookSquare />,
           link: "/statistics",
         },
-        {
-          name: "campaigns",
-          icon: <FaFacebookSquare />,
-          link: "/campaigns",
-        },
+        // {
+        //   name: "campaigns",
+        //   icon: <FaFacebookSquare />,
+        //   link: "/campaigns",
+        // },
         // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
       ],
     },

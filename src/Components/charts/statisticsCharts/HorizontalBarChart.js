@@ -143,6 +143,7 @@ const HorizontalBarChart = ({ barCharData }) => {
   const chartOptions = {
     indexAxis: "y", // Set the axis to y for horizontal bars
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       x: {
         beginAtZero: true,
