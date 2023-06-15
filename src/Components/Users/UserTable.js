@@ -357,7 +357,7 @@ const UserTable = ({ user }) => {
                           {/* <hr /> */}
                           <p className="text-sm">{item?.userContact}</p>
                           <p className="text-sm">{item?.userEmail}</p>
-                          {item?.status === 0 ? (
+                          {item?.status !== 1 ? (
                             <p className="text-sm text-red-600">Deactive</p>
                           ) : (
                             <p className="text-sm text-green-600">Active</p>
