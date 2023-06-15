@@ -173,6 +173,9 @@ const Users = () => {
     }
   };
   useEffect(() => {
+    setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
+  }, []);
+  useEffect(() => {
     const token = localStorage.getItem("auth-token");
     fetchUsers(token);
   }, [pageState.page]);
