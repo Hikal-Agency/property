@@ -8,14 +8,17 @@ import {
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 // import LeadNotes from "../LeadNotes/LeadNotes";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { IoMdClose } from "react-icons/io";
 import { IoIosAlert } from "react-icons/io";
 import { useState } from "react";
+import axios from "axios";
 
-const DeleteUser = ({ UserModelOpen, handleUserModelClose }) => {
-  const { currentMode } = useStateContext();
+const DeleteUser = ({ UserData, UserModelOpen, handleUserModelClose }) => {
+  const { currentMode, BACKEND_URL } = useStateContext();
   const [deletebtnloading, setdeleteBtnLoading] = useState(false);
+
+  console.log("deativate user model: ", UserData);
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -23,10 +26,51 @@ const DeleteUser = ({ UserModelOpen, handleUserModelClose }) => {
   };
 
   const handleDeleteUser = async (e) => {
-    e.preventDefualt();
+    e.preventDefault();
+    setdeleteBtnLoading(true);
 
-    try {
-    } catch (error) {}
+    const token = localStorage.getItem("auth-token");
+
+    axios
+      .post(
+        `${BACKEND_URL}/deactivate/${UserData}`,
+        { status: 2 },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then((result) => {
+        console.log("res user deativated  ", result);
+        setdeleteBtnLoading(false);
+
+        handleUserModelClose(true);
+        toast.success("User Deactivated Successfull", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+      .catch((err) => {
+        console.log("deactivate: ", err);
+        setdeleteBtnLoading(false);
+
+        toast.error("Something Went Wrong! Please Try Again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
   };
 
   return (
@@ -59,7 +103,7 @@ const DeleteUser = ({ UserModelOpen, handleUserModelClose }) => {
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              Do You Really Want to delete this User?
+              Do You Really Want to deactivate this User?
             </h1>
           </div>
 
