@@ -146,6 +146,10 @@ const UserTable = ({ user }) => {
     setOpenModel(false);
   };
 
+  // useEffect(() => {
+  //   setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
+  // }, [pageState.page]);
+
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);

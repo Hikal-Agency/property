@@ -7,6 +7,10 @@ import {
   styled,
   Switch,
   Input,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import "../../styles/index.css";
 import {
@@ -139,13 +143,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   // eslint-disable-next-line
 
   const handleRangeChange = (e) => {
+    setError(false);
     const value = e.target.value;
 
-    console.log("range: ", value);
-
-    if (value === "" || (value >= 10 && value <= 150)) {
+    if (value === "" || (value >= 10 && value <= 100)) {
       setPageRange(value);
-      setError("");
+
+      setError(false);
+
+      setpageState((old) => ({
+        ...old,
+        perpage: value,
+      }));
     } else {
       setError("Value out of range (10-150)");
     }
@@ -169,9 +178,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
 
   const getLangCode = (language) => {
-    if(language) {
-      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
-      if(l) {
+    if (language) {
+      const l = langs.find(
+        (lang) =>
+          lang["name"].toLowerCase() === String(language).toLowerCase() ||
+          lang["nativeName"].toLowerCase() === String(language).toLowerCase()
+      );
+      if (l) {
         return l.code.toUpperCase();
       } else {
         return "Invalid";
@@ -179,7 +192,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     } else {
       return null;
     }
-  }
+  };
 
   const ManagerColumns = [
     {
@@ -985,135 +998,135 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     // LEADS URL GENERATON FOR HOT LEADS SECTION
     if (lead_origin === "freshleads") {
       if (lead_type === "all") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=0`;
       } else if (lead_type === "new") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=New`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=0&feedback=New`;
       } else if (lead_type === "no answer") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=No Answer`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=0&feedback=No Answer`;
       } else if (lead_type === "meeting") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Meeting`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=0&feedback=Meeting`;
       } else if (lead_type === "follow up") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Follow Up`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=0&feedback=Follow Up`;
       } else if (lead_type === "low budget") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Low Budget`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=0&feedback=Low Budget`;
       } else if (lead_type === "not interested") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Not Interested`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=0&feedback=Not Interested`;
       } else if (lead_type === "unreachable") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Unreachable`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=0&feedback=Unreachable`;
       }
     }
     // LEADS URL GENERATON FOR COLD LEADS PAGE
     else if (lead_origin === "coldleads") {
       if (lead_type === "all") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=1`;
       } else if (lead_type === "new") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=New`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=1&feedback=New`;
       } else if (lead_type === "coldLeadsVerified") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&is_whatsapp=1`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=1&is_whatsapp=1`;
       } else if (lead_type === "coldLeadsInvalid") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&is_whatsapp=2`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=1&is_whatsapp=2`;
       } else if (lead_type === "coldLeadsNotChecked") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&is_whatsapp=0`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=1&is_whatsapp=0`;
       } else if (lead_type === "no answer") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=No Answer`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=1&feedback=No Answer`;
       } else if (lead_type === "meeting") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Meeting`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=1&feedback=Meeting`;
       } else if (lead_type === "follow up") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Follow Up`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=1&feedback=Follow Up`;
       } else if (lead_type === "low budget") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Low Budget`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=1&feedback=Low Budget`;
       } else if (lead_type === "not interested") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Not Interested`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=1&feedback=Not Interested`;
       } else if (lead_type === "unreachable") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Unreachable`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=1&feedback=Unreachable`;
       }
     }
     // LEADS URL GENERATON FOR THIRDPARTY PAGE
     else if (lead_origin === "thirdpartyleads") {
       if (lead_type === "all") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=3`;
       } else if (lead_type === "new") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=New`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=3&feedback=New`;
       } else if (lead_type === "no answer") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=No Answer`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=3&feedback=No Answer`;
       } else if (lead_type === "meeting") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Meeting`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=3&feedback=Meeting`;
       } else if (lead_type === "follow up") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Follow Up`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=3&feedback=Follow Up`;
       } else if (lead_type === "low budget") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Low Budget`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=3&feedback=Low Budget`;
       } else if (lead_type === "not interested") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Not Interested`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=3&feedback=Not Interested`;
       } else if (lead_type === "unreachable") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Unreachable`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=3&feedback=Unreachable`;
       }
     }
     // LEADS URL GENERATON FOR PERSONAL PAGE
     else if (lead_origin === "personalleads") {
       if (lead_type === "all") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=2`;
       } else if (lead_type === "new") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=New`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=2&feedback=New`;
       } else if (lead_type === "no answer") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=No Answer`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=2&feedback=No Answer`;
       } else if (lead_type === "meeting") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Meeting`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=2&feedback=Meeting`;
       } else if (lead_type === "follow up") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Follow Up`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=2&feedback=Follow Up`;
       } else if (lead_type === "low budget") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Low Budget`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=2&feedback=Low Budget`;
       } else if (lead_type === "not interested") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Not Interested`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=2&feedback=Not Interested`;
       } else if (lead_type === "unreachable") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Unreachable`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=2&feedback=Unreachable`;
       }
     }
     // LEADS URL GENERATON FOR WARM LEADS PAGE
     else if (lead_origin === "archive") {
       if (lead_type === "all") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=4`;
       } else if (lead_type === "new") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=New`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=4&feedback=New`;
       } else if (lead_type === "no answer") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=No Answer`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=4&feedback=No Answer`;
       } else if (lead_type === "meeting") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Meeting`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=4&feedback=Meeting`;
       } else if (lead_type === "follow up") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Follow Up`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=4&feedback=Follow Up`;
       } else if (lead_type === "low budget") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Low Budget`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=4&feedback=Low Budget`;
       } else if (lead_type === "not interested") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Not Interested`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=4&feedback=Not Interested`;
       } else if (lead_type === "unreachable") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Unreachable`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=4&feedback=Unreachable`;
       }
     } else if (lead_origin === "transfferedleads") {
-      FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&coldCall=0&leadStatus=Transferred`;
+      FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&perpage=${pageState.perpage}&coldCall=0&leadStatus=Transferred`;
     } else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=0`;
       } else if (lead_type === "new") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=New`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=0&feedback=New`;
       } else if (lead_type === "no answer") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=No Answer`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=0&feedback=No Answer`;
       } else if (lead_type === "meeting") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Meeting`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=0&feedback=Meeting`;
       } else if (lead_type === "follow up") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Follow Up`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=0&feedback=Follow Up`;
       } else if (lead_type === "low budget") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Low Budget`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=0&feedback=Low Budget`;
       } else if (lead_type === "not interested") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Not Interested`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=0&feedback=Not Interested`;
       } else if (lead_type === "unreachable") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Unreachable`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=0&feedback=Unreachable`;
       } else if (lead_type === "cold") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=1`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=1`;
       } else if (lead_type === "warm") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=4`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=4`;
       } else if (lead_type === "personal") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=2`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=2`;
       } else if (lead_type === "thirdpartyleads") {
-        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=3`;
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=3`;
       }
     }
 
@@ -1284,6 +1297,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           comment: comCount,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
+          from: result.data.coldLeads.from,
+          to: result.data.coldLeads.to,
           // total: result.data.coldLeads.total,
           total: total,
         }));
@@ -1389,7 +1404,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           assignedToSales: row?.assignedToSales || null,
           feedback: row?.feedback || null,
           priority: row?.priority || null,
-          language: getLangCode( row?.language )|| "No Language",
+          language: getLangCode(row?.language) || "No Language",
           leadSource: row?.leadSource || "No Source",
           lid: row?.lid || "No id",
           lastEdited: row?.lastEdited || "No Date",
@@ -1437,7 +1452,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     } else {
       FetchLeads(token);
     }
-  }, [pageState.page, lead_type, reloadDataGrid]);
+  }, [pageState.page, pageState.perpage, lead_type, reloadDataGrid]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
@@ -1551,24 +1566,80 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
 
   // Custom Pagination
+  // function CustomPagination() {
+  //   const apiRef = useGridApiContext();
+  //   const page = useGridSelector(apiRef, gridPageSelector);
+  //   const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+  //   return (
+  //     <>
+  //       <Pagination
+  //         sx={{
+  //           "& .Mui-selected": {
+  //             backgroundColor: "white !important",
+  //             color: "black !important",
+  //             borderRadius: "5px !important",
+  //           },
+  //         }}
+  //         count={pageCount}
+  //         page={page + 1}
+  //         onChange={(event, value) => apiRef?.current?.setPage(value - 1)}
+  //       />
+  //     </>
+  //   );
+  // }
+
   function CustomPagination() {
     const apiRef = useGridApiContext();
     const page = useGridSelector(apiRef, gridPageSelector);
     const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+
     return (
       <>
-        <Pagination
-          sx={{
-            "& .Mui-selected": {
-              backgroundColor: "white !important",
-              color: "black !important",
-              borderRadius: "5px !important",
-            },
-          }}
-          count={pageCount}
-          page={page + 1}
-          onChange={(event, value) => apiRef?.current?.setPage(value - 1)}
-        />
+        <div className="flex justify-center items-center">
+          <p className="mr-3">
+            {pageState.from}-{pageState.to}
+          </p>
+
+          <p className="text-white mr-3">Rows Per Page</p>
+
+          <Select
+            labelId="select-page-size-label"
+            value={pageState.pageSize}
+            onChange={handleRangeChange}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "white",
+                },
+                "&:hover fieldset": {
+                  borderColor: "white",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "white",
+                },
+              },
+            }}
+          >
+            {[14, 30, 50, 75, 100].map((size) => (
+              <MenuItem key={size} value={size}>
+                {size}
+              </MenuItem>
+            ))}
+          </Select>
+
+          <Pagination
+            sx={{
+              "& .Mui-selected": {
+                backgroundColor: "white !important",
+                color: "black !important",
+                borderRadius: "5px !important",
+              },
+            }}
+            count={pageCount}
+            page={page + 1}
+            onChange={(event, value) => apiRef?.current?.setPage(value - 1)}
+          />
+        </div>
       </>
     );
   }
@@ -1684,32 +1755,32 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             style={{ zIndex: "5 !important" }}
             className="absolute top-[7px] right-[20px] z-[5]"
           >
-            <TextField
+            {/* <TextField
               type="number"
-              placeholder="Select range 1-150"
+              placeholder="Select per page 14-100"
               value={pageRange}
-              // sx={{
-              //   "& input": {
-              //     borderBottom: "2px solid #ffffff6e",
-              //   },
-              // }}
+              sx={{
+                "& input": {
+                  borderBottom: "2px solid #ffffff6e",
+                },
+              }}
               variant="standard"
               onChange={handleRangeChange}
               min={"14"}
-              // onKeyUp={handleKeyUp}
-              // onInput={handleSearch}
-              // InputProps={{
-              //   startAdornment: (
-              //     <InputAdornment position="start">
-              //       <IconButton sx={{ padding: 0 }}>
-              //         {/* <BiSearch size={17} /> */}
-              //       </IconButton>
-              //     </InputAdornment>
-              //   ),
-              // }}
+              onKeyUp={handleKeyUp}
+              onInput={handleSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton sx={{ padding: 0 }}>
+                     
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
               error={error && error}
               helperText={error && error}
-            />
+            /> */}
 
             <TextField
               placeholder="Search.."
@@ -1783,8 +1854,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 );
               }}
               pageSize={pageState.pageSize}
+              // onPageChange={(newPage) => {
+              //   setpageState((old) => ({ ...old, page: newPage + 1 }));
+              // }}
               onPageChange={(newPage) => {
-                setpageState((old) => ({ ...old, page: newPage + 1 }));
+                const newPerPage = pageRange;
+                console.log("change page range: ", newPerPage);
+                setpageState((old) => ({
+                  ...old,
+                  page: newPage + 1,
+                  perpage: newPerPage,
+                }));
               }}
               onPageSizeChange={(newPageSize) =>
                 setpageState((old) => ({ ...old, pageSize: newPageSize }))

@@ -54,6 +54,9 @@ export const ContextProvider = ({ children }) => {
     data: [],
     total: 0,
     page: 1,
+    to: 0,
+    from: 0,
+    perpage: 14,
     pageSize: 15,
   });
   const DataGridStyles = {

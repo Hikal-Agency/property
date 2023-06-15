@@ -1,5 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import { Pagination } from "@mui/material";
+import { MenuItem, Pagination, Select } from "@mui/material";
 import { Box } from "@mui/system";
 import {
   DataGrid,
@@ -26,11 +26,24 @@ const Closedeals = ({ pageState, setpageState }) => {
   const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
+  const [pageRange, setPageRange] = useState();
+
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
   const handleUpdateLeadModelClose = () => {
     setUpdateLeadModelOpen(false);
+  };
+
+  const handleRangeChange = (e) => {
+    const value = e.target.value;
+
+    setPageRange(value);
+
+    setpageState((old) => ({
+      ...old,
+      perpage: value,
+    }));
   };
 
   // TOOLBAR SEARCH FUNC
@@ -155,12 +168,15 @@ const Closedeals = ({ pageState, setpageState }) => {
     }));
 
     axios
-      .get(`${BACKEND_URL}/closedDeals?page=${pageState.page}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
+      .get(
+        `${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${pageState.perpage}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
       .then((result) => {
         console.log("the closed deals are ");
         console.log(result.data);
@@ -192,6 +208,8 @@ const Closedeals = ({ pageState, setpageState }) => {
           ...old,
           isLoading: false,
           data: rowsdata,
+          from: result.data.leads.from,
+          to: result.data.leads.to,
           pageSize: result.data.leads.per_page,
           total: result.data.leads.total,
         }));
@@ -206,7 +224,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     FetchLeads(token);
 
     // eslint-disable-next-line
-  }, [pageState.page]);
+  }, [pageState.page, , pageState.perpage]);
 
   // ROW CLICK FUNCTION
   // const handleRowClick = async (params) => {
@@ -223,23 +241,58 @@ const Closedeals = ({ pageState, setpageState }) => {
     const apiRef = useGridApiContext();
     const page = useGridSelector(apiRef, gridPageSelector);
     const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+
     return (
       <>
-        <Pagination
-          sx={{
-            "& .Mui-selected": {
-              backgroundColor: "white !important",
-              color: "black !important",
-              borderRadius: "5px !important",
-            },
-          }}
-          count={pageCount}
-          page={page + 1}
-          onChange={(event, value) => apiRef.current.setPage(value - 1)}
-        />
+        <div className="flex justify-center items-center">
+          <p className="mr-3">
+            {pageState.from}-{pageState.to}
+          </p>
+
+          <p className="text-white mr-3">Rows Per Page</p>
+
+          <Select
+            labelId="select-page-size-label"
+            value={pageState.pageSize}
+            onChange={handleRangeChange}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "white",
+                },
+                "&:hover fieldset": {
+                  borderColor: "white",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "white",
+                },
+              },
+            }}
+          >
+            {[pageState.pageSize, 14, 30, 50, 75, 100].map((size) => (
+              <MenuItem key={size} value={size}>
+                {size}
+              </MenuItem>
+            ))}
+          </Select>
+
+          <Pagination
+            sx={{
+              "& .Mui-selected": {
+                backgroundColor: "white !important",
+                color: "black !important",
+                borderRadius: "5px !important",
+              },
+            }}
+            count={pageCount}
+            page={page + 1}
+            onChange={(event, value) => apiRef?.current?.setPage(value - 1)}
+          />
+        </div>
       </>
     );
   }
+
   return (
     <div className="pb-10">
       <ToastContainer />
