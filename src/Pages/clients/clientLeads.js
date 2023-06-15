@@ -19,6 +19,7 @@ import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
+import { langs } from "../../langCodes";
 import { TbFileImport } from "react-icons/tb";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
@@ -62,6 +63,19 @@ const ClientLeads = ({
   const [searchTerm, setSearchTerm] = useState("");
 
   const [deletebtnloading, setdeletebtnloading] = useState(false);
+
+    const getLangCode = (language) => {
+    if(language) {
+      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
+      if(l) {
+        return l.code.toUpperCase();
+      } else {
+        return "Invalid";
+      }
+    } else {
+      return null;
+    }
+  }
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
@@ -252,7 +266,7 @@ const ClientLeads = ({
       headerName: "Language",
       headerAlign: "center",
       // width: 130,
-      minWidth: 110,
+      minWidth: 100,
       flex: 1,
     },
     {
@@ -424,7 +438,7 @@ const ClientLeads = ({
       headerName: "Language",
       headerAlign: "center",
       // width: 130,
-      minWidth: 110,
+      minWidth: 100,
       flex: 1,
     },
     {
@@ -653,7 +667,7 @@ const ClientLeads = ({
       headerName: "Language",
       headerAlign: "center",
       // width: 130,
-      minWidth: 110,
+      minWidth: 100,
       flex: 1,
     },
     {
@@ -905,7 +919,7 @@ const ClientLeads = ({
           assignedToSales: row.assignedToSales,
           feedback: row?.feedback,
           priority: row.priority,
-          language: row.language,
+          language: getLangCode(row?.language) || "No language",
           leadSource: row?.leadSource,
           lid: row?.id,
           lastEdited: row?.lastEdited,

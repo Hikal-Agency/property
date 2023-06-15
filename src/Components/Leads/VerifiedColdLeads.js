@@ -14,6 +14,7 @@ import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import RenderFeedback from "./RenderFeedback";
+import { langs } from "../../langCodes";
 import RenderPriority from "./RenderPriority";
 
 const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
@@ -88,6 +89,19 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       // backgroundColor: "red",
     },
   };
+
+    const getLangCode = (language) => {
+    if(language) {
+      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
+      if(l) {
+        return l.code.toUpperCase();
+      } else {
+        return "Invalid";
+      }
+    } else {
+      return null;
+    }
+  }
 
   const columns = [
     {
@@ -203,7 +217,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
           assignedToSales: row.assignedToSales,
           feedback: row?.feedback,
           priority: row.priority,
-          language: row.language,
+          language: getLangCode(row?.language) || "No Language",
           //   leadSource: row?.leadSource,
           lid: row?.lid,
           //   lastEdited: row?.lastEdited,

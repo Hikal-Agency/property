@@ -22,18 +22,18 @@ import {
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
+import { AiOutlineEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
-import {BiSearch} from "react-icons/bi";
+import { BiSearch } from "react-icons/bi";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { FaSnapchat } from "react-icons/fa";
-import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
+import { langs } from "../../langCodes";
 import SingleLead from "./SingleLead";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast, ToastContainer } from "react-toastify";
@@ -64,6 +64,19 @@ const BookedDeals = ({
 
   const dataTableRef = useRef();
   const searchRef = useRef();
+
+    const getLangCode = (language) => {
+    if(language) {
+      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
+      if(l) {
+        return l.code.toUpperCase();
+      } else {
+        return "Invalid";
+      }
+    } else {
+      return null;
+    }
+  }
 
   const {
     currentMode,
@@ -417,7 +430,7 @@ const BookedDeals = ({
       headerName: "Language",
 
       // width: 130,
-      minWidth: 110,
+      minWidth: 80,
       flex: 1,
     },
   ];
@@ -489,7 +502,7 @@ const BookedDeals = ({
     {
       field: "language",
       headerName: "Lang",
-      minWidth: 45,
+      minWidth: 40,
       flex: 1,
     },
     // {
@@ -737,7 +750,7 @@ const BookedDeals = ({
     {
       field: "language",
       headerName: "Lang",
-      minWidth: 45,
+      minWidth: 40,
       flex: 1,
     },
     // {
@@ -926,7 +939,7 @@ const BookedDeals = ({
     {
       field: "language",
       headerName: "Lang",
-      minWidth: 45,
+      minWidth: 40,
       flex: 1,
     },
     // {
@@ -1083,8 +1096,8 @@ const BookedDeals = ({
           assignedToManager: row.assignedToManager,
           assignedToSales: row.assignedToSales,
           feedback: row?.feedback,
-          priority: row.priority,
-          language: row.language,
+          priority: row?.priority,
+          language: getLangCode(row?.language) || "No language",
           leadSource: row?.leadSource,
           lid: row?.lid,
           lastEdited: row?.lastEdited,
@@ -1254,7 +1267,7 @@ const BookedDeals = ({
           assignedToSales: row?.assignedToSales || null,
           feedback: row?.feedback || null,
           priority: row?.priority || null,
-          language: row?.language || "No Language",
+          language: getLangCode(row?.language) || "No language",
           leadSource: row?.leadSource || "No Source",
           lid: row?.lid || "No id",
           lastEdited: row?.lastEdited || "No Date",

@@ -28,6 +28,7 @@ import UpdateLead from "./UpdateLead";
 import Image from "next/image";
 import { toast, ToastContainer } from "react-toastify";
 import RenderPriority from "./RenderPriority";
+import {langs} from "../../langCodes";
 import RenderFeedback from "./RenderFeedback";
 import RenderManagers from "./RenderManagers";
 
@@ -73,6 +74,19 @@ const Newleads = ({
       justifyContent: "center",
     },
   };
+
+    const getLangCode = (language) => {
+    if(language) {
+      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
+      if(l) {
+        return l.code.toUpperCase();
+      } else {
+        return "Invalid";
+      }
+    } else {
+      return null;
+    }
+  }
 
   const searchRef = useRef();
 
@@ -175,7 +189,7 @@ const Newleads = ({
       headerName: "Language",
       headerAlign: "center",
       // width: 130,
-      minWidth: 110,
+      minWidth: 100,
       flex: 1,
     },
     {
@@ -327,7 +341,7 @@ const Newleads = ({
       headerName: "Language",
       headerAlign: "center",
       // width: 130,
-      minWidth: 110,
+      minWidth: 90,
       flex: 1,
     },
     {
@@ -576,7 +590,7 @@ const Newleads = ({
           feedback: row?.feedback,
           coldCall: row?.coldcall,
           priority: row.priority,
-          language: row.language,
+          language: getLangCode(row?.language) || "No language",
           leadSource: row?.leadSource,
           lid: row?.lid,
           lastEdited: row?.lastEdited,
@@ -650,7 +664,7 @@ const Newleads = ({
           assignedToSales: row?.assignedToSales || null,
           feedback: row?.feedback || null,
           priority: row?.priority || null,
-          language: row?.language || "No Language",
+          language: getLangCode(row?.language) || "No Language",
           leadSource: row?.leadSource || "No Source",
           lid: row?.lid || "No id",
           lastEdited: row?.lastEdited || "No Date",

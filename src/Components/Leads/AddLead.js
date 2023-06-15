@@ -95,6 +95,8 @@ const AddLead = () => {
                           </MenuItem>
                           <MenuItem value={"apartment"}>Apartment</MenuItem>
                           <MenuItem value={"villa"}>Villa</MenuItem>
+                          <MenuItem value={"penthouse"}>Penthouse</MenuItem>
+                          <MenuItem value={"mansion"}>Mansion</MenuItem>
                           <MenuItem value={"commercial"}>Commercial</MenuItem>
                           <MenuItem value={"townhouse"}>TownHouse</MenuItem>
                         </Select>

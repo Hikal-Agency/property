@@ -21,6 +21,7 @@ import { BsWhatsapp } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { toast, ToastContainer } from "react-toastify";
+import { langs } from "../../langCodes";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
 
@@ -117,6 +118,19 @@ const AllLeads = () => {
   });
   const [whatsappSenderNo, setWhatsappSenderNo] = useState("");
   const imagePickerRef = useRef();
+
+    const getLangCode = (language) => {
+    if(language) {
+      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
+      if(l) {
+        return l.code.toUpperCase();
+      } else {
+        return "Invalid";
+      }
+    } else {
+      return null;
+    }
+  }
 
   // const [openMessageModal, setOpenMessageModal] = useState(false);
 
@@ -668,7 +682,7 @@ const AllLeads = () => {
           leadContact: row?.leadContact,
           project: row?.project,
           leadType: row?.leadType,
-          language: row?.language || "No Language",
+          language: getLangCode(row?.language) || "No Language",
           enquiryType: row?.enquiryType,
           leadSource: row?.leadSource,
         }));
@@ -746,7 +760,7 @@ const AllLeads = () => {
             leadName: row?.leadName,
             leadContact: row?.leadContact,
             project: row?.project,
-            language: row?.language || "No Language",
+            language: getLangCode(row?.language) || "No Language",
             leadType: row?.leadType,
             leadSource: row?.leadSource,
             lid: row?.id,

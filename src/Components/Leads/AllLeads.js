@@ -170,7 +170,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   const getLangCode = (language) => {
     if(language) {
-      const l = JSON.parse(langs).find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
+      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
       if(l) {
         return l.code.toUpperCase();
       } else {
@@ -249,7 +249,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "language",
       headerName: "Lang",
-      minWidth: 65,
+      minWidth: 55,
       flex: 1,
     },
     // {
@@ -480,7 +480,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "language",
       headerName: "Lang",
-      minWidth: 45,
+      minWidth: 40,
       flex: 1,
     },
     // {
@@ -862,7 +862,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "language",
       headerName: "Lang",
-      minWidth: 40,
+      minWidth: 25,
       flex: 1,
     },
     // {
