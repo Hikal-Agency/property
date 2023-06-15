@@ -7,6 +7,10 @@ import {
   styled,
   Switch,
   Input,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import "../../styles/index.css";
 import {
@@ -141,7 +145,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     setError(false);
     const value = e.target.value;
 
-    if (value === "" || (value >= 10 && value <= 150)) {
+    if (value === "" || (value >= 10 && value <= 100)) {
       setPageRange(value);
 
       setError(false);
@@ -1362,6 +1366,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           comment: comCount,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
+          from: result.data.coldLeads.from,
+          to: result.data.coldLeads.to,
           // total: result.data.coldLeads.total,
           total: total,
         }));
@@ -1628,24 +1634,80 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
 
   // Custom Pagination
+  // function CustomPagination() {
+  //   const apiRef = useGridApiContext();
+  //   const page = useGridSelector(apiRef, gridPageSelector);
+  //   const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+  //   return (
+  //     <>
+  //       <Pagination
+  //         sx={{
+  //           "& .Mui-selected": {
+  //             backgroundColor: "white !important",
+  //             color: "black !important",
+  //             borderRadius: "5px !important",
+  //           },
+  //         }}
+  //         count={pageCount}
+  //         page={page + 1}
+  //         onChange={(event, value) => apiRef?.current?.setPage(value - 1)}
+  //       />
+  //     </>
+  //   );
+  // }
+
   function CustomPagination() {
     const apiRef = useGridApiContext();
     const page = useGridSelector(apiRef, gridPageSelector);
     const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+
     return (
       <>
-        <Pagination
-          sx={{
-            "& .Mui-selected": {
-              backgroundColor: "white !important",
-              color: "black !important",
-              borderRadius: "5px !important",
-            },
-          }}
-          count={pageCount}
-          page={page + 1}
-          onChange={(event, value) => apiRef?.current?.setPage(value - 1)}
-        />
+        <div className="flex justify-center items-center">
+          <p className="mr-3">
+            {pageState.from}-{pageState.to}
+          </p>
+
+          <p className="text-white mr-3">Rows Per Page</p>
+
+          <Select
+            labelId="select-page-size-label"
+            value={pageState.pageSize}
+            onChange={handleRangeChange}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "white",
+                },
+                "&:hover fieldset": {
+                  borderColor: "white",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "white",
+                },
+              },
+            }}
+          >
+            {[14, 30, 50, 75, 100].map((size) => (
+              <MenuItem key={size} value={size}>
+                {size}
+              </MenuItem>
+            ))}
+          </Select>
+
+          <Pagination
+            sx={{
+              "& .Mui-selected": {
+                backgroundColor: "white !important",
+                color: "black !important",
+                borderRadius: "5px !important",
+              },
+            }}
+            count={pageCount}
+            page={page + 1}
+            onChange={(event, value) => apiRef?.current?.setPage(value - 1)}
+          />
+        </div>
       </>
     );
   }
@@ -1763,7 +1825,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           >
             <TextField
               type="number"
-              placeholder="Select range 10-150"
+              placeholder="Select per page 14-100"
               value={pageRange}
               // sx={{
               //   "& input": {
