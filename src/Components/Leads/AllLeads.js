@@ -55,6 +55,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import Loader from "../Loader";
 import { FaYoutube } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
+import { langs } from "../../langCodes";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -166,6 +167,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       }
     }
   };
+
+  const getLangCode = (language) => {
+    if(language) {
+      const l = JSON.parse(langs).find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
+      if(l) {
+        return l.code.toUpperCase();
+      } else {
+        return "Invalid";
+      }
+    } else {
+      return null;
+    }
+  }
 
   const ManagerColumns = [
     {
@@ -1271,7 +1285,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           assignedToSales: row?.assignedToSales || null,
           feedback: row?.feedback || null,
           priority: row?.priority || null,
-          language: row?.language || "No language",
+          language: getLangCode(row?.language) || "No language",
           leadSource: row?.leadSource || "No source",
           lid: row?.lid || "No id",
           lastEdited: row?.lastEdited || "No date",
@@ -1462,7 +1476,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           assignedToSales: row?.assignedToSales || null,
           feedback: row?.feedback || null,
           priority: row?.priority || null,
-          language: row?.language || "No Language",
+          language: getLangCode( row?.language )|| "No Language",
           leadSource: row?.leadSource || "No Source",
           lid: row?.lid || "No id",
           lastEdited: row?.lastEdited || "No Date",
