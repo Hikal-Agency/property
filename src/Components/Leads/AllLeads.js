@@ -6,6 +6,7 @@ import {
   TextField,
   styled,
   Switch,
+  Input,
 } from "@mui/material";
 import "../../styles/index.css";
 import {
@@ -69,6 +70,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [singleLeadData, setsingleLeadData] = useState({});
   const [deleteloading, setdeleteloading] = useState(false);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
+  const [error, setError] = useState(false);
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
@@ -103,6 +105,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   // eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
+  const [pageRange, setPageRange] = useState();
 
   //View LEAD MODAL VARIABLES
   const [LeadModelOpen, setLeadModelOpen] = useState(false);
@@ -133,6 +136,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   // ROLE 3
   // eslint-disable-next-line
+
+  const handleRangeChange = (e) => {
+    const value = e.target.value;
+
+    console.log("range: ", value);
+
+    if (value === "" || (value >= 10 && value <= 150)) {
+      setPageRange(value);
+      setError("");
+    } else {
+      setError("Value out of range (10-150)");
+    }
+  };
 
   const handleSearch = (e) => {
     if (e.target.value === "") {
@@ -1380,19 +1396,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         lead_type !== "all" &&
         lead_type !== "coldLeadsVerified" &&
         lead_type !== "coldLeadsInvalid" &&
-        lead_type !== "coldLeadsNotChecked" && 
+        lead_type !== "coldLeadsNotChecked" &&
         lead_origin !== "unassigned"
       ) {
         url += `&feedback=${lead_type}`;
       }
     }
 
-    if(lead_origin === "unassigned") {
+    if (lead_origin === "unassigned") {
       url += "&unassigned=1";
-       if (lead_type === "cold") {
+      if (lead_type === "cold") {
         coldCallCode = 1;
       } else if (lead_type === "warm") {
-        coldCallCode= 4;
+        coldCallCode = 4;
       } else if (lead_type === "personal") {
         coldCallCode = 2;
       } else if (lead_type === "thirdpartyleads") {
@@ -1520,6 +1536,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     try {
       setdeleteloading(true);
       setdeletebtnloading(true);
+
+      console.log("delete leads: ", selectedRows);
 
       const urls = selectedRows.map((lead) =>
         axios.delete(`${BACKEND_URL}/leads/${lead}`, {
@@ -1739,6 +1757,33 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             style={{ zIndex: "5 !important" }}
             className="absolute top-[7px] right-[20px] z-[5]"
           >
+            <TextField
+              type="number"
+              placeholder="Select range 1-150"
+              value={pageRange}
+              // sx={{
+              //   "& input": {
+              //     borderBottom: "2px solid #ffffff6e",
+              //   },
+              // }}
+              variant="standard"
+              onChange={handleRangeChange}
+              min={"14"}
+              // onKeyUp={handleKeyUp}
+              // onInput={handleSearch}
+              // InputProps={{
+              //   startAdornment: (
+              //     <InputAdornment position="start">
+              //       <IconButton sx={{ padding: 0 }}>
+              //         {/* <BiSearch size={17} /> */}
+              //       </IconButton>
+              //     </InputAdornment>
+              //   ),
+              // }}
+              error={error && error}
+              helperText={error && error}
+            />
+
             <TextField
               placeholder="Search.."
               ref={searchRef}

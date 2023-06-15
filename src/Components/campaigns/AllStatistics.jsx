@@ -1709,50 +1709,36 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 Audience
               </h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3 ">
-              {/* <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-gray-900 text-white "
-                    : "bg-gray-200"
-                } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
-                sx={{
-                  height: "300px",
-                  width: "300px",
-                }}
-              >
-                <div className="justify-between items-center">
-                  <h6 className="font-semibold pb-3">Adsets Clicks</h6>
-                  <DoughnutChart doughnutChart={doughnutChart} />
-                  
-                </div>
-              </div> */}
+            <div className="flex  justify-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
+                {/* other commented out code */}
 
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-gray-900 text-white "
-                    : "bg-gray-200"
-                } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
-              >
-                <div className="justify-between items-center ">
-                  <h6 className="font-semibold pb-3">Audience</h6>
-                  {/* <AreaChart /> */}
-                  <HorizontalBarChart barCharData={ageGender} />
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-gray-900 text-white "
+                      : "bg-gray-200"
+                  } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                >
+                  <div className="flex flex-col justify-between items-center h-full">
+                    <h6 className="font-semibold pb-3">Audience</h6>
+                    <div className="flex-grow">
+                      <HorizontalBarChart barCharData={ageGender} />
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-gray-900 text-white "
-                    : "bg-gray-200"
-                } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
-              >
-                <div className="justify-between items-center h-80">
-                  <h6 className="font-semibold pb-3">Locations</h6>
-                  {/* <CombinationChartTable /> */}
-                  <MapChartStatistics locationData={locations} />
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-gray-900 text-white "
+                      : "bg-gray-200"
+                  } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                >
+                  <div className="justify-between items-center h-80">
+                    <h6 className="font-semibold pb-3">Locations</h6>
+                    <MapChartStatistics locationData={locations} />
+                  </div>
                 </div>
               </div>
             </div>
