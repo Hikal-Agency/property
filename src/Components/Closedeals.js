@@ -259,7 +259,7 @@ const Closedeals = ({ pageState, setpageState }) => {
               },
             }}
           >
-            {[14, 30, 50, 75, 100].map((size) => (
+            {[pageState.pageSize, 14, 30, 50, 75, 100].map((size) => (
               <MenuItem key={size} value={size}>
                 {size}
               </MenuItem>
