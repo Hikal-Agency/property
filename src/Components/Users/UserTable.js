@@ -190,7 +190,7 @@ const UserTable = ({ user }) => {
           <DeleteUser
             UserModelOpen={handleDelete}
             handleUserModelClose={handleDeleteModelClose}
-            UserData={singleUser}
+            UserData={userID}
           />
         )}
         {loading ? (
@@ -364,16 +364,21 @@ const UserTable = ({ user }) => {
                           )}
                         </div>
 
-                        <div className="absolute top-2 items-center right-2 flex flex-col">
+                        <div className="absolute top-2 items-center right-2 flex flex-col space-y-10">
                           <Link
                             to={`/updateuser/${item?.id}`}
                             className="text-blue-500"
                           >
-                            <FaEdit style={{ color: "blue" }} />
+                            <FaEdit
+                              style={{
+                                color:
+                                  currentMode == "dark" ? "white" : "black",
+                              }}
+                            />
                           </Link>
 
                           <Button
-                            className="text-green-500"
+                            className="text-green-500 mt-5"
                             onClick={() => handleModel(item?.id)}
                           >
                             <FaEye style={{ color: "green" }} />
