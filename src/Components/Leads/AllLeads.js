@@ -140,6 +140,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const handleRangeChange = (e) => {
     const value = e.target.value;
 
+    console.log("range: ", value);
+
     if (value === "" || (value >= 10 && value <= 150)) {
       setPageRange(value);
       setError("");
@@ -1394,7 +1396,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         lead_type !== "all" &&
         lead_type !== "coldLeadsVerified" &&
         lead_type !== "coldLeadsInvalid" &&
-        lead_type !== "coldLeadsNotChecked" && 
+        lead_type !== "coldLeadsNotChecked" &&
         lead_origin !== "unassigned"
       ) {
         url += `&feedback=${lead_type}`;
