@@ -68,7 +68,7 @@ const SingleLeadNote = (props) => {
       leadNote: AddNoteTxt,
       addedBy: User?.id,
       // creationDate: moment(new Date()).format("YYYY/MM/DD "),
-      creationDate: datetimeString,
+      // creationDate: datetimeString,
     };
     console.log(data);
     axios
