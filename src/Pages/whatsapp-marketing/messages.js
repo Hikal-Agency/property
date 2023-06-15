@@ -14,10 +14,12 @@ import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { MdCampaign, MdSend } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
+import {MdSms} from "react-icons/md";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import {IoMdChatboxes} from "react-icons/io";
 import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
-import { BsWhatsapp } from "react-icons/bs";
+import { BsWhatsapp, BsImage } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { toast, ToastContainer } from "react-toastify";
@@ -1272,17 +1274,11 @@ const AllLeads = () => {
             }
             type="button"
             variant="contained"
-            sx={{ padding: "12px", mb: 2, mr: 2 }}
-            // {selectedRows.length > 0 && (
-            //   <Button
-            //     onClick={() => setOpenMessageModal(true)}
-            //     type="button"
-            //     variant="contained"
-            //     sx={{ padding: "12px", mb: 2 }}
-            color="info"
-            size="lg"
+            sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
+            color="error"
+            size="small"
           >
-            <MdSend style={{ marginRight: 8 }} size={20} /> Bulk SMS
+            <MdSms style={{ marginRight: 8 }} size={20} /> Bulk SMS
           </Button>
           <Button
             onClick={() =>
@@ -1290,21 +1286,21 @@ const AllLeads = () => {
             }
             type="button"
             variant="contained"
-            sx={{ padding: "12px", mb: 2, mr: 2 }}
-            color="success"
-            size="lg"
+            sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
+            color="error"
+            size="small"
           >
-            <MdSend style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp
+            <BsWhatsapp style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp
           </Button>
           <Button
             onClick={() => imagePickerRef.current.click()}
             type="button"
             variant="contained"
-            sx={{ padding: "12px", mb: 2, mr: 2 }}
-            color="success"
-            size="lg"
+            sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
+            color="error"
+            size="small"
           >
-            <MdSend style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp Image
+            <BsImage style={{ marginRight: 8 }} size={20} /> Whatsapp Image
           </Button>
 
           {selectedRows.length === 1 && (
@@ -1312,10 +1308,11 @@ const AllLeads = () => {
               <Button
                 type="button"
                 variant="contained"
-                sx={{ padding: "12px", mb: 2, mr: 2 }}
-                color="warning"
-                size="lg"
+                sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
+                color="error"
+                size="small"
               >
+            <IoMdChatboxes style={{ marginRight: 8 }} size={20} />
                 Open Chat
               </Button>
             </Link>
