@@ -41,15 +41,15 @@ const SingleEmployee = ({ user }) => {
   const [imagePickerModal, setImagePickerModal] = useState(false);
 
   const columns = [
-    { field: "id", headerName: "ID", width: 20 },
-    { field: "day", headerName: "Day", width: 90 },
-    { field: "date", headerName: "Date", width: 100 },
-    { field: "checkIn", headerName: "Check-In", width: 90 },
-    { field: "checkOut", headerName: "Check-Out", width: 90 },
-    { field: "status", headerName: "Status", width: 90 },
-    { field: "lateBy", headerName: "Late By", width: 90 },
-    { field: "reason", headerName: "Reason", width: 90 },
-    { field: "salary", headerName: "Salary", width: 90 },
+    { field: "id",headerAlign: "center", headerName: "ID", width: 20 },
+    { field: "day",headerAlign: "center", headerName: "Day", width: 90 },
+    { field: "date",headerAlign: "center", headerName: "Date", width: 100 },
+    { field: "checkIn",headerAlign: "center", headerName: "Check-In", width: 90 },
+    { field: "checkOut",headerAlign: "center", headerName: "Check-Out", width: 90 },
+    { field: "status",headerAlign: "center", headerName: "Status", width: 90 },
+    { field: "lateBy",headerAlign: "center", headerName: "Late By", width: 90 },
+    { field: "reason",headerAlign: "center", headerName: "Reason", width: 90 },
+    { field: "salary",headerAlign: "center", headerName: "Salary", width: 90 },
     {
       field: "actions",
       headerName: "Actions",

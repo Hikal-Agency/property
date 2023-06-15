@@ -56,12 +56,14 @@ const LeadNotes = ({ pageState, setpageState }) => {
       field: "creationDate",
       headerName: "Date",
       minWidth: 170,
+      headerAlign: "center",
       flex: 1,
     },
     {
       field: "leadName",
       headerName: "Lead name",
       minWidth: 150,
+      headerAlign: "center",
       flex: 1,
     },
     {
@@ -69,12 +71,14 @@ const LeadNotes = ({ pageState, setpageState }) => {
       headerName: "Project",
       minWidth: 110,
       flex: 1,
+      headerAlign: "center",
     },
     {
       field: "enquiryType",
       headerName: "Enquiry",
       minWidth: 110,
       flex: 1,
+      headerAlign: "center",
     },
     // {
     //   field: "leadNote",
@@ -277,12 +281,14 @@ const LeadNotes = ({ pageState, setpageState }) => {
             icon={
               value === 0 ? (
                 <AiOutlineAppstore
+                size={22}
                   style={{
                     color: currentMode === "dark" ? "#ffffff" : "#000000",
                   }}
                 />
               ) : (
                 <AiOutlineTable
+                size={2}
                   style={{
                     color: currentMode === "dark" ? "#ffffff" : "#000000",
                   }}

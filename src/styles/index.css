@@ -432,6 +432,11 @@ label[for="bulkImport"] .MuiButtonBase-root {
   outline: 1px solid #da1f26 !important;
  }
 
+ .MuiDataGrid-cell {
+  text-align: center !important;
+  justify-content: center !important;
+ }
+
 @media all and (max-width: 1300px) {
   .MuiDataGrid-cell[data-field="creationDate"] p {
     font-size: 12px;

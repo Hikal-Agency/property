@@ -16,7 +16,6 @@ import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import Footer from "../../Components/Footer/Footer";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import Error from "../Error";
@@ -59,16 +58,12 @@ const SingleLeadNote = (props) => {
   };
 
   const AddNote = () => {
-    const now = moment();
-    const datetimeString = now.format("YYYY/MM/DD  HH:mm:ss ");
     setaddNoteloading(true);
     const token = localStorage.getItem("auth-token");
     const data = {
       leadId: location.pathname.split("/")[2],
       leadNote: AddNoteTxt,
       addedBy: User?.id,
-      // creationDate: moment(new Date()).format("YYYY/MM/DD "),
-      creationDate: datetimeString,
     };
     console.log(data);
     axios

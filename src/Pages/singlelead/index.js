@@ -70,7 +70,7 @@ const SingleLeadPage = () => {
       leadId: LeadData.id,
       leadNote: AddNoteTxt,
       addedBy: User?.id,
-      creationDate: moment(new Date()).format("YYYY/MM/DD"),
+      // creationDate: moment(new Date()).format("YYYY/MM/DD"),
       // creationDate: datetimeString,
     };
     console.log("Data: ");
@@ -87,6 +87,7 @@ const SingleLeadPage = () => {
         console.log("Result: ", result);
         setaddNoteloading(false);
         setAddNoteTxt("");
+        fetchLeadNotes();
         toast.success("Note added Successfully", {
           position: "top-right",
           autoClose: 3000,
@@ -126,7 +127,7 @@ const SingleLeadPage = () => {
         },
       });
 
-      console.log("SINGLE LEAD: ", result.status);
+      console.log("SINGLE LEAD: ", result);
       setLeadData(result.data.data);
       setloading(false);
     } catch (error) {
@@ -149,7 +150,8 @@ const SingleLeadPage = () => {
     }
   };
   useEffect(() => {
-    if (LeadData?.lid) {
+    console.log("Lead::", LeadData)
+    if (LeadData?.id) {
       fetchLeadNotes();
       console.log(LeadData);
     }

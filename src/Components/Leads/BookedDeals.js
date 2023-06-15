@@ -632,6 +632,7 @@ const BookedDeals = ({
       field: "leadSource",
       headerName: "Src",
       flex: 1,
+      headerAlign: "center",
       minWidth: 45,
       renderCell: (cellValues) => {
         return (
@@ -690,6 +691,7 @@ const BookedDeals = ({
     {
       field: "leadName",
       headerName: "Name",
+      headerAlign: "center",
       flex: 1,
       minWidth: 85,
       renderCell: (cellValues) => {
@@ -704,12 +706,14 @@ const BookedDeals = ({
       field: "leadContact",
       headerName: "Contact",
       minWidth: 105,
+      headerAlign: "center",
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
       minWidth: 55,
+      headerAlign: "center",
       flex: 1,
     },
     // {
@@ -724,6 +728,7 @@ const BookedDeals = ({
       headerName: "Property",
       minWidth: 100,
       flex: 1,
+      headerAlign: "center",
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
@@ -736,7 +741,7 @@ const BookedDeals = ({
     {
       field: "assignedToManager",
       headerName: "Manager",
-      minWidth: 120,
+      minWidth: 120,headerAlign: "center",
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
@@ -746,6 +751,7 @@ const BookedDeals = ({
       headerName: "Agent",
       minWidth: 120,
       flex: 1,
+      headerAlign: "center",
       hideable: false,
       renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
     },
@@ -753,6 +759,7 @@ const BookedDeals = ({
       field: "feedback",
       headerName: "Feedback",
       minWidth: 160,
+      headerAlign: "center",
       flex: 1,
 
       hideable: false,
@@ -762,6 +769,7 @@ const BookedDeals = ({
     {
       field: "language",
       headerName: "Lang",
+      headerAlign: "center",
       minWidth: 40,
       flex: 1,
     },
@@ -830,7 +838,7 @@ const BookedDeals = ({
       field: "creationDate",
       headerName: "Date",
       flex: 1,
-
+headerAlign: "center",
       sortable: false,
       minWidth: 50,
       filterable: false,
@@ -846,6 +854,7 @@ const BookedDeals = ({
       headerName: "Edit",
       flex: 1,
       width: "100%",
+      headerAlign: "center",
       sortable: false,
       filterable: false,
 
@@ -880,6 +889,7 @@ const BookedDeals = ({
       field: "leadName",
       headerName: "Name",
       flex: 1,
+      headerAlign: "center",
       minWidth: 85,
       renderCell: (cellValues) => {
         return (
@@ -894,12 +904,14 @@ const BookedDeals = ({
       headerName: "Contact",
       minWidth: 105,
       flex: 1,
+      headerAlign: "center",
     },
     {
       field: "project",
       headerName: "Project",
       minWidth: 55,
       flex: 1,
+      headerAlign: "center",
     },
     // {
     //   field: "enquiryType",
@@ -912,6 +924,7 @@ const BookedDeals = ({
       field: "leadType",
       headerName: "Property",
       minWidth: 100,
+      headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -925,6 +938,7 @@ const BookedDeals = ({
     {
       field: "assignedToManager",
       headerName: "Manager",
+      headerAlign: "center",
       minWidth: 120,
       flex: 1,
       hideable: false,
@@ -934,6 +948,7 @@ const BookedDeals = ({
       field: "assignedToSales",
       headerName: "Agent",
       minWidth: 120,
+      headerAlign: "center",
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
@@ -942,6 +957,7 @@ const BookedDeals = ({
       field: "feedback",
       headerName: "Feedback",
       minWidth: 160,
+      headerAlign: "center",
       flex: 1,
 
       hideable: false,
@@ -952,6 +968,7 @@ const BookedDeals = ({
       field: "language",
       headerName: "Lang",
       minWidth: 40,
+      headerAlign: "center",
       flex: 1,
     },
     // {
@@ -1019,7 +1036,7 @@ const BookedDeals = ({
       field: "creationDate",
       headerName: "Date",
       flex: 1,
-
+headerAlign: "center",
       sortable: false,
       minWidth: 50,
       filterable: false,
@@ -1034,6 +1051,7 @@ const BookedDeals = ({
       field: "edit",
       headerName: "Edit",
       flex: 1,
+      headerAlign: "center",
       width: "100%",
       sortable: false,
       filterable: false,

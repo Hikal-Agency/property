@@ -465,16 +465,19 @@ const AllStatistics = ({ pageState, setpageState }) => {
       field: "campaignName",
       headerName: "Ad Name",
       minWidth: 170,
+      headerAlign: "center",
       flex: 1,
     },
     {
       field: "status",
       headerName: "Status",
+      headerAlign: "center",
       minWidth: 150,
       flex: 1,
     },
     {
       field: "adset",
+      headerAlign: "center",
       headerName: "Adset",
       minWidth: 110,
       flex: 1,
@@ -482,17 +485,20 @@ const AllStatistics = ({ pageState, setpageState }) => {
     {
       field: "dailyBudget",
       headerName: "Daily Budget",
+      headerAlign: "center",
       minWidth: 110,
       flex: 1,
     },
     {
       field: "spend",
+      headerAlign: "center",
       headerName: "Spend",
       minWidth: 110,
       flex: 1,
     },
     {
       field: "cpc",
+      headerAlign: "center",
       headerName: "Cost Per Click",
       minWidth: 110,
       flex: 1,
@@ -500,6 +506,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
     {
       field: "cpm",
       headerName: "CPM",
+      headerAlign: "center",
       minWidth: 110,
       flex: 1,
     },
