@@ -317,7 +317,7 @@ const routes = [
   },
 ];
 
-// export const socket = io(process.env.REACT_APP_SOCKET_URL)
+export const socket = io(process.env.REACT_APP_SOCKET_URL)
 
 function App() {
   const {

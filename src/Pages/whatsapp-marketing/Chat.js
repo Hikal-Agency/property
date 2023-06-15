@@ -5,10 +5,11 @@ import { useStateContext } from "../../context/ContextProvider";
 import { toast } from "react-toastify";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
 import { useSearchParams } from "react-router-dom";
+import { socket } from "../App";
 import Loader from "../../Components/Loader";
 
 const Chat = () => {
-  const { socketRef, User, currentMode, darkModeColors, } = useStateContext();
+  const { User, currentMode, darkModeColors, } = useStateContext();
   const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
   const [chatLoading, setChatLoading] = useState(true);
@@ -27,8 +28,8 @@ const Chat = () => {
   const waDevice = localStorage.getItem("authenticated-wa-device");
 
   const fetchChatMessages = async (contact, afterSendMessage) => {
-    socketRef.current.emit("get_chat", { id: waDevice, contact: contact });
-    socketRef.current.on("chat", (data) => {
+    socket.emit("get_chat", { id: waDevice, contact: contact });
+    socket.on("chat", (data) => {
       setChatMessages(() => {
         return [...data];
       });
@@ -40,19 +41,19 @@ const Chat = () => {
     e.preventDefault();
     setBtnLoading(true);
     if (chatMessageInputVal) {
-      socketRef.current.emit("send-message", {
+      socket.emit("send-message", {
         id: waDevice,
         to: searchParams.get("phoneNumber") + "@c.us",
         msg: chatMessageInputVal,
       });
 
-      socketRef.current.on("sent", () => {
+      socket.on("sent", () => {
         fetchChatMessages(searchParams.get("phoneNumber"));
         setChatMessageInputVal("");
         setBtnLoading(false);
       });
 
-      socketRef.current.on("failed", () => {
+      socket.on("failed", () => {
         toast.error("Message Couldn't be sent", {
           position: "top-right",
           autoClose: 3000,
@@ -67,14 +68,14 @@ const Chat = () => {
   };
 
   const handleLogout = () => {
-    socketRef.current.emit("logout-user", { id: waDevice });
+    socket.emit("logout-user", { id: waDevice });
   };
 
   useEffect(() => {
     const waAccount = JSON.parse(
       localStorage.getItem("authenticated-wa-account")
     );
-    if (User && socketRef.current) {
+    if (User && socket) {
       if (waDevice) {
         setDeviceName(waDevice);
         setData({
@@ -84,28 +85,27 @@ const Chat = () => {
         setReady(true);
         setloading(false);
       } else {
-        setloading(false);
         setQr(null);
         setReady(false);
       }
     }
-  }, [User, socketRef.current]);
+  }, [User, socket]);
 
   useEffect(() => {
-    if (socketRef.current && User) {
-      console.log("SOck::",socketRef.current);
-      if(socketRef.current.connected) {
+    if (socket && User) {
+      socket.on("connect", () => {
         setServerDisconnected(false);
-      socketRef.current.on("qr", (qr) => {
+        setloading(false);
+      socket.on("qr", (qr) => {
         setQr(qr);
         setloading(false);
       });
 
-      socketRef.current.on("user_ready", (info) => {
+      socket.on("user_ready", (info) => {
         setDeviceName(info.sessionId);
         console.log(info.sessionId);
-        socketRef.current.emit("get_profile_picture", { id: info.sessionId });
-        socketRef.current.on("profile_picture", (url) => {
+        socket.emit("get_profile_picture", { id: info.sessionId });
+        socket.on("profile_picture", (url) => {
           localStorage.setItem("authenticated-wa-device", info.sessionId);
           console.log("url: ", url);
           if (url !== null) {
@@ -126,15 +126,15 @@ const Chat = () => {
         });
       });
 
-      socketRef.current.on("new_message", () => {
+      socket.on("new_message", () => {
         fetchChatMessages(searchParams.get("phoneNumber"));
       });
 
-      socketRef.current.on("user_disconnected", () => {
+      socket.on("user_disconnected", () => {
         handleLogout();
       });
 
-      socketRef.current.on("logged-out", (data) => {
+      socket.on("logged-out", (data) => {
         if (data) {
           localStorage.removeItem("authenticated-wa-device");
           localStorage.removeItem("authenticated-wa-account");
@@ -155,12 +155,13 @@ const Chat = () => {
         }
       });
 
-      socketRef.current.on("disconnect", () => {
+    })
+
+      socket.on("disconnect", () => {
         setServerDisconnected(true);
       });
-      }
     }
-  }, [socketRef.current]);
+  }, [socket]);
 
   useEffect(() => {
     if (User && ready) {
@@ -187,7 +188,7 @@ const Chat = () => {
       const sessionId = `${User?.id}-${deviceName
         .toLowerCase()
         .replaceAll(" ", "-")}`;
-      socketRef.current.emit("create_session", { id: sessionId });
+      socket.emit("create_session", { id: sessionId });
     }
   };
 
