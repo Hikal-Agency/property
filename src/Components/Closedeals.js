@@ -43,6 +43,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       field: "dealDate",
       headerName: "Deal date",
       minWidth: 50,
+      headerAlign: "center",
       flex: 1,
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
@@ -51,21 +52,28 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerName: "Lead name",
       minWidth: 60,
       flex: 1,
+      headerAlign: "center",
     },
     {
       field: "project",
       headerName: "Project",
+      headerAlign: "center",
+
       minWidth: 60,
       flex: 1,
     },
     {
       field: "enquiryType",
       headerName: "Enquiry",
+      headerAlign: "center",
+
       minWidth: 60,
       flex: 1,
     },
     {
       field: "leadType",
+      headerAlign: "center",
+
       headerName: "Property",
       minWidth: 60,
       flex: 1,
@@ -73,6 +81,7 @@ const Closedeals = ({ pageState, setpageState }) => {
 
     {
       field: "amount",
+      headerAlign: "center",
       headerName: "Amount in AED",
       minWidth: 40,
       flex: 1,
@@ -97,6 +106,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       minWidth: 80,
       flex: 1,
       sortable: false,
+      headerAlign: "center",
       filterable: false,
       renderCell: (cellValues) => {
         return (

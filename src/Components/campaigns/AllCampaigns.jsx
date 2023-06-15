@@ -48,6 +48,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
       field: "campaignName",
       headerName: "Ad Name",
       minWidth: 150,
+      headerAlign: "center",
       flex: 1,
     },
     {
@@ -55,6 +56,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
       headerName: "Status",
       minWidth: 60,
       flex: 1,
+      headerAlign: "center",
       renderCell: (cellValues) => {
         return (
           <div>
@@ -79,6 +81,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
       field: "dailyBudget",
       headerName: "Daily Budget",
       minWidth: 80,
+      headerAlign: "center",
       flex: 1,
     },
     {
@@ -86,17 +89,20 @@ const AllCampaigns = ({ pageState, setpageState }) => {
       headerName: "Spend",
       minWidth: 80,
       flex: 1,
+      headerAlign: "center",
     },
     {
       field: "cpc",
       headerName: "Cost Per Click",
       minWidth: 80,
+      headerAlign: "center",
       flex: 1,
     },
     {
       field: "cpm",
       headerName: "CPM",
       minWidth: 80,
+      headerAlign: "center",
       flex: 1,
     },
     // {

@@ -187,6 +187,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerName: "Name",
       flex: 1,
       minWidth: 100,
+      headerAlign: "center",
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-wrap items-center">
@@ -199,6 +200,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "leadContact",
       headerName: "Contact",
       minWidth: 115,
+      headerAlign: "center",
       flex: 1,
     },
     {
@@ -206,9 +208,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerName: "Project",
       minWidth: 110,
       flex: 1,
+      headerAlign: "center",
     },
     {
       field: "leadType",
+      headerAlign: "center",
       headerName: "Property",
       minWidth: 110,
       flex: 1,
@@ -225,12 +229,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "assignedToSales",
       headerName: "Agent",
       minWidth: 110,
+      headerAlign: "center",
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
     },
     {
       field: "feedback",
+      headerAlign: "center",
       headerName: "Feedback",
       minWidth: 110,
       flex: 1,
@@ -242,6 +248,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "priority",
       headerName: "Priority",
       minWidth: 110,
+      headerAlign: "center",
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
@@ -250,73 +257,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "language",
       headerName: "Lang",
       minWidth: 55,
+      headerAlign: "center",
       flex: 1,
     },
-    // {
-    //   field: "leadSource",
-    //   headerName: "Src",
-    //   minWidth: 38,
-    //   flex: 1,
-
-    //   renderCell: (cellValues) => {
-    //     return (
-    // <div className="w-full mx-auto flex justify-center ">
-    //   {cellValues.row.leadSource.toLowerCase() ===
-    //     "campaign snapchat" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <FaSnapchat size={22} color={"#f6d80a"} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() ===
-    //     "campaign facebook" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <FaFacebook size={22} color={"#0e82e1"} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <img
-    //         src={"/assets/tiktok-app.svg"}
-    //         alt=""
-    //         height={22}
-    //         width={22}
-    //         className="object-cover"
-    //       />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() ===
-    //     "campaign googleads" && (
-    //     <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
-    //       <FcGoogle size={22} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "campaign" && (
-    //     <div className="w-fit rounded-full flex items-center justify-center">
-    //       <MdCampaign
-    //         size={22}
-    //         color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-    //       />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "cold" && (
-    //     <div className="w-fit rounded-full flex items-center justify-center">
-    //       <BsSnow2 size={22} color={"#0ec7ff"} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "personal" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <BsPersonCircle size={22} color={"#14539a"} />
-    //     </div>
-    //   )}
-    //       </div>
-    //     );
-    //   },
-    // },
+    
     {
       field: "creationDate",
       headerName: "Date",
       flex: 1,
-
+      headerAlign: "center",
       sortable: false,
       minWidth: 45,
       filterable: false,
@@ -331,6 +280,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "edit",
       headerName: "Edit",
       flex: 1,
+      headerAlign: "center",
       width: "100%",
       sortable: false,
       filterable: false,
@@ -418,6 +368,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "leadName",
       headerName: "Name",
       flex: 1,
+      headerAlign: "center",
       minWidth: 85,
       renderCell: (cellValues) => {
         return (
@@ -432,12 +383,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerName: "Contact",
       minWidth: 115,
       flex: 1,
+      headerAlign: "center",
     },
     {
       field: "project",
       headerName: "Project",
       minWidth: 40,
       flex: 1,
+      headerAlign: "center",
     },
     // {
     //   field: "enquiryType",
@@ -450,6 +403,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "leadType",
       headerName: "Property",
       minWidth: 85,
+      headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -464,6 +418,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "feedback",
       headerName: "Feedback",
       minWidth: 85,
+      headerAlign: "center",
       flex: 1,
 
       hideable: false,
@@ -473,6 +428,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "priority",
       headerName: "Priority",
       minWidth: 85,
+      headerAlign: "center",
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
@@ -481,6 +437,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "language",
       headerName: "Lang",
       minWidth: 40,
+      headerAlign: "center",
       flex: 1,
     },
     // {
@@ -546,6 +503,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "otp",
       headerName: "OTP",
+      headerAlign: "center",
       minWidth: 72,
       flex: 1,
       renderCell: (cellValues) => {
@@ -583,6 +541,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "creationDate",
       headerName: "Date",
       flex: 1,
+      headerAlign: "center",
 
       sortable: false,
       minWidth: 50,
@@ -599,6 +558,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerName: "Edit",
       flex: 1,
       width: "100%",
+      headerAlign: "center",
       sortable: false,
       filterable: false,
 
@@ -654,6 +614,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerName: "Src",
       flex: 1,
       minWidth: 45,
+      headerAlign: "center",
       renderCell: (cellValues) => {
         return (
           <>
@@ -784,6 +745,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "leadName",
       headerName: "Name",
       flex: 1,
+      headerAlign: "center",
       minWidth: 85,
       renderCell: (cellValues) => {
         return (
@@ -794,12 +756,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       },
     },
     {
+      headerAlign: "center",
       field: "leadContact",
       headerName: "Contact",
       minWidth: 115,
       flex: 1,
     },
     {
+      headerAlign: "center",
       field: "project",
       headerName: "Project",
       minWidth: 40,
@@ -813,6 +777,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
     // },
     {
+      headerAlign: "center",
       field: "leadType",
       headerName: "Property",
       minWidth: 85,
@@ -827,6 +792,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       },
     },
     {
+      headerAlign: "center",
       field: "assignedToManager",
       headerName: "Manager",
       minWidth: 90,
@@ -835,6 +801,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
     },
     {
+      headerAlign: "center",
       field: "assignedToSales",
       headerName: "Agent",
       minWidth: 90,
@@ -844,6 +811,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "feedback",
+      headerAlign: "center",
       headerName: "Feedback",
       minWidth: 85,
       flex: 1,
@@ -853,6 +821,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "priority",
+      headerAlign: "center",
       headerName: "Priority",
       minWidth: 85,
       flex: 1,
@@ -861,74 +830,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "language",
+      headerAlign: "center",
       headerName: "Lang",
       minWidth: 25,
       flex: 1,
     },
-    // {
-    //   field: "leadSource",
-    //   headerName: "Src",
-    //   minWidth: 38,
-    //   flex: 1,
-
-    //   renderCell: (cellValues) => {
-    //     return (
-    // <div className="w-full mx-auto flex justify-center ">
-    //   {cellValues.row.leadSource.toLowerCase() ===
-    //     "campaign snapchat" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <FaSnapchat size={22} color={"#f6d80a"} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() ===
-    //     "campaign facebook" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <FaFacebook size={22} color={"#0e82e1"} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <img
-    //         src={"/assets/tiktok-app.svg"}
-    //         alt=""
-    //         height={22}
-    //         width={22}
-    //         className="object-cover"
-    //       />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() ===
-    //     "campaign googleads" && (
-    //     <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
-    //       <FcGoogle size={22} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "campaign" && (
-    //     <div className="w-fit rounded-full flex items-center justify-center">
-    //       <MdCampaign
-    //         size={22}
-    //         color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-    //       />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "cold" && (
-    //     <div className="w-fit rounded-full flex items-center justify-center">
-    //       <BsSnow2 size={22} color={"#0ec7ff"} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "personal" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <BsPersonCircle size={22} color={"#14539a"} />
-    //     </div>
-    //   )}
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       field: "otp",
       headerName: "OTP",
       minWidth: 72,
+      headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -965,6 +876,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "creationDate",
       headerName: "Date",
       flex: 1,
+      headerAlign: "center",
 
       sortable: false,
       minWidth: 50,
@@ -983,6 +895,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       width: "100%",
       sortable: false,
       filterable: false,
+      headerAlign: "center",
 
       renderCell: (cellValues) => {
         return (

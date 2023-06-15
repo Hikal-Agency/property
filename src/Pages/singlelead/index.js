@@ -70,7 +70,7 @@ const SingleLeadPage = () => {
       leadId: LeadData.id,
       leadNote: AddNoteTxt,
       addedBy: User?.id,
-      creationDate: moment(new Date()).format("YYYY/MM/DD"),
+      // creationDate: moment(new Date()).format("YYYY/MM/DD"),
       // creationDate: datetimeString,
     };
     console.log("Data: ");
