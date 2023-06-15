@@ -1823,32 +1823,32 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             style={{ zIndex: "5 !important" }}
             className="absolute top-[7px] right-[20px] z-[5]"
           >
-            <TextField
+            {/* <TextField
               type="number"
               placeholder="Select per page 14-100"
               value={pageRange}
-              // sx={{
-              //   "& input": {
-              //     borderBottom: "2px solid #ffffff6e",
-              //   },
-              // }}
+              sx={{
+                "& input": {
+                  borderBottom: "2px solid #ffffff6e",
+                },
+              }}
               variant="standard"
               onChange={handleRangeChange}
               min={"14"}
-              // onKeyUp={handleKeyUp}
-              // onInput={handleSearch}
-              // InputProps={{
-              //   startAdornment: (
-              //     <InputAdornment position="start">
-              //       <IconButton sx={{ padding: 0 }}>
-              //         {/* <BiSearch size={17} /> */}
-              //       </IconButton>
-              //     </InputAdornment>
-              //   ),
-              // }}
+              onKeyUp={handleKeyUp}
+              onInput={handleSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton sx={{ padding: 0 }}>
+                     
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
               error={error && error}
               helperText={error && error}
-            />
+            /> */}
 
             <TextField
               placeholder="Search.."

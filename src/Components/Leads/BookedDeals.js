@@ -24,7 +24,7 @@ import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
-import {BiSearch} from "react-icons/bi";
+import { BiSearch } from "react-icons/bi";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { FaSnapchat } from "react-icons/fa";
@@ -81,9 +81,21 @@ const BookedDeals = ({
   const [openDialog, setopenDialog] = useState(false);
   //eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
+  const [pageRange, setPageRange] = useState();
 
   const handleCloseDialog = () => {
     setopenDialog(false);
+  };
+
+  const handleRangeChange = (e) => {
+    const value = e.target.value;
+
+    setPageRange(value);
+
+    setpageState((old) => ({
+      ...old,
+      perpage: value,
+    }));
   };
 
   //View LEAD MODAL VARIABLES
@@ -1048,7 +1060,7 @@ const BookedDeals = ({
       isLoading: true,
     }));
 
-    FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&feedback=Booked`;
+    FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&feedback=Booked`;
 
     axios
       .get(FetchLeads_url, {
@@ -1164,6 +1176,8 @@ const BookedDeals = ({
           comment: wCount,
           isLoading: false,
           data: rowsdata,
+          from: result.data.coldLeads.from,
+          to: result.data.coldLeads.to,
           pageSize: result.data.coldLeads.per_page,
           total: result.data.coldLeads.total,
         }));
@@ -1199,29 +1213,30 @@ const BookedDeals = ({
 
     let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`;
 
-    if(lead_type) {
-      if(lead_type !== "all" &&
+    if (lead_type) {
+      if (
+        lead_type !== "all" &&
         lead_type !== "coldLeadsVerified" &&
         lead_type !== "coldLeadsInvalid" &&
-        lead_type !== "coldLeadsNotChecked") {
+        lead_type !== "coldLeadsNotChecked"
+      ) {
         url += `&feedback=${lead_type}`;
       }
     }
 
-       if (lead_type === "coldLeadsVerified") {
-        url += `&is_whatsapp=1`;
-      } else if (lead_type === "coldLeadsInvalid") {
-        url += `&is_whatsapp=2`;
-      } else if (lead_type === "coldLeadsNotChecked") {
-        url += `&is_whatsapp=0`;
-      }
-
+    if (lead_type === "coldLeadsVerified") {
+      url += `&is_whatsapp=1`;
+    } else if (lead_type === "coldLeadsInvalid") {
+      url += `&is_whatsapp=2`;
+    } else if (lead_type === "coldLeadsNotChecked") {
+      url += `&is_whatsapp=0`;
+    }
 
     if (coldCallCode !== "") {
       url += `&coldCall=${coldCallCode}`;
     }
 
-    if(lead_origin === "transfferedleads") {
+    if (lead_origin === "transfferedleads") {
       url += `&status=Transferred`;
     }
 
@@ -1315,7 +1330,7 @@ const BookedDeals = ({
     }
     // setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
-  }, [pageState.page, lead_type, reloadDataGrid]);
+  }, [pageState.page, pageState.perpage, lead_type, reloadDataGrid]);
 
   useEffect(() => {
     setpageState((oldPageState) => ({ ...oldPageState, page: 0 }));
@@ -1388,18 +1403,51 @@ const BookedDeals = ({
 
     return (
       <>
-        <Pagination
-          sx={{
-            "& .Mui-selected": {
-              backgroundColor: "white !important",
-              color: "black !important",
-              borderRadius: "5px !important",
-            },
-          }}
-          count={pageCount}
-          page={page + 1}
-          onChange={(event, value) => apiRef.current.setPage(value - 1)}
-        />
+        <div className="flex justify-center items-center">
+          <p className="mr-3">
+            {pageState.from}-{pageState.to}
+          </p>
+
+          <p className="text-white mr-3">Rows Per Page</p>
+
+          <Select
+            labelId="select-page-size-label"
+            value={pageState.pageSize}
+            onChange={handleRangeChange}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "white",
+                },
+                "&:hover fieldset": {
+                  borderColor: "white",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "white",
+                },
+              },
+            }}
+          >
+            {[14, 30, 50, 75, 100].map((size) => (
+              <MenuItem key={size} value={size}>
+                {size}
+              </MenuItem>
+            ))}
+          </Select>
+
+          <Pagination
+            sx={{
+              "& .Mui-selected": {
+                backgroundColor: "white !important",
+                color: "black !important",
+                borderRadius: "5px !important",
+              },
+            }}
+            count={pageCount}
+            page={page + 1}
+            onChange={(event, value) => apiRef?.current?.setPage(value - 1)}
+          />
+        </div>
       </>
     );
   }
@@ -1408,27 +1456,29 @@ const BookedDeals = ({
     <div className="pb-10">
       <ToastContainer />
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
-                <div className="absolute top-[7px] right-[20px] z-[5]">
-            <TextField
-              placeholder="Search.."
-              ref={searchRef}
-              sx={{"& input": {
-                borderBottom: "2px solid #ffffff6e"
-              }}}
-              variant="standard"
-              onKeyUp={handleKeyUp}
-              onInput={handleSearch}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <IconButton sx={{padding: 0}}>
-                      <BiSearch size={17} />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
+        <div className="absolute top-[7px] right-[20px] z-[5]">
+          <TextField
+            placeholder="Search.."
+            ref={searchRef}
+            sx={{
+              "& input": {
+                borderBottom: "2px solid #ffffff6e",
+              },
+            }}
+            variant="standard"
+            onKeyUp={handleKeyUp}
+            onInput={handleSearch}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton sx={{ padding: 0 }}>
+                    <BiSearch size={17} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
         <div
           className={`${currentMode}-mode-datatable`}
           style={{ position: "relative" }}
@@ -1468,8 +1518,8 @@ const BookedDeals = ({
             componentsProps={{
               toolbar: {
                 showQuickFilter: false,
-                                  printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+                printOptions: { disableToolbarButton: User?.role !== 1 },
+                csvOptions: { disableToolbarButton: User?.role !== 1 },
                 // value: searchText,
                 // onChange: HandleQuicSearch,
               },
