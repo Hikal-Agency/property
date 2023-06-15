@@ -56,18 +56,21 @@ const Newsletter = () => {
       field: "creationDate",
       headerName: "Date",
       minWidth: 50,
+      headerAlign: "center",
       flex: 1,
     },
     {
       field: "email",
       headerName: "Email",
       minWidth: 150,
+      headerAlign: "center",
       flex: 1,
     },
 
     {
       field: "status",
       headerName: "Note",
+      headerAlign: "center",
       minWidth: 100,
       flex: 1,
     },

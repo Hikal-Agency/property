@@ -19,12 +19,6 @@ const AllNewsletters = ({ pageState, setpageState }) => {
   const [searchText, setSearchText] = useState("");
   // eslint-disable-next-line
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // Model Variables
-  // const [LeadModelOpen, setLeadModelOpen] = useState(false);
-  // const handleLeadModelOpen = () => setLeadModelOpen(true);
-  // const handleLeadModelClose = () => setLeadModelOpen(false);
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = (e) => {
@@ -36,10 +30,12 @@ const AllNewsletters = ({ pageState, setpageState }) => {
       field: "creationDate",
       headerName: "Date",
       minWidth: 50,
+      headerAlign: "center",
       flex: 1,
     },
     {
       field: "email",
+      headerAlign: "center",
       headerName: "Email",
       minWidth: 150,
       flex: 1,
@@ -48,6 +44,7 @@ const AllNewsletters = ({ pageState, setpageState }) => {
     {
       field: "status",
       headerName: "Note",
+      headerAlign: "center",
       minWidth: 100,
       flex: 1,
     },

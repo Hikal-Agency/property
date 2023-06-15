@@ -238,11 +238,13 @@ const AllLeads = () => {
       field: "leadContact",
       headerName: "Contact",
       minWidth: 120,
+      headerAlign: "center",
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
+      headerAlign: "center",
       minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
@@ -256,12 +258,14 @@ const AllLeads = () => {
     {
       field: "language",
       headerName: "Lang",
+      headerAlign: "center",
       minWidth: 35,
       flex: 1,
     },
     {
       field: "enquiryType",
       headerName: "Enquiry",
+      headerAlign: "center",
       // width: 110,
       minWidth: 110,
       flex: 1,
@@ -271,6 +275,7 @@ const AllLeads = () => {
       field: "leadType",
       headerName: "Property",
       minWidth: 140,
+      headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -284,6 +289,7 @@ const AllLeads = () => {
       field: "creationDate",
       headerName: "Date",
       flex: 1,
+      headerAlign: "center",
 
       sortable: false,
       minWidth: 90,
@@ -296,6 +302,7 @@ const AllLeads = () => {
 
     {
       field: "whatsapp-web",
+      headerAlign: "center",
       headerName: "",
       minWidth: 110,
       flex: 1,
@@ -343,12 +350,14 @@ const AllLeads = () => {
       field: "leadContact",
       headerName: "Contact",
       minWidth: 120,
+      headerAlign: "center",
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
       minWidth: 100,
+      headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -362,6 +371,7 @@ const AllLeads = () => {
       field: "language",
       headerName: "Lang",
       minWidth: 35,
+      headerAlign: "center",
       flex: 1,
     },
     {
@@ -369,11 +379,13 @@ const AllLeads = () => {
       headerName: "Enquiry",
       // width: 110,
       minWidth: 110,
+      headerAlign: "center",
       flex: 1,
     },
 
     {
       field: "leadType",
+      headerAlign: "center",
       headerName: "Property",
       minWidth: 140,
       flex: 1,
@@ -388,6 +400,7 @@ const AllLeads = () => {
     {
       field: "creationDate",
       headerName: "Date",
+      headerAlign: "center",
       flex: 1,
 
       sortable: false,
@@ -402,6 +415,7 @@ const AllLeads = () => {
     {
       field: "whatsapp-web",
       headerName: "",
+      headerAlign: "center",
       minWidth: 110,
       flex: 1,
       renderCell: (cellValues) => {

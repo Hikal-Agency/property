@@ -108,7 +108,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       field: "creationDate",
       headerName: "Date",
       width: 120,
-      headerAlign: "left",
+      headerAlign: "center",
       sortable: false,
       filterable: false,
                   renderCell: (params) => <div className="flex flex-col">
@@ -120,7 +120,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       field: "city",
       headerName: "City",
       width: 100,
-      headerAlign: "left",
+      headerAlign: "center",
     },
     {
       field: "leadName",
@@ -132,7 +132,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       field: "leadContact",
       headerName: "Contact",
       width: 150,
-      headerAlign: "left",
+      headerAlign: "center",
     },
     {
       field: "project",
@@ -152,13 +152,6 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       width: 100,
       headerAlign: "center",
     },
-    // {
-    //   field: "assignedToManager",
-    //   headerName: "Manager",
-    //   width: 150,
-    //   renderCell: RenderManagers,
-    // },
-    // { field: "assignedToSales", headerName: "Salesperson", width: 110 },
     {
       field: "feedback",
       headerName: "Feedback",
@@ -171,6 +164,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       field: "priority",
       headerName: "Priority",
       width: 150,
+      headerAlign: "center",
       hideable: false,
       renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },

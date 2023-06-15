@@ -193,11 +193,6 @@ const UpdateBookedDeal = ({
     // UpdateLeadData.append("leadSource", LeadSource);
     // UpdateLeadData.append("notes", LeadNotes);
     // UpdateLeadData.append("assignedToManager", Manager);
-    // UpdateLeadData.append("assignedToSales", SalesPerson2);
-    UpdateLeadData.append(
-      "lastEdited",
-      moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
-    );
 
     await axios
       .post(`${BACKEND_URL}/leads/${LeadData.lid}`, UpdateLeadData, {

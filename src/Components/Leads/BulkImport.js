@@ -55,11 +55,8 @@ const BulkImport = ({
     try {
       const token = localStorage.getItem("auth-token");
       const urls = CSVData?.rows.map((row) => {
-        const creationDate = new Date();
         const LeadData = {
           ...allKeys,
-          creationDate: moment(creationDate).format("YYYY/MM/DD HH:mm:ss"),
-          lastEdited: moment(creationDate).format("YYYY/MM/DD HH:mm:ss"),
         };
         Object.keys(allKeys).forEach((key) => {
           const idx = CSVData?.keys.indexOf(values[key]);

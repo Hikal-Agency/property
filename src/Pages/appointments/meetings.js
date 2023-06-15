@@ -79,12 +79,14 @@ const Meetings = () => {
     {
       field: "leadName",
       headerName: "Lead name",
+      headerAlign: "center",
       minWidth: 160,
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
+      headerAlign: "center",
       minWidth: 100,
       flex: 1,
     },
@@ -92,12 +94,14 @@ const Meetings = () => {
       field: "enquiryType",
       headerName: "Enquiry",
       minWidth: 100,
+      headerAlign: "center",
       flex: 1,
     },
     {
       field: "leadType",
       headerName: "Property",
       minWidth: 100,
+      headerAlign: "center",
       flex: 1,
     },
 
@@ -105,6 +109,7 @@ const Meetings = () => {
       field: "meetingBy",
       headerName: "Meeting By",
       minWidth: 160,
+      headerAlign: "center",
       flex: 1,
     },
 
@@ -112,12 +117,14 @@ const Meetings = () => {
       field: "meetingDate",
       headerName: "Meeting Date",
       minWidth: 110,
+      headerAlign: "center",
       flex: 1,
     },
     {
       field: "meetingTime",
       headerName: "Meeting Time",
       minWidth: 50,
+      headerAlign: "center",
       flex: 1,
     },
     {
@@ -126,6 +133,7 @@ const Meetings = () => {
       width: 150,
       flex: 1,
       sortable: false,
+      headerAlign: "center",
       filterable: false,
       renderCell: (cellValues) => {
         return (
@@ -158,6 +166,7 @@ const Meetings = () => {
     {
       field: "edit",
       headerName: "Actions",
+    headerAlign: "center",
       minWidth: "110",
       flex: 1,
       renderCell: (cellValues) => {

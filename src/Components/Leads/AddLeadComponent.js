@@ -247,14 +247,6 @@ const AddLeadComponent = () => {
       LeadData.append("assignedToManager", Number(User?.isParent));
       LeadData.append("assignedToSales", Number(User?.id));
     }
-    LeadData.append(
-      "creationDate",
-      moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
-    );
-    LeadData.append(
-      "lastEdited",
-      moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
-    );
 
     for (var pair of LeadData.entries()) {
       console.log(pair[0] + ", " + pair[1]);
