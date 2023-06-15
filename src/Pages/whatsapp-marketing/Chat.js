@@ -12,6 +12,8 @@ const Chat = () => {
   const { socket, User, currentMode } = useStateContext();
   const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
+  const [chatLoading, setChatLoading] = useState(true);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [ready, setReady] = useState(false);
   const [deviceName, setDeviceName] = useState("");
   const [data, setData] = useState([]);
@@ -24,93 +26,77 @@ const Chat = () => {
   const messagesContainerRef = useRef();
 
   const socketURL = process.env.REACT_APP_SOCKET_URL;
-  const sessionId = `${deviceName.toLowerCase().replaceAll(" ", "-")}`;
+  const waDevice = localStorage.getItem("authenticated-wa-device");
 
   const fetchChatMessages = async (contact, afterSendMessage) => {
-    socket.emit("get_chat", { id: sessionId, contact: contact });
+    socket.emit("get_chat", { id: waDevice, contact: contact });
     socket.on("chat", (data) => {
       setChatMessages(() => {
-      //   if (messagesContainerRef.current && afterSendMessage === "true") {
-      //   messagesContainerRef.current.scrollBy(
-      //     0,
-      //     messagesContainerRef.current.scrollHeight
-      //   );
-      // }
         return [...data];
       });
+      setChatLoading(false);
     });
   };
 
-  const handleSendMessage = async (e) => {
-    try {
-      e.preventDefault();
-      if (chatMessageInputVal) {
-        await axios.post(`${socketURL}/send-message/${sessionId}`, {
-          to: searchParams.get("phoneNumber") + "@c.us",
-          msg: chatMessageInputVal,
-        });
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    setBtnLoading(true);
+    if (chatMessageInputVal) {
+      socket.emit("send-message", {
+        id: waDevice,
+        to: searchParams.get("phoneNumber") + "@c.us",
+        msg: chatMessageInputVal,
+      });
 
-        fetchChatMessages(searchParams.get("phoneNumber"), "true");
+      socket.on("sent", () => {
+        fetchChatMessages(searchParams.get("phoneNumber"));
         setChatMessageInputVal("");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Message Couldn't be sent", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+        setBtnLoading(false);
+      });
+
+      socket.on("failed", () => {
+        toast.error("Message Couldn't be sent", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       });
     }
   };
 
-  const handleLogout = async () => {
-    // socket.emit("logout", { id: sessionId });
-    localStorage.removeItem("authenticated-wa-device");
-    localStorage.removeItem("authenticated-wa-account");
-    toast.success("You are logged out successfully!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-    setReady(false);
-    setloading(false);
-    setQr(null);
-    setDeviceName("");
+  const handleLogout = () => {
+    socket.emit("logout-user", { id: waDevice });
   };
 
   useEffect(() => {
-    const waDevice = localStorage.getItem("authenticated-wa-device");
     const waAccount = JSON.parse(
       localStorage.getItem("authenticated-wa-account")
     );
     if (User && socket) {
-        if (waDevice) {
-          setDeviceName(waDevice);
-          setData({
-            userInfo: waAccount?.info,
-            userProfilePic: waAccount?.profile_pic_url,
-          });
-          setReady(true);
-          setloading(false);
-        } else {
-          setloading(false);
-          setQr(null);
-          setReady(false);
-        }
-    } 
+      if (waDevice) {
+        setDeviceName(waDevice);
+        setData({
+          userInfo: waAccount?.info,
+          userProfilePic: waAccount?.profile_pic_url,
+        });
+        setReady(true);
+        setloading(false);
+      } else {
+        setloading(false);
+        setQr(null);
+        setReady(false);
+      }
+    }
   }, [User, socket]);
 
   useEffect(() => {
-    if (socket && socket.connected && User) {
+    if (socket && User) {
+      if(socket.connected) {
+
       socket.on("qr", (qr) => {
         setQr(qr);
         setloading(false);
@@ -149,32 +135,35 @@ const Chat = () => {
         handleLogout();
       });
 
-      // socket.on("logout", (data) => {
-      //   if (data) {
-      //     localStorage.removeItem("authenticated-wa-device");
-      //     localStorage.removeItem("authenticated-wa-account");
-      //     toast.success("You are logged out successfully!", {
-      //       position: "top-right",
-      //       autoClose: 3000,
-      //       hideProgressBar: false,
-      //       closeOnClick: true,
-      //       draggable: true,
-      //       progress: undefined,
-      //       theme: "light",
-      //     });
+      socket.on("logged-out", (data) => {
+        if (data) {
+          localStorage.removeItem("authenticated-wa-device");
+          localStorage.removeItem("authenticated-wa-account");
+          toast.success("You are logged out successfully!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
 
-      //     setReady(false);
-      //     setloading(false);
-      //     setQr(null);
-      //   }
-      // });
+          setReady(false);
+          setDeviceName("");
+          setloading(false);
+          setQr(null);
+        }
+      });
 
       socket.on("disconnect", () => {
-        // setServerDisconnected(true);
-        handleLogout();
+        setServerDisconnected(true);
       });
+      } else {
+        setServerDisconnected(true);
+      }
     }
-  }, [socket, deviceName]);
+  }, [socket]);
 
   useEffect(() => {
     if (User && ready) {
@@ -198,7 +187,10 @@ const Chat = () => {
   const handleAddDevice = () => {
     if (deviceName) {
       setloading(true);
-      socket.emit("create_session", { id: `${User?.id}-${sessionId}` });
+      const sessionId = `${User?.id}-${deviceName
+        .toLowerCase()
+        .replaceAll(" ", "-")}`;
+      socket.emit("create_session", { id: sessionId });
     }
   };
 
@@ -359,8 +351,19 @@ const Chat = () => {
                             </div>
                           ) : (
                             <div className="bg-gray-100 h-[400px] flex flex-col items-center justify-center">
-                              <BsFillChatLeftDotsFill size={40} />
-                              <p className="mt-3">Start the Conversation!</p>
+                              {chatLoading ? (
+                                <>
+                                  <CircularProgress color="error" size={18} />
+                                  <p className="mt-3">Loading the chat..</p>
+                                </>
+                              ) : (
+                                <>
+                                  <BsFillChatLeftDotsFill size={40} />
+                                  <p className="mt-3">
+                                    Start the Conversation!
+                                  </p>
+                                </>
+                              )}
                             </div>
                           )}
                           <form
@@ -383,7 +386,14 @@ const Chat = () => {
                               sx={{ ml: 2, px: 5 }}
                               color="info"
                             >
-                              Send
+                              {btnLoading ? (
+                                <CircularProgress
+                                  size={18}
+                                  sx={{ color: "white" }}
+                                />
+                              ) : (
+                                <span>Send</span>
+                              )}
                             </Button>
                           </form>
                         </div>

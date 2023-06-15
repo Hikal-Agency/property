@@ -324,15 +324,6 @@ function App() {
     setAllRoutes,
     setSocket,
     currentMode,
-    setUser,
-    setopenBackDrop,
-    setIsUserSubscribed,
-    appLoading,
-    User,
-    setAppLoading,
-    setSalesPerson,
-    setManagers,
-    BACKEND_URL,
   } = useStateContext();
   const location = useLocation();
 
