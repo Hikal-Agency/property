@@ -1730,7 +1730,8 @@ const Sidebarmui = () => {
               }}
             >
               {[
-                ...(User?.position === "Founder & CEO"
+                ...(User?.position === "Founder & CEO" ||
+                User?.position === "Super Admin"
                   ? linksData.map((item, linkIndex) => (
                       <div key={linkIndex}>
                         {!isCollapsed ? (

@@ -96,21 +96,40 @@ const MapChartStatistics = ({ locationData }) => {
         </thead>
         <tbody>
           {locationData?.length > 0 ? (
-            locationData?.flatMap((item, index) =>
-              item.geo_locations.places.map((place, placeIndex) => (
-                <tr key={`${index}-${placeIndex}`}>
-                  <td className="border-b border-gray-300 py-2 text-center">
-                    {placeIndex}
-                  </td>
-                  <td className="border-b border-gray-300 py-2 text-center">
-                    {place.country ? `${place.country}` : "No data"}
-                  </td>
-                  <td className="border-b border-gray-300 py-2 text-center">
-                    {place.name ? `${place.name}` : "No data"}
-                  </td>
-                </tr>
-              ))
-            )
+            locationData.flatMap((item, index) => {
+              if (Array.isArray(item.geo_locations.places)) {
+                return item.geo_locations.places.map((place, placeIndex) => (
+                  <tr key={`${index}-${placeIndex}`}>
+                    <td className="border-b border-gray-300 py-2 text-center">
+                      {placeIndex}
+                    </td>
+                    <td className="border-b border-gray-300 py-2 text-center">
+                      {place.country ? `${place.country}` : "No data"}
+                    </td>
+                    <td className="border-b border-gray-300 py-2 text-center">
+                      {place.name ? `${place.name}` : "No data"}
+                    </td>
+                  </tr>
+                ));
+              } else if (Array.isArray(item.geo_locations.countries)) {
+                return item.geo_locations.countries.map(
+                  (country, countryIndex) => (
+                    <tr key={`${index}-${countryIndex}`}>
+                      <td className="border-b border-gray-300 py-2 text-center">
+                        {countryIndex}
+                      </td>
+                      <td className="border-b border-gray-300 py-2 text-center">
+                        {country ? `${country}` : "No data"}
+                      </td>
+                      <td className="border-b border-gray-300 py-2 text-center">
+                        "No data"
+                      </td>
+                    </tr>
+                  )
+                );
+              }
+              return [];
+            })
           ) : (
             <tr>
               <td
