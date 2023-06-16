@@ -30,9 +30,11 @@ const Chat = () => {
   const fetchChatMessages = async (contact) => {
     socket.emit("get_chat", { id: waDevice, contact: contact });
     socket.on("chat", (data) => {
-      setChatMessages(() => {
-        return [...data];
-      });
+      if(data?.length > 0) {
+        setChatMessages(() => {
+          return [...data];
+        });
+      }
       setChatLoading(false);
     });
   };

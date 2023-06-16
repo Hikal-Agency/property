@@ -245,7 +245,7 @@ const BookedDeals = ({
             </MenuItem>
             <MenuItem value={"Booked"}>Booked</MenuItem>
             <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
-            <MenuItem value={"Closed"}>Closed</MenuItem>
+            <MenuItem value={"Closed"}>Closed Deal</MenuItem>
           </Select>
         </FormControl>
         {DialogueVal && (

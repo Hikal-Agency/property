@@ -1156,7 +1156,7 @@ const Sidebarmui = () => {
       ],
     },
     {
-      title: "New",
+      title: "Deals",
       links: [
         {
           name: "Booked deals",
