@@ -298,9 +298,9 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                         >
                           <div className="flex items-center">
                             {/* User Image */}
-                            {item?.img ? (
+                            {item?.profile_picture ? (
                               <img
-                                src={item?.img}
+                                src={item?.profile_picture}
                                 alt="User Image"
                                 className="w-16 h-16 rounded-full mr-4"
                               />

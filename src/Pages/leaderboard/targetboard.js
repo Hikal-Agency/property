@@ -3,6 +3,7 @@ import { Box, Tab, Tabs } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "../../Components/Loader";
 
 const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
@@ -164,82 +165,119 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
           <Tab label="LAST MONTH" />
         </Tabs>
       </Box>
-      <Box
-        className="mt-1 p-5"
-        sx={
-          isLoading && {
-            opacity: 0.3,
+      {loading ? (
+        <Loader />
+      ) : (
+        <Box
+          className="mt-1 p-5"
+          sx={
+            isLoading && {
+              opacity: 0.3,
+            }
           }
-        }
-      >
-        {/* THIS_MONTH */}
-        <TabPanel value={tabValue} index={0}>
-          <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-12">
+        >
+          {/* THIS_MONTH */}
+          <TabPanel
+            value={tabValue}
+            index={0}
+            className="h-[100px] overflow-y-scroll"
+          >
+            <div className="mb-10 mx-3">
+              {/* <h1
+            className={`${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            }  font-semibold text-center`}
+          >
+            <span className="font-bold">{count?.total_closed_deals}</span>
+            &nbsp;&nbsp;Closed Deals of&nbsp;
+            <span className="font-bold">AED {count?.total_sales}</span>
+          </h1> */}
+            </div>
             <div
               className={`${
                 currentMode === "dark" ? "text-white" : "text-black"
               } p-3 rounded-md`}
             >
-              {/* MANAGER  */}
               <div
                 className={`${
-                  currentMode === "dark"
-                    ? "text-red-600"
-                    : "text-main-red-color"
+                  currentMode === "dark" ? "text-red-600" : "text-red-500"
                 } text-xl font-bold`}
               >
-                MANAGER
+                Sales Manager
               </div>
-              <div>
-                {Manager?.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="grid grid-cols-12 gap-x-5 gap-y-2 rounded-md my-3 content-center align-center items-center"
-                    >
-                      <div className="col-span-2 sm:col-span-2 md:col-span-2 lg:col-span-3 xl:col-span-2 2xl:col-span-1 flex items-center">
-                        <img
-                          src="/favicon.png"
-                          height={"100%"}
-                          width={"100%"}
-                          className="rounded-full cursor-pointer"
-                          alt=""
-                        />
-                      </div>
-                      <div className="col-span-10 sm:col-span-10 md:col-span-10 lg:col-span-9 xl:col-span-10 2xl:col-span-11 flex gap-x-3 align-center content-center items-center">
-                        {item.achieved >= item.target ? (
-                          <div className="w-full">
-                            <h4 className="font-bold my-1 mx-2">{item.name}</h4>
-                            <span
-                              className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
-                            >
-                              {((item.achieved / item.target) * 100).toFixed(2)}
-                              %
-                            </span>
-                          </div>
-                        ) : item.achieved < item.target ? (
-                          <div className="w-full">
-                            <h4 className="font-bold my-1 mx-2">{item.name}</h4>
+              <div className="h-[300px] overflow-y-scroll">
+                {manager?.length > 0 ? (
+                  manager?.map((item, index) => {
+                    let totalSales = item.total_sales
+                      ? parseInt(item.total_sales)
+                      : 0;
+                    let target = item.target ? parseInt(item.target) : 0;
+                    let percentageSales = (totalSales / target) * 100;
+                    percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
+                    const barWidth = `${percentageSales}%`;
+                    const barColor =
+                      percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+
+                    return (
+                      <div
+                        key={index}
+                        className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                      >
+                        <div className="col-span-2">
+                          <h4 className="font-bold my-1">{item?.userName}</h4>
+                        </div>
+                        <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                          <div className="relative flex-1">
                             <div
-                              style={{
-                                width: `${
-                                  (item.achieved / item.target) * 100
-                                }%`,
-                              }}
-                              className={` bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 `}
+                              className={`absolute left-0 top-0 h-5 ${barColor}`}
+                              style={{ width: barWidth }}
+                            ></div>
+                            <div
+                              className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-dark-600"
+                              }`}
                             >
-                              {((item.achieved / item.target) * 100).toFixed(2)}
-                              %
+                              {/* Total Closed Deals: {item?.total_closed_deals} /
+                          Direct deals:{" "}
+                          <span
+                            className={
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-dark-600"
+                            }
+                          >
+                            {item?.total_sales || 0}
+                          </span> */}
+                              {percentageSales?.toFixed(2)}% of target achieved
                             </div>
                           </div>
-                        ) : (
-                          <></>
-                        )}
+                          {item?.profile_picture ? (
+                            <img
+                              src={item?.profile_picture}
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          ) : (
+                            <img
+                              src="./favicon.png"
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          )}
+                        </div>
+                        <div></div>
                       </div>
-                      <div></div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                ) : (
+                  <h2>No data for this month.</h2>
+                )}
               </div>
             </div>
 
@@ -248,7 +286,6 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                 currentMode === "dark" ? "text-white" : "text-black"
               } p-3 rounded-md`}
             >
-              {/* AGENT  */}
               <div
                 className={`${
                   currentMode === "dark"
@@ -256,131 +293,187 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                     : "text-main-red-color"
                 } text-xl font-bold`}
               >
-                AGENT
+                Sales Agent
               </div>
-              <div>
-                {Agent.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="grid grid-cols-12 gap-x-5 gap-y-2 rounded-md my-3 content-center align-center items-center"
-                    >
-                      <div className="col-span-2 sm:col-span-2 md:col-span-2 lg:col-span-3 xl:col-span-2 2xl:col-span-1 flex items-center">
-                        <img
-                          src="/favicon.png"
-                          height={"100%"}
-                          width={"100%"}
-                          className="rounded-full cursor-pointer"
-                          alt=""
-                        />
-                      </div>
-                      <div className="col-span-10 sm:col-span-10 md:col-span-10 lg:col-span-9 xl:col-span-10 2xl:col-span-11 flex gap-x-3 align-center content-center items-center">
-                        {item.achieved >= item.target ? (
-                          <div className="w-full">
-                            <h4 className="font-bold my-1 mx-2">{item.name}</h4>
-                            <span
-                              className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
-                            >
-                              {((item.achieved / item.target) * 100).toFixed(2)}
-                              %
-                            </span>
-                          </div>
-                        ) : item.achieved < item.target ? (
-                          <div className="w-full">
-                            <h4 className="font-bold my-1 mx-2">{item.name}</h4>
+              <div className="h-[300px] overflow-y-scroll">
+                {agents?.length > 0 ? (
+                  agents?.map((item, index) => {
+                    let totalSales = item.total_sales
+                      ? parseInt(item.total_sales)
+                      : 0;
+                    let target = item.target ? parseInt(item.target) : 0;
+                    let percentageSales = (totalSales / target) * 100;
+                    percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
+                    const barWidth = `${percentageSales}%`;
+                    const barColor =
+                      percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+
+                    return (
+                      <div
+                        key={index}
+                        className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                      >
+                        <div className="col-span-2">
+                          <h4 className="font-bold my-1">{item?.userName}</h4>
+                        </div>
+                        <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                          <div className="relative flex-1">
                             <div
-                              style={{
-                                width: `${
-                                  (item.achieved / item.target) * 100
-                                }%`,
-                              }}
-                              className={` bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 `}
+                              className={`absolute left-0 top-0 h-5 ${barColor}`}
+                              style={{ width: barWidth }}
+                            ></div>
+                            <div
+                              className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-dark-600"
+                              }`}
                             >
-                              {((item.achieved / item.target) * 100).toFixed(2)}
-                              %
+                              {/* Total Closed Deals: {item?.total_closed_deals} /
+                          Direct deals:{" "}
+                          <span
+                            className={
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-dark-600"
+                            }
+                          >
+                            {item?.total_sales || 0}
+                          </span> */}
+                              {percentageSales?.toFixed(2)}% of target achieved
                             </div>
                           </div>
-                        ) : (
-                          <></>
-                        )}
+                          {item?.profile_picture ? (
+                            <img
+                              src={item?.profile_picture}
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          ) : (
+                            <img
+                              src="./favicon.png"
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          )}
+                        </div>
+                        <div></div>
                       </div>
-                      <div></div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                ) : (
+                  <h2>No data for this month.</h2>
+                )}
               </div>
             </div>
-          </div>
-        </TabPanel>
+          </TabPanel>
 
-        {/* LAST_MONTH */}
-        <TabPanel value={tabValue} index={1}>
-          <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-12">
+          {/* LAST_MONTH */}
+          <TabPanel
+            value={tabValue}
+            index={1}
+            className="h-[100px] overflow-y-scroll"
+          >
+            <div className="mb-10 mx-3">
+              {/* <h1
+            className={`${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            }  font-semibold text-center`}
+          >
+            <span className="font-bold">{count?.total_closed_deals}</span>
+            &nbsp;&nbsp;Closed Deals of&nbsp;
+            <span className="font-bold">AED {count?.total_sales}</span>
+          </h1> */}
+            </div>
             <div
               className={`${
                 currentMode === "dark" ? "text-white" : "text-black"
               } p-3 rounded-md`}
             >
-              {/* MANAGER  */}
               <div
                 className={`${
-                  currentMode === "dark"
-                    ? "text-red-600"
-                    : "text-main-red-color"
+                  currentMode === "dark" ? "text-red-600" : "text-red-500"
                 } text-xl font-bold`}
               >
-                MANAGER
+                Sales Manager
               </div>
-              <div>
-                {Manager.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="grid grid-cols-12 gap-x-5 gap-y-2 rounded-md my-3 content-center align-center items-center"
-                    >
-                      <div className="col-span-2 sm:col-span-2 md:col-span-2 lg:col-span-3 xl:col-span-2 2xl:col-span-1 flex items-center">
-                        <img
-                          src="/favicon.png"
-                          height={"100%"}
-                          width={"100%"}
-                          className="rounded-full cursor-pointer"
-                          alt=""
-                        />
-                      </div>
-                      <div className="col-span-10 sm:col-span-10 md:col-span-10 lg:col-span-9 xl:col-span-10 2xl:col-span-11 flex gap-x-3 align-center content-center items-center">
-                        {item.achieved >= item.target ? (
-                          <div className="w-full">
-                            <h4 className="font-bold my-1 mx-2">{item.name}</h4>
-                            <span
-                              className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
-                            >
-                              {((item.achieved / item.target) * 100).toFixed(2)}
-                              %
-                            </span>
-                          </div>
-                        ) : item.achieved < item.target ? (
-                          <div className="w-full">
-                            <h4 className="font-bold my-1 mx-2">{item.name}</h4>
+              <div className="h-[300px] overflow-y-scroll">
+                {manager?.length > 0 ? (
+                  manager?.map((item, index) => {
+                    let totalSales = item.total_sales
+                      ? parseInt(item.total_sales)
+                      : 0;
+                    let target = item.target ? parseInt(item.target) : 0;
+                    let percentageSales = (totalSales / target) * 100;
+                    percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
+                    const barWidth = `${percentageSales}%`;
+                    const barColor =
+                      percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+
+                    return (
+                      <div
+                        key={index}
+                        className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                      >
+                        <div className="col-span-2">
+                          <h4 className="font-bold my-1">{item?.userName}</h4>
+                        </div>
+                        <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                          <div className="relative flex-1">
                             <div
-                              style={{
-                                width: `${
-                                  (item.achieved / item.target) * 100
-                                }%`,
-                              }}
-                              className={` bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 `}
+                              className={`absolute left-0 top-0 h-5 ${barColor}`}
+                              style={{ width: barWidth }}
+                            ></div>
+                            <div
+                              className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-dark-600"
+                              }`}
                             >
-                              {((item.achieved / item.target) * 100).toFixed(2)}
-                              %
+                              {/* Total Closed Deals: {item?.total_closed_deals} /
+                          Direct deals:{" "}
+                          <span
+                            className={
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-dark-600"
+                            }
+                          >
+                            {item?.total_sales || 0}
+                          </span> */}
+                              {percentageSales?.toFixed(2)}% of target achieved
                             </div>
                           </div>
-                        ) : (
-                          <></>
-                        )}
+                          {item?.profile_picture ? (
+                            <img
+                              src={item?.profile_picture}
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          ) : (
+                            <img
+                              src="./favicon.png"
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          )}
+                        </div>
+                        <div></div>
                       </div>
-                      <div></div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                ) : (
+                  <h2>No data for this month.</h2>
+                )}
               </div>
             </div>
 
@@ -389,7 +482,6 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                 currentMode === "dark" ? "text-white" : "text-black"
               } p-3 rounded-md`}
             >
-              {/* AGENT  */}
               <div
                 className={`${
                   currentMode === "dark"
@@ -397,63 +489,86 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                     : "text-main-red-color"
                 } text-xl font-bold`}
               >
-                AGENT
+                Sales Agent
               </div>
-              <div>
-                {Agent.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="grid grid-cols-12 gap-x-5 gap-y-2 rounded-md my-3 content-center align-center items-center"
-                    >
-                      <div className="col-span-2 sm:col-span-2 md:col-span-2 lg:col-span-3 xl:col-span-2 2xl:col-span-1 flex items-center">
-                        <img
-                          src="/favicon.png"
-                          height={"100%"}
-                          width={"100%"}
-                          className="rounded-full cursor-pointer"
-                          alt=""
-                        />
-                      </div>
-                      <div className="col-span-10 sm:col-span-10 md:col-span-10 lg:col-span-9 xl:col-span-10 2xl:col-span-11 flex gap-x-3 align-center content-center items-center">
-                        {item.achieved >= item.target ? (
-                          <div className="w-full">
-                            <h4 className="font-bold my-1 mx-2">{item.name}</h4>
-                            <span
-                              className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
-                            >
-                              {((item.achieved / item.target) * 100).toFixed(2)}
-                              %
-                            </span>
-                          </div>
-                        ) : item.achieved < item.target ? (
-                          <div className="w-full">
-                            <h4 className="font-bold my-1 mx-2">{item.name}</h4>
+              <div className="h-[300px] overflow-y-scroll">
+                {agents?.length > 0 ? (
+                  agents?.map((item, index) => {
+                    let totalSales = item.total_sales
+                      ? parseInt(item.total_sales)
+                      : 0;
+                    let target = item.target ? parseInt(item.target) : 0;
+                    let percentageSales = (totalSales / target) * 100;
+                    percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
+                    const barWidth = `${percentageSales}%`;
+                    const barColor =
+                      percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+
+                    return (
+                      <div
+                        key={index}
+                        className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                      >
+                        <div className="col-span-2">
+                          <h4 className="font-bold my-1">{item?.userName}</h4>
+                        </div>
+                        <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                          <div className="relative flex-1">
                             <div
-                              style={{
-                                width: `${
-                                  (item.achieved / item.target) * 100
-                                }%`,
-                              }}
-                              className={` bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 `}
+                              className={`absolute left-0 top-0 h-5 ${barColor}`}
+                              style={{ width: barWidth }}
+                            ></div>
+                            <div
+                              className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-dark-600"
+                              }`}
                             >
-                              {((item.achieved / item.target) * 100).toFixed(2)}
-                              %
+                              {/* Total Closed Deals: {item?.total_closed_deals} /
+                          Direct deals:{" "}
+                          <span
+                            className={
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-dark-600"
+                            }
+                          >
+                            {item?.total_sales || 0}
+                          </span> */}
+                              {percentageSales?.toFixed(2)}% of target achieved
                             </div>
                           </div>
-                        ) : (
-                          <></>
-                        )}
+                          {item?.profile_picture ? (
+                            <img
+                              src={item?.profile_picture}
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          ) : (
+                            <img
+                              src="./favicon.png"
+                              height={50}
+                              width={50}
+                              className="rounded-full cursor-pointer"
+                              alt=""
+                            />
+                          )}
+                        </div>
+                        <div></div>
                       </div>
-                      <div></div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                ) : (
+                  <h2>No data for this month.</h2>
+                )}
               </div>
             </div>
-          </div>
-        </TabPanel>
-      </Box>
+          </TabPanel>
+        </Box>
+      )}
     </div>
   );
 
