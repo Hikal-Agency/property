@@ -204,7 +204,7 @@ const Newleads = ({
           <>
             {cellValues.formattedValue === "Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
+                <badge className="bg-[#0f9d58] p-1 rounded-md">OTP VERIFIED</badge>
               </div>
             )}
 
@@ -417,7 +417,7 @@ const Newleads = ({
           <>
             {cellValues.formattedValue === "Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md">VERIFIED</badge>
+                <badge className="bg-[#0f9d58] p-1 rounded-md">OTP VERIFIED</badge>
               </div>
             )}
 
@@ -599,7 +599,7 @@ const Newleads = ({
           leadStatus: row?.leadStatus,
           leadCategory: leadCategory,
           notes: row?.notes,
-          otp: row?.otp,
+          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
           edit: "edit",
         }));
 
@@ -673,7 +673,7 @@ const Newleads = ({
           coldCall: row?.coldcall,
           leadCategory: leadCategory || "No Category",
           notes: row?.notes || "No notes",
-          otp: row?.otp || "No otp",
+          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
           edit: "edit",
         }));
         setpageState((old) => ({

@@ -294,6 +294,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
 
 .MuiDataGrid-cell badge:not(badge.available) {
   background: #000000c7 !important;
+  width: 100%;
 }
 
 .spinner-container {
@@ -435,6 +436,10 @@ label[for="bulkImport"] .MuiButtonBase-root {
  .MuiDataGrid-cell {
   text-align: center !important;
   justify-content: center !important;
+ }
+
+ .MuiDataGrid-cell[data-field="otp"] > div {
+  width: 80%;
  }
 
 @media all and (max-width: 1300px) {
