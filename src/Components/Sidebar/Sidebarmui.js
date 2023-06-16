@@ -711,7 +711,7 @@ const Sidebarmui = () => {
             {
               name: "Archived Leads",
               count: sidebarData?.UNASSIGNED?.warm,
-              link: "/unassigned/warm",
+              link: "/unassigned/archive",
             },
             {
               name: "Personal leads",
@@ -1087,7 +1087,7 @@ const Sidebarmui = () => {
             {
               name: "Archived Leads",
               count: sidebarData?.UNASSIGNED?.warm,
-              link: "/unassigned/warm",
+              link: "/unassigned/archive",
             },
             {
               name: "Personal leads",
