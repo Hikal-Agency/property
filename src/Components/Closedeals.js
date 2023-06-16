@@ -201,7 +201,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           enquiryType: row?.enquiryType,
           leadType: row?.leadType,
           amount: row?.amount,
-          lid: row?.id,
+           lid: row?.id,
         }));
 
         setpageState((old) => ({
