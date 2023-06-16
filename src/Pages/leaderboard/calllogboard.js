@@ -34,7 +34,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
         break;
     }
 
-    const apiUrl = "callLogs?period=" + period;
+    const apiUrl = "all-user-calls?period=" + period;
 
     try {
       const call_logs = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
@@ -141,7 +141,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
             <Loader />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
-              {/* {calldata.map((call, index) => {
+              {callLogs?.map((call, index) => {
                 return (
                   <div
                     className={`${
@@ -152,7 +152,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                   >
                     <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
                       <h5 className="font-bold text-main-red-color col-span-5">
-                        {call.userName}
+                        {call?.userName}
                       </h5>
                     </div>
                     <div className="grid gap-3">
@@ -170,9 +170,17 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <div className="block gap-3 mt-2">
                           <div>
                             <h1 className="text-sm">
+                              All Calls&nbsp;
+                              <span className="font-semibold text-main-red-color float-right">
+                                {call?.all_calls || 0}
+                              </span>
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-sm">
                               ANSWERED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.out_answered_calls}
+                                {call?.answered || 0}
                               </span>
                             </h1>
                           </div>
@@ -180,15 +188,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <h1 className="text-sm">
                               NOT ANSWERED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.out_notanswered_calls}
-                              </span>
-                            </h1>
-                          </div>
-                          <div>
-                            <h1 className="text-sm">
-                              REJECTED&nbsp;
-                              <span className="font-semibold text-main-red-color float-right">
-                                {call.out_rejected_calls}
+                                {call?.notanswered || 0}
                               </span>
                             </h1>
                           </div>
@@ -210,7 +210,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <h1 className="text-sm">
                               RECEIVED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.in_answered_calls}
+                                {call.received || 0}
                               </span>
                             </h1>
                           </div>
@@ -218,7 +218,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <h1 className="text-sm">
                               MISSED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.in_missed_calls}
+                                {call.missed || 0}
                               </span>
                             </h1>
                           </div>
@@ -227,8 +227,8 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     </div>
                   </div>
                 );
-              })} */}
-              <div
+              })}
+              {/* <div
                 className={`${
                   currentMode === "dark"
                     ? "bg-gray-900 text-white"
@@ -310,7 +310,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           )}
         </TabPanel>
@@ -321,7 +321,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
             <Loader />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
-              {/* {calldata.map((call, index) => {
+              {callLogs?.map((call, index) => {
                 return (
                   <div
                     className={`${
@@ -332,7 +332,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                   >
                     <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
                       <h5 className="font-bold text-main-red-color col-span-5">
-                        {call.userName}
+                        {call?.userName}
                       </h5>
                     </div>
                     <div className="grid gap-3">
@@ -350,9 +350,17 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <div className="block gap-3 mt-2">
                           <div>
                             <h1 className="text-sm">
+                              All Calls&nbsp;
+                              <span className="font-semibold text-main-red-color float-right">
+                                {call?.all_calls || 0}
+                              </span>
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-sm">
                               ANSWERED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.out_answered_calls}
+                                {call?.answered || 0}
                               </span>
                             </h1>
                           </div>
@@ -360,15 +368,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <h1 className="text-sm">
                               NOT ANSWERED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.out_notanswered_calls}
-                              </span>
-                            </h1>
-                          </div>
-                          <div>
-                            <h1 className="text-sm">
-                              REJECTED&nbsp;
-                              <span className="font-semibold text-main-red-color float-right">
-                                {call.out_rejected_calls}
+                                {call?.notanswered || 0}
                               </span>
                             </h1>
                           </div>
@@ -390,7 +390,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <h1 className="text-sm">
                               RECEIVED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.in_answered_calls}
+                                {call.received || 0}
                               </span>
                             </h1>
                           </div>
@@ -398,7 +398,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <h1 className="text-sm">
                               MISSED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.in_missed_calls}
+                                {call.missed || 0}
                               </span>
                             </h1>
                           </div>
@@ -407,8 +407,8 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     </div>
                   </div>
                 );
-              })} */}
-              <div
+              })}
+              {/* <div
                 className={`${
                   currentMode === "dark"
                     ? "bg-gray-900 text-white"
@@ -490,7 +490,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           )}
         </TabPanel>
@@ -501,7 +501,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
             <Loader />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
-              {/* {calldata.map((call, index) => {
+              {callLogs?.map((call, index) => {
                 return (
                   <div
                     className={`${
@@ -512,7 +512,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                   >
                     <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
                       <h5 className="font-bold text-main-red-color col-span-5">
-                        {call.userName}
+                        {call?.userName}
                       </h5>
                     </div>
                     <div className="grid gap-3">
@@ -530,9 +530,17 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <div className="block gap-3 mt-2">
                           <div>
                             <h1 className="text-sm">
+                              All Calls&nbsp;
+                              <span className="font-semibold text-main-red-color float-right">
+                                {call?.all_calls || 0}
+                              </span>
+                            </h1>
+                          </div>
+                          <div>
+                            <h1 className="text-sm">
                               ANSWERED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.out_answered_calls}
+                                {call?.answered || 0}
                               </span>
                             </h1>
                           </div>
@@ -540,15 +548,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <h1 className="text-sm">
                               NOT ANSWERED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.out_notanswered_calls}
-                              </span>
-                            </h1>
-                          </div>
-                          <div>
-                            <h1 className="text-sm">
-                              REJECTED&nbsp;
-                              <span className="font-semibold text-main-red-color float-right">
-                                {call.out_rejected_calls}
+                                {call?.notanswered || 0}
                               </span>
                             </h1>
                           </div>
@@ -570,7 +570,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <h1 className="text-sm">
                               RECEIVED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.in_answered_calls}
+                                {call.received || 0}
                               </span>
                             </h1>
                           </div>
@@ -578,7 +578,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <h1 className="text-sm">
                               MISSED&nbsp;
                               <span className="font-semibold text-main-red-color float-right">
-                                {call.in_missed_calls}
+                                {call.missed || 0}
                               </span>
                             </h1>
                           </div>
@@ -587,8 +587,8 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     </div>
                   </div>
                 );
-              })} */}
-              <div
+              })}
+              {/* <div
                 className={`${
                   currentMode === "dark"
                     ? "bg-gray-900 text-white"
@@ -670,7 +670,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           )}
         </TabPanel>
