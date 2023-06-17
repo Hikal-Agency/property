@@ -41,15 +41,30 @@ const SingleEmployee = ({ user }) => {
   const [imagePickerModal, setImagePickerModal] = useState(false);
 
   const columns = [
-    { field: "id",headerAlign: "center", headerName: "ID", width: 20 },
-    { field: "day",headerAlign: "center", headerName: "Day", width: 90 },
-    { field: "date",headerAlign: "center", headerName: "Date", width: 100 },
-    { field: "checkIn",headerAlign: "center", headerName: "Check-In", width: 90 },
-    { field: "checkOut",headerAlign: "center", headerName: "Check-Out", width: 90 },
-    { field: "status",headerAlign: "center", headerName: "Status", width: 90 },
-    { field: "lateBy",headerAlign: "center", headerName: "Late By", width: 90 },
-    { field: "reason",headerAlign: "center", headerName: "Reason", width: 90 },
-    { field: "salary",headerAlign: "center", headerName: "Salary", width: 90 },
+    { field: "id", headerAlign: "center", headerName: "ID", width: 20 },
+    { field: "day", headerAlign: "center", headerName: "Day", width: 90 },
+    { field: "date", headerAlign: "center", headerName: "Date", width: 100 },
+    {
+      field: "checkIn",
+      headerAlign: "center",
+      headerName: "Check-In",
+      width: 90,
+    },
+    {
+      field: "checkOut",
+      headerAlign: "center",
+      headerName: "Check-Out",
+      width: 90,
+    },
+    { field: "status", headerAlign: "center", headerName: "Status", width: 90 },
+    {
+      field: "lateBy",
+      headerAlign: "center",
+      headerName: "Late By",
+      width: 90,
+    },
+    { field: "reason", headerAlign: "center", headerName: "Reason", width: 90 },
+    { field: "salary", headerAlign: "center", headerName: "Salary", width: 90 },
     {
       field: "actions",
       headerName: "Actions",
@@ -535,63 +550,42 @@ const SingleEmployee = ({ user }) => {
                     } rounded-md shadow-md`}
                   >
                     <div className="col-span-2 border-r-2 border-gray-400  py-10 ">
-                      <h1 className="text-xl font-semibold pb-10 text-center">
+                      {/* <h1 className="text-xl font-semibold pb-10 text-center">
                         User Account
-                      </h1>
-                      <div className="accountinfo border-t-2 border-gray-400 px-5 pt-10 ">
+                      </h1> */}
+                      <label htmlFor="pick-image">
+                        <div
+                          onClick={() => setImagePickerModal({ isOpen: true })}
+                          className="relative"
+                        >
+                          <img
+                            src={User?.displayImg}
+                            width={200}
+                            height={200}
+                            alt=""
+                            className="rounded-full mx-auto w-28"
+                          />
+                        </div>
+                      </label>
+
+                      <div className="mb-3">
+                        <h1 className="text-lg font-bold text-center">
+                          {User?.userName}
+                        </h1>
+                        <h3
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-gray-50"
+                              : "text-gray-600"
+                          }  text-center`}
+                        >
+                          {User?.position}
+                        </h3>
+                      </div>
+                      <div className="accountinfo border-t-2 border-gray-400 px-5 pt-5 ">
                         <div className="flex justify-center flex-col items-center">
-                          <label htmlFor="pick-image">
-                            <div
-                              onClick={() =>
-                                setImagePickerModal({ isOpen: true })
-                              }
-                              className="relative"
-                            >
-                              <img
-                                src={User?.displayImg}
-                                width={200}
-                                height={200}
-                                alt=""
-                                className="rounded-full mx-auto w-28"
-                              />
-                              <div className="absolute -top-1 right-1 ">
-                                <BsFillPlusCircleFill
-                                  className="text-main-red-color bg-white border-white border-[3px] rounded-full w-full h-full"
-                                  size={30}
-                                />
-                              </div>
-                            </div>
-                          </label>
-                          {/* <input
-                                accept="image/*"
-                                onInput={handlePickImage}
-                                id="pick-image"
-                                type="file"
-                                hidden
-                              /> */}
-                          {/* <input
-                                accept="image/*"
-                                onChange={handlePickImage}
-                                id="pick-image"
-                                type="file"
-                                hidden
-                              /> */}
-                          <div className="mt-3">
-                            <h1 className="text-lg font-bold text-center">
-                              {User?.userName}
-                            </h1>
-                            <h3
-                              className={`${
-                                currentMode === "dark"
-                                  ? "text-gray-50"
-                                  : "text-gray-600"
-                              }  text-center`}
-                            >
-                              {User?.position}
-                            </h3>
-                          </div>
                           <div
-                            className={`mt-5 text-center ${
+                            className={`mt-1 text-center ${
                               currentMode === "dark"
                                 ? "text-gray-50"
                                 : "text-gray-600"
@@ -619,25 +613,49 @@ const SingleEmployee = ({ user }) => {
                               <p className="font-bold">{User?.creationDate}</p>
                             </div>
                           </div>
-
-                          {User?.role === 1 ? (
-                            <div className="mt-5 text-center text-gray-600">
-                              <Button
-                                className="bg-main-red-color shadow-none hover:shadow-none p-3"
-                                ripple={true}
-                              >
-                                DELETE
-                              </Button>
+                        </div>
+                      </div>
+                      <div className="accountinfo border-t-2 border-gray-400 px-5 mt-3 pt-5 ">
+                        <div className="flex justify-center flex-col items-center">
+                          <div
+                            className={`mt-1 text-center ${
+                              currentMode === "dark"
+                                ? "text-gray-50"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
+                              <MdEmail size={25} className="block" />
+                              <h1>Email Address</h1>
                             </div>
-                          ) : (
-                            <></>
-                          )}
+                            {User?.userEmail}
+                          </div>
+                          <div
+                            className={`mt-3 text-center ${
+                              currentMode === "dark"
+                                ? "text-gray-50"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            <div className="flex items-center justify-center font-semibold mb-1">
+                              <h1 className="block">Status: </h1>{" "}
+                              <p className="font-bold">Active</p>
+                            </div>
+                            <div className="mt-3">
+                              <h1>Profile Created on: </h1>
+                              <p className="font-bold">{User?.creationDate}</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     {/* section 2 */}
                     <div className="col-span-6 ">
-                      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
+                      <Box
+                        width={"100%"}
+                        className={`${currentMode}-mode-datatable`}
+                        sx={DataGridStyles}
+                      >
                         <DataGrid
                           autoHeight
                           disableSelectionOnClick
@@ -647,15 +665,19 @@ const SingleEmployee = ({ user }) => {
                           // loading={pageState.isLoading}
                           rowsPerPageOptions={[30, 50, 75, 100]}
                           pagination
-            componentsProps={{
-              toolbar: {
-                showQuickFilter: false,
-              printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
-                // value: searchText,
-                // onChange: HandleQuicSearch,
-              },
-            }}
+                          componentsProps={{
+                            toolbar: {
+                              showQuickFilter: false,
+                              printOptions: {
+                                disableToolbarButton: User?.role !== 1,
+                              },
+                              csvOptions: {
+                                disableToolbarButton: User?.role !== 1,
+                              },
+                              // value: searchText,
+                              // onChange: HandleQuicSearch,
+                            },
+                          }}
                           width="auto"
                           paginationMode="server"
                           // page={pageState.page - 1}
