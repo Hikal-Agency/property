@@ -152,12 +152,13 @@ const EmployeesList = ({ user }) => {
             <Stack spacing={2} marginTop={2}>
               <Pagination
                 count={maxPage}
+                page={pageState.page}
                 // color={currentMode === "dark" ? "primary" : "secondary"}
                 onChange={handlePageChange}
                 style={{ margin: "auto" }}
                 sx={{
                   "& .Mui-selected": {
-                    color: "white",
+                    color: "white !important",
                     backgroundColor: "red !important",
                     "&:hover": {
                       backgroundColor:
@@ -165,7 +166,7 @@ const EmployeesList = ({ user }) => {
                     },
                   },
                   "& .MuiPaginationItem-root": {
-                    color: "white",
+                    color: currentMode === "dark" ? "white" : "black",
                   },
                 }}
               />

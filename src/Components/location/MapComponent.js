@@ -180,9 +180,7 @@ const MapContainer = ({ location }) => {
                       {selectedMeeting?.meetingTime}&nbsp;
                       {selectedMeeting?.meetingDate}
                     </h1>
-                    <h1 className="font-semibold">
-                      {selectedMeeting?.userName}
-                    </h1>
+                    <h1> {selectedMeeting?.createdBy}</h1>
                   </div>
                 </InfoWindow>
               ) : null}

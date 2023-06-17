@@ -22,7 +22,7 @@ import {
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
 import Filters from "./Filters";
 import { BiSearch } from "react-icons/bi";
@@ -610,6 +610,19 @@ const BookedDeals = ({
           <div
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
+            <Button
+              // onClick={() => HandleEditFunc(cellValues)}
+              className={`${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
+              }`}
+            >
+              <AiOutlineHistory
+                size={20}
+                onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              />
+            </Button>
             <p
               onMouseEnter={() => setHovered("edit")}
               onMouseLeave={() => setHovered("")}
@@ -868,6 +881,19 @@ const BookedDeals = ({
           <div
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
+            <Button
+              // onClick={() => HandleEditFunc(cellValues)}
+              className={`${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
+              }`}
+            >
+              <AiOutlineHistory
+                size={20}
+                onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              />
+            </Button>
             <p
               onMouseEnter={() => setHovered("edit")}
               onMouseLeave={() => setHovered("")}
@@ -1066,6 +1092,19 @@ const BookedDeals = ({
           <div
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
+            <Button
+              // onClick={() => HandleEditFunc(cellValues)}
+              className={`${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
+              }`}
+            >
+              <AiOutlineHistory
+                size={20}
+                onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              />
+            </Button>
             <p
               onMouseEnter={() => setHovered("edit")}
               onMouseLeave={() => setHovered("")}
