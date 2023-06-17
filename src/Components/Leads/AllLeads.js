@@ -4,8 +4,9 @@ import {
   IconButton,
   InputAdornment,
   TextField,
-  styled, Select,
-  MenuItem
+  styled,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import "../../styles/index.css";
 import {
@@ -268,7 +269,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerAlign: "center",
       flex: 1,
     },
-    
+
     {
       field: "creationDate",
       headerName: "Date",
@@ -1215,7 +1216,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           leadCategory: leadCategory || "No category",
           coldCall: row?.coldcall,
           notes: row?.notes || "No notes",
-          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
+          otp:
+            row?.otp === "No OTP" || row?.otp === "No OTP Used"
+              ? "No OTP Used"
+              : row?.otp || "No OTP Used",
           edit: "edit",
         }));
 
@@ -1408,7 +1412,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           coldCall: row?.coldcall,
           leadCategory: leadCategory || "No Category",
           notes: row?.notes || "No notes",
-          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
+          otp:
+            row?.otp === "No OTP" || row?.otp === "No OTP Used"
+              ? "No OTP Used"
+              : row?.otp || "No OTP Used",
           edit: "edit",
         }));
         setpageState((old) => ({
@@ -1474,15 +1481,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       setdeleteloading(true);
       setdeletebtnloading(true);
       const Data = {
-        action: 'delete', 
-        ids: selectedRows
+        action: "delete",
+        ids: selectedRows,
       };
-        await axios.post(`${BACKEND_URL}/bulkaction`, JSON.stringify(Data), {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
+      await axios.post(`${BACKEND_URL}/bulkaction`, JSON.stringify(Data), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
       setdeleteloading(false);
       setdeletebtnloading(false);
@@ -1685,7 +1692,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <>
       <ToastContainer />
       <div className="pb-10">
-                  <Filters setFilt={setFilt} data={pageState.data}/>
+        <Filters
+          setFilt={setFilt}
+          allFilters={["leadSource", "project", "language", "otp"]}
+          data={pageState.data}
+        />
+
         <Box
           sx={{
             ...DataGridStyles,
@@ -1750,7 +1762,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             style={{ zIndex: "5 !important" }}
             className="absolute top-[7px] right-[20px] z-[5]"
           >
-
             <TextField
               placeholder="Search.."
               ref={searchRef}
@@ -1798,7 +1809,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 );
               }}
               pageSize={pageState.pageSize}
-
               onPageChange={(newPage) => {
                 const newPerPage = pageRange;
                 console.log("change page range: ", newPerPage);
@@ -1819,7 +1829,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   : AgentColumns
               }
               filterModel={{
-                  items: filt
+                items: filt,
               }}
               components={{
                 Toolbar: GridToolbar,

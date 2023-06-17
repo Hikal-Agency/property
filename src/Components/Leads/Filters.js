@@ -3,15 +3,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { Box } from "@mui/material";
 import FilterItem from "./FilterItem";
 
-const allFields = {
-    "source": "leadSource", 
-    "project": "project", 
-    "language": "language",
-    "otp": "otp"
-};
-const allFilters = Object.values(allFields);
-
-const Filters = ({ setFilt, data }) => {
+const Filters = ({ setFilt, data, allFilters }) => {
   const { darkModeColors } = useStateContext();
   const [filters, setFilters] = useState([]);
   const [options, setOptions] = useState({});
@@ -75,7 +67,6 @@ const Filters = ({ setFilt, data }) => {
             paddingLeft: "6px !important",
             paddingRight: "20px",
             borderRadius: "8px",
-            border: "2px solid #da1f26",
           },
           "& .MuiInputBase-root": {
             width: "max-content",
@@ -87,6 +78,7 @@ const Filters = ({ setFilt, data }) => {
             width: "max-content",
             padding: "3px 8px",
             color: "white",
+            marginRight: "0.25rem"
           },
           "& .applied-filter span": {
             marginRight: "3px",
