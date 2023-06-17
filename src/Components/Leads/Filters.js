@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { Box, TextField, MenuItem } from "@mui/material";
-import {IoMdClose} from "react-icons/io";
+import { Box } from "@mui/material";
+import FilterItem from "./FilterItem";
 
-const Filters = ({ setFilt, data }) => {
+const Filters = ({ setFilt, data, allFilters }) => {
   const { darkModeColors } = useStateContext();
   const [filters, setFilters] = useState([]);
-  const [options, setOptions] = useState({
-    project: ["project"],
-  });
+  const [options, setOptions] = useState({});
 
   const changeFilter = (filter, value) => {
     setFilters([
@@ -22,21 +20,42 @@ const Filters = ({ setFilt, data }) => {
   };
 
   const removeFilter = (filter) => {
-    setFilters(filters.filter((f) => {
-        return f.columnField !== filter
-    }));
-  }
-
-  useEffect(() => {
-    const projects = [];
-    console.log(data);
-  }, []);
+    setFilters(
+      filters.filter((f) => {
+        return f.columnField !== filter;
+      })
+    );
+  };
 
   useEffect(() => {
     setFilt(filters);
   }, [filters]);
 
-  const projectValue = filters.find((filter) => filter.columnField === "project")?.value;
+  useEffect(() => {
+    console.log("Dat::", data)
+
+    const allOptions = {};
+    allFilters?.forEach((filter) => {
+        if(filter === "leadType") {
+            const options1 = data?.filter((l) => l["leadType"]).map((l) => l["leadType"]);
+            const options2 = data?.filter((l) => l["enquiryType"]).map((l) => l["enquiryType"]);
+            allOptions[filter] = [...new Set(options1), ...new Set(options2)];
+        } else {
+            const options = data?.filter((l) => l[filter]).map((l) => l[filter]);
+            allOptions[filter] = [...new Set(options)];
+        }
+    })
+
+    setOptions(allOptions);
+    console.log("All options", allOptions)
+  }, [data]);
+
+  const values = {};
+  allFilters.forEach((f) => {
+    const val = filters.find((filter) => filter.columnField === f)?.value;
+    values[f] = val;
+  })
+
   return (
     <>
       <Box
@@ -44,51 +63,40 @@ const Filters = ({ setFilt, data }) => {
         sx={{
           ...darkModeColors,
           "& .MuiSelect-select": {
-            padding: "4px !important",
+            padding: "2px",
             paddingLeft: "6px !important",
+            paddingRight: "20px",
+            borderRadius: "8px",
           },
           "& .MuiInputBase-root": {
-            width: "100px",
+            width: "max-content",
+            marginRight: "5px"
           },
           "& .applied-filter": {
-            background: "#da1f26", 
-            borderRadius: 4, 
-            width: "100px",
-            padding: "4px",
+            background: "#da1f26",
+            borderRadius: 4,
+            width: "max-content",
+            padding: "3px 8px",
             color: "white",
-          }, 
+            marginRight: "0.25rem"
+          },
           "& .applied-filter span": {
-            marginRight: "3px" 
-          }
+            marginRight: "3px",
+          },
         }}
       >
-      {projectValue ? <Box onClick={() => removeFilter("project")} className="flex items-center justify-around applied-filter">
-        <span>{projectValue}</span>
-        <IoMdClose style={{color: "white"}}/>
-      </Box> :
-        <TextField
-          select
-          id="project"
-          value={
-            filters?.find((filter) => filter.columnField === "project")
-              ?.value || "select_project"
-          }
-          onChange={(e) => changeFilter("project", e.target.value)}
-          size="medium"
-          className="w-full border border-gray-300 rounded "
-          displayEmpty
-          required
-        >
-          <MenuItem value="select_project" selected disabled>
-            Project
-          </MenuItem>
-          {options.project?.map((project, index) => (
-            <MenuItem key={project} value={project} sx={{ color: "black" }}>
-              {project}
-            </MenuItem>
-          ))}
-        </TextField>
-      }
+
+      {allFilters.map((filter) => {
+        return <FilterItem
+        key={filter}
+          filterName={filter}
+          filterValue={values[filter]}
+          changeFilter={changeFilter}
+          removeFilter={removeFilter}
+          filterOptions={options}
+          filters={filters}
+        />
+      })}
       </Box>
     </>
   );

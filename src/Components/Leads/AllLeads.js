@@ -4,8 +4,9 @@ import {
   IconButton,
   InputAdornment,
   TextField,
-  styled, Select,
-  MenuItem
+  styled,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import "../../styles/index.css";
 import {
@@ -1691,7 +1692,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <>
       <ToastContainer />
       <div className="pb-10">
-                  <Filters setFilt={setFilt} data={pageState.data}/>
+        <Filters
+          setFilt={setFilt}
+          allFilters={["leadSource", "project", "language", "otp"]}
+          data={pageState.data}
+        />
+
         <Box
           sx={{
             ...DataGridStyles,
@@ -1756,7 +1762,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             style={{ zIndex: "5 !important" }}
             className="absolute top-[7px] right-[20px] z-[5]"
           >
-
             <TextField
               placeholder="Search.."
               ref={searchRef}
@@ -1804,7 +1809,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 );
               }}
               pageSize={pageState.pageSize}
-
               onPageChange={(newPage) => {
                 const newPerPage = pageRange;
                 console.log("change page range: ", newPerPage);
@@ -1825,7 +1829,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   : AgentColumns
               }
               filterModel={{
-                  items: filt
+                items: filt,
               }}
               components={{
                 Toolbar: GridToolbar,

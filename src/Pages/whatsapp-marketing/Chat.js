@@ -31,6 +31,7 @@ const Chat = () => {
     socket.emit("get_chat", { id: waDevice, contact: contact });
     socket.on("chat", (data) => {
       if(data?.length > 0) {
+        console.log(data);
         setChatMessages(() => {
           return [...data];
         });

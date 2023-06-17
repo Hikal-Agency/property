@@ -147,6 +147,11 @@ const CombinationChart = () => {
               x: { ticks: { color: "#000000" } },
             },
             responsive: true,
+            width: "100%"
+          }}
+          style={{
+            height: "100%",
+            width: "100%",
           }}
         />
       )}
