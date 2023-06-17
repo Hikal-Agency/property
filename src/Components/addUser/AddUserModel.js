@@ -67,21 +67,21 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
   const ChangeUserRole = (event) => {
     setUserRole(event.target.value);
     if (event.target.value === "head of sales") {
-      setformdata({ ...formdata, isParent: 2 });
+      setformdata({ ...formdata, role: 2 });
     } else if (event.target.value === "manager") {
-      setformdata({ ...formdata, isParent: 3 });
+      setformdata({ ...formdata, role: 3 });
     } else if (event.target.value === "marketing") {
-      setformdata({ ...formdata, isParent: 4 });
+      setformdata({ ...formdata, role: 4 });
     } else if (event.target.value === "accounts") {
-      setformdata({ ...formdata, isParent: 5 });
+      setformdata({ ...formdata, role: 5 });
     } else if (event.target.value === "user") {
-      setformdata({ ...formdata, isParent: 6 });
+      setformdata({ ...formdata, role: 6 });
     } else if (event.target.value === "agent") {
-      setformdata({ ...formdata, isParent: 7 });
+      setformdata({ ...formdata, role: 7 });
     } else if (event.target.value === "dataEntry") {
-      setformdata({ ...formdata, isParent: 8 });
+      setformdata({ ...formdata, role: 8 });
     } else if (event.target.value === "officeboy") {
-      setformdata({ ...formdata, isParent: 9 });
+      setformdata({ ...formdata, role: 9 });
     }
   };
 
@@ -180,19 +180,10 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
       >
         <div className="relative overflow-hidden">
           <div className={``}>
-            <div className="flex min-h-screen items-center justify-center mt-5 pl-3">
-              <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white py-8 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+            <div className="flex min-h-screen items-center justify-center pl-3">
+              <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
                 <div>
-                  {/* <Link to={"/"} className="cursor-pointer">
-                          <img
-                            height={200}
-                            width={200}
-                            className="mx-auto h-20 w-auto"
-                            src="/assets/blackLogo.png"
-                            alt=""
-                          />
-                        </Link> */}
-                  <h2 className="mt-6 text-center text-xl font-bold text-gray-900">
+                  <h2 className="text-center text-xl font-bold text-gray-900">
                     Create A New Account
                   </h2>
                 </div>
@@ -264,7 +255,8 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                     )}
 
                     <div className="col-span-3">
-                      <Select
+                      <TextField
+                      select
                         id="user-role"
                         value={UserRole}
                         label="User Role"
@@ -288,7 +280,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                         <MenuItem value={"marketing"}>Marketing</MenuItem>
                         <MenuItem value={"user"}>General User</MenuItem>
                         <MenuItem value={"officeboy"}>Office Boy</MenuItem>
-                      </Select>
+                      </TextField>
                     </div>
                     <div className="col-span-3">
                       <TextField
