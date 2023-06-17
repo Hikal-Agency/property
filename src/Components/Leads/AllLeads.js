@@ -28,6 +28,7 @@ import { BiSearch } from "react-icons/bi";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import Filters from "./Filters";
 import { FaArchive } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
@@ -1690,6 +1691,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <>
       <ToastContainer />
       <div className="pb-10">
+                  <Filters setFilt={setFilt} data={pageState.data}/>
         <Box
           sx={{
             ...DataGridStyles,
@@ -1778,7 +1780,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             />
           </div>
           <div style={{ position: "relative" }}>
-            {pageState.data.length > 0 && <></>}
             <DataGrid
               ref={dataTableRef}
               autoHeight

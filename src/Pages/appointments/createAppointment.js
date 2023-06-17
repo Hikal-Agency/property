@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import GoogleCalendarAppointment from "../../Components/appointments/GoogleCalendarAppointment";
+import { Box } from "@mui/material";
 
 const CreateAppointment = () => {
   const [loading, setloading] = useState(true);
@@ -36,7 +37,11 @@ const CreateAppointment = () => {
                   >
                     Create Appointment
                   </h1>
-                    <GoogleCalendarAppointment/>
+                    {/* <GoogleCalendarAppointment/> */}
+                    <Box className="mx-auto mt-20 w-[50%] text-white text-center py-16 rounded" sx={{background:" #da1f26"}}>
+                      <h1 className="mb-3" style={{fontWeight: "bold", fontSize: 36}}>Feature Coming Soon!</h1>
+                      <p>Thanks for Waiting</p>
+                    </Box>
                 </div>
               </div>
             </div>
