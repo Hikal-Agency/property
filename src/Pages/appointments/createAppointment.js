@@ -38,10 +38,7 @@ const CreateAppointment = () => {
                     Create Appointment
                   </h1>
                     {/* <GoogleCalendarAppointment/> */}
-                    <Box className="mx-auto mt-20 w-[50%] text-white text-center py-16 rounded" sx={{background:" #da1f26"}}>
-                      <h1 className="mb-3" style={{fontWeight: "bold", fontSize: 36}}>Feature Coming Soon!</h1>
-                      <p>Thanks for Waiting</p>
-                    </Box>
+                    <Box className="h-[60vh] flex items-center justify-center"><img src="/assets/coming-soon.png" width={"200px"} alt=""/></Box>
                 </div>
               </div>
             </div>
