@@ -274,7 +274,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerAlign: "center",
       flex: 1,
     },
-    
+
     {
       field: "creationDate",
       headerName: "Date",
@@ -1122,7 +1122,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=0&feedback=Unreachable`;
       } else if (lead_type === "cold") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=1`;
-      } else if (lead_type === "warm") {
+      } else if (lead_type === "archive") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=4`;
       } else if (lead_type === "personal") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&unassigned=1&coldCall=2`;
@@ -1221,7 +1221,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           leadCategory: leadCategory || "No category",
           coldCall: row?.coldcall,
           notes: row?.notes || "No notes",
-          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
+          otp:
+            row?.otp === "No OTP" || row?.otp === "No OTP Used"
+              ? "No OTP Used"
+              : row?.otp || "No OTP Used",
           edit: "edit",
         }));
 
@@ -1414,7 +1417,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           coldCall: row?.coldcall,
           leadCategory: leadCategory || "No Category",
           notes: row?.notes || "No notes",
-          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
+          otp:
+            row?.otp === "No OTP" || row?.otp === "No OTP Used"
+              ? "No OTP Used"
+              : row?.otp || "No OTP Used",
           edit: "edit",
         }));
         setpageState((old) => ({
@@ -1480,15 +1486,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       setdeleteloading(true);
       setdeletebtnloading(true);
       const Data = {
-        action: 'delete', 
-        ids: selectedRows
+        action: "delete",
+        ids: selectedRows,
       };
-        await axios.post(`${BACKEND_URL}/bulkaction`, JSON.stringify(Data), {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
+      await axios.post(`${BACKEND_URL}/bulkaction`, JSON.stringify(Data), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
       setdeleteloading(false);
       setdeletebtnloading(false);
