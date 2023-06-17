@@ -2,9 +2,7 @@
 
 import React from "react";
 import { useEffect } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
 import LocationComponent from "../../Components/location/LocationComponent";
-import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 
 const Livelocation = () => {

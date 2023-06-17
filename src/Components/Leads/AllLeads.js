@@ -4,13 +4,8 @@ import {
   IconButton,
   InputAdornment,
   TextField,
-  styled,
-  Switch,
-  Input,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
+  styled, Select,
+  MenuItem
 } from "@mui/material";
 import "../../styles/index.css";
 import {
@@ -36,8 +31,6 @@ import { FcGoogle } from "react-icons/fc";
 import { FaArchive } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
-import { FaFire } from "react-icons/fa";
-import { FaRandom } from "react-icons/fa";
 
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
@@ -56,14 +49,13 @@ import DeleteLeadModel from "./DeleteLead";
 import BulkImport from "./BulkImport";
 import { RiMessage2Line } from "react-icons/ri";
 import { FaWhatsapp } from "react-icons/fa";
-import Loader from "../Loader";
 import { FaYoutube } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { langs } from "../../langCodes";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
-  top: "12.5px",
+  top: "10.5px",
   zIndex: "500",
   transform: "translateX(-50%)",
   fontWeight: "500",
@@ -75,6 +67,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [singleLeadData, setsingleLeadData] = useState({});
   const [deleteloading, setdeleteloading] = useState(false);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
+  const [filt, setFilt] = useState([]);
   const [error, setError] = useState(false);
 
   const [selectedRows, setSelectedRows] = useState([]);
@@ -1710,7 +1703,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: "564px",
+                left: "476px",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -1725,7 +1718,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: "685px",
+                left: "600px",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -1741,7 +1734,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: User?.role === 1 ? "444px" : "355px",
+                left: User?.role === 1 ? "355px" : "266px",
               }}
               variant="text"
             >
@@ -1761,32 +1754,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             style={{ zIndex: "5 !important" }}
             className="absolute top-[7px] right-[20px] z-[5]"
           >
-            {/* <TextField
-              type="number"
-              placeholder="Select per page 14-100"
-              value={pageRange}
-              sx={{
-                "& input": {
-                  borderBottom: "2px solid #ffffff6e",
-                },
-              }}
-              variant="standard"
-              onChange={handleRangeChange}
-              min={"14"}
-              onKeyUp={handleKeyUp}
-              onInput={handleSearch}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <IconButton sx={{ padding: 0 }}>
-                     
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              error={error && error}
-              helperText={error && error}
-            /> */}
 
             <TextField
               placeholder="Search.."
@@ -1811,32 +1778,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             />
           </div>
           <div style={{ position: "relative" }}>
-            {/* {pageState.data.length > 0 && (
-      <>
-        <div onClick={handleNextArrow}> 
-          <Avatar
-            className="shadow-md"
-            style={{
-              ...arrowStyles,
-              right: -30,
-            }}
-          >
-            <GrFormNext size={30} />
-          </Avatar>
-        </div>
-        <div onClick={handlePrevArrow}>
-          <Avatar
-            className="shadow-md"
-            style={{
-              ...arrowStyles,
-              left: -30,
-            }}
-          >
-            <GrFormPrevious size={30} />
-          </Avatar>
-        </div>
-      </>
-    )} */}
             {pageState.data.length > 0 && <></>}
             <DataGrid
               ref={dataTableRef}
@@ -1862,9 +1803,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 );
               }}
               pageSize={pageState.pageSize}
-              // onPageChange={(newPage) => {
-              //   setpageState((old) => ({ ...old, page: newPage + 1 }));
-              // }}
+
               onPageChange={(newPage) => {
                 const newPerPage = pageRange;
                 console.log("change page range: ", newPerPage);
@@ -1884,11 +1823,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ? ManagerColumns
                   : AgentColumns
               }
-              // columns={columns}
+              filterModel={{
+                  items: filt
+              }}
               components={{
                 Toolbar: GridToolbar,
                 Pagination: CustomPagination,
               }}
+              disableColumnFilter
               componentsProps={{
                 toolbar: {
                   showQuickFilter: false,
@@ -1911,16 +1853,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       ? "white !important"
                       : "black !important",
                 },
-                // "& .MuiDataGrid-main .MuiSwitch-switchBase": {
-                //   color: "#DA1F26 !important",
-                // },
-                // "& .MuiDataGrid-main .MuiSwitch-switchBase.Mui-checked": {
-                //   color: "#DA1F26 !important",
-                // },
-                // "& .MuiDataGrid-main .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
-                //   {
-                //     backgroundColor: "#DA1F26 !important",
-                //   },
+
                 "& .MuiButtonBase-root .MuiSwitch-switchBase": {
                   color: "red !important",
                 },
