@@ -24,7 +24,7 @@ const EmployeesList = ({ user }) => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${BACKEND_URL}/users?page=${pageState.page}`,
+          `${BACKEND_URL}/attendance?page=${pageState.page}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -32,8 +32,10 @@ const EmployeesList = ({ user }) => {
             },
           }
         );
-        setUserData(response.data?.managers?.data);
-        setMaxPage(response.data?.managers?.last_page);
+
+        console.log("attendance: ", response);
+        setUserData(response.data?.Record?.data);
+        setMaxPage(response.data?.Record?.last_page);
       } catch (error) {
         console.error("Error fetching users:", error);
       } finally {
@@ -59,6 +61,20 @@ const EmployeesList = ({ user }) => {
               <div className="mt-5 md:mt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
                   {userData?.map((item, index) => {
+                    let bgColor;
+                    if (
+                      item?.attendance_type?.toLowerCase() === "checkout" ||
+                      item?.attendance_type?.toLowerCase() === "check-out"
+                    ) {
+                      bgColor = "bg-blue-500";
+                    } else if (
+                      item?.attendance_type?.toLowerCase() === "checkin" ||
+                      item?.attendance_type?.toLowerCase() === "check in"
+                    ) {
+                      bgColor = "bg-green-500";
+                    } else {
+                      bgColor = "bg-red-500";
+                    }
                     return (
                       <div
                         key={index}
@@ -68,15 +84,17 @@ const EmployeesList = ({ user }) => {
                             : "bg-gray-200 text-black"
                         }  rounded-md`}
                       >
-                        <div className="bg-red-500 py-2 px-4 rounded-md mb-3">
+                        <div
+                          className={`${bgColor}  py-2 px-4 rounded-md mb-3`}
+                        >
                           <p className="text-sm text-white text-center">
                             Checked-in
                           </p>
                         </div>
                         <div className="flex justify-center items-center">
-                          {item?.displayImg ? (
+                          {item?.profile_picture ? (
                             <img
-                              src={item?.displayImg}
+                              src={item?.profile_picture}
                               className="rounded-full cursor-pointer h-16 w-16 object-cover"
                               alt=""
                             />
@@ -93,11 +111,23 @@ const EmployeesList = ({ user }) => {
                             {item?.userName}
                           </h4>
                           <p className="text-sm">{item?.position}</p>
-                          <p className="text-sm">{item?.department}</p>
+                          <p className="text-sm">
+                            {item?.department === 1
+                              ? "Admin"
+                              : item?.department === 3
+                              ? "Manager"
+                              : item?.department === 7
+                              ? "Agent"
+                              : "No department"}
+                          </p>
                         </div>
-                        <div className="bg-red-500 rounded-md p-2 mt-3 text-center">
-                          <p className="text-xs">Checked-Out</p>
-                          <p className="text-xs">2023-05-30 06:30</p>
+                        <div
+                          className={` ${bgColor} rounded-md p-2 mt-3 text-center`}
+                        >
+                          <p className="text-xs text-white">Checked-Out</p>
+                          <p className="text-xs text-white">
+                            {item?.check_datetime || "No Time"}
+                          </p>
                         </div>
                       </div>
                     );
