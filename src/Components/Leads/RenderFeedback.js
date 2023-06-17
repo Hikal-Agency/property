@@ -39,8 +39,13 @@ const RenderFeedback = ({ cellValues }) => {
     lng: 0,
     addressText: "",
   });
-  const { currentMode, setreloadDataGrid, reloadDataGrid, fetchSidebarData, BACKEND_URL } =
-    useStateContext();
+  const {
+    currentMode,
+    setreloadDataGrid,
+    reloadDataGrid,
+    fetchSidebarData,
+    BACKEND_URL,
+  } = useStateContext();
   const ChangeFeedback = (e) => {
     setnewFeedback(e.target.value);
     setDialogue(true);
@@ -98,10 +103,14 @@ const RenderFeedback = ({ cellValues }) => {
           minute: "2-digit",
         })
       );
-      UpdateLeadData.append("meetingStatus", meetingData.meetingStatus);
+      UpdateLeadData.append(
+        "meetingStatus",
+        meetingData.meetingStatus || "Pending"
+      );
       UpdateLeadData.append("mLat", String(meetingLocation.lat));
       UpdateLeadData.append("mLong", String(meetingLocation.lng));
       UpdateLeadData.append("meetingLocation", meetingLocation.addressText);
+      UpdateLeadData.append("notes", meetingData.notes || "");
     }
 
     await axios
@@ -368,6 +377,22 @@ const RenderFeedback = ({ cellValues }) => {
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </Select>
                     </FormControl>
+                    <TextField
+                      id="text"
+                      type={"text"}
+                      label="Notes "
+                      className="w-full mb-3"
+                      style={{ marginBottom: "20px" }}
+                      variant="outlined"
+                      name="text"
+                      size="medium"
+                      onChange={(e) => {
+                        setMeetingData({
+                          ...meetingData,
+                          notes: e.target.value,
+                        });
+                      }}
+                    />
 
                     <LocationPicker
                       meetingLocation={meetingLocation}
