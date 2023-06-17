@@ -312,7 +312,7 @@ const RenderFeedback = ({ cellValues }) => {
                   <div className="flex flex-col justify-center items-center gap-4 mt-4">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
-                        label="Meeting Date"
+                        label="Meeting Date *"
                         value={meetingData.meetingDate}
                         views={["year", "month", "day"]}
                         onChange={(newValue) => {
@@ -340,7 +340,7 @@ const RenderFeedback = ({ cellValues }) => {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <TimePicker
                         ampm={false}
-                        label="Meeting Time"
+                        label="Meeting Time *"
                         format="HH:mm"
                         value={meetingData.meetingTime}
                         onChange={(newValue) => {
@@ -357,11 +357,11 @@ const RenderFeedback = ({ cellValues }) => {
                     </LocalizationProvider>
                     <FormControl fullWidth>
                       <InputLabel id="meeting-status">
-                        Meeting Status
+                        Meeting Status *
                       </InputLabel>
                       <Select
                         labelId="meeting-status"
-                        label="Meeting Status"
+                        label="Meeting Status *"
                         value={meetingData.meetingStatus}
                         onChange={(e) => {
                           setMeetingData({
@@ -392,6 +392,7 @@ const RenderFeedback = ({ cellValues }) => {
                           notes: e.target.value,
                         });
                       }}
+                      required
                     />
 
                     <LocationPicker
