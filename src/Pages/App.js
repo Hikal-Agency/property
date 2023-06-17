@@ -60,6 +60,7 @@ import OfficeSettings from "./attendanceModule/officeSettings";
 import Settings from "./settings";
 import Employees from "./attendanceModule/employeesList";
 import AllWarmLeads from "./warmleads";
+import SingleEmployee from "../Components/attendance/SingleEmployee";
 
 const libraries = ["places"];
 
@@ -307,6 +308,11 @@ const routes = [
     element: <Employees />,
   },
   {
+    path: "/attendance/singleEmployee/:eid",
+    pageName: "Employees",
+    element: <SingleEmployee />,
+  },
+  {
     path: "/settings",
     pageName: "Settings",
     element: <Settings />,
@@ -317,14 +323,10 @@ const routes = [
   },
 ];
 
-export const socket = io(process.env.REACT_APP_SOCKET_URL)
+export const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-  const {
-    setAllRoutes,
-    socketRef,
-    currentMode,
-  } = useStateContext();
+  const { setAllRoutes, socketRef, currentMode } = useStateContext();
   const location = useLocation();
 
   useJsApiLoader({
@@ -335,7 +337,6 @@ function App() {
   useEffect(() => {
     setAllRoutes(routes);
   }, []);
-
 
   function hasSidebarOrNavbar() {
     const pathname = location.pathname;
