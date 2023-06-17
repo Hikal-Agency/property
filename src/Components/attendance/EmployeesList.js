@@ -6,6 +6,7 @@ import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 // import axios from "axios";
 import axios from "../../axoisConfig";
+import { useNavigate } from "react-router-dom";
 
 const EmployeesList = ({ user }) => {
   const [loading, setLoading] = useState(false);
@@ -14,9 +15,16 @@ const EmployeesList = ({ user }) => {
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
   const token = localStorage.getItem("auth-token");
+  const navigate = useNavigate();
 
   const handlePageChange = (event, value) => {
     setpageState({ ...pageState, page: value });
+  };
+
+  const handleClick = (e, user_id) => {
+    e.preventDefault();
+
+    navigate(`/attendance/singleEmployee/${user_id}`);
   };
 
   useEffect(() => {
@@ -82,13 +90,18 @@ const EmployeesList = ({ user }) => {
                           currentMode === "dark"
                             ? "bg-gray-900 text-white"
                             : "bg-gray-200 text-black"
-                        }  rounded-md`}
+                        }  rounded-md cursor-pointer`}
+                        onClick={(e) => handleClick(e, item?.user_id)}
                       >
                         <div
                           className={`${bgColor}  py-2 px-4 rounded-md mb-3`}
                         >
                           <p className="text-sm text-white text-center">
-                            Checked-in
+                            {bgColor === "bg-blue-500"
+                              ? "Checked-Out"
+                              : bgColor === "bg-green-500"
+                              ? "Checked-In"
+                              : "Absent"}
                           </p>
                         </div>
                         <div className="flex justify-center items-center">
@@ -96,7 +109,7 @@ const EmployeesList = ({ user }) => {
                             <img
                               src={item?.profile_picture}
                               className="rounded-full cursor-pointer h-16 w-16 object-cover"
-                              alt=""
+                              alt="profile image"
                             />
                           ) : (
                             <Avatar
@@ -124,7 +137,7 @@ const EmployeesList = ({ user }) => {
                         <div
                           className={` ${bgColor} rounded-md p-2 mt-3 text-center`}
                         >
-                          <p className="text-xs text-white">Checked-Out</p>
+                          {/* <p className="text-xs text-white">Checked-Out</p> */}
                           <p className="text-xs text-white">
                             {item?.check_datetime || "No Time"}
                           </p>

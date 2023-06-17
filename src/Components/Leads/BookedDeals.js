@@ -65,10 +65,14 @@ const BookedDeals = ({
   const dataTableRef = useRef();
   const searchRef = useRef();
 
-    const getLangCode = (language) => {
-    if(language) {
-      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
-      if(l) {
+  const getLangCode = (language) => {
+    if (language) {
+      const l = langs.find(
+        (lang) =>
+          lang["name"].toLowerCase() === String(language).toLowerCase() ||
+          lang["nativeName"].toLowerCase() === String(language).toLowerCase()
+      );
+      if (l) {
         return l.code.toUpperCase();
       } else {
         return "Invalid";
@@ -76,7 +80,7 @@ const BookedDeals = ({
     } else {
       return null;
     }
-  }
+  };
 
   const {
     currentMode,
@@ -595,7 +599,7 @@ const BookedDeals = ({
     },
     {
       field: "edit",
-      headerName: "Edit",
+      headerName: "Action",
       flex: 1,
       width: "100%",
       sortable: false,
@@ -741,7 +745,8 @@ const BookedDeals = ({
     {
       field: "assignedToManager",
       headerName: "Manager",
-      minWidth: 120,headerAlign: "center",
+      minWidth: 120,
+      headerAlign: "center",
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
@@ -838,7 +843,7 @@ const BookedDeals = ({
       field: "creationDate",
       headerName: "Date",
       flex: 1,
-headerAlign: "center",
+      headerAlign: "center",
       sortable: false,
       minWidth: 50,
       filterable: false,
@@ -851,7 +856,7 @@ headerAlign: "center",
     },
     {
       field: "edit",
-      headerName: "Edit",
+      headerName: "Action",
       flex: 1,
       width: "100%",
       headerAlign: "center",
@@ -1036,7 +1041,7 @@ headerAlign: "center",
       field: "creationDate",
       headerName: "Date",
       flex: 1,
-headerAlign: "center",
+      headerAlign: "center",
       sortable: false,
       minWidth: 50,
       filterable: false,
@@ -1049,7 +1054,7 @@ headerAlign: "center",
     },
     {
       field: "edit",
-      headerName: "Edit",
+      headerName: "Action",
       flex: 1,
       headerAlign: "center",
       width: "100%",
@@ -1138,7 +1143,10 @@ headerAlign: "center",
           leadStatus: row?.leadStatus,
           leadCategory: leadCategory,
           notes: row?.notes,
-          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
+          otp:
+            row?.otp === "No OTP" || row?.otp === "No OTP Used"
+              ? "No OTP Used"
+              : row?.otp || "No OTP Used",
           edit: "edit",
         }));
 
@@ -1309,7 +1317,10 @@ headerAlign: "center",
           coldCall: row?.coldcall,
           leadCategory: leadCategory || "No Category",
           notes: row?.notes || "No notes",
-          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
+          otp:
+            row?.otp === "No OTP" || row?.otp === "No OTP Used"
+              ? "No OTP Used"
+              : row?.otp || "No OTP Used",
           edit: "edit",
         }));
         setpageState((old) => ({
