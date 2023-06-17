@@ -245,7 +245,7 @@ const BookedDeals = ({
             </MenuItem>
             <MenuItem value={"Booked"}>Booked</MenuItem>
             <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
-            <MenuItem value={"Closed"}>Closed</MenuItem>
+            <MenuItem value={"Closed"}>Closed Deal</MenuItem>
           </Select>
         </FormControl>
         {DialogueVal && (
@@ -1138,7 +1138,7 @@ headerAlign: "center",
           leadStatus: row?.leadStatus,
           leadCategory: leadCategory,
           notes: row?.notes,
-          otp: row?.otp,
+          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
           edit: "edit",
         }));
 
@@ -1309,7 +1309,7 @@ headerAlign: "center",
           coldCall: row?.coldcall,
           leadCategory: leadCategory || "No Category",
           notes: row?.notes || "No notes",
-          otp: row?.otp || "No otp",
+          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
           edit: "edit",
         }));
         setpageState((old) => ({

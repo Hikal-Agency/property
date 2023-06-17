@@ -239,7 +239,7 @@ const AllLeads = () => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 120,
+      minWidth: 140,
       headerAlign: "center",
       flex: 1,
     },
@@ -247,7 +247,7 @@ const AllLeads = () => {
       field: "project",
       headerName: "Project",
       headerAlign: "center",
-      minWidth: 100,
+      minWidth: 160,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -294,7 +294,7 @@ const AllLeads = () => {
       headerAlign: "center",
 
       sortable: false,
-      minWidth: 90,
+      minWidth: 120,
       filterable: false,
                   renderCell: (params) => <div className="flex flex-col">
         <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
@@ -351,14 +351,14 @@ const AllLeads = () => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 120,
+      minWidth: 140,
       headerAlign: "center",
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
-      minWidth: 100,
+      minWidth: 160,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -406,7 +406,7 @@ const AllLeads = () => {
       flex: 1,
 
       sortable: false,
-      minWidth: 90,
+      minWidth: 120,
       filterable: false,
                   renderCell: (params) => <div className="flex flex-col">
         <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>

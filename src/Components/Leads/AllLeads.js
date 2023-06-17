@@ -526,7 +526,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             {cellValues.formattedValue === "Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
                 <badge className="bg-[#0f9d58] p-1 rounded-md available">
-                  VERIFIED
+                  OTP VERIFIED
                 </badge>
               </div>
             )}
@@ -861,7 +861,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             {cellValues.formattedValue === "Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
                 <badge className="bg-[#0f9d58] p-1 rounded-md available">
-                  VERIFIED
+                  OTP VERIFIED
                 </badge>
               </div>
             )}
@@ -1221,7 +1221,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           leadCategory: leadCategory || "No category",
           coldCall: row?.coldcall,
           notes: row?.notes || "No notes",
-          otp: row?.otp || "No otp",
+          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
           edit: "edit",
         }));
 
@@ -1414,7 +1414,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           coldCall: row?.coldcall,
           leadCategory: leadCategory || "No Category",
           notes: row?.notes || "No notes",
-          otp: row?.otp || "No otp",
+          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
           edit: "edit",
         }));
         setpageState((old) => ({

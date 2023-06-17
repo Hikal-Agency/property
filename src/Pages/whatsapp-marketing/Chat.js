@@ -12,7 +12,7 @@ const Chat = () => {
   const { User, currentMode, darkModeColors, } = useStateContext();
   const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
-  const [chatLoading, setChatLoading] = useState(true);
+  const [chatLoading, setChatLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [ready, setReady] = useState(false);
   const [deviceName, setDeviceName] = useState("");
@@ -27,12 +27,14 @@ const Chat = () => {
 
   const waDevice = localStorage.getItem("authenticated-wa-device");
 
-  const fetchChatMessages = async (contact, afterSendMessage) => {
+  const fetchChatMessages = async (contact) => {
     socket.emit("get_chat", { id: waDevice, contact: contact });
     socket.on("chat", (data) => {
-      setChatMessages(() => {
-        return [...data];
-      });
+      if(data?.length > 0) {
+        setChatMessages(() => {
+          return [...data];
+        });
+      }
       setChatLoading(false);
     });
   };
@@ -71,6 +73,25 @@ const Chat = () => {
     socket.emit("logout-user", { id: waDevice });
   };
 
+  const logout = () => {
+          localStorage.removeItem("authenticated-wa-device");
+          localStorage.removeItem("authenticated-wa-account");
+          toast.success("You are logged out successfully!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+
+          setReady(false);
+          setDeviceName("");
+          setloading(false);
+          setQr(null);
+  }
+
   useEffect(() => {
     const waAccount = JSON.parse(
       localStorage.getItem("authenticated-wa-account")
@@ -82,6 +103,7 @@ const Chat = () => {
           userInfo: waAccount?.info,
           userProfilePic: waAccount?.profile_pic_url,
         });
+        setChatLoading(true);
         setReady(true);
         setloading(false);
       } else {
@@ -103,7 +125,7 @@ const Chat = () => {
 
       socket.on("user_ready", (info) => {
         setDeviceName(info.sessionId);
-        console.log(info.sessionId);
+        setChatLoading(true);
         socket.emit("get_profile_picture", { id: info.sessionId });
         socket.on("profile_picture", (url) => {
           localStorage.setItem("authenticated-wa-device", info.sessionId);
@@ -136,22 +158,7 @@ const Chat = () => {
 
       socket.on("logged-out", (data) => {
         if (data) {
-          localStorage.removeItem("authenticated-wa-device");
-          localStorage.removeItem("authenticated-wa-account");
-          toast.success("You are logged out successfully!", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-
-          setReady(false);
-          setDeviceName("");
-          setloading(false);
-          setQr(null);
+          handleLogout();
         }
       });
 
@@ -159,6 +166,7 @@ const Chat = () => {
 
       socket.on("disconnect", () => {
         setServerDisconnected(true);
+        logout(); 
       });
     }
   }, [socket]);

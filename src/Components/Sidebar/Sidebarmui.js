@@ -1156,7 +1156,7 @@ const Sidebarmui = () => {
       ],
     },
     {
-      title: "New",
+      title: "Deals",
       links: [
         {
           name: "Booked deals",
@@ -1504,19 +1504,21 @@ const Sidebarmui = () => {
   }, []);
 
   const checkUser = (user) => {
-    const expiry = new Date(user?.expiry_date).getTime();
-    const now = new Date().getTime();
+    if (user?.id) {
+      const expiry = new Date(user?.expiry_date).getTime();
+      const now = new Date().getTime();
 
-    const isExpired = now > expiry;
+      const isExpired = now > expiry;
 
-    if (user?.role === 1) {
-      return true;
-    } else {
-      return (
-        isExpired === false &&
-        user?.package_name?.length > 0 &&
-        user?.package_name !== "unsubscribed"
-      );
+      if (user?.role === 1) {
+        return true;
+      } else {
+        return (
+          isExpired === false &&
+          user?.package_name?.length > 0 &&
+          user?.package_name !== "unsubscribed"
+        );
+      }
     }
   };
 

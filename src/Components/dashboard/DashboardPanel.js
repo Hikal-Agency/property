@@ -6,6 +6,7 @@ import { MdLeaderboard, MdSupportAgent } from "react-icons/md";
 import { AiOutlineFire } from "react-icons/ai";
 import { GiThermometerCold } from "react-icons/gi";
 import { FiUsers } from "react-icons/fi";
+import CountUp from 'react-countup';
 import BarChart from "../../Components/charts/BarChart";
 import SalesAmountChartAdmin from "../../Components/charts/SalesAmountChartAdmin";
 import CombinationChart from "../../Components/charts/CombinationChart";
@@ -204,17 +205,17 @@ const DashboardPanel = ({ setloading }) => {
             <div>
               {User?.role === 3 && (
                 <p className="text-2xl font-bold pb-3 text-red-600">
-                  {DashboardData?.lead_status?.hot}
+                  <CountUp end={DashboardData?.lead_status?.hot} duration={3}/>
                 </p>
               )}
               {User?.role === 7 && (
                 <p className="text-2xl font-bold pb-3 text-red-600">
-                  {DashboardData?.lead_status?.hot}
+                  <CountUp end={DashboardData?.lead_status?.hot} duration={3}/>
                 </p>
               )}
               {User?.role === 1 && (
                 <p className="text-2xl font-bold pb-3 text-red-600">
-                  {DashboardData?.lead_status?.hot}
+                  <CountUp end={DashboardData?.lead_status?.hot} duration={3}/>
                 </p>
               )}
               <p
@@ -264,7 +265,7 @@ const DashboardPanel = ({ setloading }) => {
                   } h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
                 >
                   <p className="text-2xl font-bold pb-3 text-red-600">
-                    {item.amount}
+                    <CountUp end={item.amount} duration={3}/>
                   </p>
                   <p
                     className={`text-sm ${
@@ -294,7 +295,7 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p className="text-2xl font-bold pb-3 text-red-600">
-                        {item.amount}
+                       <CountUp end={item.amount} duration={3}/> 
                       </p>
                       <p
                         className={`text-sm ${
@@ -326,7 +327,7 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p className="text-2xl font-bold pb-3 text-red-600">
-                        {item.amount}
+                       <CountUp end={item.amount} duration={3}/> 
                       </p>
                       <p
                         className={`text-sm ${
