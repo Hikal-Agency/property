@@ -11,16 +11,22 @@ const mapContainerStyle = {
 };
 
 const currentLocBtnStyle = {
-  padding: "7px", width: 40, height: 40, minWidth: "auto", position: "absolute", top: 15, right: 10
+  padding: "7px",
+  width: 40,
+  height: 40,
+  minWidth: "auto",
+  position: "absolute",
+  top: 15,
+  right: 10,
 };
 
 const LocationPicker = ({
   meetingLocation,
   setMeetingLocation,
   showOnly = false,
-  currLocByDefault
+  currLocByDefault,
 }) => {
-  const {currentMode} = useStateContext();
+  const { currentMode } = useStateContext();
   const geocoder = new window.google.maps.Geocoder();
 
   const [map, setMap] = useState({
@@ -28,32 +34,32 @@ const LocationPicker = ({
   });
 
   const handleCurrentLocationClick = () => {
-      navigator.geolocation.getCurrentPosition((position) => {
-        geocoder.geocode(
-          {
-            location: {
-              lat: Number(position.coords.latitude),
-              lng: Number(position.coords.longitude),
-            },
+    navigator.geolocation.getCurrentPosition((position) => {
+      geocoder.geocode(
+        {
+          location: {
+            lat: Number(position.coords.latitude),
+            lng: Number(position.coords.longitude),
           },
-          (results, status) => {
-            if (status === "OK") {
-              if(showOnly) {
-                map.panTo({ lat: meetingLocation.lat, lng: meetingLocation.lng });
-              } else {
+        },
+        (results, status) => {
+          if (status === "OK") {
+            if (showOnly) {
+              map.panTo({ lat: meetingLocation.lat, lng: meetingLocation.lng });
+            } else {
               setMeetingLocation({
                 lat: Number(position.coords.latitude),
                 lng: Number(position.coords.longitude),
                 addressText: results[0].formatted_address,
               });
             }
-            } else {
-              console.log("Getting address failed due to : ", status);
-            }
+          } else {
+            console.log("Getting address failed due to : ", status);
           }
-        );
-      });
-  }
+        }
+      );
+    });
+  };
 
   const onSelect = ({ latLng }) => {
     geocoder.geocode(
@@ -84,16 +90,21 @@ const LocationPicker = ({
   }, [meetingLocation.lat, meetingLocation.lng, map]);
 
   useEffect(() => {
-    if(currLocByDefault) {
-        handleCurrentLocationClick();
+    if (currLocByDefault) {
+      handleCurrentLocationClick();
     }
   }, []);
   return (
     <>
       {typeof window.google === "object" ? (
-        <Box sx={{"& ul": {
-          color: currentMode === "dark" ? "white" : "black"
-        }}} style={{ width: "100%" }}>
+        <Box
+          sx={{
+            "& ul": {
+              color: currentMode === "dark" ? "white" : "black",
+            },
+          }}
+          style={{ width: "100%" }}
+        >
           <AutoComplete
             defaultLocation={meetingLocation.addressText}
             setMeetingLocation={setMeetingLocation}
@@ -110,7 +121,13 @@ const LocationPicker = ({
           >
             <Marker position={meetingLocation} />
 
-            <Button onClick={handleCurrentLocationClick} variant="contained" sx={currentLocBtnStyle}><BiCurrentLocation color="white" size={25}/></Button>
+            <Button
+              onClick={handleCurrentLocationClick}
+              variant="contained"
+              sx={currentLocBtnStyle}
+            >
+              <BiCurrentLocation color="white" size={25} />
+            </Button>
           </GoogleMap>
         </Box>
       ) : (

@@ -7,16 +7,16 @@
       }
 
       .cls-1, .cls-2, .cls-3 {
-        stroke: #231f20;
+        stroke: #DA1F26;
         stroke-miterlimit: 10;
       }
 
       .cls-2 {
-        fill: #231f20;
+        fill: #000000;
       }
 
       .cls-3 {
-        fill: #44b64b;
+        fill: #DA1F26;
       }
     </style>
   </defs>
