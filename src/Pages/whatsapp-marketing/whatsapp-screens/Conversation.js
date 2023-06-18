@@ -15,7 +15,7 @@ const Conversation = ({
 }) => {
   return (
     <>
-      <div className="mt-5">
+      <div className="mt-5 bg-[#F6F6F6] rounded-lg">
         <h1 style={{ fontSize: "38px", fontWeight: "bold" }}>Connected</h1>
         <img
           src={data?.userProfilePic}

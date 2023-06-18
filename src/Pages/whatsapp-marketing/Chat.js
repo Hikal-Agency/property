@@ -10,13 +10,12 @@ import Conversation from "./whatsapp-screens/Conversation";
 import Devices from "./whatsapp-screens/Devices";
 
 const Chat = () => {
-  const { User, currentMode, darkModeColors } = useStateContext();
+  const { User, currentMode, darkModeColors, selectedDevice, setSelectedDevice } = useStateContext();
   const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [ready, setReady] = useState(false);
-  const [deviceName, setDeviceName] = useState("");
   const [data, setData] = useState([]);
   const [serverDisconnected, setServerDisconnected] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
@@ -92,7 +91,6 @@ const Chat = () => {
     });
 
     setReady(false);
-    setDeviceName("");
     setloading(false);
     setQr(null);
   };
@@ -104,7 +102,6 @@ const Chat = () => {
     );
     if (User && socket) {
       if (waDevice) {
-        setDeviceName(waDevice);
         setData({
           userInfo: waAccount?.info,
           userProfilePic: waAccount?.profile_pic_url,
@@ -113,8 +110,12 @@ const Chat = () => {
         setReady(true);
         setloading(false);
       } else {
-        setQr(null);
-        setReady(false);
+        if(selectedDevice) {
+          socket.emit("destroy_client", selectedDevice)
+          setSelectedDevice(null);
+          setQr(null);
+          setReady(false);
+        }
       }
     }
   }
@@ -122,17 +123,16 @@ const Chat = () => {
 
   useEffect(() => {
     if (socket && User) {
-        socket.on("connect", () => {
-          if(socket.id){
-            setServerDisconnected(false);
+          console.log("Socket connectd");
             setloading(false);
-            socket.on("qr", (qr) => {
-              setQr(qr);
-              setloading(false);
-            });
+
+              socket.on("qr", (qr) => {
+                console.log("QR Received:", qr)
+                setQr(qr);
+                setloading(false);
+              });
     
             socket.on("user_ready", (info) => {
-              setDeviceName(info.sessionId);
               setChatLoading(true);
               socket.emit("get_profile_picture", { id: info.sessionId });
               socket.on("profile_picture", (url) => {
@@ -169,10 +169,6 @@ const Chat = () => {
                 handleLogout();
               }
             });
-          } else {
-            setServerDisconnected(true);
-          }
-        });
         socket.on("disconnect", () => {
           setServerDisconnected(true);
         });
@@ -200,19 +196,21 @@ const Chat = () => {
     };
   }, [User, ready]);
 
-  const handleAddDevice = () => {
+  const handleCreateSession = (deviceName) => {
+
     if (deviceName) {
       setloading(true);
       const sessionId = `${User?.id}-${deviceName
         .toLowerCase()
         .replaceAll(" ", "-")}`;
       socket.emit("create_session", { id: sessionId });
+      setSelectedDevice(sessionId);
     }
   };
 
   return (
     <>
-      <Box className="min-h-screen" sx={darkModeColors}>
+      <Box className="min-h-screen mb-3" sx={darkModeColors}>
         {serverDisconnected ? (
           <h1
             className="text-red-600 text-center mt-12"
@@ -254,7 +252,7 @@ const Chat = () => {
                 ) : qr ? (
                   <QRCode qr={qr} />
                 ) : (
-                  <Devices />
+                  <Devices handleCreateSession={handleCreateSession}/>
                 )}
               </>
             )}

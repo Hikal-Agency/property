@@ -45,6 +45,7 @@ export const ContextProvider = ({ children }) => {
   const [allRoutes, setAllRoutes] = useState([]);
   const [isUserSubscribed, setIsUserSubscribed] = useState(null);
   const [appLoading, setAppLoading] = useState(false);
+  const [selectedDevice, setSelectedDevice] = useState(null);
   const [sidebarData, setSidebarData] = useState({});
 
   // DATA GRID
@@ -275,6 +276,8 @@ export const ContextProvider = ({ children }) => {
         setIsClicked,
         setActiveMenu,
         setCurrentMode,
+        selectedDevice, 
+        setSelectedDevice,
         // setMode,
         // setColor,
         themeSettings,

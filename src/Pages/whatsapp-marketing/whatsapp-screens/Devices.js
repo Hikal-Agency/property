@@ -1,24 +1,18 @@
+import { Box } from "@mui/material";
+import DeviceCard from "./DeviceCard";
 
-const Devices = () => {
+const Devices = ({handleCreateSession}) => {
     return (
         <>
              <div
-                  className="flex flex-col w-[230px]"
+                  className="flex p-4 w-[98%] h-[90vh] bg-[#F6F6F6] rounded-lg flex-col"
                 >
-                  {/* <TextField
-                    value={deviceName}
-                    onInput={(e) => setDeviceName(e.target.value)}
-                    sx={{ mb: 1 }}
-                    type="text"
-                    label="Device Name"
-                  ></TextField>
-                  <Button
-                    onClick={handleAddDevice}
-                    variant="contained"
-                    color="error"
-                  >
-                    Add Device
-                  </Button> */}
+                  <h1><strong>Devices</strong></h1>
+                  <Box className="flex mt-3">
+                    <DeviceCard onClick={() => handleCreateSession("Test")} name="Test" isConnected={true}/>
+                    <DeviceCard onClick={() => handleCreateSession("Test 2")} name="Test 2" isConnected={false}/>
+                    <DeviceCard addDeviceCard/>
+                  </Box>
             </div>
         </>
     );
