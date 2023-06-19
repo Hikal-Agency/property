@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AddLead from "./addlead";
 import Signup from "./auth/signup";
 import Booked from "./booked";
@@ -208,11 +208,6 @@ const routes = [
     pageName: "Profile",
   },
   {
-    path: "/whatsapp-marketing/:page",
-    element: <WhatsappMarketing />,
-    pageName: "Whatsapp Marketing",
-  },
-  {
     path: "/location/livelocation",
     pageName: "Live Location",
     element: <Livelocation />,
@@ -328,12 +323,237 @@ const routes = [
     element: <Error />,
   },
 ];
+const hosRoutes = [
+  {
+    path: "/calllogsnoheadfoot",
+    element: <CallLogsNoHeadFoot />,
+    pageName: "Call logs No Head Foot",
+  },
+  {
+    path: "/",
+    element: <Home />,
+    pageName: "Home",
+  },
+  {
+    path: "/auth/signup",
+    pageName: "Sign Up",
+    element: <Signup />,
+  },
+
+  // {
+  //   path: "/auth/forgot-password",
+  //   pageName: "Sign Up",
+  //   element: <ForgotPassword />,
+  // },
+  {
+    path: "/change-password",
+    element: <ChangePassword />,
+    pageName: "Change Password",
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    pageName: "Dashboard",
+  },
+  {
+    path: "/addlead",
+    element: <AddLead />,
+    pageName: "Add Lead",
+  },
+  {
+    path: "/unassigned/:lead_type",
+    element: <AllUnassignedLeads />,
+    pageName: "Unassigned Leads",
+  },
+  {
+    path: "/archive/:lead_type",
+    element: <AllWarmLeads />,
+    pageName: "Warm Leads",
+  },
+  {
+    path: "/freshleads/:lead_type",
+    element: <AllHotLeads />,
+    pageName: "Hot Leads",
+  },
+  {
+    path: "/personalleads/:lead_type",
+    element: <PersonaLeads />,
+    pageName: "Personal Leads",
+  },
+  {
+    path: "/thirdpartyleads/:lead_type",
+    element: <ThirdPartyLeads />,
+    pageName: "Third-party Leads",
+  },
+  {
+    path: "/coldleads/:lead_type",
+    element: <ColdLeads />,
+    pageName: "Cold Leads",
+  },
+  {
+    path: "/reshuffleleads",
+    element: <TransferredLeads />,
+    pageName: "Transferred Leads",
+  },
+  {
+    path: "/closedeals",
+    pageName: "Close Deals",
+    element: <ClosedealsPage />,
+  },
+  {
+    path: "/timeline/:id",
+    element: <TimelinePage />,
+    pageName: "Timeline",
+  },
+  {
+    path: "/leadnotes",
+    element: <LeadNotesPage />,
+    pageName: "Lead Notes",
+  },
+  {
+    path: "/leadnotes/:id",
+    element: <SingleLeadNote />,
+    pageName: "Lead Notes",
+  },
+  {
+    path: "/lead/:lid",
+    element: <SingleLeadPage />,
+    page: "Lead",
+  },
+  {
+    path: "/meetings",
+    element: <Meetings />,
+    pageName: "Meetings",
+  },
+  {
+    path: "/appointments/create",
+    element: <CreateAppointment />,
+    pageName: "Create Appointment",
+  },
+  {
+    path: "/booked",
+    element: <Booked />,
+    pageName: "Booked",
+  },
+  {
+    path: "/contacts",
+    element: <Contacts />,
+    pageName: "Contacts",
+  },
+  {
+    path: "/leaderboard",
+    element: <Leaderboard />,
+    pageName: "Leaderboard",
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage />,
+    pageName: "Profile",
+  },
+  {
+    path: "/location/livelocation",
+    pageName: "Live Location",
+    element: <Livelocation />,
+  },
+  {
+    path: "/location/userlocation",
+    pageName: "User Location",
+    element: <Userlocation />,
+  },
+  {
+    path: "/location/useralllocation/:user_id",
+    pageName: "User All Location",
+    element: <UserAllLocation />,
+  },
+
+  {
+    path: "/offers",
+    pageName: "Offers",
+    element: <Offers />,
+  },
+  {
+    path: "/reports",
+    pageName: "Reports",
+    element: <Reports />,
+  },
+  {
+    path: "/qaform",
+    pageName: "QAForm",
+    element: <QAForm />,
+  },
+  {
+    path: "/allQA",
+    pageName: "All QA",
+    element: <AllQA />,
+  },
+  {
+    path: "/support",
+    pageName: "Support",
+    element: <Tickets />,
+  },
+  {
+    path: "/singleTicket/:id",
+    pageName: "SingleTicket",
+    element: <SingleTicket />,
+  },
+  {
+    path: "/activity",
+    pageName: "Activity",
+    element: <ActivityLog />,
+  },
+  {
+    path: "/propertyPortfolio",
+    pageName: "Property Portfolio",
+    element: <PropertyPortfolio />,
+  },
+  {
+    path: "/propertyPortfolio/tour360/:proId",
+    pageName: "360 Tour",
+    element: <Tour360 />,
+  },
+  {
+    path: "/campaigns",
+    pageName: "Facebook Campaigns",
+    element: <Campaigns />,
+  },
+  {
+    path: "/statistics",
+    pageName: "Campaigns Statistics",
+    element: <Statistics />,
+  },
+  {
+    path: "/attendance/officeSettings",
+    pageName: "Office Settings",
+    element: <OfficeSettings />,
+  },
+  {
+    path: "/attendance/employeesList",
+    pageName: "Employees",
+    element: <Employees />,
+  },
+  {
+    path: "/attendance/singleEmployee/:eid",
+    pageName: "Employees",
+    element: <SingleEmployee />,
+  },
+  {
+    path: "/settings",
+    pageName: "Settings",
+    element: <Settings />,
+  },
+  {
+    path: "*",
+    element: <Error />,
+  },
+];
 
 export const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-  const { setAllRoutes, socketRef, currentMode } = useStateContext();
+  const { setAllRoutes, socketRef, currentMode, User, isUserSubscribed } =
+    useStateContext();
   const location = useLocation();
+  const [routesArr, setRoutesArr] = useState([]);
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -341,8 +561,23 @@ function App() {
   });
 
   useEffect(() => {
-    setAllRoutes(routes);
-  }, []);
+    if (isUserSubscribed !== null && isUserSubscribed === true) {
+      setRoutesArr([
+        {
+          path: "/whatsapp-marketing/:page",
+          element: <WhatsappMarketing />,
+          pageName: "Whatsapp Marketing",
+        },
+      ]);
+    }
+    if (User?.role === 2) {
+      setAllRoutes([...routesArr, ...hosRoutes]);
+      setRoutesArr([...routesArr, ...hosRoutes]);
+    } else {
+      setAllRoutes([...routesArr, ...routes]);
+      setRoutesArr([...routesArr, ...routes]);
+    }
+  }, [User, isUserSubscribed]);
 
   function hasSidebarOrNavbar() {
     const pathname = location.pathname;
@@ -381,7 +616,7 @@ function App() {
               </div>
             )}
             <Routes>
-              {routes.map((route, index) => {
+              {routesArr.map((route, index) => {
                 return (
                   <Route
                     key={index}

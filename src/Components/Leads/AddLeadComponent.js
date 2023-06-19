@@ -453,7 +453,7 @@ const AddLeadComponent = () => {
                             >
                               Agent details
                             </h4>
-                            {User?.role === 1 && (
+                            {(User?.role === 1 || User?.role === 2) && (
                               <>
                                 <TextField
                                   id="Manager"
