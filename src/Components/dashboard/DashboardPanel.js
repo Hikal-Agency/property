@@ -213,7 +213,7 @@ const DashboardPanel = ({ setloading }) => {
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3}/>
                 </p>
               )}
-              {User?.role === 1 && (
+              {(User?.role === 1 || User?.role === 2 )&& (
                 <p className="text-2xl font-bold pb-3 text-red-600">
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3}/>
                 </p>
