@@ -18,5 +18,16 @@
     <script defer src="https://accounts.google.com/gsi/client" type="text/javascript"></script>
     <script src="./inject.js"></script>
     <script src="https://mediafiles.botpress.cloud/ccb74641-9823-46bd-8f22-d565570bac7e/webchat/config.js"></script>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId            : '505067971265521',
+          autoLogAppEvents : true,
+          xfbml            : true,
+          version          : 'v17.0'
+        });
+      };
+    </script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
   </body>
 </html>

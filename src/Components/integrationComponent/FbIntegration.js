@@ -6,6 +6,23 @@ import { FaFacebook } from "react-icons/fa";
 const FbIntegration = () => {
   const { currentMode } = useStateContext();
   const [loading, setLoading] = useState(false);
+
+  const initiateFBLogin = () => {
+    window.FB.login(
+      (response) => {
+        if (response.status === "connected") {
+          // User successfully logged in to the app.
+          // You can now use the access token (response.authResponse.accessToken)
+          // to make requests to the Facebook Graph API.
+          console.log("Facebook login successful!", response);
+        } else {
+          // User could not log in.
+          console.log("Facebook login failed:", response);
+        }
+      },
+      { scope: "public_profile,email,ads_management,ads_read,leads_retrieval" }
+    );
+  };
   return (
     <>
       {" "}
@@ -49,6 +66,7 @@ const FbIntegration = () => {
                     size="lg"
                     type="submit"
                     disabled={loading ? true : false}
+                    onClick={initiateFBLogin}
                   >
                     <span className="text-white"> Connect Facebook</span>
                   </Button>
