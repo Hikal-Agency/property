@@ -1346,10 +1346,476 @@ const Sidebarmui = () => {
     },
   ];
 
+    //  DATA
+  const headOfSalesLinks = [
+    {
+      title: "Dashboard",
+      links: [
+        {
+          name: "Dashboard",
+          icon: <RiDashboardFill />,
+          link: "/dashboard",
+        },
+      ],
+    },
+
+    {
+      title: "LEADS",
+      links: [
+        {
+          name: "Add lead",
+          icon: <MdPersonAdd />,
+          link: "/addlead",
+        },
+        {
+          name: "Fresh",
+          icon: <SiHotjar />,
+          submenu: [
+            {
+              name: "All",
+              count: sidebarData?.HotLeadsCount?.hot,
+              link: "/freshleads/all",
+            },
+            {
+              name: "New",
+              count: sidebarData?.HotLeadsCount?.new,
+              link: "/freshleads/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.HotLeadsCount?.no_nswer,
+              link: "/freshleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.HotLeadsCount?.Meeting,
+              link: "/freshleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.HotLeadsCount?.follow_up,
+              link: "/freshleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.HotLeadsCount?.low_budget,
+              link: "/freshleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: sidebarData?.HotLeadsCount?.not_interested,
+              link: "/freshleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.HotLeadsCount?.unreachable,
+              link: "/freshleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Personal",
+          icon: <HiUsers />,
+          submenu: [
+            {
+              name: "All",
+              count: sidebarData?.PersonalLeadsCount?.all,
+              link: "/personalleads/all",
+            },
+            {
+              name: "New",
+              count: sidebarData?.PersonalLeadsCount?.new,
+              link: "/personalleads/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.PersonalLeadsCount?.no_nswer,
+              link: "/personalleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.PersonalLeadsCount?.Meeting,
+              link: "/personalleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.PersonalLeadsCount?.follow_up,
+              link: "/personalleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.PersonalLeadsCount?.low_budget,
+              link: "/personalleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: sidebarData?.PersonalLeadsCount?.not_interested,
+              link: "/personalleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.PersonalLeadsCount?.unreachable,
+              link: "/personalleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Third party",
+          icon: <FaLink />,
+          submenu: [
+            {
+              name: "All",
+              count: sidebarData?.ThirdPartyLeadsCount?.all,
+              link: "/thirdpartyleads/all",
+            },
+            {
+              name: "New",
+              count: sidebarData?.ThirdPartyLeadsCount?.new,
+              link: "/thirdpartyleads/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
+              link: "/thirdpartyleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
+              link: "/thirdpartyleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
+              link: "/thirdpartyleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
+              link: "/thirdpartyleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
+              link: "/thirdpartyleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.ThirdPartyLeadsCount?.unreachable,
+              link: "/thirdpartyleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Cold",
+          icon: <FaSnowflake />,
+          submenu: [
+            {
+              name: "All",
+              count: sidebarData?.ColdLeadsCount?.all,
+              link: "/coldleads/all",
+            },
+            {
+              name: "New",
+              count: sidebarData?.ColdLeadsCount?.new,
+              link: "/coldleads/new",
+            },
+            {
+              name: "Verified",
+              count: sidebarData?.ColdLeadsCount?.verified, //TODO
+              link: "/coldleads/coldLeadsVerified",
+              icon: <RiRadioButtonLine style={{ color: "green" }} />,
+              countColor: "#008000",
+            },
+            {
+              name: "Invalid",
+              count: sidebarData?.ColdLeadsCount?.unverified, //TODO
+              link: "/coldleads/coldLeadsInvalid",
+              icon: <RiRadioButtonLine style={{ color: "red" }} />,
+              countColor: "#FF0000",
+            },
+            {
+              name: "Not Checked",
+              count: sidebarData?.ColdLeadsCount?.unchecked, //TODO
+              link: "/coldleads/coldLeadsNotChecked",
+              icon: <RiRadioButtonLine style={{ color: "orange" }} />,
+              countColor: "#FFA500",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.ColdLeadsCount?.no_nswer,
+              link: "/coldleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.ColdLeadsCount?.Meeting,
+              link: "/coldleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.ColdLeadsCount?.follow_up,
+              link: "/coldleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.ColdLeadsCount?.low_budget,
+              link: "/coldleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: sidebarData?.ColdLeadsCount?.not_interested,
+              link: "/coldleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.ColdLeadsCount?.unreachable,
+              link: "/coldleads/unreachable",
+            },
+          ],
+        },
+        {
+          name: "Reshuffle",
+          icon: <FaRandom />,
+          link: "/reshuffleleads",
+        },
+        {
+          name: "Unassigned",
+          icon: <BsStopCircleFill />,
+          submenu: [
+            {
+              name: "Fresh leads",
+              count: sidebarData?.UNASSIGNED?.fresh,
+              link: "/unassigned/fresh",
+            },
+            {
+              name: "Cold leads",
+              count: sidebarData?.UNASSIGNED?.cold,
+              link: "/unassigned/cold",
+            },
+            {
+              name: "Archived Leads",
+              count: sidebarData?.UNASSIGNED?.warm,
+              link: "/unassigned/archive",
+            },
+            {
+              name: "Personal leads",
+              count: sidebarData?.UNASSIGNED?.personal,
+              link: "/unassigned/personal",
+            },
+            {
+              name: "Third Party",
+              count: sidebarData?.UNASSIGNED?.third_party,
+              link: "/unassigned/thirdpartyleads",
+            },
+          ],
+        },
+        {
+          name: "Archived Leads",
+          icon: <FaArchive />,
+          submenu: [
+            {
+              name: "All Leads",
+              count: sidebarData?.WarmLeadCount?.all,
+              link: "/archive/all",
+            },
+            {
+              name: "New Leads",
+              count: sidebarData?.WarmLeadCount?.new,
+              link: "/archive/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.WarmLeadCount?.no_nswer,
+              link: "/archive/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.WarmLeadCount?.Meeting,
+              link: "/archive/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.WarmLeadCount?.follow_up,
+              link: "/archive/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.WarmLeadCount?.low_budget,
+              link: "/archive/low budget",
+            },
+            {
+              name: "Not Intrested",
+              count: sidebarData?.WarmLeadCount?.not_interested,
+              link: "/archive/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.WarmLeadCount?.unreachable,
+              link: "/archive/unreachable",
+            },
+          ],
+        },
+
+        {
+          name: "Notes",
+          icon: <MdSpeakerNotes />,
+          link: "/leadnotes",
+        },
+      ],
+    },
+    {
+      title: "Deals",
+      links: [
+        {
+          name: "Booked deals",
+          icon: <ImBookmark />,
+          link: "/booked",
+        },
+        {
+          name: "Closed deals",
+          icon: <ImLock />,
+          link: "/closedeals",
+        },
+      ],
+    },
+    {
+      title: "Apps",
+      links: [
+        {
+          name: "Appointments",
+          icon: <BsCalendarWeekFill />,
+          submenu: [
+            {
+              name: "Create Appointment",
+              link: "/appointments/create",
+            },
+          ],
+        },
+        {
+          name: "Meetings",
+          icon: <BsCalendarWeekFill />,
+          link: "/meetings",
+        },
+        // {
+        //   name: "Add Users",
+        //   icon: <FaUser />,
+        //   link: "/adminAuth/signup",
+        // },
+        {
+          name: "Reports",
+          icon: <HiDocumentReport />,
+          link: "/reports",
+        },
+        {
+          name: "Offers",
+          icon: <AiFillGift />,
+          link: "/offers",
+        },
+        {
+          name: "Contacts",
+          icon: <MdContactPage />,
+          link: "/contacts",
+        },
+        {
+          name: "Property Portfolio",
+          icon: <RiBuilding2Fill />,
+          link: "/propertyPortfolio",
+        },
+        {
+          name: "Leaderboard",
+          icon: <MdLeaderboard />,
+          link: "/leaderboard",
+        },
+        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+      ],
+    },
+    {
+      title: "Social Media",
+      links: [
+        {
+          name: "Facebook",
+          // icon: <FaChartLine />,
+          icon: <FaFacebookSquare />,
+          link: "/statistics",
+        },
+        // {
+        //   name: "campaigns",
+        //   icon: <FaFacebookSquare />,
+        //   link: "/campaigns",
+        // },
+        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+      ],
+    },
+    {
+      title: "LOCATION",
+      links: [
+        {
+          name: "Meetings",
+          icon: <ImLocation size={20} />,
+          link: "/location/livelocation",
+        },
+        {
+          name: "Live",
+          icon: <MdPersonPinCircle size={22} />,
+          link: "/location/userlocation",
+        },
+      ],
+    },
+    {
+      title: "SUPPORT",
+      links: [
+        {
+          name: "QA ",
+          icon: <AiOutlineQuestionCircle />,
+          submenu: [
+            {
+              name: "QA Form",
+              link: "/qaform",
+            },
+            {
+              name: "All QA",
+              link: "/allQA",
+            },
+          ],
+        },
+        {
+          name: "Tickets",
+          icon: <HiTicket />,
+          link: "/support",
+        },
+      ],
+    },
+    {
+      title: "ATTENDANCE",
+      links: [
+        {
+          name: "Office Settings ",
+          icon: <BiCalendar />,
+          link: "/attendance/officeSettings",
+        },
+        {
+          name: "Employees List",
+          icon: <FiUsers />,
+          link: "/attendance/employeesList",
+        },
+      ],
+    },
+    {
+      title: "MISC",
+      links: [
+        {
+          name: "Settings",
+          icon: <FiSettings />,
+          link: "/settings",
+        },
+      ],
+    },
+  ];
+
   console.log(selected);
 
   const [agentData, setAgentData] = useState(Agentlinks);
   const [linksData, setLinksData] = useState(links);
+  const [HeadOfSalesData, setHeadOfSalesData] = useState(headOfSalesLinks);
   const [managerData, setManagerData] = useState(Managerlinks);
 
   const FetchProfile = async (token) => {
@@ -1602,12 +2068,41 @@ const Sidebarmui = () => {
           ],
         },
       ]);
+        setHeadOfSalesData([
+        ...headOfSalesLinks,
+        {
+          title: "WHATSAPP",
+          links: [
+            {
+              name: "Instances",
+              icon: <RiWhatsappFill />,
+              link: "/whatsapp-marketing/instances",
+            },
+            {
+              name: "Messages",
+              icon: <AiFillMessage />,
+              link: "/whatsapp-marketing/messages",
+            },
+            {
+              name: "Templates",
+              icon: <FaMobile />,
+              link: "/whatsapp-marketing/templates",
+            },
+            {
+              name: "Payments",
+              icon: <BsFillCreditCard2FrontFill />,
+              link: "/whatsapp-marketing/payments",
+            },
+          ],
+        },
+      ]);
     }
   }, [isUserSubscribed]);
 
   useEffect(() => {
     setAgentData([...Agentlinks]);
     setManagerData([...Managerlinks]);
+    setHeadOfSalesData([...headOfSalesLinks]);
     setLinksData([...links]);
   }, [sidebarData]);
 
@@ -1735,7 +2230,7 @@ const Sidebarmui = () => {
               }}
             >
               {[
-                ...(User?.position === "Founder & CEO" ||
+                ...(User?.role === 1 ||
                 User?.position === "Super Admin"
                   ? linksData.map((item, linkIndex) => (
                       <div key={linkIndex}>
@@ -1981,7 +2476,7 @@ const Sidebarmui = () => {
                         ))}
                       </div>
                     ))
-                  : User?.position === "Sales Manager"
+                  : User?.role === 3 
                   ? managerData.map((item, linkIndex) => (
                       <div key={linkIndex}>
                         {!isCollapsed ? (
@@ -2231,7 +2726,252 @@ const Sidebarmui = () => {
                         ))}
                       </div>
                     ))
-                  : agentData.map((item, linkIndex) => {
+                  : User?.role === 2 ?
+                      HeadOfSalesData.map((item, linkIndex) => (
+                      <div key={linkIndex}>
+                        {!isCollapsed ? (
+                          <Tooltip placement="right" title={item.title}>
+                            <p
+                              className={`font-bold m-3 mt-4 uppercase ${
+                                linkIndex === 0 && "hidden"
+                              } ${
+                                currentMode === "dark"
+                                  ? "text-red-600"
+                                  : "text-red-600"
+                              } ${
+                                !isCollapsed
+                                  ? "w-[16px] h-[16px] ml-[22px] rounded-sm bg-red-600"
+                                  : ""
+                              }`}
+                            ></p>
+                          </Tooltip>
+                        ) : (
+                          <p
+                            className={`font-bold m-3 mt-4 uppercase ${
+                              linkIndex === 0 && "hidden"
+                            } ${
+                              currentMode === "dark"
+                                ? "text-red-600"
+                                : "text-red-600"
+                            }`}
+                          >
+                            {item.title}
+                          </p>
+                        )}
+                        {item.links.map((link, menuIndex) => (
+                          <Tooltip
+                            title={link.name}
+                            key={link.name}
+                            placement="right"
+                            onClick={(e) =>
+                              handleExpand(
+                                e,
+                                { menuIndex: menuIndex + 1, linkIndex },
+                                link
+                              )
+                            }
+                          >
+                            {link.submenu ? (
+                              <Box
+                                sx={{
+                                  // FOR DARK MODE MENU SETTINGS
+                                  "& .css-1mfnem1": { borderRadius: "5px" },
+                                  "& .css-1mfnem1:hover": {
+                                    backgroundColor: "#DA1F26",
+                                  },
+                                  // submenu containerr color
+                                  "& .css-z5rm24": {
+                                    backgroundColor:
+                                      currentMode === "dark" && "#3b3d44",
+                                    borderRadius: "5px",
+                                  },
+                                  // Submenu count color
+                                  "& .css-1rnkhs0": {
+                                    color: currentMode === "dark" && "white",
+                                  },
+                                  // LIGHT MODE SETTINGS
+                                  "& .css-1ohfb25:hover": {
+                                    backgroundColor: "#DA1F26",
+                                    color: "white",
+                                    borderRadius: "5px",
+                                  },
+                                  "& .css-wx7wi4": {
+                                    width: "18px",
+                                    minWidth: "18px",
+                                  },
+                                }}
+                                className="my-1"
+                              >
+                                <SubMenu
+                                  label={link.name}
+                                  icon={link.icon}
+                                  open={
+                                    openedSubMenu.menuIndex === menuIndex + 1 &&
+                                    openedSubMenu.linkIndex === linkIndex
+                                  }
+                                >
+                                  {link.submenu.map((menu, index) => {
+                                    return (
+                                      <Link key={index} to={`${menu.link}`}>
+                                        <Box
+                                          sx={{
+                                            // STYLING FOR LIGHT MODE
+                                            "& .css-1mfnem1": {
+                                              borderRadius: "5px",
+                                            },
+                                            "& .css-1mfnem1:hover": {
+                                              backgroundColor: "#DA1F26",
+                                            },
+                                            "& .css-1ogoo8i": {
+                                              backgroundColor: "#DA1F26",
+                                            },
+
+                                            // STYLING FOR DARK MODE
+                                            "& .css-yktbuo": {
+                                              backgroundColor: "#DA1F26",
+                                            },
+                                            "& .css-1f8bwsm": {
+                                              minWidth: "10px !important",
+                                            },
+                                            "& .css-yktbuo:hover": {
+                                              backgroundColor: "#DA1F26",
+                                            },
+                                            "& .css-1v6ithu": {
+                                              color: "white",
+                                            },
+                                            "& .leads_counter": {
+                                              color: menu?.countColor
+                                                ? menu?.countColor
+                                                : currentMode === "dark"
+                                                ? "white"
+                                                : "black",
+                                            },
+                                            "& .css-cveggr-MuiListItemIcon-root":
+                                              {
+                                                minWidth: "10px !important",
+                                              },
+                                          }}
+                                          className="relative my-1"
+                                        >
+                                          <MenuItem
+                                            active={
+                                              menu.link ===
+                                              window.location.pathname.replaceAll(
+                                                "%20",
+                                                " "
+                                              )
+                                            }
+                                            className="flex"
+                                          >
+                                            {menu?.icon && (
+                                              <ListItemIcon
+                                                style={{
+                                                  minWidth: "23px !important",
+                                                }}
+                                              >
+                                                {menu?.icon}
+                                              </ListItemIcon>
+                                            )}{" "}
+                                            <span className=" ">
+                                              {" "}
+                                              {menu?.name || ""}
+                                            </span>
+                                          </MenuItem>
+                                          {menu?.count != null && (
+                                            <span
+                                              className="leads_counter block absolute right-5"
+                                              // sx={{
+                                              //   color: menu?.countColor,
+                                              // }}
+                                              style={{
+                                                top: "50%",
+                                                transform: "translateY(-50%)",
+                                              }}
+                                            >
+                                              {menu?.count !== null &&
+                                              menu?.count !== undefined
+                                                ? menu?.count
+                                                : ""}
+                                            </span>
+                                          )}
+                                        </Box>
+                                      </Link>
+                                    );
+                                  })}
+                                </SubMenu>
+                              </Box>
+                            ) : (
+                              <Box
+                                sx={{
+                                  "& .css-1mfnem1": { borderRadius: "5px" },
+                                  // hover bg color for dark mode
+                                  "& .css-1mfnem1:hover": {
+                                    backgroundColor: "#DA1F26",
+                                  },
+                                  // hover bg-color for light mode
+                                  "& .css-1ohfb25:hover": {
+                                    backgroundColor: "#DA1F26",
+                                    color: "white",
+                                    borderRadius: "5px",
+                                  },
+                                  // ACTIVE MENU ITEM STYLING FOR LIGHT MODE
+                                  "& .css-xsmbnq": {
+                                    backgroundColor: "#DA1F26",
+                                    color: "white",
+                                    borderRadius: "5px",
+                                  },
+                                  "& .css-xsmbnq:hover": {
+                                    backgroundColor: "#DA1F26",
+                                    color: "white",
+                                    borderRadius: "5px",
+                                  },
+                                  // ACTIVE MENU STYLING FOR DARK MODE
+                                  "& .css-yktbuo": {
+                                    backgroundColor: "#DA1F26",
+                                    borderRadius: "5px",
+                                  },
+                                  "& .css-yktbuo:hover": {
+                                    backgroundColor: "#DA1F26",
+                                  },
+                                }}
+                                className="my-1"
+                              >
+                                <MenuItem
+                                  active={
+                                    link.link ===
+                                    window.location.pathname.replaceAll(
+                                      "%20",
+                                      " "
+                                    )
+                                  }
+                                >
+                                  <Link
+                                    to={`${link.link}`}
+                                    onClick={() => setopenBackDrop(true)}
+                                  >
+                                    <div className="flex items-center gap-4  rounded-lg text-md  ">
+                                      <span
+                                        className={`${
+                                          !isCollapsed && "text-xl"
+                                        }`}
+                                      >
+                                        {link?.icon || ""}
+                                      </span>
+                                      {isCollapsed && (
+                                        <span className="capitalize">
+                                          {link?.name || ""}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </Link>
+                                </MenuItem>
+                              </Box>
+                            )}
+                          </Tooltip>
+                        ))}
+                      </div>
+                    ))
+                   : agentData.map((item, linkIndex) => {
                       return (
                         <div key={linkIndex}>
                           {!isCollapsed ? (
