@@ -1787,11 +1787,11 @@ const Sidebarmui = () => {
     {
       title: "ATTENDANCE",
       links: [
-        {
-          name: "Office Settings ",
-          icon: <BiCalendar />,
-          link: "/attendance/officeSettings",
-        },
+        // {
+        //   name: "Office Settings ",
+        //   icon: <BiCalendar />,
+        //   link: "/attendance/officeSettings",
+        // },
         {
           name: "Employees List",
           icon: <FiUsers />,
