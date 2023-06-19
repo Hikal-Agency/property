@@ -157,7 +157,7 @@ const routes = [
     page: "Lead",
   },
   {
-    path: "/appointments/meetings",
+    path: "/meetings",
     element: <Meetings />,
     pageName: "Meetings",
   },

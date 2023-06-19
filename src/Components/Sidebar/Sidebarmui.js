@@ -380,14 +380,15 @@ const Sidebarmui = () => {
           icon: <BsCalendarWeekFill />,
           submenu: [
             {
-              name: "Meetings",
-              link: "/appointments/meetings",
-            },
-            {
               name: "Create Appointment",
               link: "/appointments/create",
             },
           ],
+        },
+        {
+          name: "Meetings",
+          icon: <BsCalendarWeekFill />,
+          link: "/meetings",
         },
 
         {
@@ -801,14 +802,15 @@ const Sidebarmui = () => {
           icon: <BsCalendarWeekFill />,
           submenu: [
             {
-              name: "Meetings",
-              link: "/appointments/meetings",
-            },
-            {
               name: "Create Appointment",
               link: "/appointments/create",
             },
           ],
+        },
+        {
+          name: "Meetings",
+          icon: <BsCalendarWeekFill />,
+          link: "/meetings",
         },
 
         {
@@ -1178,14 +1180,15 @@ const Sidebarmui = () => {
           icon: <BsCalendarWeekFill />,
           submenu: [
             {
-              name: "Meetings",
-              link: "/appointments/meetings",
-            },
-            {
               name: "Create Appointment",
               link: "/appointments/create",
             },
           ],
+        },
+        {
+          name: "Meetings",
+          icon: <BsCalendarWeekFill />,
+          link: "/meetings",
         },
         // {
         //   name: "Add Users",

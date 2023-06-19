@@ -119,7 +119,7 @@ const DashboardPanel = ({ setloading }) => {
     {
       amount: DashboardData?.lead_status?.meeting,
       title: "Meeting",
-      link: "/appointments/meetings",
+      link: "/meetings",
     },
     {
       amount: DashboardData?.lead_status?.followup,
@@ -152,7 +152,7 @@ const DashboardPanel = ({ setloading }) => {
       icon: <AiOutlineFire />,
       amount: DashboardData?.lead_status?.meeting,
       title: "Meeting",
-      link: "/appointments/meetings",
+      link: "/meetings",
     },
     {
       icon: <AiOutlineFire />,

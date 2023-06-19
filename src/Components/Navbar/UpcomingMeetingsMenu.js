@@ -44,7 +44,7 @@ const UpcomingMeetingsMenu = () => {
             marginTop: "10px",
           }}
           component={Link}
-          to="/appointments/meetings"
+          to="/meetings"
           // className="w-full"
         >
           View all meetings
