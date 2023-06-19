@@ -517,11 +517,6 @@ const hosRoutes = [
     element: <Tour360 />,
   },
   {
-    path: "/campaigns",
-    pageName: "Facebook Campaigns",
-    element: <Campaigns />,
-  },
-  {
     path: "/statistics",
     pageName: "Campaigns Statistics",
     element: <Statistics />,
