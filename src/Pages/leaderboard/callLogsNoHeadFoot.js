@@ -7,17 +7,21 @@ import { ToastContainer, toast } from "react-toastify";
 import { useEffect } from "react";
 import Loader from "../../Components/Loader";
 
-const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
+const CallLogsNoHeadFoot = ({ isLoading }) => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const [tabValue, setTabValue] = useState(0);
   const [callLogs, setCallLogs] = useState();
   const [noData, setNoData] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (event, newValue) => {
+    console.log("changes tab");
+
     setTabValue(newValue);
   };
 
   const FetchCallLogs = async (token) => {
+    setNoData(false);
     setLoading(true);
     let period;
     switch (tabValue) {
@@ -71,57 +75,10 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
     }
   };
 
-  const calldata = [
-    {
-      userImage: "",
-      userName: "Hala Hikal",
-      outgoing_calls: 303,
-      out_answered_calls: 209,
-      out_notanswered_calls: 89,
-      out_rejected_calls: 5,
-      incoming_calls: 35,
-      in_answered_calls: 35,
-      in_missed_calls: 0,
-    },
-    {
-      userImage: "",
-      userName: "Ameer Ali",
-      outgoing_calls: 203,
-      out_answered_calls: 109,
-      out_notanswered_calls: 89,
-      out_rejected_calls: 5,
-      incoming_calls: 35,
-      in_answered_calls: 30,
-      in_missed_calls: 5,
-    },
-    {
-      userImage: "",
-      userName: "Hassan Lodhi",
-      outgoing_calls: 303,
-      out_answered_calls: 209,
-      out_notanswered_calls: 89,
-      out_rejected_calls: 5,
-      incoming_calls: 35,
-      in_answered_calls: 35,
-      in_missed_calls: 0,
-    },
-    {
-      userImage: "",
-      userName: "Rahul TR",
-      outgoing_calls: 203,
-      out_answered_calls: 109,
-      out_notanswered_calls: 89,
-      out_rejected_calls: 5,
-      incoming_calls: 35,
-      in_answered_calls: 30,
-      in_missed_calls: 5,
-    },
-  ];
-
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchCallLogs(token);
-  }, []);
+  }, [tabValue]);
 
   return (
     <div>
@@ -149,7 +106,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3 ">
-                {!noData &&
+                {noData === false &&
                   callLogs?.length > 0 &&
                   callLogs?.map((call, index) => {
                     return (
@@ -323,7 +280,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                 </div>
               </div> */}
               </div>
-              {noData && (
+              {noData === true && (
                 <div className="flex flex-col items-center justify-center h-screen ">
                   <h1
                     className={
@@ -350,7 +307,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
-                {!noData &&
+                {noData === false &&
                   callLogs?.length > 0 &&
                   callLogs?.map((call, index) => {
                     return (
@@ -523,7 +480,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                 </div>
               </div> */}
               </div>
-              {noData && (
+              {noData === true && (
                 <div className="flex flex-col items-center justify-center h-screen ">
                   <h1
                     className={
@@ -550,7 +507,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
-                {!noData &&
+                {noData === false &&
                   callLogs?.length > 0 &&
                   callLogs?.map((call, index) => {
                     return (
@@ -723,7 +680,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                 </div>
               </div> */}
               </div>
-              {noData && (
+              {noData === true && (
                 <div className="flex flex-col items-center justify-center h-screen ">
                   <h1
                     className={
@@ -752,4 +709,4 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
   }
 };
 
-export default CallLogBoard;
+export default CallLogsNoHeadFoot;
