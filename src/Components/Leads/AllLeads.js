@@ -107,6 +107,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   // eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
   const [pageRange, setPageRange] = useState();
+  const [fromLead, setFromLead] = useState();
+  const [toLead, setToLead] = useState();
 
   //View LEAD MODAL VARIABLES
   const [LeadModelOpen, setLeadModelOpen] = useState(false);
@@ -155,6 +157,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       setError("Value out of range (10-150)");
     }
   };
+
+  const handleChangeNumber = (e) => {};
 
   const handleSearch = (e) => {
     if (e.target.value === "") {
@@ -1758,7 +1762,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             id="bulkImport"
           />
 
-          <div
+          {/* <div
             style={{ zIndex: "5 !important" }}
             className="absolute top-[7px] right-[20px] z-[5]"
           >
@@ -1783,7 +1787,60 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 ),
               }}
             />
+          </div> */}
+          <div
+            style={{ zIndex: "5 !important" }}
+            className="absolute top-[7px] right-[20px] z-[5]"
+          >
+            {/* <TextField
+              type="number"
+              placeholder="From"
+              value={fromLead}
+              sx={{
+                "& input": {
+                  border: "2px solid #ffffff6e",
+                },
+              }}
+              variant="standard"
+              onChange={(e) => setFromLead(e.target.value)}
+            />
+            <TextField
+              type="number"
+              placeholder="To"
+              value={toLead}
+              sx={{
+                "& input": {
+                  border: "2px solid #ffffff6e",
+                },
+              }}
+              variant="standard"
+              onKeyUp={handleChangeNumber}
+              onChange={(e) => setToLead(e.target.value)}
+            /> */}
+
+            <TextField
+              placeholder="Search.."
+              ref={searchRef}
+              sx={{
+                "& input": {
+                  borderBottom: "2px solid #ffffff6e",
+                },
+              }}
+              variant="standard"
+              onKeyUp={handleKeyUp}
+              onInput={handleSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton sx={{ padding: 0 }}>
+                      <BiSearch size={17} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </div>
+
           <div style={{ position: "relative" }}>
             <DataGrid
               ref={dataTableRef}
