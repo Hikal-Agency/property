@@ -1235,23 +1235,23 @@ const Sidebarmui = () => {
         // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
       ],
     },
-    {
-      title: "Social Media",
-      links: [
-        {
-          name: "Facebook",
-          // icon: <FaChartLine />,
-          icon: <FaFacebookSquare />,
-          link: "/statistics",
-        },
-        // {
-        //   name: "campaigns",
-        //   icon: <FaFacebookSquare />,
-        //   link: "/campaigns",
-        // },
-        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
-      ],
-    },
+    // {
+    //   title: "Social Media",
+    //   links: [
+    //     {
+    //       name: "Facebook",
+    //       // icon: <FaChartLine />,
+    //       icon: <FaFacebookSquare />,
+    //       link: "/statistics",
+    //     },
+    //     // {
+    //     //   name: "campaigns",
+    //     //   icon: <FaFacebookSquare />,
+    //     //   link: "/campaigns",
+    //     // },
+    //     // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+    //   ],
+    // },
     {
       title: "WHATSAPP",
       links: [

@@ -16,7 +16,7 @@ const Conversation = ({
 }) => {
   return (
     <>
-      <div className="mt-5 bg-[#F6F6F6] rounded-lg p-4">
+      <div className="mt-5 bg-[#F6F6F6] w-[98%] rounded-lg p-4">
         {/* <h1 style={{ fontSize: "38px", fontWeight: "bold" }}>Connected</h1>
         <img
           src={data?.userProfilePic}
@@ -33,9 +33,14 @@ const Conversation = ({
 
         <div className="border rounded-sm flex h-full">
 
-          <Box className="p-3">
-            <p className="mb-2"><strong>Conversations</strong></p>
+          <Box className="w-[30%] border">
+            <p className="mb-4 pl-4 pt-4"><strong>Conversations</strong></p>
             <ConversationItem/>
+          </Box>
+          <Box>
+            <Box className="p-4">
+
+            </Box>
           </Box>
 
           {/* Chat Section */}
