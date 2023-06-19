@@ -1,5 +1,6 @@
 import { Button, TextField, CircularProgress } from "@mui/material";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
+import Avatar from "./ChatAvatar";
 
 const Conversation = ({
   data,
@@ -30,9 +31,9 @@ const Conversation = ({
           Logout
         </Button>
 
-        <div className="mt-4">
+        <div className="mt-4 flex flex-col h-full">
           {/* Chat Section */}
-          <div className="chat-container flex">
+          {/* <div className="chat-container flex">
             <div
               style={{ background: "#000000c2" }}
               className="px-1 w-[250px] pt-4"
@@ -148,7 +149,14 @@ const Conversation = ({
                 </Button>
               </form>
             </div>
-          </div>
+          </div> */}
+
+            <header className="h-16 border-b p-4 flex justify-between items-center">
+        <div className="flex items-center">
+          <Avatar className="mr-4" initials={"John Doe"} size="large" />
+          <div className="font-bold">John Doe</div>
+        </div>
+      </header>
         </div>
       </div>
     </>
