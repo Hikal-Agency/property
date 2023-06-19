@@ -22,6 +22,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [callLogs, setCallLogs] = useState();
+  const [noData, setNoData] = useState(false);
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
