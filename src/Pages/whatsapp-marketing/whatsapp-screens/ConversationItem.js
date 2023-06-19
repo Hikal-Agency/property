@@ -1,17 +1,17 @@
 import { Avatar, Box } from "@mui/material";
 
-const ConversationItem = () => {
+const ConversationItem = ({phoneNumber}) => {
   return (
     <Box className="w-full bg-[#e9e9e9] px-4 py-3 flex items-center justify-between">
       <Box className="flex items-center">
-        <Avatar sx={{ width: 32, height: 32 }} className="mr-3">
-          R
+        <Avatar sx={{ width: 36, height: 36 }} className="mr-3">
+          92
         </Avatar>
         <Box>
           <p className="mb-0">
-            <strong>Sophia</strong>
+            <strong>+{phoneNumber}</strong>
           </p>
-        <p className="text-gray-400"><small>You: Yep! It..</small></p>
+        <p className="text-gray-400"><small>...</small></p>
         </Box>
       </Box>
       <Box>
