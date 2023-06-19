@@ -67,7 +67,7 @@ const libraries = ["places"];
 
 const routes = [
   {
-    path: "/calllogsnoheadfoot",
+    path: "/callLogs",
     element: <CallLogsNoHeadFoot />,
     pageName: "Call logs No Head Foot",
   },
@@ -581,7 +581,11 @@ function App() {
 
   function hasSidebarOrNavbar() {
     const pathname = location.pathname;
-    if (pathname === "/" || pathname === "/auth/signup") {
+    if (
+      pathname === "/" ||
+      pathname === "/auth/signup" ||
+      pathname === "/callLogs"
+    ) {
       return false;
     } else {
       return true;
