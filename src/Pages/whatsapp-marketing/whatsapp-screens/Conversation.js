@@ -1,5 +1,14 @@
-import { Button, TextField, CircularProgress } from "@mui/material";
+import {
+  Button,
+  TextField,
+  CircularProgress,
+  Avatar,
+  Box,
+} from "@mui/material";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
+import ConversationItem from "./ConversationItem";
+import MessageFromMe from "./MessageFromMe";
+import MessageFromOther from "./MessageFromOther"; 
 
 const Conversation = ({
   data,
@@ -15,8 +24,8 @@ const Conversation = ({
 }) => {
   return (
     <>
-      <div className="mt-5 bg-[#F6F6F6] rounded-lg">
-        <h1 style={{ fontSize: "38px", fontWeight: "bold" }}>Connected</h1>
+      <div className="mt-5 bg-[#F6F6F6] w-[98%] rounded-lg p-4">
+        {/* <h1 style={{ fontSize: "38px", fontWeight: "bold" }}>Connected</h1>
         <img
           src={data?.userProfilePic}
           width={60}
@@ -28,11 +37,96 @@ const Conversation = ({
         <p>{data?.userInfo?.me?.user}</p>
         <Button onClick={handleLogout} variant="contained" color="error">
           Logout
-        </Button>
+        </Button> */}
 
-        <div className="mt-4">
+        <div className="border rounded-sm flex h-full">
+          <Box className="w-[40%] border">
+            <p className="mb-4 pl-4 pt-4">
+              <strong>Conversations</strong>
+            </p>
+            <ConversationItem phoneNumber={phoneNumber}/>
+          </Box>
+          <Box className="w-full">
+            <Box className="pl-6 py-3 border-b w-full">
+              <Box className="flex items-center w-full">
+                <Avatar sx={{ width: 35, height: 35 }} className="mr-4">
+                  92
+                </Avatar>
+                <Box>
+                  <p className="mb-0">
+                    <strong>+{phoneNumber}</strong>
+                  </p>
+                </Box>
+              </Box>
+            </Box>
+             <div className="flex-1">
+              {chatMessages.length > 0 ? (
+                <div
+                  ref={messagesContainerRef}
+                  className="h-[450px] overflow-y-scroll p-3 flex flex-col items-end"
+                >
+                  {chatMessages?.map((message, index) => {
+                    if (
+                      message.id.fromMe &&
+                      message.to === phoneNumber + "@c.us"
+                    ) {
+                      return (
+                        <MessageFromMe data={data} key={index} message={message}/>
+                      );
+                    } else {
+                      if (message.from === phoneNumber + "@c.us") {
+                        return (
+                         <MessageFromOther key={index} message={message}/>
+                        );
+                      }
+                    }
+                  })}
+                </div>
+              ) : (
+                <div className="bg-gray-100 h-[400px] flex flex-col items-center justify-center">
+                  {chatLoading ? (
+                    <>
+                      <CircularProgress color="error" size={18} />
+                      <p className="mt-3">Loading the chat..</p>
+                    </>
+                  ) : (
+                    <>
+                      <BsFillChatLeftDotsFill size={40} />
+                      <p className="mt-3">Start the Conversation!</p>
+                    </>
+                  )}
+                </div>
+              )}
+              <form
+                className="flex border border-gray-400 p-2"
+                onSubmit={handleSendMessage}
+              >
+                <TextField
+                  autoComplete="off"
+                  onInput={(e) => setChatMessageInputVal(e.target.value)}
+                  value={chatMessageInputVal}
+                  type="text"
+                  fullWidth
+                  placeholder="Type your message.."
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ ml: 2, px: 5 }}
+                  color="info"
+                >
+                  {btnLoading ? (
+                    <CircularProgress size={18} sx={{ color: "white" }} />
+                  ) : (
+                    <span>Send</span>
+                  )}
+                </Button>
+              </form>
+            </div>
+          </Box>
+
           {/* Chat Section */}
-          <div className="chat-container flex">
+          {/* <div className="chat-container flex">
             <div
               style={{ background: "#000000c2" }}
               className="px-1 w-[250px] pt-4"
@@ -148,7 +242,7 @@ const Conversation = ({
                 </Button>
               </form>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
