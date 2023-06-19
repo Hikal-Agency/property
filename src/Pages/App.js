@@ -61,6 +61,7 @@ import Settings from "./settings";
 import Employees from "./attendanceModule/employeesList";
 import AllWarmLeads from "./warmleads";
 import SingleEmployee from "../Components/attendance/SingleEmployee";
+import Integrations from "./integrations";
 
 const libraries = ["places"];
 
@@ -316,6 +317,11 @@ const routes = [
     path: "/settings",
     pageName: "Settings",
     element: <Settings />,
+  },
+  {
+    path: "/integrations",
+    pageName: "Settings",
+    element: <Integrations />,
   },
   {
     path: "*",

@@ -1337,7 +1337,12 @@ const Sidebarmui = () => {
         {
           name: "Settings",
           icon: <FiSettings />,
-          link: "/settings",
+          submenu: [
+            {
+              name: "Integration",
+              link: "/integrations",
+            },
+          ],
         },
       ],
     },
