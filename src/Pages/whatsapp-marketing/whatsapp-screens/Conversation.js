@@ -1,6 +1,6 @@
-import { Button, TextField, CircularProgress } from "@mui/material";
+import { Button, TextField, CircularProgress, Box } from "@mui/material";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
-import Avatar from "./ChatAvatar";
+import ConversationItem from "./ConversationItem";
 
 const Conversation = ({
   data,
@@ -16,8 +16,8 @@ const Conversation = ({
 }) => {
   return (
     <>
-      <div className="mt-5 bg-[#F6F6F6] rounded-lg">
-        <h1 style={{ fontSize: "38px", fontWeight: "bold" }}>Connected</h1>
+      <div className="mt-5 bg-[#F6F6F6] rounded-lg p-4">
+        {/* <h1 style={{ fontSize: "38px", fontWeight: "bold" }}>Connected</h1>
         <img
           src={data?.userProfilePic}
           width={60}
@@ -29,9 +29,15 @@ const Conversation = ({
         <p>{data?.userInfo?.me?.user}</p>
         <Button onClick={handleLogout} variant="contained" color="error">
           Logout
-        </Button>
+        </Button> */}
 
-        <div className="mt-4 flex flex-col h-full">
+        <div className="border rounded-sm flex h-full">
+
+          <Box className="p-3">
+            <p className="mb-2"><strong>Conversations</strong></p>
+            <ConversationItem/>
+          </Box>
+
           {/* Chat Section */}
           {/* <div className="chat-container flex">
             <div
@@ -150,13 +156,6 @@ const Conversation = ({
               </form>
             </div>
           </div> */}
-
-            <header className="h-16 border-b p-4 flex justify-between items-center">
-        <div className="flex items-center">
-          <Avatar className="mr-4" initials={"John Doe"} size="large" />
-          <div className="font-bold">John Doe</div>
-        </div>
-      </header>
         </div>
       </div>
     </>
