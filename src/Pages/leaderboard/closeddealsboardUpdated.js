@@ -22,6 +22,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [callLogs, setCallLogs] = useState();
+  const [noData, setNoData] = useState(false);
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -134,8 +135,8 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
         tabValue === 0
           ? "leaderboard"
           : tabValue === 1
-          ? "leaderboard?last_month"
-          : "leaderboard?current_month";
+          ? "leaderboard?period=last_month"
+          : "leaderboard?period=current_month";
       const all_leaderboard = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
         headers: {
           "Content-Type": "application/json",
@@ -341,13 +342,16 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                         </div>
                       ))
                     ) : (
-                      <h2
-                        className={`${
-                          currentMode === "dark" ? "text-white" : "text-red"
-                        } text-center`}
-                      >
-                        No data found
-                      </h2>
+                      <>
+                        <h2
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-red"
+                          } text-center`}
+                        >
+                          No data found
+                        </h2>
+                        <img src="./no_data.png" alt="No data Illustration" />
+                      </>
                     )}
                   </div>
                   <div></div>

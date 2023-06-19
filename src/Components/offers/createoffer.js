@@ -18,6 +18,7 @@ import moment from "moment";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import { ToastContainer, toast } from "react-toastify";
+import { Textarea } from "@material-tailwind/react";
 
 const currentDate = dayjs();
 
@@ -179,7 +180,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
               }
               required
             />
-            <TextField
+            {/* <TextField
               type="text"
               label="Offer Description"
               className="w-full mb-3"
@@ -187,6 +188,21 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
               style={{ marginBottom: "20px" }}
               variant="outlined"
               size="medium"
+              value={offerData.offerDescription}
+              required
+              onChange={(e) =>
+                setOfferData({ ...offerData, offerDescription: e.target.value })
+              }
+            /> */}
+            <Textarea
+              type="text"
+              placeholder="Offer Description"
+              // label="Offer Description"
+              className="w-full mb-3"
+              name="offerDescription"
+              style={{ marginBottom: "20px" }}
+              // variant="outlined"
+              size="lg"
               value={offerData.offerDescription}
               required
               onChange={(e) =>

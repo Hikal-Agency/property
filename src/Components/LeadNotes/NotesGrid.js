@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Loader from "../Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // const UserTable = ({ user }) => {
 //   const [loading, setloading] = useState(false);
@@ -384,11 +385,18 @@ const NotesGrid = ({ pageState, setpageState }) => {
   const { currentMode } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [notesData, setUserData] = useState([]);
+  const navigate = useNavigate();
 
   console.log("USERDATA: ", notesData);
 
   const handlePageChange = (event, value) => {
     setpageState({ ...pageState, page: value });
+  };
+
+  const handleNavigate = (e, leadId) => {
+    e.preventDefault();
+
+    navigate(`/leadnotes/${leadId}`);
   };
 
   useEffect(() => {
@@ -424,7 +432,8 @@ const NotesGrid = ({ pageState, setpageState }) => {
                             currentMode === "dark"
                               ? "bg-gray-900 text-white"
                               : "bg-gray-200 text-black"
-                          } p-3 rounded-md `}
+                          } p-3 rounded-md cursor-pointer `}
+                          onClick={(e) => handleNavigate(e, item?.leadId)}
                         >
                           <div className="mt-2 space-y-1 overflow-hidden">
                             <h1 className="font-bold capitalize">
