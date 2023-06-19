@@ -61,10 +61,16 @@ import Settings from "./settings";
 import Employees from "./attendanceModule/employeesList";
 import AllWarmLeads from "./warmleads";
 import SingleEmployee from "../Components/attendance/SingleEmployee";
+import CallLogsNoHeadFoot from "./leaderboard/callLogsNoHeadFoot";
 
 const libraries = ["places"];
 
 const routes = [
+  {
+    path: "/calllogsnoheadfoot",
+    element: <CallLogsNoHeadFoot />,
+    pageName: "Call logs No Head Foot",
+  },
   {
     path: "/",
     element: <Home />,
