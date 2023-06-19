@@ -25,10 +25,10 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
         period = "daily";
         break;
       case 1:
-        period = "monthly";
+        period = "yesterday";
         break;
       case 2:
-        period = "yearly";
+        period = "monthly";
         break;
       default:
         period = "daily";
@@ -128,9 +128,9 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
       <ToastContainer />
       <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={tabValue} onChange={handleChange} variant="standard">
-          <Tab label="DAILY" />
-          <Tab label="MONTYLY" />
-          <Tab label="YEARLY" />
+          <Tab label="Today" />
+          <Tab label="Yesterday" />
+          <Tab label="This month" />
           {/* <Tab label="LAST MONTH" /> */}
         </Tabs>
       </Box>
@@ -180,9 +180,9 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  All Calls&nbsp;
+                                  Dialed&nbsp;
                                   <span className="font-semibold text-main-red-color float-right">
-                                    {call?.all_calls || 0}
+                                    {call?.dialed || 0}
                                   </span>
                                 </h1>
                               </div>
@@ -381,9 +381,9 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  All Calls&nbsp;
+                                  Dialed&nbsp;
                                   <span className="font-semibold text-main-red-color float-right">
-                                    {call?.all_calls || 0}
+                                    {call?.dialed || 0}
                                   </span>
                                 </h1>
                               </div>
@@ -581,9 +581,9 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  All Calls&nbsp;
+                                  Dialed&nbsp;
                                   <span className="font-semibold text-main-red-color float-right">
-                                    {call?.all_calls || 0}
+                                    {call?.dialed || 0}
                                   </span>
                                 </h1>
                               </div>
