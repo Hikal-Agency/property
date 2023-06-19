@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AddLead from "./addlead";
 import Signup from "./auth/signup";
 import Booked from "./booked";
@@ -61,16 +61,10 @@ import Settings from "./settings";
 import Employees from "./attendanceModule/employeesList";
 import AllWarmLeads from "./warmleads";
 import SingleEmployee from "../Components/attendance/SingleEmployee";
-import CallLogsNoHeadFoot from "./leaderboard/callLogsNoHeadFoot";
 
 const libraries = ["places"];
 
 const routes = [
-  {
-    path: "/calllogsnoheadfoot",
-    element: <CallLogsNoHeadFoot />,
-    pageName: "Call logs No Head Foot",
-  },
   {
     path: "/",
     element: <Home />,
@@ -208,6 +202,11 @@ const routes = [
     pageName: "Profile",
   },
   {
+    path: "/whatsapp-marketing/:page",
+    element: <WhatsappMarketing />,
+    pageName: "Whatsapp Marketing",
+  },
+  {
     path: "/location/livelocation",
     pageName: "Live Location",
     element: <Livelocation />,
@@ -323,12 +322,9 @@ const routes = [
     element: <Error />,
   },
 ];
+
+
 const hosRoutes = [
-  {
-    path: "/calllogsnoheadfoot",
-    element: <CallLogsNoHeadFoot />,
-    pageName: "Call logs No Head Foot",
-  },
   {
     path: "/",
     element: <Home />,
@@ -451,6 +447,11 @@ const hosRoutes = [
     pageName: "Profile",
   },
   {
+    path: "/whatsapp-marketing/:page",
+    element: <WhatsappMarketing />,
+    pageName: "Whatsapp Marketing",
+  },
+  {
     path: "/location/livelocation",
     pageName: "Live Location",
     element: <Livelocation />,
@@ -465,7 +466,11 @@ const hosRoutes = [
     pageName: "User All Location",
     element: <UserAllLocation />,
   },
-
+  {
+    path: "/updateuser/:id",
+    pageName: "Users",
+    element: <UpdateUser />,
+  },
   {
     path: "/offers",
     pageName: "Offers",
@@ -550,10 +555,8 @@ const hosRoutes = [
 export const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-  const { setAllRoutes, socketRef, currentMode, User, isUserSubscribed } =
-    useStateContext();
+  const { setAllRoutes, socketRef, currentMode, User } = useStateContext();
   const location = useLocation();
-  const [routesArr, setRoutesArr] = useState([]);
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -561,23 +564,8 @@ function App() {
   });
 
   useEffect(() => {
-    if (isUserSubscribed !== null && isUserSubscribed === true) {
-      setRoutesArr([
-        {
-          path: "/whatsapp-marketing/:page",
-          element: <WhatsappMarketing />,
-          pageName: "Whatsapp Marketing",
-        },
-      ]);
-    }
-    if (User?.role === 2) {
-      setAllRoutes([...routesArr, ...hosRoutes]);
-      setRoutesArr([...routesArr, ...hosRoutes]);
-    } else {
-      setAllRoutes([...routesArr, ...routes]);
-      setRoutesArr([...routesArr, ...routes]);
-    }
-  }, [User, isUserSubscribed]);
+    setAllRoutes(routes);
+  }, []);
 
   function hasSidebarOrNavbar() {
     const pathname = location.pathname;
@@ -616,7 +604,15 @@ function App() {
               </div>
             )}
             <Routes>
-              {routesArr.map((route, index) => {
+              {User?.role === 2 ? hosRoutes.map((route, index) => {
+                return (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={route.element}
+                  />
+                );
+              }) : routes.map((route, index) => {
                 return (
                   <Route
                     key={index}
