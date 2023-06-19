@@ -38,8 +38,8 @@ const Chat = () => {
         setChatMessages(() => {
           return [...data];
         });
+        setChatLoading(false);
       }
-      setChatLoading(false);
     });
   };
 
@@ -110,7 +110,8 @@ const Chat = () => {
         setReady(true);
         setloading(false);
       } else {
-        if(selectedDevice) {
+
+        if(selectedDevice && !ready) {
           socket.emit("destroy_client", selectedDevice)
           setSelectedDevice(null);
           setQr(null);
@@ -151,6 +152,8 @@ const Chat = () => {
                     })
                   );
                   setReady(true);
+                  setQr(null);
+                  setSelectedDevice("");
                   setloading(false);
                 }
               });
@@ -166,7 +169,7 @@ const Chat = () => {
     
             socket.on("logged-out", (data) => {
               if (data) {
-                handleLogout();
+                logout();
               }
             });
         socket.on("disconnect", () => {
@@ -178,14 +181,14 @@ const Chat = () => {
 
 
   useEffect(() => {
-    if (User && ready) {
+    if (User) {
       fetchChatMessages(phoneNumber);
     }
   }, [User, ready]);
 
   useEffect(() => {
     const cb = () => {
-      if (User && ready) {
+      if (User) {
         fetchChatMessages(phoneNumber);
       }
     };
@@ -203,8 +206,8 @@ const Chat = () => {
       const sessionId = `${User?.id}-${deviceName
         .toLowerCase()
         .replaceAll(" ", "-")}`;
+        setSelectedDevice(sessionId);
       socket.emit("create_session", { id: sessionId });
-      setSelectedDevice(sessionId);
     }
   };
 

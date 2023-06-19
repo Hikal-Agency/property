@@ -2,9 +2,9 @@ import { Avatar, Box } from "@mui/material";
 import { BsFillPhoneFill } from "react-icons/bs";
 import {GrAdd} from "react-icons/gr";
 
-const DeviceCard = ({ name, isConnected, addDeviceCard = false, onClick}) => {
+const DeviceCard = ({ name, isConnected, addDeviceCard = false, onClick, setCreateDeviceModal}) => {
     if(addDeviceCard) {
-      return <Box className="rounded-lg flex flex-col items-center justify-center cursor-pointer border-dashed border-2 border-[#B2B2B2] mr-[3%] p-3 w-[30%]">
+      return <Box onClick={()=> setCreateDeviceModal(true)} className="rounded-lg flex flex-col items-center justify-center cursor-pointer border-dashed border-2 border-[#B2B2B2] mr-[3%] p-3 w-[30%]">
             <Avatar className="mb-1" style={{background: "#E5E7EB", width: 30, height: 30}}>
                 <GrAdd size={14}/>
             </Avatar>
