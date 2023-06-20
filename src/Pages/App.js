@@ -61,10 +61,16 @@ import Settings from "./settings";
 import Employees from "./attendanceModule/employeesList";
 import AllWarmLeads from "./warmleads";
 import SingleEmployee from "../Components/attendance/SingleEmployee";
+import CallLogsNoHeadFoot from "./leaderboard/callLogsNoHeadFoot";
 
 const libraries = ["places"];
 
 const routes = [
+  {
+    path: "/callLogs",
+    element: <CallLogsNoHeadFoot />,
+    pageName: "Call logs No Head Foot",
+  },
   {
     path: "/",
     element: <Home />,
@@ -323,7 +329,6 @@ const routes = [
   },
 ];
 
-
 const hosRoutes = [
   {
     path: "/",
@@ -564,7 +569,11 @@ function App() {
 
   function hasSidebarOrNavbar() {
     const pathname = location.pathname;
-    if (pathname === "/" || pathname === "/auth/signup") {
+    if (
+      pathname === "/" ||
+      pathname === "/auth/signup" ||
+      pathname === "/callLogs"
+    ) {
       return false;
     } else {
       return true;
@@ -599,23 +608,25 @@ function App() {
               </div>
             )}
             <Routes>
-              {User?.role === 2 ? hosRoutes.map((route, index) => {
-                return (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={route.element}
-                  />
-                );
-              }) : routes.map((route, index) => {
-                return (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={route.element}
-                  />
-                );
-              })}
+              {User?.role === 2
+                ? hosRoutes.map((route, index) => {
+                    return (
+                      <Route
+                        key={index}
+                        path={route.path}
+                        element={route.element}
+                      />
+                    );
+                  })
+                : routes.map((route, index) => {
+                    return (
+                      <Route
+                        key={index}
+                        path={route.path}
+                        element={route.element}
+                      />
+                    );
+                  })}
             </Routes>
           </div>
         </div>

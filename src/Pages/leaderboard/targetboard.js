@@ -45,20 +45,20 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
       //   const get_agents = leaderboard?.filter((agent) => agent?.role === 7);
       //   setAgents(get_agents);
 
-      const leadCount = leaderboard.reduce(
-        (acc, cur) => {
-          if (cur.total_sales) {
-            acc.total_sales += Number(cur.total_sales);
-          }
-          if (cur.total_closed_deals) {
-            acc.total_closed_deals += cur.total_closed_deals;
-          }
-          return acc;
-        },
-        { total_sales: 0, total_closed_deals: 0 }
-      );
+      // const leadCount = leaderboard.reduce(
+      //   (acc, cur) => {
+      //     if (cur.total_sales) {
+      //       acc.total_sales += Number(cur.total_sales);
+      //     }
+      //     if (cur.total_closed_deals) {
+      //       acc.total_closed_deals += cur.total_closed_deals;
+      //     }
+      //     return acc;
+      //   },
+      //   { total_sales: 0, total_closed_deals: 0 }
+      // );
 
-      setCount(leadCount);
+      // setCount(leadCount);
 
       const { agents = [], managers = [] } = leaderboard.reduce(
         (acc, cur) => ({
@@ -68,8 +68,15 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
         { agents: [], managers: [] }
       );
 
-      setAgents(agents);
-      setManagers(managers);
+      const filteredAgents = agents.filter(
+        (agent) => agent.total_sales > 0 && agent.target > 0
+      );
+      const filteredManagers = managers.filter(
+        (manager) => manager.total_sales > 0 && manager.target > 0
+      );
+
+      setAgents(filteredAgents);
+      setManagers(filteredManagers);
 
       setLoading(false);
 
