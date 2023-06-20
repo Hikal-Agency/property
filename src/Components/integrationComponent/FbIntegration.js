@@ -1,17 +1,30 @@
-import { Box, Button, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { FaFacebook } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 
 const FbIntegration = () => {
-  const { currentMode, fbToken, setFBToken } = useStateContext();
+  const { currentMode, fbToken, setFBToken, darkModeColors } =
+    useStateContext();
   const [loading, setLoading] = useState(false);
   const [btnVisible, setBtnVisible] = useState(true);
+  const [userName, setUserName] = useState("");
+  const [adAccounts, setAdAccounts] = useState([]);
 
   const initiateFBLogin = () => {
     window.FB.login(
       (response) => {
+        setLoading(true);
         if (response.status === "connected") {
           console.log("Facebook login successful!", response);
           // User successfully logged in to the app.
@@ -24,8 +37,19 @@ const FbIntegration = () => {
             response.authResponse.accessToken
           );
           setFBToken(token);
-
           console.log("fb token: ", token);
+
+          // Fetch user name
+          window.FB.api("/me", (resp) => {
+            setUserName(resp.name);
+          });
+
+          // Fetch user ad accounts
+          window.FB.api("/me/adaccounts?fields=id,name", "GET", (resp) => {
+            setAdAccounts(resp.data);
+          });
+
+          setLoading(false);
 
           toast.success("Your facebook account connected.", {
             position: "top-right",
@@ -38,6 +62,7 @@ const FbIntegration = () => {
             theme: "light",
           });
         } else {
+          setLoading(false);
           // User could not log in.
           toast.error("Account not connected kindly try again.", {
             position: "top-right",
@@ -55,6 +80,19 @@ const FbIntegration = () => {
       { scope: "public_profile,email,ads_management,ads_read,leads_retrieval" }
     );
   };
+
+  useEffect(() => {
+    const checkTokenExpiry = () => {
+      if (!fbToken) return;
+      window.FB.getLoginStatus((response) => {
+        if (response.status !== "connected") {
+          // Token has expired, refresh it
+          initiateFBLogin();
+        }
+      });
+    };
+    checkTokenExpiry();
+  }, []);
   return (
     <>
       <ToastContainer />{" "}
@@ -89,29 +127,81 @@ const FbIntegration = () => {
               />
             ) : (
               <>
-                <div
-                  className={`bg-main-red-color text-white px-4 text-center sm:px-6 mb-3`}
-                >
-                  {btnVisible && (
-                    <Button
-                      className={`min-w-fit mb-5 w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none text-white  bg-main-red-color`}
-                      ripple={true}
-                      size="lg"
-                      type="submit"
-                      disabled={loading ? true : false}
-                      onClick={initiateFBLogin}
+                {btnVisible && (
+                  <>
+                    <div
+                      className={`bg-main-red-color text-white px-4 text-center sm:px-6 mb-3`}
                     >
-                      <span className="text-white"> Connect Facebook</span>
-                    </Button>
-                  )}
-                </div>
-                <hr className="mb-3"></hr>
-                {/* <h6
-                  className="mb-3 bg-main-red-color text-white p-2 rounded-md"
-                  style={{ textTransform: "capitalize" }}
-                >
-                  Offer from Mr.
-                </h6> */}
+                      <Button
+                        className={`min-w-fit mb-5 w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none text-white  bg-main-red-color`}
+                        ripple={true}
+                        size="lg"
+                        type="submit"
+                        disabled={loading ? true : false}
+                        onClick={initiateFBLogin}
+                      >
+                        <span className="text-white"> Connect Facebook</span>
+                      </Button>
+                    </div>
+                    <hr className="mb-3"></hr>
+                  </>
+                )}
+
+                {!btnVisible && (
+                  <>
+                    <div
+                      className={`bg-main-red-color text-white px-4 text-center sm:px-6 mb-3 py-2`}
+                    >
+                      <h1 className="text-white font-bold">{userName}</h1>
+                    </div>
+                    <hr className="mb-3" style={{ color: "red" }}></hr>
+
+                    <Box sx={darkModeColors}>
+                      <FormControl
+                        className="w-full mt-1 mb-5"
+                        variant="outlined"
+                      >
+                        <InputLabel
+                          id="ad-account"
+                          sx={{
+                            color:
+                              currentMode === "dark"
+                                ? "#ffffff !important"
+                                : "#000000 !important",
+                          }}
+                        >
+                          Select Account
+                        </InputLabel>
+                        <Select
+                          id="adAccounts"
+                          // value={newsletterData?.status}
+                          labelId="ad-account"
+                          // onChange={(e) =>
+                          //   setNewsletterData({
+                          //     ...newsletterData,
+                          //     status: e.target.value,
+                          //   })
+                          // }
+                          label="Select Account"
+                          size="medium"
+                          className="w-full mb-5"
+                          displayEmpty
+                          required
+                        >
+                          {adAccounts?.length > 0 ? (
+                            adAccounts?.map((adAccount) => (
+                              <MenuItem value={adAccount?.id}>
+                                {adAccount?.name}
+                              </MenuItem>
+                            ))
+                          ) : (
+                            <MenuItem disabled>Not Ad Accounts</MenuItem>
+                          )}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </>
+                )}
               </>
             )}
           </div>
