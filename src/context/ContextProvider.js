@@ -47,6 +47,7 @@ export const ContextProvider = ({ children }) => {
   const [appLoading, setAppLoading] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [sidebarData, setSidebarData] = useState({});
+  const [fbToken, setFBToken] = useState();
 
   // DATA GRID
   const [pageState, setpageState] = useState({
@@ -276,8 +277,10 @@ export const ContextProvider = ({ children }) => {
         setIsClicked,
         setActiveMenu,
         setCurrentMode,
-        selectedDevice, 
+        selectedDevice,
         setSelectedDevice,
+        fbToken,
+        setFBToken,
         // setMode,
         // setColor,
         themeSettings,
