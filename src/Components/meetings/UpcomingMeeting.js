@@ -39,7 +39,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
           <div
             onClick={() => handleCardClick(meeting)}
             key={index}
-            className={`max-w-[500px] flex flex-col justify-between ${
+            className={`w-[350px] flex flex-col justify-between ${
               currentMode === "dark" ? "bg-black" : "bg-white"
             } rounded-md mb-3`}
           >
