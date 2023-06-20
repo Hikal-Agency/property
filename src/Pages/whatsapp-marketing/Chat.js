@@ -105,6 +105,7 @@ const Chat = () => {
       setReady(false);
       setloading(false);
       setQr(null);
+      window.location.reload();
     }
   };
 
@@ -117,7 +118,6 @@ const Chat = () => {
       if (User && socket) {
         if (waDevice) {
           setloading(true);
-          console.log("SocketId:", socket.id);
           socket.emit("check_device_exists", { id: waDevice });
           socket.on("check_device", (result) => {
             console.log("Result:", result);
@@ -213,14 +213,15 @@ const Chat = () => {
   }, [socket]);
 
   useEffect(() => {
-    if (User) {
+    if (User && ready) {
+      console.log("Fetch Chats")
       fetchChatMessages(phoneNumber);
     }
   }, [User, ready]);
 
   useEffect(() => {
     const cb = () => {
-      if (User) {
+      if (User && ready) {
         fetchChatMessages(phoneNumber);
       }
     };
