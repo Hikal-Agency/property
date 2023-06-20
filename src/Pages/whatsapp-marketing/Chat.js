@@ -35,9 +35,9 @@ const Chat = () => {
 
   const messagesContainerRef = useRef();
 
-  const waDevice = localStorage.getItem("authenticated-wa-device");
 
   const fetchChatMessages = async (contact) => {
+  const waDevice = localStorage.getItem("authenticated-wa-device");
     socket.emit("get_chat", { id: waDevice, contact: contact });
     socket.on("chat", (data) => {
       if (data?.length > 0) {
@@ -53,6 +53,7 @@ const Chat = () => {
     e.preventDefault();
     setBtnLoading(true);
     if (chatMessageInputVal) {
+      const waDevice = localStorage.getItem("authenticated-wa-device");
       socket.emit("send-message", {
         id: waDevice,
         to: phoneNumber + "@c.us",
@@ -80,6 +81,7 @@ const Chat = () => {
   };
 
   const handleLogout = () => {
+  const waDevice = localStorage.getItem("authenticated-wa-device");
     socket.emit("logout-user", { id: waDevice });
   };
 
@@ -107,6 +109,7 @@ const Chat = () => {
   };
 
   useEffect(() => {
+    const waDevice = localStorage.getItem("authenticated-wa-device");
     if (!serverDisconnected) {
       const waAccount = JSON.parse(
         localStorage.getItem("authenticated-wa-account")
@@ -127,7 +130,7 @@ const Chat = () => {
               setReady(true);
               setloading(false);
             } else {
-              socket.emit("destroy_client", selectedDevice);
+              socket.emit("destroy_client", waDevice);
               setSelectedDevice(null);
               setQr(null);
               setReady(false);
@@ -244,7 +247,7 @@ const Chat = () => {
       <Box className="min-h-screen mb-3" sx={darkModeColors}>
         {serverDisconnected ? (
           <h1
-            className="text-red-600 text-center mt-12"
+            className="text-red-600 text-center mt-20"
             style={{ fontSize: "38px" }}
           >
             Something went wrong <br /> Try reloading page!
