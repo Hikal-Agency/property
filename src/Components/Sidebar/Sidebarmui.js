@@ -807,6 +807,7 @@ const Sidebarmui = () => {
             },
           ],
         },
+
         {
           name: "Meetings",
           icon: <BsCalendarWeekFill />,
@@ -817,6 +818,11 @@ const Sidebarmui = () => {
           name: "Contacts",
           icon: <MdContactPage />,
           link: "/contacts",
+        },
+        {
+          name: "Users",
+          icon: <ImUsers />,
+          link: "/users",
         },
       ],
     },
@@ -1705,6 +1711,11 @@ const Sidebarmui = () => {
         //   icon: <FaUser />,
         //   link: "/adminAuth/signup",
         // },
+        {
+          name: "Users",
+          icon: <ImUsers />,
+          link: "/users",
+        },
         {
           name: "Reports",
           icon: <HiDocumentReport />,

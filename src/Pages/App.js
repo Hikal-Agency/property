@@ -353,6 +353,11 @@ const hosRoutes = [
   //   element: <ForgotPassword />,
   // },
   {
+    path: "/users",
+    pageName: "Users",
+    element: <Users />,
+  },
+  {
     path: "/change-password",
     element: <ChangePassword />,
     pageName: "Change Password",
