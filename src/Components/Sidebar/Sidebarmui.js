@@ -2011,8 +2011,12 @@ const Sidebarmui = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Subs::", isUserSubscribed)
-    if (isUserSubscribed !== null && isUserSubscribed === true) {
+    setAgentData([...Agentlinks]);
+    setManagerData([...Managerlinks]);
+    setHeadOfSalesData([...headOfSalesLinks]);
+    setLinksData([...links]);
+
+     if (isUserSubscribed !== null && isUserSubscribed === true) {
       setAgentData([
         ...Agentlinks,
         {
@@ -2098,14 +2102,7 @@ const Sidebarmui = () => {
         },
       ]);
     }
-  }, [isUserSubscribed]);
-
-  useEffect(() => {
-    setAgentData([...agentData]);
-    setManagerData([...managerData]);
-    setHeadOfSalesData([...HeadOfSalesData]);
-    setLinksData([...linksData]);
-  }, [sidebarData]);
+  }, [sidebarData, isUserSubscribed]);
 
   return (
     <div
