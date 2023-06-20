@@ -138,7 +138,6 @@ const Chat = () => {
       );
       if (User && socket) {
         if (waDevice) {
-          if (socket?.id) {
             setloading(true);
             socket.emit("check_device_exists", { id: waDevice });
             socket.on("check_device", (result) => {
@@ -159,17 +158,7 @@ const Chat = () => {
                 logout();
               }
             });
-          } else {
-            toast.error("Server is disconnected!", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          }
+
         } else {
           setloading(false);
           if (selectedDevice && !ready) {
