@@ -62,6 +62,7 @@ import Employees from "./attendanceModule/employeesList";
 import AllWarmLeads from "./warmleads";
 import SingleEmployee from "../Components/attendance/SingleEmployee";
 import CallLogsNoHeadFoot from "./leaderboard/callLogsNoHeadFoot";
+import Integrations from "./integrations";
 
 const libraries = ["places"];
 
@@ -324,6 +325,11 @@ const routes = [
     element: <Settings />,
   },
   {
+    path: "/integrations",
+    pageName: "Settings",
+    element: <Integrations />,
+  },
+  {
     path: "*",
     element: <Error />,
   },
@@ -346,6 +352,11 @@ const hosRoutes = [
   //   pageName: "Sign Up",
   //   element: <ForgotPassword />,
   // },
+  {
+    path: "/users",
+    pageName: "Users",
+    element: <Users />,
+  },
   {
     path: "/change-password",
     element: <ChangePassword />,
@@ -545,6 +556,11 @@ const hosRoutes = [
     path: "/settings",
     pageName: "Settings",
     element: <Settings />,
+  },
+  {
+    path: "/integrations",
+    pageName: "Settings",
+    element: <Integrations />,
   },
   {
     path: "*",

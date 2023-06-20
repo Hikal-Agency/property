@@ -380,7 +380,7 @@ const RenderFeedback = ({ cellValues }) => {
                     <TextField
                       id="text"
                       type={"text"}
-                      label="Notes "
+                      label="Meeting Notes "
                       className="w-full mb-3"
                       style={{ marginBottom: "20px" }}
                       variant="outlined"

@@ -288,6 +288,14 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
               </div>
             </div>
 
+            <hr
+              className="mb-3"
+              style={{
+                color: currentMode === "dark" ? "#ffffff" : "#000000",
+                height: "5px !important",
+              }}
+            />
+
             <div
               className={`${
                 currentMode === "dark" ? "text-white" : "text-black"

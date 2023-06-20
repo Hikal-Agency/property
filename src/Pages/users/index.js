@@ -20,6 +20,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import UserTable from "../../Components/Users/UserTable";
 import AddUserModel from "../../Components/addUser/AddUserModel";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import DeleteUser from "../../Components/Users/DeleteUser";
 
 const Users = () => {
   const {
@@ -36,6 +38,8 @@ const Users = () => {
   const [tabValue, setTabValue] = useState(0);
   const [value, setValue] = useState(0);
   const [model, setModel] = useState(false);
+  const [userID, setUserId] = useState();
+  const [openDeleteModel, setOpenDeleteModel] = useState(false);
 
   console.log("User: ", user);
   const handleChange = (event, newValue) => {
@@ -51,6 +55,15 @@ const Users = () => {
     console.log("Model Close:");
 
     setModel(false);
+  };
+
+  const handleDelete = (id) => {
+    console.log("Delete id: ", id);
+    setUserId(id);
+    setOpenDeleteModel(true);
+  };
+  const handleDeleteModelClose = () => {
+    setOpenDeleteModel(false);
   };
 
   const handleTrainerSwitchChange = async (cellValues) => {
@@ -187,41 +200,59 @@ const Users = () => {
       headerAlign: "center",
       align: "center",
       editable: false,
-      minWidth: 90,
+      minWidth: 180,
       flex: 1,
       renderCell: (cellValues) => {
         console.log("Image: ", cellValues);
         const imgSrc = cellValues?.formattedValue;
         if (imgSrc) {
           return (
-            <img
-              src={imgSrc}
-              alt="User"
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-              }}
-            />
+            <>
+              <div className="flex flex-col items-center my-2">
+                <img
+                  src={imgSrc}
+                  alt="User"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "50%",
+                  }}
+                />
+                <h2 className="mt-2">{cellValues.row.userName}</h2>
+              </div>
+            </>
           );
         } else {
           return (
-            <Avatar
-              alt="User"
-              variant="circular"
-              style={{ width: "30px", height: "30px" }}
-            />
+            <>
+              <div className="flex flex-col items-center my-2">
+                <Avatar
+                  alt="User"
+                  variant="circular"
+                  style={{ width: "30px", height: "30px" }}
+                />
+                <h2 className="mt-2">{cellValues.row.userName}</h2>
+              </div>
+            </>
           );
         }
       },
     },
 
+    // {
+    //   field: "userName",
+    //   headerName: "User Name",
+    //   headerAlign: "center",
+    //   editable: false,
+    //   minWidth: 180,
+    //   flex: 1,
+    // },
     {
-      field: "userName",
-      headerName: "User Name",
+      field: "userContact",
+      headerName: "Contact Number",
       headerAlign: "center",
       editable: false,
-      minWidth: 180,
+      minwidth: 130,
       flex: 1,
     },
     {
@@ -229,7 +260,7 @@ const Users = () => {
       headerName: "Position",
       headerAlign: "center",
       editable: false,
-      minWidth: 130,
+      minwidth: 150,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -246,7 +277,7 @@ const Users = () => {
       headerName: "Email Address",
       headerAlign: "center",
       editable: false,
-      minWidth: 250,
+      minwidth: 250,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -261,7 +292,7 @@ const Users = () => {
       headerName: "Trainer",
       headerAlign: "center",
       editable: false,
-      minWidth: 150,
+      minwidth: 60,
       flex: 1,
       renderCell: (cellValues) => {
         console.log("Trainer: ", cellValues);
@@ -301,6 +332,12 @@ const Users = () => {
                       ? "green !important"
                       : "#B91C1C !important",
                 },
+                "& .css-1q0bjt2-MuiSwitch-root .MuiSwitch-thumb": {
+                  backgroundColor:
+                    cellValues?.formattedValue === 1
+                      ? "green !important"
+                      : "#B91C1C !important",
+                },
               }}
             />
           </div>
@@ -313,7 +350,7 @@ const Users = () => {
       headerName: "Status",
       headerAlign: "center",
       editable: false,
-      maxWidth: 100,
+      minwidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -336,14 +373,42 @@ const Users = () => {
     {
       field: "",
       headerName: "Action",
-      maxWidth: 90,
+      minwidth: 90,
       flex: 1,
       headerAlign: "center",
       sortable: false,
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
+          <div className=" space-x-2 w-full flex items-center justify-center ">
+            {User?.role === 1 || User?.role === 2 ? (
+              <>
+                <Button
+                  onClick={() => handleDelete(cellValues?.id)}
+                  className={`editUserBtn ${
+                    currentMode === "dark"
+                      ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                      : "text-black bg-transparent rounded-md p-1 shadow-none "
+                  }`}
+                >
+                  {currentMode === "dark" ? (
+                    <FaTrash style={{ color: "white" }} />
+                  ) : (
+                    <FaTrash style={{ color: "black" }} />
+                  )}
+                </Button>
+                {/* <Link
+                  to={`/updateuser/${cellValues?.id}`}
+                  className="text-blue-500"
+                >
+                  <FaEdit
+                    style={{
+                      color: currentMode == "dark" ? "white" : "black",
+                    }}
+                  />
+                </Link> */}
+              </>
+            ) : null}
             <Button
               title="Edit User"
               className={`editUserBtn ${
@@ -527,7 +592,7 @@ const Users = () => {
                   <TabPanel value={value} index={0}>
                     <Box
                       className={`${currentMode}-mode-datatable`}
-                      width={"100%"}
+                      // width={"100%"}
                       sx={DataGridStyles}
                     >
                       <DataGrid
@@ -539,7 +604,8 @@ const Users = () => {
                         loading={pageState.isLoading}
                         rowsPerPageOptions={[30, 50, 75, 100]}
                         pagination
-                        width="auto"
+                        // width="auto"
+                        getRowHeight={() => "auto"}
                         paginationMode="server"
                         page={pageState.page - 1}
                         pageSize={pageState.pageSize}
@@ -599,6 +665,13 @@ const Users = () => {
                     />
                   </TabPanel>
                 </div>
+                {openDeleteModel && (
+                  <DeleteUser
+                    UserModelOpen={handleDelete}
+                    handleUserModelClose={handleDeleteModelClose}
+                    UserData={userID}
+                  />
+                )}
                 {/* <Box width={"100%"} sx={DataGridStyles}>
                   <DataGrid
                     autoHeight

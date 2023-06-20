@@ -22,7 +22,7 @@ import {
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
 import Filters from "./Filters";
 import { BiSearch } from "react-icons/bi";
@@ -52,6 +52,8 @@ const BookedDeals = ({
   DashboardData,
 }) => {
   const [hovered, setHovered] = useState("");
+
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("auth-token");
   const [singleLeadData, setsingleLeadData] = useState();
@@ -868,6 +870,19 @@ const BookedDeals = ({
           <div
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
+            <Button
+              // onClick={() => HandleEditFunc(cellValues)}
+              className={`${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
+              }`}
+            >
+              <AiOutlineHistory
+                size={20}
+                onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              />
+            </Button>
             <p
               onMouseEnter={() => setHovered("edit")}
               onMouseLeave={() => setHovered("")}
@@ -1066,6 +1081,19 @@ const BookedDeals = ({
           <div
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
+            <Button
+              // onClick={() => HandleEditFunc(cellValues)}
+              className={`${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
+              }`}
+            >
+              <AiOutlineHistory
+                size={20}
+                onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              />
+            </Button>
             <p
               onMouseEnter={() => setHovered("edit")}
               onMouseLeave={() => setHovered("")}
@@ -1497,11 +1525,11 @@ const BookedDeals = ({
   return (
     <div className="pb-10">
       <ToastContainer />
-       <Filters
-          setFilt={setFilt}
-          allFilters={["leadSource", "project", "language"]}
-          data={pageState.data}
-        />
+      <Filters
+        setFilt={setFilt}
+        allFilters={["leadSource", "project", "language"]}
+        data={pageState.data}
+      />
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
         <div className="absolute top-[7px] right-[20px] z-[5]">
           <TextField
@@ -1558,9 +1586,9 @@ const BookedDeals = ({
                 ? columns
                 : AgentColumns
             }
-              filterModel={{
-                items: filt,
-              }}
+            filterModel={{
+              items: filt,
+            }}
             // columns={columns}
             components={{
               Toolbar: GridToolbar,

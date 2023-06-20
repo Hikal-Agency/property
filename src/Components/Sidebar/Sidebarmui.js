@@ -807,6 +807,7 @@ const Sidebarmui = () => {
             },
           ],
         },
+
         {
           name: "Meetings",
           icon: <BsCalendarWeekFill />,
@@ -817,6 +818,11 @@ const Sidebarmui = () => {
           name: "Contacts",
           icon: <MdContactPage />,
           link: "/contacts",
+        },
+        {
+          name: "Users",
+          icon: <ImUsers />,
+          link: "/users",
         },
       ],
     },
@@ -1238,23 +1244,23 @@ const Sidebarmui = () => {
         // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
       ],
     },
-    // {
-    //   title: "Social Media",
-    //   links: [
-    //     {
-    //       name: "Facebook",
-    //       // icon: <FaChartLine />,
-    //       icon: <FaFacebookSquare />,
-    //       link: "/statistics",
-    //     },
-    //     // {
-    //     //   name: "campaigns",
-    //     //   icon: <FaFacebookSquare />,
-    //     //   link: "/campaigns",
-    //     // },
-    //     // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
-    //   ],
-    // },
+    {
+      title: "Social Media",
+      links: [
+        {
+          name: "Facebook",
+          // icon: <FaChartLine />,
+          icon: <FaFacebookSquare />,
+          link: "/statistics",
+        },
+        // {
+        //   name: "campaigns",
+        //   icon: <FaFacebookSquare />,
+        //   link: "/campaigns",
+        // },
+        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+      ],
+    },
     {
       title: "WHATSAPP",
       links: [
@@ -1340,13 +1346,18 @@ const Sidebarmui = () => {
         {
           name: "Settings",
           icon: <FiSettings />,
-          link: "/settings",
+          submenu: [
+            {
+              name: "Integration",
+              link: "/integrations",
+            },
+          ],
         },
       ],
     },
   ];
 
-    //  DATA
+  //  DATA
   const headOfSalesLinks = [
     {
       title: "Dashboard",
@@ -1701,6 +1712,11 @@ const Sidebarmui = () => {
         //   link: "/adminAuth/signup",
         // },
         {
+          name: "Users",
+          icon: <ImUsers />,
+          link: "/users",
+        },
+        {
           name: "Reports",
           icon: <HiDocumentReport />,
           link: "/reports",
@@ -2016,7 +2032,7 @@ const Sidebarmui = () => {
     setHeadOfSalesData([...headOfSalesLinks]);
     setLinksData([...links]);
 
-     if (isUserSubscribed !== null && isUserSubscribed === true) {
+    if (isUserSubscribed !== null && isUserSubscribed === true) {
       setAgentData([
         ...Agentlinks,
         {
@@ -2073,7 +2089,7 @@ const Sidebarmui = () => {
           ],
         },
       ]);
-        setHeadOfSalesData([
+      setHeadOfSalesData([
         ...headOfSalesLinks,
         {
           title: "WHATSAPP",
@@ -2228,8 +2244,7 @@ const Sidebarmui = () => {
               }}
             >
               {[
-                ...(User?.role === 1 ||
-                User?.position === "Super Admin"
+                ...(User?.role === 1 || User?.position === "Super Admin"
                   ? linksData.map((item, linkIndex) => (
                       <div key={linkIndex}>
                         {!isCollapsed ? (
@@ -2474,7 +2489,7 @@ const Sidebarmui = () => {
                         ))}
                       </div>
                     ))
-                  : User?.role === 3 
+                  : User?.role === 3
                   ? managerData.map((item, linkIndex) => (
                       <div key={linkIndex}>
                         {!isCollapsed ? (
@@ -2724,8 +2739,8 @@ const Sidebarmui = () => {
                         ))}
                       </div>
                     ))
-                  : User?.role === 2 ?
-                      HeadOfSalesData.map((item, linkIndex) => (
+                  : User?.role === 2
+                  ? HeadOfSalesData.map((item, linkIndex) => (
                       <div key={linkIndex}>
                         {!isCollapsed ? (
                           <Tooltip placement="right" title={item.title}>
@@ -2969,7 +2984,7 @@ const Sidebarmui = () => {
                         ))}
                       </div>
                     ))
-                   : agentData.map((item, linkIndex) => {
+                  : agentData.map((item, linkIndex) => {
                       return (
                         <div key={linkIndex}>
                           {!isCollapsed ? (
