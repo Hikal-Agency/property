@@ -32,7 +32,7 @@ const QRCode = ({ qr }) => {
                 <li>Point your Phone this screen to scan <strong>QR Code</strong></li>
             </ol>
         </Box>
-        <Box className="p-1">
+        <Box className="p-2 bg-white border">
           <QRCodeCanvas
             style={{ width: 190, height: 190, margin: "0 auto" }}
             value={qr}

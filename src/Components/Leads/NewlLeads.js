@@ -860,7 +860,7 @@ const Newleads = ({
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-          columns={User?.position === "Founder & CEO" ? columns : AgentColumns}
+          columns={(User?.role === 1 || User?.role === 2) ? columns : AgentColumns}
           // columns={columns}
           components={{
             Toolbar: GridToolbar,

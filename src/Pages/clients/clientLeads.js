@@ -1638,7 +1638,7 @@ const ClientLeads = ({
                       }))
                     }
                     columns={
-                      User?.role === 1
+                      (User?.role === 1 || User?.role === 2)
                         ? CEOColumns
                         : User?.role === 3
                         ? ManagerColumns

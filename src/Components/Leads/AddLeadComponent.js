@@ -1,12 +1,8 @@
 import {
   MenuItem,
-  TextField,
-  Select,
-  CircularProgress,
+  TextField, CircularProgress,
   Box,
-  Typography,
-  FormControl,
-  InputLabel,
+  Typography
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -14,7 +10,6 @@ import { Button } from "@material-tailwind/react";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
-import moment from "moment";
 import "react-phone-number-input/style.css";
 
 import PhoneInput, {
@@ -233,7 +228,7 @@ const AddLeadComponent = () => {
 
     if (User?.role === 1) {
       if (Manager) {
-        LeadData.append("assignedToManager", Number(Manager) || "");
+        LeadData.append("assignedToManager", Number(Manager));
       }
       if (SalesPerson2) {
         LeadData.append("assignedToSales", Number(SalesPerson2));
@@ -246,6 +241,18 @@ const AddLeadComponent = () => {
     } else if (User?.role === 7) {
       LeadData.append("assignedToManager", Number(User?.isParent));
       LeadData.append("assignedToSales", Number(User?.id));
+    } else if(User?.role === 2){
+        console.log("values::", Manager, SalesPerson2);
+      if(!Manager && !SalesPerson2) {
+      LeadData.append("assignedToManager", User?.id);
+      } else {
+        if(Manager) {
+           LeadData.append("assignedToManager", Number(Manager));
+        }
+        if(SalesPerson2) {
+           LeadData.append("assignedToSales", Number(SalesPerson2));
+        }
+      }
     }
 
     for (var pair of LeadData.entries()) {
@@ -357,48 +364,7 @@ const AddLeadComponent = () => {
   // }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setpageloading(true);
-        const token = localStorage.getItem("auth-token");
-        console.log("UserID: ", User?.id);
-
-        const [teamResponse, managersResponse] = await Promise.all([
-          axios.get(`${BACKEND_URL}/teamMembers/${User?.id}`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }),
-          axios.get(`${BACKEND_URL}/managers`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }),
-        ]);
-
-        console.log("team: ", teamResponse);
-        setManager2(teamResponse.data.team);
-        if (User?.role === 3) {
-          const SalesPerson = teamResponse.data.team;
-          // setSalesPerson(SalesPerson || []);
-        }
-
-        console.log(managersResponse);
-        const managers = managersResponse?.data?.managers?.data;
-
-        if (User?.role !== 1) {
-          setManager(managers || []);
-        }
-        setpageloading(false);
-      } catch (error) {
-        console.log(error);
-        setpageloading(false);
-      }
-    };
-
-    fetchData();
+    setpageloading(false);
     // eslint-disable-next-line
   }, []);
 

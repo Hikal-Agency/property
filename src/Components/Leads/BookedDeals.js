@@ -1582,7 +1582,7 @@ const BookedDeals = ({
             columns={
               User?.role === 3
                 ? managerColumns
-                : User?.role === 1
+                : (User?.role === 1 || User?.role === 2)
                 ? columns
                 : AgentColumns
             }

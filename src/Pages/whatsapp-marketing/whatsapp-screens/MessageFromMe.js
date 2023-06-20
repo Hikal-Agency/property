@@ -4,7 +4,19 @@ const MessageFromMe = ({ message, data }) => {
   return (
     <div className="flex items-start">
       {message.type === "image" ? (
-        <div className="mb-3 mr-2"><img width="100%" src={`data:image/png;base64,${message?._data?.body}`} alt="" /></div>
+        <div className="mb-3 mr-2">
+          {message?._data?.body ? (
+            <img
+              width="100%"
+              src={`data:image/png;base64,${message?._data?.body}`}
+              alt=""
+            />
+          ) : (
+            <div className="p-4 w-[130px] rounded bg-green-500 text-white flex justify-center items-center">
+              <h1>Image</h1>
+            </div>
+          )}
+        </div>
       ) : (
         <div
           style={{
