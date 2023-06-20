@@ -9,6 +9,7 @@ import {
   InputLabel,
   IconButton,
   MenuItem,
+  Box,
 } from "@mui/material";
 // import axios from "axios";
 import axios from "../../axoisConfig";
@@ -39,6 +40,7 @@ const UpdateMeeting = ({
   const [meetingTimeValue, setMeetingTimeValue] = useState({});
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingDateValue, setMeetingDateValue] = useState({});
+  const [meetingNotes, setMeetingNotes] = useState();
   const [meetingLocation, setMeetingLocation] = useState({
     lat: 0,
     lng: 0,
@@ -162,9 +164,8 @@ const UpdateMeeting = ({
     },
     "& .MuiFormLabel-root": {
       color: currentMode === "dark" ? "white" : "black",
-  },
+    },
   };
-
 
   const update = async () => {
     try {
@@ -180,6 +181,7 @@ const UpdateMeeting = ({
       meetingData.append("mLat", String(meetingLocation.lat));
       meetingData.append("mLong", String(meetingLocation.lng));
       meetingData.append("meetingLocation", meetingLocation.addressText);
+      // meetingData.append("notes", meetingNotes);
 
       const response = await axios.post(
         `${BACKEND_URL}/updateMeeting`,
@@ -339,14 +341,19 @@ const UpdateMeeting = ({
                           <TextField
                             sx={{
                               "& input": {
-                                color: currentMode === "dark" ? "white" : "black"
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
                               "&": {
                                 borderRadius: "4px",
-                                border: currentMode === "dark" ? "1px solid white" : "1px solid black"
+                                border:
+                                  currentMode === "dark"
+                                    ? "1px solid white"
+                                    : "1px solid black",
                               },
-                              "& .MuiSvgIcon-root" :{
-                                color: currentMode === "dark" ? "white" : "black",
+                              "& .MuiSvgIcon-root": {
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
                             }}
                             fullWidth
@@ -379,22 +386,28 @@ const UpdateMeeting = ({
                             label="Meeting Time"
                             sx={{
                               "& .MuiFormLabel-root": {
-                                background: currentMode === "dark" ? "#111827" : "",
+                                background:
+                                  currentMode === "dark" ? "#111827" : "",
                                 color: currentMode === "dark" ? "white" : "",
                               },
                               "& input": {
-                                color: currentMode === "dark" ? "white" : "black"
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
-                              "& .MuiSvgIcon-root" :{
-                                color: currentMode === "dark" ? "white" : "black",
+                              "& .MuiSvgIcon-root": {
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
                               "&": {
                                 borderRadius: "4px",
-                                border: currentMode === "dark" ? "1px solid white" : ""
+                                border:
+                                  currentMode === "dark"
+                                    ? "1px solid white"
+                                    : "",
                               },
                               "&:focus": {
                                 border: "",
-                              }
+                              },
                             }}
                             onKeyDown={(e) => e.preventDefault()}
                             readOnly={true}
@@ -419,6 +432,20 @@ const UpdateMeeting = ({
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </TextField>
                     </FormControl>
+                    <TextField
+                      id="text"
+                      type={"text"}
+                      label="Meeting Notes "
+                      className="w-full mb-3"
+                      style={{ marginBottom: "20px" }}
+                      variant="outlined"
+                      name="text"
+                      size="medium"
+                      onChange={(e) => {
+                        setMeetingNotes(e.target.value);
+                      }}
+                      required
+                    />
                     {meetingLocation.lat && meetingLocation.lng && (
                       <LocationPicker
                         meetingLocation={meetingLocation}
