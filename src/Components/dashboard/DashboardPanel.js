@@ -6,7 +6,7 @@ import { MdLeaderboard, MdSupportAgent } from "react-icons/md";
 import { AiOutlineFire } from "react-icons/ai";
 import { GiThermometerCold } from "react-icons/gi";
 import { FiUsers } from "react-icons/fi";
-import CountUp from 'react-countup';
+import CountUp from "react-countup";
 import BarChart from "../../Components/charts/BarChart";
 import SalesAmountChartAdmin from "../../Components/charts/SalesAmountChartAdmin";
 import CombinationChart from "../../Components/charts/CombinationChart";
@@ -20,7 +20,7 @@ import UpcomingMeetingAgent from "../meetings/UpcomingMeetingAgent";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import { CircularProgress } from "@mui/material";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 import { ToastContainer } from "react-toastify";
 
 const DashboardPanel = ({ setloading }) => {
@@ -191,7 +191,12 @@ const DashboardPanel = ({ setloading }) => {
         Overview
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
-        <motion.div transition={{duration: 0.6}} initial={{y: -120}} animate={{y: [20, 30, 0]}} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 text-center">
+        <motion.div
+          transition={{ duration: 0.6 }}
+          initial={{ y: -120 }}
+          animate={{ y: [20, 30, 0] }}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 text-center"
+        >
           {/* {DashboardData?.designation === "Head" && ( */}
           <Link
             to={"/freshleads/all"}
@@ -205,17 +210,17 @@ const DashboardPanel = ({ setloading }) => {
             <div>
               {User?.role === 3 && (
                 <p className="text-2xl font-bold pb-3 text-red-600">
-                  <CountUp end={DashboardData?.lead_status?.hot} duration={3}/>
+                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {User?.role === 7 && (
                 <p className="text-2xl font-bold pb-3 text-red-600">
-                  <CountUp end={DashboardData?.lead_status?.hot} duration={3}/>
+                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
-              {(User?.role === 1 || User?.role === 2 )&& (
+              {(User?.role === 1 || User?.role === 2) && (
                 <p className="text-2xl font-bold pb-3 text-red-600">
-                  <CountUp end={DashboardData?.lead_status?.hot} duration={3}/>
+                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               <p
@@ -265,7 +270,7 @@ const DashboardPanel = ({ setloading }) => {
                   } h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
                 >
                   <p className="text-2xl font-bold pb-3 text-red-600">
-                    <CountUp end={item.amount} duration={3}/>
+                    <CountUp end={item.amount} duration={3} />
                   </p>
                   <p
                     className={`text-sm ${
@@ -295,7 +300,7 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p className="text-2xl font-bold pb-3 text-red-600">
-                       <CountUp end={item.amount} duration={3}/> 
+                        <CountUp end={item.amount} duration={3} />
                       </p>
                       <p
                         className={`text-sm ${
@@ -327,7 +332,7 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p className="text-2xl font-bold pb-3 text-red-600">
-                       <CountUp end={item.amount} duration={3}/> 
+                        <CountUp end={item.amount} duration={3} />
                       </p>
                       <p
                         className={`text-sm ${
@@ -350,7 +355,10 @@ const DashboardPanel = ({ setloading }) => {
         <>
           {DashboardData?.designation === "Head" ? (
             <>
-              <motion.div initial={{x: 120}} transition={{duration: 0.7}} animate={{x: [-20, 30, 0]}}
+              <motion.div
+                initial={{ x: 120 }}
+                transition={{ duration: 0.7 }}
+                animate={{ x: [-20, 30, 0] }}
                 className={`${
                   currentMode === "dark"
                     ? "bg-gray-900 text-white "
@@ -512,7 +520,10 @@ const DashboardPanel = ({ setloading }) => {
 
       {/* 3RD ROW [REVENUE, TOTAL SALES] */}
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-3 pb-3">
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{margin: "-70px"}}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ margin: "-70px" }}
           className={`
            bg-red-600 h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
         >
@@ -526,7 +537,10 @@ const DashboardPanel = ({ setloading }) => {
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{margin: "-70px"}}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ margin: "-70px" }}
           className={`bg-red-600 h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
         >
           <div>
@@ -543,7 +557,10 @@ const DashboardPanel = ({ setloading }) => {
 
       {/* 4TH ROW [UPCOMING MEETING] */}
       <div className="grid grid-cols-1 pb-3">
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{margin: "-70px"}}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ margin: "-70px" }}
           className={`${
             currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
           } col-span-1 h-fit rounded-md p-5 cursor-pointer hover:shadow-sm`}
@@ -556,11 +573,11 @@ const DashboardPanel = ({ setloading }) => {
           >
             Upcoming meetings
           </h4>
-          {User?.role === 1 && (
+          {User?.role === 1 || User?.role === 2 ? (
             <UpcomingMeeting
               upcoming_meetings={DashboardData?.upcoming_meetings}
             />
-          )}
+          ) : null}
           {User?.role === 3 && (
             <UpcomingMeeting
               upcoming_meetings={DashboardData?.upcoming_meetings}
@@ -577,7 +594,12 @@ const DashboardPanel = ({ setloading }) => {
       {/* 4TH ROW END [UPCOMING MEETING] */}
 
       {/* 5TH ROW [TODO + SHORTCUTS] */}
-      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{margin: "-70px"}}  className="grid grid-cols-1 pb-3">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ margin: "-70px" }}
+        className="grid grid-cols-1 pb-3"
+      >
         <Task />
       </motion.div>
       {/* 5TH ROW END [TODO + SHORTCUTS] */}

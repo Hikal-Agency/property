@@ -121,71 +121,72 @@ const MapContainer = ({ location }) => {
           mapContainerStyle={mapContainerStyle}
           options={options}
         >
-          {location?.map((meeting) => (
-            <>
-              {window?.google?.maps ? (
-                <MarkerF
-                  key={meeting.id}
-                  position={{
-                    lat: Number(meeting?.mLat),
-                    lng: Number(meeting?.mLong),
-                  }}
-                  icon={{
-                    url: "/meetingpinattended.svg",
-                    scaledSize: window?.google
-                      ? new window.google.maps.Size(50, 50)
-                      : null,
-                  }}
-                  onClick={() => {
-                    setSelectedMeeting(meeting);
-                  }}
-                />
-              ) : (
-                <MarkerF
-                  key={meeting?.id}
-                  position={{
-                    lat: Number(meeting?.mLat),
-                    lng: Number(meeting?.mLong),
-                  }}
-                  icon={{
-                    url: "/meetingpin.svg",
-                    scaledSize: window?.google
-                      ? new window.google.maps.Size(50, 50)
-                      : null,
-                  }}
-                  onClick={() => {
-                    setSelectedMeeting(meeting);
-                  }}
-                />
-              )}
+          {location?.length > 0 &&
+            location?.map((meeting) => (
+              <>
+                {window?.google?.maps ? (
+                  <MarkerF
+                    key={meeting.id}
+                    position={{
+                      lat: Number(meeting?.mLat),
+                      lng: Number(meeting?.mLong),
+                    }}
+                    icon={{
+                      url: "/meetingpinattended.svg",
+                      scaledSize: window?.google
+                        ? new window.google.maps.Size(50, 50)
+                        : null,
+                    }}
+                    onClick={() => {
+                      setSelectedMeeting(meeting);
+                    }}
+                  />
+                ) : (
+                  <MarkerF
+                    key={meeting?.id}
+                    position={{
+                      lat: Number(meeting?.mLat),
+                      lng: Number(meeting?.mLong),
+                    }}
+                    icon={{
+                      url: "/meetingpin.svg",
+                      scaledSize: window?.google
+                        ? new window.google.maps.Size(50, 50)
+                        : null,
+                    }}
+                    onClick={() => {
+                      setSelectedMeeting(meeting);
+                    }}
+                  />
+                )}
 
-              {selectedMeeting ? (
-                <InfoWindow
-                  position={{
-                    lat: Number(selectedMeeting?.mLat),
-                    lng: Number(selectedMeeting?.mLong),
-                  }}
-                  onCloseClick={() => {
-                    setSelectedMeeting(null);
-                  }}
-                >
-                  <div>
-                    <h1>{selectedMeeting?.leadName}</h1>
-                    <h1 className="font-semibold">
-                      {selectedMeeting?.project}&nbsp;
-                      {selectedMeeting?.enquiryType}&nbsp;
-                      {selectedMeeting?.leadType}
-                    </h1>
-                    <h1>
-                      {selectedMeeting?.meetingTime}&nbsp;
-                      {selectedMeeting?.meetingDate}
-                    </h1>
-                    <h1> {selectedMeeting?.createdBy}</h1>
-                  </div>
-                </InfoWindow>
-              ) : null}
-            </>
-          ))}
+                {selectedMeeting ? (
+                  <InfoWindow
+                    position={{
+                      lat: Number(selectedMeeting?.mLat),
+                      lng: Number(selectedMeeting?.mLong),
+                    }}
+                    onCloseClick={() => {
+                      setSelectedMeeting(null);
+                    }}
+                  >
+                    <div>
+                      <h1>{selectedMeeting?.leadName}</h1>
+                      <h1 className="font-semibold">
+                        {selectedMeeting?.project}&nbsp;
+                        {selectedMeeting?.enquiryType}&nbsp;
+                        {selectedMeeting?.leadType}
+                      </h1>
+                      <h1>
+                        {selectedMeeting?.meetingTime}&nbsp;
+                        {selectedMeeting?.meetingDate}
+                      </h1>
+                      <h1> {selectedMeeting?.createdBy}</h1>
+                    </div>
+                  </InfoWindow>
+                ) : null}
+              </>
+            ))}
 
           {/* {userData.map((user) => (
             <>
