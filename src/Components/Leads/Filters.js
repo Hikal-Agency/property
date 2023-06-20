@@ -61,7 +61,6 @@ const Filters = ({ setFilt, data, allFilters }) => {
       <Box
         className="flex items-center mt-3 mb-2"
         sx={{
-          ...darkModeColors,
           "& .MuiSelect-select": {
             padding: "2px",
             paddingLeft: "6px !important",

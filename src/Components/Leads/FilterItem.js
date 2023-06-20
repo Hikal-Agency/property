@@ -1,15 +1,29 @@
 import { Box, TextField, MenuItem } from "@mui/material";
-import {IoMdClose} from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
+import { useStateContext } from "../../context/ContextProvider";
 
-const FilterItem = ({filterValue, removeFilter, filterName, filters, changeFilter, filterOptions}) => {
-    console.log("Filters::", filterOptions, filterName)
-    return (
-        <>
-               {filterValue ? <Box onClick={() => removeFilter(filterName)} className="flex cursor-pointer items-center justify-around applied-filter">
-        <span>{filterValue}</span>
-        <IoMdClose style={{color: "white"}}/>
-      </Box> :
+const FilterItem = ({
+  filterValue,
+  removeFilter,
+  filterName,
+  filters,
+  changeFilter,
+  filterOptions,
+}) => {
+  const {darkModeColors} = useStateContext();
+  return (
+    <>
+      {filterValue ? (
+        <Box
+          onClick={() => removeFilter(filterName)}
+          className="flex cursor-pointer items-center justify-around applied-filter"
+        >
+          <span>{filterValue}</span>
+          <IoMdClose style={{ color: "white" }} />
+        </Box>
+      ) : (
         <TextField
+        sx={darkModeColors}
           select
           id={filterName}
           value={
@@ -31,9 +45,9 @@ const FilterItem = ({filterValue, removeFilter, filterName, filters, changeFilte
             </MenuItem>
           ))}
         </TextField>
-      }
-        </>
-    );
-}
+      )}
+    </>
+  );
+};
 
 export default FilterItem;
