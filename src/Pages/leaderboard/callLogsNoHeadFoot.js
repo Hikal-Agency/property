@@ -77,19 +77,20 @@ const CallLogsNoHeadFoot = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("auth-token");
-  //   FetchCallLogs();
-  // }, [tabValue]);
-
   useEffect(() => {
     setLoading(true);
-    const interval = setInterval(() => {
-      FetchCallLogs();
-    }, 10000);
-
-    return () => clearInterval(interval);
+    const token = localStorage.getItem("auth-token");
+    FetchCallLogs();
   }, [tabValue]);
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   const interval = setInterval(() => {
+  //     FetchCallLogs();
+  //   }, 10000);
+
+  //   return () => clearInterval(interval);
+  // }, [tabValue]);
 
   return (
     <div style={{ height: "96vh" }}>
