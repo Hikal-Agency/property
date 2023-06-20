@@ -14,6 +14,8 @@ import MapContainer from "./MapComponent";
 const LocationComponent = ({ upcoming_meetings }) => {
   const { currentMode } = useStateContext();
 
+  console.log("upcommings meetins locations : ", upcoming_meetings);
+
   //   const position = [51.505, -0.09];
 
   useEffect(() => {
@@ -33,7 +35,9 @@ const LocationComponent = ({ upcoming_meetings }) => {
           } w-full h-[85vh]`}
         >
           {/* MAP */}
+          {/* {upcoming_meetings?.length > 0 && ( */}
           <MapContainer location={upcoming_meetings} />
+          {/* )} */}
         </div>
         <div className="h-full w-full mt-5">
           <h4 className="text-red-600 font-bold text-xl mb-2">Meetings</h4>
