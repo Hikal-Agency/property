@@ -408,7 +408,7 @@ const UserTable = ({ user }) => {
                 sx={{
                   "& .Mui-selected": {
                     color: "white !important",
-                    backgroundColor: "red !important",
+                    backgroundColor: "#DA1F26 !important",
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",
