@@ -75,9 +75,10 @@ const Conversation = ({
     }
   }
 
+  console.log(chatMessages);
   return (
     <>
-      <div className="mt-5 bg-[#F6F6F6] w-[98%] rounded-lg">
+      <div className="mt-5 bg-[#F6F6F6] w-[98%] rounded-lg mb-8">
         <div className="border border-[#bfbfbf] rounded-sm flex h-full">
           <Box className="w-[45%] border-[#bfbfbf] border-r relative">
             <p
@@ -139,10 +140,10 @@ const Conversation = ({
                     backgroundImage:
                       "url(https://i.pinimg.com/600x315/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg)",
                     backgroundPosition: "center",
-                    backgroundColor: "rgba(255, 255, 255, 0.4)",
+                    backgroundColor: "rgba(255, 255, 255, 0.6)",
                     backgroundBlendMode: "overlay",
                   }}
-                  className="h-[450px] overflow-y-scroll p-3 flex flex-col items-end"
+                  className="h-[530px] overflow-y-scroll p-3 flex flex-col items-end"
                 >
                   {chatMessages?.map((message, index) => {
                     if (
@@ -156,17 +157,13 @@ const Conversation = ({
                           message={message}
                         />
                       );
-                    } else {
-                      if (message.from === phoneNumber + "@c.us") {
-                        return (
-                          <MessageFromOther key={index} message={message} />
-                        );
-                      }
+                    } else if (message.from === phoneNumber + "@c.us") {
+                      return <MessageFromOther key={index} message={message} />;
                     }
                   })}
                 </div>
               ) : (
-                <div className="bg-gray-100 h-[400px] flex flex-col items-center justify-center">
+                <div className="bg-gray-100 h-[530px] flex flex-col items-center justify-center">
                   {chatLoading ? (
                     <>
                       <CircularProgress color="error" size={18} />
