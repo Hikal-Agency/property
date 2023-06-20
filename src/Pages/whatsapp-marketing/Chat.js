@@ -35,9 +35,8 @@ const Chat = () => {
 
   const messagesContainerRef = useRef();
 
-
   const fetchChatMessages = async (contact) => {
-  const waDevice = localStorage.getItem("authenticated-wa-device");
+    const waDevice = localStorage.getItem("authenticated-wa-device");
     socket.emit("get_chat", { id: waDevice, contact: contact });
     socket.on("chat", (data) => {
       if (data?.length > 0) {
@@ -52,7 +51,7 @@ const Chat = () => {
   const handleSendMessage = (e) => {
     e.preventDefault();
     setBtnLoading(true);
-    if (chatMessageInputVal) {
+    if (chatMessageInputVal && socket?.id) {
       const waDevice = localStorage.getItem("authenticated-wa-device");
       socket.emit("send-message", {
         id: waDevice,
@@ -77,12 +76,34 @@ const Chat = () => {
           theme: "light",
         });
       });
+    } else {
+      toast.error("Server is disconnected!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
   const handleLogout = () => {
-  const waDevice = localStorage.getItem("authenticated-wa-device");
-    socket.emit("logout-user", { id: waDevice });
+    const waDevice = localStorage.getItem("authenticated-wa-device");
+    if (socket?.id) {
+      socket.emit("logout-user", { id: waDevice });
+    } else {
+      toast.error("Server is disconnected!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const logout = () => {
@@ -117,26 +138,38 @@ const Chat = () => {
       );
       if (User && socket) {
         if (waDevice) {
-          setloading(true);
-          socket.emit("check_device_exists", { id: waDevice });
-          socket.on("check_device", (result) => {
-            console.log("Result:", result);
-            if (result) {
-              setData({
-                userInfo: waAccount?.info,
-                userProfilePic: waAccount?.profile_pic_url,
-              });
-              setChatLoading(true);
-              setReady(true);
-              setloading(false);
-            } else {
-              socket.emit("destroy_client", waDevice);
-              setSelectedDevice(null);
-              setQr(null);
-              setReady(false);
-              logout();
-            }
-          });
+          if (socket?.id) {
+            setloading(true);
+            socket.emit("check_device_exists", { id: waDevice });
+            socket.on("check_device", (result) => {
+              console.log("Result:", result);
+              if (result) {
+                setData({
+                  userInfo: waAccount?.info,
+                  userProfilePic: waAccount?.profile_pic_url,
+                });
+                setChatLoading(true);
+                setReady(true);
+                setloading(false);
+              } else {
+                socket.emit("destroy_client", waDevice);
+                setSelectedDevice(null);
+                setQr(null);
+                setReady(false);
+                logout();
+              }
+            });
+          } else {
+            toast.error("Server is disconnected!", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
         } else {
           setloading(false);
           if (selectedDevice && !ready) {
@@ -214,7 +247,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (User && ready) {
-      console.log("Fetch Chats")
+      console.log("Fetch Chats");
       fetchChatMessages(phoneNumber);
     }
   }, [User, ready]);
@@ -239,7 +272,20 @@ const Chat = () => {
         .toLowerCase()
         .replaceAll(" ", "-")}`;
       setSelectedDevice(sessionId);
-      socket.emit("create_session", { id: sessionId });
+      if (socket?.id) {
+        socket.emit("create_session", { id: sessionId });
+      } else {
+        toast.error("Server is disconnected!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setloading(false);
+      }
     }
   };
 
