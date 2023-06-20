@@ -1238,23 +1238,23 @@ const Sidebarmui = () => {
         // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
       ],
     },
-    {
-      title: "Social Media",
-      links: [
-        {
-          name: "Facebook",
-          // icon: <FaChartLine />,
-          icon: <FaFacebookSquare />,
-          link: "/statistics",
-        },
-        // {
-        //   name: "campaigns",
-        //   icon: <FaFacebookSquare />,
-        //   link: "/campaigns",
-        // },
-        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
-      ],
-    },
+    // {
+    //   title: "Social Media",
+    //   links: [
+    //     {
+    //       name: "Facebook",
+    //       // icon: <FaChartLine />,
+    //       icon: <FaFacebookSquare />,
+    //       link: "/statistics",
+    //     },
+    //     // {
+    //     //   name: "campaigns",
+    //     //   icon: <FaFacebookSquare />,
+    //     //   link: "/campaigns",
+    //     // },
+    //     // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+    //   ],
+    // },
     {
       title: "WHATSAPP",
       links: [
@@ -1728,23 +1728,23 @@ const Sidebarmui = () => {
         // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
       ],
     },
-    {
-      title: "Social Media",
-      links: [
-        {
-          name: "Facebook",
-          // icon: <FaChartLine />,
-          icon: <FaFacebookSquare />,
-          link: "/statistics",
-        },
-        // {
-        //   name: "campaigns",
-        //   icon: <FaFacebookSquare />,
-        //   link: "/campaigns",
-        // },
-        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
-      ],
-    },
+    // {
+    //   title: "Social Media",
+    //   links: [
+    //     {
+    //       name: "Facebook",
+    //       // icon: <FaChartLine />,
+    //       icon: <FaFacebookSquare />,
+    //       link: "/statistics",
+    //     },
+    //     // {
+    //     //   name: "campaigns",
+    //     //   icon: <FaFacebookSquare />,
+    //     //   link: "/campaigns",
+    //     // },
+    //     // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+    //   ],
+    // },
     {
       title: "LOCATION",
       links: [
@@ -1787,11 +1787,11 @@ const Sidebarmui = () => {
     {
       title: "ATTENDANCE",
       links: [
-        {
-          name: "Office Settings ",
-          icon: <BiCalendar />,
-          link: "/attendance/officeSettings",
-        },
+        // {
+        //   name: "Office Settings ",
+        //   icon: <BiCalendar />,
+        //   link: "/attendance/officeSettings",
+        // },
         {
           name: "Employees List",
           icon: <FiUsers />,
@@ -2011,7 +2011,12 @@ const Sidebarmui = () => {
   }, []);
 
   useEffect(() => {
-    if (isUserSubscribed !== null && isUserSubscribed === true) {
+    setAgentData([...Agentlinks]);
+    setManagerData([...Managerlinks]);
+    setHeadOfSalesData([...headOfSalesLinks]);
+    setLinksData([...links]);
+
+     if (isUserSubscribed !== null && isUserSubscribed === true) {
       setAgentData([
         ...Agentlinks,
         {
@@ -2097,14 +2102,7 @@ const Sidebarmui = () => {
         },
       ]);
     }
-  }, [isUserSubscribed]);
-
-  useEffect(() => {
-    setAgentData([...Agentlinks]);
-    setManagerData([...Managerlinks]);
-    setHeadOfSalesData([...headOfSalesLinks]);
-    setLinksData([...links]);
-  }, [sidebarData]);
+  }, [sidebarData, isUserSubscribed]);
 
   return (
     <div

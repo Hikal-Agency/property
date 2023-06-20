@@ -10,13 +10,20 @@ import Conversation from "./whatsapp-screens/Conversation";
 import Devices from "./whatsapp-screens/Devices";
 
 const Chat = () => {
-  const { User, currentMode, darkModeColors, selectedDevice, setSelectedDevice } = useStateContext();
+  const {
+    User,
+    currentMode,
+    darkModeColors,
+    selectedDevice,
+    setSelectedDevice,
+  } = useStateContext();
   const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [ready, setReady] = useState(false);
   const [data, setData] = useState([]);
+  const [WALoadingScreen, setWALoadingScreen] = useState(false);
   const [serverDisconnected, setServerDisconnected] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatMessageInputVal, setChatMessageInputVal] = useState("");
@@ -28,13 +35,11 @@ const Chat = () => {
 
   const messagesContainerRef = useRef();
 
-  const waDevice = localStorage.getItem("authenticated-wa-device");
-
   const fetchChatMessages = async (contact) => {
+    const waDevice = localStorage.getItem("authenticated-wa-device");
     socket.emit("get_chat", { id: waDevice, contact: contact });
     socket.on("chat", (data) => {
       if (data?.length > 0) {
-        console.log(data);
         setChatMessages(() => {
           return [...data];
         });
@@ -46,7 +51,8 @@ const Chat = () => {
   const handleSendMessage = (e) => {
     e.preventDefault();
     setBtnLoading(true);
-    if (chatMessageInputVal) {
+    if (chatMessageInputVal && socket?.id) {
+      const waDevice = localStorage.getItem("authenticated-wa-device");
       socket.emit("send-message", {
         id: waDevice,
         to: phoneNumber + "@c.us",
@@ -70,125 +76,185 @@ const Chat = () => {
           theme: "light",
         });
       });
+    } else {
+      toast.error("Server is disconnected!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
   const handleLogout = () => {
-    socket.emit("logout-user", { id: waDevice });
+    const waDevice = localStorage.getItem("authenticated-wa-device");
+    if (socket?.id) {
+      socket.emit("logout-user", { id: waDevice });
+    } else {
+      toast.error("Server is disconnected!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const logout = () => {
-    localStorage.removeItem("authenticated-wa-device");
-    localStorage.removeItem("authenticated-wa-account");
-    toast.success("You are logged out successfully!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    const waAccount = JSON.parse(
+      localStorage.getItem("authenticated-wa-account")
+    );
+    if (waAccount) {
+      localStorage.removeItem("authenticated-wa-device");
+      localStorage.removeItem("authenticated-wa-account");
+      toast.success("You are logged out successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
 
-    setReady(false);
-    setloading(false);
-    setQr(null);
+      setReady(false);
+      setloading(false);
+      setQr(null);
+      window.location.reload();
+    }
   };
 
-    useEffect(() => {
-    if(!serverDisconnected) {
+  useEffect(() => {
+    const waDevice = localStorage.getItem("authenticated-wa-device");
+    if (!serverDisconnected) {
       const waAccount = JSON.parse(
         localStorage.getItem("authenticated-wa-account")
-    );
-    if (User && socket) {
-      if (waDevice) {
-        setData({
-          userInfo: waAccount?.info,
-          userProfilePic: waAccount?.profile_pic_url,
-        });
-        setChatLoading(true);
-        setReady(true);
-        setloading(false);
-      } else {
-
-        if(selectedDevice && !ready) {
-          socket.emit("destroy_client", selectedDevice)
-          setSelectedDevice(null);
-          setQr(null);
-          setReady(false);
+      );
+      if (User && socket) {
+        if (waDevice) {
+          if (socket?.id) {
+            setloading(true);
+            socket.emit("check_device_exists", { id: waDevice });
+            socket.on("check_device", (result) => {
+              console.log("Result:", result);
+              if (result) {
+                setData({
+                  userInfo: waAccount?.info,
+                  userProfilePic: waAccount?.profile_pic_url,
+                });
+                setChatLoading(true);
+                setReady(true);
+                setloading(false);
+              } else {
+                socket.emit("destroy_client", waDevice);
+                setSelectedDevice(null);
+                setQr(null);
+                setReady(false);
+                logout();
+              }
+            });
+          } else {
+            toast.error("Server is disconnected!", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
+        } else {
+          setloading(false);
+          if (selectedDevice && !ready) {
+            socket.emit("destroy_client", selectedDevice);
+            setSelectedDevice(null);
+            setQr(null);
+            setReady(false);
+          }
         }
       }
     }
-  }
   }, [User, socket, serverDisconnected]);
 
   useEffect(() => {
     if (socket && User) {
-          console.log("Socket connectd");
-            setloading(false);
+      console.log("Socket connectd");
 
-              socket.on("qr", (qr) => {
-                console.log("QR Received:", qr)
-                setQr(qr);
-                setloading(false);
-              });
-    
-            socket.on("user_ready", (info) => {
-              setChatLoading(true);
-              socket.emit("get_profile_picture", { id: info.sessionId });
-              socket.on("profile_picture", (url) => {
-                localStorage.setItem("authenticated-wa-device", info.sessionId);
-                console.log("url: ", url);
-                if (url !== null) {
-                  setData({
-                    userInfo: info,
-                    userProfilePic: url,
-                  });
-                  localStorage.setItem(
-                    "authenticated-wa-account",
-                    JSON.stringify({
-                      info: info,
-                      profile_pic_url: url,
-                    })
-                  );
-                  setReady(true);
-                  setQr(null);
-                  setSelectedDevice("");
-                  setloading(false);
-                }
-              });
+      socket.on("qr", (qr) => {
+        console.log("QR Received:", qr);
+        setQr(qr);
+        setloading(false);
+      });
+
+      socket.on("user_ready", (info) => {
+        setChatLoading(true);
+        socket.emit("get_profile_picture", { id: info.sessionId });
+        socket.on("profile_picture", (url) => {
+          localStorage.setItem("authenticated-wa-device", info.sessionId);
+          console.log("url: ", url);
+          if (url !== null) {
+            setData({
+              userInfo: info,
+              userProfilePic: url,
             });
-    
-            socket.on("new_message", () => {
-              fetchChatMessages(phoneNumber);
-            });
-    
-            socket.on("user_disconnected", () => {
-              handleLogout();
-            });
-    
-            socket.on("logged-out", (data) => {
-              if (data) {
-                logout();
-              }
-            });
-        socket.on("disconnect", () => {
-          setServerDisconnected(true);
+            localStorage.setItem(
+              "authenticated-wa-account",
+              JSON.stringify({
+                info: info,
+                profile_pic_url: url,
+              })
+            );
+            setQr(null);
+            setSelectedDevice("");
+            setloading(false);
+            setWALoadingScreen(false);
+            setReady(true);
+          }
         });
+      });
+
+      socket.on("new_message", () => {
+        fetchChatMessages(phoneNumber);
+      });
+
+      socket.on("user_disconnected", () => {
+        handleLogout();
+      });
+
+      socket.on("authenticating", (data) => {
+        if (data === 0) {
+          setWALoadingScreen(true);
+        }
+      });
+
+      socket.on("logged-out", (data) => {
+        if (data) {
+          logout();
+        }
+      });
+      socket.on("disconnect", () => {
+        setServerDisconnected(true);
+      });
     }
   }, [socket]);
 
-
-
   useEffect(() => {
-    if (User) {
+    if (User && ready) {
+      console.log("Fetch Chats");
       fetchChatMessages(phoneNumber);
     }
   }, [User, ready]);
 
   useEffect(() => {
     const cb = () => {
-      if (User) {
+      if (User && ready) {
         fetchChatMessages(phoneNumber);
       }
     };
@@ -200,14 +266,26 @@ const Chat = () => {
   }, [User, ready]);
 
   const handleCreateSession = (deviceName) => {
-
     if (deviceName) {
       setloading(true);
       const sessionId = `${User?.id}-${deviceName
         .toLowerCase()
         .replaceAll(" ", "-")}`;
-        setSelectedDevice(sessionId);
-      socket.emit("create_session", { id: sessionId });
+      setSelectedDevice(sessionId);
+      if (socket?.id) {
+        socket.emit("create_session", { id: sessionId });
+      } else {
+        toast.error("Server is disconnected!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setloading(false);
+      }
     }
   };
 
@@ -216,16 +294,31 @@ const Chat = () => {
       <Box className="min-h-screen mb-3" sx={darkModeColors}>
         {serverDisconnected ? (
           <h1
-            className="text-red-600 text-center mt-12"
+            className="text-red-600 text-center mt-20"
             style={{ fontSize: "38px" }}
           >
-            Something went wrong!
+            Something went wrong <br /> Try reloading page!
           </h1>
         ) : (
           <>
-            {loading ? (
-              <div className="flex justify-center">
-                <Loader />
+            {loading || WALoadingScreen ? (
+              <div className="flex h-[80vh] items-center justify-center">
+                {loading ? (
+                  <Loader />
+                ) : (
+                  <Box className="mt-10 flex flex-col items-center">
+                    <img
+                      className="whatsapp-logo-animation"
+                      width={80}
+                      height={80}
+                      src="/assets/loading/whatsapp-logo.png"
+                      alt=""
+                    />
+                    <p className="mt-3">
+                      <strong>Syncing.. Keep app open!</strong>
+                    </p>
+                  </Box>
+                )}
               </div>
             ) : (
               <>
@@ -255,7 +348,7 @@ const Chat = () => {
                 ) : qr ? (
                   <QRCode qr={qr} />
                 ) : (
-                  <Devices handleCreateSession={handleCreateSession}/>
+                  <Devices handleCreateSession={handleCreateSession} />
                 )}
               </>
             )}

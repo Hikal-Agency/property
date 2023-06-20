@@ -1696,12 +1696,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <>
       <ToastContainer />
       <div className="pb-10">
-        <Filters
-          setFilt={setFilt}
-          allFilters={["leadSource", "project", "language", "otp"]}
-          data={pageState.data}
-        />
-
+        {lead_origin === "freshleads" && (
+          <Filters
+            setFilt={setFilt}
+            allFilters={["leadSource", "project", "language", "otp"]}
+            data={pageState.data}
+          />
+        )}
         <Box
           sx={{
             ...DataGridStyles,
