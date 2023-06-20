@@ -12,12 +12,18 @@ const MessageFromOther = ({ message, phoneNumber }) => {
           <BiUser size={15} />
         </Avatar>
         {message.type === "image" ? (
-          <div className="mb-3 ml-2">
-            <img
-              width="100%"
-              src={`data:image/png;base64,${message?._data?.body}`}
-              alt=""
-            />
+          <div className="mb-3">
+            {message?._data?.body ? (
+              <img
+                width="100%"
+                src={`data:image/png;base64,${message?._data?.body}`}
+                alt=""
+              />
+            ) : (
+              <div className="p-4 w-[130px] rounded bg-green-500 text-white flex justify-center items-center">
+                <h1>Image</h1>
+              </div>
+            )}
           </div>
         ) : (
           <div

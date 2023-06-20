@@ -48,15 +48,54 @@ const Chat = () => {
     });
   };
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = (e = null, type, base64 = null) => {
     e.preventDefault();
+    const waDevice = localStorage.getItem("authenticated-wa-device");
     setBtnLoading(true);
-    if (chatMessageInputVal && socket?.id) {
-      const waDevice = localStorage.getItem("authenticated-wa-device");
+    if (type === "text") {
+      if (chatMessageInputVal && socket?.id) {
+        socket.emit("send-message", {
+          id: waDevice,
+          to: phoneNumber + "@c.us",
+          msg: chatMessageInputVal,
+          type: "text"
+        });
+
+        socket.on("sent", () => {
+          fetchChatMessages(phoneNumber);
+          setChatMessageInputVal("");
+          setBtnLoading(false);
+        });
+
+        socket.on("failed", () => {
+          toast.error("Message Couldn't be sent", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        });
+      } else {
+        toast.error("Server is disconnected!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    } else if (type === "img") {
+      setBtnLoading(true);
       socket.emit("send-message", {
-        id: waDevice,
         to: phoneNumber + "@c.us",
-        msg: chatMessageInputVal,
+        id: waDevice,
+        type: "img",
+        base64: base64,
       });
 
       socket.on("sent", () => {
@@ -75,16 +114,6 @@ const Chat = () => {
           progress: undefined,
           theme: "light",
         });
-      });
-    } else {
-      toast.error("Server is disconnected!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
       });
     }
   };
@@ -138,27 +167,26 @@ const Chat = () => {
       );
       if (User && socket) {
         if (waDevice) {
-            setloading(true);
-            socket.emit("check_device_exists", { id: waDevice });
-            socket.on("check_device", (result) => {
-              console.log("Result:", result);
-              if (result) {
-                setData({
-                  userInfo: waAccount?.info,
-                  userProfilePic: waAccount?.profile_pic_url,
-                });
-                setChatLoading(true);
-                setReady(true);
-                setloading(false);
-              } else {
-                socket.emit("destroy_client", waDevice);
-                setSelectedDevice(null);
-                setQr(null);
-                setReady(false);
-                logout();
-              }
-            });
-
+          setloading(true);
+          socket.emit("check_device_exists", { id: waDevice });
+          socket.on("check_device", (result) => {
+            console.log("Result:", result);
+            if (result) {
+              setData({
+                userInfo: waAccount?.info,
+                userProfilePic: waAccount?.profile_pic_url,
+              });
+              setChatLoading(true);
+              setReady(true);
+              setloading(false);
+            } else {
+              socket.emit("destroy_client", waDevice);
+              setSelectedDevice(null);
+              setQr(null);
+              setReady(false);
+              logout();
+            }
+          });
         } else {
           setloading(false);
           if (selectedDevice && !ready) {

@@ -7,10 +7,12 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
+import { useRef } from "react";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
 import ConversationItem from "./ConversationItem";
 import MessageFromMe from "./MessageFromMe";
 import { BiLogOut, BiUser } from "react-icons/bi";
+import {BsImage} from "react-icons/bs";
 import MessageFromOther from "./MessageFromOther";
 import { IoMdSend } from "react-icons/io";
 import moment from "moment";
@@ -27,6 +29,8 @@ const Conversation = ({
   phoneNumber,
   messagesContainerRef,
 }) => {
+  const imagePickerRef = useRef();
+
   let lastMessageText = "";
   let lastMessageTime = "";
   if (chatMessages.length > 0) {
@@ -40,6 +44,7 @@ const Conversation = ({
     } else {
       lastMessageText = `${lastMsgFormattedBody}`;
     }
+
 
     const today = moment();
     const msgTime = moment(lastMsg.timestamp * 1000);
@@ -76,6 +81,36 @@ const Conversation = ({
   }
 
   console.log(chatMessages);
+
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file)
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      }
+      fileReader.onerror = (error) => {
+        reject(error);
+      }
+    })
+  }
+
+  const sendMsg = async (file) => {
+    const base64 = await convertBase64(file);
+    handleSendMessage(null, "img", base64); 
+  } 
+
+  const handleChangeImage = (e) => {
+    e.preventDefault();
+
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    sendMsg(files[0]);
+  }
   return (
     <>
       <div className="mt-5 bg-[#F6F6F6] w-[98%] rounded-lg mb-8">
@@ -177,13 +212,17 @@ const Conversation = ({
                   )}
                 </div>
               )}
-              <form className="relative" onSubmit={handleSendMessage}>
+              <form className="relative" onSubmit={(e) => handleSendMessage(e, "text")}>
                 <TextField
                   sx={{
                     "& .MuiOutlinedInput-notchedOutline": {
                       border: "0 !important",
                       borderTop: "2px solid grey !important",
                     },
+                    "& input" : {
+                      paddingLeft: "75px",
+                      paddingRight: "75px",
+                    }
                   }}
                   autoComplete="off"
                   onInput={(e) => setChatMessageInputVal(e.target.value)}
@@ -204,6 +243,15 @@ const Conversation = ({
                     )}
                   </IconButton>
                 </Box>
+                <Box
+                  sx={{ transform: "translateY(-50%)" }}
+                  className="absolute top-[50%] left-5"
+                >
+                  <IconButton onClick={() => imagePickerRef.current.click()}>
+                      <BsImage size={18}/>
+                  </IconButton>
+                </Box>
+                <input onInput={handleChangeImage} ref={imagePickerRef} type="file" accept="image/*" id="select-img" hidden/>
               </form>
             </div>
           </Box>
