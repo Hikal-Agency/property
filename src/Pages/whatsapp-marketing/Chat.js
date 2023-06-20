@@ -155,7 +155,6 @@ const Chat = () => {
       setReady(false);
       setloading(false);
       setQr(null);
-      window.location.reload();
     }
   };
 
