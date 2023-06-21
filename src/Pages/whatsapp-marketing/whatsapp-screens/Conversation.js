@@ -12,9 +12,10 @@ import { BsFillChatLeftDotsFill } from "react-icons/bs";
 import ConversationItem from "./ConversationItem";
 import MessageFromMe from "./MessageFromMe";
 import { BiLogOut, BiUser } from "react-icons/bi";
-import {BsImage} from "react-icons/bs";
+import { BsImage } from "react-icons/bs";
 import MessageFromOther from "./MessageFromOther";
 import { IoMdSend } from "react-icons/io";
+import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import moment from "moment";
 
 const Conversation = ({
@@ -44,7 +45,6 @@ const Conversation = ({
     } else {
       lastMessageText = `${lastMsgFormattedBody}`;
     }
-
 
     const today = moment();
     const msgTime = moment(lastMsg.timestamp * 1000);
@@ -85,20 +85,20 @@ const Conversation = ({
   const convertBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
-      fileReader.readAsDataURL(file)
+      fileReader.readAsDataURL(file);
       fileReader.onload = () => {
         resolve(fileReader.result);
-      }
+      };
       fileReader.onerror = (error) => {
         reject(error);
-      }
-    })
-  }
+      };
+    });
+  };
 
   const sendMsg = async (file) => {
     const base64 = await convertBase64(file);
-    handleSendMessage(null, "img", base64); 
-  } 
+    handleSendMessage(null, "img", base64);
+  };
 
   const handleChangeImage = (e) => {
     e.preventDefault();
@@ -110,10 +110,22 @@ const Conversation = ({
       files = e.target.files;
     }
     sendMsg(files[0]);
-  }
+  };
   return (
     <>
-      <div className="mt-5 bg-[#F6F6F6] w-[98%] rounded-lg mb-8">
+      <div className="flex justify-end items-center pr-5">
+        <Button
+          type="button"
+          variant="contained"
+          sx={{ padding: "7px 6px", mb: 1 }}
+          color="error"
+          size="small"
+        >
+          <HiOutlineSwitchHorizontal style={{ marginRight: 8 }} size={20} />
+          Switch Device
+        </Button>
+      </div>
+      <div className="mt-3 bg-[#F6F6F6] w-[98%] rounded-lg mb-8">
         <div className="border border-[#bfbfbf] rounded-sm flex h-full">
           <Box className="w-[45%] border-[#bfbfbf] border-r relative">
             <p
@@ -212,17 +224,20 @@ const Conversation = ({
                   )}
                 </div>
               )}
-              <form className="relative" onSubmit={(e) => handleSendMessage(e, "text")}>
+              <form
+                className="relative"
+                onSubmit={(e) => handleSendMessage(e, "text")}
+              >
                 <TextField
                   sx={{
                     "& .MuiOutlinedInput-notchedOutline": {
                       border: "0 !important",
                       borderTop: "2px solid grey !important",
                     },
-                    "& input" : {
+                    "& input": {
                       paddingLeft: "75px",
                       paddingRight: "75px",
-                    }
+                    },
                   }}
                   autoComplete="off"
                   onInput={(e) => setChatMessageInputVal(e.target.value)}
@@ -248,10 +263,17 @@ const Conversation = ({
                   className="absolute top-[50%] left-5"
                 >
                   <IconButton onClick={() => imagePickerRef.current.click()}>
-                      <BsImage size={18}/>
+                    <BsImage size={18} />
                   </IconButton>
                 </Box>
-                <input onInput={handleChangeImage} ref={imagePickerRef} type="file" accept="image/*" id="select-img" hidden/>
+                <input
+                  onInput={handleChangeImage}
+                  ref={imagePickerRef}
+                  type="file"
+                  accept="image/*"
+                  id="select-img"
+                  hidden
+                />
               </form>
             </div>
           </Box>
