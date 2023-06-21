@@ -351,6 +351,7 @@ const Chat = () => {
                 {ready ? (
                   <Conversation
                     data={data}
+                    logout={logout}
                     handleLogout={handleLogout}
                     chatMessages={chatMessages}
                     handleSendMessage={handleSendMessage}

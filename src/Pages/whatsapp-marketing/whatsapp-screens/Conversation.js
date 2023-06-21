@@ -28,6 +28,7 @@ const Conversation = ({
   btnLoading,
   chatMessageInputVal,
   phoneNumber,
+  logout,
   messagesContainerRef,
 }) => {
   const imagePickerRef = useRef();
@@ -82,39 +83,28 @@ const Conversation = ({
 
   console.log(chatMessages);
 
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-
-  const sendMsg = async (file) => {
-    const base64 = await convertBase64(file);
-    handleSendMessage(null, "img", base64);
-  };
-
   const handleChangeImage = (e) => {
-    e.preventDefault();
+    let files = e.target.files;
+    let reader = new FileReader();
 
-    let files;
-    if (e.dataTransfer) {
-      files = e.dataTransfer.files;
-    } else if (e.target) {
-      files = e.target.files;
+    reader.addEventListener(
+      "load",
+      () => {
+        console.log(reader.result);
+          handleSendMessage(null, "img", reader.result);
+      },
+      false
+    );
+
+    if (files[0]) {
+      reader.readAsDataURL(files[0]);
     }
-    sendMsg(files[0]);
   };
   return (
     <>
       <div className="flex justify-end items-center pr-5">
         <Button
+          onClick={logout}
           type="button"
           variant="contained"
           sx={{ padding: "7px 6px", mb: 1 }}
