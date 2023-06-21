@@ -140,7 +140,7 @@ selectionModelRef
           <Select
             id="Manager"
             value={Manager}
-            disabled={User?.role !== 1 && true}
+            disabled={User?.role !== 1 && User?.role !== 2 && true}
             label="Manager"
             onChange={ChangeManager}
             size="medium"
@@ -178,7 +178,7 @@ selectionModelRef
                 size="medium"
                 className="w-full mb-5"
                 displayEmpty
-                disabled={User?.role !== 1 && true}
+                disabled={User?.role !== 1 && User?.role !== 2 && true}
                 // required={SalesPerson.length > 0 ? true : false}
               >
                 <MenuItem value="0" disabled>

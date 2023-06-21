@@ -26,16 +26,19 @@ const Chat = () => {
   const [WALoadingScreen, setWALoadingScreen] = useState(false);
   const [serverDisconnected, setServerDisconnected] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
+  const [loadingConversations, setLoadingConversations] = useState(true);
+  const [allChats, setAllChats] = useState([]);
   const [chatMessageInputVal, setChatMessageInputVal] = useState("");
 
-  const [searchParams] = useSearchParams();
-  const [phoneNumber, setPhoneNumber] = useState(
-    searchParams.get("phoneNumber")
-  );
+  const [activeChat, setActiveChat] = useState({
+    phoneNumber: null,
+    name: "",
+  });
 
   const messagesContainerRef = useRef();
 
-  const fetchChatMessages = async (contact) => {
+  const fetchChatMessages = async (contact, callback) => {
+    console.log("Fetchinggg chat::");
     const waDevice = localStorage.getItem("authenticated-wa-device");
     socket.emit("get_chat", { id: waDevice, contact: contact });
     socket.on("chat", (data) => {
@@ -43,7 +46,9 @@ const Chat = () => {
         setChatMessages(() => {
           return [...data];
         });
+        if(callback) callback();
         setChatLoading(false);
+        console.log("Has Fetched chat::");
       }
     });
   };
@@ -56,15 +61,16 @@ const Chat = () => {
       if (chatMessageInputVal && socket?.id) {
         socket.emit("send-message", {
           id: waDevice,
-          to: phoneNumber + "@c.us",
+          to: activeChat.phoneNumber + "@c.us",
           msg: chatMessageInputVal,
-          type: "text"
+          type: "text",
         });
 
         socket.on("sent", () => {
-          fetchChatMessages(phoneNumber);
+          fetchChatMessages(activeChat.phoneNumber, () => {
+            setBtnLoading(false);
+          });
           setChatMessageInputVal("");
-          setBtnLoading(false);
         });
 
         socket.on("failed", () => {
@@ -92,16 +98,17 @@ const Chat = () => {
     } else if (type === "img") {
       setBtnLoading(true);
       socket.emit("send-message", {
-        to: phoneNumber + "@c.us",
+        to: activeChat.phoneNumber + "@c.us",
         id: waDevice,
         type: "img",
         base64: base64,
       });
 
       socket.on("sent", () => {
-        fetchChatMessages(phoneNumber);
+        fetchChatMessages(activeChat.phoneNumber, () => {
+          setBtnLoading(false);
+        });
         setChatMessageInputVal("");
-        setBtnLoading(false);
       });
 
       socket.on("failed", () => {
@@ -175,7 +182,6 @@ const Chat = () => {
                 userInfo: waAccount?.info,
                 userProfilePic: waAccount?.profile_pic_url,
               });
-              setChatLoading(true);
               setReady(true);
               setloading(false);
             } else {
@@ -210,7 +216,6 @@ const Chat = () => {
       });
 
       socket.on("user_ready", (info) => {
-        setChatLoading(true);
         socket.emit("get_profile_picture", { id: info.sessionId });
         socket.on("profile_picture", (url) => {
           localStorage.setItem("authenticated-wa-device", info.sessionId);
@@ -237,7 +242,7 @@ const Chat = () => {
       });
 
       socket.on("new_message", () => {
-        fetchChatMessages(phoneNumber);
+        fetchChatMessages(activeChat.phoneNumber);
       });
 
       socket.on("user_disconnected", () => {
@@ -262,16 +267,29 @@ const Chat = () => {
   }, [socket]);
 
   useEffect(() => {
-    if (User && ready && phoneNumber) {
-      console.log("Fetch Chats");
-      fetchChatMessages(phoneNumber);
+    if (User && ready && activeChat.phoneNumber) {
+      setChatLoading(true);
+      fetchChatMessages(activeChat.phoneNumber);
     }
-  }, [User, ready, phoneNumber]);
+
+    const waDevice = localStorage.getItem("authenticated-wa-device");
+    socket.emit("get-all-chats", { id: waDevice });
+    socket.on("all-chats", (data) => {
+      if (data.length > 0) {
+        setLoadingConversations(false);
+        setAllChats(() => {
+          return data.filter((chat) => {
+            return !chat.isGroup;
+          });
+        });
+      }
+    });
+  }, [User, ready, activeChat.phoneNumber]);
 
   useEffect(() => {
     const cb = () => {
-      if (User && ready && phoneNumber) {
-        fetchChatMessages(phoneNumber);
+      if (User && ready && activeChat.phoneNumber) {
+        fetchChatMessages(activeChat.phoneNumber);
       }
     };
     const interval = setInterval(cb, 6000);
@@ -279,7 +297,7 @@ const Chat = () => {
     return () => {
       clearInterval(interval, cb);
     };
-  }, [User, ready, phoneNumber]);
+  }, [User, ready, activeChat.phoneNumber]);
 
   const handleCreateSession = (deviceName) => {
     if (deviceName) {
@@ -304,6 +322,12 @@ const Chat = () => {
       }
     }
   };
+
+  // useEffect(() => {
+  //   if (activeChat.phoneNumber) {
+  //     setChatLoading(true);
+  //   }
+  // }, [activeChat]);
 
   return (
     <>
@@ -351,15 +375,18 @@ const Chat = () => {
                 {ready ? (
                   <Conversation
                     data={data}
+                    setActiveChat={setActiveChat}
+                    allChats={allChats}
                     logout={logout}
                     handleLogout={handleLogout}
                     chatMessages={chatMessages}
+                    loadingConversations={loadingConversations}
                     handleSendMessage={handleSendMessage}
                     chatLoading={chatLoading}
                     setChatMessageInputVal={setChatMessageInputVal}
                     btnLoading={btnLoading}
                     chatMessageInputVal={chatMessageInputVal}
-                    phoneNumber={phoneNumber}
+                    activeChat={activeChat}
                     messagesContainerRef={messagesContainerRef}
                   />
                 ) : qr ? (
