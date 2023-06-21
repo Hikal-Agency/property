@@ -417,11 +417,11 @@ label[for="bulkImport"] .MuiButtonBase-root {
   gap: 0.4rem !important;
 }
 
-.css-jsexje-MuiSwitch-thumb{
+.MuiDataGrid-columnsPanel .css-jsexje-MuiSwitch-thumb{
     background-color: #da1f26 !important;
 }
 
-.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track{
+.MuiDataGrid-columnsPanel .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track{
   background-color: #da1f26 !important;
 }
 
