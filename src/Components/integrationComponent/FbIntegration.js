@@ -20,6 +20,46 @@ const FbIntegration = () => {
   const [btnVisible, setBtnVisible] = useState(true);
   const [userName, setUserName] = useState("");
   const [adAccounts, setAdAccounts] = useState([]);
+  const [selectedAccount, setSelectedAccount] = useState("");
+  const [forms, setForms] = useState([]);
+  const [pages, setPages] = useState([]);
+  const [selectedPage, setSelectedPage] = useState("");
+
+  console.log("selected adaccount: ", selectedAccount);
+  console.log("form data: ", forms);
+  console.log("selected page: ", selectedPage);
+  console.log("pages data: ", pages);
+
+  // useEffect(() => {
+  //   if (selectedAccount) {
+  //     window.FB.api(`/${selectedAccount}/leadgen_forms`, "GET", (resp) => {
+  //       console.log("getForms: ", resp);
+  //       setForms(resp.data);
+  //     });
+  //   }
+  // }, [selectedAccount]);
+
+  useEffect(() => {
+    if (selectedPage) {
+      window.FB.api(
+        `/${selectedPage.id}/leadgen_forms`,
+        { access_token: selectedPage.access_token },
+        "GET",
+        (resp) => {
+          setForms(resp.data);
+        }
+      );
+    }
+  }, [selectedPage]);
+
+  const handleAccountSelect = (event) => {
+    setSelectedAccount(event.target.value);
+  };
+
+  const handlePageSelect = (event) => {
+    const page = pages.find((page) => page.id === event.target.value);
+    setSelectedPage(page);
+  };
 
   const initiateFBLogin = () => {
     window.FB.login(
@@ -47,6 +87,11 @@ const FbIntegration = () => {
           // Fetch user ad accounts
           window.FB.api("/me/adaccounts?fields=id,name", "GET", (resp) => {
             setAdAccounts(resp.data);
+          });
+
+          // Fetch user pages
+          window.FB.api("/me/accounts", "GET", (resp) => {
+            setPages(resp.data);
           });
 
           setLoading(false);
@@ -174,14 +219,9 @@ const FbIntegration = () => {
                         </InputLabel>
                         <Select
                           id="adAccounts"
-                          // value={newsletterData?.status}
+                          value={selectedAccount}
                           labelId="ad-account"
-                          // onChange={(e) =>
-                          //   setNewsletterData({
-                          //     ...newsletterData,
-                          //     status: e.target.value,
-                          //   })
-                          // }
+                          onChange={handleAccountSelect}
                           label="Select Account"
                           size="medium"
                           className="w-full mb-5"
@@ -196,6 +236,43 @@ const FbIntegration = () => {
                             ))
                           ) : (
                             <MenuItem disabled>Not Ad Accounts</MenuItem>
+                          )}
+                        </Select>
+                      </FormControl>
+
+                      {/* pages */}
+                      <FormControl
+                        className="w-full mt-1 mb-5"
+                        variant="outlined"
+                      >
+                        <InputLabel
+                          id="page-label"
+                          sx={{
+                            color:
+                              currentMode === "dark"
+                                ? "#ffffff !important"
+                                : "#000000 !important",
+                          }}
+                        >
+                          Select Page
+                        </InputLabel>
+                        <Select
+                          id="pages"
+                          labelId="page-label"
+                          label="Select Page"
+                          size="medium"
+                          className="w-full mb-5"
+                          displayEmpty
+                          required
+                          value={selectedPage}
+                          onChange={handlePageSelect}
+                        >
+                          {pages?.length > 0 ? (
+                            pages?.map((page) => (
+                              <MenuItem value={page?.id}>{page?.name}</MenuItem>
+                            ))
+                          ) : (
+                            <MenuItem disabled>No Pages Found</MenuItem>
                           )}
                         </Select>
                       </FormControl>
