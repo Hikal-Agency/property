@@ -78,7 +78,7 @@ const Conversation = ({
               <strong>Conversations</strong>
             </p>
 
-            <div className="h-[88%] overflow-y-scroll">
+            <div className="h-[79%] overflow-y-scroll">
               {loadingConversations ? (
                 <div className="flex h-[80%] flex-col items-center justify-center">
                   <CircularProgress color="error" size={18} />

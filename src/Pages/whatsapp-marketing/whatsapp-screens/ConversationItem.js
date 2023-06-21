@@ -9,14 +9,26 @@ const ConversationItem = ({ phNo, name, setActiveChat, isActive, lastMsg }) => {
 
   useEffect(() => {
     if (lastMsg) {
-      const lastMsgFormattedBody =
-        lastMsg.body.length > 15
-          ? lastMsg.body.slice(0, 15) + "..."
-          : lastMsg.body;
       if (lastMsg.id.fromMe && lastMsg.to === phNo + "@c.us") {
-        setLastMessageText(`You: ${lastMsgFormattedBody}`);
+        if (lastMsg.type === "chat") {
+          const lastMsgFormattedBody =
+            lastMsg.body.length > 10
+              ? lastMsg.body.slice(0, 10) + "..."
+              : lastMsg.body;
+          setLastMessageText(`You: ${lastMsgFormattedBody}`);
+        } else if (lastMsg.type === "image") {
+          setLastMessageText(`You: 📷 Image`);
+        }
       } else {
-        setLastMessageText(`${lastMsgFormattedBody}`);
+        if (lastMsg.type === "chat") {
+          const lastMsgFormattedBody =
+            lastMsg.body.length > 15
+              ? lastMsg.body.slice(0, 15) + "..."
+              : lastMsg.body;
+          setLastMessageText(`${lastMsgFormattedBody}`);
+        } else if (lastMsg.type === "image") {
+          setLastMessageText(`📷 Image`);
+        }
       }
 
       const today = moment();
@@ -27,29 +39,23 @@ const ConversationItem = ({ phNo, name, setActiveChat, isActive, lastMsg }) => {
       const hours = Math.floor(duration.asHours());
       const days = Math.floor(duration.asDays());
       const weeks = Math.floor(duration.asWeeks());
-
-      if (weeks > 0) {
-        if (days > 0) {
+      const months = Math.floor(duration.asMonths());
+      if (lastMsg.type !== "e2e_notification") {
+        if (months > 0) {
+          setLastMessageTime(
+            new Date(lastMsg.timestamp * 1000).toLocaleDateString()
+          );
+        } else if (weeks > 0) {
           setLastMessageTime(`${weeks} w, ${days - weeks * 7} days ago`);
-        } else {
-          setLastMessageTime(`${weeks} weeks ago`);
-        }
-      } else if (days > 0) {
-        if (hours > 0) {
+        } else if (days > 0) {
           setLastMessageTime(`${days} days, ${hours - days * 24} hrs ago`);
-        } else {
-          setLastMessageTime(`${days} days ago`);
-        }
-      } else if (hours > 0) {
-        if (minutes > 0) {
+        } else if (hours > 0) {
           setLastMessageTime(`${hours} hrs, ${minutes - hours * 60} mins ago`);
-        } else {
-          setLastMessageTime(`${hours} hrs ago`);
+        } else if (minutes > 0) {
+          setLastMessageTime(`${minutes} minutes ago`);
+        } else if (seconds > 0) {
+          setLastMessageTime("a few seconds ago");
         }
-      } else if (minutes > 0) {
-        setLastMessageTime(`${minutes} minutes ago`);
-      } else if (seconds > 0) {
-        setLastMessageTime("a few seconds ago");
       }
     }
   }, [lastMsg]);
