@@ -12,10 +12,13 @@ import { useStateContext } from "../../context/ContextProvider";
 import { FaFacebook } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import { useEffect } from "react";
+import axios from "axios";
 
 const FbIntegration = () => {
   const { currentMode, fbToken, setFBToken, darkModeColors } =
     useStateContext();
+  const [leadsLoading, setLeadsLoading] = useState(false);
+  const [leadsFetched, setLeadsFetched] = useState(false);
   const [loading, setLoading] = useState(false);
   const [btnVisible, setBtnVisible] = useState(true);
   const [userName, setUserName] = useState("");
@@ -24,29 +27,84 @@ const FbIntegration = () => {
   const [forms, setForms] = useState([]);
   const [pages, setPages] = useState([]);
   const [selectedPage, setSelectedPage] = useState("");
+  const [formResponses, setFormResponses] = useState([]);
 
   console.log("selected adaccount: ", selectedAccount);
   console.log("form data: ", forms);
   console.log("selected page: ", selectedPage);
   console.log("pages data: ", pages);
-
-  // useEffect(() => {
-  //   if (selectedAccount) {
-  //     window.FB.api(`/${selectedAccount}/leadgen_forms`, "GET", (resp) => {
-  //       console.log("getForms: ", resp);
-  //       setForms(resp.data);
-  //     });
-  //   }
-  // }, [selectedAccount]);
-
+  console.log("pages data: ", pages);
+  console.log("formreponse: ", formResponses);
   useEffect(() => {
     if (selectedPage) {
+      setLeadsLoading(true);
+      setLeadsFetched(false);
       window.FB.api(
         `/${selectedPage.id}/leadgen_forms`,
         { access_token: selectedPage.access_token },
         "GET",
-        (resp) => {
+        async (resp) => {
           setForms(resp.data);
+
+          // Fetch data for each form
+          const responses = await Promise.all(
+            resp?.data?.map((form) => {
+              return new Promise((resolve, reject) => {
+                window.FB.api(
+                  `/${form.id}/leads`,
+                  { access_token: selectedPage.access_token },
+                  "GET",
+                  (response) => {
+                    if (!response || response.error) {
+                      console.error(
+                        `Error fetching data for form ${form.id}:`,
+                        response.error
+                      );
+
+                      reject(response.error);
+                    } else {
+                      resolve(response);
+                    }
+                  }
+                );
+              }).catch((error) => {
+                console.error(
+                  `Error fetching data for form ${form.id}:`,
+                  error
+                );
+
+                toast.error("Error in fetching Form Data", {
+                  position: "top-right",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+              });
+            })
+          );
+
+          // Store the responses in state
+          setFormResponses(responses);
+
+          setLeadsLoading(false);
+          setLeadsFetched(true);
+          toast.success(
+            "Leads fetched successfully. Please visit the Unassigned page.",
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
         }
       );
     }
@@ -59,6 +117,38 @@ const FbIntegration = () => {
   const handlePageSelect = (event) => {
     const page = pages.find((page) => page.id === event.target.value);
     setSelectedPage(page);
+  };
+
+  // logout
+  const handleLogout = () => {
+    // Reset state variables
+    setBtnVisible(true);
+    setUserName("");
+    setAdAccounts([]);
+    setSelectedAccount("");
+    setForms([]);
+    setPages([]);
+    setSelectedPage("");
+    setFormResponses([]);
+
+    // Remove token from localStorage
+    localStorage.removeItem("fb_token");
+
+    // FB logout process
+    window.FB.logout(function (response) {
+      console.log("User logged out.", response);
+    });
+
+    toast.success("You have logged out successfully.", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   const initiateFBLogin = () => {
@@ -85,9 +175,9 @@ const FbIntegration = () => {
           });
 
           // Fetch user ad accounts
-          window.FB.api("/me/adaccounts?fields=id,name", "GET", (resp) => {
-            setAdAccounts(resp.data);
-          });
+          // window.FB.api("/me/adaccounts?fields=id,name", "GET", (resp) => {
+          //   setAdAccounts(resp.data);
+          // });
 
           // Fetch user pages
           window.FB.api("/me/accounts", "GET", (resp) => {
@@ -133,11 +223,23 @@ const FbIntegration = () => {
         if (response.status !== "connected") {
           // Token has expired, refresh it
           initiateFBLogin();
+          setBtnVisible(true);
+        } else {
+          setBtnVisible(false);
         }
       });
     };
     checkTokenExpiry();
   }, []);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("fb_token");
+  //   if (token) {
+  //     setFBToken(token);
+  //     initiateFBLogin();
+  //     setBtnVisible(false);
+  //   }
+  // }, []);
   return (
     <>
       <ToastContainer />{" "}
@@ -202,7 +304,7 @@ const FbIntegration = () => {
                     <hr className="mb-3" style={{ color: "red" }}></hr>
 
                     <Box sx={darkModeColors}>
-                      <FormControl
+                      {/* <FormControl
                         className="w-full mt-1 mb-5"
                         variant="outlined"
                       >
@@ -238,7 +340,7 @@ const FbIntegration = () => {
                             <MenuItem disabled>Not Ad Accounts</MenuItem>
                           )}
                         </Select>
-                      </FormControl>
+                      </FormControl> */}
 
                       {/* pages */}
                       <FormControl
@@ -264,7 +366,7 @@ const FbIntegration = () => {
                           className="w-full mb-5"
                           displayEmpty
                           required
-                          value={selectedPage}
+                          value={selectedPage?.id}
                           onChange={handlePageSelect}
                         >
                           {pages?.length > 0 ? (
@@ -277,6 +379,48 @@ const FbIntegration = () => {
                         </Select>
                       </FormControl>
                     </Box>
+
+                    {leadsLoading && (
+                      <>
+                        {" "}
+                        <p
+                          className={`${
+                            currentMode === "dark" ? "#ffffff" : "#000000"
+                          }`}
+                        >
+                          We are fetching your leads...
+                        </p>
+                        <CircularProgress />
+                      </>
+                    )}
+                    {leadsFetched && formResponses.length === 0 && (
+                      <h3
+                        className={`${
+                          currentMode === "dark" ? "#ffffff" : "#000000"
+                        }`}
+                      >
+                        No leads found.
+                      </h3>
+                    )}
+
+                    <hr />
+                    <>
+                      <div
+                        className={`mt-2 bg-main-red-color text-white px-4 text-center sm:px-6 mb-3`}
+                      >
+                        <Button
+                          className={`min-w-fit mb-5 w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none text-white  bg-main-red-color`}
+                          ripple={true}
+                          size="lg"
+                          type="submit"
+                          disabled={loading ? true : false}
+                          onClick={handleLogout}
+                        >
+                          <span className="text-white">Logout</span>
+                        </Button>
+                      </div>
+                      <hr className="mb-3"></hr>
+                    </>
                   </>
                 )}
               </>

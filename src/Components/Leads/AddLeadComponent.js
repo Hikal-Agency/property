@@ -1,8 +1,9 @@
 import {
   MenuItem,
-  TextField, CircularProgress,
+  TextField,
+  CircularProgress,
   Box,
-  Typography
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -40,6 +41,7 @@ const AddLeadComponent = () => {
     Managers,
   } = useStateContext();
   console.log("Salesperson: ", SalesPerson);
+  console.log("MAnagers: ", Managers);
   const [Manager2, setManager2] = useState([]);
   // const [SalesPerson, setSalesPerson] = useState([]);
 
@@ -241,16 +243,16 @@ const AddLeadComponent = () => {
     } else if (User?.role === 7) {
       LeadData.append("assignedToManager", Number(User?.isParent));
       LeadData.append("assignedToSales", Number(User?.id));
-    } else if(User?.role === 2){
-        console.log("values::", Manager, SalesPerson2);
-      if(!Manager && !SalesPerson2) {
-      LeadData.append("assignedToManager", User?.id);
+    } else if (User?.role === 2) {
+      console.log("values::", Manager, SalesPerson2);
+      if (!Manager && !SalesPerson2) {
+        LeadData.append("assignedToManager", User?.id);
       } else {
-        if(Manager) {
-           LeadData.append("assignedToManager", Number(Manager));
+        if (Manager) {
+          LeadData.append("assignedToManager", Number(Manager));
         }
-        if(SalesPerson2) {
-           LeadData.append("assignedToSales", Number(SalesPerson2));
+        if (SalesPerson2) {
+          LeadData.append("assignedToSales", Number(SalesPerson2));
         }
       }
     }
@@ -557,7 +559,7 @@ const AddLeadComponent = () => {
                                   variant="outlined"
                                   size="medium"
                                   value={
-                                    Manager?.find(
+                                    Managers?.find(
                                       (person) => person?.id === User?.isParent
                                     )?.userName || "No manager"
                                   }
@@ -675,8 +677,8 @@ const AddLeadComponent = () => {
                               </MenuItem>
                               <MenuItem value={"Apartment"}>Apartment</MenuItem>
                               <MenuItem value={"Villa"}>Villa</MenuItem>
-                          <MenuItem value={"penthouse"}>Penthouse</MenuItem>
-                          <MenuItem value={"mansion"}>Mansion</MenuItem>
+                              <MenuItem value={"penthouse"}>Penthouse</MenuItem>
+                              <MenuItem value={"mansion"}>Mansion</MenuItem>
                               <MenuItem value={"Commercial"}>
                                 Commercial
                               </MenuItem>

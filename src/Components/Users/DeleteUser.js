@@ -117,7 +117,7 @@ const DeleteUser = ({ UserData, UserModelOpen, handleUserModelClose }) => {
               {deletebtnloading ? (
                 <CircularProgress size={18} sx={{ color: "blue" }} />
               ) : (
-                <span>Delete</span>
+                <span>Deactivate</span>
               )}
             </Button>
 

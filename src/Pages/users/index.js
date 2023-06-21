@@ -20,7 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import UserTable from "../../Components/Users/UserTable";
 import AddUserModel from "../../Components/addUser/AddUserModel";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaBan, FaEdit, FaTrash } from "react-icons/fa";
 import DeleteUser from "../../Components/Users/DeleteUser";
 
 const Users = () => {
@@ -355,17 +355,21 @@ const Users = () => {
       renderCell: (cellValues) => {
         return (
           <>
-            {cellValues?.formattedValue === 1 && (
+            {cellValues?.formattedValue === 1 ? (
               <div className="w-full h-full flex justify-center items-center text-[#0f9d58] px-5 text-xs font-semibold">
                 ACTIVE
               </div>
-            )}
-
-            {cellValues?.formattedValue === 0 && (
+            ) : (
               <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
                 DEACTIVE
               </div>
             )}
+            {/* 
+            {cellValues?.formattedValue === 0 && (
+              <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
+                DEACTIVE
+              </div>
+            )} */}
           </>
         );
       },
@@ -392,9 +396,9 @@ const Users = () => {
                   }`}
                 >
                   {currentMode === "dark" ? (
-                    <FaTrash style={{ color: "white" }} />
+                    <FaBan style={{ color: "white" }} />
                   ) : (
-                    <FaTrash style={{ color: "black" }} />
+                    <FaBan style={{ color: "black" }} />
                   )}
                 </Button>
                 {/* <Link

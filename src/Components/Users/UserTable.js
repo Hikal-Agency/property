@@ -6,7 +6,7 @@ import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { FaBan, FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import SingleUser from "./SingleUser";
 import DeleteUser from "./DeleteUser";
@@ -388,7 +388,7 @@ const UserTable = ({ user }) => {
                             className="text-red-500"
                             onClick={() => handleDelete(item?.id)}
                           >
-                            <FaTrash style={{ color: "red" }} />
+                            <FaBan style={{ color: "red" }} />
                           </Button>
                         </div>
                       </div>
