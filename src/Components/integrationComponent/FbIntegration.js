@@ -17,6 +17,8 @@ import axios from "axios";
 const FbIntegration = () => {
   const { currentMode, fbToken, setFBToken, darkModeColors } =
     useStateContext();
+  const [leadsLoading, setLeadsLoading] = useState(false);
+  const [leadsFetched, setLeadsFetched] = useState(false);
   const [loading, setLoading] = useState(false);
   const [btnVisible, setBtnVisible] = useState(true);
   const [userName, setUserName] = useState("");
@@ -33,9 +35,10 @@ const FbIntegration = () => {
   console.log("pages data: ", pages);
   console.log("pages data: ", pages);
   console.log("formreponse: ", formResponses);
-
   useEffect(() => {
     if (selectedPage) {
+      setLeadsLoading(true);
+      setLeadsFetched(false);
       window.FB.api(
         `/${selectedPage.id}/leadgen_forms`,
         { access_token: selectedPage.access_token },
@@ -44,28 +47,64 @@ const FbIntegration = () => {
           setForms(resp.data);
 
           // Fetch data for each form
-
           const responses = await Promise.all(
-            resp?.data?.map(async (form) => {
-              try {
-                const response = await axios.get(
-                  `https://facebookleadapi-36amsmgr3a-de.a.run.app/fetch_form_data/${form.id}`
+            resp?.data?.map((form) => {
+              return new Promise((resolve, reject) => {
+                window.FB.api(
+                  `/${form.id}/leads`,
+                  { access_token: selectedPage.access_token },
+                  "GET",
+                  (response) => {
+                    if (!response || response.error) {
+                      console.error(
+                        `Error fetching data for form ${form.id}:`,
+                        response.error
+                      );
+
+                      reject(response.error);
+                    } else {
+                      resolve(response);
+                    }
+                  }
                 );
-
-                console.log("form api reponse: ", response);
-
-                return response.data;
-              } catch (error) {
+              }).catch((error) => {
                 console.error(
                   `Error fetching data for form ${form.id}:`,
                   error
                 );
-              }
+
+                toast.error("Error in fetching Form Data", {
+                  position: "top-right",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+              });
             })
           );
 
           // Store the responses in state
           setFormResponses(responses);
+
+          setLeadsLoading(false);
+          setLeadsFetched(true);
+          toast.success(
+            "Leads fetched successfully. Please visit the Unassigned page.",
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
         }
       );
     }
@@ -189,6 +228,15 @@ const FbIntegration = () => {
     };
     checkTokenExpiry();
   }, []);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("fb_token");
+  //   if (token) {
+  //     setFBToken(token);
+  //     initiateFBLogin();
+  //     setBtnVisible(false);
+  //   }
+  // }, []);
   return (
     <>
       <ToastContainer />{" "}
@@ -253,7 +301,7 @@ const FbIntegration = () => {
                     <hr className="mb-3" style={{ color: "red" }}></hr>
 
                     <Box sx={darkModeColors}>
-                      <FormControl
+                      {/* <FormControl
                         className="w-full mt-1 mb-5"
                         variant="outlined"
                       >
@@ -289,7 +337,7 @@ const FbIntegration = () => {
                             <MenuItem disabled>Not Ad Accounts</MenuItem>
                           )}
                         </Select>
-                      </FormControl>
+                      </FormControl> */}
 
                       {/* pages */}
                       <FormControl
@@ -328,6 +376,29 @@ const FbIntegration = () => {
                         </Select>
                       </FormControl>
                     </Box>
+
+                    {leadsLoading && (
+                      <>
+                        {" "}
+                        <p
+                          className={`${
+                            currentMode === "dark" ? "#ffffff" : "#000000"
+                          }`}
+                        >
+                          We are fetching your leads...
+                        </p>
+                        <CircularProgress />
+                      </>
+                    )}
+                    {leadsFetched && formResponses.length === 0 && (
+                      <h3
+                        className={`${
+                          currentMode === "dark" ? "#ffffff" : "#000000"
+                        }`}
+                      >
+                        No leads found.
+                      </h3>
+                    )}
 
                     <hr />
                     <>
