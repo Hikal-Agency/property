@@ -151,7 +151,7 @@ const Conversation = ({
                   <CircularProgress color="error" size={18} />
                   <p className="mt-3">Loading the chat..</p>
                 </>
-              ) : chatLoading ? (
+              ) : chatMessages.length > 0 ? (
                 <div className="bg-gray-100 flex-1 flex flex-col items-center justify-center">
                   <div
                     ref={messagesContainerRef}
