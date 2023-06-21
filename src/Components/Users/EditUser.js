@@ -147,6 +147,7 @@ const EditUser = ({ user }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 md:grid-cols- sm:grid-cols-1 gap-5">
                     <div>
                       <Box sx={darkModeColors}>
+                      {User?.role === 1 &&
                         <TextField
                           id="master"
                           type={"password"}
@@ -173,6 +174,7 @@ const EditUser = ({ user }) => {
                           }
                           fullWidth
                         />
+                      }
 
                         <br />
 
@@ -204,6 +206,7 @@ const EditUser = ({ user }) => {
 
                         <br />
 
+                          {User?.role === 1 &&
                         <TextField
                           id="packageName"
                           type={"text"}
@@ -227,6 +230,7 @@ const EditUser = ({ user }) => {
                             })
                           }
                         />
+                          }
 
                         <InputLabel id="position">Position</InputLabel>
                         <Select
@@ -286,6 +290,7 @@ const EditUser = ({ user }) => {
                           </MenuItem>
                         </Select>
 
+                              {User?.role === 1 &&
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
                             label="Expiry Date"
@@ -350,6 +355,7 @@ const EditUser = ({ user }) => {
                             mask="__/__/____"
                           />
                         </LocalizationProvider>
+                              }
                       </Box>
                     </div>
                   </div>
