@@ -12,6 +12,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { FaFacebook } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import { useEffect } from "react";
+import axios from "axios";
 
 const FbIntegration = () => {
   const { currentMode, fbToken, setFBToken, darkModeColors } =
@@ -24,20 +25,14 @@ const FbIntegration = () => {
   const [forms, setForms] = useState([]);
   const [pages, setPages] = useState([]);
   const [selectedPage, setSelectedPage] = useState("");
+  const [formResponses, setFormResponses] = useState([]);
 
   console.log("selected adaccount: ", selectedAccount);
   console.log("form data: ", forms);
   console.log("selected page: ", selectedPage);
   console.log("pages data: ", pages);
-
-  // useEffect(() => {
-  //   if (selectedAccount) {
-  //     window.FB.api(`/${selectedAccount}/leadgen_forms`, "GET", (resp) => {
-  //       console.log("getForms: ", resp);
-  //       setForms(resp.data);
-  //     });
-  //   }
-  // }, [selectedAccount]);
+  console.log("pages data: ", pages);
+  console.log("formreponse: ", formResponses);
 
   useEffect(() => {
     if (selectedPage) {
@@ -45,8 +40,32 @@ const FbIntegration = () => {
         `/${selectedPage.id}/leadgen_forms`,
         { access_token: selectedPage.access_token },
         "GET",
-        (resp) => {
+        async (resp) => {
           setForms(resp.data);
+
+          // Fetch data for each form
+
+          const responses = await Promise.all(
+            resp?.data?.map(async (form) => {
+              try {
+                const response = await axios.get(
+                  `https://facebookleadapi-36amsmgr3a-de.a.run.app/fetch_form_data/${form.id}`
+                );
+
+                console.log("form api reponse: ", response);
+
+                return response.data;
+              } catch (error) {
+                console.error(
+                  `Error fetching data for form ${form.id}:`,
+                  error
+                );
+              }
+            })
+          );
+
+          // Store the responses in state
+          setFormResponses(responses);
         }
       );
     }
@@ -59,6 +78,38 @@ const FbIntegration = () => {
   const handlePageSelect = (event) => {
     const page = pages.find((page) => page.id === event.target.value);
     setSelectedPage(page);
+  };
+
+  // logout
+  const handleLogout = () => {
+    // Reset state variables
+    setBtnVisible(true);
+    setUserName("");
+    setAdAccounts([]);
+    setSelectedAccount("");
+    setForms([]);
+    setPages([]);
+    setSelectedPage("");
+    setFormResponses([]);
+
+    // Remove token from localStorage
+    localStorage.removeItem("fb_token");
+
+    // FB logout process
+    window.FB.logout(function (response) {
+      console.log("User logged out.", response);
+    });
+
+    toast.success("You have logged out successfully.", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   const initiateFBLogin = () => {
@@ -85,9 +136,9 @@ const FbIntegration = () => {
           });
 
           // Fetch user ad accounts
-          window.FB.api("/me/adaccounts?fields=id,name", "GET", (resp) => {
-            setAdAccounts(resp.data);
-          });
+          // window.FB.api("/me/adaccounts?fields=id,name", "GET", (resp) => {
+          //   setAdAccounts(resp.data);
+          // });
 
           // Fetch user pages
           window.FB.api("/me/accounts", "GET", (resp) => {
@@ -264,7 +315,7 @@ const FbIntegration = () => {
                           className="w-full mb-5"
                           displayEmpty
                           required
-                          value={selectedPage}
+                          value={selectedPage?.id}
                           onChange={handlePageSelect}
                         >
                           {pages?.length > 0 ? (
@@ -277,6 +328,25 @@ const FbIntegration = () => {
                         </Select>
                       </FormControl>
                     </Box>
+
+                    <hr />
+                    <>
+                      <div
+                        className={`mt-2 bg-main-red-color text-white px-4 text-center sm:px-6 mb-3`}
+                      >
+                        <Button
+                          className={`min-w-fit mb-5 w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none text-white  bg-main-red-color`}
+                          ripple={true}
+                          size="lg"
+                          type="submit"
+                          disabled={loading ? true : false}
+                          onClick={handleLogout}
+                        >
+                          <span className="text-white">Logout</span>
+                        </Button>
+                      </div>
+                      <hr className="mb-3"></hr>
+                    </>
                   </>
                 )}
               </>
