@@ -73,7 +73,7 @@ const RenderSalesperson = ({ cellValues }) => {
   };
   const UpdateSalesPerson = async () => {
     const managerId = cellValues?.row?.assignedToManager;
-
+    console.log("cellvalues in agents: ", cellValues);
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();

@@ -1163,6 +1163,7 @@ const BookedDeals = ({
           language: getLangCode(row?.language) || "No language",
           leadSource: row?.leadSource,
           lid: row?.lid,
+          leadId: row?.id,
           lastEdited: row?.lastEdited,
           //eslint-disable-next-line
           project: row?.project,
@@ -1582,7 +1583,7 @@ const BookedDeals = ({
             columns={
               User?.role === 3
                 ? managerColumns
-                : (User?.role === 1 || User?.role === 2)
+                : User?.role === 1 || User?.role === 2
                 ? columns
                 : AgentColumns
             }

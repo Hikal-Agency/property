@@ -64,8 +64,12 @@ const SingleUser = ({ UserModelOpen, handleUserModelClose, UserData }) => {
               } col-span-1 p-3 rounded-md w-full h-full`}
             >
               <div className="flex justify-center items-center m-2 mt-0">
-                {UserData?.displayImg ? (
-                  <img src={UserData?.displayImg} alt="profile" width={"60%"} />
+                {UserData?.profile_picture ? (
+                  <img
+                    src={UserData?.profile_picture}
+                    alt="profile"
+                    width={"60%"}
+                  />
                 ) : (
                   <img src="/favicon.png" alt="" width={"60%"} />
                 )}
