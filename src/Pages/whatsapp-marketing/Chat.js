@@ -262,15 +262,15 @@ const Chat = () => {
   }, [socket]);
 
   useEffect(() => {
-    if (User && ready) {
+    if (User && ready && phoneNumber) {
       console.log("Fetch Chats");
       fetchChatMessages(phoneNumber);
     }
-  }, [User, ready]);
+  }, [User, ready, phoneNumber]);
 
   useEffect(() => {
     const cb = () => {
-      if (User && ready) {
+      if (User && ready && phoneNumber) {
         fetchChatMessages(phoneNumber);
       }
     };
@@ -279,7 +279,7 @@ const Chat = () => {
     return () => {
       clearInterval(interval, cb);
     };
-  }, [User, ready]);
+  }, [User, ready, phoneNumber]);
 
   const handleCreateSession = (deviceName) => {
     if (deviceName) {
