@@ -147,12 +147,11 @@ const Conversation = ({
             )}
             <div className="flex-1 flex flex-col h-[88%]">
               {chatLoading ? (
-                <>
+                <div className="bg-gray-100 flex-1 flex flex-col items-center justify-center">
                   <CircularProgress color="error" size={18} />
                   <p className="mt-3">Loading the chat..</p>
-                </>
+                  </div>
               ) : chatMessages.length > 0 ? (
-                <div className="bg-gray-100 flex-1 flex flex-col items-center justify-center">
                   <div
                     ref={messagesContainerRef}
                     style={{
@@ -186,12 +185,11 @@ const Conversation = ({
                       }
                     })}
                   </div>
-                </div>
               ) : (
-                <>
+                <div className="bg-gray-100 flex-1 flex flex-col items-center justify-center">
                   <BsFillChatLeftDotsFill size={40} />
                   <p className="mt-3">Start the Conversation!</p>
-                </>
+                  </div>
               )}
               {activeChat.phoneNumber && (
                 <form
