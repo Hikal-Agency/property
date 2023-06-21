@@ -288,7 +288,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
                 />
               ) : (
                 <AiOutlineTable
-                size={2}
+                size={22}
                   style={{
                     color: currentMode === "dark" ? "#ffffff" : "#000000",
                   }}
