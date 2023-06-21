@@ -53,6 +53,8 @@ const Task = () => {
       if (Number(tabId) === 0) {
         url = `${BACKEND_URL}/callLogs/?%2F=&period=daily`;
       } else if (Number(tabId) === 1) {
+        url = `${BACKEND_URL}/callLogs/?%2F=&period=yesterday`;
+      } else if (Number(tabId) === 2) {
         url = `${BACKEND_URL}/callLogs/?%2F=&period=monthly`;
       } else {
         url = `${BACKEND_URL}/callLogs`;

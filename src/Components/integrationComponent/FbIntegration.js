@@ -223,6 +223,9 @@ const FbIntegration = () => {
         if (response.status !== "connected") {
           // Token has expired, refresh it
           initiateFBLogin();
+          setBtnVisible(true);
+        } else {
+          setBtnVisible(false);
         }
       });
     };
