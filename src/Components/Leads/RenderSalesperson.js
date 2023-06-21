@@ -134,7 +134,10 @@ const RenderSalesperson = ({ cellValues }) => {
         setNoAgents(false);
         setSalesPersonsList(agents);
       }
-    } else if ((!managerId || managerId === 102) && User?.role === 1) {
+    } else if (
+      (!managerId || managerId === 102) &&
+      (User?.role === 1 || User?.role === 2)
+    ) {
       if (managerId === 102) {
         console.log("102;;jklsd;fjl;;sd;fjklfjsd;fkljsd;fl");
       }
