@@ -49,8 +49,13 @@ const CombinationChart = () => {
 
         console.log("members_deal value: ", members_deal);
 
+        // Additional filter to remove members with zero total_meetings and total_sales
+        const filteredMembers = members_deal.filter(
+          (member) => member.total_meetings !== 0 || member.total_sales !== 0
+        );
+
         if (User?.role === 3) {
-          const filteredMembersDeal = members_deal.filter(
+          const filteredMembersDeal = filteredMembers.filter(
             (member) => member.role !== 3
           );
 
@@ -58,8 +63,10 @@ const CombinationChart = () => {
           setPerformanceChartData(filteredMembersDeal);
           return;
         }
-        setPerformanceChartData(members_deal);
+
+        setPerformanceChartData(filteredMembers);
       })
+
       .catch((err) => {
         console.log(err);
       });
@@ -147,7 +154,7 @@ const CombinationChart = () => {
               x: { ticks: { color: "#000000" } },
             },
             responsive: true,
-            width: "100%"
+            width: "100%",
           }}
           style={{
             height: "100%",
