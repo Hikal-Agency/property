@@ -299,13 +299,13 @@ const AllStatistics = ({ pageState, setpageState }) => {
 
   const FetchCampaignStats = async (campaignId) => {
     try {
-      const adsetsPromise = axios.get(
-        `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
-      );
+      // const adsetsPromise = axios.get(
+      //   `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
+      // );
 
-      const adsPromise = axios.get(
-        `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
-      );
+      // const adsPromise = axios.get(
+      //   `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
+      // );
 
       const insightsWithBreakdownsPromise = axios.get(
         `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&breakdowns=gender,age`
@@ -326,8 +326,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
         insightsWithDeviceBreakdownsResult,
         overallInsightsResult,
       ] = await Promise.all([
-        adsetsPromise,
-        adsPromise,
+        // adsetsPromise,
+        // adsPromise,
         insightsWithBreakdownsPromise,
         insightsWithDeviceBreakdownPromise,
         overallInsightsPromise,

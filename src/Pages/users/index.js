@@ -196,7 +196,7 @@ const Users = () => {
   const columns = [
     {
       field: "profile_picture",
-      headerName: "Image",
+      headerName: "User",
       headerAlign: "center",
       align: "center",
       editable: false,
