@@ -127,17 +127,14 @@ const RenderSalesperson = ({ cellValues }) => {
     const managerId = cellValues?.row?.assignedToManager;
     console.log("managerID: ", managerId);
     const agents = SalesPerson[`manager-${managerId}`];
-    if (managerId && managerId !== 102 && User?.role !== 2 && managerId !== User?.id) {
+    if (managerId && (managerId !== 102 && ((User?.role === 2 && managerId !== User?.id) || (User?.role !== 2 && true)))) {
       if (agents === undefined || agents.length === 0) {
         setNoAgents(true);
       } else {
         setNoAgents(false);
         setSalesPersonsList(agents);
       }
-    } else if (((!managerId || managerId === 102) && (User?.role === 1)) || ((!managerId || managerId === User?.id) && User?.role === 2)) {
-      if (managerId === 102) {
-        console.log("102;;jklsd;fjl;;sd;fjklfjsd;fkljsd;fl");
-      }
+    } else if ((((!managerId || managerId === 102) && User?.role === 1)) || ((!managerId || managerId === User?.id) && User?.role === 2)) {
       setNoAgents(false);
       const agents = Object.values(SalesPerson).flat();
       console.log("Agents extracted: ", agents);
