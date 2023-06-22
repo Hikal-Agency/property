@@ -40,7 +40,18 @@ const ShowLocation = ({ isModalOpened, handleModalClose, meetingLocation }) => {
           >
             Meeting Location
           </h1>
-          <LocationPicker showOnly={true} meetingLocation={meetingLocation} />
+          {meetingLocation && [
+            meetingLocation.lat && meetingLocation.lng ? (
+              <LocationPicker
+                showOnly={true}
+                meetingLocation={meetingLocation}
+              />
+            ) : (
+              <div className="mt-8 text-center text-[#da1f26]">
+                <p>Location for this meeting is not set</p>
+              </div>
+            ),
+          ]}
           <IconButton
             sx={{
               position: "absolute",
