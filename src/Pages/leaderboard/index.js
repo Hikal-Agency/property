@@ -84,7 +84,7 @@ const Leaderboard = () => {
                         <Tab label="Target" />
                       </Tabs>
                       <Link
-                        className="bg-main-red-color w-[250px] text-white rounded-lg pl-2 py-3 font-semibold mb-3 flex items-center justify-center space-x-2"
+                        className="bg-main-red-color w-[250px] text-white rounded-lg pl-2 py-3 font-semibold  flex items-center justify-center space-x-2"
                         style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
                         to="http://localhost:3000/callLogs"
                         target="_blank"

@@ -53,7 +53,7 @@ import { useStateContext } from "../../../context/ContextProvider";
 // };
 
 const DoughnutChart = ({ doughnutChart }) => {
-  console.log("dougnut: ", doughnutChart);
+  console.log("dougnut Devcies: ", doughnutChart);
   const { currentMode } = useStateContext();
 
   const doughnutChartData = {
