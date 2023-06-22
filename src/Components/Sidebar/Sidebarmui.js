@@ -310,16 +310,6 @@ const Sidebarmui = () => {
           link: "/reshuffleleads",
         },
         {
-          name: "Booked deals",
-          icon: <ImBookmark />,
-          link: "/booked",
-        },
-        {
-          name: "Closed deals",
-          icon: <ImLock />,
-          link: "/closedeals",
-        },
-        {
           name: "Archived Leads",
           icon: <FaArchive />,
           submenu: [
@@ -369,6 +359,21 @@ const Sidebarmui = () => {
           name: "Notes",
           icon: <MdSpeakerNotes />,
           link: "/leadnotes",
+        },
+      ],
+    },
+        {
+      title: "Deals",
+      links: [
+        {
+          name: "Booked deals",
+          icon: <ImBookmark />,
+          link: "/booked",
+        },
+        {
+          name: "Closed deals",
+          icon: <ImLock />,
+          link: "/closedeals",
         },
       ],
     },
