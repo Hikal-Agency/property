@@ -82,7 +82,7 @@ const CallLogsNoHeadFoot = () => {
   }, [tabValue]);
 
   return (
-    <div style={{ height: "96vh" }}>
+    <div style={{ height: "96vh" }} className="overflow-hidden">
       <div>
         <div
           className="flex justify-between items-center p-2 relative w-full"
@@ -174,7 +174,7 @@ const CallLogsNoHeadFoot = () => {
                               <div className="block gap-3 mt-2">
                                 <div>
                                   <h1 className="text-sm">
-                                    Dialed&nbsp;
+                                    DIALED&nbsp;
                                     <span className="font-semibold text-main-red-color float-right">
                                       {call?.dialed || 0}
                                     </span>
@@ -291,7 +291,7 @@ const CallLogsNoHeadFoot = () => {
                               <div className="block gap-3 mt-2">
                                 <div>
                                   <h1 className="text-sm">
-                                    Dialed&nbsp;
+                                    DIALED&nbsp;
                                     <span className="font-semibold text-main-red-color float-right">
                                       {call?.dialed || 0}
                                     </span>
@@ -408,7 +408,7 @@ const CallLogsNoHeadFoot = () => {
                               <div className="block gap-3 mt-2">
                                 <div>
                                   <h1 className="text-sm">
-                                    Dialed&nbsp;
+                                    DIALED&nbsp;
                                     <span className="font-semibold text-main-red-color float-right">
                                       {call?.dialed || 0}
                                     </span>
