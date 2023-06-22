@@ -127,7 +127,7 @@ const RenderSalesperson = ({ cellValues }) => {
     const managerId = cellValues?.row?.assignedToManager;
     console.log("managerID: ", managerId);
     const agents = SalesPerson[`manager-${managerId}`];
-    if (managerId && (managerId !== 102 && ((User?.role === 2 && managerId !== User?.id) || (User?.role !== 2 && true)))) {
+    if (managerId && ((((User?.role === 2 && (managerId !== User?.id && (managerId !== 102)))) || (User?.role !== 2 &&( managerId !== 102 && (managerId !== 358)))))) {
       if (agents === undefined || agents.length === 0) {
         setNoAgents(true);
       } else {
