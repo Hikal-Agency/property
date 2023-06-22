@@ -858,16 +858,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         return (
           <div style={{ fontSize: 10 }}>
             {cellValues.formattedValue === "Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md available">
+              <div className="w-24 h-full flex justify-center items-center text-white text-center font-semibold">
+                <badge className=" p-1 rounded-md w-24 text-center">
                   OTP VERIFIED
                 </badge>
               </div>
             )}
 
             {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className="bg-[#ff0000] p-1 rounded-md available">
+              <div className="w-24 h-full flex justify-center items-center text-white text-center font-semibold">
+                <badge className=" p-1 rounded-md w-24 text-center">
                   NOT VERIFIED
                 </badge>
               </div>
@@ -875,8 +875,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
             {cellValues.formattedValue !== "Not Verified" &&
               cellValues.formattedValue !== "Verified" && (
-                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <badge className=" p-1 rounded-md">
+                <div className="w-24 h-full flex justify-center items-center text-white text-center font-semibold">
+                  <badge className=" p-1 rounded-md w-24 text-center">
                     {cellValues.formattedValue}
                   </badge>
                 </div>
@@ -1880,7 +1880,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 setpageState((old) => ({ ...old, pageSize: newPageSize }))
               }
               columns={
-                (User?.role === 1 || User?.role === 2)
+                User?.role === 1 || User?.role === 2
                   ? CEOColumns
                   : User?.role === 3
                   ? ManagerColumns
