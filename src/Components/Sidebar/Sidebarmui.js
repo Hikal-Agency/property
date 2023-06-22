@@ -1976,12 +1976,15 @@ const Sidebarmui = () => {
       if (token) {
         FetchProfile(token);
       } else {
-        navigate("/", {
-          state: {
-            error: "Please login to proceed.",
-            continueURL: location.pathname,
-          },
-        });
+        if(document.location.pathname !== "/fresh-logs") {
+
+          navigate("/", {
+            state: {
+              error: "Please login to proceed.",
+              continueURL: location.pathname,
+            },
+          });
+        }
       }
     }
 
@@ -2015,12 +2018,14 @@ const Sidebarmui = () => {
         setUser(JSON.parse(user));
         setIsUserSubscribed(checkUser(JSON.parse(user)));
       } else {
+        if(document.location.pathname !== "/fresh-logs") {
         navigate("/", {
           state: {
             error: "Something Went Wrong! Please Try Again",
             continueURL: location.pathname,
           },
         });
+      }
       }
     }
     // eslint-disable-next-line

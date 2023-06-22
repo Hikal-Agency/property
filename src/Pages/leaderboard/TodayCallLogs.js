@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { socket } from "../App";
+import {BsArrowsFullscreen} from "react-icons/bs";
 import Loader from "../../Components/Loader";
+import { IconButton } from "@mui/material";
 
 const TodayCallLogs = () => {
   const [noData, setNoData] = useState(false);
   const [callLogs, setCallLogs] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { currentMode, User } = useStateContext();
 
   useEffect(() => {
@@ -24,6 +26,20 @@ const TodayCallLogs = () => {
       });
     }
   }, [User, socket]);
+
+  function requestFullScreen(element) {
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+
+    if (requestMethod) { // Native full screen.
+        requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+        var wscript = new window.ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
+    }
+}
+
   return (
     <div style={{ height: "96vh" }}>
          <div>
@@ -44,10 +60,16 @@ const TodayCallLogs = () => {
           <div className="flex items-center">
             <div className="flex items-center rounded-lg pl-1 cursor-pointer">
               <a href="/dashboard">
-                <img src="./favicon.png" className="w-10 h-10" alt=""/>
+                  <img
+                    className="w-[70px]"
+                    src="/assets/blackLogo.png"
+                    alt=""
+                  />
               </a>
             </div>
           </div>
+
+          <IconButton onClick={() => requestFullScreen(document.body)}><BsArrowsFullscreen size={18}/></IconButton>
 
          
         </div>
