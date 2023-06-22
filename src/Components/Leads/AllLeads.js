@@ -859,26 +859,26 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <div style={{ fontSize: 10 }}>
             {cellValues.formattedValue === "Verified" && (
               <div className="w-24 h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md w-24 text-center">
+                <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
                   OTP VERIFIED
-                </badge>
+                </span>
               </div>
             )}
 
             {cellValues.formattedValue === "Not Verified" && (
               <div className="w-24 h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className="bg-[#DA1F26]  p-1 rounded-md w-24 text-center">
+                <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
                   NOT VERIFIED
-                </badge>
+                </span>
               </div>
             )}
 
             {cellValues.formattedValue !== "Not Verified" &&
               cellValues.formattedValue !== "Verified" && (
                 <div className="w-24 h-full flex justify-center items-center text-white text-center font-semibold">
-                  <badge className=" p-1 rounded-md w-24 text-center">
+                  <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
                     {cellValues.formattedValue}
-                  </badge>
+                  </span>
                 </div>
               )}
           </div>
