@@ -185,7 +185,7 @@ const CallLogsNoHeadFoot = () => {
                               <div className="block gap-3 mt-2">
                                 <div>
                                   <h1 className="text-sm">
-                                    Dialed&nbsp;
+                                    DIALED&nbsp;
                                     <span className="font-semibold text-main-red-color float-right">
                                       {call?.dialed || 0}
                                     </span>
@@ -302,7 +302,7 @@ const CallLogsNoHeadFoot = () => {
                               <div className="block gap-3 mt-2">
                                 <div>
                                   <h1 className="text-sm">
-                                    Dialed&nbsp;
+                                    DIALED&nbsp;
                                     <span className="font-semibold text-main-red-color float-right">
                                       {call?.dialed || 0}
                                     </span>
@@ -419,7 +419,7 @@ const CallLogsNoHeadFoot = () => {
                               <div className="block gap-3 mt-2">
                                 <div>
                                   <h1 className="text-sm">
-                                    Dialed&nbsp;
+                                    DIALED&nbsp;
                                     <span className="font-semibold text-main-red-color float-right">
                                       {call?.dialed || 0}
                                     </span>

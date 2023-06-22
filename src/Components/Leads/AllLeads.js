@@ -859,7 +859,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <div style={{ fontSize: 10 }}>
             {cellValues.formattedValue === "Verified" && (
               <div className="w-24 h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className=" p-1 rounded-md w-24 text-center">
+                <badge className="bg-[#0f9d58] p-1 rounded-md w-24 text-center">
                   OTP VERIFIED
                 </badge>
               </div>
@@ -867,7 +867,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
             {cellValues.formattedValue === "Not Verified" && (
               <div className="w-24 h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className=" p-1 rounded-md w-24 text-center">
+                <badge className="bg-[#DA1F26]  p-1 rounded-md w-24 text-center">
                   NOT VERIFIED
                 </badge>
               </div>
