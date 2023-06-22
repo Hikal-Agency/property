@@ -93,7 +93,7 @@ const CallLogsNoHeadFoot = () => {
   // }, [tabValue]);
 
   return (
-    <div style={{ height: "96vh" }}>
+    <div style={{ height: "96vh" }} className="overflow-hidden">
       <div>
         <div
           className="flex justify-between items-center p-2 relative w-full"
