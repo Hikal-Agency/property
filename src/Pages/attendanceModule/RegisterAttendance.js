@@ -1,5 +1,13 @@
 import React from "react";
-import { Box, Tab, Tabs } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Tab,
+  Tabs,
+} from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import axios from "axios";
@@ -35,9 +43,9 @@ const RegisterAttendance = () => {
       if (token) {
         // FetchProfile(token);
       } else {
-        navigate("/", {
+        navigate("/attendanceLogin", {
           state: {
-            error: "Please login to proceed.",
+            error: "Please login to register attendance.",
             continueURL: location.pathname,
           },
         });
@@ -86,6 +94,46 @@ const RegisterAttendance = () => {
       <ToastContainer />
       <div style={{ display: "block" }} className="pt-20 px-5 overflow-hidden">
         {" "}
+        <div className="pt-5 space-y-6">
+          <FormControl className="w-full mt-1 mb-5" variant="outlined" required>
+            <InputLabel
+              id="check"
+              sx={{
+                color:
+                  currentMode === "dark"
+                    ? "#ffffff !important"
+                    : "#000000 !important",
+              }}
+            >
+              Check
+            </InputLabel>
+            <Select
+              id="check"
+              //   value={UserRole}
+              label="User Role"
+              //   onChange={ChangeUserRole}
+              size="medium"
+              className="w-full"
+              displayEmpty
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not(.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem value="" disabled>
+                Check
+              </MenuItem>
+
+              <MenuItem value={"checkin"}>Check In</MenuItem>
+              <MenuItem value={"agent"}>Check Out</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
       </div>
     </div>
   );
