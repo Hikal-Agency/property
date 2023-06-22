@@ -22,13 +22,14 @@ import {
 } from "@mui/x-data-grid";
 import GridMeeting from "../../Components/meetings/GridMeeting";
 import UpdateMeeting from "../../Components/meetings/UpdateMeeting";
+import ShowLocation from "../../Components/meetings/ShowLocation";
 
 const Meetings = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, BACKEND_URL,User, darkModeColors } =
+  const { currentMode, setopenBackDrop, BACKEND_URL, User, darkModeColors } =
     useStateContext();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [locationModalOpen, setLocationModalOpen] = useState(false);
+  const [meetingLocation, setMeetingLocation] = useState(null);
   const [openEditModal, setOpenEditModal] = useState({
     open: false,
     id: null,
@@ -61,6 +62,36 @@ const Meetings = () => {
     });
   };
 
+  const handleRowClick = (params, event) => {
+    if (!event.target.closest(".deleteLeadBtn button")) {
+      setLocationModalOpen(true);
+      const { mLat, mLong } = params.row;
+      if (!mLat || !mLong) {
+        setMeetingLocation({
+          lat: "",
+          lng: "",
+          addressText: "",
+        });
+      } else {
+        const geocoder = new window.google.maps.Geocoder();
+        geocoder.geocode(
+          { location: { lat: Number(mLat), lng: Number(mLong) } },
+          (results, status) => {
+            if (status === "OK") {
+              setMeetingLocation({
+                lat: Number(mLat),
+                lng: Number(mLong),
+                addressText: results[0].formatted_address,
+              });
+            } else {
+              console.log("Getting address failed due to: " + status);
+            }
+          }
+        );
+      }
+    }
+  };
+
   const handleMeetingModalClose = () => {
     setOpenEditModal({
       open: false,
@@ -75,7 +106,7 @@ const Meetings = () => {
     pageSize: 15,
   });
 
- const columns = [
+  const columns = [
     {
       field: "leadName",
       headerName: "Lead name",
@@ -166,7 +197,7 @@ const Meetings = () => {
     {
       field: "edit",
       headerName: "Actions",
-    headerAlign: "center",
+      headerAlign: "center",
       minWidth: "110",
       flex: 1,
       renderCell: (cellValues) => {
@@ -227,6 +258,9 @@ const Meetings = () => {
           meetingBy: row?.userName,
           meetingTime: row?.meetingTime,
           meetingStatus: row?.meetingStatus,
+          mLat: row?.mLat,
+          mLong: row?.mLong,
+          meetingLocation: row?.meetingLocation,
         }));
 
         setpageState((old) => ({
@@ -266,8 +300,8 @@ const Meetings = () => {
     },
 
     "& .MuiDataGrid-cell[data-field='meetingTime']": {
-      display: "flex", 
-      justifyContent: "center"
+      display: "flex",
+      justifyContent: "center",
     },
     "& .MuiInputBase-root": {
       color: "white",
@@ -407,7 +441,7 @@ const Meetings = () => {
                         icon={
                           value === 0 ? (
                             <AiOutlineAppstore
-                            size={22}
+                              size={22}
                               style={{
                                 color:
                                   currentMode === "dark"
@@ -417,7 +451,7 @@ const Meetings = () => {
                             />
                           ) : (
                             <AiOutlineTable
-                            size={22}
+                              size={22}
                               style={{
                                 color:
                                   currentMode === "dark"
@@ -443,13 +477,18 @@ const Meetings = () => {
                     />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
+                    <Box
+                      width={"100%"}
+                      className={`${currentMode}-mode-datatable`}
+                      sx={DataGridStyles}
+                    >
                       <DataGrid
                         autoHeight
                         rows={pageState.data}
                         rowCount={pageState.total}
                         loading={pageState.isLoading}
                         rowsPerPageOptions={[30, 50, 75, 100]}
+                        onRowClick={handleRowClick}
                         pagination
                         paginationMode="server"
                         page={pageState.page - 1}
@@ -474,8 +513,12 @@ const Meetings = () => {
                         componentsProps={{
                           toolbar: {
                             showQuickFilter: true,
-                                              printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+                            printOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
+                            csvOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
                             value: searchText,
                             onChange: HandleQuicSearch,
                           },
@@ -513,6 +556,18 @@ const Meetings = () => {
             </div>
             {/* <Footer /> */}
           </div>
+        )}
+        {meetingLocation !== null && locationModalOpen ? (
+          <ShowLocation
+            isModalOpened={locationModalOpen}
+            meetingLocation={meetingLocation}
+            handleModalClose={() => {
+              setLocationModalOpen(false);
+              setMeetingLocation(null);
+            }}
+          />
+        ) : (
+          <></>
         )}
       </div>
     </>
