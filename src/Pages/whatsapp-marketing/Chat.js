@@ -161,6 +161,8 @@ const Chat = () => {
 
       setReady(false);
       setloading(false);
+      setChatLoading(false);
+      setServerDisconnected(false);
       setQr(null);
     }
   };

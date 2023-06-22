@@ -63,6 +63,7 @@ import AllWarmLeads from "./warmleads";
 import SingleEmployee from "../Components/attendance/SingleEmployee";
 import CallLogsNoHeadFoot from "./leaderboard/callLogsNoHeadFoot";
 import Integrations from "./integrations";
+import TodayCallLogs from "./leaderboard/TodayCallLogs";
 
 const libraries = ["places"];
 
@@ -71,6 +72,11 @@ const routes = [
     path: "/callLogs",
     element: <CallLogsNoHeadFoot />,
     pageName: "Call logs No Head Foot",
+  },
+  {
+    path: "/fresh-logs",
+    element: <TodayCallLogs />,
+    pageName: "Fresh CallLogs",
   },
   {
     path: "/",
@@ -588,7 +594,8 @@ function App() {
     if (
       pathname === "/" ||
       pathname === "/auth/signup" ||
-      pathname === "/callLogs"
+      pathname === "/callLogs" ||
+      pathname === "/fresh-logs"
     ) {
       return false;
     } else {
