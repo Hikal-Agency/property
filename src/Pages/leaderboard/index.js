@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Button, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Footer from "../../Components/Footer/Footer";
@@ -9,6 +9,8 @@ import ClosedDealsBoard from "./closeddealsboard";
 import TargetBoard from "./targetboard";
 import Scoreboard from "./Scoredboard";
 import ClosedealsboardUpdated from "./closeddealsboardUpdated";
+import { Link } from "react-router-dom";
+import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 
 const Leaderboard = () => {
   const { currentMode, darkModeColors } = useStateContext();
@@ -53,12 +55,10 @@ const Leaderboard = () => {
               <div className="grid grid-cols-1 pb-3">
                 {/* <Task call_logs={DashboardData?.call_logs} /> */}
                 <div className={`p-5 rounded-md`}>
-                  {/* <hr className="w-[calc(100%+40px)] -ml-[20px] mt-2 mb-5" /> */}
                   <Box
                     sx={{
                       ...darkModeColors,
                       "& .MuiTabs-indicator": {
-                        // bottom: "7px",
                         height: "100%",
                         borderRadius: "5px",
                         backgroundColor: "#da1f26",
@@ -70,19 +70,30 @@ const Leaderboard = () => {
                     }}
                     className={`w-full rounded-md overflow-hidden ${
                       currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
-                    } `}
+                    }`}
                   >
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      variant="standard"
-                      className="w-full px-1 m-1"
-                    >
-                      <Tab label="Call Logs" />
-                      <Tab label="Closed Deals" />
-                      <Tab label="Target" />
-                      {/* <Tab label="Scoreboard" /> */}
-                    </Tabs>
+                    <div className="flex justify-between">
+                      <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        variant="standard"
+                        className="w-full px-1 m-1"
+                      >
+                        <Tab label="Call Logs" />
+                        <Tab label="Closed Deals" />
+                        <Tab label="Target" />
+                      </Tabs>
+                      <Link
+                        className="bg-main-red-color w-[250px] text-white rounded-lg pl-2 py-3 font-semibold  flex items-center justify-center space-x-2"
+                        style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+                        to="http://localhost:3000/callLogs"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span>Call Logs Full View</span>
+                        <BsFillArrowUpRightCircleFill />
+                      </Link>
+                    </div>
                   </Box>
                   <div className="mt-3 pb-3">
                     <TabPanel value={value} index={0}>
@@ -93,11 +104,6 @@ const Leaderboard = () => {
                       />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                      {/* <ClosedDealsBoard
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                      /> */}
                       <ClosedealsboardUpdated
                         isLoading={loading}
                         tabValue={tabValue}
