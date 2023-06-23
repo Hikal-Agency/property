@@ -2,6 +2,8 @@ import React from "react";
 import {
   Avatar,
   Box,
+  Button,
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -19,6 +21,7 @@ import Navbar from "../../Components/Navbar/Navbar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { db } from "../../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import LiveDateTimeComponent from "./LiveDateTimeComponent";
 import { RiRadioButtonLine } from "react-icons/ri";
 
@@ -64,6 +67,10 @@ const RegisterAttendance = () => {
 
     checkConnection();
   }, []);
+
+  const MarkAttendance = (e) => {
+    e.preventDefault();
+  };
 
   const FetchProfile = async (token) => {
     const storedUser = localStorage.getItem("user");
@@ -276,23 +283,43 @@ const RegisterAttendance = () => {
           ></hr>
 
           {check === "in" ? (
-            <>
-              <h6
-                className="mb-3 bg-[#008000] text-white p-2 rounded-md"
-                style={{ textTransform: "capitalize", cursor: "pointer" }}
-              >
-                Check In
-              </h6>
-            </>
+            <button
+              onClick={MarkAttendance}
+              className={`mb-3 bg-[#008000] text-white p-2 rounded-md w-full text-center ${
+                loading ? "relative" : ""
+              }`}
+              style={{ textTransform: "capitalize", cursor: "pointer" }}
+              disabled={loading}
+            >
+              {loading ? (
+                <CircularProgress
+                  className="absolute inset-0 m-auto"
+                  size={24}
+                  color="inherit"
+                />
+              ) : (
+                "Check In"
+              )}
+            </button>
           ) : (
-            <>
-              <h6
-                className="mb-3 mt-2 bg-main-red-color text-white p-2 rounded-md"
-                style={{ textTransform: "capitalize", curson: "pointer" }}
-              >
-                Check Out
-              </h6>
-            </>
+            <button
+              onClick={MarkAttendance}
+              className={`mb-3 mt-2 bg-main-red-color text-white p-2 rounded-md w-full text-center ${
+                loading ? "relative" : ""
+              }`}
+              style={{ textTransform: "capitalize", cursor: "pointer" }}
+              disabled={loading}
+            >
+              {loading ? (
+                <CircularProgress
+                  className="absolute inset-0 m-auto"
+                  size={24}
+                  color="inherit"
+                />
+              ) : (
+                "Check Out"
+              )}
+            </button>
           )}
         </div>
       </div>
