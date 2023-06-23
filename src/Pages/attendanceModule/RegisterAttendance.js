@@ -20,7 +20,7 @@ import Loader from "../../Components/Loader";
 import Navbar from "../../Components/Navbar/Navbar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { db } from "../../firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDoc, getDocs } from "firebase/firestore";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import LiveDateTimeComponent from "./LiveDateTimeComponent";
 import { RiRadioButtonLine } from "react-icons/ri";
@@ -72,60 +72,48 @@ const RegisterAttendance = () => {
   //   checkConnection();
   // }, []);
 
-  // const MarkAttendance = async (status) => {
-  //   setLoading(true);
-  //   try {
-  //     const date = new Date();
-  //     const day = ("0" + date.getDate()).slice(-2);
-  //     const month = ("0" + (date.getMonth() + 1)).slice(-2);
-  //     const year = date.getFullYear();
+  const GetAttendanceStatus = async (status) => {
+    const date = new Date();
+    const day = ("0" + date.getDate()).slice(-2);
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const year = date.getFullYear();
 
-  //     const docRef = doc(
-  //       db,
-  //       "test_collection",
-  //       `${day}-${month}-${year}-${status.toUpperCase()}`
-  //     );
+    const docRef = doc(
+      db,
+      "attendance",
+      `${month}-${day}-${year}-${status.toUpperCase()}`
+    );
 
-  //     const data = {
-  //       id: User?.id,
-  //       userName: User?.userName,
-  //       check: status,
-  //       checkTime: attendanceTime,
-  //     };
+    const docSnap = await getDoc(docRef);
 
-  //     await setDoc(docRef, data);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      if (data[User?.id]) {
+        return true; // The user has already checked in or out
+      }
+    }
 
-  //     console.log("Document successfully written!");
-  //     toast.success(`Succefully Checked-${status}`, {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   } catch (error) {
-  //     console.error("Error writing document: ", error);
-  //     toast.false(`Unable to mark attendance. Kindly try again.`, {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+    return false; // The user hasn't checked in or out
+  };
 
   const MarkAttendance = async (status) => {
     setLoading(true);
     try {
+      const alreadyChecked = await GetAttendanceStatus(status);
+
+      if (alreadyChecked) {
+        toast.error(`You have already Checked-${status}.`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return;
+      }
       const date = new Date();
       const day = ("0" + date.getDate()).slice(-2);
       const month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -136,17 +124,14 @@ const RegisterAttendance = () => {
         "attendance",
         `${month}-${day}-${year}-${status.toUpperCase()}`
       );
-      // Create a new check-in object
+
       const checkInObj = {
         id: User?.id,
         checkTime: attendanceTime,
       };
+
       // Create or update the document
-      await setDoc(
-        docRef,
-        { [User?.id]: arrayUnion(checkInObj) }, // Add the new check-in to the 'checkIns' array field
-        { merge: true }
-      );
+      await setDoc(docRef, { [User?.id]: checkInObj }, { merge: true });
 
       console.log("Document successfully written!");
       toast.success(`Successfully Checked-${status}`, {
@@ -161,7 +146,7 @@ const RegisterAttendance = () => {
       });
     } catch (error) {
       console.error("Error writing document: ", error);
-      toast.false(`Unable to mark attendance. Kindly try again.`, {
+      toast.error(`Unable to mark attendance. Kindly try again.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
