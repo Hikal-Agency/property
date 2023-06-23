@@ -1723,12 +1723,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <>
       <ToastContainer />
       <div className="pb-10">
-        {lead_origin === "freshleads" && (
+        {/* {lead_origin === "freshleads" && (
           <Filters
           pageState={pageState}
           FetchLeads={FetchLeads}
           />
-        )}
+        )} */}
         <Box
           sx={{
             ...DataGridStyles,
