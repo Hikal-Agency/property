@@ -65,6 +65,7 @@ import CallLogsNoHeadFoot from "./leaderboard/callLogsNoHeadFoot";
 import Integrations from "./integrations";
 import RegisterAttendance from "./attendanceModule/RegisterAttendance";
 import TodayCallLogs from "./leaderboard/TodayCallLogs";
+import AttendanceLogin from "./auth/attendanceLogin";
 
 const libraries = ["places"];
 
@@ -83,6 +84,11 @@ const routes = [
     path: "/fresh-logs",
     element: <TodayCallLogs />,
     pageName: "Fresh CallLogs",
+  },
+  {
+    path: "/attendanceLogin",
+    element: <AttendanceLogin />,
+    pageName: "Attendance Login",
   },
   {
     path: "/",
@@ -602,7 +608,8 @@ function App() {
       pathname === "/auth/signup" ||
       pathname === "/callLogs" ||
       pathname === "/attendance" ||
-      pathname === "/fresh-logs"
+      pathname === "/fresh-logs" ||
+      pathname === "/attendanceLogin"
     ) {
       return false;
     } else {
