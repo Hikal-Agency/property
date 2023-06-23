@@ -201,7 +201,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           enquiryType: row?.enquiryType,
           leadType: row?.leadType,
           amount: row?.amount,
-           lid: row?.id,
+          lid: row?.id,
         }));
 
         setpageState((old) => ({
@@ -224,7 +224,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     FetchLeads(token);
 
     // eslint-disable-next-line
-  }, [pageState.page, , pageState.perpage]);
+  }, [pageState.page, pageState.perpage]);
 
   // ROW CLICK FUNCTION
   // const handleRowClick = async (params) => {
