@@ -47,23 +47,23 @@ const RegisterAttendance = () => {
 
   console.log("check,guid :::: ", check, guid);
 
-  // useEffect(() => {
-  //   const checkConnection = async () => {
-  //     try {
-  //       // const data = await db.collection("attendance").get();
-  //       const data = collection(db, "attendance");
-  //       const attendance = await getDocs(data);
-  //       console.log(
-  //         "Connected to Firestore successfully:",
-  //         attendance.docs.map((doc) => doc.data())
-  //       );
-  //     } catch (error) {
-  //       console.error("Failed to connect to Firestore:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const checkConnection = async () => {
+      try {
+        // const data = await db.collection("attendance").get();
+        const data = collection(db, "attendance");
+        const attendance = await getDocs(data);
+        console.log(
+          "Connected to Firestore successfully:",
+          attendance.docs.map((doc) => doc.data())
+        );
+      } catch (error) {
+        console.error("Failed to connect to Firestore:", error);
+      }
+    };
 
-  //   checkConnection();
-  // }, []);
+    checkConnection();
+  }, []);
 
   const FetchProfile = async (token) => {
     const storedUser = localStorage.getItem("user");

@@ -6,11 +6,10 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect } from "react";
 import Loader from "../../Components/Loader";
-import Navbar from "../../Components/Navbar/Navbar";
 import { Link } from "react-router-dom";
 
 const CallLogsNoHeadFoot = () => {
-  const { currentMode, BACKEND_URL, darkModeColors } = useStateContext();
+  const { currentMode, BACKEND_URL, User, darkModeColors } = useStateContext();
   const [tabValue, setTabValue] = useState(0);
   const [callLogs, setCallLogs] = useState();
   const [noData, setNoData] = useState(false);
@@ -22,7 +21,7 @@ const CallLogsNoHeadFoot = () => {
     setTabValue(newValue);
   };
 
-  const FetchCallLogs = async (token) => {
+  const FetchCallLogs = async (tabValue) => {
     setNoData(false);
     // setLoading(true);
     let period;
@@ -77,20 +76,10 @@ const CallLogsNoHeadFoot = () => {
     }
   };
 
-  useEffect(() => {
+    useEffect(() => {
     setLoading(true);
-    const token = localStorage.getItem("auth-token");
     FetchCallLogs();
   }, [tabValue]);
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const interval = setInterval(() => {
-  //     FetchCallLogs();
-  //   }, 10000);
-
-  //   return () => clearInterval(interval);
-  // }, [tabValue]);
 
   return (
     <div style={{ height: "96vh" }} className="overflow-hidden">
@@ -134,8 +123,8 @@ const CallLogsNoHeadFoot = () => {
         <Box sx={darkModeColors} className="font-semibold ">
           <Tabs value={tabValue} onChange={handleChange} variant="standard">
             <Tab label="Today" />
-            <Tab label="Yesterday" />
-            <Tab label="This month" />
+            <Tab onClick={() => FetchCallLogs(1)} label="Yesterday" />
+            <Tab onClick={() => FetchCallLogs(2)} label="This month" />
             {/* <Tab label="LAST MONTH" /> */}
           </Tabs>
         </Box>

@@ -38,7 +38,7 @@ const CreateAppointment = () => {
                     Create Appointment
                   </h1>
                     {/* <GoogleCalendarAppointment/> */}
-                    <Box className="h-[60vh] flex items-center justify-center"><img src="/assets/coming-soon.png" width={"200px"} alt=""/></Box>
+                    <Box className="h-[60vh] flex items-center justify-center"><img src="/coming-soon.png" width={"200px"} alt=""/></Box>
                 </div>
               </div>
             </div>
