@@ -983,7 +983,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   const [CEOColumns, setCEOColumns] = useState(columns);
 
-  const FetchLeads = async (token) => {
+  const FetchLeads = async (
+    token, 
+    projectName,
+    source,
+    enquiryType,
+    assignedManager,
+    assignedAgent
+    ) => {
     console.log("lead type is");
     console.log(lead_type);
     console.log("lead origin is");
@@ -1132,6 +1139,26 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
     console.log("fetch lead url is");
     console.log(FetchLeads_url, lead_type);
+
+    if (projectName) {
+      FetchLeads_url += `&project=${projectName}`;
+    }
+
+    if (enquiryType) {
+      FetchLeads_url += `&enquiryType=${enquiryType}`;
+    }
+
+    if (source) {
+      FetchLeads_url += `&leadSource=${source}`;
+    }
+
+    if (assignedManager) {
+      FetchLeads_url += `&managerAssigned=${assignedManager}`;
+    }
+
+    if (assignedAgent) {
+      FetchLeads_url += `&agentAssigned=${assignedAgent}`;
+    }
 
     axios
       .get(FetchLeads_url, {
