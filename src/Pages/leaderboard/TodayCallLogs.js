@@ -15,6 +15,8 @@ const TodayCallLogs = () => {
         if (data) {
             console.log(data);
           if (data.length > 0) {
+            setNoData(false);
+            setLoading(false);
             setCallLogs(data);
           } else {
             setNoData(true);
@@ -65,7 +67,7 @@ const TodayCallLogs = () => {
           </div>
           <div>
             <h1
-              style={{fontSize: 28}}
+              style={{fontSize: 24}}
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-[#da1f26]"
                 } font-bold`}
@@ -96,7 +98,7 @@ const TodayCallLogs = () => {
             </h1>
           </div> */}
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3 ">
+            <div style={{fontSize: "110%"}} className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3 ">
               {noData === false &&
                 callLogs?.length > 0 &&
                 callLogs?.map((call, index) => {
@@ -109,7 +111,7 @@ const TodayCallLogs = () => {
                       } p-3 rounded-md`}
                     >
                       <div className="grid gap-3 rounded-md px-2 mb-2">
-                        <h5 className="font-bold text-main-red-color col-span-5">
+                        <h5 className="font-bold text-lg text-main-red-color col-span-5">
                           {call?.userName}
                         </h5>
                       </div>
@@ -121,21 +123,21 @@ const TodayCallLogs = () => {
                               : "bg-white text-black"
                           } rounded-md p-2`}
                         >
-                          <h6 className="mb-1 text-center text-xs font-semibold">
+                          <h6 className="mb-1 text-center text-md font-semibold">
                             Outgoing
                           </h6>
                           <hr></hr>
                           <div className="block gap-3 mt-2">
                             <div>
-                              <h1 className="text-sm">
-                                Dialed&nbsp;
+                              <h1 className="text-lg">
+                                DIALED&nbsp;
                                 <span className="font-semibold float-right" style={{color: "#000000"}}>
-                                  {call?.dialed || 0}
+                                  {call?.DIALED || 0}
                                 </span>
                               </h1>
                             </div>
                             <div>
-                              <h1 className="text-sm">
+                              <h1 className="text-lg">
                                 ANSWERED&nbsp;
                                 <span className="font-semibold float-right" style={{color: "#00A67D"}}>
                                   {call?.answered || 0}
@@ -143,7 +145,7 @@ const TodayCallLogs = () => {
                               </h1>
                             </div>
                             <div>
-                              <h1 className="text-sm">
+                              <h1 className="text-lg">
                                 NOT ANSWERED&nbsp;
                                 <span className="font-semibold float-right" style={{color: "#DF2938"}}>
                                   {call?.notanswered || 0}
@@ -159,13 +161,13 @@ const TodayCallLogs = () => {
                               : "bg-white text-black"
                           } rounded-md p-2`}
                         >
-                          <h6 className="mb-1 text-center text-xs font-semibold">
+                          <h6 className="mb-1 text-center text-md font-semibold">
                             Incoming
                           </h6>
                           <hr></hr>
                           <div className="block gap-3 mt-2">
                             <div>
-                              <h1 className="text-sm">
+                              <h1 className="text-lg">
                                 RECEIVED&nbsp;
                                 <span className="font-semibold float-right" style={{color: "#00A67D"}}>
                                   {call.received || 0}
@@ -173,7 +175,7 @@ const TodayCallLogs = () => {
                               </h1>
                             </div>
                             <div>
-                              <h1 className="text-sm">
+                              <h1 className="text-lg">
                                 MISSED&nbsp;
                                 <span className="font-semibold float-right" style={{color: "#DF2938"}}>
                                   {call.missed || 0}
@@ -188,14 +190,7 @@ const TodayCallLogs = () => {
                 })}
             </div>
             {noData === true && (
-              <div className="flex flex-col items-center justify-center h-screen ">
-                <h1
-                  className={
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }
-                >
-                  No data available.
-                </h1>
+              <div className="flex flex-col items-center justify-center h-[80vh] ">
                 <img
                   src="./no_data.png"
                   alt="No data Illustration"
