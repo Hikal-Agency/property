@@ -126,6 +126,7 @@ const Navbar = () => {
     localStorage.removeItem("auth-token");
     localStorage.removeItem("user");
     localStorage.removeItem("leadsData");
+    localStorage.removeItem("fb_token");
     window.open("/", "_self");
   };
 
