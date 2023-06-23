@@ -21,9 +21,10 @@ import Navbar from "../../Components/Navbar/Navbar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { db } from "../../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import LiveDateTimeComponent from "./LiveDateTimeComponent";
 import { RiRadioButtonLine } from "react-icons/ri";
+import { arrayUnion } from "firebase/firestore";
 
 const RegisterAttendance = () => {
   const {
@@ -38,6 +39,7 @@ const RegisterAttendance = () => {
   const location = useLocation();
   console.log("USer: ", User);
   const [loading, setLoading] = useState(false);
+  const [attendanceTime, setAttendanceTime] = useState(null);
 
   function useQuery() {
     return new URLSearchParams(location.search);
@@ -50,26 +52,126 @@ const RegisterAttendance = () => {
 
   console.log("check,guid :::: ", check, guid);
 
-  useEffect(() => {
-    const checkConnection = async () => {
-      try {
-        // const data = await db.collection("attendance").get();
-        const data = collection(db, "attendance");
-        const attendance = await getDocs(data);
-        console.log(
-          "Connected to Firestore successfully:",
-          attendance.docs.map((doc) => doc.data())
-        );
-      } catch (error) {
-        console.error("Failed to connect to Firestore:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const checkConnection = async () => {
+  //     try {
+  //       // const data = await db.collection("attendance").get();
+  //       const data = collection(db, "attendance");
+  //       const attendance = await getDocs(data);
+  //       console.log(
+  //         "Connected to Firestore successfully:",
+  //         attendance.docs.map((doc) => doc.data())
+  //       );
+  //     } catch (error) {
+  //       console.error("Failed to connect to Firestore:", error);
+  //     }
+  //   };
 
-    checkConnection();
-  }, []);
+  //   checkConnection();
+  // }, []);
 
-  const MarkAttendance = (e) => {
-    e.preventDefault();
+  // const MarkAttendance = async (status) => {
+  //   setLoading(true);
+  //   try {
+  //     const date = new Date();
+  //     const day = ("0" + date.getDate()).slice(-2);
+  //     const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  //     const year = date.getFullYear();
+
+  //     const docRef = doc(
+  //       db,
+  //       "test_collection",
+  //       `${day}-${month}-${year}-${status.toUpperCase()}`
+  //     );
+
+  //     const data = {
+  //       id: User?.id,
+  //       userName: User?.userName,
+  //       check: status,
+  //       checkTime: attendanceTime,
+  //     };
+
+  //     await setDoc(docRef, data);
+
+  //     console.log("Document successfully written!");
+  //     toast.success(`Succefully Checked-${status}`, {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   } catch (error) {
+  //     console.error("Error writing document: ", error);
+  //     toast.false(`Unable to mark attendance. Kindly try again.`, {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const MarkAttendance = async (status) => {
+    setLoading(true);
+    try {
+      const date = new Date();
+      const day = ("0" + date.getDate()).slice(-2);
+      const month = ("0" + (date.getMonth() + 1)).slice(-2);
+      const year = date.getFullYear();
+
+      const docRef = doc(
+        db,
+        "attendance",
+        `${month}-${day}-${year}-${status.toUpperCase()}`
+      );
+      // Create a new check-in object
+      const checkInObj = {
+        id: User?.id,
+        checkTime: attendanceTime,
+      };
+      // Create or update the document
+      await setDoc(
+        docRef,
+        { [User?.id]: arrayUnion(checkInObj) }, // Add the new check-in to the 'checkIns' array field
+        { merge: true }
+      );
+
+      console.log("Document successfully written!");
+      toast.success(`Successfully Checked-${status}`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.error("Error writing document: ", error);
+      toast.false(`Unable to mark attendance. Kindly try again.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const FetchProfile = async (token) => {
@@ -182,154 +284,157 @@ const RegisterAttendance = () => {
   }, []);
 
   return (
-    <div style={{ height: "96vh" }} className="overflow-hidden">
-      <div>
-        <div
-          className="flex justify-between items-center p-2 relative w-full"
-          style={{
-            position: "fixed",
-            top: 0,
-            // left: 0,
-            right: 0,
-            zIndex: "20",
-            backgroundColor:
-              currentMode === "dark" ? "black" : "rgb(229 231 235)",
-            boxShadow:
-              currentMode !== "dark" ? "0 2px 4px rgba(0, 0, 0, 0.1)" : "none",
-          }}
-        >
-          <div className="flex items-center">
-            <div className="flex items-center rounded-lg pl-1 cursor-pointer">
-              <Link to="/dashboard">
-                <img src="./favicon.png" className="w-10 h-10" />
-              </Link>
+    <>
+      <ToastContainer />
+      <div style={{ height: "96vh" }} className="overflow-hidden">
+        <div>
+          <div
+            className="flex justify-between items-center p-2 relative w-full"
+            style={{
+              position: "fixed",
+              top: 0,
+              // left: 0,
+              right: 0,
+              zIndex: "20",
+              backgroundColor:
+                currentMode === "dark" ? "black" : "rgb(229 231 235)",
+              boxShadow:
+                currentMode !== "dark"
+                  ? "0 2px 4px rgba(0, 0, 0, 0.1)"
+                  : "none",
+            }}
+          >
+            <div className="flex items-center">
+              <div className="flex items-center rounded-lg pl-1 cursor-pointer">
+                <Link to="/dashboard">
+                  <img src="./favicon.png" className="w-10 h-10" />
+                </Link>
+              </div>
+            </div>
+
+            <div className="flex">
+              <h1
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                } font-bold`}
+              >
+                Register Attendance
+              </h1>
             </div>
           </div>
-
-          <div className="flex">
-            <h1
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-dark"
-              } font-bold`}
-            >
-              Register Attendance
-            </h1>
-          </div>
         </div>
-      </div>
-      <ToastContainer />
-      <div className="grid place-items-center h-screen ">
-        <div
-          className={`${
-            currentMode === "dark"
-              ? "bg-[#111827] text-white"
-              : "bg-[#E5E7EB] text-black"
-          } flex flex-col items-center p-5 rounded-md w-full sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4`}
-        >
-          <div className="w-24 h-24 mb-4">
-            {User?.profile_picture ? (
-              <img
-                src={User?.profile_picture}
-                className="rounded-md cursor-pointer object-cover w-full h-full"
-                alt=""
-              />
-            ) : (
-              <Avatar
-                alt="User"
-                variant="circular"
-                style={{ width: "96px", height: "96px" }}
-              />
-            )}
-          </div>
-          <hr
-            className={`mb-3 w-full ${
-              currentMode === "dark" ? "border-white" : "border-black"
-            }`}
-          ></hr>
-          <div className="flex items-center space-x-1 text-lg font-bold mb-3">
-            {check === "in" ? (
-              <>
-                <h2>In</h2>
-                <RiRadioButtonLine
-                  style={{ color: "green", fontSize: "20px" }}
-                />
-              </>
-            ) : (
-              <>
-                <h2>Out</h2>
-                <RiRadioButtonLine style={{ color: "red", fontSize: "20px" }} />
-              </>
-            )}
-          </div>
-          <h1
-            className="bg-main-red-color text-white font-semibold rounded-md p-2 mb-3"
-            style={{ textTransform: "capitalize" }}
+        <ToastContainer />
+        <div className="grid place-items-center h-screen ">
+          <div
+            className={`${
+              currentMode === "dark"
+                ? "bg-[#111827] text-white"
+                : "bg-[#E5E7EB] text-black"
+            } flex flex-col items-center p-5 rounded-md w-full sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4`}
           >
-            {User?.userName}
-          </h1>
-          {/* <h6 className="mb-3 p-2">desc</h6> */}
-          <hr
-            className={`mb-3 w-full ${
-              currentMode === "dark" ? "border-white" : "border-black"
-            }`}
-          ></hr>
-          <h1 className="font-semibold mb-3">
-            <LiveDateTimeComponent />
-          </h1>
-          <hr
-            className={`mb-3 w-full ${
-              currentMode === "dark" ? "border-white" : "border-black"
-            }`}
-          ></hr>
+            <div className={`w-24 h-24 mb-4  rounded-md`}>
+              {User?.profile_picture ? (
+                <img
+                  src={User?.profile_picture}
+                  className="rounded-md cursor-pointer object-cover w-full h-full border border-white "
+                  alt=""
+                />
+              ) : (
+                <Avatar
+                  alt="User"
+                  variant="circular"
+                  className="border border-black"
+                  style={{ width: "96px", height: "96px" }}
+                />
+              )}
+            </div>
+            {/* <hr
+              className={`mb-3 w-full ${
+                currentMode === "dark" ? "border-white" : "border-black"
+              }`}
+            ></hr> */}
+            <div className="flex items-center space-x-1 text-lg font-bold mb-3">
+              {check === "in" ? (
+                <>
+                  <h2>In</h2>
+                  <RiRadioButtonLine
+                    style={{ color: "green", fontSize: "20px" }}
+                  />
+                </>
+              ) : (
+                <>
+                  <h2>Out</h2>
+                  <RiRadioButtonLine
+                    style={{ color: "red", fontSize: "20px" }}
+                  />
+                </>
+              )}
+            </div>
+            <h1
+              className="bg-main-red-color text-white font-semibold rounded-md p-2 mb-3"
+              style={{ textTransform: "capitalize" }}
+            >
+              {User?.userName}
+            </h1>
+            {/* <h6 className="mb-3 p-2">desc</h6> */}
+            <hr
+              className={`mb-3 w-full ${
+                currentMode === "dark" ? "border-white" : "border-black"
+              }`}
+            ></hr>
+            <h1 className="font-semibold mb-3">
+              <LiveDateTimeComponent setAttendanceTime={setAttendanceTime} />
+            </h1>
+            <hr
+              className={`mb-3 w-full ${
+                currentMode === "dark" ? "border-white" : "border-black"
+              }`}
+            ></hr>
 
-          {check === "in" ? (
-            <button
-              onClick={MarkAttendance}
-              className={`mb-3 bg-[#008000] text-white p-2 rounded-md w-full text-center ${
-                loading ? "relative" : ""
-              }`}
-              style={{ textTransform: "capitalize", cursor: "pointer" }}
-              disabled={loading}
-            >
-              {loading ? (
-                <CircularProgress
-                  className="absolute inset-0 m-auto"
-                  size={24}
-                  color="inherit"
-                />
-              ) : (
-                "Check In"
-              )}
-            </button>
-          ) : (
-            <button
-              onClick={MarkAttendance}
-              className={`mb-3 mt-2 bg-main-red-color text-white p-2 rounded-md w-full text-center ${
-                loading ? "relative" : ""
-              }`}
-              style={{ textTransform: "capitalize", cursor: "pointer" }}
-              disabled={loading}
-            >
-              {loading ? (
-                <CircularProgress
-                  className="absolute inset-0 m-auto"
-                  size={24}
-                  color="inherit"
-                />
-              ) : (
-                "Check Out"
-              )}
-            </button>
-          )}
+            {check === "in" ? (
+              <button
+                onClick={() => MarkAttendance("in")}
+                className={`mb-3 bg-[#008000] text-white p-2 rounded-md w-full text-center ${
+                  loading ? "relative" : ""
+                }`}
+                style={{ textTransform: "capitalize", cursor: "pointer" }}
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularProgress
+                    className="absolute inset-0 m-auto"
+                    size={24}
+                    color="inherit"
+                  />
+                ) : (
+                  "Check In"
+                )}
+              </button>
+            ) : (
+              <button
+                onClick={() => MarkAttendance("out")}
+                className={`mb-3 mt-2 bg-main-red-color text-white p-2 rounded-md w-full text-center ${
+                  loading ? "relative" : ""
+                } `}
+                style={{ textTransform: "capitalize", cursor: "pointer" }}
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularProgress
+                    className="absolute inset-0 m-auto"
+                    size={24}
+                    color="inherit"
+                  />
+                ) : (
+                  "Check Out"
+                )}
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
-
-  function TabPanel(props) {
-    const { children, value, index } = props;
-    return <div>{value === index && <div>{children}</div>}</div>;
-  }
 };
 
 export default RegisterAttendance;
