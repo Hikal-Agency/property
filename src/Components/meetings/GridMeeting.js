@@ -1,19 +1,93 @@
-import { Pagination, PaginationItem, Stack } from "@mui/material";
+import {
+  Avatar,
+  IconButton,
+  Pagination,
+  PaginationItem,
+  Stack,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import Loader from "../Loader";
+import { MdEdit } from "react-icons/md";
+import { MdLocationOn } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
+import ShowLocation from "./ShowLocation";
+import axios from "axios";
+import UpdateMeeting from "./UpdateMeeting";
 const GridMeeting = ({ pageState, setpageState }) => {
   console.log("meetings state: ", pageState);
   const [loading, setLoading] = useState(false);
-  const { currentMode } = useStateContext();
+  const { currentMode, BACKEND_URL } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
+  const [meetingLocation, setMeetingLocation] = useState(null);
+  const [locationModalOpen, setLocationModalOpen] = useState(false);
   const [notesData, setUserData] = useState([]);
-  
+  const [openEditModal, setOpenEditModal] = useState({
+    open: false,
+    id: null,
+  });
+
   console.log("USERDATA: ", notesData);
 
   const handlePageChange = (event, value) => {
     setpageState({ ...pageState, page: value });
+  };
+
+  const FetchLeads = async (token) => {
+    setpageState((old) => ({
+      ...old,
+      isLoading: true,
+    }));
+
+    axios
+      .get(`${BACKEND_URL}/meeting/?page=${pageState.page}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("the meeting leads are ");
+        console.log(result.data);
+        let rowsDataArray = "";
+        if (result.data.leads.current_page > 1) {
+          const theme_values = Object.values(result.data.leads.data);
+          rowsDataArray = theme_values;
+        } else {
+          rowsDataArray = result.data.leads.data;
+        }
+        console.log("rows array is");
+        console.log(rowsDataArray);
+
+        let rowsdata = rowsDataArray.map((row, index) => ({
+          id: pageState.page > 1 ? pageState.page * 15 - 14 + index : index + 1,
+          meetingId: row?.id,
+          leadName: row?.leadName,
+          project: row?.project,
+          enquiryType: row?.enquiryType,
+          leadType: row?.leadType,
+          meetingDate: row?.meetingDate,
+          meetingBy: row?.userName,
+          meetingTime: row?.meetingTime,
+          meetingStatus: row?.meetingStatus,
+          mLat: row?.mLat,
+          mLong: row?.mLong,
+          meetingLocation: row?.meetingLocation,
+        }));
+
+        setpageState((old) => ({
+          ...old,
+          isLoading: false,
+          data: rowsdata,
+          pageSize: result.data.leads.per_page,
+          gridDataSize: result.data.leads.last_page,
+          total: result.data.leads.total,
+        }));
+      })
+      .catch((err) => {
+        console.log("error occured");
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -26,6 +100,43 @@ const GridMeeting = ({ pageState, setpageState }) => {
 
     setLoading(isLoading);
   }, [pageState]);
+
+  const showLocation = (mLat, mLong) => {
+    setLocationModalOpen(true);
+    if (!mLat || !mLong) {
+      setMeetingLocation({
+        lat: "",
+        lng: "",
+        addressText: "",
+      });
+    } else {
+      const geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode(
+        { location: { lat: Number(mLat), lng: Number(mLong) } },
+        (results, status) => {
+          if (status === "OK") {
+            setMeetingLocation({
+              lat: Number(mLat),
+              lng: Number(mLong),
+              addressText: results[0].formatted_address,
+            });
+          } else {
+            console.log("Getting address failed due to: " + status);
+          }
+        }
+      );
+    }
+  };
+
+  const handleEditMeeting = (meeting) => {
+    if (!meeting?.meetingId) {
+      return;
+    }
+    setOpenEditModal({
+      open: true,
+      id: meeting.meetingId,
+    });
+  };
 
   return (
     <>
@@ -43,6 +154,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
                   {notesData?.length > 0 &&
                     notesData?.map((item, index) => {
+                      const { mLat, mLong } = item;
                       return (
                         <div
                           key={index}
@@ -53,35 +165,67 @@ const GridMeeting = ({ pageState, setpageState }) => {
                           } p-3 rounded-md `}
                         >
                           <div className="mt-2 space-y-1 overflow-hidden">
-                            <h1 className="font-bold capitalize">
-                              <b>Lead Name: </b>{" "}
-                              <span className="text-red-600">
-                                {item?.leadName}
-                              </span>
-                            </h1>
+                            <div className="flex items-center justify-between">
+                              <h1 className="font-bold capitalize">
+                                <b>Lead Name: </b>{" "}
+                                <span className="text-red-600">
+                                  {item?.leadName}
+                                </span>
+                              </h1>
+                              <div className="flex items-center">
+                                <Avatar
+                                  sx={{ marginRight: "3px" }}
+                                  style={{
+                                    background: "white",
+                                    width: "30px",
+                                    height: "30px",
+                                  }}
+                                >
+                                  <IconButton onClick={() => handleEditMeeting(item)}>
+                                    <MdEdit
+                                      style={{ color: "#da1f26" }}
+                                      size={16}
+                                    />
+                                  </IconButton>
+                                </Avatar>
+                                <Avatar
+                                  style={{
+                                    background: "white",
+                                    width: "30px",
+                                    height: "30px",
+                                  }}
+                                >
+                                  <IconButton
+                                    onClick={() => showLocation(mLat, mLong)}
+                                  >
+                                    <MdLocationOn
+                                      style={{ color: "#da1f26" }}
+                                      size={16}
+                                    />
+                                  </IconButton>
+                                </Avatar>
+                              </div>
+                            </div>
 
                             <p className="text-sm">
                               <b>Project: </b> {item?.project}
                             </p>
 
-                            <p className="text-sm font-semibold  ">
+                            <p className="text-sm">
                               <b>Enquiry: </b> {item?.enquiryType}
                             </p>
-                            <p className="text-sm font-semibold  ">
+                            <p className="text-sm">
                               <b>Property: </b> {item?.leadType}
                             </p>
                             <hr />
-                            <p className="text-sm font-semibold  ">
+                            <p className="text-sm">
                               <b>Meeting By: </b> {item?.meetingBy}
                             </p>
-                            <p className="text-sm font-semibold ">
+                            <p className="text-sm">
                               <b>Meeting Date: </b> {item?.meetingDate}
                             </p>
-                            <p className="text-sm font-semibold ">
+                            <p className="text-sm">
                               <b>Meeting Time: </b> {item?.meetingTime}
-                            </p>
-                            <p className="text-sm font-semibold ">
-                              <b>Meeting Location: </b> {item?.meetingLocation}
                             </p>
                             <p className="text-sm font-semibold ">
                               <b>Status: </b>
@@ -165,6 +309,31 @@ const GridMeeting = ({ pageState, setpageState }) => {
           </div>
         )}
       </div>
+
+      {openEditModal.open && (
+        <UpdateMeeting
+          FetchLeads={FetchLeads}
+          meetingModalOpen={openEditModal}
+          handleMeetingModalClose={() => {
+            setOpenEditModal({
+              open: false,
+            });
+          }}
+        />
+      )}
+
+      {meetingLocation !== null && locationModalOpen ? (
+        <ShowLocation
+          isModalOpened={locationModalOpen}
+          meetingLocation={meetingLocation}
+          handleModalClose={() => {
+            setLocationModalOpen(false);
+            setMeetingLocation(null);
+          }}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 };
