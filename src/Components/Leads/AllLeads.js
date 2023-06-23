@@ -1698,9 +1698,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       <div className="pb-10">
         {lead_origin === "freshleads" && (
           <Filters
-            setFilt={setFilt}
-            allFilters={["leadSource", "project", "language", "otp"]}
-            data={pageState.data}
+          pageState={pageState}
+          FetchLeads={FetchLeads}
           />
         )}
         <Box

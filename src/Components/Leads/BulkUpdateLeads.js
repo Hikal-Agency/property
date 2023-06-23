@@ -51,7 +51,7 @@ selectionModelRef
 
   const handleSubmit = async () => {
     try {
-      if (User.role === 1 && Manager) {
+      if ((User.role === 1 || User?.role === 2) && Manager) {
       const token = localStorage.getItem("auth-token");
 
        const UpdateLeadData = {
@@ -140,7 +140,7 @@ selectionModelRef
           <Select
             id="Manager"
             value={Manager}
-            disabled={User?.role !== 1 && User?.role !== 2 && true}
+            disabled={(User?.role !== 1 && User?.role !== 2) && true}
             label="Manager"
             onChange={ChangeManager}
             size="medium"
@@ -169,7 +169,7 @@ selectionModelRef
               No Agents
             </p>
           ) : (
-            User.role === 1 && (
+            (User.role === 1 || User?.role === 2) && (
               <Select
                 id="SalesPerson"
                 value={SalesPerson2}

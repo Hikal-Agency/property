@@ -4,18 +4,16 @@ import { socket } from "../App";
 import {BsArrowsFullscreen} from "react-icons/bs";
 import Loader from "../../Components/Loader";
 import { IconButton } from "@mui/material";
-
 const TodayCallLogs = () => {
   const [noData, setNoData] = useState(false);
   const [callLogs, setCallLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const { currentMode, User } = useStateContext();
-
   useEffect(() => {
     if (User && socket) {
       socket.on("call-logs", (data) => {
         if (data) {
-            console.log("Data fetched")
+            console.log(data);
           if (data.length > 0) {
             setCallLogs(data);
           } else {
@@ -26,10 +24,8 @@ const TodayCallLogs = () => {
       });
     }
   }, [User, socket]);
-
   function requestFullScreen(element) {
     var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
-
     if (requestMethod) { // Native full screen.
         requestMethod.call(element);
     } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
@@ -39,7 +35,6 @@ const TodayCallLogs = () => {
         }
     }
 }
-
   return (
     <div style={{ height: "96vh" }}>
          <div>
@@ -68,9 +63,17 @@ const TodayCallLogs = () => {
               </a>
             </div>
           </div>
-
+          <div>
+            <h1
+              style={{fontSize: 28}}
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-[#da1f26]"
+                } font-bold`}
+              >
+              Calls Count Today
+            </h1>
+          </div>
           <IconButton onClick={() => requestFullScreen(document.body)}><BsArrowsFullscreen size={18}/></IconButton>
-
          
         </div>
       </div>
@@ -82,7 +85,7 @@ const TodayCallLogs = () => {
           style={{ display: "block" }}
           className="pt-24 px-5 overflow-hidden"
         >
-         <div className="flex mb-5 justify-center px-3 rounded h-[125px] items-center bg-[#e5e7eb]">
+         {/* <div className="flex mb-5 justify-center px-3 rounded h-[125px] items-center bg-[#e5e7eb]">
             <h1
             style={{fontSize: 32}}
               className={`${
@@ -91,7 +94,7 @@ const TodayCallLogs = () => {
             >
               Today Call logs
             </h1>
-          </div>
+          </div> */}
           <>
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3 ">
               {noData === false &&
@@ -105,7 +108,7 @@ const TodayCallLogs = () => {
                           : "bg-gray-200 text-black"
                       } p-3 rounded-md`}
                     >
-                      <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
+                      <div className="grid gap-3 rounded-md px-2 mb-2">
                         <h5 className="font-bold text-main-red-color col-span-5">
                           {call?.userName}
                         </h5>
@@ -118,7 +121,7 @@ const TodayCallLogs = () => {
                               : "bg-white text-black"
                           } rounded-md p-2`}
                         >
-                          <h6 className="text-center text-xs font-semibold">
+                          <h6 className="mb-1 text-center text-xs font-semibold">
                             Outgoing
                           </h6>
                           <hr></hr>
@@ -126,7 +129,7 @@ const TodayCallLogs = () => {
                             <div>
                               <h1 className="text-sm">
                                 Dialed&nbsp;
-                                <span className="font-semibold text-main-red-color float-right">
+                                <span className="font-semibold float-right" style={{color: "#000000"}}>
                                   {call?.dialed || 0}
                                 </span>
                               </h1>
@@ -134,7 +137,7 @@ const TodayCallLogs = () => {
                             <div>
                               <h1 className="text-sm">
                                 ANSWERED&nbsp;
-                                <span className="font-semibold text-main-red-color float-right">
+                                <span className="font-semibold float-right" style={{color: "#00A67D"}}>
                                   {call?.answered || 0}
                                 </span>
                               </h1>
@@ -142,7 +145,7 @@ const TodayCallLogs = () => {
                             <div>
                               <h1 className="text-sm">
                                 NOT ANSWERED&nbsp;
-                                <span className="font-semibold text-main-red-color float-right">
+                                <span className="font-semibold float-right" style={{color: "#DF2938"}}>
                                   {call?.notanswered || 0}
                                 </span>
                               </h1>
@@ -156,7 +159,7 @@ const TodayCallLogs = () => {
                               : "bg-white text-black"
                           } rounded-md p-2`}
                         >
-                          <h6 className="text-center text-xs font-semibold">
+                          <h6 className="mb-1 text-center text-xs font-semibold">
                             Incoming
                           </h6>
                           <hr></hr>
@@ -164,7 +167,7 @@ const TodayCallLogs = () => {
                             <div>
                               <h1 className="text-sm">
                                 RECEIVED&nbsp;
-                                <span className="font-semibold text-main-red-color float-right">
+                                <span className="font-semibold float-right" style={{color: "#00A67D"}}>
                                   {call.received || 0}
                                 </span>
                               </h1>
@@ -172,7 +175,7 @@ const TodayCallLogs = () => {
                             <div>
                               <h1 className="text-sm">
                                 MISSED&nbsp;
-                                <span className="font-semibold text-main-red-color float-right">
+                                <span className="font-semibold float-right" style={{color: "#DF2938"}}>
                                   {call.missed || 0}
                                 </span>
                               </h1>
@@ -207,5 +210,4 @@ const TodayCallLogs = () => {
     </div>
   );
 };
-
 export default TodayCallLogs;
