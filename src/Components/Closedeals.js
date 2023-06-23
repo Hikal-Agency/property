@@ -590,7 +590,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     <div className="pb-10">
       <ToastContainer />
       <Box
-        className={`${currentMode}-mode-datatable`}
+        className={`closed-datatable ${currentMode}-mode-datatable`}
         sx={{ ...DataGridStyles, position: "relative", marginBottom: "50px" }}
       >
         <DataGrid

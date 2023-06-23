@@ -442,6 +442,19 @@ label[for="bulkImport"] .MuiButtonBase-root {
   width: 80%;
  }
 
+ .closed-datatable .MuiDataGrid-columnHeadersInner .MuiDataGrid-columnHeader:last-child {
+
+  min-width: revert !important;
+  max-width: revert !important;
+  width: 100% !important;
+ }
+
+ .closed-datatable .MuiDataGrid-row .MuiDataGrid-cell:last-child {
+  min-width: revert !important;
+  max-width: revert !important;
+  width: 100% !important;
+ }
+
 @media all and (max-width: 1300px) {
   .MuiDataGrid-cell[data-field="creationDate"] p {
     font-size: 12px;
