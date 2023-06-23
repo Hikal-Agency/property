@@ -52,7 +52,6 @@ const Calls = ({
             <Tab label="TODAY" />
             <Tab label="YESTERDAY" />
             <Tab label="THIS MONTH" />
-            <Tab label="ALL TIME" />
           </Tabs>
         </Box>
         <Box
