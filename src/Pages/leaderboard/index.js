@@ -86,7 +86,7 @@ const Leaderboard = () => {
                       <Link
                         className="bg-main-red-color w-[250px] text-white rounded-lg pl-2 py-3 font-semibold  flex items-center justify-center space-x-2"
                         style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
-                        to="http://localhost:3000/callLogs"
+                        to="/fresh-logs"
                         target="_blank"
                         rel="noopener noreferrer"
                       >

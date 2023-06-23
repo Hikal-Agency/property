@@ -43,7 +43,6 @@ const GridMeeting = ({ pageState, setpageState }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
                   {notesData?.length > 0 &&
                     notesData?.map((item, index) => {
-                      let loc = "";
                       return (
                         <div
                           key={index}
@@ -82,7 +81,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                               <b>Meeting Time: </b> {item?.meetingTime}
                             </p>
                             <p className="text-sm font-semibold ">
-                              <b>Meeting Location: </b> {loc}
+                              <b>Meeting Location: </b> {item?.meetingLocation}
                             </p>
                             <p className="text-sm font-semibold ">
                               <b>Status: </b>
