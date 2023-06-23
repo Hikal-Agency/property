@@ -74,6 +74,13 @@ const LeadNotes = ({ pageState, setpageState }) => {
       headerAlign: "center",
     },
     {
+      field: "userName",
+      headerName: "Added By",
+      minWidth: 110,
+      flex: 1,
+      headerAlign: "center",
+    },
+    {
       field: "enquiryType",
       headerName: "Enquiry",
       minWidth: 110,
@@ -281,14 +288,14 @@ const LeadNotes = ({ pageState, setpageState }) => {
             icon={
               value === 0 ? (
                 <AiOutlineAppstore
-                size={22}
+                  size={22}
                   style={{
                     color: currentMode === "dark" ? "#ffffff" : "#000000",
                   }}
                 />
               ) : (
                 <AiOutlineTable
-                size={22}
+                  size={22}
                   style={{
                     color: currentMode === "dark" ? "#ffffff" : "#000000",
                   }}
@@ -300,7 +307,11 @@ const LeadNotes = ({ pageState, setpageState }) => {
       </Box>
       <div className="mt-3 pb-3">
         <TabPanel value={value} index={1}>
-          <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
+          <Box
+            width={"100%"}
+            className={`${currentMode}-mode-datatable`}
+            sx={DataGridStyles}
+          >
             <DataGrid
               autoHeight
               rows={pageState.data}
@@ -325,8 +336,8 @@ const LeadNotes = ({ pageState, setpageState }) => {
               }}
               componentsProps={{
                 toolbar: {
-                                    printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+                  printOptions: { disableToolbarButton: User?.role !== 1 },
+                  csvOptions: { disableToolbarButton: User?.role !== 1 },
                   showQuickFilter: true,
                   value: searchText,
                   onChange: HandleQuicSearch,
