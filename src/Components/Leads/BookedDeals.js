@@ -296,7 +296,7 @@ const BookedDeals = ({
                       </span>{" "}
                       to{" "}
                       <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                        {newFeedback}
+                        {newFeedback === "Closed" ? "Closed Deal" : newFeedback}
                       </span>{" "}
                       ?
                     </h1>
@@ -1526,11 +1526,11 @@ const BookedDeals = ({
   return (
     <div className="pb-10">
       <ToastContainer />
-      <Filters
+      {/* <Filters
         setFilt={setFilt}
         allFilters={["leadSource", "project", "language"]}
         data={pageState.data}
-      />
+      /> */}
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
         <div className="absolute top-[7px] right-[20px] z-[5]">
           <TextField
