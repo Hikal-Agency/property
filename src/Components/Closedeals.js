@@ -517,7 +517,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     FetchLeads(token);
 
     // eslint-disable-next-line
-  }, [pageState.page, , pageState.perpage]);
+  }, [pageState.page, pageState.perpage]);
 
   // ROW CLICK FUNCTION
   // const handleRowClick = async (params) => {
@@ -562,7 +562,7 @@ const Closedeals = ({ pageState, setpageState }) => {
               },
             }}
           >
-            {[pageState.pageSize, 14, 30, 50, 75, 100].map((size) => (
+            {[14, 30, 50, 75, 100].map((size) => (
               <MenuItem key={size} value={size}>
                 {size}
               </MenuItem>
