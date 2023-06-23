@@ -24,6 +24,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import LiveDateTimeComponent from "./LiveDateTimeComponent";
 import { RiRadioButtonLine } from "react-icons/ri";
+import { BsDot } from "react-icons/bs";
+
 import { arrayUnion } from "firebase/firestore";
 
 const RegisterAttendance = () => {
@@ -231,7 +233,10 @@ const RegisterAttendance = () => {
 
           setUser(user);
 
-          console.log("USer: ", user);
+          console.log("Localstorage: ", user);
+
+          // Save user data to local storage
+          localStorage.setItem("user", JSON.stringify(user));
         })
         .catch((err) => {
           console.log(err);
@@ -262,7 +267,6 @@ const RegisterAttendance = () => {
         });
     }
   };
-
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     if (User?.id && User?.loginId) {
@@ -336,14 +340,18 @@ const RegisterAttendance = () => {
               {User?.profile_picture ? (
                 <img
                   src={User?.profile_picture}
-                  className="rounded-md cursor-pointer object-cover w-full h-full border border-white "
+                  className={`rounded-md cursor-pointer object-cover w-full h-full border ${
+                    currentMode === "dark" ? "border-white" : "border-black"
+                  } `}
                   alt=""
                 />
               ) : (
                 <Avatar
                   alt="User"
                   variant="circular"
-                  className="border border-black"
+                  className={`border ${
+                    currentMode === "dark" ? "border-white" : "border-black"
+                  }`}
                   style={{ width: "96px", height: "96px" }}
                 />
               )}
@@ -353,20 +361,16 @@ const RegisterAttendance = () => {
                 currentMode === "dark" ? "border-white" : "border-black"
               }`}
             ></hr> */}
-            <div className="flex items-center space-x-1 text-lg font-bold mb-3">
+            <div className="flex items-center space-x-0 text-lg font-bold mb-3">
               {check === "in" ? (
                 <>
                   <h2>In</h2>
-                  <RiRadioButtonLine
-                    style={{ color: "green", fontSize: "20px" }}
-                  />
+                  <BsDot style={{ color: "green" }} size={40} />
                 </>
               ) : (
                 <>
                   <h2>Out</h2>
-                  <RiRadioButtonLine
-                    style={{ color: "red", fontSize: "20px" }}
-                  />
+                  <BsDot style={{ color: "red" }} size={40} />
                 </>
               )}
             </div>
@@ -377,19 +381,19 @@ const RegisterAttendance = () => {
               {User?.userName}
             </h1>
             {/* <h6 className="mb-3 p-2">desc</h6> */}
-            <hr
+            {/* <hr
               className={`mb-3 w-full ${
                 currentMode === "dark" ? "border-white" : "border-black"
               }`}
-            ></hr>
+            ></hr> */}
             <h1 className="font-semibold mb-3">
               <LiveDateTimeComponent setAttendanceTime={setAttendanceTime} />
             </h1>
-            <hr
+            {/* <hr
               className={`mb-3 w-full ${
                 currentMode === "dark" ? "border-white" : "border-black"
               }`}
-            ></hr>
+            ></hr> */}
 
             {check === "in" ? (
               <button

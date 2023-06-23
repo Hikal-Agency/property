@@ -9,14 +9,14 @@ function LiveDateTimeComponent({ setAttendanceTime }) {
     const timer = setInterval(() => {
       const newDateTime = new Date().toLocaleString();
       setCurrentDateTime(newDateTime);
-      setAttendanceTime(newDateTime); // Pass the new date/time back to the parent
+      setAttendanceTime(newDateTime);
     }, 1000); // Updates every second
 
     // Clear interval on component unmount
     return () => {
       clearInterval(timer);
     };
-  }, [setAttendanceTime]); // Empty dependency array means this effect runs once on mount, and cleanup runs on unmount
+  }, [setAttendanceTime]);
 
   return <div>{currentDateTime}</div>;
 }
