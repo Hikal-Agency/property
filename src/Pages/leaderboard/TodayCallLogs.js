@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { socket } from "../App";
-import {BsArrowsFullscreen} from "react-icons/bs";
+import { BsArrowsFullscreen } from "react-icons/bs";
 import Loader from "../../Components/Loader";
 import { IconButton } from "@mui/material";
 
@@ -15,7 +15,7 @@ const TodayCallLogs = () => {
     if (User && socket) {
       socket.on("call-logs", (data) => {
         if (data) {
-            console.log("Data fetched")
+          console.log("Data fetched");
           if (data.length > 0) {
             setCallLogs(data);
           } else {
@@ -28,21 +28,27 @@ const TodayCallLogs = () => {
   }, [User, socket]);
 
   function requestFullScreen(element) {
-    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+    var requestMethod =
+      element.requestFullScreen ||
+      element.webkitRequestFullScreen ||
+      element.mozRequestFullScreen ||
+      element.msRequestFullScreen;
 
-    if (requestMethod) { // Native full screen.
-        requestMethod.call(element);
-    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
-        var wscript = new window.ActiveXObject("WScript.Shell");
-        if (wscript !== null) {
-            wscript.SendKeys("{F11}");
-        }
+    if (requestMethod) {
+      // Native full screen.
+      requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") {
+      // Older IE.
+      var wscript = new window.ActiveXObject("WScript.Shell");
+      if (wscript !== null) {
+        wscript.SendKeys("{F11}");
+      }
     }
-}
+  }
 
   return (
     <div style={{ height: "96vh" }}>
-         <div>
+      <div>
         <div
           className="flex justify-between items-center p-2 relative w-full"
           style={{
@@ -60,21 +66,16 @@ const TodayCallLogs = () => {
           <div className="flex items-center">
             <div className="flex items-center rounded-lg pl-1 cursor-pointer">
               <a href="/dashboard">
-                  <img
-                    className="w-[70px]"
-                    src="/assets/blackLogo.png"
-                    alt=""
-                  />
+                <img className="w-[70px]" src="/assets/blackLogo.png" alt="" />
               </a>
             </div>
           </div>
 
-          <IconButton onClick={() => requestFullScreen(document.body)}><BsArrowsFullscreen size={18}/></IconButton>
-
-         
+          <IconButton onClick={() => requestFullScreen(document.body)}>
+            <BsArrowsFullscreen size={18} />
+          </IconButton>
         </div>
       </div>
-      
       {loading ? (
         <Loader />
       ) : (
@@ -82,9 +83,9 @@ const TodayCallLogs = () => {
           style={{ display: "block" }}
           className="pt-24 px-5 overflow-hidden"
         >
-         <div className="flex mb-5 justify-center px-3 rounded h-[125px] items-center bg-[#e5e7eb]">
+          <div className="flex mb-5 justify-center px-3 rounded h-[125px] items-center bg-[#e5e7eb]">
             <h1
-            style={{fontSize: 32}}
+              style={{ fontSize: 32 }}
               className={`${
                 currentMode === "dark" ? "text-white" : "text-[#da1f26]"
               } font-bold`}

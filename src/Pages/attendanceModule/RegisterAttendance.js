@@ -311,7 +311,19 @@ const RegisterAttendance = () => {
             <div className="flex items-center">
               <div className="flex items-center rounded-lg pl-1 cursor-pointer">
                 <Link to="/dashboard">
-                  <img src="./favicon.png" className="w-10 h-10" />
+                  {currentMode === "dark" ? (
+                    <img
+                      className="w-[70px]"
+                      src="/assets/lightLogo.png"
+                      alt="logo"
+                    />
+                  ) : (
+                    <img
+                      className="w-[70px]"
+                      src="/assets/blackLogo.png"
+                      alt="logo"
+                    />
+                  )}
                 </Link>
               </div>
             </div>
@@ -406,7 +418,7 @@ const RegisterAttendance = () => {
               >
                 {loading ? (
                   <CircularProgress
-                    className="absolute inset-0 m-auto"
+                    // className="absolute inset-0 m-auto"
                     size={24}
                     color="inherit"
                   />
@@ -425,12 +437,12 @@ const RegisterAttendance = () => {
               >
                 {loading ? (
                   <CircularProgress
-                    className="absolute inset-0 m-auto"
+                    // className="absolute inset-0 m-auto"
                     size={24}
                     color="inherit"
                   />
                 ) : (
-                  "Check Out"
+                  <span>Check Out</span>
                 )}
               </button>
             )}
