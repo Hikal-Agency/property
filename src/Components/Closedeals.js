@@ -285,6 +285,13 @@ const Closedeals = ({ pageState, setpageState }) => {
       minWidth: 40,
       flex: 1,
     },
+    {
+      field: "userName",
+      headerAlign: "center",
+      headerName: "Property Consultant",
+      minWidth: 40,
+      flex: 1,
+    },
     // {
     //   field: "manager",
     //   headerName: "Manager",
@@ -388,6 +395,13 @@ const Closedeals = ({ pageState, setpageState }) => {
       flex: 1,
     },
     // {
+    //   field: "userName",
+    //   headerAlign: "center",
+    //   headerName: "Property Consultant",
+    //   minWidth: 40,
+    //   flex: 1,
+    // },
+    // {
     //   field: "manager",
     //   headerName: "Manager",
     //   minWidth: 150,
@@ -485,6 +499,7 @@ const Closedeals = ({ pageState, setpageState }) => {
               : index + 1,
           dealDate: row?.dealDate,
           leadName: row?.leadName,
+          userName: row?.userName,
           project: row?.project,
           enquiryType: row?.enquiryType,
           leadType: row?.leadType,
