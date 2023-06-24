@@ -22,6 +22,7 @@ import axios from "../../axoisConfig";
 import { CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
 import { ToastContainer } from "react-toastify";
+import Reminder from "../reminder/Reminder";
 
 const DashboardPanel = ({ setloading }) => {
   const {
@@ -592,6 +593,30 @@ const DashboardPanel = ({ setloading }) => {
         </motion.div>
       </div>
       {/* 4TH ROW END [UPCOMING MEETING] */}
+
+      {/* 5TH ROW [REMINDER] */}
+      <div className="grid grid-cols-1 pb-3">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ margin: "-70px" }}
+          className={`${
+            currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
+          } col-span-1 h-fit rounded-md p-5 cursor-pointer hover:shadow-sm`}
+        >
+          {/* {console.log("User is")}
+          {console.log(User)} */}
+          <h4
+            className="font-semibold pb-5"
+            style={{ textTransform: "capitalize" }}
+          >
+            Reminders
+          </h4>
+
+          <Reminder />
+        </motion.div>
+      </div>
+      {/* 5TH ROW END [REMINDER] */}
 
       {/* 5TH ROW [TODO + SHORTCUTS] */}
       <motion.div

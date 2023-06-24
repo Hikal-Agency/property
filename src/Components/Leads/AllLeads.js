@@ -17,9 +17,10 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
+
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import { FaComment } from "react-icons/fa";
+import { FaComment, FaBell } from "react-icons/fa";
 import { FaGlobe } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -927,6 +928,21 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               onClick={() => HandleEditFunc(cellValues)}
             >
               <IconButton sx={{ padding: 0 }}>
+                <FaBell size={19} />
+              </IconButton>
+            </p>
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleEditFunc(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
                 <AiOutlineEdit size={20} />
               </IconButton>
             </p>
@@ -984,13 +1000,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [CEOColumns, setCEOColumns] = useState(columns);
 
   const FetchLeads = async (
-    token, 
+    token,
     projectName,
     source,
     enquiryType,
     assignedManager,
     assignedAgent
-    ) => {
+  ) => {
     console.log("lead type is");
     console.log(lead_type);
     console.log("lead origin is");
