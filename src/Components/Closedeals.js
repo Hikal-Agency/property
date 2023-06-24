@@ -285,13 +285,13 @@ const Closedeals = ({ pageState, setpageState }) => {
       minWidth: 40,
       flex: 1,
     },
-    // {
-    //   field: "userName",
-    //   headerAlign: "center",
-    //   headerName: "Property Consultant",
-    //   minWidth: 40,
-    //   flex: 1,
-    // },
+    {
+      field: "userName",
+      headerAlign: "center",
+      headerName: "Property Consultant",
+      minWidth: 40,
+      flex: 1,
+    },
     // {
     //   field: "manager",
     //   headerName: "Manager",
@@ -394,13 +394,13 @@ const Closedeals = ({ pageState, setpageState }) => {
       minWidth: 40,
       flex: 1,
     },
-    {
-      field: "userName",
-      headerAlign: "center",
-      headerName: "Property Consultant",
-      minWidth: 40,
-      flex: 1,
-    },
+    // {
+    //   field: "userName",
+    //   headerAlign: "center",
+    //   headerName: "Property Consultant",
+    //   minWidth: 40,
+    //   flex: 1,
+    // },
     // {
     //   field: "manager",
     //   headerName: "Manager",
