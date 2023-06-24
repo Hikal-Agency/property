@@ -373,13 +373,13 @@ const Chat = () => {
                 >
                   Whatsapp
                 </h1>
-
+                <div class={`section-container-${currentMode}`}>
                 {ready ? (
                   <Conversation
+                  currentMode={currentMode}
                     data={data}
                     setActiveChat={setActiveChat}
                     allChats={allChats}
-                    currentMode={currentMode}
                     logout={logout}
                     handleLogout={handleLogout}
                     chatMessages={chatMessages}
@@ -397,6 +397,7 @@ const Chat = () => {
                 ) : (
                   <Devices handleCreateSession={handleCreateSession} />
                 )}
+                </div>
               </>
             )}
           </>

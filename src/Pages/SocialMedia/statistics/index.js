@@ -53,7 +53,7 @@ const Statistics = () => {
         <title>HIKAL CRM - Lead Notes</title>
         <meta name="description" content="Meetings - HIKAL CRM" />
       </Head> */}
-      <div className="flex min-h-screen mb-4">
+      <div className="flex min-h-screen p-3 mb-4">
         {loading ? (
           <Loader />
         ) : (
@@ -63,19 +63,10 @@ const Statistics = () => {
             }`}
           >
             <div className={`w-full `}>
-              <div className="pl-3 mt-4">
-              <h4
-                className={`font-semibold mb-3 p-7 text-center text-2xl ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
-              >
-                Facebook Statistics
-              </h4>
                 <AllStatistics
                   pageState={pageState}
                   setpageState={setpageState}
                 />
-              </div>
             </div>
             {/* <Footer /> */}
           </div>

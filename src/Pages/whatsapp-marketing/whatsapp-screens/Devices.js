@@ -7,7 +7,7 @@ const Devices = ({ handleCreateSession }) => {
   const [createDeviceModal, setCreateDeviceModal] = useState(false);
   return (
     <>
-      <div className="flex p-4 w-[98%] h-[90vh] bg-[#F6F6F6] rounded-lg flex-col">
+      <div className="flex p-4 h-[90vh] flex-col">
         <h1>
           <strong>Devices</strong>
         </h1>

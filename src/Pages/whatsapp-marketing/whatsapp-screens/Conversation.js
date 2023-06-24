@@ -28,10 +28,10 @@ const Conversation = ({
   btnLoading,
   allChats,
   chatMessageInputVal,
+  currentMode,
   activeChat,
   logout,
   setActiveChat,
-  currentMode,
   loadingConversations,
   messagesContainerRef,
 }) => {

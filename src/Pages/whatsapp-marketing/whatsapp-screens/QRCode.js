@@ -6,7 +6,7 @@ const QRCode = ({ qr }) => {
   const { currentMode } = useStateContext();
   return (
     <>
-      <div className="h-[90vh] px-4 items-center w-[98%] bg-[#F6F6F6] rounded-lg flex justify-evenly">
+      <div className="h-[90vh] px-4 items-center flex justify-evenly">
         <Box sx={{
             "& ol li": {
                 marginBottom: "12px", 

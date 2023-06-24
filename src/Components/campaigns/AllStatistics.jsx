@@ -2,6 +2,7 @@ import {
   Box,
   CircularProgress,
   FormControl,
+  TextField,
   InputLabel,
   MenuItem,
   Select,
@@ -18,6 +19,7 @@ import CombineChart from "../charts/statisticsCharts/CombineChart";
 import CombinationChartTable from "../charts/statisticsCharts/CombinationTableChart";
 import MapChartStatistics from "../charts/statisticsCharts/MapChartStatistics";
 import TopCampaignsTable from "../charts/statisticsCharts/TopCampaignsTable";
+import CountUp from "react-countup";
 
 const AllStatistics = ({ pageState, setpageState }) => {
   const { currentMode, User, darkModeColors, graph_api_token } =
@@ -48,184 +50,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
   console.log("campaign stats: ", campaignStats);
 
   console.log("age,gender: ", ageGender);
-  // const FetchCampaignStats = async (campaignId) => {
-  //   try {
-  //     const adsetsPromise = axios.get(
-  //       `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
-  //     );
-
-  //     const adsPromise = axios.get(
-  //       `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
-  //     );
-
-  //     const insightsPromise = axios.get(
-  //       `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&breakdowns=gender,age`
-  //     );
-
-  //     const [adsetsResult, adsResult, insightsResult] = await Promise.all([
-  //       adsetsPromise,
-  //       adsPromise,
-  //       insightsPromise,
-  //     ]);
-
-  //     console.log("ADSET RESULT: ", adsetsResult);
-  //     console.log("ADS RESULT: ", adsResult);
-  //     console.log("INSIGHTS RESULTsss: ", insightsResult);
-
-  //     const adsetsCount = adsetsResult.data.summary.total_count;
-  //     const adsCount = adsResult.data.summary.total_count;
-
-  //     setAgeGender(insightsResult?.data?.data)
-
-  //     const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
-  //       if (ad.status === "ACTIVE") {
-  //         count++;
-  //       }
-  //       return count;
-  //     }, 0);
-
-  //     const activeAdsetsCount = adsetsResult.data.data.reduce((count, adset) => {
-  //       if (adset.status === "ACTIVE") {
-  //         count++;
-  //       }
-  //       return count;
-  //     }, 0);
-
-  //     const genderData = insightsResult.data.data.map(
-  //       (insight) => insight.gender
-  //     );
-  //     const ageData = insightsResult.data.data.map((insight) => insight.age);
-
-  //     console.log("Ad Sets Count: ", adsetsCount);
-  //     console.log("Ads Count: ", adsCount);
-  //     console.log("Active Ads Count: ", activeAdsCount);
-  //     console.log("Active Adset Count: ", activeAdsetsCount);
-  //     console.log("Gender Data: ", genderData);
-  //     console.log("Age Data: ", ageData);
-
-  //     // Set the fetched counts, genders, and ages to state or use them as needed
-  //     const campaignStats = {
-  //       adsetsCount: adsetsCount,
-  //       adsCount: adsCount,
-  //       activeAdsCount: activeAdsCount,
-  //       activeAdsetCount: activeAdsetsCount,
-  //       genderData: genderData,
-  //       ageData: ageData,
-  //     };
-
-  //     // Set the campaign stats state with the fetched data
-  //     setCampaignStats(campaignStats);
-  //   } catch (error) {
-  //     console.log("Error occurred while fetching campaign stats: ", error);
-  //   }
-  // };
-
-  // adseet stats
-
-  // const FetchCampaignStats = async (campaignId) => {
-  //   try {
-  //     const adsetsPromise = axios.get(
-  //       `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
-  //     );
-
-  //     const adsPromise = axios.get(
-  //       `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
-  //     );
-
-  //     const insightsPromise = axios.get(
-  //       `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&breakdowns=gender,age&fields=impressions,clicks,cpc,cpm,actions`
-  //     );
-
-  //     const [adsetsResult, adsResult, insightsResult] = await Promise.all([
-  //       adsetsPromise,
-  //       adsPromise,
-  //       insightsPromise,
-  //     ]);
-
-  //     console.log("ADSET RESULT: ", adsetsResult);
-  //     console.log("ADS RESULT: ", adsResult);
-  //     console.log("INSIGHTS RESULT: ", insightsResult);
-
-  //     const adsetsCount = adsetsResult.data.summary.total_count;
-  //     const adsCount = adsResult.data.summary.total_count;
-
-  //     setAgeGender(insightsResult?.data?.data);
-
-  //     const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
-  //       if (ad.status === "ACTIVE") {
-  //         count++;
-  //       }
-  //       return count;
-  //     }, 0);
-
-  //     const activeAdsetsCount = adsetsResult.data.data.reduce(
-  //       (count, adset) => {
-  //         if (adset.status === "ACTIVE") {
-  //           count++;
-  //         }
-  //         return count;
-  //       },
-  //       0
-  //     );
-
-  //     const genderData = insightsResult.data.data.map(
-  //       (insight) => insight.gender
-  //     );
-  //     const ageData = insightsResult.data.data.map((insight) => insight.age);
-
-  //     const campaignInsights = insightsResult.data.data;
-  //     const cpc = campaignInsights?.cpc?.length;
-  //     const cpm = campaignInsights?.cpm;
-  //     const impressions = campaignInsights?.impressions;
-  //     const clicks = campaignInsights?.clicks;
-  //     const conversions = campaignInsights?.actions?.find(
-  //       (action) => action.action_type === "conversion"
-  //     )?.value;
-
-  //     console.log("CPC: ", cpc);
-  //     console.log("CPM: ", cpm);
-  //     console.log("Impressions: ", impressions);
-  //     console.log("Clicks: ", clicks);
-  //     console.log("Conversions: ", conversions);
-  //     console.log("Ad Sets Count: ", adsetsCount);
-  //     console.log("Ads Count: ", adsCount);
-  //     // console.log("Active Ads Count: ", activeAdsCount);
-  //     // console.log("Active Adset Count: ", activeAdsetCount);
-  //     console.log("Gender Data: ", genderData);
-  //     console.log("Age Data: ", ageData);
-
-  //     // Set the fetched counts, genders, and ages to state or use them as needed
-  //     const campaignStats = {
-  //       adsetsCount: adsetsCount,
-  //       adsCount: adsCount,
-  //       activeAdsCount: activeAdsCount,
-  //       // activeAdsetCount: activeAdsetCount,
-  //       genderData: genderData,
-  //       ageData: ageData,
-  //       cpc: cpc,
-  //       cpm: cpm,
-  //       impressions: impressions,
-  //       clicks: clicks,
-  //       conversions: conversions,
-  //     };
-
-  //     // Set the campaign stats state with the fetched data
-  //     setCampaignStats(campaignStats);
-  //   } catch (error) {
-  //     console.log("Error occurred while fetching campaign stats: ", error);
-  //   }
-  // };
 
   const FetchCampaignStats = async (campaignId) => {
     try {
-      // const adsetsPromise = axios.get(
-      //   `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
-      // );
-
-      // const adsPromise = axios.get(
-      //   `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
-      // );
-
       const insightsWithBreakdownsPromise = axios.get(
         `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&breakdowns=gender,age`
       );
@@ -776,9 +603,18 @@ const AllStatistics = ({ pageState, setpageState }) => {
     return <Loader />;
   } else {
     return (
-      <div className="pb-10 mb-5">
-        <div className={`grid  gap-3 ${darkModeColors}`}>
+      <div
+        className={`pb-10 mb-5 min-h-screen section-container-${currentMode}`}
+      >
+        <div className={`grid gap-3 ${darkModeColors}`}>
           <div>
+            <div className="pl-3 mt-4 flex items-center justify-center mb-6">
+              <h4
+                className={`inline-block py-1 px-3 rounded bg-red-600 font-semibold mb-3 text-center text-2xl text-white`}
+              >
+                Facebook Statistics
+              </h4>
+            </div>
             <>
               <div className="w-full -mx-2">
                 <Box
@@ -791,15 +627,15 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       borderRadius: "8px",
                     },
                     "& .MuiInputBase-root": {
-                      width: "max-content",
-                      marginRight: "5px",
+                      width: "150px",
+                      marginRight: "10px",
                     },
                   }}
                   className="w-full flex flex-wrap justify-center items-center px-2"
                 >
                   <div>
                     <FormControl
-                      className="w-full mt-1 mb-5"
+                      className="w-full mt-1 mb-5 mr-2"
                       variant="outlined"
                       required
                     >
@@ -856,7 +692,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
 
                   <div>
                     <FormControl
-                      className="w-full mt-1 mb-5"
+                      className="w-full mt-1 mb-5 mr-2"
                       variant="outlined"
                       value={selectedAdset}
                       sx={{
@@ -887,7 +723,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                         label="Select Ad Set"
                         onChange={handleselectedAdset}
                       >
-                        <MenuItem value="0" disabled>
+                        <MenuItem value="0" selected disabled>
                           Select Ad Set
                         </MenuItem>
                         {selectedCampaign?.adsets?.length > 0 ? (
@@ -906,7 +742,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   <div>
                     {selectedAd?.length > 0 ? (
                       <FormControl
-                        className="w-full mt-1 mb-5"
+                        className="w-full mt-1 mb-5 mr-2"
                         variant="outlined"
                         sx={{
                           "& .MuiOutlinedInput-notchedOutline": {
@@ -928,7 +764,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                                 : "#000000 !important",
                           }}
                         >
-                          Ad
+                          Select Ad
                         </InputLabel>
                         <Select
                           // value={selectedAd}
@@ -966,8 +802,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
                           },
                         }}
                       >
-                        <InputLabel
-                          id="ad-label"
+           <InputLabel
+                          id="ad-label2"
                           sx={{
                             color:
                               currentMode === "dark"
@@ -975,16 +811,18 @@ const AllStatistics = ({ pageState, setpageState }) => {
                                 : "#000000 !important",
                           }}
                         >
-                          Ad
+                          Select Ad
                         </InputLabel>
                         <Select
                           // value={selectedAd}
                           // onChange={(event) => selectAd(event, event.target.value)}
-                          labelId="ad-label"
+                          
+                          labelId="ad-label2"
                           label="Select Ad"
+                          dispayEmpty
                           value={selectedAd}
                         >
-                          <MenuItem value="0" disabled>
+                          <MenuItem selected disabled>
                             Select Ad
                           </MenuItem>
                           {selectedCampaign?.ads?.length > 0 ? (
@@ -1011,7 +849,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
               <div className="mb-4 mt-5 ml-0">
                 {selectedCampaign.SelectedCampaign !== "0" && (
                   <h2
-                    className={`${
+                    className={`text-center ${
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   >
@@ -1041,11 +879,11 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       className={`${
                         currentMode === "dark"
                           ? "bg-gray-900 text-white "
-                          : "bg-[#da1f26] text-white"
-                      } rounded-lg h-20 bg-[#da1f26] p-2 shadow cursor-pointer hover:shadow-sm grid content-center`}
+                          : "bg-red-600 text-black"
+                      } rounded-lg h-20 p-2 shadow cursor-pointer hover:shadow-sm grid content-center`}
                     >
                       <p className="text-xl font-bold pb-2 text-white">
-                        {item?.amount}
+                        <CountUp end={item?.amount} duration={3} />
                       </p>
                       <p
                         className={`text-sm ${
@@ -1069,16 +907,18 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 Performance & Interactions
               </h1>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
                 <div
                   className={`${
                     currentMode === "dark"
                       ? "bg-gray-900 text-white "
-                      : "bg-gray-200"
-                  } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                      : "bg-white"
+                  } col-span-1 h-96 shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                 >
                   <div className="justify-between items-center ">
-                    <h6 className="font-semibold pb-3">Performance</h6>
+                    <h6 className="font-semibold pb-3 text-red-600">
+                      Performance
+                    </h6>
                     {/* <AreaChart /> */}
                     <CombineChart combineData={chartData} />
                   </div>
@@ -1088,30 +928,14 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   className={`${
                     currentMode === "dark"
                       ? "bg-gray-900 text-white "
-                      : "bg-gray-200"
-                  } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                      : "bg-white"
+                  } col-span-1 h-96 shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                 >
                   <div className="justify-between items-center">
-                    <h6 className="font-semibold pb-3">Top Campaigns</h6>
+                    <h6 className="font-semibold pb-3 text-red-600">
+                      Top Campaigns
+                    </h6>
                     <TopCampaignsTable tablData={campaigns} />
-                  </div>
-                </div>
-
-                <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "bg-gray-900 text-white "
-                      : "bg-gray-200"
-                  } col-span-1 h-96 w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
-                  sx={{
-                    height: "300px",
-                    width: "300px",
-                  }}
-                >
-                  <div className="justify-between items-center">
-                    <h6 className="font-semibold pb-3">Devices</h6>
-                    <DoughnutChart doughnutChart={devices} />
-                    {/* <DoughnutChart doughnutChart={doughnutChart} /> */}
                   </div>
                 </div>
               </div>
@@ -1120,13 +944,17 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   className={`${
                     currentMode === "dark"
                       ? "bg-gray-900 text-white "
-                      : "bg-gray-200"
-                  } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm flex flex-col justify-start`}
+                      : "bg-white"
+                  } col-span-1 h-96 w-full shadow rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                  sx={{
+                    height: "300px",
+                    width: "300px",
+                  }}
                 >
-                  <h6 className="font-semibold pb-3">Frequency And Reach</h6>
-                  <div className="flex-grow flex items-center justify-center">
-                    <BubbleChartStat bubbleChartData={row} />
-                    {/* <CombineChart /> */}
+                  <div className="justify-between items-center">
+                    <h6 className="font-semibold pb-3 text-red-600">Devices</h6>
+                    <DoughnutChart doughnutChart={devices} />
+                    {/* <DoughnutChart doughnutChart={doughnutChart} /> */}
                   </div>
                 </div>
 
@@ -1134,17 +962,35 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   className={`${
                     currentMode === "dark"
                       ? "bg-gray-900 text-white "
-                      : "bg-gray-200"
-                  } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                      : "bg-white"
+                  } col-span-1 h-96 shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                 >
                   <div className="justify-between items-center">
-                    <h6 className="font-semibold pb-3">Ads Data</h6>
+                    <h6 className="font-semibold pb-3 text-red-600">
+                      Ads Data
+                    </h6>
                     <CombinationChartTable tablData={row} />
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3"></div>
 
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-x-3 gap-y-3 pb-3 mt-5">
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-gray-900 text-white "
+                      : "bg-white"
+                  } col-span-1 h-96 shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm flex flex-col justify-start`}
+                >
+                  <h6 className="font-semibold pb-3 text-red-600">
+                    Frequency And Reach
+                  </h6>
+                  <div className="flex-grow flex items-center justify-center">
+                    <BubbleChartStat bubbleChartData={row} />
+                    {/* <CombineChart /> */}
+                  </div>
+                </div>
+              </div>
             </div>
 
             <Box
@@ -1169,11 +1015,13 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     className={`${
                       currentMode === "dark"
                         ? "bg-gray-900 text-white "
-                        : "bg-gray-200"
-                    } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                        : "bg-white"
+                    } col-span-1 h-full shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                   >
                     <div className="flex w-full flex-col justify-between items-center h-full">
-                      <h6 className="font-semibold pb-3">Audience</h6>
+                      <h6 className="font-semibold pb-3 text-red-600">
+                        Audience
+                      </h6>
                       <div className="flex-grow">
                         <HorizontalBarChart barCharData={ageGender} />
                       </div>
@@ -1184,11 +1032,13 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     className={`${
                       currentMode === "dark"
                         ? "bg-gray-900 text-white "
-                        : "bg-gray-200"
-                    } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                        : "bg-white"
+                    } col-span-1 h-min shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                   >
                     <div className="justify-between items-center h-80">
-                      <h6 className="font-semibold pb-3">Locations</h6>
+                      <h6 className="font-semibold pb-3 text-red-600">
+                        Locations
+                      </h6>
                       <MapChartStatistics locationData={locations} />
                     </div>
                   </div>
