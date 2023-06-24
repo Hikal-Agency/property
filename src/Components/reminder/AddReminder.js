@@ -24,7 +24,7 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import classNames from "classnames";
 
-const UpdateLead = ({
+const AddReminder = ({
   LeadModelOpen,
   setLeadModelOpe,
   handleLeadModelOpen,
@@ -397,7 +397,14 @@ const UpdateLead = ({
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />
-              <span className="font-semibold text-lg"> Fetching Your Lead</span>
+              <span
+                className={`font-semibold text-lg ${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              >
+                {" "}
+                Fetching Your Lead
+              </span>
             </div>
           ) : (
             <>
@@ -417,7 +424,7 @@ const UpdateLead = ({
                   currentMode === "dark" ? "text-white" : "text-black"
                 } text-center font-bold text-xl pb-10`}
               >
-                Update lead details
+                Add Reminder
               </h1>
               <form
                 onSubmit={(e) => {
@@ -829,4 +836,4 @@ const UpdateLead = ({
   );
 };
 
-export default UpdateLead;
+export default AddReminder;

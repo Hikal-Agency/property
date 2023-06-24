@@ -55,6 +55,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { langs } from "../../langCodes";
+import AddReminder from "../reminder/AddReminder";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -118,10 +119,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
+  const [AddReminderModelOpen, setAddReminderModelOpen] = useState(false);
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
   const handleUpdateLeadModelClose = () => {
     setLeadModelOpen(false);
     setUpdateLeadModelOpen(false);
+  };
+
+  const handleAdReminderModalOpen = () => setAddReminderModelOpen(true);
+  const handleAdReminderModalClose = () => {
+    setLeadModelOpen(false);
+    setAddReminderModelOpen(false);
   };
 
   const CustomColorSwitch = styled(() => ({
@@ -925,7 +933,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ? "bg-transparent text-white rounded-md shadow-none"
                   : "bg-transparent text-black rounded-md shadow-none"
               }`}
-              onClick={() => HandleEditFunc(cellValues)}
+              onClick={() => HandleReminderBtn(cellValues)}
             >
               <IconButton sx={{ padding: 0 }}>
                 <FaBell size={19} />
@@ -1514,6 +1522,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       handleLeadModelOpen();
     }
   };
+  // REMINDER BTN CLICK FUNC
+  const HandleReminderBtn = async (params) => {
+    console.log("LEADID: ", params);
+    setsingleLeadData(params.row);
+    handleAdReminderModalOpen();
+    // setUpdateLeadModelOpen(true);
+  };
   // EDIT BTN CLICK FUNC
   const HandleEditFunc = async (params) => {
     console.log("LEADID: ", params);
@@ -1994,6 +2009,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               setLeadModelOpen={setUpdateLeadModelOpen}
               handleLeadModelOpen={handleUpdateLeadModelOpen}
               handleLeadModelClose={handleUpdateLeadModelClose}
+              LeadData={singleLeadData}
+              BACKEND_URL={BACKEND_URL}
+              FetchLeads={FetchLeads}
+            />
+          )}
+
+          {AddReminderModelOpen && (
+            <AddReminder
+              LeadModelOpen={AddReminderModelOpen}
+              setLeadModelOpen={setAddReminderModelOpen}
+              handleLeadModelOpen={handleAdReminderModalOpen}
+              handleLeadModelClose={handleAdReminderModalClose}
               LeadData={singleLeadData}
               BACKEND_URL={BACKEND_URL}
               FetchLeads={FetchLeads}
