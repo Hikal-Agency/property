@@ -7,6 +7,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import axios from "axios";
 import Loader from "../Loader";
@@ -816,6 +817,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                           // onChange={(event) => selectAd(event, event.target.value)}
 
                           labelId="ad-label2"
+                          id="ad-label2"
                           label="Select Ad"
                           value={selectedAd}
                         >
