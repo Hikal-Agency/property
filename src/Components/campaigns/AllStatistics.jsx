@@ -28,9 +28,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
   const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
-  const [selectedCampaign, setSelectedCampaigns] = useState({
-    SelectedCampaign: "0",
-  });
+  const [selectedCampaign, setSelectedCampaigns] = useState({});
   const [campaignStats, setCampaignStats] = useState(null);
   const [ads, setAds] = useState();
   const [chartData, setChartData] = useState();
@@ -38,8 +36,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
   const [doughnutChart, setDoughnut] = useState();
   const [ageGender, setAgeGender] = useState([]);
   const [locations, setLocations] = useState([]);
-  const [selectedAd, setSelectedAd] = useState("0");
-  const [selectedAdset, setSelectedAdset] = useState("0");
+  const [selectedAd, setSelectedAd] = useState();
+  const [selectedAdset, setSelectedAdset] = useState();
   const [devices, setdevices] = useState();
 
   console.log("ChartData: ", chartData);
@@ -718,7 +716,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                         Ad Set
                       </InputLabel>
                       <Select
-                        value={selectedAdset}
+                        // value={selectedAdset}
                         labelId="adset-label"
                         label="Select Ad Set"
                         onChange={handleselectedAdset}
@@ -819,10 +817,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
                           
                           labelId="ad-label2"
                           label="Select Ad"
-                          dispayEmpty
                           value={selectedAd}
                         >
-                          <MenuItem selected disabled>
+                          <MenuItem selected value="0" disabled>
                             Select Ad
                           </MenuItem>
                           {selectedCampaign?.ads?.length > 0 ? (
@@ -843,11 +840,11 @@ const AllStatistics = ({ pageState, setpageState }) => {
             </>
           </div>
         </div>
-        {selectedCampaign.SelectedCampaign !== "0" && (
+        {selectedCampaign.SelectedCampaign && (
           <>
             <div className=" mb-5">
               <div className="mb-4 mt-5 ml-0">
-                {selectedCampaign.SelectedCampaign !== "0" && (
+                {selectedCampaign.SelectedCampaign && (
                   <h2
                     className={`text-center ${
                       currentMode === "dark" ? "text-white" : "text-black"
