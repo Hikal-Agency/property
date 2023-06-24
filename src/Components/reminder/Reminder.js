@@ -3,6 +3,12 @@ import React, { useEffect, useState } from "react";
 import { BsBuilding } from "react-icons/bs";
 import { ImLocation, ImClock } from "react-icons/im";
 import { useStateContext } from "../../context/ContextProvider";
+import { IconButton, Tooltip } from "@mui/material";
+import {
+  RiCheckLine as CheckIcon,
+  RiCloseLine as CloseIcon,
+} from "react-icons/ri";
+import { RiStickyNoteLine } from "react-icons/ri";
 
 const Reminder = () => {
   const { currentMode } = useStateContext();
@@ -10,70 +16,28 @@ const Reminder = () => {
 
   const upcoming_reminders = [
     {
-      leadName: "Junaid React Dev (Sr)",
-      project: "CRM",
-      enquiryType: "Villa",
-      LeadType: "Dev",
-      leadFor: "Investment",
-      meetingTime: "12:00",
-      meetingDate: "24-6-23",
-      meetingLocation: "ISL",
-      createdBy: "Junaid",
+      id: 1,
+      leadName: "Meeting 1",
+      notes: "Reminder notes 1",
+      date: "2023-06-25",
+      time: "09:00",
+      completed: false,
     },
     {
-      leadName: "Junaid React Dev (Sr)",
-      project: "CRM",
-      enquiryType: "Villa",
-      LeadType: "Dev",
-      leadFor: "Investment",
-      meetingTime: "12:00",
-      meetingDate: "24-6-23",
-      meetingLocation: "ISL",
-      createdBy: "Junaid",
+      id: 2,
+      leadName: "Meeting 2",
+      notes: "Reminder notes 2",
+      date: "2023-06-26",
+      time: "14:30",
+      completed: false,
     },
     {
-      leadName: "Junaid React Dev (Sr)",
-      project: "CRM",
-      enquiryType: "Villa",
-      LeadType: "Dev",
-      leadFor: "Investment",
-      meetingTime: "12:00",
-      meetingDate: "24-6-23",
-      meetingLocation: "ISL",
-      createdBy: "Junaid",
-    },
-    {
-      leadName: "Junaid React Dev (Sr)",
-      project: "CRM",
-      enquiryType: "Villa",
-      LeadType: "Dev",
-      leadFor: "Investment",
-      meetingTime: "12:00",
-      meetingDate: "24-6-23",
-      meetingLocation: "ISL",
-      createdBy: "Junaid",
-    },
-    {
-      leadName: "Junaid React Dev (Sr)",
-      project: "CRM",
-      enquiryType: "Villa",
-      LeadType: "Dev",
-      leadFor: "Investment",
-      meetingTime: "12:00",
-      meetingDate: "24-6-23",
-      meetingLocation: "ISL",
-      createdBy: "Junaid",
-    },
-    {
-      leadName: "Junaid React Dev (Sr)",
-      project: "CRM",
-      enquiryType: "Villa",
-      LeadType: "Dev",
-      leadFor: "Investment",
-      meetingTime: "12:00",
-      meetingDate: "24-6-23",
-      meetingLocation: "ISL",
-      createdBy: "Junaid",
+      id: 3,
+      leadName: "Meeting 3",
+      notes: "Reminder notes 3",
+      date: "2023-06-27",
+      time: "11:15",
+      completed: true,
     },
   ];
 
@@ -82,27 +46,23 @@ const Reminder = () => {
       {upcoming_reminders?.map((meeting, index) => {
         return (
           <div
-            // onClick={() => handleCardClick(meeting)}
-            key={index}
+            key={meeting.id}
             className={`w-[350px] flex flex-col justify-between ${
               currentMode === "dark" ? "bg-black" : "bg-white"
             } rounded-md mb-3`}
           >
             <div className="px-5 py-5 space-y-3">
               <h2 className="text-main-red-color text-md font-bold">
-                {meeting?.leadName}
+                {meeting.leadName}
               </h2>
               <div className="w-full flex justify-between items-center">
                 <div className="flex items-center space-x-1">
-                  <BsBuilding
+                  <RiStickyNoteLine
                     className={`mr-2 ${
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   />
-                  <p className="text-sm mr-3">
-                    {meeting?.project} {meeting?.enquiryType}{" "}
-                    {meeting?.leadType} {meeting?.leadFor}
-                  </p>
+                  <p className="text-sm mr-3">{meeting.notes}</p>
                 </div>
               </div>
               <div className="w-full flex justify-between items-center">
@@ -112,31 +72,31 @@ const Reminder = () => {
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   />
-                  <p className="text-sm mr-3">
-                    {meeting?.meetingTime === ""
-                      ? ""
-                      : `${meeting?.meetingTime}, `}{" "}
-                    {moment(meeting?.meetingDate).format("MMMM D, Y")}
-                  </p>
-                </div>
-              </div>
-              <div className="w-full flex justify-between items-center">
-                <div className="flex items-center space-x-1">
-                  <ImLocation
-                    className={`mr-2 ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  />
-                  <p className="text-sm mr-3">
-                    {" "}
-                    {meeting?.meetingLocation || "Not Updated"}
-                  </p>
+                  <p className="text-sm mr-3">{`${meeting.time}, ${moment(
+                    meeting.date
+                  ).format("MMMM D, Y")}`}</p>
                 </div>
               </div>
             </div>
-            <span className="block text-sm bg-main-red-color text-white rounded-md text-center p-2 font-semibold">
-              {meeting?.createdBy}
-            </span>
+            <div className="flex justify-between px-5 py-3">
+              <Tooltip title="Complete" arrow>
+                <IconButton
+                  style={{ backgroundColor: "#4CAF50", color: "white" }}
+                  className="rounded-full"
+                >
+                  <CheckIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="Cancel" arrow>
+                <IconButton
+                  style={{ backgroundColor: "#DC2626", color: "white" }}
+                  className="rounded-full"
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
           </div>
         );
       })}

@@ -602,7 +602,7 @@ const DashboardPanel = ({ setloading }) => {
           viewport={{ margin: "-70px" }}
           className={`${
             currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
-          } col-span-1 h-fit rounded-md p-5 cursor-pointer hover:shadow-sm`}
+          } col-span-1 h-fit rounded-md p-5  hover:shadow-sm`}
         >
           {/* {console.log("User is")}
           {console.log(User)} */}
