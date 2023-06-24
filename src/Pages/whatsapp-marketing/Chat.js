@@ -379,6 +379,7 @@ const Chat = () => {
                     data={data}
                     setActiveChat={setActiveChat}
                     allChats={allChats}
+                    currentMode={currentMode}
                     logout={logout}
                     handleLogout={handleLogout}
                     chatMessages={chatMessages}

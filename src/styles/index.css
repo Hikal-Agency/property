@@ -455,6 +455,18 @@ label[for="bulkImport"] .MuiButtonBase-root {
   width: 100% !important;
  }
 
+  .section-container-light {
+    padding: 1rem;
+    width: 98%;
+    background: #f6f6f6;
+    border-radius: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-container-dark {
+    background: none;
+  }
+
 @media all and (max-width: 1300px) {
   .MuiDataGrid-cell[data-field="creationDate"] p {
     font-size: 12px;
