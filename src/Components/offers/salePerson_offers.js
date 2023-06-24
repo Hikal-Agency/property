@@ -80,7 +80,7 @@ const SalesPersonOffers = ({ tabValue, setTabValue, isLoading }) => {
           }
         }
       >
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-x-3 gap-y-3 pb-4 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-4 text-center">
           {offers?.map((offer, index) => {
             return (
               offer?.validToSales === 1 && (
