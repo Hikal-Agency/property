@@ -468,15 +468,6 @@ const Meetings = () => {
 
                 <div className="mt-3 pb-3">
                   <TabPanel value={value} index={0}>
-                    <GridMeeting
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                      pageState={pageState}
-                      setpageState={setpageState}
-                    />
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
                     <Box
                       width={"100%"}
                       className={`${currentMode}-mode-datatable`}
@@ -550,6 +541,15 @@ const Meetings = () => {
                         handleMeetingModalClose={handleMeetingModalClose}
                       />
                     )}
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                    <GridMeeting
+                      isLoading={loading}
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                      pageState={pageState}
+                      setpageState={setpageState}
+                    />
                   </TabPanel>
                 </div>
               </div>
