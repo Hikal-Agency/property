@@ -904,17 +904,10 @@ const AllStatistics = ({ pageState, setpageState }) => {
   };
 
   useEffect(() => {
-    // const token = localStorage.getItem("auth-token");
-    // FetchSingleCampaign(token);
     FetchCampaigns();
     // eslint-disable-next-line
   }, [pageState.page]);
 
-  // ROW CLICK FUNCTION
-  const handleRowClick = async (params) => {
-    console.log("Clicked");
-    // window.open(`/leadnotes/${params.row.leadId}`);
-  };
 
   const DataGridStyles = {
     "& .MuiButtonBase-root": {
@@ -982,41 +975,11 @@ const AllStatistics = ({ pageState, setpageState }) => {
       // backgroundColor: "red",
     },
   };
-  // Custom Pagination
-  function CustomPagination() {
-    const apiRef = useGridApiContext();
-    const page = useGridSelector(apiRef, gridPageSelector);
-    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
 
-    return (
-      <>
-        {/* <Pagination
-          sx={{
-            "& .Mui-selected": {
-              backgroundColor: "white !important",
-              color: "black !important",
-              borderRadius: "5px !important",
-            },
-          }}
-          count={pageCount}
-          page={page + 1}
-          onChange={(event, value) => apiRef.current.setPage(value - 1)}
-        /> */}
-      </>
-    );
-  }
   return (
     <div className="pb-10 mb-5">
       <div className={`grid  gap-3 ${darkModeColors}`}>
         <div>
-          {/* <label
-            htmlFor="leadOrigin"
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            } capitalize`}
-          >
-            Select a campaign
-          </label> */}
 
           {loading ? (
             <>
@@ -1024,145 +987,14 @@ const AllStatistics = ({ pageState, setpageState }) => {
               <CircularProgress />
             </>
           ) : (
-            // <>
-            //   <FormControl
-            //     className="w-full mt-1 mb-5"
-            //     variant="outlined"
-            //     required
-            //   >
-            //     <InputLabel
-            //       id="campaign-label"
-            //       sx={{
-            //         color:
-            //           currentMode === "dark"
-            //             ? "#ffffff !important"
-            //             : "#000000 !important",
-            //       }}
-            //     >
-            //       Select Campaign
-            //     </InputLabel>
-            //     <Select
-            //       id="leadOrigin"
-            //       value={selectedCampaign.SelectedCampaign}
-            //       onChange={(event) =>
-            //         selectCampaign(event, event.target.value)
-            //       }
-            //       labelId="campaign-label"
-            //       label="Select Campaign"
-            //       size="medium"
-            //       sx={{
-            //         "& .MuiOutlinedInput-notchedOutline": {
-            //           borderColor:
-            //             currentMode === "dark" ? "#ffffff" : "#000000",
-            //         },
-            //         "&:hover:not(.Mui-disabled):before": {
-            //           borderColor:
-            //             currentMode === "dark" ? "#ffffff" : "#000000",
-            //         },
-            //       }}
-            //     >
-            //       <MenuItem value="0" disabled>
-            //         Select Campaign
-            //       </MenuItem>
-            //       {campaigns?.length > 0 ? (
-            //         campaigns?.map((campaign, index) => (
-            //           <MenuItem
-            //             key={index}
-            //             value={campaign?.id || ""}
-            //             name={campaign?.name}
-            //           >
-            //             {campaign?.name}
-            //           </MenuItem>
-            //         ))
-            //       ) : (
-            //         <MenuItem disabled>No Campaigns found.</MenuItem>
-            //       )}
-            //     </Select>
-            //   </FormControl>
-
-            //   {selectedCampaign && (
-            //     <>
-            //       <FormControl
-            //         className="w-full mt-1 mb-5"
-            //         variant="outlined"
-            //         required
-            //         sx={{
-            //           "& .MuiOutlinedInput-notchedOutline": {
-            //             borderColor:
-            //               currentMode === "dark" ? "#ffffff" : "#000000",
-            //           },
-            //           "&:hover:not(.Mui-disabled):before": {
-            //             borderColor:
-            //               currentMode === "dark" ? "#ffffff" : "#000000",
-            //           },
-            //         }}
-            //       >
-            //         <InputLabel id="ad-label">Select Ad</InputLabel>
-            //         <Select
-            //           // value={selectedAd}
-            //           // onChange={(event) => selectAd(event, event.target.value)}
-            //           labelId="ad-label"
-            //           label="Select Ad"
-            //         >
-            //           <MenuItem value="0" disabled>
-            //             Select Ad
-            //           </MenuItem>
-            //           {selectedCampaign?.ads?.length > 0 ? (
-            //             selectedCampaign?.ads?.map((ad, index) => (
-            //               <MenuItem key={index} value={ad?.id || ""}>
-            //                 {ad?.name}
-            //               </MenuItem>
-            //             ))
-            //           ) : (
-            //             <MenuItem disabled>No Ads found.</MenuItem>
-            //           )}
-            //         </Select>
-            //       </FormControl>
-
-            //       <FormControl
-            //         className="w-full mt-1 mb-5"
-            //         variant="outlined"
-            //         required
-            //         sx={{
-            //           "& .MuiOutlinedInput-notchedOutline": {
-            //             borderColor:
-            //               currentMode === "dark" ? "#ffffff" : "#000000",
-            //           },
-            //           "&:hover:not(.Mui-disabled):before": {
-            //             borderColor:
-            //               currentMode === "dark" ? "#ffffff" : "#000000",
-            //           },
-            //         }}
-            //       >
-            //         <InputLabel id="adset-label">Select Ad Set</InputLabel>
-            //         <Select
-            //           // value={selectedAdset}
-            //           // onChange={(event) =>
-            //           //   selectAdset(event, event.target.value)
-            //           // }
-            //           labelId="adset-label"
-            //           label="Select Ad Set"
-            //         >
-            //           <MenuItem value="0" disabled>
-            //             Select Ad Set
-            //           </MenuItem>
-            //           {selectedCampaign?.adsets?.length > 0 ? (
-            //             selectedCampaign?.adsets?.map((adset, index) => (
-            //               <MenuItem key={index} value={adset?.id || ""}>
-            //                 {adset?.name}
-            //               </MenuItem>
-            //             ))
-            //           ) : (
-            //             <MenuItem disabled>No Ad Sets found.</MenuItem>
-            //           )}
-            //         </Select>
-            //       </FormControl>
-            //     </>
-            //   )}
-            // </>
             <>
               <div className="w-full   -mx-2">
-                <div className="w-full flex flex-wrap justify-between  px-2">
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                  }}
+                  className="w-full flex flex-wrap justify-between  px-2"
+                >
                   <div className="w-full sm:w-1/3">
                     <FormControl
                       className="w-full mt-1 mb-5"
@@ -1367,159 +1199,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       </FormControl>
                     )}
                   </div>
-                </div>
-
-                {/* {selectedCampaign.SelectedCampaign && (
-                  <>
-                    <div className="w-full px-2">
-                      <FormControl
-                        className="w-full mt-1 mb-5"
-                        variant="outlined"
-                        value={selectedAdset}
-                        sx={{
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          },
-                          "&:hover:not(.Mui-disabled):before": {
-                            borderColor:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          },
-                        }}
-                      >
-                        <InputLabel
-                          id="adset-label"
-                          sx={{
-                            color:
-                              currentMode === "dark"
-                                ? "#ffffff !important"
-                                : "#000000 !important",
-                          }}
-                        >
-                          Ad Set
-                        </InputLabel>
-                        <Select
-                          // value={selectedAdset}
-                          // onChange={(event) => selectAdset(event, event.target.value)}
-                          labelId="adset-label"
-                          label="Select Ad Set"
-                          onChange={handleselectedAdset}
-                        >
-                          <MenuItem value="0" disabled>
-                            Ad Set
-                          </MenuItem>
-                          {selectedCampaign?.adsets?.length > 0 ? (
-                            selectedCampaign?.adsets?.map((adset, index) => (
-                              <MenuItem key={index} value={adset?.id || ""}>
-                                {adset?.name}
-                              </MenuItem>
-                            ))
-                          ) : (
-                            <MenuItem disabled>No Ad Sets found.</MenuItem>
-                          )}
-                        </Select>
-                      </FormControl>
-                    </div>
-
-                    <div className="w-full  px-2">
-                      {selectedAd?.length > 0 ? (
-                        <FormControl
-                          className="w-full mt-1 mb-5"
-                          variant="outlined"
-                          sx={{
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                            },
-                            "&:hover:not(.Mui-disabled):before": {
-                              borderColor:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                            },
-                          }}
-                        >
-                          <InputLabel
-                            id="ad-label"
-                            sx={{
-                              color:
-                                currentMode === "dark"
-                                  ? "#ffffff !important"
-                                  : "#000000 !important",
-                            }}
-                          >
-                            Ad
-                          </InputLabel>
-                          <Select
-                            // value={selectedAd}
-                            // onChange={(event) => selectAd(event, event.target.value)}
-                            labelId="ad-label"
-                            label="Select Ad"
-                            value={selectedAd}
-                          >
-                            <MenuItem value="0" disabled>
-                              Ad
-                            </MenuItem>
-                            {selectedAd.length > 0 ? (
-                              selectedAd?.map((ad, index) => (
-                                <MenuItem key={index} value={ad?.id || ""}>
-                                  {ad?.name}
-                                </MenuItem>
-                              ))
-                            ) : (
-                              <MenuItem disabled>No Ads found.</MenuItem>
-                            )}
-                          </Select>
-                        </FormControl>
-                      ) : (
-                        <FormControl
-                          className="w-full mt-1 mb-5"
-                          variant="outlined"
-                          sx={{
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                            },
-                            "&:hover:not(.Mui-disabled):before": {
-                              borderColor:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                            },
-                          }}
-                        >
-                          <InputLabel
-                            id="ad-label"
-                            sx={{
-                              color:
-                                currentMode === "dark"
-                                  ? "#ffffff !important"
-                                  : "#000000 !important",
-                            }}
-                          >
-                            Ad
-                          </InputLabel>
-                          <Select
-                            // value={selectedAd}
-                            // onChange={(event) => selectAd(event, event.target.value)}
-                            labelId="ad-label"
-                            label="Select Ad"
-                            value={selectedAd}
-                          >
-                            <MenuItem value="0" disabled>
-                              Select Ad
-                            </MenuItem>
-                            {selectedCampaign?.ads?.length > 0 ? (
-                              selectedCampaign?.ads?.map((ad, index) => (
-                                <MenuItem key={index} value={ad?.id || ""}>
-                                  {ad?.name}
-                                </MenuItem>
-                              ))
-                            ) : (
-                              <MenuItem disabled>No Ads found.</MenuItem>
-                            )}
-                          </Select>
-                        </FormControl>
-                      )}
-                    </div>
-                  </>
-                )} */}
+                </Box>
               </div>
             </>
           )}
@@ -1587,15 +1267,6 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 ))}
             </div>
 
-            <div>
-              {/* <div style={{ flex: "1" }}>
-                <h6 className="font-semibold w-full">Performance</h6>
-              
-                <CombineChart combineData={chartData} />
-                
-              </div> */}
-            </div>
-
             <div
               style={{
                 width: "80%",
@@ -1636,8 +1307,6 @@ const AllStatistics = ({ pageState, setpageState }) => {
               >
                 <div className="justify-between items-center">
                   <h6 className="font-semibold pb-3">Top Campaigns</h6>
-                  {/* <BarChartStatistics /> */}
-                  {/* <MapChartStatistics /> */}
                   <TopCampaignsTable tablData={campaigns} />
                 </div>
               </div>
@@ -1684,8 +1353,6 @@ const AllStatistics = ({ pageState, setpageState }) => {
               >
                 <div className="justify-between items-center">
                   <h6 className="font-semibold pb-3">Ads Data</h6>
-                  {/* <BarChartStatistics /> */}
-                  {/* <MapChartStatistics /> */}
                   <CombinationChartTable tablData={row} />
                 </div>
               </div>
