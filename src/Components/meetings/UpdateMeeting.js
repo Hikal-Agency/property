@@ -432,7 +432,7 @@ const UpdateMeeting = ({
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </TextField>
                     </FormControl>
-                    <TextField
+                    {/* <TextField
                       id="text"
                       type={"text"}
                       label="Meeting Notes "
@@ -445,7 +445,7 @@ const UpdateMeeting = ({
                         setMeetingNotes(e.target.value);
                       }}
                       required
-                    />
+                    /> */}
                     {meetingLocation.lat && meetingLocation.lng && (
                       <LocationPicker
                         meetingLocation={meetingLocation}

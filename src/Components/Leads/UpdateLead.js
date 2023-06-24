@@ -138,7 +138,7 @@ const UpdateLead = ({
     }
   };
 
-      console.log("Time:", moment().format("YYYY/MM/DD HH:mm:ss"));
+  console.log("Time:", moment().format("YYYY/MM/DD HH:mm:ss"));
 
   const handleEmail = (e) => {
     setEmailError(false);
@@ -648,8 +648,8 @@ const UpdateLead = ({
                         <MenuItem value="">Property type</MenuItem>
                         <MenuItem value={"Apartment"}>Apartment</MenuItem>
                         <MenuItem value={"Villa"}>Villa</MenuItem>
-                          <MenuItem value={"penthouse"}>Penthouse</MenuItem>
-                          <MenuItem value={"mansion"}>Mansion</MenuItem>
+                        <MenuItem value={"penthouse"}>Penthouse</MenuItem>
+                        <MenuItem value={"mansion"}>Mansion</MenuItem>
                         <MenuItem value={"Commercial"}>Commercial</MenuItem>
                         <MenuItem value={"Townhouse"}>TownHouse</MenuItem>
                       </TextField>

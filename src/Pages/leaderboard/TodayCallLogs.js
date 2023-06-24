@@ -140,7 +140,7 @@ const TodayCallLogs = () => {
                                   className="font-semibold float-right"
                                   style={{ color: "#000000" }}
                                 >
-                                  {call?.DIALED || 0}
+                                  {call?.dialed || 0}
                                 </span>
                               </h1>
                             </div>
