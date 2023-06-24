@@ -31,6 +31,7 @@ const Conversation = ({
   activeChat,
   logout,
   setActiveChat,
+  currentMode,
   loadingConversations,
   messagesContainerRef,
 }) => {
@@ -68,7 +69,7 @@ const Conversation = ({
           Switch Device
         </Button>
       </div>
-      <div className="mt-3 h-[530px] bg-[#F6F6F6] w-[98%] rounded-lg mb-8">
+      <div className={`mt-3 h-[530px] section-container-${currentMode}`}>
         <div className="border border-[#bfbfbf] rounded-sm flex h-full">
           <Box className="w-[45%] border-[#bfbfbf] border-r relative">
             <p

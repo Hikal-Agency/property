@@ -6,18 +6,11 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import {
-  DataGrid,
-  gridPageCountSelector,
-  gridPageSelector,
-  GridToolbar,
-  useGridApiContext,
-  useGridSelector,
-} from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import axios from "axios";
+import Loader from "../Loader";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate, useLocation } from "react-router-dom";
 import BubbleChartStat from "../charts/statisticsCharts/BubbleChartStat";
 import DoughnutChart from "../charts/statisticsCharts/DoughnutChartState";
 import HorizontalBarChart from "../charts/statisticsCharts/HorizontalBarChart";
@@ -33,7 +26,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
   const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
-  const [selectedCampaign, setSelectedCampaigns] = useState({});
+  const [selectedCampaign, setSelectedCampaigns] = useState({
+    SelectedCampaign: "0",
+  });
   const [campaignStats, setCampaignStats] = useState(null);
   const [ads, setAds] = useState();
   const [chartData, setChartData] = useState();
@@ -41,92 +36,16 @@ const AllStatistics = ({ pageState, setpageState }) => {
   const [doughnutChart, setDoughnut] = useState();
   const [ageGender, setAgeGender] = useState([]);
   const [locations, setLocations] = useState([]);
-  const [selectedAd, setSelectedAd] = useState();
-  const [selectedAdset, setSelectedAdset] = useState();
+  const [selectedAd, setSelectedAd] = useState("0");
+  const [selectedAdset, setSelectedAdset] = useState("0");
   const [devices, setdevices] = useState();
 
   console.log("ChartData: ", chartData);
-
-  const navigate = useNavigate();
-  const location = useLocation();
 
   console.log();
   console.log("Ads: ", ads);
 
   console.log("campaign stats: ", campaignStats);
-
-  // const data = [
-  //   { amount: campaignStats?.adsCount, title: "Ads", icon: FaAd },
-  //   { amount: campaignStats?.adsetsCount, title: "Adsets", icon: FaThList },
-  //   {
-  //     amount: campaignStats?.activeAdsCount,
-  //     title: "Active Ads",
-  //     icon: FaCheckCircle,
-  //   },
-  //   {
-  //     amount: campaignStats?.activeAdsetCount,
-  //     title: "Active Adsets",
-  //     icon: FaCheckCircle,
-  //   },
-  // ];
-
-  // count of ads adsets
-  // const FetchCampaignStats = async (campaignId) => {
-  //   try {
-  //     const adsetsPromise = axios.get(
-  //       `https://graph.facebook.com/v16.0/${campaignId}/adsets?summary=true&fields=id,name,status&access_token=${graph_api_token}`
-  //     );
-
-  //     const adsPromise = axios.get(
-  //       `https://graph.facebook.com/v16.0/${campaignId}/ads?summary=true&fields=id,name,status&access_token=${graph_api_token}`
-  //     );
-
-  //     const [adsetsResult, adsResult] = await Promise.all([
-  //       adsetsPromise,
-  //       adsPromise,
-  //     ]);
-
-  //     console.log("ADSERRESULT: ", adsetsResult);
-
-  //     const adsetsCount = adsetsResult.data.summary.total_count;
-  //     const adsCount = adsResult.data.summary.total_count;
-
-  //     const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
-  //       if (ad.status === "ACTIVE") {
-  //         count++;
-  //       }
-  //       return count;
-  //     }, 0);
-
-  //     const activeAdsetsCount = adsetsResult.data.data.reduce(
-  //       (count, adset) => {
-  //         if (adset.status === "ACTIVE") {
-  //           count++;
-  //         }
-  //         return count;
-  //       },
-  //       0
-  //     );
-
-  //     console.log("Ad Sets Count: ", adsetsCount);
-  //     console.log("Ads Count: ", adsCount);
-  //     console.log("Active Ads Count: ", activeAdsCount);
-  //     console.log("Active Adset Count: ", activeAdsetsCount);
-
-  //     // Set the fetched counts to state or use them as needed
-  //     const campaignStats = {
-  //       adsetsCount: adsetsCount,
-  //       adsCount: adsCount,
-  //       activeAdsCount: activeAdsCount,
-  //       activeAdsetCount: activeAdsetsCount,
-  //     };
-
-  //     // Set the campaign stats state with the fetched data
-  //     setCampaignStats(campaignStats);
-  //   } catch (error) {
-  //     console.log("Error occurred while fetching campaign stats: ", error);
-  //   }
-  // };
 
   console.log("age,gender: ", ageGender);
   // const FetchCampaignStats = async (campaignId) => {
@@ -519,16 +438,6 @@ const AllStatistics = ({ pageState, setpageState }) => {
     // },
   ];
 
-  // const row =
-  //   ads?.length > 0 &&
-  //   ads?.map((ad, index) => ({
-  //     id: ad?.id,
-  //     campaignName: ad?.name,
-  //     status: ad?.status,
-  //     adset: ad?.adset?.name,
-  //     dailyBudget: ad?.adset?.daily_budget,
-  //   }));
-
   const row =
     ads?.length > 0 &&
     ads?.map((ad, index) => ({
@@ -551,35 +460,14 @@ const AllStatistics = ({ pageState, setpageState }) => {
   console.log("Row: ", row);
 
   const totalCounts = {
-    cpc: campaignStats?.cpc || "No cpc",
-    cpm: campaignStats?.cpm || "No cpm",
-    impressions: campaignStats?.impressions || "No impressions",
-    link_clicks: campaignStats?.link_clicks || "No link clicks",
-    clicks: campaignStats?.clicks || "No clicks",
-    ctr: campaignStats?.ctr || "No CTR",
-    spend: campaignStats?.spend || "No amount",
+    cpc: campaignStats?.cpc || "0",
+    cpm: campaignStats?.cpm || "0",
+    impressions: campaignStats?.impressions || "0",
+    link_clicks: campaignStats?.link_clicks || "0",
+    clicks: campaignStats?.clicks || "0",
+    ctr: campaignStats?.ctr || "0",
+    spend: campaignStats?.spend || "0",
   };
-  // const totalCounts = {
-  //   cpc:
-  //     row?.length > 0 &&
-  //     row?.reduce((total, ad) => total + (ad?.cpc !== "No Data" ? 1 : 0), 0),
-  //   cpm:
-  //     row?.length > 0 &&
-  //     row?.reduce((total, ad) => total + (ad?.cpm !== "No Data" ? 1 : 0), 0),
-  //   impressions:
-  //     row?.length > 0 &&
-  //     row?.reduce(
-  //       (total, ad) => total + (ad?.impressions !== "No Data" ? 1 : 0),
-  //       0
-  //     ),
-  //   conversions:
-  //     row?.length > 0 &&
-  //     row.reduce(
-  //       (total, ad) =>
-  //         total + (ad.conversions.length !== 0 ? ad.conversions.length : 0),
-  //       0
-  //     ),
-  // };
 
   const data = [
     { amount: totalCounts.cpc, title: "CPC" },
@@ -595,10 +483,6 @@ const AllStatistics = ({ pageState, setpageState }) => {
 
   const FetchCampaigns = async (e) => {
     try {
-      // const relative_campaigns = await axios.get(
-      //   `https://graph.facebook.com/v16.0/act_967421490560096/campaigns?fields=name,bid_strategy,daily_budget,special_ad_category,ads{name,adset,bid_amount,status}&access_token=${graph_api_token}`
-      // );
-
       setLoading(true);
       const relative_campaigns = await axios.get(
         "https://graph.facebook.com/v16.0/act_967421490560096/campaigns",
@@ -642,92 +526,6 @@ const AllStatistics = ({ pageState, setpageState }) => {
 
     console.log("ads<-adsets: ", filteredAds);
   };
-
-  // const selectCampaign = (e, id, name) => {
-  //   console.log("Selected campaign ID: ", e.target.value);
-  //   console.log("Selected campaign name: ", name);
-
-  //   const selectedCampaignId = e.target.value;
-
-  //   const selectedCampaign = campaigns.find(
-  //     (campaign) => campaign.id === selectedCampaignId
-  //   );
-  //   const selectedCampaignName = selectedCampaign ? selectedCampaign.name : "";
-
-  //   setSelectedCampaigns({
-  //     SelectedCampaign: selectedCampaignId,
-  //     CampaignName: selectedCampaignName,
-  //   });
-
-  //   FetchSingleCampaign(selectedCampaignId);
-  // };
-
-  // const FetchSingleCampaign = async (selectedCampaign) => {
-  //   setpageState((old) => ({
-  //     ...old,
-  //     isLoading: true,
-  //   }));
-
-  //   axios
-  //     .get(
-  //       `https://graph.facebook.com/v16.0/${selectedCampaign}/ads?fields=id,name,adset{id,name,daily_budget},status&date_preset=last_year&limit=1000&access_token=${graph_api_token}`
-  //     )
-  //     .then(async (result) => {
-  //       console.log("ads of campaign ");
-  //       console.log(result.data);
-
-  //       const adsData = result.data.data;
-  //       console.log("adsData: ", adsData);
-  //       const adsWithInsights = await Promise.all(
-  //         adsData?.map(async (ad) => {
-  //           const insightsResult = await axios.get(
-  //             `https://graph.facebook.com/v16.0/${ad.id}/insights?fields=spend,cpc,cpm,impressions&date_preset=maximum&access_token=${graph_api_token}`
-  //           );
-  //           console.log("Insights result: ", insightsResult);
-  //           const insightsData = insightsResult.data.data[0];
-  //           return {
-  //             ...ad,
-  //             adset: ad?.adset?.name,
-  //             dailyBudget: ad?.adset?.daily_budget,
-  //             spend: insightsData?.spend,
-  //             cpc: insightsData?.cpc,
-  //             cpm: insightsData?.cpm,
-  //             impressions: insightsData?.impressions,
-  //           };
-  //         })
-  //       );
-
-  //       console.log("Insights Data: ", adsWithInsights);
-
-  //       setAds(adsWithInsights);
-  //       FetchCampaignStats(selectedCampaign);
-
-  //       const rowsdata = adsWithInsights.map((row, index) => ({
-  //         id: index + 1,
-  //         campaignName: row?.name,
-  //         status: row?.status,
-  //         adset: row?.adset,
-  //         dailyBudget: row?.dailyBudget,
-  //         spend: row?.spend,
-  //         cpc: row?.cpc,
-  //         cpm: row?.cpm,
-  //         impressions: row?.impressions,
-  //         Cid: row?.id,
-  //       }));
-
-  //       setpageState((old) => ({
-  //         ...old,
-  //         isLoading: false,
-  //         data: rowsdata,
-  //         total: rowsdata.length,
-  //         pageSize: 10,
-  //       }));
-  //     })
-  //     .catch((err) => {
-  //       console.log("error occured", err);
-  //       console.log(err);
-  //     });
-  // };
 
   const selectCampaign = (e, id, name) => {
     console.log("Selected campaign ID: ", e.target.value);
@@ -908,7 +706,6 @@ const AllStatistics = ({ pageState, setpageState }) => {
     // eslint-disable-next-line
   }, [pageState.page]);
 
-
   const DataGridStyles = {
     "& .MuiButtonBase-root": {
       color: "white",
@@ -975,27 +772,32 @@ const AllStatistics = ({ pageState, setpageState }) => {
       // backgroundColor: "red",
     },
   };
-
-  return (
-    <div className="pb-10 mb-5">
-      <div className={`grid  gap-3 ${darkModeColors}`}>
-        <div>
-
-          {loading ? (
+  if (loading) {
+    return <Loader />;
+  } else {
+    return (
+      <div className="pb-10 mb-5">
+        <div className={`grid  gap-3 ${darkModeColors}`}>
+          <div>
             <>
-              <br />
-              <CircularProgress />
-            </>
-          ) : (
-            <>
-              <div className="w-full   -mx-2">
+              <div className="w-full -mx-2">
                 <Box
                   sx={{
                     ...darkModeColors,
+                    "& .MuiSelect-select": {
+                      padding: "4px",
+                      paddingLeft: "6px !important",
+                      paddingRight: "20px",
+                      borderRadius: "8px",
+                    },
+                    "& .MuiInputBase-root": {
+                      width: "max-content",
+                      marginRight: "5px",
+                    },
                   }}
-                  className="w-full flex flex-wrap justify-between  px-2"
+                  className="w-full flex flex-wrap justify-center items-center px-2"
                 >
-                  <div className="w-full sm:w-1/3">
+                  <div>
                     <FormControl
                       className="w-full mt-1 mb-5"
                       variant="outlined"
@@ -1010,10 +812,10 @@ const AllStatistics = ({ pageState, setpageState }) => {
                               : "#000000 !important",
                         }}
                       >
-                        Select Campaign
+                        Campaign
                       </InputLabel>
                       <Select
-                        id="leadOrigin"
+                        id="campaign-label"
                         value={selectedCampaign.SelectedCampaign}
                         onChange={(event) =>
                           selectCampaign(event, event.target.value)
@@ -1032,7 +834,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                           },
                         }}
                       >
-                        <MenuItem value="0" disabled>
+                        <MenuItem value="0" selected disabled>
                           Select Campaign
                         </MenuItem>
                         {campaigns?.length > 0 ? (
@@ -1052,7 +854,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     </FormControl>
                   </div>
 
-                  <div className="w-full sm:w-1/3 px-2">
+                  <div>
                     <FormControl
                       className="w-full mt-1 mb-5"
                       variant="outlined"
@@ -1080,14 +882,13 @@ const AllStatistics = ({ pageState, setpageState }) => {
                         Ad Set
                       </InputLabel>
                       <Select
-                        // value={selectedAdset}
-                        // onChange={(event) => selectAdset(event, event.target.value)}
+                        value={selectedAdset}
                         labelId="adset-label"
                         label="Select Ad Set"
                         onChange={handleselectedAdset}
                       >
                         <MenuItem value="0" disabled>
-                          Ad Set
+                          Select Ad Set
                         </MenuItem>
                         {selectedCampaign?.adsets?.length > 0 ? (
                           selectedCampaign?.adsets?.map((adset, index) => (
@@ -1102,7 +903,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     </FormControl>
                   </div>
 
-                  <div className="w-full sm:w-1/3 px-2">
+                  <div>
                     {selectedAd?.length > 0 ? (
                       <FormControl
                         className="w-full mt-1 mb-5"
@@ -1136,10 +937,10 @@ const AllStatistics = ({ pageState, setpageState }) => {
                           label="Select Ad"
                           value={selectedAd}
                         >
-                          <MenuItem value="0" disabled>
-                            Ad
+                          <MenuItem value="0" selected disabled>
+                            Select Ad
                           </MenuItem>
-                          {selectedAd.length > 0 ? (
+                          {selectedAd !== "0" && selectedAd.length > 0 ? (
                             selectedAd?.map((ad, index) => (
                               <MenuItem key={index} value={ad?.id || ""}>
                                 {ad?.name}
@@ -1202,271 +1003,243 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 </Box>
               </div>
             </>
-          )}
+          </div>
         </div>
-      </div>
-      {selectedCampaign.SelectedCampaign && (
-        <>
-          <div className=" mb-5">
-            <div className="mb-4 mt-5 ml-0">
-              {selectedCampaign.SelectedCampaign && (
-                <h2
-                  className={`${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  Campaign:{" "}
-                  <span className="text-red-600 font-bold">
-                    {selectedCampaign.CampaignName}
-                  </span>
-                </h2>
-              )}
-            </div>
-
-            <div
-              style={{
-                width: "80%",
-                backgroundColor: "#DA1F26",
-                padding: "10px",
-              }}
-              className="my-3 rounded-lg mx-auto"
-            >
-              <h2
-                style={{ textAlign: "center" }}
-                className="text-white font-bold text-lg"
+        {selectedCampaign.SelectedCampaign !== "0" && (
+          <>
+            <div className=" mb-5">
+              <div className="mb-4 mt-5 ml-0">
+                {selectedCampaign.SelectedCampaign !== "0" && (
+                  <h2
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    Campaign:{" "}
+                    <span className="text-red-600 font-bold">
+                      {selectedCampaign.CampaignName}
+                    </span>
+                  </h2>
+                )}
+              </div>
+              <h1
+                className={`text-xl border-l-[4px] ml-1 pl-1 mb-4 mt-5 font-bold ${
+                  currentMode === "dark"
+                    ? "text-white border-white"
+                    : "text-red-600 font-bold border-red-600"
+                }`}
               >
                 Overview
-              </h2>
+              </h1>
+
+              {/* data starts */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-6 xl:grid-cols-7 gap-x-3 gap-y-3 text-center">
+                {data?.length > 0 &&
+                  data?.map((item, index) => (
+                    <div
+                      key={index}
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-gray-900 text-white "
+                          : "bg-[#da1f26] text-white"
+                      } rounded-lg h-20 bg-[#da1f26] p-2 shadow cursor-pointer hover:shadow-sm grid content-center`}
+                    >
+                      <p className="text-xl font-bold pb-2 text-white">
+                        {item?.amount}
+                      </p>
+                      <p
+                        className={`text-sm ${
+                          currentMode === "dark"
+                            ? "text-white"
+                            : "text-white font-semibold"
+                        }`}
+                      >
+                        {item?.title}
+                      </p>
+                    </div>
+                  ))}
+              </div>
+              <h1
+                className={`text-xl border-l-[4px] ml-1 pl-1 mb-4 mt-7 font-bold ${
+                  currentMode === "dark"
+                    ? "text-white border-white"
+                    : "text-red-600 font-bold border-red-600"
+                }`}
+              >
+                Performance & Interactions
+              </h1>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3">
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-gray-900 text-white "
+                      : "bg-gray-200"
+                  } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                >
+                  <div className="justify-between items-center ">
+                    <h6 className="font-semibold pb-3">Performance</h6>
+                    {/* <AreaChart /> */}
+                    <CombineChart combineData={chartData} />
+                  </div>
+                </div>
+
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-gray-900 text-white "
+                      : "bg-gray-200"
+                  } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                >
+                  <div className="justify-between items-center">
+                    <h6 className="font-semibold pb-3">Top Campaigns</h6>
+                    <TopCampaignsTable tablData={campaigns} />
+                  </div>
+                </div>
+
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-gray-900 text-white "
+                      : "bg-gray-200"
+                  } col-span-1 h-96 w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                  sx={{
+                    height: "300px",
+                    width: "300px",
+                  }}
+                >
+                  <div className="justify-between items-center">
+                    <h6 className="font-semibold pb-3">Devices</h6>
+                    <DoughnutChart doughnutChart={devices} />
+                    {/* <DoughnutChart doughnutChart={doughnutChart} /> */}
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-5">
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-gray-900 text-white "
+                      : "bg-gray-200"
+                  } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm flex flex-col justify-start`}
+                >
+                  <h6 className="font-semibold pb-3">Frequency And Reach</h6>
+                  <div className="flex-grow flex items-center justify-center">
+                    <BubbleChartStat bubbleChartData={row} />
+                    {/* <CombineChart /> */}
+                  </div>
+                </div>
+
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-gray-900 text-white "
+                      : "bg-gray-200"
+                  } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                >
+                  <div className="justify-between items-center">
+                    <h6 className="font-semibold pb-3">Ads Data</h6>
+                    <CombinationChartTable tablData={row} />
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3"></div>
+
             </div>
 
-            {/* data starts */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-6 xl:grid-cols-7 gap-x-3 gap-y-3 text-center">
-              {data?.length > 0 &&
-                data?.map((item, index) => (
+            <Box
+              width={"100%"}
+              sx={DataGridStyles}
+              style={{ width: "100%", overflowX: "auto" }}
+            >
+              <h1
+                className={`text-xl border-l-[4px] ml-1 pl-1 mb-4 mt-2 font-bold ${
+                  currentMode === "dark"
+                    ? "text-white border-white"
+                    : "text-red-600 font-bold border-red-600"
+                }`}
+              >
+                Audience
+              </h1>
+              <div className="flex justify-center">
+                <div className="grid w-full px-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-2">
+                  {/* other commented out code */}
+
                   <div
-                    key={index}
                     className={`${
                       currentMode === "dark"
                         ? "bg-gray-900 text-white "
-                        : "bg-gray-200 text-main-dark-bg"
-                    } border-2 border-red-600 rounded-lg h-20 dark:bg-secondary-dark-bg p-2 cursor-pointer hover:shadow-sm grid content-center`}
+                        : "bg-gray-200"
+                    } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                   >
-                    <p className="text-xl font-bold pb-2 text-red-600">
-                      {item?.amount}
-                    </p>
-                    <p
-                      className={`text-sm ${
-                        currentMode === "dark"
-                          ? "text-white"
-                          : "text-main-dark-bg-2 font-semibold"
-                      }`}
-                    >
-                      {item?.title}
-                    </p>
+                    <div className="flex w-full flex-col justify-between items-center h-full">
+                      <h6 className="font-semibold pb-3">Audience</h6>
+                      <div className="flex-grow">
+                        <HorizontalBarChart barCharData={ageGender} />
+                      </div>
+                    </div>
                   </div>
-                ))}
-            </div>
 
-            <div
-              style={{
-                width: "80%",
-                backgroundColor: "#DA1F26",
-                padding: "10px",
-              }}
-              className="my-5 rounded-lg mx-auto"
-            >
-              <h2
-                style={{ textAlign: "center" }}
-                className="text-white font-bold text-lg"
-              >
-                Performance & Interations
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3  mt-5">
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-gray-900 text-white "
-                    : "bg-gray-200"
-                } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
-              >
-                <div className="justify-between items-center ">
-                  <h6 className="font-semibold pb-3">Performance</h6>
-                  {/* <AreaChart /> */}
-                  <CombineChart combineData={chartData} />
-                </div>
-              </div>
-
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-gray-900 text-white "
-                    : "bg-gray-200"
-                } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
-              >
-                <div className="justify-between items-center">
-                  <h6 className="font-semibold pb-3">Top Campaigns</h6>
-                  <TopCampaignsTable tablData={campaigns} />
-                </div>
-              </div>
-
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-gray-900 text-white "
-                    : "bg-gray-200"
-                } col-span-1 h-96 w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
-                sx={{
-                  height: "300px",
-                  width: "300px",
-                }}
-              >
-                <div className="justify-between items-center">
-                  <h6 className="font-semibold pb-3">Devices</h6>
-                  <DoughnutChart doughnutChart={devices} />
-                  {/* <DoughnutChart doughnutChart={doughnutChart} /> */}
-                </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-5">
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-gray-900 text-white "
-                    : "bg-gray-200"
-                } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm flex flex-col justify-start`}
-              >
-                <h6 className="font-semibold pb-3">Frequency And Reach</h6>
-                <div className="flex-grow flex items-center justify-center">
-                  <BubbleChartStat bubbleChartData={row} />
-                  {/* <CombineChart /> */}
-                </div>
-              </div>
-
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-gray-900 text-white "
-                    : "bg-gray-200"
-                } col-span-1 h-96  w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
-              >
-                <div className="justify-between items-center">
-                  <h6 className="font-semibold pb-3">Ads Data</h6>
-                  <CombinationChartTable tablData={row} />
-                </div>
-              </div>
-            </div>
-            {/* MANAGER TAGET PROGRESS BAR  */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3"></div>
-
-            {/* data ends*/}
-          </div>
-
-          <Box
-            width={"100%"}
-            sx={DataGridStyles}
-            style={{ width: "100%", overflowX: "auto" }}
-          >
-            <div
-              style={{
-                width: "80%",
-                backgroundColor: "#DA1F26",
-                padding: "10px",
-              }}
-              className=" rounded-lg mx-auto mb-3"
-            >
-              <h2
-                style={{ textAlign: "center" }}
-                className="text-white font-bold text-lg"
-              >
-                Audience
-              </h2>
-            </div>
-            <div className="flex  justify-center">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
-                {/* other commented out code */}
-
-                <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "bg-gray-900 text-white "
-                      : "bg-gray-200"
-                  } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
-                >
-                  <div className="flex flex-col justify-between items-center h-full">
-                    <h6 className="font-semibold pb-3">Audience</h6>
-                    <div className="flex-grow">
-                      <HorizontalBarChart barCharData={ageGender} />
+                  <div
+                    className={`${
+                      currentMode === "dark"
+                        ? "bg-gray-900 text-white "
+                        : "bg-gray-200"
+                    } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                  >
+                    <div className="justify-between items-center h-80">
+                      <h6 className="font-semibold pb-3">Locations</h6>
+                      <MapChartStatistics locationData={locations} />
                     </div>
                   </div>
                 </div>
-
-                <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "bg-gray-900 text-white "
-                      : "bg-gray-200"
-                  } col-span-1 h-min w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
-                >
-                  <div className="justify-between items-center h-80">
-                    <h6 className="font-semibold pb-3">Locations</h6>
-                    <MapChartStatistics locationData={locations} />
-                  </div>
-                </div>
               </div>
-            </div>
 
-            {/* MANAGER TAGET PROGRESS BAR  */}
-            <div
-              className={`${currentMode}-mode-datatable grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3`}
-            ></div>
+              {/* MANAGER TAGET PROGRESS BAR  */}
+              <div
+                className={`${currentMode}-mode-datatable grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3`}
+              ></div>
 
-            <div
-              style={{
-                width: "80%",
-                backgroundColor: "#DA1F26",
-                padding: "10px",
-              }}
-              className=" rounded-lg mx-auto mb-3"
-            >
-              <h2
-                style={{ textAlign: "center" }}
-                className="text-white font-bold text-lg"
+              <h1
+                className={`text-xl border-l-[4px] ml-1 pl-1 mb-4 mt-5 font-bold ${
+                  currentMode === "dark"
+                    ? "text-white border-white"
+                    : "text-red-600 font-bold border-red-600"
+                }`}
               >
                 Ads Details
-              </h2>
-            </div>
+              </h1>
 
-            <DataGrid
-              autoHeight
-              rows={row}
-              columns={columns}
-              components={{
-                Toolbar: GridToolbar,
-                // Pagination: CustomPagination,
-              }}
-              componentsProps={{
-                toolbar: {
-                  printOptions: { disableToolbarButton: User?.role !== 1 },
-                  csvOptions: { disableToolbarButton: User?.role !== 1 },
-                  showQuickFilter: true,
-                  value: searchText,
-                  onChange: HandleQuicSearch,
-                },
-              }}
-              sx={{
-                boxShadow: 2,
-                "& .MuiDataGrid-cell:hover": {
-                  cursor: "pointer",
-                },
-              }}
-            />
-          </Box>
-        </>
-      )}
-    </div>
-  );
+              <DataGrid
+                autoHeight
+                rows={row}
+                columns={columns}
+                components={{
+                  Toolbar: GridToolbar,
+                  // Pagination: CustomPagination,
+                }}
+                componentsProps={{
+                  toolbar: {
+                    printOptions: { disableToolbarButton: User?.role !== 1 },
+                    csvOptions: { disableToolbarButton: User?.role !== 1 },
+                    showQuickFilter: true,
+                    value: searchText,
+                    onChange: HandleQuicSearch,
+                  },
+                }}
+                sx={{
+                  boxShadow: 2,
+                  "& .MuiDataGrid-cell:hover": {
+                    cursor: "pointer",
+                  },
+                }}
+              />
+            </Box>
+          </>
+        )}
+      </div>
+    );
+  }
 };
 
 export default AllStatistics;
