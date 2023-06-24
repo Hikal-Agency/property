@@ -24,6 +24,12 @@ const AttendanceLogin = () => {
   const [loading, setloading] = useState(false);
   const [openBackDrop, setOpenBackDrop] = useState(false);
 
+  // function useQuery() {
+  //   return new URLSearchParams(location.search);
+  // }
+
+  // let query = useQuery();
+
   const LoginUser = async () => {
     setloading(true);
     var bodyFormData = new FormData();
@@ -37,8 +43,18 @@ const AttendanceLogin = () => {
         // console.log(result);
         if (result.data.success && result.data.data.token) {
           localStorage.setItem("auth-token", result.data.data.token);
-          document.location.href =
-            location?.state?.continueURL || "/attendance";
+
+          let continueURL = location?.state?.continueURL || "/attendance";
+          let params = new URLSearchParams(location.search);
+          let check = params.get("check");
+
+          // Append the 'check' parameter to the continueURL
+          if (check) {
+            continueURL += "?check=" + check;
+          }
+
+          document.location.href = continueURL;
+
           toast.success("Login Successfull", {
             position: "top-right",
             autoClose: 3000,

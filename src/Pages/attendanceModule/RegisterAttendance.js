@@ -242,7 +242,7 @@ const RegisterAttendance = () => {
       if (token) {
         FetchProfile(token);
       } else {
-        navigate("/attendanceLogin", {
+        navigate("/attendanceLogin" + location.search, {
           state: {
             error: "Please login to register attendance.",
             continueURL: location.pathname,
