@@ -1,7 +1,6 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { BsBuilding } from "react-icons/bs";
-import { ImLocation, ImClock } from "react-icons/im";
+import { ImClock } from "react-icons/im";
 import { useStateContext } from "../../context/ContextProvider";
 import { IconButton, Tooltip } from "@mui/material";
 import {
