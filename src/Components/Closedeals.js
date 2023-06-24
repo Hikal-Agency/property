@@ -471,7 +471,9 @@ const Closedeals = ({ pageState, setpageState }) => {
 
     axios
       .get(
-        `${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${pageState.perpage}`,
+        `${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${
+          pageState.perpage || 14
+        }`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -499,7 +501,7 @@ const Closedeals = ({ pageState, setpageState }) => {
               : index + 1,
           dealDate: row?.dealDate,
           leadName: row?.leadName,
-          userName: row?.userName,
+          userName: row?.userName ? row?.userName : "no name",
           project: row?.project,
           enquiryType: row?.enquiryType,
           leadType: row?.leadType,
