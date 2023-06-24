@@ -800,7 +800,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                           },
                         }}
                       >
-           <InputLabel
+                        <InputLabel
                           id="ad-label2"
                           sx={{
                             color:
@@ -814,7 +814,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                         <Select
                           // value={selectedAd}
                           // onChange={(event) => selectAd(event, event.target.value)}
-                          
+
                           labelId="ad-label2"
                           label="Select Ad"
                           value={selectedAd}
