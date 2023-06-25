@@ -595,7 +595,7 @@ const DashboardPanel = ({ setloading }) => {
       {/* 4TH ROW END [UPCOMING MEETING] */}
 
       {/* 5TH ROW [REMINDER] */}
-      <div className="grid grid-cols-1 pb-3">
+      {/* <div className="grid grid-cols-1 pb-3">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -604,8 +604,6 @@ const DashboardPanel = ({ setloading }) => {
             currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
           } col-span-1 h-fit rounded-md p-5  hover:shadow-sm`}
         >
-          {/* {console.log("User is")}
-          {console.log(User)} */}
           <h4
             className="font-semibold pb-5"
             style={{ textTransform: "capitalize" }}
@@ -615,7 +613,7 @@ const DashboardPanel = ({ setloading }) => {
 
           <Reminder />
         </motion.div>
-      </div>
+      </div> */}
       {/* 5TH ROW END [REMINDER] */}
 
       {/* 5TH ROW [TODO + SHORTCUTS] */}
