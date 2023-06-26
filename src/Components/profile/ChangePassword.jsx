@@ -40,7 +40,7 @@ export const ChangePassword = () => {
         .then((result) => {
           console.log(result);
           setbtnloading(false);
-          toast.success("Password Updated Successfully", {
+          toast.success("Password Updated, Login again with the new credentials!", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
