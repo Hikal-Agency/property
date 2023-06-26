@@ -23,9 +23,7 @@ import {
 
 const LeadNotes = ({ pageState, setpageState }) => {
   const { currentMode, BACKEND_URL, User, darkModeColors } = useStateContext();
-  // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
-  // eslint-disable-next-line
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
   const [value, setValue] = useState(0);
