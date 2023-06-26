@@ -149,22 +149,25 @@ const Chat = () => {
     }
   };
 
-  const logout = () => {
+  const logout = (showNotif = true) => {
     const waAccount = JSON.parse(
       localStorage.getItem("authenticated-wa-account")
     );
     if (waAccount) {
       localStorage.removeItem("authenticated-wa-device");
       localStorage.removeItem("authenticated-wa-account");
-      toast.success("You are logged out successfully!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      if(showNotif) {
+
+        toast.success("You are logged out successfully!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
 
       fetchDevices();
       setActiveChat({

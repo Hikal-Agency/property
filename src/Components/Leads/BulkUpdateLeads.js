@@ -137,6 +137,7 @@ selectionModelRef
           >
             <IoMdClose size={18} />
           </IconButton>
+          {(User?.role !== 3 && User?.role !== 7) && 
           <Select
             id="Manager"
             value={Manager}
@@ -157,7 +158,7 @@ selectionModelRef
               </MenuItem>
             ))}
           </Select>
-
+          }
           {noAgents ? (
             <p
               style={{
@@ -178,7 +179,6 @@ selectionModelRef
                 size="medium"
                 className="w-full mb-5"
                 displayEmpty
-                disabled={User?.role !== 1 && User?.role !== 2 && true}
                 // required={SalesPerson.length > 0 ? true : false}
               >
                 <MenuItem value="0" disabled>
