@@ -91,7 +91,7 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
           }
         }
       >
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-4 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-4 ">
           {offers?.map((offer, index) => {
             return (
               // offer.validToManager === 1 && offer.validToSales === 1 ? (
@@ -100,26 +100,46 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                   currentMode === "dark"
                     ? "bg-black text-white"
                     : "bg-white text-black"
-                } p-5 rounded-md h-[350px] flex flex-col justify-between`}
+                } p-5 rounded-md h-[450px] flex flex-col justify-between`}
               >
+                <div>
+                  <img
+                    src="../assets/offers_static_img.png"
+                    alt="offers image"
+                  />
+                </div>
+                <p
+                  className={`${
+                    currentMode === "dark" ? "text-white" : "text-[#000000]"
+                  }  text-xs`}
+                  style={{ textTransform: "capitalize" }}
+                >
+                  Offer from:{" "}
+                  <span className="text-[#DA1F26] font-bold">
+                    Mr. {offer?.offerFrom}
+                  </span>
+                </p>
+
                 <h1
-                  className="bg-main-red-color text-white font-semibold rounded-md p-2 mb-3"
+                  className={`${
+                    currentMode === "dark" ? "text-white" : "text-[#000000]"
+                  } text-white font-bold rounded-md mb-3 text-start text-lg`}
                   style={{ textTransform: "capitalize" }}
                 >
                   {offer?.offerTitle}
                 </h1>
-                <h6 className="mb-3 p-2">{offer?.offerDescription}</h6>
+                <h6 className="mb-3">{offer?.offerDescription}</h6>
                 <hr className="mb-3"></hr>
                 <h1 className="font-semibold mb-3">
                   Valid from {offer?.validFrom} to {offer?.validTill}
                 </h1>
                 <hr className="mb-3"></hr>
-                <h6
+                {/* <h6
                   className="mb-3 bg-main-red-color text-white p-2 rounded-md"
                   style={{ textTransform: "capitalize" }}
                 >
                   Offer from Mr. {offer?.offerFrom}
-                </h6>
+                </h6> */}
               </div>
 
               // ) : (
