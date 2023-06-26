@@ -108,7 +108,7 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                     : "bg-white text-black"
                 } p-5 rounded-md h-[500px] flex flex-col justify-between`}
               >
-                <div className=" top-0 left-1/2 transform -translate-x-1/2 z-10 flex gap-1">
+                <div className=" top-0 left-0   z-10 flex gap-1">
                   <div className="h-1 w-7 bg-red-500"></div>
                   <div className="h-1 w-7 bg-red-500"></div>
                   <div className="h-1 w-7 bg-red-500"></div>
