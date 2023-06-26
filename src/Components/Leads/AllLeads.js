@@ -65,6 +65,17 @@ const bulkUpdateBtnStyles = {
   fontWeight: "500",
 };
 
+const feedbacks = [
+  "All",
+  "New",
+  "No Answer",
+  "Meeting",
+  "Follow Up",
+  "Low Budget",
+  "Not Interested",
+  "Unreachable",
+];
+
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const token = localStorage.getItem("auth-token");
   const navigate = useNavigate();
@@ -77,6 +88,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
+  const [unassignedFeedback, setUnassignedFeedback] = useState("All");
   const [bulkDeleteClicked, setBulkDeleteClicked] = useState(false);
   const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
   // const [searchTerm, setSearchTerm] = useState("");
@@ -102,6 +114,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     User,
     fetchSidebarData,
     BACKEND_URL,
+    darkModeColors,
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -1318,6 +1331,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       FetchLeads_url += `&agentAssigned=${assignedAgent}`;
     }
 
+    if(unassignedFeedback) {
+      if(unassignedFeedback !== "All") {
+        FetchLeads_url += `&feedback=${unassignedFeedback}`;
+      }
+    }
+
     axios
       .get(FetchLeads_url, {
         headers: {
@@ -1385,26 +1404,25 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               : index + 1,
           leadId: row?.id,
           creationDate: row?.creationDate,
-          leadName: row?.leadName || "No Name",
+          leadName: row?.leadName || "-",
           // leadContact:
-          //   row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
-          leadContact: row?.leadContact?.replaceAll(" ", "") || "No Contact",
-          project: row?.project || "No Project",
-          enquiryType: row?.enquiryType || "No Type",
-          leadType: row?.leadType || "No Type",
+          leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
+          project: row?.project || "-",
+          enquiryType: row?.enquiryType || "-",
+          leadType: row?.leadType || "-",
           assignedToManager: row?.assignedToManager || null,
           assignedToSales: row?.assignedToSales || null,
           feedback: row?.feedback || null,
           priority: row?.priority || null,
-          language: getLangCode(row?.language) || "No language",
-          leadSource: row?.leadSource || "No source",
-          lid: row?.lid || "No id",
-          lastEdited: row?.lastEdited || "No date",
-          leadFor: row?.leadFor || "No lead",
-          leadStatus: row?.leadStatus || "No status",
-          leadCategory: leadCategory || "No category",
+          language: getLangCode(row?.language) || "-",
+          leadSource: row?.leadSource || "-",
+          lid: row?.lid || "-",
+          lastEdited: row?.lastEdited || "-",
+          leadFor: row?.leadFor || "-",
+          leadStatus: row?.leadStatus || "-",
+          leadCategory: leadCategory || "-",
           coldCall: row?.coldcall,
-          notes: row?.notes || "No notes",
+          notes: row?.notes || "-",
           otp:
             row?.otp === "No OTP" || row?.otp === "No OTP Used"
               ? "No OTP Used"
@@ -1581,26 +1599,26 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               : index + 1,
           leadId: row?.id,
           creationDate: row?.creationDate,
-          leadName: row?.leadName || "No Name",
+          leadName: row?.leadName || "-",
           // leadContact:
           //   row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
-          leadContact: row?.leadContact?.replaceAll(" ", "") || "No Contact",
-          project: row?.project || "No Project",
-          enquiryType: row?.enquiryType || "No Type",
-          leadType: row?.leadType || "No Type",
+          leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
+          project: row?.project || "-",
+          enquiryType: row?.enquiryType || "-",
+          leadType: row?.leadType || "-",
           assignedToManager: row?.assignedToManager || null,
           assignedToSales: row?.assignedToSales || null,
           feedback: row?.feedback || null,
           priority: row?.priority || null,
-          language: getLangCode(row?.language) || "No Language",
-          leadSource: row?.leadSource || "No Source",
-          lid: row?.lid || "No id",
-          lastEdited: row?.lastEdited || "No Date",
-          leadFor: row?.leadFor || "No Lead",
-          leadStatus: row?.leadStatus || "No Status",
+          language: getLangCode(row?.language) || "-",
+          leadSource: row?.leadSource || "-",
+          lid: row?.lid || "-",
+          lastEdited: row?.lastEdited || "-",
+          leadFor: row?.leadFor || "-",
+          leadStatus: row?.leadStatus || "-",
           coldCall: row?.coldcall,
-          leadCategory: leadCategory || "No Category",
-          notes: row?.notes || "No notes",
+          leadCategory: leadCategory || "-",
+          notes: row?.notes || "-",
           otp:
             row?.otp === "No OTP" || row?.otp === "No OTP Used"
               ? "No OTP Used"
@@ -1626,6 +1644,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     e.preventDefault();
     //  setSearchTerm(e.target.value);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    FetchLeads(token);
+  }, [unassignedFeedback]);
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -1888,6 +1911,59 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <>
       <ToastContainer />
       <div className="pb-10">
+        {lead_origin === "unassigned" && lead_type === "fresh" && (
+          <Box
+            sx={{
+              ...darkModeColors,
+              "& .MuiSelect-select": {
+                padding: "2px",
+                paddingLeft: "6px !important",
+                paddingRight: "20px",
+                borderRadius: "8px",
+              },
+              "& .MuiInputBase-root": {
+                width: "max-content",
+                marginRight: "5px",
+              },
+            }}
+          >
+            <Select
+              id="un-feedback"
+              value={unassignedFeedback}
+              className={`w-full mt-1 mb-5`}
+              onChange={(event) => {
+                setUnassignedFeedback(event.target.value);
+              }}
+              displayEmpty
+              size="small"
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem
+                value="0"
+                disabled
+                selected
+                sx={{
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                }}
+              >
+                Feedback
+              </MenuItem>
+              {feedbacks?.map((feedback, index) => (
+                <MenuItem key={index} value={feedback || ""}>
+                  {feedback}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+        )}
         {/* {lead_origin === "freshleads" && (
           <Filters
           pageState={pageState}
@@ -1902,7 +1978,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }}
           className={`${currentMode}-mode-datatable`}
         >
-          {(selectedRows.length > 0 && User?.role !== 7) && (
+          {selectedRows.length > 0 && User?.role !== 7 && (
             <MuiButton
               size="small"
               sx={{

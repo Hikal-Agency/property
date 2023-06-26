@@ -665,44 +665,6 @@ const Sidebarmui = () => {
               name: "Fresh leads",
               count: sidebarData?.UNASSIGNED?.fresh,
               link: "/unassigned/fresh",
-              childMenu: [
-                {
-                  name: "All ",
-                  // count: sidebarData?.UNASSIGNED?.cold,
-                  link: "/unassigned/new",
-                },
-
-                {
-                  name: "No Answer ",
-                  // count: sidebarData?.UNASSIGNED?.cold,
-                  link: "/unassigned/no answer",
-                },
-                {
-                  name: "Meetings ",
-                  // count: sidebarData?.UNASSIGNED?.cold,
-                  link: "/unassigned/meeting",
-                },
-                {
-                  name: "Follow Up",
-                  // count: sidebarData?.UNASSIGNED?.cold,
-                  link: "/unassigned/follow up",
-                },
-                {
-                  name: "Low Budget",
-                  // count: sidebarData?.UNASSIGNED?.cold,
-                  link: "/unassigned/low budget",
-                },
-                {
-                  name: "Not Interested",
-                  // count: sidebarData?.UNASSIGNED?.cold,
-                  link: "/unassigned/not interested",
-                },
-                {
-                  name: "Unreachable",
-                  // count: sidebarData?.UNASSIGNED?.cold,
-                  link: "/unassigned/unreachable",
-                },
-              ],
             },
             {
               name: "Cold leads",

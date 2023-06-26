@@ -17,6 +17,14 @@ export const ChangePassword = () => {
     loginId: User?.loginId,
   });
 
+  const LogoutUser = () => {
+    localStorage.removeItem("auth-token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("leadsData");
+    localStorage.removeItem("fb_token");
+    window.open("/", "_self");
+  };
+
   const UpdatePass = async (e) => {
     e.preventDefault();
     if (passwordData.password === passwordData.c_password) {
@@ -32,7 +40,7 @@ export const ChangePassword = () => {
         .then((result) => {
           console.log(result);
           setbtnloading(false);
-          toast.success("Password Updated Successfully", {
+          toast.success("Password Updated, Login again with the new credentials!", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -42,6 +50,9 @@ export const ChangePassword = () => {
             progress: undefined,
             theme: "light",
           });
+          setTimeout(() => {
+            LogoutUser();
+          }, 1000);
         })
         .catch((err) => {
           console.log(err);

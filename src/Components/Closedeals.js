@@ -509,7 +509,7 @@ const Closedeals = ({ pageState, setpageState }) => {
             row?.otp === "No OTP" || row?.otp === "No OTP Used"
               ? "No OTP Used"
               : row?.otp || "No OTP Used",
-          leadSource: row?.leadSource || "No Source",
+          leadSource: row?.leadSource || "-",
           amount: row?.amount,
           lid: row?.id,
         }));
