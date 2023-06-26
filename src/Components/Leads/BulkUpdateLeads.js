@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Modal,
   Backdrop,
@@ -24,7 +24,7 @@ const BulkUpdateLeads = ({
   handleCloseBulkUpdateModel,
   selectedRows,
   FetchLeads,
-selectionModelRef
+  selectionModelRef,
 }) => {
   const { currentMode, Managers, User, SalesPerson, BACKEND_URL } =
     useStateContext();
@@ -52,43 +52,47 @@ selectionModelRef
   const handleSubmit = async () => {
     try {
       if ((User.role === 1 || User?.role === 2) && Manager) {
-      const token = localStorage.getItem("auth-token");
+        const token = localStorage.getItem("auth-token");
 
-       const UpdateLeadData = {
-        ids: selectedRows, 
-        action: "update",
-       };
+        const UpdateLeadData = {
+          ids: selectedRows,
+          action: "update",
+        };
 
-          if (Manager && !SalesPerson2) {
-            UpdateLeadData["role"] = "manager";
-            UpdateLeadData["user_id"] = Manager;
-          } else if(Manager && SalesPerson2) {
-            UpdateLeadData["role"] = "agent";
-            UpdateLeadData["user_id"] = SalesPerson2;
-          }
+        if (Manager && !SalesPerson2) {
+          UpdateLeadData["role"] = "manager";
+          UpdateLeadData["user_id"] = Manager;
+        } else if (Manager && SalesPerson2) {
+          UpdateLeadData["role"] = "agent";
+          UpdateLeadData["user_id"] = SalesPerson2;
+        }
 
-          await axios.post(`${BACKEND_URL}/bulkaction`, JSON.stringify(UpdateLeadData), {
+        await axios.post(
+          `${BACKEND_URL}/bulkaction`,
+          JSON.stringify(UpdateLeadData),
+          {
             headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        });
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
 
-      setbtnloading(true);
-      toast.success("Leads Updated Successfully", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setbtnloading(false);
-      FetchLeads(token);
-      selectionModelRef.current = [];
-      handleCloseBulkUpdateModel();
-    }
+        setbtnloading(true);
+        toast.success("Leads Updated Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setbtnloading(false);
+        FetchLeads(token);
+        selectionModelRef.current = [];
+        handleCloseBulkUpdateModel();
+      }
     } catch (error) {
       toast.error("Error in Updating Leads", {
         position: "top-right",
@@ -104,6 +108,18 @@ selectionModelRef
       handleCloseBulkUpdateModel();
     }
   };
+
+  useEffect(() => {
+    if (User?.role === 3) {
+      const agents = SalesPerson[`manager-${User?.id}`];
+      if (agents) {
+        setSalesPersonsList([...agents]);
+        setNoAgents(false);
+      } else {
+        setNoAgents(true);
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -137,28 +153,28 @@ selectionModelRef
           >
             <IoMdClose size={18} />
           </IconButton>
-          {(User?.role !== 3 && User?.role !== 7) && 
-          <Select
-            id="Manager"
-            value={Manager}
-            disabled={(User?.role !== 1 && User?.role !== 2) && true}
-            label="Manager"
-            onChange={ChangeManager}
-            size="medium"
-            className="w-full mb-5"
-            displayEmpty
-            required
-          >
-            <MenuItem value="0" disabled>
-              <span style={{ color: "grey" }}>Manager</span>
-            </MenuItem>
-            {Managers?.map((person, index) => (
-              <MenuItem key={index} value={person?.id || ""}>
-                {person?.userName}
+          {User?.role !== 3 && User?.role !== 7 && (
+            <Select
+              id="Manager"
+              value={Manager}
+              disabled={User?.role !== 1 && User?.role !== 2 && true}
+              label="Manager"
+              onChange={ChangeManager}
+              size="medium"
+              className="w-full mb-5"
+              displayEmpty
+              required
+            >
+              <MenuItem value="0" disabled>
+                <span style={{ color: "grey" }}>Manager</span>
               </MenuItem>
-            ))}
-          </Select>
-          }
+              {Managers?.map((person, index) => (
+                <MenuItem key={index} value={person?.id || ""}>
+                  {person?.userName}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
           {noAgents ? (
             <p
               style={{
@@ -170,7 +186,7 @@ selectionModelRef
               No Agents
             </p>
           ) : (
-            (User.role !== 7) && (
+            User.role !== 7 && (
               <Select
                 id="SalesPerson"
                 value={SalesPerson2}
