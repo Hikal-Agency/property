@@ -174,6 +174,7 @@ const Chat = () => {
         phoneNumber: null, 
         name: ""
       });
+      setChatMessages([]);
       setSelectedDevice(null);
       setReady(false);
       setChatLoading(false);
@@ -279,12 +280,13 @@ const Chat = () => {
                 profile_pic_url: url,
               })
             );
+            console.log("Selected contact:::", selectedDevice);
             // updateDeviceStatus(selectedDevice?.deviceId, info.data?.userInfo?.me?.user);
             setQr(null);
-            setSelectedDevice(null);
             setloading(false);
             setWALoadingScreen(false);
             setReady(true);
+            setSelectedDevice(null);
           }
         });
       });
@@ -375,8 +377,8 @@ const Chat = () => {
       const sessionId = `${User?.id}-${deviceName
         .toLowerCase()
         .replaceAll(" ", "-")}`;
-      setSelectedDevice({ sessionId, deviceId });
-      if (socket?.id) {
+        if (socket?.id) {
+        setSelectedDevice({ sessionId, deviceId });
         socket.emit("create_session", { id: sessionId });
       } else {
         toast.error("Server is disconnected!", {

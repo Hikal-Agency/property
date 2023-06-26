@@ -58,7 +58,7 @@ const Conversation = ({
     <>
       <div className="flex justify-end items-center pr-5">
         <Button
-          onClick={logout}
+          onClick={() => logout(false)}
           type="button"
           variant="contained"
           sx={{ padding: "7px 6px", mb: 1 }}
