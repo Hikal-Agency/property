@@ -20,7 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import UserTable from "../../Components/Users/UserTable";
 import AddUserModel from "../../Components/addUser/AddUserModel";
-import { FaBan, FaEdit, FaTrash } from "react-icons/fa";
+import { FaBan, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
 import DeleteUser from "../../Components/Users/DeleteUser";
 
 const Users = () => {
@@ -39,6 +39,7 @@ const Users = () => {
   const [value, setValue] = useState(0);
   const [model, setModel] = useState(false);
   const [userID, setUserId] = useState();
+  const [userStatus, setUserStatus] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
 
   console.log("User: ", user);
@@ -57,9 +58,10 @@ const Users = () => {
     setModel(false);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id, status) => {
     console.log("Delete id: ", id);
     setUserId(id);
+    setUserStatus(status);
     setOpenDeleteModel(true);
   };
   const handleDeleteModelClose = () => {
@@ -387,20 +389,41 @@ const Users = () => {
           <div className=" space-x-2 w-full flex items-center justify-center ">
             {User?.role === 1 || User?.role === 2 ? (
               <>
-                <Button
-                  onClick={() => handleDelete(cellValues?.id)}
-                  className={`editUserBtn ${
-                    currentMode === "dark"
-                      ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                      : "text-black bg-transparent rounded-md p-1 shadow-none "
-                  }`}
-                >
-                  {currentMode === "dark" ? (
-                    <FaBan style={{ color: "white" }} />
-                  ) : (
-                    <FaBan style={{ color: "black" }} />
-                  )}
-                </Button>
+                {cellValues.row.status === 1 ? (
+                  <Button
+                    onClick={() =>
+                      handleDelete(cellValues?.id, cellValues.row.status)
+                    }
+                    className={`editUserBtn ${
+                      currentMode === "dark"
+                        ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                        : "text-black bg-transparent rounded-md p-1 shadow-none "
+                    }`}
+                  >
+                    {currentMode === "dark" ? (
+                      <FaBan style={{ color: "white" }} />
+                    ) : (
+                      <FaBan style={{ color: "black" }} />
+                    )}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() =>
+                      handleDelete(cellValues?.id, cellValues.row.status)
+                    }
+                    className={`editUserBtn ${
+                      currentMode === "dark"
+                        ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                        : "text-black bg-transparent rounded-md p-1 shadow-none "
+                    }`}
+                  >
+                    {currentMode === "dark" ? (
+                      <FaUnlock style={{ color: "white" }} />
+                    ) : (
+                      <FaUnlock style={{ color: "black" }} />
+                    )}
+                  </Button>
+                )}
                 {/* <Link
                   to={`/updateuser/${cellValues?.id}`}
                   className="text-blue-500"
@@ -674,6 +697,7 @@ const Users = () => {
                     UserModelOpen={handleDelete}
                     handleUserModelClose={handleDeleteModelClose}
                     UserData={userID}
+                    UserStatus={userStatus}
                   />
                 )}
                 {/* <Box width={"100%"} sx={DataGridStyles}>
