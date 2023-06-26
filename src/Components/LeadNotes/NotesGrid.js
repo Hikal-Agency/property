@@ -396,7 +396,8 @@ const NotesGrid = ({ pageState, setpageState }) => {
   const handleNavigate = (e, leadId) => {
     e.preventDefault();
 
-    navigate(`/leadnotes/${leadId}`);
+    const url = `/leadnotes/${leadId}`;
+    window.open(url, "_blank");
   };
 
   useEffect(() => {
