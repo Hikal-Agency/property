@@ -51,7 +51,7 @@ const BulkUpdateLeads = ({
 
   const handleSubmit = async () => {
     try {
-      if ((User.role === 1 || User?.role === 2) && Manager) {
+      if (((User.role === 1 || User?.role === 2 || User?.role === 3) && Manager)) {
         const token = localStorage.getItem("auth-token");
 
         const UpdateLeadData = {
@@ -111,6 +111,7 @@ const BulkUpdateLeads = ({
 
   useEffect(() => {
     if (User?.role === 3) {
+      setManager(User?.id);
       const agents = SalesPerson[`manager-${User?.id}`];
       if (agents) {
         setSalesPersonsList([...agents]);
