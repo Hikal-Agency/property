@@ -72,6 +72,31 @@ const LeadNotes = ({ pageState, setpageState }) => {
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
+      renderCell: (cellValues) => {
+        return (
+          <>
+            <div className="flex flex-col items-center my-2">
+              <p>{cellValues.formattedValue}</p>
+              <p className="mt-2">{cellValues.row.enquiryType}</p>
+            </div>
+          </>
+        );
+      },
+    },
+
+    // {
+    //   field: "enquiryType",
+    //   headerName: "Enquiry",
+    //   minWidth: 110,
+    //   flex: 1,
+    //   headerAlign: "center",
+    // },
+    {
+      field: "leadNote",
+      headerName: "Note",
+      minWidth: 400,
+      flex: 1,
+      headerAlign: "center",
     },
     {
       field: "userName",
@@ -80,28 +105,6 @@ const LeadNotes = ({ pageState, setpageState }) => {
       flex: 1,
       headerAlign: "center",
     },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    // {
-    //   field: "leadNote",
-    //   headerName: "Note",
-    //   minWidth: 400,
-    //   flex: 1,
-    //   headerAlign: "center",
-    // },
-
-    // {
-    //   field: "userName",
-    //   headerName: "Added by",
-    //   minWidth: 150,
-    //   flex: 1,
-    //   headerAlign: "center",
-    // },
   ];
 
   const FetchLeads = async (token) => {
@@ -320,6 +323,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
               loading={pageState.isLoading}
               rowsPerPageOptions={[30, 50, 75, 100]}
               pagination
+              getRowHeight={() => "auto"}
               paginationMode="server"
               page={pageState.page - 1}
               pageSize={pageState.pageSize}
