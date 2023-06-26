@@ -65,6 +65,17 @@ const bulkUpdateBtnStyles = {
   fontWeight: "500",
 };
 
+const feedbacks = [
+  "All",
+  "New",
+  "No Answer",
+  "Meeting",
+  "Follow Up",
+  "Low Budget",
+  "Not Interested",
+  "Unreachable",
+];
+
 const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const token = localStorage.getItem("auth-token");
   const navigate = useNavigate();
@@ -77,6 +88,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
+  const [unassignedFeedback, setUnassignedFeedback] = useState("All");
   const [bulkDeleteClicked, setBulkDeleteClicked] = useState(false);
   const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
   // const [searchTerm, setSearchTerm] = useState("");
@@ -102,6 +114,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     User,
     fetchSidebarData,
     BACKEND_URL,
+    darkModeColors,
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -1318,6 +1331,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       FetchLeads_url += `&agentAssigned=${assignedAgent}`;
     }
 
+    if(unassignedFeedback) {
+      if(unassignedFeedback !== "All") {
+        FetchLeads_url += `&feedback=${unassignedFeedback}`;
+      }
+    }
+
     axios
       .get(FetchLeads_url, {
         headers: {
@@ -1628,6 +1647,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    FetchLeads(token);
+  }, [unassignedFeedback]);
+
+  useEffect(() => {
     setopenBackDrop(false);
     // eslint-disable-next-line
   }, [lead_type]);
@@ -1888,6 +1912,59 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <>
       <ToastContainer />
       <div className="pb-10">
+        {lead_origin === "unassigned" && lead_type === "fresh" && (
+          <Box
+            sx={{
+              ...darkModeColors,
+              "& .MuiSelect-select": {
+                padding: "2px",
+                paddingLeft: "6px !important",
+                paddingRight: "20px",
+                borderRadius: "8px",
+              },
+              "& .MuiInputBase-root": {
+                width: "max-content",
+                marginRight: "5px",
+              },
+            }}
+          >
+            <Select
+              id="un-feedback"
+              value={unassignedFeedback}
+              className={`w-full mt-1 mb-5`}
+              onChange={(event) => {
+                setUnassignedFeedback(event.target.value);
+              }}
+              displayEmpty
+              size="small"
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem
+                value="0"
+                disabled
+                selected
+                sx={{
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                }}
+              >
+                Feedback
+              </MenuItem>
+              {feedbacks?.map((feedback, index) => (
+                <MenuItem key={index} value={feedback || ""}>
+                  {feedback}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+        )}
         {/* {lead_origin === "freshleads" && (
           <Filters
           pageState={pageState}
@@ -1902,7 +1979,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }}
           className={`${currentMode}-mode-datatable`}
         >
-          {(selectedRows.length > 0 && User?.role !== 7) && (
+          {selectedRows.length > 0 && User?.role !== 7 && (
             <MuiButton
               size="small"
               sx={{
