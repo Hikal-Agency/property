@@ -15,7 +15,7 @@ const Devices = ({ handleCreateSession, fetchDevices, devices }) => {
           {devices?.map((device) => {
             return (
               <DeviceCard
-                onClick={() => handleCreateSession(device.instance_name)}
+                onClick={() => handleCreateSession(device.instance_name, device.id)}
                 details={device}
               />
             );

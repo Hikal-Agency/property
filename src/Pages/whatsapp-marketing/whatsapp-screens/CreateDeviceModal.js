@@ -2,7 +2,7 @@ import { Modal, Backdrop, IconButton, TextField, Button } from "@mui/material";
 import { useState } from "react";
 import { useStateContext } from "../../../context/ContextProvider";
 import {toast} from "react-toastify";
-import axios from "axios";
+import axios from "../../../axoisConfig";
 import {IoMdClose} from "react-icons/io";
 const style = {
   transform: "translate(-50%, -50%)",
@@ -22,7 +22,10 @@ const CreateDeviceModal = ({
     try { 
       const DeviceData = new FormData();
       const token = localStorage.getItem("auth-token");
-      DeviceData.append("instance_name", deviceName.toLowerCase());
+      const sessionId = `${deviceName
+        .toLowerCase()
+        .replaceAll(" ", "-")}`;
+      DeviceData.append("instance_name", sessionId);
       DeviceData.append("status", "disconnected");
       DeviceData.append("user_id", User?.id);
 

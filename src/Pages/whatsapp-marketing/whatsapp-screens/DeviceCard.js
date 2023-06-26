@@ -60,7 +60,7 @@ const DeviceCard = ({
           {details.phone_number &&
           <Box className="mt-4">
             <small>
-              Phone Number: <strong>{details.phone_number}</strong>
+              Phone Number: <strong>+{details.phone_number}</strong>
             </small>
           </Box>
           }

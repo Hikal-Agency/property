@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import Loader from "../Loader";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";

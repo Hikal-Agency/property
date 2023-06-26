@@ -169,7 +169,7 @@ selectionModelRef
               No Agents
             </p>
           ) : (
-            (User.role === 1 || User?.role === 2) && (
+            (User.role !== 7) && (
               <Select
                 id="SalesPerson"
                 value={SalesPerson2}
