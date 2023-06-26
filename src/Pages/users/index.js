@@ -40,6 +40,7 @@ const Users = () => {
   const [model, setModel] = useState(false);
   const [userID, setUserId] = useState();
   const [userStatus, setUserStatus] = useState();
+  const [username, setUserName] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
 
   console.log("User: ", user);
@@ -58,10 +59,11 @@ const Users = () => {
     setModel(false);
   };
 
-  const handleDelete = (id, status) => {
+  const handleDelete = (id, status, name) => {
     console.log("Delete id: ", id);
     setUserId(id);
     setUserStatus(status);
+    setUserName(name);
     setOpenDeleteModel(true);
   };
   const handleDeleteModelClose = () => {
@@ -392,7 +394,11 @@ const Users = () => {
                 {cellValues.row.status === 1 ? (
                   <Button
                     onClick={() =>
-                      handleDelete(cellValues?.id, cellValues.row.status)
+                      handleDelete(
+                        cellValues?.id,
+                        cellValues.row.status,
+                        cellValues?.row?.userName
+                      )
                     }
                     className={`editUserBtn ${
                       currentMode === "dark"
@@ -409,7 +415,11 @@ const Users = () => {
                 ) : (
                   <Button
                     onClick={() =>
-                      handleDelete(cellValues?.id, cellValues.row.status)
+                      handleDelete(
+                        cellValues?.id,
+                        cellValues.row.status,
+                        cellValues?.row?.userName
+                      )
                     }
                     className={`editUserBtn ${
                       currentMode === "dark"
@@ -698,6 +708,8 @@ const Users = () => {
                     handleUserModelClose={handleDeleteModelClose}
                     UserData={userID}
                     UserStatus={userStatus}
+                    UserName={username}
+                    fetchUser={fetchUsers}
                   />
                 )}
                 {/* <Box width={"100%"} sx={DataGridStyles}>
