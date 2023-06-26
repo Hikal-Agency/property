@@ -181,7 +181,9 @@ const GridMeeting = ({ pageState, setpageState }) => {
                                     height: "30px",
                                   }}
                                 >
-                                  <IconButton onClick={() => handleEditMeeting(item)}>
+                                  <IconButton
+                                    onClick={() => handleEditMeeting(item)}
+                                  >
                                     <MdEdit
                                       style={{ color: "#da1f26" }}
                                       size={16}
@@ -267,7 +269,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                 sx={{
                   "& .Mui-selected": {
                     color: currentMode === "dark" ? "white" : "gray",
-                    backgroundColor: "red !important",
+                    backgroundColor: "#DA1F26 !important",
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",
