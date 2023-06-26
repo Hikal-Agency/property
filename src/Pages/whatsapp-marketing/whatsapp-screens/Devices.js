@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import DeviceCard from "./DeviceCard";
 import CreateDeviceModal from "./CreateDeviceModal";
 
-const Devices = ({ handleCreateSession }) => {
+const Devices = ({ handleCreateSession, fetchDevices, devices }) => {
   const [createDeviceModal, setCreateDeviceModal] = useState(false);
   return (
     <>
@@ -12,29 +12,28 @@ const Devices = ({ handleCreateSession }) => {
           <strong>Devices</strong>
         </h1>
         <Box className="flex mt-3">
-          <DeviceCard
-            onClick={() => handleCreateSession("Test")}
-            name="Test"
-            isConnected={true}
-          />
-          <DeviceCard
-            onClick={() => handleCreateSession("Test 2")}
-            name="Test 2"
-            isConnected={false}
-          />
+          {devices?.map((device) => {
+            return (
+              <DeviceCard
+                onClick={() => handleCreateSession(device.instance_name)}
+                details={device}
+              />
+            );
+          })}
           <DeviceCard
             setCreateDeviceModal={setCreateDeviceModal}
             addDeviceCard
           />
         </Box>
 
-    {createDeviceModal &&
-        <CreateDeviceModal
-          CreateDeviceModalOpen={createDeviceModal}
-          handleCreateDeviceModalClose={() => setCreateDeviceModal(false)}
-          handleCreateSession={handleCreateSession}
-        />
-    }
+        {createDeviceModal && (
+          <CreateDeviceModal
+          fetchDevices={fetchDevices}
+            CreateDeviceModalOpen={createDeviceModal}
+            handleCreateDeviceModalClose={() => setCreateDeviceModal(false)}
+            handleCreateSession={handleCreateSession}
+          />
+        )}
       </div>
     </>
   );

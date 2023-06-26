@@ -8,6 +8,7 @@ import Loader from "../../Components/Loader";
 import QRCode from "./whatsapp-screens/QRCode";
 import Conversation from "./whatsapp-screens/Conversation";
 import Devices from "./whatsapp-screens/Devices";
+import axios from "axios";
 
 const Chat = () => {
   const {
@@ -16,6 +17,7 @@ const Chat = () => {
     darkModeColors,
     selectedDevice,
     setSelectedDevice,
+    BACKEND_URL
   } = useStateContext();
   const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
@@ -26,6 +28,7 @@ const Chat = () => {
   const [WALoadingScreen, setWALoadingScreen] = useState(false);
   const [serverDisconnected, setServerDisconnected] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
+  const [devicesList, setDevicesList] = useState([]);
   const [loadingConversations, setLoadingConversations] = useState(true);
   const [allChats, setAllChats] = useState([]);
   const [chatMessageInputVal, setChatMessageInputVal] = useState("");
@@ -167,6 +170,20 @@ const Chat = () => {
     }
   };
 
+  const fetchDevices = async () => {
+    setloading(true);
+    const token = localStorage.getItem("auth-token");
+      const response = await axios.get(`${BACKEND_URL}/instances`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      setDevicesList(response.data.instances.data);
+      setloading(false);
+    }
+
   useEffect(() => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
     if (!serverDisconnected) {
@@ -191,17 +208,18 @@ const Chat = () => {
               setSelectedDevice(null);
               setQr(null);
               setReady(false);
+              fetchDevices();
               logout();
             }
           });
         } else {
-          setloading(false);
           if (selectedDevice && !ready) {
             socket.emit("destroy_client", selectedDevice);
             setSelectedDevice(null);
             setQr(null);
             setReady(false);
           }
+          fetchDevices();
         }
       }
     }
@@ -239,6 +257,7 @@ const Chat = () => {
             setloading(false);
             setWALoadingScreen(false);
             setReady(true);
+
           }
         });
       });
@@ -395,7 +414,7 @@ const Chat = () => {
                 ) : qr ? (
                   <QRCode qr={qr} />
                 ) : (
-                  <Devices handleCreateSession={handleCreateSession} />
+                  <Devices fetchDevices={fetchDevices} devices={devicesList} handleCreateSession={handleCreateSession} />
                 )}
                 </div>
               </>
