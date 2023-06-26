@@ -379,6 +379,7 @@ import { useNavigate } from "react-router-dom";
 //     </>
 //   );
 // };
+
 const NotesGrid = ({ pageState, setpageState }) => {
   console.log("Notes state: ", pageState);
   const [loading, setLoading] = useState(false);
@@ -396,7 +397,8 @@ const NotesGrid = ({ pageState, setpageState }) => {
   const handleNavigate = (e, leadId) => {
     e.preventDefault();
 
-    navigate(`/leadnotes/${leadId}`);
+    const url = `/leadnotes/${leadId}`;
+    window.open(url, "_blank");
   };
 
   useEffect(() => {
@@ -465,7 +467,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
                 sx={{
                   "& .Mui-selected": {
                     color: "white !important",
-                    backgroundColor: "red !important",
+                    backgroundColor: "#DA1F26 !important",
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",

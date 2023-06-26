@@ -257,7 +257,7 @@ const Navbar = () => {
             isUserSubscribed === false && (
               <Button
                 variant="contained"
-                style={{ background: "red" }}
+                style={{ background: "#DA1F26" }}
                 sx={{ mr: 2 }}
               >
                 <a href="/whatsapp-marketing/payments">Upgrade</a>

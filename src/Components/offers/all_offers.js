@@ -100,7 +100,7 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                   currentMode === "dark"
                     ? "bg-black text-white"
                     : "bg-white text-black"
-                } p-5 rounded-md h-fit`}
+                } p-5 rounded-md h-[350px] flex flex-col justify-between`}
               >
                 <h1
                   className="bg-main-red-color text-white font-semibold rounded-md p-2 mb-3"
@@ -121,6 +121,7 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                   Offer from Mr. {offer?.offerFrom}
                 </h6>
               </div>
+
               // ) : (
               //     <>l
               //     </>
