@@ -12,7 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { IoMdClose } from "react-icons/io";
 import { IoIosAlert } from "react-icons/io";
 import { useState } from "react";
-import axios from "axios";
+import axios from "../../axoisConfig";
 
 const DeleteUser = ({ UserData, UserModelOpen, handleUserModelClose }) => {
   const { currentMode, BACKEND_URL } = useStateContext();

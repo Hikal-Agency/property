@@ -12,7 +12,7 @@ import { MdLocationOn } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import ShowLocation from "./ShowLocation";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import UpdateMeeting from "./UpdateMeeting";
 const GridMeeting = ({ pageState, setpageState }) => {
   console.log("meetings state: ", pageState);

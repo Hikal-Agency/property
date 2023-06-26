@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect } from "react";
 import Loader from "../../Components/Loader";

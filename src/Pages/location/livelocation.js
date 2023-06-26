@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import LocationComponent from "../../Components/location/LocationComponent";
 import { useStateContext } from "../../context/ContextProvider";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 import Loader from "../../Components/Loader";
 

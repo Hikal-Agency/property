@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { ToastContainer, toast } from "react-toastify";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import { useState } from "react";
 import { useEffect } from "react";
 import Loader from "../../Components/Loader";

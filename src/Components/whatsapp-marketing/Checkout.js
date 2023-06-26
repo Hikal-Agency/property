@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IconButton, Box, TextField, Button, CircularProgress } from "@mui/material";
 import { BiArrowBack } from "react-icons/bi";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import {toast, ToastContainer} from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
