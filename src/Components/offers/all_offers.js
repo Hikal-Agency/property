@@ -108,14 +108,23 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                     : "bg-white text-black"
                 } p-5 rounded-md h-[500px] flex flex-col justify-between`}
               >
+                <div className=" top-0 left-1/2 transform -translate-x-1/2 z-10 flex gap-1">
+                  <div className="h-1 w-7 bg-red-500"></div>
+                  <div className="h-1 w-7 bg-red-500"></div>
+                  <div className="h-1 w-7 bg-red-500"></div>
+                </div>
+
                 <div>
                   <img
                     // src="../assets/offers_static_img_2.png"
-                    src={imagePaths[index % imagePaths.length]}
+                    src={
+                      imagePaths[Math.floor(Math.random() * imagePaths.length)]
+                    }
                     alt="offers image"
                     className="w-full h-[200px]"
                   />
                 </div>
+
                 <p
                   className={`${
                     currentMode === "dark" ? "text-white" : "text-[#000000]"
