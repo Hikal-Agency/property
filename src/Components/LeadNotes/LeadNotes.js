@@ -46,7 +46,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
     {
       field: "id",
       headerName: "#",
-      minWidth: 40,
+      maxWidth: 70,
       headerAlign: "center",
       flex: 1,
     },
@@ -92,7 +92,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
     {
       field: "leadNote",
       headerName: "Note",
-      minWidth: 400,
+      minWidth: 500,
       flex: 1,
       headerAlign: "center",
     },
