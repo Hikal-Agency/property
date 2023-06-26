@@ -130,7 +130,7 @@ const DeleteUser = ({
               {deletebtnloading ? (
                 <CircularProgress size={18} sx={{ color: "blue" }} />
               ) : (
-                <span>Deactivate</span>
+                <span>{UserStatus === 1 ? "deactivate" : "reactive"}</span>
               )}
             </Button>
 

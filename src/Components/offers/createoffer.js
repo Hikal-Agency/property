@@ -267,26 +267,37 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 />
               </LocalizationProvider>
             </div>
-            <div className="grid grid-cols-2 gap-3 mt-3">
-              <Button
-                type="submit"
-                size="medium"
-                className="bg-main-red-color  w-full text-white rounded-lg py-3 font-semibold mb-3"
-                style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
-                onClick={handleClick}
-                disabled={loading ? true : false}
-              >
-                {loading ? (
-                  <CircularProgress
-                    size={23}
-                    sx={{ color: "white" }}
-                    className="text-white"
-                  />
-                ) : (
-                  <span> Create</span>
-                )}
-              </Button>
-            </div>
+            {/* <div className="grid grid-cols-2 gap-3 mt-3">
+              <input
+                accept="image/*"
+                style={{ display: "none" }}
+                id="contained-button-file"
+                type="file"
+                // onChange={handleUpload}
+              />
+              <label htmlFor="contained-button-file">
+                <Button
+                  type="submit"
+                  size="medium"
+                  className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
+                  style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+                  // onClick={handleClick}
+                  disabled={loading ? true : false}
+                  startIcon={loading ? null : //<CloudUploadIcon />
+                }
+                >
+                  {loading ? (
+                    <CircularProgress
+                      size={23}
+                      sx={{ color: "white" }}
+                      className="text-white"
+                    />
+                  ) : (
+                    <span>Upload Image</span>
+                  )}
+                </Button>
+              </label>
+            </div> */}
           </Box>
 
           <div
