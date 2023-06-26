@@ -19,6 +19,8 @@ const DeleteUser = ({
   UserModelOpen,
   handleUserModelClose,
   UserStatus,
+  UserName,
+  fetchUser,
 }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [deletebtnloading, setdeleteBtnLoading] = useState(false);
@@ -41,7 +43,7 @@ const DeleteUser = ({
 
     axios
       .post(
-        `${BACKEND_URL}/deactivate/${UserData}`,
+        `${BACKEND_URL}/updateuser/${UserData}`,
         { status: userSTatus },
         {
           headers: {
@@ -56,7 +58,9 @@ const DeleteUser = ({
 
         handleUserModelClose(true);
         toast.success(
-          `User ${UserStatus === 1 ? "Deativated" : "Reactivated"} Successfull`,
+          `User ${
+            UserStatus === 1 ? "Deativated" : "Reactivated"
+          } Successfully`,
           {
             position: "top-right",
             autoClose: 3000,
@@ -67,6 +71,8 @@ const DeleteUser = ({
             theme: "light",
           }
         );
+
+        fetchUser(token);
       })
       .catch((err) => {
         console.log("deactivate: ", err);
@@ -83,6 +89,67 @@ const DeleteUser = ({
         });
       });
   };
+
+  // const handleDeleteUser = async (e) => {
+  //   e.preventDefault();
+  //   setdeleteBtnLoading(true);
+
+  //   const token = localStorage.getItem("auth-token");
+
+  //   const userSTatus = UserStatus === 1 ? 2 : 1;
+
+  //   // Determine the endpoint based on UserStatus
+  //   const url =
+  //     UserStatus === 1
+  //       ? `${BACKEND_URL}/deactivate/${UserData}`
+  //       : `${BACKEND_URL}/updateuser/${UserData}`;
+
+  //   axios
+  //     .post(
+  //       url,
+  //       { status: userSTatus },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     )
+  //     .then((result) => {
+  //       console.log("res user status updated  ", result);
+  //       setdeleteBtnLoading(false);
+
+  //       handleUserModelClose(true);
+  //       toast.success(
+  //         `User ${
+  //           UserStatus === 1 ? "Deativated" : "Reactivated"
+  //         } Successfully`,
+  //         {
+  //           position: "top-right",
+  //           autoClose: 3000,
+  //           hideProgressBar: false,
+  //           closeOnClick: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //           theme: "light",
+  //         }
+  //       );
+  //     })
+  //     .catch((err) => {
+  //       console.log("status update error: ", err);
+  //       setdeleteBtnLoading(false);
+
+  //       toast.error("Something Went Wrong! Please Try Again", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //     });
+  // };
 
   return (
     <>
@@ -116,7 +183,7 @@ const DeleteUser = ({
             >
               {`Do You Really Want to ${
                 UserStatus === 1 ? "deactivate" : "reactive"
-              } this User?`}
+              } ${UserName}?`}
             </h1>
           </div>
 
