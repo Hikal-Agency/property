@@ -115,7 +115,9 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                   style={{ textTransform: "capitalize" }}
                 >
                   Offer from:{" "}
-                  <span className="text-[#DA1F26]">Mr. {offer?.offerFrom}</span>
+                  <span className="text-[#DA1F26] font-bold">
+                    Mr. {offer?.offerFrom}
+                  </span>
                 </p>
 
                 <h1
@@ -126,7 +128,7 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                 >
                   {offer?.offerTitle}
                 </h1>
-                <h6 className="mb-3 p-2">{offer?.offerDescription}</h6>
+                <h6 className="mb-3">{offer?.offerDescription}</h6>
                 <hr className="mb-3"></hr>
                 <h1 className="font-semibold mb-3">
                   Valid from {offer?.validFrom} to {offer?.validTill}
