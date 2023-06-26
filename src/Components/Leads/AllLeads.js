@@ -1902,7 +1902,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }}
           className={`${currentMode}-mode-datatable`}
         >
-          {selectedRows.length > 0 && (
+          {(selectedRows.length > 0 && User?.role !== 7) && (
             <MuiButton
               size="small"
               sx={{
