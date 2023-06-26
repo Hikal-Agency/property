@@ -14,11 +14,17 @@ import { IoIosAlert } from "react-icons/io";
 import { useState } from "react";
 import axios from "../../axoisConfig";
 
-const DeleteUser = ({ UserData, UserModelOpen, handleUserModelClose }) => {
+const DeleteUser = ({
+  UserData,
+  UserModelOpen,
+  handleUserModelClose,
+  UserStatus,
+}) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [deletebtnloading, setdeleteBtnLoading] = useState(false);
 
   console.log("deativate user model: ", UserData);
+  console.log("userStatus: ", UserStatus);
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -31,10 +37,12 @@ const DeleteUser = ({ UserData, UserModelOpen, handleUserModelClose }) => {
 
     const token = localStorage.getItem("auth-token");
 
+    const userSTatus = UserStatus === 1 ? 2 : 1;
+
     axios
       .post(
         `${BACKEND_URL}/deactivate/${UserData}`,
-        { status: 2 },
+        { status: userSTatus },
         {
           headers: {
             "Content-Type": "application/json",
@@ -47,15 +55,18 @@ const DeleteUser = ({ UserData, UserModelOpen, handleUserModelClose }) => {
         setdeleteBtnLoading(false);
 
         handleUserModelClose(true);
-        toast.success("User Deactivated Successfull", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.success(
+          `User ${UserStatus === 1 ? "Deativated" : "Reactivated"} Successfull`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
       })
       .catch((err) => {
         console.log("deactivate: ", err);
@@ -103,7 +114,9 @@ const DeleteUser = ({ UserData, UserModelOpen, handleUserModelClose }) => {
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              Do You Really Want to deactivate this User?
+              {`Do You Really Want to ${
+                UserStatus === 1 ? "deactivate" : "reactive"
+              } this User?`}
             </h1>
           </div>
 
