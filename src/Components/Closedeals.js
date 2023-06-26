@@ -291,6 +291,11 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerName: "Property Consultant",
       minWidth: 40,
       flex: 1,
+      renderCell: (cellValues) => {
+        return <div style={{textWrap: "wrap"}}>
+        {cellValues.formattedValue}
+        </div>
+      }
     },
     // {
     //   field: "manager",
