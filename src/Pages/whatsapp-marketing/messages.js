@@ -694,13 +694,13 @@ const AllLeads = () => {
                 index
               : index + 1,
           creationDate: row?.creationDate,
-          leadName: row?.leadName,
-          leadContact: row?.leadContact,
-          project: row?.project,
-          leadType: row?.leadType,
-          language: getLangCode(row?.language) || "No Language",
-          enquiryType: row?.enquiryType,
-          leadSource: row?.leadSource,
+          leadName: row?.leadName || "-",
+          leadContact: row?.leadContact || "-",
+          project: row?.project  || "-",
+          leadType: row?.leadType || "-",
+          language: getLangCode(row?.language) || "-",
+          enquiryType: row?.enquiryType || "-",
+          leadSource: row?.leadSource || "-",
         }));
 
         setpageState((old) => ({
@@ -772,13 +772,13 @@ const AllLeads = () => {
                   (pageState.pageSize - 1) +
                   index
                 : index + 1,
-            creationDate: row?.creationDate,
-            leadName: row?.leadName,
-            leadContact: row?.leadContact,
-            project: row?.project,
-            language: getLangCode(row?.language) || "No Language",
-            leadType: row?.leadType,
-            leadSource: row?.leadSource,
+            creationDate: row?.creationDate || "-",
+            leadName: row?.leadName || "-",
+            leadContact: row?.leadContact || "-",
+            project: row?.project || "-",
+            language: getLangCode(row?.language) || "-",
+            leadType: row?.leadType || "-",
+            leadSource: row?.leadSource || "-",
             lid: row?.id,
           }));
           setpageState((old) => ({

@@ -196,14 +196,14 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
         let rowsdata = rowsDataArray.map((row, index) => ({
           id: pageState.page > 1 ? pageState.page * 15 - 14 + index : index + 1,
           meetingId: row?.id,
-          leadName: row?.leadName,
-          project: row?.project,
-          enquiryType: row?.enquiryType,
-          leadType: row?.leadType,
-          meetingDate: row?.meetingDate,
-          meetingBy: row?.userName,
-          meetingTime: row?.meetingTime,
-          meetingStatus: row?.meetingStatus,
+          leadName: row?.leadName || "-",
+          project: row?.project || "-",
+          enquiryType: row?.enquiryType || "-",
+          leadType: row?.leadType || "-",
+          meetingDate: row?.meetingDate || "-",
+          meetingBy: row?.userName || "-",
+          meetingTime: row?.meetingTime || "-",
+          meetingStatus: row?.meetingStatus || "-",
         }));
 
         setpageState((old) => ({
