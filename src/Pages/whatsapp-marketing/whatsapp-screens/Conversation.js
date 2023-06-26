@@ -90,12 +90,12 @@ const Conversation = ({
                   allChats?.map((chat) => {
                     return (
                       <ConversationItem
-                        key={chat.id.user}
+                        key={chat?.id?.user}
                         setActiveChat={setActiveChat}
-                        lastMsg={chat.lastMessage}
-                        phNo={chat.id.user}
-                        isActive={activeChat.phoneNumber === chat.id.user}
-                        name={chat.name}
+                        lastMsg={chat?.lastMessage}
+                        phNo={chat?.id?.user}
+                        isActive={activeChat?.phoneNumber === chat?.id?.user}
+                        name={chat?.name}
                       />
                     );
                   }),

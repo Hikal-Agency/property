@@ -17,7 +17,7 @@ const Chat = () => {
     darkModeColors,
     selectedDevice,
     setSelectedDevice,
-    BACKEND_URL
+    BACKEND_URL,
   } = useStateContext();
   const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
@@ -32,6 +32,8 @@ const Chat = () => {
   const [loadingConversations, setLoadingConversations] = useState(true);
   const [allChats, setAllChats] = useState([]);
   const [chatMessageInputVal, setChatMessageInputVal] = useState("");
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [activeChat, setActiveChat] = useState({
     phoneNumber: null,
@@ -49,7 +51,7 @@ const Chat = () => {
         setChatMessages(() => {
           return [...data];
         });
-        if(callback) callback();
+        if (callback) callback();
         setChatLoading(false);
         console.log("Has Fetched chat::");
       }
@@ -173,16 +175,16 @@ const Chat = () => {
   const fetchDevices = async () => {
     setloading(true);
     const token = localStorage.getItem("auth-token");
-      const response = await axios.get(`${BACKEND_URL}/instances`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+    const response = await axios.get(`${BACKEND_URL}/instances`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
 
-      setDevicesList(response.data.instances.data);
-      setloading(false);
-    }
+    setDevicesList(response.data.instances.data);
+    setloading(false);
+  };
 
   useEffect(() => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
@@ -257,7 +259,6 @@ const Chat = () => {
             setloading(false);
             setWALoadingScreen(false);
             setReady(true);
-
           }
         });
       });
@@ -298,11 +299,27 @@ const Chat = () => {
     socket.on("all-chats", (data) => {
       if (data.length > 0) {
         setLoadingConversations(false);
-        setAllChats(() => {
-          return data.filter((chat) => {
-            return !chat.isGroup;
+        const phNo = searchParams.get("phoneNumber");
+        if (phNo) {
+          const findChat = data.find((chat) => chat.id.user === phNo);
+          if (findChat) {
+            setAllChats([findChat]);
+          } else {
+            setAllChats({
+              id: {
+                user: phNo,
+              },
+              name: "",
+              lastMessage: "",
+            });
+          }
+        } else {
+          setAllChats(() => {
+            return data.filter((chat) => {
+              return !chat.isGroup;
+            });
           });
-        });
+        }
       }
     });
   }, [User, ready, activeChat.phoneNumber]);
@@ -393,29 +410,33 @@ const Chat = () => {
                   Whatsapp
                 </h1>
                 <div class={`section-container-${currentMode}`}>
-                {ready ? (
-                  <Conversation
-                  currentMode={currentMode}
-                    data={data}
-                    setActiveChat={setActiveChat}
-                    allChats={allChats}
-                    logout={logout}
-                    handleLogout={handleLogout}
-                    chatMessages={chatMessages}
-                    loadingConversations={loadingConversations}
-                    handleSendMessage={handleSendMessage}
-                    chatLoading={chatLoading}
-                    setChatMessageInputVal={setChatMessageInputVal}
-                    btnLoading={btnLoading}
-                    chatMessageInputVal={chatMessageInputVal}
-                    activeChat={activeChat}
-                    messagesContainerRef={messagesContainerRef}
-                  />
-                ) : qr ? (
-                  <QRCode qr={qr} />
-                ) : (
-                  <Devices fetchDevices={fetchDevices} devices={devicesList} handleCreateSession={handleCreateSession} />
-                )}
+                  {ready ? (
+                    <Conversation
+                      currentMode={currentMode}
+                      data={data}
+                      setActiveChat={setActiveChat}
+                      allChats={allChats}
+                      logout={logout}
+                      handleLogout={handleLogout}
+                      chatMessages={chatMessages}
+                      loadingConversations={loadingConversations}
+                      handleSendMessage={handleSendMessage}
+                      chatLoading={chatLoading}
+                      setChatMessageInputVal={setChatMessageInputVal}
+                      btnLoading={btnLoading}
+                      chatMessageInputVal={chatMessageInputVal}
+                      activeChat={activeChat}
+                      messagesContainerRef={messagesContainerRef}
+                    />
+                  ) : qr ? (
+                    <QRCode qr={qr} />
+                  ) : (
+                    <Devices
+                      fetchDevices={fetchDevices}
+                      devices={devicesList}
+                      handleCreateSession={handleCreateSession}
+                    />
+                  )}
                 </div>
               </>
             )}
