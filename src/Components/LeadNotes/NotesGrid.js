@@ -379,6 +379,7 @@ import { useNavigate } from "react-router-dom";
 //     </>
 //   );
 // };
+
 const NotesGrid = ({ pageState, setpageState }) => {
   console.log("Notes state: ", pageState);
   const [loading, setLoading] = useState(false);
