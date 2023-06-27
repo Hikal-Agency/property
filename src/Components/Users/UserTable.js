@@ -6,7 +6,7 @@ import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import { FaBan, FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { FaBan, FaEdit, FaEye, FaTrash, FaUnlock } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import SingleUser from "./SingleUser";
 import DeleteUser from "./DeleteUser";
@@ -109,7 +109,7 @@ import DeleteUser from "./DeleteUser";
 
 const UserTable = ({ user }) => {
   const [loading, setLoading] = useState(false);
-  const { currentMode, BACKEND_URL, pageState, setpageState } =
+  const { currentMode, BACKEND_URL, pageState, setpageState, User } =
     useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
@@ -117,6 +117,8 @@ const UserTable = ({ user }) => {
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [singleUser, setSingleUserData] = useState({});
   const [userID, setUserId] = useState();
+  const [status, setUserStatus] = useState();
+  const [username, setUserName] = useState();
   const [currentPage, setCurrentPage] = useState();
   const token = localStorage.getItem("auth-token");
 
@@ -133,9 +135,11 @@ const UserTable = ({ user }) => {
     setOpenModel(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id, status, name) => {
     console.log("Delete id: ", id);
     setUserId(id);
+    setUserStatus(status);
+    setUserName(name);
     setOpenDeleteModel(true);
   };
   const handleDeleteModelClose = () => {
@@ -150,29 +154,29 @@ const UserTable = ({ user }) => {
   //   setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
   // }, [pageState.page]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `${BACKEND_URL}/users?page=${pageState.page}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-        setUserData(response.data?.managers?.data);
-        setMaxPage(response.data?.managers?.last_page);
-        setCurrentPage(response.data?.managers?.currentPage);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchUsers = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/users?page=${pageState.page}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      setUserData(response.data?.managers?.data);
+      setMaxPage(response.data?.managers?.last_page);
+      setCurrentPage(response.data?.managers?.currentPage);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchUsers();
   }, [pageState.page]);
 
@@ -191,6 +195,9 @@ const UserTable = ({ user }) => {
             UserModelOpen={handleDelete}
             handleUserModelClose={handleDeleteModelClose}
             UserData={userID}
+            UserStatus={status}
+            UserName={username}
+            fetchUser={fetchUsers}
           />
         )}
         {loading ? (
@@ -365,6 +372,13 @@ const UserTable = ({ user }) => {
                         </div>
 
                         <div className="absolute top-2 items-center right-2 flex flex-col space-y-10">
+                          <Button
+                            className="text-green-500 mt-5"
+                            onClick={() => handleModel(item?.id)}
+                          >
+                            <FaEye style={{ color: "green" }} />
+                          </Button>
+
                           <Link
                             to={`/updateuser/${item?.id}`}
                             className="text-blue-500"
@@ -377,19 +391,41 @@ const UserTable = ({ user }) => {
                             />
                           </Link>
 
-                          <Button
-                            className="text-green-500 mt-5"
-                            onClick={() => handleModel(item?.id)}
-                          >
-                            <FaEye style={{ color: "green" }} />
-                          </Button>
-
-                          <Button
-                            className="text-red-500"
-                            onClick={() => handleDelete(item?.id)}
-                          >
-                            <FaBan style={{ color: "red" }} />
-                          </Button>
+                          {User?.role === 1 || User?.role === 2 ? (
+                            <>
+                              {User?.role === 1 || User?.role === 2 ? (
+                                <>
+                                  {item?.status === 1 ? (
+                                    <Button
+                                      className="text-red-500"
+                                      onClick={() =>
+                                        handleDelete(
+                                          item?.id,
+                                          item?.status,
+                                          item?.userName
+                                        )
+                                      }
+                                    >
+                                      <FaBan style={{ color: "red" }} />
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      className="text-green-500"
+                                      onClick={() =>
+                                        handleDelete(
+                                          item?.id,
+                                          item?.status,
+                                          item?.userName
+                                        )
+                                      }
+                                    >
+                                      <FaUnlock style={{ color: "green" }} />
+                                    </Button>
+                                  )}
+                                </>
+                              ) : null}
+                            </>
+                          ) : null}
                         </div>
                       </div>
                     );

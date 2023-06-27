@@ -267,7 +267,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 />
               </LocalizationProvider>
             </div>
-            {/* <div className="grid grid-cols-2 gap-3 mt-3">
+            <div className="grid grid-cols-2 gap-3 mt-3">
               <input
                 accept="image/*"
                 style={{ display: "none" }}
@@ -276,15 +276,14 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 // onChange={handleUpload}
               />
               <label htmlFor="contained-button-file">
-                <Button
+                {/* <Button
                   type="submit"
                   size="medium"
                   className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
                   style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
                   // onClick={handleClick}
                   disabled={loading ? true : false}
-                  startIcon={loading ? null : //<CloudUploadIcon />
-                }
+                  startIcon={loading ? null : <CloudUploadIcon />}
                 >
                   {loading ? (
                     <CircularProgress
@@ -295,9 +294,9 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                   ) : (
                     <span>Upload Image</span>
                   )}
-                </Button>
+                </Button> */}
               </label>
-            </div> */}
+            </div>
           </Box>
 
           <div
