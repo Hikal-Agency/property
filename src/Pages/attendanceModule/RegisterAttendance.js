@@ -313,15 +313,17 @@ const RegisterAttendance = () => {
               currentMode === "dark"
                 ? "bg-[#111827] text-white"
                 : "bg-[#E5E7EB] text-black"
-            } flex flex-col items-center p-5 rounded-md w-full sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4`}
+            } flex flex-col items-center p-5 rounded-md  sm:w-3/5 md:w-2/5 lg:w-1/3 xl:w-1/5 `}
+            style={{ borderRadius: "20px" }}
           >
-            <div className={`w-24 h-24 mb-4  rounded-md`}>
+            <div className={`w-24 h-24 mb-4  rounded-full`}>
               {User?.profile_picture ? (
                 <img
                   src={User?.profile_picture}
-                  className={`rounded-md cursor-pointer object-cover w-full h-full border ${
+                  className={`rounded-md cursor-pointer object-cover w-full h-full border rounded-full ${
                     currentMode === "dark" ? "border-white" : "border-black"
                   } `}
+                  style={{ borderRadius: "50px" }}
                   alt=""
                 />
               ) : (
@@ -359,6 +361,22 @@ const RegisterAttendance = () => {
             >
               {User?.userName}
             </h1>
+            <h6
+              className={`${
+                currentMode === "dark" ? "#ffffff" : "#000000"
+              } text-white font-semibold rounded-md p-2 `}
+              style={{ textTransform: "capitalize" }}
+            >
+              {User?.position}
+            </h6>
+            <h6
+              className={`${
+                currentMode === "dark" ? "#ffffff" : "#000000"
+              } text-white font-semibold rounded-md p-2 `}
+              style={{ textTransform: "capitalize" }}
+            >
+              {User?.deprtment}
+            </h6>
             {/* <h6 className="mb-3 p-2">desc</h6> */}
             {/* <hr
               className={`mb-3 w-full ${
