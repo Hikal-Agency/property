@@ -291,6 +291,11 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerName: "Property Consultant",
       minWidth: 40,
       flex: 1,
+      renderCell: (cellValues) => {
+        return <div style={{textWrap: "wrap"}}>
+        {cellValues.formattedValue}
+        </div>
+      }
     },
     // {
     //   field: "manager",
@@ -500,9 +505,9 @@ const Closedeals = ({ pageState, setpageState }) => {
                 index
               : index + 1,
           dealDate: row?.dealDate,
-          leadName: row?.leadName,
-          userName: row?.userName ? row?.userName : "no name",
-          project: row?.project,
+          leadName: row?.leadName || "-",
+          userName: row?.userName ? row?.userName : "-",
+          project: row?.project || "-",
           enquiryType: row?.enquiryType,
           leadType: row?.leadType,
           otp:
@@ -510,7 +515,7 @@ const Closedeals = ({ pageState, setpageState }) => {
               ? "No OTP Used"
               : row?.otp || "No OTP Used",
           leadSource: row?.leadSource || "-",
-          amount: row?.amount,
+          amount: row?.amount || "-",
           lid: row?.id,
         }));
 

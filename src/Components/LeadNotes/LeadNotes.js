@@ -139,11 +139,11 @@ const LeadNotes = ({ pageState, setpageState }) => {
                 index
               : index + 1,
           creationDate: row?.creationDate,
-          leadName: row?.leadName,
+          leadName: row?.leadName || "-",
           leadNote: row?.leadNote,
-          project: row?.project,
-          enquiryType: row?.enquiryType,
-          userName: row?.userName,
+          project: row?.project || "-",
+          enquiryType: row?.enquiryType || "-",
+          userName: row?.userName || "-",
           leadId: row?.leadId,
         }));
 

@@ -15,7 +15,10 @@ const Devices = ({ handleCreateSession, fetchDevices, devices }) => {
           {devices?.map((device) => {
             return (
               <DeviceCard
-                onClick={() => handleCreateSession(device.instance_name, device.id)}
+                key={device.id}
+                onClick={() =>
+                  handleCreateSession(device.instance_name, device.id)
+                }
                 details={device}
               />
             );
@@ -28,7 +31,7 @@ const Devices = ({ handleCreateSession, fetchDevices, devices }) => {
 
         {createDeviceModal && (
           <CreateDeviceModal
-          fetchDevices={fetchDevices}
+            fetchDevices={fetchDevices}
             CreateDeviceModalOpen={createDeviceModal}
             handleCreateDeviceModalClose={() => setCreateDeviceModal(false)}
             handleCreateSession={handleCreateSession}
