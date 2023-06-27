@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import dayjs from "dayjs";
+import { MdFileUpload } from "react-icons/md";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -30,6 +31,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
   const [validToDate, setValidToDate] = useState("");
   const [validToDateValue, setValidToDateValue] = useState({});
   const [loading, setloading] = useState(false);
+  const [img, setImg] = useState();
 
   const [offerData, setOfferData] = useState({
     offerTitle: "",
@@ -37,6 +39,16 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     validToManager: 1,
     validToSales: 1,
   });
+
+  const handleImgUpload = (e) => {
+    const file = e.target.files[0];
+
+    console.log("Uploaded img: ", file);
+
+    setImg(file);
+  };
+
+  console.log("img state: ", img);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -80,6 +92,8 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     const token = localStorage.getItem("auth-token");
     const user = JSON.parse(localStorage.getItem("user"));
 
+    console.log("img: ", img);
+
     console.log("User", user);
     const creationDate = new Date();
     const Offer = new FormData();
@@ -97,6 +111,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     Offer.append("offerAgency", User?.agency);
     Offer.append("validToManager", offerData.validToManager);
     Offer.append("validToSales", offerData.validToSales);
+    Offer.append("offer_image", img);
 
     console.log("Offer append: ", Offer);
 
@@ -273,28 +288,24 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 style={{ display: "none" }}
                 id="contained-button-file"
                 type="file"
-                // onChange={handleUpload}
+                onChange={handleImgUpload}
               />
               <label htmlFor="contained-button-file">
-                {/* <Button
-                  type="submit"
+                <Button
+                  variant="contained"
                   size="medium"
                   className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-                  style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
-                  // onClick={handleClick}
+                  style={{
+                    backgroundColor: "#111827",
+                    color: "#ffffff",
+                    border: "1px solid #DA1F26",
+                  }}
+                  component="span" // Required so the button doesn't automatically submit form
                   disabled={loading ? true : false}
-                  startIcon={loading ? null : <CloudUploadIcon />}
+                  startIcon={loading ? null : <MdFileUpload />}
                 >
-                  {loading ? (
-                    <CircularProgress
-                      size={23}
-                      sx={{ color: "white" }}
-                      className="text-white"
-                    />
-                  ) : (
-                    <span>Upload Image</span>
-                  )}
-                </Button> */}
+                  <span>Upload Image</span>
+                </Button>
               </label>
             </div>
           </Box>
