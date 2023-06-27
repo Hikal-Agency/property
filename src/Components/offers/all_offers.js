@@ -100,7 +100,6 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
         <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-4 ">
           {offers?.map((offer, index) => {
             return (
-              // offer.validToManager === 1 && offer.validToSales === 1 ? (
               <div
                 className={`${
                   currentMode === "dark"
@@ -115,14 +114,23 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                 </div>
 
                 <div>
-                  <img
-                    // src="../assets/offers_static_img_2.png"
-                    src={
-                      imagePaths[Math.floor(Math.random() * imagePaths.length)]
-                    }
-                    alt="offers image"
-                    className="w-full h-[200px]"
-                  />
+                  {offer?.offer_image ? (
+                    <img
+                      src={offer?.offer_image}
+                      alt="offers image"
+                      className="w-full h-[200px]"
+                    />
+                  ) : (
+                    <img
+                      src={
+                        imagePaths[
+                          Math.floor(Math.random() * imagePaths.length)
+                        ]
+                      }
+                      alt="offers image"
+                      className="w-full h-[200px]"
+                    />
+                  )}
                 </div>
 
                 <p
@@ -141,7 +149,10 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                   className={`${
                     currentMode === "dark" ? "text-white" : "text-[#000000]"
                   } text-white font-bold rounded-md mb-3 text-start text-lg`}
-                  style={{ textTransform: "capitalize" }}
+                  style={{
+                    textTransform: "capitalize",
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  }}
                 >
                   {offer?.offerTitle}
                 </h1>
@@ -160,11 +171,6 @@ const AllOffers = ({ tabValue, setTabValue, isLoading }) => {
                   Offer from Mr. {offer?.offerFrom}
                 </h6> */}
               </div>
-
-              // ) : (
-              //     <>l
-              //     </>
-              // )
             );
           })}
         </div>

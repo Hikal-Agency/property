@@ -10,6 +10,12 @@ const SalesPersonOffers = ({ tabValue, setTabValue, isLoading }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [offers, setOffers] = useState();
 
+  const imagePaths = [
+    "../assets/offers_static_img.png",
+    "../assets/offers_static_img_2.png",
+    // "../assets/offers_static_img3.png",
+  ];
+
   console.log("Offers: ", offers);
 
   const FetchOffers = async (token) => {
@@ -89,20 +95,72 @@ const SalesPersonOffers = ({ tabValue, setTabValue, isLoading }) => {
                     currentMode === "dark"
                       ? "bg-black text-white"
                       : "bg-white text-black"
-                  } p-5 rounded-md h-fit`}
+                  } p-5 rounded-md h-[500px] flex flex-col justify-between`}
                 >
-                  <h1 className="bg-main-red-color text-white font-semibold rounded-md p-2 mb-3">
+                  <div className=" top-0 left-0   z-10 flex gap-1">
+                    <div className="h-1 w-7 bg-red-500"></div>
+                    <div className="h-1 w-7 bg-red-500"></div>
+                    <div className="h-1 w-7 bg-red-500"></div>
+                  </div>
+
+                  <div>
+                    {offer?.offer_image ? (
+                      <img
+                        src={offer?.offer_image}
+                        alt="offers image"
+                        className="w-full h-[200px]"
+                      />
+                    ) : (
+                      <img
+                        src={
+                          imagePaths[
+                            Math.floor(Math.random() * imagePaths.length)
+                          ]
+                        }
+                        alt="offers image"
+                        className="w-full h-[200px]"
+                      />
+                    )}
+                  </div>
+
+                  <p
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-[#000000]"
+                    }  text-xs`}
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    Offer from:{" "}
+                    <span className="text-[#DA1F26] font-bold">
+                      Mr. {offer?.offerFrom}
+                    </span>
+                  </p>
+
+                  <h1
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-[#000000]"
+                    } text-white font-bold rounded-md mb-3 text-start text-lg`}
+                    style={{
+                      textTransform: "capitalize",
+                      color: currentMode === "dark" ? "#ffffff" : "#000000",
+                    }}
+                  >
                     {offer?.offerTitle}
                   </h1>
-                  <h6 className="mb-3 p-2">{offer?.offerDescription}</h6>
-                  <hr className="mb-3"></hr>
-                  <h1 className="font-semibold mb-3">
-                    Valid from {offer?.validFrom} to {offer?.validTill}
+                  <p className="mb-3">{offer?.offerDescription}</p>
+                  <hr className="mb-1"></hr>
+                  <h1 className="font-semibold mb-1">
+                    Valid from{" "}
+                    <span className="text-[#DA1F26]">{offer?.validFrom}</span>{" "}
+                    to{" "}
+                    <span className="text-[#DA1F26]">{offer?.validTill}</span>
                   </h1>
-                  <hr className="mb-3"></hr>
-                  <h6 className="mb-3 bg-main-red-color text-white p-2 rounded-md">
-                    Offer from Mr. {offer?.offerFrom}
-                  </h6>
+                  <hr className="mb-1"></hr>
+                  {/* <h6
+                  className="mb-3 bg-main-red-color text-white p-2 rounded-md"
+                  style={{ textTransform: "capitalize" }}
+                >
+                  Offer from Mr. {offer?.offerFrom}
+                </h6> */}
                 </div>
               )
               //  : (
