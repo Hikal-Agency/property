@@ -595,7 +595,7 @@ const DashboardPanel = ({ setloading }) => {
       {/* 4TH ROW END [UPCOMING MEETING] */}
 
       {/* 5TH ROW [REMINDER] */}
-      {/* <div className="grid grid-cols-1 pb-3">
+      <div className="grid grid-cols-1 pb-3">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -613,7 +613,7 @@ const DashboardPanel = ({ setloading }) => {
 
           <Reminder />
         </motion.div>
-      </div> */}
+      </div>
       {/* 5TH ROW END [REMINDER] */}
 
       {/* 5TH ROW [TODO + SHORTCUTS] */}

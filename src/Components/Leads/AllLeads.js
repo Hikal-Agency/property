@@ -304,12 +304,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       sortable: false,
       minWidth: 45,
       filterable: false,
-      renderCell: (params) => (
-        <div className="flex flex-col">
-          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-        </div>
-      ),
+      renderCell: (params) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div className="flex flex-col">
+              <p>{moment(params?.row.transferredDate).format("YY-MM-DD")}</p>
+              <p>{moment(params?.row.transferredDate).format("HH:mm:ss")}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div className="flex flex-col">
+              <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+              <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+            </div>
+          );
+        }
+      },
     },
     {
       field: "edit",
@@ -380,6 +391,21 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <AiOutlineHistory size={20} />
             </p> */}
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleReminderBtn(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <FaBell size={19} />
+              </IconButton>
+            </p>
             {cellValues.row.leadId !== null && (
               <Link
                 to={`/timeline/${cellValues.row.leadId}`}
@@ -615,6 +641,22 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <IconButton sx={{ padding: 0 }}>
                 <AiOutlineEdit size={20} />
+              </IconButton>
+            </p>
+
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleReminderBtn(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <FaBell size={19} />
               </IconButton>
             </p>
 
@@ -872,39 +914,48 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "otp",
-      headerName: "OTP",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
       minWidth: 72,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
-        return (
-          <div style={{ fontSize: 10 }}>
-            {cellValues.formattedValue === "Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
-                  OTP VERIFIED
-                </span>
-              </div>
-            )}
-
-            {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
-                  NOT VERIFIED
-                </span>
-              </div>
-            )}
-
-            {cellValues.formattedValue !== "Not Verified" &&
-              cellValues.formattedValue !== "Verified" && (
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>{cellValues.row.transferredFromName || "No Name"}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {cellValues.formattedValue === "Verified" && (
                 <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
-                    {cellValues.formattedValue}
+                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
+                    OTP VERIFIED
                   </span>
                 </div>
               )}
-          </div>
-        );
+
+              {cellValues.formattedValue === "Not Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                    NOT VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                      {cellValues.formattedValue}
+                    </span>
+                  </div>
+                )}
+            </div>
+          );
+        }
       },
     },
     {
@@ -916,12 +967,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       sortable: false,
       minWidth: 50,
       filterable: false,
-      renderCell: (params) => (
-        <div className="flex flex-col">
-          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-        </div>
-      ),
+      renderCell: (params) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div className="flex flex-col">
+              <p>{moment(params?.row.transferredDate).format("YY-MM-DD")}</p>
+              <p>{moment(params?.row.transferredDate).format("HH:mm:ss")}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div className="flex flex-col">
+              <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+              <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+            </div>
+          );
+        }
+      },
     },
     {
       field: "edit",
@@ -937,7 +999,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <div
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
-            {/* <p
+            <p
               onMouseEnter={() => setHovered("edit")}
               onMouseLeave={() => setHovered("")}
               style={{ cursor: "pointer" }}
@@ -951,7 +1013,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <IconButton sx={{ padding: 0 }}>
                 <FaBell size={19} />
               </IconButton>
-            </p> */}
+            </p>
             <p
               onMouseEnter={() => setHovered("edit")}
               onMouseLeave={() => setHovered("")}
@@ -1331,8 +1393,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       FetchLeads_url += `&agentAssigned=${assignedAgent}`;
     }
 
-    if(unassignedFeedback) {
-      if(unassignedFeedback !== "All") {
+    if (unassignedFeedback) {
+      if (unassignedFeedback !== "All") {
         FetchLeads_url += `&feedback=${unassignedFeedback}`;
       }
     }
@@ -1404,6 +1466,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               : index + 1,
           leadId: row?.id,
           creationDate: row?.creationDate,
+          transferredDate: row?.transferredDate,
+          transferredFromName: row?.transferredFromName,
           leadName: row?.leadName || "-",
           // leadContact:
           leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
