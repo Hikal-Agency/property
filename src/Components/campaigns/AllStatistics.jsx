@@ -620,9 +620,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   sx={{
                     ...darkModeColors,
                     "& .MuiSelect-select": {
-                      padding: "4px",
+                      // padding: "4px",
                       paddingLeft: "6px !important",
-                      paddingRight: "20px",
+                      // paddingRight: "20px",
                       borderRadius: "8px",
                     },
                     "& .MuiInputBase-root": {
@@ -638,7 +638,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       variant="outlined"
                       required
                     >
-                      <InputLabel
+                      {/* <InputLabel
                         id="campaign-label"
                         sx={{
                           color:
@@ -648,8 +648,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
                         }}
                       >
                         Campaign
-                      </InputLabel>
-                      <Select
+                      </InputLabel> */}
+                      <TextField
                         id="campaign-label"
                         value={selectedCampaign.SelectedCampaign}
                         onChange={(event) =>
@@ -658,6 +658,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                         labelId="campaign-label"
                         label="Select Campaign"
                         size="medium"
+                        select
                         sx={{
                           "& .MuiOutlinedInput-notchedOutline": {
                             borderColor:
@@ -668,6 +669,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                               currentMode === "dark" ? "#ffffff" : "#000000",
                           },
                         }}
+                        displayEmpty
                       >
                         <MenuItem value="0" selected disabled>
                           Select Campaign
@@ -685,7 +687,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                         ) : (
                           <MenuItem disabled>No Campaigns found.</MenuItem>
                         )}
-                      </Select>
+                      </TextField>
                     </FormControl>
                   </div>
 
