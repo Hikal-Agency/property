@@ -48,6 +48,20 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     setImg(file);
   };
 
+  // const handleImgUpload = (e) => {
+  //   const file = e.target.files[0];
+
+  //   if (file) {
+  //     const reader = new FileReader();
+
+  //     reader.onloadend = () => {
+  //       setImg(reader.result);
+  //     };
+
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
   console.log("img state: ", img);
 
   const handleClick = async (e) => {
@@ -103,6 +117,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
       moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
     );
     Offer.append("offerTitle", offerData.offerTitle);
+    Offer.append("offer_image", img);
     Offer.append("offerDescription", offerData.offerDescription);
     Offer.append("status", "Open");
     Offer.append("validFrom", validFromDate);
@@ -111,14 +126,14 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     Offer.append("offerAgency", User?.agency);
     Offer.append("validToManager", offerData.validToManager);
     Offer.append("validToSales", offerData.validToSales);
-    Offer.append("offer_image", img);
 
     console.log("Offer append: ", Offer);
+    console.log("Click img state: ", img);
 
     try {
       const submitOffer = await axios.post(`${BACKEND_URL}/offers`, Offer, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       });
@@ -282,7 +297,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 />
               </LocalizationProvider>
             </div>
-            {/* <div className="grid grid-cols-2 gap-3 mt-3">
+            <div className="grid grid-cols-2 gap-3 mt-3">
               <input
                 accept="image/*"
                 style={{ display: "none" }}
@@ -307,7 +322,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                   <span>Upload Image</span>
                 </Button>
               </label>
-            </div> */}
+            </div>
           </Box>
 
           <div
