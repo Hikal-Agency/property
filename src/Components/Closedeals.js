@@ -504,12 +504,12 @@ const Closedeals = ({ pageState, setpageState }) => {
                 (pageState.pageSize - 1) +
                 index
               : index + 1,
-          dealDate: row?.dealDate,
+          dealDate: row?.dealDate || "-",
           leadName: row?.leadName || "-",
           userName: row?.userName ? row?.userName : "-",
           project: row?.project || "-",
-          enquiryType: row?.enquiryType,
-          leadType: row?.leadType,
+          enquiryType: row?.enquiryType || "-",
+          leadType: row?.leadType || "-",
           otp:
             row?.otp === "No OTP" || row?.otp === "No OTP Used"
               ? "No OTP Used"
