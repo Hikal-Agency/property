@@ -304,12 +304,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       sortable: false,
       minWidth: 45,
       filterable: false,
-      renderCell: (params) => (
-        <div className="flex flex-col">
-          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-        </div>
-      ),
+      renderCell: (params) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div className="flex flex-col">
+              <p>{moment(params?.row.transferredDate).format("YY-MM-DD")}</p>
+              <p>{moment(params?.row.transferredDate).format("HH:mm:ss")}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div className="flex flex-col">
+              <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+              <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+            </div>
+          );
+        }
+      },
     },
     {
       field: "edit",
@@ -916,12 +927,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       sortable: false,
       minWidth: 50,
       filterable: false,
-      renderCell: (params) => (
-        <div className="flex flex-col">
-          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-        </div>
-      ),
+      renderCell: (params) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div className="flex flex-col">
+              <p>{moment(params?.row.transferredDate).format("YY-MM-DD")}</p>
+              <p>{moment(params?.row.transferredDate).format("HH:mm:ss")}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div className="flex flex-col">
+              <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+              <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+            </div>
+          );
+        }
+      },
     },
     {
       field: "edit",
@@ -1331,8 +1353,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       FetchLeads_url += `&agentAssigned=${assignedAgent}`;
     }
 
-    if(unassignedFeedback) {
-      if(unassignedFeedback !== "All") {
+    if (unassignedFeedback) {
+      if (unassignedFeedback !== "All") {
         FetchLeads_url += `&feedback=${unassignedFeedback}`;
       }
     }
@@ -1404,6 +1426,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               : index + 1,
           leadId: row?.id,
           creationDate: row?.creationDate,
+          transferredDate: row?.transferredDate,
           leadName: row?.leadName || "-",
           // leadContact:
           leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
