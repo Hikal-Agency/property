@@ -467,6 +467,11 @@ label[for="bulkImport"] .MuiButtonBase-root {
     background: none;
   }
 
+  .MuiDataGrid-cell[data-field="leadName"] {
+    white-space: pre-wrap !important;
+    text-wrap: wrap;
+  }
+
 @media all and (max-width: 1300px) {
   .MuiDataGrid-cell[data-field="creationDate"] p {
     font-size: 12px;

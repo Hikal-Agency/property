@@ -8,7 +8,7 @@ import {
   BsCalendarWeekFill,
   BsFillCreditCard2FrontFill,
 } from "react-icons/bs";
-import { HiTicket, HiDocumentReport, HiUsers } from "react-icons/hi";
+import { HiTicket, HiDocumentReport, HiUsers, HiSearch } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill } from "react-icons/bs";
 import { FaFacebookSquare, FaChartLine, FaUser } from "react-icons/fa";
@@ -114,6 +114,11 @@ const Sidebarmui = () => {
     {
       title: "LEADS",
       links: [
+        {
+          name: "Search",
+          icon: <HiSearch />,
+          link: "/search",
+        },
         {
           name: "Add lead",
           icon: <MdPersonAdd />,
@@ -466,11 +471,15 @@ const Sidebarmui = () => {
       title: "LEADS",
       links: [
         {
+          name: "Search",
+          icon: <HiSearch />,
+          link: "/search",
+        },
+        {
           name: "Add lead",
           icon: <MdPersonAdd />,
           link: "/addlead",
         },
-
         {
           name: "Fresh",
           icon: <SiHotjar />,
@@ -835,6 +844,11 @@ const Sidebarmui = () => {
     {
       title: "LEADS",
       links: [
+        {
+          name: "Search",
+          icon: <HiSearch />,
+          link: "/search",
+        },
         {
           name: "Add lead",
           icon: <MdPersonAdd />,
