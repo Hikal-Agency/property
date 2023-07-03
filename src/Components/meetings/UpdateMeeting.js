@@ -432,20 +432,22 @@ const UpdateMeeting = ({
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </TextField>
                     </FormControl>
-                    {/* <TextField
-                      id="text"
-                      type={"text"}
-                      label="Meeting Notes "
-                      className="w-full mb-3"
-                      style={{ marginBottom: "20px" }}
-                      variant="outlined"
-                      name="text"
-                      size="medium"
-                      onChange={(e) => {
-                        setMeetingNotes(e.target.value);
-                      }}
-                      required
-                    /> */}
+                    {/* <FormControl>
+                      <TextField
+                        id="text"
+                        type={"text"}
+                        label="Meeting Notes "
+                        className="w-full mb-3"
+                        style={{ marginBottom: "20px" }}
+                        variant="outlined"
+                        name="text"
+                        size="medium"
+                        onChange={(e) => {
+                          setMeetingNotes(e.target.value);
+                        }}
+                        required
+                      />
+                    </FormControl> */}
                     {meetingLocation.lat && meetingLocation.lng && (
                       <LocationPicker
                         meetingLocation={meetingLocation}
