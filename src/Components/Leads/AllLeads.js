@@ -914,39 +914,48 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "otp",
-      headerName: "OTP",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
       minWidth: 72,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
-        return (
-          <div style={{ fontSize: 10 }}>
-            {cellValues.formattedValue === "Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
-                  OTP VERIFIED
-                </span>
-              </div>
-            )}
-
-            {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
-                  NOT VERIFIED
-                </span>
-              </div>
-            )}
-
-            {cellValues.formattedValue !== "Not Verified" &&
-              cellValues.formattedValue !== "Verified" && (
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>{cellValues.row.transferredFromName || "No Name"}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {cellValues.formattedValue === "Verified" && (
                 <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
-                    {cellValues.formattedValue}
+                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
+                    OTP VERIFIED
                   </span>
                 </div>
               )}
-          </div>
-        );
+
+              {cellValues.formattedValue === "Not Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                    NOT VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                      {cellValues.formattedValue}
+                    </span>
+                  </div>
+                )}
+            </div>
+          );
+        }
       },
     },
     {
@@ -1458,6 +1467,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           leadId: row?.id,
           creationDate: row?.creationDate,
           transferredDate: row?.transferredDate,
+          transferredFromName: row?.transferredFromName,
           leadName: row?.leadName || "-",
           // leadContact:
           leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
