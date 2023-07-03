@@ -126,7 +126,7 @@ const ManagerOffers = ({ tabValue, setTabValue, isLoading }) => {
                   <p
                     className={`${
                       currentMode === "dark" ? "text-white" : "text-[#000000]"
-                    }  text-xs`}
+                    }  text-xs text-start`}
                     style={{ textTransform: "capitalize" }}
                   >
                     Offer from:{" "}
@@ -146,7 +146,7 @@ const ManagerOffers = ({ tabValue, setTabValue, isLoading }) => {
                   >
                     {offer?.offerTitle}
                   </h1>
-                  <p className="mb-3">{offer?.offerDescription}</p>
+                  <p className="mb-3 text-start">{offer?.offerDescription}</p>
                   <hr className="mb-1"></hr>
                   <h1 className="font-semibold mb-1">
                     Valid from{" "}
