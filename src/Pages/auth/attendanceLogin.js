@@ -197,9 +197,15 @@ const AttendanceLogin = () => {
         </div>
         <div
           className={`LoginWrapper md:h-screen w-screen flex items-center justify-center `}
+          style={{
+            backgroundImage: "url('/assets/wallapp.png')",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+          }}
         >
           <div className="flex min-h-screen items-center justify-center mt-5 pl-3">
-            <div className="w-[calc(100vw-50px)] md:max-w-[500px] space-y-4 md:space-y-6 bg-white py-8 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+            <div className="w-[calc(100vw-50px)] md:max-w-[500px] space-y-4 md:space-y-6 bg-white py-8 px-5 md:px-10 rounded-lg md:rounded-md z-[5]">
               <div>
                 <Link to={"/"} className="cursor-pointer">
                   <img
@@ -209,7 +215,7 @@ const AttendanceLogin = () => {
                   />
                 </Link>
                 <h2 className="mt-6 text-center text-xl font-bold text-gray-900">
-                  Sign in to your account
+                  Login to your account
                 </h2>
               </div>
 
@@ -259,7 +265,7 @@ const AttendanceLogin = () => {
                         id="password"
                         type={"password"}
                         label="Password"
-                        className="w-full"
+                        className="w-full "
                         variant="outlined"
                         size="medium"
                         required
@@ -310,7 +316,7 @@ const AttendanceLogin = () => {
                     <button
                       disabled={loading ? true : false}
                       type="submit"
-                      className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-3 px-4 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                      className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-full border border-transparent bg-main-red-color py-3 px-4 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
                     >
                       {loading ? (
                         <CircularProgress
@@ -319,7 +325,7 @@ const AttendanceLogin = () => {
                           className="text-white"
                         />
                       ) : (
-                        <span>Sign in</span>
+                        <span>Login</span>
                       )}
                     </button>
                     {/* <div className="flex justify-center">

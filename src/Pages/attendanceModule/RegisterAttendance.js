@@ -257,7 +257,16 @@ const RegisterAttendance = () => {
   return (
     <>
       <ToastContainer />
-      <div style={{ height: "96vh" }} className="overflow-hidden">
+      <div
+        style={{
+          height: "96vh",
+          backgroundImage: "url('/assets/wallapp.png')",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="overflow-hidden"
+      >
         <div>
           <div
             className="flex justify-between items-center p-2 relative w-full"
@@ -313,15 +322,17 @@ const RegisterAttendance = () => {
               currentMode === "dark"
                 ? "bg-[#111827] text-white"
                 : "bg-[#E5E7EB] text-black"
-            } flex flex-col items-center p-5 rounded-md w-full sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4`}
+            } flex flex-col items-center p-10 rounded-md  sm:w-3/5 md:w-2/5 lg:w-1/3 xl:w-1/5 `}
+            style={{ borderRadius: "20px" }}
           >
-            <div className={`w-24 h-24 mb-4  rounded-md`}>
+            <div className={`w-24 h-24 mb-4  rounded-full`}>
               {User?.profile_picture ? (
                 <img
                   src={User?.profile_picture}
-                  className={`rounded-md cursor-pointer object-cover w-full h-full border ${
+                  className={`rounded-md object-cover w-full h-full border rounded-full ${
                     currentMode === "dark" ? "border-white" : "border-black"
                   } `}
+                  style={{ borderRadius: "50px" }}
                   alt=""
                 />
               ) : (
@@ -335,12 +346,8 @@ const RegisterAttendance = () => {
                 />
               )}
             </div>
-            {/* <hr
-              className={`mb-3 w-full ${
-                currentMode === "dark" ? "border-white" : "border-black"
-              }`}
-            ></hr> */}
-            <div className="flex items-center space-x-0 text-lg font-bold mb-3">
+
+            {/* <div className="flex items-center space-x-0 text-lg font-bold mb-3">
               {check === "in" ? (
                 <>
                   <h2>In</h2>
@@ -352,19 +359,32 @@ const RegisterAttendance = () => {
                   <BsDot style={{ color: "red" }} size={40} />
                 </>
               )}
-            </div>
+            </div> */}
             <h1
-              className="bg-main-red-color text-white font-semibold rounded-md p-2 mb-3"
+              className={`${
+                currentMode === "dark" ? "#ffffff" : "#000000"
+              } font-semibold  mt-3 `}
               style={{ textTransform: "capitalize" }}
             >
               {User?.userName}
             </h1>
+            <h6
+              className={`text-[#DA1F26] font-semibold rounded-md p-2 text-sm `}
+              style={{ textTransform: "capitalize" }}
+            >
+              {User?.position}
+            </h6>
+            <h6
+              className={` text-[#DA1F26] font-semibold  p-2 text-sm `}
+              style={{ textTransform: "capitalize" }}
+            >
+              {User?.deprtment}
+            </h6>
             {/* <h6 className="mb-3 p-2">desc</h6> */}
-            {/* <hr
-              className={`mb-3 w-full ${
-                currentMode === "dark" ? "border-white" : "border-black"
-              }`}
-            ></hr> */}
+
+            <h3 className="">
+              {check === "in" ? "Check-in Time" : "Check-out Time"}
+            </h3>
             <h1 className="font-semibold mb-3">
               <LiveDateTimeComponent setAttendanceTime={setAttendanceTime} />
             </h1>
@@ -377,7 +397,7 @@ const RegisterAttendance = () => {
             {check === "in" ? (
               <button
                 onClick={() => MarkAttendance("in")}
-                className={`mb-3 bg-[#008000] text-white p-2 rounded-md w-full text-center ${
+                className={`mb-3 bg-[#008000] text-white p-2 rounded-full w-full text-center ${
                   loading ? "relative" : ""
                 }`}
                 style={{ textTransform: "capitalize", cursor: "pointer" }}
