@@ -44,8 +44,8 @@ const Chat = () => {
 
   const fetchChatMessages = async (contact, callback) => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
-    if(waDevice) {
-      console.log("Get-chat::", waDevice, contact)
+    if (waDevice) {
+      console.log("Get-chat::", waDevice, contact);
       socket.emit("get_chat", { id: waDevice, contact: contact });
       socket.on("chat", (data) => {
         if (data?.length > 0) {
@@ -156,8 +156,7 @@ const Chat = () => {
     if (waAccount) {
       localStorage.removeItem("authenticated-wa-device");
       localStorage.removeItem("authenticated-wa-account");
-      if(showNotif) {
-
+      if (showNotif) {
         toast.success("You are logged out successfully!", {
           position: "top-right",
           autoClose: 3000,
@@ -171,8 +170,8 @@ const Chat = () => {
 
       fetchDevices();
       setActiveChat({
-        phoneNumber: null, 
-        name: ""
+        phoneNumber: null,
+        name: "",
       });
       setChatMessages([]);
 
@@ -185,32 +184,45 @@ const Chat = () => {
     }
   };
 
-  const fetchDevices = async () => {
+  const fetchDevices = () => {
     setloading(true);
-    const token = localStorage.getItem("auth-token");
-    const response = await axios.get(`${BACKEND_URL}/instances`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
+    setTimeout(async () => {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.get(`${BACKEND_URL}/instances`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
-    setDevicesList(response.data.instances.data);
-    setloading(false);
+      setDevicesList(response.data.instances.data);
+      setloading(false);
+    }, 1000);
   };
 
-  const updateDeviceStatus = async (deviceId, phoneNo) => {
+  const connectDevice = async (deviceName, phoneNo) => {
     const token = localStorage.getItem("auth-token");
-
-    const DeviceData = new FormData();
-    DeviceData.append("status", "connected");
-    DeviceData.append("phone_number", phoneNo);
-    await axios.post(`${BACKEND_URL}/instances/${deviceId}`, DeviceData, {
+    const devices = await axios.get(`${BACKEND_URL}/instances`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
     });
+    const findDevice = devices.data.instances.data.find(
+      (device) => device.instance_name === deviceName
+    );
+    if (findDevice) {
+      const deviceId = findDevice?.id;
+      const DeviceData = new FormData();
+      DeviceData.append("status", "connected");
+      DeviceData.append("phone_number", phoneNo);
+      await axios.post(`${BACKEND_URL}/instances/${deviceId}`, DeviceData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+    }
   };
 
   useEffect(() => {
@@ -254,6 +266,34 @@ const Chat = () => {
     }
   }, [User, socket, serverDisconnected]);
 
+  const disconnectDevice = async (deviceName) => {
+    console.log("Dev name: ", deviceName);
+    const token = localStorage.getItem("auth-token");
+    const devices = await axios.get(`${BACKEND_URL}/instances`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    const findDevice = devices.data.instances.data.find(
+      (device) =>
+        device.instance_name === deviceName.slice(deviceName.indexOf("-") + 1)
+    );
+    if (findDevice) {
+      const deviceId = findDevice?.id;
+      const DeviceData = new FormData();
+      DeviceData.append("status", "disconnected");
+      DeviceData.append("phone_number", "");
+      await axios.post(`${BACKEND_URL}/instances/${deviceId}`, DeviceData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      fetchDevices();
+    }
+  };
+
   useEffect(() => {
     if (socket && User) {
       console.log("Socket connectd");
@@ -281,7 +321,7 @@ const Chat = () => {
                 profile_pic_url: url,
               })
             );
-            updateDeviceStatus(info?.deviceId, info?.me?.user);
+            connectDevice(info.sessionId, info?.me?.user);
             setQr(null);
             setloading(false);
             setWALoadingScreen(false);
@@ -306,7 +346,8 @@ const Chat = () => {
       });
 
       socket.on("logged-out", (data) => {
-        if (data) {
+        if (data.status) {
+          disconnectDevice(data.id);
           logout();
         }
       });
@@ -379,7 +420,7 @@ const Chat = () => {
       const sessionId = `${User?.id}-${deviceName
         .toLowerCase()
         .replaceAll(" ", "-")}`;
-        if (socket?.id) {
+      if (socket?.id) {
         setSelectedDevice({ sessionId, deviceId });
         socket.emit("create_session", { id: sessionId, deviceId });
       } else {
