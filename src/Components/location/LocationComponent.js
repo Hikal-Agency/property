@@ -46,7 +46,7 @@ const LocationComponent = ({ upcoming_meetings }) => {
             {upcoming_meetings?.map((meeting, index) => {
               return (
                 <div
-                  className={`${
+                  className={`flex flex-col justify-between ${
                     currentMode === "dark"
                       ? "bg-gray-900 text-white"
                       : "bg-gray-200 text-black"
