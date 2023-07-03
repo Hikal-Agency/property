@@ -128,6 +128,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     Offer.append("validToSales", offerData.validToSales);
 
     console.log("Offer append: ", Offer);
+    console.log("Click img state: ", img);
 
     try {
       const submitOffer = await axios.post(`${BACKEND_URL}/offers`, Offer, {
