@@ -110,11 +110,15 @@ const Reminder = () => {
                         currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                     />
-                    <p className="text-sm mr-3">{`${
-                      meeting?.reminder_time
-                    }, ${moment(meeting?.reminder_date).format(
-                      "MMMM D, Y"
-                    )}`}</p>
+                    {meeting?.reminder_date && meeting?.reminder_time ? (
+                      <p className="text-sm mr-3">{`${
+                        meeting?.reminder_time
+                      }, ${moment(meeting?.reminder_date).format(
+                        "MMMM D, Y"
+                      )}`}</p>
+                    ) : (
+                      "No time and date."
+                    )}
                   </div>
                 </div>
                 <div className="w-full flex justify-between items-center">
@@ -124,7 +128,9 @@ const Reminder = () => {
                         currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                     />
-                    <p className="text-sm mr-3">{meeting?.reminder_note}</p>
+                    <p className="text-sm mr-3">
+                      {meeting?.reminder_note || "No Notes"}
+                    </p>
                   </div>
                 </div>
               </div>
