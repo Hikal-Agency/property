@@ -48,6 +48,20 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     setImg(file);
   };
 
+  // const handleImgUpload = (e) => {
+  //   const file = e.target.files[0];
+
+  //   if (file) {
+  //     const reader = new FileReader();
+
+  //     reader.onloadend = () => {
+  //       setImg(reader.result);
+  //     };
+
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
   console.log("img state: ", img);
 
   const handleClick = async (e) => {
@@ -282,7 +296,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 />
               </LocalizationProvider>
             </div>
-            {/* <div className="grid grid-cols-2 gap-3 mt-3">
+            <div className="grid grid-cols-2 gap-3 mt-3">
               <input
                 accept="image/*"
                 style={{ display: "none" }}
@@ -307,7 +321,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                   <span>Upload Image</span>
                 </Button>
               </label>
-            </div> */}
+            </div>
           </Box>
 
           <div
