@@ -117,6 +117,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
       moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
     );
     Offer.append("offerTitle", offerData.offerTitle);
+    Offer.append("offer_image", img);
     Offer.append("offerDescription", offerData.offerDescription);
     Offer.append("status", "Open");
     Offer.append("validFrom", validFromDate);
@@ -125,14 +126,13 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     Offer.append("offerAgency", User?.agency);
     Offer.append("validToManager", offerData.validToManager);
     Offer.append("validToSales", offerData.validToSales);
-    Offer.append("offer_image", img);
 
     console.log("Offer append: ", Offer);
 
     try {
       const submitOffer = await axios.post(`${BACKEND_URL}/offers`, Offer, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       });
