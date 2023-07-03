@@ -282,7 +282,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 />
               </LocalizationProvider>
             </div>
-            <div className="grid grid-cols-2 gap-3 mt-3">
+            {/* <div className="grid grid-cols-2 gap-3 mt-3">
               <input
                 accept="image/*"
                 style={{ display: "none" }}
@@ -307,7 +307,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                   <span>Upload Image</span>
                 </Button>
               </label>
-            </div>
+            </div> */}
           </Box>
 
           <div
