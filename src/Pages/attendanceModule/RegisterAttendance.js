@@ -257,7 +257,16 @@ const RegisterAttendance = () => {
   return (
     <>
       <ToastContainer />
-      <div style={{ height: "96vh" }} className="overflow-hidden">
+      <div
+        style={{
+          height: "96vh",
+          backgroundImage: "url('/assets/wallapp.png')",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+        }}
+        className="overflow-hidden"
+      >
         <div>
           <div
             className="flex justify-between items-center p-2 relative w-full"
