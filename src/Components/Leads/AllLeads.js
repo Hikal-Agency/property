@@ -391,6 +391,21 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <AiOutlineHistory size={20} />
             </p> */}
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleReminderBtn(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <FaBell size={19} />
+              </IconButton>
+            </p>
             {cellValues.row.leadId !== null && (
               <Link
                 to={`/timeline/${cellValues.row.leadId}`}
@@ -626,6 +641,22 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <IconButton sx={{ padding: 0 }}>
                 <AiOutlineEdit size={20} />
+              </IconButton>
+            </p>
+
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleReminderBtn(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <FaBell size={19} />
               </IconButton>
             </p>
 
@@ -959,7 +990,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <div
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
-            {/* <p
+            <p
               onMouseEnter={() => setHovered("edit")}
               onMouseLeave={() => setHovered("")}
               style={{ cursor: "pointer" }}
@@ -973,7 +1004,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <IconButton sx={{ padding: 0 }}>
                 <FaBell size={19} />
               </IconButton>
-            </p> */}
+            </p>
             <p
               onMouseEnter={() => setHovered("edit")}
               onMouseLeave={() => setHovered("")}
