@@ -7,6 +7,7 @@ import {
   styled,
   Select,
   MenuItem,
+  createStyles,
 } from "@mui/material";
 import "../../styles/index.css";
 import {
@@ -700,8 +701,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 <FaSnapchat size={22} color={"#f6d80a"} />
               </div>
             )}
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "bulk import" && (
+            {cellValues.row.leadSource?.toLowerCase() === "bulk import" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <BiImport size={22} color={"#da1f26"} />
               </div>
@@ -920,10 +920,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "otp",
-      headerName:
-        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
+      headerName: lead_origin === "transfferedleads" ? "Ex Agent" : "OTP",
       minWidth: 72,
       headerAlign: "center",
+      // headerClassName: headerClasses.header,
+      headerClassName: "break-normal",
       flex: 1,
       renderCell: (cellValues) => {
         if (lead_origin === "transfferedleads") {
@@ -966,10 +967,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "creationDate",
-      headerName: "Date",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transffered Date" : "Date",
       flex: 1,
       headerAlign: "center",
-
       sortable: false,
       minWidth: 50,
       filterable: false,
