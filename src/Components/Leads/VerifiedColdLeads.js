@@ -104,18 +104,21 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
   }
 
   const columns = [
-    {
-      field: "creationDate",
-      headerName: "Date",
-      width: 120,
+        {
+      field: "id",
+      headerName: "#",
+      minWidth: 40,
       headerAlign: "center",
-      sortable: false,
-      filterable: false,
-                  renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <small>
+            <strong>{cellValues?.formattedValue}</strong>
+          </small>
+        );
+      },
     },
+
     {
       field: "city",
       headerName: "City",

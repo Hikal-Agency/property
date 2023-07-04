@@ -14,11 +14,11 @@ import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { MdCampaign, MdSend } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
-import {BiImport} from "react-icons/bi";
-import {MdSms} from "react-icons/md";
+import { BiImport } from "react-icons/bi";
+import { MdSms } from "react-icons/md";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import {IoMdChatboxes} from "react-icons/io";
+import { IoMdChatboxes } from "react-icons/io";
 import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
 import { BsWhatsapp, BsImage } from "react-icons/bs";
 import { Link } from "react-router-dom";
@@ -98,7 +98,7 @@ const AllLeads = () => {
     darkModeColors,
     Managers,
     SalesPerson,
-    User
+    User,
   } = useStateContext();
   console.log("Managers: ", Managers);
   const token = localStorage.getItem("auth-token");
@@ -122,10 +122,14 @@ const AllLeads = () => {
   const [whatsappSenderNo, setWhatsappSenderNo] = useState("");
   const imagePickerRef = useRef();
 
-    const getLangCode = (language) => {
-    if(language) {
-      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
-      if(l) {
+  const getLangCode = (language) => {
+    if (language) {
+      const l = langs.find(
+        (lang) =>
+          lang["name"].toLowerCase() === String(language).toLowerCase() ||
+          lang["nativeName"].toLowerCase() === String(language).toLowerCase()
+      );
+      if (l) {
         return l.code.toUpperCase();
       } else {
         return "Invalid";
@@ -133,7 +137,7 @@ const AllLeads = () => {
     } else {
       return null;
     }
-  }
+  };
 
   // const [openMessageModal, setOpenMessageModal] = useState(false);
 
@@ -141,97 +145,26 @@ const AllLeads = () => {
   const [searchText, setSearchText] = useState("");
 
   const columns = [
-    // {
-    //   field: "id",
-    //   headerName: "#",
-    //   // width: 150,
-    //   headerAlign: "center",
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div
-    //         className={`${
-    //           currentMode === "dark"
-    //             ? "bg-[#000000] text-white"
-    //             : "bg-[#000000] text-white"
-    //         } h-full justify-center flex w-full items-center px-5 font-semibold`}
-    //       >
-    //         {cellValues.formattedValue}
-    //       </div>
-    //     );
-    //   },
-    // },
     {
-      field: "leadSource",
-      headerName: "Src",
-      minWidth: 100,
+      field: "id",
+      headerName: "#",
+      minWidth: 40,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full mx-auto flex justify-center ">
-            {cellValues?.row?.leadSource?.toLowerCase() ===
-              "campaign snapchat" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <FaSnapchat size={22} color={"#f6d80a"} />
-              </div>
-            )}
-                                {cellValues.row.leadSource?.toLowerCase() ===
-              "bulk import" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <BiImport size={22} color={"#da1f26"} />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
-              "campaign facebook" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <FaFacebook size={22} color={"#0e82e1"} />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
-              "campaign tiktok" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <img
-                  src={"/assets/tiktok-app.svg"}
-                  alt=""
-                  height={22}
-                  width={22}
-                  className="object-cover"
-                />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
-              "campaign googleads" && (
-              <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
-                <FcGoogle size={22} />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "campaign" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
-                <MdCampaign
-                  size={22}
-                  color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-                />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "cold" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
-                <BsSnow2 size={22} color={"#0ec7ff"} />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "personal" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <BsPersonCircle size={22} color={"#14539a"} />
-              </div>
-            )}
-          </div>
+          <small>
+            <strong>{cellValues?.formattedValue}</strong>
+          </small>
         );
       },
     },
+
     {
       field: "leadName",
       headerAlign: "center",
       headerName: "Lead name",
-      minWidth: 180,
+      minWidth: 85,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -246,7 +179,7 @@ const AllLeads = () => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 140,
+      minWidth: 115,
       headerAlign: "center",
       flex: 1,
     },
@@ -254,7 +187,7 @@ const AllLeads = () => {
       field: "project",
       headerName: "Project",
       headerAlign: "center",
-      minWidth: 160,
+      minWidth: 40,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -265,80 +198,84 @@ const AllLeads = () => {
       },
     },
     {
+      headerAlign: "center",
+      field: "leadType",
+      headerName: "Property",
+      minWidth: 85,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-col">
+            <p>{cellValues.row.leadType}</p>
+            <p>{cellValues.row.enquiryType}</p>
+          </div>
+        );
+      },
+    },
+
+    {
+      field: "otp",
+      headerName: "OTP",
+      minWidth: 72,
+      headerAlign: "center",
+      // headerClassName: headerClasses.header,
+      headerClassName: "break-normal",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div style={{ fontSize: 10 }}>
+            {cellValues.formattedValue === "Verified" && (
+              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
+                  OTP VERIFIED
+                </span>
+              </div>
+            )}
+
+            {cellValues.formattedValue === "Not Verified" && (
+              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                  NOT VERIFIED
+                </span>
+              </div>
+            )}
+
+            {cellValues.formattedValue !== "Not Verified" &&
+              cellValues.formattedValue !== "Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                    {cellValues.formattedValue}
+                  </span>
+                </div>
+              )}
+          </div>
+        );
+      },
+    },
+    {
       field: "language",
       headerName: "Lang",
       headerAlign: "center",
-      minWidth: 35,
+      minWidth: 25,
       flex: 1,
-    },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      headerAlign: "center",
-      // width: 110,
-      minWidth: 110,
-      flex: 1,
-    },
-
-    {
-      field: "leadType",
-      headerName: "Property",
-      minWidth: 140,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    {
-      field: "creationDate",
-      headerName: "Date",
-      flex: 1,
-      headerAlign: "center",
-
-      sortable: false,
-      minWidth: 120,
-      filterable: false,
-                  renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
-    },
-
-    {
-      field: "whatsapp-web",
-      headerAlign: "center",
-      headerName: "",
-      minWidth: 110,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div
-            className="whatsapp-web-link"
-            style={{ display: "flex", justifyContent: "center", width: "100%" }}
-          >
-            <BsWhatsapp
-              size={24}
-              onClick={() => {
-                window.open(
-                  `https://wa.me/${cellValues.row.leadContact
-                    .slice(1)
-                    .replaceAll(" ", "")}`
-                );
-              }}
-              color="green"
-            />
-          </div>
-        );
-      },
     },
   ];
 
   const managerColumns = [
+        {
+      field: "id",
+      headerName: "#",
+      minWidth: 40,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <small>
+            <strong>{cellValues?.formattedValue}</strong>
+          </small>
+        );
+      },
+    },
     {
       field: "leadName",
       headerAlign: "center",
@@ -405,20 +342,6 @@ const AllLeads = () => {
           </div>
         );
       },
-    },
-    {
-      field: "creationDate",
-      headerName: "Date",
-      headerAlign: "center",
-      flex: 1,
-
-      sortable: false,
-      minWidth: 120,
-      filterable: false,
-                  renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
     },
 
     {
@@ -703,7 +626,7 @@ const AllLeads = () => {
           creationDate: row?.creationDate,
           leadName: row?.leadName || "-",
           leadContact: row?.leadContact || "-",
-          project: row?.project  || "-",
+          project: row?.project || "-",
           leadType: row?.leadType || "-",
           language: getLangCode(row?.language) || "-",
           enquiryType: row?.enquiryType || "-",
@@ -1160,8 +1083,7 @@ const AllLeads = () => {
       </Box> */}
 
       <Box sx={{ width: "100%" }} className="mb-5">
-        <div className="grid grid-cols-2 gap-4">
-        </div>
+        <div className="grid grid-cols-2 gap-4"></div>
       </Box>
 
       <h1
@@ -1219,7 +1141,11 @@ const AllLeads = () => {
           </Button>
 
           {selectedRows.length === 1 && (
-            <Link to={`/whatsapp-marketing/chat?phoneNumber=${selectedRows[0].slice(1).replaceAll(" ", "")}`}>
+            <Link
+              to={`/whatsapp-marketing/chat?phoneNumber=${selectedRows[0]
+                .slice(1)
+                .replaceAll(" ", "")}`}
+            >
               <Button
                 type="button"
                 variant="contained"
@@ -1227,7 +1153,7 @@ const AllLeads = () => {
                 color="error"
                 size="small"
               >
-            <IoMdChatboxes style={{ marginRight: 8 }} size={20} />
+                <IoMdChatboxes style={{ marginRight: 8 }} size={20} />
                 Open Chat
               </Button>
             </Link>
@@ -1242,7 +1168,11 @@ const AllLeads = () => {
         </Box>
       )}
 
-      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={{ ...DataGridStyles, position: "relative" }}>
+      <Box
+        width={"100%"}
+        className={`${currentMode}-mode-datatable`}
+        sx={{ ...DataGridStyles, position: "relative" }}
+      >
         <DataGrid
           autoHeight
           disableSelectionOnClick
@@ -1275,8 +1205,8 @@ const AllLeads = () => {
           }}
           componentsProps={{
             toolbar: {
-                                printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+              printOptions: { disableToolbarButton: User?.role !== 1 },
+              csvOptions: { disableToolbarButton: User?.role !== 1 },
               showQuickFilter: true,
               value: searchText,
               onChange: HandleQuicSearch,

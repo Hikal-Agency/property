@@ -469,6 +469,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   ];
 
   const AgentColumns = [
+        {
+      field: "id",
+      headerName: "#",
+      minWidth: 40,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <small>
+            <strong>{cellValues?.formattedValue}</strong>
+          </small>
+        );
+      },
+    },
     {
       field: "leadName",
       headerName: "Name",
@@ -642,22 +656,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         );
       },
     },
-    {
-      field: "creationDate",
-      headerName: "Date",
-      flex: 1,
-      headerAlign: "center",
 
-      sortable: false,
-      minWidth: 50,
-      filterable: false,
-      renderCell: (params) => (
-        <div className="flex flex-col">
-          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-        </div>
-      ),
-    },
     {
       field: "edit",
       headerName: "Edit",
@@ -873,26 +872,84 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }
       },
     },
+      
         {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
       minWidth: 35,
       headerAlign: "center",
-
-      sortable: false,
-      filterable: false,
-      renderCell: (params) => {
-        if (lead_origin === "transfferedleads") {
-          return (
-            <div className="flex flex-col">
-              <p>{moment(params?.row.transferredDate).format("YY-MM-DD")}</p>
-              <p>{moment(params?.row.transferredDate).format("HH:mm:ss")}</p>
+      renderCell: (cellValues) => {
+        console.log("Start::", cellValues.row.leadSource);
+        const sourceIcons = {
+          "campaign snapchat": () => <FaSnapchat size={22} color={"#f6d80a"} />,
+          "bulk import": () => <FaSnapchat size={22} color={"#f6d80a"} />,
+          "campaign facebook": () => <FaFacebook size={22} color={"#0e82e1"} />,
+          "campaign tiktok": () => (
+            <img
+              src={"/assets/tiktok-app.svg"}
+              alt=""
+              style={{margin: "0 auto"}}
+              height={18}
+              width={18}
+              className="object-cover"
+            />
+          ),
+          "campaign googleads": () => <FcGoogle size={22} />,
+          campaign: () => <FcGoogle size={22} />,
+          cold: () => <BsSnow2 size={22} color={"#0ec7ff"} />,
+          personal: () => <BsPersonCircle size={22} color={"#14539a"} />,
+          whatsapp: () => <FaWhatsapp size={22} color={"#29EC62"} />,
+          message: () => <RiMessage2Line size={22} color={"#14539a"} />,
+          comment: () => <FaComment size={22} color={"#14539a"} />,
+          website: () => <FaGlobe size={22} color={"#14539a"} />,
+          "property finder": () => (
+            <GiMagnifyingGlass size={22} color={"#14539a"} />
+          ),
+          "propety finder": () => (
+            <GiMagnifyingGlass size={22} color={"#14539a"} />
+          ),
+          self: () => <FaUser size={22} color={"#14539a"} />,
+          "campaign youtube": () => <FaYoutube size={22} color={"#FF0000"} />,
+          "campaign twitter": () => <FaTwitter size={22} color={"#14539a"} />,
+        };
+        return (
+          <>
+            <div className="flex items-center justify-center">
+              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
+                <FaArchive
+                  style={{
+                    background: "white",
+                    padding: "5px",
+                    borderRadius: "50%",
+                    width: "70%",
+                    height: "100%",
+                    margin: "0 auto",
+                  }}
+                  size={22}
+                  color={"#14539a"}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    "& svg": {
+                      background: "white",
+                      padding: "5px",
+                      borderRadius: "50%",
+                      width: "70%",
+                      height: "100%",
+                      margin: "0 auto",
+                    },
+                  }}
+                >
+                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()] ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]() : "-"}
+                </Box>
+              )}
             </div>
+          </>
         );
-      }
-    }
-  },
+      },
+    },
     {
       field: "language",
       headerName: "Lang",
