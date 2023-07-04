@@ -77,6 +77,8 @@ const AddReminder = ({
     AddReminderData.append("lead_id", LeadData?.leadId);
     AddReminderData.append("user_id", User?.id);
     AddReminderData.append("reminder_status", "Pending");
+    // AddReminderData.append("reminder_enquiryType", LeadData?.enquiryType);
+    // AddReminderData.append("reminder_project", LeadData?.project);
 
     await axios
       .post(`${BACKEND_URL}/reminders`, AddReminderData, {
@@ -192,7 +194,12 @@ const AddReminder = ({
                     value={reminderDate}
                     renderInput={(params) => (
                       <TextField
+                        label="Reminder Date"
                         sx={{
+                          "& .MuiFormLabel-root": {
+                            background: currentMode === "dark" ? "#111827" : "",
+                            color: currentMode === "dark" ? "white" : "",
+                          },
                           "& input": {
                             color: currentMode === "dark" ? "white" : "black",
                           },
@@ -208,7 +215,6 @@ const AddReminder = ({
                           },
                         }}
                         fullWidth
-                        label="Reminder Date"
                         {...params}
                         onKeyDown={(e) => e.preventDefault()}
                         readOnly={true}

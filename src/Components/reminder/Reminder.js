@@ -11,13 +11,18 @@ import { RiStickyNoteLine } from "react-icons/ri";
 import axios from "../../axoisConfig";
 import { ToastContainer, toast } from "react-toastify";
 import { BsBuilding } from "react-icons/bs";
+import SingleLead from "../Leads/SingleLead";
 
 const Reminder = ({ reminder, setReminder }) => {
   const { currentMode, BACKEND_URL, User } = useStateContext();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [btnLoading, setbtnLoading] = useState(false);
+  const [openleadModel, setOpenLeadModel] = useState(false);
+  const [leadData, setLeadData] = useState(null);
   // const [reminder, setReminder] = useState([]);
   const token = localStorage.getItem("auth-token");
+  const handleLeadModelOpen = () => setOpenLeadModel(true);
+  const handleLeadModelClose = () => setOpenLeadModel(false);
 
   const upcoming_reminders = [
     {
@@ -45,6 +50,12 @@ const Reminder = ({ reminder, setReminder }) => {
       completed: true,
     },
   ];
+
+  const handleClick = (id) => {
+    console.log("id: ", id);
+    setLeadData(id);
+    setOpenLeadModel(true);
+  };
 
   const UpdateReminder = async (value, id) => {
     setbtnLoading(true);
@@ -147,7 +158,8 @@ const Reminder = ({ reminder, setReminder }) => {
               key={meeting.id}
               className={`w-[350px] flex flex-col justify-between ${
                 currentMode === "dark" ? "bg-black" : "bg-white"
-              } rounded-md mb-3`}
+              } rounded-md mb-3 cursor-pointer`}
+              onClick={() => handleClick(meeting?.lead_id)}
             >
               <div className="px-5 py-5 space-y-3">
                 <h2 className="text-main-red-color text-md font-bold">
@@ -232,6 +244,17 @@ const Reminder = ({ reminder, setReminder }) => {
           );
         })}
       </div>
+      {openleadModel && (
+        <SingleLead
+          LeadModelOpen={openleadModel}
+          setLeadModelOpen={setOpenLeadModel}
+          handleLeadModelOpen={handleLeadModelOpen}
+          handleLeadModelClose={handleLeadModelClose}
+          LeadData={leadData}
+          BACKEND_URL={BACKEND_URL}
+          setLeadData={setLeadData}
+        />
+      )}
     </>
   );
 };
