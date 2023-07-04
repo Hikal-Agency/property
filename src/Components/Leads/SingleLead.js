@@ -29,15 +29,36 @@ const SingleLead = ({
   handleLeadModelOpen,
   handleLeadModelClose,
   LeadData,
+  setLeadData,
 }) => {
   const { darkModeColors, currentMode, User, BACKEND_URL } = useStateContext();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [lastNote, setLastNote] = useState("");
 
+  console.log("leaddata: ", LeadData);
+
   const style = {
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
+  };
+
+  const FetchLead = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const result = await axios.get(`${BACKEND_URL}/leads/${LeadData}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("leads: ", result);
+
+      setLeadData(result?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const AddNote = () => {
@@ -122,8 +143,14 @@ const SingleLead = ({
       fetchLastNote();
     }
 
+    console.log("leaddata: ", LeadData);
+
+    if (typeof LeadData === "number") {
+      FetchLead(LeadData);
+    }
+
     console.log("LeadData::", LeadData);
-  }, [LeadData]);
+  }, []);
 
   return (
     <>
