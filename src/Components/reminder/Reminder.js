@@ -109,6 +109,9 @@ const Reminder = () => {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
+        params: {
+          reminder_status: "Pending",
+        },
       });
 
       setReminder(reminders.data.reminder.data);
