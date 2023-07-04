@@ -70,13 +70,13 @@ const AddReminder = ({
     const token = localStorage.getItem("auth-token");
     const creationDate = new Date();
     const AddReminderData = new FormData();
-    // AddReminderData.append("id", User?.id);
     AddReminderData.append("reminder_note", ReminderNotes);
     AddReminderData.append("reminder_time", reminderTime);
     AddReminderData.append("reminder_date", reminderDate);
     AddReminderData.append("leadName", LeadData?.leadName);
     AddReminderData.append("lead_id", LeadData?.leadId);
     AddReminderData.append("user_id", User?.id);
+    AddReminderData.append("reminder_status", "Pending");
 
     await axios
       .post(`${BACKEND_URL}/reminders`, AddReminderData, {
@@ -97,7 +97,6 @@ const AddReminder = ({
           progress: undefined,
           theme: "light",
         });
-        FetchLeads(token);
         setbtnloading(false);
         handleLeadModelClose();
       })

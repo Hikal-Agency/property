@@ -45,6 +45,58 @@ const Reminder = () => {
     },
   ];
 
+  const UpdateReminder = async (value, id) => {
+    console.log("value :", value);
+    let reminderStatus;
+
+    if (value === 1) {
+      reminderStatus = "Completed";
+    } else {
+      reminderStatus = "Cancelled";
+    }
+
+    const ReminderUpdate = new FormData();
+    ReminderUpdate.append("reminder_status", reminderStatus);
+
+    try {
+      const reminders = await axios.post(
+        `${BACKEND_URL}/reminders/${id}`,
+        ReminderUpdate,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("Successfully update reminder.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      fetchRminders(token);
+    } catch (error) {
+      console.log("Reminder error: ", error);
+      toast.error("Unable to Update Reminders.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   const fetchRminders = async () => {
     try {
       const reminders = await axios.get(`${BACKEND_URL}/reminders`, {
@@ -139,6 +191,7 @@ const Reminder = () => {
                   <IconButton
                     style={{ backgroundColor: "#4CAF50", color: "white" }}
                     className="rounded-full"
+                    onClick={() => UpdateReminder(1, meeting?.id)}
                   >
                     <CheckIcon />
                   </IconButton>
@@ -148,6 +201,7 @@ const Reminder = () => {
                   <IconButton
                     style={{ backgroundColor: "#DC2626", color: "white" }}
                     className="rounded-full"
+                    onClick={() => UpdateReminder(0, meeting?.id)}
                   >
                     <CloseIcon />
                   </IconButton>
