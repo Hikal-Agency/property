@@ -118,6 +118,12 @@ const RenderPriority = ({ cellValues }) => {
       </Select> */}
       <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
         <Select
+        sx={{
+            color:
+              currentMode === "dark"
+                ? "#ffffff !important"
+                : "#000000 !important",
+        }}
           id="priority"
           value={Priority != null ? Priority : "set_priority"}
           label="Priority"

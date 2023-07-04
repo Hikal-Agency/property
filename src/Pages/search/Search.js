@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import "../../styles/index.css";
-import{BiImport} from "react-icons/bi";
+import { BiImport } from "react-icons/bi";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -21,18 +21,25 @@ import {
 
 // import axios from "axios";
 import axios from "../../axoisConfig";
+import { FaComment, FaArchive, FaUser, FaBell } from "react-icons/fa";
+import { GiMagnifyingGlass } from "react-icons/gi";
+import { FaGlobe } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
+import { BsAlarm } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
-import { FaSnapchat, FaBell } from "react-icons/fa";
+import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
+import { RiMessage2Line } from "react-icons/ri";
+import { FaWhatsapp } from "react-icons/fa";
+import { FaYoutube } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
-import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "../../Components/Leads/SingleLead";
 import UpdateLead from "../../Components/Leads/UpdateLead";
@@ -46,6 +53,7 @@ import DeleteLeadModel from "../../Components/Leads/DeleteLead";
 import BulkImport from "../../Components/Leads/BulkImport";
 import { langs } from "../../langCodes";
 import AddReminder from "../../Components/reminder/AddReminder";
+import RenderPriority from "../../Components/Leads/RenderPriority";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -160,11 +168,11 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [agentSelected, setAgentSelected] = useState("");
   const [projectNameTyped, setProjectNameTyped] = useState("");
   const [bulkDeleteClicked, setBulkDeleteClicked] = useState(false);
+  const [leadSourceSelected, setLeadSourceSelected] = useState(0);
   const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
   const [managers, setManagers] = useState(Managers || []);
   const [agents, setAgents] = useState(SalesPerson || {});
   const [searchText, setSearchText] = useState("");
-  // const [searchTerm, setSearchTerm] = useState("");
   const searchRef = useRef();
   const selectionModelRef = useRef([]);
   const [hovered, setHovered] = useState("");
@@ -216,11 +224,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
   }));
 
-  const classes = CustomColorSwitch();
-
-  // ROLE 3
-  // eslint-disable-next-line
-
   const handleRangeChange = (e) => {
     setError(false);
     const value = e.target.value;
@@ -252,7 +255,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const handleKeyUp = (e) => {
     if (searchRef.current.querySelector("input").value) {
       if (e.key === "Enter" || e.keyCode === 13) {
-        // setpageState((oldPageState) => ({...oldPageState, page: 1}));
+        setProjectNameTyped("");
         FetchSearchedLeads(token, e.target.value);
       }
     }
@@ -277,10 +280,25 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   const managerColumns = [
     {
+      field: "id",
+      headerName: "#",
+      minWidth: 40,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <small>
+            <strong>{cellValues?.formattedValue}</strong>
+          </small>
+        );
+      },
+    },
+
+    {
       field: "leadName",
       headerAlign: "center",
       headerName: "Lead name",
-      minWidth: 100,
+      minWidth: 120,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -302,7 +320,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "project",
       headerName: "Project",
-      minWidth: 110,
+      minWidth: 85,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -314,31 +332,16 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       },
     },
     {
-      field: "language",
-      headerName: "Lang",
-      minWidth: 55,
       headerAlign: "center",
-      flex: 1,
-    },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      // width: 110,
-      minWidth: 110,
-      headerAlign: "center",
-      flex: 1,
-    },
-
-    {
       field: "leadType",
-      headerAlign: "center",
       headerName: "Property",
-      minWidth: 110,
+      minWidth: 85,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
+          <div className="flex flex-col">
+            <p>{cellValues.row.enquiryType}</p>
+            <p>{cellValues.row.leadType}</p>
           </div>
         );
       },
@@ -346,7 +349,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "assignedToSales",
       headerName: "Agent",
-      minWidth: 110,
+      minWidth: 85,
       headerAlign: "center",
       flex: 1,
       hideable: false,
@@ -356,29 +359,76 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "feedback",
       headerAlign: "center",
       headerName: "Feedback",
-      minWidth: 110,
+      minWidth: 85,
       flex: 1,
 
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
     {
-      field: "creationDate",
-      headerName: "Date",
+      field: "priority",
+      headerName: "Priority",
+      minWidth: 85,
       headerAlign: "center",
       flex: 1,
-
-      sortable: false,
-      minWidth: 45,
-      filterable: false,
-      renderCell: (params) => (
-        <div className="flex flex-col">
-          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-        </div>
-      ),
+      hideable: false,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
-        {
+    {
+      field: "otp",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
+      minWidth: 90,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>{cellValues.row.transferredFromName || "No Name"}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {cellValues.formattedValue === "Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
+                    OTP VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue === "Not Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                    NOT VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                      {cellValues.formattedValue}
+                    </span>
+                  </div>
+                )}
+            </div>
+          );
+        }
+      },
+    },
+    {
+      field: "language",
+      headerName: "Lang",
+      minWidth: 55,
+      headerAlign: "center",
+      flex: 1,
+    },
+
+    {
       field: "edit",
       headerName: "Edit",
       flex: 1,
@@ -390,6 +440,21 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleReminderBtn(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <BsAlarm size={19} />
+              </IconButton>
+            </p>
             {currentMode === "dark" ? (
               <p
                 onClick={() => HandleEditFunc(cellValues)}
@@ -447,21 +512,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <AiOutlineHistory size={20} />
             </p> */}
-            <p
-              onMouseEnter={() => setHovered("edit")}
-              onMouseLeave={() => setHovered("")}
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "bg-transparent text-white rounded-md shadow-none"
-                  : "bg-transparent text-black rounded-md shadow-none"
-              }`}
-              onClick={() => HandleReminderBtn(cellValues)}
-            >
-              <IconButton sx={{ padding: 0 }}>
-                <FaBell size={19} />
-              </IconButton>
-            </p>
             {cellValues.row.leadId !== null && (
               <Link
                 to={`/timeline/${cellValues.row.leadId}`}
@@ -481,73 +531,21 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   ];
 
   const columns = [
-    {
-      field: "leadSource",
-      headerName: "Src",
-      minWidth: 35,
+      {
+      field: "id",
+      headerName: "#",
+      minWidth: 40,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full mx-auto flex justify-center ">
-            {cellValues?.row?.leadSource?.toLowerCase() ===
-              "campaign snapchat" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <FaSnapchat size={22} color={"#f6d80a"} />
-              </div>
-            )}
-                                {cellValues.row.leadSource?.toLowerCase() ===
-              "bulk import" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <BiImport size={22} color={"#da1f26"} />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
-              "campaign facebook" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <FaFacebook size={22} color={"#0e82e1"} />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
-              "campaign tiktok" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <img
-                  src={"/assets/tiktok-app.svg"}
-                  alt=""
-                  height={22}
-                  width={22}
-                  className="object-cover"
-                />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
-              "campaign googleads" && (
-              <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
-                <FcGoogle size={22} />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "campaign" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
-                <MdCampaign
-                  size={22}
-                  color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-                />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "cold" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
-                <BsSnow2 size={22} color={"#0ec7ff"} />
-              </div>
-            )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "personal" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
-                <BsPersonCircle size={22} color={"#14539a"} />
-              </div>
-            )}
-          </div>
+          <small>
+            <strong>{cellValues?.formattedValue}</strong>
+          </small>
         );
       },
     },
+
     {
       field: "leadName",
       headerAlign: "center",
@@ -584,13 +582,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           </div>
         );
       },
-    },
-    {
-      field: "language",
-      headerName: "Lang",
-      headerAlign: "center",
-      minWidth: 25,
-      flex: 1,
     },
     {
       headerAlign: "center",
@@ -635,7 +626,8 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
-     {
+
+    {
       field: "otp",
       headerName:
         lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
@@ -681,22 +673,91 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }
       },
     },
-    {
-      field: "creationDate",
-      headerName: "Date",
+        {
+      field: "leadSource",
+      headerName: "Src",
       flex: 1,
+      minWidth: 35,
       headerAlign: "center",
-
-      sortable: false,
-      minWidth: 50,
-      filterable: false,
-      renderCell: (params) => (
-        <div className="flex flex-col">
-          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-        </div>
-      ),
+      renderCell: (cellValues) => {
+        console.log("Start::", cellValues.row.leadSource);
+        const sourceIcons = {
+          "campaign snapchat": () => <FaSnapchat size={22} color={"#f6d80a"} />,
+          "bulk import": () => <FaSnapchat size={22} color={"#f6d80a"} />,
+          "campaign facebook": () => <FaFacebook size={22} color={"#0e82e1"} />,
+          "campaign tiktok": () => (
+            <img
+              src={"/assets/tiktok-app.svg"}
+              alt=""
+              style={{margin: "0 auto"}}
+              height={18}
+              width={18}
+              className="object-cover"
+            />
+          ),
+          "campaign googleads": () => <FcGoogle size={22} />,
+          campaign: () => <FcGoogle size={22} />,
+          cold: () => <BsSnow2 size={22} color={"#0ec7ff"} />,
+          personal: () => <BsPersonCircle size={22} color={"#14539a"} />,
+          whatsapp: () => <FaWhatsapp size={22} color={"#29EC62"} />,
+          message: () => <RiMessage2Line size={22} color={"#14539a"} />,
+          comment: () => <FaComment size={22} color={"#14539a"} />,
+          website: () => <FaGlobe size={22} color={"#14539a"} />,
+          "property finder": () => (
+            <GiMagnifyingGlass size={22} color={"#14539a"} />
+          ),
+          "propety finder": () => (
+            <GiMagnifyingGlass size={22} color={"#14539a"} />
+          ),
+          self: () => <FaUser size={22} color={"#14539a"} />,
+          "campaign youtube": () => <FaYoutube size={22} color={"#FF0000"} />,
+          "campaign twitter": () => <FaTwitter size={22} color={"#14539a"} />,
+        };
+        return (
+          <>
+            <div className="flex items-center justify-center">
+              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
+                <FaArchive
+                  style={{
+                    background: "white",
+                    padding: "5px",
+                    borderRadius: "50%",
+                    width: "70%",
+                    height: "100%",
+                    margin: "0 auto",
+                  }}
+                  size={22}
+                  color={"#14539a"}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    "& svg": {
+                      background: "white",
+                      padding: "5px",
+                      borderRadius: "50%",
+                      width: "70%",
+                      height: "100%",
+                      margin: "0 auto",
+                    },
+                  }}
+                >
+                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()] ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]() : "-"}
+                </Box>
+              )}
+            </div>
+          </>
+        );
+      },
     },
+    {
+      field: "language",
+      headerName: "Lang",
+      headerAlign: "center",
+      minWidth: 25,
+      flex: 1,
+    },
+
     {
       field: "edit",
       headerName: "Edit",
@@ -711,6 +772,21 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <div
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleReminderBtn(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <BsAlarm size={19} />
+              </IconButton>
+            </p>
             <p
               style={{ cursor: "pointer" }}
               className={`${
@@ -923,6 +999,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       FetchLeads_url += `&enquiryType=${enquiryTypeSelected?.id}`;
     }
 
+    if (leadSourceSelected) {
+      FetchLeads_url += `&leadSource=${leadSourceSelected}`;
+    }
+
     if (managerSelected) {
       FetchLeads_url += `&managerAssigned=${managerSelected}`;
     }
@@ -1039,6 +1119,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       }
     }
 
+    if (leadSourceSelected) {
+      url += `&leadStatus=${leadSourceSelected}`;
+    }
+
     if (leadOriginSelected?.id === "unassigned") {
       url += "&unassigned=1";
       if (leadTypeSelected?.id === "cold") {
@@ -1150,6 +1234,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   useEffect(() => {
     if (searchRef.current.querySelector("input").value) {
+      setProjectNameTyped("");
       FetchSearchedLeads(token, searchRef.current.querySelector("input").value);
     } else {
       FetchLeads(token);
@@ -1171,6 +1256,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     agentSelected,
     leadOriginSelected,
     projectNameTyped,
+    leadSourceSelected,
     enquiryTypeSelected,
     reloadDataGrid,
   ]);
@@ -1391,6 +1477,13 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
     reader.readAsText(file);
   };
+
+  let allAgents = [];
+  if (User?.role === 1 || User?.role === 2) {
+    allAgents = agents[`manager-${managerSelected}`];
+  } else {
+    allAgents = agents[`manager-${User?.id}`];
+  }
   return (
     <>
       <ToastContainer />
@@ -1457,8 +1550,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               : "text-main-red-color font-bold border-main-red-color"
           }`}
         >
-          {leadOriginSelected.formattedValue} -{" "}
-          <span className="uppercase">{leadTypeSelected.formattedValue}</span>{" "}
+          <span className="uppercase">leads</span>{" "}
           <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
             {pageState?.total}
           </span>
@@ -1499,11 +1591,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             <Select
               id="leadOrigin"
               value={leadOriginSelected?.id || "hotleads"}
-              onChange={(event) =>
+              onChange={(event) => {
+                searchRef.current.querySelector("input").value = "";
                 setLeadOriginSelected(
                   leadOrigins.find((origin) => origin.id === event.target.value)
-                )
-              }
+                );
+              }}
               size="small"
               className={`w-full mt-1 mb-5 `}
               displayEmpty
@@ -1531,11 +1624,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             <Select
               id="leadType"
               value={leadTypeSelected?.id || "all"}
-              onChange={(event) =>
+              onChange={(event) => {
+                searchRef.current.querySelector("input").value = "";
                 setLeadTypeSelected(
                   leadTypes.find((type) => type.id === event.target.value)
-                )
-              }
+                );
+              }}
               size="small"
               className={`w-full mt-1 mb-5`}
               displayEmpty
@@ -1565,6 +1659,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               ))}
             </Select>
           </div>
+
           <div style={{ position: "relative" }}>
             <label
               htmlFor="enquiryType"
@@ -1588,11 +1683,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               id="enquiryType"
               value={enquiryTypeSelected?.id}
               className={`w-full mt-1 mb-5`}
-              onChange={(event) =>
+              onChange={(event) => {
+                searchRef.current.querySelector("input").value = "";
                 setEnquiryTypeSelected(
                   enquiryTypes.find((type) => type.id === event.target.value)
-                )
-              }
+                );
+              }}
               displayEmpty
               size="small"
               required
@@ -1612,7 +1708,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   color: currentMode === "dark" ? "#ffffff" : "#000000",
                 }}
               >
-                Select Enquiry Type
+                Enquiry
               </MenuItem>
               {enquiryTypes?.map((type, index) => (
                 <MenuItem key={index} value={type?.id || ""}>
@@ -1621,33 +1717,19 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               ))}
             </Select>
           </div>
-          <div>
-            <TextField
-              className={`w-full`}
-              id="Project"
-              sx={{
-                marginTop: "-12px",
-              }}
-              type={"text"}
-              label="Project Name"
-              variant="outlined"
-              size="small"
-              onChange={(e) => setProjectNameTyped(e.target.value)}
-              required
-            />
-          </div>
+          {(User?.role === 1 || User?.role === 2) &&
           <div style={{ position: "relative" }}>
             <label
+              htmlFor="leadSource"
               style={{ position: "absolute", top: "-20px", right: 0 }}
-              htmlFor="Manager"
               className={`flex justify-end items-center ${
                 currentMode === "dark" ? "text-white" : "text-dark"
               } `}
             >
-              {managerSelected ? (
+              {leadSourceSelected ? (
                 <strong
                   className="ml-4 text-red-600 cursor-pointer"
-                  onClick={() => setManagerSelected("")}
+                  onClick={() => setLeadSourceSelected(0)}
                 >
                   Clear
                 </strong>
@@ -1656,12 +1738,15 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               )}
             </label>
             <Select
-              id="Manager"
-              value={managerSelected || ""}
-              onChange={(event) => setManagerSelected(event.target.value)}
-              size="small"
-              className={`w-full mt-1 mb-5 `}
+              id="leadSource"
+              value={leadSourceSelected}
+              className={`w-full mt-1 mb-5`}
+              onChange={(event) => {
+                searchRef.current.querySelector("input").value = "";
+                setLeadSourceSelected(event.target.value);
+              }}
               displayEmpty
+              size="small"
               required
               sx={{
                 "& .MuiOutlinedInput-notchedOutline": {
@@ -1672,16 +1757,104 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 },
               }}
             >
-              <MenuItem value="" selected disabled>
-                Manager
+              <MenuItem
+                value="0"
+                disabled
+                sx={{
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                }}
+              >
+                Source
               </MenuItem>
-              {managers?.map((manager, index) => (
-                <MenuItem key={index} value={manager?.id || ""}>
-                  {manager?.userName}
-                </MenuItem>
-              ))}
+              <MenuItem value={"Website"}>Website</MenuItem>
+              <MenuItem value={"Property Finder"}>Property Finder</MenuItem>
+              <MenuItem value={"Campaign"}>Campaign</MenuItem>
+              <MenuItem value={"Personal"}>Personal</MenuItem>
+              <MenuItem value={"Whatsapp"}>Whatsapp</MenuItem>
+              <MenuItem value={"Comment"}>Comment</MenuItem>
+              <MenuItem value={"Message"}>Message</MenuItem>
+              <MenuItem value={"Campaign Snapchat"}>Campaign Snapchat</MenuItem>
+              <MenuItem value={"Campaign Tiktok"}>Campaign Tiktok</MenuItem>
+              <MenuItem value={"Campaign Facebook"}>Campaign Facebook</MenuItem>
+              <MenuItem value={"Campaign GoogleAds"}>
+                Campaign GoogleAds
+              </MenuItem>
             </Select>
           </div>
+          }
+          <div>
+            <TextField
+              className={`w-full`}
+              id="Project"
+              type={"text"}
+              label="Project Name"
+              variant="outlined"
+              sx={{
+                marginTop: "-12px",
+                "& input:placeholder": {
+                  fontSize: 14,
+                },
+              }}
+              size="small"
+              onChange={(e) => {
+                searchRef.current.querySelector("input").value = "";
+                setProjectNameTyped(e.target.value);
+              }}
+              required
+            />
+          </div>
+          {(User?.role === 1 || User?.role === 2) && (
+            <div style={{ position: "relative" }}>
+              <label
+                style={{ position: "absolute", top: "-20px", right: 0 }}
+                htmlFor="Manager"
+                className={`flex justify-end items-center ${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                } `}
+              >
+                {managerSelected ? (
+                  <strong
+                    className="ml-4 text-red-600 cursor-pointer"
+                    onClick={() => setManagerSelected("")}
+                  >
+                    Clear
+                  </strong>
+                ) : (
+                  ""
+                )}
+              </label>
+              <Select
+                id="Manager"
+                value={managerSelected || ""}
+                onChange={(event) => {
+                  searchRef.current.querySelector("input").value = "";
+                  setManagerSelected(event.target.value);
+                }}
+                size="small"
+                className={`w-full mt-1 mb-5 `}
+                displayEmpty
+                required
+                sx={{
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "&:hover:not (.Mui-disabled):before": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                }}
+              >
+                <MenuItem value="" selected disabled>
+                  Manager
+                </MenuItem>
+                {managers?.map((manager, index) => (
+                  <MenuItem key={index} value={manager?.id || ""}>
+                    {manager?.userName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </div>
+          )}
+          {User?.role <= 3 &&
           <div style={{ position: "relative" }}>
             <label
               style={{ position: "absolute", top: "-20px", right: 0 }}
@@ -1695,7 +1868,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   className="ml-4 text-red-600 cursor-pointer"
                   onClick={() => {
                     setAgentSelected("");
-                    setAgents([]);
                   }}
                 >
                   Clear
@@ -1707,7 +1879,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             <Select
               id="Agent"
               value={agentSelected || ""}
-              onChange={(event) => setAgentSelected(event.target.value)}
+              onChange={(event) => {
+                searchRef.current.querySelector("input").value = "";
+                setAgentSelected(event.target.value);
+              }}
               size="small"
               className={`w-full mt-1 mb-5 `}
               displayEmpty
@@ -1724,13 +1899,14 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <MenuItem selected value="" disabled>
                 Agent
               </MenuItem>
-              {agents[`manager-${managerSelected}`]?.map((agent, index) => (
+              {allAgents?.map((agent, index) => (
                 <MenuItem key={index} value={agent?.id || ""}>
                   {agent?.userName}
                 </MenuItem>
               ))}
             </Select>
           </div>
+          }
         </Box>
         <Box
           sx={{
@@ -1945,7 +2121,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               selectionModelRef={selectionModelRef}
             />
           )}
-            
+
           {AddReminderModelOpen && (
             <AddReminder
               LeadModelOpen={AddReminderModelOpen}
@@ -1957,7 +2133,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               FetchLeads={FetchLeads}
             />
           )}
-          
+
           {deleteModelOpen && (
             <DeleteLeadModel
               handleCloseDeleteModel={handleCloseDeleteModel}

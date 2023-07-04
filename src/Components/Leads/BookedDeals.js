@@ -40,9 +40,10 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast, ToastContainer } from "react-toastify";
 import RenderManagers from "./RenderManagers";
 import UpdateBookedDeal from "./UpdateBookedDeal";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import RenderSalesperson from "./RenderSalesperson";
+import RenderPriority from "./RenderPriority";
 
 const BookedDeals = ({
   BACKEND_URL,
@@ -910,17 +911,34 @@ const BookedDeals = ({
     },
   ];
 
-  const managerColumns = [
+ const managerColumns = [
     {
-      field: "leadName",
-      headerName: "Name",
-      flex: 1,
+      field: "id",
+      headerName: "#",
+      minWidth: 40,
       headerAlign: "center",
-      minWidth: 85,
+      flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="flex flex-wrap items-center">
-            <span>{cellValues.row.leadName}</span>
+          <small>
+            <strong>{cellValues?.formattedValue}</strong>
+          </small>
+        );
+      },
+    },
+
+    {
+      field: "leadName",
+      headerAlign: "center",
+      headerName: "Lead name",
+      minWidth: 120,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
           </div>
         );
       },
@@ -928,52 +946,43 @@ const BookedDeals = ({
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 105,
-      flex: 1,
+      minWidth: 115,
       headerAlign: "center",
+      flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
-      minWidth: 55,
-      flex: 1,
-      headerAlign: "center",
-    },
-    // {
-    //   field: "enquiryType",
-    //   headerName: "Enquiry",
-    //   minWidth: 75,
-    //   flex: 1,
-
-    // },
-    {
-      field: "leadType",
-      headerName: "Property",
-      minWidth: 100,
+      minWidth: 85,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="flex flex-col">
-            <p>{cellValues.row.leadType}</p>
-            <p>{cellValues.row.enquiryType}</p>
+          <div className="w-full ">
+            <p className="capitalize">{cellValues?.formattedValue}</p>
           </div>
         );
       },
     },
     {
-      field: "assignedToManager",
-      headerName: "Manager",
       headerAlign: "center",
-      minWidth: 120,
+      field: "leadType",
+      headerName: "Property",
+      minWidth: 85,
       flex: 1,
-      hideable: false,
-      renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-col">
+            <p>{cellValues.row.enquiryType}</p>
+            <p>{cellValues.row.leadType}</p>
+          </div>
+        );
+      },
     },
     {
       field: "assignedToSales",
       headerName: "Agent",
-      minWidth: 120,
+      minWidth: 85,
       headerAlign: "center",
       flex: 1,
       hideable: false,
@@ -981,101 +990,80 @@ const BookedDeals = ({
     },
     {
       field: "feedback",
-      headerName: "Feedback",
-      minWidth: 160,
       headerAlign: "center",
+      headerName: "Feedback",
+      minWidth: 85,
       flex: 1,
 
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
+    {
+      field: "priority",
+      headerName: "Priority",
+      minWidth: 85,
+      headerAlign: "center",
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
+    },
+    {
+      field: "otp",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
+      minWidth: 90,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>{cellValues.row.transferredFromName || "No Name"}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {cellValues.formattedValue === "Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
+                    OTP VERIFIED
+                  </span>
+                </div>
+              )}
 
+              {cellValues.formattedValue === "Not Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                    NOT VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                      {cellValues.formattedValue}
+                    </span>
+                  </div>
+                )}
+            </div>
+          );
+        }
+      },
+    },
     {
       field: "language",
       headerName: "Lang",
-      minWidth: 40,
+      minWidth: 55,
       headerAlign: "center",
       flex: 1,
     },
-    // {
-    //   field: "leadSource",
-    //   headerName: "Src",
-    //   minWidth: 38,
-    //   flex: 1,
 
-    //   renderCell: (cellValues) => {
-    //     return (
-    // <div className="w-full mx-auto flex justify-center ">
-    //   {cellValues.row.leadSource.toLowerCase() ===
-    //     "campaign snapchat" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <FaSnapchat size={22} color={"#f6d80a"} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() ===
-    //     "campaign facebook" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <FaFacebook size={22} color={"#0e82e1"} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "campaign tiktok" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <img
-    //         src={"/assets/tiktok-app.svg"}
-    //         alt=""
-    //         height={22}
-    //         width={22}
-    //         className="object-cover"
-    //       />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() ===
-    //     "campaign googleads" && (
-    //     <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
-    //       <FcGoogle size={22} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "campaign" && (
-    //     <div className="w-fit rounded-full flex items-center justify-center">
-    //       <MdCampaign
-    //         size={22}
-    //         color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-    //       />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "cold" && (
-    //     <div className="w-fit rounded-full flex items-center justify-center">
-    //       <BsSnow2 size={22} color={"#0ec7ff"} />
-    //     </div>
-    //   )}
-    //   {cellValues.row.leadSource.toLowerCase() === "personal" && (
-    //     <div className="bg-white w-fit rounded-full flex items-center justify-center">
-    //       <BsPersonCircle size={22} color={"#14539a"} />
-    //     </div>
-    //   )}
-    //       </div>
-    //     );
-    //   },
-    // },
-
-    {
-      field: "creationDate",
-      headerName: "Date",
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      minWidth: 50,
-      filterable: false,
-      renderCell: (params) => (
-        <div className="flex flex-col">
-          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-        </div>
-      ),
-    },
     {
       field: "edit",
-      headerName: "Action",
+      headerName: "Edit",
       flex: 1,
       headerAlign: "center",
       width: "100%",
@@ -1084,37 +1072,76 @@ const BookedDeals = ({
 
       renderCell: (cellValues) => {
         return (
-          <div
-            className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
-          >
-            <Button
-              // onClick={() => HandleEditFunc(cellValues)}
-              className={`${
+          <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
+            {currentMode === "dark" ? (
+              <p
+                onClick={() => HandleEditFunc(cellValues)}
+                // className={`${
+                //   currentMode === "dark"
+                //     ? "text-white bg-transparent rounded-md shadow-none "
+                //     : "text-black bg-transparent rounded-md shadow-none "
+                // }`}
+              >
+                <AiOutlineEdit size={20} color="white" />
+
+                {/* {currentMode === "dark" ? (
+                  <AiOutlineEdit
+                    size={20}
+                    color="white"
+                    // sx={{ color: "red" }}
+                  />
+                ) : (
+                  <AiOutlineEdit size={20} color="black" />
+                )} */}
+              </p>
+            ) : (
+              <p
+                onClick={() => HandleEditFunc(cellValues)}
+                // className={`${
+                //   currentMode === "dark"
+                //     ? "text-white bg-transparent rounded-md shadow-none "
+                //     : "text-black bg-transparent rounded-md shadow-none "
+                // }`}
+              >
+                <AiOutlineEdit
+                  size={20}
+                  color="black"
+                  // sx={{ color: "red" }}
+                />
+                {/* {currentMode === "dark" ? (
+                  <AiOutlineEdit
+                    size={20}
+                    color="white"
+                    // sx={{ color: "red" }}
+                  />
+                ) : (
+                  <AiOutlineEdit size={20} color="black" />
+                )} */}
+              </p>
+            )}
+
+            {/* <p
+              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              className={`editLeadBtn ${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none "
                   : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
-              <AiOutlineHistory
-                size={20}
-                onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              />
-            </Button>
-            <p
-              onMouseEnter={() => setHovered("edit")}
-              onMouseLeave={() => setHovered("")}
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "bg-transparent text-white rounded-md shadow-none"
-                  : "bg-transparent text-black rounded-md shadow-none"
-              }`}
-              onClick={() => HandleEditFunc(cellValues)}
-            >
-              <IconButton sx={{ padding: 0 }}>
-                <AiOutlineEdit size={20} />
-              </IconButton>
-            </p>
+              <AiOutlineHistory size={20} />
+            </p> */}
+            {cellValues.row.leadId !== null && (
+              <Link
+                to={`/timeline/${cellValues.row.leadId}`}
+                className={`editLeadBtn ${
+                  currentMode === "dark"
+                    ? "text-white bg-transparent rounded-md shadow-none "
+                    : "text-black bg-transparent rounded-md shadow-none "
+                }`}
+              >
+                <AiOutlineHistory size={20} />
+              </Link>
+            )}
           </div>
         );
       },
