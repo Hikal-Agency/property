@@ -93,8 +93,11 @@ const BulkImport = ({
           }
         }
 
-        AllLeads.push(LeadData);
+        if(LeadData["leadName"] && LeadData["leadContact"]) {
+          AllLeads.push(LeadData);
+        }
       });
+
       setbtnloading(true);
 
     await axios
