@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { RiMessage2Line } from "react-icons/ri";
 import { FaWhatsapp } from "react-icons/fa";
+import {BiImport} from "react-icons/bi";
 import { FaYoutube } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 
@@ -81,6 +82,12 @@ const Closedeals = ({ pageState, setpageState }) => {
               "campaign snapchat" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <FaSnapchat size={22} color={"#f6d80a"} />
+              </div>
+            )}
+                    {cellValues.row.leadSource?.toLowerCase() ===
+              "bulk import" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <BiImport size={22} color={"#da1f26"} />
               </div>
             )}
             {cellValues.row.leadSource?.toLowerCase() ===

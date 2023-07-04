@@ -334,7 +334,7 @@ const UpdateLead = ({
       console.log("manager and salesperson ", Manager, SalesPerson2);
     }
 
-    UpdateLeadData.append("last", LeadNotes);
+    // UpdateLeadData.append("last", LeadNotes);
 
     await axios
       .post(`${BACKEND_URL}/leads/${LeadData.leadId}`, UpdateLeadData, {

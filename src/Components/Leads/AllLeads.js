@@ -26,11 +26,10 @@ import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
-import { BiSearch } from "react-icons/bi";
+import { BiSearch, BiImport } from "react-icons/bi";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import Filters from "./Filters";
 import { FaArchive } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
@@ -690,7 +689,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
-      minWidth: 45,
+      minWidth: 35,
       headerAlign: "center",
       renderCell: (cellValues) => {
         return (
@@ -701,6 +700,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 <FaSnapchat size={22} color={"#f6d80a"} />
               </div>
             )}
+            {cellValues.row.leadSource?.toLowerCase() ===
+              "bulk import" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <BiImport size={22} color={"#da1f26"} />
+              </div>
+            )}
+
             {cellValues.row.leadSource?.toLowerCase() ===
               "campaign facebook" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
@@ -1421,42 +1427,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }
 
         let filteredData = rowsDataArray;
-        // if (lead_origin === "unassigned") {
-        //   console.log("Hi, I am unassigned. Please assign me to someone 😢");
-        //   console.log(rowsDataArray);
-
-        //   if (User?.role === 3) {
-        //     console.log("ROLE: ", User?.role);
-        //     console.log(
-        //       "Sales assignes: ",
-        //       rowsDataArray.filter(
-        //         (item) =>
-        //           !item.assignedToSales ||
-        //           !item.assignedToSales === 0 ||
-        //           item.assignedToSales === 102
-        //       )
-        //     );
-        //     filteredData = rowsDataArray.filter(
-        //       (item) =>
-        //         !item.assignedToSales ||
-        //         !item.assignedToSales === 0 ||
-        //         item.assignedToSales === 102
-        //     );
-        //   } else {
-        //     filteredData = rowsDataArray.filter(
-        //       (item) =>
-        //         !item.assignedToManager ||
-        //         item.assignedToManager === 102 ||
-        //         item.assignedToManager === 0
-        //     );
-        //   }
-
-        //   total = filteredData?.length;
-        //   console.log("Total: ", total);
-
-        //   console.log("Unassigned rows data: ", filteredData);
-        // }
-
         let rowsdata = filteredData.map((row, index) => ({
           id:
             pageState.page > 1
@@ -1469,7 +1439,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           transferredDate: row?.transferredDate,
           transferredFromName: row?.transferredFromName,
           leadName: row?.leadName || "-",
-          // leadContact:
           leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
           project: row?.project || "-",
           enquiryType: row?.enquiryType || "-",
@@ -2331,6 +2300,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               handleCloseBulkImportModel={handleCloseBulkImportModel}
               FetchLeads={FetchLeads}
               CSVData={CSVData}
+              lead_origin={lead_origin}
             />
           )}
         </Box>

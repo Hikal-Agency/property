@@ -24,12 +24,7 @@ const allKeys = {
   project: "Project",
   leadFor: "Lead For",
   language: "Language",
-  leadStatus: "Lead Status",
-  leadSource: "Lead Source",
-  feedback: "Feedback",
   notes: "Notes",
-  assignedToManager: "Assigned To Manager",
-  assignedToSales: "Assigned To Sales",
 };
 
 const style = {
@@ -44,17 +39,35 @@ const BulkImport = ({
   handleCloseBulkImportModel,
   CSVData,
   FetchLeads,
+  lead_origin
 }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, User } = useStateContext();
 
   const [values, setValues] = useState({});
   const [columns, setColumns] = useState(CSVData?.keys || []);
   const [btnloading, setbtnloading] = useState(false);
 
-  const handleSubmit = async () => {
+    let coldCallCode = "";
+    if (lead_origin === "freshleads") {
+      coldCallCode = 0;
+    } else if (lead_origin === "coldleads") {
+      coldCallCode = 1;
+    } else if (lead_origin === "thirdpartyleads") {
+      coldCallCode = 3;
+    } else if (lead_origin === "personalleads") {
+      coldCallCode = 2;
+    } else if (lead_origin === "warmleads") {
+      coldCallCode = 4;
+    } else if (lead_origin === "transfferedleads") {
+      coldCallCode = 0;
+    }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const token = localStorage.getItem("auth-token");
-      const urls = CSVData?.rows.map((row) => {
+      const AllLeads = [];
+      CSVData?.rows.forEach((row) => {
         const LeadData = {
           ...allKeys,
         };
@@ -62,15 +75,38 @@ const BulkImport = ({
           const idx = CSVData?.keys.indexOf(values[key]);
           LeadData[key] = row[idx];
         });
-        return axios.post(`${BACKEND_URL}/leads`, JSON.stringify(LeadData), {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        });
+
+        LeadData["leadSource"] = "Bulk Import";
+        LeadData["coldCall"] = coldCallCode;
+        LeadData["feedback"] = "New";
+
+        if(User?.role === 3 || User?.role === 2){
+          LeadData["assignedToManager"] = User?.id;
+        } else if(User?.role === 7) {
+          LeadData["assignedToSales"] = User?.id;
+          LeadData["assignedToManager"] = User?.isParent;
+        }
+
+        for(let key in LeadData) {
+          if(!LeadData[key]) {
+            delete LeadData[key];
+          }
+        }
+
+        AllLeads.push(LeadData);
       });
       setbtnloading(true);
-      await Promise.all(urls);
+
+    await axios
+      .post(`${BACKEND_URL}/bulkimport`, JSON.stringify({
+        leads: AllLeads
+      }), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      
       toast.success("Leads Added Successfully", {
         position: "top-right",
         autoClose: 3000,
@@ -137,53 +173,53 @@ const BulkImport = ({
             <IoMdClose size={18} />
           </IconButton>
 
-          {Object.keys(allKeys).map((key) => {
-            return (
-              <>
-                <label htmlFor={key}>{allKeys[key]}</label>
-                <Select
-                  id={key}
-                  value={values[key] || ""}
-                  onChange={(event) => handleChange(event, key)}
-                  size="medium"
-                  className="w-full mb-5 mt-1"
-                  required
-                >
-                  <MenuItem value="" disabled>
-                    Select Column
-                  </MenuItem>
-
-                  {columns?.map((col, index) => (
-                    <MenuItem
-                      key={index}
-                      disabled={Object.values(values).includes(col)}
-                      value={col}
-                    >
-                      {col}
+          <form onSubmit={handleSubmit}>
+            {Object.keys(allKeys).map((key) => {
+              return (
+                <>
+                  <label htmlFor={key}>{allKeys[key]}</label>
+                  <Select
+                    id={key}
+                    value={values[key] || ""}
+                    onChange={(event) => handleChange(event, key)}
+                    size="medium"
+                    className="w-full mb-5 mt-1"
+                    required={(key === "leadName" || key === "leadContact") ? true : false}
+                  >
+                    <MenuItem value="" disabled>
+                      Select Column
                     </MenuItem>
-                  ))}
-                </Select>
-              </>
-            );
-          })}
-
-          <Button
-            className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
-            ripple={"true"}
-            size="lg"
-            variant="contained"
-            onClick={handleSubmit}
-            type="submit"
-            disabled={btnloading ? true : false}
-          >
-            {btnloading ? (
-              <div className="flex items-center justify-center space-x-1">
-                <CircularProgress size={18} sx={{ color: "blue" }} />
-              </div>
-            ) : (
-              <span>Add Leads</span>
-            )}
-          </Button>
+                    {columns?.map((col, index) => (
+                      <MenuItem
+                        key={index}
+                        disabled={Object.values(values).includes(col)}
+                        value={col}
+                      >
+                        {col}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </>
+              );
+            })}
+            <Button
+              className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+              ripple={"true"}
+              color="error"
+              size="lg"
+              variant="contained"
+              type="submit"
+              disabled={btnloading ? true : false}
+            >
+              {btnloading ? (
+                <div className="flex items-center justify-center space-x-1">
+                  <CircularProgress size={18} sx={{ color: "blue" }} />
+                </div>
+              ) : (
+                <span>Add Leads</span>
+              )}
+            </Button>
+          </form>
         </div>
       </Modal>
     </>

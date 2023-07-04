@@ -20,20 +20,14 @@ import {
 
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import { FaComment, FaBell } from "react-icons/fa";
-import { FaGlobe } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
 import { BiSearch } from "react-icons/bi";
-import { BsWhatsapp } from "react-icons/bs";
-import { FaSnapchat } from "react-icons/fa";
+import { FaSnapchat, FaBell } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { FaArchive } from "react-icons/fa";
-import { GiMagnifyingGlass } from "react-icons/gi";
-import { FaUser } from "react-icons/fa";
 
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
@@ -41,19 +35,14 @@ import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "../../Components/Leads/SingleLead";
 import UpdateLead from "../../Components/Leads/UpdateLead";
-import BulkUpdateLeads from "../../Components/Leads/BulkUpdateLeads";
-import { toast, ToastContainer } from "react-toastify";
-import RenderPriority from "../../Components/Leads/RenderPriority";
-import RenderFeedback from "../../Components/Leads/RenderFeedback";
 import RenderManagers from "../../Components/Leads/RenderManagers";
 import RenderSalesperson from "../../Components/Leads/RenderSalesperson";
+import RenderFeedback from "../../Components/Leads/RenderFeedback";
+import BulkUpdateLeads from "../../Components/Leads/BulkUpdateLeads";
+import { toast, ToastContainer } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteLeadModel from "../../Components/Leads/DeleteLead";
 import BulkImport from "../../Components/Leads/BulkImport";
-import { RiMessage2Line } from "react-icons/ri";
-import { FaWhatsapp } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
 import { langs } from "../../langCodes";
 import AddReminder from "../../Components/reminder/AddReminder";
 
@@ -290,7 +279,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "leadName",
       headerAlign: "center",
       headerName: "Lead name",
-      minWidth: 180,
+      minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -305,14 +294,14 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 140,
+      minWidth: 115,
       headerAlign: "center",
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
-      minWidth: 160,
+      minWidth: 110,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -326,7 +315,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "language",
       headerName: "Lang",
-      minWidth: 35,
+      minWidth: 55,
       headerAlign: "center",
       flex: 1,
     },
@@ -343,7 +332,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "leadType",
       headerAlign: "center",
       headerName: "Property",
-      minWidth: 140,
+      minWidth: 110,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -354,13 +343,32 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       },
     },
     {
+      field: "assignedToSales",
+      headerName: "Agent",
+      minWidth: 110,
+      headerAlign: "center",
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
+    },
+    {
+      field: "feedback",
+      headerAlign: "center",
+      headerName: "Feedback",
+      minWidth: 110,
+      flex: 1,
+
+      hideable: false,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
+    },
+    {
       field: "creationDate",
       headerName: "Date",
       headerAlign: "center",
       flex: 1,
 
       sortable: false,
-      minWidth: 120,
+      minWidth: 45,
       filterable: false,
       renderCell: (params) => (
         <div className="flex flex-col">
@@ -368,9 +376,8 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
         </div>
       ),
-    }, 
-
-    {
+    },
+        {
       field: "edit",
       headerName: "Edit",
       flex: 1,
@@ -383,19 +390,77 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         return (
           <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
             {currentMode === "dark" ? (
-              <p onClick={() => HandleEditFunc(cellValues)}>
+              <p
+                onClick={() => HandleEditFunc(cellValues)}
+                // className={`${
+                //   currentMode === "dark"
+                //     ? "text-white bg-transparent rounded-md shadow-none "
+                //     : "text-black bg-transparent rounded-md shadow-none "
+                // }`}
+              >
                 <AiOutlineEdit size={20} color="white" />
+
+                {/* {currentMode === "dark" ? (
+                  <AiOutlineEdit
+                    size={20}
+                    color="white"
+                    // sx={{ color: "red" }}
+                  />
+                ) : (
+                  <AiOutlineEdit size={20} color="black" />
+                )} */}
               </p>
             ) : (
-              <p onClick={() => HandleEditFunc(cellValues)}>
+              <p
+                onClick={() => HandleEditFunc(cellValues)}
+                // className={`${
+                //   currentMode === "dark"
+                //     ? "text-white bg-transparent rounded-md shadow-none "
+                //     : "text-black bg-transparent rounded-md shadow-none "
+                // }`}
+              >
                 <AiOutlineEdit
                   size={20}
                   color="black"
                   // sx={{ color: "red" }}
                 />
+                {/* {currentMode === "dark" ? (
+                  <AiOutlineEdit
+                    size={20}
+                    color="white"
+                    // sx={{ color: "red" }}
+                  />
+                ) : (
+                  <AiOutlineEdit size={20} color="black" />
+                )} */}
               </p>
             )}
 
+            {/* <p
+              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+              className={`editLeadBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
+              }`}
+            >
+              <AiOutlineHistory size={20} />
+            </p> */}
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleReminderBtn(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <FaBell size={19} />
+              </IconButton>
+            </p>
             {cellValues.row.leadId !== null && (
               <Link
                 to={`/timeline/${cellValues.row.leadId}`}
@@ -415,29 +480,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   ];
 
   const columns = [
-    // {
-    //   field: "id",
-    //   headerName: "#",
-    //   // width: 150,
-    //   headerAlign: "center",
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div
-    //         className={`${
-    //           currentMode === "dark"
-    //             ? "bg-[#000000] text-white"
-    //             : "bg-[#000000] text-white"
-    //         } h-full justify-center flex w-full items-center px-5 font-semibold`}
-    //       >
-    //         {cellValues.formattedValue}
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       field: "leadSource",
       headerName: "Src",
-      minWidth: 100,
+      minWidth: 35,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -499,7 +545,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "leadName",
       headerAlign: "center",
       headerName: "Lead name",
-      minWidth: 180,
+      minWidth: 85,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -514,7 +560,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 140,
+      minWidth: 115,
       headerAlign: "center",
       flex: 1,
     },
@@ -522,7 +568,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "project",
       headerName: "Project",
       headerAlign: "center",
-      minWidth: 160,
+      minWidth: 40,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -536,30 +582,96 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "language",
       headerName: "Lang",
       headerAlign: "center",
-      minWidth: 35,
+      minWidth: 25,
       flex: 1,
     },
     {
-      field: "enquiryType",
-      headerName: "Enquiry",
       headerAlign: "center",
-      // width: 110,
-      minWidth: 110,
-      flex: 1,
-    },
-
-    {
       field: "leadType",
       headerName: "Property",
-      minWidth: 140,
-      headerAlign: "center",
+      minWidth: 85,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
+          <div className="flex flex-col">
+            <p>{cellValues.row.leadType}</p>
+            <p>{cellValues.row.enquiryType}</p>
           </div>
         );
+      },
+    },
+    {
+      headerAlign: "center",
+      field: "assignedToManager",
+      headerName: "Manager",
+      minWidth: 90,
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
+    },
+    {
+      headerAlign: "center",
+      field: "assignedToSales",
+      headerName: "Agent",
+      minWidth: 90,
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
+    },
+    {
+      field: "feedback",
+      headerAlign: "center",
+      headerName: "Feedback",
+      minWidth: 85,
+      flex: 1,
+
+      hideable: false,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
+    },
+     {
+      field: "otp",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
+      minWidth: 90,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>{cellValues.row.transferredFromName || "No Name"}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {cellValues.formattedValue === "Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
+                    OTP VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue === "Not Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                    NOT VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                      {cellValues.formattedValue}
+                    </span>
+                  </div>
+                )}
+            </div>
+          );
+        }
       },
     },
     {
@@ -569,7 +681,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerAlign: "center",
 
       sortable: false,
-      minWidth: 120,
+      minWidth: 50,
       filterable: false,
       renderCell: (params) => (
         <div className="flex flex-col">
@@ -658,15 +770,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   const [CEOColumns, setCEOColumns] = useState(columns);
 
-  const FetchLeads = async (
-    token,
-    projectName,
-    lead_origin,
-    lead_type,
-    enquiryType,
-    assignedManager,
-    assignedAgent
-  ) => {
+  const FetchLeads = async (token) => {
     console.log("lead type is");
     console.log(lead_type);
     console.log("lead origin is");
@@ -676,129 +780,127 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       ...old,
       isLoading: true,
     }));
-    // LEADS URL GENERATON FOR HOT LEADS SECTION
 
-    // LEADS URL GENERATON FOR HOT LEADS SECTION
-    if (lead_origin === "hotleads") {
-      if (lead_type === "all") {
+    if (leadOriginSelected?.id === "hotleads") {
+      if (leadTypeSelected?.id === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0`;
-      } else if (lead_type === "new") {
+      } else if (leadTypeSelected?.id === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=New`;
-      } else if (lead_type === "no answer") {
+      } else if (leadTypeSelected?.id === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=No Answer`;
-      } else if (lead_type === "meeting") {
+      } else if (leadTypeSelected?.id === "meeting") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Meeting`;
-      } else if (lead_type === "follow up") {
+      } else if (leadTypeSelected?.id === "follow up") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Follow Up`;
-      } else if (lead_type === "low budget") {
+      } else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Low Budget`;
-      } else if (lead_type === "not interested") {
+      } else if (leadTypeSelected?.id === "not interested") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Not Interested`;
-      } else if (lead_type === "unreachable") {
+      } else if (leadTypeSelected?.id === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Unreachable`;
       }
     }
     // LEADS URL GENERATON FOR COLD LEADS PAGE
-    else if (lead_origin === "coldleads") {
-      if (lead_type === "all") {
+    else if (leadOriginSelected?.id === "coldleads") {
+      if (leadTypeSelected?.id === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1`;
-      } else if (lead_type === "new") {
+      } else if (leadTypeSelected?.id === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=New`;
-      } else if (lead_type === "no answer") {
+      } else if (leadTypeSelected?.id === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=No Answer`;
-      } else if (lead_type === "meeting") {
+      } else if (leadTypeSelected?.id === "meeting") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Meeting`;
-      } else if (lead_type === "follow up") {
+      } else if (leadTypeSelected?.id === "follow up") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Follow Up`;
-      } else if (lead_type === "low budget") {
+      } else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Low Budget`;
-      } else if (lead_type === "not interested") {
+      } else if (leadTypeSelected?.id === "not interested") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Not Interested`;
-      } else if (lead_type === "unreachable") {
+      } else if (leadTypeSelected?.id === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Unreachable`;
       }
     }
     // LEADS URL GENERATON FOR THIRDPARTY PAGE
-    else if (lead_origin === "thirdpartyleads") {
-      if (lead_type === "all") {
+    else if (leadOriginSelected?.id === "thirdpartyleads") {
+      if (leadTypeSelected?.id === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3`;
-      } else if (lead_type === "new") {
+      } else if (leadTypeSelected?.id === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=New`;
-      } else if (lead_type === "no answer") {
+      } else if (leadTypeSelected?.id === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=No Answer`;
-      } else if (lead_type === "meeting") {
+      } else if (leadTypeSelected?.id === "meeting") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Meeting`;
-      } else if (lead_type === "follow up") {
+      } else if (leadTypeSelected?.id === "follow up") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Follow Up`;
-      } else if (lead_type === "low budget") {
+      } else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Low Budget`;
-      } else if (lead_type === "not interested") {
+      } else if (leadTypeSelected?.id === "not interested") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Not Interested`;
-      } else if (lead_type === "unreachable") {
+      } else if (leadTypeSelected?.id === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Unreachable`;
       }
     }
     // LEADS URL GENERATON FOR PERSONAL PAGE
-    else if (lead_origin === "personalleads") {
-      if (lead_type === "all") {
+    else if (leadOriginSelected?.id === "personalleads") {
+      if (leadTypeSelected?.id === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2`;
-      } else if (lead_type === "new") {
+      } else if (leadTypeSelected?.id === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=New`;
-      } else if (lead_type === "no answer") {
+      } else if (leadTypeSelected?.id === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=No Answer`;
-      } else if (lead_type === "meeting") {
+      } else if (leadTypeSelected?.id === "meeting") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Meeting`;
-      } else if (lead_type === "follow up") {
+      } else if (leadTypeSelected?.id === "follow up") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Follow Up`;
-      } else if (lead_type === "low budget") {
+      } else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Low Budget`;
-      } else if (lead_type === "not interested") {
+      } else if (leadTypeSelected?.id === "not interested") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Not Interested`;
-      } else if (lead_type === "unreachable") {
+      } else if (leadTypeSelected?.id === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Unreachable`;
       }
     }
     // LEADS URL GENERATON FOR WARM LEADS PAGE
-    else if (lead_origin === "warmleads") {
-      if (lead_type === "all") {
+    else if (leadOriginSelected?.id === "warmleads") {
+      if (leadTypeSelected?.id === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4`;
-      } else if (lead_type === "new") {
+      } else if (leadTypeSelected?.id === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=New`;
-      } else if (lead_type === "no answer") {
+      } else if (leadTypeSelected?.id === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=No Answer`;
-      } else if (lead_type === "meeting") {
+      } else if (leadTypeSelected?.id === "meeting") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Meeting`;
-      } else if (lead_type === "follow up") {
+      } else if (leadTypeSelected?.id === "follow up") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Follow Up`;
-      } else if (lead_type === "low budget") {
+      } else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Low Budget`;
-      } else if (lead_type === "not interested") {
+      } else if (leadTypeSelected?.id === "not interested") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Not Interested`;
-      } else if (lead_type === "unreachable") {
+      } else if (leadTypeSelected?.id === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Unreachable`;
       }
-    } else if (lead_origin === "transfferedleads") {
+    } else if (leadOriginSelected?.id === "transfferedleads") {
       FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&coldCall=0&leadStatus=Transferred`;
-    } else if (lead_origin === "unassigned") {
-      if (lead_type === "fresh") {
+    } else if (leadOriginSelected?.id === "unassigned") {
+      if (leadTypeSelected?.id === "fresh") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0`;
-      } else if (lead_type === "new") {
+      } else if (leadTypeSelected?.id === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=New`;
-      } else if (lead_type === "no answer") {
+      } else if (leadTypeSelected?.id === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=No Answer`;
-      } else if (lead_type === "meeting") {
+      } else if (leadTypeSelected?.id === "meeting") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Meeting`;
-      } else if (lead_type === "follow up") {
+      } else if (leadTypeSelected?.id === "follow up") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Follow Up`;
-      } else if (lead_type === "low budget") {
+      } else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Low Budget`;
-      } else if (lead_type === "not interested") {
+      } else if (leadTypeSelected?.id === "not interested") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Not Interested`;
-      } else if (lead_type === "unreachable") {
+      } else if (leadTypeSelected?.id === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Unreachable`;
-      } else if (lead_type === "cold") {
+      } else if (leadTypeSelected?.id === "cold") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=1`;
-      } else if (lead_type === "warm") {
+      } else if (leadTypeSelected?.id === "warm") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=4`;
       }
     }
@@ -806,20 +908,20 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     console.log("fetch lead url is");
     console.log(FetchLeads_url);
 
-    if (projectName) {
-      FetchLeads_url += `&project=${projectName}`;
+    if (projectNameTyped) {
+      FetchLeads_url += `&project=${projectNameTyped}`;
     }
 
-    if (enquiryType) {
-      FetchLeads_url += `&enquiryType=${enquiryType}`;
+    if (enquiryTypeSelected?.id) {
+      FetchLeads_url += `&enquiryType=${enquiryTypeSelected?.id}`;
     }
 
-    if (assignedManager) {
-      FetchLeads_url += `&managerAssigned=${assignedManager}`;
+    if (managerSelected) {
+      FetchLeads_url += `&managerAssigned=${managerSelected}`;
     }
 
-    if (assignedAgent) {
-      FetchLeads_url += `&agentAssigned=${assignedAgent}`;
+    if (agentSelected) {
+      FetchLeads_url += `&agentAssigned=${agentSelected}`;
     }
 
     console.log(FetchLeads_url);
@@ -850,16 +952,34 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 (pageState.pageSize - 1) +
                 index
               : index + 1,
-          creationDate: row?.creationDate,
-          leadName: row?.leadName || "-",
-          lid: row?.lid || "-",
-          leadContact: row?.leadContact || "-",
-          project: row?.project || "-",
-          leadType: row?.leadType || "-",
           leadId: row?.id,
-          language: getLangCode(row?.language) || "-",
+          creationDate: row?.creationDate,
+          transferredDate: row?.transferredDate,
+          transferredFromName: row?.transferredFromName,
+          leadName: row?.leadName || "-",
+          // leadContact:
+          leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
+          project: row?.project || "-",
           enquiryType: row?.enquiryType || "-",
+          leadType: row?.leadType || "-",
+          assignedToManager: row?.assignedToManager || null,
+          assignedToSales: row?.assignedToSales || null,
+          feedback: row?.feedback || null,
+          priority: row?.priority || null,
+          language: getLangCode(row?.language) || "-",
           leadSource: row?.leadSource || "-",
+          lid: row?.lid || "-",
+          lastEdited: row?.lastEdited || "-",
+          leadFor: row?.leadFor || "-",
+          leadStatus: row?.leadStatus || "-",
+          leadCategory: leadCategory || "-",
+          coldCall: row?.coldcall,
+          notes: row?.notes || "-",
+          otp:
+            row?.otp === "No OTP" || row?.otp === "No OTP Used"
+              ? "No OTP Used"
+              : row?.otp || "No OTP Used",
+          edit: "edit",
         }));
 
         setpageState((old) => ({
@@ -869,6 +989,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           pageSize: result.data.coldLeads.per_page,
           total: result.data.coldLeads.total,
         }));
+        setCEOColumns([...CEOColumns]);
       })
       .catch((err) => {
         console.log("error occured");
@@ -883,43 +1004,43 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     }));
 
     let coldCallCode = "";
-    if (lead_origin === "freshleads") {
+    if (leadOriginSelected?.id === "freshleads") {
       coldCallCode = 0;
-    } else if (lead_origin === "coldleads") {
+    } else if (leadOriginSelected?.id === "coldleads") {
       coldCallCode = 1;
-    } else if (lead_origin === "thirdpartyleads") {
+    } else if (leadOriginSelected?.id === "thirdpartyleads") {
       coldCallCode = 3;
-    } else if (lead_origin === "personalleads") {
+    } else if (leadOriginSelected?.id === "personalleads") {
       coldCallCode = 2;
-    } else if (lead_origin === "warmleads") {
+    } else if (leadOriginSelected?.id === "warmleads") {
       coldCallCode = 4;
-    } else if (lead_origin === "transfferedleads") {
+    } else if (leadOriginSelected?.id === "transfferedleads") {
       coldCallCode = 0;
     }
 
     let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`;
 
-    if (lead_type) {
+    if (leadTypeSelected?.id) {
       if (
-        lead_type !== "all" &&
-        lead_type !== "coldLeadsVerified" &&
-        lead_type !== "coldLeadsInvalid" &&
-        lead_type !== "coldLeadsNotChecked" &&
-        lead_origin !== "unassigned"
+        leadTypeSelected?.id !== "all" &&
+        leadTypeSelected?.id !== "coldLeadsVerified" &&
+        leadTypeSelected?.id !== "coldLeadsInvalid" &&
+        leadTypeSelected?.id !== "coldLeadsNotChecked" &&
+        leadOriginSelected?.id !== "unassigned"
       ) {
-        url += `&feedback=${lead_type}`;
+        url += `&feedback=${leadTypeSelected?.id}`;
       }
     }
 
-    if (lead_origin === "unassigned") {
+    if (leadOriginSelected?.id === "unassigned") {
       url += "&unassigned=1";
-      if (lead_type === "cold") {
+      if (leadTypeSelected?.id === "cold") {
         coldCallCode = 1;
-      } else if (lead_type === "warm") {
+      } else if (leadTypeSelected?.id === "warm") {
         coldCallCode = 4;
-      } else if (lead_type === "personal") {
+      } else if (leadTypeSelected?.id === "personal") {
         coldCallCode = 2;
-      } else if (lead_type === "thirdpartyleads") {
+      } else if (leadTypeSelected?.id === "thirdpartyleads") {
         coldCallCode = 3;
       }
     }
@@ -928,15 +1049,15 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       url += `&coldCall=${coldCallCode}`;
     }
 
-    if (lead_type === "coldLeadsVerified") {
+    if (leadTypeSelected?.id === "coldLeadsVerified") {
       url += `&is_whatsapp=1`;
-    } else if (lead_type === "coldLeadsInvalid") {
+    } else if (leadTypeSelected?.id === "coldLeadsInvalid") {
       url += `&is_whatsapp=2`;
-    } else if (lead_type === "coldLeadsNotChecked") {
+    } else if (leadTypeSelected?.id === "coldLeadsNotChecked") {
       url += `&is_whatsapp=0`;
     }
 
-    if (lead_origin === "transfferedleads") {
+    if (leadOriginSelected?.id === "transfferedleads") {
       url += `&status=Transferred`;
     }
 
@@ -1013,28 +1134,20 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   useEffect(() => {
     setopenBackDrop(false);
     // eslint-disable-next-line
-  }, [lead_type]);
+  }, [leadTypeSelected?.id]);
 
   useEffect(() => {
     setpageState((oldPageState) => ({ ...oldPageState, page: 0 }));
     searchRef.current.querySelector("input").value = "";
-  }, [lead_type, lead_origin]);
+  }, [leadTypeSelected, leadOriginSelected]);
 
   useEffect(() => {
     if (searchRef.current.querySelector("input").value) {
       FetchSearchedLeads(token, searchRef.current.querySelector("input").value);
     } else {
-      FetchLeads(
-        token,
-        leadOriginSelected?.id || "hotleads",
-        leadTypeSelected?.id || "all",
-        projectNameTyped,
-        enquiryTypeSelected?.id,
-        managerSelected,
-        agentSelected
-      );
+      FetchLeads(token);
     }
-  }, [pageState.page, pageState.perpage, lead_type, reloadDataGrid]);
+  }, [pageState.page, pageState.perpage, leadTypeSelected?.id, reloadDataGrid]);
 
   useEffect(() => {
     setManagers(Managers);
@@ -1042,15 +1155,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   }, [Managers, SalesPerson]);
 
   useEffect(() => {
-    FetchLeads(
-      token,
-      projectNameTyped,
-      leadOriginSelected?.id || "hotleads",
-      leadTypeSelected?.id || "all",
-      enquiryTypeSelected?.id,
-      managerSelected,
-      agentSelected
-    );
+    FetchLeads(token);
     // eslint-disable-next-line
   }, [
     pageState.page,
@@ -1283,74 +1388,74 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <>
       <ToastContainer />
       <div className="pb-10 p-4">
-        {lead_origin === "unassigned" && lead_type === "fresh" && (
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiSelect-select": {
-                padding: "2px",
-                paddingLeft: "6px !important",
-                paddingRight: "20px",
-                borderRadius: "8px",
-              },
-              "& .MuiInputBase-root": {
-                width: "max-content",
-                marginRight: "5px",
-              },
-            }}
-          >
-            <Select
-              id="un-feedback"
-              value={unassignedFeedback}
-              className={`w-full mt-1 mb-5`}
-              onChange={(event) => {
-                setUnassignedFeedback(event.target.value);
-              }}
-              displayEmpty
-              size="small"
-              required
+        {leadOriginSelected?.id === "unassigned" &&
+          leadTypeSelected?.id === "fresh" && (
+            <Box
               sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                ...darkModeColors,
+                "& .MuiSelect-select": {
+                  padding: "2px",
+                  paddingLeft: "6px !important",
+                  paddingRight: "20px",
+                  borderRadius: "8px",
                 },
-                "&:hover:not (.Mui-disabled):before": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                "& .MuiInputBase-root": {
+                  width: "max-content",
+                  marginRight: "5px",
                 },
               }}
             >
-              <MenuItem
-                value="0"
-                disabled
-                selected
+              <Select
+                id="un-feedback"
+                value={unassignedFeedback}
+                className={`w-full mt-1 mb-5`}
+                onChange={(event) => {
+                  setUnassignedFeedback(event.target.value);
+                }}
+                displayEmpty
+                size="small"
+                required
                 sx={{
-                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "&:hover:not (.Mui-disabled):before": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
                 }}
               >
-                Feedback
-              </MenuItem>
-              {feedbacks?.map((feedback, index) => (
-                <MenuItem key={index} value={feedback || ""}>
-                  {feedback}
+                <MenuItem
+                  value="0"
+                  disabled
+                  selected
+                  sx={{
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  }}
+                >
+                  Feedback
                 </MenuItem>
-              ))}
-            </Select>
-          </Box>
-        )}
-          <Box className="mb-5"></Box>
-          <h1
-            className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
-              currentMode === "dark"
-                ? "text-white border-white"
-                : "text-main-red-color font-bold border-main-red-color"
-            }`}
-          >
-            {leadOriginSelected.formattedValue} -{" "}
-            <span className="uppercase">{leadTypeSelected.formattedValue}</span>{" "}
-            <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
-              {pageState?.total}
-            </span>
-          </h1>
-
+                {feedbacks?.map((feedback, index) => (
+                  <MenuItem key={index} value={feedback || ""}>
+                    {feedback}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
+          )}
+        <Box className="mb-5"></Box>
+        <h1
+          className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
+            currentMode === "dark"
+              ? "text-white border-white"
+              : "text-main-red-color font-bold border-main-red-color"
+          }`}
+        >
+          {leadOriginSelected.formattedValue} -{" "}
+          <span className="uppercase">{leadTypeSelected.formattedValue}</span>{" "}
+          <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+            {pageState?.total}
+          </span>
+        </h1>
 
         <Box
           sx={{
@@ -1833,7 +1938,19 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               selectionModelRef={selectionModelRef}
             />
           )}
-
+            
+          {AddReminderModelOpen && (
+            <AddReminder
+              LeadModelOpen={AddReminderModelOpen}
+              setLeadModelOpen={setAddReminderModelOpen}
+              handleLeadModelOpen={handleAdReminderModalOpen}
+              handleLeadModelClose={handleAdReminderModalClose}
+              LeadData={singleLeadData}
+              BACKEND_URL={BACKEND_URL}
+              FetchLeads={FetchLeads}
+            />
+          )}
+          
           {deleteModelOpen && (
             <DeleteLeadModel
               handleCloseDeleteModel={handleCloseDeleteModel}
