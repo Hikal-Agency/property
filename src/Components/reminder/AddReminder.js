@@ -70,7 +70,7 @@ const AddReminder = ({
     const token = localStorage.getItem("auth-token");
     const creationDate = new Date();
     const AddReminderData = new FormData();
-    AddReminderData.append("id", User?.id);
+    // AddReminderData.append("id", User?.id);
     AddReminderData.append("reminder_note", ReminderNotes);
     AddReminderData.append("reminder_time", reminderTime);
     AddReminderData.append("reminder_date", reminderDate);
