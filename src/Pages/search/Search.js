@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import "../../styles/index.css";
-import{BiImport} from "react-icons/bi";
+import { BiImport } from "react-icons/bi";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -21,13 +21,21 @@ import {
 
 // import axios from "axios";
 import axios from "../../axoisConfig";
+import { FaComment, FaArchive, FaUser, FaBell } from "react-icons/fa";
+import { GiMagnifyingGlass } from "react-icons/gi";
+import { FaGlobe } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
+import {BsAlarm} from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
-import { FaSnapchat, FaBell } from "react-icons/fa";
+import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
+import { RiMessage2Line } from "react-icons/ri";
+import { FaWhatsapp } from "react-icons/fa";
+import { FaYoutube } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
@@ -277,6 +285,17 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   const managerColumns = [
     {
+      field: "id",
+      headerName: "#",
+      minWidth: 40,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return <small><strong>{cellValues?.formattedValue}</strong></small>
+      }
+    },
+
+    {
       field: "leadName",
       headerAlign: "center",
       headerName: "Lead name",
@@ -314,31 +333,16 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       },
     },
     {
-      field: "language",
-      headerName: "Lang",
-      minWidth: 55,
       headerAlign: "center",
-      flex: 1,
-    },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      // width: 110,
-      minWidth: 110,
-      headerAlign: "center",
-      flex: 1,
-    },
-
-    {
       field: "leadType",
-      headerAlign: "center",
       headerName: "Property",
-      minWidth: 110,
+      minWidth: 85,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
+          <div className="flex flex-col">
+            <p>{cellValues.row.enquiryType}</p>
+            <p>{cellValues.row.leadType}</p>
           </div>
         );
       },
@@ -363,22 +367,125 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
     {
-      field: "creationDate",
-      headerName: "Date",
+      field: "otp",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
+      minWidth: 90,
       headerAlign: "center",
       flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>{cellValues.row.transferredFromName || "No Name"}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {cellValues.formattedValue === "Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
+                    OTP VERIFIED
+                  </span>
+                </div>
+              )}
 
-      sortable: false,
-      minWidth: 45,
-      filterable: false,
-      renderCell: (params) => (
-        <div className="flex flex-col">
-          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-        </div>
-      ),
+              {cellValues.formattedValue === "Not Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                    NOT VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                      {cellValues.formattedValue}
+                    </span>
+                  </div>
+                )}
+            </div>
+          );
+        }
+      },
     },
-        {
+    {
+      field: "leadSource",
+      headerName: "Src",
+      flex: 1,
+      minWidth: 35,
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        const sourceIcons = {
+          "campaign snapchat": () => <FaSnapchat size={22} color={"#f6d80a"} />,
+          "bulk import": () => <FaSnapchat size={22} color={"#f6d80a"} />,
+          "campaign facebook": () => <FaFacebook size={22} color={"#0e82e1"} />,
+          "campaign tiktok": () => (
+            <img
+              src={"/assets/tiktok-app.svg"}
+              alt=""
+              height={22}
+              width={22}
+              className="object-cover"
+            />
+          ),
+          "campaign googleads": () => <FcGoogle size={22} />,
+          campaign: () => <FcGoogle size={22} />,
+          cold: () => <BsSnow2 size={22} color={"#0ec7ff"} />,
+          personal: () => <BsPersonCircle size={22} color={"#14539a"} />,
+          whatsapp: () => <FaWhatsapp size={22} color={"#29EC62"} />,
+          message: () => <RiMessage2Line size={22} color={"#14539a"} />,
+          comment: () => <FaComment size={22} color={"#14539a"} />,
+          website: () => <FaGlobe size={22} color={"#14539a"} />,
+          "property finder": () => (
+            <GiMagnifyingGlass size={22} color={"#14539a"} />
+          ),
+          "propety finder": () => (
+            <GiMagnifyingGlass size={22} color={"#14539a"} />
+          ),
+          self: () => <FaUser size={22} color={"#14539a"} />,
+          "campaign youtube": () => <FaYoutube size={22} color={"#FF0000"} />,
+          "campaign twitter": () => <FaTwitter size={22} color={"#14539a"} />,
+        };
+        return (
+          <>
+            <div className="flex items-center justify-center">
+              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
+                <FaArchive size={22} color={"#14539a"} />
+              ) : (
+                <Box
+                  sx={{
+                    "& svg": {
+                      color: " rgb(20, 83, 154)",
+                      background: "white",
+                      padding: "5px",
+                      borderRadius: "50%",
+                      width: "70%",
+                      height: "100%",
+                      margin: "0 auto"
+                    },
+                  }}
+                >
+                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()]()}
+                </Box>
+              )}
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      field: "language",
+      headerName: "Lang",
+      minWidth: 55,
+      headerAlign: "center",
+      flex: 1,
+    },
+
+    {
       field: "edit",
       headerName: "Edit",
       flex: 1,
@@ -390,6 +497,21 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleReminderBtn(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <BsAlarm size={19} />
+              </IconButton>
+            </p>
             {currentMode === "dark" ? (
               <p
                 onClick={() => HandleEditFunc(cellValues)}
@@ -447,21 +569,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <AiOutlineHistory size={20} />
             </p> */}
-            <p
-              onMouseEnter={() => setHovered("edit")}
-              onMouseLeave={() => setHovered("")}
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "bg-transparent text-white rounded-md shadow-none"
-                  : "bg-transparent text-black rounded-md shadow-none"
-              }`}
-              onClick={() => HandleReminderBtn(cellValues)}
-            >
-              <IconButton sx={{ padding: 0 }}>
-                <FaBell size={19} />
-              </IconButton>
-            </p>
             {cellValues.row.leadId !== null && (
               <Link
                 to={`/timeline/${cellValues.row.leadId}`}
@@ -484,33 +591,32 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "leadSource",
       headerName: "Src",
+      flex: 1,
       minWidth: 35,
       headerAlign: "center",
-      flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full mx-auto flex justify-center ">
-            {cellValues?.row?.leadSource?.toLowerCase() ===
+          <>
+            {cellValues.row.leadSource?.toLowerCase() ===
               "campaign snapchat" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <FaSnapchat size={22} color={"#f6d80a"} />
               </div>
             )}
-                                {cellValues.row.leadSource?.toLowerCase() ===
-              "bulk import" && (
+            {cellValues.row.leadSource?.toLowerCase() === "bulk import" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <BiImport size={22} color={"#da1f26"} />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
+
+            {cellValues.row.leadSource?.toLowerCase() ===
               "campaign facebook" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <FaFacebook size={22} color={"#0e82e1"} />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
-              "campaign tiktok" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+            {cellValues.row.leadSource?.toLowerCase() === "campaign tiktok" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <img
                   src={"/assets/tiktok-app.svg"}
                   alt=""
@@ -520,31 +626,103 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() ===
+            {cellValues.row.leadSource?.toLowerCase() ===
               "campaign googleads" && (
-              <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
+              <div className="bg-white w-max rounded-full text-white flex items-center justify-center">
                 <FcGoogle size={22} />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "campaign" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
-                <MdCampaign
-                  size={22}
-                  color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-                />
+            {cellValues.row.leadSource?.toLowerCase() === "campaign" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <MdCampaign size={22} color={"#000000"} />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "cold" && (
-              <div className="w-fit rounded-full flex items-center justify-center">
+            {cellValues.row.leadSource?.toLowerCase() === "cold" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <BsSnow2 size={22} color={"#0ec7ff"} />
               </div>
             )}
-            {cellValues?.row?.leadSource?.toLowerCase() === "personal" && (
-              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+            {cellValues.row.leadSource?.toLowerCase() === "personal" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <BsPersonCircle size={22} color={"#14539a"} />
               </div>
             )}
-          </div>
+
+            {cellValues.row.leadSource?.toLowerCase() === "whatsapp" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaWhatsapp size={22} color={"#29EC62"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() === "message" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <RiMessage2Line size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() === "comment" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaComment size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() === "website" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaGlobe size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {(cellValues.row.leadSource?.toLowerCase() === "property finder" ||
+              cellValues.row.leadSource?.toLowerCase() ===
+                "propety finder") && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <GiMagnifyingGlass size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() === "self" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaUser size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() ===
+              "campaign youtube" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaYoutube size={22} color={"#FF0000"} />
+              </div>
+            )}
+
+            {cellValues.row.leadSource?.toLowerCase() ===
+              "campaign twitter" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaTwitter size={22} color={"#14539a"} />
+              </div>
+            )}
+
+            {/* {cellValues.row.leadSource?.toLowerCase() ===
+              "warm (Hubspot: shery@hikalagency.ae)" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <FaFire size={22} color={"#14539a"} />
+              </div>
+            )} */}
+
+            {(() => {
+              const leadSource = cellValues.row.leadSource?.toLowerCase();
+
+              if (leadSource && leadSource.startsWith("warm")) {
+                const firstWord = leadSource.split(" ")[0];
+
+                return (
+                  <div className="bg-white w-max rounded-full flex items-center justify-center">
+                    <FaArchive size={22} color={"#14539a"} />
+                  </div>
+                );
+              }
+
+              return null; // Return null if the condition is not met
+            })()}
+          </>
         );
       },
     },
@@ -584,13 +762,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           </div>
         );
       },
-    },
-    {
-      field: "language",
-      headerName: "Lang",
-      headerAlign: "center",
-      minWidth: 25,
-      flex: 1,
     },
     {
       headerAlign: "center",
@@ -635,7 +806,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
-     {
+    {
       field: "otp",
       headerName:
         lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
@@ -682,21 +853,59 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       },
     },
     {
-      field: "creationDate",
-      headerName: "Date",
-      flex: 1,
+      field: "otp",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
+      minWidth: 90,
       headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>{cellValues.row.transferredFromName || "No Name"}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {cellValues.formattedValue === "Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
+                    OTP VERIFIED
+                  </span>
+                </div>
+              )}
 
-      sortable: false,
-      minWidth: 50,
-      filterable: false,
-      renderCell: (params) => (
-        <div className="flex flex-col">
-          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-        </div>
-      ),
+              {cellValues.formattedValue === "Not Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                    NOT VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                      {cellValues.formattedValue}
+                    </span>
+                  </div>
+                )}
+            </div>
+          );
+        }
+      },
     },
+    {
+      field: "language",
+      headerName: "Lang",
+      headerAlign: "center",
+      minWidth: 25,
+      flex: 1,
+    },
+
     {
       field: "edit",
       headerName: "Edit",
@@ -1945,7 +2154,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               selectionModelRef={selectionModelRef}
             />
           )}
-            
+
           {AddReminderModelOpen && (
             <AddReminder
               LeadModelOpen={AddReminderModelOpen}
@@ -1957,7 +2166,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               FetchLeads={FetchLeads}
             />
           )}
-          
+
           {deleteModelOpen && (
             <DeleteLeadModel
               handleCloseDeleteModel={handleCloseDeleteModel}

@@ -115,11 +115,6 @@ const Sidebarmui = () => {
       title: "LEADS",
       links: [
         {
-          name: "Search",
-          icon: <HiSearch />,
-          link: "/search",
-        },
-        {
           name: "Add lead",
           icon: <MdPersonAdd />,
           link: "/addlead",
@@ -365,6 +360,11 @@ const Sidebarmui = () => {
           icon: <MdSpeakerNotes />,
           link: "/leadnotes",
         },
+        {
+          name: "Search",
+          icon: <HiSearch />,
+          link: "/search",
+        },
       ],
     },
         {
@@ -470,11 +470,6 @@ const Sidebarmui = () => {
     {
       title: "LEADS",
       links: [
-        {
-          name: "Search",
-          icon: <HiSearch />,
-          link: "/search",
-        },
         {
           name: "Add lead",
           icon: <MdPersonAdd />,
@@ -763,6 +758,11 @@ const Sidebarmui = () => {
           icon: <MdSpeakerNotes />,
           link: "/leadnotes",
         },
+        {
+          name: "Search",
+          icon: <HiSearch />,
+          link: "/search",
+        },
       ],
     },
     {
@@ -844,11 +844,6 @@ const Sidebarmui = () => {
     {
       title: "LEADS",
       links: [
-        {
-          name: "Search",
-          icon: <HiSearch />,
-          link: "/search",
-        },
         {
           name: "Add lead",
           icon: <MdPersonAdd />,
@@ -1146,6 +1141,11 @@ const Sidebarmui = () => {
           name: "Notes",
           icon: <MdSpeakerNotes />,
           link: "/leadnotes",
+        },
+        {
+          name: "Search",
+          icon: <HiSearch />,
+          link: "/search",
         },
       ],
     },
