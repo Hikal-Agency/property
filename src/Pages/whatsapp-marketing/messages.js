@@ -31,7 +31,7 @@ const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh Leads" },
   { id: "coldleads", formattedValue: "Cold Leads" },
   { id: "thirdpartyleads", formattedValue: "Thirdparty Leads" },
-  { id: "personaleads", formattedValue: "Personal Leads" },
+  { id: "personalleads", formattedValue: "Personal Leads" },
   { id: "warmleads", formattedValue: "Warm Leads" },
   { id: "transfferedleads", formattedValue: "Transferred Leads" },
 ];
@@ -1154,98 +1154,6 @@ const AllLeads = () => {
 
       <Box sx={{ width: "100%" }} className="mb-5">
         <div className="grid grid-cols-2 gap-4">
-          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Date of Birth"
-              // value={Datevalue}
-              // onChange={(newValue) => {
-              //   console.log(newValue);
-              //   setDatevalue(newValue);
-              //   setPersonalInfo({
-              //     ...PersonalInfo,
-              //     dob:
-              //       format(newValue?.$d.getUTCFullYear()) +
-              //       "-" +
-              //       format(newValue?.$d.getUTCMonth() + 1) +
-              //       "-" +
-              //       format(newValue?.$d.getUTCDate() + 1),
-              //   });
-              //   console.log(Datevalue);
-              // }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  onKeyDown={(e) => e.preventDefault()}
-                  readOnly={true}
-                />
-              )}
-              className="w-full"
-              required
-              maxDate={currentDate}
-              // minDate={minDate}
-              // inputFormat="MM/dd/yyyy"
-              disableFuture
-              invalidDateMessage="Invalid date"
-              mask="__/__/____"
-              sx={{
-                width: "full",
-                border:
-                  currentMode === "dark" ? "1px solid #FFF" : "1px solid #000",
-              }}
-            />
-          </LocalizationProvider> */}
-
-          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  onKeyDown={(e) => e.preventDefault()}
-                  readOnly={true}
-                  className={`myDatePicker ${
-                    currentMode === "dark" ? "dark-border" : ""
-                  }`}
-                />
-              )}
-              className="w-full"
-              required
-              maxDate={currentDate}
-              // minDate={minDate}
-              // inputFormat="MM/dd/yyyy"
-              disableFuture
-              invalidDateMessage="Invalid date"
-              mask="__/__/____"
-              sx={{
-                border: `1px solid ${
-                  currentMode === "dark" ? "white" : "black"
-                }`,
-                width: "full",
-              }}
-              InputProps={{
-                classes: {
-                  notchedOutline: `${
-                    currentMode === "dark" ? "dark-border" : ""
-                  }`,
-                  focused: `${
-                    currentMode === "dark" ? "dark-focused" : "light-focused"
-                  }`,
-                },
-              }}
-            />
-          </LocalizationProvider> */}
-          {/* <TextField
-            label="Search"
-            // value={searchText}
-            // onChange={(event) => setSearchText(event.target.value)}
-            variant="outlined"
-            className="w-full"
-            sx={{
-              marginLeft: "1rem",
-              border:
-                currentMode === "dark" ? "1px solid #FFF" : "1px solid #000",
-              color: currentMode === "dark" ? "#ffffff" : "#000",
-            }}
-          /> */}
         </div>
       </Box>
 

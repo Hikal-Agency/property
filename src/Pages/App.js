@@ -66,6 +66,7 @@ import Integrations from "./integrations";
 import RegisterAttendance from "./attendanceModule/RegisterAttendance";
 import TodayCallLogs from "./leaderboard/TodayCallLogs";
 import AttendanceLogin from "./auth/attendanceLogin";
+import Search from "./search/Search";
 
 const libraries = ["places"];
 
@@ -348,6 +349,11 @@ const routes = [
     element: <Integrations />,
   },
   {
+    path: "/search",
+    pageName: "Search",
+    element: <Search />,
+  },
+  {
     path: "*",
     element: <Error />,
   },
@@ -579,6 +585,11 @@ const hosRoutes = [
     path: "/integrations",
     pageName: "Settings",
     element: <Integrations />,
+  },
+  {
+    path: "/search",
+    pageName: "Search",
+    element: <Search />,
   },
   {
     path: "*",

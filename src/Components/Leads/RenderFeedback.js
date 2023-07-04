@@ -252,6 +252,7 @@ const RenderFeedback = ({ cellValues }) => {
           <MenuItem value={"Low Budget"}>Low Budget</MenuItem>
           <MenuItem value={"Not Interested"}>Not Interested</MenuItem>
           <MenuItem value={"Unreachable"}>Unreachable</MenuItem>
+          <MenuItem value={"Dead"}>Dead</MenuItem>
         </Select>
       </FormControl>
 

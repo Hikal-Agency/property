@@ -1,0 +1,1864 @@
+import {
+  Box,
+  Button as MuiButton,
+  IconButton,
+  InputAdornment,
+  TextField,
+  styled,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import "../../styles/index.css";
+import {
+  DataGrid,
+  gridPageCountSelector,
+  gridPageSelector,
+  GridToolbar,
+  useGridApiContext,
+  useGridSelector,
+} from "@mui/x-data-grid";
+
+// import axios from "axios";
+import axios from "../../axoisConfig";
+import { FaComment, FaBell } from "react-icons/fa";
+import { FaGlobe } from "react-icons/fa";
+import { useEffect, useState, useRef } from "react";
+import { useStateContext } from "../../context/ContextProvider";
+import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
+import { MdCampaign } from "react-icons/md";
+import { BiSearch } from "react-icons/bi";
+import { BsWhatsapp } from "react-icons/bs";
+import { FaSnapchat } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { FaArchive } from "react-icons/fa";
+import { GiMagnifyingGlass } from "react-icons/gi";
+import { FaUser } from "react-icons/fa";
+
+import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
+import { TbFileImport } from "react-icons/tb";
+import moment from "moment/moment";
+import Pagination from "@mui/material/Pagination";
+import SingleLead from "../../Components/Leads/SingleLead";
+import UpdateLead from "../../Components/Leads/UpdateLead";
+import BulkUpdateLeads from "../../Components/Leads/BulkUpdateLeads";
+import { toast, ToastContainer } from "react-toastify";
+import RenderPriority from "../../Components/Leads/RenderPriority";
+import RenderFeedback from "../../Components/Leads/RenderFeedback";
+import RenderManagers from "../../Components/Leads/RenderManagers";
+import RenderSalesperson from "../../Components/Leads/RenderSalesperson";
+import { Link, useNavigate } from "react-router-dom";
+import DeleteLeadModel from "../../Components/Leads/DeleteLead";
+import BulkImport from "../../Components/Leads/BulkImport";
+import { RiMessage2Line } from "react-icons/ri";
+import { FaWhatsapp } from "react-icons/fa";
+import { FaYoutube } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
+import { langs } from "../../langCodes";
+import AddReminder from "../../Components/reminder/AddReminder";
+
+const bulkUpdateBtnStyles = {
+  position: "absolute",
+  top: "10.5px",
+  zIndex: "500",
+  transform: "translateX(-50%)",
+  fontWeight: "500",
+};
+
+const feedbacks = [
+  "All",
+  "New",
+  "No Answer",
+  "Meeting",
+  "Follow Up",
+  "Low Budget",
+  "Not Interested",
+  "Unreachable",
+];
+
+const leadOrigins = [
+  { id: "hotleads", formattedValue: "Fresh Leads" },
+  { id: "coldleads", formattedValue: "Cold Leads" },
+  { id: "thirdpartyleads", formattedValue: "Thirdparty Leads" },
+  { id: "personalleads", formattedValue: "Personal Leads" },
+  { id: "warmleads", formattedValue: "Warm Leads" },
+  { id: "transfferedleads", formattedValue: "Transferred Leads" },
+];
+const leadTypes = [
+  { id: "all", formattedValue: "All" },
+  { id: "new", formattedValue: "New" },
+  { id: "no answer", formattedValue: "No Answer" },
+  { id: "meeting", formattedValue: "Meeting" },
+  { id: "follow up", formattedValue: "Follow Up" },
+  { id: "low budget", formattedValue: "Low Budget" },
+  { id: "not interested", formattedValue: "Not Interested" },
+  { id: "unreachable", formattedValue: "Unreachable" },
+];
+
+const enquiryTypes = [
+  {
+    id: "studio",
+    formattedValue: "Studio",
+  },
+  {
+    id: "1 bedroom",
+    formattedValue: "1 Bedroom",
+  },
+  {
+    id: "2 bedrooms",
+    formattedValue: "2 Bedrooms",
+  },
+  {
+    id: "3 bedrooms",
+    formattedValue: "3 Bedrooms",
+  },
+  {
+    id: "4 bedrooms",
+    formattedValue: "4 Bedrooms",
+  },
+  {
+    id: "5 bedrooms",
+    formattedValue: "5 Bedrooms",
+  },
+  {
+    id: "6 bedrooms",
+    formattedValue: "6 Bedrooms",
+  },
+  {
+    id: "retail",
+    formattedValue: "Retail",
+  },
+  {
+    id: "others",
+    formattedValue: "Others",
+  },
+];
+
+const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
+  const token = localStorage.getItem("auth-token");
+
+  const {
+    currentMode,
+    pageState,
+    setpageState,
+    reloadDataGrid,
+    setreloadDataGrid,
+    DataGridStyles,
+    setopenBackDrop,
+    User,
+    fetchSidebarData,
+    BACKEND_URL,
+    Managers,
+    SalesPerson,
+    darkModeColors,
+  } = useStateContext();
+  const navigate = useNavigate();
+  const [singleLeadData, setsingleLeadData] = useState({});
+  const [deleteloading, setdeleteloading] = useState(false);
+  const [deletebtnloading, setdeletebtnloading] = useState(false);
+  const [filt, setFilt] = useState([]);
+  const [error, setError] = useState(false);
+
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
+  const [deleteModelOpen, setDeleteModelOpen] = useState(false);
+  const [unassignedFeedback, setUnassignedFeedback] = useState("All");
+  const [leadOriginSelected, setLeadOriginSelected] = useState(leadOrigins[0]);
+  const [leadTypeSelected, setLeadTypeSelected] = useState(leadTypes[0]);
+  const [enquiryTypeSelected, setEnquiryTypeSelected] = useState({ id: 0 });
+  const [managerSelected, setManagerSelected] = useState("");
+  const [agentSelected, setAgentSelected] = useState("");
+  const [projectNameTyped, setProjectNameTyped] = useState("");
+  const [bulkDeleteClicked, setBulkDeleteClicked] = useState(false);
+  const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
+  const [managers, setManagers] = useState(Managers || []);
+  const [agents, setAgents] = useState(SalesPerson || {});
+  const [searchText, setSearchText] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
+  const searchRef = useRef();
+  const selectionModelRef = useRef([]);
+  const [hovered, setHovered] = useState("");
+  const [CSVData, setCSVData] = useState({
+    keys: [],
+    rows: [],
+  });
+
+  const bulkImportRef = useRef();
+  const dataTableRef = useRef();
+
+  console.log("Path in alleads component: ", lead_origin);
+
+  // eslint-disable-next-line
+  const [LeadToDelete, setLeadToDelete] = useState();
+  const [pageRange, setPageRange] = useState();
+  const [fromLead, setFromLead] = useState();
+  const [toLead, setToLead] = useState();
+
+  //View LEAD MODAL VARIABLES
+  const [LeadModelOpen, setLeadModelOpen] = useState(false);
+  const handleLeadModelOpen = () => setLeadModelOpen(true);
+  const handleLeadModelClose = () => setLeadModelOpen(false);
+
+  //Update LEAD MODAL VARIABLES
+  const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
+  const [AddReminderModelOpen, setAddReminderModelOpen] = useState(false);
+  const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
+  const handleUpdateLeadModelClose = () => {
+    setLeadModelOpen(false);
+    setUpdateLeadModelOpen(false);
+  };
+
+  const handleAdReminderModalOpen = () => setAddReminderModelOpen(true);
+  const handleAdReminderModalClose = () => {
+    setLeadModelOpen(false);
+    setAddReminderModelOpen(false);
+  };
+
+  const CustomColorSwitch = styled(() => ({
+    "& .MuiSwitch-switchBase.Mui-checked": {
+      color: "green",
+    },
+    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+      backgroundColor: "green",
+    },
+    "& .MuiSwitch-switchBase": {
+      color: "pink",
+    },
+  }));
+
+  const classes = CustomColorSwitch();
+
+  // ROLE 3
+  // eslint-disable-next-line
+
+  const handleRangeChange = (e) => {
+    setError(false);
+    const value = e.target.value;
+
+    if (value === "" || (value >= 10 && value <= 100)) {
+      setPageRange(value);
+
+      setError(false);
+
+      setpageState((old) => ({
+        ...old,
+        perpage: value,
+      }));
+    } else {
+      setError("Value out of range (10-150)");
+    }
+  };
+
+  const handleChangeNumber = (e) => {};
+
+  const handleSearch = (e) => {
+    if (e.target.value === "") {
+      setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
+      FetchLeads(token);
+    }
+    // setSearchTerm(e.target.value);
+  };
+
+  const handleKeyUp = (e) => {
+    if (searchRef.current.querySelector("input").value) {
+      if (e.key === "Enter" || e.keyCode === 13) {
+        // setpageState((oldPageState) => ({...oldPageState, page: 1}));
+        FetchSearchedLeads(token, e.target.value);
+      }
+    }
+  };
+
+  const getLangCode = (language) => {
+    if (language) {
+      const l = langs.find(
+        (lang) =>
+          lang["name"].toLowerCase() === String(language).toLowerCase() ||
+          lang["nativeName"].toLowerCase() === String(language).toLowerCase()
+      );
+      if (l) {
+        return l.code.toUpperCase();
+      } else {
+        return "Invalid";
+      }
+    } else {
+      return null;
+    }
+  };
+
+  const managerColumns = [
+    {
+      field: "leadName",
+      headerAlign: "center",
+      headerName: "Lead name",
+      minWidth: 180,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "leadContact",
+      headerName: "Contact",
+      minWidth: 140,
+      headerAlign: "center",
+      flex: 1,
+    },
+    {
+      field: "project",
+      headerName: "Project",
+      minWidth: 160,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="capitalize">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "language",
+      headerName: "Lang",
+      minWidth: 35,
+      headerAlign: "center",
+      flex: 1,
+    },
+    {
+      field: "enquiryType",
+      headerName: "Enquiry",
+      // width: 110,
+      minWidth: 110,
+      headerAlign: "center",
+      flex: 1,
+    },
+
+    {
+      field: "leadType",
+      headerAlign: "center",
+      headerName: "Property",
+      minWidth: 140,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full">
+            <p className="capitalize">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "creationDate",
+      headerName: "Date",
+      headerAlign: "center",
+      flex: 1,
+
+      sortable: false,
+      minWidth: 120,
+      filterable: false,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
+    }, 
+
+    {
+      field: "edit",
+      headerName: "Edit",
+      flex: 1,
+      headerAlign: "center",
+      width: "100%",
+      sortable: false,
+      filterable: false,
+
+      renderCell: (cellValues) => {
+        return (
+          <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
+            {currentMode === "dark" ? (
+              <p onClick={() => HandleEditFunc(cellValues)}>
+                <AiOutlineEdit size={20} color="white" />
+              </p>
+            ) : (
+              <p onClick={() => HandleEditFunc(cellValues)}>
+                <AiOutlineEdit
+                  size={20}
+                  color="black"
+                  // sx={{ color: "red" }}
+                />
+              </p>
+            )}
+
+            {cellValues.row.leadId !== null && (
+              <Link
+                to={`/timeline/${cellValues.row.leadId}`}
+                className={`editLeadBtn ${
+                  currentMode === "dark"
+                    ? "text-white bg-transparent rounded-md shadow-none "
+                    : "text-black bg-transparent rounded-md shadow-none "
+                }`}
+              >
+                <AiOutlineHistory size={20} />
+              </Link>
+            )}
+          </div>
+        );
+      },
+    },
+  ];
+
+  const columns = [
+    // {
+    //   field: "id",
+    //   headerName: "#",
+    //   // width: 150,
+    //   headerAlign: "center",
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div
+    //         className={`${
+    //           currentMode === "dark"
+    //             ? "bg-[#000000] text-white"
+    //             : "bg-[#000000] text-white"
+    //         } h-full justify-center flex w-full items-center px-5 font-semibold`}
+    //       >
+    //         {cellValues.formattedValue}
+    //       </div>
+    //     );
+    //   },
+    // },
+    {
+      field: "leadSource",
+      headerName: "Src",
+      minWidth: 100,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full mx-auto flex justify-center ">
+            {cellValues?.row?.leadSource?.toLowerCase() ===
+              "campaign snapchat" && (
+              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                <FaSnapchat size={22} color={"#f6d80a"} />
+              </div>
+            )}
+            {cellValues?.row?.leadSource?.toLowerCase() ===
+              "campaign facebook" && (
+              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                <FaFacebook size={22} color={"#0e82e1"} />
+              </div>
+            )}
+            {cellValues?.row?.leadSource?.toLowerCase() ===
+              "campaign tiktok" && (
+              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                <img
+                  src={"/assets/tiktok-app.svg"}
+                  alt=""
+                  height={22}
+                  width={22}
+                  className="object-cover"
+                />
+              </div>
+            )}
+            {cellValues?.row?.leadSource?.toLowerCase() ===
+              "campaign googleads" && (
+              <div className="bg-white w-fit rounded-full text-white flex items-center justify-center">
+                <FcGoogle size={22} />
+              </div>
+            )}
+            {cellValues?.row?.leadSource?.toLowerCase() === "campaign" && (
+              <div className="w-fit rounded-full flex items-center justify-center">
+                <MdCampaign
+                  size={22}
+                  color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+                />
+              </div>
+            )}
+            {cellValues?.row?.leadSource?.toLowerCase() === "cold" && (
+              <div className="w-fit rounded-full flex items-center justify-center">
+                <BsSnow2 size={22} color={"#0ec7ff"} />
+              </div>
+            )}
+            {cellValues?.row?.leadSource?.toLowerCase() === "personal" && (
+              <div className="bg-white w-fit rounded-full flex items-center justify-center">
+                <BsPersonCircle size={22} color={"#14539a"} />
+              </div>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      field: "leadName",
+      headerAlign: "center",
+      headerName: "Lead name",
+      minWidth: 180,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "leadContact",
+      headerName: "Contact",
+      minWidth: 140,
+      headerAlign: "center",
+      flex: 1,
+    },
+    {
+      field: "project",
+      headerName: "Project",
+      headerAlign: "center",
+      minWidth: 160,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="capitalize">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "language",
+      headerName: "Lang",
+      headerAlign: "center",
+      minWidth: 35,
+      flex: 1,
+    },
+    {
+      field: "enquiryType",
+      headerName: "Enquiry",
+      headerAlign: "center",
+      // width: 110,
+      minWidth: 110,
+      flex: 1,
+    },
+
+    {
+      field: "leadType",
+      headerName: "Property",
+      minWidth: 140,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full">
+            <p className="capitalize">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "creationDate",
+      headerName: "Date",
+      flex: 1,
+      headerAlign: "center",
+
+      sortable: false,
+      minWidth: 120,
+      filterable: false,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
+    },
+    {
+      field: "edit",
+      headerName: "Edit",
+      flex: 1,
+      width: "100%",
+      sortable: false,
+      filterable: false,
+      headerAlign: "center",
+
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
+          >
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleEditFunc(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <AiOutlineEdit size={20} />
+              </IconButton>
+            </p>
+
+            {cellValues.row.leadId !== null && (
+              <p>
+                <Link
+                  to={`/timeline/${cellValues.row.leadId}`}
+                  className={`editLeadBtn cursor-pointer ${
+                    currentMode === "dark"
+                      ? "bg-transparent rounded-md shadow-none"
+                      : "bg-transparent rounded-md shadow-none"
+                  }`}
+                >
+                  <IconButton
+                    sx={{ padding: 0 }}
+                    color={currentMode === "dark" ? "black" : "white"}
+                  >
+                    <AiOutlineHistory size={20} style={{ color: "inherit" }} />
+                  </IconButton>
+                </Link>
+              </p>
+            )}
+
+            <p
+              onClick={() => {
+                setLeadToDelete(cellValues?.row.leadId);
+                setDeleteModelOpen(true);
+                setBulkDeleteClicked(false);
+              }}
+              disabled={deleteloading ? true : false}
+              className={`deleteLeadBtn cursor-pointer ${
+                currentMode === "dark"
+                  ? " bg-transparent rounded-md shadow-none"
+                  : "bg-transparent rounded-md shadow-none"
+              }`}
+            >
+              <IconButton
+                sx={{ padding: 0 }}
+                color={currentMode === "dark" ? "black" : "white"}
+              >
+                <BsTrash
+                  className="deleteLeadBtn"
+                  size={18}
+                  style={{ color: "inherit" }}
+                />
+              </IconButton>
+            </p>
+          </div>
+        );
+      },
+    },
+  ];
+
+  const [CEOColumns, setCEOColumns] = useState(columns);
+
+  const FetchLeads = async (
+    token,
+    projectName,
+    lead_origin,
+    lead_type,
+    enquiryType,
+    assignedManager,
+    assignedAgent
+  ) => {
+    console.log("lead type is");
+    console.log(lead_type);
+    console.log("lead origin is");
+    console.log(lead_origin);
+    let FetchLeads_url = "";
+    setpageState((old) => ({
+      ...old,
+      isLoading: true,
+    }));
+    // LEADS URL GENERATON FOR HOT LEADS SECTION
+
+    // LEADS URL GENERATON FOR HOT LEADS SECTION
+    if (lead_origin === "hotleads") {
+      if (lead_type === "all") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0`;
+      } else if (lead_type === "new") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=New`;
+      } else if (lead_type === "no answer") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=No Answer`;
+      } else if (lead_type === "meeting") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Meeting`;
+      } else if (lead_type === "follow up") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Follow Up`;
+      } else if (lead_type === "low budget") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Low Budget`;
+      } else if (lead_type === "not interested") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Not Interested`;
+      } else if (lead_type === "unreachable") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=0&feedback=Unreachable`;
+      }
+    }
+    // LEADS URL GENERATON FOR COLD LEADS PAGE
+    else if (lead_origin === "coldleads") {
+      if (lead_type === "all") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1`;
+      } else if (lead_type === "new") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=New`;
+      } else if (lead_type === "no answer") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=No Answer`;
+      } else if (lead_type === "meeting") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Meeting`;
+      } else if (lead_type === "follow up") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Follow Up`;
+      } else if (lead_type === "low budget") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Low Budget`;
+      } else if (lead_type === "not interested") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Not Interested`;
+      } else if (lead_type === "unreachable") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=1&feedback=Unreachable`;
+      }
+    }
+    // LEADS URL GENERATON FOR THIRDPARTY PAGE
+    else if (lead_origin === "thirdpartyleads") {
+      if (lead_type === "all") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3`;
+      } else if (lead_type === "new") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=New`;
+      } else if (lead_type === "no answer") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=No Answer`;
+      } else if (lead_type === "meeting") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Meeting`;
+      } else if (lead_type === "follow up") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Follow Up`;
+      } else if (lead_type === "low budget") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Low Budget`;
+      } else if (lead_type === "not interested") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Not Interested`;
+      } else if (lead_type === "unreachable") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=3&feedback=Unreachable`;
+      }
+    }
+    // LEADS URL GENERATON FOR PERSONAL PAGE
+    else if (lead_origin === "personalleads") {
+      if (lead_type === "all") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2`;
+      } else if (lead_type === "new") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=New`;
+      } else if (lead_type === "no answer") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=No Answer`;
+      } else if (lead_type === "meeting") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Meeting`;
+      } else if (lead_type === "follow up") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Follow Up`;
+      } else if (lead_type === "low budget") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Low Budget`;
+      } else if (lead_type === "not interested") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Not Interested`;
+      } else if (lead_type === "unreachable") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=2&feedback=Unreachable`;
+      }
+    }
+    // LEADS URL GENERATON FOR WARM LEADS PAGE
+    else if (lead_origin === "warmleads") {
+      if (lead_type === "all") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4`;
+      } else if (lead_type === "new") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=New`;
+      } else if (lead_type === "no answer") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=No Answer`;
+      } else if (lead_type === "meeting") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Meeting`;
+      } else if (lead_type === "follow up") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Follow Up`;
+      } else if (lead_type === "low budget") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Low Budget`;
+      } else if (lead_type === "not interested") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Not Interested`;
+      } else if (lead_type === "unreachable") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&coldCall=4&feedback=Unreachable`;
+      }
+    } else if (lead_origin === "transfferedleads") {
+      FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&coldCall=0&leadStatus=Transferred`;
+    } else if (lead_origin === "unassigned") {
+      if (lead_type === "fresh") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0`;
+      } else if (lead_type === "new") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=New`;
+      } else if (lead_type === "no answer") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=No Answer`;
+      } else if (lead_type === "meeting") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Meeting`;
+      } else if (lead_type === "follow up") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Follow Up`;
+      } else if (lead_type === "low budget") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Low Budget`;
+      } else if (lead_type === "not interested") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Not Interested`;
+      } else if (lead_type === "unreachable") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=0&feedback=Unreachable`;
+      } else if (lead_type === "cold") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=1`;
+      } else if (lead_type === "warm") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&unassigned=1&coldCall=4`;
+      }
+    }
+
+    console.log("fetch lead url is");
+    console.log(FetchLeads_url);
+
+    if (projectName) {
+      FetchLeads_url += `&project=${projectName}`;
+    }
+
+    if (enquiryType) {
+      FetchLeads_url += `&enquiryType=${enquiryType}`;
+    }
+
+    if (assignedManager) {
+      FetchLeads_url += `&managerAssigned=${assignedManager}`;
+    }
+
+    if (assignedAgent) {
+      FetchLeads_url += `&agentAssigned=${assignedAgent}`;
+    }
+
+    console.log(FetchLeads_url);
+
+    axios
+      .get(FetchLeads_url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then(async (result) => {
+        console.log("the user leads are ");
+        console.log(result.data);
+
+        let rowsDataArray = "";
+        if (result.data.coldLeads.current_page > 1) {
+          const theme_values = Object.values(result.data.coldLeads.data);
+          rowsDataArray = theme_values;
+        } else {
+          rowsDataArray = result.data.coldLeads.data;
+        }
+
+        let rowsdata = rowsDataArray.map((row, index) => ({
+          id:
+            pageState.page > 1
+              ? pageState.page * pageState.pageSize -
+                (pageState.pageSize - 1) +
+                index
+              : index + 1,
+          creationDate: row?.creationDate,
+          leadName: row?.leadName || "-",
+          lid: row?.lid || "-",
+          leadContact: row?.leadContact || "-",
+          project: row?.project || "-",
+          leadType: row?.leadType || "-",
+          leadId: row?.id,
+          language: getLangCode(row?.language) || "-",
+          enquiryType: row?.enquiryType || "-",
+          leadSource: row?.leadSource || "-",
+        }));
+
+        setpageState((old) => ({
+          ...old,
+          isLoading: false,
+          data: rowsdata,
+          pageSize: result.data.coldLeads.per_page,
+          total: result.data.coldLeads.total,
+        }));
+      })
+      .catch((err) => {
+        console.log("error occured");
+        console.log(err);
+      });
+  };
+
+  const FetchSearchedLeads = async (token, term) => {
+    setpageState((old) => ({
+      ...old,
+      isLoading: true,
+    }));
+
+    let coldCallCode = "";
+    if (lead_origin === "freshleads") {
+      coldCallCode = 0;
+    } else if (lead_origin === "coldleads") {
+      coldCallCode = 1;
+    } else if (lead_origin === "thirdpartyleads") {
+      coldCallCode = 3;
+    } else if (lead_origin === "personalleads") {
+      coldCallCode = 2;
+    } else if (lead_origin === "warmleads") {
+      coldCallCode = 4;
+    } else if (lead_origin === "transfferedleads") {
+      coldCallCode = 0;
+    }
+
+    let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`;
+
+    if (lead_type) {
+      if (
+        lead_type !== "all" &&
+        lead_type !== "coldLeadsVerified" &&
+        lead_type !== "coldLeadsInvalid" &&
+        lead_type !== "coldLeadsNotChecked" &&
+        lead_origin !== "unassigned"
+      ) {
+        url += `&feedback=${lead_type}`;
+      }
+    }
+
+    if (lead_origin === "unassigned") {
+      url += "&unassigned=1";
+      if (lead_type === "cold") {
+        coldCallCode = 1;
+      } else if (lead_type === "warm") {
+        coldCallCode = 4;
+      } else if (lead_type === "personal") {
+        coldCallCode = 2;
+      } else if (lead_type === "thirdpartyleads") {
+        coldCallCode = 3;
+      }
+    }
+
+    if (coldCallCode !== "") {
+      url += `&coldCall=${coldCallCode}`;
+    }
+
+    if (lead_type === "coldLeadsVerified") {
+      url += `&is_whatsapp=1`;
+    } else if (lead_type === "coldLeadsInvalid") {
+      url += `&is_whatsapp=2`;
+    } else if (lead_type === "coldLeadsNotChecked") {
+      url += `&is_whatsapp=0`;
+    }
+
+    if (lead_origin === "transfferedleads") {
+      url += `&status=Transferred`;
+    }
+
+    await axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("search result is");
+        console.log(result.data);
+        let rowsdata = result.data.result.data.map((row, index) => ({
+          id:
+            pageState.page > 1
+              ? pageState.page * pageState.pageSize -
+                (pageState.pageSize - 1) +
+                index
+              : index + 1,
+          leadId: row?.id,
+          creationDate: row?.creationDate,
+          leadName: row?.leadName || "-",
+          // leadContact:
+          //   row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
+          leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
+          project: row?.project || "-",
+          enquiryType: row?.enquiryType || "-",
+          leadType: row?.leadType || "-",
+          assignedToManager: row?.assignedToManager || null,
+          assignedToSales: row?.assignedToSales || null,
+          feedback: row?.feedback || null,
+          priority: row?.priority || null,
+          language: getLangCode(row?.language) || "-",
+          leadSource: row?.leadSource || "-",
+          lid: row?.lid || "-",
+          lastEdited: row?.lastEdited || "-",
+          leadFor: row?.leadFor || "-",
+          leadStatus: row?.leadStatus || "-",
+          coldCall: row?.coldcall,
+          leadCategory: leadCategory || "-",
+          notes: row?.notes || "-",
+          otp:
+            row?.otp === "No OTP" || row?.otp === "No OTP Used"
+              ? "No OTP Used"
+              : row?.otp || "No OTP Used",
+          edit: "edit",
+        }));
+        setpageState((old) => ({
+          ...old,
+          data: rowsdata,
+          pageSize: result.data.result.per_page,
+          total: result.data.result.total,
+        }));
+        setpageState((old) => ({
+          ...old,
+          isLoading: false,
+        }));
+      })
+      .catch((err) => console.log(err));
+  };
+
+  // TOOLBAR SEARCH FUNC
+  const HandleQuicSearch = (e) => {
+    e.preventDefault();
+    //  setSearchTerm(e.target.value);
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    FetchLeads(token);
+  }, [unassignedFeedback]);
+
+  useEffect(() => {
+    setopenBackDrop(false);
+    // eslint-disable-next-line
+  }, [lead_type]);
+
+  useEffect(() => {
+    setpageState((oldPageState) => ({ ...oldPageState, page: 0 }));
+    searchRef.current.querySelector("input").value = "";
+  }, [lead_type, lead_origin]);
+
+  useEffect(() => {
+    if (searchRef.current.querySelector("input").value) {
+      FetchSearchedLeads(token, searchRef.current.querySelector("input").value);
+    } else {
+      FetchLeads(
+        token,
+        leadOriginSelected?.id || "hotleads",
+        leadTypeSelected?.id || "all",
+        projectNameTyped,
+        enquiryTypeSelected?.id,
+        managerSelected,
+        agentSelected
+      );
+    }
+  }, [pageState.page, pageState.perpage, lead_type, reloadDataGrid]);
+
+  useEffect(() => {
+    setManagers(Managers);
+    setAgents(SalesPerson);
+  }, [Managers, SalesPerson]);
+
+  useEffect(() => {
+    FetchLeads(
+      token,
+      projectNameTyped,
+      leadOriginSelected?.id || "hotleads",
+      leadTypeSelected?.id || "all",
+      enquiryTypeSelected?.id,
+      managerSelected,
+      agentSelected
+    );
+    // eslint-disable-next-line
+  }, [
+    pageState.page,
+    leadTypeSelected,
+    managerSelected,
+    agentSelected,
+    leadOriginSelected,
+    projectNameTyped,
+    enquiryTypeSelected,
+    reloadDataGrid,
+  ]);
+
+  // ROW CLICK FUNCTION
+  const handleRowClick = async (params, event) => {
+    if (
+      !event.target.closest(".editLeadBtn") &&
+      !event.target.closest(".deleteLeadBtn")
+    ) {
+      console.log("Single lead clicked::::::: ", params.row);
+      setsingleLeadData(params.row);
+      handleLeadModelOpen();
+    }
+  };
+  // REMINDER BTN CLICK FUNC
+  const HandleReminderBtn = async (params) => {
+    console.log("LEADID: ", params);
+    setsingleLeadData(params.row);
+    handleAdReminderModalOpen();
+    // setUpdateLeadModelOpen(true);
+  };
+  // EDIT BTN CLICK FUNC
+  const HandleEditFunc = async (params) => {
+    console.log("LEADID: ", params);
+    setsingleLeadData(params.row);
+    handleUpdateLeadModelOpen();
+    // setUpdateLeadModelOpen(true);
+  };
+  // Delete Lead
+
+  const handleBulkDelete = async () => {
+    try {
+      setdeleteloading(true);
+      setdeletebtnloading(true);
+      const Data = {
+        action: "delete",
+        ids: selectedRows,
+      };
+      await axios.post(`${BACKEND_URL}/bulkaction`, JSON.stringify(Data), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      setdeleteloading(false);
+      setdeletebtnloading(false);
+      setreloadDataGrid(!reloadDataGrid);
+      FetchLeads(token);
+      selectionModelRef.current = [];
+      setDeleteModelOpen(false);
+      fetchSidebarData();
+      toast.success("Leads Deleted Successfull", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log(error);
+      setdeleteloading(false);
+      setdeletebtnloading(false);
+      toast.error("Something Went Wrong! Please Try Again", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+  const deleteLead = async (lid) => {
+    setdeleteloading(true);
+    setdeletebtnloading(true);
+    axios
+      .delete(`${BACKEND_URL}/leads/${lid}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log(result);
+        setdeleteloading(false);
+        setdeletebtnloading(false);
+        setreloadDataGrid(!reloadDataGrid);
+        FetchLeads(token);
+        setDeleteModelOpen(false);
+        fetchSidebarData();
+        toast.success("Lead Deleted Successfull", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        setdeleteloading(false);
+        setdeletebtnloading(false);
+        toast.error("Something Went Wrong! Please Try Again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  };
+
+  function CustomPagination() {
+    const apiRef = useGridApiContext();
+    const page = useGridSelector(apiRef, gridPageSelector);
+    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+
+    return (
+      <>
+        <div className="flex justify-center items-center">
+          <p className="mr-3">
+            {pageState.from}-{pageState.to}
+          </p>
+
+          <p className="text-white mr-3">Rows Per Page</p>
+
+          <Select
+            labelId="select-page-size-label"
+            value={pageState.pageSize}
+            onChange={handleRangeChange}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "white",
+                },
+                "&:hover fieldset": {
+                  borderColor: "white",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "white",
+                },
+              },
+            }}
+          >
+            {[14, 30, 50, 75, 100].map((size) => (
+              <MenuItem key={size} value={size}>
+                {size}
+              </MenuItem>
+            ))}
+          </Select>
+
+          <Pagination
+            sx={{
+              "& .Mui-selected": {
+                backgroundColor: "white !important",
+                color: "black !important",
+                borderRadius: "5px !important",
+              },
+            }}
+            count={pageCount}
+            page={page + 1}
+            onChange={(event, value) => apiRef?.current?.setPage(value - 1)}
+          />
+        </div>
+      </>
+    );
+  }
+
+  const handleClickBulkUpdate = () => {
+    setBulkUpdateModelOpen(true);
+  };
+
+  const handleCloseBulkUpdateModel = () => {
+    setBulkUpdateModelOpen(false);
+  };
+
+  const handleCloseDeleteModel = () => {
+    setDeleteModelOpen(false);
+  };
+
+  const handleClickBulkDelete = () => {
+    setBulkDeleteClicked(true);
+    setDeleteModelOpen(true);
+  };
+
+  const handleCloseBulkImportModel = () => {
+    setBulkImportModelOpen(false);
+    bulkImportRef.current.value = "";
+  };
+
+  const handleBulkImport = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const text = e.target.result;
+      const rows = text.split("\n");
+      const keys = rows[0].split(",").map((key) => key.toString().trim());
+      const data = rows.slice(1, rows.length);
+      const formatted = data.map((row) =>
+        row.split(",").map((value) => value.toString().trim())
+      );
+      setCSVData({
+        rows: formatted,
+        keys,
+      });
+      setBulkImportModelOpen(true);
+    };
+
+    reader.readAsText(file);
+  };
+  return (
+    <>
+      <ToastContainer />
+      <div className="pb-10 p-4">
+        {lead_origin === "unassigned" && lead_type === "fresh" && (
+          <Box
+            sx={{
+              ...darkModeColors,
+              "& .MuiSelect-select": {
+                padding: "2px",
+                paddingLeft: "6px !important",
+                paddingRight: "20px",
+                borderRadius: "8px",
+              },
+              "& .MuiInputBase-root": {
+                width: "max-content",
+                marginRight: "5px",
+              },
+            }}
+          >
+            <Select
+              id="un-feedback"
+              value={unassignedFeedback}
+              className={`w-full mt-1 mb-5`}
+              onChange={(event) => {
+                setUnassignedFeedback(event.target.value);
+              }}
+              displayEmpty
+              size="small"
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem
+                value="0"
+                disabled
+                selected
+                sx={{
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                }}
+              >
+                Feedback
+              </MenuItem>
+              {feedbacks?.map((feedback, index) => (
+                <MenuItem key={index} value={feedback || ""}>
+                  {feedback}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+        )}
+          <Box className="mb-5"></Box>
+          <h1
+            className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
+              currentMode === "dark"
+                ? "text-white border-white"
+                : "text-main-red-color font-bold border-main-red-color"
+            }`}
+          >
+            {leadOriginSelected.formattedValue} -{" "}
+            <span className="uppercase">{leadTypeSelected.formattedValue}</span>{" "}
+            <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+              {pageState?.total}
+            </span>
+          </h1>
+
+
+        <Box
+          sx={{
+            ...darkModeColors,
+            marginTop: "34px",
+            "& .MuiSelect-select": {
+              padding: "2px",
+              paddingLeft: "6px !important",
+              paddingRight: "20px",
+              borderRadius: "8px",
+            },
+            "& .MuiInputBase-root": {
+              width: "max-content",
+              marginRight: "5px",
+            },
+            "& input": {
+              paddingTop: "0",
+            },
+            "& .applied-filter": {
+              background: "#da1f26",
+              borderRadius: 4,
+              width: "max-content",
+              padding: "3px 8px",
+              color: "white",
+              marginRight: "0.25rem",
+            },
+            "& .applied-filter span": {
+              marginRight: "3px",
+            },
+          }}
+          className={"flex items-center"}
+        >
+          <div>
+            <Select
+              id="leadOrigin"
+              value={leadOriginSelected?.id || "hotleads"}
+              onChange={(event) =>
+                setLeadOriginSelected(
+                  leadOrigins.find((origin) => origin.id === event.target.value)
+                )
+              }
+              size="small"
+              className={`w-full mt-1 mb-5 `}
+              displayEmpty
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem value="0" disabled>
+                Lead Origin
+              </MenuItem>
+              {leadOrigins?.map((origin, index) => (
+                <MenuItem key={index} value={origin?.id || ""}>
+                  {origin?.formattedValue}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+          <div>
+            <Select
+              id="leadType"
+              value={leadTypeSelected?.id || "all"}
+              onChange={(event) =>
+                setLeadTypeSelected(
+                  leadTypes.find((type) => type.id === event.target.value)
+                )
+              }
+              size="small"
+              className={`w-full mt-1 mb-5`}
+              displayEmpty
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem
+                value="0"
+                disabled
+                sx={{
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                }}
+              >
+                Lead Type
+              </MenuItem>
+              {leadTypes?.map((type, index) => (
+                <MenuItem key={index} value={type?.id || ""}>
+                  {type?.formattedValue}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+          <div style={{ position: "relative" }}>
+            <label
+              htmlFor="enquiryType"
+              style={{ position: "absolute", top: "-20px", right: 0 }}
+              className={`flex justify-end items-center ${
+                currentMode === "dark" ? "text-white" : "text-dark"
+              } `}
+            >
+              {enquiryTypeSelected?.id ? (
+                <strong
+                  className="ml-4 text-red-600 cursor-pointer"
+                  onClick={() => setEnquiryTypeSelected({ id: 0 })}
+                >
+                  Clear
+                </strong>
+              ) : (
+                ""
+              )}
+            </label>
+            <Select
+              id="enquiryType"
+              value={enquiryTypeSelected?.id}
+              className={`w-full mt-1 mb-5`}
+              onChange={(event) =>
+                setEnquiryTypeSelected(
+                  enquiryTypes.find((type) => type.id === event.target.value)
+                )
+              }
+              displayEmpty
+              size="small"
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem
+                value="0"
+                disabled
+                sx={{
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                }}
+              >
+                Select Enquiry Type
+              </MenuItem>
+              {enquiryTypes?.map((type, index) => (
+                <MenuItem key={index} value={type?.id || ""}>
+                  {type?.formattedValue}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+          <div>
+            <TextField
+              className={`w-full`}
+              id="Project"
+              sx={{
+                marginTop: "-12px",
+              }}
+              type={"text"}
+              label="Project Name"
+              variant="outlined"
+              size="small"
+              onChange={(e) => setProjectNameTyped(e.target.value)}
+              required
+            />
+          </div>
+          <div style={{ position: "relative" }}>
+            <label
+              style={{ position: "absolute", top: "-20px", right: 0 }}
+              htmlFor="Manager"
+              className={`flex justify-end items-center ${
+                currentMode === "dark" ? "text-white" : "text-dark"
+              } `}
+            >
+              {managerSelected ? (
+                <strong
+                  className="ml-4 text-red-600 cursor-pointer"
+                  onClick={() => setManagerSelected("")}
+                >
+                  Clear
+                </strong>
+              ) : (
+                ""
+              )}
+            </label>
+            <Select
+              id="Manager"
+              value={managerSelected || ""}
+              onChange={(event) => setManagerSelected(event.target.value)}
+              size="small"
+              className={`w-full mt-1 mb-5 `}
+              displayEmpty
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem value="" selected disabled>
+                Manager
+              </MenuItem>
+              {managers?.map((manager, index) => (
+                <MenuItem key={index} value={manager?.id || ""}>
+                  {manager?.userName}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+          <div style={{ position: "relative" }}>
+            <label
+              style={{ position: "absolute", top: "-20px", right: 0 }}
+              htmlFor="Agent"
+              className={`flex justify-end items-center ${
+                currentMode === "dark" ? "text-white" : "text-dark"
+              } `}
+            >
+              {agentSelected ? (
+                <strong
+                  className="ml-4 text-red-600 cursor-pointer"
+                  onClick={() => {
+                    setAgentSelected("");
+                    setAgents([]);
+                  }}
+                >
+                  Clear
+                </strong>
+              ) : (
+                ""
+              )}
+            </label>
+            <Select
+              id="Agent"
+              value={agentSelected || ""}
+              onChange={(event) => setAgentSelected(event.target.value)}
+              size="small"
+              className={`w-full mt-1 mb-5 `}
+              displayEmpty
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem selected value="" disabled>
+                Agent
+              </MenuItem>
+              {agents[`manager-${managerSelected}`]?.map((agent, index) => (
+                <MenuItem key={index} value={agent?.id || ""}>
+                  {agent?.userName}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+        </Box>
+        <Box
+          sx={{
+            ...DataGridStyles,
+            position: "relative",
+            marginBottom: "50px",
+          }}
+          className={`${currentMode}-mode-datatable`}
+        >
+          {selectedRows.length > 0 && User?.role !== 7 && (
+            <MuiButton
+              size="small"
+              sx={{
+                ...bulkUpdateBtnStyles,
+                left: "476px",
+                zIndex: "5 !important",
+              }}
+              variant="text"
+              onClick={handleClickBulkUpdate}
+            >
+              <AiFillEdit size={20} />{" "}
+              <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
+            </MuiButton>
+          )}
+          {selectedRows.length > 0 && User?.role === 1 && (
+            <MuiButton
+              size="small"
+              sx={{
+                ...bulkUpdateBtnStyles,
+                left: "600px",
+                zIndex: "5 !important",
+              }}
+              variant="text"
+              onClick={handleClickBulkDelete}
+            >
+              <BsTrash size={18} />{" "}
+              <span style={{ paddingLeft: "5px" }}>Bulk Delete</span>
+            </MuiButton>
+          )}
+          <label htmlFor="bulkImport">
+            <MuiButton
+              onClick={() => bulkImportRef.current.click()}
+              size="small"
+              sx={{
+                ...bulkUpdateBtnStyles,
+                left: User?.role === 1 ? "355px" : "266px",
+              }}
+              variant="text"
+            >
+              <TbFileImport size={18} />{" "}
+              <span style={{ paddingLeft: "5px" }}>Bulk Import</span>
+            </MuiButton>
+          </label>
+          <input
+            type="file"
+            style={{ display: "none" }}
+            ref={bulkImportRef}
+            onInput={handleBulkImport}
+            id="bulkImport"
+          />
+          <div
+            style={{ zIndex: "5 !important" }}
+            className="absolute top-[7px] right-[20px] z-[5]"
+          >
+            <TextField
+              placeholder="Search.."
+              ref={searchRef}
+              sx={{
+                "& input": {
+                  borderBottom: "2px solid #ffffff6e",
+                },
+              }}
+              variant="standard"
+              onKeyUp={handleKeyUp}
+              onInput={handleSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IconButton sx={{ padding: 0 }}>
+                      <BiSearch size={17} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+
+          <Box
+            width={"100%"}
+            className={`${currentMode}-mode-datatable`}
+            sx={{ ...DataGridStyles, position: "relative" }}
+          >
+            <DataGrid
+              autoHeight
+              disableSelectionOnClick
+              rows={pageState.data}
+              onRowClick={handleRowClick}
+              rowCount={pageState.total}
+              loading={pageState.isLoading}
+              rowsPerPageOptions={[30, 50, 75, 100]}
+              pagination
+              width="auto"
+              paginationMode="server"
+              page={pageState.page - 1}
+              checkboxSelection
+              selectionModel={selectionModelRef.current}
+              onSelectionModelChange={(ids) => {
+                selectionModelRef.current = ids;
+                setSelectedRows(
+                  ids.map((id) => pageState?.data[id - 1]?.leadId)
+                );
+              }}
+              pageSize={pageState.pageSize}
+              onPageChange={(newPage) => {
+                setpageState((old) => ({ ...old, page: newPage + 1 }));
+              }}
+              onPageSizeChange={(newPageSize) =>
+                setpageState((old) => ({ ...old, pageSize: newPageSize }))
+              }
+              disableColumnFilter
+              columns={User?.role <= 2 ? columns : managerColumns}
+              components={{
+                Toolbar: GridToolbar,
+                Pagination: CustomPagination,
+              }}
+              componentsProps={{
+                toolbar: {
+                  printOptions: { disableToolbarButton: User?.role !== 1 },
+                  csvOptions: { disableToolbarButton: User?.role !== 1 },
+                  showQuickFilter: false,
+                },
+              }}
+              sx={{
+                boxShadow: 2,
+                "& .MuiDataGrid-cell:hover": {
+                  cursor: "pointer",
+                },
+                "& .MuiCheckbox-root": {
+                  color: currentMode === "dark" ? "#FFF" : "#000",
+                },
+                "& .Mui-checked": {
+                  color: currentMode === "dark" ? "#FFF" : "#000",
+                },
+                "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                  color:
+                    currentMode === "dark"
+                      ? "white !important"
+                      : "black !important",
+                },
+                "& .MuiDataGrid-virtualScrollerContent .MuiSvgIcon-root": {
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "& .MuiDataGrid-main": {
+                  overflowY: "scroll",
+                  height: "auto",
+                },
+                "& .MuiButtonBase-root .MuiSwitch-switchBase": {
+                  color: "red !important",
+                },
+
+                "& .MuiSwitch-root .MuiSwitch-track": {
+                  backgroundColor: "red !important",
+                },
+              }}
+              getRowClassName={(params) =>
+                params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+              }
+            />
+          </Box>
+          {!UpdateLeadModelOpen && (
+            <SingleLead
+              LeadModelOpen={LeadModelOpen}
+              setLeadModelOpen={setLeadModelOpen}
+              handleLeadModelOpen={handleLeadModelOpen}
+              handleLeadModelClose={handleLeadModelClose}
+              LeadData={singleLeadData}
+              BACKEND_URL={BACKEND_URL}
+            />
+          )}
+
+          {UpdateLeadModelOpen && (
+            <UpdateLead
+              LeadModelOpen={UpdateLeadModelOpen}
+              setLeadModelOpen={setUpdateLeadModelOpen}
+              handleLeadModelOpen={handleUpdateLeadModelOpen}
+              handleLeadModelClose={handleUpdateLeadModelClose}
+              LeadData={singleLeadData}
+              BACKEND_URL={BACKEND_URL}
+              FetchLeads={FetchLeads}
+            />
+          )}
+
+          {AddReminderModelOpen && (
+            <AddReminder
+              LeadModelOpen={AddReminderModelOpen}
+              setLeadModelOpen={setAddReminderModelOpen}
+              handleLeadModelOpen={handleAdReminderModalOpen}
+              handleLeadModelClose={handleAdReminderModalClose}
+              LeadData={singleLeadData}
+              BACKEND_URL={BACKEND_URL}
+              FetchLeads={FetchLeads}
+            />
+          )}
+
+          {bulkUpdateModelOpen && (
+            <BulkUpdateLeads
+              handleCloseBulkUpdateModel={handleCloseBulkUpdateModel}
+              bulkUpdateModelOpen={bulkUpdateModelOpen}
+              selectedRows={selectedRows}
+              FetchLeads={FetchLeads}
+              setSelectedRows={setSelectedRows}
+              selectionModelRef={selectionModelRef}
+            />
+          )}
+
+          {deleteModelOpen && (
+            <DeleteLeadModel
+              handleCloseDeleteModel={handleCloseDeleteModel}
+              deleteLead={deleteLead}
+              deleteModelOpen={deleteModelOpen}
+              LeadToDelete={LeadToDelete}
+              deletebtnloading={deletebtnloading}
+              bulkDeleteClicked={bulkDeleteClicked}
+              selectedRows={selectedRows}
+              handleBulkDelete={handleBulkDelete}
+            />
+          )}
+
+          {bulkImportModelOpen && (
+            <BulkImport
+              bulkImportModelOpen={bulkImportModelOpen}
+              handleCloseBulkImportModel={handleCloseBulkImportModel}
+              FetchLeads={FetchLeads}
+              CSVData={CSVData}
+            />
+          )}
+        </Box>
+      </div>
+    </>
+  );
+};
+
+export default Search;
