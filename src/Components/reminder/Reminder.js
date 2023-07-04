@@ -12,11 +12,11 @@ import axios from "../../axoisConfig";
 import { ToastContainer, toast } from "react-toastify";
 import { BsBuilding } from "react-icons/bs";
 
-const Reminder = () => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+const Reminder = ({ reminder, setReminder }) => {
+  const { currentMode, BACKEND_URL, User } = useStateContext();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [btnLoading, setbtnLoading] = useState(false);
-  const [reminder, setReminder] = useState([]);
+  // const [reminder, setReminder] = useState([]);
   const token = localStorage.getItem("auth-token");
 
   const upcoming_reminders = [
@@ -108,6 +108,10 @@ const Reminder = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
+        },
+        params: {
+          reminder_status: "Pending",
+          user_id: User?.id,
         },
       });
 
