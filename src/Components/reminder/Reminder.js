@@ -90,7 +90,7 @@ const Reminder = () => {
             >
               <div className="px-5 py-5 space-y-3">
                 <h2 className="text-main-red-color text-md font-bold">
-                  {meeting.leadName}
+                  {meeting?.leadName || "No Lead Name"}
                 </h2>
                 {/* <div className="flex items-center space-x-1">
                   <BsBuilding
