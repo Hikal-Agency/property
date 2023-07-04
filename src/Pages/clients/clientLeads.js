@@ -17,6 +17,7 @@ import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
+import {BiImport} from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { langs } from "../../langCodes";
@@ -683,6 +684,12 @@ const ClientLeads = ({
             {cellValues.row.leadSource.toLowerCase() === "campaign " && (
               <div className=" w-fit rounded-full flex items-center justify-center">
                 Campaign
+              </div>
+            )}
+                                {cellValues.row.leadSource?.toLowerCase() ===
+              "bulk import" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <BiImport size={22} color={"#da1f26"} />
               </div>
             )}
             {cellValues.row.leadSource.toLowerCase() ===

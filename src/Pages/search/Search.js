@@ -9,6 +9,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import "../../styles/index.css";
+import{BiImport} from "react-icons/bi";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -493,6 +494,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               "campaign snapchat" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
                 <FaSnapchat size={22} color={"#f6d80a"} />
+              </div>
+            )}
+                                {cellValues.row.leadSource?.toLowerCase() ===
+              "bulk import" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <BiImport size={22} color={"#da1f26"} />
               </div>
             )}
             {cellValues?.row?.leadSource?.toLowerCase() ===

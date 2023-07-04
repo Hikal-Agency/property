@@ -25,7 +25,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
 import Filters from "./Filters";
-import { BiSearch } from "react-icons/bi";
+import { BiSearch, BiImport } from "react-icons/bi";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { FaSnapchat } from "react-icons/fa";
@@ -653,6 +653,12 @@ const BookedDeals = ({
               "campaign facebook" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <FaFacebook size={22} color={"#0e82e1"} />
+              </div>
+            )}
+                                {cellValues.row.leadSource?.toLowerCase() ===
+              "bulk import" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <BiImport size={22} color={"#da1f26"} />
               </div>
             )}
             {cellValues.row.leadSource?.toLowerCase() === "campaign tiktok" && (

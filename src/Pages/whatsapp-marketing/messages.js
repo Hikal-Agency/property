@@ -14,6 +14,7 @@ import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { MdCampaign, MdSend } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
+import {BiImport} from "react-icons/bi";
 import {MdSms} from "react-icons/md";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -172,6 +173,12 @@ const AllLeads = () => {
               "campaign snapchat" && (
               <div className="bg-white w-fit rounded-full flex items-center justify-center">
                 <FaSnapchat size={22} color={"#f6d80a"} />
+              </div>
+            )}
+                                {cellValues.row.leadSource?.toLowerCase() ===
+              "bulk import" && (
+              <div className="bg-white w-max rounded-full flex items-center justify-center">
+                <BiImport size={22} color={"#da1f26"} />
               </div>
             )}
             {cellValues?.row?.leadSource?.toLowerCase() ===
