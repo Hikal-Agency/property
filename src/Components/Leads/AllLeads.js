@@ -881,7 +881,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerAlign: "center",
 
       sortable: false,
-      minWidth: 50,
       filterable: false,
       renderCell: (params) => {
         if (lead_origin === "transfferedleads") {
@@ -890,10 +889,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <p>{moment(params?.row.transferredDate).format("YY-MM-DD")}</p>
               <p>{moment(params?.row.transferredDate).format("HH:mm:ss")}</p>
             </div>
-          </>
         );
-      },
-    },
+      }
+    }
+  },
     {
       field: "language",
       headerName: "Lang",
