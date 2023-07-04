@@ -34,7 +34,7 @@ import { FaArchive } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
 
-import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
+import { BsPersonCircle, BsSnow2, BsTrash, BsAlarm} from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
@@ -215,17 +215,34 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     }
   };
 
-  const ManagerColumns = [
+ const ManagerColumns = [
     {
-      field: "leadName",
-      headerName: "Name",
-      flex: 1,
-      minWidth: 100,
+      field: "id",
+      headerName: "#",
+      minWidth: 40,
       headerAlign: "center",
+      flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="flex flex-wrap items-center">
-            <span>{cellValues.row.leadName}</span>
+          <small>
+            <strong>{cellValues?.formattedValue}</strong>
+          </small>
+        );
+      },
+    },
+
+    {
+      field: "leadName",
+      headerAlign: "center",
+      headerName: "Lead name",
+      minWidth: 120,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
           </div>
         );
       },
@@ -240,21 +257,28 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "project",
       headerName: "Project",
-      minWidth: 110,
-      flex: 1,
+      minWidth: 85,
       headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="capitalize">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
     },
     {
-      field: "leadType",
       headerAlign: "center",
+      field: "leadType",
       headerName: "Property",
-      minWidth: 110,
+      minWidth: 85,
       flex: 1,
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
-            <p>{cellValues.row.leadType}</p>
             <p>{cellValues.row.enquiryType}</p>
+            <p>{cellValues.row.leadType}</p>
           </div>
         );
       },
@@ -262,7 +286,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "assignedToSales",
       headerName: "Agent",
-      minWidth: 110,
+      minWidth: 85,
       headerAlign: "center",
       flex: 1,
       hideable: false,
@@ -272,7 +296,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "feedback",
       headerAlign: "center",
       headerName: "Feedback",
-      minWidth: 110,
+      minWidth: 85,
       flex: 1,
 
       hideable: false,
@@ -281,11 +305,57 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "priority",
       headerName: "Priority",
-      minWidth: 110,
+      minWidth: 85,
       headerAlign: "center",
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
+    },
+    {
+      field: "otp",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
+      minWidth: 90,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>{cellValues.row.transferredFromName || "No Name"}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {cellValues.formattedValue === "Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
+                    OTP VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue === "Not Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                    NOT VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                      {cellValues.formattedValue}
+                    </span>
+                  </div>
+                )}
+            </div>
+          );
+        }
+      },
     },
     {
       field: "language",
@@ -295,32 +365,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       flex: 1,
     },
 
-    {
-      field: "creationDate",
-      headerName: "Date",
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      minWidth: 45,
-      filterable: false,
-      renderCell: (params) => {
-        if (lead_origin === "transfferedleads") {
-          return (
-            <div className="flex flex-col">
-              <p>{moment(params?.row.transferredDate).format("YY-MM-DD")}</p>
-              <p>{moment(params?.row.transferredDate).format("HH:mm:ss")}</p>
-            </div>
-          );
-        } else {
-          return (
-            <div className="flex flex-col">
-              <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-              <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-            </div>
-          );
-        }
-      },
-    },
     {
       field: "edit",
       headerName: "Edit",
@@ -345,7 +389,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               onClick={() => HandleReminderBtn(cellValues)}
             >
               <IconButton sx={{ padding: 0 }}>
-                <FaBell size={19} />
+                <BsAlarm size={19} />
               </IconButton>
             </p>
             {currentMode === "dark" ? (
@@ -405,7 +449,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <AiOutlineHistory size={20} />
             </p> */}
-
             {cellValues.row.leadId !== null && (
               <Link
                 to={`/timeline/${cellValues.row.leadId}`}
@@ -684,181 +727,59 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
   ];
 
-  const columns = [
-    {
-      field: "leadSource",
-      headerName: "Src",
-      flex: 1,
-      minWidth: 35,
+    const columns = [
+      {
+      field: "id",
+      headerName: "#",
+      minWidth: 40,
       headerAlign: "center",
+      flex: 1,
       renderCell: (cellValues) => {
         return (
-          <>
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "campaign snapchat" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaSnapchat size={22} color={"#f6d80a"} />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "bulk import" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <BiImport size={22} color={"#da1f26"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "campaign facebook" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaFacebook size={22} color={"#0e82e1"} />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() === "campaign tiktok" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <img
-                  src={"/assets/tiktok-app.svg"}
-                  alt=""
-                  height={22}
-                  width={22}
-                  className="object-cover"
-                />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "campaign googleads" && (
-              <div className="bg-white w-max rounded-full text-white flex items-center justify-center">
-                <FcGoogle size={22} />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() === "campaign" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <MdCampaign size={22} color={"#000000"} />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() === "cold" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <BsSnow2 size={22} color={"#0ec7ff"} />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() === "personal" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <BsPersonCircle size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() === "whatsapp" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaWhatsapp size={22} color={"#29EC62"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() === "message" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <RiMessage2Line size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() === "comment" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaComment size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() === "website" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaGlobe size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {(cellValues.row.leadSource?.toLowerCase() === "property finder" ||
-              cellValues.row.leadSource?.toLowerCase() ===
-                "propety finder") && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <GiMagnifyingGlass size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() === "self" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaUser size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "campaign youtube" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaYoutube size={22} color={"#FF0000"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "campaign twitter" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaTwitter size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {/* {cellValues.row.leadSource?.toLowerCase() ===
-              "warm (Hubspot: shery@hikalagency.ae)" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaFire size={22} color={"#14539a"} />
-              </div>
-            )} */}
-
-            {(() => {
-              const leadSource = cellValues.row.leadSource?.toLowerCase();
-
-              if (leadSource && leadSource.startsWith("warm")) {
-                const firstWord = leadSource.split(" ")[0];
-
-                return (
-                  <div className="bg-white w-max rounded-full flex items-center justify-center">
-                    <FaArchive size={22} color={"#14539a"} />
-                  </div>
-                );
-              }
-
-              return null; // Return null if the condition is not met
-            })()}
-          </>
+          <small>
+            <strong>{cellValues?.formattedValue}</strong>
+          </small>
         );
       },
     },
+
     {
       field: "leadName",
-      headerName: "Name",
-      flex: 1,
       headerAlign: "center",
+      headerName: "Lead name",
       minWidth: 85,
+      flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="flex flex-wrap items-center">
-            <span>{cellValues.row.leadName}</span>
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
           </div>
         );
       },
     },
     {
-      headerAlign: "center",
       field: "leadContact",
       headerName: "Contact",
       minWidth: 115,
+      headerAlign: "center",
       flex: 1,
     },
     {
-      headerAlign: "center",
       field: "project",
       headerName: "Project",
+      headerAlign: "center",
       minWidth: 40,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="capitalize">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
     },
-    // {
-    //   field: "enquiryType",
-    //   headerName: "Enquiry",
-    //   minWidth: 75,
-    //   flex: 1,
-
-    // },
     {
       headerAlign: "center",
       field: "leadType",
@@ -902,27 +823,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
-    {
-      field: "priority",
-      headerAlign: "center",
-      headerName: "Priority",
-      minWidth: 85,
-      flex: 1,
-      hideable: false,
-      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
-    },
-    {
-      field: "language",
-      headerAlign: "center",
-      headerName: "Lang",
-      minWidth: 25,
-      flex: 1,
-    },
+
     {
       field: "otp",
       headerName:
         lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
-      minWidth: 72,
+      minWidth: 90,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -964,33 +870,91 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }
       },
     },
-    {
-      field: "creationDate",
-      headerName: "Date",
+        {
+      field: "leadSource",
+      headerName: "Src",
       flex: 1,
+      minWidth: 35,
       headerAlign: "center",
-
-      sortable: false,
-      minWidth: 50,
-      filterable: false,
-      renderCell: (params) => {
-        if (lead_origin === "transfferedleads") {
-          return (
-            <div className="flex flex-col">
-              <p>{moment(params?.row.transferredDate).format("YY-MM-DD")}</p>
-              <p>{moment(params?.row.transferredDate).format("HH:mm:ss")}</p>
+      renderCell: (cellValues) => {
+        console.log("Start::", cellValues.row.leadSource);
+        const sourceIcons = {
+          "campaign snapchat": () => <FaSnapchat size={22} color={"#f6d80a"} />,
+          "bulk import": () => <FaSnapchat size={22} color={"#f6d80a"} />,
+          "campaign facebook": () => <FaFacebook size={22} color={"#0e82e1"} />,
+          "campaign tiktok": () => (
+            <img
+              src={"/assets/tiktok-app.svg"}
+              alt=""
+              style={{margin: "0 auto"}}
+              height={18}
+              width={18}
+              className="object-cover"
+            />
+          ),
+          "campaign googleads": () => <FcGoogle size={22} />,
+          campaign: () => <FcGoogle size={22} />,
+          cold: () => <BsSnow2 size={22} color={"#0ec7ff"} />,
+          personal: () => <BsPersonCircle size={22} color={"#14539a"} />,
+          whatsapp: () => <FaWhatsapp size={22} color={"#29EC62"} />,
+          message: () => <RiMessage2Line size={22} color={"#14539a"} />,
+          comment: () => <FaComment size={22} color={"#14539a"} />,
+          website: () => <FaGlobe size={22} color={"#14539a"} />,
+          "property finder": () => (
+            <GiMagnifyingGlass size={22} color={"#14539a"} />
+          ),
+          "propety finder": () => (
+            <GiMagnifyingGlass size={22} color={"#14539a"} />
+          ),
+          self: () => <FaUser size={22} color={"#14539a"} />,
+          "campaign youtube": () => <FaYoutube size={22} color={"#FF0000"} />,
+          "campaign twitter": () => <FaTwitter size={22} color={"#14539a"} />,
+        };
+        return (
+          <>
+            <div className="flex items-center justify-center">
+              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
+                <FaArchive
+                  style={{
+                    background: "white",
+                    padding: "5px",
+                    borderRadius: "50%",
+                    width: "70%",
+                    height: "100%",
+                    margin: "0 auto",
+                  }}
+                  size={22}
+                  color={"#14539a"}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    "& svg": {
+                      background: "white",
+                      padding: "5px",
+                      borderRadius: "50%",
+                      width: "70%",
+                      height: "100%",
+                      margin: "0 auto",
+                    },
+                  }}
+                >
+                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()] ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]() : "-"}
+                </Box>
+              )}
             </div>
-          );
-        } else {
-          return (
-            <div className="flex flex-col">
-              <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-              <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-            </div>
-          );
-        }
+          </>
+        );
       },
     },
+    {
+      field: "language",
+      headerName: "Lang",
+      headerAlign: "center",
+      minWidth: 25,
+      flex: 1,
+    },
+
     {
       field: "edit",
       headerName: "Edit",
@@ -1017,12 +981,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               onClick={() => HandleReminderBtn(cellValues)}
             >
               <IconButton sx={{ padding: 0 }}>
-                <FaBell size={19} />
+                <BsAlarm size={19} />
               </IconButton>
             </p>
             <p
-              onMouseEnter={() => setHovered("edit")}
-              onMouseLeave={() => setHovered("")}
               style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
