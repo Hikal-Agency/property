@@ -86,10 +86,17 @@ const UpdateMeeting = ({
             theme: "light",
           });
         } else {
-          const { meetingStatus, meetingDate, mLat, mLong, meetingTime } =
-            response.data.meeting;
+          const {
+            meetingStatus,
+            meetingDate,
+            mLat,
+            mLong,
+            meetingTime,
+            meetingNote,
+          } = response.data.meeting;
           console.log(response.data.meeting);
           setMeetingStatus(meetingStatus);
+          setMeetingNotes(meetingNote);
           setMeetingDateValue(dayjs(meetingDate));
           setMeetingTimeValue(dayjs("2023-01-01 " + meetingTime));
           if (!mLat || !mLong) {
@@ -181,7 +188,7 @@ const UpdateMeeting = ({
       meetingData.append("mLat", String(meetingLocation.lat));
       meetingData.append("mLong", String(meetingLocation.lng));
       meetingData.append("meetingLocation", meetingLocation.addressText);
-      // meetingData.append("notes", meetingNotes);
+      meetingData.append("meetingNote", meetingNotes);
 
       const response = await axios.post(
         `${BACKEND_URL}/updateMeeting`,
@@ -432,22 +439,25 @@ const UpdateMeeting = ({
                         <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
                       </TextField>
                     </FormControl>
-                    {/* <FormControl>
-                      <TextField
-                        id="text"
-                        type={"text"}
-                        label="Meeting Notes "
-                        className="w-full mb-3"
-                        style={{ marginBottom: "20px" }}
-                        variant="outlined"
-                        name="text"
-                        size="medium"
-                        onChange={(e) => {
-                          setMeetingNotes(e.target.value);
-                        }}
-                        required
-                      />
-                    </FormControl> */}
+                    <Box sx={darkModeColors} className="w-full">
+                      <FormControl fullWidth>
+                        <TextField
+                          id="text"
+                          type={"text"}
+                          label="Meeting Notes "
+                          className="w-full mb-3"
+                          style={{ marginBottom: "20px" }}
+                          variant="outlined"
+                          name="text"
+                          size="medium"
+                          value={meetingNotes}
+                          onChange={(e) => {
+                            setMeetingNotes(e.target.value);
+                          }}
+                          required
+                        />
+                      </FormControl>
+                    </Box>
                     {meetingLocation.lat && meetingLocation.lng && (
                       <LocationPicker
                         meetingLocation={meetingLocation}

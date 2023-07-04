@@ -333,6 +333,21 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleReminderBtn(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <FaBell size={19} />
+              </IconButton>
+            </p>
             {currentMode === "dark" ? (
               <p
                 onClick={() => HandleEditFunc(cellValues)}
@@ -390,21 +405,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               <AiOutlineHistory size={20} />
             </p> */}
-            <p
-              onMouseEnter={() => setHovered("edit")}
-              onMouseLeave={() => setHovered("")}
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "bg-transparent text-white rounded-md shadow-none"
-                  : "bg-transparent text-black rounded-md shadow-none"
-              }`}
-              onClick={() => HandleReminderBtn(cellValues)}
-            >
-              <IconButton sx={{ padding: 0 }}>
-                <FaBell size={19} />
-              </IconButton>
-            </p>
+
             {cellValues.row.leadId !== null && (
               <Link
                 to={`/timeline/${cellValues.row.leadId}`}
@@ -636,13 +637,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ? "bg-transparent text-white rounded-md shadow-none"
                   : "bg-transparent text-black rounded-md shadow-none"
               }`}
-              onClick={() => HandleEditFunc(cellValues)}
+              onClick={() => HandleReminderBtn(cellValues)}
             >
               <IconButton sx={{ padding: 0 }}>
-                <AiOutlineEdit size={20} />
+                <FaBell size={19} />
               </IconButton>
             </p>
-
             <p
               onMouseEnter={() => setHovered("edit")}
               onMouseLeave={() => setHovered("")}
@@ -652,10 +652,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ? "bg-transparent text-white rounded-md shadow-none"
                   : "bg-transparent text-black rounded-md shadow-none"
               }`}
-              onClick={() => HandleReminderBtn(cellValues)}
+              onClick={() => HandleEditFunc(cellValues)}
             >
               <IconButton sx={{ padding: 0 }}>
-                <FaBell size={19} />
+                <AiOutlineEdit size={20} />
               </IconButton>
             </p>
 

@@ -56,6 +56,7 @@ const AddReminder = ({
   const [ReminderNotes, setReminderNotes] = useState("");
   const [reminderDate, setReminderDate] = useState(null);
   const [reminderTime, setReminderTime] = useState(null);
+  const [reminderTimeValue, setTimeValue] = useState({});
 
   const [error, setError] = useState(false);
   const style = {
@@ -69,20 +70,25 @@ const AddReminder = ({
     const token = localStorage.getItem("auth-token");
     const creationDate = new Date();
     const AddReminderData = new FormData();
-    AddReminderData.append("id", User?.id);
-    AddReminderData.append("notes", ReminderNotes);
+    AddReminderData.append("reminder_note", ReminderNotes);
+    AddReminderData.append("reminder_time", reminderTime);
+    AddReminderData.append("reminder_date", reminderDate);
+    AddReminderData.append("leadName", LeadData?.leadName);
+    AddReminderData.append("lead_id", LeadData?.leadId);
+    AddReminderData.append("user_id", User?.id);
+    AddReminderData.append("reminder_status", "Pending");
 
     await axios
-      .post(`${BACKEND_URL}/leads/${LeadData.leadId}`, AddReminderData, {
+      .post(`${BACKEND_URL}/reminders`, AddReminderData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       })
       .then((result) => {
-        console.log("lead updated successfull");
+        console.log("Reminder added successfull");
         console.log(result);
-        toast.success("Lead Updated Successfully", {
+        toast.success("Reminder Added Successfully", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -91,12 +97,11 @@ const AddReminder = ({
           progress: undefined,
           theme: "light",
         });
-        FetchLeads(token);
         setbtnloading(false);
         handleLeadModelClose();
       })
       .catch((err) => {
-        toast.error("Error in Updating the Lead", {
+        toast.error("Error in adding reminder", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -172,16 +177,16 @@ const AddReminder = ({
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     views={["year", "month", "day"]}
-                    //   onChange={(newValue) => {
-                    //     setMeetingDateValue(newValue);
-                    //     setMeetingDate(
-                    //       formatNum(newValue?.$d?.getUTCFullYear()) +
-                    //         "-" +
-                    //         formatNum(newValue?.$d?.getUTCMonth() + 1) +
-                    //         "-" +
-                    //         formatNum(newValue?.$d?.getUTCDate() + 1)
-                    //     );
-                    //   }}
+                    onChange={(newValue) => {
+                      // setMeetingDateValue(newValue);
+                      setReminderDate(
+                        formatNum(newValue?.$d?.getUTCFullYear()) +
+                          "-" +
+                          formatNum(newValue?.$d?.getUTCMonth() + 1) +
+                          "-" +
+                          formatNum(newValue?.$d?.getUTCDate() + 1)
+                      );
+                    }}
                     format="yyyy-MM-dd"
                     InputProps={{ required: true }}
                     value={reminderDate}
@@ -216,16 +221,15 @@ const AddReminder = ({
                   <TimePicker
                     ampm={false}
                     format="HH:mm"
-                    value={reminderDate}
-                    //   onChange={(newValue) => {
-                    //     setMeetingTime(
-                    //       formatNum(newValue?.$d?.getHours()) +
-                    //         ":" +
-                    //         formatNum(newValue?.$d?.getMinutes())
-                    //     );
-                    //     setMeetingTimeValue(newValue);
-                    //   }}
-
+                    value={reminderTimeValue}
+                    onChange={(newValue) => {
+                      setReminderTime(
+                        formatNum(newValue?.$d?.getHours()) +
+                          ":" +
+                          formatNum(newValue?.$d?.getMinutes())
+                      );
+                      setTimeValue(newValue);
+                    }}
                     InputProps={{ required: true }}
                     sx={{ marginTop: "3px !important" }}
                     renderInput={(params) => (
