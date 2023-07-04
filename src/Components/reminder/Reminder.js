@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { ImClock } from "react-icons/im";
 import { useStateContext } from "../../context/ContextProvider";
-import { IconButton, Tooltip } from "@mui/material";
+import { CircularProgress, IconButton, Tooltip } from "@mui/material";
 import {
   RiCheckLine as CheckIcon,
   RiCloseLine as CloseIcon,
@@ -15,6 +15,7 @@ import { BsBuilding } from "react-icons/bs";
 const Reminder = () => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [isModalOpened, setIsModalOpened] = useState(false);
+  const [btnLoading, setbtnLoading] = useState(false);
   const [reminder, setReminder] = useState([]);
   const token = localStorage.getItem("auth-token");
 
@@ -46,6 +47,7 @@ const Reminder = () => {
   ];
 
   const UpdateReminder = async (value, id) => {
+    setbtnLoading(true);
     console.log("value :", value);
     let reminderStatus;
 
@@ -70,6 +72,8 @@ const Reminder = () => {
         }
       );
 
+      setbtnLoading(false);
+
       toast.success("Successfully update reminder.", {
         position: "top-right",
         autoClose: 3000,
@@ -83,6 +87,7 @@ const Reminder = () => {
 
       fetchRminders(token);
     } catch (error) {
+      setbtnLoading(false);
       console.log("Reminder error: ", error);
       toast.error("Unable to Update Reminders.", {
         position: "top-right",
@@ -191,9 +196,15 @@ const Reminder = () => {
                   <IconButton
                     style={{ backgroundColor: "#4CAF50", color: "white" }}
                     className="rounded-full"
-                    onClick={() => UpdateReminder(1, meeting?.id)}
+                    onClick={() => {
+                      UpdateReminder(1, meeting?.id);
+                    }}
                   >
-                    <CheckIcon />
+                    {btnLoading ? (
+                      <CircularProgress color="inherit" size={20} />
+                    ) : (
+                      <CheckIcon />
+                    )}
                   </IconButton>
                 </Tooltip>
 
@@ -201,9 +212,15 @@ const Reminder = () => {
                   <IconButton
                     style={{ backgroundColor: "#DC2626", color: "white" }}
                     className="rounded-full"
-                    onClick={() => UpdateReminder(0, meeting?.id)}
+                    onClick={() => {
+                      UpdateReminder(0, meeting?.id);
+                    }}
                   >
-                    <CloseIcon />
+                    {btnLoading ? (
+                      <CircularProgress color="inherit" size={20} />
+                    ) : (
+                      <CloseIcon />
+                    )}
                   </IconButton>
                 </Tooltip>
               </div>
