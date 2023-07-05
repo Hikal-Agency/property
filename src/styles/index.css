@@ -153,12 +153,13 @@ aside.ps-sidebar-root {
 }
 
 .MuiDataGrid-cellCheckbox {
-  min-width: 22px !important;
-  width: 22px !important;
+  min-width: 25px !important;
+  width: 25px !important;
 }
 
 .MuiDataGrid-main .MuiDataGrid-cellCheckbox .MuiButtonBase-root {
   padding: 0 !important;
+  padding-right: 3px !important;
 }
 
 .MuiDataGrid-virtualScroller {

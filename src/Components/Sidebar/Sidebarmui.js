@@ -411,6 +411,11 @@ const Sidebarmui = () => {
           icon: <AiOutlineQuestionCircle />,
           link: "/qaform",
         },
+        {
+          name: "Tickets",
+          icon: <HiTicket />,
+          link: "/support",
+        },
       ],
     },
     {
@@ -814,6 +819,11 @@ const Sidebarmui = () => {
           name: "QA Form",
           icon: <AiOutlineQuestionCircle />,
           link: "/qaform",
+        },
+        {
+          name: "Tickets",
+          icon: <HiTicket />,
+          link: "/support",
         },
       ],
     },
@@ -1802,8 +1812,6 @@ const Sidebarmui = () => {
       ],
     },
   ];
-
-  console.log(selected);
 
   const [agentData, setAgentData] = useState(Agentlinks);
   const [linksData, setLinksData] = useState(links);
