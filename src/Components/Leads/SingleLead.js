@@ -321,7 +321,9 @@ const SingleLead = ({
               <div className="flex my-0 w-full">
                 <Link
                   sx={{ my: 0, w: "100%" }}
-                  to={`/lead/${LeadData?.leadId || LeadData?.lid}`}
+                  to={`/lead/${
+                    LeadData?.leadId || LeadData?.lid || LeadData?.id
+                  }`}
                   target="_blank"
                 >
                   <Button
