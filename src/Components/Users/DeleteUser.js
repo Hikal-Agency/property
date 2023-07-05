@@ -199,12 +199,13 @@ const DeleteUser = ({
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              {`${
-                UserStatus === 1 ? "De-activating" : "Re-activating"
-              } ${UserName}`}
+              {`Do you really want to ${
+                UserStatus === 1 ? "De-activate" : "Re-activate"
+              } ${UserName}?`}
             </h1>
+            <small className="text-center w-[80%] mx-auto text-gray-500">All the leads assigned to {UserName} will be unassigned automatically and can be found in Reshuffled leads.</small>
 
-            <div className="bg-red-600 text-center rounded p-3 my-2 w-full text-white">
+            <div className="bg-red-600 text-center rounded p-3 mb-2 mt-4 w-full text-white">
               <strong style={{ fontSize: 20 }}>
                 {randNumbers?.firstNumber} + {randNumbers?.secondNumber} = ?
               </strong>
