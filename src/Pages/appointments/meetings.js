@@ -29,12 +29,14 @@ const Meetings = () => {
   const { currentMode, setopenBackDrop, BACKEND_URL, User, darkModeColors } =
     useStateContext();
   const [locationModalOpen, setLocationModalOpen] = useState(false);
+  const [meetingNote, setMeetingNote] = useState(null);
   const [meetingLocation, setMeetingLocation] = useState(null);
   const [openEditModal, setOpenEditModal] = useState({
     open: false,
     id: null,
   });
 
+  console.log("meeting notessss: ", meetingNote);
   const [value, setValue] = useState(0);
   // const handleChange = (event, newValue) => {
   //   setValue(newValue);
@@ -64,6 +66,7 @@ const Meetings = () => {
 
   const handleRowClick = (params, event) => {
     if (!event.target.closest(".deleteLeadBtn button")) {
+      setMeetingNote(params.row.meetingNote);
       setLocationModalOpen(true);
       const { mLat, mLong } = params.row;
       if (!mLat || !mLong) {
@@ -261,6 +264,7 @@ const Meetings = () => {
           mLat: row?.mLat,
           mLong: row?.mLong,
           meetingLocation: row?.meetingLocation || "-",
+          meetingNote: row?.meetingNote || "No Notes",
         }));
 
         setpageState((old) => ({
@@ -561,6 +565,7 @@ const Meetings = () => {
           <ShowLocation
             isModalOpened={locationModalOpen}
             meetingLocation={meetingLocation}
+            meetingNote={meetingNote}
             handleModalClose={() => {
               setLocationModalOpen(false);
               setMeetingLocation(null);
