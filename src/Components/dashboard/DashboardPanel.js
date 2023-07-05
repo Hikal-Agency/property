@@ -37,6 +37,7 @@ const DashboardPanel = ({ setloading }) => {
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
   const [reminder, setReminder] = useState([]);
+  const [visible, setVisible] = useState(true);
 
   const fetchData = async () => {
     try {
@@ -597,25 +598,32 @@ const DashboardPanel = ({ setloading }) => {
 
       {/* 5TH ROW [REMINDER] */}
 
-      <div className="grid grid-cols-1 pb-3">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ margin: "-70px" }}
-          className={`${
-            currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
-          } col-span-1 h-fit rounded-md p-5  hover:shadow-sm`}
-        >
-          <h4
+      {visible === true && (
+        <div className="grid grid-cols-1 pb-3">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ margin: "-70px" }}
+            className={`${
+              currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
+            } col-span-1 h-fit rounded-md p-5  hover:shadow-sm`}
+          >
+            {/* <h4
             className="font-semibold pb-5"
             style={{ textTransform: "capitalize" }}
           >
             Reminders
-          </h4>
+          </h4> */}
 
-          <Reminder reminder={reminder} setReminder={setReminder} />
-        </motion.div>
-      </div>
+            <Reminder
+              reminder={reminder}
+              setReminder={setReminder}
+              visible={visible}
+              setVisible={setVisible}
+            />
+          </motion.div>
+        </div>
+      )}
 
       {/* 5TH ROW END [REMINDER] */}
 

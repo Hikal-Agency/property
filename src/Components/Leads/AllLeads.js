@@ -35,7 +35,7 @@ import { FaArchive } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
 
-import { BsPersonCircle, BsSnow2, BsTrash, BsAlarm} from "react-icons/bs";
+import { BsPersonCircle, BsSnow2, BsTrash, BsAlarm } from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
@@ -216,7 +216,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     }
   };
 
- const ManagerColumns = [
+  const ManagerColumns = [
     {
       field: "id",
       headerName: "#",
@@ -469,7 +469,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   ];
 
   const AgentColumns = [
-        {
+    {
       field: "id",
       headerName: "#",
       minWidth: 40,
@@ -683,7 +683,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               onClick={() => HandleReminderBtn(cellValues)}
             >
               <IconButton sx={{ padding: 0 }}>
-                <FaBell size={19} />
+                <BsAlarm size={19} />
               </IconButton>
             </p>
             <p
@@ -727,8 +727,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
   ];
 
-    const columns = [
-      {
+  const columns = [
+    {
       field: "id",
       headerName: "#",
       minWidth: 40,
@@ -872,8 +872,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }
       },
     },
-      
-        {
+
+    {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
@@ -889,7 +889,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             <img
               src={"/assets/tiktok-app.svg"}
               alt=""
-              style={{margin: "0 auto"}}
+              style={{ margin: "0 auto" }}
               height={18}
               width={18}
               className="object-cover"
@@ -942,7 +942,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     },
                   }}
                 >
-                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()] ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]() : "-"}
+                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()]
+                    ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]()
+                    : "-"}
                 </Box>
               )}
             </div>
