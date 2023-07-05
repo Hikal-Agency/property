@@ -406,6 +406,16 @@ label[for="bulkImport"] .MuiButtonBase-root {
   margin: 0 !important;
 }
 
+.light-mode-sidebar .sub .ps-open .MuiBox-root {
+  background: #cac4c4;
+  margin: 0 !important;
+}
+
+.dark-mode-sidebar .sub .ps-open .MuiBox-root {
+  background: #818181;
+  margin: 0 !important;
+}
+
 .light-mode-sidebar .ps-open .ps-menu-button:not(.ps-active):hover {
   background: #c5c5c5;
 }

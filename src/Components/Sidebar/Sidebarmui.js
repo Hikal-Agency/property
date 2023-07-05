@@ -74,22 +74,39 @@ const Sidebarmui = () => {
   const [openedSubMenu, setOpenSubMenu] = useState({
     menuIndex: 0,
     linkIndex: 0,
+    sub: false
   });
 
-  const setOpenedSubMenu = ({ menuIndex, linkIndex }) => {
+  const setOpenedSubMenu = ({ menuIndex, linkIndex, sub = false }) => {
+    if(sub) {
+      if(openedSubMenu?.sub) {
+        setOpenSubMenu({
+          menuIndex, linkIndex
+        });
+      } else {
+        setOpenSubMenu({
+          menuIndex, linkIndex, sub: true
+        });
+      }
+      setOpenSubMenu({ menuIndex, linkIndex });
+    } else
     if (
       openedSubMenu.menuIndex === menuIndex &&
       openedSubMenu.linkIndex === linkIndex
     ) {
       setOpenSubMenu(0);
     } else {
-      setOpenSubMenu({ menuIndex, linkIndex });
+      setOpenSubMenu({ menuIndex, linkIndex, sub: false });
     }
   };
 
-  const handleExpand = (e, obj, link) => {
+  const handleExpand = (e, obj, isMenuDeep = false) => {
+    if(isMenuDeep === true) {
+      setOpenedSubMenu(obj);
+    } else {
     if (!e.target.closest(".ps-submenu-content")) {
       setOpenedSubMenu(obj);
+    }
     }
   };
 
@@ -367,7 +384,7 @@ const Sidebarmui = () => {
         },
       ],
     },
-        {
+    {
       title: "Deals",
       links: [
         {
@@ -1075,8 +1092,20 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "Fresh leads",
-              count: sidebarData?.UNASSIGNED?.fresh,
-              link: "/unassigned/fresh",
+              icon: <SiHotjar />,
+              // count: sidebarData?.UNASSIGNED?.fresh,
+              submenu: [
+                {
+                  name: "All",
+                  count: 1,
+                  link: "/unassigned/all",
+                },
+                {
+                  name: "New",
+                  count: 2,
+                  link: "/unassigned/new",
+                },
+              ],
             },
             {
               name: "Cold leads",
@@ -1960,8 +1989,7 @@ const Sidebarmui = () => {
       if (token) {
         FetchProfile(token);
       } else {
-        if(document.location.pathname !== "/fresh-logs") {
-
+        if (document.location.pathname !== "/fresh-logs") {
           navigate("/", {
             state: {
               error: "Please login to proceed.",
@@ -2002,14 +2030,14 @@ const Sidebarmui = () => {
         setUser(JSON.parse(user));
         setIsUserSubscribed(checkUser(JSON.parse(user)));
       } else {
-        if(document.location.pathname !== "/fresh-logs") {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      }
+        if (document.location.pathname !== "/fresh-logs") {
+          navigate("/", {
+            state: {
+              error: "Something Went Wrong! Please Try Again",
+              continueURL: location.pathname,
+            },
+          });
+        }
       }
     }
     // eslint-disable-next-line
@@ -2318,6 +2346,170 @@ const Sidebarmui = () => {
                                   }
                                 >
                                   {link.submenu.map((menu, index) => {
+                                    if (menu?.submenu) {
+                                      return (
+                                        <Box
+                                               onClick={(e) => {
+                                              handleExpand(
+                                                e,
+                                                {
+                                                  menuIndex: menuIndex + 1,
+                                                  linkIndex: linkIndex,
+                                                  sub: true
+                                                },
+                                                true
+                                              )
+                                               }
+                                            }
+                                          sx={{
+                                            // FOR DARK MODE MENU SETTINGS
+                                            "& .css-1mfnem1": {
+                                              borderRadius: "5px",
+                                            },
+                                            "& .css-1mfnem1:hover": {
+                                              backgroundColor: "#DA1F26",
+                                            },
+                                            // submenu containerr color
+                                            "& .css-z5rm24": {
+                                              backgroundColor:
+                                                currentMode === "dark" &&
+                                                "#3b3d44",
+                                              borderRadius: "5px",
+                                            },
+                                            // Submenu count color
+                                            "& .css-1rnkhs0": {
+                                              color:
+                                                currentMode === "dark" &&
+                                                "white",
+                                            },
+                                            // LIGHT MODE SETTINGS
+                                            "& .css-1ohfb25:hover": {
+                                              backgroundColor: "#DA1F26",
+                                              color: "white",
+                                              borderRadius: "5px",
+                                            },
+                                            "& .css-wx7wi4": {
+                                              width: "18px",
+                                              minWidth: "18px",
+                                            },
+                                          }}
+                                          className="my-1 sub"
+                                        >
+                                          <SubMenu
+                                     
+                                            label={menu.name}
+                                            icon={menu.icon}
+                                            open={
+                                              openedSubMenu.menuIndex ===
+                                               menuIndex + 1 &&
+                                              openedSubMenu.linkIndex ===
+                                                linkIndex && openedSubMenu?.sub
+                                            }
+                                          >
+                                            {menu?.submenu.map((m, index) => {
+                                              return (
+                                                <Link
+                                                  key={index}
+                                                  to={`${m.link}`}
+                                                >
+                                                  <Box
+                                                    sx={{
+                                                      // STYLING FOR LIGHT MODE
+                                                      "& .css-1mfnem1": {
+                                                        borderRadius: "5px",
+                                                      },
+                                                      "& .css-1mfnem1:hover": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+                                                      "& .css-1ogoo8i": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+
+                                                      // STYLING FOR DARK MODE
+                                                      "& .css-yktbuo": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+                                                      "& .css-1f8bwsm": {
+                                                        minWidth:
+                                                          "10px !important",
+                                                      },
+                                                      "& .css-yktbuo:hover": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+                                                      "& .css-1v6ithu": {
+                                                        color: "white",
+                                                      },
+                                                      "& .leads_counter": {
+                                                        color: m?.countColor
+                                                          ? m?.countColor
+                                                          : currentMode ===
+                                                            "dark"
+                                                          ? "white"
+                                                          : "black",
+                                                      },
+                                                      "& .css-cveggr-MuiListItemIcon-root":
+                                                        {
+                                                          minWidth:
+                                                            "10px !important",
+                                                        },
+                                                    }}
+                                                    className="relative my-1"
+                                                  >
+                                                    <MenuItem
+                                                      active={
+                                                        m.link ===
+                                                        window.location.pathname.replaceAll(
+                                                          "%20",
+                                                          " "
+                                                        )
+                                                      }
+                                                      className="flex"
+                                                    >
+                                                      {m?.icon && (
+                                                        <ListItemIcon
+                                                          style={{
+                                                            minWidth:
+                                                              "23px !important",
+                                                          }}
+                                                        >
+                                                          {m?.icon}
+                                                        </ListItemIcon>
+                                                      )}{" "}
+                                                      <span className=" ">
+                                                        {" "}
+                                                        {m?.name || ""}
+                                                      </span>
+                                                    </MenuItem>
+                                                    {m?.count != null && (
+                                                      <span
+                                                        className="leads_counter block absolute right-5"
+                                                        // sx={{
+                                                        //   color: menu?.countColor,
+                                                        // }}
+                                                        style={{
+                                                          top: "50%",
+                                                          transform:
+                                                            "translateY(-50%)",
+                                                        }}
+                                                      >
+                                                        {m?.count !== null &&
+                                                        m?.count !== undefined
+                                                          ? m?.count
+                                                          : ""}
+                                                      </span>
+                                                    )}
+                                                  </Box>
+                                                </Link>
+                                              );
+                                            })}
+                                          </SubMenu>
+                                        </Box>
+                                      );
+                                    }
                                     return (
                                       <Link key={index} to={`${menu.link}`}>
                                         <Box
