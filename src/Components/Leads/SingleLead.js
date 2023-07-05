@@ -312,6 +312,7 @@ const SingleLead = ({
             <Link
               sx={{ my: 0, w: "100%" }}
               to={`/lead/${LeadData?.leadId || LeadData?.lid}`}
+              target="_blank"
             >
               <Button
                 fullWidth
