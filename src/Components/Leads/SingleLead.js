@@ -71,7 +71,7 @@ const SingleLead = ({
     // const datetimeString = now.format("YYYY/MM/DD hh:mm:ss A");
 
     const data = {
-      leadId: LeadData.leadId,
+      leadId: LeadData.leadId || LeadData.id,
       leadNote: AddNoteTxt,
       addedBy: User?.id,
       // creationDate: moment(new Date()).format("YYYY/MM/DD"),
