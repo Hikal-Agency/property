@@ -8,6 +8,7 @@ import ShowLocation from "./ShowLocation";
 const UpcomingMeeting = ({ upcoming_meetings }) => {
   const { currentMode } = useStateContext();
   const [isModalOpened, setIsModalOpened] = useState(false);
+  const [meetingNote, setMeetingNote] = useState(null);
   const [meetingLocation, setMeetingLocation] = useState({
     lat: 0,
     lng: 0,
@@ -20,7 +21,9 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
   }, []);
 
   const handleCardClick = (meeting) => {
+    console.log("Meeting loc data: ", meeting);
     setIsModalOpened(true);
+    setMeetingNote(meeting.meetingNote);
     setMeetingLocation({
       lat: Number(meeting.mLat),
       lng: Number(meeting.mLong),
@@ -54,9 +57,24 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   />
+                  {/* <p className="text-sm mr-3">
+                    {meeting?.project || "no project"}{" "}
+                    {meeting?.enquiryType ?? "no type"}{" "}
+                    {meeting?.leadType ?? "no type"}{" "}
+                    {meeting?.leadFor ?? "no name"}
+                  </p> */}
                   <p className="text-sm mr-3">
-                    {meeting?.project} {meeting?.enquiryType}{" "}
-                    {meeting?.leadType} {meeting?.leadFor}
+                    {(!meeting?.project || meeting?.project === "null") &&
+                    (!meeting?.enquiryType ||
+                      meeting?.enquiryType === "null") &&
+                    (!meeting?.leadType || meeting?.leadType === "null") &&
+                    (!meeting?.leadFor || meeting?.leadFor === "null")
+                      ? "No Data"
+                      : `${meeting?.project || "no project"} ${
+                          meeting?.enquiryType ?? "no type"
+                        } ${meeting?.leadType ?? "no type"} ${
+                          meeting?.leadFor ?? "no name"
+                        }`}
                   </p>
                 </div>
               </div>
@@ -99,6 +117,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
         <ShowLocation
           isModalOpened={isModalOpened}
           meetingLocation={meetingLocation}
+          meetingNote={meetingNote}
           handleModalClose={handleModalClose}
         />
       ) : (

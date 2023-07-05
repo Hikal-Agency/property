@@ -65,7 +65,8 @@ const ShowLocation = ({
                 variant="outlined"
                 name="text"
                 size="medium"
-                value={meetingNote}
+                value={meetingNote || "No notes"}
+                readOnly={true}
               />
             </FormControl>
           </Box>
