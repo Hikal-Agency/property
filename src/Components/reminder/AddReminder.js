@@ -25,9 +25,13 @@ import PhoneInput, {
 import classNames from "classnames";
 import dayjs from "dayjs";
 
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import MobileTimePicker from "@mui/lab/MobileTimePicker";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+
 import {
   DatePicker,
-  LocalizationProvider,
+  // LocalizationProvider,
   TimePicker,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -57,6 +61,7 @@ const AddReminder = ({
   const [reminderDate, setReminderDate] = useState(null);
   const [reminderTime, setReminderTime] = useState(null);
   const [reminderTimeValue, setTimeValue] = useState({});
+  const [time, setTime] = useState(new Date());
 
   const [error, setError] = useState(false);
   const style = {
@@ -176,7 +181,7 @@ const AddReminder = ({
                     onChange={(e) => setReminderNotes(e.target.value)}
                   />
                 </Box>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     views={["year", "month", "day"]}
                     onChange={(newValue) => {
@@ -222,12 +227,13 @@ const AddReminder = ({
                     )}
                     minDate={dayjs().startOf("day").toDate()}
                   />
-                </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                </LocalizationProvider> */}
+                {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
                     ampm={false}
                     format="HH:mm"
                     value={reminderTimeValue}
+                    orientation="landscape"
                     onChange={(newValue) => {
                       setReminderTime(
                         formatNum(newValue?.$d?.getHours()) +
@@ -267,6 +273,17 @@ const AddReminder = ({
                         readOnly={true}
                       />
                     )}
+                  />
+                </LocalizationProvider> */}
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <MobileTimePicker
+                    label="Landscape mode"
+                    value={time}
+                    onChange={(newValue) => {
+                      setTime(newValue);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                    orientation="landscape"
                   />
                 </LocalizationProvider>
               </div>
