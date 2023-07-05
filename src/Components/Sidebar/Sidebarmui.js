@@ -1256,7 +1256,7 @@ const Sidebarmui = () => {
       title: "WHATSAPP",
       links: [
         {
-          name: "Live Chat",
+          name: "Conversations",
           icon: <RiWhatsappFill />,
           link: "/whatsapp-marketing/chat",
         },
@@ -2056,7 +2056,7 @@ const Sidebarmui = () => {
           title: "WHATSAPP",
           links: [
             {
-              name: "Live Chat",
+              name: "Conversations",
               icon: <RiWhatsappFill />,
               link: "/whatsapp-marketing/chat",
             },
@@ -2084,7 +2084,7 @@ const Sidebarmui = () => {
           title: "WHATSAPP",
           links: [
             {
-              name: "Live Chat",
+              name: "Conversations",
               icon: <RiWhatsappFill />,
               link: "/whatsapp-marketing/chat",
             },

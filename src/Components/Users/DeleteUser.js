@@ -5,13 +5,14 @@ import {
   IconButton,
   CircularProgress,
   Button,
+  TextField,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 // import LeadNotes from "../LeadNotes/LeadNotes";
 import { ToastContainer, toast } from "react-toastify";
 import { IoMdClose } from "react-icons/io";
 import { IoIosAlert } from "react-icons/io";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../axoisConfig";
 
 const DeleteUser = ({
@@ -24,6 +25,11 @@ const DeleteUser = ({
 }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [deletebtnloading, setdeleteBtnLoading] = useState(false);
+  const [randNumbers, setRandNumbers] = useState({
+    firstNumber: null,
+    secondNumber: null,
+  });
+  const [answerVal, setAnswerVal] = useState("");
 
   console.log("deativate user model: ", UserData);
   console.log("userStatus: ", UserStatus);
@@ -150,7 +156,19 @@ const DeleteUser = ({
   //       });
   //     });
   // };
+  useEffect(() => {
+    setRandNumbers({
+      firstNumber: Math.ceil(Math.random() * 10),
+      secondNumber: Math.ceil(Math.random() * 10),
+    });
+  }, []);
 
+  let isCaptchaVerified = false;
+  if (randNumbers?.firstNumber && randNumbers?.secondNumber) {
+    isCaptchaVerified =
+      Number(answerVal) ===
+      Number(randNumbers?.firstNumber) + Number(randNumbers?.secondNumber);
+  }
   return (
     <>
       <ToastContainer />
@@ -181,10 +199,24 @@ const DeleteUser = ({
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              {`Do You Really Want to ${
-                UserStatus === 1 ? "deactivate" : "reactive"
+              {`Do you really want to ${
+                UserStatus === 1 ? "De-activate" : "Re-activate"
               } ${UserName}?`}
             </h1>
+            <small className="text-center w-[80%] mx-auto text-gray-500">All the leads assigned to {UserName} will be unassigned automatically and can be found in Reshuffled leads.</small>
+
+            <div className="bg-red-600 text-center rounded p-3 mb-2 mt-4 w-full text-white">
+              <strong style={{ fontSize: 20 }}>
+                {randNumbers?.firstNumber} + {randNumbers?.secondNumber} = ?
+              </strong>
+            </div>
+            <TextField
+              onInput={(e) => setAnswerVal(e.target.value)}
+              value={answerVal}
+              label="Type your answer here.."
+              type="number"
+              fullWidth
+            />
           </div>
 
           <div className="action buttons mt-5 flex items-center justify-center space-x-2">
@@ -192,6 +224,7 @@ const DeleteUser = ({
               className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
               ripple="true"
               size="lg"
+              disabled={!isCaptchaVerified}
               onClick={handleDeleteUser}
             >
               {deletebtnloading ? (

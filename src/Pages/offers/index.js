@@ -1,10 +1,7 @@
 import { Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
-import Footer from "../../Components/Footer/Footer";
-import AllOffers from "../../Components/offers/all_offers";
 import CreateOffer from "../../Components/offers/createoffer";
 import ManagerOffers from "../../Components/offers/manager_offers";
 import SalesPersonOffers from "../../Components/offers/salePerson_offers";
@@ -68,7 +65,6 @@ const Offers = () => {
                     className="w-full px-1 m-1"
                   >
                     <Tab label="CREATE NEW OFFER" />
-                    <Tab label="ALL" />
                     <Tab label="FOR MANAGERS" />
                     <Tab label="FOR AGENTS" />
                   </Tabs>
@@ -76,13 +72,6 @@ const Offers = () => {
                 <div className="mt-3 pb-3">
                   <TabPanel value={value} index={0}>
                     <CreateOffer
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                    />
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <AllOffers
                       isLoading={loading}
                       tabValue={tabValue}
                       setTabValue={setTabValue}

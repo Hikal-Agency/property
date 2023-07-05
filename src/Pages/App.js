@@ -67,6 +67,7 @@ import RegisterAttendance from "./attendanceModule/RegisterAttendance";
 import TodayCallLogs from "./leaderboard/TodayCallLogs";
 import AttendanceLogin from "./auth/attendanceLogin";
 import Search from "./search/Search";
+import Restricted from "./Restricted";
 
 const libraries = ["places"];
 
@@ -206,16 +207,19 @@ const routes = [
     path: "/clients",
     element: <Clients />,
     pageName: "Clients",
+    restrictedRoles: [2, 3, 7]
   },
   {
     path: "/clients/agencyUsers/:client_id",
     element: <AgencyUsers />,
     pageName: "Clients",
+    restrictedRoles: [2, 3, 7]
   },
   {
     path: "/clients/clientLeads/:client_id",
     element: <ClientLeads />,
     pageName: "Clients",
+    restrictedRoles: [2, 3, 7]
   },
   {
     path: "/leaderboard",
@@ -236,16 +240,19 @@ const routes = [
     path: "/location/livelocation",
     pageName: "Live Location",
     element: <Livelocation />,
+    restrictedRoles: [3, 7]
   },
   {
     path: "/location/userlocation",
     pageName: "User Location",
     element: <Userlocation />,
+    restrictedRoles: [3, 7]
   },
   {
     path: "/location/useralllocation/:user_id",
     pageName: "User All Location",
     element: <UserAllLocation />,
+    restrictedRoles: [3, 7]
   },
   {
     path: "/updateuser/:id",
@@ -256,6 +263,7 @@ const routes = [
     path: "/users",
     pageName: "Users",
     element: <Users />,
+    restrictedRoles: [7]
   },
 
   {
@@ -272,11 +280,14 @@ const routes = [
     path: "/newsletter/addnewsletter",
     pageName: "Newsletter",
     element: <AddNewsLetters />,
+      restrictedRoles: [3,2, 7]
   },
   {
     path: "/newsletter",
     pageName: "Newsletter",
     element: <Newsletter />,
+      restrictedRoles: [3,2, 7]
+
   },
   {
     path: "/qaform",
@@ -317,264 +328,31 @@ const routes = [
     path: "/campaigns",
     pageName: "Facebook Campaigns",
     element: <Campaigns />,
+      restrictedRoles: [3, 7]
   },
   {
     path: "/statistics",
     pageName: "Campaigns Statistics",
     element: <Statistics />,
+      restrictedRoles: [3, 7]
   },
   {
     path: "/attendance/officeSettings",
     pageName: "Office Settings",
     element: <OfficeSettings />,
+      restrictedRoles: [3, 7]
   },
   {
     path: "/attendance/employeesList",
     pageName: "Employees",
     element: <Employees />,
+      restrictedRoles: [3, 7]
   },
   {
     path: "/attendance/singleEmployee/:eid",
     pageName: "Employees",
     element: <SingleEmployee />,
-  },
-  {
-    path: "/settings",
-    pageName: "Settings",
-    element: <Settings />,
-  },
-  {
-    path: "/integrations",
-    pageName: "Settings",
-    element: <Integrations />,
-  },
-  {
-    path: "/search",
-    pageName: "Search",
-    element: <Search />,
-  },
-  {
-    path: "*",
-    element: <Error />,
-  },
-];
-
-const hosRoutes = [
-  {
-    path: "/",
-    element: <Home />,
-    pageName: "Home",
-  },
-  {
-    path: "/auth/signup",
-    pageName: "Sign Up",
-    element: <Signup />,
-  },
-
-  // {
-  //   path: "/auth/forgot-password",
-  //   pageName: "Sign Up",
-  //   element: <ForgotPassword />,
-  // },
-  {
-    path: "/users",
-    pageName: "Users",
-    element: <Users />,
-  },
-  {
-    path: "/change-password",
-    element: <ChangePassword />,
-    pageName: "Change Password",
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
-    pageName: "Dashboard",
-  },
-  {
-    path: "/addlead",
-    element: <AddLead />,
-    pageName: "Add Lead",
-  },
-  {
-    path: "/unassigned/:lead_type",
-    element: <AllUnassignedLeads />,
-    pageName: "Unassigned Leads",
-  },
-  {
-    path: "/archive/:lead_type",
-    element: <AllWarmLeads />,
-    pageName: "Warm Leads",
-  },
-  {
-    path: "/freshleads/:lead_type",
-    element: <AllHotLeads />,
-    pageName: "Hot Leads",
-  },
-  {
-    path: "/personalleads/:lead_type",
-    element: <PersonaLeads />,
-    pageName: "Personal Leads",
-  },
-  {
-    path: "/thirdpartyleads/:lead_type",
-    element: <ThirdPartyLeads />,
-    pageName: "Third-party Leads",
-  },
-  {
-    path: "/coldleads/:lead_type",
-    element: <ColdLeads />,
-    pageName: "Cold Leads",
-  },
-  {
-    path: "/reshuffleleads",
-    element: <TransferredLeads />,
-    pageName: "Transferred Leads",
-  },
-  {
-    path: "/closedeals",
-    pageName: "Close Deals",
-    element: <ClosedealsPage />,
-  },
-  {
-    path: "/timeline/:id",
-    element: <TimelinePage />,
-    pageName: "Timeline",
-  },
-  {
-    path: "/leadnotes",
-    element: <LeadNotesPage />,
-    pageName: "Lead Notes",
-  },
-  {
-    path: "/leadnotes/:id",
-    element: <SingleLeadNote />,
-    pageName: "Lead Notes",
-  },
-  {
-    path: "/lead/:lid",
-    element: <SingleLeadPage />,
-    page: "Lead",
-  },
-  {
-    path: "/meetings",
-    element: <Meetings />,
-    pageName: "Meetings",
-  },
-  {
-    path: "/appointments/create",
-    element: <CreateAppointment />,
-    pageName: "Create Appointment",
-  },
-  {
-    path: "/booked",
-    element: <Booked />,
-    pageName: "Booked",
-  },
-  {
-    path: "/contacts",
-    element: <Contacts />,
-    pageName: "Contacts",
-  },
-  {
-    path: "/leaderboard",
-    element: <Leaderboard />,
-    pageName: "Leaderboard",
-  },
-  {
-    path: "/profile",
-    element: <ProfilePage />,
-    pageName: "Profile",
-  },
-  {
-    path: "/whatsapp-marketing/:page",
-    element: <WhatsappMarketing />,
-    pageName: "Whatsapp Marketing",
-  },
-  {
-    path: "/location/livelocation",
-    pageName: "Live Location",
-    element: <Livelocation />,
-  },
-  {
-    path: "/location/userlocation",
-    pageName: "User Location",
-    element: <Userlocation />,
-  },
-  {
-    path: "/location/useralllocation/:user_id",
-    pageName: "User All Location",
-    element: <UserAllLocation />,
-  },
-  {
-    path: "/updateuser/:id",
-    pageName: "Users",
-    element: <UpdateUser />,
-  },
-  {
-    path: "/offers",
-    pageName: "Offers",
-    element: <Offers />,
-  },
-  {
-    path: "/reports",
-    pageName: "Reports",
-    element: <Reports />,
-  },
-  {
-    path: "/qaform",
-    pageName: "QAForm",
-    element: <QAForm />,
-  },
-  {
-    path: "/allQA",
-    pageName: "All QA",
-    element: <AllQA />,
-  },
-  {
-    path: "/support",
-    pageName: "Support",
-    element: <Tickets />,
-  },
-  {
-    path: "/singleTicket/:id",
-    pageName: "SingleTicket",
-    element: <SingleTicket />,
-  },
-  {
-    path: "/activity",
-    pageName: "Activity",
-    element: <ActivityLog />,
-  },
-  {
-    path: "/propertyPortfolio",
-    pageName: "Property Portfolio",
-    element: <PropertyPortfolio />,
-  },
-  {
-    path: "/propertyPortfolio/tour360/:proId",
-    pageName: "360 Tour",
-    element: <Tour360 />,
-  },
-  {
-    path: "/statistics",
-    pageName: "Campaigns Statistics",
-    element: <Statistics />,
-  },
-  {
-    path: "/attendance/officeSettings",
-    pageName: "Office Settings",
-    element: <OfficeSettings />,
-  },
-  {
-    path: "/attendance/employeesList",
-    pageName: "Employees",
-    element: <Employees />,
-  },
-  {
-    path: "/attendance/singleEmployee/:eid",
-    pageName: "Employees",
-    element: <SingleEmployee />,
+      restrictedRoles: [3, 7]
   },
   {
     path: "/settings",
@@ -600,7 +378,7 @@ const hosRoutes = [
 export const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-  const { setAllRoutes, socketRef, currentMode, User } = useStateContext();
+  const { setAllRoutes, currentMode, User } = useStateContext();
   const location = useLocation();
 
   useJsApiLoader({
@@ -656,25 +434,18 @@ function App() {
               </div>
             )}
             <Routes>
-              {User?.role === 2
-                ? hosRoutes.map((route, index) => {
-                    return (
-                      <Route
-                        key={index}
-                        path={route.path}
-                        element={route.element}
-                      />
-                    );
-                  })
-                : routes.map((route, index) => {
-                    return (
-                      <Route
-                        key={index}
-                        path={route.path}
-                        element={route.element}
-                      />
-                    );
-                  })}
+              {routes.map((route, index) => {
+                const isRestricted = route?.restrictedRoles?.includes(
+                  User?.role
+                );
+                return (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={isRestricted ? <Restricted /> : route.element}
+                  />
+                );
+              })}
             </Routes>
           </div>
         </div>
