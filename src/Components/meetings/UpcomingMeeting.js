@@ -57,9 +57,24 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   />
+                  {/* <p className="text-sm mr-3">
+                    {meeting?.project || "no project"}{" "}
+                    {meeting?.enquiryType ?? "no type"}{" "}
+                    {meeting?.leadType ?? "no type"}{" "}
+                    {meeting?.leadFor ?? "no name"}
+                  </p> */}
                   <p className="text-sm mr-3">
-                    {meeting?.project} {meeting?.enquiryType}{" "}
-                    {meeting?.leadType} {meeting?.leadFor}
+                    {(!meeting?.project || meeting?.project === "null") &&
+                    (!meeting?.enquiryType ||
+                      meeting?.enquiryType === "null") &&
+                    (!meeting?.leadType || meeting?.leadType === "null") &&
+                    (!meeting?.leadFor || meeting?.leadFor === "null")
+                      ? "No Data"
+                      : `${meeting?.project || "no project"} ${
+                          meeting?.enquiryType ?? "no type"
+                        } ${meeting?.leadType ?? "no type"} ${
+                          meeting?.leadFor ?? "no name"
+                        }`}
                   </p>
                 </div>
               </div>
