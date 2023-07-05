@@ -67,6 +67,7 @@ import RegisterAttendance from "./attendanceModule/RegisterAttendance";
 import TodayCallLogs from "./leaderboard/TodayCallLogs";
 import AttendanceLogin from "./auth/attendanceLogin";
 import Search from "./search/Search";
+import Restricted from "./Restricted";
 
 const libraries = ["places"];
 
@@ -667,11 +668,12 @@ function App() {
                     );
                   })
                 : routes.map((route, index) => {
+                    const isRestricted = route?.restrictedRoles?.includes(User?.role);
                     return (
                       <Route
                         key={index}
                         path={route.path}
-                        element={route.element}
+                        element={isRestricted ? <Restricted/> : route.element}
                       />
                     );
                   })}
