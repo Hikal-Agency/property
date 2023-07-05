@@ -207,16 +207,19 @@ const routes = [
     path: "/clients",
     element: <Clients />,
     pageName: "Clients",
+    restrictedRoles: [2, 3, 7]
   },
   {
     path: "/clients/agencyUsers/:client_id",
     element: <AgencyUsers />,
     pageName: "Clients",
+    restrictedRoles: [2, 3, 7]
   },
   {
     path: "/clients/clientLeads/:client_id",
     element: <ClientLeads />,
     pageName: "Clients",
+    restrictedRoles: [2, 3, 7]
   },
   {
     path: "/leaderboard",
@@ -237,16 +240,19 @@ const routes = [
     path: "/location/livelocation",
     pageName: "Live Location",
     element: <Livelocation />,
+    restrictedRoles: [3, 7]
   },
   {
     path: "/location/userlocation",
     pageName: "User Location",
     element: <Userlocation />,
+    restrictedRoles: [3, 7]
   },
   {
     path: "/location/useralllocation/:user_id",
     pageName: "User All Location",
     element: <UserAllLocation />,
+    restrictedRoles: [3, 7]
   },
   {
     path: "/updateuser/:id",
@@ -257,6 +263,7 @@ const routes = [
     path: "/users",
     pageName: "Users",
     element: <Users />,
+    restrictedRoles: [7]
   },
 
   {
@@ -273,11 +280,14 @@ const routes = [
     path: "/newsletter/addnewsletter",
     pageName: "Newsletter",
     element: <AddNewsLetters />,
+      restrictedRoles: [3,2, 7]
   },
   {
     path: "/newsletter",
     pageName: "Newsletter",
     element: <Newsletter />,
+      restrictedRoles: [3,2, 7]
+
   },
   {
     path: "/qaform",
@@ -318,26 +328,31 @@ const routes = [
     path: "/campaigns",
     pageName: "Facebook Campaigns",
     element: <Campaigns />,
+      restrictedRoles: [3, 7]
   },
   {
     path: "/statistics",
     pageName: "Campaigns Statistics",
     element: <Statistics />,
+      restrictedRoles: [3, 7]
   },
   {
     path: "/attendance/officeSettings",
     pageName: "Office Settings",
     element: <OfficeSettings />,
+      restrictedRoles: [3, 7]
   },
   {
     path: "/attendance/employeesList",
     pageName: "Employees",
     element: <Employees />,
+      restrictedRoles: [3, 7]
   },
   {
     path: "/attendance/singleEmployee/:eid",
     pageName: "Employees",
     element: <SingleEmployee />,
+      restrictedRoles: [3, 7]
   },
   {
     path: "/settings",
