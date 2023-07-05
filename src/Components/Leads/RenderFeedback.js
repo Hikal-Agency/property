@@ -110,7 +110,7 @@ const RenderFeedback = ({ cellValues }) => {
       UpdateLeadData.append("mLat", String(meetingLocation.lat));
       UpdateLeadData.append("mLong", String(meetingLocation.lng));
       UpdateLeadData.append("meetingLocation", meetingLocation.addressText);
-      // UpdateLeadData.append("meetingNote", meetingData.notes || "");
+      UpdateLeadData.append("meetingNote", meetingData.notes || "");
     }
 
     await axios

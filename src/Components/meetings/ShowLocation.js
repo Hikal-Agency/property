@@ -1,10 +1,24 @@
-import { Modal, Backdrop, IconButton } from "@mui/material";
+import {
+  Modal,
+  Backdrop,
+  IconButton,
+  TextField,
+  FormControl,
+  Box,
+} from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import LocationPicker from "./LocationPicker";
 import { IoMdClose } from "react-icons/io";
 
-const ShowLocation = ({ isModalOpened, handleModalClose, meetingLocation }) => {
-  const { currentMode } = useStateContext();
+const ShowLocation = ({
+  isModalOpened,
+  handleModalClose,
+  meetingLocation,
+  meetingNote,
+}) => {
+  const { currentMode, darkModeColors } = useStateContext();
+
+  console.log("meeting note: ", meetingNote);
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -40,6 +54,21 @@ const ShowLocation = ({ isModalOpened, handleModalClose, meetingLocation }) => {
           >
             Meeting Location
           </h1>
+          <Box sx={darkModeColors} className="w-full">
+            <FormControl fullWidth>
+              <TextField
+                id="text"
+                type={"text"}
+                label="Meeting Notes "
+                className="w-full mb-3"
+                style={{ marginBottom: "20px" }}
+                variant="outlined"
+                name="text"
+                size="medium"
+                value={meetingNote}
+              />
+            </FormControl>
+          </Box>
           {meetingLocation && [
             meetingLocation.lat && meetingLocation.lng ? (
               <LocationPicker
