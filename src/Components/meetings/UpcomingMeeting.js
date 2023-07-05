@@ -8,6 +8,7 @@ import ShowLocation from "./ShowLocation";
 const UpcomingMeeting = ({ upcoming_meetings }) => {
   const { currentMode } = useStateContext();
   const [isModalOpened, setIsModalOpened] = useState(false);
+  const [meetingNote, setMeetingNote] = useState(null);
   const [meetingLocation, setMeetingLocation] = useState({
     lat: 0,
     lng: 0,
@@ -20,7 +21,9 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
   }, []);
 
   const handleCardClick = (meeting) => {
+    console.log("Meeting loc data: ", meeting);
     setIsModalOpened(true);
+    setMeetingNote(meeting.meetingNote);
     setMeetingLocation({
       lat: Number(meeting.mLat),
       lng: Number(meeting.mLong),
@@ -99,6 +102,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
         <ShowLocation
           isModalOpened={isModalOpened}
           meetingLocation={meetingLocation}
+          meetingNote={meetingNote}
           handleModalClose={handleModalClose}
         />
       ) : (

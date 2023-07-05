@@ -228,7 +228,6 @@ const AddReminder = ({
                     ampm={false}
                     format="HH:mm"
                     value={reminderTimeValue}
-                    orientation="landscape"
                     onChange={(newValue) => {
                       setReminderTime(
                         formatNum(newValue?.$d?.getHours()) +
