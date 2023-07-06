@@ -3,14 +3,17 @@ import {
   CircularProgress,
   Dialog,
   FormControl,
-  IconButton,
   InputLabel,
+  IconButton,
   MenuItem,
   // Select,
   TextField,
 } from "@mui/material";
 import Select from "@mui/material/Select";
 import { Box } from "@mui/system";
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
+import { MdAccessTime } from "react-icons/md";
+
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import React, { useState, useEffect } from "react";
@@ -339,7 +342,7 @@ const RenderFeedback = ({ cellValues }) => {
                       />
                     </LocalizationProvider>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <TimePicker
+                      <MobileTimePicker
                         ampm={false}
                         label="Meeting Time *"
                         format="HH:mm"
@@ -351,7 +354,17 @@ const RenderFeedback = ({ cellValues }) => {
                           });
                         }}
                         renderInput={(params) => (
-                          <TextField {...params} fullWidth />
+                          <TextField
+                            {...params}
+                            fullWidth
+                            InputProps={{
+                              endAdornment: (
+                                <IconButton>
+                                  <MdAccessTime color={"#000000"} />
+                                </IconButton>
+                              ),
+                            }}
+                          />
                         )}
                         InputProps={{ required: true }}
                       />

@@ -23,6 +23,8 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useStateContext } from "../../context/ContextProvider";
 import LocationPicker from "./LocationPicker";
 import { IoMdClose } from "react-icons/io";
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
+import { MdAccessTime } from "react-icons/md";
 
 const UpdateMeeting = ({
   meetingModalOpen,
@@ -374,7 +376,7 @@ const UpdateMeeting = ({
                       />
                     </LocalizationProvider>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <TimePicker
+                      <MobileTimePicker
                         ampm={false}
                         format="HH:mm"
                         value={meetingTimeValue}
@@ -418,6 +420,17 @@ const UpdateMeeting = ({
                             }}
                             onKeyDown={(e) => e.preventDefault()}
                             readOnly={true}
+                            InputProps={{
+                              endAdornment: (
+                                <IconButton>
+                                  {currentMode === "dark" ? (
+                                    <MdAccessTime color={"#ffffff"} />
+                                  ) : (
+                                    <MdAccessTime color={"#000000"} />
+                                  )}
+                                </IconButton>
+                              ),
+                            }}
                           />
                         )}
                       />

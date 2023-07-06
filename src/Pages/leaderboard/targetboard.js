@@ -21,7 +21,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
     setLoading(true);
     let apiUrl =
       tabValue === 0
-        ? "leaderboard"
+        ? "leaderboard?period=current_month"
         : tabValue === 1
         ? "leaderboard?period=last_month"
         : "leaderboard?period=current_month";
