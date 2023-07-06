@@ -83,9 +83,6 @@ const Offers = () => {
                       tabValue={tabValue}
                       setTabValue={setTabValue}
                     />
-                    {/* <div>
-                        <h1>Hello world 3 </h1>
-                      </div> */}
                   </TabPanel>
                   <TabPanel value={value} index={2}>
                     <SalesPersonOffers

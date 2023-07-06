@@ -74,23 +74,25 @@ const Sidebarmui = () => {
   const [openedSubMenu, setOpenSubMenu] = useState({
     menuIndex: 0,
     linkIndex: 0,
-    sub: false
+    sub: false,
   });
 
   const setOpenedSubMenu = ({ menuIndex, linkIndex, sub = false }) => {
-    if(sub) {
-      if(openedSubMenu?.sub) {
+    if (sub) {
+      if (openedSubMenu?.sub) {
         setOpenSubMenu({
-          menuIndex, linkIndex
+          menuIndex,
+          linkIndex,
+          sub: false,
         });
       } else {
         setOpenSubMenu({
-          menuIndex, linkIndex, sub: true
+          menuIndex,
+          linkIndex,
+          sub: true,
         });
       }
-      setOpenSubMenu({ menuIndex, linkIndex });
-    } else
-    if (
+    } else if (
       openedSubMenu.menuIndex === menuIndex &&
       openedSubMenu.linkIndex === linkIndex
     ) {
@@ -101,12 +103,14 @@ const Sidebarmui = () => {
   };
 
   const handleExpand = (e, obj, isMenuDeep = false) => {
-    if(isMenuDeep === true) {
-      setOpenedSubMenu(obj);
+    if (isMenuDeep === true) {
+      if (!e.target.closest(".sub .ps-submenu-content")) {
+        setOpenedSubMenu(obj);
+      }
     } else {
-    if (!e.target.closest(".ps-submenu-content")) {
-      setOpenedSubMenu(obj);
-    }
+      if (!e.target.closest(".ps-submenu-content")) {
+        setOpenedSubMenu(obj);
+      }
     }
   };
 
@@ -1094,46 +1098,46 @@ const Sidebarmui = () => {
               name: "Fresh leads",
               icon: <SiHotjar />,
               submenu: [
-            {
-              name: "All",
-              // count: sidebarData?.HotLeadsCount?.hot,
-              link: "/unassigned/fresh",
-            },
-            {
-              name: "New",
-              count: sidebarData?.HotLeadsCount?.new,
-              link: "/unassigned/new",
-            },
-            {
-              name: "No Answer",
-              count: sidebarData?.HotLeadsCount?.no_nswer,
-              link: "/unassigned/no answer",
-            },
-            {
-              name: "Meeting",
-              count: sidebarData?.HotLeadsCount?.Meeting,
-              link: "/unassigned/meeting",
-            },
-            {
-              name: "Follow Up",
-              count: sidebarData?.HotLeadsCount?.follow_up,
-              link: "/unassigned/follow up",
-            },
-            {
-              name: "Low Budget",
-              count: sidebarData?.HotLeadsCount?.low_budget,
-              link: "/unassigned/low budget",
-            },
-            {
-              name: "Not Interested",
-              count: sidebarData?.HotLeadsCount?.not_interested,
-              link: "/unassigned/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: sidebarData?.HotLeadsCount?.unreachable,
-              link: "/unassigned/unreachable",
-            },
+                {
+                  name: "All",
+                  count: sidebarData?.UNASSIGNED?.fresh,
+                  link: "/unassigned/fresh",
+                },
+                {
+                  name: "New",
+                  count: sidebarData?.HotLeadsCount?.new,
+                  link: "/unassigned/new",
+                },
+                {
+                  name: "No Answer",
+                  count: sidebarData?.HotLeadsCount?.no_nswer,
+                  link: "/unassigned/no answer",
+                },
+                {
+                  name: "Meeting",
+                  count: sidebarData?.HotLeadsCount?.Meeting,
+                  link: "/unassigned/meeting",
+                },
+                {
+                  name: "Follow Up",
+                  count: sidebarData?.HotLeadsCount?.follow_up,
+                  link: "/unassigned/follow up",
+                },
+                {
+                  name: "Low Budget",
+                  count: sidebarData?.HotLeadsCount?.low_budget,
+                  link: "/unassigned/low budget",
+                },
+                {
+                  name: "Not Interested",
+                  count: sidebarData?.HotLeadsCount?.not_interested,
+                  link: "/unassigned/not interested",
+                },
+                {
+                  name: "Unreachable",
+                  count: sidebarData?.HotLeadsCount?.unreachable,
+                  link: "/unassigned/unreachable",
+                },
               ],
             },
             {
@@ -2378,18 +2382,17 @@ const Sidebarmui = () => {
                                     if (menu?.submenu) {
                                       return (
                                         <Box
-                                               onClick={(e) => {
-                                              handleExpand(
-                                                e,
-                                                {
-                                                  menuIndex: menuIndex + 1,
-                                                  linkIndex: linkIndex,
-                                                  sub: true
-                                                },
-                                                true
-                                              )
-                                               }
-                                            }
+                                          onClick={(e) => {
+                                            handleExpand(
+                                              e,
+                                              {
+                                                menuIndex: menuIndex + 1,
+                                                linkIndex: linkIndex,
+                                                sub: true,
+                                              },
+                                              true
+                                            );
+                                          }}
                                           sx={{
                                             // FOR DARK MODE MENU SETTINGS
                                             "& .css-1mfnem1": {
@@ -2425,14 +2428,14 @@ const Sidebarmui = () => {
                                           className="my-1 sub"
                                         >
                                           <SubMenu
-                                     
                                             label={menu.name}
                                             icon={menu.icon}
                                             open={
                                               openedSubMenu.menuIndex ===
-                                               menuIndex + 1 &&
+                                                menuIndex + 1 &&
                                               openedSubMenu.linkIndex ===
-                                                linkIndex && openedSubMenu?.sub
+                                                linkIndex &&
+                                              openedSubMenu?.sub
                                             }
                                           >
                                             {menu?.submenu.map((m, index) => {
