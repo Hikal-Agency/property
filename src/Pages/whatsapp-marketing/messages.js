@@ -627,6 +627,7 @@ const AllLeads = () => {
           leadName: row?.leadName || "-",
           leadContact: row?.leadContact || "-",
           project: row?.project || "-",
+          otp: row?.otp || "-",
           leadType: row?.leadType || "-",
           language: getLangCode(row?.language) || "-",
           enquiryType: row?.enquiryType || "-",

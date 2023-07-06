@@ -38,21 +38,21 @@ const Conversation = ({
   const imagePickerRef = useRef();
 
   const handleChangeImage = (e) => {
-    let files = e.target.files;
-    let reader = new FileReader();
-
-    reader.addEventListener(
-      "load",
-      () => {
-        console.log(reader.result);
-        handleSendMessage(null, "img", reader.result);
-      },
-      false
-    );
-
-    if (files[0]) {
-      reader.readAsDataURL(files[0]);
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
     }
+
+    console.log(e.target.files[0]);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      console.log("Result::", reader.result);
+    };
+    reader.readAsDataURL(files[0]);
   };
   return (
     <>
@@ -92,10 +92,8 @@ const Conversation = ({
                       <ConversationItem
                         key={chat?.id?.user}
                         setActiveChat={setActiveChat}
-                        lastMsg={chat?.lastMessage}
-                        phNo={chat?.id?.user}
+                        chat={chat}
                         isActive={activeChat?.phoneNumber === chat?.id?.user}
-                        name={chat?.name}
                       />
                     );
                   }),
