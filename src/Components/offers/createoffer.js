@@ -107,8 +107,18 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     const user = JSON.parse(localStorage.getItem("user"));
 
     console.log("img: ", img);
-
     console.log("User", user);
+
+    let validToSales;
+    let validToManager;
+
+    if (User?.role === 3) {
+      validToSales = 1;
+      validToManager = 1;
+    } else {
+      validToSales = offerData.validToSales;
+      validToManager = offerData.validToManager;
+    }
     const creationDate = new Date();
     const Offer = new FormData();
 
@@ -124,8 +134,8 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     Offer.append("validTill", validToDate);
     Offer.append("offerFrom", User?.id);
     Offer.append("offerAgency", User?.agency);
-    Offer.append("validToManager", offerData.validToManager);
-    Offer.append("validToSales", offerData.validToSales);
+    Offer.append("validToManager", validToManager);
+    Offer.append("validToSales", validToSales);
 
     console.log("Offer append: ", Offer);
     console.log("Click img state: ", img);
@@ -325,63 +335,65 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
             </div>
           </Box>
 
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
-            } rounded-md px-5 pt-5 mx-5 mb-1`}
-          >
-            <Box sx={darkModeColors}>
-              <label className="font-semibold text-sm">
-                <span className="text-main-red-color">Valid for:</span>
-              </label>
-              <br></br>
-              <FormControl>
-                <RadioGroup defaultValue="Both" name="radio-buttons-group">
-                  <FormControlLabel
-                    className="m-1"
-                    value="manager"
-                    name="validToManager"
-                    control={<Radio />}
-                    label="Sales Managers"
-                    onChange={(e) =>
-                      setOfferData({
-                        ...offerData,
-                        validToManager: 1,
-                        validToSales: 0,
-                      })
-                    }
-                  />
-                  <FormControlLabel
-                    className="m-1"
-                    value="agent"
-                    name="validToSales"
-                    control={<Radio />}
-                    onChange={(e) =>
-                      setOfferData({
-                        ...offerData,
-                        validToSales: 1,
-                        validToManager: 0,
-                      })
-                    }
-                    label="Sales Agents"
-                  />
-                  <FormControlLabel
-                    className="mt-1"
-                    value="Both"
-                    onChange={(e) =>
-                      setOfferData({
-                        ...offerData,
-                        validToSales: 1,
-                        validToManager: 1,
-                      })
-                    }
-                    control={<Radio />}
-                    label="Both"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
-          </div>
+          {User?.role !== 3 && (
+            <div
+              className={`${
+                currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
+              } rounded-md px-5 pt-5 mx-5 mb-1`}
+            >
+              <Box sx={darkModeColors}>
+                <label className="font-semibold text-sm">
+                  <span className="text-main-red-color">Valid for:</span>
+                </label>
+                <br></br>
+                <FormControl>
+                  <RadioGroup defaultValue="Both" name="radio-buttons-group">
+                    <FormControlLabel
+                      className="m-1"
+                      value="manager"
+                      name="validToManager"
+                      control={<Radio />}
+                      label="Sales Managers"
+                      onChange={(e) =>
+                        setOfferData({
+                          ...offerData,
+                          validToManager: 1,
+                          validToSales: 0,
+                        })
+                      }
+                    />
+                    <FormControlLabel
+                      className="m-1"
+                      value="agent"
+                      name="validToSales"
+                      control={<Radio />}
+                      onChange={(e) =>
+                        setOfferData({
+                          ...offerData,
+                          validToSales: 1,
+                          validToManager: 0,
+                        })
+                      }
+                      label="Sales Agents"
+                    />
+                    <FormControlLabel
+                      className="mt-1"
+                      value="Both"
+                      onChange={(e) =>
+                        setOfferData({
+                          ...offerData,
+                          validToSales: 1,
+                          validToManager: 1,
+                        })
+                      }
+                      control={<Radio />}
+                      label="Both"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Box>
+            </div>
+          )}
         </div>
 
         <Button

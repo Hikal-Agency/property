@@ -7,9 +7,11 @@ import ManagerOffers from "../../Components/offers/manager_offers";
 import SalesPersonOffers from "../../Components/offers/salePerson_offers";
 
 const Offers = () => {
-  const { currentMode, darkModeColors, setopenBackDrop } = useStateContext();
+  const { currentMode, darkModeColors, setopenBackDrop, User } =
+    useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
+    console.log("newvalue: ", newValue);
     setValue(newValue);
   };
 
@@ -64,27 +66,42 @@ const Offers = () => {
                     // centered
                     className="w-full px-1 m-1"
                   >
-                    <Tab label="CREATE NEW OFFER" />
-                    <Tab label="FOR MANAGERS" />
+                    {User?.role === 1 || User?.role === 3 ? (
+                      <Tab label="CREATE NEW OFFER" />
+                    ) : (
+                      ""
+                    )}
+                    {User?.role === 1 && <Tab label="FOR MANAGERS" />}
                     <Tab label="FOR AGENTS" />
                   </Tabs>
                 </Box>
                 <div className="mt-3 pb-3">
-                  <TabPanel value={value} index={0}>
-                    <CreateOffer
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                    />
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <ManagerOffers
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                    />
-                  </TabPanel>
-                  <TabPanel value={value} index={2}>
+                  {User?.role === 1 || User?.role === 3 ? (
+                    <TabPanel value={value} index={0}>
+                      <CreateOffer
+                        isLoading={loading}
+                        tabValue={tabValue}
+                        setTabValue={setTabValue}
+                      />
+                    </TabPanel>
+                  ) : (
+                    ""
+                  )}
+                  {User?.role === 1 ? (
+                    <TabPanel value={value} index={1}>
+                      <ManagerOffers
+                        isLoading={loading}
+                        tabValue={tabValue}
+                        setTabValue={setTabValue}
+                      />
+                    </TabPanel>
+                  ) : (
+                    ""
+                  )}
+                  <TabPanel
+                    value={value}
+                    index={User?.role === 1 ? 2 : User?.role === 3 ? 1 : 0}
+                  >
                     <SalesPersonOffers
                       isLoading={loading}
                       tabValue={tabValue}

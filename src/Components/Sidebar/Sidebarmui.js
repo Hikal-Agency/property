@@ -422,6 +422,11 @@ const Sidebarmui = () => {
           icon: <MdContactPage />,
           link: "/contacts",
         },
+        {
+          name: "Offers",
+          icon: <AiFillGift />,
+          link: "/offers",
+        },
       ],
     },
     {
@@ -819,6 +824,12 @@ const Sidebarmui = () => {
           name: "Meetings",
           icon: <BsCalendarWeekFill />,
           link: "/meetings",
+        },
+
+        {
+          name: "Offers",
+          icon: <AiFillGift />,
+          link: "/offers",
         },
 
         {
