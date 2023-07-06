@@ -1911,65 +1911,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <>
       <ToastContainer />
       <div className="pb-10">
-        {lead_origin === "unassigned" && lead_type === "fresh" && (
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiSelect-select": {
-                padding: "2px",
-                paddingLeft: "6px !important",
-                paddingRight: "20px",
-                borderRadius: "8px",
-              },
-              "& .MuiInputBase-root": {
-                width: "max-content",
-                marginRight: "5px",
-              },
-            }}
-          >
-            <Select
-              id="un-feedback"
-              value={unassignedFeedback}
-              className={`w-full mt-1 mb-5`}
-              onChange={(event) => {
-                setUnassignedFeedback(event.target.value);
-              }}
-              displayEmpty
-              size="small"
-              required
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-                "&:hover:not (.Mui-disabled):before": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-              }}
-            >
-              <MenuItem
-                value="0"
-                disabled
-                selected
-                sx={{
-                  color: currentMode === "dark" ? "#ffffff" : "#000000",
-                }}
-              >
-                Feedback
-              </MenuItem>
-              {feedbacks?.map((feedback, index) => (
-                <MenuItem key={index} value={feedback || ""}>
-                  {feedback}
-                </MenuItem>
-              ))}
-            </Select>
-          </Box>
-        )}
-        {/* {lead_origin === "freshleads" && (
-          <Filters
-          pageState={pageState}
-          FetchLeads={FetchLeads}
-          />
-        )} */}
         <Box
           sx={{
             ...DataGridStyles,

@@ -83,6 +83,7 @@ const Sidebarmui = () => {
         setOpenSubMenu({
           menuIndex,
           linkIndex,
+          sub: false,
         });
       } else {
         setOpenSubMenu({
@@ -91,7 +92,6 @@ const Sidebarmui = () => {
           sub: true,
         });
       }
-      setOpenSubMenu({ menuIndex, linkIndex });
     } else if (
       openedSubMenu.menuIndex === menuIndex &&
       openedSubMenu.linkIndex === linkIndex
@@ -104,7 +104,9 @@ const Sidebarmui = () => {
 
   const handleExpand = (e, obj, isMenuDeep = false) => {
     if (isMenuDeep === true) {
-      setOpenedSubMenu(obj);
+      if (!e.target.closest(".sub .ps-submenu-content")) {
+        setOpenedSubMenu(obj);
+      }
     } else {
       if (!e.target.closest(".ps-submenu-content")) {
         setOpenedSubMenu(obj);
@@ -1109,7 +1111,7 @@ const Sidebarmui = () => {
               submenu: [
                 {
                   name: "All",
-                  // count: sidebarData?.HotLeadsCount?.hot,
+                  count: sidebarData?.UNASSIGNED?.fresh,
                   link: "/unassigned/fresh",
                 },
                 {

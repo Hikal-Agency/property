@@ -411,6 +411,10 @@ label[for="bulkImport"] .MuiButtonBase-root {
   margin: 0 !important;
 }
 
+.ps-submenu-content .sub .ps-submenu-root > .ps-menu-button {
+  padding-left: 40px;
+}
+
 .dark-mode-sidebar .sub .ps-open .MuiBox-root {
   background: #818181;
   margin: 0 !important;
@@ -418,6 +422,10 @@ label[for="bulkImport"] .MuiButtonBase-root {
 
 .light-mode-sidebar .ps-open .ps-menu-button:not(.ps-active):hover {
   background: #c5c5c5;
+}
+
+.light-mode-sidebar .sub .ps-open .ps-menu-button:not(.ps-active):hover {
+  background: #e5e5e5;
 }
 
 .light-mode-sidebar .ps-menu-button.ps-open {
