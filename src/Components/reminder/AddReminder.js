@@ -24,13 +24,16 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import classNames from "classnames";
 import dayjs from "dayjs";
+import { MdAccessTime } from "react-icons/md";
 
 import {
   DatePicker,
   LocalizationProvider,
-  TimePicker,
+  // TimePicker,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 
 const AddReminder = ({
   LeadModelOpen,
@@ -223,7 +226,7 @@ const AddReminder = ({
                     minDate={dayjs().startOf("day").toDate()}
                   />
                 </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {/*  <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
                     ampm={false}
                     format="HH:mm"
@@ -265,6 +268,63 @@ const AddReminder = ({
                         }}
                         onKeyDown={(e) => e.preventDefault()}
                         readOnly={true}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>{" "}
+                */}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <MobileTimePicker
+                    // ampm={false}
+                    format="hh:mm A"
+                    value={reminderTimeValue}
+                    onChange={(newValue) => {
+                      setReminderTime(
+                        formatNum(newValue?.$d?.getHours()) +
+                          ":" +
+                          formatNum(newValue?.$d?.getMinutes())
+                      );
+                      setTimeValue(newValue);
+                    }}
+                    InputProps={{ required: true }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        label="Reminder Time"
+                        sx={{
+                          "& .MuiFormLabel-root": {
+                            background: currentMode === "dark" ? "#111827" : "",
+                            color: currentMode === "dark" ? "white" : "",
+                          },
+                          "& input": {
+                            color: currentMode === "dark" ? "white" : "black",
+                          },
+                          "& .MuiSvgIcon-root": {
+                            color: currentMode === "dark" ? "white" : "black",
+                          },
+                          "&": {
+                            borderRadius: "4px",
+                            border:
+                              currentMode === "dark" ? "1px solid white" : "",
+                          },
+                          "&:focus": {
+                            border: "",
+                          },
+                        }}
+                        onKeyDown={(e) => e.preventDefault()}
+                        readOnly={true}
+                        InputProps={{
+                          endAdornment: (
+                            <IconButton>
+                              {currentMode === "dark" ? (
+                                <MdAccessTime color={"#ffffff"} />
+                              ) : (
+                                <MdAccessTime color={"#000000"} />
+                              )}
+                            </IconButton>
+                          ),
+                        }}
                       />
                     )}
                   />

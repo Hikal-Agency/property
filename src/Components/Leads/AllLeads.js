@@ -1483,6 +1483,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         );
         const comCount = comment.length;
 
+        const website = rowsdata.filter(
+          (row) => row?.leadSource.toLowerCase() === "website"
+        );
+        const webCount = website.length;
+
         console.log("FB: ", fbCounts);
         console.log("Snap: ", spCount);
         console.log("wa: ", wCount);
@@ -1501,6 +1506,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           mCount: mCount,
           wCount: wCount,
           comment: comCount,
+          webCount: webCount,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
           from: result.data.coldLeads.from,
