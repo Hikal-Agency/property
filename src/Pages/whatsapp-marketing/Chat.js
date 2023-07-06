@@ -45,7 +45,6 @@ const Chat = () => {
   const fetchChatMessages = async (contact, callback) => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
     if (waDevice) {
-      console.log("Get-chat::", waDevice, contact);
       socket.emit("get_chat", { id: waDevice, contact: contact });
       socket.on("chat", (data) => {
         if (data?.length > 0) {
@@ -54,7 +53,6 @@ const Chat = () => {
           });
           if (callback) callback();
           setChatLoading(false);
-          console.log("Has Fetched chat::");
         }
       });
     }
