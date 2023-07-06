@@ -65,20 +65,28 @@ const Offers = () => {
                     // centered
                     className="w-full px-1 m-1"
                   >
-                    <Tab label="CREATE NEW OFFER" />
-                    {User?.role !== 3 && <Tab label="FOR MANAGERS" />}
+                    {User?.role === 1 || User?.role === 3 ? (
+                      <Tab label="CREATE NEW OFFER" />
+                    ) : (
+                      ""
+                    )}
+                    {User?.role === 1 && <Tab label="FOR MANAGERS" />}
                     <Tab label="FOR AGENTS" />
                   </Tabs>
                 </Box>
                 <div className="mt-3 pb-3">
-                  <TabPanel value={value} index={0}>
-                    <CreateOffer
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                    />
-                  </TabPanel>
-                  {User?.role !== 3 && (
+                  {User?.role === 1 || User?.role === 3 ? (
+                    <TabPanel value={value} index={0}>
+                      <CreateOffer
+                        isLoading={loading}
+                        tabValue={tabValue}
+                        setTabValue={setTabValue}
+                      />
+                    </TabPanel>
+                  ) : (
+                    ""
+                  )}
+                  {User?.role === 1 && (
                     <TabPanel value={value} index={1}>
                       <ManagerOffers
                         isLoading={loading}
