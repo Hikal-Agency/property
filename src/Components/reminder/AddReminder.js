@@ -24,6 +24,7 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import classNames from "classnames";
 import dayjs from "dayjs";
+import { MdAccessTime } from "react-icons/md";
 
 import {
   DatePicker,
@@ -33,8 +34,6 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
-
-import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 
 const AddReminder = ({
   LeadModelOpen,
@@ -276,7 +275,18 @@ const AddReminder = ({
                 */}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <MobileTimePicker
-                    defaultValue={dayjs("2022-04-17T15:30")}
+                    // ampm={false}
+                    format="hh:mm A"
+                    value={reminderTimeValue}
+                    onChange={(newValue) => {
+                      setReminderTime(
+                        formatNum(newValue?.$d?.getHours()) +
+                          ":" +
+                          formatNum(newValue?.$d?.getMinutes())
+                      );
+                      setTimeValue(newValue);
+                    }}
+                    InputProps={{ required: true }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -304,6 +314,17 @@ const AddReminder = ({
                         }}
                         onKeyDown={(e) => e.preventDefault()}
                         readOnly={true}
+                        InputProps={{
+                          endAdornment: (
+                            <IconButton>
+                              {currentMode === "dark" ? (
+                                <MdAccessTime color={"#ffffff"} />
+                              ) : (
+                                <MdAccessTime color={"#000000"} />
+                              )}
+                            </IconButton>
+                          ),
+                        }}
                       />
                     )}
                   />
