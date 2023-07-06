@@ -10,7 +10,7 @@ import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import { Box } from "@mui/material";
 import { MdCampaign } from "react-icons/md";
-import { FaSnapchat } from "react-icons/fa";
+import { FaGlobe, FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsSnow2 } from "react-icons/bs";
@@ -79,7 +79,7 @@ const AllHotLeads = () => {
                   {User?.role === 1 && (
                     <div className="justify-self-end">
                       <div className=" px-4 py-5">
-                        <div className="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-8 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-9 lg:grid-cols-9 gap-4">
                           <Box
                             sx={{
                               padding: "10px",
@@ -138,6 +138,36 @@ const AllHotLeads = () => {
                               />
                             </span>
                             <span>{pageState?.spCount}</span>
+                          </Box>
+                          <Box
+                            sx={{
+                              padding: "10px",
+                              borderRadius: "7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              fontWeight: "bold",
+                              background: "#da1f26",
+                              color: "#ffffff",
+                              boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
+                              height: "40px",
+                              width: "70px",
+                              justifySelf: "end",
+                            }}
+                          >
+                            <span
+                              style={{
+                                background: "white",
+                                borderRadius: "50%",
+                              }}
+                            >
+                              <FaGlobe
+                                size={22}
+                                color={"#14539A"}
+                                style={{ padding: "3px" }}
+                              />
+                            </span>
+                            <span>{pageState?.webCount}</span>
                           </Box>
                           <Box
                             sx={{
