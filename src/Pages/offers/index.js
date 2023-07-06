@@ -7,7 +7,8 @@ import ManagerOffers from "../../Components/offers/manager_offers";
 import SalesPersonOffers from "../../Components/offers/salePerson_offers";
 
 const Offers = () => {
-  const { currentMode, darkModeColors, setopenBackDrop } = useStateContext();
+  const { currentMode, darkModeColors, setopenBackDrop, User } =
+    useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -65,7 +66,7 @@ const Offers = () => {
                     className="w-full px-1 m-1"
                   >
                     <Tab label="CREATE NEW OFFER" />
-                    <Tab label="FOR MANAGERS" />
+                    {User?.role !== 3 && <Tab label="FOR MANAGERS" />}
                     <Tab label="FOR AGENTS" />
                   </Tabs>
                 </Box>
@@ -77,16 +78,15 @@ const Offers = () => {
                       setTabValue={setTabValue}
                     />
                   </TabPanel>
-                  <TabPanel value={value} index={2}>
-                    <ManagerOffers
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                    />
-                    {/* <div>
-                        <h1>Hello world 3 </h1>
-                      </div> */}
-                  </TabPanel>
+                  {User?.role !== 3 && (
+                    <TabPanel value={value} index={2}>
+                      <ManagerOffers
+                        isLoading={loading}
+                        tabValue={tabValue}
+                        setTabValue={setTabValue}
+                      />
+                    </TabPanel>
+                  )}
                   <TabPanel value={value} index={3}>
                     <SalesPersonOffers
                       isLoading={loading}
