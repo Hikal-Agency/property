@@ -57,7 +57,7 @@ const DeviceCard = ({
               <BsFillPhoneFill size={18} />
             </Avatar>
           </Box>
-          {details.phone_number &&
+          {details.phone_number && details.status === "connected" &&
           <Box className="mt-4">
             <small>
               Phone Number: <strong>+{details.phone_number}</strong>

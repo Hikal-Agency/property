@@ -40,7 +40,6 @@ const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
       files = e.target.files;
     }
 
-    console.log("%cSelected Image: ", "background-color: green");
     console.log(e.target.files[0]);
 
     const reader = new FileReader();
@@ -88,7 +87,6 @@ const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
           },
         }
       );
-      console.log("%cImage Result: ", "background-color: purple");
       console.log(result.data);
       setImagePickerModal({ isOpen: false });
       setbtnloading(false);
@@ -135,7 +133,6 @@ const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
       const src = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
       const file = await srcToFile(src, selectedFile.name, selectedFile.type);
-      console.log("%cCropped Image: ", "background-color: blue");
       console.log(file);
       UpdateProfileImage(file);
     }
