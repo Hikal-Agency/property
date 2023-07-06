@@ -377,8 +377,8 @@ const UpdateMeeting = ({
                     </LocalizationProvider>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <MobileTimePicker
-                        ampm={false}
-                        format="HH:mm"
+                        // ampm={false}
+                        format="hh:mm A"
                         value={meetingTimeValue}
                         onChange={(newValue) => {
                           setMeetingTime(

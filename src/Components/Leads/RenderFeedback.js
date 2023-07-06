@@ -343,9 +343,9 @@ const RenderFeedback = ({ cellValues }) => {
                     </LocalizationProvider>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <MobileTimePicker
-                        ampm={false}
+                        // ampm={false}
                         label="Meeting Time *"
-                        format="HH:mm"
+                        format="hh:mm A"
                         value={meetingData.meetingTime}
                         onChange={(newValue) => {
                           setMeetingData({

@@ -68,6 +68,8 @@ const RegisterAttendance = () => {
 
     const docSnap = await getDoc(docRef);
 
+    console.log("docsnap: ", docSnap);
+
     if (docSnap.exists()) {
       const data = docSnap.data();
       if (data[User?.id]) {
