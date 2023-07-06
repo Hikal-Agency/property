@@ -11,6 +11,7 @@ const TodayCallLogs = () => {
   const { currentMode, User } = useStateContext();
   useEffect(() => {
     if (User && socket) {
+      socket.emit("get-call-logs");
       socket.on("call-logs", (data) => {
         if (data) {
           console.log(data);

@@ -1735,6 +1735,11 @@ const Sidebarmui = () => {
           icon: <MdSpeakerNotes />,
           link: "/leadnotes",
         },
+        {
+          name: "Search",
+          icon: <HiSearch />,
+          link: "/search",
+        },
       ],
     },
     {
