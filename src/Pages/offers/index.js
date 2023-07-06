@@ -77,7 +77,7 @@ const Offers = () => {
                       setTabValue={setTabValue}
                     />
                   </TabPanel>
-                  <TabPanel value={value} index={2}>
+                  <TabPanel value={value} index={1}>
                     <ManagerOffers
                       isLoading={loading}
                       tabValue={tabValue}
@@ -87,7 +87,7 @@ const Offers = () => {
                         <h1>Hello world 3 </h1>
                       </div> */}
                   </TabPanel>
-                  <TabPanel value={value} index={3}>
+                  <TabPanel value={value} index={2}>
                     <SalesPersonOffers
                       isLoading={loading}
                       tabValue={tabValue}
