@@ -107,8 +107,18 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     const user = JSON.parse(localStorage.getItem("user"));
 
     console.log("img: ", img);
-
     console.log("User", user);
+
+    let validToSales;
+    let validToManager;
+
+    if (User?.role === 3) {
+      validToSales = 1;
+      validToManager = 1;
+    } else {
+      validToSales = offerData.validToSales;
+      validToManager = offerData.validToManager;
+    }
     const creationDate = new Date();
     const Offer = new FormData();
 
@@ -124,8 +134,8 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     Offer.append("validTill", validToDate);
     Offer.append("offerFrom", User?.id);
     Offer.append("offerAgency", User?.agency);
-    Offer.append("validToManager", offerData.validToManager);
-    Offer.append("validToSales", offerData.validToSales);
+    Offer.append("validToManager", validToManager);
+    Offer.append("validToSales", validToSales);
 
     console.log("Offer append: ", Offer);
     console.log("Click img state: ", img);

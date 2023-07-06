@@ -11,6 +11,7 @@ const Offers = () => {
     useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
+    console.log("newvalue: ", newValue);
     setValue(newValue);
   };
 
@@ -86,7 +87,7 @@ const Offers = () => {
                   ) : (
                     ""
                   )}
-                  {User?.role === 1 && (
+                  {User?.role === 1 ? (
                     <TabPanel value={value} index={1}>
                       <ManagerOffers
                         isLoading={loading}
@@ -94,8 +95,13 @@ const Offers = () => {
                         setTabValue={setTabValue}
                       />
                     </TabPanel>
+                  ) : (
+                    ""
                   )}
-                  <TabPanel value={value} index={2}>
+                  <TabPanel
+                    value={value}
+                    index={User?.role === 1 ? 2 : User?.role === 3 ? 1 : 0}
+                  >
                     <SalesPersonOffers
                       isLoading={loading}
                       tabValue={tabValue}
