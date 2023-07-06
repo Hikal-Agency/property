@@ -133,6 +133,7 @@ const Chat = () => {
   const handleLogout = () => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
     if (socket?.id) {
+      setloading(true);
       socket.emit("logout-user", { id: waDevice });
     } else {
       toast.error("Server is disconnected!", {
@@ -243,6 +244,7 @@ const Chat = () => {
               setReady(true);
               setloading(false);
             } else {
+              disconnectDevice(waDevice);
               socket.emit("destroy_client", waDevice);
               setSelectedDevice(null);
               setQr(null);
@@ -265,7 +267,6 @@ const Chat = () => {
   }, [User, socket, serverDisconnected]);
 
   const disconnectDevice = async (deviceName) => {
-    console.log("Dev name: ", deviceName);
     const token = localStorage.getItem("auth-token");
     const devices = await axios.get(`${BACKEND_URL}/instances`, {
       headers: {
@@ -333,7 +334,8 @@ const Chat = () => {
         fetchChatMessages(activeChat.phoneNumber);
       });
 
-      socket.on("user_disconnected", () => {
+      socket.on("user_disconnected", (id) => {
+        disconnectDevice(id);
         handleLogout();
       });
 
@@ -346,10 +348,15 @@ const Chat = () => {
       socket.on("logged-out", (data) => {
         if (data.status) {
           disconnectDevice(data.id);
+          setloading(false);
           logout();
         }
       });
       socket.on("disconnect", () => {
+        const waDevice = localStorage.getItem("authenticated-wa-device");
+        if (waDevice) {
+          disconnectDevice(waDevice);
+        }
         setServerDisconnected(true);
       });
     }
@@ -397,18 +404,18 @@ const Chat = () => {
     }
   }, [User, ready, activeChat.phoneNumber, searchParams]);
 
-  useEffect(() => {
-    const cb = () => {
-      if (User && ready && activeChat.phoneNumber) {
-        fetchChatMessages(activeChat.phoneNumber);
-      }
-    };
-    const interval = setInterval(cb, 6000);
+  // useEffect(() => {
+  //   const cb = () => {
+  //     if (User && ready && activeChat.phoneNumber) {
+  //       fetchChatMessages(activeChat.phoneNumber);
+  //     }
+  //   };
+  //   const interval = setInterval(cb, 6000);
 
-    return () => {
-      clearInterval(interval, cb);
-    };
-  }, [User, ready, activeChat.phoneNumber]);
+  //   return () => {
+  //     clearInterval(interval, cb);
+  //   };
+  // }, [User, ready, activeChat.phoneNumber]);
 
   console.log("Selec::", selectedDevice);
 
