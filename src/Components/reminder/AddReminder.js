@@ -28,9 +28,13 @@ import dayjs from "dayjs";
 import {
   DatePicker,
   LocalizationProvider,
-  TimePicker,
+  // TimePicker,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
+
+import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 
 const AddReminder = ({
   LeadModelOpen,
@@ -223,7 +227,7 @@ const AddReminder = ({
                     minDate={dayjs().startOf("day").toDate()}
                   />
                 </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {/*  <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
                     ampm={false}
                     format="HH:mm"
@@ -238,6 +242,41 @@ const AddReminder = ({
                     }}
                     InputProps={{ required: true }}
                     sx={{ marginTop: "3px !important" }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        label="Reminder Time"
+                        sx={{
+                          "& .MuiFormLabel-root": {
+                            background: currentMode === "dark" ? "#111827" : "",
+                            color: currentMode === "dark" ? "white" : "",
+                          },
+                          "& input": {
+                            color: currentMode === "dark" ? "white" : "black",
+                          },
+                          "& .MuiSvgIcon-root": {
+                            color: currentMode === "dark" ? "white" : "black",
+                          },
+                          "&": {
+                            borderRadius: "4px",
+                            border:
+                              currentMode === "dark" ? "1px solid white" : "",
+                          },
+                          "&:focus": {
+                            border: "",
+                          },
+                        }}
+                        onKeyDown={(e) => e.preventDefault()}
+                        readOnly={true}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>{" "}
+                */}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <MobileTimePicker
+                    defaultValue={dayjs("2022-04-17T15:30")}
                     renderInput={(params) => (
                       <TextField
                         {...params}
