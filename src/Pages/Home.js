@@ -5,8 +5,15 @@ import { toast, ToastContainer } from "react-toastify";
 import { useStateContext } from "../context/ContextProvider";
 import "../styles/app.css";
 import { Link, useLocation } from "react-router-dom";
-import { Backdrop, CircularProgress, TextField } from "@mui/material";
+import {
+  Backdrop,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { FaEye } from "react-icons/fa";
 
 const Home = () => {
   let canvas = useRef();
@@ -16,6 +23,11 @@ const Home = () => {
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
   const [openBackDrop, setOpenBackDrop] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = (event) => event.preventDefault();
 
   const LoginUser = async () => {
     setloading(true);
@@ -230,7 +242,7 @@ const Home = () => {
                         }}
                       />
                     </div>
-                    <div className="pt-5 space-y-6">
+                    {/* <div className="pt-5 space-y-6">
                       <TextField
                         id="password"
                         type={"password"}
@@ -245,6 +257,37 @@ const Home = () => {
                             ...formdata,
                             password: e.target.value,
                           });
+                        }}
+                      />
+                    </div> */}
+                    <div className="pt-5 space-y-6">
+                      <TextField
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        label="Password"
+                        className="w-full"
+                        variant="outlined"
+                        size="medium"
+                        required
+                        value={formdata?.password}
+                        onChange={(e) => {
+                          setformdata({
+                            ...formdata,
+                            password: e.target.value,
+                          });
+                        }}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                              >
+                                {showPassword ? <FaEye /> : <FaEye />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
                         }}
                       />
                     </div>
