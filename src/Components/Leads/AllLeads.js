@@ -645,39 +645,74 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     // },
     {
       field: "otp",
-      headerName: "OTP",
-      headerAlign: "center",
+      headerName: lead_origin === "transfferedleads" ? "Ex-Agent" : "OTP",
       minWidth: 72,
+      headerAlign: "center",
+      // headerClassName: headerClasses.header,
+      headerClassName: "break-normal",
       flex: 1,
       renderCell: (cellValues) => {
-        return (
-          <div style={{ fontSize: 10 }}>
-            {cellValues.formattedValue === "Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md available">
-                  OTP VERIFIED
-                </badge>
-              </div>
-            )}
-
-            {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <badge className="bg-[#ff0000] p-1 rounded-md available">
-                  NOT VERIFIED
-                </badge>
-              </div>
-            )}
-
-            {cellValues.formattedValue !== "Not Verified" &&
-              cellValues.formattedValue !== "Verified" && (
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>{cellValues.row.transferredFromName || "No Name"}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {cellValues.formattedValue === "Verified" && (
                 <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <badge className=" p-1 rounded-md">
-                    {cellValues.formattedValue}
-                  </badge>
+                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
+                    OTP VERIFIED
+                  </span>
                 </div>
               )}
-          </div>
-        );
+
+              {cellValues.formattedValue === "Not Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                    NOT VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                      {cellValues.formattedValue}
+                    </span>
+                  </div>
+                )}
+            </div>
+          );
+        }
+      },
+    },
+    {
+      field: "creationDate",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred Date" : "Date",
+      minWidth: 55,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>
+                {moment(cellValues.row.transferredDate).format("YYYY-MM-DD")}
+              </p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {moment(cellValues.formattedValue).format("YYYY-MM-DD")}
+            </div>
+          );
+        }
       },
     },
 
@@ -850,8 +885,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
     {
       field: "otp",
-      headerName:
-        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
+      headerName: lead_origin === "transfferedleads" ? "Ex-Agent" : "OTP",
       minWidth: 72,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
@@ -891,6 +925,31 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     </span>
                   </div>
                 )}
+            </div>
+          );
+        }
+      },
+    },
+    {
+      field: "creationDate",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred Date" : "Date",
+      minWidth: 55,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>
+                {moment(cellValues.row.transferredDate).format("YYYY-MM-DD")}
+              </p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {moment(cellValues.formattedValue).format("YYYY-MM-DD")}
             </div>
           );
         }
