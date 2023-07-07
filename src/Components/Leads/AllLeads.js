@@ -314,8 +314,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "otp",
-      headerName:
-        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
+      headerName: lead_origin === "transfferedleads" ? "Ex-Agent" : "OTP",
       minWidth: 90,
       headerAlign: "center",
       flex: 1,
@@ -353,6 +352,31 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     </span>
                   </div>
                 )}
+            </div>
+          );
+        }
+      },
+    },
+    {
+      field: "creationDate",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred Date" : "Date",
+      minWidth: 55,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>
+                {moment(cellValues.row.transferredDate).format("YYYY-MM-DD")}
+              </p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {moment(cellValues.formattedValue).format("YYYY-MM-DD")}
             </div>
           );
         }
