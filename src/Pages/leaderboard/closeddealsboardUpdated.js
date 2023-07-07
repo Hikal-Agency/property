@@ -135,8 +135,8 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
         tabValue === 0
           ? "leaderboard"
           : tabValue === 1
-          ? "leaderboard?period=last_month"
-          : "leaderboard?period=current_month";
+          ? "leaderboard?last_month"
+          : "leaderboard?current_month";
       const all_leaderboard = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
         headers: {
           "Content-Type": "application/json",

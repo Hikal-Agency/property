@@ -21,10 +21,10 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
     setLoading(true);
     let apiUrl =
       tabValue === 0
-        ? "leaderboard?period=current_month"
+        ? "leaderboard?current_month"
         : tabValue === 1
-        ? "leaderboard?period=last_month"
-        : "leaderboard?period=current_month";
+        ? "leaderboard?last_month"
+        : "leaderboard?current_month";
     try {
       const all_leaderboard = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
         headers: {
