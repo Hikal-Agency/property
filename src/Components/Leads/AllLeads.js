@@ -2000,7 +2000,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <>
       <ToastContainer />
       <div className="pb-10">
-           {lead_origin === "unassigned" && lead_type === "fresh" && (
+           {/* {lead_origin === "unassigned" && lead_type === "fresh" && (
           <Box
             sx={{
               ...darkModeColors,
@@ -2052,7 +2052,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               ))}
             </Select>
           </Box>
-        )}
+        )} */}
         <Box
           sx={{
             ...DataGridStyles,

@@ -1108,50 +1108,50 @@ const Sidebarmui = () => {
             {
               name: "Fresh leads",
               link: "/unassigned/fresh",
-              // icon: <SiHotjar />,
-              count: sidebarData?.UNASSIGNED?.fresh
-              // submenu: [
-              //   {
-              //     name: "All",
-              //     count: sidebarData?.UNASSIGNED?.fresh,
-              //     link: "/unassigned/fresh",
-              //   },
-              //   {
-              //     name: "New",
-              //     count: sidebarData?.HotLeadsCount?.new,
-              //     link: "/unassigned/new",
-              //   },
-              //   {
-              //     name: "No Answer",
-              //     count: sidebarData?.HotLeadsCount?.no_nswer,
-              //     link: "/unassigned/no answer",
-              //   },
-              //   {
-              //     name: "Meeting",
-              //     count: sidebarData?.HotLeadsCount?.Meeting,
-              //     link: "/unassigned/meeting",
-              //   },
-              //   {
-              //     name: "Follow Up",
-              //     count: sidebarData?.HotLeadsCount?.follow_up,
-              //     link: "/unassigned/follow up",
-              //   },
-              //   {
-              //     name: "Low Budget",
-              //     count: sidebarData?.HotLeadsCount?.low_budget,
-              //     link: "/unassigned/low budget",
-              //   },
-              //   {
-              //     name: "Not Interested",
-              //     count: sidebarData?.HotLeadsCount?.not_interested,
-              //     link: "/unassigned/not interested",
-              //   },
-              //   {
-              //     name: "Unreachable",
-              //     count: sidebarData?.HotLeadsCount?.unreachable,
-              //     link: "/unassigned/unreachable",
-              //   },
-              // ],
+              icon: <SiHotjar />,
+              // count: sidebarData?.UNASSIGNED?.fresh,
+              submenu: [
+                {
+                  name: "All",
+                  count: sidebarData?.UNASSIGNED?.fresh,
+                  link: "/unassigned/fresh",
+                },
+                {
+                  name: "New",
+                  count: sidebarData?.UNASSIGNED?.new,
+                  link: "/unassigned/new",
+                },
+                {
+                  name: "No Answer",
+                  count: sidebarData?.UNASSIGNED?.no_answer,
+                  link: "/unassigned/no answer",
+                },
+                {
+                  name: "Meeting",
+                  count: sidebarData?.UNASSIGNED?.meeting,
+                  link: "/unassigned/meeting",
+                },
+                {
+                  name: "Follow Up",
+                  count: sidebarData?.UNASSIGNED?.follow_up,
+                  link: "/unassigned/follow up",
+                },
+                {
+                  name: "Low Budget",
+                  count: sidebarData?.UNASSIGNED?.low_budget,
+                  link: "/unassigned/low budget",
+                },
+                {
+                  name: "Not Interested",
+                  count: sidebarData?.UNASSIGNED?.not_interested,
+                  link: "/unassigned/not interested",
+                },
+                {
+                  name: "Unreachable",
+                  count: sidebarData?.UNASSIGNED?.unreachable,
+                  link: "/unassigned/unreachable",
+                },
+              ],
             },
             {
               name: "Cold leads",
@@ -2397,7 +2397,7 @@ const Sidebarmui = () => {
                                   }
                                 >
                                   {link.submenu.map((menu, index) => {
-                                    {/* if (menu?.submenu) {
+                                    if (menu?.submenu) {
                                       return (
                                         <Box
                                           onClick={(e) => {
@@ -2559,7 +2559,7 @@ const Sidebarmui = () => {
                                           </SubMenu>
                                         </Box>
                                       );
-                                    } */}
+                                    }
                                     return (
                                       <Link key={index} to={`${menu.link}`}>
                                         <Box
