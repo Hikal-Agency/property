@@ -1,33 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <link rel="manifest" href="/favicon.png" />
-    <link rel="icon" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="HIKAL CRM" />
-    <link rel="apple-touch-icon" href="/favicon.png" />
-    <title>Hikal CRM</title>
-  </head>
-  <body>
-    <div id="root"></div>
 
-    <script defer src="https://apis.google.com/js/api.js" type="text/javascript"></script>
-    <script defer src="https://accounts.google.com/gsi/client" type="text/javascript"></script>
-    <script src="./inject.js"></script>
-    <script src="https://mediafiles.botpress.cloud/ccb74641-9823-46bd-8f22-d565570bac7e/webchat/config.js"></script>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId            : '505067971265521',
-          autoLogAppEvents : true,
-          xfbml            : true,
-          version          : 'v17.0'
+<head>
+  <meta charset="utf-8" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="manifest" href="/favicon.png" />
+  <link rel="icon" href="/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="HIKAL CRM" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+
+  <title>Hikal CRM</title>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script defer src="https://apis.google.com/js/api.js" type="text/javascript"></script>
+  <script defer src="https://accounts.google.com/gsi/client" type="text/javascript"></script>
+  <script>
+    window.onload = () => {
+      (() => {
+        const chatContainerId = "bp-web-widget";
+        const chatInstances = {};
+
+        function getContainerId(chatId) {
+          return chatId ? `${chatId}-container` : chatContainerId;
+        }
+
+        function getFrameId(chatId) {
+          return chatId || "bp-widget";
+        }
+
+        function createElement(tag, parentSelector, attributes = {}) {
+          const element = document.createElement(tag);
+          Object.entries(attributes).forEach(([key, value]) => {
+            element[key] = value;
+          });
+          const parentElement = document.querySelector(parentSelector);
+          if (!parentElement) {
+            throw new Error(`No element corresponds to ${parentSelector}`);
+          }
+          parentElement.appendChild(element);
+          return element;
+        }
+
+        function generateChatKey(clientId) {
+          const chatKey = `bp-chat-key-${clientId}`;
+          let encryptionKey = localStorage.getItem(chatKey);
+          if (!encryptionKey) {
+            encryptionKey = Array.from(Array(32))
+              .map(() => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".charAt(Math.floor(Math.random() * 62)))
+              .join("");
+            localStorage.setItem(chatKey, encryptionKey);
+          }
+          return encodeURIComponent(JSON.stringify({ config: { ...clientId, encryptionKey } }));
+        }
+
+        function generateFrameSrc(hostUrl, clientId) {
+          const encodedOptions = generateChatKey(clientId);
+          const encodedTitle = encodeURIComponent(clientId.botConversationDescription || clientId.botName || "Chatbot");
+          return `${hostUrl}/index.html?options=${encodedOptions}`;
+        }
+
+        function createChatInstance(chatId, instance) {
+          const chatElement = { iframeWindow: getFrame(chatId)?.contentWindow };
+          if (chatInstances[chatId]) {
+            Object.assign(chatInstances[chatId], chatElement);
+          } else {
+            chatInstances[chatId] = createProxy(chatId, chatElement);
+          }
+        }
+
+        function getChatInstance(chatId) {
+          return chatInstances[chatId] || createProxy(chatId, {});
+        }
+
+        function createProxy(chatId, instance) {
+          return new Proxy(instance, {
+            get(target, property) {
+              if (target[property]) {
+                return target[property];
+              }
+              if (property === "iframeWindow") {
+                return () => {
+                  console.warn(`No webchat with id ${chatId} has been initialized. \n Please use window.botpressWebChat.init first.`);
+                };
+              }
+              if (property === "eventListener") {
+                return { handler: () => { }, topics: [] };
+              }
+            },
+            set(target, property, value) {
+              target[property] = value;
+              return true;
+            },
+          });
+        }
+
+        function getChatInstanceById(chatId) {
+          return chatInstances[chatId];
+        }
+
+        function getFrame(containerId, frameId) {
+          return document.querySelector(`#${containerId} #${frameId}`);
+        }
+
+        window.addEventListener("message", function ({ data: event }) {
+          if (!event || typeof event.type !== "string" || typeof event.chatId !== "string") {
+            return;
+          }
+
+          const { type, value, chatId } = event;
+
+          if (type === "UI.RESIZE") {
+            const width = typeof value === "number" ? value + "px" : value;
+            const chatFrame = getFrame(getContainerId(chatId), getFrameId(chatId));
+            chatFrame.style.width = width;
+          }
+
+          if (type === "UI.SET-CLASS") {
+            const chatFrame = getFrame(getContainerId(chatId), getFrameId(chatId));
+            chatFrame.setAttribute("class", value);
+          }
+
+          const chatInstance = getChatInstance(chatId);
+          if (chatInstance.eventListener?.topics?.some(topic => topic === "*" || topic === type)) {
+            chatInstance.eventListener.handler(event);
+          }
         });
-      };
-    </script>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-  </body>
+
+        window.botpressWebChat = {
+          init: function (config, parentElementId) {
+            parentElementId = parentElementId || "body";
+            config.chatId = config.chatId || chatContainerId;
+            const hostUrl = config.hostUrl || "";
+            createElement("link", "head", { rel: "stylesheet", href: `${hostUrl}/inject.css` });
+            const frameSrc = generateFrameSrc(hostUrl, config);
+            const containerId = getContainerId(config.chatId);
+            const frameId = getFrameId(config.chatId);
+            createElement("div", parentElementId, { id: containerId, innerHTML: `<iframe id="${frameId}" title="${encodeURIComponent(config.botConversationDescription || config.botName || "Chatbot")}" frameborder="0" src="${frameSrc}" class="bp-widget-web"/>` });
+            createChatInstance(config.chatId);
+          },
+          configure: function (payload, chatId) {
+            getChatInstanceById(chatId).iframeWindow.postMessage({ action: "configure", payload }, "*");
+          },
+          sendEvent: function (payload, chatId) {
+            getChatInstanceById(chatId).iframeWindow.postMessage({ action: "event", payload }, "*");
+          },
+          mergeConfig: function (payload, chatId) {
+            getChatInstanceById(chatId).iframeWindow.postMessage({ action: "mergeConfig", payload }, "*");
+          },
+          sendPayload: function (payload, chatId) {
+            getChatInstanceById(chatId).iframeWindow.postMessage({ action: "sendPayload", payload }, "*");
+          },
+          onEvent: function (handler, topics = [], chatId) {
+            if (typeof handler !== "function") {
+              throw new Error("EventHandler is not a function, please provide a function");
+            }
+            if (!Array.isArray(topics)) {
+              throw new Error("Topics should be an array of supported event types");
+            }
+            const eventListener = { handler, topics };
+            if (chatInstances[chatId]) {
+              Object.assign(chatInstances[chatId].eventListener, eventListener);
+            } else {
+              chatInstances[chatId] = createProxy(chatId, { eventListener });
+            }
+          },
+        };
+      })();
+      window?.botpressWebChat?.init({
+        "botId": "ccb74641-9823-46bd-8f22-d565570bac7e",
+        "hostUrl": "https://cdn.botpress.cloud/webchat/v0",
+        "messagingUrl": "https://messaging.botpress.cloud",
+        "clientId": "ccb74641-9823-46bd-8f22-d565570bac7e",
+        "botName": "HIKAL",
+        "avatarUrl": "https://property.hikalcrm.com/favicon.png",
+        "botConversationDescription": "Property Solutions Hub",
+        "phoneNumber": "+92 3366926432",
+        "emailAddress": "rimsha@hikalagency.ae",
+        "website": "https://hikalproperties.ae/",
+        "useSessionStorage": true
+      });
+
+    }
+  </script>
+  <script>
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '505067971265521',
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: 'v17.0'
+      });
+    };
+  </script>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+</body>
+
 </html>

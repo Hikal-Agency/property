@@ -1,19 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import Footer from "../../Components/Footer/Footer";
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
-import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
-import { Box } from "@mui/material";
-import { MdCampaign } from "react-icons/md";
-import { FaSnapchat } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { BsSnow2 } from "react-icons/bs";
-import { FaTiktok } from "react-icons/fa";
-import { RiMessage2Line } from "react-icons/ri";
-import { FaWhatsapp } from "react-icons/fa";
 
 const PersonaLeads = () => {
   const location = useLocation();

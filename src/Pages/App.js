@@ -154,7 +154,7 @@ const routes = [
     pageName: "Cold Leads",
   },
   {
-    path: "/reshuffleleads",
+    path: "/reshuffleleads/:lead_type",
     element: <TransferredLeads />,
     pageName: "Transferred Leads",
   },
