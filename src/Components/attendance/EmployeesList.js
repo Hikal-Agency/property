@@ -21,10 +21,21 @@ const EmployeesList = ({ user }) => {
     setpageState({ ...pageState, page: value });
   };
 
+  // const handleClick = (e, user_id) => {
+  //   e.preventDefault();
+
+  //   navigate(`/attendance/singleEmployee/${user_id}`);
+  // };
   const handleClick = (e, user_id) => {
     e.preventDefault();
+    const newWindow = window.open(
+      `/attendance/singleEmployee/${user_id}`,
+      "_blank"
+    );
 
-    navigate(`/attendance/singleEmployee/${user_id}`);
+    if (newWindow) {
+      newWindow.opener = null;
+    }
   };
 
   useEffect(() => {
