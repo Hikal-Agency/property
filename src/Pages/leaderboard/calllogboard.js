@@ -325,13 +325,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
               </div>
               {noData && (
                 <div className="flex flex-col items-center justify-center h-screen ">
-                  <h1
+                  {/* <h1
                     className={
                       currentMode === "dark" ? "text-white" : "text-black"
                     }
                   >
                     No data available.
-                  </h1>
+                  </h1> */}
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
@@ -525,13 +525,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
               </div>
               {noData && (
                 <div className="flex flex-col items-center justify-center h-screen ">
-                  <h1
+                  {/* <h1
                     className={
                       currentMode === "dark" ? "text-white" : "text-black"
                     }
                   >
                     No data available.
-                  </h1>
+                  </h1> */}
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
@@ -725,13 +725,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
               </div>
               {noData && (
                 <div className="flex flex-col items-center justify-center h-screen ">
-                  <h1
+                  {/* <h1
                     className={
                       currentMode === "dark" ? "text-white" : "text-black"
                     }
                   >
                     No data available.
-                  </h1>
+                  </h1> */}
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
