@@ -334,9 +334,8 @@ const AddReminder = ({
                         }}
                       />
                     )}
-                    views={["hours", "minutes", "seconds"]}
-                    // view="minutes"
-                    defaultView="minutes"
+                    // views={["hours", "minutes", "seconds"]}
+                    // defaultView={"hours"}
                   />
                 </LocalizationProvider>
               </div>
