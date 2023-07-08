@@ -108,6 +108,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchLeaderboard(token);
+    console.log("tabvaleu: ", tabValue);
   }, []);
 
   const handleChange = (event, newValue) => {
