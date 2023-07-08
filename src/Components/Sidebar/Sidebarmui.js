@@ -186,52 +186,7 @@ const Sidebarmui = () => {
             },
           ],
         },
-        {
-          name: "Personal",
-          icon: <HiUsers />,
-          submenu: [
-            {
-              name: "All",
-              count: sidebarData?.PersonalLeadsCount?.all,
-              link: "/personalleads/all",
-            },
-            {
-              name: "New",
-              count: sidebarData?.PersonalLeadsCount?.new,
-              link: "/personalleads/new",
-            },
-            {
-              name: "No Answer",
-              count: sidebarData?.PersonalLeadsCount?.no_nswer,
-              link: "/personalleads/no answer",
-            },
-            {
-              name: "Meeting",
-              count: sidebarData?.PersonalLeadsCount?.Meeting,
-              link: "/personalleads/meeting",
-            },
-            {
-              name: "Follow Up",
-              count: sidebarData?.PersonalLeadsCount?.follow_up,
-              link: "/personalleads/follow up",
-            },
-            {
-              name: "Low Budget",
-              count: sidebarData?.PersonalLeadsCount?.low_budget,
-              link: "/personalleads/low budget",
-            },
-            {
-              name: "Not Interested",
-              count: sidebarData?.PersonalLeadsCount?.not_interested,
-              link: "/personalleads/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: sidebarData?.PersonalLeadsCount?.unreachable,
-              link: "/personalleads/unreachable",
-            },
-          ],
-        },
+
         {
           name: "Third party",
           icon: <FaLink />,
@@ -325,6 +280,7 @@ const Sidebarmui = () => {
             },
           ],
         },
+
         {
           name: "Reshuffle Leads",
           icon: <FaRandom />,
@@ -376,6 +332,53 @@ const Sidebarmui = () => {
             },
           ],
         },
+        {
+          name: "Personal",
+          icon: <HiUsers />,
+          submenu: [
+            {
+              name: "All",
+              count: sidebarData?.PersonalLeadsCount?.all,
+              link: "/personalleads/all",
+            },
+            {
+              name: "New",
+              count: sidebarData?.PersonalLeadsCount?.new,
+              link: "/personalleads/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.PersonalLeadsCount?.no_nswer,
+              link: "/personalleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.PersonalLeadsCount?.Meeting,
+              link: "/personalleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.PersonalLeadsCount?.follow_up,
+              link: "/personalleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.PersonalLeadsCount?.low_budget,
+              link: "/personalleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: sidebarData?.PersonalLeadsCount?.not_interested,
+              link: "/personalleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.PersonalLeadsCount?.unreachable,
+              link: "/personalleads/unreachable",
+            },
+          ],
+        },
+
         {
           name: "Notes",
           icon: <MdSpeakerNotes />,
@@ -507,6 +510,37 @@ const Sidebarmui = () => {
           link: "/addlead",
         },
         {
+          name: "Unassigned",
+          icon: <BsStopCircleFill />,
+          submenu: [
+            {
+              name: "Fresh leads",
+              count: sidebarData?.UNASSIGNED?.fresh,
+              link: "/unassigned/fresh",
+            },
+            {
+              name: "Cold leads",
+              count: sidebarData?.UNASSIGNED?.cold,
+              link: "/unassigned/cold",
+            },
+            {
+              name: "Archived Leads",
+              count: sidebarData?.UNASSIGNED?.warm,
+              link: "/unassigned/archive",
+            },
+            {
+              name: "Personal leads",
+              count: sidebarData?.UNASSIGNED?.personal,
+              link: "/unassigned/personal",
+            },
+            {
+              name: "Third Party",
+              count: sidebarData?.UNASSIGNED?.third_party,
+              link: "/unassigned/thirdpartyleads",
+            },
+          ],
+        },
+        {
           name: "Fresh",
           icon: <SiHotjar />,
           submenu: [
@@ -549,53 +583,6 @@ const Sidebarmui = () => {
               name: "Unreachable",
               count: sidebarData?.HotLeadsCount?.unreachable,
               link: "/freshleads/unreachable",
-            },
-          ],
-        },
-
-        {
-          name: "Personal",
-          icon: <HiUsers />,
-          submenu: [
-            {
-              name: "All",
-              count: sidebarData?.PersonalLeadsCount?.all,
-              link: "/personalleads/all",
-            },
-            {
-              name: "New",
-              count: sidebarData?.PersonalLeadsCount?.new,
-              link: "/personalleads/new",
-            },
-            {
-              name: "No Answer",
-              count: sidebarData?.PersonalLeadsCount?.no_nswer,
-              link: "/personalleads/no answer",
-            },
-            {
-              name: "Meeting",
-              count: sidebarData?.PersonalLeadsCount?.Meeting,
-              link: "/personalleads/meeting",
-            },
-            {
-              name: "Follow Up",
-              count: sidebarData?.PersonalLeadsCount?.follow_up,
-              link: "/personalleads/follow up",
-            },
-            {
-              name: "Low Budget",
-              count: sidebarData?.PersonalLeadsCount?.low_budget,
-              link: "/personalleads/low budget",
-            },
-            {
-              name: "Not Interested",
-              count: sidebarData?.PersonalLeadsCount?.not_interested,
-              link: "/personalleads/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: sidebarData?.PersonalLeadsCount?.unreachable,
-              link: "/personalleads/unreachable",
             },
           ],
         },
@@ -692,37 +679,60 @@ const Sidebarmui = () => {
             },
           ],
         },
+
         {
-          name: "Unassigned",
-          icon: <BsStopCircleFill />,
+          name: "Reshuffle",
+          icon: <FaRandom />,
+          link: "/reshuffleleads",
+        },
+
+        {
+          name: "Personal",
+          icon: <HiUsers />,
           submenu: [
             {
-              name: "Fresh leads",
-              count: sidebarData?.UNASSIGNED?.fresh,
-              link: "/unassigned/fresh",
+              name: "All",
+              count: sidebarData?.PersonalLeadsCount?.all,
+              link: "/personalleads/all",
             },
             {
-              name: "Cold leads",
-              count: sidebarData?.UNASSIGNED?.cold,
-              link: "/unassigned/cold",
+              name: "New",
+              count: sidebarData?.PersonalLeadsCount?.new,
+              link: "/personalleads/new",
             },
             {
-              name: "Archived Leads",
-              count: sidebarData?.UNASSIGNED?.warm,
-              link: "/unassigned/archive",
+              name: "No Answer",
+              count: sidebarData?.PersonalLeadsCount?.no_nswer,
+              link: "/personalleads/no answer",
             },
             {
-              name: "Personal leads",
-              count: sidebarData?.UNASSIGNED?.personal,
-              link: "/unassigned/personal",
+              name: "Meeting",
+              count: sidebarData?.PersonalLeadsCount?.Meeting,
+              link: "/personalleads/meeting",
             },
             {
-              name: "Third Party",
-              count: sidebarData?.UNASSIGNED?.third_party,
-              link: "/unassigned/thirdpartyleads",
+              name: "Follow Up",
+              count: sidebarData?.PersonalLeadsCount?.follow_up,
+              link: "/personalleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.PersonalLeadsCount?.low_budget,
+              link: "/personalleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: sidebarData?.PersonalLeadsCount?.not_interested,
+              link: "/personalleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.PersonalLeadsCount?.unreachable,
+              link: "/personalleads/unreachable",
             },
           ],
         },
+
         {
           name: "Archived",
           icon: <FaArchive />,
@@ -769,11 +779,7 @@ const Sidebarmui = () => {
             },
           ],
         },
-        {
-          name: "Reshuffle",
-          icon: <FaRandom />,
-          link: "/reshuffleleads",
-        },
+
         // {
         //   name: "Booked deals",
         //   icon: <ImBookmark />,
@@ -1613,53 +1619,6 @@ const Sidebarmui = () => {
           ],
         },
         {
-          name: "Personal",
-          icon: <HiUsers />,
-          submenu: [
-            {
-              name: "All",
-              count: sidebarData?.PersonalLeadsCount?.all,
-              link: "/personalleads/all",
-            },
-            {
-              name: "New",
-              count: sidebarData?.PersonalLeadsCount?.new,
-              link: "/personalleads/new",
-            },
-            {
-              name: "No Answer",
-              count: sidebarData?.PersonalLeadsCount?.no_nswer,
-              link: "/personalleads/no answer",
-            },
-            {
-              name: "Meeting",
-              count: sidebarData?.PersonalLeadsCount?.Meeting,
-              link: "/personalleads/meeting",
-            },
-            {
-              name: "Follow Up",
-              count: sidebarData?.PersonalLeadsCount?.follow_up,
-              link: "/personalleads/follow up",
-            },
-            {
-              name: "Low Budget",
-              count: sidebarData?.PersonalLeadsCount?.low_budget,
-              link: "/personalleads/low budget",
-            },
-            {
-              name: "Not Interested",
-              count: sidebarData?.PersonalLeadsCount?.not_interested,
-              link: "/personalleads/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: sidebarData?.PersonalLeadsCount?.unreachable,
-              link: "/personalleads/unreachable",
-            },
-          ],
-        },
-
-        {
           name: "Cold",
           icon: <FaSnowflake />,
           submenu: [
@@ -1730,6 +1689,52 @@ const Sidebarmui = () => {
           name: "Reshuffle",
           icon: <FaRandom />,
           link: "/reshuffleleads",
+        },
+        {
+          name: "Personal",
+          icon: <HiUsers />,
+          submenu: [
+            {
+              name: "All",
+              count: sidebarData?.PersonalLeadsCount?.all,
+              link: "/personalleads/all",
+            },
+            {
+              name: "New",
+              count: sidebarData?.PersonalLeadsCount?.new,
+              link: "/personalleads/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.PersonalLeadsCount?.no_nswer,
+              link: "/personalleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.PersonalLeadsCount?.Meeting,
+              link: "/personalleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.PersonalLeadsCount?.follow_up,
+              link: "/personalleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.PersonalLeadsCount?.low_budget,
+              link: "/personalleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: sidebarData?.PersonalLeadsCount?.not_interested,
+              link: "/personalleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.PersonalLeadsCount?.unreachable,
+              link: "/personalleads/unreachable",
+            },
+          ],
         },
 
         {
