@@ -48,9 +48,7 @@ const Chat = () => {
       socket.emit("get_chat", { id: waDevice, contact: contact });
       socket.on("chat", (data) => {
         if (data?.length > 0) {
-          setChatMessages(() => {
-            return [...data];
-          });
+            setChatMessages([...data]);
           if (callback) callback();
           setChatLoading(false);
         }
@@ -183,9 +181,8 @@ const Chat = () => {
     }
   };
 
-  const fetchDevices = () => {
+  const fetchDevices = async () => {
     setloading(true);
-    setTimeout(async () => {
       const token = localStorage.getItem("auth-token");
       const response = await axios.get(`${BACKEND_URL}/instances`, {
         headers: {
@@ -196,7 +193,6 @@ const Chat = () => {
 
       setDevicesList(response.data.instances.data);
       setloading(false);
-    }, 1000);
   };
 
   const connectDevice = async (deviceName, phoneNo) => {
@@ -356,8 +352,8 @@ const Chat = () => {
         const waDevice = localStorage.getItem("authenticated-wa-device");
         if (waDevice) {
           disconnectDevice(waDevice);
+          setServerDisconnected(true);
         }
-        setServerDisconnected(true);
       });
     }
   }, [socket]);
@@ -403,6 +399,19 @@ const Chat = () => {
       });
     }
   }, [User, ready, activeChat.phoneNumber, searchParams]);
+
+    useEffect(() => {
+    const cb = () => {
+      if (User && ready) {
+        fetchChatMessages(searchParams.get("phoneNumber"));
+      }
+    };
+    const interval = setInterval(cb, 6000);
+
+    return () => {
+      clearInterval(interval, cb);
+    };
+  }, [User, ready]);
 
   // useEffect(() => {
   //   const cb = () => {
