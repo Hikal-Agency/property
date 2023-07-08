@@ -6,7 +6,7 @@ import {
   TextField,
   styled,
   Select,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import "../../styles/index.css";
 import {
@@ -56,7 +56,6 @@ import { FaTwitter } from "react-icons/fa";
 import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
 
-
 const bulkUpdateBtnStyles = {
   position: "absolute",
   top: "10.5px",
@@ -76,7 +75,7 @@ const feedbacks = [
   "Unreachable",
 ];
 
-const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
+const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const token = localStorage.getItem("auth-token");
   const navigate = useNavigate();
   const [singleLeadData, setsingleLeadData] = useState({});
@@ -84,6 +83,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [deletebtnloading, setdeletebtnloading] = useState(false);
   const [filt, setFilt] = useState([]);
   const [error, setError] = useState(false);
+  console.log("LeadType::", lead_type);
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
@@ -104,7 +104,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const dataTableRef = useRef();
 
   const location = useLocation();
-  console.log("Location::", location)
+  console.log("Location::", location);
 
   const {
     currentMode,
@@ -1362,7 +1362,39 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Unreachable`;
       }
     } else if (lead_origin === "transfferedleads") {
-      FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&perpage=${pageState.perpage}&coldCall=0&leadStatus=Transferred`;
+      if (lead_type === "all") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=0&leadStatus=Transferred`;
+      } else if (lead_type === "new") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=New&leadStatus=Transferred`;
+      } else if (lead_type === "no answer") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=No Answer&leadStatus=Transferred`;
+      } else if (lead_type === "meeting") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Meeting&leadStatus=Transferred`;
+      } else if (lead_type === "follow up") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Follow Up&leadStatus=Transferred`;
+      } else if (lead_type === "low budget") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Low Budget&leadStatus=Transferred`;
+      } else if (lead_type === "not interested") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=Not Interested&leadStatus=Transferred`;
+      } else if (lead_type === "unreachable") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Unreachable&leadStatus=Transferred`;
+      }
     } else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -2003,7 +2035,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     <>
       <ToastContainer />
       <div className="pb-10">
-           {/* {lead_origin === "unassigned" && lead_type === "fresh" && (
+        {/* {lead_origin === "unassigned" && lead_type === "fresh" && (
           <Box
             sx={{
               ...darkModeColors,

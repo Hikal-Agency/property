@@ -2,18 +2,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
-import Footer from "../../Components/Footer/Footer";
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
-import { MdCampaign } from "react-icons/md";
-import { FaSnapchat } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { BsSnow2 } from "react-icons/bs";
-import { Box } from "@mui/material";
 
 const TransferredLeads = (props) => {
   const navigate = useNavigate();
@@ -28,27 +19,9 @@ const TransferredLeads = (props) => {
     BACKEND_URL,
   } = useStateContext();
 
-  const FetchProfile = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setUser(result.data.user[0]);
-        setloading(false);
-      })
-      .catch((err) => {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again ",
-            continueURL: location.pathname,
-          },
-        });
-      });
-  };
+  const lead_type2 = location.pathname.split("/")[2];
+  var lead_type = lead_type2.replace(/%20/g, " ");
+
   useEffect(() => {
     setopenBackDrop(false);
     setloading(false);
@@ -81,7 +54,7 @@ const TransferredLeads = (props) => {
                     }`}
                   >
                     Reshuffle Leads -{" "}
-                    {/* <span className="capitalize">{lead_type}</span>{" "} */}
+                    <span className="capitalize">{lead_type}</span>{" "}
                     <span className="bg-main-red-color text-white px-3 py-3 rounded-sm my-auto">
                       {pageState?.total}
                     </span>
@@ -256,6 +229,7 @@ const TransferredLeads = (props) => {
                 <AllLeads
                   BACKEND_URL={BACKEND_URL}
                   lead_origin="transfferedleads"
+                  lead_type={lead_type}
                 />
               </div>
             </div>
