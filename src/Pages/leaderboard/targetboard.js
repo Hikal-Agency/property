@@ -8,6 +8,8 @@ import Loader from "../../Components/Loader";
 const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
 
+  const [noData, setNoData] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [leaderboard, setLeaderboard] = useState();
   const [manager, setManagers] = useState();
@@ -34,6 +36,12 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
       });
 
       setLeaderboard(all_leaderboard?.data?.user);
+
+      if (all_leaderboard?.data?.user.length == 0) {
+        setNoData(true);
+        setLoading(false);
+        return;
+      }
 
       const leaderboard = all_leaderboard?.data?.user;
 
@@ -100,6 +108,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchLeaderboard(token);
+    console.log("tabvaleu: ", tabValue);
   }, []);
 
   const handleChange = (event, newValue) => {
@@ -212,41 +221,41 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
               >
                 Sales Manager
               </div>
-              <div className="h-[300px] overflow-y-scroll">
-                {manager?.length > 0 ? (
-                  manager?.map((item, index) => {
-                    let totalSales = item.total_sales
-                      ? parseInt(item.total_sales)
-                      : 0;
-                    let target = item.target ? parseInt(item.target) : 0;
-                    let percentageSales = (totalSales / target) * 100;
-                    percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
-                    const barWidth = `${percentageSales}%`;
-                    const barColor =
-                      percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+              <div className={`${!noData && "h-[300px]"} overflow-y-scroll`}>
+                {!noData && manager?.length > 0
+                  ? manager?.map((item, index) => {
+                      let totalSales = item.total_sales
+                        ? parseInt(item.total_sales)
+                        : 0;
+                      let target = item.target ? parseInt(item.target) : 0;
+                      let percentageSales = (totalSales / target) * 100;
+                      percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
+                      const barWidth = `${percentageSales}%`;
+                      const barColor =
+                        percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
 
-                    return (
-                      <div
-                        key={index}
-                        className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
-                      >
-                        <div className="col-span-2">
-                          <h4 className="font-bold my-1">{item?.userName}</h4>
-                        </div>
-                        <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                          <div className="relative flex-1">
-                            <div
-                              className={`absolute left-0 top-0 h-5 ${barColor}`}
-                              style={{ width: barWidth }}
-                            ></div>
-                            <div
-                              className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
-                                currentMode === "dark"
-                                  ? "text-white"
-                                  : "text-dark-600"
-                              }`}
-                            >
-                              {/* Total Closed Deals: {item?.total_closed_deals} /
+                      return (
+                        <div
+                          key={index}
+                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                        >
+                          <div className="col-span-2">
+                            <h4 className="font-bold my-1">{item?.userName}</h4>
+                          </div>
+                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                            <div className="relative flex-1">
+                              <div
+                                className={`absolute left-0 top-0 h-5 ${barColor}`}
+                                style={{ width: barWidth }}
+                              ></div>
+                              <div
+                                className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-dark-600"
+                                }`}
+                              >
+                                {/* Total Closed Deals: {item?.total_closed_deals} /
                           Direct deals:{" "}
                           <span
                             className={
@@ -257,33 +266,48 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             {item?.total_sales || 0}
                           </span> */}
-                              {percentageSales?.toFixed(2)}% of target achieved
+                                {percentageSales?.toFixed(2)}% of target
+                                achieved
+                              </div>
                             </div>
+                            {item?.profile_picture ? (
+                              <img
+                                src={item?.profile_picture}
+                                height={50}
+                                width={50}
+                                className="rounded-full cursor-pointer"
+                                alt=""
+                              />
+                            ) : (
+                              <img
+                                src="./favicon.png"
+                                height={50}
+                                width={50}
+                                className="rounded-full cursor-pointer"
+                                alt=""
+                              />
+                            )}
                           </div>
-                          {item?.profile_picture ? (
-                            <img
-                              src={item?.profile_picture}
-                              height={50}
-                              width={50}
-                              className="rounded-full cursor-pointer"
-                              alt=""
-                            />
-                          ) : (
-                            <img
-                              src="./favicon.png"
-                              height={50}
-                              width={50}
-                              className="rounded-full cursor-pointer"
-                              alt=""
-                            />
-                          )}
+                          <div></div>
                         </div>
-                        <div></div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <h2>No data for this month.</h2>
+                      );
+                    })
+                  : ""}
+                {noData && (
+                  <div className="flex flex-col items-center justify-center ">
+                    {/* <h1
+                      className={
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      }
+                    >
+                      No data available.
+                    </h1> */}
+                    <img
+                      src="./no_data.png"
+                      alt="No data Illustration"
+                      className="w-[600px] h-[600px] object-cover"
+                    />
+                  </div>
                 )}
               </div>
             </div>
@@ -311,40 +335,40 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                 Sales Agent
               </div>
               <div className="h-[300px] overflow-y-scroll">
-                {agents?.length > 0 ? (
-                  agents?.map((item, index) => {
-                    let totalSales = item.total_sales
-                      ? parseInt(item.total_sales)
-                      : 0;
-                    let target = item.target ? parseInt(item.target) : 0;
-                    let percentageSales = (totalSales / target) * 100;
-                    percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
-                    const barWidth = `${percentageSales}%`;
-                    const barColor =
-                      percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+                {!noData && agents?.length > 0
+                  ? agents?.map((item, index) => {
+                      let totalSales = item.total_sales
+                        ? parseInt(item.total_sales)
+                        : 0;
+                      let target = item.target ? parseInt(item.target) : 0;
+                      let percentageSales = (totalSales / target) * 100;
+                      percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
+                      const barWidth = `${percentageSales}%`;
+                      const barColor =
+                        percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
 
-                    return (
-                      <div
-                        key={index}
-                        className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
-                      >
-                        <div className="col-span-2">
-                          <h4 className="font-bold my-1">{item?.userName}</h4>
-                        </div>
-                        <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                          <div className="relative flex-1">
-                            <div
-                              className={`absolute left-0 top-0 h-5 ${barColor}`}
-                              style={{ width: barWidth }}
-                            ></div>
-                            <div
-                              className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
-                                currentMode === "dark"
-                                  ? "text-white"
-                                  : "text-dark-600"
-                              }`}
-                            >
-                              {/* Total Closed Deals: {item?.total_closed_deals} /
+                      return (
+                        <div
+                          key={index}
+                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                        >
+                          <div className="col-span-2">
+                            <h4 className="font-bold my-1">{item?.userName}</h4>
+                          </div>
+                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                            <div className="relative flex-1">
+                              <div
+                                className={`absolute left-0 top-0 h-5 ${barColor}`}
+                                style={{ width: barWidth }}
+                              ></div>
+                              <div
+                                className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-dark-600"
+                                }`}
+                              >
+                                {/* Total Closed Deals: {item?.total_closed_deals} /
                           Direct deals:{" "}
                           <span
                             className={
@@ -355,34 +379,33 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             {item?.total_sales || 0}
                           </span> */}
-                              {percentageSales?.toFixed(2)}% of target achieved
+                                {percentageSales?.toFixed(2)}% of target
+                                achieved
+                              </div>
                             </div>
+                            {item?.profile_picture ? (
+                              <img
+                                src={item?.profile_picture}
+                                height={50}
+                                width={50}
+                                className="rounded-full cursor-pointer"
+                                alt=""
+                              />
+                            ) : (
+                              <img
+                                src="./favicon.png"
+                                height={50}
+                                width={50}
+                                className="rounded-full cursor-pointer"
+                                alt=""
+                              />
+                            )}
                           </div>
-                          {item?.profile_picture ? (
-                            <img
-                              src={item?.profile_picture}
-                              height={50}
-                              width={50}
-                              className="rounded-full cursor-pointer"
-                              alt=""
-                            />
-                          ) : (
-                            <img
-                              src="./favicon.png"
-                              height={50}
-                              width={50}
-                              className="rounded-full cursor-pointer"
-                              alt=""
-                            />
-                          )}
+                          <div></div>
                         </div>
-                        <div></div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <h2>No data for this month.</h2>
-                )}
+                      );
+                    })
+                  : ""}
               </div>
             </div>
           </TabPanel>
@@ -417,40 +440,40 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                 Sales Manager
               </div>
               <div className="h-[300px] overflow-y-scroll">
-                {manager?.length > 0 ? (
-                  manager?.map((item, index) => {
-                    let totalSales = item.total_sales
-                      ? parseInt(item.total_sales)
-                      : 0;
-                    let target = item.target ? parseInt(item.target) : 0;
-                    let percentageSales = (totalSales / target) * 100;
-                    percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
-                    const barWidth = `${percentageSales}%`;
-                    const barColor =
-                      percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+                {manager?.length > 0
+                  ? manager?.map((item, index) => {
+                      let totalSales = item.total_sales
+                        ? parseInt(item.total_sales)
+                        : 0;
+                      let target = item.target ? parseInt(item.target) : 0;
+                      let percentageSales = (totalSales / target) * 100;
+                      percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
+                      const barWidth = `${percentageSales}%`;
+                      const barColor =
+                        percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
 
-                    return (
-                      <div
-                        key={index}
-                        className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
-                      >
-                        <div className="col-span-2">
-                          <h4 className="font-bold my-1">{item?.userName}</h4>
-                        </div>
-                        <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                          <div className="relative flex-1">
-                            <div
-                              className={`absolute left-0 top-0 h-5 ${barColor}`}
-                              style={{ width: barWidth }}
-                            ></div>
-                            <div
-                              className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
-                                currentMode === "dark"
-                                  ? "text-white"
-                                  : "text-dark-600"
-                              }`}
-                            >
-                              {/* Total Closed Deals: {item?.total_closed_deals} /
+                      return (
+                        <div
+                          key={index}
+                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                        >
+                          <div className="col-span-2">
+                            <h4 className="font-bold my-1">{item?.userName}</h4>
+                          </div>
+                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                            <div className="relative flex-1">
+                              <div
+                                className={`absolute left-0 top-0 h-5 ${barColor}`}
+                                style={{ width: barWidth }}
+                              ></div>
+                              <div
+                                className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-dark-600"
+                                }`}
+                              >
+                                {/* Total Closed Deals: {item?.total_closed_deals} /
                           Direct deals:{" "}
                           <span
                             className={
@@ -461,34 +484,33 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             {item?.total_sales || 0}
                           </span> */}
-                              {percentageSales?.toFixed(2)}% of target achieved
+                                {percentageSales?.toFixed(2)}% of target
+                                achieved
+                              </div>
                             </div>
+                            {item?.profile_picture ? (
+                              <img
+                                src={item?.profile_picture}
+                                height={50}
+                                width={50}
+                                className="rounded-full cursor-pointer"
+                                alt=""
+                              />
+                            ) : (
+                              <img
+                                src="./favicon.png"
+                                height={50}
+                                width={50}
+                                className="rounded-full cursor-pointer"
+                                alt=""
+                              />
+                            )}
                           </div>
-                          {item?.profile_picture ? (
-                            <img
-                              src={item?.profile_picture}
-                              height={50}
-                              width={50}
-                              className="rounded-full cursor-pointer"
-                              alt=""
-                            />
-                          ) : (
-                            <img
-                              src="./favicon.png"
-                              height={50}
-                              width={50}
-                              className="rounded-full cursor-pointer"
-                              alt=""
-                            />
-                          )}
+                          <div></div>
                         </div>
-                        <div></div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <h2>No data for this month.</h2>
-                )}
+                      );
+                    })
+                  : ""}
               </div>
             </div>
 
@@ -507,40 +529,40 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                 Sales Agent
               </div>
               <div className="h-[300px] overflow-y-scroll">
-                {agents?.length > 0 ? (
-                  agents?.map((item, index) => {
-                    let totalSales = item.total_sales
-                      ? parseInt(item.total_sales)
-                      : 0;
-                    let target = item.target ? parseInt(item.target) : 0;
-                    let percentageSales = (totalSales / target) * 100;
-                    percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
-                    const barWidth = `${percentageSales}%`;
-                    const barColor =
-                      percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+                {agents?.length > 0
+                  ? agents?.map((item, index) => {
+                      let totalSales = item.total_sales
+                        ? parseInt(item.total_sales)
+                        : 0;
+                      let target = item.target ? parseInt(item.target) : 0;
+                      let percentageSales = (totalSales / target) * 100;
+                      percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
+                      const barWidth = `${percentageSales}%`;
+                      const barColor =
+                        percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
 
-                    return (
-                      <div
-                        key={index}
-                        className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
-                      >
-                        <div className="col-span-2">
-                          <h4 className="font-bold my-1">{item?.userName}</h4>
-                        </div>
-                        <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                          <div className="relative flex-1">
-                            <div
-                              className={`absolute left-0 top-0 h-5 ${barColor}`}
-                              style={{ width: barWidth }}
-                            ></div>
-                            <div
-                              className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
-                                currentMode === "dark"
-                                  ? "text-white"
-                                  : "text-dark-600"
-                              }`}
-                            >
-                              {/* Total Closed Deals: {item?.total_closed_deals} /
+                      return (
+                        <div
+                          key={index}
+                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                        >
+                          <div className="col-span-2">
+                            <h4 className="font-bold my-1">{item?.userName}</h4>
+                          </div>
+                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
+                            <div className="relative flex-1">
+                              <div
+                                className={`absolute left-0 top-0 h-5 ${barColor}`}
+                                style={{ width: barWidth }}
+                              ></div>
+                              <div
+                                className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-dark-600"
+                                }`}
+                              >
+                                {/* Total Closed Deals: {item?.total_closed_deals} /
                           Direct deals:{" "}
                           <span
                             className={
@@ -551,34 +573,33 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             {item?.total_sales || 0}
                           </span> */}
-                              {percentageSales?.toFixed(2)}% of target achieved
+                                {percentageSales?.toFixed(2)}% of target
+                                achieved
+                              </div>
                             </div>
+                            {item?.profile_picture ? (
+                              <img
+                                src={item?.profile_picture}
+                                height={50}
+                                width={50}
+                                className="rounded-full cursor-pointer"
+                                alt=""
+                              />
+                            ) : (
+                              <img
+                                src="./favicon.png"
+                                height={50}
+                                width={50}
+                                className="rounded-full cursor-pointer"
+                                alt=""
+                              />
+                            )}
                           </div>
-                          {item?.profile_picture ? (
-                            <img
-                              src={item?.profile_picture}
-                              height={50}
-                              width={50}
-                              className="rounded-full cursor-pointer"
-                              alt=""
-                            />
-                          ) : (
-                            <img
-                              src="./favicon.png"
-                              height={50}
-                              width={50}
-                              className="rounded-full cursor-pointer"
-                              alt=""
-                            />
-                          )}
+                          <div></div>
                         </div>
-                        <div></div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <h2>No data for this month.</h2>
-                )}
+                      );
+                    })
+                  : ""}
               </div>
             </div>
           </TabPanel>

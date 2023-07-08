@@ -343,13 +343,13 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                       ))
                     ) : (
                       <>
-                        <h2
+                        {/* <h2
                           className={`${
                             currentMode === "dark" ? "text-white" : "text-red"
                           } text-center`}
                         >
                           No data found
-                        </h2>
+                        </h2> */}
                         <img src="./no_data.png" alt="No data Illustration" />
                       </>
                     )}
