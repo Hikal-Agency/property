@@ -259,10 +259,38 @@ const AllLeads = () => {
       minWidth: 25,
       flex: 1,
     },
+
+    {
+      field: "whatsapp-web",
+      headerName: "",
+      headerAlign: "center",
+      minWidth: 110,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <Link
+            to={`/whatsapp-marketing/chat?phoneNumber=${cellValues.row.leadContact
+              .slice(1)
+              .replaceAll(" ", "")}`}
+          >
+            <div
+              className="whatsapp-web-link"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
+              <BsWhatsapp size={24} color="green" />
+            </div>
+          </Link>
+        );
+      },
+    },
   ];
 
   const managerColumns = [
-        {
+    {
       field: "id",
       headerName: "#",
       minWidth: 40,
@@ -344,7 +372,7 @@ const AllLeads = () => {
       },
     },
 
-    {
+       {
       field: "whatsapp-web",
       headerName: "",
       headerAlign: "center",
@@ -352,22 +380,22 @@ const AllLeads = () => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div
-            className="whatsapp-web-link"
-            style={{ display: "flex", justifyContent: "center", width: "100%" }}
+          <Link
+            to={`/whatsapp-marketing/chat?phoneNumber=${cellValues.row.leadContact
+              .slice(1)
+              .replaceAll(" ", "")}`}
           >
-            <BsWhatsapp
-              size={24}
-              onClick={() => {
-                window.open(
-                  `https://wa.me/${cellValues.row.leadContact
-                    .slice(1)
-                    .replaceAll(" ", "")}`
-                );
+            <div
+              className="whatsapp-web-link"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
               }}
-              color="green"
-            />
-          </div>
+            >
+              <BsWhatsapp size={24} color="green" />
+            </div>
+          </Link>
         );
       },
     },
