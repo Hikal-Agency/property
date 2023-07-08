@@ -1,4 +1,4 @@
-import { Pagination, Stack } from "@mui/material";
+import { Box, MenuItem, Pagination, Select, Stack } from "@mui/material";
 import React, { useEffect } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
@@ -7,52 +7,115 @@ import Avatar from "@mui/material/Avatar";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const EmployeesList = ({ user }) => {
   const [loading, setLoading] = useState(false);
-  const { currentMode, BACKEND_URL, pageState, setpageState } =
+  const { currentMode, BACKEND_URL, pageState, setpageState, darkModeColors } =
     useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
+  const [selectedDay, setSelectedDay] = useState("");
   const token = localStorage.getItem("auth-token");
   const navigate = useNavigate();
+
+  console.log("selected day state: ", selectedDay);
 
   const handlePageChange = (event, value) => {
     setpageState({ ...pageState, page: value });
   };
 
+  const handleDayFilter = (event) => {
+    setSelectedDay(event.target.value);
+
+    console.log("date range: ", event.target.value);
+
+    fetchUsers();
+  };
+
+  // const handleClick = (e, user_id) => {
+  //   e.preventDefault();
+
+  //   navigate(`/attendance/singleEmployee/${user_id}`);
+  // };
   const handleClick = (e, user_id) => {
     e.preventDefault();
+    const newWindow = window.open(
+      `/attendance/singleEmployee/${user_id}`,
+      "_blank"
+    );
 
-    navigate(`/attendance/singleEmployee/${user_id}`);
+    if (newWindow) {
+      newWindow.opener = null;
+    }
+  };
+
+  // const fetchUsers = async () => {
+  //   setLoading(true);
+
+  //   if(selectedDay)
+
+  //   try {
+  //     const response = await axios.get(
+  //       `${BACKEND_URL}/attendance?page=${pageState.page}`,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+
+  //     console.log("attendance: ", response);
+  //     setUserData(response.data?.Record?.data);
+  //     setMaxPage(response.data?.Record?.last_page);
+  //   } catch (error) {
+  //     console.error("Error fetching users:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const fetchUsers = async () => {
+    setLoading(true);
+
+    console.log("date: ", selectedDay);
+
+    try {
+      const params = {
+        page: pageState.page,
+      };
+
+      if (selectedDay) {
+        // Check if selectedDay is 'today' or 'yesterday'
+        if (selectedDay === "today") {
+          params.created_at = moment().format("YYYY-MM-DD");
+        } else if (selectedDay === "yesterday") {
+          params.created_at = moment().subtract(1, "days").format("YYYY-MM-DD");
+        }
+      }
+
+      const response = await axios.get(`${BACKEND_URL}/attendance`, {
+        params,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("attendance: ", response);
+      setUserData(response.data?.Record?.data);
+      setMaxPage(response.data?.Record?.last_page);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `${BACKEND_URL}/attendance?page=${pageState.page}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-
-        console.log("attendance: ", response);
-        setUserData(response.data?.Record?.data);
-        setMaxPage(response.data?.Record?.last_page);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUsers();
-  }, [pageState.page]);
+  }, [pageState.page, selectedDay]);
 
   return (
     <>
@@ -66,6 +129,24 @@ const EmployeesList = ({ user }) => {
             }`}
           >
             <div className="px-5">
+              <Box sx={darkModeColors}>
+                <div className="flex justify-end">
+                  <Select
+                    id="monthSelect"
+                    size="small"
+                    className="w-[100px]"
+                    displayEmpty
+                    value={selectedDay}
+                    onChange={handleDayFilter}
+                  >
+                    <MenuItem selected value="selected">
+                      Select a day
+                    </MenuItem>
+                    <MenuItem value="today">Today</MenuItem>
+                    <MenuItem value="yesterday">Yesterday</MenuItem>
+                  </Select>
+                </div>
+              </Box>
               <div className="mt-5 md:mt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
                   {userData?.map((item, index) => {
