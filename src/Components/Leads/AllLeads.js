@@ -6,8 +6,7 @@ import {
   TextField,
   styled,
   Select,
-  MenuItem,
-  createStyles,
+  MenuItem
 } from "@mui/material";
 import "../../styles/index.css";
 import {
@@ -21,19 +20,19 @@ import {
 
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import { FaComment, FaBell } from "react-icons/fa";
+import { FaComment } from "react-icons/fa";
 import { FaGlobe } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
-import { MdCampaign } from "react-icons/md";
-import { BiSearch, BiImport } from "react-icons/bi";
+import { BiSearch } from "react-icons/bi";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaArchive } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 
 import { BsPersonCircle, BsSnow2, BsTrash, BsAlarm } from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
@@ -56,6 +55,7 @@ import { FaYoutube } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
+
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -102,6 +102,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   const bulkImportRef = useRef();
   const dataTableRef = useRef();
+
+  const location = useLocation();
+  console.log("Location::", location)
 
   const {
     currentMode,
