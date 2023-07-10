@@ -18,7 +18,7 @@ import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { RiMessage2Line } from "react-icons/ri";
 import { FaWhatsapp } from "react-icons/fa";
-import {BiImport} from "react-icons/bi";
+import { BiImport } from "react-icons/bi";
 import { FaYoutube } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 
@@ -84,8 +84,7 @@ const Closedeals = ({ pageState, setpageState }) => {
                 <FaSnapchat size={22} color={"#f6d80a"} />
               </div>
             )}
-                    {cellValues.row.leadSource?.toLowerCase() ===
-              "bulk import" && (
+            {cellValues.row.leadSource?.toLowerCase() === "bulk import" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <BiImport size={22} color={"#da1f26"} />
               </div>
@@ -299,10 +298,10 @@ const Closedeals = ({ pageState, setpageState }) => {
       minWidth: 40,
       flex: 1,
       renderCell: (cellValues) => {
-        return <div style={{textWrap: "wrap"}}>
-        {cellValues.formattedValue}
-        </div>
-      }
+        return (
+          <div style={{ textWrap: "wrap" }}>{cellValues.formattedValue}</div>
+        );
+      },
     },
     // {
     //   field: "manager",
@@ -339,7 +338,7 @@ const Closedeals = ({ pageState, setpageState }) => {
             >
               <AiOutlineHistory
                 size={20}
-                onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+                onClick={() => navigate(`/timeline/${cellValues.row.leadId}`)}
               />
             </Button>
             <Button
@@ -524,6 +523,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           leadSource: row?.leadSource || "-",
           amount: row?.amount || "-",
           lid: row?.id,
+          leadId: row?.leadId,
         }));
 
         setpageState((old) => ({
