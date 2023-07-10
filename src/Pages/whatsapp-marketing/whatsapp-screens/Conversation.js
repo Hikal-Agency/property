@@ -24,11 +24,10 @@ const Conversation = ({
   chatMessages,
   handleSendMessage,
   chatLoading,
-  setChatMessageInputVal,
   btnLoading,
   allChats,
-  chatMessageInputVal,
   currentMode,
+  messageInputRef,
   activeChat,
   logout,
   setActiveChat,
@@ -207,8 +206,7 @@ const Conversation = ({
                       },
                     }}
                     autoComplete="off"
-                    onInput={(e) => setChatMessageInputVal(e.target.value)}
-                    value={chatMessageInputVal}
+                    ref={messageInputRef}
                     type="text"
                     fullWidth
                     placeholder="Type something.."

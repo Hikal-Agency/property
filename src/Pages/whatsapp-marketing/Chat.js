@@ -31,10 +31,10 @@ const Chat = () => {
   const [devicesList, setDevicesList] = useState([]);
   const [loadingConversations, setLoadingConversations] = useState(true);
   const [allChats, setAllChats] = useState([]);
-  const [chatMessageInputVal, setChatMessageInputVal] = useState("");
 
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const messageInputRef = useRef("");
   const [activeChat, setActiveChat] = useState({
     phoneNumber: null,
     name: "",
@@ -61,11 +61,11 @@ const Chat = () => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
     setBtnLoading(true);
     if (type === "text") {
-      if (chatMessageInputVal && socket?.id) {
+      if (messageInputRef.current.querySelector("input").value && socket?.id) {
         socket.emit("send-message", {
           id: waDevice,
           to: activeChat.phoneNumber + "@c.us",
-          msg: chatMessageInputVal,
+          msg: messageInputRef.current.querySelector("input").value,
           type: "text",
         });
 
@@ -73,7 +73,7 @@ const Chat = () => {
           fetchChatMessages(activeChat.phoneNumber, () => {
             setBtnLoading(false);
           });
-          setChatMessageInputVal("");
+          messageInputRef.current.querySelector("input").value = "";
         });
 
         socket.on("failed", () => {
@@ -111,7 +111,7 @@ const Chat = () => {
         fetchChatMessages(activeChat.phoneNumber, () => {
           setBtnLoading(false);
         });
-        setChatMessageInputVal("");
+        messageInputRef.current.querySelector("input").value = "";
       });
 
       socket.on("failed", () => {
@@ -348,13 +348,13 @@ const Chat = () => {
           logout();
         }
       });
-      socket.on("disconnect", () => {
-        const waDevice = localStorage.getItem("authenticated-wa-device");
-        if (waDevice) {
-          disconnectDevice(waDevice);
-          setServerDisconnected(true);
-        }
-      });
+      // socket.on("disconnect", () => {
+      //   const waDevice = localStorage.getItem("authenticated-wa-device");
+      //   if (waDevice) {
+      //     disconnectDevice(waDevice);
+      //     setServerDisconnected(true);
+      //   }
+      // });
     }
   }, [socket]);
 
@@ -368,6 +368,7 @@ const Chat = () => {
     if (waDevice) {
       socket.emit("get-all-chats", { id: waDevice });
       socket.on("all-chats", (data) => {
+        console.log("All Chats:", data);
         if (data.length > 0) {
           setLoadingConversations(false);
           const phNo = searchParams.get("phoneNumber");
@@ -399,7 +400,6 @@ const Chat = () => {
       });
     }
   }, [User, ready, activeChat.phoneNumber, searchParams]);
-
     useEffect(() => {
     const cb = () => {
       if (User && ready) {
@@ -496,7 +496,7 @@ const Chat = () => {
                 </h1>
                 <div class={`section-container-${currentMode}`}>
                   {ready ? (
-                    <Conversation
+                    {/* <Conversation
                       currentMode={currentMode}
                       data={data}
                       setActiveChat={setActiveChat}
@@ -507,12 +507,11 @@ const Chat = () => {
                       loadingConversations={loadingConversations}
                       handleSendMessage={handleSendMessage}
                       chatLoading={chatLoading}
-                      setChatMessageInputVal={setChatMessageInputVal}
                       btnLoading={btnLoading}
-                      chatMessageInputVal={chatMessageInputVal}
+                      messageInputRef={messageInputRef}
                       activeChat={activeChat}
                       messagesContainerRef={messagesContainerRef}
-                    />
+                    /> */}
                   ) : qr ? (
                     <QRCode qr={qr} />
                   ) : (

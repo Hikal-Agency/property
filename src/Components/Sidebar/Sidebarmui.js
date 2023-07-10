@@ -696,10 +696,53 @@ const Sidebarmui = () => {
           name: "Unassigned",
           icon: <BsStopCircleFill />,
           submenu: [
-            {
+              {
               name: "Fresh leads",
-              count: sidebarData?.UNASSIGNED?.fresh,
               link: "/unassigned/fresh",
+              icon: <SiHotjar />,
+              // count: sidebarData?.UNASSIGNED?.fresh,
+              submenu: [
+                {
+                  name: "All",
+                  count: sidebarData?.UNASSIGNED?.fresh,
+                  link: "/unassigned/fresh",
+                },
+                {
+                  name: "New",
+                  count: sidebarData?.UNASSIGNED?.new,
+                  link: "/unassigned/new",
+                },
+                {
+                  name: "No Answer",
+                  count: sidebarData?.UNASSIGNED?.no_answer,
+                  link: "/unassigned/no answer",
+                },
+                {
+                  name: "Meeting",
+                  count: sidebarData?.UNASSIGNED?.meeting,
+                  link: "/unassigned/meeting",
+                },
+                {
+                  name: "Follow Up",
+                  count: sidebarData?.UNASSIGNED?.follow_up,
+                  link: "/unassigned/follow up",
+                },
+                {
+                  name: "Low Budget",
+                  count: sidebarData?.UNASSIGNED?.low_budget,
+                  link: "/unassigned/low budget",
+                },
+                {
+                  name: "Not Interested",
+                  count: sidebarData?.UNASSIGNED?.not_interested,
+                  link: "/unassigned/not interested",
+                },
+                {
+                  name: "Unreachable",
+                  count: sidebarData?.UNASSIGNED?.unreachable,
+                  link: "/unassigned/unreachable",
+                },
+              ],
             },
             {
               name: "Cold leads",
@@ -1700,10 +1743,53 @@ const Sidebarmui = () => {
           name: "Unassigned",
           icon: <BsStopCircleFill />,
           submenu: [
-            {
+                {
               name: "Fresh leads",
-              count: sidebarData?.UNASSIGNED?.fresh,
               link: "/unassigned/fresh",
+              icon: <SiHotjar />,
+              // count: sidebarData?.UNASSIGNED?.fresh,
+              submenu: [
+                {
+                  name: "All",
+                  count: sidebarData?.UNASSIGNED?.fresh,
+                  link: "/unassigned/fresh",
+                },
+                {
+                  name: "New",
+                  count: sidebarData?.UNASSIGNED?.new,
+                  link: "/unassigned/new",
+                },
+                {
+                  name: "No Answer",
+                  count: sidebarData?.UNASSIGNED?.no_answer,
+                  link: "/unassigned/no answer",
+                },
+                {
+                  name: "Meeting",
+                  count: sidebarData?.UNASSIGNED?.meeting,
+                  link: "/unassigned/meeting",
+                },
+                {
+                  name: "Follow Up",
+                  count: sidebarData?.UNASSIGNED?.follow_up,
+                  link: "/unassigned/follow up",
+                },
+                {
+                  name: "Low Budget",
+                  count: sidebarData?.UNASSIGNED?.low_budget,
+                  link: "/unassigned/low budget",
+                },
+                {
+                  name: "Not Interested",
+                  count: sidebarData?.UNASSIGNED?.not_interested,
+                  link: "/unassigned/not interested",
+                },
+                {
+                  name: "Unreachable",
+                  count: sidebarData?.UNASSIGNED?.unreachable,
+                  link: "/unassigned/unreachable",
+                },
+              ],
             },
             {
               name: "Cold leads",
@@ -2847,6 +2933,169 @@ const Sidebarmui = () => {
                                   icon={link.icon}
                                 >
                                   {link.submenu.map((menu, index) => {
+                                         if (menu?.submenu) {
+                                      return (
+                                        <Box
+                                          onClick={(e) => {
+                                            handleExpand(
+                                              e,
+                                              {
+                                                menuIndex: menuIndex + 1,
+                                                linkIndex: linkIndex,
+                                                sub: true,
+                                              },
+                                              true
+                                            );
+                                          }}
+                                          sx={{
+                                            // FOR DARK MODE MENU SETTINGS
+                                            "& .css-1mfnem1": {
+                                              borderRadius: "5px",
+                                            },
+                                            "& .css-1mfnem1:hover": {
+                                              backgroundColor: "#DA1F26",
+                                            },
+                                            // submenu containerr color
+                                            "& .css-z5rm24": {
+                                              backgroundColor:
+                                                currentMode === "dark" &&
+                                                "#3b3d44",
+                                              borderRadius: "5px",
+                                            },
+                                            // Submenu count color
+                                            "& .css-1rnkhs0": {
+                                              color:
+                                                currentMode === "dark" &&
+                                                "white",
+                                            },
+                                            // LIGHT MODE SETTINGS
+                                            "& .css-1ohfb25:hover": {
+                                              backgroundColor: "#DA1F26",
+                                              color: "white",
+                                              borderRadius: "5px",
+                                            },
+                                            "& .css-wx7wi4": {
+                                              width: "18px",
+                                              minWidth: "18px",
+                                            },
+                                          }}
+                                          className="my-1 sub"
+                                        >
+                                          <SubMenu
+                                            label={menu.name}
+                                            icon={menu.icon}
+                                            open={
+                                              openedSubMenu.menuIndex ===
+                                                menuIndex + 1 &&
+                                              openedSubMenu.linkIndex ===
+                                                linkIndex &&
+                                              openedSubMenu?.sub
+                                            }
+                                          >
+                                            {menu?.submenu.map((m, index) => {
+                                              return (
+                                                <Link
+                                                  key={index}
+                                                  to={`${m.link}`}
+                                                >
+                                                  <Box
+                                                    sx={{
+                                                      // STYLING FOR LIGHT MODE
+                                                      "& .css-1mfnem1": {
+                                                        borderRadius: "5px",
+                                                      },
+                                                      "& .css-1mfnem1:hover": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+                                                      "& .css-1ogoo8i": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+
+                                                      // STYLING FOR DARK MODE
+                                                      "& .css-yktbuo": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+                                                      "& .css-1f8bwsm": {
+                                                        minWidth:
+                                                          "10px !important",
+                                                      },
+                                                      "& .css-yktbuo:hover": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+                                                      "& .css-1v6ithu": {
+                                                        color: "white",
+                                                      },
+                                                      "& .leads_counter": {
+                                                        color: m?.countColor
+                                                          ? m?.countColor
+                                                          : currentMode ===
+                                                            "dark"
+                                                          ? "white"
+                                                          : "black",
+                                                      },
+                                                      "& .css-cveggr-MuiListItemIcon-root":
+                                                        {
+                                                          minWidth:
+                                                            "10px !important",
+                                                        },
+                                                    }}
+                                                    className="relative my-1"
+                                                  >
+                                                    <MenuItem
+                                                      active={
+                                                        m.link ===
+                                                        window.location.pathname.replaceAll(
+                                                          "%20",
+                                                          " "
+                                                        )
+                                                      }
+                                                      className="flex"
+                                                    >
+                                                      {m?.icon && (
+                                                        <ListItemIcon
+                                                          style={{
+                                                            minWidth:
+                                                              "23px !important",
+                                                          }}
+                                                        >
+                                                          {m?.icon}
+                                                        </ListItemIcon>
+                                                      )}{" "}
+                                                      <span className=" ">
+                                                        {" "}
+                                                        {m?.name || ""}
+                                                      </span>
+                                                    </MenuItem>
+                                                    {m?.count != null && (
+                                                      <span
+                                                        className="leads_counter block absolute right-5"
+                                                        // sx={{
+                                                        //   color: menu?.countColor,
+                                                        // }}
+                                                        style={{
+                                                          top: "50%",
+                                                          transform:
+                                                            "translateY(-50%)",
+                                                        }}
+                                                      >
+                                                        {m?.count !== null &&
+                                                        m?.count !== undefined
+                                                          ? m?.count
+                                                          : ""}
+                                                      </span>
+                                                    )}
+                                                  </Box>
+                                                </Link>
+                                              );
+                                            })}
+                                          </SubMenu>
+                                        </Box>
+                                      );
+                                    }
                                     return (
                                       <Link
                                         key={index}
@@ -3097,6 +3346,169 @@ const Sidebarmui = () => {
                                   }
                                 >
                                   {link.submenu.map((menu, index) => {
+                                         if (menu?.submenu) {
+                                      return (
+                                        <Box
+                                          onClick={(e) => {
+                                            handleExpand(
+                                              e,
+                                              {
+                                                menuIndex: menuIndex + 1,
+                                                linkIndex: linkIndex,
+                                                sub: true,
+                                              },
+                                              true
+                                            );
+                                          }}
+                                          sx={{
+                                            // FOR DARK MODE MENU SETTINGS
+                                            "& .css-1mfnem1": {
+                                              borderRadius: "5px",
+                                            },
+                                            "& .css-1mfnem1:hover": {
+                                              backgroundColor: "#DA1F26",
+                                            },
+                                            // submenu containerr color
+                                            "& .css-z5rm24": {
+                                              backgroundColor:
+                                                currentMode === "dark" &&
+                                                "#3b3d44",
+                                              borderRadius: "5px",
+                                            },
+                                            // Submenu count color
+                                            "& .css-1rnkhs0": {
+                                              color:
+                                                currentMode === "dark" &&
+                                                "white",
+                                            },
+                                            // LIGHT MODE SETTINGS
+                                            "& .css-1ohfb25:hover": {
+                                              backgroundColor: "#DA1F26",
+                                              color: "white",
+                                              borderRadius: "5px",
+                                            },
+                                            "& .css-wx7wi4": {
+                                              width: "18px",
+                                              minWidth: "18px",
+                                            },
+                                          }}
+                                          className="my-1 sub"
+                                        >
+                                          <SubMenu
+                                            label={menu.name}
+                                            icon={menu.icon}
+                                            open={
+                                              openedSubMenu.menuIndex ===
+                                                menuIndex + 1 &&
+                                              openedSubMenu.linkIndex ===
+                                                linkIndex &&
+                                              openedSubMenu?.sub
+                                            }
+                                          >
+                                            {menu?.submenu.map((m, index) => {
+                                              return (
+                                                <Link
+                                                  key={index}
+                                                  to={`${m.link}`}
+                                                >
+                                                  <Box
+                                                    sx={{
+                                                      // STYLING FOR LIGHT MODE
+                                                      "& .css-1mfnem1": {
+                                                        borderRadius: "5px",
+                                                      },
+                                                      "& .css-1mfnem1:hover": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+                                                      "& .css-1ogoo8i": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+
+                                                      // STYLING FOR DARK MODE
+                                                      "& .css-yktbuo": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+                                                      "& .css-1f8bwsm": {
+                                                        minWidth:
+                                                          "10px !important",
+                                                      },
+                                                      "& .css-yktbuo:hover": {
+                                                        backgroundColor:
+                                                          "#DA1F26",
+                                                      },
+                                                      "& .css-1v6ithu": {
+                                                        color: "white",
+                                                      },
+                                                      "& .leads_counter": {
+                                                        color: m?.countColor
+                                                          ? m?.countColor
+                                                          : currentMode ===
+                                                            "dark"
+                                                          ? "white"
+                                                          : "black",
+                                                      },
+                                                      "& .css-cveggr-MuiListItemIcon-root":
+                                                        {
+                                                          minWidth:
+                                                            "10px !important",
+                                                        },
+                                                    }}
+                                                    className="relative my-1"
+                                                  >
+                                                    <MenuItem
+                                                      active={
+                                                        m.link ===
+                                                        window.location.pathname.replaceAll(
+                                                          "%20",
+                                                          " "
+                                                        )
+                                                      }
+                                                      className="flex"
+                                                    >
+                                                      {m?.icon && (
+                                                        <ListItemIcon
+                                                          style={{
+                                                            minWidth:
+                                                              "23px !important",
+                                                          }}
+                                                        >
+                                                          {m?.icon}
+                                                        </ListItemIcon>
+                                                      )}{" "}
+                                                      <span className=" ">
+                                                        {" "}
+                                                        {m?.name || ""}
+                                                      </span>
+                                                    </MenuItem>
+                                                    {m?.count != null && (
+                                                      <span
+                                                        className="leads_counter block absolute right-5"
+                                                        // sx={{
+                                                        //   color: menu?.countColor,
+                                                        // }}
+                                                        style={{
+                                                          top: "50%",
+                                                          transform:
+                                                            "translateY(-50%)",
+                                                        }}
+                                                      >
+                                                        {m?.count !== null &&
+                                                        m?.count !== undefined
+                                                          ? m?.count
+                                                          : ""}
+                                                      </span>
+                                                    )}
+                                                  </Box>
+                                                </Link>
+                                              );
+                                            })}
+                                          </SubMenu>
+                                        </Box>
+                                      );
+                                    }
                                     return (
                                       <Link key={index} to={`${menu.link}`}>
                                         <Box
