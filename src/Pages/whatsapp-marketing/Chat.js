@@ -41,7 +41,7 @@ const Chat = () => {
   });
 
   const messagesContainerRef = useRef();
-
+  
   const fetchChatMessages = async (contact, callback) => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
     if (waDevice) {
@@ -61,11 +61,11 @@ const Chat = () => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
     setBtnLoading(true);
     if (type === "text") {
-      if (messageInputRef.current.querySelector("input").value && socket?.id) {
+      if (messageInputRef.current?.querySelector("input").value && socket?.id) {
         socket.emit("send-message", {
           id: waDevice,
           to: activeChat.phoneNumber + "@c.us",
-          msg: messageInputRef.current.querySelector("input").value,
+          msg: messageInputRef?.current?.querySelector("input").value,
           type: "text",
         });
 
@@ -73,7 +73,9 @@ const Chat = () => {
           fetchChatMessages(activeChat.phoneNumber, () => {
             setBtnLoading(false);
           });
-          messageInputRef.current.querySelector("input").value = "";
+          if(messageInputRef.current) {
+            messageInputRef.current.querySelector("input").value = "";
+          }
         });
 
         socket.on("failed", () => {
@@ -111,7 +113,9 @@ const Chat = () => {
         fetchChatMessages(activeChat.phoneNumber, () => {
           setBtnLoading(false);
         });
+          if(messageInputRef.current) {
         messageInputRef.current.querySelector("input").value = "";
+          }
       });
 
       socket.on("failed", () => {
@@ -400,6 +404,8 @@ const Chat = () => {
       });
     }
   }, [User, ready, activeChat.phoneNumber, searchParams]);
+
+
     useEffect(() => {
     const cb = () => {
       if (User && ready) {
@@ -413,18 +419,18 @@ const Chat = () => {
     };
   }, [User, ready]);
 
-  // useEffect(() => {
-  //   const cb = () => {
-  //     if (User && ready && activeChat.phoneNumber) {
-  //       fetchChatMessages(activeChat.phoneNumber);
-  //     }
-  //   };
-  //   const interval = setInterval(cb, 6000);
+  useEffect(() => {
+    const cb = () => {
+      if (User && ready && activeChat.phoneNumber) {
+        fetchChatMessages(activeChat.phoneNumber);
+      }
+    };
+    const interval = setInterval(cb, 4000);
 
-  //   return () => {
-  //     clearInterval(interval, cb);
-  //   };
-  // }, [User, ready, activeChat.phoneNumber]);
+    return () => {
+      clearInterval(interval, cb);
+    };
+  }, [User, ready, activeChat.phoneNumber]);
 
   console.log("Selec::", selectedDevice);
 
@@ -496,7 +502,7 @@ const Chat = () => {
                 </h1>
                 <div class={`section-container-${currentMode}`}>
                   {ready ? (
-                    {/* <Conversation
+                    <Conversation
                       currentMode={currentMode}
                       data={data}
                       setActiveChat={setActiveChat}
@@ -511,7 +517,7 @@ const Chat = () => {
                       messageInputRef={messageInputRef}
                       activeChat={activeChat}
                       messagesContainerRef={messagesContainerRef}
-                    /> */}
+                    />
                   ) : qr ? (
                     <QRCode qr={qr} />
                   ) : (

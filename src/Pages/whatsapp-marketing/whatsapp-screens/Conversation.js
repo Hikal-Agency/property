@@ -100,7 +100,7 @@ const Conversation = ({
               )}
             </div>
 
-            <Box className="absolute bg-[#e5e7eb] flex items-center justify-between bottom-0 left-0 right-0 w-full px-4 py-2">
+            <Box className="absolute bg-[#c6c6c6] flex items-center justify-between bottom-0 left-0 right-0 w-full px-4 py-2">
               <Box className="flex items-center">
                 <img
                   className="mr-3 rounded-full"
