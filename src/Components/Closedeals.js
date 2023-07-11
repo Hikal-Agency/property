@@ -447,7 +447,7 @@ const Closedeals = ({ pageState, setpageState }) => {
             >
               <AiOutlineHistory
                 size={20}
-                onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
+                onClick={() => navigate(`/timeline/${cellValues.row.leadId}`)}
               />
             </Button>
             <Button
