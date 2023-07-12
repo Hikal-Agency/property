@@ -49,11 +49,11 @@ const OfficeSettings = () => {
           <div className="grid grid-cols-1 gap-5">Calendar</div>
         </div>
       </div> */}
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-3">
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-5 pb-3">
         <div
           className={`${
             currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
-          } w-full col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3 p-5`}
+          } w-full col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 p-5`}
           //   style={{ height: "700px" }}
         >
           <div>
