@@ -94,7 +94,11 @@ const OfficeSettings = () => {
                     Start Time
                   </p>
                   {isEditing ? (
-                    <input type="time" style={{padding: "0 6px"}} defaultValue="09:30" />
+                    <input
+                      type="time"
+                      style={{ padding: "0 6px" }}
+                      defaultValue="09:30"
+                    />
                   ) : (
                     <p>9:30AM</p>
                   )}
@@ -102,7 +106,11 @@ const OfficeSettings = () => {
                 <div className="flex justify-between mb-3">
                   <p>End Time</p>
                   {isEditing ? (
-                    <input type="time" style={{padding: "0 6px"}} defaultValue="06:30" />
+                    <input
+                      type="time"
+                      style={{ padding: "0 6px" }}
+                      defaultValue="06:30"
+                    />
                   ) : (
                     <p>6:30PM</p>
                   )}
@@ -110,7 +118,11 @@ const OfficeSettings = () => {
                 <div className="flex justify-between mb-3">
                   <p>Off Day</p>
                   {isEditing ? (
-                    <input type="text" style={{padding: "0 6px"}} defaultValue="Sunday" />
+                    <input
+                      type="text"
+                      style={{ padding: "0 6px" }}
+                      defaultValue="Sunday"
+                    />
                   ) : (
                     // <LocalizationProvider dateAdapter={AdapterDayjs}>
                     //   <TimePicker
@@ -149,7 +161,11 @@ const OfficeSettings = () => {
                 <div className="flex justify-between mb-3">
                   <p>Maximum Late Time</p>
                   {isEditing ? (
-                    <input type="time" style={{padding: "0 6px"}} defaultValue="10:45" />
+                    <input
+                      type="time"
+                      style={{ padding: "0 6px" }}
+                      defaultValue="10:45"
+                    />
                   ) : (
                     <p>10:45AM</p>
                   )}
@@ -157,7 +173,11 @@ const OfficeSettings = () => {
                 <div className="flex justify-between mb-3">
                   <p>Overtime After</p>
                   {isEditing ? (
-                    <input type="time" style={{padding: "0 6px"}} defaultValue="08:00" />
+                    <input
+                      type="time"
+                      style={{ padding: "0 6px" }}
+                      defaultValue="08:00"
+                    />
                   ) : (
                     <p>08:00AM</p>
                   )}
