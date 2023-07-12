@@ -280,7 +280,11 @@ const SingleLeadPage = () => {
                             <span className="p-2 bg-main-red-color text-white rounded-md">
                               {LeadData?.feedback ?? "No Feedback"}
                             </span>
-                            <span className="float-right">
+                            <Box className="float-right" sx={{
+                              "& svg": {
+                                color: currentMode === "dark" ? "white" : "black"
+                              }
+                            }}>
                               {LeadData?.coldcall === 0 ? (
                                 <BsFire size={25} />
                               ) : LeadData?.coldcall === 1 ? (
@@ -295,7 +299,7 @@ const SingleLeadPage = () => {
                                 <BsPatchQuestion size={25} />
                                 // <FaHotjar size={25} />
                               )}
-                            </span>
+                            </Box>
                           </div>
                           <p
                             className={`italic text-sm ${
