@@ -131,7 +131,7 @@ const ManagerOffers = ({ tabValue, setTabValue, isLoading }) => {
                   >
                     Offer from:{" "}
                     <span className="text-[#DA1F26] font-bold">
-                      Mr. {offer?.offerFromName}
+                      {offer?.offerFromName}
                     </span>
                   </p>
 
