@@ -513,7 +513,7 @@ const Sidebarmui = () => {
           name: "Unassigned",
           icon: <BsStopCircleFill />,
           submenu: [
-                {
+            {
               name: "Fresh leads",
               link: "/unassigned/fresh",
               icon: <SiHotjar />,
@@ -733,11 +733,11 @@ const Sidebarmui = () => {
           name: "Personal",
           icon: <HiUsers />,
           submenu: [
-          {
-                  name: "All",
-                  count: sidebarData?.PersonalLeadsCount?.all,
-                  link: "/personalleads/all",
-                },
+            {
+              name: "All",
+              count: sidebarData?.PersonalLeadsCount?.all,
+              link: "/personalleads/all",
+            },
             {
               name: "New",
               count: sidebarData?.PersonalLeadsCount?.new,
@@ -879,6 +879,11 @@ const Sidebarmui = () => {
           name: "Offers",
           icon: <AiFillGift />,
           link: "/offers",
+        },
+        {
+          name: "Leaderboard",
+          icon: <MdLeaderboard />,
+          link: "/leaderboard",
         },
 
         {
