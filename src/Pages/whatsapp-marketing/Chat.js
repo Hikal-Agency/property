@@ -57,7 +57,7 @@ const Chat = () => {
   };
 
   const handleSendMessage = (e = null, type, base64 = null) => {
-    e.preventDefault();
+    e?.preventDefault();
     const waDevice = localStorage.getItem("authenticated-wa-device");
     setBtnLoading(true);
     if (type === "text") {

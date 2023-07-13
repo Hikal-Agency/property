@@ -50,6 +50,8 @@ const Conversation = ({
     const reader = new FileReader();
     reader.onload = () => {
       console.log("Result::", reader.result);
+      const src = reader.result.slice(reader.result.indexOf("64,") + 3);
+      handleSendMessage(null, "img", src );
     };
     reader.readAsDataURL(files[0]);
   };
