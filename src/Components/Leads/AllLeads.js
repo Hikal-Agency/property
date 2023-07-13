@@ -29,6 +29,7 @@ import { BiSearch } from "react-icons/bi";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import {BiBlock} from "react-icons/bi";
 import { FaArchive } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { FaUser } from "react-icons/fa";
@@ -55,6 +56,7 @@ import { FaYoutube } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
+import BlockIPModal from "./BlockIPModal";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -82,6 +84,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const [deleteloading, setdeleteloading] = useState(false);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
   const [filt, setFilt] = useState([]);
+  const [blockIPModalOpened, setBlockIPModalOpened] = useState({
+    lead: null, 
+    isOpened: false
+  });
   const [error, setError] = useState(false);
   console.log("LeadType::", lead_type);
 
@@ -183,8 +189,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     }
   };
 
-  const handleChangeNumber = (e) => {};
-
   const handleSearch = (e) => {
     if (e.target.value === "") {
       setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
@@ -223,7 +227,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "id",
       headerName: "#",
-      minWidth: 40,
+      minWidth: 30,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -793,7 +797,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "id",
       headerName: "#",
-      minWidth: 40,
+      minWidth: 25,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -1133,6 +1137,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 />
               </IconButton>
             </p>
+            {lead_origin === "freshleads" && <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleBlockIP(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <BiBlock size={19} />
+              </IconButton>
+            </p>}
           </div>
         );
       },
@@ -1526,6 +1543,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadName: row?.leadName || "-",
           leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
           project: row?.project || "-",
+          ip: row?.ip,
           enquiryType: row?.enquiryType || "-",
           leadType: row?.leadType || "-",
           assignedToManager: row?.assignedToManager || null,
@@ -1728,6 +1746,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           //   row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
           leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
           project: row?.project || "-",
+          ip: row?.ip,
           enquiryType: row?.enquiryType || "-",
           leadType: row?.leadType || "-",
           assignedToManager: row?.assignedToManager || null,
@@ -1803,6 +1822,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       handleLeadModelOpen();
     }
   };
+
+  const HandleBlockIP = async (params) => {
+    setBlockIPModalOpened({
+      lead: params, 
+      isOpened: true
+    });
+  };
+
   // REMINDER BTN CLICK FUNC
   const HandleReminderBtn = async (params) => {
     console.log("LEADID: ", params);
@@ -2363,6 +2390,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               FetchLeads={FetchLeads}
               setSelectedRows={setSelectedRows}
               selectionModelRef={selectionModelRef}
+            />
+          )}
+          {blockIPModalOpened?.isOpened && (
+            <BlockIPModal
+              handleCloseIPModal={() => setBlockIPModalOpened({
+                isOpened: false, 
+                lead: null
+              })}
+              blockIPModalOpened={blockIPModalOpened?.isOpened}
+              lead={blockIPModalOpened?.lead}
             />
           )}
 

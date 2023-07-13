@@ -139,13 +139,13 @@ const Contacts = () => {
             <div className="pl-3">
               <div className="mt-5 md:mt-2">
                 <h1
-                  className={`font-semibold ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  } text-xl ml-2 mb-3 auto-cols-max gap-x-3`}
+                  className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
+                    currentMode === "dark"
+                      ? "text-white border-white"
+                      : "text-main-red-color font-bold border-main-red-color"
+                  }`}
                 >
-                  Contacts
-                  {/* <span className="px-5 py-3 rounded-md">Leaderboard</span> */}
-                  {/* <span className="px-5 py-3 rounded-md">Call Log Board</span> */}
+                Contacts
                 </h1>
 
                 <Box

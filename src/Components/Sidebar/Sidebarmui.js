@@ -13,6 +13,7 @@ import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill } from "react-icons/bs";
 import { FaFacebookSquare, FaChartLine, FaUser } from "react-icons/fa";
 import { RiRadioButtonLine } from "react-icons/ri";
+import {BiBlock} from "react-icons/bi";
 import { BiCalendar } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { FaFire } from "react-icons/fa";
@@ -892,6 +893,11 @@ const Sidebarmui = () => {
           link: "/contacts",
         },
         {
+          name: "Blocked IPs",
+          icon: <BiBlock />,
+          link: "/blocked",
+        },
+        {
           name: "Users",
           icon: <ImUsers />,
           link: "/users",
@@ -1395,6 +1401,11 @@ const Sidebarmui = () => {
           name: "Contacts",
           icon: <MdContactPage />,
           link: "/contacts",
+        },
+        {
+          name: "Blocked IPs",
+          icon: <BiBlock />,
+          link: "/blocked",
         },
         {
           name: "Property Portfolio",
@@ -1939,6 +1950,11 @@ const Sidebarmui = () => {
           name: "Contacts",
           icon: <MdContactPage />,
           link: "/contacts",
+        },
+        {
+          name: "Blocked IPs",
+          icon: <BiBlock />,
+          link: "/blocked",
         },
         {
           name: "Property Portfolio",

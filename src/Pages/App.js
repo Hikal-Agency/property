@@ -9,6 +9,7 @@ import Contacts from "./contacts";
 import Dashboard from "./dashboard";
 import Error from "./Error";
 import Home from "./Home";
+import BlockedIPs from "./blocked";
 import AllHotLeads from "./hotleads";
 import AllUnassignedLeads from "./unassigned";
 import LeadNotesPage from "./leadnotes";
@@ -152,6 +153,11 @@ const routes = [
     path: "/coldleads/:lead_type",
     element: <ColdLeads />,
     pageName: "Cold Leads",
+  },
+  {
+    path: "/blocked",
+    element: <BlockedIPs />,
+    pageName: "Blocked IPs",
   },
   {
     path: "/reshuffleleads/:lead_type",
