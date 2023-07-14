@@ -15,6 +15,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
+import {BiBlock} from "react-icons/bi";
 import { useStateContext } from "../../context/ContextProvider";
 import "react-phone-number-input/style.css";
 import PhoneInput, {
@@ -23,12 +24,14 @@ import PhoneInput, {
   isPossiblePhoneNumber,
 } from "react-phone-number-input";
 import classNames from "classnames";
+import BlockIPModal from "./BlockIPModal";
 
 const UpdateLead = ({
   LeadModelOpen,
   setLeadModelOpe,
   handleLeadModelOpen,
   handleLeadModelClose,
+  lead_origin,
   LeadData,
   FetchLeads,
 }) => {
@@ -45,8 +48,11 @@ const UpdateLead = ({
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
   const [noAgents, setNoAgents] = useState(false);
-  const [filter_manager, setfilter_manager] = useState();
   const [error, setError] = useState(false);
+  const [blockIPModalOpened, setBlockIPModalOpened] = useState({
+    lead: null, 
+    isOpened: false
+  })
   const style = {
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
@@ -81,6 +87,14 @@ const UpdateLead = ({
   //     }
   //   }
   // };
+
+  const HandleBlockIP = async (params) => {
+    setBlockIPModalOpened({
+      lead: params, 
+      isOpened: true
+    });
+  };
+
 
   const handlePhone = () => {
     setError(false);
@@ -804,7 +818,23 @@ const UpdateLead = ({
                     </Box>
                   </div>
                 </div>
-
+            {lead_origin === "freshleads" && <div className="flex items-center justify-end mb-3">
+              <p
+                style={{ cursor: "pointer", display: "inline-block" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
+                }`}
+                onClick={() => HandleBlockIP(LeadData)}
+              >
+                <IconButton sx={{ padding: 0, "& svg": {
+                  color: "red !important"
+                }}}>
+                  <BiBlock size={19} />
+                </IconButton>
+              </p>
+            </div>}
                 <Button
                   className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
                   ripple={true}
@@ -825,6 +855,15 @@ const UpdateLead = ({
           )}
         </div>
       </Modal>
+
+        <BlockIPModal
+          blockIPModalOpened={blockIPModalOpened?.isOpened}
+          handleCloseIPModal={() => setBlockIPModalOpened({
+            isOpened: false, 
+            lead: null
+          })}
+          lead={LeadData}
+        />
     </>
   );
 };

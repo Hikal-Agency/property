@@ -1137,19 +1137,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 />
               </IconButton>
             </p>
-            {lead_origin === "freshleads" && <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "bg-transparent text-white rounded-md shadow-none"
-                  : "bg-transparent text-black rounded-md shadow-none"
-              }`}
-              onClick={() => HandleBlockIP(cellValues)}
-            >
-              <IconButton sx={{ padding: 0 }}>
-                <BiBlock size={19} />
-              </IconButton>
-            </p>}
           </div>
         );
       },
@@ -1822,14 +1809,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       handleLeadModelOpen();
     }
   };
-
-  const HandleBlockIP = async (params) => {
-    setBlockIPModalOpened({
-      lead: params, 
-      isOpened: true
-    });
-  };
-
+  
   // REMINDER BTN CLICK FUNC
   const HandleReminderBtn = async (params) => {
     console.log("LEADID: ", params);
@@ -2360,6 +2340,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
           {UpdateLeadModelOpen && (
             <UpdateLead
+            lead_origin={lead_origin}
               LeadModelOpen={UpdateLeadModelOpen}
               setLeadModelOpen={setUpdateLeadModelOpen}
               handleLeadModelOpen={handleUpdateLeadModelOpen}
@@ -2390,16 +2371,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               FetchLeads={FetchLeads}
               setSelectedRows={setSelectedRows}
               selectionModelRef={selectionModelRef}
-            />
-          )}
-          {blockIPModalOpened?.isOpened && (
-            <BlockIPModal
-              handleCloseIPModal={() => setBlockIPModalOpened({
-                isOpened: false, 
-                lead: null
-              })}
-              blockIPModalOpened={blockIPModalOpened?.isOpened}
-              lead={blockIPModalOpened?.lead}
             />
           )}
 
