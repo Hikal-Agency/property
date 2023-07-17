@@ -138,6 +138,61 @@ const SingleEmployee = ({ user }) => {
       reason: "N/A",
       salary: "$2000",
     },
+    {
+      id: 5,
+      day: "Tuesday",
+      date: "2023-05-02",
+      checkIn: "08:45 AM",
+      checkOut: "05:30 PM",
+      status: "Present",
+      lateBy: "5 minutes",
+      reason: "N/A",
+      salary: "$2000",
+    },
+    {
+      id: 5,
+      day: "Tuesday",
+      date: "2023-05-02",
+      checkIn: "08:45 AM",
+      checkOut: "05:30 PM",
+      status: "Present",
+      lateBy: "5 minutes",
+      reason: "N/A",
+      salary: "$2000",
+    },
+    {
+      id: 5,
+      day: "Tuesday",
+      date: "2023-05-02",
+      checkIn: "08:45 AM",
+      checkOut: "05:30 PM",
+      status: "Present",
+      lateBy: "5 minutes",
+      reason: "N/A",
+      salary: "$2000",
+    },
+    {
+      id: 5,
+      day: "Tuesday",
+      date: "2023-05-02",
+      checkIn: "08:45 AM",
+      checkOut: "05:30 PM",
+      status: "Present",
+      lateBy: "5 minutes",
+      reason: "N/A",
+      salary: "$2000",
+    },
+    {
+      id: 5,
+      day: "Tuesday",
+      date: "2023-05-02",
+      checkIn: "08:45 AM",
+      checkOut: "05:30 PM",
+      status: "Present",
+      lateBy: "5 minutes",
+      reason: "N/A",
+      salary: "$2000",
+    },
   ];
 
   const generateLastThreeMonths = () => {
@@ -653,6 +708,7 @@ const SingleEmployee = ({ user }) => {
                     <div className="col-span-6 ">
                       <Box
                         width={"100%"}
+                        height={"100%"}
                         className={`${currentMode}-mode-datatable`}
                         sx={DataGridStyles}
                       >
