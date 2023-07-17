@@ -284,7 +284,11 @@ const Home = () => {
                                 onMouseDown={handleMouseDownPassword}
                                 edge="end"
                               >
-                                {showPassword ? <FaEye /> : <FaEye />}
+                                {showPassword ? (
+                                  <FaEye size={18} />
+                                ) : (
+                                  <FaEye size={18} />
+                                )}
                               </IconButton>
                             </InputAdornment>
                           ),
