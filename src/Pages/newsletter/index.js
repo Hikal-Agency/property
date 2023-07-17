@@ -311,6 +311,7 @@ const Newsletter = () => {
                       icon={
                         value === 0 ? (
                           <AiOutlineAppstore
+                            size={22}
                             style={{
                               color:
                                 currentMode === "dark" ? "#ffffff" : "#000000",
@@ -318,6 +319,7 @@ const Newsletter = () => {
                           />
                         ) : (
                           <AiOutlineTable
+                            size={22}
                             style={{
                               color:
                                 currentMode === "dark" ? "#ffffff" : "#000000",
