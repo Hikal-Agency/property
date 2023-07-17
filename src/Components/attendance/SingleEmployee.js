@@ -41,34 +41,51 @@ const SingleEmployee = ({ user }) => {
   const [imagePickerModal, setImagePickerModal] = useState(false);
 
   const columns = [
-    { field: "id", headerAlign: "center", headerName: "ID", width: 20 },
-    { field: "day", headerAlign: "center", headerName: "Day", width: 90 },
-    { field: "date", headerAlign: "center", headerName: "Date", width: 100 },
+    { field: "id", headerAlign: "center", headerName: "ID", minWidth: 60 },
+    { field: "day", headerAlign: "center", headerName: "Day", minWidth: 120 },
+    { field: "date", headerAlign: "center", headerName: "Date", minWidth: 120 },
     {
       field: "checkIn",
       headerAlign: "center",
       headerName: "Check-In",
-      width: 90,
+      minWidth: 100,
     },
     {
       field: "checkOut",
       headerAlign: "center",
       headerName: "Check-Out",
-      width: 90,
+      minWidth: 120,
     },
-    { field: "status", headerAlign: "center", headerName: "Status", width: 90 },
+    {
+      field: "status",
+      headerAlign: "center",
+      headerName: "Status",
+      minWidth: 120,
+    },
     {
       field: "lateBy",
       headerAlign: "center",
       headerName: "Late By",
-      width: 90,
+      minWidth: 120,
     },
-    { field: "reason", headerAlign: "center", headerName: "Reason", width: 90 },
-    { field: "salary", headerAlign: "center", headerName: "Salary", width: 90 },
+    {
+      field: "reason",
+      headerAlign: "center",
+      headerName: "Reason",
+      minWidth: 250,
+    },
+    {
+      field: "salary",
+      headerAlign: "center",
+      headerName: "Salary",
+      minWidth: 120,
+    },
     {
       field: "actions",
       headerName: "Actions",
-      width: 90,
+      headerAlign: "center",
+      width: "100%",
+      // minWidth: 120,
       renderCell: (params) => (
         <>
           <IconButton>
@@ -118,6 +135,61 @@ const SingleEmployee = ({ user }) => {
     },
     {
       id: 4,
+      day: "Tuesday",
+      date: "2023-05-02",
+      checkIn: "08:45 AM",
+      checkOut: "05:30 PM",
+      status: "Present",
+      lateBy: "5 minutes",
+      reason: "N/A",
+      salary: "$2000",
+    },
+    {
+      id: 5,
+      day: "Tuesday",
+      date: "2023-05-02",
+      checkIn: "08:45 AM",
+      checkOut: "05:30 PM",
+      status: "Present",
+      lateBy: "5 minutes",
+      reason: "N/A",
+      salary: "$2000",
+    },
+    {
+      id: 5,
+      day: "Tuesday",
+      date: "2023-05-02",
+      checkIn: "08:45 AM",
+      checkOut: "05:30 PM",
+      status: "Present",
+      lateBy: "5 minutes",
+      reason: "N/A",
+      salary: "$2000",
+    },
+    {
+      id: 5,
+      day: "Tuesday",
+      date: "2023-05-02",
+      checkIn: "08:45 AM",
+      checkOut: "05:30 PM",
+      status: "Present",
+      lateBy: "5 minutes",
+      reason: "N/A",
+      salary: "$2000",
+    },
+    {
+      id: 5,
+      day: "Tuesday",
+      date: "2023-05-02",
+      checkIn: "08:45 AM",
+      checkOut: "05:30 PM",
+      status: "Present",
+      lateBy: "5 minutes",
+      reason: "N/A",
+      salary: "$2000",
+    },
+    {
+      id: 5,
       day: "Tuesday",
       date: "2023-05-02",
       checkIn: "08:45 AM",
@@ -653,7 +725,8 @@ const SingleEmployee = ({ user }) => {
                     <div className="col-span-6 ">
                       <Box
                         width={"100%"}
-                        className={`${currentMode}-mode-datatable`}
+                        height={"100%"}
+                        className={`single-emp ${currentMode}-mode-datatable`}
                         sx={DataGridStyles}
                       >
                         <DataGrid
