@@ -5,6 +5,7 @@ import { Tab, Tabs } from "@mui/material";
 import CreateOffer from "../../Components/offers/createoffer";
 import ManagerOffers from "../../Components/offers/manager_offers";
 import SalesPersonOffers from "../../Components/offers/salePerson_offers";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Offers = () => {
   const { currentMode, darkModeColors, setopenBackDrop, User } =

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 // import axios from "axios";
 import axios from "../../axoisConfig";
@@ -9,26 +9,36 @@ import { useState } from "react";
 const ManagerOffers = ({ tabValue, setTabValue, isLoading }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [offers, setOffers] = useState();
+  const [lastPage, setLastPage] = useState(0);
+  const [btnloading, setbtnloading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const imagePaths = [
     "../assets/offers_static_img.png",
     "../assets/offers_static_img_2.png",
-    // "../assets/offers_static_img3.png",
   ];
 
   console.log("Offers: ", offers);
 
-  const FetchOffers = async (token) => {
+  const FetchOffers = async (token, page = 1) => {
+    if (page > 1) {
+      setbtnloading(true);
+    }
     try {
-      const all_offers = await axios.get(`${BACKEND_URL}/offers`, {
+      const all_offers = await axios.get(`${BACKEND_URL}/offers?page=${page}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       });
 
-      setOffers(all_offers?.data?.offers?.data);
-
+      if(page > 1) {
+        setOffers((offers) => [...offers, all_offers?.data?.offers?.data]);
+      } else {
+        setOffers(all_offers?.data?.offers?.data);
+      }
+      setLastPage(all_offers?.data?.offers?.last_page);
+      setbtnloading(false);
       //   console.log("All Offers: ",all_offers)
     } catch (error) {
       console.log("Offers not fetched. ", error);
@@ -37,44 +47,13 @@ const ManagerOffers = ({ tabValue, setTabValue, isLoading }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
+    FetchOffers(token, currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
     FetchOffers(token);
   }, []);
-
-  const offer = [
-    {
-      creationDate: "2022-03-03",
-      offerTitle: "Win iPad ",
-      offerDescription:
-        "Get a chance to win latest iPad 14 Pro Max by closing AED 7 Million plus direct deals this month.",
-      valid_from: "2022-03-01",
-      valid_to: "2023-03-30",
-      validToManager: 1,
-      validToSales: 1,
-      offerBy: "Mohamed Hikal",
-    },
-    {
-      creationDate: "2022-03-03",
-      offerTitle: "Win iPhone 14 Pro Max",
-      offerDescription:
-        "Get a chance to win latest iPhone 14 Pro Max by closing AED 3 Million plus deals this month.",
-      valid_from: "2022-03-01",
-      valid_to: "2023-03-30",
-      validToManager: 0,
-      validToSales: 1,
-      offerBy: "Belal Hikal",
-    },
-    {
-      creationDate: "2022-03-07",
-      offerTitle: "Win iPhone 14 Pro Max",
-      offerDescription:
-        "Get a chance to win latest iPhone 14 Pro Max by closing AED 10 Million plus deals this month.",
-      valid_from: "2022-03-01",
-      valid_to: "2023-03-30",
-      validToManager: 1,
-      validToSales: 0,
-      offerBy: "Mohamed Hikal",
-    },
-  ];
 
   return (
     <div>
@@ -107,7 +86,7 @@ const ManagerOffers = ({ tabValue, setTabValue, isLoading }) => {
                     {offer?.offer_image ? (
                       <img
                         src={offer?.offer_image}
-                        alt="offers image"
+                        alt="offer"
                         className="w-full h-[200px]"
                       />
                     ) : (
@@ -117,7 +96,7 @@ const ManagerOffers = ({ tabValue, setTabValue, isLoading }) => {
                             Math.floor(Math.random() * imagePaths.length)
                           ]
                         }
-                        alt="offers image"
+                        alt="offer"
                         className="w-full h-[200px]"
                       />
                     )}
@@ -163,14 +142,27 @@ const ManagerOffers = ({ tabValue, setTabValue, isLoading }) => {
                 </h6> */}
                 </div>
               )
-              // : (
-              //     <>
-              //     No valid offers for manager
-              //     </>
-              // )
             );
           })}
         </div>
+        {(currentPage < lastPage) &&
+        <div className="flex justify-center mt-5">
+          <Button
+            disabled={btnloading}
+            onClick={() => setCurrentPage((page) => page + 1)}
+            variant="contained"
+            color="error"
+          >
+            {btnloading ? (
+              <div className="flex items-center justify-center space-x-1">
+                <CircularProgress size={18} sx={{ color: "blue" }} />
+              </div>
+            ) : (
+              <span>Show More</span>
+            )}
+          </Button>
+        </div>
+        }
       </Box>
     </div>
   );
