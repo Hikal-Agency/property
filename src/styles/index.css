@@ -469,7 +469,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
   width: 80%;
  }
 
- .closed-datatable .MuiDataGrid-columnHeadersInner .MuiDataGrid-columnHeader:last-child {
+.closed-datatable .MuiDataGrid-columnHeadersInner .MuiDataGrid-columnHeader:last-child {
 
   min-width: revert !important;
   max-width: revert !important;
@@ -477,6 +477,19 @@ label[for="bulkImport"] .MuiButtonBase-root {
  }
 
  .closed-datatable .MuiDataGrid-row .MuiDataGrid-cell:last-child {
+  min-width: revert !important;
+  max-width: revert !important;
+  width: 100% !important;
+ }
+
+.single-emp .MuiDataGrid-columnHeadersInner .MuiDataGrid-columnHeader:last-child {
+
+  min-width: revert !important;
+  max-width: revert !important;
+  width: 100% !important;
+ }
+
+ .single-emp .MuiDataGrid-row .MuiDataGrid-cell:last-child {
   min-width: revert !important;
   max-width: revert !important;
   width: 100% !important;

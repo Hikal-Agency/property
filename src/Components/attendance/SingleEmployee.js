@@ -41,34 +41,51 @@ const SingleEmployee = ({ user }) => {
   const [imagePickerModal, setImagePickerModal] = useState(false);
 
   const columns = [
-    { field: "id", headerAlign: "center", headerName: "ID", width: 20 },
-    { field: "day", headerAlign: "center", headerName: "Day", width: 90 },
-    { field: "date", headerAlign: "center", headerName: "Date", width: 100 },
+    { field: "id", headerAlign: "center", headerName: "ID", minWidth: 60 },
+    { field: "day", headerAlign: "center", headerName: "Day", minWidth: 120 },
+    { field: "date", headerAlign: "center", headerName: "Date", minWidth: 120 },
     {
       field: "checkIn",
       headerAlign: "center",
       headerName: "Check-In",
-      width: 90,
+      minWidth: 100,
     },
     {
       field: "checkOut",
       headerAlign: "center",
       headerName: "Check-Out",
-      width: 90,
+      minWidth: 120,
     },
-    { field: "status", headerAlign: "center", headerName: "Status", width: 90 },
+    {
+      field: "status",
+      headerAlign: "center",
+      headerName: "Status",
+      minWidth: 120,
+    },
     {
       field: "lateBy",
       headerAlign: "center",
       headerName: "Late By",
-      width: 90,
+      minWidth: 120,
     },
-    { field: "reason", headerAlign: "center", headerName: "Reason", width: 90 },
-    { field: "salary", headerAlign: "center", headerName: "Salary", width: 90 },
+    {
+      field: "reason",
+      headerAlign: "center",
+      headerName: "Reason",
+      minWidth: 250,
+    },
+    {
+      field: "salary",
+      headerAlign: "center",
+      headerName: "Salary",
+      minWidth: 120,
+    },
     {
       field: "actions",
       headerName: "Actions",
-      width: 90,
+      headerAlign: "center",
+      width: "100%",
+      // minWidth: 120,
       renderCell: (params) => (
         <>
           <IconButton>
@@ -709,7 +726,7 @@ const SingleEmployee = ({ user }) => {
                       <Box
                         width={"100%"}
                         height={"100%"}
-                        className={`${currentMode}-mode-datatable`}
+                        className={`single-emp ${currentMode}-mode-datatable`}
                         sx={DataGridStyles}
                       >
                         <DataGrid
