@@ -1,6 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "../Loader";
-import { Button, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+  FormControl,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { FaSignOutAlt } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
@@ -9,8 +19,12 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import CreateEvent from "./CreateEvent";
 import { toast } from "react-toastify";
+import { useStateContext } from "../../context/ContextProvider";
+import { Box } from "@mui/system";
+import { BsChevronCompactDown } from "react-icons/bs";
 
 const GoogleCalendarAppointment = () => {
+  const { currentMode, formatNum, darkModeColors } = useStateContext();
   const gapi = window.gapi;
   const google = window.google;
 
@@ -22,7 +36,7 @@ const GoogleCalendarAppointment = () => {
 
   const [gapiInited, setGapiInited] = useState(false);
   const [gisInited, setGisInited] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [createEventModal, setCreateEventModal] = useState({
@@ -36,17 +50,48 @@ const GoogleCalendarAppointment = () => {
 
   const tokenClient = useRef({});
 
-  useEffect(() => {
-    //const expiryTime = new Date().getTime() + expiresIn * 1000;
-    gapiLoaded();
-    gisLoaded();
-  }, []);
+  const [isEditing, setIsEditing] = useState(false);
+  const handleEventClick = (eventClickInfo) => {
+    console.log("Event clicked:", eventClickInfo.event);
+  };
 
-  useEffect(() => {
-    if (gapiInited && gisInited) {
-      setLoading(false);
-    }
-  }, [gapiInited, gisInited]);
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleUpdateClick = () => {
+    // Perform update logic here
+    setIsEditing(false);
+  };
+
+  const SelectStyles = {
+    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
+      {
+        color: currentMode === "dark" ? "white" : "black",
+        // borderColor: currentMode === "dark" ? "white" : "black",
+        fontSize: "0.9rem",
+        fontWeight: "500",
+        // borderLeft: currentMode === "dark" ? "1px solid white" : "1px solid black",
+        // borderRight: currentMode === "dark" ? "1px solid white" : "1px solid black",
+        border: "none",
+      },
+    "& .MuiOutlinedInput-notchedOutline": {
+      // borderColor: currentMode === "dark" ? "white" : "black",
+      border: "none",
+    },
+  };
+
+  // useEffect(() => {
+  //   //const expiryTime = new Date().getTime() + expiresIn * 1000;
+  //   gapiLoaded();
+  //   gisLoaded();
+  // }, []);
+
+  // useEffect(() => {
+  //   if (gapiInited && gisInited) {
+  //     setLoading(false);
+  //   }
+  // }, [gapiInited, gisInited]);
 
   function gapiLoaded() {
     gapi.load("client", initializeGapiClient);
@@ -135,16 +180,16 @@ const GoogleCalendarAppointment = () => {
       response = await gapi.client.calendar.events.list(request);
     } catch (err) {
       setMessageText(err.message);
-      if(err.status === 401) {
-      toast.error("Session Expired! You need to Sign in again", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      if (err.status === 401) {
+        toast.error("Session Expired! You need to Sign in again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       return;
     }
@@ -177,13 +222,13 @@ const GoogleCalendarAppointment = () => {
   } else {
     return (
       <div>
-        {!isLoggedIn && (
+        {/* {!isLoggedIn && (
           <div className="min-h-[50vh] flex flex-col justify-center items-center">
             <Typography variant="h5">
               Create and Manage Appointments on the Go!
             </Typography>
             <Button
-            disabled={!window.google}
+              disabled={!window.google}
               color="primary"
               sx={{ marginRight: "4px", marginTop: "12px" }}
               variant="contained"
@@ -194,9 +239,10 @@ const GoogleCalendarAppointment = () => {
               <span style={{ paddingLeft: "8px" }}>Sign In With Google</span>
             </Button>
           </div>
-        )}
-        {isLoggedIn && (
-          <>
+        )} */}
+        {/* {isLoggedIn && ( */}
+        <>
+          <div className="flex justify-end">
             <Button
               color="error"
               sx={{ marginRight: "7px" }}
@@ -218,16 +264,91 @@ const GoogleCalendarAppointment = () => {
               <IoMdAdd size={18} style={{ color: "white" }} />{" "}
               <span style={{ paddingLeft: "8px" }}>Add Event</span>
             </Button>
+          </div>
 
-            <pre
-              className="mt-3"
-              id="content"
-              style={{ whiteSpace: "pre-wrap" }}
+          <pre className="mt-3" id="content" style={{ whiteSpace: "pre-wrap" }}>
+            {messageText}
+          </pre>
+
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-5 pb-3">
+            <div className="h-full w-full">
+              <div className="grid grid-cols-1 gap-5">
+                <div className="flex flex-col">
+                  <div
+                    className={`${
+                      currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
+                    } p-4 shadow-md rounded-md`}
+                    style={{ width: "400px" }}
+                  >
+                    <div className=" justify-center mb-3">
+                      <FullCalendar
+                        headerToolbar={{
+                          start: "title",
+                          center: "",
+                          // end: "today dayGridMonth,dayGridWeek,dayGridDay prev,next",
+                        }}
+                        events={events}
+                        plugins={[dayGridPlugin, timeGridPlugin]}
+                        initialView="dayGridMonth"
+                      />
+                    </div>
+
+                    <div className="justify-center mb-3 mt-10">
+                      <p
+                        className={`font-bold text-md mb-3 ${
+                          currentMode === "dark" ? "text-white" : " text-black"
+                        }`}
+                      >
+                        Your Meeting Link
+                      </p>
+                      <Box sx={darkModeColors}>
+                        <TextField
+                          id="notes"
+                          type={"text"}
+                          label="Link"
+                          className="w-full mb-5"
+                          style={{ marginBottom: "20px" }}
+                          variant="outlined"
+                          size="small"
+                          // value={LeadNotes}
+                          // onChange={(e) => setLeadNotes(e.target.value)}
+                        />
+                      </Box>
+                    </div>
+
+                    <div className="justify-center mb-3">
+                      <Accordion className="mb-4" defaultExpanded={true}>
+                        <AccordionSummary expandIcon={<BsChevronCompactDown />}>
+                          <Typography>Integrated Calendars</Typography>
+                        </AccordionSummary>
+
+                        <AccordionDetails>
+                          <Typography sx={{ wordWrap: "break-word" }}>
+                            ubaid@gmail.com
+                            <hr className="mb-2" />
+                          </Typography>
+                          <Typography sx={{ wordWrap: "break-word" }}>
+                            Birthdays
+                            <hr className="mb-2" />
+                          </Typography>
+                          <Typography sx={{ wordWrap: "break-word" }}>
+                            Meetings
+                            <hr className="mb-2" />
+                          </Typography>
+                        </AccordionDetails>
+                      </Accordion>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className={`${
+                currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
+              } w-full col-span-2 md:col-span-2 lg:col-span-3 xl:col-span-2 p-5`}
+              style={{ width: "100%" }}
             >
-              {messageText}
-            </pre>
-
-            <div className="my-12">
+              {/* <div> */}
               <FullCalendar
                 headerToolbar={{
                   start: "title",
@@ -238,9 +359,11 @@ const GoogleCalendarAppointment = () => {
                 plugins={[dayGridPlugin, timeGridPlugin]}
                 initialView="dayGridMonth"
               />
+              {/* </div> */}
             </div>
-          </>
-        )}
+          </div>
+        </>
+        {/* )} */}
 
         {createEventModal.isOpen && (
           <CreateEvent
