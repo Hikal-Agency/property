@@ -42,13 +42,16 @@ const SingleEmployee = ({ user }) => {
   });
   const [selectedMonth, setSelectedMonth] = useState("");
 
-  const handleMonthChange = (event) => {
-    setSelectedMonth(event.target.value);
+  const handleDayFilter = (event) => {
+    setSelectedDay(event.target.value);
+
+    console.log("date range: ", event.target.value);
   };
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [empData, setEmpData] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(null);
 
   console.log("emp data: ", empData);
 
@@ -99,7 +102,7 @@ const SingleEmployee = ({ user }) => {
     {
       field: "attendance_type",
       headerAlign: "center",
-      headerName: "Check-Out",
+      headerName: "Check",
       minWidth: 120,
     },
     {
@@ -299,8 +302,42 @@ const SingleEmployee = ({ user }) => {
   };
 
   const FetchProfile = async (token) => {
+    const params = {
+      page: pageState.page,
+    };
+
+    if (selectedDay) {
+      if (selectedDay === "today") {
+        params.date_range = [
+          moment().subtract(1, "days").format("YYYY-MM-DD"),
+          moment().add(1, "days").format("YYYY-MM-DD"),
+        ].join(",");
+      } else if (selectedDay === "yesterday") {
+        params.date_range = [
+          moment().subtract(2, "days").format("YYYY-MM-DD"),
+          moment().format("YYYY-MM-DD"),
+        ].join(",");
+      } else if (selectedDay === "month") {
+        // Apply default date range of the complete month
+        const startDate = moment()
+          .subtract(1, "months")
+          .endOf("month")
+          .format("YYYY-MM-DD");
+        const endDate = moment()
+          .add(1, "months")
+          .startOf("month")
+          .format("YYYY-MM-DD");
+        params.date_range = [startDate, endDate].join(",");
+      }
+    } else if (selectedDay === "month") {
+      // Apply default date range of the complete month
+      const startDate = moment().startOf("month").format("YYYY-MM-DD");
+      const endDate = moment().endOf("month").format("YYYY-MM-DD");
+      params.date_range = [startDate, endDate].join(",");
+    }
     await axios
       .get(`${BACKEND_URL}/attendance?user_id=${id}`, {
+        params,
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -335,12 +372,18 @@ const SingleEmployee = ({ user }) => {
           edit: "edit",
         }));
 
+        const attended_days = rowsdata.filter(
+          (row) => row?.attendance_type.toLowerCase() === "in"
+        );
+        const attended_count = attended_days.length;
+        console.log("attended days: ", attended_count);
         setEmpData(rowsdata);
         setloading(false);
 
         setpageState((old) => ({
           ...old,
           data: rowsdata,
+          attended_count: attended_count,
         }));
       })
       .catch((err) => {
@@ -370,7 +413,7 @@ const SingleEmployee = ({ user }) => {
     const token = localStorage.getItem("auth-token");
     FetchProfile(token);
     // eslint-disable-next-line
-  }, []);
+  }, [pageState.page, selectedDay]);
 
   // const UpdateProfile = async (data) => {
   //   console.log("Profile: ", data);
@@ -664,13 +707,14 @@ const SingleEmployee = ({ user }) => {
                       size="small"
                       className="w-[100px]"
                       displayEmpty
+                      value={selectedDay || "month"}
+                      onChange={handleDayFilter}
                     >
-                      <MenuItem selected>Select a month</MenuItem>
-                      {lastThreeMonths?.map((month) => (
-                        <MenuItem key={month?.value} value={month?.value}>
-                          {month?.label}
-                        </MenuItem>
-                      ))}
+                      <MenuItem selected value="month">
+                        Select a day
+                      </MenuItem>
+                      <MenuItem value="today">Today</MenuItem>
+                      <MenuItem value="yesterday">Yesterday</MenuItem>
                     </Select>
                   </div>
                 </Box>
@@ -742,11 +786,9 @@ const SingleEmployee = ({ user }) => {
                           >
                             <div className="flex items-center justify-center font-semibold mb-1">
                               <h1 className="block">Salary Per Day: </h1>{" "}
-                              {/* <p className="font-bold">Active</p> */}
-                            </div>
-                            <div className="mt-3">
-                              <h1>Profile Created on: </h1>
-                              <p className="font-bold">{User?.creationDate}</p>
+                              {empData[0]?.salary && empData[0]?.salary !== null
+                                ? empData[0]?.salary / 30
+                                : "No data"}
                             </div>
                           </div>
                         </div>
@@ -761,10 +803,9 @@ const SingleEmployee = ({ user }) => {
                             }`}
                           >
                             <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
-                              <MdEmail size={25} className="block" />
-                              <h1>Email Address</h1>
+                              <h1>Attended Days:</h1>
                             </div>
-                            {User?.userEmail}
+                            {pageState?.attended_count || "0"}
                           </div>
                           <div
                             className={`mt-3 text-center ${
