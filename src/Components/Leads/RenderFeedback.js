@@ -76,7 +76,7 @@ const RenderFeedback = ({ cellValues }) => {
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
-    UpdateLeadData.append("lid", cellValues?.row?.leadId);
+    // UpdateLeadData.append("lid", cellValues?.row?.leadId);
     UpdateLeadData.append("id", cellValues?.row?.leadId);
     UpdateLeadData.append("feedback", newFeedback);
     if (newFeedback === "Meeting") {

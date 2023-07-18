@@ -300,7 +300,7 @@ const SingleEmployee = ({ user }) => {
 
   const FetchProfile = async (token) => {
     await axios
-      .get(`${BACKEND_URL}/attendance/${id}`, {
+      .get(`${BACKEND_URL}/attendance?user_id=${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -309,7 +309,7 @@ const SingleEmployee = ({ user }) => {
       .then((result) => {
         console.log("fetched data ", result.data);
 
-        const data = result.data.data;
+        const data = result.data.Record.data;
 
         let rowsdata = data?.map((row, index) => ({
           id:
@@ -325,6 +325,7 @@ const SingleEmployee = ({ user }) => {
           is_late: row?.is_late || "-",
           late_reason: row?.late_reason || "-",
           late_minutes: row?.late_minutes || "-",
+          salary: row?.salary || "-",
           created_at: row?.created_at,
           updated_at: row?.updated_at,
           edit: "edit",
