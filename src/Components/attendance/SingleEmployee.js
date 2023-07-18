@@ -55,30 +55,41 @@ const SingleEmployee = ({ user }) => {
   const columns = [
     { field: "id", headerAlign: "center", headerName: "ID", minWidth: 60 },
     {
-      field: "check_datetime",
+      field: "time",
       headerAlign: "center",
       headerName: "Time",
       minWidth: 120,
       renderCell: (cellValues) => {
         return (
-          <div>{moment(cellValues.row.formattedValue).format("hh:mm:ss ")}</div>
+          <div>{moment(cellValues.row.check_datetime).format("h:mm:ss A")}</div>
         );
       },
     },
-
     {
-      field: "date",
+      field: "check_datetime",
       headerAlign: "center",
       headerName: "Date",
       minWidth: 120,
       renderCell: (cellValues) => {
         return (
           <div>
-            {moment(cellValues.row.formattedValue).format("YYYY-MM-DD")}
+            {moment(cellValues.row.check_datetime).format("YYYY-MM-DD")}
           </div>
         );
       },
     },
+    {
+      field: "day",
+      headerAlign: "center",
+      headerName: "Day",
+      minWidth: 120,
+      renderCell: (cellValues) => {
+        return (
+          <div>{moment(cellValues.row.check_datetime).format("dddd")}</div>
+        );
+      },
+    },
+
     // {
     //   field: "checkIn",
     //   headerAlign: "center",
