@@ -5,6 +5,12 @@ body {
   padding: 0;
   font-family: "Open Sans", sans-serif;
 }
+
+*:lang(ar) {
+  font-family: "Monospace" !important;
+  color: blue !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

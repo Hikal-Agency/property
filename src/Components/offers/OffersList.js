@@ -56,7 +56,6 @@ const OffersList = ({ user, lastPage, offers, currentPage, btnloading, setCurren
 
   const imagePaths = [
     "../assets/offers_static_img.png",
-    "../assets/offers_static_img_2.png",
   ];
 
 
