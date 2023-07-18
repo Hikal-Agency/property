@@ -142,7 +142,7 @@ const EmployeesList = ({ user }) => {
                     size="small"
                     className="w-[100px]"
                     displayEmpty
-                    value={selectedDay}
+                    value={selectedDay || "selected"}
                     onChange={handleDayFilter}
                   >
                     <MenuItem selected value="selected">
