@@ -11,7 +11,6 @@ const CreateAppointment = () => {
   useEffect(() => {
     setopenBackDrop(false);
     setloading(false);
-    // eslint-disable-next-line
   }, []);
 
   return (

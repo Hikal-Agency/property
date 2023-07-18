@@ -64,23 +64,6 @@ const GoogleCalendarAppointment = () => {
     setIsEditing(false);
   };
 
-  const SelectStyles = {
-    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
-      {
-        color: currentMode === "dark" ? "white" : "black",
-        // borderColor: currentMode === "dark" ? "white" : "black",
-        fontSize: "0.9rem",
-        fontWeight: "500",
-        // borderLeft: currentMode === "dark" ? "1px solid white" : "1px solid black",
-        // borderRight: currentMode === "dark" ? "1px solid white" : "1px solid black",
-        border: "none",
-      },
-    "& .MuiOutlinedInput-notchedOutline": {
-      // borderColor: currentMode === "dark" ? "white" : "black",
-      border: "none",
-    },
-  };
-
   // useEffect(() => {
   //   //const expiryTime = new Date().getTime() + expiresIn * 1000;
   //   gapiLoaded();
@@ -270,9 +253,9 @@ const GoogleCalendarAppointment = () => {
             {messageText}
           </pre>
 
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-5 pb-3">
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 pb-3">
             <div className="h-full w-full">
-              <div className="grid grid-cols-1 gap-5">
+              <div className="grid grid-cols-1">
                 <div className="flex flex-col">
                   <div
                     className={`${
