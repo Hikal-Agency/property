@@ -384,6 +384,10 @@ const SingleEmployee = ({ user }) => {
         const leave_count = leave_days.length;
         console.log("leave days: ", leave_count);
 
+        const is_late = rowsdata.filter((row) => row?.is_late === 1);
+        const late_count = is_late.length;
+        console.log("is late: ", late_count);
+
         setEmpData(rowsdata);
         setloading(false);
 
@@ -392,6 +396,7 @@ const SingleEmployee = ({ user }) => {
           data: rowsdata,
           attended_count: attended_count,
           leave_count: leave_count,
+          late_count: late_count,
         }));
       })
       .catch((err) => {
@@ -786,7 +791,7 @@ const SingleEmployee = ({ user }) => {
                                 : "text-gray-600"
                             }`}
                           >
-                            <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
+                            <div className="flex items-center space-x-1 justify-center">
                               {/* <MdEmail size={25} className="block" /> */}
                               <h1>Monthly Salary</h1>
                             </div>
@@ -819,7 +824,7 @@ const SingleEmployee = ({ user }) => {
                                 : "text-gray-600"
                             }`}
                           >
-                            <div className="flex  justify-center font-bold  mb-1">
+                            <div className="flex  justify-center font-semibold ">
                               <h1>Attended Days:</h1>
                             </div>
                             {pageState?.attended_count || "0"}
@@ -831,7 +836,7 @@ const SingleEmployee = ({ user }) => {
                                 : "text-gray-600"
                             }`}
                           >
-                            <div className="flex justify-center font-semibold mb-1">
+                            <div className="flex justify-center font-semibold ">
                               <h1 className="block">Leave Days : </h1>
                               {"  "}
                               <p className="font-bold pl-1">
@@ -839,9 +844,58 @@ const SingleEmployee = ({ user }) => {
                               </p>
                             </div>
                             <div className="mt-3">
-                              <h1>Profile Created on: </h1>
-                              <p className="font-bold">{User?.creationDate}</p>
+                              <h1>Late Attendance Days: </h1>
+                              <p className="font-bold">
+                                {pageState?.late_count || "0"}
+                              </p>
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="accountinfo border-t-2 border-gray-400 px-5 mt-3 pt-5 ">
+                        <div className="flex justify-center flex-col items-center">
+                          <div
+                            className={`mt-1 text-center ${
+                              currentMode === "dark"
+                                ? "text-gray-50"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            <div className="flex  justify-center  font-semibold">
+                              <h1>Leave Days:</h1>
+                            </div>
+                            {pageState?.attended_count || "0"}
+                          </div>
+                          <div
+                            className={`mt-3 text-center ${
+                              currentMode === "dark"
+                                ? "text-gray-50"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            <div className="flex justify-center font-semibold mb-1">
+                              <h1 className="block">Late Attendance Days : </h1>
+                              {"  "}
+                              <p className="font-bold pl-1">
+                                {"  "} {pageState?.leave_count || "0"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="accountinfo border-t-2  border-b-2 border-gray-400 px-5 mt-3 mb-3 pb-5 pt-5 ">
+                        <div className="flex justify-center flex-col items-center">
+                          <div
+                            className={`mt-1 text-center ${
+                              currentMode === "dark"
+                                ? "text-gray-50"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            <div className="flex  justify-center  font-semibold">
+                              <h1>Total Salary:</h1>
+                            </div>
+                            {pageState?.attended_count || "0"}
                           </div>
                         </div>
                       </div>
