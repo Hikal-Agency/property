@@ -13,8 +13,15 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, IconButton } from "@mui/material";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
+import moment from "moment";
 
 const SingleEmployee = ({ user }) => {
+  const path = window.location.pathname;
+  const id = path.split("/").pop();
+
+  console.log("id: ", id);
+  console.log("user: ", user);
+
   const [loading, setloading] = useState(true);
   const {
     User,
@@ -24,6 +31,8 @@ const SingleEmployee = ({ user }) => {
     BACKEND_URL,
     setUser,
     DataGridStyles,
+    pageState,
+    setpageState,
   } = useStateContext();
   const [GeneralInfoData, setGeneralInfo] = useState({
     userAltContact: "",
@@ -39,19 +48,45 @@ const SingleEmployee = ({ user }) => {
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
+  const [empData, setEmpData] = useState(null);
+
+  console.log("emp data: ", empData);
 
   const columns = [
     { field: "id", headerAlign: "center", headerName: "ID", minWidth: 60 },
-    { field: "day", headerAlign: "center", headerName: "Day", minWidth: 120 },
-    { field: "date", headerAlign: "center", headerName: "Date", minWidth: 120 },
     {
-      field: "checkIn",
+      field: "check_datetime",
       headerAlign: "center",
-      headerName: "Check-In",
-      minWidth: 100,
+      headerName: "Time",
+      minWidth: 120,
+      renderCell: (cellValues) => {
+        return (
+          <div>{moment(cellValues.row.formattedValue).format("hh:mm:ss ")}</div>
+        );
+      },
     },
+
     {
-      field: "checkOut",
+      field: "date",
+      headerAlign: "center",
+      headerName: "Date",
+      minWidth: 120,
+      renderCell: (cellValues) => {
+        return (
+          <div>
+            {moment(cellValues.row.formattedValue).format("YYYY-MM-DD")}
+          </div>
+        );
+      },
+    },
+    // {
+    //   field: "checkIn",
+    //   headerAlign: "center",
+    //   headerName: "Check-In",
+    //   minWidth: 100,
+    // },
+    {
+      field: "attendance_type",
       headerAlign: "center",
       headerName: "Check-Out",
       minWidth: 120,
@@ -63,13 +98,13 @@ const SingleEmployee = ({ user }) => {
       minWidth: 120,
     },
     {
-      field: "lateBy",
+      field: "late_minutes",
       headerAlign: "center",
       headerName: "Late By",
       minWidth: 120,
     },
     {
-      field: "reason",
+      field: "late_reason",
       headerAlign: "center",
       headerName: "Reason",
       minWidth: 250,
@@ -254,36 +289,46 @@ const SingleEmployee = ({ user }) => {
 
   const FetchProfile = async (token) => {
     await axios
-      .get(`${BACKEND_URL}/profile`, {
+      .get(`${BACKEND_URL}/attendance/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       })
       .then((result) => {
-        console.log("fetched profile ", result.data);
-        setGeneralInfo({
-          userContact: result.data.user[0].userContact,
-          userAltContact: result.data.user[0].userAltContact,
-          userEmail: result.data.user[0].userEmail,
-          userAltEmail: result.data.user[0].userAltEmail,
-        });
-        setPersonalInfo({
-          nationality: result.data.user[0].nationality,
-          currentAddress: result.data.user[0].currentAddress,
-          dob: result.data.user[0].dob,
-          gender: result.data.user[0].gender,
-        });
+        console.log("fetched data ", result.data);
 
-        if (result.data.user[0].profile_picture !== User?.displayImg) {
-          SetUserProfilePic(result.data.user[0].profile_picture);
-        }
+        const data = result.data.data;
 
-        console.log("Personal info: ", PersonalInfo.address);
-        // setgender(User?.gender);
+        let rowsdata = data?.map((row, index) => ({
+          id:
+            pageState.page > 1
+              ? pageState.page * pageState.pageSize -
+                (pageState.pageSize - 1) +
+                index
+              : index + 1,
+          attendance_type: row?.attendance_type,
+          check_datetime: row?.check_datetime,
+          default_datetime: row?.default_datetime,
+          attendance_source: row?.attendance_source || "-",
+          is_late: row?.is_late || "-",
+          late_reason: row?.late_reason || "-",
+          late_minutes: row?.late_minutes || "-",
+          created_at: row?.created_at,
+          updated_at: row?.updated_at,
+          edit: "edit",
+        }));
+
+        setEmpData(rowsdata);
         setloading(false);
+
+        setpageState((old) => ({
+          ...old,
+          data: rowsdata,
+        }));
       })
       .catch((err) => {
+        setloading(false);
         console.log("here is error");
         console.log(err);
         toast.error("Sorry something went wrong. Kindly refresh the page.", {
@@ -664,10 +709,10 @@ const SingleEmployee = ({ user }) => {
                             }`}
                           >
                             <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
-                              <MdEmail size={25} className="block" />
-                              <h1>Email Address</h1>
+                              {/* <MdEmail size={25} className="block" /> */}
+                              <h1>Monthly Salary</h1>
                             </div>
-                            {User?.userEmail}
+                            {/* {Use/r?.userEmail} */}
                           </div>
                           <div
                             className={`mt-3 text-center ${
@@ -677,8 +722,8 @@ const SingleEmployee = ({ user }) => {
                             }`}
                           >
                             <div className="flex items-center justify-center font-semibold mb-1">
-                              <h1 className="block">Status: </h1>{" "}
-                              <p className="font-bold">Active</p>
+                              <h1 className="block">Salary Per Day: </h1>{" "}
+                              {/* <p className="font-bold">Active</p> */}
                             </div>
                             <div className="mt-3">
                               <h1>Profile Created on: </h1>
@@ -732,7 +777,7 @@ const SingleEmployee = ({ user }) => {
                         <DataGrid
                           autoHeight
                           disableSelectionOnClick
-                          rows={rows}
+                          rows={pageState.data}
                           columns={columns}
                           // rowCount={pageState.total}
                           // loading={pageState.isLoading}
