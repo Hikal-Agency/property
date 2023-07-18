@@ -68,7 +68,7 @@ const Livelocation = () => {
 
   return (
     <>
-      <ToastContainer />
+      
       {loading ? (
         <Loader />
       ) : (

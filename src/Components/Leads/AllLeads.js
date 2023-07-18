@@ -2041,7 +2041,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   };
   return (
     <>
-      <ToastContainer />
+      
       <div className="pb-10">
         {/* {lead_origin === "unassigned" && lead_type === "fresh" && (
           <Box

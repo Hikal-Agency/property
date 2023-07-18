@@ -138,7 +138,7 @@ const Signup = () => {
   };
   return (
     <>
-      <ToastContainer />
+      
       {/* <Head>
         <title>HIKAL CRM - Create a new Account</title>
         <meta name="description" content="Create a New Account - HIKAL CRM" />

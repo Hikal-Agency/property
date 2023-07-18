@@ -258,7 +258,7 @@ const RegisterAttendance = () => {
 
   return (
     <>
-      <ToastContainer />
+      
       <div
         style={{
           height: "96vh",
@@ -317,7 +317,7 @@ const RegisterAttendance = () => {
             </div>
           </div>
         </div>
-        <ToastContainer />
+        
         <div className="grid place-items-center h-screen ">
           <div
             className={`${

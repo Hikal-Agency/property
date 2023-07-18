@@ -215,7 +215,7 @@ const Navbar = () => {
 
   return (
     <>
-      <ToastContainer />
+      
       <div
         className="flex justify-between items-center p-2 relative "
         style={{

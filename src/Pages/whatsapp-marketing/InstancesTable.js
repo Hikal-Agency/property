@@ -281,7 +281,7 @@ const InstancesTable = ({ pageState, setpageState }) => {
 
     return (
       <>
-        <ToastContainer />
+        
         <Pagination
           sx={{
             "& .Mui-selected": {

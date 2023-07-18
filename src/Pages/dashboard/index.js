@@ -60,7 +60,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <ToastContainer />
+      
       <div className="flex min-h-screen w-[100%]">
         {loading ? (
           <Loader />

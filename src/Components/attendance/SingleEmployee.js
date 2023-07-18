@@ -640,7 +640,7 @@ const SingleEmployee = ({ user }) => {
 
   return (
     <>
-      <ToastContainer />
+      
       <div className="flex min-h-screen">
         {loading ? (
           <Loader />

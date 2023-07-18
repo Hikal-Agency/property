@@ -374,7 +374,7 @@ const AddLeadComponent = () => {
 
   return (
     <>
-      <ToastContainer />
+      
       {pageloading ? (
         <Loader />
       ) : (

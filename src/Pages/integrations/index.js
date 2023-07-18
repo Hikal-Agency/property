@@ -19,7 +19,7 @@ const Integrations = () => {
 
   return (
     <>
-      <ToastContainer />
+      
       <div className="flex min-h-screen">
         <div
           className={`w-full ${

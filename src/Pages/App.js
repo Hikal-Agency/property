@@ -414,6 +414,7 @@ function App() {
 
   return (
     <>
+    <ToastContainer/>
       <div
         style={{
           margin: 0,
@@ -421,7 +422,7 @@ function App() {
           background: currentMode === "dark" ? "#000000" : "#ffffff",
         }}
       >
-        <ToastContainer />
+        
         {/* {appLoading && hasSidebarOrNavbar() &&
       <div style={{width: "100vw", height: "100vh", zIndex: 10000, position: "fixed", top: 0, left: 0}}>
         <Loader/>

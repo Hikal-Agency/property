@@ -171,7 +171,7 @@ const DeleteUser = ({
   }
   return (
     <>
-      <ToastContainer />
+      
       {console.log("user data is")}
       {/* {console.log(UserData)} */}
       <Modal

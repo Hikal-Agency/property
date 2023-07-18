@@ -90,7 +90,7 @@ export const GeneralInfo = ({
 
   return (
     <>
-      <ToastContainer />
+      
       <div className="relative w-full">
         <form action="">
           <Box sx={darkModeColors} className="grid grid-cols-6 gap-x-3 gap-y-5">

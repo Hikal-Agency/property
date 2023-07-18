@@ -190,7 +190,7 @@ const AttendanceLogin = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
       </Head> */}
-      <ToastContainer />
+      
       <div className="relative overflow-hidden">
         <div className="canvas absolute w-full overflow-x-hidden">
           <canvas ref={(elem) => (canvas = elem)} className="-z-[1]"></canvas>

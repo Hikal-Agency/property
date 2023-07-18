@@ -158,7 +158,7 @@ const SingleLead = ({
 
   return (
     <>
-      <ToastContainer />
+      
       {console.log("lead data is")}
       {console.log(LeadData)}
       <Modal

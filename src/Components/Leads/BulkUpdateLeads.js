@@ -142,7 +142,7 @@ const BulkUpdateLeads = ({
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
         >
-          <ToastContainer />
+          
           <IconButton
             sx={{
               position: "absolute",

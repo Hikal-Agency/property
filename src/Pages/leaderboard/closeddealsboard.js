@@ -161,7 +161,7 @@
 
 //   return (
 //     <div>
-//       <ToastContainer />
+//       
 //       <Box sx={darkModeColors} className="font-semibold">
 //         <Tabs value={tabValue} onChange={handleChange} variant="standard">
 //           <Tab label="All TIME" />
@@ -830,7 +830,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
 
   return (
     <div>
-      <ToastContainer />
+      
       <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={tabValue} onChange={handleChange} variant="standard">
           <Tab label="All TIME" />
