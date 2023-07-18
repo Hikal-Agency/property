@@ -10,7 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, IconButton } from "@mui/material";
+import { Avatar, Box, IconButton } from "@mui/material";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
 import moment from "moment";
@@ -105,12 +105,12 @@ const SingleEmployee = ({ user }) => {
       headerName: "Check",
       minWidth: 120,
     },
-    {
-      field: "status",
-      headerAlign: "center",
-      headerName: "Status",
-      minWidth: 120,
-    },
+    // {
+    //   field: "status",
+    //   headerAlign: "center",
+    //   headerName: "Status",
+    //   minWidth: 120,
+    // },
     {
       field: "late_minutes",
       headerAlign: "center",
@@ -363,7 +363,7 @@ const SingleEmployee = ({ user }) => {
           late_reason: row?.late_reason || "-",
           late_minutes: row?.late_minutes || "-",
           salary: row?.salary || "-",
-          profile_picture: row?.profile_picture || "-",
+          profile_picture: row?.profile_picture,
           position: row?.position || "-",
           currency: row?.currency || "-",
           userName: row?.userName || "-",
@@ -377,6 +377,13 @@ const SingleEmployee = ({ user }) => {
         );
         const attended_count = attended_days.length;
         console.log("attended days: ", attended_count);
+
+        const leave_days = rowsdata.filter(
+          (row) => row?.attendance_type.toLowerCase() === "out"
+        );
+        const leave_count = leave_days.length;
+        console.log("leave days: ", leave_count);
+
         setEmpData(rowsdata);
         setloading(false);
 
@@ -384,6 +391,7 @@ const SingleEmployee = ({ user }) => {
           ...old,
           data: rowsdata,
           attended_count: attended_count,
+          leave_count: leave_count,
         }));
       })
       .catch((err) => {
@@ -735,13 +743,22 @@ const SingleEmployee = ({ user }) => {
                           // onClick={() => setImagePickerModal({ isOpen: true })}
                           className="relative"
                         >
-                          <img
-                            src={empData[0]?.profile_picture}
-                            width={200}
-                            height={200}
-                            alt=""
-                            className="rounded-full mx-auto w-28"
-                          />
+                          {empData[0]?.profile_picture ? (
+                            <img
+                              src={empData[0]?.profile_picture}
+                              width={200}
+                              height={200}
+                              alt=""
+                              className="rounded-full mx-auto w-28"
+                            />
+                          ) : (
+                            <Avatar
+                              alt="User"
+                              variant="circular"
+                              style={{ width: "64px", height: "64px" }}
+                              className="rounded-full mx-auto w-28"
+                            />
+                          )}
                         </div>
                       </label>
 
@@ -802,7 +819,7 @@ const SingleEmployee = ({ user }) => {
                                 : "text-gray-600"
                             }`}
                           >
-                            <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
+                            <div className="flex  justify-center font-bold  mb-1">
                               <h1>Attended Days:</h1>
                             </div>
                             {pageState?.attended_count || "0"}
@@ -814,9 +831,12 @@ const SingleEmployee = ({ user }) => {
                                 : "text-gray-600"
                             }`}
                           >
-                            <div className="flex items-center justify-center font-semibold mb-1">
-                              <h1 className="block">Status: </h1>{" "}
-                              <p className="font-bold">Active</p>
+                            <div className="flex justify-center font-semibold mb-1">
+                              <h1 className="block">Leave Days : </h1>
+                              {"  "}
+                              <p className="font-bold pl-1">
+                                {"  "} {pageState?.leave_count || "0"}
+                              </p>
                             </div>
                             <div className="mt-3">
                               <h1>Profile Created on: </h1>
