@@ -128,17 +128,17 @@ const OffersList = ({ user, lastPage, offers, currentPage, btnloading, setCurren
                         <img
                           src={offer?.offer_image}
                           alt="offer"
-                          className="w-full h-[200px]"
+                          className="w-full object-cover h-[200px]"
                         />
                       ) : (
                         <img
                           src={
                             imagePaths[
-                              Math.floor(Math.random() * imagePaths.length)
+                              0
                             ]
                           }
                           alt="offer"
-                          className="w-full h-[200px]"
+                          className="w-full h-[200px] object-cover"
                         />
                       )}
                     </div>

@@ -16,7 +16,6 @@ import { BsImage } from "react-icons/bs";
 import MessageFromOther from "./MessageFromOther";
 import { IoMdSend } from "react-icons/io";
 import { HiOutlineSwitchHorizontal } from "react-icons/hi";
-import moment from "moment";
 
 const Conversation = ({
   data,
