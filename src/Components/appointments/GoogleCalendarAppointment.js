@@ -253,7 +253,10 @@ const GoogleCalendarAppointment = () => {
             {messageText}
           </pre>
 
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-0 pb-3">
+          <div
+            className="grid grid-cols-1 md:grid-cols-[1fr,3fr] lg:grid-cols-[1fr,3fr] gap-x-3 pb-3"
+            style={{}}
+          >
             {/* <div className="h-full "> */}
             {/* <div className="grid grid-cols-1"> */}
             {/* <div className="flex flex-col"> */}
@@ -261,7 +264,6 @@ const GoogleCalendarAppointment = () => {
               className={`${
                 currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
               } p-4 shadow-md rounded-md `}
-              style={{ width: "400px" }}
             >
               <div className=" justify-center mb-3">
                 <FullCalendar
@@ -328,7 +330,7 @@ const GoogleCalendarAppointment = () => {
             <div
               className={` ${
                 currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
-              }  col-span-2 md:col-span-2 lg:col-span-3 xl:col-span-2  p-5`}
+              }   p-5`}
             >
               {/* <div> */}
               <FullCalendar
