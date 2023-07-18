@@ -52,6 +52,7 @@
     "react-dom": "^18.2.0",
     "react-google-calendar-api": "^2.2.2",
     "react-icons": "^4.7.1",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-phone-number-input": "^3.2.20",
     "react-pro-sidebar": "^1.0.0",
     "react-router-dom": "^6.8.1",

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { ToastContainer } from "react-toastify";
+import { Box } from "@mui/material";
 
 const BlockedIps = () => {
   const { currentMode, BACKEND_URL, Managers, SalesPerson } = useStateContext();
@@ -14,7 +15,7 @@ const BlockedIps = () => {
         }`}
       >
         <div className="pl-3">
-          <div className="mt-5 md:mt-2">
+          {/* <div className="mt-5 md:mt-2">
             <h1
               className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
                 currentMode === "dark"
@@ -30,7 +31,13 @@ const BlockedIps = () => {
             ) : (
               <></>
             )}
-          </div>
+          </div> */}
+
+          <Box className="h-[60vh] flex items-center justify-center">
+            <img src="/coming-soon.png" width={"200px"} alt="" />
+          </Box>
+
+          <img src="" alt="" />
         </div>
       </div>
     </>

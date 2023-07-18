@@ -269,9 +269,7 @@ const AllLeads = () => {
       renderCell: (cellValues) => {
         return (
           <Link
-            to={`/whatsapp-marketing/chat?phoneNumber=${cellValues.row.leadContact
-              .slice(1)
-              .replaceAll(" ", "")}`}
+            to={`/whatsapp-marketing/chat?phoneNumber=${cellValues.row.leadContact?.slice(1)?.replaceAll(" ", "")}`}
           >
             <div
               className="whatsapp-web-link"
@@ -381,9 +379,7 @@ const AllLeads = () => {
       renderCell: (cellValues) => {
         return (
           <Link
-            to={`/whatsapp-marketing/chat?phoneNumber=${cellValues.row.leadContact
-              .slice(1)
-              .replaceAll(" ", "")}`}
+            to={`/whatsapp-marketing/chat?phoneNumber=${cellValues.row.leadContact?.slice(1)?.replaceAll(" ", "")}`}
           >
             <div
               className="whatsapp-web-link"
@@ -689,7 +685,7 @@ const AllLeads = () => {
           },
         }
       );
-      const waNo = response.data?.id.slice(0, response.data?.id.indexOf("@"));
+      const waNo = response.data?.id?.slice(0, response.data?.id?.indexOf("@"));
       setWhatsappSenderNo(waNo);
     } catch (error) {
       console.log(error);
@@ -1171,9 +1167,7 @@ const AllLeads = () => {
 
           {selectedRows.length === 1 && (
             <Link
-              to={`/whatsapp-marketing/chat?phoneNumber=${selectedRows[0]
-                .slice(1)
-                .replaceAll(" ", "")}`}
+              to={`/whatsapp-marketing/chat?phoneNumber=${selectedRows[0]?.slice(1)?.replaceAll(" ", "")}`}
             >
               <Button
                 type="button"

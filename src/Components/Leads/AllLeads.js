@@ -1692,6 +1692,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         coldCallCode = 3;
       }
     }
+    
 
     if (coldCallCode !== "") {
       url += `&coldCall=${coldCallCode}`;
@@ -1708,6 +1709,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     if (lead_origin === "transfferedleads") {
       url += `&status=Transferred`;
     }
+
 
     await axios
       .get(url, {
