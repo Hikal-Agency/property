@@ -253,83 +253,82 @@ const GoogleCalendarAppointment = () => {
             {messageText}
           </pre>
 
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 pb-3">
-            <div className="h-full w-full">
-              <div className="grid grid-cols-1">
-                <div className="flex flex-col">
-                  <div
-                    className={`${
-                      currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
-                    } p-4 shadow-md rounded-md`}
-                    style={{ width: "400px" }}
-                  >
-                    <div className=" justify-center mb-3">
-                      <FullCalendar
-                        headerToolbar={{
-                          start: "title",
-                          center: "",
-                          // end: "today dayGridMonth,dayGridWeek,dayGridDay prev,next",
-                        }}
-                        events={events}
-                        plugins={[dayGridPlugin, timeGridPlugin]}
-                        initialView="dayGridMonth"
-                      />
-                    </div>
-
-                    <div className="justify-center mb-3 mt-10">
-                      <p
-                        className={`font-bold text-md mb-3 ${
-                          currentMode === "dark" ? "text-white" : " text-black"
-                        }`}
-                      >
-                        Your Meeting Link
-                      </p>
-                      <Box sx={darkModeColors}>
-                        <TextField
-                          id="notes"
-                          type={"text"}
-                          label="Link"
-                          className="w-full mb-5"
-                          style={{ marginBottom: "20px" }}
-                          variant="outlined"
-                          size="small"
-                          // value={LeadNotes}
-                          // onChange={(e) => setLeadNotes(e.target.value)}
-                        />
-                      </Box>
-                    </div>
-
-                    <div className="justify-center mb-3">
-                      <Accordion className="mb-4" defaultExpanded={true}>
-                        <AccordionSummary expandIcon={<BsChevronCompactDown />}>
-                          <Typography>Integrated Calendars</Typography>
-                        </AccordionSummary>
-
-                        <AccordionDetails>
-                          <Typography sx={{ wordWrap: "break-word" }}>
-                            ubaid@gmail.com
-                            <hr className="mb-2" />
-                          </Typography>
-                          <Typography sx={{ wordWrap: "break-word" }}>
-                            Birthdays
-                            <hr className="mb-2" />
-                          </Typography>
-                          <Typography sx={{ wordWrap: "break-word" }}>
-                            Meetings
-                            <hr className="mb-2" />
-                          </Typography>
-                        </AccordionDetails>
-                      </Accordion>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-0 pb-3">
+            {/* <div className="h-full "> */}
+            {/* <div className="grid grid-cols-1"> */}
+            {/* <div className="flex flex-col"> */}
             <div
               className={`${
                 currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
-              } w-full col-span-2 md:col-span-2 lg:col-span-3 xl:col-span-2 p-5`}
-              style={{ width: "100%" }}
+              } p-4 shadow-md rounded-md `}
+              style={{ width: "400px" }}
+            >
+              <div className=" justify-center mb-3">
+                <FullCalendar
+                  headerToolbar={{
+                    start: "title",
+                    center: "",
+                    // end: "today dayGridMonth,dayGridWeek,dayGridDay prev,next",
+                  }}
+                  events={events}
+                  plugins={[dayGridPlugin, timeGridPlugin]}
+                  initialView="dayGridMonth"
+                />
+              </div>
+
+              <div className="justify-center mb-3 mt-10">
+                <p
+                  className={`font-bold text-md mb-3 ${
+                    currentMode === "dark" ? "text-white" : " text-black"
+                  }`}
+                >
+                  Your Meeting Link
+                </p>
+                <Box sx={darkModeColors}>
+                  <TextField
+                    id="notes"
+                    type={"text"}
+                    label="Link"
+                    className="w-full mb-5"
+                    style={{ marginBottom: "20px" }}
+                    variant="outlined"
+                    size="small"
+                    // value={LeadNotes}
+                    // onChange={(e) => setLeadNotes(e.target.value)}
+                  />
+                </Box>
+              </div>
+
+              <div className="justify-center mb-3">
+                <Accordion className="mb-4" defaultExpanded={true}>
+                  <AccordionSummary expandIcon={<BsChevronCompactDown />}>
+                    <Typography>Integrated Calendars</Typography>
+                  </AccordionSummary>
+
+                  <AccordionDetails>
+                    <Typography sx={{ wordWrap: "break-word" }}>
+                      ubaid@gmail.com
+                      <hr className="mb-2" />
+                    </Typography>
+                    <Typography sx={{ wordWrap: "break-word" }}>
+                      Birthdays
+                      <hr className="mb-2" />
+                    </Typography>
+                    <Typography sx={{ wordWrap: "break-word" }}>
+                      Meetings
+                      <hr className="mb-2" />
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
+              </div>
+            </div>
+            {/* </div> */}
+            {/* </div> */}
+            {/* </div> */}
+            <div
+              className={` ${
+                currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
+              }  col-span-2 md:col-span-2 lg:col-span-3 xl:col-span-2  p-5`}
             >
               {/* <div> */}
               <FullCalendar
