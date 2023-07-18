@@ -326,6 +326,10 @@ const SingleEmployee = ({ user }) => {
           late_reason: row?.late_reason || "-",
           late_minutes: row?.late_minutes || "-",
           salary: row?.salary || "-",
+          profile_picture: row?.profile_picture || "-",
+          position: row?.position || "-",
+          currency: row?.currency || "-",
+          userName: row?.userName || "-",
           created_at: row?.created_at,
           updated_at: row?.updated_at,
           edit: "edit",
@@ -684,11 +688,11 @@ const SingleEmployee = ({ user }) => {
                       </h1> */}
                       <label htmlFor="pick-image">
                         <div
-                          onClick={() => setImagePickerModal({ isOpen: true })}
+                          // onClick={() => setImagePickerModal({ isOpen: true })}
                           className="relative"
                         >
                           <img
-                            src={User?.displayImg}
+                            src={empData[0]?.profile_picture}
                             width={200}
                             height={200}
                             alt=""
@@ -699,7 +703,8 @@ const SingleEmployee = ({ user }) => {
 
                       <div className="mb-3">
                         <h1 className="text-lg font-bold text-center">
-                          {User?.userName}
+                          {/* {User?.userName} */}
+                          {empData[0]?.userName}
                         </h1>
                         <h3
                           className={`${
@@ -708,7 +713,7 @@ const SingleEmployee = ({ user }) => {
                               : "text-gray-600"
                           }  text-center`}
                         >
-                          {User?.position}
+                          {empData[0]?.position}
                         </h3>
                       </div>
                       <div className="accountinfo border-t-2 border-gray-400 px-5 pt-5 ">
@@ -724,7 +729,9 @@ const SingleEmployee = ({ user }) => {
                               {/* <MdEmail size={25} className="block" /> */}
                               <h1>Monthly Salary</h1>
                             </div>
-                            {/* {Use/r?.userEmail} */}
+                            {empData[0]?.salary
+                              ? (empData[0]?.salary, empData[0]?.currency)
+                              : "No data."}
                           </div>
                           <div
                             className={`mt-3 text-center ${
