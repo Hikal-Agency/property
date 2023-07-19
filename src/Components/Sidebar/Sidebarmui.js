@@ -285,7 +285,7 @@ const Sidebarmui = () => {
         {
           name: "Reshuffle Leads",
           icon: <FaRandom />,
-          link: "/reshuffleleads",
+          link: "/reshuffleleads/all",
         },
         {
           name: "Archived Leads",
