@@ -205,11 +205,11 @@ const routes = [
     element: <Booked />,
     pageName: "Booked",
   },
-  {
-    path: "/contacts",
-    element: <Contacts />,
-    pageName: "Contacts",
-  },
+  // {
+  //   path: "/contacts",
+  //   element: <Contacts />,
+  //   pageName: "Contacts",
+  // },
   {
     path: "/clients",
     element: <Clients />,
@@ -239,9 +239,9 @@ const routes = [
     pageName: "Profile",
   },
   {
-    path: "/whatsapp-marketing/:page",
+    path: "/marketing/:page",
     element: <WhatsappMarketing />,
-    pageName: "Whatsapp Marketing",
+    pageName: "Marketing",
   },
   {
     path: "/location/livelocation",
@@ -414,7 +414,7 @@ function App() {
 
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer />
       <div
         style={{
           margin: 0,
@@ -422,7 +422,6 @@ function App() {
           background: currentMode === "dark" ? "#000000" : "#ffffff",
         }}
       >
-        
         {/* {appLoading && hasSidebarOrNavbar() &&
       <div style={{width: "100vw", height: "100vh", zIndex: 10000, position: "fixed", top: 0, left: 0}}>
         <Loader/>
