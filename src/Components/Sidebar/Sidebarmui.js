@@ -13,7 +13,7 @@ import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill } from "react-icons/bs";
 import { FaFacebookSquare, FaChartLine, FaUser } from "react-icons/fa";
 import { RiRadioButtonLine } from "react-icons/ri";
-import {BiBlock} from "react-icons/bi";
+import { BiBlock } from "react-icons/bi";
 import { BiCalendar } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { FaFire } from "react-icons/fa";
@@ -448,16 +448,16 @@ const Sidebarmui = () => {
         },
       ],
     },
-    {
-      title: "MISC",
-      links: [
-        {
-          name: "Settings",
-          icon: <FiSettings />,
-          link: "/settings",
-        },
-      ],
-    },
+    // {
+    //   title: "MISC",
+    //   links: [
+    //     {
+    //       name: "Settings",
+    //       icon: <FiSettings />,
+    //       link: "/settings",
+    //     },
+    //   ],
+    // },
 
     // {
     //   title: "WHATSAPP MARKETING",
@@ -919,16 +919,16 @@ const Sidebarmui = () => {
         },
       ],
     },
-    {
-      title: "MISC",
-      links: [
-        {
-          name: "Settings",
-          icon: <FiSettings />,
-          link: "/settings",
-        },
-      ],
-    },
+    // {
+    //   title: "MISC",
+    //   links: [
+    //     {
+    //       name: "Settings",
+    //       icon: <FiSettings />,
+    //       link: "/settings",
+    //     },
+    //   ],
+    // },
   ];
   //  DATA
   const links = [
@@ -1438,7 +1438,7 @@ const Sidebarmui = () => {
       ],
     },
     {
-      title: "WHATSAPP",
+      title: "MARKETING",
       links: [
         {
           name: "Conversations",
@@ -1516,21 +1516,21 @@ const Sidebarmui = () => {
         },
       ],
     },
-    {
-      title: "MISC",
-      links: [
-        {
-          name: "Settings",
-          icon: <FiSettings />,
-          submenu: [
-            {
-              name: "Integration",
-              link: "/integrations",
-            },
-          ],
-        },
-      ],
-    },
+    // {
+    //   title: "MISC",
+    //   links: [
+    //     {
+    //       name: "Settings",
+    //       icon: <FiSettings />,
+    //       submenu: [
+    //         {
+    //           name: "Integration",
+    //           link: "/integrations",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
   ];
 
   //  DATA
@@ -2040,16 +2040,16 @@ const Sidebarmui = () => {
         },
       ],
     },
-    {
-      title: "MISC",
-      links: [
-        {
-          name: "Settings",
-          icon: <FiSettings />,
-          link: "/settings",
-        },
-      ],
-    },
+    // {
+    //   title: "MISC",
+    //   links: [
+    //     {
+    //       name: "Settings",
+    //       icon: <FiSettings />,
+    //       link: "/settings",
+    //     },
+    //   ],
+    // },
   ];
 
   const [agentData, setAgentData] = useState(Agentlinks);
@@ -2263,7 +2263,7 @@ const Sidebarmui = () => {
       setAgentData([
         ...Agentlinks,
         {
-          title: "WHATSAPP",
+          title: "MARKETING",
           links: [
             {
               name: "Instances",
@@ -2291,7 +2291,7 @@ const Sidebarmui = () => {
       setManagerData([
         ...Managerlinks,
         {
-          title: "WHATSAPP",
+          title: "MARKETING",
           links: [
             {
               name: "Conversations",
@@ -2319,7 +2319,7 @@ const Sidebarmui = () => {
       setHeadOfSalesData([
         ...headOfSalesLinks,
         {
-          title: "WHATSAPP",
+          title: "MARKETING",
           links: [
             {
               name: "Conversations",
