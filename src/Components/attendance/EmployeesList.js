@@ -19,6 +19,8 @@ const EmployeesList = ({ user }) => {
   const token = localStorage.getItem("auth-token");
   const navigate = useNavigate();
 
+  console.log("employess data:: ", userData);
+
   console.log("selected day state: ", selectedDay);
 
   const handlePageChange = (event, value) => {
@@ -39,6 +41,7 @@ const EmployeesList = ({ user }) => {
   //   navigate(`/attendance/singleEmployee/${user_id}`);
   // };
   const handleClick = (e, user_id) => {
+    console.log("id: ", user_id);
     e.preventDefault();
     const newWindow = window.open(
       `/attendance/singleEmployee/${user_id}`,

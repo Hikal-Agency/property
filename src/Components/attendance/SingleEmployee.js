@@ -10,7 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, IconButton } from "@mui/material";
+import { Avatar, Box, IconButton } from "@mui/material";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
 import moment from "moment";
@@ -42,29 +42,22 @@ const SingleEmployee = ({ user }) => {
   });
   const [selectedMonth, setSelectedMonth] = useState("");
 
-  const handleMonthChange = (event) => {
-    setSelectedMonth(event.target.value);
+  const handleDayFilter = (event) => {
+    setSelectedDay(event.target.value);
+
+    console.log("date range: ", event.target.value);
   };
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [empData, setEmpData] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(null);
 
   console.log("emp data: ", empData);
 
   const columns = [
-    { field: "id", headerAlign: "center", headerName: "ID", minWidth: 60 },
-    {
-      field: "time",
-      headerAlign: "center",
-      headerName: "Time",
-      minWidth: 120,
-      renderCell: (cellValues) => {
-        return (
-          <div>{moment(cellValues.row.check_datetime).format("h:mm:ss A")}</div>
-        );
-      },
-    },
+    { field: "id", headerAlign: "center", headerName: "Sr.No", minWidth: 60 },
+
     {
       field: "check_datetime",
       headerAlign: "center",
@@ -75,6 +68,17 @@ const SingleEmployee = ({ user }) => {
           <div>
             {moment(cellValues.row.check_datetime).format("YYYY-MM-DD")}
           </div>
+        );
+      },
+    },
+    {
+      field: "time",
+      headerAlign: "center",
+      headerName: "Time",
+      minWidth: 120,
+      renderCell: (cellValues) => {
+        return (
+          <div>{moment(cellValues.row.check_datetime).format("h:mm:ss A")}</div>
         );
       },
     },
@@ -99,15 +103,15 @@ const SingleEmployee = ({ user }) => {
     {
       field: "attendance_type",
       headerAlign: "center",
-      headerName: "Check-Out",
+      headerName: "Check",
       minWidth: 120,
     },
-    {
-      field: "status",
-      headerAlign: "center",
-      headerName: "Status",
-      minWidth: 120,
-    },
+    // {
+    //   field: "status",
+    //   headerAlign: "center",
+    //   headerName: "Status",
+    //   minWidth: 120,
+    // },
     {
       field: "late_minutes",
       headerAlign: "center",
@@ -120,12 +124,12 @@ const SingleEmployee = ({ user }) => {
       headerName: "Reason",
       minWidth: 250,
     },
-    {
-      field: "salary",
-      headerAlign: "center",
-      headerName: "Salary",
-      minWidth: 120,
-    },
+    // {
+    //   field: "salary",
+    //   headerAlign: "center",
+    //   headerName: "Salary",
+    //   minWidth: 120,
+    // },
     {
       field: "actions",
       headerName: "Actions",
@@ -137,9 +141,9 @@ const SingleEmployee = ({ user }) => {
           <IconButton>
             <MdModeEdit />
           </IconButton>
-          <IconButton>
+          {/* <IconButton>
             <MdDelete />
-          </IconButton>
+          </IconButton> */}
         </>
       ),
     },
@@ -299,8 +303,42 @@ const SingleEmployee = ({ user }) => {
   };
 
   const FetchProfile = async (token) => {
+    const params = {
+      page: pageState.page,
+    };
+
+    if (selectedDay) {
+      if (selectedDay === "today") {
+        params.date_range = [
+          moment().subtract(1, "days").format("YYYY-MM-DD"),
+          moment().add(1, "days").format("YYYY-MM-DD"),
+        ].join(",");
+      } else if (selectedDay === "yesterday") {
+        params.date_range = [
+          moment().subtract(2, "days").format("YYYY-MM-DD"),
+          moment().format("YYYY-MM-DD"),
+        ].join(",");
+      } else if (selectedDay === "month") {
+        // Apply default date range of the complete month
+        const startDate = moment()
+          .subtract(1, "months")
+          .endOf("month")
+          .format("YYYY-MM-DD");
+        const endDate = moment()
+          .add(1, "months")
+          .startOf("month")
+          .format("YYYY-MM-DD");
+        params.date_range = [startDate, endDate].join(",");
+      }
+    } else if (selectedDay === "month") {
+      // Apply default date range of the complete month
+      const startDate = moment().startOf("month").format("YYYY-MM-DD");
+      const endDate = moment().endOf("month").format("YYYY-MM-DD");
+      params.date_range = [startDate, endDate].join(",");
+    }
     await axios
-      .get(`${BACKEND_URL}/attendance/${id}`, {
+      .get(`${BACKEND_URL}/attendance?user_id=${id}`, {
+        params,
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -309,7 +347,7 @@ const SingleEmployee = ({ user }) => {
       .then((result) => {
         console.log("fetched data ", result.data);
 
-        const data = result.data.data;
+        const data = result.data.Record.data;
 
         let rowsdata = data?.map((row, index) => ({
           id:
@@ -325,10 +363,33 @@ const SingleEmployee = ({ user }) => {
           is_late: row?.is_late || "-",
           late_reason: row?.late_reason || "-",
           late_minutes: row?.late_minutes || "-",
+          salary: row?.salary || "-",
+          profile_picture: row?.profile_picture,
+          position: row?.position || "-",
+          currency: row?.currency || "-",
+          userName: row?.userName || "-",
           created_at: row?.created_at,
           updated_at: row?.updated_at,
           edit: "edit",
         }));
+        const attended_days = rowsdata.filter(
+          (row) =>
+            row?.attendance_type.toLowerCase() === "in" ||
+            row?.attendance_type.toLowerCase() === "check-in"
+        );
+
+        const attended_count = attended_days.length;
+        console.log("attended days: ", attended_count);
+
+        const leave_days = rowsdata.filter(
+          (row) => row?.attendance_type.toLowerCase() === "out"
+        );
+        const leave_count = leave_days.length;
+        console.log("leave days: ", leave_count);
+
+        const is_late = rowsdata.filter((row) => row?.is_late === 1);
+        const late_count = is_late.length;
+        console.log("is late: ", late_count);
 
         setEmpData(rowsdata);
         setloading(false);
@@ -336,6 +397,9 @@ const SingleEmployee = ({ user }) => {
         setpageState((old) => ({
           ...old,
           data: rowsdata,
+          attended_count: attended_count,
+          leave_count: leave_count,
+          late_count: late_count,
         }));
       })
       .catch((err) => {
@@ -365,7 +429,7 @@ const SingleEmployee = ({ user }) => {
     const token = localStorage.getItem("auth-token");
     FetchProfile(token);
     // eslint-disable-next-line
-  }, []);
+  }, [pageState.page, selectedDay]);
 
   // const UpdateProfile = async (data) => {
   //   console.log("Profile: ", data);
@@ -659,13 +723,14 @@ const SingleEmployee = ({ user }) => {
                       size="small"
                       className="w-[100px]"
                       displayEmpty
+                      value={selectedDay || "month"}
+                      onChange={handleDayFilter}
                     >
-                      <MenuItem selected>Select a month</MenuItem>
-                      {lastThreeMonths?.map((month) => (
-                        <MenuItem key={month?.value} value={month?.value}>
-                          {month?.label}
-                        </MenuItem>
-                      ))}
+                      <MenuItem selected value="month">
+                        Select a day
+                      </MenuItem>
+                      <MenuItem value="today">Today</MenuItem>
+                      <MenuItem value="yesterday">Yesterday</MenuItem>
                     </Select>
                   </div>
                 </Box>
@@ -683,22 +748,32 @@ const SingleEmployee = ({ user }) => {
                       </h1> */}
                       <label htmlFor="pick-image">
                         <div
-                          onClick={() => setImagePickerModal({ isOpen: true })}
+                          // onClick={() => setImagePickerModal({ isOpen: true })}
                           className="relative"
                         >
-                          <img
-                            src={User?.displayImg}
-                            width={200}
-                            height={200}
-                            alt=""
-                            className="rounded-full mx-auto w-28"
-                          />
+                          {empData[0]?.profile_picture ? (
+                            <img
+                              src={empData[0]?.profile_picture}
+                              width={200}
+                              height={200}
+                              alt=""
+                              className="rounded-full mx-auto w-28"
+                            />
+                          ) : (
+                            <Avatar
+                              alt="User"
+                              variant="circular"
+                              style={{ width: "64px", height: "64px" }}
+                              className="rounded-full mx-auto w-28"
+                            />
+                          )}
                         </div>
                       </label>
 
                       <div className="mb-3">
                         <h1 className="text-lg font-bold text-center">
-                          {User?.userName}
+                          {/* {User?.userName} */}
+                          {empData[0]?.userName}
                         </h1>
                         <h3
                           className={`${
@@ -707,7 +782,7 @@ const SingleEmployee = ({ user }) => {
                               : "text-gray-600"
                           }  text-center`}
                         >
-                          {User?.position}
+                          {empData[0]?.position}
                         </h3>
                       </div>
                       <div className="accountinfo border-t-2 border-gray-400 px-5 pt-5 ">
@@ -719,11 +794,13 @@ const SingleEmployee = ({ user }) => {
                                 : "text-gray-600"
                             }`}
                           >
-                            <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
+                            <div className="flex items-center space-x-1 justify-center">
                               {/* <MdEmail size={25} className="block" /> */}
                               <h1>Monthly Salary</h1>
                             </div>
-                            {/* {Use/r?.userEmail} */}
+                            {empData[0]?.salary
+                              ? (empData[0]?.salary, empData[0]?.currency)
+                              : "No data."}
                           </div>
                           <div
                             className={`mt-3 text-center ${
@@ -734,11 +811,9 @@ const SingleEmployee = ({ user }) => {
                           >
                             <div className="flex items-center justify-center font-semibold mb-1">
                               <h1 className="block">Salary Per Day: </h1>{" "}
-                              {/* <p className="font-bold">Active</p> */}
-                            </div>
-                            <div className="mt-3">
-                              <h1>Profile Created on: </h1>
-                              <p className="font-bold">{User?.creationDate}</p>
+                              {empData[0]?.salary && empData[0]?.salary !== null
+                                ? empData[0]?.salary / 30
+                                : "No data"}
                             </div>
                           </div>
                         </div>
@@ -752,11 +827,10 @@ const SingleEmployee = ({ user }) => {
                                 : "text-gray-600"
                             }`}
                           >
-                            <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
-                              <MdEmail size={25} className="block" />
-                              <h1>Email Address</h1>
+                            <div className="flex  justify-center font-semibold ">
+                              <h1>Attended Days:</h1>
                             </div>
-                            {User?.userEmail}
+                            {pageState?.attended_count || "0"}
                           </div>
                           <div
                             className={`mt-3 text-center ${
@@ -765,14 +839,66 @@ const SingleEmployee = ({ user }) => {
                                 : "text-gray-600"
                             }`}
                           >
-                            <div className="flex items-center justify-center font-semibold mb-1">
-                              <h1 className="block">Status: </h1>{" "}
-                              <p className="font-bold">Active</p>
+                            <div className="flex justify-center font-semibold ">
+                              <h1 className="block">Leave Days : </h1>
+                              {"  "}
+                              <p className="font-bold pl-1">
+                                {"  "} {pageState?.leave_count || "0"}
+                              </p>
                             </div>
                             <div className="mt-3">
-                              <h1>Profile Created on: </h1>
-                              <p className="font-bold">{User?.creationDate}</p>
+                              <h1>Late Attendance Days: </h1>
+                              <p className="font-bold">
+                                {pageState?.late_count || "0"}
+                              </p>
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="accountinfo border-t-2 border-gray-400 px-5 mt-3 pt-5 ">
+                        <div className="flex justify-center flex-col items-center">
+                          <div
+                            className={`mt-1 text-center ${
+                              currentMode === "dark"
+                                ? "text-gray-50"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            <div className="flex  justify-center  font-semibold">
+                              <h1>Leave Days Salary:</h1>
+                            </div>
+                            {pageState?.attended_count || "0"}
+                          </div>
+                          <div
+                            className={`mt-3 text-center ${
+                              currentMode === "dark"
+                                ? "text-gray-50"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            <div className="flex justify-center font-semibold mb-1">
+                              <h1 className="block">Late Days Salary: </h1>
+                              {"  "}
+                              <p className="font-bold pl-1">
+                                {"  "} {pageState?.leave_count || "0"}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="accountinfo border-t-2  border-b-2 border-gray-400 px-5 mt-3 mb-3 pb-5 pt-5 ">
+                        <div className="flex justify-center flex-col items-center">
+                          <div
+                            className={`mt-1 text-center ${
+                              currentMode === "dark"
+                                ? "text-gray-50"
+                                : "text-gray-600"
+                            }`}
+                          >
+                            <div className="flex  justify-center  font-semibold">
+                              <h1>Total Salary:</h1>
+                            </div>
+                            {pageState?.attended_count || "0"}
                           </div>
                         </div>
                       </div>
