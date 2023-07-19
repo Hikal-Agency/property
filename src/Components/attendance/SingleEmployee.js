@@ -56,18 +56,8 @@ const SingleEmployee = ({ user }) => {
   console.log("emp data: ", empData);
 
   const columns = [
-    { field: "id", headerAlign: "center", headerName: "ID", minWidth: 60 },
-    {
-      field: "time",
-      headerAlign: "center",
-      headerName: "Time",
-      minWidth: 120,
-      renderCell: (cellValues) => {
-        return (
-          <div>{moment(cellValues.row.check_datetime).format("h:mm:ss A")}</div>
-        );
-      },
-    },
+    { field: "id", headerAlign: "center", headerName: "Sr.No", minWidth: 60 },
+
     {
       field: "check_datetime",
       headerAlign: "center",
@@ -78,6 +68,17 @@ const SingleEmployee = ({ user }) => {
           <div>
             {moment(cellValues.row.check_datetime).format("YYYY-MM-DD")}
           </div>
+        );
+      },
+    },
+    {
+      field: "time",
+      headerAlign: "center",
+      headerName: "Time",
+      minWidth: 120,
+      renderCell: (cellValues) => {
+        return (
+          <div>{moment(cellValues.row.check_datetime).format("h:mm:ss A")}</div>
         );
       },
     },
@@ -123,12 +124,12 @@ const SingleEmployee = ({ user }) => {
       headerName: "Reason",
       minWidth: 250,
     },
-    {
-      field: "salary",
-      headerAlign: "center",
-      headerName: "Salary",
-      minWidth: 120,
-    },
+    // {
+    //   field: "salary",
+    //   headerAlign: "center",
+    //   headerName: "Salary",
+    //   minWidth: 120,
+    // },
     {
       field: "actions",
       headerName: "Actions",
@@ -140,9 +141,9 @@ const SingleEmployee = ({ user }) => {
           <IconButton>
             <MdModeEdit />
           </IconButton>
-          <IconButton>
+          {/* <IconButton>
             <MdDelete />
-          </IconButton>
+          </IconButton> */}
         </>
       ),
     },
@@ -864,7 +865,7 @@ const SingleEmployee = ({ user }) => {
                             }`}
                           >
                             <div className="flex  justify-center  font-semibold">
-                              <h1>Leave Days:</h1>
+                              <h1>Leave Days Salary:</h1>
                             </div>
                             {pageState?.attended_count || "0"}
                           </div>
@@ -876,7 +877,7 @@ const SingleEmployee = ({ user }) => {
                             }`}
                           >
                             <div className="flex justify-center font-semibold mb-1">
-                              <h1 className="block">Late Attendance Days : </h1>
+                              <h1 className="block">Late Days Salary: </h1>
                               {"  "}
                               <p className="font-bold pl-1">
                                 {"  "} {pageState?.leave_count || "0"}
