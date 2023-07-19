@@ -186,7 +186,8 @@ const BookedDeals = ({
       setbtnloading(true);
       const token = localStorage.getItem("auth-token");
       const UpdateLeadData = new FormData();
-      UpdateLeadData.append("lid", cellValues?.row?.lid);
+      // UpdateLeadData.append("lid", cellValues?.row?.lid);
+      UpdateLeadData.append("id", cellValues?.row?.leadId);
       UpdateLeadData.append("feedback", newFeedback);
       UpdateLeadData.append("amount", leadAmount);
       UpdateLeadData.append("dealDate", leadDate);
