@@ -166,7 +166,7 @@ const Contacts = () => {
                       paddingBottom: "6px",
                     },
                   }}
-                  className="flex"
+                  className="flex" 
                 >
                   {/* <div className="w-[30%] h-full p-3 border rounded mr-3">
                     <strong className="mb-3 text-red-600">Filters</strong>
