@@ -567,10 +567,10 @@ const ListQa = ({ pageState, setpageState }) => {
                 >
                   {qa.question}
                 </Typography>
-                <BsTrash
+                {/* <BsTrash
                   className="ml-2 mt-1 cursor-pointer"
                   onClick={handleDeleteQuestion}
-                />
+                /> */}
               </AccordionSummary>
 
               <AccordionDetails className={getDetailBgClass()}>
