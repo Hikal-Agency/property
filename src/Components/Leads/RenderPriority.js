@@ -52,7 +52,6 @@ const RenderPriority = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("id", cellValues?.row?.leadId);
-    UpdateLeadData.append("lid", cellValues?.row?.leadId);
     UpdateLeadData.append("priority", newPriority);
 
     console.log(cellValues);
