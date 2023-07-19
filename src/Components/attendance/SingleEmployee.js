@@ -371,10 +371,12 @@ const SingleEmployee = ({ user }) => {
           updated_at: row?.updated_at,
           edit: "edit",
         }));
-
         const attended_days = rowsdata.filter(
-          (row) => row?.attendance_type.toLowerCase() === "in"
+          (row) =>
+            row?.attendance_type.toLowerCase() === "in" ||
+            row?.attendance_type.toLowerCase() === "check-in"
         );
+
         const attended_count = attended_days.length;
         console.log("attended days: ", attended_count);
 
