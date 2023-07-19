@@ -8,7 +8,7 @@ const BlockedIps = () => {
   const [IPs, setIPs] = useState([]);
   return (
     <>
-      <ToastContainer />
+      
       <div
         className={`w-full  ${
           currentMode === "dark" ? "bg-black" : "bg-white"

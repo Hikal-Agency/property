@@ -82,7 +82,7 @@ const UpdateTemplateModal = ({
   };
   return (
     <>
-      <ToastContainer />
+      
       <Modal
         keepMounted
         open={updateTemplateModal.isOpen}

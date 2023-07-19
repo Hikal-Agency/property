@@ -274,7 +274,7 @@ const UpdateMeeting = ({
 
   return (
     <>
-      <ToastContainer />
+      
       {/* MODAL FOR SINGLE LEAD SHOW */}
       <Modal
         keepMounted
@@ -315,7 +315,7 @@ const UpdateMeeting = ({
             </div>
           ) : (
             <>
-              {/* <ToastContainer /> */}
+              {/*  */}
               <h1
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-black"

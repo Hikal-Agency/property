@@ -16,7 +16,7 @@ const SingleUser = ({ UserModelOpen, handleUserModelClose, UserData }) => {
 
   return (
     <>
-      <ToastContainer />
+      
       {console.log("user data is")}
       {/* {console.log(UserData)} */}
       <Modal

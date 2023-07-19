@@ -129,7 +129,7 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
 
   return (
     <>
-      <ToastContainer />
+      
       {reminder.length > 0 && (
         <>
           <h4

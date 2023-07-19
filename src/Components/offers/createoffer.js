@@ -193,7 +193,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
   // }, []);
   return (
     <div>
-      <ToastContainer />
+      
       <div
         className={`${
           currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"

@@ -119,7 +119,6 @@ const CreateEvent = ({
 
   return (
     <>
-      <ToastContainer />
       <Modal
         keepMounted
         open={createEventModal.isOpen}

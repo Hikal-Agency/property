@@ -821,7 +821,7 @@ const AllLeads = () => {
 
   return (
     <div className="pb-10">
-      <ToastContainer />
+      
       <div className={`grid grid-cols-6 mt-6 gap-1 ${darkModeColors}`}>
         <div>
           <Select

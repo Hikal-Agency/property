@@ -1578,7 +1578,7 @@ const BookedDeals = ({
 
   return (
     <div className="pb-10">
-      <ToastContainer />
+      
       {/* <Filters
         setFilt={setFilt}
         allFilters={["leadSource", "project", "language"]}

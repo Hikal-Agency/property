@@ -79,7 +79,7 @@ export const ChangePassword = () => {
   };
   return (
     <>
-      <ToastContainer />
+      
       <div className="relative w-full">
         <form onSubmit={UpdatePass}>
           <Box sx={darkModeColors} className="grid grid-cols-6 gap-x-3 gap-y-5">

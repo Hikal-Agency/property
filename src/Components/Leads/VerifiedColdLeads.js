@@ -270,7 +270,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
 
   return (
     <div className="pb-10">
-      <ToastContainer />
+      
 
       <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
         <DataGrid

@@ -50,7 +50,7 @@ const AddLead = () => {
   };
   return (
     <>
-      {/* <ToastContainer /> */}
+      {/*  */}
       <div className="pt-5 pb-5 mx-4 rounded-md sm:mx-6 lg:mx-auto ">
         <form
           onSubmit={(e) => {

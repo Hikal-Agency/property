@@ -185,7 +185,7 @@ const DashboardPanel = ({ setloading }) => {
   }
   return (
     <div className="mt-5 md:mt-2">
-      <ToastContainer />
+      
       <h1
         className={`font-semibold ${
           currentMode === "dark" ? "text-white" : "text-red-600"

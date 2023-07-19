@@ -116,7 +116,7 @@ const SingleLeadNote = (props) => {
         <title>HIKAL CRM - Lead Note</title>
         <meta name="description" content="User Dashboard - HIKAL CRM" />
       </Head> */}
-      <ToastContainer />
+      
       <div className="flex min-h-screen">
         {loading ? (
           <Loader />

@@ -117,7 +117,7 @@ const CallLogsNoHeadFoot = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
+      
       <div style={{ display: "block" }} className="pt-20 px-5 overflow-hidden">
         {" "}
         <Box sx={darkModeColors} className="font-semibold ">

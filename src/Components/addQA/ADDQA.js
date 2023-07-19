@@ -185,7 +185,6 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
 
   return (
     <>
-      <ToastContainer />
       <Box sx={darkModeColors}>
         <TextField
           type={"text"}

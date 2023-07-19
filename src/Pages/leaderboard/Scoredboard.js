@@ -136,7 +136,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
 
   return (
     <div>
-      <ToastContainer />
+      
       {loading ? (
         <Loader />
       ) : (

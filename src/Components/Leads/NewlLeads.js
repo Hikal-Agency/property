@@ -820,7 +820,7 @@ const Newleads = ({
 
   return (
     <div className="pb-10">
-      <ToastContainer />
+      
       <Box
         width={"100%"}
         className={`${currentMode}-mode-datatable`}

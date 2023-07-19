@@ -78,7 +78,7 @@ const CreateTemplateModal = ({
   };
   return (
     <>
-      <ToastContainer />
+      
       <Modal
         keepMounted
         open={createTemplateModal.isOpen}

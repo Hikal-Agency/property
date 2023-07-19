@@ -1485,7 +1485,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   }
   return (
     <>
-      <ToastContainer />
+      
       <div className="pb-10 p-4">
         {leadOriginSelected?.id === "unassigned" &&
           leadTypeSelected?.id === "fresh" && (

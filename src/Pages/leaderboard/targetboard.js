@@ -174,7 +174,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
 
   return (
     <div>
-      <ToastContainer />
+      
       <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={tabValue} onChange={handleChange} variant="standard">
           <Tab label="THIS MONTH" />

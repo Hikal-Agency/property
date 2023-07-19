@@ -94,7 +94,7 @@ const Userlocation = () => {
 
   return (
     <>
-      <ToastContainer />
+      
       <div className="min-h-screen">
         <div
           className={`w-full  ${
