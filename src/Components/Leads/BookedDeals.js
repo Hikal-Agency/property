@@ -23,38 +23,36 @@ import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
-import { MdCampaign } from "react-icons/md";
-import Filters from "./Filters";
-import { BiSearch, BiImport } from "react-icons/bi";
+import { BiSearch } from "react-icons/bi";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
-import { FaComment, FaArchive, FaUser, FaBell } from "react-icons/fa";
+import { FaComment, FaArchive, FaUser } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { FaGlobe } from "react-icons/fa";
 import moment from "moment/moment";
-import { BsAlarm } from "react-icons/bs";
 import { RiMessage2Line } from "react-icons/ri";
 import { FaWhatsapp } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 
-import {BsTrash } from "react-icons/bs";
-import { TbFileImport } from "react-icons/tb";
 import Pagination from "@mui/material/Pagination";
 import { langs } from "../../langCodes";
 import SingleLead from "./SingleLead";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import RenderManagers from "./RenderManagers";
 import UpdateBookedDeal from "./UpdateBookedDeal";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import RenderSalesperson from "./RenderSalesperson";
 import RenderPriority from "./RenderPriority";
+import Confetti from "react-confetti";
+import useWindowSize from 'react-use/lib/useWindowSize'
+
 
 const BookedDeals = ({
   BACKEND_URL,
@@ -64,7 +62,7 @@ const BookedDeals = ({
   DashboardData,
 }) => {
   const [hovered, setHovered] = useState("");
-
+    const { screenWidth, screenHeight } = useWindowSize()
   const navigate = useNavigate();
 
   const token = localStorage.getItem("auth-token");
@@ -133,6 +131,7 @@ const BookedDeals = ({
   const [LeadModelOpen, setLeadModelOpen] = useState(false);
   const handleLeadModelOpen = () => setLeadModelOpen(true);
   const handleLeadModelClose = () => setLeadModelOpen(false);
+  const [isClosed, setIsClosed] = useState(false);
 
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
@@ -216,6 +215,14 @@ const BookedDeals = ({
           setFeedback(newFeedback);
           setreloadDataGrid(!reloadDataGrid);
           setDialogue(false);
+          if(newFeedback === "Closed"){
+            setIsClosed(true);
+            setTimeout(
+              () => {
+                setIsClosed(false);
+              }, 10000
+            );
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -1579,12 +1586,11 @@ const BookedDeals = ({
 
   return (
     <div className="pb-10">
-      
-      {/* <Filters
-        setFilt={setFilt}
-        allFilters={["leadSource", "project", "language"]}
-        data={pageState.data}
-      /> */}
+     {isClosed ?  <Confetti
+      width={screenWidth}
+      height={screenHeight}
+    /> : <></>
+     }
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
         <div className="absolute top-[7px] right-[20px] z-[5]">
           <TextField

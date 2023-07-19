@@ -168,7 +168,7 @@ const Contacts = () => {
                   }}
                   className="flex"
                 >
-                  <div className="w-[30%] h-full p-3 border rounded mr-3">
+                  {/* <div className="w-[30%] h-full p-3 border rounded mr-3">
                     <strong className="mb-3 text-red-600">Filters</strong>
                     <div className="flex mt-4 items-center">
 
@@ -316,7 +316,7 @@ const Contacts = () => {
                         )}
                       </TextField>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="grid w-full flex-1 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
                     {contacts?.map((item, index) => {
                       return (
