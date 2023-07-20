@@ -260,7 +260,7 @@ const Navbar = () => {
                 style={{ background: "#DA1F26" }}
                 sx={{ mr: 2 }}
               >
-                <a href="/whatsapp-marketing/payments">Upgrade</a>
+                <Link href="/marketing/payments">Upgrade</Link>
               </Button>
             ),
           ]}

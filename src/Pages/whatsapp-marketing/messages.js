@@ -269,7 +269,7 @@ const AllLeads = () => {
       renderCell: (cellValues) => {
         return (
           <Link
-            to={`/whatsapp-marketing/chat?phoneNumber=${cellValues.row.leadContact?.slice(1)?.replaceAll(" ", "")}`}
+            to={`/marketing/chat?phoneNumber=${cellValues.row.leadContact?.slice(1)?.replaceAll(" ", "")}`}
           >
             <div
               className="whatsapp-web-link"
@@ -379,7 +379,7 @@ const AllLeads = () => {
       renderCell: (cellValues) => {
         return (
           <Link
-            to={`/whatsapp-marketing/chat?phoneNumber=${cellValues.row.leadContact?.slice(1)?.replaceAll(" ", "")}`}
+            to={`/marketing/chat?phoneNumber=${cellValues.row.leadContact?.slice(1)?.replaceAll(" ", "")}`}
           >
             <div
               className="whatsapp-web-link"
@@ -1167,7 +1167,7 @@ const AllLeads = () => {
 
           {selectedRows.length === 1 && (
             <Link
-              to={`/whatsapp-marketing/chat?phoneNumber=${selectedRows[0]?.slice(1)?.replaceAll(" ", "")}`}
+              to={`/marketing/chat?phoneNumber=${selectedRows[0]?.slice(1)?.replaceAll(" ", "")}`}
             >
               <Button
                 type="button"
