@@ -1484,48 +1484,6 @@ const BookedDeals = ({
     setUpdateLeadModelOpen(true);
   };
   // Delete Lead
-  //eslint-disable-next-line
-  const deleteLead = async (params) => {
-    setdeleteloading(true);
-    setdeletebtnloading(true);
-    axios
-      .delete(`${BACKEND_URL}/leads/${params.row.lid}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log(result);
-        setdeleteloading(false);
-        setdeletebtnloading(false);
-        handleCloseDialog();
-        setreloadDataGrid(!reloadDataGrid);
-        toast.success("Lead Deleted Successfull", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        setdeleteloading(false);
-        setdeletebtnloading(false);
-        toast.error("Something Went Wrong! Please Try Again", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
-  };
 
   // Custom Pagination
   function CustomPagination() {
