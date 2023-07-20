@@ -23,6 +23,7 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
   const token = localStorage.getItem("auth-token");
   const handleLeadModelOpen = () => setOpenLeadModel(true);
   const handleLeadModelClose = () => setOpenLeadModel(false);
+  const [loadingStates, setLoadingStates] = useState({});
 
   const handleClick = (id) => {
     console.log("id: ", id);
@@ -86,6 +87,24 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
     }
   };
 
+  const handleButtonClick = async (event, status, meetingId) => {
+    event.stopPropagation();
+    console.log("i am clicked: ");
+    // Set loading state to true for the current meeting button that is clicked
+    setLoadingStates((prevLoadingStates) => ({
+      ...prevLoadingStates,
+      [meetingId]: true,
+    }));
+
+    await UpdateReminder(status, meetingId);
+
+    // After the API call is complete, set loading state to false for the current meeting button
+    setLoadingStates((prevLoadingStates) => ({
+      ...prevLoadingStates,
+      [meetingId]: false,
+    }));
+  };
+
   const fetchRminders = async () => {
     try {
       const reminders = await axios.get(`${BACKEND_URL}/reminders`, {
@@ -129,8 +148,7 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
 
   return (
     <>
-      
-      {reminder.length > 0 && (
+      {reminder?.length > 0 && (
         <>
           <h4
             className="font-semibold pb-5"
@@ -140,6 +158,7 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
           </h4>
           <div className="overflow-x-scroll snap-x grid grid-flow-col auto-cols-max gap-x-3 scrollbar-thin">
             {reminder?.map((meeting, index) => {
+              const isLoading = loadingStates[meeting.id] || false;
               return (
                 <div
                   key={meeting.id}
@@ -199,12 +218,11 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
                       <IconButton
                         style={{ backgroundColor: "#4CAF50", color: "white" }}
                         className="rounded-full"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          UpdateReminder(1, meeting?.id);
-                        }}
+                        onClick={(event) =>
+                          handleButtonClick(event, 0, meeting?.id)
+                        }
                       >
-                        {btnLoading ? (
+                        {isLoading ? (
                           <CircularProgress color="inherit" size={20} />
                         ) : (
                           <CheckIcon />
@@ -216,12 +234,11 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
                       <IconButton
                         style={{ backgroundColor: "#DC2626", color: "white" }}
                         className="rounded-full"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          UpdateReminder(0, meeting?.id);
-                        }}
+                        onClick={(event) =>
+                          handleButtonClick(event, 0, meeting?.id)
+                        }
                       >
-                        {btnLoading ? (
+                        {isLoading ? (
                           <CircularProgress color="inherit" size={20} />
                         ) : (
                           <CloseIcon />
