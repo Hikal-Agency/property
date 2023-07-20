@@ -51,8 +51,7 @@ import { IoIosAlert, IoMdClose } from "react-icons/io";
 import RenderSalesperson from "./RenderSalesperson";
 import RenderPriority from "./RenderPriority";
 import Confetti from "react-confetti";
-import useWindowSize from 'react-use/lib/useWindowSize'
-
+import useWindowSize from "react-use/lib/useWindowSize";
 
 const BookedDeals = ({
   BACKEND_URL,
@@ -62,7 +61,7 @@ const BookedDeals = ({
   DashboardData,
 }) => {
   const [hovered, setHovered] = useState("");
-    const { screenWidth, screenHeight } = useWindowSize()
+  const { screenWidth, screenHeight } = useWindowSize();
   const navigate = useNavigate();
 
   const token = localStorage.getItem("auth-token");
@@ -215,13 +214,11 @@ const BookedDeals = ({
           setFeedback(newFeedback);
           setreloadDataGrid(!reloadDataGrid);
           setDialogue(false);
-          if(newFeedback === "Closed"){
+          if (newFeedback === "Closed") {
             setIsClosed(true);
-            setTimeout(
-              () => {
-                setIsClosed(false);
-              }, 10000
-            );
+            setTimeout(() => {
+              setIsClosed(false);
+            }, 10000);
           }
         })
         .catch((err) => {
@@ -271,7 +268,7 @@ const BookedDeals = ({
             </MenuItem>
             <MenuItem value={"Booked"}>Booked</MenuItem>
             <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
-            <MenuItem value={"Closed"}>Closed Deal</MenuItem>
+            <MenuItem value={"Closed Deal"}>Closed Deal</MenuItem>
           </Select>
         </FormControl>
         {DialogueVal && (
@@ -320,7 +317,7 @@ const BookedDeals = ({
                       </span>{" "}
                       ?
                     </h1>
-                    {newFeedback.toLowerCase() === "closed" && (
+                    {newFeedback.toLowerCase() === "closed deal" && (
                       <div className="grid sm:grid-cols-1 gap-5">
                         <div className="flex flex-col justify-center items-center gap-4 mt-2 mb-4">
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -474,7 +471,7 @@ const BookedDeals = ({
   ];
 
   const AgentColumns = [
-        {
+    {
       field: "id",
       headerName: "#",
       minWidth: 40,
@@ -618,7 +615,6 @@ const BookedDeals = ({
     //   },
     // },
 
-
     {
       field: "edit",
       headerName: "Action",
@@ -653,8 +649,8 @@ const BookedDeals = ({
     },
   ];
 
-    const columns = [
-      {
+  const columns = [
+    {
       field: "id",
       headerName: "#",
       minWidth: 40,
@@ -798,8 +794,8 @@ const BookedDeals = ({
         }
       },
     },
-       
-        {
+
+    {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
@@ -815,7 +811,7 @@ const BookedDeals = ({
             <img
               src={"/assets/tiktok-app.svg"}
               alt=""
-              style={{margin: "0 auto"}}
+              style={{ margin: "0 auto" }}
               height={18}
               width={18}
               className="object-cover"
@@ -868,7 +864,9 @@ const BookedDeals = ({
                     },
                   }}
                 >
-                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()] ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]() : "-"}
+                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()]
+                    ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]()
+                    : "-"}
                 </Box>
               )}
             </div>
@@ -898,7 +896,6 @@ const BookedDeals = ({
           <div
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
-           
             <p
               style={{ cursor: "pointer" }}
               className={`${
@@ -932,14 +929,13 @@ const BookedDeals = ({
                 </Link>
               </p>
             )}
-          
           </div>
         );
       },
     },
   ];
 
- const managerColumns = [
+  const managerColumns = [
     {
       field: "id",
       headerName: "#",
@@ -1389,8 +1385,7 @@ const BookedDeals = ({
           leadId: row?.id,
           creationDate: row?.creationDate,
           leadName: row?.leadName || "-",
-          leadContact:
-            row?.leadContact?.slice(1)?.replaceAll(" ", "") || "-",
+          leadContact: row?.leadContact?.slice(1)?.replaceAll(" ", "") || "-",
           project: row?.project || "-",
           enquiryType: row?.enquiryType || "-",
           leadType: row?.leadType || "-",
@@ -1544,11 +1539,11 @@ const BookedDeals = ({
 
   return (
     <div className="pb-10">
-     {isClosed ?  <Confetti
-      width={screenWidth}
-      height={screenHeight}
-    /> : <></>
-     }
+      {isClosed ? (
+        <Confetti width={screenWidth} height={screenHeight} />
+      ) : (
+        <></>
+      )}
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
         <div className="absolute top-[7px] right-[20px] z-[5]">
           <TextField
