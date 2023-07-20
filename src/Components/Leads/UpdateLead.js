@@ -333,7 +333,7 @@ const UpdateLead = ({
     const UpdateLeadData = new FormData();
     // UpdateLeadData.append("id", User.id);
     UpdateLeadData.append("id", LeadData.leadId);
-    UpdateLeadData.append("lid", LeadData.leadId);
+    // UpdateLeadData.append("lid", LeadData.leadId);
     UpdateLeadData.append("leadName", LeadName);
     UpdateLeadData.append("leadContact", LeadContact);
     UpdateLeadData.append("leadEmail", LeadEmail);

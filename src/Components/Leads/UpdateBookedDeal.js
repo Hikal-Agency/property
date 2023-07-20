@@ -118,7 +118,7 @@ const UpdateBookedDeal = ({
 
     // GETTING LEAD DETAILS
     axios
-      .get(`${BACKEND_URL}/leads/${LeadData.lid}`, {
+      .get(`${BACKEND_URL}/leads/${LeadData.leadId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -179,7 +179,7 @@ const UpdateBookedDeal = ({
     const creationDate = new Date();
     const UpdateLeadData = new FormData();
     // UpdateLeadData.append("id", User.id);
-    UpdateLeadData.append("lid", LeadData.lid);
+    UpdateLeadData.append("id", LeadData.leadId);
     UpdateLeadData.append("leadName", LeadName);
     UpdateLeadData.append("leadContact", LeadContact);
     UpdateLeadData.append("leadEmail", LeadEmail);
@@ -195,7 +195,7 @@ const UpdateBookedDeal = ({
     // UpdateLeadData.append("assignedToManager", Manager);
 
     await axios
-      .post(`${BACKEND_URL}/leads/${LeadData.lid}`, UpdateLeadData, {
+      .post(`${BACKEND_URL}/leads/${LeadData.leadId}`, UpdateLeadData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -204,6 +204,7 @@ const UpdateBookedDeal = ({
       .then((result) => {
         console.log("lead updated successfull");
         console.log(result);
+        handleLeadModelClose();
         toast.success("Lead Updated Successfully", {
           position: "top-right",
           autoClose: 3000,

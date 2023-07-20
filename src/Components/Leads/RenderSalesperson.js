@@ -77,7 +77,7 @@ const RenderSalesperson = ({ cellValues }) => {
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
-    UpdateLeadData.append("lid", cellValues?.row?.leadId);
+    UpdateLeadData.append("id", cellValues?.row?.leadId);
     if (newSalesPerson === undefined) {
       UpdateLeadData.append("assignedToSales", 1);
     } else {
