@@ -15,6 +15,7 @@ import CreateTemplateModal from "./CreateTemplateModal";
 import { useStateContext } from "../../context/ContextProvider";
 // import axios from "axios";
 import axios from "../../axoisConfig";
+import DeleteTemplateModal from "./DeleteTemplateModal";
 import { BiPen } from "react-icons/bi";
 import { MdEmail, MdSms, MdTitle } from "react-icons/md";
 import { HiTemplate } from "react-icons/hi";
@@ -35,7 +36,12 @@ const TemplatesComponent = () => {
     isOpen: false,
     template: {},
   });
+  const [deleteTemplateModal, setDeleteTemplateModal] = useState({
+    isOpen: false, 
+    templateId: null
+  });
   const [templates, setTemplates] = useState([]);
+  const [deletebtnloading, setdeletebtnloading] = useState(false);
 
   const handleUpdateTemplate = (e, template) => {
       setUpdateTemplateModal({
@@ -67,6 +73,7 @@ const TemplatesComponent = () => {
 
   const handleDelete = async (templateId) => {
     try {
+      setdeletebtnloading(true);
       setLoading(true);
       const token = localStorage.getItem("auth-token");
       await axios.delete(`${BACKEND_URL}/templates/${templateId}`, {
@@ -100,6 +107,8 @@ const TemplatesComponent = () => {
         theme: "light",
       });
     }
+    setDeleteTemplateModal({isOpen: false, templateId: null});
+      setdeletebtnloading(false);
   };
 
   return (
@@ -254,7 +263,7 @@ const TemplatesComponent = () => {
                                 />
                               </IconButton>
                               <IconButton
-                                onClick={() => handleDelete(template.id)}
+                                onClick={() => setDeleteTemplateModal({isOpen: true, templateId: template?.id})}
                                 sx={{ padding: 0 }}
                                 color={
                                   currentMode === "dark" ? "black" : "white"
@@ -291,6 +300,9 @@ const TemplatesComponent = () => {
               setUpdateTemplateModal={setUpdateTemplateModal}
               fetchTemplates={fetchTemplates}
             />
+          )}
+          {deleteTemplateModal?.isOpen && (
+            <DeleteTemplateModal deleteTemplate={handleDelete} deleteTemplateModal={deleteTemplateModal} deletebtnloading={deletebtnloading} handleCloseDeleteTemplateModal={() => setDeleteTemplateModal({isOpen: false, templateId: null})}/>
           )}
         </Box>
       )}
