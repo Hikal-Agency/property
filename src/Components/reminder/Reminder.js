@@ -221,6 +221,7 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
                         onClick={(event) =>
                           handleButtonClick(event, 0, meeting?.id)
                         }
+                        disabled={isLoading}
                       >
                         {isLoading ? (
                           <CircularProgress color="inherit" size={20} />
@@ -237,6 +238,7 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
                         onClick={(event) =>
                           handleButtonClick(event, 0, meeting?.id)
                         }
+                        disabled={isLoading}
                       >
                         {isLoading ? (
                           <CircularProgress color="inherit" size={20} />
