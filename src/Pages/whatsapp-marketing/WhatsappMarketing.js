@@ -9,7 +9,7 @@ import Payments from "./payments";
 import Chat from "./Chat";
 
 const pagesComponents = {
-  messages: <MessagesComponent />,
+  contacts: <MessagesComponent />,
   templates: <TemplatesComponent />,
   payments: <Payments />,
   transactions: <TransactionsComponent />,

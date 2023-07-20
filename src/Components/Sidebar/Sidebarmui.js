@@ -13,7 +13,7 @@ import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill } from "react-icons/bs";
 import { FaFacebookSquare, FaChartLine, FaUser } from "react-icons/fa";
 import { RiRadioButtonLine } from "react-icons/ri";
-import {BiBlock} from "react-icons/bi";
+import { BiBlock } from "react-icons/bi";
 import { BiCalendar } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { FaFire } from "react-icons/fa";
@@ -421,11 +421,11 @@ const Sidebarmui = () => {
           link: "/meetings",
         },
 
-        {
-          name: "Contacts",
-          icon: <MdContactPage />,
-          link: "/contacts",
-        },
+        // {
+        //   name: "Contacts",
+        //   icon: <MdContactPage />,
+        //   link: "/contacts",
+        // },
         {
           name: "Offers",
           icon: <AiFillGift />,
@@ -449,15 +449,25 @@ const Sidebarmui = () => {
       ],
     },
     {
-      title: "MISC",
+      title: "BILLINGS",
       links: [
         {
-          name: "Settings",
-          icon: <FiSettings />,
-          link: "/settings",
+          name: "Payments",
+          icon: <BsFillCreditCard2FrontFill />,
+          link: "/marketing/payments",
         },
       ],
     },
+    // {
+    //   title: "MISC",
+    //   links: [
+    //     {
+    //       name: "Settings",
+    //       icon: <FiSettings />,
+    //       link: "/settings",
+    //     },
+    //   ],
+    // },
 
     // {
     //   title: "WHATSAPP MARKETING",
@@ -465,27 +475,27 @@ const Sidebarmui = () => {
     //     {
     //       name: "Dashboard",
     //       icon: <RiWhatsappFill />,
-    //       link: "/whatsapp-marketing/dashboard",
+    //       link: "/marketing/dashboard",
     //     },
     //     {
     //       name: "Device",
     //       icon: <FaMobile />,
-    //       link: "/whatsapp-marketing/device",
+    //       link: "/marketing/device",
     //     },
     //     {
-    //       name: "Messages",
+    //       name: "Conversations",
     //       icon: <AiFillMessage />,
-    //       link: "/whatsapp-marketing/messages",
+    //       link: "/marketing/contacts",
     //     },
     //     {
     //       name: "Payments",
     //       icon: <BsFillCreditCard2FrontFill />,
-    //       link: "/whatsapp-marketing/payments",
+    //       link: "/marketing/payments",
     //     },
     //     {
     //       name: "Transactions",
     //       icon: <GrTransaction />,
-    //       link: "/whatsapp-marketing/transactions",
+    //       link: "/marketing/transactions",
     //     },
     //   ],
     // },
@@ -887,11 +897,11 @@ const Sidebarmui = () => {
           link: "/leaderboard",
         },
 
-        {
-          name: "Contacts",
-          icon: <MdContactPage />,
-          link: "/contacts",
-        },
+        // {
+        //   name: "Contacts",
+        //   icon: <MdContactPage />,
+        //   link: "/contacts",
+        // },
         {
           name: "Blocked IPs",
           icon: <BiBlock />,
@@ -920,15 +930,25 @@ const Sidebarmui = () => {
       ],
     },
     {
-      title: "MISC",
+      title: "BILLINGS",
       links: [
         {
-          name: "Settings",
-          icon: <FiSettings />,
-          link: "/settings",
+          name: "Payments",
+          icon: <BsFillCreditCard2FrontFill />,
+          link: "/marketing/payments",
         },
       ],
     },
+    // {
+    //   title: "MISC",
+    //   links: [
+    //     {
+    //       name: "Settings",
+    //       icon: <FiSettings />,
+    //       link: "/settings",
+    //     },
+    //   ],
+    // },
   ];
   //  DATA
   const links = [
@@ -1397,11 +1417,11 @@ const Sidebarmui = () => {
           icon: <ImUsers />,
           link: "/clients",
         },
-        {
-          name: "Contacts",
-          icon: <MdContactPage />,
-          link: "/contacts",
-        },
+        // {
+        //   name: "Contacts",
+        //   icon: <MdContactPage />,
+        //   link: "/contacts",
+        // },
         {
           name: "Blocked IPs",
           icon: <BiBlock />,
@@ -1438,27 +1458,22 @@ const Sidebarmui = () => {
       ],
     },
     {
-      title: "WHATSAPP",
+      title: "MARKETING",
       links: [
         {
           name: "Conversations",
           icon: <RiWhatsappFill />,
-          link: "/whatsapp-marketing/chat",
+          link: "/marketing/chat",
         },
         {
-          name: "Messages",
+          name: "Contacts",
           icon: <AiFillMessage />,
-          link: "/whatsapp-marketing/messages",
+          link: "/marketing/contacts",
         },
         {
           name: "Templates",
           icon: <FaMobile />,
-          link: "/whatsapp-marketing/templates",
-        },
-        {
-          name: "Payments",
-          icon: <BsFillCreditCard2FrontFill />,
-          link: "/whatsapp-marketing/payments",
+          link: "/marketing/templates",
         },
       ],
     },
@@ -1502,6 +1517,16 @@ const Sidebarmui = () => {
       ],
     },
     {
+      title: "BILLINGS",
+      links: [
+        {
+          name: "Payments",
+          icon: <BsFillCreditCard2FrontFill />,
+          link: "/marketing/payments",
+        },
+      ],
+    },
+    {
       title: "ATTENDANCE",
       links: [
         {
@@ -1516,21 +1541,21 @@ const Sidebarmui = () => {
         },
       ],
     },
-    {
-      title: "MISC",
-      links: [
-        {
-          name: "Settings",
-          icon: <FiSettings />,
-          submenu: [
-            {
-              name: "Integration",
-              link: "/integrations",
-            },
-          ],
-        },
-      ],
-    },
+    // {
+    //   title: "MISC",
+    //   links: [
+    //     {
+    //       name: "Settings",
+    //       icon: <FiSettings />,
+    //       submenu: [
+    //         {
+    //           name: "Integration",
+    //           link: "/integrations",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
   ];
 
   //  DATA
@@ -1946,11 +1971,11 @@ const Sidebarmui = () => {
           icon: <AiFillGift />,
           link: "/offers",
         },
-        {
-          name: "Contacts",
-          icon: <MdContactPage />,
-          link: "/contacts",
-        },
+        // {
+        //   name: "Contacts",
+        //   icon: <MdContactPage />,
+        //   link: "/contacts",
+        // },
         {
           name: "Blocked IPs",
           icon: <BiBlock />,
@@ -2026,6 +2051,26 @@ const Sidebarmui = () => {
       ],
     },
     {
+      title: "BILLINGS",
+      links: [
+        {
+          name: "Payments",
+          icon: <BsFillCreditCard2FrontFill />,
+          link: "/marketing/payments",
+        },
+      ],
+    },
+    {
+      title: "BILLINGS",
+      links: [
+        {
+          name: "Payments",
+          icon: <BsFillCreditCard2FrontFill />,
+          link: "/marketing/payments",
+        },
+      ],
+    },
+    {
       title: "ATTENDANCE",
       links: [
         // {
@@ -2040,16 +2085,16 @@ const Sidebarmui = () => {
         },
       ],
     },
-    {
-      title: "MISC",
-      links: [
-        {
-          name: "Settings",
-          icon: <FiSettings />,
-          link: "/settings",
-        },
-      ],
-    },
+    // {
+    //   title: "MISC",
+    //   links: [
+    //     {
+    //       name: "Settings",
+    //       icon: <FiSettings />,
+    //       link: "/settings",
+    //     },
+    //   ],
+    // },
   ];
 
   const [agentData, setAgentData] = useState(Agentlinks);
@@ -2263,27 +2308,22 @@ const Sidebarmui = () => {
       setAgentData([
         ...Agentlinks,
         {
-          title: "WHATSAPP",
+          title: "MARKETING",
           links: [
             {
               name: "Instances",
               icon: <RiWhatsappFill />,
-              link: "/whatsapp-marketing/instances",
+              link: "/marketing/instances",
             },
             {
-              name: "Messages",
+              name: "Contacts",
               icon: <AiFillMessage />,
-              link: "/whatsapp-marketing/messages",
+              link: "/marketing/contacts",
             },
             {
               name: "Templates",
               icon: <FaMobile />,
-              link: "/whatsapp-marketing/templates",
-            },
-            {
-              name: "Payments",
-              icon: <BsFillCreditCard2FrontFill />,
-              link: "/whatsapp-marketing/payments",
+              link: "/marketing/templates",
             },
           ],
         },
@@ -2291,27 +2331,22 @@ const Sidebarmui = () => {
       setManagerData([
         ...Managerlinks,
         {
-          title: "WHATSAPP",
+          title: "MARKETING",
           links: [
             {
               name: "Conversations",
               icon: <RiWhatsappFill />,
-              link: "/whatsapp-marketing/chat",
+              link: "/marketing/chat",
             },
             {
-              name: "Messages",
+              name: "Contacts",
               icon: <AiFillMessage />,
-              link: "/whatsapp-marketing/messages",
+              link: "/marketing/contacts",
             },
             {
               name: "Templates",
               icon: <FaMobile />,
-              link: "/whatsapp-marketing/templates",
-            },
-            {
-              name: "Payments",
-              icon: <BsFillCreditCard2FrontFill />,
-              link: "/whatsapp-marketing/payments",
+              link: "/marketing/templates",
             },
           ],
         },
@@ -2319,27 +2354,22 @@ const Sidebarmui = () => {
       setHeadOfSalesData([
         ...headOfSalesLinks,
         {
-          title: "WHATSAPP",
+          title: "MARKETING",
           links: [
             {
               name: "Conversations",
               icon: <RiWhatsappFill />,
-              link: "/whatsapp-marketing/chat",
+              link: "/marketing/chat",
             },
             {
-              name: "Messages",
+              name: "Contacts",
               icon: <AiFillMessage />,
-              link: "/whatsapp-marketing/messages",
+              link: "/marketing/contacts",
             },
             {
               name: "Templates",
               icon: <FaMobile />,
-              link: "/whatsapp-marketing/templates",
-            },
-            {
-              name: "Payments",
-              icon: <BsFillCreditCard2FrontFill />,
-              link: "/whatsapp-marketing/payments",
+              link: "/marketing/templates",
             },
           ],
         },
