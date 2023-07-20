@@ -704,7 +704,6 @@ const SingleEmployee = ({ user }) => {
 
   return (
     <>
-      
       <div className="flex min-h-screen">
         {loading ? (
           <Loader />
@@ -798,9 +797,9 @@ const SingleEmployee = ({ user }) => {
                               {/* <MdEmail size={25} className="block" /> */}
                               <h1>Monthly Salary</h1>
                             </div>
-                            {empData[0]?.salary
-                              ? (empData[0]?.salary, empData[0]?.currency)
-                              : "No data."}
+                            {empData[0].salary
+                              ? `${empData[0]?.salary} ${empData[0]?.currency}`
+                              : "No data"}
                           </div>
                           <div
                             className={`mt-3 text-center ${
