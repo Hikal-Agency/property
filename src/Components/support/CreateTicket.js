@@ -55,6 +55,21 @@ const CreateTicket = ({ categories, setCategories }) => {
       return;
     }
 
+    if(categories?.find((cat) => cat?.catName === newCategory)) {
+      toast.error("Category already exists, try another one!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setbtnloading(false);
+      return;
+    }
+
     setbtnloading(true);
 
     try {
