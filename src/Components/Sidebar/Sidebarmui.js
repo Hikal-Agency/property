@@ -2099,16 +2099,16 @@ const Sidebarmui = () => {
 
   // DATA
   const accountsLinks = [
-    {
-      title: "DEALS",
-      links: [
-        {
-          name: "Closed deals",
-          icon: <ImLock />,
-          link: "/closedeals",
-        },
-      ],
-    },
+    // {
+    //   title: "DEALS",
+    //   links: [
+    //     {
+    //       name: "Closed deals",
+    //       icon: <ImLock />,
+    //       link: "/closedeals",
+    //     },
+    //   ],
+    // },
     {
       title: "ATTENDANCE",
       links: [

@@ -510,7 +510,6 @@ const Users = () => {
 
   return (
     <>
-      
       <div className="flex min-h-screen">
         <div
           className={`w-full ${
@@ -548,15 +547,19 @@ const Users = () => {
                       Add User
                     </span>
                   </Link> */}
-                  <Button
-                    className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
-                    onClick={HandleOpenModel}
-                  >
-                    <span className="flex justify-between items-center ">
-                      <AiOutlinePlus style={{ marginRight: "0.5em" }} />
-                      Add User
-                    </span>
-                  </Button>
+                  {User?.role === 1 || User?.role === 2 ? (
+                    <Button
+                      className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
+                      onClick={HandleOpenModel}
+                    >
+                      <span className="flex justify-between items-center ">
+                        <AiOutlinePlus style={{ marginRight: "0.5em" }} />
+                        Add User
+                      </span>
+                    </Button>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="flex items-center justify-between">
                   <Box

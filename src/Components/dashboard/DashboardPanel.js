@@ -63,10 +63,6 @@ const DashboardPanel = ({ setloading }) => {
 
   useEffect(() => {
     fetchData();
-    if (User?.role === 5) {
-      navigate("/attendance/employeesList");
-      return;
-    }
   }, []);
 
   // COUNTER DATA
