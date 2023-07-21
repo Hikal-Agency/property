@@ -2198,10 +2198,7 @@ const Sidebarmui = () => {
 
           // Save user data to local storage
           localStorage.setItem("user", JSON.stringify(user));
-          // if (result.data.user[0].role === 5) {
-          //   navigate("/attendance/employeesList");
-          //   return;
-          // }
+          
         })
         .catch((err) => {
           console.log(err);
