@@ -18,7 +18,6 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-// import axios from "axios";
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -101,6 +100,7 @@ const BookedDeals = ({
     setreloadDataGrid,
     DataGridStyles,
     setopenBackDrop,
+    isArabic,
     User,
   } = useStateContext();
   //eslint-disable-next-line
@@ -435,6 +435,15 @@ const BookedDeals = ({
       // width: 110,
       minWidth: 110,
       flex: 1,
+        renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "enquiryType",
@@ -509,6 +518,15 @@ const BookedDeals = ({
       headerName: "Project",
       minWidth: 55,
       flex: 1,
+           renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     // {
     //   field: "enquiryType",
@@ -694,10 +712,12 @@ const BookedDeals = ({
       headerAlign: "center",
       minWidth: 40,
       flex: 1,
-      renderCell: (cellValues) => {
+           renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
           </div>
         );
       },
@@ -980,10 +1000,12 @@ const BookedDeals = ({
       minWidth: 85,
       headerAlign: "center",
       flex: 1,
-      renderCell: (cellValues) => {
+           renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
           </div>
         );
       },

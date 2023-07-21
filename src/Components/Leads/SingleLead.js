@@ -9,18 +9,13 @@ import {
   Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { FiLink } from "react-icons/fi";
-import { BsSnow2, BsPatchQuestion, BsFire, BsSun } from "react-icons/bs";
-import { HiOutlineUserCircle } from "react-icons/hi";
 import { useStateContext } from "../../context/ContextProvider";
-import { camelCase } from "lodash";
 
 // import LeadNotes from "../LeadNotes/LeadNotes";
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import moment from "moment";
 import { IoMdClose } from "react-icons/io";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const SingleLead = ({
@@ -31,13 +26,11 @@ const SingleLead = ({
   LeadData,
   setLeadData,
 }) => {
-  const { darkModeColors, currentMode, User, BACKEND_URL } = useStateContext();
+  const { darkModeColors, currentMode, User, BACKEND_URL, isArabic } = useStateContext();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [lastNote, setLastNote] = useState("");
   const [loading, setLoading] = useState(false);
-
-  console.log("leaddata: ", LeadData);
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -154,7 +147,7 @@ const SingleLead = ({
     }
 
     console.log("LeadData::", LeadData);
-  }, []);
+  }, [LeadData]);
 
   return (
     <>
@@ -339,7 +332,7 @@ const SingleLead = ({
               </div>
               <div className={`rounded-md mt-2`}>
                 {lastNote && (
-                  <Box className="bg-gray-300 rounded px-2 py-1 mt-3">
+                  <Box style={{fontFamily: isArabic(lastNote) ? "Noto Kufi Arabic" : "inherit"}} className="bg-gray-300 rounded px-2 py-1 mt-3">
                     {lastNote}
                   </Box>
                 )}
@@ -351,7 +344,9 @@ const SingleLead = ({
                   }}
                 >
                   <TextField
-                    sx={darkModeColors}
+                    sx={{...darkModeColors, "& input": {
+                      fontFamily: "Noto Kufi Arabic"
+                    }}}
                     id="note"
                     type={"text"}
                     label="Your Note"

@@ -32,7 +32,7 @@ const SingleLeadPage = () => {
   const [LeadNotesData, setLeadNotesData] = useState(null);
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [addNoteloading, setaddNoteloading] = useState(false);
-  const { currentMode, setopenBackDrop, User, BACKEND_URL, darkModeColors } =
+  const { currentMode, setopenBackDrop, User, BACKEND_URL, darkModeColors, isArabic } =
     useStateContext();
 
   const { lid } = useParams();
@@ -211,6 +211,7 @@ const SingleLeadPage = () => {
                                 Lead Name :
                               </h6>
                               <h6
+                              style={{fontFamily: isArabic(LeadData?.leadName) ? "Noto Kufi Arabic" : "inherit"}}
                                 className={`font-semibold ${
                                   currentMode === "dark"
                                     ? "text-white"
@@ -432,7 +433,7 @@ const SingleLeadPage = () => {
                                         {row?.userName}
                                       </TableCell>
                                       <TableCell align="left">
-                                        {row?.leadNote}
+                                        <p style={{fontFamily: isArabic(row?.leadNote) ? "Noto Kufi Arabic" : "inherit"}}>{row?.leadNote}</p>
                                       </TableCell>
                                     </TableRow>
                                   )
@@ -450,7 +451,9 @@ const SingleLeadPage = () => {
                           }}
                         >
                           <TextField
-                            sx={darkModeColors}
+                            sx={{...darkModeColors, "& input": {
+                              fontFamily: "Noto Kufi Arabic"
+                            }}}
                             id="note"
                             type={"text"}
                             label="Your Note"

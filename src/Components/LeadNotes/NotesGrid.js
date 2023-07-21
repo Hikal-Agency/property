@@ -383,7 +383,7 @@ import { useNavigate } from "react-router-dom";
 const NotesGrid = ({ pageState, setpageState }) => {
   console.log("Notes state: ", pageState);
   const [loading, setLoading] = useState(false);
-  const { currentMode } = useStateContext();
+  const { currentMode, isArabic } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [notesData, setUserData] = useState([]);
   const navigate = useNavigate();
@@ -439,7 +439,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
                         >
                           <div className="mt-2 space-y-1 overflow-hidden">
                             <h1 className="font-bold capitalize">
-                              <b>Lead Name: </b> {item?.leadName}
+                              <b>Lead Name: </b> <span style={{fontFamily: isArabic(item?.leadName) ? "Noto Kufi Arabic" : "inherit"}}>{item?.leadName}</span>
                             </h1>
 
                             <p className="text-sm">
@@ -447,7 +447,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
                             </p>
                             <hr />
                             <p className="text-sm font-semibold text-red-600 capitalize">
-                              <b>Lead Note: </b> {item?.leadNote}
+                              <b>Lead Note: </b> <span style={{fontFamily: isArabic(item?.leadNote) ? "Noto Kufi Arabic" : "inherit"}}>{item?.leadNote}</span>
                             </p>
                             <p className="text-sm">{item.userEmail}</p>
                           </div>

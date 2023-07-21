@@ -1,22 +1,12 @@
-import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { ImClock } from "react-icons/im";
 import { useStateContext } from "../../context/ContextProvider";
-import { CircularProgress, IconButton, Tooltip } from "@mui/material";
-import {
-  RiCheckLine as CheckIcon,
-  RiCloseLine as CloseIcon,
-} from "react-icons/ri";
-import { RiStickyNoteLine } from "react-icons/ri";
 import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
-import { BsBuilding } from "react-icons/bs";
+import { toast } from "react-toastify";
 import SingleLead from "../Leads/SingleLead";
 import ReminderComponent from "./ReminderComponent";
 
 const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
   const { currentMode, BACKEND_URL, User } = useStateContext();
-  const [isModalOpened, setIsModalOpened] = useState(false);
   const [btnLoading, setbtnLoading] = useState(false);
   const [openleadModel, setOpenLeadModel] = useState(false);
   const [leadData, setLeadData] = useState(null);

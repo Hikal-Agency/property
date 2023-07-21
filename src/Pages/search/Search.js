@@ -147,6 +147,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     BACKEND_URL,
     Managers,
     SalesPerson,
+    isArabic,
     darkModeColors,
   } = useStateContext();
   const navigate = useNavigate();
@@ -322,10 +323,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 85,
       headerAlign: "center",
       flex: 1,
-      renderCell: (cellValues) => {
+           renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
           </div>
         );
       },

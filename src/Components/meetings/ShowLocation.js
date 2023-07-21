@@ -59,6 +59,9 @@ const ShowLocation = ({
               <TextField
                 id="text"
                 type={"text"}
+                sx={{"& input": {
+                  fontFamily: "Noto Kufi Arabic"
+                }}}
                 label="Meeting Notes "
                 className="w-full mb-3"
                 style={{ marginBottom: "20px" }}

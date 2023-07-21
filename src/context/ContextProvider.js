@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState, useRef } from "react";
-// import axios from "axios";
+import React, { createContext, useContext, useState } from "react";
 import axios from "../axoisConfig";
 
 const StateContext = createContext();
@@ -12,8 +11,6 @@ const initialState = {
 };
 
 export const ContextProvider = ({ children }) => {
-  //const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-  // const BACKEND_URL = "https://testing.hikalcrm.com/api";
   const BACKEND_URL = process.env.REACT_APP_API_URL;
   const graph_api_token = process.env.REACT_APP_FB_TOKEN;
   const [screenSize, setScreenSize] = useState(undefined);
@@ -204,7 +201,7 @@ export const ContextProvider = ({ children }) => {
           Authorization: "Bearer " + token,
         },
       });
-      console.log("Sidebar data::", response.data.data)
+      console.log("Sidebar data::", response.data.data);
       setSidebarData({
         HotLeadsCount: response.data.data["HOT LEADS"],
         ColdLeadsCount: response.data.data["COLD LEADS"],
@@ -223,6 +220,11 @@ export const ContextProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const isArabic = (text) => {
+    const regex = new RegExp("[\u0600-\u06FF\u0750-\u077F\u08a0-\u08ff\uFB50-\uFDFF\uFE70-\uFEFF]+([\u0600-\u06FF\u0750-\u077F\u08a0-\u08ff\uFB50-\uFDFF\uFE70-\uFEFF\\W\\d]+)*","g");
+    return text.match(regex);
   };
 
   return (
@@ -251,6 +253,7 @@ export const ContextProvider = ({ children }) => {
         LightIconsColor,
         currentMode,
         selected,
+        isArabic,
         setSelected,
         darkModeColors,
         activeMenu,

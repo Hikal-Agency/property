@@ -122,6 +122,7 @@ const ClientLeads = ({
     DataGridStyles,
     setopenBackDrop,
     User,
+    isArabic,
     BACKEND_URL,
   } = useStateContext();
 
@@ -200,6 +201,15 @@ const ClientLeads = ({
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
+           renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "enquiryType",
@@ -397,6 +407,15 @@ const ClientLeads = ({
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
+           renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "enquiryType",
@@ -608,6 +627,15 @@ const ClientLeads = ({
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
+           renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "enquiryType",

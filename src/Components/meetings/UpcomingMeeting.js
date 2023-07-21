@@ -100,7 +100,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   />
-                  <p className="text-sm mr-3">
+                  <p className="text-sm mr-3 w-full">
                     {" "}
                     {meeting?.meetingLocation || "Not Updated"}
                   </p>

@@ -14,7 +14,6 @@ import { FaUser } from "react-icons/fa";
 
 import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
 import moment from "moment/moment";
-import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { RiMessage2Line } from "react-icons/ri";
 import { FaWhatsapp } from "react-icons/fa";
@@ -40,7 +39,7 @@ const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
   const navigate = useNavigate();
-  const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
+  const { currentMode, DataGridStyles, BACKEND_URL, User, isArabic } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
   const [pageRange, setPageRange] = useState();
@@ -228,6 +227,15 @@ const Closedeals = ({ pageState, setpageState }) => {
 
       minWidth: 60,
       flex: 1,
+           renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "enquiryType",
@@ -380,6 +388,15 @@ const Closedeals = ({ pageState, setpageState }) => {
 
       minWidth: 60,
       flex: 1,
+           renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "enquiryType",

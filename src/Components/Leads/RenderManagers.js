@@ -175,7 +175,12 @@ const RenderManagers = ({ cellValues, lead_origin }) => {
           className="w-full border border-gray-300 rounded "
           displayEmpty
           required
-          sx={{ border: "1px solid #000000" }}
+          sx={{ border: "1px solid #000000",
+          
+          "& .MuiSelect-select": {
+            fontSize: 12,
+          },
+           }}
         >
           <MenuItem value="select_manager" selected>
             Select Manager

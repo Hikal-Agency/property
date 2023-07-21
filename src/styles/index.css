@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;800&display=swap');
 
 body {
   margin: 0;
@@ -7,9 +8,8 @@ body {
   overflow-x: hidden;
 }
 
-*:lang(ar) {
-  font-family: "Monospace" !important;
-  color: blue !important;
+html, body {
+  font-size: 14px;
 }
 
 @tailwind base;

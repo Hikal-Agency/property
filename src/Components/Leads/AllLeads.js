@@ -122,6 +122,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     User,
     fetchSidebarData,
     BACKEND_URL,
+    isArabic,
     darkModeColors,
   } = useStateContext();
 
@@ -244,10 +245,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerName: "Lead name",
       minWidth: 120,
       flex: 1,
-      renderCell: (cellValues) => {
+        renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -267,10 +268,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 85,
       headerAlign: "center",
       flex: 1,
-      renderCell: (cellValues) => {
+        renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
           </div>
         );
       },
@@ -521,10 +524,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       flex: 1,
       headerAlign: "center",
       minWidth: 85,
-      renderCell: (cellValues) => {
+        renderCell: (cellValues) => {
         return (
-          <div className="flex flex-wrap items-center">
-            <span>{cellValues.row.leadName}</span>
+          <div className="w-full ">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
           </div>
         );
       },
@@ -542,6 +547,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 40,
       flex: 1,
       headerAlign: "center",
+        renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     // {
     //   field: "enquiryType",
@@ -819,7 +833,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -839,10 +853,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       minWidth: 40,
       flex: 1,
-      renderCell: (cellValues) => {
+        renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              {cellValues?.formattedValue}
+            </p>
           </div>
         );
       },

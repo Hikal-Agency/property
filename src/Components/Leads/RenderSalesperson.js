@@ -211,6 +211,9 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
             size="medium"
             className="w-[100%] h-[75%]"
             sx={{
+          "& .MuiSelect-select": {
+            fontSize: 12,
+          },
               color:
                 currentMode === "dark"
                   ? "#ffffff !important"

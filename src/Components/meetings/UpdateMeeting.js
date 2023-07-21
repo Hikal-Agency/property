@@ -461,6 +461,9 @@ const UpdateMeeting = ({
                           className="w-full mb-3"
                           style={{ marginBottom: "20px" }}
                           variant="outlined"
+                          sx={{"& input": {
+                            fontFamily: "Noto Kufi Arabic"
+                          }}}
                           name="text"
                           size="medium"
                           value={meetingNotes}

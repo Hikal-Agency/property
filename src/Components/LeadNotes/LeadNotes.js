@@ -22,7 +22,7 @@ import {
 } from "react-icons/ai";
 
 const LeadNotes = ({ pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL, User, darkModeColors } = useStateContext();
+  const { currentMode, BACKEND_URL, User, darkModeColors, isArabic } = useStateContext();
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
@@ -63,6 +63,9 @@ const LeadNotes = ({ pageState, setpageState }) => {
       minWidth: 150,
       headerAlign: "center",
       flex: 1,
+          renderCell: (cellValues) => {
+        return <p style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>{cellValues?.formattedValue}</p>
+      }
     },
     {
       field: "project",
@@ -80,6 +83,16 @@ const LeadNotes = ({ pageState, setpageState }) => {
           </>
         );
       },
+           renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+                <p>{cellValues.formattedValue}</p>
+              <p className="mt-2">{cellValues.row.enquiryType}</p>
+            </p>
+          </div>
+        );
+      },
     },
 
     // {
@@ -95,6 +108,9 @@ const LeadNotes = ({ pageState, setpageState }) => {
       minWidth: 500,
       flex: 1,
       headerAlign: "center",
+      renderCell: (cellValues) => {
+        return <p style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>{cellValues?.formattedValue}</p>
+      }
     },
     {
       field: "userName",

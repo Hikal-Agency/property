@@ -65,7 +65,7 @@ const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
         <TextField
             type={"text"}
             fullWidth
-            sx={{"& input": {color: currentMode === "dark" ? "white" : "black"}}}
+            sx={{"& input": {color: currentMode === "dark" ? "white" : "black", fontFamily: "Noto Kufi Arabic"}}}
             disabled={isDisabled ? true : !ready}
             onChange={handleInput}
             required

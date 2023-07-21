@@ -3,26 +3,16 @@ import {
   Backdrop,
   Box,
   CircularProgress,
-  IconButton,
-  MenuItem,
-  Modal,
-  TextField,
-  Typography,
+  IconButton, Modal,
+  TextField
 } from "@mui/material";
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import "react-phone-number-input/style.css";
-import PhoneInput, {
-  formatPhoneNumberIntl,
-  isValidPhoneNumber,
-  isPossiblePhoneNumber,
-} from "react-phone-number-input";
-import classNames from "classnames";
 import dayjs from "dayjs";
 import { MdAccessTime } from "react-icons/md";
 
@@ -170,6 +160,9 @@ const AddReminder = ({
                   <TextField
                     id="LeadName"
                     type={"text"}
+                    sx={{"& input": {
+                      fontFamily: "Noto Kufi Arabic"
+                    }}}
                     label="Reminder Notes"
                     className="w-full"
                     variant="outlined"

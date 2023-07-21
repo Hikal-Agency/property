@@ -21,7 +21,7 @@ const ReminderComponent = ({
   fetchRminders,
 }) => {
   console.log("reminders component: ", reminder);
-  const { currentMode, BACKEND_URL, User } = useStateContext();
+  const { currentMode, BACKEND_URL, isArabic } = useStateContext();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [completeLoading, setCompletebtnLoading] = useState(false);
   const [cancleLoading, setCanclebtnLoading] = useState(false);
@@ -151,13 +151,13 @@ const ReminderComponent = ({
             </div>
           </div>
           <div className="w-full flex justify-between items-center">
-            <div className="flex items-center space-x-1">
-              <RiStickyNoteLine
+            <div className="flex items-center">
+              <RiStickyNoteLine size="18"
                 className={`mr-2 ${
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               />
-              <p className="text-sm mr-3">
+              <p className="text-sm mr-3 w-[100%]" style={{fontFamily: isArabic(reminder?.reminder_note) ? "Noto Kufi Arabic" : "inherit"}}>
                 {reminder?.reminder_note || "No Notes"}
               </p>
             </div>

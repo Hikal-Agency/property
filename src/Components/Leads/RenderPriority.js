@@ -118,6 +118,9 @@ const RenderPriority = ({ cellValues }) => {
       <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
         <Select
         sx={{
+          "& .MuiSelect-select": {
+            fontSize: 12,
+          },
             color:
               currentMode === "dark"
                 ? "#ffffff !important"
