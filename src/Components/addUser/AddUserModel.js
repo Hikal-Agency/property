@@ -156,6 +156,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
             });
           }
           setloading(false);
+          addUserModelClose();
         })
         .catch((err) => {
           toast.error("Something went Wrong! Please Try Again", {
