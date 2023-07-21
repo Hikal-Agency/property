@@ -737,7 +737,7 @@ const Sidebarmui = () => {
         {
           name: "Reshuffle",
           icon: <FaRandom />,
-          link: "/reshuffleleads",
+          link: "/reshuffleleads/all",
         },
 
         {
@@ -1812,10 +1812,57 @@ const Sidebarmui = () => {
             },
           ],
         },
+        // {
+        //   name: "Reshuffle",
+        //   icon: <FaRandom />,
+        //   link: "/reshuffleleads/all",
+        // },
         {
           name: "Reshuffle",
           icon: <FaRandom />,
-          link: "/reshuffleleads",
+          // link: "/reshuffleleads",
+          submenu: [
+            {
+              name: "All",
+              count: sidebarData?.Reshuffle?.fresh,
+              link: "/reshuffleleads/all",
+            },
+            {
+              name: "New",
+              count: sidebarData?.Reshuffle?.new,
+              link: "/reshuffleleads/new",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.Reshuffle?.no_answer,
+              link: "/reshuffleleads/no answer",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.Reshuffle?.meeting,
+              link: "/reshuffleleads/meeting",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.Reshuffle?.follow_up,
+              link: "/reshuffleleads/follow up",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.Reshuffle?.low_budget,
+              link: "/reshuffleleads/low budget",
+            },
+            {
+              name: "Not Interested",
+              count: sidebarData?.Reshuffle?.not_interested,
+              link: "/reshuffleleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.Reshuffle?.unreachable,
+              link: "/reshuffleleads/unreachable",
+            },
+          ],
         },
         {
           name: "Personal",
@@ -2198,10 +2245,6 @@ const Sidebarmui = () => {
 
           // Save user data to local storage
           localStorage.setItem("user", JSON.stringify(user));
-          // if (result.data.user[0].role === 5) {
-          //   navigate("/attendance/employeesList");
-          //   return;
-          // }
         })
         .catch((err) => {
           console.log(err);

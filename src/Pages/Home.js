@@ -161,6 +161,7 @@ const Home = () => {
     if (!location?.state?.error) {
       if (token) {
         setOpenBackDrop(true);
+        navigate("/dashboard");
       }
     }
     // eslint-disable-next-line
