@@ -38,7 +38,7 @@ const Employee = () => {
                   : "text-red-600 font-bold border-red-600"
               }`}
             >
-              Employee:{" "}
+              ● Employee:{" "}
               <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
                 Ubaid
               </span>

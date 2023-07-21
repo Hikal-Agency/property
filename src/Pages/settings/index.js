@@ -34,7 +34,7 @@ const Settings = () => {
                     : "text-main-red-color font-bold border-main-red-color"
                 }`}
               >
-                Settings
+                ● Settings
               </h1>
             </div>
           </div>

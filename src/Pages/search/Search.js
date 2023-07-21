@@ -1552,7 +1552,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               : "text-main-red-color font-bold border-main-red-color"
           }`}
         >
-          <span className="uppercase">leads</span>{" "}
+          <span className="uppercase">● Leads</span>{" "}
           <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
             {pageState?.total}
           </span>

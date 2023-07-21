@@ -190,7 +190,7 @@ const SingleLeadPage = () => {
                           : "text-red-600 font-bold border-red-600"
                       }`}
                     >
-                      Lead Details{" "}
+                      ● Lead Details{" "}
                       <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
                         <span>{LeadData?.id}</span>
                       </span>

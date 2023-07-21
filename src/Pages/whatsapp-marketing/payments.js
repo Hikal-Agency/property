@@ -95,7 +95,7 @@ const Payments = () => {
               : "text-red-600 font-bold border-red-600"
           }`}
         >
-          All Subscribers
+          ● All Subscribers
         </h1>
         <Box className="mb-16 mt-4 items-start flex flex-wrap">
           {subscribers.map((sub, index) => {

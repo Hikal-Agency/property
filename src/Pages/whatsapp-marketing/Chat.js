@@ -498,7 +498,7 @@ const Chat = () => {
                       : "text-main-red-color font-bold border-main-red-color"
                   }`}
                 >
-                  Whatsapp
+                  ● Whatsapp
                 </h1>
                 <div class={`section-container-${currentMode}`}>
                   {ready ? (

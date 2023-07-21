@@ -1434,7 +1434,7 @@ const ClientLeads = ({
                       : "text-red-600 font-bold border-red-600"
                   }`}
                 >
-                  {client?.name} -{" "}
+                  ● {client?.name} {" "}
                   <span className="capitalize mt-5">
                     {client?.businessName}
                   </span>{" "}

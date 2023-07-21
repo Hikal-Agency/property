@@ -62,36 +62,36 @@ const AllHotLeads = () => {
           >
             <div className="w-full pl-3">
               <div className="w-full">
-                <div className=" w-full flex items-center justify-between">
+                <div className=" w-full flex my-4 items-center justify-between">
                   <h1
-                    className={`text-xl border-l-[4px] ml-1 pl-1  font-bold ${
+                    className={`text-xl ml-1 pl-1 border-l-[4px] font-bold ${
                       currentMode === "dark"
                         ? "text-white border-white"
-                        : "text-red-600 font-bold border-red-600 py-3 pb-4"
+                        : "text-red-600 font-bold"
                     }`}
                   >
-                    Fresh Leads -{" "}
-                    <span className="capitalize">{lead_type}</span>{" "}
-                    <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+                    ● Fresh Leads{" "}
+                    <span className="capitalize">({lead_type})</span>{" "}
+                    <span className="bg-main-red-color text-white px-3 py-1 ml-2 rounded-sm my-auto">
                       {pageState?.total}
                     </span>
                   </h1>
                   {User?.role === 1 && (
                     <div className="justify-self-end">
-                      <div className=" px-4 py-5">
+                      <div className=" px-4">
                         <div className="grid grid-cols-1 md:grid-cols-9 lg:grid-cols-9 gap-4">
                           <Box
                             sx={{
-                              padding: "10px",
+                              padding: "6px",
                               borderRadius: "7px",
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
                               fontWeight: "bold",
-                              background: " #da1f26",
-                              color: "#ffffff",
+                              background: "white",
+                              color: "black",
                               boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                              height: "40px",
+                              height: "30px",
                               width: "70px",
                             }}
                           >
@@ -111,16 +111,16 @@ const AllHotLeads = () => {
                           </Box>
                           <Box
                             sx={{
-                              padding: "10px",
+                              padding: "6px",
                               borderRadius: "7px",
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
                               fontWeight: "bold",
-                              background: "#da1f26",
-                              color: "#ffffff",
+                              background: "white",
+                              color: "black",
                               boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                              height: "40px",
+                              height: "30px",
                               width: "70px",
                               justifySelf: "end",
                             }}
@@ -141,16 +141,16 @@ const AllHotLeads = () => {
                           </Box>
                           <Box
                             sx={{
-                              padding: "10px",
+                              padding: "6px",
                               borderRadius: "7px",
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
                               fontWeight: "bold",
-                              background: "#da1f26",
-                              color: "#ffffff",
+                              background: "white",
+                              color: "black",
                               boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                              height: "40px",
+                              height: "30px",
                               width: "70px",
                               justifySelf: "end",
                             }}
@@ -171,16 +171,16 @@ const AllHotLeads = () => {
                           </Box>
                           <Box
                             sx={{
-                              padding: "10px",
+                              padding: "6px",
                               borderRadius: "7px",
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
                               fontWeight: "bold",
-                              background: "#da1f26",
-                              color: "#ffffff",
+                              background: "white",
+                              color: "black",
                               boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                              height: "40px",
+                              height: "30px",
                               width: "70px",
                               justifySelf: "end",
                             }}
@@ -209,16 +209,16 @@ const AllHotLeads = () => {
                           </Box>
                           <Box
                             sx={{
-                              padding: "10px",
+                              padding: "6px",
                               borderRadius: "7px",
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
                               fontWeight: "bold",
-                              background: "#da1f26",
-                              color: "#ffffff",
+                              background: "white",
+                              color: "black",
                               boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                              height: "40px",
+                              height: "30px",
                               width: "70px",
                               justifySelf: "end",
                             }}
@@ -239,16 +239,16 @@ const AllHotLeads = () => {
                           </Box>
                           <Box
                             sx={{
-                              padding: "10px",
+                              padding: "6px",
                               borderRadius: "7px",
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
                               fontWeight: "bold",
-                              background: "#da1f26",
-                              color: "#ffffff",
+                              background: "white",
+                              color: "black",
                               boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
-                              height: "40px",
+                              height: "30px",
                               width: "70px",
                               justifySelf: "end",
                             }}
@@ -269,17 +269,17 @@ const AllHotLeads = () => {
                           </Box>
                           <Box
                             sx={{
-                              padding: "10px",
+                              padding: "6px",
                               borderRadius: "7px",
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
                               fontWeight: "bold",
-                              background: "#da1f26",
-                              color: "#ffffff",
+                              background: "white",
+                              color: "black",
                               boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
                               justifySelf: "end",
-                              height: "40px",
+                              height: "30px",
                               width: "70px",
                             }}
                           >
@@ -299,17 +299,17 @@ const AllHotLeads = () => {
                           </Box>
                           <Box
                             sx={{
-                              padding: "10px",
+                              padding: "6px",
                               borderRadius: "7px",
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
                               fontWeight: "bold",
-                              background: "#da1f26",
-                              color: "#ffffff",
+                              background: "white",
+                              color: "black",
                               boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
                               justifySelf: "end",
-                              height: "40px",
+                              height: "30px",
                               width: "70px",
                             }}
                           >
@@ -329,17 +329,17 @@ const AllHotLeads = () => {
                           </Box>
                           <Box
                             sx={{
-                              padding: "10px",
+                              padding: "6px",
                               borderRadius: "7px",
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
                               fontWeight: "bold",
-                              background: "#da1f26",
-                              color: "#ffffff",
+                              background: "white",
+                              color: "black",
                               boxShadow: "0px 3px 3px rgba(0, 0, 0, 0.25)",
                               justifySelf: "end",
-                              height: "40px",
+                              height: "30px",
                               width: "70px",
                             }}
                           >

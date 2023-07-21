@@ -125,7 +125,7 @@ const TemplatesComponent = () => {
                   : "text-red-600 font-bold border-red-600"
               }`}
             >
-              Templates
+              ● Templates
             </h1>
             <Button
               sx={{

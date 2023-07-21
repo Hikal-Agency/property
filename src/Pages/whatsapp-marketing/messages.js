@@ -1118,8 +1118,8 @@ const AllLeads = () => {
             : "text-main-red-color font-bold border-main-red-color"
         }`}
       >
-        {leadOriginSelected.formattedValue} -{" "}
-        <span className="uppercase">{leadTypeSelected.formattedValue}</span>{" "}
+        ● {" "}{leadOriginSelected.formattedValue} {" "}
+        <span className="uppercase">({leadTypeSelected.formattedValue})</span>{" "}
         <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
           {pageState?.total}
         </span>

@@ -33,7 +33,7 @@ const ChangePassword = () => {
                         : "text-red-600 font-bold border-red-600"
                     }`}
                   >
-                    Change Password
+                    ● Change Password
                   </h1>
                 </div>
                 <div className="my-5 mb-10">

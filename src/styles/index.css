@@ -23,6 +23,17 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+.border-l-\[4px\] {
+  border-left: 0px !important;
+  margin-bottom: 0px !important;
+  margin: 1rem 0 !important;
+  padding: 0px !important;
+}
+
+.border-l-\[4px\] .bg-main-red-color {
+  margin-left: 0.5rem !important;
+}
+
 /* mui mobile time picker */
 .css-3dah0e-MuiModal-root-MuiDialog-root .MuiDialog-paper {
   outline: 0;

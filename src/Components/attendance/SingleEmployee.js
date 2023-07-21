@@ -880,7 +880,7 @@ const SingleEmployee = ({ user }) => {
             }`}
           >
             <div className={`w-full `}>
-              <div className="pl-3">
+              <div className="pl-3 mt-3">
                 <Box sx={darkModeColors}>
                   <div className="flex justify-end">
                     <Select

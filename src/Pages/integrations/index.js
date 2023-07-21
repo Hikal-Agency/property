@@ -36,7 +36,7 @@ const Integrations = () => {
                       : "text-main-red-color font-bold border-main-red-color"
                   }`}
                 >
-                  Integrations
+                  ● Integrations
                 </h1>
               </div>
             </div>

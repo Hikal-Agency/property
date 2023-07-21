@@ -71,7 +71,7 @@ const ClosedealsPage = (props) => {
                   }`}
                   style={{ textTransform: "capitalize" }}
                 >
-                  Closed deals{" "}
+                  ● Closed deals{" "}
                   <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
                     <span>{pageState?.total}</span>
                   </span>

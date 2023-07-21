@@ -145,7 +145,7 @@ const Contacts = () => {
                       : "text-main-red-color font-bold border-main-red-color"
                   }`}
                 >
-                Contacts
+                ● Contacts
                 </h1>
 
                 <Box

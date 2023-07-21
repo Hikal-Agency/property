@@ -224,7 +224,12 @@ export const ContextProvider = ({ children }) => {
 
   const isArabic = (text) => {
     const regex = new RegExp("[\u0600-\u06FF\u0750-\u077F\u08a0-\u08ff\uFB50-\uFDFF\uFE70-\uFEFF]+([\u0600-\u06FF\u0750-\u077F\u08a0-\u08ff\uFB50-\uFDFF\uFE70-\uFEFF\\W\\d]+)*","g");
-    return text.match(regex);
+
+    if(text) {
+      return text.match(regex);
+    } else {
+      return false;
+    }
   };
 
   return (

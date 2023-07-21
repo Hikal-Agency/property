@@ -868,7 +868,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     : "text-red-600 font-bold border-red-600"
                 }`}
               >
-                Overview
+                ● Overview
               </h1>
 
               {/* data starts */}
@@ -905,7 +905,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     : "text-red-600 font-bold border-red-600"
                 }`}
               >
-                Performance & Interactions
+                ● Performance & Interactions
               </h1>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
@@ -1006,7 +1006,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     : "text-red-600 font-bold border-red-600"
                 }`}
               >
-                Audience
+                ● Audience
               </h1>
               <div className="flex justify-center">
                 <div className="grid w-full px-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3 mt-2">
@@ -1058,7 +1058,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     : "text-red-600 font-bold border-red-600"
                 }`}
               >
-                Ads Details
+                ● Ads Details
               </h1>
 
               <DataGrid

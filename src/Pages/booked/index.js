@@ -44,7 +44,7 @@ const Booked = () => {
                         : "text-red-600 font-bold border-red-600"
                     }`}
                   >
-                    Booked Deals -{" "}
+                    ● Booked Deals{" "}
                     {/* <span className="capitalize">{lead_type}</span>{" "} */}
                     <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
                       {pageState?.total}
