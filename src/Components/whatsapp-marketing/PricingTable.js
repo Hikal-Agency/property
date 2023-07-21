@@ -11,7 +11,7 @@ const PricingTable = ({allPlans}) => {
             <Box className="flex justify-center items-center">
 
             {allPlans.map((plan) => {
-         return <Card key={plan.name} sx={{ p: 5, mr: 3, height: "300px", width: "30%", borderRadius: 6 }}>
+         return <Card className="shadow-md" key={plan.name} sx={{ p: 5, mr: 3, height: "300px", width: "30%", borderRadius: 4 }}>
           <Box className="h-[100%] flex flex-col pt-4 relative">
                 {plan.isRecommended &&
             <span
@@ -36,7 +36,7 @@ const PricingTable = ({allPlans}) => {
               {plan.name}
             </h2>
             <Box className="flex items-center mt-2">
-              <h1 className="font-black" style={{ fontSize: 40 }}>
+              <h1 className="font-black text-[#da1f26]" style={{ fontSize: 40 }}>
                 US${plan.price}
               </h1>
               <Box className="text-slate-400 font-light ml-2">
@@ -44,11 +44,11 @@ const PricingTable = ({allPlans}) => {
                 <p style={{ lineHeight: 1, fontSize: 13 }}>year</p>
               </Box>
             </Box>
-            <Box className="h-[50%] flex flex-col justify-end">
+            <Box className="h-[45%] flex flex-col justify-end">
               <Button
               onClick={() => setPlan(plan.name)}
                 variant="contained"
-                style={{ backgroundColor: "red" }}
+                style={{ backgroundColor: "#da1f26" }}
                 fullWidth
                 sx={{ padding: "12px 0" }}
               >
