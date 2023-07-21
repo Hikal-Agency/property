@@ -293,7 +293,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
                   ?
                 </h1>
               </div>
-              <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+              <div className="action buttons mt-5 flex items-center justify-center ">
                 <Button
                   className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
                   ripple={true}
@@ -307,7 +307,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
                   )}
                 </Button>
 
-                <Button
+                {/* <Button
                   onClick={() => setDialogue(false)}
                   ripple={true}
                   variant="outlined"
@@ -318,7 +318,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
                   }`}
                 >
                   Cancel
-                </Button>
+                </Button> */}
               </div>
             </div>
           </Dialog>
