@@ -17,7 +17,7 @@ import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
-const RenderSalesperson = ({ cellValues }) => {
+const RenderSalesperson = ({ cellValues, lead_origin }) => {
   const [SalesPerson2, setSalesPerson2] = useState(
     cellValues?.row?.assignedToSales
   );
@@ -104,7 +104,12 @@ const RenderSalesperson = ({ cellValues }) => {
           theme: "light",
         });
         setbtnloading(false);
-        setSalesPerson2(newSalesPerson?.id);
+
+        if (lead_origin === "unassigned") {
+          setSalesPerson2(null);
+        } else {
+          setSalesPerson2(newSalesPerson?.id);
+        }
         setreloadDataGrid(!reloadDataGrid);
         setDialogue(false);
       })
@@ -127,14 +132,21 @@ const RenderSalesperson = ({ cellValues }) => {
     const managerId = cellValues?.row?.assignedToManager;
     console.log("managerID: ", managerId);
     const agents = SalesPerson[`manager-${managerId}`];
-    if (managerId && ((((User?.role === 2 && (managerId !== User?.id && (managerId !== 102)))) || (User?.role !== 2 &&( managerId !== 102 && (managerId !== 358)))))) {
+    if (
+      managerId &&
+      ((User?.role === 2 && managerId !== User?.id && managerId !== 102) ||
+        (User?.role !== 2 && managerId !== 102 && managerId !== 358))
+    ) {
       if (agents === undefined || agents.length === 0) {
         setNoAgents(true);
       } else {
         setNoAgents(false);
         setSalesPersonsList(agents);
       }
-    } else if ((((!managerId || managerId === 102) && User?.role === 1)) || ((!managerId || managerId === User?.id) && User?.role === 2)) {
+    } else if (
+      ((!managerId || managerId === 102) && User?.role === 1) ||
+      ((!managerId || managerId === User?.id) && User?.role === 2)
+    ) {
       setNoAgents(false);
       const agents = Object.values(SalesPerson).flat();
       console.log("Agents extracted: ", agents);
@@ -281,7 +293,7 @@ const RenderSalesperson = ({ cellValues }) => {
                   ?
                 </h1>
               </div>
-              <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+              <div className="action buttons mt-5 flex items-center justify-center ">
                 <Button
                   className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
                   ripple={true}
@@ -295,7 +307,7 @@ const RenderSalesperson = ({ cellValues }) => {
                   )}
                 </Button>
 
-                <Button
+                {/* <Button
                   onClick={() => setDialogue(false)}
                   ripple={true}
                   variant="outlined"
@@ -306,7 +318,7 @@ const RenderSalesperson = ({ cellValues }) => {
                   }`}
                 >
                   Cancel
-                </Button>
+                </Button> */}
               </div>
             </div>
           </Dialog>

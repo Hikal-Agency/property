@@ -39,7 +39,6 @@ const Home = () => {
       .post(`${BACKEND_URL}/login`, bodyFormData)
       .then((result) => {
         setOpenBackDrop(true);
-        // console.log(result);
         if (result.data.success && result.data.data.token) {
           localStorage.setItem("auth-token", result.data.data.token);
           document.location.href = location?.state?.continueURL || "/dashboard";
@@ -162,7 +161,6 @@ const Home = () => {
     if (!location?.state?.error) {
       if (token) {
         setOpenBackDrop(true);
-        navigate("/dashboard");
       }
     }
     // eslint-disable-next-line
@@ -178,7 +176,7 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
       </Head> */}
-      
+
       <div className="relative overflow-hidden">
         <div className="canvas absolute w-full overflow-x-hidden">
           <canvas ref={(elem) => (canvas = elem)} className="-z-[1]"></canvas>

@@ -17,7 +17,7 @@ import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
-const RenderManagers = ({ cellValues }) => {
+const RenderManagers = ({ cellValues, lead_origin }) => {
   const [manager2, setmanager2] = useState(cellValues?.row?.assignedToManager);
   const [newManager, setnewManager] = useState("");
   const [Dialogue, setDialogue] = useState(false);

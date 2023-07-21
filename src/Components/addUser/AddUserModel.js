@@ -25,6 +25,17 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const rolesMap = {
+    "head of sales": 2,
+    manager: 3,
+    marketing: 4,
+    accounts: 5,
+    user: 6,
+    agent: 7,
+    dataEntry: 8,
+    officeboy: 9,
+  };
+
   const handlePassword = (e) => {
     setPasswordError(false);
     const password = e.target.value;
@@ -64,25 +75,31 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     setformdata({ ...formdata, userEmail: email });
   };
 
+  // const ChangeUserRole = (event) => {
+  //   setUserRole(event.target.value);
+  //   if (event.target.value === "head of sales") {
+  //     setformdata({ ...formdata, role: 2 });
+  //   } else if (event.target.value === "manager") {
+  //     setformdata({ ...formdata, role: 3 });
+  //   } else if (event.target.value === "marketing") {
+  //     setformdata({ ...formdata, role: 4 });
+  //   } else if (event.target.value === "accounts") {
+  //     setformdata({ ...formdata, role: 5 });
+  //   } else if (event.target.value === "user") {
+  //     setformdata({ ...formdata, role: 6 });
+  //   } else if (event.target.value === "agent") {
+  //     setformdata({ ...formdata, role: 7 });
+  //   } else if (event.target.value === "dataEntry") {
+  //     setformdata({ ...formdata, role: 8 });
+  //   } else if (event.target.value === "officeboy") {
+  //     setformdata({ ...formdata, role: 9 });
+  //   }
+  // };
+
   const ChangeUserRole = (event) => {
-    setUserRole(event.target.value);
-    if (event.target.value === "head of sales") {
-      setformdata({ ...formdata, role: 2 });
-    } else if (event.target.value === "manager") {
-      setformdata({ ...formdata, role: 3 });
-    } else if (event.target.value === "marketing") {
-      setformdata({ ...formdata, role: 4 });
-    } else if (event.target.value === "accounts") {
-      setformdata({ ...formdata, role: 5 });
-    } else if (event.target.value === "user") {
-      setformdata({ ...formdata, role: 6 });
-    } else if (event.target.value === "agent") {
-      setformdata({ ...formdata, role: 7 });
-    } else if (event.target.value === "dataEntry") {
-      setformdata({ ...formdata, role: 8 });
-    } else if (event.target.value === "officeboy") {
-      setformdata({ ...formdata, role: 9 });
-    }
+    const selectedRole = event.target.value;
+    setUserRole(selectedRole);
+    setformdata({ ...formdata, role: rolesMap[selectedRole] });
   };
 
   // sql injuction
@@ -139,6 +156,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
             });
           }
           setloading(false);
+          addUserModelClose();
         })
         .catch((err) => {
           toast.error("Something went Wrong! Please Try Again", {
@@ -256,7 +274,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
 
                     <div className="col-span-3">
                       <TextField
-                      select
+                        select
                         id="user-role"
                         value={UserRole}
                         label="User Role"

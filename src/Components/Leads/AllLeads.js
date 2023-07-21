@@ -84,8 +84,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const [deletebtnloading, setdeletebtnloading] = useState(false);
   const [filt, setFilt] = useState([]);
   const [blockIPModalOpened, setBlockIPModalOpened] = useState({
-    lead: null, 
-    isOpened: false
+    lead: null,
+    isOpened: false,
   });
   const [error, setError] = useState(false);
   console.log("LeadType::", lead_type);
@@ -297,7 +297,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
+      renderCell: (cellValues) => (
+        <RenderSalesperson cellValues={cellValues} lead_origin={lead_origin} />
+      ),
     },
     {
       field: "feedback",
@@ -867,7 +869,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 90,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
+      renderCell: (cellValues) => (
+        <RenderManagers cellValues={cellValues} lead_origin={lead_origin} />
+      ),
     },
     {
       headerAlign: "center",
@@ -876,7 +880,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 90,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
+      renderCell: (cellValues) => (
+        <RenderSalesperson cellValues={cellValues} lead_origin={lead_origin} />
+      ),
     },
     {
       field: "feedback",
@@ -1370,23 +1376,33 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       } else if (lead_type === "new") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=New&leadStatus=Transferred`;
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=New&leadStatus=Transferred`;
       } else if (lead_type === "no answer") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=No Answer&leadStatus=Transferred`;
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=No Answer&leadStatus=Transferred`;
       } else if (lead_type === "meeting") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Meeting&leadStatus=Transferred`;
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=Meeting&leadStatus=Transferred`;
       } else if (lead_type === "follow up") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Follow Up&leadStatus=Transferred`;
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=Follow Up&leadStatus=Transferred`;
       } else if (lead_type === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Low Budget&leadStatus=Transferred`;
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=Low Budget&leadStatus=Transferred`;
       } else if (lead_type === "not interested") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
@@ -1396,7 +1412,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       } else if (lead_type === "unreachable") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Unreachable&leadStatus=Transferred`;
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=Unreachable&leadStatus=Transferred`;
       }
     } else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
@@ -1691,7 +1709,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         coldCallCode = 3;
       }
     }
-    
 
     if (coldCallCode !== "") {
       url += `&coldCall=${coldCallCode}`;
@@ -1708,7 +1725,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     if (lead_origin === "transfferedleads") {
       url += `&status=Transferred`;
     }
-
 
     await axios
       .get(url, {
@@ -1810,7 +1826,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       handleLeadModelOpen();
     }
   };
-  
+
   // REMINDER BTN CLICK FUNC
   const HandleReminderBtn = async (params) => {
     console.log("LEADID: ", params);
@@ -2041,7 +2057,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   };
   return (
     <>
-      
       <div className="pb-10">
         {/* {lead_origin === "unassigned" && lead_type === "fresh" && (
           <Box
@@ -2341,7 +2356,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
           {UpdateLeadModelOpen && (
             <UpdateLead
-            lead_origin={lead_origin}
+              lead_origin={lead_origin}
               LeadModelOpen={UpdateLeadModelOpen}
               setLeadModelOpen={setUpdateLeadModelOpen}
               handleLeadModelOpen={handleUpdateLeadModelOpen}
