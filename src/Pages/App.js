@@ -47,7 +47,7 @@ import SingleTicket from "./support/SingleTicket";
 import UpdateUser from "./users/updateUser";
 import { io } from "socket.io-client";
 import Sidebarmui from "../Components/Sidebar/Sidebarmui";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Statistics from "./SocialMedia/statistics";
 import AllQA from "./qaform/allQA";
 import SingleLeadPage from "./singlelead";
@@ -386,6 +386,7 @@ export const socket = io(process.env.REACT_APP_SOCKET_URL);
 function App() {
   const { setAllRoutes, currentMode, User } = useStateContext();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,

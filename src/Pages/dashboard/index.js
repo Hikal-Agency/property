@@ -6,11 +6,13 @@ import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
 import DashboardPanel from "../../Components/dashboard/DashboardPanel";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const Dashboard = () => {
-  const { setopenBackDrop, currentMode, setDashboardData, BACKEND_URL } =
+  const { setopenBackDrop, currentMode, setDashboardData, BACKEND_URL, User } =
     useStateContext();
   const [loading, setloading] = useState(true);
+  const navigate = useNavigate();
 
   const FetchProfile = (token) => {
     setloading(true);
@@ -53,14 +55,15 @@ const Dashboard = () => {
 
   useEffect(() => {
     setopenBackDrop(false);
+
     const token = localStorage.getItem("auth-token");
     FetchProfile(token);
+
     // eslint-disable-next-line
   }, []);
 
   return (
     <>
-      
       <div className="flex min-h-screen w-[100%]">
         {loading ? (
           <Loader />

@@ -14,7 +14,7 @@ import DoughnutChart from "../../Components/charts/DoughnutChart";
 import BarChartProject from "../../Components/charts/BarChartProject";
 import BarChartProjectAdmin from "../../Components/charts/BarChartProjectAdmin";
 import Task from "../../Components/Tasks/Task";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UpcomingMeeting from "../meetings/UpcomingMeeting";
 import UpcomingMeetingAgent from "../meetings/UpcomingMeetingAgent";
 // import axios from "axios";
@@ -38,6 +38,7 @@ const DashboardPanel = ({ setloading }) => {
   const [saleschart_loading, setsaleschart_loading] = useState(true);
   const [reminder, setReminder] = useState([]);
   const [visible, setVisible] = useState(true);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -62,6 +63,10 @@ const DashboardPanel = ({ setloading }) => {
 
   useEffect(() => {
     fetchData();
+    if (User?.role === 5) {
+      navigate("/attendance/employeesList");
+      return;
+    }
   }, []);
 
   // COUNTER DATA
