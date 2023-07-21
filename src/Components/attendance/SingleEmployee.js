@@ -115,6 +115,13 @@ const SingleEmployee = ({ user }) => {
     //   minWidth: 120,
     // },
     {
+      field: "deduction",
+      headerName: "Deduction",
+      headerAlign: "center",
+      minWidth: 120,
+      renderCell: (params) => <>{params.row.cut_salary}</>,
+    },
+    {
       field: "actions",
       headerName: "Actions",
       headerAlign: "center",
@@ -401,7 +408,8 @@ const SingleEmployee = ({ user }) => {
           userName: row?.userName || "-",
           created_at: row?.created_at,
           updated_at: row?.updated_at,
-          edit: "edit",
+          deduction: row?.deduct_salary,
+          cut_salary: row?.cut_salary || "-",
 
           checkInTime:
             (row?.attendance_type.toLowerCase() === "in" ||
@@ -427,6 +435,8 @@ const SingleEmployee = ({ user }) => {
             row?.attendance_source
               ? row.attendance_source
               : "-",
+
+          edit: "edit",
         }));
 
         const attended_days = rowsdata.filter(
