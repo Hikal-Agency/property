@@ -56,7 +56,7 @@ const SingleEmployee = ({ user }) => {
   console.log("emp data: ", empData);
 
   const columns = [
-    { field: "id", headerAlign: "center", headerName: "Sr.No", minWidth: 60 },
+    // { field: "id", headerAlign: "center", headerName: "Sr.No", minWidth: 60 },
 
     {
       field: "check_datetime",
@@ -99,7 +99,7 @@ const SingleEmployee = ({ user }) => {
     {
       field: "late_minutes",
       headerAlign: "center",
-      headerName: "Late By",
+      headerName: "Late ",
       minWidth: 120,
     },
     {
@@ -493,6 +493,7 @@ const SingleEmployee = ({ user }) => {
           // Add other fields as needed
           return {
             id: row.id,
+
             checkIn:
               row?.attendance_type.toLowerCase() === "in" ||
               row?.attendance_type.toLowerCase() === "check-in"
