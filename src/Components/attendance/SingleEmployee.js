@@ -72,25 +72,25 @@ const SingleEmployee = ({ user }) => {
       },
     },
     {
-      field: "checkInTime",
+      field: "checkIns",
       headerAlign: "center",
       headerName: "In-time",
       minWidth: 120,
     },
     {
-      field: "insource",
+      field: "attendanceSourcesForCheckIn",
       headerAlign: "center",
       headerName: "In-Source",
       minWidth: 120,
     },
     {
-      field: "checkOutTime",
+      field: "checkOuts",
       headerAlign: "center",
       headerName: "Out-time",
       minWidth: 120,
     },
     {
-      field: "outsource",
+      field: "attendanceSourcesForCheckOut",
       headerAlign: "center",
       headerName: "Out-Source",
       minWidth: 120,
@@ -376,68 +376,164 @@ const SingleEmployee = ({ user }) => {
         //   edit: "edit",
         // }));
 
-        let rowsdata = data?.map((row, index) => ({
-          id:
-            pageState.page > 1
-              ? pageState.page * pageState.pageSize -
-                (pageState.pageSize - 1) +
-                index
-              : index + 1,
-          checkIn:
-            row?.attendance_type.toLowerCase() === "in" ||
-            row?.attendance_type.toLowerCase() === "check-in"
-              ? "In"
-              : "-",
-          checkOut:
-            row?.attendance_type.toLowerCase() === "out" ||
-            row?.attendance_type.toLowerCase() === "check-out"
-              ? "Out"
-              : "-",
-          attendance_type: row?.attendance_type,
-          check_datetime: row?.check_datetime,
-          default_datetime: row?.default_datetime,
-          attendance_source: row?.attendance_source || "-",
-          is_late: row?.is_late || "-",
-          late_reason: row?.late_reason || "-",
-          late_minutes: row?.late_minutes || "-",
-          salary: row?.salary,
-          profile_picture: row?.profile_picture,
-          position: row?.position || "-",
-          currency: row?.currency || "-",
-          attendance_source: row?.attendance_source || "-",
-          userName: row?.userName || "-",
-          created_at: row?.created_at,
-          updated_at: row?.updated_at,
-          deduction: row?.deduct_salary,
-          cut_salary: row?.cut_salary || "-",
+        // let rowsdata = data?.map((row, index) => ({
+        //   id:
+        //     pageState.page > 1
+        //       ? pageState.page * pageState.pageSize -
+        //         (pageState.pageSize - 1) +
+        //         index
+        //       : index + 1,
+        //   checkIn:
+        //     row?.attendance_type.toLowerCase() === "in" ||
+        //     row?.attendance_type.toLowerCase() === "check-in"
+        //       ? "In"
+        //       : "-",
+        //   checkOut:
+        //     row?.attendance_type.toLowerCase() === "out" ||
+        //     row?.attendance_type.toLowerCase() === "check-out"
+        //       ? "Out"
+        //       : "-",
+        //   attendance_type: row?.attendance_type,
+        //   check_datetime: row?.check_datetime,
+        //   default_datetime: row?.default_datetime,
+        //   attendance_source: row?.attendance_source || "-",
+        //   is_late: row?.is_late || "-",
+        //   late_reason: row?.late_reason || "-",
+        //   late_minutes: row?.late_minutes || "-",
+        //   salary: row?.salary,
+        //   profile_picture: row?.profile_picture,
+        //   position: row?.position || "-",
+        //   currency: row?.currency || "-",
+        //   attendance_source: row?.attendance_source || "-",
+        //   userName: row?.userName || "-",
+        //   created_at: row?.created_at,
+        //   updated_at: row?.updated_at,
+        //   deduction: row?.deduct_salary,
+        //   cut_salary: row?.cut_salary || "-",
 
-          checkInTime:
-            (row?.attendance_type.toLowerCase() === "in" ||
-              row?.attendance_type.toLowerCase() === "check-in") &&
-            row?.check_datetime
-              ? moment(row.check_datetime).format("hh:mm A")
-              : "-",
-          checkOutTime:
-            (row?.attendance_type.toLowerCase() === "out" ||
-              row?.attendance_type.toLowerCase() === "check-out") &&
-            row?.check_datetime
-              ? moment(row.check_datetime).format("hh:mm A")
-              : "-",
-          insource:
-            (row?.attendance_type.toLowerCase() === "in" ||
-              row?.attendance_type.toLowerCase() === "check-in") &&
-            row?.attendance_source
-              ? row.attendance_source
-              : "-",
-          outsource:
-            (row?.attendance_type.toLowerCase() === "out" ||
-              row?.attendance_type.toLowerCase() === "check-out") &&
-            row?.attendance_source
-              ? row.attendance_source
-              : "-",
+        //   checkInTime:
+        //     (row?.attendance_type.toLowerCase() === "in" ||
+        //       row?.attendance_type.toLowerCase() === "check-in") &&
+        //     row?.check_datetime
+        //       ? moment(row.check_datetime).format("hh:mm A")
+        //       : "-",
+        //   checkOutTime:
+        //     (row?.attendance_type.toLowerCase() === "out" ||
+        //       row?.attendance_type.toLowerCase() === "check-out") &&
+        //     row?.check_datetime
+        //       ? moment(row.check_datetime).format("hh:mm A")
+        //       : "-",
+        //   insource:
+        //     (row?.attendance_type.toLowerCase() === "in" ||
+        //       row?.attendance_type.toLowerCase() === "check-in") &&
+        //     row?.attendance_source
+        //       ? row.attendance_source
+        //       : "-",
+        //   outsource:
+        //     (row?.attendance_type.toLowerCase() === "out" ||
+        //       row?.attendance_type.toLowerCase() === "check-out") &&
+        //     row?.attendance_source
+        //       ? row.attendance_source
+        //       : "-",
 
-          edit: "edit",
+        //   edit: "edit",
+        // }));
+
+        let rowsdata = data?.reduce((acc, row) => {
+          const date = moment(row?.check_datetime).format("YYYY-MM-DD");
+          const existingRow = acc.find((item) => item.date === date);
+
+          const attendanceType = row?.attendance_type.toLowerCase();
+          const checkTime = row?.check_datetime
+            ? moment(row.check_datetime).format("hh:mm A")
+            : "-";
+
+          if (!existingRow) {
+            acc.push({
+              date,
+              checkIns:
+                attendanceType === "in" || attendanceType === "check-in"
+                  ? [checkTime]
+                  : [],
+              checkOuts:
+                attendanceType === "out" || attendanceType === "check-out"
+                  ? [checkTime]
+                  : [],
+              attendanceSourcesForCheckIn:
+                attendanceType === "in" || attendanceType === "check-in"
+                  ? [row.attendance_source || "-"]
+                  : [],
+              attendanceSourcesForCheckOut:
+                attendanceType === "out" || attendanceType === "check-out"
+                  ? [row.attendance_source || "-"]
+                  : [],
+              ...otherFields(row),
+            });
+          } else {
+            if (attendanceType === "in" || attendanceType === "check-in") {
+              existingRow.checkIns.push(checkTime);
+              existingRow.attendanceSourcesForCheckIn.push(
+                row.attendance_source || "-"
+              );
+            } else if (
+              attendanceType === "out" ||
+              attendanceType === "check-out"
+            ) {
+              existingRow.checkOuts.push(checkTime);
+              existingRow.attendanceSourcesForCheckOut.push(
+                row.attendance_source || "-"
+              );
+            }
+          }
+
+          return acc;
+        }, []);
+
+        function otherFields(row) {
+          // Add other fields as needed
+          return {
+            id: row.id,
+            checkIn:
+              row?.attendance_type.toLowerCase() === "in" ||
+              row?.attendance_type.toLowerCase() === "check-in"
+                ? "In"
+                : "-",
+            checkOut:
+              row?.attendance_type.toLowerCase() === "out" ||
+              row?.attendance_type.toLowerCase() === "check-out"
+                ? "Out"
+                : "-",
+            attendance_type: row?.attendance_type,
+            check_datetime: row?.check_datetime,
+            default_datetime: row?.default_datetime,
+            is_late: row?.is_late || "-",
+            late_reason: row?.late_reason || "-",
+            late_minutes: row?.late_minutes || "-",
+            salary: row?.salary,
+            profile_picture: row?.profile_picture,
+            position: row?.position || "-",
+            currency: row?.currency || "-",
+            userName: row?.userName || "-",
+            created_at: row?.created_at,
+            updated_at: row?.updated_at,
+            deduction: row?.deduct_salary,
+            cut_salary: row?.cut_salary || "-",
+            edit: "edit",
+          };
+        }
+
+        // Concatenate check-ins, check-outs, and attendance_sources into a single comma-separated string
+        rowsdata = rowsdata.map((row) => ({
+          ...row,
+          checkIns: row.checkIns.join(", "),
+          checkOuts: row.checkOuts.join(", "),
+          attendanceSourcesForCheckIn:
+            row.attendanceSourcesForCheckIn.join(", "),
+          attendanceSourcesForCheckOut:
+            row.attendanceSourcesForCheckOut.join(", "),
         }));
+
+        console.log("rowsss:::::::: ", rowsdata);
 
         const attended_days = rowsdata.filter(
           (row) =>
