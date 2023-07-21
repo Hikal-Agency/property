@@ -869,7 +869,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 90,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
+      renderCell: (cellValues) => (
+        <RenderManagers cellValues={cellValues} lead_origin={lead_origin} />
+      ),
     },
     {
       headerAlign: "center",
