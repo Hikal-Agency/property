@@ -737,7 +737,7 @@ const Sidebarmui = () => {
         {
           name: "Reshuffle",
           icon: <FaRandom />,
-          link: "/reshuffleleads",
+          link: "/reshuffleleads/all",
         },
 
         {
@@ -1815,7 +1815,7 @@ const Sidebarmui = () => {
         {
           name: "Reshuffle",
           icon: <FaRandom />,
-          link: "/reshuffleleads",
+          link: "/reshuffleleads/all",
         },
         {
           name: "Personal",
@@ -2198,7 +2198,6 @@ const Sidebarmui = () => {
 
           // Save user data to local storage
           localStorage.setItem("user", JSON.stringify(user));
-          
         })
         .catch((err) => {
           console.log(err);
