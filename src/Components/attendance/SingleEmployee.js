@@ -94,16 +94,28 @@ const SingleEmployee = ({ user }) => {
       },
     },
 
+    {
+      field: "checkIn",
+      headerAlign: "center",
+      headerName: "Check-In",
+      minWidth: 100,
+    },
+    {
+      field: "checkOut",
+      headerAlign: "center",
+      headerName: "Check-Out",
+      minWidth: 100,
+    },
     // {
-    //   field: "checkIn",
+    //   field: "attendance_type",
     //   headerAlign: "center",
-    //   headerName: "Check-In",
-    //   minWidth: 100,
+    //   headerName: "Check",
+    //   minWidth: 120,
     // },
     {
-      field: "attendance_type",
+      field: "attendance_source",
       headerAlign: "center",
-      headerName: "Check",
+      headerName: "Src",
       minWidth: 120,
     },
     // {
@@ -302,7 +314,7 @@ const SingleEmployee = ({ user }) => {
     );
   };
 
-  const FetchProfile = async (token) => {
+  const FetchAttendance = async (token) => {
     const params = {
       page: pageState.page,
     };
@@ -356,6 +368,16 @@ const SingleEmployee = ({ user }) => {
                 (pageState.pageSize - 1) +
                 index
               : index + 1,
+          checkIn:
+            row?.attendance_type.toLowerCase() === "in" ||
+            row?.attendance_type.toLowerCase() === "check-in"
+              ? "In"
+              : "-",
+          checkOut:
+            row?.attendance_type.toLowerCase() === "out" ||
+            row?.attendance_type.toLowerCase() === "check-out"
+              ? "Out"
+              : "-",
           attendance_type: row?.attendance_type,
           check_datetime: row?.check_datetime,
           default_datetime: row?.default_datetime,
@@ -363,10 +385,11 @@ const SingleEmployee = ({ user }) => {
           is_late: row?.is_late || "-",
           late_reason: row?.late_reason || "-",
           late_minutes: row?.late_minutes || "-",
-          salary: row?.salary || "-",
+          salary: row?.salary,
           profile_picture: row?.profile_picture,
           position: row?.position || "-",
           currency: row?.currency || "-",
+          attendance_source: row?.attendance_source || "-",
           userName: row?.userName || "-",
           created_at: row?.created_at,
           updated_at: row?.updated_at,
@@ -382,7 +405,9 @@ const SingleEmployee = ({ user }) => {
         console.log("attended days: ", attended_count);
 
         const leave_days = rowsdata.filter(
-          (row) => row?.attendance_type.toLowerCase() === "out"
+          (row) =>
+            row?.attendance_type.toLowerCase() === "out" ||
+            row?.attendance_type.toLowerCase() === "check-out"
         );
         const leave_count = leave_days.length;
         console.log("leave days: ", leave_count);
@@ -427,7 +452,7 @@ const SingleEmployee = ({ user }) => {
   useEffect(() => {
     setopenBackDrop(false);
     const token = localStorage.getItem("auth-token");
-    FetchProfile(token);
+    FetchAttendance(token);
     // eslint-disable-next-line
   }, [pageState.page, selectedDay]);
 
@@ -464,7 +489,7 @@ const SingleEmployee = ({ user }) => {
   //       });
   //       const token = localStorage.getItem("auth-token");
   //       if (token) {
-  //         FetchProfile(token);
+  //         FetchAttendance(token);
   //       } else {
   //         navigate("/", {
   //           state: { error: "Something Went Wrong! Please Try Again" },
@@ -679,7 +704,7 @@ const SingleEmployee = ({ user }) => {
         });
         const token = localStorage.getItem("auth-token");
         if (token) {
-          FetchProfile(token);
+          FetchAttendance(token);
         } else {
           navigate("/", {
             state: { error: "Something Went Wrong! Please Try Again" },
@@ -854,37 +879,41 @@ const SingleEmployee = ({ user }) => {
                           </div>
                         </div>
                       </div>
-                      <div className="accountinfo border-t-2 border-gray-400 px-5 mt-3 pt-5 ">
-                        <div className="flex justify-center flex-col items-center">
-                          <div
-                            className={`mt-1 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            <div className="flex  justify-center  font-semibold">
-                              <h1>Leave Days Salary:</h1>
+                      {empData[0]?.salary ? (
+                        <div className="accountinfo border-t-2 border-gray-400 px-5 mt-3 pt-5 ">
+                          <div className="flex justify-center flex-col items-center">
+                            <div
+                              className={`mt-1 text-center ${
+                                currentMode === "dark"
+                                  ? "text-gray-50"
+                                  : "text-gray-600"
+                              }`}
+                            >
+                              <div className="flex  justify-center  font-semibold">
+                                <h1>Leave Days Salary:</h1>
+                              </div>
+                              {pageState?.attended_count || "0"}
                             </div>
-                            {pageState?.attended_count || "0"}
-                          </div>
-                          <div
-                            className={`mt-3 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            <div className="flex justify-center font-semibold mb-1">
-                              <h1 className="block">Late Days Salary: </h1>
-                              {"  "}
-                              <p className="font-bold pl-1">
-                                {"  "} {pageState?.leave_count || "0"}
-                              </p>
+                            <div
+                              className={`mt-3 text-center ${
+                                currentMode === "dark"
+                                  ? "text-gray-50"
+                                  : "text-gray-600"
+                              }`}
+                            >
+                              <div className="flex justify-center font-semibold mb-1">
+                                <h1 className="block">Late Days Salary: </h1>
+                                {"  "}
+                                <p className="font-bold pl-1">
+                                  {"  "} {pageState?.leave_count || "0"}
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      ) : (
+                        ""
+                      )}
                       <div className="accountinfo border-t-2  border-b-2 border-gray-400 px-5 mt-3 mb-3 pb-5 pt-5 ">
                         <div className="flex justify-center flex-col items-center">
                           <div
@@ -897,7 +926,7 @@ const SingleEmployee = ({ user }) => {
                             <div className="flex  justify-center  font-semibold">
                               <h1>Total Salary:</h1>
                             </div>
-                            {pageState?.attended_count || "0"}
+                            {empData[0]?.salary || "No data"}
                           </div>
                         </div>
                       </div>
