@@ -214,7 +214,7 @@ const BookedDeals = ({
           setFeedback(newFeedback);
           setreloadDataGrid(!reloadDataGrid);
           setDialogue(false);
-          if (newFeedback === "Closed") {
+          if (newFeedback === "Closed Deal") {
             setIsClosed(true);
             setTimeout(() => {
               setIsClosed(false);

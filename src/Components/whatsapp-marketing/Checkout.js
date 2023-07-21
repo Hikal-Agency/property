@@ -91,13 +91,13 @@ const Checkout = ({ allPlans, plan }) => {
 
       <Box className="flex justify-center items-start mt-4">
         <Box className="flex flex-col items-center h-[100%] mr-12">
-          <Box className="p-5 bg-white rounded-md h-[100%] text-black">
+          <Box className="p-5 text-white bg-[#da1f26] rounded-md h-[100%]">
             <h1>Subscribe to {selectedPlan.name}</h1>
             <Box className="flex items-center mt-2">
-              <h1 className="font-black" style={{ fontSize: 40 }}>
+              <h1 className="font-black text-white" style={{ fontSize: 40 }}>
                 US${selectedPlan.price}
               </h1>
-              <Box className="text-slate-400 font-light ml-2">
+              <Box className="text-white font-light ml-2">
                 <p>per</p>
                 <p style={{ lineHeight: 1, fontSize: 13 }}>year</p>
               </Box>
@@ -163,7 +163,7 @@ const Checkout = ({ allPlans, plan }) => {
                 setFormValues({ ...formValues, cvc: e.target.value })
               }
             />
-            <Button fullWidth sx={{ py: 2 }} type="submit" variant="contained">
+            <Button fullWidth style={{background: "#da1f26"}} sx={{ py: 2 }} type="submit" variant="contained">
               {btnloading ? <CircularProgress size={18} sx={{ color: "white" }} /> : <span>Submit</span>}
             </Button>
           </form>
