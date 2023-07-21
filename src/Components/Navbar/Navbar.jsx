@@ -260,7 +260,7 @@ const Navbar = () => {
                 style={{ background: "#DA1F26" }}
                 sx={{ mr: 2 }}
               >
-                <Link href="/marketing/payments">Upgrade</Link>
+                <Link to="/marketing/payments">Upgrade</Link>
               </Button>
             ),
           ]}

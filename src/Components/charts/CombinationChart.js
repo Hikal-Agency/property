@@ -54,16 +54,6 @@ const CombinationChart = () => {
           (member) => member.total_meetings !== 0 || member.total_sales !== 0
         );
 
-        if (User?.role === 3) {
-          const filteredMembersDeal = filteredMembers.filter(
-            (member) => member.role !== 3
-          );
-
-          console.log("filterperformance: ", filteredMembersDeal);
-          setPerformanceChartData(filteredMembersDeal);
-          return;
-        }
-
         setPerformanceChartData(filteredMembers);
       })
 
