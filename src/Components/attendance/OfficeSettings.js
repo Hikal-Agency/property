@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { Button } from "@mui/material";
 import MyCalendar from "./MyCalendar";
+import { Box } from "@mui/system";
 
 const OfficeSettings = () => {
   const { currentMode, formatNum } = useStateContext();
@@ -28,27 +29,10 @@ const OfficeSettings = () => {
       <h4 className="text-red-600 font-bold text-xl mb-2 text-center">
         Office Time Settings
       </h4>
-      {/* <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-3">
-        <div
-          className={`${
-            currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
-          } w-full col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3 p-5`}
-          style={{ height: "700px" }}
-        >
-          <div>
-            <FullCalendar
-              plugins={[dayGridPlugin]}
-              initialView="dayGridMonth"
-              // weekends={false}
-              // events={events}
-              // eventContent={renderEventContent}
-            />
-          </div>
-        </div>
-        <div className="h-full w-full">
-          <div className="grid grid-cols-1 gap-5">Calendar</div>
-        </div>
-      </div> */}
+      <Box className="h-[60vh] flex items-center justify-center">
+        <img src="/coming-soon.png" width={"200px"} alt="" />
+      </Box>
+      {/* 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-5 pb-3">
         <div
           className={`${
@@ -57,21 +41,6 @@ const OfficeSettings = () => {
           //   style={{ height: "700px" }}
         >
           <div>
-            {/* <FullCalendar
-              plugins={[dayGridPlugin]}
-              initialView="dayGridMonth"
-              height={"90vh"}
-            /> */}
-            {/* <FullCalendar
-              plugins={[dayGridPlugin]}
-              initialView="dayGridMonth"
-              height={"90vh"}
-              selectable={true}
-              // eventClick={handleEventClick}
-              select={function (start, end, allDays) {
-                console.log("...clicked....");
-              }}
-            /> */}
             <MyCalendar />
           </div>
         </div>
@@ -124,29 +93,6 @@ const OfficeSettings = () => {
                       defaultValue="Sunday"
                     />
                   ) : (
-                    // <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    //   <TimePicker
-                    //     ampm={false}
-                    //     label="Meeting Time"
-                    //     format="HH:mm"
-                    //     // value={meetingTimeValue}
-                    //     // onChange={(newValue) => {
-                    //     //   setMeetingTime(
-                    //     //     formatNum(newValue?.$d?.getHours()) +
-                    //     //       ":" +
-                    //     //       formatNum(newValue?.$d?.getMinutes())
-                    //     //   );
-                    //     //   setMeetingTimeValue(newValue);
-                    //     // }}
-                    //     renderInput={(params) => (
-                    //       <TextField
-                    //         {...params}
-                    //         onKeyDown={(e) => e.preventDefault()}
-                    //         readOnly={true}
-                    //       />
-                    //     )}
-                    //   />
-                    // </LocalizationProvider>
                     <p>Sunday</p>
                   )}
                 </div>
@@ -209,7 +155,7 @@ const OfficeSettings = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
