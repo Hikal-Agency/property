@@ -5,8 +5,8 @@ import { GrAdd } from "react-icons/gr";
 const DeviceCard = ({
   details,
   addDeviceCard = false,
-  onClick,
-  setCreateDeviceModal,
+  onClick = () => {},
+  setCreateDeviceModal = () => {},
 }) => {
   if (addDeviceCard) {
     return (

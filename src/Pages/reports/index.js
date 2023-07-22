@@ -1,15 +1,47 @@
-import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
-import Footer from "../../Components/Footer/Footer";
 import ReportProjectBar from "../../Components/charts/ReportProjectBar";
 import ReportMeetingsClosed from "../../Components/charts/ReportMeetingsClosed";
 import DoughnutChart from "../../Components/charts/DoughnutChart";
 import SalesAmountChartAdmin from "../../Components/charts/SalesAmountChartAdmin";
 import ReportClosedMeetingDoughnut from "../../Components/charts/ReportClosedMeetingDoughnut";
+import { useEffect, useState } from "react";
+import Loader from "../../Components/Loader";
+import axios from "axios";
+import { CircularProgress } from "@mui/material";
 
 const Reports = () => {
-  const { currentMode, DashboardData, Sales_chart_data } = useStateContext();
+  const { currentMode, DashboardData, Sales_chart_data, setSales_chart_data, BACKEND_URL } = useStateContext();
+  const [saleschart_loading, setsaleschart_loading] = useState(true);
+  
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const urls = [`${BACKEND_URL}/memberdeals`];
+      const responses = await Promise.all(
+        urls.map((url) => {
+          return axios.get(url, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          });
+        })
+      );
+      setSales_chart_data(responses[0].data?.members_deal);
+      setsaleschart_loading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if(saleschart_loading) {
+    return <Loader/>;
+  } else {
   return (
     <>
       {/* <ToastContainer/> */}
@@ -47,9 +79,15 @@ const Reports = () => {
                       </span>
                     </h6>
                     <div className="justify-between items-center">
+
+                {saleschart_loading ? (
+                  <div className="flex items-center space-x-2">
+                    <CircularProgress size={20} /> <span>Loading</span>
+                  </div>
+                ) : (
                       <SalesAmountChartAdmin
-                        Sales_chart_data={Sales_chart_data}
                       />
+                )}
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
@@ -152,6 +190,7 @@ const Reports = () => {
       </div>
     </>
   );
+                        }
 };
 
 export default Reports;

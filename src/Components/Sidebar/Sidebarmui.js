@@ -10,7 +10,7 @@ import {
 } from "react-icons/bs";
 import { HiTicket, HiDocumentReport, HiUsers, HiSearch } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { BsEnvelopeFill } from "react-icons/bs";
+import { BsEnvelopeFill, BsFillLayersFill } from "react-icons/bs";
 import { FaFacebookSquare, FaChartLine, FaUser } from "react-icons/fa";
 import { RiRadioButtonLine } from "react-icons/ri";
 import { BiBlock } from "react-icons/bi";
@@ -483,7 +483,7 @@ const Sidebarmui = () => {
     //       link: "/marketing/device",
     //     },
     //     {
-    //       name: "Conversations",
+    //       name: "WhatsApp",
     //       icon: <AiFillMessage />,
     //       link: "/marketing/contacts",
     //     },
@@ -1461,13 +1461,18 @@ const Sidebarmui = () => {
       title: "MARKETING",
       links: [
         {
-          name: "Conversations",
+          name: "Instances",
+          icon: <BsFillLayersFill />,
+          link: "/marketing/instances",
+        },
+        {
+          name: "WhatsApp",
           icon: <RiWhatsappFill />,
           link: "/marketing/chat",
         },
         {
           name: "Contacts",
-          icon: <AiFillMessage />,
+          icon: <MdContactPage />,
           link: "/marketing/contacts",
         },
         {
@@ -2391,14 +2396,14 @@ const Sidebarmui = () => {
           title: "MARKETING",
           links: [
             {
-              name: "Instances",
+              name: "WhatsApp",
               icon: <RiWhatsappFill />,
-              link: "/marketing/instances",
+              link: "/marketing/chat",
             },
             {
               name: "Contacts",
-              icon: <AiFillMessage />,
               link: "/marketing/contacts",
+              icon: <MdContactPage />,
             },
             {
               name: "Templates",
@@ -2414,13 +2419,13 @@ const Sidebarmui = () => {
           title: "MARKETING",
           links: [
             {
-              name: "Conversations",
+              name: "WhatsApp",
               icon: <RiWhatsappFill />,
               link: "/marketing/chat",
             },
             {
               name: "Contacts",
-              icon: <AiFillMessage />,
+              icon: <MdContactPage />,
               link: "/marketing/contacts",
             },
             {
@@ -2437,13 +2442,13 @@ const Sidebarmui = () => {
           title: "MARKETING",
           links: [
             {
-              name: "Conversations",
+              name: "WhatsApp",
               icon: <RiWhatsappFill />,
               link: "/marketing/chat",
             },
             {
               name: "Contacts",
-              icon: <AiFillMessage />,
+              icon: <MdContactPage />,
               link: "/marketing/contacts",
             },
             {
