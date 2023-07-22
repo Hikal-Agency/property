@@ -58,11 +58,13 @@ const SingleEmployee = ({ user }) => {
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
+  const [cut_salary, setCutSalary] = useState();
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [empData, setEmpData] = useState(null);
   const [showDailogue, setDialogue] = useState(false);
+  console.log("cut: ", cut_salary);
 
   const handleDayFilter = (event) => {
     setSelectedMonth(event.target.value);
@@ -120,18 +122,25 @@ const SingleEmployee = ({ user }) => {
       employeeData?.default_datetime
     );
 
+    const monthly_salary = employeeData?.salary / 30;
+    let deduted_salary = monthly_salary / 2;
+
     const UpdateData = new FormData();
     if (btn === 1) {
       if (User?.role === 1) {
+        console.log("deducted salary: ", deduted_salary);
+
         UpdateData.append("is_late", 1);
         UpdateData.append("late_minutes", lateMinutes);
         UpdateData.append("deduct_salary", 1);
         UpdateData.append("notify_status", "Direct");
+        UpdateData.append("cut_salary", deduted_salary.toString());
       } else {
         UpdateData.append("is_late", 1);
         UpdateData.append("late_minutes", lateMinutes);
         UpdateData.append("notify_status", "Pending");
         UpdateData.append("notify_deduct_salary", 1);
+        UpdateData.append("cut_salary", deduted_salary.toString());
       }
     } else if (btn === 2) {
       console.log("btn2");
@@ -155,7 +164,7 @@ const SingleEmployee = ({ user }) => {
 
     try {
       const UpdateUser = await axios.post(
-        `${BACKEND_URL}/attendance?user_id=${employeeData?.id}`,
+        `${BACKEND_URL}/attendance/${employeeData?.id}`,
         UpdateData,
         {
           headers: {
@@ -246,7 +255,7 @@ const SingleEmployee = ({ user }) => {
       renderCell: (params) => (
         <>
           {params.row.is_late === 1 || params.row.is_late === 2 ? (
-            params.row.late_minutes
+            params.row.late_minutes + "mins"
           ) : (
             <div className="flex justify-between px-5 py-3">
               <Tooltip title="Yes" arrow>
@@ -307,13 +316,11 @@ const SingleEmployee = ({ user }) => {
     //   minWidth: 120,
     // },
     {
-      field: "deduction",
+      field: "cut_salary",
       headerName: "Salary Deduction",
       headerAlign: "center",
       minWidth: 120,
-      renderCell: (params) => (
-        <>{pageState.deduction === 1 ? pageState.cut_salary : "-"}</>
-      ),
+      // renderCell: (params) => <>{param}</>,
     },
     {
       field: "actions",
@@ -545,6 +552,7 @@ const SingleEmployee = ({ user }) => {
         let cutSalaryValue = "";
 
         if (checkInRow) {
+          console.log("checkinrows: ", checkInRow);
           // Get the value of deduction
           deductionValue = checkInRow.deduction || "";
 
@@ -558,6 +566,7 @@ const SingleEmployee = ({ user }) => {
         console.log("Cut Salary Value:", cutSalaryValue);
 
         setEmpData(rowsdata);
+        setCutSalary(cutSalaryValue);
         setloading(false);
 
         setpageState((old) => ({
