@@ -10,14 +10,24 @@ import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
-import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Dialog,
+  IconButton,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
+import { IoIosAlert, IoMdClose } from "react-icons/io";
+
 import moment from "moment";
 import {
   RiCheckLine as CheckIcon,
   RiCloseLine as CloseIcon,
 } from "react-icons/ri";
+import SalaryDeductDailogue from "./SalaryDeductDailogue";
 
 const SingleEmployee = ({ user }) => {
   const path = window.location.pathname;
@@ -51,11 +61,26 @@ const SingleEmployee = ({ user }) => {
   const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [empData, setEmpData] = useState(null);
+  const [showDailogue, setDialogue] = useState(false);
 
   const handleDayFilter = (event) => {
     setSelectedMonth(event.target.value);
 
     console.log("date range: ", event.target.value);
+  };
+
+  const deductSalary = async (e, id) => {
+    console.log("button clicked: ", e.target.value, id);
+
+    // Find the data with the matching id in the empdata array
+    const employeeData = empData.find((employee) => employee.id === id);
+
+    if (employeeData) {
+      console.log("Employee Data:", employeeData);
+    } else {
+      // Employee data with the matching id is not found
+      console.log("Employee Data not found for id:", id);
+    }
   };
 
   console.log("emp data: ", empData);
@@ -112,15 +137,16 @@ const SingleEmployee = ({ user }) => {
             params.row.late_minutes
           ) : (
             <div className="flex justify-between px-5 py-3">
-              <Tooltip title="Complete" arrow>
+              <Tooltip title="Yes" arrow>
                 <IconButton
                   style={{
                     backgroundColor: "#4CAF50",
                     color: "white",
                     fontSize: "1rem",
                   }}
+                  value={1}
                   className="rounded-full"
-                  // onClick={(event) => handleButtonClick(event, 1, reminder?.id)}
+                  onClick={(event) => deductSalary(event, params?.row.id)}
                   // disabled={completeLoading}
                 >
                   {/* {completeLoading ? (
@@ -132,7 +158,7 @@ const SingleEmployee = ({ user }) => {
                 </IconButton>
               </Tooltip>
 
-              <Tooltip title="Cancel" arrow>
+              <Tooltip title="No" arrow>
                 <IconButton
                   style={{
                     backgroundColor: "#DC2626",
@@ -140,8 +166,9 @@ const SingleEmployee = ({ user }) => {
                     fontSize: "1rem",
                     marginLeft: "5%",
                   }}
+                  value={0}
                   className="rounded-full"
-                  // onClick={(event) => handleButtonClick(event, 0, reminder?.id)}
+                  onClick={(event) => deductSalary(event)}
                   // disabled={cancleLoading}
                 >
                   {/* {cancleLoading ? (
@@ -476,9 +503,6 @@ const SingleEmployee = ({ user }) => {
                       value={selectedMonth}
                       onChange={handleDayFilter}
                     >
-                      <MenuItem selected value="month">
-                        Select a day
-                      </MenuItem>
                       {/* <MenuItem value="today">Today</MenuItem>
                       <MenuItem value="yesterday">Yesterday</MenuItem> */}
                       {lastThreeMonths?.map((month) => (
@@ -702,6 +726,12 @@ const SingleEmployee = ({ user }) => {
                         />
                       </Box>
                     </div>
+                    {showDailogue && (
+                      <SalaryDeductDailogue
+                        showDailogue={showDailogue}
+                        setDialogue={setDialogue}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
