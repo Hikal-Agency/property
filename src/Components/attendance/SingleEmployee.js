@@ -54,6 +54,7 @@ const SingleEmployee = ({ user }) => {
     userEmail: "",
     userContact: "",
   });
+  const token = localStorage.getItem("auth-token");
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
@@ -74,6 +75,106 @@ const SingleEmployee = ({ user }) => {
 
     // Find the data with the matching id in the empdata array
     const employeeData = empData.find((employee) => employee.id === id);
+    console.log("logging single emp row:::: ", employeeData);
+
+    // const late_minutes =
+    //   employeeData?.default_datetime - pageState?.first_check?.check_datetime;
+
+    // const lateMinutes =
+    //   (new Date(employeeData?.default_datetime) -
+    //     new Date(` ${pageState?.first_check?.check_datetime}`)) /
+    //   (1000 * 60);
+
+    // Calculate the difference in minutes
+    let lateMinutes = moment(employeeData?.default_datetime, "HH:mm").diff(
+      moment(pageState?.first_check?.check_datetime, "HH:mm"),
+      "minutes"
+    );
+
+    // Take the absolute value of lateMinutes to make sure the result is positive
+    const absoluteLateMinutes = Math.abs(lateMinutes);
+
+    // Check if absoluteLateMinutes is greater than 60
+    if (absoluteLateMinutes > 60) {
+      // Calculate the remaining minutes after removing complete hours
+      const remainingMinutes = absoluteLateMinutes % 60;
+
+      // Calculate the number of complete hours (after converting minutes to hours)
+      const completeHours = Math.floor(absoluteLateMinutes / 60);
+
+      // Calculate the final result by subtracting the value of the remaining minutes
+      // (after converting them back to minutes using the product of remainingMinutes and 60)
+      lateMinutes = Math.abs(absoluteLateMinutes - remainingMinutes * 60);
+
+      console.log("Original Difference in Minutes:", absoluteLateMinutes);
+      console.log("Complete Hours:", completeHours);
+      console.log("Remaining Minutes:", remainingMinutes);
+      console.log("Final Result:", lateMinutes);
+    } else {
+      // If the absoluteLateMinutes is not greater than 60, use it as the final result
+      console.log("Final Result:", absoluteLateMinutes);
+    }
+
+    console.log(
+      "late minutes: ",
+      lateMinutes,
+      pageState?.first_check?.check_datetime,
+      employeeData?.default_datetime
+    );
+
+    const UpdateData = new FormData();
+    if (User?.role === 1) {
+      UpdateData.append("is_late", 1);
+      UpdateData.append("late_minutes", lateMinutes);
+      UpdateData.append("deduct_salary", 1);
+      UpdateData.append("notify_status", "Direct");
+    } else {
+      UpdateData.append("is_late", 1);
+      UpdateData.append("late_minutes", lateMinutes);
+      UpdateData.append("notify_status", "Pending");
+      UpdateData.append("notify_deduct_salary", 1);
+    }
+
+    try {
+      const UpdateUser = await axios.post(
+        `${BACKEND_URL}/attendance?user_id=${employeeData?.id}`,
+        UpdateData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("User updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setloading(false);
+
+      console.log("Response: ", UpdateUser);
+    } catch (error) {
+      setloading(false);
+      console.log("Error: ", error);
+      toast.error("Unable to update.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
 
     if (employeeData) {
       console.log("Employee Data:", employeeData);
@@ -302,6 +403,15 @@ const SingleEmployee = ({ user }) => {
 
         const data = result.data.Record.data;
 
+        const firstCheckIn = data?.find((element) => {
+          return (
+            element.attendance_type.toLowerCase() === "in" ||
+            element.attendance_type.toLowerCase() === "check-in"
+          );
+        });
+
+        console.log("first check in : ", firstCheckIn);
+
         let rowsdata = data?.reduce((acc, row) => {
           const date = moment(row?.check_datetime).format("YYYY-MM-DD");
           const existingRow = acc.find((item) => item.date === date);
@@ -449,6 +559,7 @@ const SingleEmployee = ({ user }) => {
           late_count: late_count,
           dedution: deductionValue,
           cut_salary: cutSalaryValue,
+          first_check: firstCheckIn,
         }));
       })
       .catch((err) => {
@@ -475,8 +586,8 @@ const SingleEmployee = ({ user }) => {
 
   useEffect(() => {
     setopenBackDrop(false);
-    const token = localStorage.getItem("auth-token");
-    FetchAttendance(token);
+    // const token = localStorage.getItem("auth-token");
+    FetchAttendance();
     // eslint-disable-next-line
   }, [pageState.page, selectedMonth]);
 
