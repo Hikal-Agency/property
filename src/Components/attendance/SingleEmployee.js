@@ -10,10 +10,14 @@ import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
-import { Avatar, Box, IconButton } from "@mui/material";
+import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
 import moment from "moment";
+import {
+  RiCheckLine as CheckIcon,
+  RiCloseLine as CloseIcon,
+} from "react-icons/ri";
 
 const SingleEmployee = ({ user }) => {
   const path = window.location.pathname;
@@ -101,6 +105,56 @@ const SingleEmployee = ({ user }) => {
       headerAlign: "center",
       headerName: "Late ",
       minWidth: 120,
+      renderCell: (params) => (
+        <>
+          {params.row.is_late === 1 || params.row.is_late === 2 ? (
+            params.row.late_minutes
+          ) : (
+            <div className="flex justify-between px-5 py-3">
+              <Tooltip title="Complete" arrow>
+                <IconButton
+                  style={{
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    fontSize: "1rem",
+                  }}
+                  className="rounded-full"
+                  // onClick={(event) => handleButtonClick(event, 1, reminder?.id)}
+                  // disabled={completeLoading}
+                >
+                  {/* {completeLoading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : (
+                    <CheckIcon />
+                  )} */}
+                  <CheckIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="Cancel" arrow>
+                <IconButton
+                  style={{
+                    backgroundColor: "#DC2626",
+                    color: "white",
+                    fontSize: "1rem",
+                    marginLeft: "5%",
+                  }}
+                  className="rounded-full"
+                  // onClick={(event) => handleButtonClick(event, 0, reminder?.id)}
+                  // disabled={cancleLoading}
+                >
+                  {/* {cancleLoading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : (
+                    <CloseIcon />
+                  )} */}
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
+          )}
+        </>
+      ),
     },
     {
       field: "late_reason",
@@ -116,10 +170,12 @@ const SingleEmployee = ({ user }) => {
     // },
     {
       field: "deduction",
-      headerName: "Deduction",
+      headerName: "Salary Deduction",
       headerAlign: "center",
       minWidth: 120,
-      renderCell: (params) => <>{params.row.cut_salary}</>,
+      renderCell: (params) => (
+        <>{pageState.deduction === 1 ? pageState[0].cut_salary : "-"}</>
+      ),
     },
     {
       field: "actions",
@@ -253,6 +309,14 @@ const SingleEmployee = ({ user }) => {
     },
   ];
 
+  // Custom function to check if it's a "checkin" or "in"
+  function isCheckIn(row) {
+    return (
+      row.checkIn.toLowerCase() === "in" ||
+      row.checkIn.toLowerCase() === "check-in"
+    );
+  }
+
   const generateLastThreeMonths = () => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth();
@@ -271,27 +335,6 @@ const SingleEmployee = ({ user }) => {
 
   // Btn loading
   const [btnloading, setbtnloading] = useState(false);
-
-  // COUNTER FOR TABS
-  const [value, setValue] = useState(0);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const SetUserProfilePic = (url) => {
-    setUser((user) => ({
-      ...user,
-      displayImg: url,
-    }));
-    const localStorageUser = JSON.parse(localStorage.getItem("user"));
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        ...localStorageUser,
-        displayImg: url,
-      })
-    );
-  };
 
   const FetchAttendance = async (token) => {
     const params = {
@@ -339,105 +382,6 @@ const SingleEmployee = ({ user }) => {
         console.log("fetched data ", result.data);
 
         const data = result.data.Record.data;
-
-        // let rowsdata = data?.map((row, index) => ({
-        //   id:
-        //     pageState.page > 1
-        //       ? pageState.page * pageState.pageSize -
-        //         (pageState.pageSize - 1) +
-        //         index
-        //       : index + 1,
-        //   checkIn:
-        //     row?.attendance_type.toLowerCase() === "in" ||
-        //     row?.attendance_type.toLowerCase() === "check-in"
-        //       ? "In"
-        //       : "-",
-        //   checkOut:
-        //     row?.attendance_type.toLowerCase() === "out" ||
-        //     row?.attendance_type.toLowerCase() === "check-out"
-        //       ? "Out"
-        //       : "-",
-
-        //   attendance_type: row?.attendance_type,
-        //   check_datetime: row?.check_datetime,
-        //   default_datetime: row?.default_datetime,
-        //   attendance_source: row?.attendance_source || "-",
-        //   is_late: row?.is_late || "-",
-        //   late_reason: row?.late_reason || "-",
-        //   late_minutes: row?.late_minutes || "-",
-        //   salary: row?.salary,
-        //   profile_picture: row?.profile_picture,
-        //   position: row?.position || "-",
-        //   currency: row?.currency || "-",
-        //   attendance_source: row?.attendance_source || "-",
-        //   userName: row?.userName || "-",
-        //   created_at: row?.created_at,
-        //   updated_at: row?.updated_at,
-        //   edit: "edit",
-        // }));
-
-        // let rowsdata = data?.map((row, index) => ({
-        //   id:
-        //     pageState.page > 1
-        //       ? pageState.page * pageState.pageSize -
-        //         (pageState.pageSize - 1) +
-        //         index
-        //       : index + 1,
-        //   checkIn:
-        //     row?.attendance_type.toLowerCase() === "in" ||
-        //     row?.attendance_type.toLowerCase() === "check-in"
-        //       ? "In"
-        //       : "-",
-        //   checkOut:
-        //     row?.attendance_type.toLowerCase() === "out" ||
-        //     row?.attendance_type.toLowerCase() === "check-out"
-        //       ? "Out"
-        //       : "-",
-        //   attendance_type: row?.attendance_type,
-        //   check_datetime: row?.check_datetime,
-        //   default_datetime: row?.default_datetime,
-        //   attendance_source: row?.attendance_source || "-",
-        //   is_late: row?.is_late || "-",
-        //   late_reason: row?.late_reason || "-",
-        //   late_minutes: row?.late_minutes || "-",
-        //   salary: row?.salary,
-        //   profile_picture: row?.profile_picture,
-        //   position: row?.position || "-",
-        //   currency: row?.currency || "-",
-        //   attendance_source: row?.attendance_source || "-",
-        //   userName: row?.userName || "-",
-        //   created_at: row?.created_at,
-        //   updated_at: row?.updated_at,
-        //   deduction: row?.deduct_salary,
-        //   cut_salary: row?.cut_salary || "-",
-
-        //   checkInTime:
-        //     (row?.attendance_type.toLowerCase() === "in" ||
-        //       row?.attendance_type.toLowerCase() === "check-in") &&
-        //     row?.check_datetime
-        //       ? moment(row.check_datetime).format("hh:mm A")
-        //       : "-",
-        //   checkOutTime:
-        //     (row?.attendance_type.toLowerCase() === "out" ||
-        //       row?.attendance_type.toLowerCase() === "check-out") &&
-        //     row?.check_datetime
-        //       ? moment(row.check_datetime).format("hh:mm A")
-        //       : "-",
-        //   insource:
-        //     (row?.attendance_type.toLowerCase() === "in" ||
-        //       row?.attendance_type.toLowerCase() === "check-in") &&
-        //     row?.attendance_source
-        //       ? row.attendance_source
-        //       : "-",
-        //   outsource:
-        //     (row?.attendance_type.toLowerCase() === "out" ||
-        //       row?.attendance_type.toLowerCase() === "check-out") &&
-        //     row?.attendance_source
-        //       ? row.attendance_source
-        //       : "-",
-
-        //   edit: "edit",
-        // }));
 
         let rowsdata = data?.reduce((acc, row) => {
           const date = moment(row?.check_datetime).format("YYYY-MM-DD");
@@ -557,6 +501,25 @@ const SingleEmployee = ({ user }) => {
         const late_count = is_late.length;
         console.log("is late: ", late_count);
 
+        // Assuming you already have the rowsdata array
+        const checkInRow = rowsdata.find((row) => isCheckIn(row));
+
+        let deductionValue = "";
+        let cutSalaryValue = "";
+
+        if (checkInRow) {
+          // Get the value of deduction
+          deductionValue = checkInRow.deduction || "";
+
+          // Get the value of cut_salary if deduction is 'one'
+          if (deductionValue === 1) {
+            cutSalaryValue = checkInRow.cut_salary || "";
+          }
+        }
+
+        console.log("Deduction Value:", deductionValue);
+        console.log("Cut Salary Value:", cutSalaryValue);
+
         setEmpData(rowsdata);
         setloading(false);
 
@@ -566,6 +529,8 @@ const SingleEmployee = ({ user }) => {
           attended_count: attended_count,
           leave_count: leave_count,
           late_count: late_count,
+          dedution: deductionValue,
+          cut_salary: cutSalaryValue,
         }));
       })
       .catch((err) => {
@@ -960,7 +925,6 @@ const SingleEmployee = ({ user }) => {
                             }`}
                           >
                             <div className="flex items-center space-x-1 justify-center">
-                              {/* <MdEmail size={25} className="block" /> */}
                               <h1>Monthly Salary</h1>
                             </div>
                             {empData[0].salary
