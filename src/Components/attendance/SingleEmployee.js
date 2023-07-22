@@ -133,47 +133,6 @@ const SingleEmployee = ({ user }) => {
         UpdateData.append("notify_status", "Pending");
         UpdateData.append("notify_deduct_salary", 1);
       }
-
-      try {
-        const UpdateUser = await axios.post(
-          `${BACKEND_URL}/attendance?user_id=${employeeData?.id}`,
-          UpdateData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-
-        toast.success("User updated successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
-        setloading(false);
-
-        console.log("Response: ", UpdateUser);
-      } catch (error) {
-        setloading(false);
-        console.log("Error: ", error);
-        toast.error("Unable to update.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
     } else if (btn === 2) {
       console.log("btn2");
 
@@ -181,20 +140,58 @@ const SingleEmployee = ({ user }) => {
         moment(pageState?.first_check?.check_datetime, "HH:mm") >
         moment(employeeData?.default_datetime, "HH:mm")
       ) {
-        console.log("late::::::::::");
+        console.log("lates::::::::::::::");
+        UpdateData.append("is_late", 1);
+        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("deduct_salary", 2);
       } else if (
         moment(pageState?.first_check?.check_datetime, "HH:mm") <=
         moment(employeeData?.default_datetime, "HH:mm")
       ) {
-        console.log("No lates:::::::::");
+        console.log("No late:::::::::");
+        UpdateData.append("is_late", 2);
       }
     }
 
-    if (employeeData) {
-      console.log("Employee Data:", employeeData);
-    } else {
-      // Employee data with the matching id is not found
-      console.log("Employee Data not found for id:", id);
+    try {
+      const UpdateUser = await axios.post(
+        `${BACKEND_URL}/attendance?user_id=${employeeData?.id}`,
+        UpdateData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("User updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setloading(false);
+
+      console.log("Response: ", UpdateUser);
+    } catch (error) {
+      setloading(false);
+      console.log("Error: ", error);
+      toast.error("Unable to update.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
