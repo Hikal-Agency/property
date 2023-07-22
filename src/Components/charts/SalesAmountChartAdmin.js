@@ -20,6 +20,7 @@ const SalesAmountChartAdmin = () => {
   });
 
   useEffect(() => {
+    console.log("Sales::", Sales_chart_data);
     setSalesData({
       labels: Sales_chart_data?.map((data) => data.userName), //["Riviera", "Crescent", "Tiger"],
       datasets: [

@@ -47,9 +47,6 @@ const CombinationChart = () => {
           data: { members_deal },
         } = result;
 
-        console.log("members_deal value: ", members_deal);
-
-        // Additional filter to remove members with zero total_meetings and total_sales
         const filteredMembers = members_deal.filter(
           (member) => member.total_meetings !== 0 || member.total_sales !== 0
         );
