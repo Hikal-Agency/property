@@ -1645,6 +1645,13 @@ const ClientLeads = ({
                     id="bulkImport"
                   />
                   <DataGrid
+                    initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    creationDate: false,
+                  },
+                },
+              }}
                     autoHeight
                     disableSelectionOnClick
                     rows={pageState?.data}

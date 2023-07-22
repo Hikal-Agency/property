@@ -639,6 +639,13 @@ const Closedeals = ({ pageState, setpageState }) => {
         sx={{ ...DataGridStyles, position: "relative", marginBottom: "50px" }}
       >
         <DataGrid
+          initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    creationDate: false,
+                  },
+                },
+              }}
           autoHeight
           rows={pageState.data}
           rowCount={pageState.total}

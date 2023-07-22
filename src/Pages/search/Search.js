@@ -628,6 +628,15 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
+        {
+      field: "priority",
+      headerName: "Priority",
+      minWidth: 85,
+      headerAlign: "center",
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
+    },
 
     {
       field: "otp",
@@ -2002,6 +2011,13 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             sx={{ ...DataGridStyles, position: "relative" }}
           >
             <DataGrid
+              initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    creationDate: false,
+                  },
+                },
+              }}
               autoHeight
               disableSelectionOnClick
               rows={pageState.data}

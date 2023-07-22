@@ -245,10 +245,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerName: "Lead name",
       minWidth: 120,
       flex: 1,
-        renderCell: (cellValues) => {
+      renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+            <p
+              className="text-center capitalize"
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -268,10 +275,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 85,
       headerAlign: "center",
       flex: 1,
-        renderCell: (cellValues) => {
+      renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+            <p
+              className="text-center capitalize"
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -524,10 +538,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       flex: 1,
       headerAlign: "center",
       minWidth: 85,
-        renderCell: (cellValues) => {
+      renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+            <p
+              className="text-center capitalize"
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -547,10 +568,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 40,
       flex: 1,
       headerAlign: "center",
-        renderCell: (cellValues) => {
+      renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+            <p
+              className="text-center capitalize"
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -833,7 +861,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+            <p
+              className="text-center capitalize"
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -853,10 +888,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       minWidth: 40,
       flex: 1,
-        renderCell: (cellValues) => {
+      renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+            <p
+              className="text-center capitalize"
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -909,6 +951,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
+    },
+
+    {
+      field: "priority",
+      headerName: "Priority",
+      minWidth: 85,
+      headerAlign: "center",
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
 
     {
@@ -2268,6 +2320,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
           <div style={{ position: "relative" }}>
             <DataGrid
+              initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    creationDate: false,
+                  },
+                },
+              }}
               ref={dataTableRef}
               autoHeight
               disableSelectionOnClick
