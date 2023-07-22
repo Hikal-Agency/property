@@ -657,163 +657,185 @@ const SingleEmployee = ({ user }) => {
                         : "bg-white text-gray-900 "
                     } rounded-md shadow-md`}
                   >
-                    <div className="col-span-2 border-r-2 border-gray-400  py-10 ">
-                      <label htmlFor="pick-image">
-                        <div className="relative">
-                          {empData[0]?.profile_picture ? (
-                            <img
-                              src={empData[0]?.profile_picture}
-                              width={200}
-                              height={200}
-                              alt=""
-                              className="rounded-full mx-auto w-28"
-                            />
-                          ) : (
-                            <Avatar
-                              alt="User"
-                              variant="circular"
-                              style={{ width: "64px", height: "64px" }}
-                              className="rounded-full mx-auto w-28"
-                            />
-                          )}
-                        </div>
-                      </label>
-
-                      <div className="mb-3">
-                        <h1 className="text-lg font-bold text-center">
-                          {empData[0]?.userName}
-                        </h1>
-                        <h3
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-gray-50"
-                              : "text-gray-600"
-                          }  text-center`}
-                        >
-                          {empData[0]?.position}
-                        </h3>
-                      </div>
-                      <div className="accountinfo border-t-2 border-gray-400 px-5 pt-5 ">
-                        <div className="flex justify-center flex-col items-center">
-                          <div
-                            className={`mt-1 text-center ${
+                    <div className="col-span-2 px-2 pb-2 text-sm">
+                      <div className="rounded-md shadow-md border-gray-400 p-3 mb-1">
+                        <label htmlFor="pick-image">
+                          <div className="relative">
+                            {empData[0]?.profile_picture ? (
+                              <img
+                                src={empData[0]?.profile_picture}
+                                width={200}
+                                height={200}
+                                alt=""
+                                className="rounded-full mx-auto w-28"
+                              />
+                            ) : (
+                              <Avatar
+                                alt="User"
+                                variant="circular"
+                                style={{ width: "64px", height: "64px" }}
+                                className="rounded-full mx-auto w-28"
+                              />
+                            )}
+                          </div>
+                        </label>
+                        <div className="m-3">
+                          <h1
+                            className={`${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-black"
+                            }  text-center font-bold text-base`}
+                          >
+                            {empData[0]?.userName}
+                          </h1>
+                          <h3
+                            className={`${
                               currentMode === "dark"
                                 ? "text-gray-50"
                                 : "text-gray-600"
-                            }`}
+                            }  text-center text-sm`}
                           >
-                            <div className="flex items-center space-x-1 justify-center">
-                              <h1>Monthly Salary</h1>
+                            {empData[0]?.position}
+                          </h3>
+                        </div>
+                      </div>
+                      {/* MONTHLY SALARY AND SALARY PER DAY  */}
+                      <div
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        } accountinfo rounded-md shadow-md border-gray-400 p-3 my-1`}
+                      >
+                        <div className="flex justify-center flex-col items-center gap-y-3 my-2">
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <h1 className="font-semibold">Monthly salary</h1>
                             </div>
                             {empData[0]?.salary
-                              ? `${empData[0]?.salary} ${empData[0]?.currency}`
+                              ? `${empData[0]?.currency} ${empData[0]?.salary} `
                               : "No data"}
                           </div>
-                          <div
-                            className={`mt-3 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            <div className="flex items-center justify-center font-semibold mb-1">
-                              <h1 className="block">Salary Per Day: </h1>{" "}
-                              {empData[0]?.salary && empData[0]?.salary !== null
-                                ? empData[0]?.salary / 30
-                                : "No data"}
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <h1 className="font-semibold">Salary per day</h1>
                             </div>
+                            {empData[0]?.salary && empData[0]?.salary !== null
+                              ? `${empData[0]?.currency} ${
+                                  empData[0]?.salary / 30
+                                }`
+                              : "No data"}
                           </div>
                         </div>
                       </div>
-                      <div className="accountinfo border-t-2 border-gray-400 px-5 mt-3 pt-5 ">
-                        <div className="flex justify-center flex-col items-center">
-                          <div
-                            className={`mt-1 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            <div className="flex  justify-center font-semibold ">
-                              <h1>Attended Days:</h1>
-                            </div>
-                            {pageState?.attended_count || "0"}
-                          </div>
-                          <div
-                            className={`mt-3 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            <div className="flex justify-center font-semibold ">
-                              <h1 className="block">Leave Days : </h1>
+                      {/* ATTENDED AND LEAVE DAYS  */}
+                      <div
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        } accountinfo rounded-md shadow-md border-gray-400 p-3 my-1`}
+                      >
+                        <div className="flex justify-center flex-col items-center gap-y-3 my-2">
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <p className="font-bold text-red-600 pr-2">
+                                {"  "} {pageState?.attended_count || "0"}{" "}
+                                {/*CHANGE WORKING DAYS*/}
+                              </p>
                               {"  "}
-                              <p className="font-bold pl-1">
+                              <h1 className="font-semibold text-sm">
+                                working days
+                              </h1>
+                            </div>
+                          </div>
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <p className="font-bold text-red-600 pr-2">
+                                {"  "} {pageState?.attended_count || "0"}
+                              </p>
+                              {"  "}
+                              <h1 className="font-semibold text-sm">
+                                attended days
+                              </h1>
+                            </div>
+                          </div>
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <p className="font-bold text-red-600 pr-2">
                                 {"  "} {pageState?.leave_count || "0"}
                               </p>
+                              {"  "}
+                              <h1 className="font-semibold">leave days</h1>
                             </div>
-                            <div className="mt-3">
-                              <h1>Late Attendance Days: </h1>
-                              <p className="font-bold">
-                                {pageState?.late_count || "0"}
+                          </div>
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <p className="font-bold text-red-600 pr-2">
+                                {"  "} {pageState?.late_count || "0"}
                               </p>
+                              {"  "}
+                              <h1 className="font-semibold text-sm">
+                                late attendance days
+                              </h1>
                             </div>
                           </div>
                         </div>
                       </div>
+                      {/* DEDUCTED SALARY  */}
                       {empData[0]?.salary ? (
-                        <div className="accountinfo border-t-2 border-gray-400 px-5 mt-3 pt-5 ">
-                          <div className="flex justify-center flex-col items-center">
-                            <div
-                              className={`mt-1 text-center ${
-                                currentMode === "dark"
-                                  ? "text-gray-50"
-                                  : "text-gray-600"
-                              }`}
-                            >
-                              <div className="flex  justify-center  font-semibold">
-                                <h1>Leave Days Salary:</h1>
+                        <div
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          } accountinfo rounded-md shadow-md border-gray-400 p-3 my-1`}
+                        >
+                          <div className="flex justify-center flex-col items-center gap-y-3 my-2">
+                            <div className="text-center">
+                              <div className="flex items-center justify-center">
+                                <h1 className="font-semibold">
+                                  Leave days salary
+                                </h1>
                               </div>
-                              {pageState?.attended_count || "0"}
+                              {/* (SALARY_PER_DAY * TOTAL_LEAVE_DAYS) =========== TOTAL_LEAVE_DAYS = WORKING_DAYS - ATTENDED_DAYS */}
+                              {empData[0]?.salary
+                                ? `${empData[0]?.currency} ${empData[0]?.salary} `
+                                : "No data"}
                             </div>
-                            <div
-                              className={`mt-3 text-center ${
-                                currentMode === "dark"
-                                  ? "text-gray-50"
-                                  : "text-gray-600"
-                              }`}
-                            >
-                              <div className="flex justify-center font-semibold mb-1">
-                                <h1 className="block">Late Days Salary: </h1>
-                                {"  "}
-                                <p className="font-bold pl-1">
-                                  {"  "} {pageState?.leave_count || "0"}
-                                </p>
+                            <div className="text-center">
+                              <div className="flex items-center justify-center">
+                                <h1 className="font-semibold">
+                                  Late days salary
+                                </h1>
                               </div>
+                              {/* (SALARY_PER_DAY * TOTAL_LATE_DAYS) / 2 ========== TOTAL_LATE_DAYS = COUNT(is_late) WHERE is_late = 1 */}
+                              {empData[0]?.salary && empData[0]?.salary !== null
+                                ? `${empData[0]?.currency} ${
+                                    empData[0]?.salary / 30
+                                  }`
+                                : "No data"}
                             </div>
                           </div>
                         </div>
                       ) : (
                         ""
                       )}
-                      <div className="accountinfo border-t-2  border-b-2 border-gray-400 px-5 mt-3 mb-3 pb-5 pt-5 ">
-                        <div className="flex justify-center flex-col items-center">
-                          <div
-                            className={`mt-1 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            <div className="flex  justify-center  font-semibold">
-                              <h1>Total Salary:</h1>
+                      {/* TOTAL SALARY  */}
+                      <div
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        } accountinfo rounded-md shadow-md border-gray-400 p-3 my-1`}
+                      >
+                        <div className="flex justify-center flex-col items-center gap-y-3 my-2">
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <h1 className="font-semibold">Total salary</h1>
                             </div>
-                            {empData[0]?.salary || "No data"}
+                            {/* MONTHLY_SALARY - (LEAVE_DAY_SALARY + LATE_DAYA_SALARY) */}
+                            {empData[0]?.salary
+                              ? `${empData[0]?.currency} ${empData[0]?.salary} `
+                              : "No data"}
                           </div>
                         </div>
                       </div>
                     </div>
+
                     {/* section 2 */}
                     <div className="col-span-6 ">
                       <Box
