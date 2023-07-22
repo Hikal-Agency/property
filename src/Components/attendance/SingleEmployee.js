@@ -72,6 +72,13 @@ const SingleEmployee = ({ user }) => {
     console.log("date range: ", event.target.value);
   };
 
+  const updateReason = async (e, id) => {
+    console.log("ciklsd;kl", id);
+    const employeeData = empData.find((employee) => employee.id === id);
+    setDialogue(employeeData);
+    console.log("emp reason: ", employeeData);
+  };
+
   const deductSalary = async (e, btn, id) => {
     // Find the data with the matching id in the empdata array
     const employeeData = empData.find((employee) => employee.id === id);
@@ -330,7 +337,7 @@ const SingleEmployee = ({ user }) => {
       // minWidth: 120,
       renderCell: (params) => (
         <>
-          <IconButton>
+          <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
             <MdModeEdit />
           </IconButton>
           {/* <IconButton>
