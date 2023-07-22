@@ -15,7 +15,10 @@ const EmployeesList = ({ user }) => {
     useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
-  const [selectedDay, setSelectedDay] = useState("");
+  
+  const [selectedDay, setSelectedDay] = useState("today");
+  // const [selectedDay, setSelectedDay] = useState("");
+
   const token = localStorage.getItem("auth-token");
   const navigate = useNavigate();
 
@@ -145,34 +148,34 @@ const EmployeesList = ({ user }) => {
                     size="small"
                     className="w-[100px]"
                     displayEmpty
-                    value={selectedDay || "selected"}
+                    value={selectedDay || "Today"}
                     onChange={handleDayFilter}
                   >
-                    <MenuItem selected value="selected">
+                    {/* <MenuItem selected value="selected">
                       Select a day
-                    </MenuItem>
-                    <MenuItem value="today">Today</MenuItem>
+                    </MenuItem> */}
+                    <MenuItem selected value="today">Today</MenuItem>
                     <MenuItem value="yesterday">Yesterday</MenuItem>
                   </Select>
                 </div>
               </Box>
-              <div className="mt-5 md:mt-2">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
+              <div className="my-3 md:mt-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 pb-3">
                   {userData?.length > 0 ? (
                     userData.map((item, index) => {
                       let bgColor;
                       if (
-                        item?.attendance_type?.toLowerCase() === "checkout" ||
+                        item?.attendance_type?.toLowerCase() === "out" ||
                         item?.attendance_type?.toLowerCase() === "check-out"
                       ) {
-                        bgColor = "bg-blue-500";
+                        bgColor = "bg-blue-600";
                       } else if (
-                        item?.attendance_type?.toLowerCase() === "checkin" ||
-                        item?.attendance_type?.toLowerCase() === "check in"
+                        item?.attendance_type?.toLowerCase() === "in" ||
+                        item?.attendance_type?.toLowerCase() === "check-in"
                       ) {
-                        bgColor = "bg-green-500";
+                        bgColor = "bg-green-600";
                       } else {
-                        bgColor = "bg-red-500";
+                        bgColor = "bg-red-600";
                       }
                       return (
                         <div
@@ -181,21 +184,21 @@ const EmployeesList = ({ user }) => {
                             currentMode === "dark"
                               ? "bg-gray-900 text-white"
                               : "bg-gray-200 text-black"
-                          }  rounded-md cursor-pointer`}
+                          }  rounded-md cursor-pointer gap-y-2`}
                           onClick={(e) => handleClick(e, item?.user_id)}
                         >
-                          <div
-                            className={`${bgColor}  py-2 px-4 rounded-md mb-3`}
-                          >
-                            <p className="text-sm text-white text-center">
-                              {bgColor === "bg-blue-500"
-                                ? "Checked-Out"
-                                : bgColor === "bg-green-500"
-                                ? "Checked-In"
-                                : "Absent"}
+                          {/* ATTENDANCE TYPE  */}
+                          <div className={`${bgColor} p-2 rounded-sm flex justify-between text-sm text-white font-semibold`} >
+                            <p className="text-left">
+                              {item?.attendance_type}
+                            </p>
+                            <p className="text-right">
+                              {item?.check_datetime}
                             </p>
                           </div>
-                          <div className="flex justify-center items-center">
+
+                          {/* IMAGE  */}
+                          <div className="flex justify-center items-center mt-2 p-1">
                             {item?.profile_picture ? (
                               <img
                                 src={item?.profile_picture}
@@ -206,16 +209,18 @@ const EmployeesList = ({ user }) => {
                               <Avatar
                                 alt="User"
                                 variant="circular"
-                                style={{ width: "64px", height: "64px" }}
+                                style={{ width: "55px", height: "55px" }}
                               />
                             )}
                           </div>
-                          <div className="text-center mt-3">
-                            <h4 className="font-bold text-lg capitalize">
+
+                          {/* USER DETAIL  */}
+                          <div className="text-center my-1 p-1">
+                            <h4 className="font-bold text-base capitalize">
                               {item?.userName}
                             </h4>
-                            <p className="text-sm">{item?.position}</p>
-                            <p className="text-sm">
+                            <p className="text-sm">{item?.position.toUpperCase()}</p>
+                            {/* <p className="text-sm">
                               {item?.department === 1
                                 ? "Admin"
                                 : item?.department === 3
@@ -223,15 +228,15 @@ const EmployeesList = ({ user }) => {
                                 : item?.department === 7
                                 ? "Agent"
                                 : "No department"}
-                            </p>
+                            </p> */}
                           </div>
-                          <div
-                            className={` ${bgColor} rounded-md p-2 mt-3 text-center`}
-                          >
+
+                          {/* CHECK DATE TIME  */}
+                          {/* <div className={` ${bgColor} rounded-md p-1 text-center`} >
                             <p className="text-xs text-white">
                               {item?.check_datetime || "No Time"}
                             </p>
-                          </div>
+                          </div> */}
                         </div>
                       );
                     })

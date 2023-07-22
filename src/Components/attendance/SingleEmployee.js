@@ -254,6 +254,24 @@ const SingleEmployee = ({ user }) => {
       minWidth: 120,
     },
 
+    // OFFICE IN TIME
+    {
+      field: "default_datetime",
+      headerAlign: "center",
+      headerName: "Office in-time",
+      minWidth: 120,
+      renderCell: (cellValues) => {
+        const formattedTime = cellValues.row.default_datetime
+        ? convertTo12HourFormat(cellValues.row.default_datetime)
+        : "";
+        return (
+          <div>
+            {formattedTime}
+          </div>
+        );
+      },
+    },
+
     {
       field: "late_minutes",
       headerAlign: "center",
@@ -262,7 +280,7 @@ const SingleEmployee = ({ user }) => {
       renderCell: (params) => (
         <>
           {params.row.is_late === 1 || params.row.is_late === 2 ? (
-            params.row.late_minutes + "mins"
+            params.row.late_minutes + " minutes"
           ) : (
             <div className="flex justify-between px-5 py-3">
               <Tooltip title="Yes" arrow>
@@ -314,14 +332,8 @@ const SingleEmployee = ({ user }) => {
       field: "late_reason",
       headerAlign: "center",
       headerName: "Reason",
-      minWidth: 250,
+      minWidth: 200,
     },
-    // {
-    //   field: "salary",
-    //   headerAlign: "center",
-    //   headerName: "Salary",
-    //   minWidth: 120,
-    // },
     {
       field: "cut_salary",
       headerName: "Salary Deduction",
@@ -907,6 +919,24 @@ const SingleEmployee = ({ user }) => {
       )}
     </>
   );
+
+  function convertTo12HourFormat(time24Hour) {
+    const [hours, minutes] = time24Hour.split(":");
+    const parsedHours = parseInt(hours, 10);
+  
+    let meridiem = "AM";
+    let formattedHours = parsedHours;
+  
+    if (parsedHours === 0) {
+      formattedHours = 12;
+    } else if (parsedHours > 12) {
+      formattedHours = parsedHours - 12;
+      meridiem = "PM";
+    }
+  
+    return `${formattedHours}:${minutes} ${meridiem}`;
+  }
+  
   function TabPanel(props) {
     const { children, value, index } = props;
     return <div>{value === index && <div>{children}</div>}</div>;
