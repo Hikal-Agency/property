@@ -10,14 +10,24 @@ import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
-import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Dialog,
+  IconButton,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import { MdDelete, MdModeEdit } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
+import { IoIosAlert, IoMdClose } from "react-icons/io";
+
 import moment from "moment";
 import {
   RiCheckLine as CheckIcon,
   RiCloseLine as CloseIcon,
 } from "react-icons/ri";
+import SalaryDeductDailogue from "./SalaryDeductDailogue";
 
 const SingleEmployee = ({ user }) => {
   const path = window.location.pathname;
@@ -44,18 +54,127 @@ const SingleEmployee = ({ user }) => {
     userEmail: "",
     userContact: "",
   });
-  const [selectedMonth, setSelectedMonth] = useState("");
+  const token = localStorage.getItem("auth-token");
 
-  const handleDayFilter = (event) => {
-    setSelectedDay(event.target.value);
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
-    console.log("date range: ", event.target.value);
-  };
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [empData, setEmpData] = useState(null);
-  const [selectedDay, setSelectedDay] = useState(null);
+  const [showDailogue, setDialogue] = useState(false);
+
+  const handleDayFilter = (event) => {
+    setSelectedMonth(event.target.value);
+
+    console.log("date range: ", event.target.value);
+  };
+
+  const deductSalary = async (e, id) => {
+    console.log("button clicked: ", e.target.value, id);
+
+    // Find the data with the matching id in the empdata array
+    const employeeData = empData.find((employee) => employee.id === id);
+    console.log("logging single emp row:::: ", employeeData);
+
+    // Calculate the difference in minutes
+    let lateMinutes = moment(employeeData?.default_datetime, "HH:mm").diff(
+      moment(pageState?.first_check?.check_datetime, "HH:mm"),
+      "minutes"
+    );
+
+    // Take the absolute value of lateMinutes to make sure the result is positive
+    const absoluteLateMinutes = Math.abs(lateMinutes);
+
+    // Check if absoluteLateMinutes is greater than 60
+    if (absoluteLateMinutes > 60) {
+      // Calculate the remaining minutes after removing complete hours
+      const remainingMinutes = absoluteLateMinutes % 60;
+
+      // Calculate the number of complete hours (after converting minutes to hours)
+      const completeHours = Math.floor(absoluteLateMinutes / 60);
+
+      // Calculate the final result by subtracting the value of the remaining minutes
+      // (after converting them back to minutes using the product of remainingMinutes and 60)
+      lateMinutes = Math.abs(absoluteLateMinutes - remainingMinutes * 60);
+
+      console.log("Original Difference in Minutes:", absoluteLateMinutes);
+      console.log("Complete Hours:", completeHours);
+      console.log("Remaining Minutes:", remainingMinutes);
+      console.log("Final Result:", lateMinutes);
+    } else {
+      // If the absoluteLateMinutes is not greater than 60, use it as the final result
+      console.log("Final Result:", absoluteLateMinutes);
+    }
+
+    console.log(
+      "late minutes: ",
+      lateMinutes,
+      pageState?.first_check?.check_datetime,
+      employeeData?.default_datetime
+    );
+
+    const UpdateData = new FormData();
+    if (User?.role === 1) {
+      UpdateData.append("is_late", 1);
+      UpdateData.append("late_minutes", lateMinutes);
+      UpdateData.append("deduct_salary", 1);
+      UpdateData.append("notify_status", "Direct");
+    } else {
+      UpdateData.append("is_late", 1);
+      UpdateData.append("late_minutes", lateMinutes);
+      UpdateData.append("notify_status", "Pending");
+      UpdateData.append("notify_deduct_salary", 1);
+    }
+
+    try {
+      const UpdateUser = await axios.post(
+        `${BACKEND_URL}/attendance?user_id=${employeeData?.id}`,
+        UpdateData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("User updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setloading(false);
+
+      console.log("Response: ", UpdateUser);
+    } catch (error) {
+      setloading(false);
+      console.log("Error: ", error);
+      toast.error("Unable to update.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    if (employeeData) {
+      console.log("Employee Data:", employeeData);
+    } else {
+      // Employee data with the matching id is not found
+      console.log("Employee Data not found for id:", id);
+    }
+  };
 
   console.log("emp data: ", empData);
 
@@ -111,15 +230,16 @@ const SingleEmployee = ({ user }) => {
             params.row.late_minutes
           ) : (
             <div className="flex justify-between px-5 py-3">
-              <Tooltip title="Complete" arrow>
+              <Tooltip title="Yes" arrow>
                 <IconButton
                   style={{
                     backgroundColor: "#4CAF50",
                     color: "white",
                     fontSize: "1rem",
                   }}
+                  value={1}
                   className="rounded-full"
-                  // onClick={(event) => handleButtonClick(event, 1, reminder?.id)}
+                  onClick={(event) => deductSalary(event, params?.row.id)}
                   // disabled={completeLoading}
                 >
                   {/* {completeLoading ? (
@@ -131,7 +251,7 @@ const SingleEmployee = ({ user }) => {
                 </IconButton>
               </Tooltip>
 
-              <Tooltip title="Cancel" arrow>
+              <Tooltip title="No" arrow>
                 <IconButton
                   style={{
                     backgroundColor: "#DC2626",
@@ -139,8 +259,9 @@ const SingleEmployee = ({ user }) => {
                     fontSize: "1rem",
                     marginLeft: "5%",
                   }}
+                  value={0}
                   className="rounded-full"
-                  // onClick={(event) => handleButtonClick(event, 0, reminder?.id)}
+                  onClick={(event) => deductSalary(event)}
                   // disabled={cancleLoading}
                 >
                   {/* {cancleLoading ? (
@@ -196,119 +317,6 @@ const SingleEmployee = ({ user }) => {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      day: "Monday",
-      date: "2023-05-01",
-      checkIn: "09:00 AM",
-      checkOut: "06:00 PM",
-      status: "Present",
-      lateBy: "0 minutes",
-      reason: "N/A",
-      salary: "$2000",
-    },
-    {
-      id: 2,
-      day: "Tuesday",
-      date: "2023-05-02",
-      checkIn: "08:45 AM",
-      checkOut: "05:30 PM",
-      status: "Present",
-      lateBy: "5 minutes",
-      reason: "N/A",
-      salary: "$2000",
-    },
-    {
-      id: 3,
-      day: "Tuesday",
-      date: "2023-05-02",
-      checkIn: "08:45 AM",
-      checkOut: "05:30 PM",
-      status: "Present",
-      lateBy: "5 minutes",
-      reason: "N/A",
-      salary: "$2000",
-    },
-    {
-      id: 4,
-      day: "Tuesday",
-      date: "2023-05-02",
-      checkIn: "08:45 AM",
-      checkOut: "05:30 PM",
-      status: "Present",
-      lateBy: "5 minutes",
-      reason: "N/A",
-      salary: "$2000",
-    },
-    {
-      id: 5,
-      day: "Tuesday",
-      date: "2023-05-02",
-      checkIn: "08:45 AM",
-      checkOut: "05:30 PM",
-      status: "Present",
-      lateBy: "5 minutes",
-      reason: "N/A",
-      salary: "$2000",
-    },
-    {
-      id: 5,
-      day: "Tuesday",
-      date: "2023-05-02",
-      checkIn: "08:45 AM",
-      checkOut: "05:30 PM",
-      status: "Present",
-      lateBy: "5 minutes",
-      reason: "N/A",
-      salary: "$2000",
-    },
-    {
-      id: 5,
-      day: "Tuesday",
-      date: "2023-05-02",
-      checkIn: "08:45 AM",
-      checkOut: "05:30 PM",
-      status: "Present",
-      lateBy: "5 minutes",
-      reason: "N/A",
-      salary: "$2000",
-    },
-    {
-      id: 5,
-      day: "Tuesday",
-      date: "2023-05-02",
-      checkIn: "08:45 AM",
-      checkOut: "05:30 PM",
-      status: "Present",
-      lateBy: "5 minutes",
-      reason: "N/A",
-      salary: "$2000",
-    },
-    {
-      id: 5,
-      day: "Tuesday",
-      date: "2023-05-02",
-      checkIn: "08:45 AM",
-      checkOut: "05:30 PM",
-      status: "Present",
-      lateBy: "5 minutes",
-      reason: "N/A",
-      salary: "$2000",
-    },
-    {
-      id: 5,
-      day: "Tuesday",
-      date: "2023-05-02",
-      checkIn: "08:45 AM",
-      checkOut: "05:30 PM",
-      status: "Present",
-      lateBy: "5 minutes",
-      reason: "N/A",
-      salary: "$2000",
-    },
-  ];
-
   // Custom function to check if it's a "checkin" or "in"
   function isCheckIn(row) {
     return (
@@ -336,40 +344,44 @@ const SingleEmployee = ({ user }) => {
   // Btn loading
   const [btnloading, setbtnloading] = useState(false);
 
+  console.log("logging selectedmonth: ", selectedMonth);
+
   const FetchAttendance = async (token) => {
     const params = {
       page: pageState.page,
     };
 
-    if (selectedDay) {
-      if (selectedDay === "today") {
-        params.date_range = [
-          moment().subtract(1, "days").format("YYYY-MM-DD"),
-          moment().add(1, "days").format("YYYY-MM-DD"),
-        ].join(",");
-      } else if (selectedDay === "yesterday") {
-        params.date_range = [
-          moment().subtract(2, "days").format("YYYY-MM-DD"),
-          moment().format("YYYY-MM-DD"),
-        ].join(",");
-      } else if (selectedDay === "month") {
-        // Apply default date range of the complete month
-        const startDate = moment()
-          .subtract(1, "months")
-          .endOf("month")
-          .format("YYYY-MM-DD");
-        const endDate = moment()
-          .add(1, "months")
+    if (selectedMonth) {
+      console.log("month filter: ", selectedMonth);
+
+      // Check if selectedMonth is a valid month (between 1 and 12)
+      const isValidMonth =
+        Number(selectedMonth) >= 1 && Number(selectedMonth) <= 12;
+
+      if (isValidMonth) {
+        // Convert selectedMonth to "YYYY-MM" format
+        const year = moment().format("YYYY");
+        const month = String(selectedMonth).padStart(2, "0");
+        const selectedMonthInYYYYMM = `${year}-${month}`;
+
+        const startDate = moment(selectedMonthInYYYYMM)
           .startOf("month")
           .format("YYYY-MM-DD");
+        const endDate = moment(selectedMonthInYYYYMM)
+          .endOf("month")
+          .format("YYYY-MM-DD");
         params.date_range = [startDate, endDate].join(",");
+      } else {
+        // Handle invalid selectedMonth (e.g., if user manually inputs an invalid date)
+        console.error("Invalid selectedMonth:", selectedMonth);
       }
-    } else if (selectedDay === "month") {
-      // Apply default date range of the complete month
+    } else {
+      // Apply default date range of the complete current month
       const startDate = moment().startOf("month").format("YYYY-MM-DD");
       const endDate = moment().endOf("month").format("YYYY-MM-DD");
       params.date_range = [startDate, endDate].join(",");
     }
+
     await axios
       .get(`${BACKEND_URL}/attendance?user_id=${id}`, {
         params,
@@ -382,6 +394,15 @@ const SingleEmployee = ({ user }) => {
         console.log("fetched data ", result.data);
 
         const data = result.data.Record.data;
+
+        const firstCheckIn = data?.find((element) => {
+          return (
+            element.attendance_type.toLowerCase() === "in" ||
+            element.attendance_type.toLowerCase() === "check-in"
+          );
+        });
+
+        console.log("first check in : ", firstCheckIn);
 
         let rowsdata = data?.reduce((acc, row) => {
           const date = moment(row?.check_datetime).format("YYYY-MM-DD");
@@ -530,6 +551,7 @@ const SingleEmployee = ({ user }) => {
           late_count: late_count,
           dedution: deductionValue,
           cut_salary: cutSalaryValue,
+          first_check: firstCheckIn,
         }));
       })
       .catch((err) => {
@@ -556,10 +578,10 @@ const SingleEmployee = ({ user }) => {
 
   useEffect(() => {
     setopenBackDrop(false);
-    const token = localStorage.getItem("auth-token");
-    FetchAttendance(token);
+    // const token = localStorage.getItem("auth-token");
+    FetchAttendance();
     // eslint-disable-next-line
-  }, [pageState.page, selectedDay]);
+  }, [pageState.page, selectedMonth]);
 
   return (
     <>
@@ -581,14 +603,16 @@ const SingleEmployee = ({ user }) => {
                       size="small"
                       className="w-[100px]"
                       displayEmpty
-                      value={selectedDay || "month"}
+                      value={selectedMonth}
                       onChange={handleDayFilter}
                     >
-                      <MenuItem selected value="month">
-                        Select a day
-                      </MenuItem>
-                      <MenuItem value="today">Today</MenuItem>
-                      <MenuItem value="yesterday">Yesterday</MenuItem>
+                      {/* <MenuItem value="today">Today</MenuItem>
+                      <MenuItem value="yesterday">Yesterday</MenuItem> */}
+                      {lastThreeMonths?.map((month) => (
+                        <MenuItem key={month.value} value={month.value + 1}>
+                          {month.label}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </div>
                 </Box>
@@ -601,14 +625,8 @@ const SingleEmployee = ({ user }) => {
                     } rounded-md shadow-md`}
                   >
                     <div className="col-span-2 border-r-2 border-gray-400  py-10 ">
-                      {/* <h1 className="text-xl font-semibold pb-10 text-center">
-                        User Account
-                      </h1> */}
                       <label htmlFor="pick-image">
-                        <div
-                          // onClick={() => setImagePickerModal({ isOpen: true })}
-                          className="relative"
-                        >
+                        <div className="relative">
                           {empData[0]?.profile_picture ? (
                             <img
                               src={empData[0]?.profile_picture}
@@ -630,7 +648,6 @@ const SingleEmployee = ({ user }) => {
 
                       <div className="mb-3">
                         <h1 className="text-lg font-bold text-center">
-                          {/* {User?.userName} */}
                           {empData[0]?.userName}
                         </h1>
                         <h3
@@ -655,7 +672,7 @@ const SingleEmployee = ({ user }) => {
                             <div className="flex items-center space-x-1 justify-center">
                               <h1>Monthly Salary</h1>
                             </div>
-                            {empData[0].salary
+                            {empData[0]?.salary
                               ? `${empData[0]?.salary} ${empData[0]?.currency}`
                               : "No data"}
                           </div>
@@ -812,6 +829,12 @@ const SingleEmployee = ({ user }) => {
                         />
                       </Box>
                     </div>
+                    {showDailogue && (
+                      <SalaryDeductDailogue
+                        showDailogue={showDailogue}
+                        setDialogue={setDialogue}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
