@@ -70,9 +70,7 @@ const SingleEmployee = ({ user }) => {
     console.log("date range: ", event.target.value);
   };
 
-  const deductSalary = async (e, id) => {
-    console.log("button clicked: ", e.target.value, id);
-
+  const deductSalary = async (e, btn, id) => {
     // Find the data with the matching id in the empdata array
     const employeeData = empData.find((employee) => employee.id === id);
     console.log("logging single emp row:::: ", employeeData);
@@ -103,9 +101,17 @@ const SingleEmployee = ({ user }) => {
       console.log("Remaining Minutes:", remainingMinutes);
       console.log("Final Result:", lateMinutes);
     } else {
-      // If the absoluteLateMinutes is not greater than 60, use it as the final result
-      console.log("Final Result:", absoluteLateMinutes);
+      lateMinutes = moment(employeeData?.default_datetime, "HH:mm").diff(
+        moment(pageState?.first_check?.check_datetime, "HH:mm"),
+        "minutes"
+      );
     }
+
+    // setpageState({ ...pageState, lateMinutes: lateMinutes });
+    setpageState((oldPageState) => ({
+      ...oldPageState,
+      lateMinutes: lateMinutes,
+    }));
 
     console.log(
       "late minutes: ",
@@ -115,16 +121,36 @@ const SingleEmployee = ({ user }) => {
     );
 
     const UpdateData = new FormData();
-    if (User?.role === 1) {
-      UpdateData.append("is_late", 1);
-      UpdateData.append("late_minutes", lateMinutes);
-      UpdateData.append("deduct_salary", 1);
-      UpdateData.append("notify_status", "Direct");
-    } else {
-      UpdateData.append("is_late", 1);
-      UpdateData.append("late_minutes", lateMinutes);
-      UpdateData.append("notify_status", "Pending");
-      UpdateData.append("notify_deduct_salary", 1);
+    if (btn === 1) {
+      if (User?.role === 1) {
+        UpdateData.append("is_late", 1);
+        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("deduct_salary", 1);
+        UpdateData.append("notify_status", "Direct");
+      } else {
+        UpdateData.append("is_late", 1);
+        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("notify_status", "Pending");
+        UpdateData.append("notify_deduct_salary", 1);
+      }
+    } else if (btn === 2) {
+      console.log("btn2");
+
+      if (
+        moment(pageState?.first_check?.check_datetime, "HH:mm") >
+        moment(employeeData?.default_datetime, "HH:mm")
+      ) {
+        console.log("lates::::::::::::::");
+        UpdateData.append("is_late", 1);
+        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("deduct_salary", 2);
+      } else if (
+        moment(pageState?.first_check?.check_datetime, "HH:mm") <=
+        moment(employeeData?.default_datetime, "HH:mm")
+      ) {
+        console.log("No late:::::::::");
+        UpdateData.append("is_late", 2);
+      }
     }
 
     try {
@@ -166,13 +192,6 @@ const SingleEmployee = ({ user }) => {
         progress: undefined,
         theme: "light",
       });
-    }
-
-    if (employeeData) {
-      console.log("Employee Data:", employeeData);
-    } else {
-      // Employee data with the matching id is not found
-      console.log("Employee Data not found for id:", id);
     }
   };
 
@@ -237,9 +256,8 @@ const SingleEmployee = ({ user }) => {
                     color: "white",
                     fontSize: "1rem",
                   }}
-                  value={1}
                   className="rounded-full"
-                  onClick={(event) => deductSalary(event, params?.row.id)}
+                  onClick={(event) => deductSalary(event, 1, params?.row.id)}
                   // disabled={completeLoading}
                 >
                   {/* {completeLoading ? (
@@ -259,9 +277,8 @@ const SingleEmployee = ({ user }) => {
                     fontSize: "1rem",
                     marginLeft: "5%",
                   }}
-                  value={0}
                   className="rounded-full"
-                  onClick={(event) => deductSalary(event)}
+                  onClick={(event) => deductSalary(event, 2, params?.row.id)}
                   // disabled={cancleLoading}
                 >
                   {/* {cancleLoading ? (
