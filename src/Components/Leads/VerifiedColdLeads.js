@@ -274,6 +274,13 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
 
       <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
         <DataGrid
+          initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    creationDate: false,
+                  },
+                },
+              }}
           autoHeight
           disableSelectionOnClick
           rows={pageState.data}

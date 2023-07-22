@@ -330,6 +330,13 @@ const LeadNotes = ({ pageState, setpageState }) => {
             sx={DataGridStyles}
           >
             <DataGrid
+              initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    creationDate: false,
+                  },
+                },
+              }}
               autoHeight
               rows={pageState.data}
               onRowClick={handleRowClick}

@@ -566,6 +566,16 @@ const BookedDeals = ({
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
 
+        {
+      field: "priority",
+      headerName: "Priority",
+      minWidth: 85,
+      headerAlign: "center",
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
+    },
+
     {
       field: "language",
       headerName: "Lang",
@@ -764,6 +774,17 @@ const BookedDeals = ({
 
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
+    },
+
+
+        {
+      field: "priority",
+      headerName: "Priority",
+      minWidth: 85,
+      headerAlign: "center",
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
 
     {
@@ -1595,6 +1616,13 @@ const BookedDeals = ({
           style={{ position: "relative" }}
         >
           <DataGrid
+            initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    creationDate: false,
+                  },
+                },
+              }}
             ref={dataTableRef}
             autoHeight
             disableSelectionOnClick

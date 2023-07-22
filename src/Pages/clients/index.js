@@ -725,6 +725,13 @@ const Clients = () => {
                 </div>
                 <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
                   <DataGrid
+                    initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    creationDate: false,
+                  },
+                },
+              }}
                     autoHeight
                     disableSelectionOnClick
                     onRowClick={handleRowClick}

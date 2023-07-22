@@ -478,6 +478,13 @@ const Meetings = () => {
                       sx={DataGridStyles}
                     >
                       <DataGrid
+                        initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    creationDate: false,
+                  },
+                },
+              }}
                         autoHeight
                         rows={pageState.data}
                         rowCount={pageState.total}

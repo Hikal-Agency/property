@@ -175,6 +175,7 @@ const Newleads = ({
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
+
     {
       field: "priority",
       headerName: "Priority",
@@ -848,6 +849,13 @@ const Newleads = ({
             />
           </div>
         <DataGrid
+          initialState={{
+                columns: {
+                  columnVisibilityModel: {
+                    creationDate: false,
+                  },
+                },
+              }}
           autoHeight
           disableSelectionOnClick
           rows={pageState.data}
