@@ -77,14 +77,6 @@ const SingleEmployee = ({ user }) => {
     const employeeData = empData.find((employee) => employee.id === id);
     console.log("logging single emp row:::: ", employeeData);
 
-    // const late_minutes =
-    //   employeeData?.default_datetime - pageState?.first_check?.check_datetime;
-
-    // const lateMinutes =
-    //   (new Date(employeeData?.default_datetime) -
-    //     new Date(` ${pageState?.first_check?.check_datetime}`)) /
-    //   (1000 * 60);
-
     // Calculate the difference in minutes
     let lateMinutes = moment(employeeData?.default_datetime, "HH:mm").diff(
       moment(pageState?.first_check?.check_datetime, "HH:mm"),
