@@ -1,10 +1,20 @@
-import { Button, Dialog, IconButton, TextField } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  IconButton,
+  TextField,
+} from "@mui/material";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 
-import React from "react";
+import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
+import { toast } from "react-toastify";
+import axios from "../../axoisConfig";
 
 const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
+  console.log("showdialogue: ", showDailogue);
+  const token = localStorage.getItem("auth-token");
   const {
     User,
     currentMode,
@@ -16,6 +26,53 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
     pageState,
     setpageState,
   } = useStateContext();
+  const [reason, setReason] = useState(null);
+  const [btnloading, setloading] = useState(false);
+
+  const handleClick = async () => {
+    setloading(true);
+    try {
+      const UpdateReason = await axios.post(
+        `${BACKEND_URL}/attendance/${showDailogue?.id}`,
+        { late_reason: reason },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("Reason updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setloading(false);
+      setDialogue(false);
+
+      console.log("Response: ", UpdateReason);
+    } catch (error) {
+      setloading(false);
+      console.log("Error: ", error);
+      toast.error("Unable to Reason.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const updateSalaryDeduction = async (e) => {};
   return (
@@ -62,19 +119,14 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
               }`}
               sx={{
                 marginBottom: "20px",
-                input: {
-                  color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
-                },
+                // input: {
+                //   color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
+                // },
               }}
               variant="outlined"
               size="medium"
-              // value={userData?.master}
-              // onChange={(e) =>
-              //   setUserData({
-              //     ...userData,
-              //     master: e.target.value,
-              //   })
-              // }
+              value={showDailogue?.late_reason}
+              onChange={(e) => setReason(e.target.value)}
               fullWidth
             />
 
@@ -84,13 +136,14 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
                 ripple={true}
                 size="lg"
                 type="submit"
+                onClick={handleClick}
               >
-                <span>Confirm</span>
-                {/* {btnloading ? (
-                        <CircularProgress size={18} sx={{ color: "white" }} />
-                      ) : (
-                        <span>Confirm</span>
-                      )} */}
+                {/* <span>Confirm</span> */}
+                {btnloading ? (
+                  <CircularProgress size={18} sx={{ color: "red" }} />
+                ) : (
+                  <span>Confirm</span>
+                )}
               </Button>
             </div>
           </div>

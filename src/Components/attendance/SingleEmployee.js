@@ -44,14 +44,25 @@ const SingleEmployee = ({ user }) => {
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
+  const [cut_salary, setCutSalary] = useState();
+  const [PersonalInfo, setPersonalInfo] = useState({});
+  const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [empData, setEmpData] = useState(null);
   const [showDailogue, setDialogue] = useState(false);
+  console.log("cut: ", cut_salary);
 
   const handleDayFilter = (event) => {
     setSelectedMonth(event.target.value);
 
     console.log("date range: ", event.target.value);
+  };
+
+  const updateReason = async (e, id) => {
+    console.log("ciklsd;kl", id);
+    const employeeData = empData.find((employee) => employee.id === id);
+    setDialogue(employeeData);
+    console.log("emp reason: ", employeeData);
   };
 
   const deductSalary = async (e, btn, id) => {
@@ -104,18 +115,25 @@ const SingleEmployee = ({ user }) => {
       employeeData?.default_datetime
     );
 
+    const monthly_salary = employeeData?.salary / 30;
+    let deduted_salary = monthly_salary / 2;
+
     const UpdateData = new FormData();
     if (btn === 1) {
       if (User?.role === 1) {
+        console.log("deducted salary: ", deduted_salary);
+
         UpdateData.append("is_late", 1);
         UpdateData.append("late_minutes", lateMinutes);
         UpdateData.append("deduct_salary", 1);
         UpdateData.append("notify_status", "Direct");
+        UpdateData.append("cut_salary", deduted_salary.toString());
       } else {
         UpdateData.append("is_late", 1);
         UpdateData.append("late_minutes", lateMinutes);
         UpdateData.append("notify_status", "Pending");
         UpdateData.append("notify_deduct_salary", 1);
+        UpdateData.append("cut_salary", deduted_salary.toString());
       }
     } else if (btn === 2) {
       console.log("btn2");
@@ -139,7 +157,7 @@ const SingleEmployee = ({ user }) => {
 
     try {
       const UpdateUser = await axios.post(
-        `${BACKEND_URL}/attendance?user_id=${employeeData?.id}`,
+        `${BACKEND_URL}/attendance/${employeeData?.id}`,
         UpdateData,
         {
           headers: {
@@ -222,6 +240,24 @@ const SingleEmployee = ({ user }) => {
       minWidth: 120,
     },
 
+    // OFFICE IN TIME
+    {
+      field: "default_datetime",
+      headerAlign: "center",
+      headerName: "Office in-time",
+      minWidth: 120,
+      renderCell: (cellValues) => {
+        const formattedTime = cellValues.row.default_datetime
+        ? convertTo12HourFormat(cellValues.row.default_datetime)
+        : "";
+        return (
+          <div>
+            {formattedTime}
+          </div>
+        );
+      },
+    },
+
     {
       field: "late_minutes",
       headerAlign: "center",
@@ -230,7 +266,7 @@ const SingleEmployee = ({ user }) => {
       renderCell: (params) => (
         <>
           {params.row.is_late === 1 || params.row.is_late === 2 ? (
-            params.row.late_minutes
+            params.row.late_minutes + " minutes"
           ) : (
             <div className="flex justify-between px-5 py-3">
               <Tooltip title="Yes" arrow>
@@ -282,22 +318,14 @@ const SingleEmployee = ({ user }) => {
       field: "late_reason",
       headerAlign: "center",
       headerName: "Reason",
-      minWidth: 250,
+      minWidth: 200,
     },
-    // {
-    //   field: "salary",
-    //   headerAlign: "center",
-    //   headerName: "Salary",
-    //   minWidth: 120,
-    // },
     {
-      field: "deduction",
+      field: "cut_salary",
       headerName: "Salary Deduction",
       headerAlign: "center",
       minWidth: 120,
-      renderCell: (params) => (
-        <>{pageState.deduction === 1 ? pageState.cut_salary : "-"}</>
-      ),
+      // renderCell: (params) => <>{param}</>,
     },
     {
       field: "actions",
@@ -307,7 +335,7 @@ const SingleEmployee = ({ user }) => {
       // minWidth: 120,
       renderCell: (params) => (
         <>
-          <IconButton>
+          <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
             <MdModeEdit />
           </IconButton>
           {/* <IconButton>
@@ -529,6 +557,7 @@ const SingleEmployee = ({ user }) => {
         let cutSalaryValue = "";
 
         if (checkInRow) {
+          console.log("checkinrows: ", checkInRow);
           // Get the value of deduction
           deductionValue = checkInRow.deduction || "";
 
@@ -542,6 +571,7 @@ const SingleEmployee = ({ user }) => {
         console.log("Cut Salary Value:", cutSalaryValue);
 
         setEmpData(rowsdata);
+        setCutSalary(cutSalaryValue);
         setloading(false);
 
         setpageState((old) => ({
@@ -625,163 +655,185 @@ const SingleEmployee = ({ user }) => {
                         : "bg-white text-gray-900 "
                     } rounded-md shadow-md`}
                   >
-                    <div className="col-span-2 border-r-2 border-gray-400  py-10 ">
-                      <label htmlFor="pick-image">
-                        <div className="relative">
-                          {empData[0]?.profile_picture ? (
-                            <img
-                              src={empData[0]?.profile_picture}
-                              width={200}
-                              height={200}
-                              alt=""
-                              className="rounded-full mx-auto w-28"
-                            />
-                          ) : (
-                            <Avatar
-                              alt="User"
-                              variant="circular"
-                              style={{ width: "64px", height: "64px" }}
-                              className="rounded-full mx-auto w-28"
-                            />
-                          )}
-                        </div>
-                      </label>
-
-                      <div className="mb-3">
-                        <h1 className="text-lg font-bold text-center">
-                          {empData[0]?.userName}
-                        </h1>
-                        <h3
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-gray-50"
-                              : "text-gray-600"
-                          }  text-center`}
-                        >
-                          {empData[0]?.position}
-                        </h3>
-                      </div>
-                      <div className="accountinfo border-t-2 border-gray-400 px-5 pt-5 ">
-                        <div className="flex justify-center flex-col items-center">
-                          <div
-                            className={`mt-1 text-center ${
+                    <div className="col-span-2 px-2 pb-2 text-sm">
+                      <div className="rounded-md shadow-md border-gray-400 p-3 mb-1">
+                        <label htmlFor="pick-image">
+                          <div className="relative">
+                            {empData[0]?.profile_picture ? (
+                              <img
+                                src={empData[0]?.profile_picture}
+                                width={200}
+                                height={200}
+                                alt=""
+                                className="rounded-full mx-auto w-28"
+                              />
+                            ) : (
+                              <Avatar
+                                alt="User"
+                                variant="circular"
+                                style={{ width: "64px", height: "64px" }}
+                                className="rounded-full mx-auto w-28"
+                              />
+                            )}
+                          </div>
+                        </label>
+                        <div className="m-3">
+                          <h1
+                            className={`${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-black"
+                            }  text-center font-bold text-base`}
+                          >
+                            {empData[0]?.userName}
+                          </h1>
+                          <h3
+                            className={`${
                               currentMode === "dark"
                                 ? "text-gray-50"
                                 : "text-gray-600"
-                            }`}
+                            }  text-center text-sm`}
                           >
-                            <div className="flex items-center space-x-1 justify-center">
-                              <h1>Monthly Salary</h1>
+                            {empData[0]?.position}
+                          </h3>
+                        </div>
+                      </div>
+                      {/* MONTHLY SALARY AND SALARY PER DAY  */}
+                      <div
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        } accountinfo rounded-md shadow-md border-gray-400 p-3 my-1`}
+                      >
+                        <div className="flex justify-center flex-col items-center gap-y-3 my-2">
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <h1 className="font-semibold">Monthly salary</h1>
                             </div>
                             {empData[0]?.salary
-                              ? `${empData[0]?.salary} ${empData[0]?.currency}`
+                              ? `${empData[0]?.currency} ${empData[0]?.salary} `
                               : "No data"}
                           </div>
-                          <div
-                            className={`mt-3 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            <div className="flex items-center justify-center font-semibold mb-1">
-                              <h1 className="block">Salary Per Day: </h1>{" "}
-                              {empData[0]?.salary && empData[0]?.salary !== null
-                                ? empData[0]?.salary / 30
-                                : "No data"}
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <h1 className="font-semibold">Salary per day</h1>
                             </div>
+                            {empData[0]?.salary && empData[0]?.salary !== null
+                              ? `${empData[0]?.currency} ${
+                                  empData[0]?.salary / 30
+                                }`
+                              : "No data"}
                           </div>
                         </div>
                       </div>
-                      <div className="accountinfo border-t-2 border-gray-400 px-5 mt-3 pt-5 ">
-                        <div className="flex justify-center flex-col items-center">
-                          <div
-                            className={`mt-1 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            <div className="flex  justify-center font-semibold ">
-                              <h1>Attended Days:</h1>
-                            </div>
-                            {pageState?.attended_count || "0"}
-                          </div>
-                          <div
-                            className={`mt-3 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            <div className="flex justify-center font-semibold ">
-                              <h1 className="block">Leave Days : </h1>
+                      {/* ATTENDED AND LEAVE DAYS  */}
+                      <div
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        } accountinfo rounded-md shadow-md border-gray-400 p-3 my-1`}
+                      >
+                        <div className="flex justify-center flex-col items-center gap-y-3 my-2">
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <p className="font-bold text-red-600 pr-2">
+                                {"  "} {pageState?.attended_count || "0"}{" "}
+                                {/*CHANGE WORKING DAYS*/}
+                              </p>
                               {"  "}
-                              <p className="font-bold pl-1">
+                              <h1 className="font-semibold text-sm">
+                                working days
+                              </h1>
+                            </div>
+                          </div>
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <p className="font-bold text-red-600 pr-2">
+                                {"  "} {pageState?.attended_count || "0"}
+                              </p>
+                              {"  "}
+                              <h1 className="font-semibold text-sm">
+                                attended days
+                              </h1>
+                            </div>
+                          </div>
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <p className="font-bold text-red-600 pr-2">
                                 {"  "} {pageState?.leave_count || "0"}
                               </p>
+                              {"  "}
+                              <h1 className="font-semibold">leave days</h1>
                             </div>
-                            <div className="mt-3">
-                              <h1>Late Attendance Days: </h1>
-                              <p className="font-bold">
-                                {pageState?.late_count || "0"}
+                          </div>
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <p className="font-bold text-red-600 pr-2">
+                                {"  "} {pageState?.late_count || "0"}
                               </p>
+                              {"  "}
+                              <h1 className="font-semibold text-sm">
+                                late attendance days
+                              </h1>
                             </div>
                           </div>
                         </div>
                       </div>
+                      {/* DEDUCTED SALARY  */}
                       {empData[0]?.salary ? (
-                        <div className="accountinfo border-t-2 border-gray-400 px-5 mt-3 pt-5 ">
-                          <div className="flex justify-center flex-col items-center">
-                            <div
-                              className={`mt-1 text-center ${
-                                currentMode === "dark"
-                                  ? "text-gray-50"
-                                  : "text-gray-600"
-                              }`}
-                            >
-                              <div className="flex  justify-center  font-semibold">
-                                <h1>Leave Days Salary:</h1>
+                        <div
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          } accountinfo rounded-md shadow-md border-gray-400 p-3 my-1`}
+                        >
+                          <div className="flex justify-center flex-col items-center gap-y-3 my-2">
+                            <div className="text-center">
+                              <div className="flex items-center justify-center">
+                                <h1 className="font-semibold">
+                                  Leave days salary
+                                </h1>
                               </div>
-                              {pageState?.attended_count || "0"}
+                              {/* (SALARY_PER_DAY * TOTAL_LEAVE_DAYS) =========== TOTAL_LEAVE_DAYS = WORKING_DAYS - ATTENDED_DAYS */}
+                              {empData[0]?.salary
+                                ? `${empData[0]?.currency} ${empData[0]?.salary} `
+                                : "No data"}
                             </div>
-                            <div
-                              className={`mt-3 text-center ${
-                                currentMode === "dark"
-                                  ? "text-gray-50"
-                                  : "text-gray-600"
-                              }`}
-                            >
-                              <div className="flex justify-center font-semibold mb-1">
-                                <h1 className="block">Late Days Salary: </h1>
-                                {"  "}
-                                <p className="font-bold pl-1">
-                                  {"  "} {pageState?.leave_count || "0"}
-                                </p>
+                            <div className="text-center">
+                              <div className="flex items-center justify-center">
+                                <h1 className="font-semibold">
+                                  Late days salary
+                                </h1>
                               </div>
+                              {/* (SALARY_PER_DAY * TOTAL_LATE_DAYS) / 2 ========== TOTAL_LATE_DAYS = COUNT(is_late) WHERE is_late = 1 */}
+                              {empData[0]?.salary && empData[0]?.salary !== null
+                                ? `${empData[0]?.currency} ${
+                                    empData[0]?.salary / 30
+                                  }`
+                                : "No data"}
                             </div>
                           </div>
                         </div>
                       ) : (
                         ""
                       )}
-                      <div className="accountinfo border-t-2  border-b-2 border-gray-400 px-5 mt-3 mb-3 pb-5 pt-5 ">
-                        <div className="flex justify-center flex-col items-center">
-                          <div
-                            className={`mt-1 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            <div className="flex  justify-center  font-semibold">
-                              <h1>Total Salary:</h1>
+                      {/* TOTAL SALARY  */}
+                      <div
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        } accountinfo rounded-md shadow-md border-gray-400 p-3 my-1`}
+                      >
+                        <div className="flex justify-center flex-col items-center gap-y-3 my-2">
+                          <div className="text-center">
+                            <div className="flex items-center justify-center">
+                              <h1 className="font-semibold">Total salary</h1>
                             </div>
-                            {empData[0]?.salary || "No data"}
+                            {/* MONTHLY_SALARY - (LEAVE_DAY_SALARY + LATE_DAYA_SALARY) */}
+                            {empData[0]?.salary
+                              ? `${empData[0]?.currency} ${empData[0]?.salary} `
+                              : "No data"}
                           </div>
                         </div>
                       </div>
                     </div>
+
                     {/* section 2 */}
                     <div className="col-span-6 ">
                       <Box
@@ -853,6 +905,24 @@ const SingleEmployee = ({ user }) => {
       )}
     </>
   );
+
+  function convertTo12HourFormat(time24Hour) {
+    const [hours, minutes] = time24Hour.split(":");
+    const parsedHours = parseInt(hours, 10);
+  
+    let meridiem = "AM";
+    let formattedHours = parsedHours;
+  
+    if (parsedHours === 0) {
+      formattedHours = 12;
+    } else if (parsedHours > 12) {
+      formattedHours = parsedHours - 12;
+      meridiem = "PM";
+    }
+  
+    return `${formattedHours}:${minutes} ${meridiem}`;
+  }
+  
   function TabPanel(props) {
     const { children, value, index } = props;
     return <div>{value === index && <div>{children}</div>}</div>;
