@@ -195,7 +195,7 @@ const Chat = () => {
         },
       });
 
-      setDevicesList(response.data.instances.data);
+      setDevicesList(response.data.instances.data?.filter((device) => device?.user_id === User?.id));
       setloading(false);
   };
 

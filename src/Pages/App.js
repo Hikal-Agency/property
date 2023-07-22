@@ -244,6 +244,12 @@ const routes = [
     pageName: "Marketing",
   },
   {
+    path: "/marketing/instances",
+    element: <WhatsappMarketing />,
+    pageName: "Marketing",
+    restrictedRoles: [2, 3, 7]
+  },
+  {
     path: "/location/livelocation",
     pageName: "Live Location",
     element: <Livelocation />,

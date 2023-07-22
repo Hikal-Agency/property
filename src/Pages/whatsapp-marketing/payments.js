@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress } from "@mui/material";
+import { Box, Button, Card, CircularProgress } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
@@ -42,7 +42,7 @@ const Payments = () => {
     try {
       const token = localStorage.getItem("auth-token");
       setbtnloading(true);
-      const result = await axios.post(
+      await axios.post(
         `${BACKEND_URL}/cancel`,
         JSON.stringify({
           package_name: "unsubscribed",
@@ -65,7 +65,10 @@ const Payments = () => {
         progress: undefined,
         theme: "light",
       });
-      window.location.href = "/dashboard";
+      setTimeout(() => {
+        localStorage.removeItem("user");
+        window.location.href = "/dashboard";
+      }, 2000);
     } catch (error) {
       console.log(error);
       toast.error("Sorry, something went wrong", {
@@ -108,30 +111,152 @@ const Payments = () => {
 
   if (isUserSubscribed) {
     return (
-      <Box className="flex flex-col justify-center items-center">
-        <h1>
-          You are Subscribed to{" "}
-          <span style={{ color: "red" }}>{User?.package_name}</span>
-        </h1>
-        <Button
-          onClick={handleUnsubscribe}
-          variant="contained"
-          style={{ background: "red", marginTop: 12 }}
+      <Box className="min-h-screen">
+        <h1
+          className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+            currentMode === "dark"
+              ? "text-white border-white"
+              : "text-red-600 font-bold border-red-600"
+          }`}
         >
-          {btnloading ? (
-            <div className="flex items-center justify-center space-x-1">
-              <CircularProgress size={18} sx={{ color: "blue" }} />
-            </div>
-          ) : (
-            <span>Unsubscribe</span>
-          )}
-        </Button>
+          ● Upgrade
+        </h1>
+        <div
+          className={`${
+            currentMode === "dark"
+              ? "bg-gray-900 text-white"
+              : "bg-gray-200 text-black"
+          } flex min-h-screen mt-8 p-5 rounded-md mb-10`}
+        >
+        
+          <Card
+            className="shadow-md"
+            sx={{
+              p: 5,
+              mr: 3,
+              height: "300px",
+              background: "#da1f26",
+              width: "30%",
+              borderRadius: 4,
+            }}
+          >
+            <Box className="h-[100%] flex justify-between flex-col pt-4 relative">
+              <span
+                style={{
+                  position: "absolute",
+                  top: -20,
+                  left: 0,
+                  background: "black",
+                  color: "white",
+                  borderRadius: 4,
+                  width: "max-content",
+                  padding: "0 5px",
+                }}
+              >
+                Subscribed
+              </span>
+              <h2 className="text-white font-bold" style={{ fontSize: "18px" }}>
+                {User?.package_name}
+              </h2>
+              <Box className="flex items-center mt-2">
+                <h1 className="font-black text-white" style={{ fontSize: 40 }}>
+                  US$_
+                </h1>
+                <Box className="text-white font-light ml-2">
+                  <p>per</p>
+                  <p style={{ lineHeight: 1, fontSize: 13 }}>year</p>
+                </Box>
+              </Box>
+              <Box className="h-[45%] flex flex-col justify-end">
+                <Button
+                  onClick={handleUnsubscribe}
+                  variant="contained"
+                  style={{ backgroundColor: "white", color: "black" }}
+                  fullWidth
+                  sx={{ padding: "12px 0" }}
+                >
+                  {btnloading ? (
+                    <div className="flex items-center justify-center space-x-1">
+                      <CircularProgress size={18} sx={{ color: "blue" }} />
+                    </div>
+                  ) : (
+                    <span>Unsubscribe</span>
+                  )}
+                </Button>
+              </Box>
+            </Box>
+          </Card>
+          <Card
+            className="shadow-md"
+            sx={{
+              p: 5,
+              mr: 3,
+              height: "300px",
+              width: "30%",
+              borderRadius: 4,
+            }}
+          >
+            <Box className="h-[100%] flex justify-between flex-col pt-4 relative">
+              <span
+                style={{
+                  position: "absolute",
+                  top: -20,
+                  left: 0,
+                  background: "black",
+                  color: "white",
+                  borderRadius: 4,
+                  width: "max-content",
+                  padding: "0 5px",
+                }}
+              >
+                Recommended
+              </span>
+              <h2
+                className="text-slate-600 font-bold"
+                style={{ fontSize: "18px" }}
+              >
+                Pro
+              </h2>
+              <Box className="flex items-center mt-2">
+                <h1
+                  className="font-black text-slate-600"
+                  style={{ fontSize: 40 }}
+                >
+                  US$_
+                </h1>
+                <Box className="text-slate-600 font-light ml-2">
+                  <p>per</p>
+                  <p style={{ lineHeight: 1, fontSize: 13 }}>year</p>
+                </Box>
+              </Box>
+              <Box className="h-[45%] flex flex-col justify-end">
+                <Button
+                  onClick={() => {}}
+                  variant="contained"
+                  style={{ backgroundColor: "#da1f26", color: "white" }}
+                  fullWidth
+                  sx={{ padding: "12px 0" }}
+                >
+                  Upgrade
+                </Button>
+              </Box>
+            </Box>
+          </Card>
+        </div>
       </Box>
     );
   } else {
     return (
       <>
-        <h4 className="font-semibold p-3 text-center">Payments</h4>
+          <h1
+          className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+            currentMode === "dark"
+              ? "text-white border-white"
+              : "text-red-600 font-bold border-red-600"
+          }`}
+        >
+          ● Payments
+        </h1>
         <div
           className={`${
             currentMode === "dark"
@@ -161,7 +286,7 @@ const Payments = () => {
               className="w-full px-1 m-1"
             >
               <Tab label="NEW PAYMENT" />
-              <Tab label="ALL TRANSACTIONS" />
+              {/* <Tab label="ALL TRANSACTIONS" /> */}
             </Tabs>
           </Box>
           <div className="mt-3 pb-3">
@@ -172,13 +297,13 @@ const Payments = () => {
                 setTabValue={setTabValue}
               />
             </TabPanel>
-            <TabPanel value={value} index={1}>
+            {/* <TabPanel value={value} index={1}>
               <Transactions
                 isLoading={loading}
                 tabValue={tabValue}
                 setTabValue={setTabValue}
               />
-            </TabPanel>
+            </TabPanel> */}
           </div>
         </div>
       </>

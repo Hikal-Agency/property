@@ -7,10 +7,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AllMessages from "./AllMessages";
 import Payments from "./payments";
 import Chat from "./Chat";
+import Instances from "./Instances";
 
 const pagesComponents = {
   contacts: <MessagesComponent />,
   templates: <TemplatesComponent />,
+  instances: <Instances/>,
   payments: <Payments />,
   transactions: <TransactionsComponent />,
   all: <AllMessages />,
