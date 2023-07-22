@@ -44,18 +44,19 @@ const SingleEmployee = ({ user }) => {
     userEmail: "",
     userContact: "",
   });
-  const [selectedMonth, setSelectedMonth] = useState("");
 
-  const handleDayFilter = (event) => {
-    setSelectedDay(event.target.value);
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
-    console.log("date range: ", event.target.value);
-  };
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [empData, setEmpData] = useState(null);
-  const [selectedDay, setSelectedDay] = useState(null);
+
+  const handleDayFilter = (event) => {
+    setSelectedMonth(event.target.value);
+
+    console.log("date range: ", event.target.value);
+  };
 
   console.log("emp data: ", empData);
 
@@ -336,40 +337,73 @@ const SingleEmployee = ({ user }) => {
   // Btn loading
   const [btnloading, setbtnloading] = useState(false);
 
+  console.log("logging selectedmonth: ", selectedMonth);
+
   const FetchAttendance = async (token) => {
     const params = {
       page: pageState.page,
     };
 
-    if (selectedDay) {
-      if (selectedDay === "today") {
-        params.date_range = [
-          moment().subtract(1, "days").format("YYYY-MM-DD"),
-          moment().add(1, "days").format("YYYY-MM-DD"),
-        ].join(",");
-      } else if (selectedDay === "yesterday") {
-        params.date_range = [
-          moment().subtract(2, "days").format("YYYY-MM-DD"),
-          moment().format("YYYY-MM-DD"),
-        ].join(",");
-      } else if (selectedDay === "month") {
-        // Apply default date range of the complete month
-        const startDate = moment()
-          .subtract(1, "months")
-          .endOf("month")
-          .format("YYYY-MM-DD");
-        const endDate = moment()
-          .add(1, "months")
+    // if (selectedMonth) {
+    //   if (selectedMonth === "today") {
+    //     params.date_range = [
+    //       moment().subtract(1, "days").format("YYYY-MM-DD"),
+    //       moment().add(1, "days").format("YYYY-MM-DD"),
+    //     ].join(",");
+    //   } else if (selectedMonth === "yesterday") {
+    //     params.date_range = [
+    //       moment().subtract(2, "days").format("YYYY-MM-DD"),
+    //       moment().format("YYYY-MM-DD"),
+    //     ].join(",");
+    //   } else if (selectedMonth === "month") {
+    //     // Apply default date range of the complete month
+    //     const startDate = moment()
+    //       .subtract(1, "months")
+    //       .endOf("month")
+    //       .format("YYYY-MM-DD");
+    //     const endDate = moment()
+    //       .add(1, "months")
+    //       .startOf("month")
+    //       .format("YYYY-MM-DD");
+    //     params.date_range = [startDate, endDate].join(",");
+    //   }
+    // } else if (selectedMonth === "month") {
+    //   // Apply default date range of the complete month
+    //   const startDate = moment().startOf("month").format("YYYY-MM-DD");
+    //   const endDate = moment().endOf("month").format("YYYY-MM-DD");
+    //   params.date_range = [startDate, endDate].join(",");
+    // }
+    if (selectedMonth) {
+      console.log("month filter: ", selectedMonth);
+
+      // Check if selectedMonth is a valid month (between 1 and 12)
+      const isValidMonth =
+        Number(selectedMonth) >= 1 && Number(selectedMonth) <= 12;
+
+      if (isValidMonth) {
+        // Convert selectedMonth to "YYYY-MM" format
+        const year = moment().format("YYYY");
+        const month = String(selectedMonth).padStart(2, "0");
+        const selectedMonthInYYYYMM = `${year}-${month}`;
+
+        const startDate = moment(selectedMonthInYYYYMM)
           .startOf("month")
           .format("YYYY-MM-DD");
+        const endDate = moment(selectedMonthInYYYYMM)
+          .endOf("month")
+          .format("YYYY-MM-DD");
         params.date_range = [startDate, endDate].join(",");
+      } else {
+        // Handle invalid selectedMonth (e.g., if user manually inputs an invalid date)
+        console.error("Invalid selectedMonth:", selectedMonth);
       }
-    } else if (selectedDay === "month") {
-      // Apply default date range of the complete month
+    } else {
+      // Apply default date range of the complete current month
       const startDate = moment().startOf("month").format("YYYY-MM-DD");
       const endDate = moment().endOf("month").format("YYYY-MM-DD");
       params.date_range = [startDate, endDate].join(",");
     }
+
     await axios
       .get(`${BACKEND_URL}/attendance?user_id=${id}`, {
         params,
@@ -559,7 +593,7 @@ const SingleEmployee = ({ user }) => {
     const token = localStorage.getItem("auth-token");
     FetchAttendance(token);
     // eslint-disable-next-line
-  }, [pageState.page, selectedDay]);
+  }, [pageState.page, selectedMonth]);
 
   return (
     <>
@@ -581,14 +615,19 @@ const SingleEmployee = ({ user }) => {
                       size="small"
                       className="w-[100px]"
                       displayEmpty
-                      value={selectedDay || "month"}
+                      value={selectedMonth}
                       onChange={handleDayFilter}
                     >
                       <MenuItem selected value="month">
                         Select a day
                       </MenuItem>
-                      <MenuItem value="today">Today</MenuItem>
-                      <MenuItem value="yesterday">Yesterday</MenuItem>
+                      {/* <MenuItem value="today">Today</MenuItem>
+                      <MenuItem value="yesterday">Yesterday</MenuItem> */}
+                      {lastThreeMonths?.map((month) => (
+                        <MenuItem key={month.value} value={month.value + 1}>
+                          {month.label}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </div>
                 </Box>
@@ -601,14 +640,8 @@ const SingleEmployee = ({ user }) => {
                     } rounded-md shadow-md`}
                   >
                     <div className="col-span-2 border-r-2 border-gray-400  py-10 ">
-                      {/* <h1 className="text-xl font-semibold pb-10 text-center">
-                        User Account
-                      </h1> */}
                       <label htmlFor="pick-image">
-                        <div
-                          // onClick={() => setImagePickerModal({ isOpen: true })}
-                          className="relative"
-                        >
+                        <div className="relative">
                           {empData[0]?.profile_picture ? (
                             <img
                               src={empData[0]?.profile_picture}
@@ -630,7 +663,6 @@ const SingleEmployee = ({ user }) => {
 
                       <div className="mb-3">
                         <h1 className="text-lg font-bold text-center">
-                          {/* {User?.userName} */}
                           {empData[0]?.userName}
                         </h1>
                         <h3
@@ -655,7 +687,7 @@ const SingleEmployee = ({ user }) => {
                             <div className="flex items-center space-x-1 justify-center">
                               <h1>Monthly Salary</h1>
                             </div>
-                            {empData[0].salary
+                            {empData[0]?.salary
                               ? `${empData[0]?.salary} ${empData[0]?.currency}`
                               : "No data"}
                           </div>
