@@ -1,26 +1,18 @@
-import { Button } from "@material-tailwind/react";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
-import { BsFillPlusCircleFill } from "react-icons/bs";
-import { MdEmail } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   Avatar,
-  Box,
-  Dialog,
-  IconButton,
-  TextField,
-  Tooltip,
+  Box, IconButton, Tooltip
 } from "@mui/material";
-import { MdDelete, MdModeEdit } from "react-icons/md";
+import { MdModeEdit } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
-import { IoIosAlert, IoMdClose } from "react-icons/io";
 
 import moment from "moment";
 import {
@@ -48,18 +40,10 @@ const SingleEmployee = ({ user }) => {
     pageState,
     setpageState,
   } = useStateContext();
-  const [GeneralInfoData, setGeneralInfo] = useState({
-    userAltContact: "",
-    userAltEmail: "",
-    userEmail: "",
-    userContact: "",
-  });
   const token = localStorage.getItem("auth-token");
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
-  const [PersonalInfo, setPersonalInfo] = useState({});
-  const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [empData, setEmpData] = useState(null);
   const [showDailogue, setDialogue] = useState(false);

@@ -53,32 +53,6 @@ const EmployeesList = ({ user }) => {
     }
   };
 
-  // const fetchUsers = async () => {
-  //   setLoading(true);
-
-  //   if(selectedDay)
-
-  //   try {
-  //     const response = await axios.get(
-  //       `${BACKEND_URL}/attendance?page=${pageState.page}`,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-
-  //     console.log("attendance: ", response);
-  //     setUserData(response.data?.Record?.data);
-  //     setMaxPage(response.data?.Record?.last_page);
-  //   } catch (error) {
-  //     console.error("Error fetching users:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const fetchUsers = async () => {
     setLoading(true);
 

@@ -8,10 +8,46 @@ import { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
+import SocialChart from "../../Components/charts/SocialChart";
+import {toast} from "react-toastify";
 
 const Reports = () => {
-  const { currentMode, DashboardData, Sales_chart_data, setSales_chart_data, BACKEND_URL } = useStateContext();
+  const { currentMode, DashboardData, setDashboardData, setSales_chart_data, BACKEND_URL } = useStateContext();
   const [saleschart_loading, setsaleschart_loading] = useState(true);
+  const [loading, setloading] = useState(true);
+  const [socialChartData, setSocialChartData] = useState([]);
+
+   const FetchProfile = (token) => {
+    axios
+      .get(`${BACKEND_URL}/dashboard?page=1`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("dashboard data is");
+        console.log(result.data);
+        console.log("User from dashboard: ", result.data.user);
+        setDashboardData({
+          ...result.data,
+          newLeads: result.data.lead_status.new,
+        });
+        setloading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Sorry something went wrong. Kindly refresh the page.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  };
   
   const fetchData = async () => {
     try {
@@ -34,12 +70,35 @@ const Reports = () => {
     }
   };
 
+ 
+  const fetchSocialChart = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const urls = [`${BACKEND_URL}/socialchart`];
+      const responses = await Promise.all(
+        urls.map((url) =>{
+          return axios.get(url, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          });
+        })
+      );
+      setSocialChartData(responses[0].data?.social_chart);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     fetchData();
+    fetchSocialChart();
+    const token = localStorage.getItem("auth-token");
+    FetchProfile(token);
   }, []);
 
-  if(saleschart_loading) {
+  if(loading) {
     return <Loader/>;
   } else {
   return (
@@ -152,6 +211,42 @@ const Reports = () => {
                     </div>
                   </div>
 
+
+                    <div
+                    className={`${
+                      currentMode === "dark"
+                        ? "bg-gray-900 text-white"
+                        : "bg-gray-200 text-black"
+                    } rounded-md col-span-2 p-2`}
+                  >
+                    <h6 className="mb-2 p-2">
+                      <span className="font-semibold">Social Chart</span>
+                      <span className="float-right">
+                        <select
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black"
+                          } text-xs rounded-md p-1`}
+                        >
+                          <option value="alltime">All-Time</option>
+                          <option value="lastmonth">Last Month</option>
+                          <option value="thismonth">This Month</option>
+                        </select>
+                      </span>
+                    </h6>
+                    <div className="justify-between items-center">
+
+                {saleschart_loading ? (
+                  <div className="flex items-center space-x-2">
+                    <CircularProgress size={20} /> <span>Loading</span>
+                  </div>
+                ) : (
+                      <SocialChart data={socialChartData}/>
+                )}
+                    </div>
+                  </div>
+
                   <div
                     className={`${
                       currentMode === "dark"
@@ -181,6 +276,7 @@ const Reports = () => {
                       />
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>
