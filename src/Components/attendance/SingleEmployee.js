@@ -616,6 +616,7 @@ const SingleEmployee = ({ user }) => {
           leaveDaySalary: LEAVE_DAY_SALARY,
           lateDaySalary: LATE_DAY_SALARY,
           totalSalary: TOTAl_SALARY,
+          perDaySalary: per_day_salary,
         }));
       })
       .catch((err) => {
@@ -751,9 +752,7 @@ const SingleEmployee = ({ user }) => {
                               <h1 className="font-semibold">Salary per day</h1>
                             </div>
                             {empData[0]?.salary && empData[0]?.salary !== null
-                              ? `${empData[0]?.currency} ${
-                                  empData[0]?.salary / 30
-                                }`
+                              ? `${empData[0]?.currency} ${pageState?.perDaySalary}`
                               : "No data"}
                           </div>
                         </div>
