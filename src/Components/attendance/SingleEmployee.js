@@ -578,9 +578,9 @@ const SingleEmployee = ({ user }) => {
 
         const per_day_salary = firstCheckIn?.salary / workingDays;
         const LEAVE_DAY_SALARY = per_day_salary * leave_count;
-        const LATE_DAY_SALARY = (firstCheckIn?.salary * late_count) / 2;
+        const LATE_DAY_SALARY = (per_day_salary * late_count) / 2;
         const TOTAl_SALARY =
-          LEAVE_DAY_SALARY + LATE_DAY_SALARY - per_day_salary;
+          firstCheckIn?.salary - (LEAVE_DAY_SALARY + LATE_DAY_SALARY);
 
         let deductionValue = "";
         let cutSalaryValue = "";
