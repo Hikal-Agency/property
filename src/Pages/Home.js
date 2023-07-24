@@ -41,7 +41,11 @@ const Home = () => {
         setOpenBackDrop(true);
         if (result.data.success && result.data.data.token) {
           localStorage.setItem("auth-token", result.data.data.token);
-          document.location.href = location?.state?.continueURL || "/dashboard";
+
+          document.location.href =
+            result.data.data.role === 5
+              ? "/attendance/employeesList"
+              : location?.state?.continueURL || "/dashboard";
           toast.success("Login Successfull", {
             position: "top-right",
             autoClose: 3000,
