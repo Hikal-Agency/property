@@ -7,10 +7,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
-import {
-  Avatar,
-  Box, IconButton, Tooltip
-} from "@mui/material";
+import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import { MdModeEdit } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
 
@@ -248,13 +245,9 @@ const SingleEmployee = ({ user }) => {
       minWidth: 120,
       renderCell: (cellValues) => {
         const formattedTime = cellValues.row.default_datetime
-        ? convertTo12HourFormat(cellValues.row.default_datetime)
-        : "";
-        return (
-          <div>
-            {formattedTime}
-          </div>
-        );
+          ? convertTo12HourFormat(cellValues.row.default_datetime)
+          : "";
+        return <div>{formattedTime}</div>;
       },
     },
 
@@ -370,6 +363,36 @@ const SingleEmployee = ({ user }) => {
   };
   const lastThreeMonths = generateLastThreeMonths();
 
+  function calculateWorkingDays(offDay) {
+    // Get the current month and year
+    const currentDate = moment();
+    const currentMonth = currentDate.month();
+    const currentYear = currentDate.year();
+
+    // Get the number of days in the current month
+    const daysInMonth = currentDate.daysInMonth();
+
+    // Initialize an array to store the working days
+    const workingDays = [];
+
+    // Loop through each day of the current month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = moment(
+        `${currentYear}-${currentMonth + 1}-${day}`,
+        "YYYY-MM-DD"
+      );
+
+      // Check if the day is not an off-day (you can replace 'Sunday' with the name of your off-day)
+      if (date.format("dddd") !== offDay) {
+        workingDays.push(date.format("YYYY-MM-DD"));
+      }
+    }
+
+    console.log("Working Days:", workingDays);
+
+    return workingDays.length;
+  }
+
   // Btn loading
   const [btnloading, setbtnloading] = useState(false);
 
@@ -430,6 +453,10 @@ const SingleEmployee = ({ user }) => {
             element.attendance_type.toLowerCase() === "check-in"
           );
         });
+
+        const workingDays = calculateWorkingDays(firstCheckIn?.off_day);
+
+        console.log("working days: ", workingDays);
 
         console.log("first check in : ", firstCheckIn);
 
@@ -513,6 +540,7 @@ const SingleEmployee = ({ user }) => {
             updated_at: row?.updated_at,
             deduction: row?.deduct_salary,
             cut_salary: row?.cut_salary || "-",
+            off_day: row?.off_day || "-",
             edit: "edit",
           };
         }
@@ -539,12 +567,7 @@ const SingleEmployee = ({ user }) => {
         const attended_count = attended_days.length;
         console.log("attended days: ", attended_count);
 
-        const leave_days = rowsdata.filter(
-          (row) =>
-            row?.attendance_type.toLowerCase() === "out" ||
-            row?.attendance_type.toLowerCase() === "check-out"
-        );
-        const leave_count = leave_days.length;
+        const leave_count = workingDays - attended_count;
         console.log("leave days: ", leave_count);
 
         const is_late = rowsdata.filter((row) => row?.is_late === 1);
@@ -552,6 +575,12 @@ const SingleEmployee = ({ user }) => {
         console.log("is late: ", late_count);
 
         const checkInRow = rowsdata.find((row) => isCheckIn(row));
+
+        const per_day_salary = firstCheckIn?.salary / workingDays;
+        const LEAVE_DAY_SALARY = per_day_salary * leave_count;
+        const LATE_DAY_SALARY = (firstCheckIn?.salary * late_count) / 2;
+        const TOTAl_SALARY =
+          LEAVE_DAY_SALARY + LATE_DAY_SALARY - per_day_salary;
 
         let deductionValue = "";
         let cutSalaryValue = "";
@@ -583,6 +612,10 @@ const SingleEmployee = ({ user }) => {
           dedution: deductionValue,
           cut_salary: cutSalaryValue,
           first_check: firstCheckIn,
+          workingDays: workingDays,
+          leaveDaySalary: LEAVE_DAY_SALARY,
+          lateDaySalary: LATE_DAY_SALARY,
+          totalSalary: TOTAl_SALARY,
         }));
       })
       .catch((err) => {
@@ -735,7 +768,7 @@ const SingleEmployee = ({ user }) => {
                           <div className="text-center">
                             <div className="flex items-center justify-center">
                               <p className="font-bold text-red-600 pr-2">
-                                {"  "} {pageState?.attended_count || "0"}{" "}
+                                {"  "} {pageState?.workingDays || "0"}{" "}
                                 {/*CHANGE WORKING DAYS*/}
                               </p>
                               {"  "}
@@ -793,7 +826,7 @@ const SingleEmployee = ({ user }) => {
                               </div>
                               {/* (SALARY_PER_DAY * TOTAL_LEAVE_DAYS) =========== TOTAL_LEAVE_DAYS = WORKING_DAYS - ATTENDED_DAYS */}
                               {empData[0]?.salary
-                                ? `${empData[0]?.currency} ${empData[0]?.salary} `
+                                ? `${empData[0]?.currency} ${pageState?.leaveDaySalary} `
                                 : "No data"}
                             </div>
                             <div className="text-center">
@@ -804,9 +837,7 @@ const SingleEmployee = ({ user }) => {
                               </div>
                               {/* (SALARY_PER_DAY * TOTAL_LATE_DAYS) / 2 ========== TOTAL_LATE_DAYS = COUNT(is_late) WHERE is_late = 1 */}
                               {empData[0]?.salary && empData[0]?.salary !== null
-                                ? `${empData[0]?.currency} ${
-                                    empData[0]?.salary / 30
-                                  }`
+                                ? `${empData[0]?.currency} ${pageState?.lateDaySalary}`
                                 : "No data"}
                             </div>
                           </div>
@@ -827,7 +858,7 @@ const SingleEmployee = ({ user }) => {
                             </div>
                             {/* MONTHLY_SALARY - (LEAVE_DAY_SALARY + LATE_DAYA_SALARY) */}
                             {empData[0]?.salary
-                              ? `${empData[0]?.currency} ${empData[0]?.salary} `
+                              ? `${empData[0]?.currency} ${pageState?.totalSalary} `
                               : "No data"}
                           </div>
                         </div>
@@ -909,20 +940,20 @@ const SingleEmployee = ({ user }) => {
   function convertTo12HourFormat(time24Hour) {
     const [hours, minutes] = time24Hour.split(":");
     const parsedHours = parseInt(hours, 10);
-  
+
     let meridiem = "AM";
     let formattedHours = parsedHours;
-  
+
     if (parsedHours === 0) {
       formattedHours = 12;
     } else if (parsedHours > 12) {
       formattedHours = parsedHours - 12;
       meridiem = "PM";
     }
-  
+
     return `${formattedHours}:${minutes} ${meridiem}`;
   }
-  
+
   function TabPanel(props) {
     const { children, value, index } = props;
     return <div>{value === index && <div>{children}</div>}</div>;
