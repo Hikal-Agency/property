@@ -7,15 +7,15 @@ import {
   IconButton,
   Button,
   Box,
+  Tooltip
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 
-// import LeadNotes from "../LeadNotes/LeadNotes";
-// import axios from "axios";
 import axios from "../../axoisConfig";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
+import {BiBlock} from "react-icons/bi";
 import { Link } from "react-router-dom";
 
 const SingleLead = ({
@@ -58,21 +58,56 @@ const SingleLead = ({
     }
   };
 
+  const handleBlockIP = async (LeadData) => {
+    setLoading(true);
+     try {
+      const token = localStorage.getItem("auth-token");
+      setLoading(true);
+      await axios.post(`${BACKEND_URL}/blocked`, JSON.stringify({
+        byIP: LeadData?.ip
+      }), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      toast.success("IP Blocked successfuly!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      handleLeadModelClose();
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to fetch blocked IPs", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
+
   const AddNote = () => {
     setaddNoteloading(true);
     const token = localStorage.getItem("auth-token");
     console.log("lead data is");
     console.log(LeadData);
 
-    // const now = moment();
-    // const datetimeString = now.format("YYYY/MM/DD hh:mm:ss A");
-
     const data = {
       leadId: LeadData.leadId || LeadData.id,
       leadNote: AddNoteTxt,
       addedBy: User?.id,
-      // creationDate: moment(new Date()).format("YYYY/MM/DD"),
-      // creationDate: datetimeString,
     };
     console.log("Data: ");
     console.log("Data: ", data);
@@ -311,7 +346,7 @@ const SingleLead = ({
               </div>
 
               <div className="bg-main-red-color h-0.5 w-full mt-6 mb-4"></div>
-              <div className="flex my-0 w-full">
+              <div className="flex justify-between items-center my-0 w-full">
                 <Link
                   sx={{ my: 0, w: "100%" }}
                   to={`/lead/${
@@ -329,6 +364,18 @@ const SingleLead = ({
                     View Lead Details
                   </Button>
                 </Link>
+                <Tooltip title="Block IP" arrow>
+                  <IconButton onClick={() => handleBlockIP(LeadData)} sx={{
+                  "& svg": {
+                    color:
+                      currentMode === "dark"
+                        ? "white !important"
+                        : "black !important",
+                  },
+                  }}>
+                      <BiBlock size={18}/>
+                  </IconButton>
+                </Tooltip>
               </div>
               <div className={`rounded-md mt-2`}>
                 {lastNote && (

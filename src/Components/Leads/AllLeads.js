@@ -428,8 +428,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         return (
           <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
             <p
-              onMouseEnter={() => setHovered("edit")}
-              onMouseLeave={() => setHovered("")}
               style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
@@ -445,60 +443,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             {currentMode === "dark" ? (
               <p
                 onClick={() => HandleEditFunc(cellValues)}
-                // className={`${
-                //   currentMode === "dark"
-                //     ? "text-white bg-transparent rounded-md shadow-none "
-                //     : "text-black bg-transparent rounded-md shadow-none "
-                // }`}
               >
                 <AiOutlineEdit size={20} color="white" />
-
-                {/* {currentMode === "dark" ? (
-                  <AiOutlineEdit
-                    size={20}
-                    color="white"
-                    // sx={{ color: "red" }}
-                  />
-                ) : (
-                  <AiOutlineEdit size={20} color="black" />
-                )} */}
               </p>
             ) : (
               <p
                 onClick={() => HandleEditFunc(cellValues)}
-                // className={`${
-                //   currentMode === "dark"
-                //     ? "text-white bg-transparent rounded-md shadow-none "
-                //     : "text-black bg-transparent rounded-md shadow-none "
-                // }`}
               >
                 <AiOutlineEdit
                   size={20}
                   color="black"
-                  // sx={{ color: "red" }}
                 />
-                {/* {currentMode === "dark" ? (
-                  <AiOutlineEdit
-                    size={20}
-                    color="white"
-                    // sx={{ color: "red" }}
-                  />
-                ) : (
-                  <AiOutlineEdit size={20} color="black" />
-                )} */}
               </p>
             )}
 
-            {/* <p
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </p> */}
             {cellValues.row.leadId !== null && (
               <Link
                 to={`/timeline/${cellValues.row.leadId}`}
