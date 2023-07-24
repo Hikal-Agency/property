@@ -896,17 +896,6 @@ const Sidebarmui = () => {
           icon: <MdLeaderboard />,
           link: "/leaderboard",
         },
-
-        // {
-        //   name: "Contacts",
-        //   icon: <MdContactPage />,
-        //   link: "/contacts",
-        // },
-        {
-          name: "Blocked IPs",
-          icon: <BiBlock />,
-          link: "/blocked",
-        },
         {
           name: "Users",
           icon: <ImUsers />,

@@ -85,7 +85,13 @@ const Reports = () => {
           });
         })
       );
-      setSocialChartData(responses[0].data?.social_chart);
+      const warmLeads = responses[0].data?.social_chart?.filter((data) => data?.leadSource.startsWith("Warm"));
+      const totalWarmLeadsCount = warmLeads?.reduce((a, b) => a + b?.total, 0);
+      const formattedData = responses[0].data?.social_chart?.filter((data) => !(data?.leadSource.startsWith("Warm")));
+      setSocialChartData([...formattedData, {
+        leadSource: "Warm Leads", 
+        total: totalWarmLeadsCount
+      }]);
     } catch (error) {
       console.log(error);
     }
