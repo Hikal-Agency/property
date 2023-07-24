@@ -27,6 +27,7 @@ import { RiRadioButtonLine } from "react-icons/ri";
 import { BsDot } from "react-icons/bs";
 
 import { arrayUnion } from "firebase/firestore";
+import moment from "moment";
 
 const RegisterAttendance = () => {
   const {
@@ -39,6 +40,8 @@ const RegisterAttendance = () => {
   } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
+  const token = localStorage.getItem("auth-token");
+
   console.log("USer: ", User);
   const [loading, setLoading] = useState(false);
   const [attendanceTime, setAttendanceTime] = useState(null);
@@ -53,71 +56,43 @@ const RegisterAttendance = () => {
   const guid = query.get("guid");
 
   console.log("check,guid :::: ", check, guid);
+  const currentDateTime = moment().format("YY-MM-DD HH:mm:ss");
 
-  const GetAttendanceStatus = async (status) => {
-    const date = new Date();
-    const day = ("0" + date.getDate()).slice(-2);
-    const month = ("0" + (date.getMonth() + 1)).slice(-2);
-    const year = date.getFullYear();
-
-    const docRef = doc(
-      db,
-      "attendance",
-      `${month}-${day}-${year}-${status.toUpperCase()}`
-    );
-
-    const docSnap = await getDoc(docRef);
-
-    console.log("docsnap: ", docSnap);
-
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      if (data[User?.id]) {
-        return true; // The user has already checked in or out
-      }
-    }
-
-    return false; // The user hasn't checked in or out
-  };
+  console.log("dateeeeeeeeeee: ", currentDateTime);
 
   const MarkAttendance = async (status) => {
     setLoading(true);
     try {
-      const alreadyChecked = await GetAttendanceStatus(status);
+      // const date = new Date();
+      // const day = ("0" + date.getDate()).slice(-2);
+      // const month = ("0" + (date.getMonth() + 1)).slice(-2);
+      // const year = date.getFullYear();
+      const date = new Date().toLocaleString();
+      const currentDateTime = moment().format("YY-MM-DD HH:mm:ss");
+      console.log("dateeeeeeeeeee: ", currentDateTime);
 
-      if (alreadyChecked) {
-        toast.error(`You have already Checked-${status}.`, {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        return;
-      }
-      const date = new Date();
-      const day = ("0" + date.getDate()).slice(-2);
-      const month = ("0" + (date.getMonth() + 1)).slice(-2);
-      const year = date.getFullYear();
+      const AddAttendance = new FormData();
 
-      const docRef = doc(
-        db,
-        "attendance",
-        `${month}-${day}-${year}-${status.toUpperCase()}`
+      const attendanceType = check === "in" ? "Check-in" : "Check-out";
+
+      AddAttendance.append("user_id", User?.id);
+      AddAttendance.append("check_datetime", currentDateTime);
+      AddAttendance.append("attendance_type", attendanceType);
+      AddAttendance.append("attendance_source", "qr");
+      AddAttendance.append("agency_id", User?.agency);
+
+      const registerAttendance = await axios.post(
+        `${BACKEND_URL}/attendance`,
+        AddAttendance,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
       );
 
-      const checkInObj = {
-        id: User?.id,
-        checkTime: attendanceTime,
-      };
-
-      // Create or update the document
-      await setDoc(docRef, { [User?.id]: checkInObj }, { merge: true });
-
-      console.log("Document successfully written!");
+      console.log("Document successfully written!", registerAttendance);
       toast.success(`Successfully Checked-${status}`, {
         position: "top-right",
         autoClose: 3000,
@@ -237,7 +212,6 @@ const RegisterAttendance = () => {
     }
   };
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
     if (User?.id && User?.loginId) {
       FetchProfile(token);
     } else {
@@ -258,7 +232,6 @@ const RegisterAttendance = () => {
 
   return (
     <>
-      
       <div
         style={{
           height: "96vh",
@@ -317,7 +290,7 @@ const RegisterAttendance = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="grid place-items-center h-screen ">
           <div
             className={`${

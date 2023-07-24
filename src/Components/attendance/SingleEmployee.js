@@ -576,7 +576,7 @@ const SingleEmployee = ({ user }) => {
 
         const checkInRow = rowsdata.find((row) => isCheckIn(row));
 
-        const per_day_salary = firstCheckIn?.salary / workingDays;
+        const per_day_salary = firstCheckIn?.salary / 30;
         const LEAVE_DAY_SALARY = per_day_salary * leave_count;
         const LATE_DAY_SALARY = (per_day_salary * late_count) / 2;
         const TOTAl_SALARY =
