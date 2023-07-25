@@ -5,13 +5,15 @@ import {
 } from "@mui/material";
 import UserInstances from "./UserInstances";
 import { useStateContext } from "../../context/ContextProvider";
+import Loader from "../../Components/Loader";
 
 const Instances = () => {
   const [allUsersInstances, setAllUsersInstances] = useState([]);
   const { BACKEND_URL, currentMode } = useStateContext();
+  const [loading, setLoading] = useState(true);
 
   const fetchInstances = async () => {
-
+    setLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
       const response = await axios.get(`${BACKEND_URL}/instances`, {
@@ -26,6 +28,7 @@ const Instances = () => {
         instances: allInstances?.filter((instance) => instance?.user_id === user),
       }))
       setAllUsersInstances(userInstances);
+    setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -34,6 +37,10 @@ const Instances = () => {
   useEffect(() => {
     fetchInstances();
   }, []);
+
+  if(loading) {
+    return <Loader/>;
+  }
   return (
     <div className="h-screen">
         <h1
@@ -47,9 +54,11 @@ const Instances = () => {
         </h1>
 
       <Box className="mt-4">
-        {allUsersInstances?.map((item) => {
-            return <UserInstances user={item?.instances[0]?.user_name || item?.instances[0]?.user_id} instances={item?.instances}/>
-        })}
+      {allUsersInstances?.length === 0 ? <p className="text-red-600">Nothing to show</p> :
+        [allUsersInstances?.map((item) => {
+            return <UserInstances fetchInstances={fetchInstances} user={item?.instances[0]?.user_name || item?.instances[0]?.user_id} instances={item?.instances}/>
+        })]
+      }
       </Box>
     </div>
   );
