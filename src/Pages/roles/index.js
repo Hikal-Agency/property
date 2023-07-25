@@ -538,27 +538,13 @@ const Role = () => {
                       <span>{pageState?.total}</span>
                     </span> */}
                   </h1>
-
-                  {User?.role === 1 || User?.role === 2 ? (
-                    <Button
-                      className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
-                      onClick={HandleOpenModel}
-                    >
-                      <span className="flex justify-between items-center ">
-                        <AiOutlinePlus style={{ marginRight: "0.5em" }} />
-                        Add User
-                      </span>
-                    </Button>
-                  ) : (
-                    ""
-                  )}
                 </div>
                 <div className="flex items-center justify-between">
                   <Box
                     sx={{
                       ...darkModeColors,
                       "& .MuiTabs-indicator": {
-                        // height: "100%",
+                        height: "100%",
                         borderRadius: "5px",
                         backgroundColor: "#da1f26",
                       },
@@ -567,57 +553,30 @@ const Role = () => {
                         zIndex: "1",
                       },
                     }}
-                    className={` rounded-md overflow-hidden ${
+                    className={`w-full rounded-md overflow-hidden ${
                       currentMode === "dark" ? "bg-black" : "bg-white"
                     } `}
                   >
                     <Tabs
                       value={value}
-                      onClick={handleChange}
+                      onChange={handleChange}
                       variant="standard"
+                      className="w-full px-1 m-1"
                     >
-                      <Tab
-                        icon={
-                          value === 0 ? (
-                            <AiOutlineAppstore
-                              size={22}
-                              style={{
-                                color:
-                                  currentMode === "dark"
-                                    ? "#ffffff"
-                                    : "#000000",
-                              }}
-                            />
-                          ) : (
-                            <AiOutlineTable
-                              size={22}
-                              style={{
-                                color:
-                                  currentMode === "dark"
-                                    ? "#ffffff"
-                                    : "#000000",
-                              }}
-                            />
-                          )
-                        }
-                      />
+                      <Tab label="Roles" />
+                      <Tab label="Permissions" />
                     </Tabs>
                   </Box>
-                  <div className="">
-                    <TextField
-                      placeholder="Search.."
-                      variant="standard"
-                      inputProps={{
-                        style: {
-                          borderBottom: "2px solid white",
-                          marginRight: "10px",
-                          color: currentMode === "dark" ? "#ffffff" : "#000000",
-                        },
-                      }}
-                      // onKeyUp={handleKeyUp}
-                      // value={searchTerm}
-                      // onInput={handleSearch}
-                    />
+                  <div className="w-max">
+                    <Button
+                      className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
+                      onClick={HandleOpenModel}
+                    >
+                      <span className="flex justify-between items-center ">
+                        <AiOutlinePlus style={{ marginRight: "0.5em" }} />
+                        Add Role
+                      </span>
+                    </Button>
                   </div>
                 </div>
                 <div className="mt-3 pb-3">
