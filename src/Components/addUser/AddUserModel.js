@@ -75,27 +75,6 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     setformdata({ ...formdata, userEmail: email });
   };
 
-  // const ChangeUserRole = (event) => {
-  //   setUserRole(event.target.value);
-  //   if (event.target.value === "head of sales") {
-  //     setformdata({ ...formdata, role: 2 });
-  //   } else if (event.target.value === "manager") {
-  //     setformdata({ ...formdata, role: 3 });
-  //   } else if (event.target.value === "marketing") {
-  //     setformdata({ ...formdata, role: 4 });
-  //   } else if (event.target.value === "accounts") {
-  //     setformdata({ ...formdata, role: 5 });
-  //   } else if (event.target.value === "user") {
-  //     setformdata({ ...formdata, role: 6 });
-  //   } else if (event.target.value === "agent") {
-  //     setformdata({ ...formdata, role: 7 });
-  //   } else if (event.target.value === "dataEntry") {
-  //     setformdata({ ...formdata, role: 8 });
-  //   } else if (event.target.value === "officeboy") {
-  //     setformdata({ ...formdata, role: 9 });
-  //   }
-  // };
-
   const ChangeUserRole = (event) => {
     const selectedRole = event.target.value;
     setUserRole(selectedRole);
@@ -206,183 +185,164 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                   </h2>
                 </div>
 
-                <form
-                  className="mt-8 space-y-6"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    RegisterUser();
-                  }}
-                >
-                  <input type="hidden" name="remember" defaultValue="true" />
-                  <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md">
-                    <div className="col-span-6">
-                      <TextField
-                        id="login-id"
-                        type="text"
-                        label="Login ID"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={formdata?.loginId}
-                        onChange={(e) => {
-                          setformdata({
-                            ...formdata,
-                            loginId: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="col-span-3">
-                      <TextField
-                        id="password"
-                        type="password"
-                        label="Password"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={formdata?.password}
-                        onChange={handlePassword}
-                        helperText="Example: Abc123@#"
-                      />
-                    </div>
-                    <div className="col-span-3">
-                      <TextField
-                        id="confirm-password"
-                        type="password"
-                        label="Confirm Password"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={formdata?.c_password}
-                        onChange={(e) => {
-                          setPasswordError(false);
-                          setformdata({
-                            ...formdata,
-                            c_password: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    {passwordError && (
-                      <div className="col-span-6">
-                        <p className="italic text-red-900">{passwordError}</p>
-                      </div>
-                    )}
 
-                    <div className="col-span-3">
-                      <TextField
-                        select
-                        id="user-role"
-                        value={UserRole}
-                        label="User Role"
-                        onChange={ChangeUserRole}
-                        size="medium"
-                        className="w-full"
-                        displayEmpty
-                        required
-                      >
-                        <MenuItem value="" disabled>
-                          User Role
-                        </MenuItem>
-                        {/* <MenuItem value={"admin"}>Admin</MenuItem> */}
-                        <MenuItem value={"manager"}>Manager</MenuItem>
-                        <MenuItem value={"agent"}>Agent</MenuItem>
-                        <MenuItem value={"accounts"}>Accounts</MenuItem>
-                        <MenuItem value={"dataEntry"}>Data Entry</MenuItem>
-                        <MenuItem value={"head of sales"}>
-                          Head Of Sales
-                        </MenuItem>
-                        <MenuItem value={"marketing"}>Marketing</MenuItem>
-                        <MenuItem value={"user"}>General User</MenuItem>
-                        <MenuItem value={"officeboy"}>Office Boy</MenuItem>
-                      </TextField>
-                    </div>
-                    <div className="col-span-3">
-                      <TextField
-                        id="username"
-                        type="text"
-                        label="Username"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={formdata?.userName}
-                        onChange={(e) => {
-                          setformdata({
-                            ...formdata,
-                            userName: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="col-span-6">
-                      <TextField
-                        id="postion"
-                        type="text"
-                        label="User Position"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        // error={!!emailError}
-                        required
-                        value={formdata?.position}
-                        onChange={(e) => {
-                          setformdata({
-                            ...formdata,
-                            position: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="col-span-6">
-                      <TextField
-                        id="email"
-                        type="email"
-                        label="User Email Address"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        // error={!!emailError}
-                        required
-                        value={formdata?.userEmail}
-                        onChange={handleEmail}
-                      />
-                    </div>
-                    {emailError && (
-                      <div className="col-span-6">
-                        <p className="italic text-red-900">{emailError}</p>
-                      </div>
-                    )}
+               <form
+                className="mt-8 space-y-6"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  RegisterUser();
+                }}
+              >
+                <input type="hidden" name="remember" defaultValue="true" />
+                <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md">
+                  <div className="col-span-6">
+                    <TextField
+                      id="login-id"
+                      type={"text"}
+                      label="Login ID"
+                      className="w-full"
+                      variant="outlined"
+                      size="medium"
+                      required
+                      value={formdata?.loginId}
+                      onChange={(e) => {
+                        setformdata({ ...formdata, loginId: e.target.value });
+                      }}
+                    />
                   </div>
-                  <div>
-                    <button
-                      disabled={loading ? true : false}
-                      type="submit"
-                      className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-3 px-4 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                  <div className="col-span-3">
+                    <TextField
+                      id="password"
+                      type={"password"}
+                      label="Password"
+                      className="w-full"
+                      variant="outlined"
+                      size="medium"
+                      required
+                      value={formdata?.password}
+                      onChange={handlePassword}
+                      helperText={"Example: Abc123@#"}
+                    />
+                  </div>
+                  <div className="col-span-3">
+                    <TextField
+                      id="confirm-password"
+                      type={"password"}
+                      label="Confirm Password"
+                      className="w-full"
+                      variant="outlined"
+                      size="medium"
+                      required
+                      value={formdata?.c_password}
+                      onChange={(e) => {
+                        setPasswordError(false);
+                        setformdata({
+                          ...formdata,
+                          c_password: e.target.value,
+                        });
+                      }}
+                    />
+                  </div>
+                  {passwordError && (
+                    <div className="col-span-6">
+                      <p className="italic text-red-900">{passwordError}</p>
+                    </div>
+                  )}
+
+                  <div className="col-span-3">
+                    <Select
+                      id="user-role"
+                      value={UserRole}
+                      label="User Role"
+                      onChange={ChangeUserRole}
+                      size="medium"
+                      className="w-full"
+                      displayEmpty
+                      required
                     >
-                      {loading ? (
-                        <CircularProgress
-                          sx={{ color: "white" }}
-                          size={25}
-                          className="text-white"
-                        />
-                      ) : (
-                        <span>Register</span>
-                      )}
-                    </button>
-                    <div className="flex justify-center">
-                      <Link
-                        to={"/"}
-                        state={{
-                          continueURL: location?.state?.continueURL,
-                        }}
-                      ></Link>
-                    </div>
+                      <MenuItem value="" disabled>
+                        User Role
+                      </MenuItem>
+                      {/* <MenuItem value={"admin"}>Admin</MenuItem> */}
+                      <MenuItem value={"manager"}>Manager</MenuItem>
+                      <MenuItem value={"agent"}>Agent</MenuItem>
+                    </Select>
                   </div>
-                </form>
+                  <div className="col-span-3">
+                    {UserRole === "agent" && (
+                      <TextField
+                        id="managerId"
+                        type={"text"}
+                        label="Enter your managers code"
+                        className="w-full mb-3"
+                        variant="outlined"
+                        size="medium"
+                        sx={{ marginBottom: "7px" }}
+                        required
+                        value={formdata?.isParent}
+                        onChange={(e) => {
+                          setformdata({
+                            ...formdata,
+                            isParent: e.target.value,
+                          });
+                        }}
+                      />
+                    )}
+                    <TextField
+                      id="username"
+                      type={"text"}
+                      label="Username"
+                      className="w-full mt-3"
+                      variant="outlined"
+                      size="medium"
+                      required
+                      value={formdata?.userName}
+                      onChange={(e) => {
+                        setformdata({ ...formdata, userName: e.target.value });
+                      }}
+                    />
+                  </div>
+                  <div className="col-span-6">
+                    <TextField
+                      id="email"
+                      type={"email"}
+                      label="User Email Address"
+                      className="w-full"
+                      variant="outlined"
+                      size="medium"
+                      // error={!!emailError}
+                      required
+                      value={formdata?.userEmail}
+                      onChange={handleEmail}
+                    />
+                  </div>
+                  {emailError && (
+                    <div className="col-span-6">
+                      <p className="italic text-red-900">{emailError}</p>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <button
+                    disabled={loading ? true : false}
+                    type="submit"
+                    className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-3 px-4 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                  >
+                    {loading ? (
+                      <CircularProgress
+                        sx={{ color: "white" }}
+                        size={25}
+                        className="text-white"
+                      />
+                    ) : (
+                      <span>Create</span>
+                    )}
+                  </button>
+
+                </div>
+              </form>
+
+
               </div>
             </div>
           </div>

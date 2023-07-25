@@ -1,24 +1,16 @@
-import { Button } from "@material-tailwind/react";
-import Switch from "@mui/material/Switch";
 
 import { Box } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
-import Footer from "../../Components/Footer/Footer";
 
-import { AiOutlineEdit } from "react-icons/ai";
-import SingleUser from "../../Components/Users/SingleUser";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import EditUser from "../../Components/Users/EditUser";
 import { useLocation } from "react-router-dom";
 
 const UpdateUser = () => {
-  const { currentMode, DataGridStyles, BACKEND_URL, pageState, setpageState } =
+  const { currentMode, DataGridStyles, BACKEND_URL } =
     useStateContext();
 
   const location = useLocation();

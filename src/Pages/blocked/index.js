@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "axios";
-import { ToastContainer } from "react-toastify";
-import { Box } from "@mui/material";
 import { toast } from "react-toastify";
+import { CgUnblock } from "react-icons/cg";
 import Loader from "../../Components/Loader";
+import { IconButton } from "@mui/material";
 
 const BlockedIps = () => {
   const { currentMode, BACKEND_URL, Managers, SalesPerson } = useStateContext();
@@ -46,6 +46,47 @@ const BlockedIps = () => {
   if (loading) {
     return <Loader />;
   }
+
+
+    const handleUnblock = async (ip) => {
+    try { 
+      setLoading(true);
+      const token = localStorage.getItem("auth-token");
+
+      await axios.delete(`${BACKEND_URL}/blocked/${ip?.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      toast.success("IP unblocked successfuly!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setLoading(true);
+      fetchBlockedIPs(); 
+      
+    } catch (error) {
+      console.log(error);
+      toast.error("Couldn't unblock the IP", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
+
   return (
     <>
       <div
@@ -72,8 +113,25 @@ const BlockedIps = () => {
                 {IPs?.map((ip) => {
                   if (ip?.byIP) {
                     return (
-                      <div className="rounded m-2 w-[20%] p-3 text-white bg-black">
-                        {ip?.byIP}
+                      <div className="relative rounded m-2 w-[30%] px-3 py-4 text-black bg-[#cbcbcb]">
+                        <div className="flex items-center justify-between">
+                          <strong className="text-[#da1f26] mb-0">{ip?.byIP}</strong>
+                          <IconButton 
+                          onClick={() => handleUnblock(ip)}
+                          className="p-0"
+                            sx={{
+                              "& svg": {
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
+                              },
+                            }}
+                          >
+                            <CgUnblock />
+                          </IconButton>
+                        </div>
+                        <small>
+                          Blocked on {new Date(ip?.created_at)?.toUTCString()}
+                        </small>
                       </div>
                     );
                   }
