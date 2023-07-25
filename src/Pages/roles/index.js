@@ -24,6 +24,7 @@ import { FaBan, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
 import DeleteUser from "../../Components/Users/DeleteUser";
 import RolesComponent from "../../Components/Roles-Permissions/RolesComponent";
 import DeleteComponent from "../../Components/Roles-Permissions/DeleteComponent";
+import UpdateComponent from "../../Components/Roles-Permissions/UpdateComponent";
 
 const Role = () => {
   const {
@@ -44,6 +45,7 @@ const Role = () => {
   const [userStatus, setUserStatus] = useState();
   const [DataName, setDataName] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
+  const [openUpdateModel, setOpenUpdateModel] = useState(false);
 
   console.log("User: ", user);
   const handleChange = (event, newValue) => {
@@ -61,6 +63,13 @@ const Role = () => {
     setModel(false);
   };
 
+  const handleUpdate = (id, name) => {
+    console.log("Delete id: ", id);
+    setDataId(id);
+    setDataName(name);
+
+    setOpenUpdateModel(true);
+  };
   const handleDelete = (id, name) => {
     console.log("Delete id: ", id);
     setDataId(id);
@@ -70,6 +79,10 @@ const Role = () => {
   };
   const handleDeleteModelClose = () => {
     setOpenDeleteModel(false);
+  };
+
+  const handleCloseUpdateModel = () => {
+    setOpenUpdateModel(false);
   };
 
   const handleTrainerSwitchChange = async (cellValues) => {
@@ -263,11 +276,11 @@ const Role = () => {
                   ? "text-white bg-transparent rounded-md p-1 shadow-none "
                   : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
+              onClick={() =>
+                handleUpdate(cellValues?.id, cellValues?.row?.role)
+              }
             >
-              <Link to={`/updateuser/${cellValues?.id}`}>
-                {" "}
-                <AiOutlineEdit size={20} />
-              </Link>
+              <AiOutlineEdit size={20} />
             </Button>
           </div>
         );
@@ -459,6 +472,17 @@ const Role = () => {
                   <DeleteComponent
                     UserModelOpen={handleDelete}
                     handleUserModelClose={handleDeleteModelClose}
+                    UserData={userID}
+                    fetchData={fetchData}
+                    value={value}
+                    DataName={DataName}
+                  />
+                )}
+
+                {openUpdateModel && (
+                  <UpdateComponent
+                    handleOpenModel={HandleOpenModel}
+                    addUserModelClose={handleCloseUpdateModel}
                     UserData={userID}
                     fetchData={fetchData}
                     value={value}

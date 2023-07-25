@@ -15,26 +15,27 @@ const style = {
   boxShadow: 24,
 };
 
-const RolesComponent = ({
+const UpdateComponent = ({
   handleOpenModel,
   addUserModelClose,
   value,
   fetchData,
+  DataName,
+  UserData,
 }) => {
   const { BACKEND_URL, currentMode, User } = useStateContext();
-  const [formdata, setformdata] = useState({ user_id: User?.id, status: 1 });
+
+  const [role, setRole] = useState(DataName);
   const [loading, setloading] = useState(false);
+  const [updateData, setUpdateData] = useState();
   const token = localStorage.getItem("auth-token");
 
-  const AddData = async () => {
-    function isSafeInput(input) {
-      const regex = /([';\/*-])/g; // Characters to look for in input
-      return !regex.test(input);
-    }
+  const UpdateData = async () => {
+    setloading(true);
 
-    const { role } = formdata;
-    if (!isSafeInput(role)) {
-      toast.error("Input contains invalid data", {
+    if (!role) {
+      setloading(false);
+      toast.error("Kindly enter role name.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -47,10 +48,12 @@ const RolesComponent = ({
       return;
     }
 
-    setloading(true);
+    const formdata = new FormData();
+    formdata.append("user_id", User?.id);
+    formdata.append("role", role);
 
     await axios
-      .post(`${BACKEND_URL}/roles`, formdata, {
+      .post(`${BACKEND_URL}/roles/${UserData}`, formdata, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -115,7 +118,7 @@ const RolesComponent = ({
               <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
                 <div>
                   <h2 className="text-center text-xl font-bold text-gray-900 mt-4">
-                    Create New {value === 0 ? " Role" : " Permissions"}
+                    Update {value === 0 ? " Role" : " Permissions"}
                   </h2>
                 </div>
 
@@ -123,7 +126,7 @@ const RolesComponent = ({
                   className="mt-8 space-y-6"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    AddData();
+                    UpdateData();
                   }}
                 >
                   <input type="hidden" name="remember" defaultValue="true" />
@@ -137,13 +140,8 @@ const RolesComponent = ({
                         variant="outlined"
                         size="medium"
                         required
-                        value={formdata?.role}
-                        onChange={(e) => {
-                          setformdata({
-                            ...formdata,
-                            role: e.target.value,
-                          });
-                        }}
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
                       />
                     </div>
                   </div>
@@ -174,4 +172,4 @@ const RolesComponent = ({
   );
 };
 
-export default RolesComponent;
+export default UpdateComponent;

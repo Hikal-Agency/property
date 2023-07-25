@@ -74,7 +74,6 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
     }
   };
 
-  const updateSalaryDeduction = async (e) => {};
   return (
     <>
       <Dialog
