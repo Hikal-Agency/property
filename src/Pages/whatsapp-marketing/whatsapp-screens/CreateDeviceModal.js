@@ -26,6 +26,7 @@ const CreateDeviceModal = ({
         .toLowerCase()
         .replaceAll(" ", "-")}`;
       DeviceData.append("instance_name", sessionId);
+      DeviceData.append("user_name", User?.userName);
       DeviceData.append("status", "disconnected");
       DeviceData.append("user_id", User?.id);
 
