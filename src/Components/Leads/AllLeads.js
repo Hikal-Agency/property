@@ -108,6 +108,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const bulkImportRef = useRef();
   const dataTableRef = useRef();
 
+  // contact masking
+  // const renderMaskedContactNumber = (params) => {
+  //   const leadContact = params.getValue(params.id, "leadContact");
+
+  //   return (
+  //     <InputMask mask="(+9 99) 9999-9999" value={leadContact}>
+  //       {() => <input style={{ border: "none", outline: "none" }} />}{" "}
+  //       {/* Optional styling */}
+  //     </InputMask>
+  //   );
+  // };
+
   const location = useLocation();
   console.log("Location::", location);
 
@@ -441,19 +453,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               </IconButton>
             </p>
             {currentMode === "dark" ? (
-              <p
-                onClick={() => HandleEditFunc(cellValues)}
-              >
+              <p onClick={() => HandleEditFunc(cellValues)}>
                 <AiOutlineEdit size={20} color="white" />
               </p>
             ) : (
-              <p
-                onClick={() => HandleEditFunc(cellValues)}
-              >
-                <AiOutlineEdit
-                  size={20}
-                  color="black"
-                />
+              <p onClick={() => HandleEditFunc(cellValues)}>
+                <AiOutlineEdit size={20} color="black" />
               </p>
             )}
 
@@ -794,6 +799,401 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     },
   ];
 
+  const DataEntryColumns = [
+    {
+      field: "id",
+      headerName: "#",
+      minWidth: 25,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <small>
+            <strong>{cellValues?.formattedValue}</strong>
+          </small>
+        );
+      },
+    },
+
+    {
+      field: "leadName",
+      headerAlign: "center",
+      headerName: "Lead name",
+      minWidth: 85,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p
+              className="text-center capitalize"
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "leadContact",
+      headerName: "Contact",
+      minWidth: 115,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (params) => {
+        const contactNumber = params.getValue(params.id, "leadContact");
+
+        // Get the last four digits of the contact number
+        const lastFourDigits = contactNumber?.slice(-4).replace(/\d/g, "*");
+
+        // Replace all digits except the last four with "*"
+        const stearics = contactNumber?.slice(0, -4) + lastFourDigits;
+
+        // Apply masking logic here, assuming the format is "(+X XX) XXXX-XXXX"
+        const maskedContactNumber = ` ${stearics}`;
+
+        return <span>{maskedContactNumber}</span>;
+      },
+    },
+
+    {
+      field: "project",
+      headerName: "Project",
+      headerAlign: "center",
+      minWidth: 40,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p
+              className="text-center capitalize"
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      headerAlign: "center",
+      field: "leadType",
+      headerName: "Property",
+      minWidth: 85,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-col">
+            <p>{cellValues.row.leadType}</p>
+            <p>{cellValues.row.enquiryType}</p>
+          </div>
+        );
+      },
+    },
+    {
+      headerAlign: "center",
+      field: "assignedToManager",
+      headerName: "Manager",
+      minWidth: 90,
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => (
+        <RenderManagers cellValues={cellValues} lead_origin={lead_origin} />
+      ),
+    },
+    {
+      headerAlign: "center",
+      field: "assignedToSales",
+      headerName: "Agent",
+      minWidth: 90,
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => (
+        <RenderSalesperson cellValues={cellValues} lead_origin={lead_origin} />
+      ),
+    },
+    {
+      field: "feedback",
+      headerAlign: "center",
+      headerName: "Feedback",
+      minWidth: 85,
+      flex: 1,
+
+      hideable: false,
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
+    },
+
+    {
+      field: "priority",
+      headerName: "Priority",
+      minWidth: 85,
+      headerAlign: "center",
+      flex: 1,
+      hideable: false,
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
+    },
+
+    {
+      field: "otp",
+      headerName: lead_origin === "transfferedleads" ? "Ex-Agent" : "OTP",
+      minWidth: 72,
+      headerAlign: "center",
+      // headerClassName: headerClasses.header,
+      headerClassName: "break-normal",
+      flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>{cellValues.row.transferredFromName || "No Name"}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {cellValues.formattedValue === "Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
+                    OTP VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue === "Not Verified" && (
+                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                    NOT VERIFIED
+                  </span>
+                </div>
+              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
+                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                      {cellValues.formattedValue}
+                    </span>
+                  </div>
+                )}
+            </div>
+          );
+        }
+      },
+    },
+    {
+      field: "creationDate",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred Date" : "Date",
+      minWidth: 55,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>
+                {moment(cellValues.row.transferredDate).format("YYYY-MM-DD")}
+              </p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {moment(cellValues.formattedValue).format("YYYY-MM-DD")}
+            </div>
+          );
+        }
+      },
+    },
+
+    {
+      field: "leadSource",
+      headerName: "Src",
+      flex: 1,
+      minWidth: 35,
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        console.log("Start::", cellValues.row.leadSource);
+        const sourceIcons = {
+          "campaign snapchat": () => <FaSnapchat size={22} color={"#f6d80a"} />,
+          "bulk import": () => <FaSnapchat size={22} color={"#f6d80a"} />,
+          "campaign facebook": () => <FaFacebook size={22} color={"#0e82e1"} />,
+          "campaign tiktok": () => (
+            <img
+              src={"/assets/tiktok-app.svg"}
+              alt=""
+              style={{ margin: "0 auto" }}
+              height={18}
+              width={18}
+              className="object-cover"
+            />
+          ),
+          "campaign googleads": () => <FcGoogle size={22} />,
+          campaign: () => <FcGoogle size={22} />,
+          cold: () => <BsSnow2 size={22} color={"#0ec7ff"} />,
+          personal: () => <BsPersonCircle size={22} color={"#14539a"} />,
+          whatsapp: () => <FaWhatsapp size={22} color={"#29EC62"} />,
+          message: () => <RiMessage2Line size={22} color={"#14539a"} />,
+          comment: () => <FaComment size={22} color={"#14539a"} />,
+          website: () => <FaGlobe size={22} color={"#14539a"} />,
+          "property finder": () => (
+            <GiMagnifyingGlass size={22} color={"#14539a"} />
+          ),
+          "propety finder": () => (
+            <GiMagnifyingGlass size={22} color={"#14539a"} />
+          ),
+          self: () => <FaUser size={22} color={"#14539a"} />,
+          "campaign youtube": () => <FaYoutube size={22} color={"#FF0000"} />,
+          "campaign twitter": () => <FaTwitter size={22} color={"#14539a"} />,
+        };
+        return (
+          <>
+            <div className="flex items-center justify-center">
+              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
+                <FaArchive
+                  style={{
+                    background: "white",
+                    padding: "5px",
+                    borderRadius: "50%",
+                    width: "70%",
+                    height: "100%",
+                    margin: "0 auto",
+                  }}
+                  size={22}
+                  color={"#14539a"}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    "& svg": {
+                      background: "white",
+                      padding: "5px",
+                      borderRadius: "50%",
+                      width: "70%",
+                      height: "100%",
+                      margin: "0 auto",
+                    },
+                  }}
+                >
+                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()]
+                    ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]()
+                    : "-"}
+                </Box>
+              )}
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      field: "language",
+      headerName: "Lang",
+      headerAlign: "center",
+      minWidth: 25,
+      flex: 1,
+    },
+
+    {
+      field: "edit",
+      headerName: "Edit",
+      flex: 1,
+      width: "100%",
+      sortable: false,
+      filterable: false,
+      headerAlign: "center",
+
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
+          >
+            <p
+              onMouseEnter={() => setHovered("edit")}
+              onMouseLeave={() => setHovered("")}
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleReminderBtn(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <BsAlarm size={19} />
+              </IconButton>
+            </p>
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "bg-transparent text-white rounded-md shadow-none"
+                  : "bg-transparent text-black rounded-md shadow-none"
+              }`}
+              onClick={() => HandleEditFunc(cellValues)}
+            >
+              <IconButton sx={{ padding: 0 }}>
+                <AiOutlineEdit size={20} />
+              </IconButton>
+            </p>
+
+            {cellValues.row.leadId !== null && (
+              <p>
+                <Link
+                  to={`/timeline/${cellValues.row.leadId}`}
+                  className={`editLeadBtn cursor-pointer ${
+                    currentMode === "dark"
+                      ? "bg-transparent rounded-md shadow-none"
+                      : "bg-transparent rounded-md shadow-none"
+                  }`}
+                >
+                  <IconButton
+                    sx={{ padding: 0 }}
+                    color={currentMode === "dark" ? "black" : "white"}
+                  >
+                    <AiOutlineHistory size={20} style={{ color: "inherit" }} />
+                  </IconButton>
+                </Link>
+              </p>
+            )}
+
+            <p
+              onClick={() => {
+                setLeadToDelete(cellValues?.row.leadId);
+                setDeleteModelOpen(true);
+                setBulkDeleteClicked(false);
+              }}
+              disabled={deleteloading ? true : false}
+              className={`deleteLeadBtn cursor-pointer ${
+                currentMode === "dark"
+                  ? " bg-transparent rounded-md shadow-none"
+                  : "bg-transparent rounded-md shadow-none"
+              }`}
+            >
+              <IconButton
+                sx={{ padding: 0 }}
+                color={currentMode === "dark" ? "black" : "white"}
+              >
+                <BsTrash
+                  className="deleteLeadBtn"
+                  size={18}
+                  style={{ color: "inherit" }}
+                />
+              </IconButton>
+            </p>
+          </div>
+        );
+      },
+    },
+  ];
+
   const columns = [
     {
       field: "id",
@@ -840,6 +1240,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       flex: 1,
     },
+
     {
       field: "project",
       headerName: "Project",
@@ -2325,6 +2726,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   ? CEOColumns
                   : User?.role === 3
                   ? ManagerColumns
+                  : User?.role === 8
+                  ? DataEntryColumns
                   : AgentColumns
               }
               filterModel={{

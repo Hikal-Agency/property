@@ -8,19 +8,20 @@ import {
   TextField,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
+// import LeadNotes from "../LeadNotes/LeadNotes";
 import { ToastContainer, toast } from "react-toastify";
 import { IoMdClose } from "react-icons/io";
 import { IoIosAlert } from "react-icons/io";
 import { useEffect, useState } from "react";
 import axios from "../../axoisConfig";
 
-const DeleteUser = ({
+const DeleteComponent = ({
   UserData,
   UserModelOpen,
   handleUserModelClose,
-  UserStatus,
-  UserName,
-  fetchUser,
+  fetchData,
+  value,
+  DataName,
 }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [deletebtnloading, setdeleteBtnLoading] = useState(false);
@@ -31,7 +32,6 @@ const DeleteUser = ({
   const [answerVal, setAnswerVal] = useState("");
 
   console.log("deativate user model: ", UserData);
-  console.log("userStatus: ", UserStatus);
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -44,28 +44,20 @@ const DeleteUser = ({
 
     const token = localStorage.getItem("auth-token");
 
-    const userSTatus = UserStatus === 1 ? 2 : 1;
-
     axios
-      .post(
-        `${BACKEND_URL}/updateuser/${UserData}`,
-        { status: userSTatus },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
+      .delete(`${BACKEND_URL}/roles/${UserData}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
       .then((result) => {
-        console.log("res user deativated  ", result);
+        console.log("data deleted  ", result);
         setdeleteBtnLoading(false);
 
         handleUserModelClose(true);
         toast.success(
-          `User ${
-            UserStatus === 1 ? "Deativated" : "Reactivated"
-          } Successfully`,
+          `${value === 0 ? "Role " : "Permission "}deleted Successfully`,
           {
             position: "top-right",
             autoClose: 3000,
@@ -77,10 +69,10 @@ const DeleteUser = ({
           }
         );
 
-        fetchUser(token);
+        fetchData(token);
       })
       .catch((err) => {
-        console.log("deactivate: ", err);
+        console.log("deleted: ", err);
         setdeleteBtnLoading(false);
 
         toast.error("Something Went Wrong! Please Try Again", {
@@ -95,79 +87,6 @@ const DeleteUser = ({
       });
   };
 
-  // const handleDeleteUser = async (e) => {
-  //   e.preventDefault();
-  //   setdeleteBtnLoading(true);
-
-  //   const token = localStorage.getItem("auth-token");
-
-  //   const userSTatus = UserStatus === 1 ? 2 : 1;
-
-  //   // Determine the endpoint based on UserStatus
-  //   const url =
-  //     UserStatus === 1
-  //       ? `${BACKEND_URL}/deactivate/${UserData}`
-  //       : `${BACKEND_URL}/updateuser/${UserData}`;
-
-  //   axios
-  //     .post(
-  //       url,
-  //       { status: userSTatus },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     )
-  //     .then((result) => {
-  //       console.log("res user status updated  ", result);
-  //       setdeleteBtnLoading(false);
-
-  //       handleUserModelClose(true);
-  //       toast.success(
-  //         `User ${
-  //           UserStatus === 1 ? "Deativated" : "Reactivated"
-  //         } Successfully`,
-  //         {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         }
-  //       );
-  //     })
-  //     .catch((err) => {
-  //       console.log("status update error: ", err);
-  //       setdeleteBtnLoading(false);
-
-  //       toast.error("Something Went Wrong! Please Try Again", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     });
-  // };
-  useEffect(() => {
-    setRandNumbers({
-      firstNumber: Math.ceil(Math.random() * 10),
-      secondNumber: Math.ceil(Math.random() * 10),
-    });
-  }, []);
-
-  let isCaptchaVerified = false;
-  if (randNumbers?.firstNumber && randNumbers?.secondNumber) {
-    isCaptchaVerified =
-      Number(answerVal) ===
-      Number(randNumbers?.firstNumber) + Number(randNumbers?.secondNumber);
-  }
   return (
     <>
       {console.log("user data is")}
@@ -198,26 +117,9 @@ const DeleteUser = ({
               }`}
             >
               {`Do you really want to ${
-                UserStatus === 1 ? "De-activate" : "Re-activate"
-              } ${UserName}?`}
+                value === 0 ? "" : "Re-activate"
+              } ${DataName}?`}
             </h1>
-            <small className="text-center w-[80%] mx-auto text-gray-500">
-              All the leads assigned to {UserName} will be unassigned
-              automatically and can be found in Reshuffled leads.
-            </small>
-
-            <div className="bg-red-600 text-center rounded p-3 mb-2 mt-4 w-full text-white">
-              <strong style={{ fontSize: 20 }}>
-                {randNumbers?.firstNumber} + {randNumbers?.secondNumber} = ?
-              </strong>
-            </div>
-            <TextField
-              onInput={(e) => setAnswerVal(e.target.value)}
-              value={answerVal}
-              label="Type your answer here.."
-              type="number"
-              fullWidth
-            />
           </div>
 
           <div className="action buttons mt-5 flex items-center justify-center space-x-2">
@@ -225,13 +127,13 @@ const DeleteUser = ({
               className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
               ripple="true"
               size="lg"
-              disabled={!isCaptchaVerified}
+              disabled={deletebtnloading}
               onClick={handleDeleteUser}
             >
               {deletebtnloading ? (
                 <CircularProgress size={18} sx={{ color: "blue" }} />
               ) : (
-                <span>{UserStatus === 1 ? "deactivate" : "reactive"}</span>
+                <span>Delete</span>
               )}
             </Button>
 
@@ -254,4 +156,4 @@ const DeleteUser = ({
   );
 };
 
-export default DeleteUser;
+export default DeleteComponent;

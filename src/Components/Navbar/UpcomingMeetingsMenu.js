@@ -11,8 +11,10 @@ import { Link } from "react-router-dom";
 const UpcomingMeetingsMenu = () => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [upcomingMeetings, setUpcomingMeetings] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const FetchUpcomingMeetings = async (token) => {
+    setLoading(true);
     await axios
       .get(`${BACKEND_URL}/dashboard?page=1`, {
         headers: {
@@ -20,10 +22,13 @@ const UpcomingMeetingsMenu = () => {
           Authorization: "Bearer " + token,
         },
       })
+
       .then((result) => {
+        setLoading(false);
         setUpcomingMeetings(result.data.upcoming_meetings);
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
       });
   };
@@ -49,7 +54,19 @@ const UpcomingMeetingsMenu = () => {
         >
           View all meetings
         </Button>
-        {upcomingMeetings?.length > 0 ? (
+        {loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            <CircularProgress size={30} />
+          </div>
+        )}
+        {!loading && upcomingMeetings?.length > 0 ? (
           upcomingMeetings.map((meeting, index) => {
             return (
               <div
@@ -124,7 +141,7 @@ const UpcomingMeetingsMenu = () => {
               height: "100%",
             }}
           >
-            <CircularProgress size={30} />
+            <h2>No meetings</h2>
           </div>
         )}
       </Container>

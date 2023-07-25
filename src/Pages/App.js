@@ -69,6 +69,7 @@ import TodayCallLogs from "./leaderboard/TodayCallLogs";
 import AttendanceLogin from "./auth/attendanceLogin";
 import Search from "./search/Search";
 import Restricted from "./Restricted";
+import Role from "./roles";
 
 const libraries = ["places"];
 
@@ -217,6 +218,12 @@ const routes = [
     restrictedRoles: [2, 3, 7],
   },
   {
+    path: "/roles",
+    element: <Role />,
+    pageName: "Roles",
+    // restrictedRoles: [2, 3, 7],
+  },
+  {
     path: "/clients/agencyUsers/:client_id",
     element: <AgencyUsers />,
     pageName: "Clients",
@@ -247,7 +254,7 @@ const routes = [
     path: "/marketing/instances",
     element: <WhatsappMarketing />,
     pageName: "Marketing",
-    restrictedRoles: [2, 3, 7]
+    restrictedRoles: [2, 3, 7],
   },
   {
     path: "/location/livelocation",
