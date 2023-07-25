@@ -45,16 +45,12 @@ const DeleteComponent = ({
     const token = localStorage.getItem("auth-token");
 
     axios
-      .post(
-        `${BACKEND_URL}/roles/${UserData}`,
-
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
+      .delete(`${BACKEND_URL}/roles/${UserData}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
       .then((result) => {
         console.log("data deleted  ", result);
         setdeleteBtnLoading(false);

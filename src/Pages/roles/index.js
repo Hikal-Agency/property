@@ -140,7 +140,7 @@ const Role = () => {
           },
         }
       );
-      console.log("Data: ", response.data.role);
+      console.log("Data: ", response?.data?.role);
 
       let rowsDataArray = "";
       let rowsdata;
@@ -240,59 +240,22 @@ const Role = () => {
       renderCell: (cellValues) => {
         return (
           <div className=" space-x-2 w-full flex items-center justify-center ">
-            {User?.role === 1 || User?.role === 2 ? (
-              <>
-                {cellValues.row.status === 1 ? (
-                  <Button
-                    onClick={() =>
-                      handleDelete(cellValues?.id, cellValues?.row?.role)
-                    }
-                    className={`editUserBtn ${
-                      currentMode === "dark"
-                        ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                        : "text-black bg-transparent rounded-md p-1 shadow-none "
-                    }`}
-                  >
-                    {currentMode === "dark" ? (
-                      <FaBan style={{ color: "white" }} />
-                    ) : (
-                      <FaBan style={{ color: "black" }} />
-                    )}
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() =>
-                      handleDelete(
-                        cellValues?.id,
-                        cellValues.row.status,
-                        cellValues?.row?.userName
-                      )
-                    }
-                    className={`editUserBtn ${
-                      currentMode === "dark"
-                        ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                        : "text-black bg-transparent rounded-md p-1 shadow-none "
-                    }`}
-                  >
-                    {currentMode === "dark" ? (
-                      <FaUnlock style={{ color: "white" }} />
-                    ) : (
-                      <FaUnlock style={{ color: "black" }} />
-                    )}
-                  </Button>
-                )}
-                {/* <Link
-                  to={`/updateuser/${cellValues?.id}`}
-                  className="text-blue-500"
-                >
-                  <FaEdit
-                    style={{
-                      color: currentMode == "dark" ? "white" : "black",
-                    }}
-                  />
-                </Link> */}
-              </>
-            ) : null}
+            <Button
+              onClick={() =>
+                handleDelete(cellValues?.id, cellValues?.row?.role)
+              }
+              className={`editUserBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
+              }`}
+            >
+              {currentMode === "dark" ? (
+                <FaBan style={{ color: "white" }} />
+              ) : (
+                <FaBan style={{ color: "black" }} />
+              )}
+            </Button>
             <Button
               title="Edit User"
               className={`editUserBtn ${
@@ -422,10 +385,6 @@ const Role = () => {
                 </div>
                 <div className="mt-3 pb-3">
                   <TabPanel value={value} index={0}>
-                    {/* <RolesComponent
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                    /> */}
                     <Box
                       className={`${currentMode}-mode-datatable`}
                       // width={"100%"}
@@ -507,9 +466,11 @@ const Role = () => {
                   />
                 )}
                 {model && (
-                  <AddUserModel
+                  <RolesComponent
                     handleOpenModel={HandleOpenModel}
                     addUserModelClose={HandleModelClose}
+                    value={value}
+                    fetchData={fetchData}
                   />
                 )}
               </div>
