@@ -129,7 +129,9 @@ const Role = () => {
     try {
       // const token = localStorage.getItem("auth-token");
       const response = await axios.get(
-        `${BACKEND_URL}/roles?page=${pageState.page}`,
+        `${BACKEND_URL}/${value === 0 ? "roles" : "permissions"}?page=${
+          pageState.page
+        }`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -140,30 +142,31 @@ const Role = () => {
       console.log("Data: ", response.data.role);
 
       let rowsDataArray = "";
-      if (response?.data?.role?.current_page > 1) {
-        const theme_values = Object.values(response?.data?.role?.data);
-        rowsDataArray = theme_values;
-      } else {
-        rowsDataArray = response?.data?.role?.data;
-      }
+      let rowsdata;
+      if (value === 0) {
+        if (response?.data?.role?.current_page > 1) {
+          const theme_values = Object.values(response?.data?.role?.data);
+          rowsDataArray = theme_values;
+        } else {
+          rowsDataArray = response?.data?.role?.data;
+        }
 
-      let rowsdata = rowsDataArray?.map((row, index) => ({
-        id:
-          pageState.page > 1
-            ? pageState.page * pageState.pageSize -
-              (pageState.pageSize - 1) +
-              index
-            : index + 1,
-        id: row?.id,
-        userName: row?.userName || "No Name",
-        position: row?.position || "No Position",
-        userContact: row?.userContact || "No Contact",
-        userEmail: row?.userEmail || "No Email",
-        status: row?.status,
-        is_trainer: row?.is_trainer,
-        profile_picture: row?.profile_picture,
-        edit: "edit",
-      }));
+        rowsdata = rowsDataArray?.map((row, index) => ({
+          id:
+            pageState.page > 1
+              ? pageState.page * pageState.pageSize -
+                (pageState.pageSize - 1) +
+                index
+              : index + 1,
+          id: row?.id,
+          role: row?.role || "No Role",
+          status: row?.status || "No Status",
+          updated_at: row?.updated_at || "No Time",
+          user_id: row?.user_id || "No User Id",
+          edit: "edit",
+        }));
+      } else {
+      }
 
       console.log("Rows Data: ", rowsdata);
 
@@ -200,61 +203,16 @@ const Role = () => {
 
   const columns = [
     {
-      field: "profile_picture",
-      headerName: "User",
-      headerAlign: "center",
-      align: "center",
-      editable: false,
-      minWidth: 180,
-      flex: 1,
-      renderCell: (cellValues) => {
-        console.log("Image: ", cellValues);
-        const imgSrc = cellValues?.formattedValue;
-        if (imgSrc) {
-          return (
-            <>
-              <div className="flex flex-col items-center my-2">
-                <img
-                  src={imgSrc}
-                  alt="User"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "50%",
-                  }}
-                />
-                <h2 className="mt-2">{cellValues.row.userName}</h2>
-              </div>
-            </>
-          );
-        } else {
-          return (
-            <>
-              <div className="flex flex-col items-center my-2">
-                <Avatar
-                  alt="User"
-                  variant="circular"
-                  style={{ width: "30px", height: "30px" }}
-                />
-                <h2 className="mt-2">{cellValues.row.userName}</h2>
-              </div>
-            </>
-          );
-        }
-      },
-    },
-
-    {
-      field: "userContact",
-      headerName: "Contact Number",
+      field: "role",
+      headerName: "Role",
       headerAlign: "center",
       editable: false,
       minwidth: 130,
       flex: 1,
     },
     {
-      field: "position",
-      headerName: "Position",
+      field: "status",
+      headerName: "Status",
       headerAlign: "center",
       editable: false,
       minwidth: 150,
@@ -263,104 +221,13 @@ const Role = () => {
         return (
           <div className="w-full flex items-center justify-center ">
             <p className="text-center capitalize">
-              {cellValues?.formattedValue}
+              {cellValues?.formattedValue === 1 ? "Active" : "Deactive"}
             </p>
           </div>
         );
       },
     },
-    {
-      field: "userEmail",
-      headerName: "Email Address",
-      headerAlign: "center",
-      editable: false,
-      minwidth: 250,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    {
-      field: "is_trainer",
-      headerName: "Trainer",
-      headerAlign: "center",
-      editable: false,
-      minwidth: 60,
-      flex: 1,
-      renderCell: (cellValues) => {
-        console.log("Trainer: ", cellValues);
 
-        return (
-          <div className="w-full flex items-center justify-center capitalize">
-            <Switch
-              defaultChecked={cellValues?.formattedValue === 1}
-              onChange={() => handleTrainerSwitchChange(cellValues)}
-              sx={{
-                color: "green !important",
-                "& .MuiSwitch-thumb": {
-                  color:
-                    cellValues?.formattedValue === 1
-                      ? "green !important"
-                      : "#B91C1C !important",
-                },
-                "& .Mui-checked": {
-                  color:
-                    cellValues?.formattedValue === 1
-                      ? "green !important"
-                      : "#B91C1C !important",
-                },
-                "& .MuiSwitch-track": {
-                  backgroundColor:
-                    cellValues?.formattedValue === 1
-                      ? "green !important"
-                      : "#B91C1C !important",
-                },
-                "& .css-1q0bjt2-MuiSwitch-root .MuiSwitch-thumb": {
-                  backgroundColor:
-                    cellValues?.formattedValue === 1
-                      ? "green !important"
-                      : "#B91C1C !important",
-                },
-              }}
-            />
-          </div>
-        );
-      },
-    },
-
-    {
-      field: "status",
-      headerName: "Status",
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <>
-            {cellValues?.formattedValue === 1 ? (
-              <div className="w-full h-full flex justify-center items-center text-[#0f9d58] px-5 text-xs font-semibold">
-                ACTIVE
-              </div>
-            ) : (
-              <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
-                DEACTIVE
-              </div>
-            )}
-            {/*
-            {cellValues?.formattedValue === 0 && (
-              <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
-                DEACTIVE
-              </div>
-            )} */}
-          </>
-        );
-      },
-    },
     {
       field: "",
       headerName: "Action",
@@ -502,12 +369,6 @@ const Role = () => {
           <div className={`w-full `}>
             <div className="pl-3">
               <div className="my-5 mb-10">
-                {model && (
-                  <AddUserModel
-                    handleOpenModel={HandleOpenModel}
-                    addUserModelClose={HandleModelClose}
-                  />
-                )}
                 <div className="mt-3 flex justify-between items-center">
                   <h1
                     className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
@@ -648,42 +509,12 @@ const Role = () => {
                     fetchUser={fetchData}
                   />
                 )}
-                {/* <Box width={"100%"} sx={DataGridStyles}>
-                  <DataGrid
-                    autoHeight
-                    disableSelectionOnClick
-                    rows={pageState.data}
-                    columns={columns}
-                    rowCount={pageState.total}
-                    loading={pageState.isLoading}
-                    rowsPerPageOptions={[30, 50, 75, 100]}
-                    pagination
-                    width="auto"
-                    paginationMode="server"
-                    page={pageState.page - 1}
-                    pageSize={pageState.pageSize}
-                    onPageChange={(newPage) => {
-                      setpageState((old) => ({ ...old, page: newPage + 1 }));
-                    }}
-                    onPageSizeChange={(newPageSize) =>
-                      setpageState((old) => ({
-                        ...old,
-                        pageSize: newPageSize,
-                      }))
-                    }
-                    sx={{
-                      boxShadow: 2,
-                      "& .MuiDataGrid-cell:hover": {
-                        cursor: "pointer",
-                      },
-                    }}
-                    getRowClassName={(params) =>
-                      params.indexRelativeToCurrentPage % 2 === 0
-                        ? "even"
-                        : "odd"
-                    }
+                {model && (
+                  <AddUserModel
+                    handleOpenModel={HandleOpenModel}
+                    addUserModelClose={HandleModelClose}
                   />
-                </Box> */}
+                )}
               </div>
             </div>
           </div>
