@@ -132,7 +132,7 @@ const RolesComponent = ({
                       <TextField
                         id=""
                         type="text"
-                        label="Role"
+                        label={`${value === 0 ? "Role" : "Permissions"}`}
                         className="w-full"
                         variant="outlined"
                         size="medium"
