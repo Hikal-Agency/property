@@ -1372,6 +1372,11 @@ const Sidebarmui = () => {
           link: "/appointments/create",
         },
         {
+          name: "Roles",
+          icon: <BsCalendarWeekFill />,
+          link: "/roles",
+        },
+        {
           name: "Meetings",
           icon: <BsCalendarWeekFill />,
           link: "/meetings",
