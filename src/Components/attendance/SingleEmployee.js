@@ -605,6 +605,7 @@ const SingleEmployee = ({ user }) => {
 
         setpageState((old) => ({
           ...old,
+          isLoading: false,
           data: rowsdata,
           attended_count: attended_count,
           leave_count: leave_count,
@@ -880,8 +881,8 @@ const SingleEmployee = ({ user }) => {
                           rows={pageState.data}
                           columns={columns}
                           // rowCount={pageState.total}
-                          // loading={pageState.isLoading}
-                          rowsPerPageOptions={[30, 50, 75, 100]}
+                          loading={pageState.isLoading}
+                          // rowsPerPageOptions={[30, 50, 75, 100]}
                           pagination
                           componentsProps={{
                             toolbar: {
