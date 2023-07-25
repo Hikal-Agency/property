@@ -9,7 +9,7 @@ body {
 }
 
 html, body {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 @tailwind base;
@@ -48,15 +48,15 @@ input[type="number"] {
 }
 
 .MuiDataGrid-panel .MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
-  color :"red !important"
+  color :"#DA1F26 !important"
 }
 
 .MuiDataGrid-panel .MuiButtonBase-root .MuiSwitch-switchBase{
-  color: "red";
+  color: "#DA1F26";
 }
 
 .MuiDataGrid-panel .MuiSwitch-root .MuiSwitch-track {
-background-color: "red";
+background-color: "#DA1F26";
 }
 .MuiDataGrid-panel  .css-1ycxvqq-MuiSwitch-root .MuiSwitch-thumb .MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
   color : "#DA1F26 !important"
@@ -206,7 +206,7 @@ aside.ps-sidebar-root {
   top: 0 !important;
   z-index: 10 !important;
   min-height: 45px !important;
-  font-size: 13px !important;
+  font-size: 12px !important;
 }
 
 .MuiDataGrid-columnHeaderCheckbox {
@@ -407,7 +407,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
 .leads_counter {
    color: white !important;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 12px;
   text-align: center;
   border-radius: 2px;
   width: 42px;

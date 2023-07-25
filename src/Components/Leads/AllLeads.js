@@ -228,25 +228,24 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       if (l) {
         return l.code.toUpperCase();
       } else {
-        return "Invalid";
+        return language;
       }
     } else {
       return null;
     }
   };
 
+  // ROLE 3
   const ManagerColumns = [
     {
       field: "id",
       headerName: "#",
-      minWidth: 30,
+      minWidth: 20,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <small>
-            <strong>{cellValues?.formattedValue}</strong>
-          </small>
+          <strong>{cellValues?.formattedValue}</strong>
         );
       },
     },
@@ -261,7 +260,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         return (
           <div className="w-full ">
             <p
-              className="text-center capitalize"
               style={{
                 fontFamily: isArabic(cellValues?.formattedValue)
                   ? "Noto Kufi Arabic"
@@ -289,17 +287,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
-            <p
-              className="text-center capitalize"
-              style={{
-                fontFamily: isArabic(cellValues?.formattedValue)
-                  ? "Noto Kufi Arabic"
-                  : "inherit",
-              }}
-            >
-              {cellValues?.formattedValue}
-            </p>
+          // <div className="w-full ">
+          //   <p
+          //     style={{
+          //       fontFamily: isArabic(cellValues?.formattedValue)
+          //         ? "Noto Kufi Arabic"
+          //         : "inherit",
+          //     }}
+          //   >
+          //     {cellValues?.formattedValue}
+          //   </p>
+          // </div>
+          <div className="flex flex-col">
+            <p>{cellValues.row.project}</p>
+            <p>{cellValues.row.leadFor}</p>
           </div>
         );
       },
@@ -480,6 +481,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     },
   ];
 
+  // ROLE 7
   const AgentColumns = [
     {
       field: "id",
@@ -799,6 +801,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     },
   ];
 
+  // ROLE 8
   const DataEntryColumns = [
     {
       field: "id",
@@ -1194,18 +1197,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     },
   ];
 
+  // ROLE 1
   const columns = [
     {
       field: "id",
       headerName: "#",
-      minWidth: 25,
+      minWidth: 20,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <small>
-            <strong>{cellValues?.formattedValue}</strong>
-          </small>
+          <strong>{cellValues?.formattedValue}</strong>
         );
       },
     },
@@ -1220,7 +1222,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         return (
           <div className="w-full ">
             <p
-              className="text-center capitalize"
               style={{
                 fontFamily: isArabic(cellValues?.formattedValue)
                   ? "Noto Kufi Arabic"
@@ -1249,17 +1250,21 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
-            <p
-              className="text-center capitalize"
-              style={{
-                fontFamily: isArabic(cellValues?.formattedValue)
-                  ? "Noto Kufi Arabic"
-                  : "inherit",
-              }}
-            >
-              {cellValues?.formattedValue}
-            </p>
+          // <div className="w-full ">
+          //   <p
+          //     className="text-center capitalize"
+          //     style={{
+                // fontFamily: isArabic(cellValues?.formattedValue)
+          //         ? "Noto Kufi Arabic"
+          //         : "inherit",
+          //     }}
+          //   >
+          //     {cellValues?.formattedValue}
+          //   </p>
+          // </div>
+          <div className="flex flex-col">
+            <p>{cellValues.row.project}</p>
+            <p>{cellValues.row.leadFor}</p>
           </div>
         );
       },
@@ -1273,8 +1278,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
-            <p>{cellValues.row.leadType}</p>
             <p>{cellValues.row.enquiryType}</p>
+            <p>{cellValues.row.leadType}</p>
           </div>
         );
       },
@@ -1283,7 +1288,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       field: "assignedToManager",
       headerName: "Manager",
-      minWidth: 90,
+      minWidth: 100,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
@@ -1294,7 +1299,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       field: "assignedToSales",
       headerName: "Agent",
-      minWidth: 90,
+      minWidth: 100,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
@@ -1305,27 +1310,31 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "feedback",
       headerAlign: "center",
       headerName: "Feedback",
-      minWidth: 85,
+      minWidth: 80,
       flex: 1,
 
       hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
+      renderCell: (cellValues) => (
+        <RenderFeedback cellValues={cellValues} />
+      ),
     },
 
     {
       field: "priority",
       headerName: "Priority",
-      minWidth: 85,
+      minWidth: 80,
       headerAlign: "center",
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
+      renderCell: (cellValues) => (
+        <RenderPriority cellValues={cellValues} />
+      ),
     },
 
     {
       field: "otp",
       headerName: lead_origin === "transfferedleads" ? "Ex-Agent" : "OTP",
-      minWidth: 72,
+      minWidth: 80,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
       headerClassName: "break-normal",
@@ -1333,17 +1342,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       renderCell: (cellValues) => {
         if (lead_origin === "transfferedleads") {
           return (
-            <div style={{ fontSize: 10 }}>
+            <div style={{ fontSize: 11 }}>
               <p>{cellValues.row.transferredFromName || "No Name"}</p>
             </div>
           );
         } else {
           return (
-            <div style={{ fontSize: 10 }}>
+            <div style={{ fontSize: 9 }}>
               {cellValues.formattedValue === "Verified" && (
                 <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
-                    OTP VERIFIED
+                  <span className="bg-[#238e41] p-1 rounded-md w-24 text-center">
+                    VERIFIED
                   </span>
                 </div>
               )}
@@ -1351,15 +1360,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               {cellValues.formattedValue === "Not Verified" && (
                 <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
                   <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
-                    NOT VERIFIED
+                    UNVERIFIED
                   </span>
                 </div>
               )}
 
               {cellValues.formattedValue !== "Not Verified" &&
                 cellValues.formattedValue !== "Verified" && (
-                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                  <div className="w-full h-full flex justify-center items-center text-white  text-center font-semibold">
+                    <span className="bg-[#000000] p-1 rounded-md w-24text-center">
                       {cellValues.formattedValue}
                     </span>
                   </div>
@@ -1369,32 +1378,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         }
       },
     },
-    {
-      field: "creationDate",
-      headerName:
-        lead_origin === "transfferedleads" ? "Transferred Date" : "Date",
-      minWidth: 55,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        if (lead_origin === "transfferedleads") {
-          return (
-            <div style={{ fontSize: 10 }}>
-              <p>
-                {moment(cellValues.row.transferredDate).format("YYYY-MM-DD")}
-              </p>
-            </div>
-          );
-        } else {
-          return (
-            <div style={{ fontSize: 10 }}>
-              {moment(cellValues.formattedValue).format("YYYY-MM-DD")}
-            </div>
-          );
-        }
-      },
-    },
-
     {
       field: "leadSource",
       headerName: "Src",
@@ -1481,12 +1464,38 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 25,
       flex: 1,
     },
+    
+    {
+      field: "creationDate",
+      headerName:
+        lead_origin === "transfferedleads" ? "Transferred Date" : "Date",
+      minWidth: 55,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        if (lead_origin === "transfferedleads") {
+          return (
+            <div style={{ fontSize: 10 }}>
+              <p>
+                {moment(cellValues.row.transferredDate).format("YYYY-MM-DD")}
+              </p>
+            </div>
+          );
+        } else {
+          return (
+            <div style={{ fontSize: 10 }}>
+              {moment(cellValues.formattedValue).format("YYYY-MM-DD")}
+            </div>
+          );
+        }
+      },
+    },
 
     {
       field: "edit",
       headerName: "Edit",
       flex: 1,
-      width: "100%",
+      minWidth: 100,
       sortable: false,
       filterable: false,
       headerAlign: "center",
@@ -1508,7 +1517,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               onClick={() => HandleReminderBtn(cellValues)}
             >
               <IconButton sx={{ padding: 0 }}>
-                <BsAlarm size={19} />
+                <BsAlarm size={16} />
               </IconButton>
             </p>
             <p
@@ -1521,7 +1530,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               onClick={() => HandleEditFunc(cellValues)}
             >
               <IconButton sx={{ padding: 0 }}>
-                <AiOutlineEdit size={20} />
+                <AiOutlineEdit size={16} />
               </IconButton>
             </p>
 
@@ -1539,7 +1548,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     sx={{ padding: 0 }}
                     color={currentMode === "dark" ? "black" : "white"}
                   >
-                    <AiOutlineHistory size={20} style={{ color: "inherit" }} />
+                    <AiOutlineHistory size={16} style={{ color: "inherit" }} />
                   </IconButton>
                 </Link>
               </p>
