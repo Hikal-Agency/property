@@ -23,6 +23,7 @@ import AddUserModel from "../../Components/addUser/AddUserModel";
 import { FaBan, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
 import DeleteUser from "../../Components/Users/DeleteUser";
 import RolesComponent from "../../Components/Roles-Permissions/RolesComponent";
+import DeleteComponent from "../../Components/Roles-Permissions/DeleteComponent";
 
 const Role = () => {
   const {
@@ -39,9 +40,9 @@ const Role = () => {
   const [tabValue, setTabValue] = useState(0);
   const [value, setValue] = useState(0);
   const [model, setModel] = useState(false);
-  const [userID, setUserId] = useState();
+  const [userID, setDataId] = useState();
   const [userStatus, setUserStatus] = useState();
-  const [username, setUserName] = useState();
+  const [DataName, setDataName] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
 
   console.log("User: ", user);
@@ -60,11 +61,11 @@ const Role = () => {
     setModel(false);
   };
 
-  const handleDelete = (id, status, name) => {
+  const handleDelete = (id, name) => {
     console.log("Delete id: ", id);
-    setUserId(id);
-    setUserStatus(status);
-    setUserName(name);
+    setDataId(id);
+    setDataName(name);
+
     setOpenDeleteModel(true);
   };
   const handleDeleteModelClose = () => {
@@ -244,11 +245,7 @@ const Role = () => {
                 {cellValues.row.status === 1 ? (
                   <Button
                     onClick={() =>
-                      handleDelete(
-                        cellValues?.id,
-                        cellValues.row.status,
-                        cellValues?.row?.userName
-                      )
+                      handleDelete(cellValues?.id, cellValues?.row?.role)
                     }
                     className={`editUserBtn ${
                       currentMode === "dark"
@@ -500,13 +497,13 @@ const Role = () => {
                   </TabPanel>
                 </div>
                 {openDeleteModel && (
-                  <DeleteUser
+                  <DeleteComponent
                     UserModelOpen={handleDelete}
                     handleUserModelClose={handleDeleteModelClose}
                     UserData={userID}
-                    UserStatus={userStatus}
-                    UserName={username}
-                    fetchUser={fetchData}
+                    fetchData={fetchData}
+                    value={value}
+                    DataName={DataName}
                   />
                 )}
                 {model && (
