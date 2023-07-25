@@ -500,7 +500,7 @@ const Chat = () => {
                 >
                   ● Whatsapp
                 </h1>
-                <div class={`section-container-${currentMode}`}>
+                <div className={`section-container-${currentMode}`}>
                   {ready ? (
                     <Conversation
                       currentMode={currentMode}
