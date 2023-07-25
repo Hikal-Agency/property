@@ -848,10 +848,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         const contactNumber = params.getValue(params.id, "leadContact");
 
         // Get the last four digits of the contact number
-        const lastFourDigits = contactNumber.slice(-4).replace(/\d/g, "*");
+        const lastFourDigits = contactNumber?.slice(-4).replace(/\d/g, "*");
 
         // Replace all digits except the last four with "*"
-        const stearics = contactNumber.slice(0, -4) + lastFourDigits;
+        const stearics = contactNumber?.slice(0, -4) + lastFourDigits;
 
         // Apply masking logic here, assuming the format is "(+X XX) XXXX-XXXX"
         const maskedContactNumber = ` ${stearics}`;
