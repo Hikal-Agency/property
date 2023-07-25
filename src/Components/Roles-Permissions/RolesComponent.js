@@ -1,30 +1,19 @@
-import { Button } from "@material-tailwind/react";
-import Switch from "@mui/material/Switch";
-import Avatar from "@mui/material/Avatar";
-
-import { Box, Tab, Tabs, TextField } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-
+import { toast } from "react-toastify";
+import { DataGrid } from "@mui/x-data-grid";
+import { Avatar, Box, Button, Switch } from "@mui/material";
 import {
   AiOutlineEdit,
   AiOutlinePlus,
   AiOutlineTable,
   AiOutlineAppstore,
 } from "react-icons/ai";
-import SingleUser from "../../Components/Users/SingleUser";
-import { useEffect, useState } from "react";
-// import axios from "axios";
-import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import UserTable from "../../Components/Users/UserTable";
-import AddUserModel from "../../Components/addUser/AddUserModel";
+import axios from "../../axoisConfig";
 import { FaBan, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
-import DeleteUser from "../../Components/Users/DeleteUser";
-import RolesComponent from "../../Components/Roles-Permissions/RolesComponent";
 
-const Role = () => {
+const RolesComponent = () => {
   const {
     currentMode,
     DataGridStyles,
@@ -43,11 +32,6 @@ const Role = () => {
   const [userStatus, setUserStatus] = useState();
   const [username, setUserName] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
-
-  console.log("User: ", user);
-  const handleChange = (event, newValue) => {
-    setValue(value === 0 ? 1 : 0);
-  };
 
   const HandleOpenModel = () => {
     console.log("Model Open:");
@@ -120,8 +104,7 @@ const Role = () => {
       });
     }
   };
-
-  const fetchData = async (token) => {
+  const fetchUsers = async (token) => {
     setpageState((old) => ({
       ...old,
       isLoading: true,
@@ -129,7 +112,7 @@ const Role = () => {
     try {
       // const token = localStorage.getItem("auth-token");
       const response = await axios.get(
-        `${BACKEND_URL}/roles?page=${pageState.page}`,
+        `${BACKEND_URL}/users?page=${pageState.page}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -137,14 +120,14 @@ const Role = () => {
           },
         }
       );
-      console.log("Data: ", response.data.role);
+      console.log("Users: ", response);
 
       let rowsDataArray = "";
-      if (response?.data?.role?.current_page > 1) {
-        const theme_values = Object.values(response?.data?.role?.data);
+      if (response?.data?.managers?.current_page > 1) {
+        const theme_values = Object.values(response?.data?.managers?.data);
         rowsDataArray = theme_values;
       } else {
-        rowsDataArray = response?.data?.role?.data;
+        rowsDataArray = response?.data?.managers?.data;
       }
 
       let rowsdata = rowsDataArray?.map((row, index) => ({
@@ -190,14 +173,14 @@ const Role = () => {
       });
     }
   };
+
   useEffect(() => {
     setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
   }, []);
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    fetchData(token);
-  }, [pageState.page, value]);
-
+    fetchUsers(token);
+  }, [pageState.page]);
   const columns = [
     {
       field: "profile_picture",
@@ -351,7 +334,7 @@ const Role = () => {
                 DEACTIVE
               </div>
             )}
-            {/*
+            {/* 
             {cellValues?.formattedValue === 0 && (
               <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
                 DEACTIVE
@@ -417,16 +400,6 @@ const Role = () => {
                     )}
                   </Button>
                 )}
-                {/* <Link
-                  to={`/updateuser/${cellValues?.id}`}
-                  className="text-blue-500"
-                >
-                  <FaEdit
-                    style={{
-                      color: currentMode == "dark" ? "white" : "black",
-                    }}
-                  />
-                </Link> */}
               </>
             ) : null}
             <Button
@@ -447,256 +420,70 @@ const Role = () => {
       },
     },
   ];
-
-  const rows = [
-    {
-      id: 1,
-      userName: "Hala Hikal",
-      position: "Sales Agent",
-      contactNumber: "566666555",
-      email: "1@hikalproperties.ae",
-      status: "1",
-    },
-    {
-      id: 2,
-      userName: "Ameer Ali",
-      position: "Sales Agent",
-      contactNumber: "555567678",
-      email: "2@hikalproperties.ae",
-      status: "0",
-    },
-    {
-      id: 3,
-      userName: "Belal Hikal",
-      position: "Sales Manager",
-      contactNumber: "536526766",
-      email: "3@hikalproperties.ae",
-      status: "1",
-    },
-    {
-      id: 4,
-      userName: "Nada Amin",
-      position: "Head of Sales",
-      contactNumber: "5638378937",
-      email: "4@hikalproperties.ae",
-      status: "1",
-    },
-  ];
-
-  const handleRowClick = async (params, event) => {
-    if (!event.target.classList.contains("editLeadBtn")) {
-      // setSingleUserData(params.row);
-      // handleUserModelOpen();
-      <SingleUser />;
-    }
-  };
-
   return (
     <>
-      <div className="flex min-h-screen">
-        <div
-          className={`w-full ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
-          }`}
-        >
-          <div className={`w-full `}>
-            <div className="pl-3">
-              <div className="my-5 mb-10">
-                {model && (
-                  <AddUserModel
-                    handleOpenModel={HandleOpenModel}
-                    addUserModelClose={HandleModelClose}
-                  />
-                )}
-                <div className="mt-3 flex justify-between items-center">
-                  <h1
-                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-red-600 font-bold border-red-600"
-                    }`}
-                  >
-                    ● Roles & Permissions{" "}
-                    {/* <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
-                      <span>{pageState?.total}</span>
-                    </span> */}
-                  </h1>
-                </div>
-                <div className="flex items-center justify-between">
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiTabs-indicator": {
-                        height: "100%",
-                        borderRadius: "5px",
-                        backgroundColor: "#da1f26",
-                      },
-                      "& .Mui-selected": {
-                        color: "white !important",
-                        zIndex: "1",
-                      },
-                    }}
-                    className={`w-full rounded-md overflow-hidden ${
-                      currentMode === "dark" ? "bg-black" : "bg-white"
-                    } `}
-                  >
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      variant="standard"
-                      className="w-full px-1 m-1"
-                    >
-                      <Tab label="Roles" />
-                      <Tab label="Permissions" />
-                    </Tabs>
-                  </Box>
-                  <div className="w-max">
-                    <Button
-                      className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
-                      onClick={HandleOpenModel}
-                    >
-                      <span className="flex justify-between items-center ">
-                        <AiOutlinePlus style={{ marginRight: "0.5em" }} />
-                        {value === 0 ? "Add Role" : "Add Permissions"}
-                      </span>
-                    </Button>
-                  </div>
-                </div>
-                <div className="mt-3 pb-3">
-                  <TabPanel value={value} index={0}>
-                    {/* <RolesComponent
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                    /> */}
-                    <Box
-                      className={`${currentMode}-mode-datatable`}
-                      // width={"100%"}
-                      sx={DataGridStyles}
-                    >
-                      <DataGrid
-                        autoHeight
-                        disableSelectionOnClick
-                        rows={pageState.data}
-                        columns={columns}
-                        rowCount={pageState.total}
-                        loading={pageState.isLoading}
-                        rowsPerPageOptions={[30, 50, 75, 100]}
-                        pagination
-                        // width="auto"
-                        getRowHeight={() => "auto"}
-                        paginationMode="server"
-                        page={pageState.page - 1}
-                        pageSize={pageState.pageSize}
-                        componentsProps={{
-                          toolbar: {
-                            printOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            csvOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            showQuickFilter: true,
-                          },
-                        }}
-                        onPageChange={(newPage) => {
-                          setpageState((old) => ({
-                            ...old,
-                            page: newPage + 1,
-                          }));
-                        }}
-                        onPageSizeChange={(newPageSize) =>
-                          setpageState((old) => ({
-                            ...old,
-                            pageSize: newPageSize,
-                          }))
-                        }
-                        sx={{
-                          boxShadow: 2,
-                          "& .MuiDataGrid-cell:hover": {
-                            cursor: "pointer",
-                          },
-                          "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                            color:
-                              currentMode === "dark"
-                                ? "white !important"
-                                : "black !important",
-                          },
-                        }}
-                        getRowClassName={(params) =>
-                          params.indexRelativeToCurrentPage % 2 === 0
-                            ? "even"
-                            : "odd"
-                        }
-                      />
-                    </Box>
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <UserTable
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                      user={user}
-                    />
-                  </TabPanel>
-                </div>
-                {openDeleteModel && (
-                  <DeleteUser
-                    UserModelOpen={handleDelete}
-                    handleUserModelClose={handleDeleteModelClose}
-                    UserData={userID}
-                    UserStatus={userStatus}
-                    UserName={username}
-                    fetchUser={fetchData}
-                  />
-                )}
-                {/* <Box width={"100%"} sx={DataGridStyles}>
-                  <DataGrid
-                    autoHeight
-                    disableSelectionOnClick
-                    rows={pageState.data}
-                    columns={columns}
-                    rowCount={pageState.total}
-                    loading={pageState.isLoading}
-                    rowsPerPageOptions={[30, 50, 75, 100]}
-                    pagination
-                    width="auto"
-                    paginationMode="server"
-                    page={pageState.page - 1}
-                    pageSize={pageState.pageSize}
-                    onPageChange={(newPage) => {
-                      setpageState((old) => ({ ...old, page: newPage + 1 }));
-                    }}
-                    onPageSizeChange={(newPageSize) =>
-                      setpageState((old) => ({
-                        ...old,
-                        pageSize: newPageSize,
-                      }))
-                    }
-                    sx={{
-                      boxShadow: 2,
-                      "& .MuiDataGrid-cell:hover": {
-                        cursor: "pointer",
-                      },
-                    }}
-                    getRowClassName={(params) =>
-                      params.indexRelativeToCurrentPage % 2 === 0
-                        ? "even"
-                        : "odd"
-                    }
-                  />
-                </Box> */}
-              </div>
-            </div>
-          </div>
-          {/* <Footer /> */}
-        </div>
-      </div>
+      {" "}
+      <Box
+        className={`${currentMode}-mode-datatable`}
+        // width={"100%"}
+        sx={DataGridStyles}
+      >
+        <DataGrid
+          autoHeight
+          disableSelectionOnClick
+          rows={pageState.data}
+          columns={columns}
+          rowCount={pageState.total}
+          loading={pageState.isLoading}
+          rowsPerPageOptions={[30, 50, 75, 100]}
+          pagination
+          // width="auto"
+          getRowHeight={() => "auto"}
+          paginationMode="server"
+          page={pageState.page - 1}
+          pageSize={pageState.pageSize}
+          componentsProps={{
+            toolbar: {
+              printOptions: {
+                disableToolbarButton: User?.role !== 1,
+              },
+              csvOptions: {
+                disableToolbarButton: User?.role !== 1,
+              },
+              showQuickFilter: true,
+            },
+          }}
+          onPageChange={(newPage) => {
+            setpageState((old) => ({
+              ...old,
+              page: newPage + 1,
+            }));
+          }}
+          onPageSizeChange={(newPageSize) =>
+            setpageState((old) => ({
+              ...old,
+              pageSize: newPageSize,
+            }))
+          }
+          sx={{
+            boxShadow: 2,
+            "& .MuiDataGrid-cell:hover": {
+              cursor: "pointer",
+            },
+            "& .MuiDataGrid-cell[data-field='edit'] svg": {
+              color:
+                currentMode === "dark"
+                  ? "white !important"
+                  : "black !important",
+            },
+          }}
+          getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+          }
+        />
+      </Box>
     </>
   );
-
-  function TabPanel(props) {
-    const { children, value, index } = props;
-    return <div>{value === index && <div>{children}</div>}</div>;
-  }
 };
 
-export default Role;
+export default RolesComponent;
