@@ -2569,11 +2569,6 @@ const Sidebarmui = () => {
       title: "Apps",
       links: [
         {
-          name: "Appointments",
-          link: "/appointments/create",
-          icon: <BsCalendarWeekFill />,
-        },
-        {
           name: "Meetings",
           icon: <BsCalendarWeekFill />,
           link: "/meetings",
@@ -2589,31 +2584,13 @@ const Sidebarmui = () => {
           icon: <HiDocumentReport />,
           link: "/reports",
         },
-        {
-          name: "Offers",
-          icon: <AiFillGift />,
-          link: "/offers",
-        },
+
         // {
         //   name: "Contacts",
         //   icon: <MdContactPage />,
         //   link: "/contacts",
         // },
-        {
-          name: "Blocked IPs",
-          icon: <BiBlock />,
-          link: "/blocked",
-        },
-        {
-          name: "Property Portfolio",
-          icon: <RiBuilding2Fill />,
-          link: "/propertyPortfolio",
-        },
-        {
-          name: "Leaderboard",
-          icon: <MdLeaderboard />,
-          link: "/leaderboard",
-        },
+
         // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
       ],
     },
