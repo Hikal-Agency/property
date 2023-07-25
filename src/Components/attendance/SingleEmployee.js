@@ -617,6 +617,8 @@ const SingleEmployee = ({ user }) => {
           lateDaySalary: LATE_DAY_SALARY,
           totalSalary: TOTAl_SALARY,
           perDaySalary: per_day_salary,
+          pageSize: result?.data?.Record?.per_page,
+          total: result?.data?.Record?.total,
         }));
       })
       .catch((err) => {
@@ -896,8 +898,8 @@ const SingleEmployee = ({ user }) => {
                           }}
                           width="auto"
                           paginationMode="server"
-                          // page={pageState.page - 1}
-                          // pageSize={pageState.pageSize}
+                          page={pageState.page - 1}
+                          pageSize={pageState.pageSize}
                           sx={{
                             boxShadow: 2,
                             "& .MuiDataGrid-cell:hover": {
@@ -908,6 +910,18 @@ const SingleEmployee = ({ user }) => {
                             params.indexRelativeToCurrentPage % 2 === 0
                               ? "even"
                               : "odd"
+                          }
+                          onPageChange={(newPage) => {
+                            setpageState((old) => ({
+                              ...old,
+                              page: newPage + 1,
+                            }));
+                          }}
+                          onPageSizeChange={(newPageSize) =>
+                            setpageState((old) => ({
+                              ...old,
+                              pageSize: newPageSize,
+                            }))
                           }
                         />
                       </Box>
@@ -951,11 +965,6 @@ const SingleEmployee = ({ user }) => {
     }
 
     return `${formattedHours}:${minutes} ${meridiem}`;
-  }
-
-  function TabPanel(props) {
-    const { children, value, index } = props;
-    return <div>{value === index && <div>{children}</div>}</div>;
   }
 };
 
