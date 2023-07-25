@@ -65,10 +65,7 @@ const EditUser = ({ user }) => {
     //   return;
     // }
 
-    updated_data.append("master", userData?.master);
-    updated_data.append("package_name", userData?.package_name || "");
     updated_data.append("position", userData?.position);
-    updated_data.append("expiry_date", userData?.expiry_date || "");
     updated_data.append("target", userData?.target);
 
     try {
@@ -116,10 +113,7 @@ const EditUser = ({ user }) => {
   useEffect(() => {
     if (user) {
       setUserData({
-        master: user?.master,
-        package_name: !user?.package_name === "null" ? user?.package_name : "",
         position: user?.position,
-        expiry_date: user?.expiry_date,
         target: user?.target,
       });
     }
@@ -147,37 +141,6 @@ const EditUser = ({ user }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 md:grid-cols- sm:grid-cols-1 gap-5">
                     <div>
                       <Box sx={darkModeColors}>
-                      {User?.role === 1 &&
-                        <TextField
-                          id="master"
-                          type={"password"}
-                          label="Update Master Password"
-                          className={`w-full mb-5 ${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
-                          sx={{
-                            marginBottom: "20px",
-                            input: {
-                              color: `${
-                                currentMode === "dark" ? "#ffffff" : "#000000"
-                              }`,
-                            },
-                          }}
-                          variant="outlined"
-                          size="medium"
-                          value={userData?.master}
-                          onChange={(e) =>
-                            setUserData({
-                              ...userData,
-                              master: e.target.value,
-                            })
-                          }
-                          fullWidth
-                        />
-                      }
-
-                        <br />
-
                         <TextField
                           id="target"
                           type={"number"}
@@ -206,156 +169,32 @@ const EditUser = ({ user }) => {
 
                         <br />
 
-                          {User?.role === 1 &&
-                        <TextField
-                          id="packageName"
-                          type={"text"}
-                          label="Package Name"
-                          className="w-full mb-5"
-                          value={userData?.package_name}
-                          sx={{
-                            marginBottom: "20px",
-                            input: {
-                              color: `${
-                                currentMode === "dark" ? "#ffffff" : "#000000"
-                              }`,
-                            },
-                          }}
-                          variant="outlined"
-                          size="medium"
-                          onChange={(e) =>
-                            setUserData({
-                              ...userData,
-                              package_name: e.target.value,
-                            })
-                          }
-                        />
-                          }
-
                         <InputLabel id="position">Position</InputLabel>
-                        <Select
+                        <TextField
                           id="position"
-                          value={userData?.position || "no position"}
+                          value={userData?.position}
                           InputLabel="Position"
                           size="medium"
                           className="w-full mb-5"
                           displayEmpty
-                          onChange={(e) =>
+                          required
+                          onInput={(e) =>
                             setUserData({
                               ...userData,
                               position: e.target.value,
                             })
                           }
                           sx={{
+                            "& input": {
+                              color: currentMode === "light" && "#000000",
+                            },
                             marginBottom: "20px",
                             "& .Mui-selected": {
                               color: currentMode === "light" && "#000000",
                             },
                           }}
-                          renderValue={(selected) => (
-                            <span
-                              style={{
-                                color:
-                                  currentMode === "dark"
-                                    ? "#ffffff"
-                                    : "#000000",
-                              }}
-                            >
-                              {selected}
-                            </span>
-                          )}
                         >
-                          <MenuItem value="no position">
-                            Select Position
-                          </MenuItem>
-                          <MenuItem value={"IT Administration"}>
-                            IT Administration
-                          </MenuItem>
-                          <MenuItem value={"developer"}>Developer</MenuItem>
-                          <MenuItem value={"Sales Agent"}>Sales Agent</MenuItem>
-                          <MenuItem value={"Sales Manager"}>
-                            Sales Manager
-                          </MenuItem>
-                          <MenuItem value={"Social Media Assistant"}>
-                            Social Media Assistant
-                          </MenuItem>
-                          <MenuItem value={"Head of Marketing"}>
-                            Head Of Marketing
-                          </MenuItem>
-                          <MenuItem value={"Head of Sales"}>
-                            Head Of Sales
-                          </MenuItem>
-                          <MenuItem value={"Admin Assistant"}>
-                            Admin Assistant
-                          </MenuItem>
-                        </Select>
-
-                              {User?.role === 1 &&
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DatePicker
-                            label="Expiry Date"
-                            value={userData?.expiry_date}
-                            onChange={(newValue) => {
-                              console.log(newValue);
-                              //   setDatevalue(newValue);
-                              setUserData({
-                                ...userData,
-                                expiry_date:
-                                  format(newValue?.$d.getUTCFullYear()) +
-                                  "-" +
-                                  format(newValue?.$d.getUTCMonth() + 1) +
-                                  "-" +
-                                  format(newValue?.$d.getUTCDate() + 1),
-                              });
-                            }}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                sx={{
-                                  input: {
-                                    color: `${
-                                      currentMode === "dark"
-                                        ? "#ffffff"
-                                        : "#000000"
-                                    }`,
-                                  },
-                                  svg: {
-                                    color:
-                                      currentMode === "dark"
-                                        ? "#ffffff !important"
-                                        : "#000000 !important",
-                                  },
-                                }}
-                                onKeyDown={(e) => e.preventDefault()}
-                                readOnly={true}
-                              />
-                            )}
-                            className={`w-full ${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-black"
-                            }`}
-                            // required
-                            // maxDate={currentDate}
-                            // minDate={minDate}
-                            // inputFormat="MM/dd/yyyy"
-                            // disableFuture
-                            sx={{
-                              marginBottom: "20px",
-                              input: {
-                                color: `${
-                                  currentMode === "dark" ? "#ffffff" : "#000000"
-                                }`,
-                              },
-                              "& .MuiSvgIcon-root": {
-                                color: "red",
-                              },
-                            }}
-                            invalidDateMessage="Invalid date"
-                            mask="__/__/____"
-                          />
-                        </LocalizationProvider>
-                              }
+                        </TextField>
                       </Box>
                     </div>
                   </div>
