@@ -219,6 +219,21 @@ const Closedeals = ({ pageState, setpageState }) => {
       minWidth: 60,
       flex: 1,
       headerAlign: "center",
+            renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "project",
@@ -380,6 +395,21 @@ const Closedeals = ({ pageState, setpageState }) => {
       minWidth: 60,
       flex: 1,
       headerAlign: "center",
+            renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "project",

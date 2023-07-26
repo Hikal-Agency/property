@@ -440,12 +440,12 @@ const Sidebarmui = () => {
         {
           name: "QA Form",
           icon: <AiOutlineQuestionCircle />,
-          link: "/qaform",
+          link: "/trainer",
         },
         {
           name: "Tickets",
           icon: <HiTicket />,
-          link: "/support",
+          link: "/tickets",
         },
       ],
     },
@@ -910,7 +910,7 @@ const Sidebarmui = () => {
         {
           name: "QA Form",
           icon: <AiOutlineQuestionCircle />,
-          link: "/qaform",
+          link: "/trainer",
         },
         {
           name: "Tickets",
@@ -1442,7 +1442,7 @@ const Sidebarmui = () => {
           name: "Facebook",
           // icon: <FaChartLine />,
           icon: <FaFacebookSquare />,
-          link: "/statistics",
+          link: "/facebook",
         },
         // {
         //   name: "campaigns",
@@ -1483,7 +1483,7 @@ const Sidebarmui = () => {
         {
           name: "Meetings",
           icon: <ImLocation size={20} />,
-          link: "/location/livelocation",
+          link: "/location/meetinglocation",
         },
         {
           name: "Live",
@@ -1501,11 +1501,11 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "QA Form",
-              link: "/qaform",
+              link: "/trainer",
             },
             {
               name: "All QA",
-              link: "/allQA",
+              link: "/qa",
             },
           ],
         },
@@ -2064,7 +2064,7 @@ const Sidebarmui = () => {
         {
           name: "Meetings",
           icon: <ImLocation size={20} />,
-          link: "/location/livelocation",
+          link: "/location/meetinglocation",
         },
         {
           name: "Live",
@@ -2082,11 +2082,11 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "QA Form",
-              link: "/qaform",
+              link: "/trainer",
             },
             {
               name: "All QA",
-              link: "/allQA",
+              link: "/qa",
             },
           ],
         },

@@ -257,7 +257,7 @@ const routes = [
     restrictedRoles: [2, 3, 7],
   },
   {
-    path: "/location/livelocation",
+    path: "/location/meetinglocation",
     pageName: "Live Location",
     element: <Livelocation />,
     restrictedRoles: [3, 7],
@@ -309,12 +309,12 @@ const routes = [
     restrictedRoles: [3, 2, 7],
   },
   {
-    path: "/qaform",
+    path: "/trainer",
     pageName: "QAForm",
     element: <QAForm />,
   },
   {
-    path: "/allQA",
+    path: "/qa",
     pageName: "All QA",
     element: <AllQA />,
   },
@@ -350,7 +350,7 @@ const routes = [
     restrictedRoles: [3, 7],
   },
   {
-    path: "/statistics",
+    path: "/facebook",
     pageName: "Campaigns Statistics",
     element: <Statistics />,
     restrictedRoles: [3, 7],
