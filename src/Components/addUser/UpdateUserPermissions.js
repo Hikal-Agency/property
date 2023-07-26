@@ -175,9 +175,7 @@ const UpdateUserPermissions = ({
     >
       <div
         style={style}
-        className={`w-[calc(100%-20px)] md:w-[40%]  ${
-          currentMode === "dark" ? "bg-gray-900" : "bg-white"
-        } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
+        className={`w-[calc(100%-20px)] md:w-[40%]  absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
       >
         <div className="relative overflow-hidden">
           <div className={``}>
@@ -185,7 +183,7 @@ const UpdateUserPermissions = ({
               <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
                 <div>
                   <h2 className="text-center mt-3 text-xl font-bold text-gray-900">
-                    Update Role of <span className="text-red">{}</span>
+                    Update Role of <span className="text-red">{UserName}</span>
                   </h2>
                 </div>
 
