@@ -22,6 +22,7 @@ import UserTable from "../../Components/Users/UserTable";
 import AddUserModel from "../../Components/addUser/AddUserModel";
 import { FaBan, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
 import DeleteUser from "../../Components/Users/DeleteUser";
+import { BsPersonFillLock } from "react-icons/bs";
 
 const Users = () => {
   const {
@@ -434,16 +435,6 @@ const Users = () => {
                     )}
                   </Button>
                 )}
-                {/* <Link
-                  to={`/updateuser/${cellValues?.id}`}
-                  className="text-blue-500"
-                >
-                  <FaEdit
-                    style={{
-                      color: currentMode == "dark" ? "white" : "black",
-                    }}
-                  />
-                </Link> */}
               </>
             ) : null}
             <Button
@@ -459,6 +450,25 @@ const Users = () => {
                 <AiOutlineEdit size={20} />
               </Link>
             </Button>
+
+            {User?.role === 1 || User?.role === 2 ? (
+              <Button
+                onClick={() =>
+                  handleDelete(
+                    cellValues?.id,
+                    cellValues.row.status,
+                    cellValues?.row?.userName
+                  )
+                }
+                className={`editUserBtn ${
+                  currentMode === "dark"
+                    ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                    : "text-black bg-transparent rounded-md p-1 shadow-none "
+                }`}
+              >
+                <BsPersonFillLock style={{ color: "white" }} size={20} />
+              </Button>
+            ) : null}
           </div>
         );
       },
