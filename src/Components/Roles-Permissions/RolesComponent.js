@@ -32,8 +32,8 @@ const RolesComponent = ({
       return !regex.test(input);
     }
 
-    const { role } = formdata;
-    if (!isSafeInput(role)) {
+    const { data } = formdata;
+    if (!isSafeInput(data)) {
       toast.error("Input contains invalid data", {
         position: "top-right",
         autoClose: 3000,
@@ -49,8 +49,17 @@ const RolesComponent = ({
 
     setloading(true);
 
+    const AddData = new FormData();
+    if (value === 0) {
+      AddData.append("role", formdata?.data);
+    } else {
+      AddData.append("permission", formdata?.data);
+    }
+    AddData.append("user_id", User?.id);
+    AddData.append("status", 1);
+
     await axios
-      .post(`${BACKEND_URL}/roles`, formdata, {
+      .post(`${BACKEND_URL}/${value === 0 ? "role" : "permissions"}`, AddData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -141,7 +150,7 @@ const RolesComponent = ({
                         onChange={(e) => {
                           setformdata({
                             ...formdata,
-                            role: e.target.value,
+                            data: e.target.value,
                           });
                         }}
                       />
