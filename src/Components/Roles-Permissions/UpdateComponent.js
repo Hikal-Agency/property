@@ -146,7 +146,7 @@ const UpdateComponent = ({
                       <TextField
                         id=""
                         type="text"
-                        label="Role"
+                        label={value === 0 ? "Role" : "Permission"}
                         className="w-full"
                         variant="outlined"
                         size="medium"
