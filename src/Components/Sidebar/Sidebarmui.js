@@ -414,7 +414,7 @@ const Sidebarmui = () => {
         {
           name: "Appointments",
           icon: <BsCalendarWeekFill />,
-          link: "/appointments/create",
+          link: "/appointments",
         },
         {
           name: "Meetings",
@@ -878,7 +878,7 @@ const Sidebarmui = () => {
         {
           name: "Appointments",
           icon: <BsCalendarWeekFill />,
-          link: "/appointments/create",
+          link: "/appointments",
         },
 
         {
@@ -1370,7 +1370,7 @@ const Sidebarmui = () => {
         {
           name: "Appointments",
           icon: <BsCalendarWeekFill />,
-          link: "/appointments/create",
+          link: "/appointments",
         },
         {
           name: "Roles",
@@ -1990,7 +1990,7 @@ const Sidebarmui = () => {
       links: [
         {
           name: "Appointments",
-          link: "/appointments/create",
+          link: "/appointments",
           icon: <BsCalendarWeekFill />,
         },
         {

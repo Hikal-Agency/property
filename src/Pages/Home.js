@@ -41,7 +41,6 @@ const Home = () => {
         setOpenBackDrop(true);
         if (result.data.success && result.data.data.token) {
           localStorage.setItem("auth-token", result.data.data.token);
-
           document.location.href =
             result.data.data.role === 5
               ? "/attendance/employeesList"

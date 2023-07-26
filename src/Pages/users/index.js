@@ -175,6 +175,7 @@ const Users = () => {
         userEmail: row?.userEmail || "No Email",
         status: row?.status,
         is_trainer: row?.is_trainer,
+        salary: row?.salary,
         profile_picture: row?.profile_picture,
         edit: "edit",
       }));
@@ -305,6 +306,19 @@ const Users = () => {
           </div>
         );
       },
+    },
+    {
+      field: "salary",
+      headerName: "Salary",
+      headerAlign: "center",
+      editable: false,
+      minwidth: 80,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return <div className="flex items-center justify-center">
+          {cellValues?.formattedValue} AED
+        </div>
+      }
     },
     {
       field: "is_trainer",
