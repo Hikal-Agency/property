@@ -43,7 +43,7 @@ const UpdateUserPermissions = ({
   const UpdateRole = async () => {
     setloading(true);
     await axios
-      .post(`${BACKEND_URL}/register`, formdata)
+      .post(`${BACKEND_URL}/user`, formdata)
       .then((result) => {
         console.log("result", result);
         if (result.data.success) {
@@ -151,7 +151,12 @@ const UpdateUserPermissions = ({
                     {UserRole?.length > 0
                       ? UserRole?.map((role) => (
                           <div className="col-span-2">
-                            <RolesCheckbox role={role} defaultRole={UserData} />
+                            <RolesCheckbox
+                              role={role}
+                              defaultRole={UserData}
+                              formData={formdata}
+                              setFormData={setformdata}
+                            />
                           </div>
                         ))
                       : "No Roles"}
