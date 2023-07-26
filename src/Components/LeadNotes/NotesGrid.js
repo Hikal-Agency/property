@@ -5,6 +5,9 @@ import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { BsBuildings } from "react-icons/bs";
+import { BiUserCircle, BiUser } from "react-icons/bi";
+
 // const UserTable = ({ user }) => {
 //   const [loading, setloading] = useState(false);
 //   const { currentMode, BACKEND_URL, pageState, setpageState } =
@@ -437,19 +440,28 @@ const NotesGrid = ({ pageState, setpageState }) => {
                           } p-3 rounded-md cursor-pointer `}
                           onClick={(e) => handleNavigate(e, item?.leadId)}
                         >
-                          <div className="mt-2 space-y-1 overflow-hidden">
-                            <h1 className="font-bold capitalize">
-                              <b>Lead Name: </b> <span style={{fontFamily: isArabic(item?.leadName) ? "Noto Kufi Arabic" : "inherit"}}>{item?.leadName}</span>
+                          <div className="my-1 space-y-1 overflow-hidden">
+                            <h1 className="font-semibold capitalize text-red-600 py-1">
+                              <span style={{fontFamily: isArabic(item?.leadNote) ? "Noto Kufi Arabic" : "inherit"}}>{item?.leadNote}</span>
                             </h1>
-
-                            <p className="text-sm">
-                              <b>Project: </b> {item?.project}
+                            <div className="my-3 h-[1px] w-full bg-[#DA1F26]" ></div>
+                            <p className="flex items-center text-sm py-1">
+                              <BiUserCircle size={16} className="mr-2" /> 
+                              <span className="mx-1" style={{fontFamily: isArabic(item?.leadName) ? "Noto Kufi Arabic" : "inherit"}}>{item?.leadName}</span>
                             </p>
-                            <hr />
-                            <p className="text-sm font-semibold text-red-600 capitalize">
-                              <b>Lead Note: </b> <span style={{fontFamily: isArabic(item?.leadNote) ? "Noto Kufi Arabic" : "inherit"}}>{item?.leadNote}</span>
+                            <p className="flex items-center text-sm py-1">
+                              <BsBuildings size={16} className="mr-2" /> 
+                              <span className="mx-1">{item?.project}</span>
+                              <span className="mx-1">{item?.enquiryType}</span>
+                              <span className="mx-1">{item?.leadType}</span>
+                              <span className="mx-1">{item?.leadFor}</span>
                             </p>
-                            <p className="text-sm">{item.userEmail}</p>
+                            <p className="flex items-center text-sm py-1">
+                              <BiUser size={16} className="mr-2" /> 
+                              <span className="mx-1">{item?.userName}</span>
+                              <span className="mx-1">|</span>
+                              <span className="mx-1">{item?.creationDate}</span>
+                            </p>
                           </div>
                         </div>
                       );
