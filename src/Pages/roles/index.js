@@ -24,6 +24,7 @@ import { FaBan, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
 import DeleteUser from "../../Components/Users/DeleteUser";
 import RolesComponent from "../../Components/Roles-Permissions/RolesComponent";
 import DeleteComponent from "../../Components/Roles-Permissions/DeleteComponent";
+import UpdateComponent from "../../Components/Roles-Permissions/UpdateComponent";
 
 const Role = () => {
   const {
@@ -44,6 +45,7 @@ const Role = () => {
   const [userStatus, setUserStatus] = useState();
   const [DataName, setDataName] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
+  const [openUpdateModel, setOpenUpdateModel] = useState(false);
 
   console.log("User: ", user);
   const handleChange = (event, newValue) => {
@@ -61,6 +63,13 @@ const Role = () => {
     setModel(false);
   };
 
+  const handleUpdate = (id, name) => {
+    console.log("Delete id: ", id);
+    setDataId(id);
+    setDataName(name);
+
+    setOpenUpdateModel(true);
+  };
   const handleDelete = (id, name) => {
     console.log("Delete id: ", id);
     setDataId(id);
@@ -70,6 +79,10 @@ const Role = () => {
   };
   const handleDeleteModelClose = () => {
     setOpenDeleteModel(false);
+  };
+
+  const handleCloseUpdateModel = () => {
+    setOpenUpdateModel(false);
   };
 
   const handleTrainerSwitchChange = async (cellValues) => {
@@ -159,7 +172,7 @@ const Role = () => {
                 (pageState.pageSize - 1) +
                 index
               : index + 1,
-          id: row?.id,
+          role_id: row?.id,
           role: row?.role || "No Role",
           status: row?.status || "No Status",
           updated_at: row?.updated_at || "No Time",
@@ -167,6 +180,27 @@ const Role = () => {
           edit: "edit",
         }));
       } else {
+        if (response?.data?.permission?.current_page > 1) {
+          const theme_values = Object.values(response?.data?.permission?.data);
+          rowsDataArray = theme_values;
+        } else {
+          rowsDataArray = response?.data?.permission?.data;
+        }
+
+        rowsdata = rowsDataArray?.map((row, index) => ({
+          id:
+            pageState.page > 1
+              ? pageState.page * pageState.pageSize -
+                (pageState.pageSize - 1) +
+                index
+              : index + 1,
+          permission_id: row?.id,
+          permission: row?.permission || "No Permission",
+          status: row?.status || "No Status",
+          updated_at: row?.updated_at || "No Time",
+          user_id: row?.user_id || "No User Id",
+          edit: "edit",
+        }));
       }
 
       console.log("Rows Data: ", rowsdata);
@@ -238,11 +272,12 @@ const Role = () => {
       sortable: false,
       filterable: false,
       renderCell: (cellValues) => {
+        console.log("action data: ", cellValues);
         return (
           <div className=" space-x-2 w-full flex items-center justify-center ">
             <Button
               onClick={() =>
-                handleDelete(cellValues?.id, cellValues?.row?.role)
+                handleDelete(cellValues?.row?.role_id, cellValues?.row?.role)
               }
               className={`editUserBtn ${
                 currentMode === "dark"
@@ -263,11 +298,11 @@ const Role = () => {
                   ? "text-white bg-transparent rounded-md p-1 shadow-none "
                   : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
+              onClick={() =>
+                handleUpdate(cellValues?.row?.role_id, cellValues?.row?.role)
+              }
             >
-              <Link to={`/updateuser/${cellValues?.id}`}>
-                {" "}
-                <AiOutlineEdit size={20} />
-              </Link>
+              <AiOutlineEdit size={20} />
             </Button>
           </div>
         );
@@ -275,48 +310,86 @@ const Role = () => {
     },
   ];
 
-  const rows = [
+  const permissionsColumns = [
     {
-      id: 1,
-      userName: "Hala Hikal",
-      position: "Sales Agent",
-      contactNumber: "566666555",
-      email: "1@hikalproperties.ae",
-      status: "1",
+      field: "permission",
+      headerName: "Permission",
+      headerAlign: "center",
+      editable: false,
+      minwidth: 130,
+      flex: 1,
     },
     {
-      id: 2,
-      userName: "Ameer Ali",
-      position: "Sales Agent",
-      contactNumber: "555567678",
-      email: "2@hikalproperties.ae",
-      status: "0",
+      field: "status",
+      headerName: "Status",
+      headerAlign: "center",
+      editable: false,
+      minwidth: 150,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue === 1 ? "Active" : "Deactive"}
+            </p>
+          </div>
+        );
+      },
     },
+
     {
-      id: 3,
-      userName: "Belal Hikal",
-      position: "Sales Manager",
-      contactNumber: "536526766",
-      email: "3@hikalproperties.ae",
-      status: "1",
-    },
-    {
-      id: 4,
-      userName: "Nada Amin",
-      position: "Head of Sales",
-      contactNumber: "5638378937",
-      email: "4@hikalproperties.ae",
-      status: "1",
+      field: "",
+      headerName: "Action",
+      minwidth: 90,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+      renderCell: (cellValues) => {
+        return (
+          <div className=" space-x-2 w-full flex items-center justify-center ">
+            <Button
+              onClick={() =>
+                handleDelete(
+                  cellValues?.row?.permission_id,
+                  cellValues?.row?.permission
+                )
+              }
+              className={`editUserBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
+              }`}
+            >
+              {currentMode === "dark" ? (
+                <FaBan style={{ color: "white" }} />
+              ) : (
+                <FaBan style={{ color: "black" }} />
+              )}
+            </Button>
+            <Button
+              title="Edit User"
+              className={`editUserBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
+              }`}
+              onClick={() =>
+                handleUpdate(
+                  cellValues?.row?.permission_id,
+                  value === 0
+                    ? cellValues?.row?.role
+                    : cellValues?.row?.permission
+                )
+              }
+            >
+              <AiOutlineEdit size={20} />
+            </Button>
+          </div>
+        );
+      },
     },
   ];
-
-  const handleRowClick = async (params, event) => {
-    if (!event.target.classList.contains("editLeadBtn")) {
-      // setSingleUserData(params.row);
-      // handleUserModelOpen();
-      <SingleUser />;
-    }
-  };
 
   return (
     <>
@@ -448,17 +521,84 @@ const Role = () => {
                     </Box>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <UserTable
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                      user={user}
-                    />
+                    <Box
+                      className={`${currentMode}-mode-datatable`}
+                      // width={"100%"}
+                      sx={DataGridStyles}
+                    >
+                      <DataGrid
+                        autoHeight
+                        disableSelectionOnClick
+                        rows={pageState.data}
+                        columns={permissionsColumns}
+                        rowCount={pageState.total}
+                        loading={pageState.isLoading}
+                        rowsPerPageOptions={[30, 50, 75, 100]}
+                        pagination
+                        // width="auto"
+                        getRowHeight={() => "auto"}
+                        paginationMode="server"
+                        page={pageState.page - 1}
+                        pageSize={pageState.pageSize}
+                        componentsProps={{
+                          toolbar: {
+                            printOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
+                            csvOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
+                            showQuickFilter: true,
+                          },
+                        }}
+                        onPageChange={(newPage) => {
+                          setpageState((old) => ({
+                            ...old,
+                            page: newPage + 1,
+                          }));
+                        }}
+                        onPageSizeChange={(newPageSize) =>
+                          setpageState((old) => ({
+                            ...old,
+                            pageSize: newPageSize,
+                          }))
+                        }
+                        sx={{
+                          boxShadow: 2,
+                          "& .MuiDataGrid-cell:hover": {
+                            cursor: "pointer",
+                          },
+                          "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                            color:
+                              currentMode === "dark"
+                                ? "white !important"
+                                : "black !important",
+                          },
+                        }}
+                        getRowClassName={(params) =>
+                          params.indexRelativeToCurrentPage % 2 === 0
+                            ? "even"
+                            : "odd"
+                        }
+                      />
+                    </Box>
                   </TabPanel>
                 </div>
                 {openDeleteModel && (
                   <DeleteComponent
                     UserModelOpen={handleDelete}
                     handleUserModelClose={handleDeleteModelClose}
+                    UserData={userID}
+                    fetchData={fetchData}
+                    value={value}
+                    DataName={DataName}
+                  />
+                )}
+
+                {openUpdateModel && (
+                  <UpdateComponent
+                    handleOpenModel={HandleOpenModel}
+                    addUserModelClose={handleCloseUpdateModel}
                     UserData={userID}
                     fetchData={fetchData}
                     value={value}

@@ -22,6 +22,8 @@ import UserTable from "../../Components/Users/UserTable";
 import AddUserModel from "../../Components/addUser/AddUserModel";
 import { FaBan, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
 import DeleteUser from "../../Components/Users/DeleteUser";
+import { BsPersonFillLock } from "react-icons/bs";
+import UpdateUserPermissions from "../../Components/addUser/UpdateUserPermissions";
 
 const Users = () => {
   const {
@@ -42,6 +44,7 @@ const Users = () => {
   const [userStatus, setUserStatus] = useState();
   const [username, setUserName] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
+  const [openPermissionModel, setOpenPermissionModel] = useState(false);
 
   console.log("User: ", user);
   const handleChange = (event, newValue) => {
@@ -51,6 +54,18 @@ const Users = () => {
   const HandleOpenModel = () => {
     console.log("Model Open:");
     setModel(true);
+  };
+
+  const HandlePermissionModel = (id, status, name) => {
+    console.log("Permission Model Open:");
+    setUserId(id);
+    setUserName(name);
+    setOpenPermissionModel(true);
+  };
+
+  const HandlePermissionClose = () => {
+    console.log("Permission Model close:");
+    setOpenPermissionModel(false);
   };
 
   const HandleModelClose = () => {
@@ -434,16 +449,6 @@ const Users = () => {
                     )}
                   </Button>
                 )}
-                {/* <Link
-                  to={`/updateuser/${cellValues?.id}`}
-                  className="text-blue-500"
-                >
-                  <FaEdit
-                    style={{
-                      color: currentMode == "dark" ? "white" : "black",
-                    }}
-                  />
-                </Link> */}
               </>
             ) : null}
             <Button
@@ -459,6 +464,25 @@ const Users = () => {
                 <AiOutlineEdit size={20} />
               </Link>
             </Button>
+
+            {User?.role === 1 || User?.role === 2 ? (
+              <Button
+                onClick={() =>
+                  HandlePermissionModel(
+                    cellValues?.id,
+                    cellValues.row.status,
+                    cellValues?.row?.userName
+                  )
+                }
+                className={`editUserBtn ${
+                  currentMode === "dark"
+                    ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                    : "text-black bg-transparent rounded-md p-1 shadow-none "
+                }`}
+              >
+                <BsPersonFillLock style={{ color: "white" }} size={20} />
+              </Button>
+            ) : null}
           </div>
         );
       },
@@ -711,6 +735,15 @@ const Users = () => {
                     handleUserModelClose={handleDeleteModelClose}
                     UserData={userID}
                     UserStatus={userStatus}
+                    UserName={username}
+                    fetchUser={fetchUsers}
+                  />
+                )}
+                {openPermissionModel && (
+                  <UpdateUserPermissions
+                    UserModelOpen={HandlePermissionModel}
+                    handleUserModelClose={HandlePermissionClose}
+                    UserData={userID}
                     UserName={username}
                     fetchUser={fetchUsers}
                   />

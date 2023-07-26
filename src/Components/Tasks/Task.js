@@ -115,7 +115,7 @@ const Task = () => {
             onChange={handleChange}
             variant="standard"
             // centered
-            className="w-full px-1 m-1"
+            className="w-full m-1 px-1"
           >
             <Tab label="Calls" />
             {/* <Tab label="Activity " />
@@ -124,7 +124,7 @@ const Task = () => {
             <Tab label="Busines" /> */}
           </Tabs>
         </Box>
-        <div className="mt-3 pb-3">
+        <div className="mt-3 pb-2">
           <TabPanel value={value} index={0}>
             <Calls
               isLoading={loading}

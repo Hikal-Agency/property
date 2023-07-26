@@ -15,26 +15,27 @@ const style = {
   boxShadow: 24,
 };
 
-const RolesComponent = ({
+const UpdateComponent = ({
   handleOpenModel,
   addUserModelClose,
   value,
   fetchData,
+  DataName,
+  UserData,
 }) => {
   const { BACKEND_URL, currentMode, User } = useStateContext();
-  const [formdata, setformdata] = useState({ user_id: User?.id, status: 1 });
+
+  const [data, setRole] = useState(DataName);
   const [loading, setloading] = useState(false);
+  const [updateData, setUpdateData] = useState();
   const token = localStorage.getItem("auth-token");
 
-  const AddData = async () => {
-    function isSafeInput(input) {
-      const regex = /([';\/*-])/g; // Characters to look for in input
-      return !regex.test(input);
-    }
+  const UpdateData = async () => {
+    setloading(true);
 
-    const { data } = formdata;
-    if (!isSafeInput(data)) {
-      toast.error("Input contains invalid data", {
+    if (!data) {
+      setloading(false);
+      toast.error("Kindly enter data.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -47,21 +48,18 @@ const RolesComponent = ({
       return;
     }
 
-    setloading(true);
-
-    const AddData = new FormData();
+    const formdata = new FormData();
+    formdata.append("user_id", User?.id);
     if (value === 0) {
-      AddData.append("role", formdata?.data);
+      formdata.append("role", data);
     } else {
-      AddData.append("permission", formdata?.data);
+      formdata.append("permission", data);
     }
-    AddData.append("user_id", User?.id);
-    AddData.append("status", 1);
 
     await axios
       .post(
-        `${BACKEND_URL}/${value === 0 ? "roles" : "permissions"}`,
-        AddData,
+        `${BACKEND_URL}/${value === 0 ? "roles" : "permissions"}/${UserData}`,
+        formdata,
         {
           headers: {
             "Content-Type": "application/json",
@@ -72,16 +70,19 @@ const RolesComponent = ({
       .then((result) => {
         console.log("result", result);
         if (result.data.status === true) {
-          toast.success("Registration Completed Successfully", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          toast.success(
+            `${value === 0 ? "Role " : "Permission "} updated successfully.`,
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
         }
         setloading(false);
         addUserModelClose();
@@ -128,7 +129,7 @@ const RolesComponent = ({
               <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
                 <div>
                   <h2 className="text-center text-xl font-bold text-gray-900 mt-4">
-                    Create New {value === 0 ? " Role" : " Permissions"}
+                    Update {value === 0 ? " Role" : " Permissions"}
                   </h2>
                 </div>
 
@@ -136,7 +137,7 @@ const RolesComponent = ({
                   className="mt-8 space-y-6"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    AddData();
+                    UpdateData();
                   }}
                 >
                   <input type="hidden" name="remember" defaultValue="true" />
@@ -145,18 +146,13 @@ const RolesComponent = ({
                       <TextField
                         id=""
                         type="text"
-                        label={`${value === 0 ? "Role" : "Permissions"}`}
+                        label={value === 0 ? "Role" : "Permission"}
                         className="w-full"
                         variant="outlined"
                         size="medium"
                         required
-                        value={formdata?.role}
-                        onChange={(e) => {
-                          setformdata({
-                            ...formdata,
-                            data: e.target.value,
-                          });
-                        }}
+                        value={data}
+                        onChange={(e) => setRole(e.target.value)}
                       />
                     </div>
                   </div>
@@ -187,4 +183,4 @@ const RolesComponent = ({
   );
 };
 
-export default RolesComponent;
+export default UpdateComponent;

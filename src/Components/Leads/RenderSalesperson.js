@@ -45,8 +45,8 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
         color: currentMode === "dark" ? "white" : "black",
         // borderColor: currentMode === "dark" ? "white" : "black",
         border: "none",
-        fontSize: "0.9rem",
-        fontWeight: "500",
+        fontSize: "12px",
+        fontWeight: "400",
       },
     "& .MuiOutlinedInput-notchedOutline": {
       // borderColor: currentMode === "dark" ? "white" : "black",
@@ -212,7 +212,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
             className="w-[100%] h-[75%]"
             sx={{
           "& .MuiSelect-select": {
-            fontSize: 12,
+            fontSize: 11,
           },
               color:
                 currentMode === "dark"
