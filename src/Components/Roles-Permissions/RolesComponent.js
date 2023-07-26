@@ -59,12 +59,16 @@ const RolesComponent = ({
     AddData.append("status", 1);
 
     await axios
-      .post(`${BACKEND_URL}/${value === 0 ? "role" : "permissions"}`, AddData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
+      .post(
+        `${BACKEND_URL}/${value === 0 ? "roles" : "permissions"}`,
+        AddData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
       .then((result) => {
         console.log("result", result);
         if (result.data.status === true) {

@@ -172,7 +172,7 @@ const Role = () => {
                 (pageState.pageSize - 1) +
                 index
               : index + 1,
-          // id: row?.id,
+          role_id: row?.id,
           role: row?.role || "No Role",
           status: row?.status || "No Status",
           updated_at: row?.updated_at || "No Time",
@@ -194,7 +194,7 @@ const Role = () => {
                 (pageState.pageSize - 1) +
                 index
               : index + 1,
-          role_id: row?.role_id,
+          permission_id: row?.id,
           permission: row?.permission || "No Permission",
           status: row?.status || "No Status",
           updated_at: row?.updated_at || "No Time",
@@ -272,11 +272,12 @@ const Role = () => {
       sortable: false,
       filterable: false,
       renderCell: (cellValues) => {
+        console.log("action data: ", cellValues);
         return (
           <div className=" space-x-2 w-full flex items-center justify-center ">
             <Button
               onClick={() =>
-                handleDelete(cellValues?.id, cellValues?.row?.role)
+                handleDelete(cellValues?.row?.role_id, cellValues?.row?.role)
               }
               className={`editUserBtn ${
                 currentMode === "dark"
@@ -298,7 +299,7 @@ const Role = () => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
               onClick={() =>
-                handleUpdate(cellValues?.id, cellValues?.row?.role)
+                handleUpdate(cellValues?.row?.role_id, cellValues?.row?.role)
               }
             >
               <AiOutlineEdit size={20} />
@@ -349,7 +350,10 @@ const Role = () => {
           <div className=" space-x-2 w-full flex items-center justify-center ">
             <Button
               onClick={() =>
-                handleDelete(cellValues?.id, cellValues?.row?.role)
+                handleDelete(
+                  cellValues?.row?.permission_id,
+                  cellValues?.row?.permission
+                )
               }
               className={`editUserBtn ${
                 currentMode === "dark"
@@ -372,7 +376,7 @@ const Role = () => {
               }`}
               onClick={() =>
                 handleUpdate(
-                  cellValues?.id,
+                  cellValues?.row?.permission_id,
                   value === 0
                     ? cellValues?.row?.role
                     : cellValues?.row?.permission

@@ -25,13 +25,8 @@ const DeleteComponent = ({
 }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [deletebtnloading, setdeleteBtnLoading] = useState(false);
-  const [randNumbers, setRandNumbers] = useState({
-    firstNumber: null,
-    secondNumber: null,
-  });
-  const [answerVal, setAnswerVal] = useState("");
 
-  console.log("deativate user model: ", UserData);
+  console.log("delete model: ", UserData);
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -45,12 +40,15 @@ const DeleteComponent = ({
     const token = localStorage.getItem("auth-token");
 
     axios
-      .delete(`${BACKEND_URL}/roles/${UserData}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
+      .delete(
+        `${BACKEND_URL}/${value === 0 ? "roles" : "permissions"}/${UserData}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
       .then((result) => {
         console.log("data deleted  ", result);
         setdeleteBtnLoading(false);
