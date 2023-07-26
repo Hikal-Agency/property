@@ -169,7 +169,7 @@ const UpdateComponent = ({
                           className="text-white"
                         />
                       ) : (
-                        <span>Create</span>
+                        <span>Update</span>
                       )}
                     </button>
                   </div>

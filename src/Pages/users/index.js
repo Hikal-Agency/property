@@ -43,6 +43,7 @@ const Users = () => {
   const [userID, setUserId] = useState();
   const [userStatus, setUserStatus] = useState();
   const [username, setUserName] = useState();
+  const [role, setUserRole] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [openPermissionModel, setOpenPermissionModel] = useState(false);
 
@@ -56,10 +57,11 @@ const Users = () => {
     setModel(true);
   };
 
-  const HandlePermissionModel = (id, status, name) => {
-    console.log("Permission Model Open:");
+  const HandlePermissionModel = (id, status, name, role) => {
+    console.log("Permission Model Open:", id, status, name, role);
     setUserId(id);
     setUserName(name);
+    setUserRole(role);
     setOpenPermissionModel(true);
   };
 
@@ -162,12 +164,12 @@ const Users = () => {
       }
 
       let rowsdata = rowsDataArray?.map((row, index) => ({
-        id:
-          pageState.page > 1
-            ? pageState.page * pageState.pageSize -
-              (pageState.pageSize - 1) +
-              index
-            : index + 1,
+        // id:
+        //   pageState.page > 1
+        //     ? pageState.page * pageState.pageSize -
+        //       (pageState.pageSize - 1) +
+        //       index
+        //     : index + 1,
         id: row?.id,
         userName: row?.userName || "No Name",
         position: row?.position || "No Position",
@@ -485,7 +487,8 @@ const Users = () => {
                   HandlePermissionModel(
                     cellValues?.id,
                     cellValues.row.status,
-                    cellValues?.row?.userName
+                    cellValues?.row?.userName,
+                    cellValues?.row?.role
                   )
                 }
                 className={`editUserBtn ${
@@ -759,6 +762,7 @@ const Users = () => {
                     handleUserModelClose={HandlePermissionClose}
                     UserData={userID}
                     UserName={username}
+                    userRole={role}
                     fetchUser={fetchUsers}
                   />
                 )}

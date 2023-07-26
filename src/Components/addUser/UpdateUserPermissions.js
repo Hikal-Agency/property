@@ -9,7 +9,7 @@ import {
 import { IoIosAlert } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
 import { Select, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import "../../styles/app.css";
 // import axios from "axios";
@@ -23,130 +23,41 @@ const style = {
   boxShadow: 24,
 };
 
-const UpdateUserPermissions = ({ UserModelOpen, handleUserModelClose }) => {
+const UpdateUserPermissions = ({
+  UserModelOpen,
+  handleUserModelClose,
+  UserData,
+  UserName,
+  userRole,
+}) => {
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
-  const [UserRole, setUserRole] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
+  const [UserRole, setUserRole] = useState([]);
   const { BACKEND_URL, currentMode } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
+  const token = localStorage.getItem("auth-token");
 
-  const rolesMap = {
-    "head of sales": 2,
-    manager: 3,
-    marketing: 4,
-    accounts: 5,
-    user: 6,
-    agent: 7,
-    dataEntry: 8,
-    officeboy: 9,
-  };
+  console.log("user role list:  ", UserRole);
 
-  const handlePassword = (e) => {
-    setPasswordError(false);
-    const password = e.target.value;
+  const UpdateRole = async () => {
+    setloading(true);
 
-    // Check if password meets the required criteria
-    const validPassword =
-      password.length >= 8 &&
-      /[a-z]/.test(password) &&
-      /[A-Z]/.test(password) &&
-      /[0-9]/.test(password) &&
-      /[@#$%^&+=]/.test(password);
-
-    if (validPassword) {
-      setPasswordError(false);
-    } else {
-      setPasswordError(
-        "Password must be at least 8 characters long, include numbers, characters, and special characters. Example: Abc123@#"
-      );
-    }
-
-    setformdata({
-      ...formdata,
-      password: e.target.value,
-    });
-  };
-  const handleEmail = (e) => {
-    setEmailError(false);
-    const email = e.target.value;
-    const emailRegex = /^\S+@\S+\.\S+$/; // regex pattern to match email address format
-    const isValidEmail = emailRegex.test(email);
-    if (isValidEmail) {
-      setEmailError(false);
-    } else {
-      setEmailError("Please enter a valid email address");
-    }
-
-    setformdata({ ...formdata, userEmail: email });
-  };
-
-  const ChangeUserRole = (event) => {
-    const selectedRole = event.target.value;
-    setUserRole(selectedRole);
-    setformdata({ ...formdata, role: rolesMap[selectedRole] });
-  };
-
-  // sql injuction
-  function isSafeInput(input) {
-    const regex = /([';\/*-])/g; // Characters to look for in input
-    return !regex.test(input);
-  }
-
-  const initialFormState = {
-    userName: "",
-    userEmail: "",
-    password: "",
-    c_password: "",
-    loginId: "",
-  };
-
-  const RegisterUser = async () => {
-    const { userName, userEmail, password, c_password, loginId } = formdata;
-    if (
-      !isSafeInput(userName) ||
-      !isSafeInput(userEmail) ||
-      !isSafeInput(password) ||
-      !isSafeInput(c_password) ||
-      !isSafeInput(loginId)
-    ) {
-      toast.error("Input contains invalid email", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      return;
-    }
-    if (formdata.password === formdata.c_password) {
-      setloading(true);
-      await axios
-        .post(`${BACKEND_URL}/register`, formdata)
-        .then((result) => {
-          console.log("result", result);
-          if (result.data.success) {
-            toast.success("Registration Completed Successfully", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          }
-          setloading(false);
-          handleUserModelClose();
-        })
-        .catch((err) => {
-          toast.error("Something went Wrong! Please Try Again", {
+    await axios
+      .post(
+        `${BACKEND_URL}/updateuser/${UserData}`,
+        { role: parseInt(formdata) },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then((result) => {
+        console.log("result", result);
+        if (result.data.success) {
+          toast.success("Role Updated Successfully", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -156,12 +67,60 @@ const UpdateUserPermissions = ({ UserModelOpen, handleUserModelClose }) => {
             progress: undefined,
             theme: "light",
           });
-          setloading(false);
+        }
+        setloading(false);
+        handleUserModelClose();
+      })
+      .catch((err) => {
+        toast.error("Something went Wrong! Please Try Again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
         });
-    } else {
-      setPasswordError("Your Password & Confirm Password must be Same");
-    }
+        setloading(false);
+      });
   };
+
+  const fetchRoles = async () => {
+    setloading(true);
+    await axios
+      .get(`${BACKEND_URL}/roles`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("result", result);
+
+        setUserRole(result?.data?.role?.data);
+
+        setloading(false);
+      })
+      .catch((err) => {
+        console.log("roles err: ", err);
+        toast.error("Unable to fetch roles.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setloading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchRoles();
+  }, []);
 
   console.log("User Model: ");
   return (
@@ -179,9 +138,7 @@ const UpdateUserPermissions = ({ UserModelOpen, handleUserModelClose }) => {
     >
       <div
         style={style}
-        className={`w-[calc(100%-20px)] md:w-[40%]  ${
-          currentMode === "dark" ? "bg-gray-900" : "bg-white"
-        } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
+        className={`w-[calc(100%-20px)] md:w-[40%]  absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
       >
         <div className="relative overflow-hidden">
           <div className={``}>
@@ -189,7 +146,7 @@ const UpdateUserPermissions = ({ UserModelOpen, handleUserModelClose }) => {
               <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
                 <div>
                   <h2 className="text-center mt-3 text-xl font-bold text-gray-900">
-                    Update User Role
+                    Update Role of <span className="text-red">{UserName}</span>
                   </h2>
                 </div>
 
@@ -197,16 +154,24 @@ const UpdateUserPermissions = ({ UserModelOpen, handleUserModelClose }) => {
                   className="mt-8 space-y-6"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    RegisterUser();
+                    UpdateRole();
                   }}
                 >
-                  <input type="hidden" name="remember" defaultValue="true" />
                   <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md">
-                    <div className="col-span-3">
-                      <RolesCheckbox />
-                      <RolesCheckbox />
-                    </div>
+                    {UserRole?.length > 0
+                      ? UserRole?.map((role) => (
+                          <div className="col-span-2">
+                            <RolesCheckbox
+                              role={role}
+                              defaultRole={UserData}
+                              formData={formdata}
+                              setFormData={setformdata}
+                            />
+                          </div>
+                        ))
+                      : "No Roles"}
                   </div>
+
                   <div>
                     <button
                       disabled={loading ? true : false}
@@ -220,7 +185,7 @@ const UpdateUserPermissions = ({ UserModelOpen, handleUserModelClose }) => {
                           className="text-white"
                         />
                       ) : (
-                        <span>Create</span>
+                        <span>Update</span>
                       )}
                     </button>
                   </div>
