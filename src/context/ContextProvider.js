@@ -45,6 +45,7 @@ export const ContextProvider = ({ children }) => {
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [sidebarData, setSidebarData] = useState({});
   const [fbToken, setFBToken] = useState();
+  const [permissions, setPermissions] = useState([]);
 
   // DATA GRID
   const [pageState, setpageState] = useState({
@@ -297,6 +298,7 @@ export const ContextProvider = ({ children }) => {
         allRoutes,
         setAllRoutes,
         isUserSubscribed,
+        setPermissions,
         setIsUserSubscribed,
         appLoading,
         setAppLoading,

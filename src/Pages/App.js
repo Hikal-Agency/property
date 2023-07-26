@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 import AddLead from "./addlead";
-import Signup from "./auth/signup";
 import Booked from "./booked";
 import ClosedealsPage from "./closedeals";
 import TimelinePage from "./timeline";
 import ColdLeads from "./coldleads";
-import Contacts from "./contacts";
 import Dashboard from "./dashboard";
 import Error from "./Error";
 import Home from "./Home";
@@ -13,7 +11,6 @@ import BlockedIPs from "./blocked";
 import AllHotLeads from "./hotleads";
 import AllUnassignedLeads from "./unassigned";
 import LeadNotesPage from "./leadnotes";
-import SingleLeadNote from "./leadnotes/SingleLeadNote";
 import Meetings from "./appointments/meetings";
 import CreateAppointment from "./appointments/createAppointment";
 import PersonaLeads from "./personalleads";
@@ -99,11 +96,11 @@ const routes = [
     element: <Home />,
     pageName: "Home",
   },
-  {
-    path: "/auth/signup",
-    pageName: "Sign Up",
-    element: <Signup />,
-  },
+  // {
+  //   path: "/auth/signup",
+  //   pageName: "Sign Up",
+  //   element: <Signup />,
+  // },
 
   // {
   //   path: "/auth/forgot-password",
@@ -197,7 +194,7 @@ const routes = [
     pageName: "Meetings",
   },
   {
-    path: "/appointments/create",
+    path: "/appointments",
     element: <CreateAppointment />,
     pageName: "Create Appointment",
   },
@@ -414,7 +411,7 @@ function App() {
     const pathname = location.pathname;
     if (
       pathname === "/" ||
-      pathname === "/auth/signup" ||
+      // pathname === "/auth/signup" ||
       pathname === "/callLogs" ||
       pathname === "/attendance" ||
       pathname === "/fresh-logs" ||
