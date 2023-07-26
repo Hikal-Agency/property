@@ -42,12 +42,22 @@ const UpdateUserPermissions = ({
 
   const UpdateRole = async () => {
     setloading(true);
+
     await axios
-      .post(`${BACKEND_URL}/user`, formdata)
+      .post(
+        `${BACKEND_URL}/updateuser/${UserData}`,
+        { role: parseInt(formdata) },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
       .then((result) => {
         console.log("result", result);
         if (result.data.success) {
-          toast.success("Registration Completed Successfully", {
+          toast.success("Role Updated Successfully", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,

@@ -14,38 +14,24 @@ const RolesCheckbox = ({ role, defaultRole, formData, setFormData }) => {
   const isSelectedRole = role.user_id === defaultRole;
   console.log("selected checkbox: ", isSelectedRole);
 
-  const handleClick = () => {
+  const handleClick = (e) => {
     console.log("radio: ", role.id);
-    setFormData(role.id);
+    setFormData(e.target.value);
   };
 
   return (
     <div>
-      {/* <FormControlLabel
+      <FormControlLabel
         control={
           <Radio
             value={role?.id}
-            onClick={handleClick}
+            onChange={handleClick}
             // checked={isSelectedRole}
-            name="radio-buttons"
+            name="roleRadio"
           />
         }
         label={role?.role}
-      /> */}
-      <FormControl>
-        <RadioGroup
-          aria-labelledby="demo-controlled-radio-buttons-group"
-          name="controlled-radio-buttons-group"
-          value={role?.id}
-          onChange={handleClick}
-        >
-          <FormControlLabel
-            // value={role?.id}
-            control={<Radio />}
-            label={role?.role}
-          />
-        </RadioGroup>
-      </FormControl>
+      />
     </div>
   );
 };
