@@ -425,7 +425,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="px-5">
+            <div className="px-1">
               <div className="mt-5 md:mt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
                   {notesData?.length > 0 &&

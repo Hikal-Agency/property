@@ -288,7 +288,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
     );
   }
   return (
-    <div className="pb-10">
+    <div className="px-1 py-1">
       <Box
         sx={{
           ...darkModeColors,
@@ -305,9 +305,10 @@ const LeadNotes = ({ pageState, setpageState }) => {
             color: "red",
           },
         }}
-        className={`rounded-md overflow-hidden ${
+        className={`rounded-md overflow-hidden px-1 flex ${
           currentMode === "dark" ? "bg-black" : "bg-white"
         }`}
+        style={{justifyContent: "flex-end"}}
       >
         <Tabs value={value} onClick={handleChange} variant="standard">
           <Tab
@@ -331,7 +332,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
           />
         </Tabs>
       </Box>
-      <div className="mt-3 pb-3">
+      <div className="pb-1">
         <TabPanel value={value} index={1}>
           <Box
             width={"100%"}
