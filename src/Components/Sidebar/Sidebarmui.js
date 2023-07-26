@@ -18,6 +18,7 @@ import { BiCalendar } from "react-icons/bi";
 import { FiUsers } from "react-icons/fi";
 import { FaFire } from "react-icons/fa";
 import { FaRandom } from "react-icons/fa";
+import { BsPersonFillLock } from "react-icons/bs";
 import {
   MdLeaderboard,
   MdPersonAdd,
@@ -1373,7 +1374,7 @@ const Sidebarmui = () => {
         },
         {
           name: "Roles",
-          icon: <BsCalendarWeekFill />,
+          icon: <BsPersonFillLock />,
           link: "/roles",
         },
         {
