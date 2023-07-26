@@ -23,6 +23,7 @@ import AddUserModel from "../../Components/addUser/AddUserModel";
 import { FaBan, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
 import DeleteUser from "../../Components/Users/DeleteUser";
 import { BsPersonFillLock } from "react-icons/bs";
+import UpdateUserPermissions from "../../Components/addUser/UpdateUserPermissions";
 
 const Users = () => {
   const {
@@ -43,6 +44,7 @@ const Users = () => {
   const [userStatus, setUserStatus] = useState();
   const [username, setUserName] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
+  const [openPermissionModel, setOpenPermissionModel] = useState(false);
 
   console.log("User: ", user);
   const handleChange = (event, newValue) => {
@@ -52,6 +54,18 @@ const Users = () => {
   const HandleOpenModel = () => {
     console.log("Model Open:");
     setModel(true);
+  };
+
+  const HandlePermissionModel = (id, status, name) => {
+    console.log("Permission Model Open:");
+    setUserId(id);
+    setUserName(name);
+    setOpenPermissionModel(true);
+  };
+
+  const HandlePermissionClose = () => {
+    console.log("Permission Model close:");
+    setOpenPermissionModel(false);
   };
 
   const HandleModelClose = () => {
@@ -454,7 +468,7 @@ const Users = () => {
             {User?.role === 1 || User?.role === 2 ? (
               <Button
                 onClick={() =>
-                  handleDelete(
+                  HandlePermissionModel(
                     cellValues?.id,
                     cellValues.row.status,
                     cellValues?.row?.userName
@@ -721,6 +735,15 @@ const Users = () => {
                     handleUserModelClose={handleDeleteModelClose}
                     UserData={userID}
                     UserStatus={userStatus}
+                    UserName={username}
+                    fetchUser={fetchUsers}
+                  />
+                )}
+                {openPermissionModel && (
+                  <UpdateUserPermissions
+                    UserModelOpen={HandlePermissionModel}
+                    handleUserModelClose={HandlePermissionClose}
+                    UserData={userID}
                     UserName={username}
                     fetchUser={fetchUsers}
                   />
