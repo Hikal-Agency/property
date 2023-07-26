@@ -58,7 +58,7 @@ const Users = () => {
   };
 
   const HandlePermissionModel = (id, status, name, role) => {
-    console.log("Permission Model Open:");
+    console.log("Permission Model Open:", id, status, name, role);
     setUserId(id);
     setUserName(name);
     setUserRole(role);
@@ -164,12 +164,12 @@ const Users = () => {
       }
 
       let rowsdata = rowsDataArray?.map((row, index) => ({
-        id:
-          pageState.page > 1
-            ? pageState.page * pageState.pageSize -
-              (pageState.pageSize - 1) +
-              index
-            : index + 1,
+        // id:
+        //   pageState.page > 1
+        //     ? pageState.page * pageState.pageSize -
+        //       (pageState.pageSize - 1) +
+        //       index
+        //     : index + 1,
         id: row?.id,
         userName: row?.userName || "No Name",
         position: row?.position || "No Position",
@@ -177,6 +177,7 @@ const Users = () => {
         userEmail: row?.userEmail || "No Email",
         status: row?.status,
         is_trainer: row?.is_trainer,
+        role: row?.role,
         profile_picture: row?.profile_picture,
         edit: "edit",
       }));

@@ -32,7 +32,7 @@ const UpdateUserPermissions = ({
 }) => {
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
-  const [UserRole, setUserRole] = useState();
+  const [UserRole, setUserRole] = useState([]);
   const { BACKEND_URL, currentMode } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
@@ -40,88 +40,41 @@ const UpdateUserPermissions = ({
 
   console.log("user role list:  ", UserRole);
 
-  const rolesMap = {
-    "head of sales": 2,
-    manager: 3,
-    marketing: 4,
-    accounts: 5,
-    user: 6,
-    agent: 7,
-    dataEntry: 8,
-    officeboy: 9,
+  const UpdateRole = async () => {
+    setloading(true);
+    await axios
+      .post(`${BACKEND_URL}/register`, formdata)
+      .then((result) => {
+        console.log("result", result);
+        if (result.data.success) {
+          toast.success("Registration Completed Successfully", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+        setloading(false);
+        handleUserModelClose();
+      })
+      .catch((err) => {
+        toast.error("Something went Wrong! Please Try Again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setloading(false);
+      });
   };
-
-  const ChangeUserRole = (event) => {
-    const selectedRole = event.target.value;
-    setUserRole(selectedRole);
-    setformdata({ ...formdata, role: rolesMap[selectedRole] });
-  };
-
-  // sql injuction
-  function isSafeInput(input) {
-    const regex = /([';\/*-])/g; // Characters to look for in input
-    return !regex.test(input);
-  }
-
-  //   const RegisterUser = async () => {
-  //     const { userName, userEmail, password, c_password, loginId } = formdata;
-  //     if (
-  //       !isSafeInput(userName) ||
-  //       !isSafeInput(userEmail) ||
-  //       !isSafeInput(password) ||
-  //       !isSafeInput(c_password) ||
-  //       !isSafeInput(loginId)
-  //     ) {
-  //       toast.error("Input contains invalid email", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //       return;
-  //     }
-  //     if (formdata.password === formdata.c_password) {
-  //       setloading(true);
-  //       await axios
-  //         .post(`${BACKEND_URL}/register`, formdata)
-  //         .then((result) => {
-  //           console.log("result", result);
-  //           if (result.data.success) {
-  //             toast.success("Registration Completed Successfully", {
-  //               position: "top-right",
-  //               autoClose: 3000,
-  //               hideProgressBar: false,
-  //               closeOnClick: true,
-  //               pauseOnHover: true,
-  //               draggable: true,
-  //               progress: undefined,
-  //               theme: "light",
-  //             });
-  //           }
-  //           setloading(false);
-  //           handleUserModelClose();
-  //         })
-  //         .catch((err) => {
-  //           toast.error("Something went Wrong! Please Try Again", {
-  //             position: "top-right",
-  //             autoClose: 3000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: "light",
-  //           });
-  //           setloading(false);
-  //         });
-  //     } else {
-  //       setPasswordError("Your Password & Confirm Password must be Same");
-  //     }
-  //   };
 
   const fetchRoles = async () => {
     setloading(true);
@@ -191,14 +144,14 @@ const UpdateUserPermissions = ({
                   className="mt-8 space-y-6"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    // RegisterUser();
+                    UpdateRole();
                   }}
                 >
                   <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md">
                     {UserRole?.length > 0
                       ? UserRole?.map((role) => (
                           <div className="col-span-2">
-                            <RolesCheckbox role={role} defaultRole={userRole} />
+                            <RolesCheckbox role={role} defaultRole={UserData} />
                           </div>
                         ))
                       : "No Roles"}
@@ -217,7 +170,7 @@ const UpdateUserPermissions = ({
                           className="text-white"
                         />
                       ) : (
-                        <span>Create</span>
+                        <span>Update</span>
                       )}
                     </button>
                   </div>
