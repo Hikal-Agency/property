@@ -43,6 +43,7 @@ const Users = () => {
   const [userID, setUserId] = useState();
   const [userStatus, setUserStatus] = useState();
   const [username, setUserName] = useState();
+  const [role, setUserRole] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [openPermissionModel, setOpenPermissionModel] = useState(false);
 
@@ -56,10 +57,11 @@ const Users = () => {
     setModel(true);
   };
 
-  const HandlePermissionModel = (id, status, name) => {
+  const HandlePermissionModel = (id, status, name, role) => {
     console.log("Permission Model Open:");
     setUserId(id);
     setUserName(name);
+    setUserRole(role);
     setOpenPermissionModel(true);
   };
 
@@ -471,7 +473,8 @@ const Users = () => {
                   HandlePermissionModel(
                     cellValues?.id,
                     cellValues.row.status,
-                    cellValues?.row?.userName
+                    cellValues?.row?.userName,
+                    cellValues?.row?.role
                   )
                 }
                 className={`editUserBtn ${
@@ -745,6 +748,7 @@ const Users = () => {
                     handleUserModelClose={HandlePermissionClose}
                     UserData={userID}
                     UserName={username}
+                    userRole={role}
                     fetchUser={fetchUsers}
                   />
                 )}
