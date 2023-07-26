@@ -15,10 +15,13 @@ const Devices = ({ handleCreateSession, fetchDevices, devices }) => {
           {devices?.map((device) => {
             return (
               <DeviceCard
+                fetchInstances={fetchDevices}
                 key={device.id}
-                onClick={() =>
-                  handleCreateSession(device.instance_name, device.id)
-                }
+                onClick={(e) => {
+                  if (!e.target.closest(".delete-btn")) {
+                    handleCreateSession(device.instance_name, device.id);
+                  }
+                }}
                 details={device}
               />
             );

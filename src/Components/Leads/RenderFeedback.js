@@ -188,7 +188,7 @@ const RenderFeedback = ({ cellValues }) => {
 
   return (
     <Box
-      className={` w-full h-full flex items-center justify-center `}
+      className={`mr-2 w-full h-full flex items-center justify-center `}
       sx={SelectStyles}
     >
       {/* <Select

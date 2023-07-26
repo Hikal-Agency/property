@@ -418,9 +418,23 @@ const BookedDeals = ({
     {
       field: "leadName",
       headerName: "Lead name",
-      // width: 170,
       minWidth: 150,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
     },
     {
       field: "leadContact",
@@ -506,10 +520,18 @@ const BookedDeals = ({
       headerName: "Name",
       flex: 1,
       minWidth: 85,
-      renderCell: (cellValues) => {
+       renderCell: (cellValues) => {
         return (
-          <div className="flex flex-wrap items-center">
-            <span>{cellValues.row.leadName}</span>
+          <div className="w-full ">
+            <p
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
+              {cellValues?.formattedValue}
+            </p>
           </div>
         );
       },
@@ -713,10 +735,16 @@ const BookedDeals = ({
       headerName: "Lead name",
       minWidth: 85,
       flex: 1,
-      renderCell: (cellValues) => {
+            renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize">
+            <p
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -1032,10 +1060,16 @@ const BookedDeals = ({
       headerName: "Lead name",
       minWidth: 85,
       flex: 1,
-      renderCell: (cellValues) => {
+            renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize">
+            <p
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -1337,10 +1371,16 @@ const BookedDeals = ({
       headerName: "Lead name",
       minWidth: 120,
       flex: 1,
-      renderCell: (cellValues) => {
+            renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize">
+            <p
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>

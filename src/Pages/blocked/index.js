@@ -47,7 +47,6 @@ const BlockedIps = () => {
     return <Loader />;
   }
 
-
     const handleUnblock = async (ip) => {
     try { 
       setLoading(true);
@@ -69,7 +68,6 @@ const BlockedIps = () => {
         progress: undefined,
         theme: "light",
       });
-      setLoading(true);
       fetchBlockedIPs(); 
       
     } catch (error) {
@@ -85,6 +83,7 @@ const BlockedIps = () => {
         theme: "light",
       });
     }
+    setLoading(false);
   }
 
   return (
