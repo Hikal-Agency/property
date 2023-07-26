@@ -9,6 +9,8 @@ import "../../styles/app.css";
 import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import PermissionsCheckbox from "../addUser/PermissionsCheckbox";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -23,8 +25,12 @@ const RolesComponent = ({
 }) => {
   const { BACKEND_URL, currentMode, User } = useStateContext();
   const [formdata, setformdata] = useState({ user_id: User?.id, status: 1 });
+  const [permissions, setPermissions] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
   const [loading, setloading] = useState(false);
   const token = localStorage.getItem("auth-token");
+
+  console.log("permissions:  ", permissions);
 
   const AddData = async () => {
     function isSafeInput(input) {
@@ -102,7 +108,40 @@ const RolesComponent = ({
       });
   };
 
+  const fetchPermissions = async () => {
+    try {
+      const permissions = await axios.get(`${BACKEND_URL}/permissions`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      setDataLoading(true);
+
+      setPermissions(permissions?.data?.permission?.data);
+
+      console.log("Response: ", permissions);
+      setDataLoading(false);
+    } catch (error) {
+      setDataLoading(false);
+
+      toast.error("Unable to fetch permissions.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   console.log("User Model: ");
+  useEffect(() => {
+    fetchPermissions();
+  }, []);
   return (
     <Modal
       keepMounted
@@ -160,40 +199,15 @@ const RolesComponent = ({
                       />
                     </div>
                     {value === 0 && (
-                      <div>
-                        <TextField
-                          id="Manager"
-                          select
-                          sx={{
-                            "&": {
-                              marginBottom: "1.25rem !important",
-                            },
-                          }}
-                          // value={Manager}
-                          // disabled={User?.role === 3 && true}
-                          label="Manager"
-                          // onChange={ChangeManager}
-                          size="medium"
-                          className="w-full mb-5"
-                          displayEmpty
-                          fullWidth
-                        >
-                          <MenuItem value="">
-                            Select
-                            <span className="ml-1" style={{ color: "red" }}>
-                              *
-                            </span>
-                          </MenuItem>
-
-                          {/* {Managers?.map((person, index) => ( */}
-                          {/* <MenuItem key={index} value={person?.id}> */}
-                          <MenuItem>
-                            {/* {person?.userName} */}
-                            kese ho
-                          </MenuItem>
-                          {/* ))} */}
-                        </TextField>
-                      </div>
+                      <>
+                        <div className="flex flex-wrap w-full">
+                          {!dataLoading && permissions?.length > 0
+                            ? permissions?.map((permission) => (
+                                <PermissionsCheckbox permission={permission} />
+                              ))
+                            : "No permissions found."}
+                        </div>
+                      </>
                     )}
                   </div>
                   <div>
