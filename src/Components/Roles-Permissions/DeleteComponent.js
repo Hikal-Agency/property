@@ -114,9 +114,7 @@ const DeleteComponent = ({
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              {`Do you really want to ${
-                value === 0 ? "" : "Re-activate"
-              } ${DataName}?`}
+              {`Do you really want to delete ${DataName}?`}
             </h1>
           </div>
 

@@ -159,6 +159,42 @@ const RolesComponent = ({
                         }}
                       />
                     </div>
+                    {value === 0 && (
+                      <div>
+                        <TextField
+                          id="Manager"
+                          select
+                          sx={{
+                            "&": {
+                              marginBottom: "1.25rem !important",
+                            },
+                          }}
+                          // value={Manager}
+                          // disabled={User?.role === 3 && true}
+                          label="Manager"
+                          // onChange={ChangeManager}
+                          size="medium"
+                          className="w-full mb-5"
+                          displayEmpty
+                          fullWidth
+                        >
+                          <MenuItem value="">
+                            Select
+                            <span className="ml-1" style={{ color: "red" }}>
+                              *
+                            </span>
+                          </MenuItem>
+
+                          {/* {Managers?.map((person, index) => ( */}
+                          {/* <MenuItem key={index} value={person?.id}> */}
+                          <MenuItem>
+                            {/* {person?.userName} */}
+                            kese ho
+                          </MenuItem>
+                          {/* ))} */}
+                        </TextField>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <button
