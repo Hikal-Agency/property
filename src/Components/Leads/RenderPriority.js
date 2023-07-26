@@ -39,8 +39,8 @@ const RenderPriority = ({ cellValues }) => {
         color: currentMode === "dark" ? "white" : "black",
         // borderColor: currentMode === "dark" ? "white" : "black",
         border: "none",
-        fontSize: "0.9rem",
-        fontWeight: "500",
+        fontSize: "12px",
+        fontWeight: "400",
       },
     "& .MuiOutlinedInput-notchedOutline": {
       // borderColor: currentMode === "dark" ? "white" : "black",
@@ -119,7 +119,7 @@ const RenderPriority = ({ cellValues }) => {
         <Select
         sx={{
           "& .MuiSelect-select": {
-            fontSize: 12,
+            fontSize: 11,
           },
             color:
               currentMode === "dark"

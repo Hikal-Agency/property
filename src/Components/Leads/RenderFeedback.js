@@ -59,8 +59,8 @@ const RenderFeedback = ({ cellValues }) => {
       {
         color: currentMode === "dark" ? "white" : "black",
         // borderColor: currentMode === "dark" ? "white" : "black",
-        fontSize: "0.9rem",
-        fontWeight: "500",
+        fontSize: "12px",
+        fontWeight: "400",
         // borderLeft: currentMode === "dark" ? "1px solid white" : "1px solid black",
         // borderRight: currentMode === "dark" ? "1px solid white" : "1px solid black",
         border: "none",
@@ -188,7 +188,7 @@ const RenderFeedback = ({ cellValues }) => {
 
   return (
     <Box
-      className={`relative w-full h-full flex items-center justify-center `}
+      className={` w-full h-full flex items-center justify-center `}
       sx={SelectStyles}
     >
       {/* <Select
@@ -224,19 +224,24 @@ const RenderFeedback = ({ cellValues }) => {
           label="Feedback"
           onChange={ChangeFeedback}
           size="medium"
-          className="w-[100%] h-[75%] border-none render"
+          // className="w-[100%] h-[75%] border-none render"
+          className="w-full border border-gray-300 rounded "
           displayEmpty
           required
           sx={{
-            color:
-              currentMode === "dark"
-                ? "#ffffff !important"
-                : "#000000 !important",
-            "& .MuiSelect-icon": {
-              color:
-                currentMode === "dark"
-                  ? "#ffffff !important"
-                  : "#000000 !important",
+            border: "1px solid #000000",
+            // color:
+            //   currentMode === "dark"
+            //     ? "#ffffff !important"
+            //     : "#000000 !important",
+            // "& .MuiSelect-icon": {
+            //   color:
+            //     currentMode === "dark"
+            //       ? "#ffffff !important"
+            //       : "#000000 !important",
+            // },
+            "& .MuiSelect-select": {
+              fontSize: 11,
             },
           }}
         >
@@ -250,11 +255,11 @@ const RenderFeedback = ({ cellValues }) => {
           <MenuItem value={"Follow Up"}>Follow Up</MenuItem>
           <MenuItem value={"Meeting"}>Meeting</MenuItem>
           <MenuItem value={"Booked"}>Booked</MenuItem>
-          <MenuItem value={"Duplicate"}>Duplicate</MenuItem>
-          <MenuItem value={"No Answer"}>No Answer</MenuItem>
           <MenuItem value={"Low Budget"}>Low Budget</MenuItem>
           <MenuItem value={"Not Interested"}>Not Interested</MenuItem>
+          <MenuItem value={"No Answer"}>No Answer</MenuItem>
           <MenuItem value={"Unreachable"}>Unreachable</MenuItem>
+          <MenuItem value={"Duplicate"}>Duplicate</MenuItem>
           <MenuItem value={"Dead"}>Dead</MenuItem>
         </Select>
       </FormControl>

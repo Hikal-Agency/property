@@ -1,6 +1,5 @@
 import { Button } from "@material-tailwind/react";
 import {
-  Box,
   CircularProgress,
   Dialog,
   FormControl,
@@ -9,6 +8,7 @@ import {
   // Select,
 } from "@mui/material";
 import Select from "@mui/material/Select";
+import { Box } from "@mui/system";
 
 // import axios from "axios";
 import axios from "../../axoisConfig";
@@ -36,8 +36,8 @@ const RenderManagers = ({ cellValues, lead_origin }) => {
         color: currentMode === "dark" ? "white !important" : "black !important",
         // borderColor: currentMode === "dark" ? "white" : "black",
         border: "none",
-        fontSize: "0.9rem",
-        fontWeight: "500",
+        fontSize: "12px",
+        fontWeight: "400",
       },
     "& .MuiOutlinedInput-notchedOutline": {
       // borderColor: currentMode === "dark" ? "white" : "black",
@@ -178,7 +178,7 @@ const RenderManagers = ({ cellValues, lead_origin }) => {
           sx={{ border: "1px solid #000000",
           
           "& .MuiSelect-select": {
-            fontSize: 12,
+            fontSize: 11,
           },
            }}
         >
