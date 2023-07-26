@@ -434,8 +434,8 @@ const SendMessageModal = ({
             <Button
               ripple="true"
               variant="contained"
-              color="success"
-              sx={{ p: "12px", mt: 2 }}
+              sx={{ p: "12px", mt: 2}}
+              style={{backgroundColor: '#da1f26'}}
               type="submit"
             >
               {btnloading ? (
