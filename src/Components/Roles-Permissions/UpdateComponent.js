@@ -25,7 +25,7 @@ const UpdateComponent = ({
 }) => {
   const { BACKEND_URL, currentMode, User } = useStateContext();
 
-  const [role, setRole] = useState(DataName);
+  const [data, setRole] = useState(DataName);
   const [loading, setloading] = useState(false);
   const [updateData, setUpdateData] = useState();
   const token = localStorage.getItem("auth-token");
@@ -33,9 +33,9 @@ const UpdateComponent = ({
   const UpdateData = async () => {
     setloading(true);
 
-    if (!role) {
+    if (!data) {
       setloading(false);
-      toast.error("Kindly enter role name.", {
+      toast.error("Kindly enter data.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -50,28 +50,39 @@ const UpdateComponent = ({
 
     const formdata = new FormData();
     formdata.append("user_id", User?.id);
-    formdata.append("role", role);
+    if (value === 0) {
+      formdata.append("role", data);
+    } else {
+      formdata.append("permission", data);
+    }
 
     await axios
-      .post(`${BACKEND_URL}/roles/${UserData}`, formdata, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
+      .post(
+        `${BACKEND_URL}/${value === 0 ? "roles" : "permissions"}/${UserData}`,
+        formdata,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
       .then((result) => {
         console.log("result", result);
         if (result.data.status === true) {
-          toast.success("Registration Completed Successfully", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          toast.success(
+            `${value === 0 ? "Role " : "Permission "} updated successfully.`,
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
         }
         setloading(false);
         addUserModelClose();
@@ -140,7 +151,7 @@ const UpdateComponent = ({
                         variant="outlined"
                         size="medium"
                         required
-                        value={role}
+                        value={data}
                         onChange={(e) => setRole(e.target.value)}
                       />
                     </div>
