@@ -132,7 +132,7 @@ const Timeline = () => {
               <h1
                 className={`font-semibold ${
                   currentMode === "dark" ? "text-white" : "text-red-600"
-                } text-xl ml-2 mb-3 auto-cols-max gap-x-3`}
+                } text-lg ml-2 mb-3 auto-cols-max gap-x-3`}
               >
                 Timeline
                 {/* <span className="px-5 py-3 rounded-md">Leaderboard</span> */}
@@ -148,7 +148,7 @@ const Timeline = () => {
                     <div className="col-span-12 sm:col-span-2">
                       {LeadDetails.map((item, index) => (
                         <>
-                          <h3 className="text-xl font-bold uppercase mb-5">
+                          <h3 className="text-lg font-bold uppercase mb-5">
                             {item.leadName}
                           </h3>
                           <div className="text-center sm:text-left mb-5 before:block before:w-24 before:h-1 before:mb-5 before:rounded-md before:mx-auto sm:before:mx-0 before:bg-main-red-color">

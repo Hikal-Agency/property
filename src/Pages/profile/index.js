@@ -413,7 +413,7 @@ const ProfilePage = () => {
                     } rounded-md shadow-md`}
                   >
                     <div className="col-span-2 border-r-2 border-gray-400  py-10 ">
-                      <h1 className="text-xl font-semibold pb-10 text-center">
+                      <h1 className="text-lg font-semibold pb-10 text-center">
                         User Account
                       </h1>
                       <div className="accountinfo border-t-2 border-gray-400 px-5 pt-10 ">

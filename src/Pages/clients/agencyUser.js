@@ -232,7 +232,7 @@ const AgencyUsers = () => {
                 <h1
                   className={`font-semibold ${
                     currentMode === "dark" ? "text-white" : "text-black"
-                  } text-xl ml-2 mb-3 auto-cols-max gap-x-3`}
+                  } text-lg ml-2 mb-3 auto-cols-max gap-x-3`}
                 >
                   Contacts
                   {/* <span className="px-5 py-3 rounded-md">Leaderboard</span> */}

@@ -162,7 +162,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                   currentMode === "dark"
                     ? "text-red-600"
                     : "text-main-red-color"
-                } text-xl font-bold my-2 text-center`}
+                } text-lg font-bold my-2 text-center`}
               >
                 Daily Calls
               </div>
@@ -298,7 +298,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                   currentMode === "dark"
                     ? "text-red-600"
                     : "text-main-red-color"
-                } text-xl font-bold my-2 text-center`}
+                } text-lg font-bold my-2 text-center`}
               >
                 Total Calls
               </div>

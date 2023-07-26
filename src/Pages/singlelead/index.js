@@ -184,7 +184,7 @@ const SingleLeadPage = () => {
                 <div className="pl-3">
                   <div className="mt-3">
                     <h1
-                      className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                      className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
                         currentMode === "dark"
                           ? "text-white border-white"
                           : "text-red-600 font-bold border-red-600"
@@ -208,7 +208,7 @@ const SingleLeadPage = () => {
                                     : "text-black"
                                 }`}
                               >
-                                Lead Name :
+                                Lead name:
                               </h6>
                               <h6
                               style={{fontFamily: isArabic(LeadData?.leadName) ? "Noto Kufi Arabic" : "inherit"}}
@@ -231,7 +231,7 @@ const SingleLeadPage = () => {
                                     : "text-black"
                                 }`}
                               >
-                                Contact Details:
+                                Contact details:
                               </h6>
                               <h6
                                 className={`font-semibold ${
@@ -287,15 +287,15 @@ const SingleLeadPage = () => {
                               }
                             }}>
                               {LeadData?.coldcall === 0 ? (
-                                <BsFire size={25} />
+                                <BsFire size={20} />
                               ) : LeadData?.coldcall === 1 ? (
-                                <BsSnow2 size={25} />
+                                <BsSnow2 size={20} />
                               ) : LeadData?.coldcall === 2 ? (
-                                <HiOutlineUserCircle size={25} />
+                                <HiOutlineUserCircle size={20} />
                               ) : LeadData?.coldcall === 3 ? (
-                                <FiLink size={25} />
+                                <FiLink size={20} />
                               ) : LeadData?.coldcall === 4 ? (
-                                <BsSun size={25} />
+                                <BsSun size={20} />
                               ) : (
                                 <BsPatchQuestion size={25} />
                                 // <FaHotjar size={25} />
@@ -303,7 +303,7 @@ const SingleLeadPage = () => {
                             </Box>
                           </div>
                           <p
-                            className={`italic text-sm ${
+                            className={`text-sm ${
                               currentMode === "dark"
                                 ? "text-white"
                                 : "text-black"
@@ -312,7 +312,7 @@ const SingleLeadPage = () => {
                             Lead added on {LeadData?.creationDate}
                           </p>
                           <p
-                            className={`italic text-sm ${
+                            className={`text-sm ${
                               currentMode === "dark"
                                 ? "text-white"
                                 : "text-black"
@@ -336,7 +336,7 @@ const SingleLeadPage = () => {
                           <h6 className="font-semibold">{LeadData?.project}</h6>
                         </div>
                         <div className="grid justify-center space-y-3 text-center">
-                          <h6 className="font-bold">How many bedrooms?</h6>
+                          <h6 className="font-bold">Enquiry about</h6>
                           <h6 className="font-semibold">
                             {LeadData?.enquiryType}
                           </h6>
@@ -352,9 +352,9 @@ const SingleLeadPage = () => {
                           <h6 className="font-semibold">{LeadData?.leadFor}</h6>
                         </div>
                       </div>
-                      <div className="bg-main-red-color h-0.5 w-full my-7"></div>
-                      <div className={`rounded-md mt-5`}>
-                        <h1 className="font-bold text-lg text-center">
+                      <div className="bg-main-red-color h-0.5 w-full my-5"></div>
+                      <div className={`rounded-md my-5`}>
+                        <h1 className="font-bold text-lg text-center my-2">
                           Lead Notes
                         </h1>
 

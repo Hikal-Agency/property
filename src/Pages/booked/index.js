@@ -38,7 +38,7 @@ const Booked = () => {
               <div className="w-full">
                 <div className=" w-full flex items-center justify-between">
                   <h1
-                    className={`text-xl border-l-[4px] ml-1 pl-1  font-bold ${
+                    className={`text-lg border-l-[4px] ml-1 pl-1  font-bold ${
                       currentMode === "dark"
                         ? "text-white border-white"
                         : "text-red-600 font-bold border-red-600"

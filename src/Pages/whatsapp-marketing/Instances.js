@@ -44,7 +44,7 @@ const Instances = () => {
   return (
     <div className="h-screen">
         <h1
-          className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+          className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
             currentMode === "dark"
               ? "text-white border-white"
               : "text-red-600 font-bold border-red-600"

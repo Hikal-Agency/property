@@ -64,7 +64,7 @@ const AllHotLeads = () => {
               <div className="w-full">
                 <div className=" w-full flex my-4 items-center justify-between">
                   <h1
-                    className={`text-xl ml-1 pl-1 border-l-[4px] font-bold ${
+                    className={`text-lg ml-1 pl-1 border-l-[4px] font-bold ${
                       currentMode === "dark"
                         ? "text-white border-white"
                         : "text-red-600 font-bold"

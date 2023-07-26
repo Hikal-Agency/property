@@ -1240,7 +1240,7 @@ const ClientLeads = ({
                     <h2
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-black"
-                      } font-semibold text-xl`}
+                      } font-semibold text-lg`}
                     >
                       Leads
                     </h2>
@@ -1428,7 +1428,7 @@ const ClientLeads = ({
             <div className="w-full pl-3">
               <div className="mt-5">
                 <h1
-                  className={`text-xl border-l-[4px] ml-1 pl-1 mb-5  font-bold ${
+                  className={`text-lg border-l-[4px] ml-1 pl-1 mb-5  font-bold ${
                     currentMode === "dark"
                       ? "text-white border-white"
                       : "text-red-600 font-bold border-red-600"
