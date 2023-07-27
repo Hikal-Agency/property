@@ -9,6 +9,8 @@ import "../../styles/app.css";
 import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import UpdatePermissionsCheckbox from "../addUser/UpdatePermissionCheckbox";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -27,7 +29,16 @@ const UpdateComponent = ({
 
   const [data, setRole] = useState(DataName);
   const [loading, setloading] = useState(false);
-  const [updateData, setUpdateData] = useState();
+  const [dataLoading, setDataLoading] = useState(false);
+  const [selectedPermission, setSelectedPermission] = useState();
+  const [permissions, setPermissions] = useState({
+    allPermissions: null,
+    selectedPermissions: null,
+  });
+
+  console.log("selected permissions: ", selectedPermission);
+  console.log("all permisssions: ", permissions);
+
   const token = localStorage.getItem("auth-token");
 
   const UpdateData = async () => {
@@ -102,6 +113,74 @@ const UpdateComponent = ({
         setloading(false);
       });
   };
+  const fetchPermissions = async () => {
+    setDataLoading(true);
+
+    try {
+      const permissionsPromise = axios.get(`${BACKEND_URL}/permissions`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      const rolesPromise = axios.get(
+        `${BACKEND_URL}/roles/${UserData}/permissions`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      const [permissionsResponse, rolesResponse] = await Promise.all([
+        permissionsPromise,
+        rolesPromise,
+      ]);
+
+      setPermissions({
+        allPermissions: permissionsResponse?.data?.permission?.data,
+        selectedPermissions: rolesResponse?.data?.permissions,
+      });
+
+      console.log("Permissions Response: ", permissionsResponse);
+      console.log("Roles Permissions Response: ", rolesResponse);
+
+      setDataLoading(false);
+    } catch (error) {
+      setDataLoading(false);
+
+      toast.error("Unable to fetch data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (value === 0) {
+      fetchPermissions();
+    }
+  }, []);
+
+  const permits = permissions?.allPermissions?.map((permission) => {
+    return {
+      ...permission,
+      isPermitted: permissions?.selectedPermissions?.find(
+        (p) => p.id === permission.id
+      )
+        ? true
+        : false,
+    };
+  });
+  console.log("permits:::: ", permits);
 
   console.log("User Model: ");
   return (
@@ -119,14 +198,12 @@ const UpdateComponent = ({
     >
       <div
         style={style}
-        className={`w-[calc(100%-20px)] md:w-[40%]  ${
-          currentMode === "dark" ? "bg-gray-900" : "bg-white"
-        } absolute top-1/2 left-1/2 p-5  rounded-md`}
+        className={`w-[calc(100%-20px)] md:w-[40%] absolute top-1/2 left-1/2 p-5  rounded-md `}
       >
         <div className="relative overflow-hidden">
-          <div className={``}>
-            <div className="flex  items-center justify-center pl-3">
-              <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+          <div className={` `}>
+            <div className="flex items-center justify-center pl-3">
+              <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5] ">
                 <div>
                   <h2 className="text-center text-xl font-bold text-gray-900 mt-4">
                     Update {value === 0 ? " Role" : " Permissions"}
@@ -141,7 +218,7 @@ const UpdateComponent = ({
                   }}
                 >
                   <input type="hidden" name="remember" defaultValue="true" />
-                  <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md">
+                  <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md  ">
                     <div className="col-span-6">
                       <TextField
                         id=""
@@ -155,6 +232,52 @@ const UpdateComponent = ({
                         onChange={(e) => setRole(e.target.value)}
                       />
                     </div>
+                    {value === 0 && (
+                      <>
+                        <div className="col-span-6 max-h-[60vh] overflow-y-auto ">
+                          <div className="grid grid-cols-3 gap-x-3">
+                            {!dataLoading ? (
+                              permits?.length > 0 ? (
+                                permits?.map((permission) => (
+                                  <>
+                                    <UpdatePermissionsCheckbox
+                                      key={permission?.id}
+                                      permission={permission}
+                                      allPermissions={permissions}
+                                      selectedPermission={selectedPermission}
+                                      setSelectedPermission={
+                                        setSelectedPermission
+                                      }
+                                    />
+                                  </>
+                                ))
+                              ) : (
+                                <p>No permissions found.</p>
+                              )
+                            ) : (
+                              <div className="flex justify-center w-full my-3">
+                                <CircularProgress />{" "}
+                              </div>
+                            )}
+                            {/* <button
+                              disabled={loading ? true : false}
+                              type="submit"
+                              className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-3 px-4 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                            >
+                              {loading ? (
+                                <CircularProgress
+                                  sx={{ color: "white" }}
+                                  size={25}
+                                  className="text-white"
+                                />
+                              ) : (
+                                <span>Select All</span>
+                              )}
+                            </button> */}
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div>
                     <button

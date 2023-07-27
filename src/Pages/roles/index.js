@@ -292,7 +292,7 @@ const Role = () => {
               )}
             </Button>
             <Button
-              title="Edit User"
+              title="Edit Role"
               className={`editUserBtn ${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none "
@@ -368,7 +368,7 @@ const Role = () => {
               )}
             </Button>
             <Button
-              title="Edit User"
+              title="Edit Permission"
               className={`editUserBtn ${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none "
