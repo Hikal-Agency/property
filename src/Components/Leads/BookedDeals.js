@@ -9,6 +9,7 @@ import {
   InputAdornment,
   TextField,
   FormControl,
+  Tooltip,
 } from "@mui/material";
 import {
   DataGrid,
@@ -51,6 +52,7 @@ import RenderSalesperson from "./RenderSalesperson";
 import RenderPriority from "./RenderPriority";
 import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
+import Timeline from "../../Pages/timeline";
 
 const BookedDeals = ({
   BACKEND_URL,
@@ -130,6 +132,7 @@ const BookedDeals = ({
   const [LeadModelOpen, setLeadModelOpen] = useState(false);
   const handleLeadModelOpen = () => setLeadModelOpen(true);
   const handleLeadModelClose = () => setLeadModelOpen(false);
+  const [timelineModelOpen, setTimelineModelOpen] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
 
   //Update LEAD MODAL VARIABLES
@@ -139,6 +142,12 @@ const BookedDeals = ({
     setLeadModelOpen(false);
     setUpdateLeadModelOpen(false);
   };
+
+  const HandleViewTimeline = (params) => {
+    setsingleLeadData(params.row);
+    setTimelineModelOpen(true);
+  };
+
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
       {
@@ -1013,25 +1022,23 @@ const BookedDeals = ({
               </IconButton>
             </p>
 
-            {cellValues.row.leadId !== null && (
-              <p>
-                <Link
-                  to={`/timeline/${cellValues.row.leadId}`}
-                  className={`editLeadBtn cursor-pointer ${
-                    currentMode === "dark"
-                      ? "bg-transparent rounded-md shadow-none"
-                      : "bg-transparent rounded-md shadow-none"
-                  }`}
-                >
-                  <IconButton
-                    sx={{ padding: 0 }}
-                    color={currentMode === "dark" ? "black" : "white"}
-                  >
-                    <AiOutlineHistory size={20} style={{ color: "inherit" }} />
+             {cellValues.row.leadId !== null && (
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
+                }`}
+                onClick={() => HandleViewTimeline(cellValues)}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
                   </IconButton>
-                </Link>
+                </Tooltip>
               </p>
-            )}
+            )} 
           </div>
         );
       },
@@ -1324,23 +1331,21 @@ const BookedDeals = ({
               </IconButton>
             </p>
 
-            {cellValues.row.leadId !== null && (
-              <p>
-                <Link
-                  to={`/timeline/${cellValues.row.leadId}`}
-                  className={`editLeadBtn cursor-pointer ${
-                    currentMode === "dark"
-                      ? "bg-transparent rounded-md shadow-none"
-                      : "bg-transparent rounded-md shadow-none"
-                  }`}
-                >
-                  <IconButton
-                    sx={{ padding: 0 }}
-                    color={currentMode === "dark" ? "black" : "white"}
-                  >
-                    <AiOutlineHistory size={20} style={{ color: "inherit" }} />
+               {cellValues.row.leadId !== null && (
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
+                }`}
+                onClick={() => HandleViewTimeline(cellValues)}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
                   </IconButton>
-                </Link>
+                </Tooltip>
               </p>
             )}
           </div>
@@ -1559,41 +1564,27 @@ const BookedDeals = ({
                 <AiOutlineEdit
                   size={20}
                   color="black"
-                  // sx={{ color: "red" }}
                 />
-                {/* {currentMode === "dark" ? (
-                  <AiOutlineEdit
-                    size={20}
-                    color="white"
-                    // sx={{ color: "red" }}
-                  />
-                ) : (
-                  <AiOutlineEdit size={20} color="black" />
-                )} */}
               </p>
             )}
 
-            {/* <p
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </p> */}
-            {cellValues.row.leadId !== null && (
-              <Link
-                to={`/timeline/${cellValues.row.leadId}`}
-                className={`editLeadBtn ${
+  
+               {cellValues.row.leadId !== null && (
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
                   currentMode === "dark"
-                    ? "text-white bg-transparent rounded-md shadow-none "
-                    : "text-black bg-transparent rounded-md shadow-none "
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
                 }`}
+                onClick={() => HandleViewTimeline(cellValues)}
               >
-                <AiOutlineHistory size={20} />
-              </Link>
+                <Tooltip title="View Timeline" arrow>
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
+                  </IconButton>
+                </Tooltip>
+              </p>
             )}
           </div>
         );
@@ -1894,12 +1885,13 @@ const BookedDeals = ({
   }, [lead_type, lead_origin]);
 
   // ROW CLICK FUNCTION
-  const handleRowClick = async (params, event) => {
-    if (!event.target.classList.contains("deleteLeadBtn")) {
+  const handleRowClick = (params, event) => {
+      if(!event.target.closest(".deleteLeadBtn")) {
       setsingleLeadData(params.row);
       handleLeadModelOpen();
+        
+      }
     }
-  };
   // EDIT BTN CLICK FUNC
   const HandleEditFunc = async (params) => {
     console.log(params.row);
@@ -2073,6 +2065,15 @@ const BookedDeals = ({
             }
           />
         </div>
+                
+          {timelineModelOpen && (
+            <Timeline
+              timelineModelOpen={timelineModelOpen}
+              handleCloseTimelineModel={() => setTimelineModelOpen(false)}
+              LeadData={singleLeadData}
+            />
+          )}
+
 
         {!UpdateLeadModelOpen && (
           <SingleLead

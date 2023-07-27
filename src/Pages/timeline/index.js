@@ -1,26 +1,30 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
-import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import { ImUserCheck } from "react-icons/im";
 import { MdFeedback } from "react-icons/md";
 import { MdStickyNote2 } from "react-icons/md";
 import { HiClock } from "react-icons/hi";
+import {IoMdClose} from "react-icons/io";
 import Error from "../Error";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import { FaCalendarDay } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
+import {Backdrop, IconButton, Modal } from "@mui/material";
 
-const Timeline = () => {
+  const style = {
+    transform: "translate(-50%, -50%)",
+    boxShadow: 24,
+  };
+
+const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [leadsCycle, setLeadsCycle] = useState(null);
   const [leadDetails, setLeadDetails] = useState(null);
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const fetchLeadsData = async (token, LeadID) => {
     // const LeadID = location.pathname.split("/")[2].replace(/%20/g, " ");
@@ -55,7 +59,7 @@ const Timeline = () => {
   };
 
   useEffect(() => {
-    const LeadID = location.pathname.split("/")[2].replace(/%20/g, " ");
+    const LeadID = LeadData?.leadId;
     const token = localStorage.getItem("auth-token");
     if (!LeadID) {
       navigate(`/closedeals`);
@@ -104,11 +108,36 @@ const Timeline = () => {
 
   return (
     <>
-      {/* <Head>
-        <title>HIKAL CRM - Timeline</title>
-        <meta name="description" content="Timeline - HIKAL CRM" />
-      </Head> */}
-      <div className="min-h-screen">
+    
+      <Modal
+        keepMounted
+        open={timelineModelOpen}
+        onClose={handleCloseTimelineModel}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <div
+          style={style}
+          className={`w-[calc(100%-20px)] h-[80%] overflow-y-scroll md:w-[900px]  ${
+            currentMode === "dark" ? "bg-gray-900 text-white" : "bg-white"
+          } absolute top-1/2 left-1/2 px-10 py-5 rounded-md`}
+        >
+          <IconButton
+            sx={{
+              position: "absolute",
+              right: 12,
+              top: 10,
+              color: (theme) => theme.palette.grey[500],
+            }}
+            onClick={handleCloseTimelineModel}
+          >
+            <IoMdClose size={18} />
+          </IconButton>
         <div
           className={`w-full  ${
             currentMode === "dark" ? "bg-black" : "bg-white"
@@ -625,8 +654,8 @@ const Timeline = () => {
             )}
           </div>
         </div>
-        {/* <Footer /> */}
-      </div>
+        </div>
+        </Modal>
     </>
   );
 };

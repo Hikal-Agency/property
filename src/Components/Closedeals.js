@@ -34,6 +34,7 @@ import {
 // import axios from "axios";
 import axios from "../axoisConfig";
 import UpdateClosedLead from "./Leads/UpdateClosedLead";
+import Timeline from "../Pages/timeline";
 
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
@@ -46,9 +47,15 @@ const Closedeals = ({ pageState, setpageState }) => {
 
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
+  const [timelineModelOpen, setTimelineModelOpen] = useState(false);
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
   const handleUpdateLeadModelClose = () => {
     setUpdateLeadModelOpen(false);
+  };
+
+  const HandleViewTimeline = (params) => {
+    setsingleLeadData(params.row);
+    setTimelineModelOpen(true);
   };
 
   const handleRangeChange = (e) => {
@@ -352,7 +359,6 @@ const Closedeals = ({ pageState, setpageState }) => {
         return (
           <div className="space-x-2 w-full flex items-center justify-center ">
             <Button
-              // onClick={() => HandleEditFunc(cellValues)}
               className={`${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none "
@@ -361,7 +367,7 @@ const Closedeals = ({ pageState, setpageState }) => {
             >
               <AiOutlineHistory
                 size={20}
-                onClick={() => navigate(`/timeline/${cellValues.row.leadId}`)}
+                onClick={() => HandleViewTimeline(cellValues)}
               />
             </Button>
             <Button
@@ -494,7 +500,7 @@ const Closedeals = ({ pageState, setpageState }) => {
             >
               <AiOutlineHistory
                 size={20}
-                onClick={() => navigate(`/timeline/${cellValues.row.leadId}`)}
+                onClick={() => HandleViewTimeline(cellValues)}
               />
             </Button>
             <Button
@@ -737,6 +743,14 @@ const Closedeals = ({ pageState, setpageState }) => {
           FetchLeads={FetchLeads}
         />
       )}
+          
+          {timelineModelOpen && (
+            <Timeline
+              timelineModelOpen={timelineModelOpen}
+              handleCloseTimelineModel={() => setTimelineModelOpen(false)}
+              LeadData={singleLeadData}
+            />
+          )}
     </div>
   );
 };

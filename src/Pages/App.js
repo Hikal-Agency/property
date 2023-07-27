@@ -167,11 +167,11 @@ const routes = [
     pageName: "Close Deals",
     element: <ClosedealsPage />,
   },
-  {
-    path: "/timeline/:id",
-    element: <TimelinePage />,
-    pageName: "Timeline",
-  },
+  // {
+  //   path: "/timeline/:id",
+  //   element: <TimelinePage />,
+  //   pageName: "Timeline",
+  // },
   {
     path: "/leadnotes",
     element: <LeadNotesPage />,

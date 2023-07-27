@@ -203,8 +203,8 @@ const AllTickets = () => {
       });
       const rowsList = response.data.tickets.data;
       rowsList.forEach((row) => {
-        row.creationDate = row.created_ad;
-        row.userName = row.added_by;
+        row.creationDate = row.created_at || "-";
+        row.userName = row.added_by_name || "-";
       });
       setRows(rowsList);
       setLoading(false);
