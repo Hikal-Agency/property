@@ -2,7 +2,14 @@ import { Button } from "@material-tailwind/react";
 import Switch from "@mui/material/Switch";
 import Avatar from "@mui/material/Avatar";
 
-import { Box, Tab, Tabs, TextField } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  Tab,
+  Tabs,
+  TextField,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
 
@@ -13,17 +20,18 @@ import {
   AiOutlineAppstore,
 } from "react-icons/ai";
 import SingleUser from "../../Components/Users/SingleUser";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import UserTable from "../../Components/Users/UserTable";
 import AddUserModel from "../../Components/addUser/AddUserModel";
-import { FaBan, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
+import { FaBan, FaUnlock } from "react-icons/fa";
 import DeleteUser from "../../Components/Users/DeleteUser";
 import { BsPersonFillLock } from "react-icons/bs";
 import UpdateUserPermissions from "../../Components/addUser/UpdateUserPermissions";
+import { BiSearch } from "react-icons/bi";
 
 const Users = () => {
   const {
@@ -47,9 +55,27 @@ const Users = () => {
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [openPermissionModel, setOpenPermissionModel] = useState(false);
 
+  const searchRef = useRef("");
+
   console.log("User: ", user);
   const handleChange = (event, newValue) => {
     setValue(value === 0 ? 1 : 0);
+  };
+
+  const handleKeyUp = (e) => {
+    if (searchRef.current.querySelector("input").value) {
+      if (e.key === "Enter" || e.keyCode === 13) {
+        const token = localStorage.getItem("auth-token");
+        fetchUsers(token, e.target.value);
+      }
+    }
+  };
+  const handleSearch = (e) => {
+    if (e.target.value === "") {
+      setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
+      const token = localStorage.getItem("auth-token");
+      fetchUsers(token);
+    }
   };
 
   const HandleOpenModel = () => {
@@ -137,16 +163,20 @@ const Users = () => {
     }
   };
 
-  const fetchUsers = async (token) => {
+  const fetchUsers = async (token, keyword = "", pageNo = 1) => {
     setpageState((old) => ({
       ...old,
       isLoading: true,
     }));
     try {
-      // const token = localStorage.getItem("auth-token");
+      let url = "";
+      if(keyword) {
+        url = `${BACKEND_URL}/users?page=${pageNo}&title=${keyword}`;
+      } else {
+        url = `${BACKEND_URL}/users?page=${pageState.page}`;
+      }
       const response = await axios.get(
-        `${BACKEND_URL}/users?page=${pageState.page}`,
-        {
+        url, {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
@@ -164,12 +194,6 @@ const Users = () => {
       }
 
       let rowsdata = rowsDataArray?.map((row, index) => ({
-        // id:
-        //   pageState.page > 1
-        //     ? pageState.page * pageState.pageSize -
-        //       (pageState.pageSize - 1) +
-        //       index
-        //     : index + 1,
         id: row?.id,
         userName: row?.userName || "No Name",
         position: row?.position || "No Position",
@@ -210,9 +234,14 @@ const Users = () => {
   useEffect(() => {
     setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
   }, []);
+
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    fetchUsers(token);
+    if (searchRef.current.querySelector("input").value) {
+      fetchUsers(token, searchRef.current.querySelector("input").value, pageState.page);
+    } else {
+      fetchUsers(token);
+    }
   }, [pageState.page]);
 
   const columns = [
@@ -511,49 +540,6 @@ const Users = () => {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      userName: "Hala Hikal",
-      position: "Sales Agent",
-      contactNumber: "566666555",
-      email: "1@hikalproperties.ae",
-      status: "1",
-    },
-    {
-      id: 2,
-      userName: "Ameer Ali",
-      position: "Sales Agent",
-      contactNumber: "555567678",
-      email: "2@hikalproperties.ae",
-      status: "0",
-    },
-    {
-      id: 3,
-      userName: "Belal Hikal",
-      position: "Sales Manager",
-      contactNumber: "536526766",
-      email: "3@hikalproperties.ae",
-      status: "1",
-    },
-    {
-      id: 4,
-      userName: "Nada Amin",
-      position: "Head of Sales",
-      contactNumber: "5638378937",
-      email: "4@hikalproperties.ae",
-      status: "1",
-    },
-  ];
-
-  const handleRowClick = async (params, event) => {
-    if (!event.target.classList.contains("editLeadBtn")) {
-      // setSingleUserData(params.row);
-      // handleUserModelOpen();
-      <SingleUser />;
-    }
-  };
-
   return (
     <>
       <div className="flex min-h-screen">
@@ -584,15 +570,7 @@ const Users = () => {
                       <span>{pageState?.total}</span>
                     </span>
                   </h1>
-                  {/* <Link
-                    to="/adminAuth/signup"
-                    className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md "
-                  >
-                    <span className="flex justify-between items-center">
-                      <AiOutlinePlus style={{ marginRight: "0.5em" }} />
-                      Add User
-                    </span>
-                  </Link> */}
+
                   {User?.role === 1 || User?.role === 2 ? (
                     <Button
                       className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
@@ -657,22 +635,31 @@ const Users = () => {
                       />
                     </Tabs>
                   </Box>
-                  {/* <div className="">
+                  {value === 0 &&
+                  <div>
                     <TextField
                       placeholder="Search.."
-                      variant="standard"
-                      inputProps={{
-                        style: {
-                          borderBottom: "2px solid white",
-                          marginRight: "10px",
-                          color: currentMode === "dark" ? "#ffffff" : "#000000",
+                      ref={searchRef}
+                      sx={{
+                        "& input": {
+                          borderBottom: "2px solid #ffffff6e",
                         },
                       }}
-                      // onKeyUp={handleKeyUp}
-                      // value={searchTerm}
-                      // onInput={handleSearch}
+                      variant="standard"
+                      onKeyUp={handleKeyUp}
+                      onInput={handleSearch}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <IconButton sx={{ padding: 0 }}>
+                              <BiSearch size={17} />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
-                  </div> */}
+                  </div>
+                  }
                 </div>
                 <div className="mt-3 pb-3">
                   <TabPanel value={value} index={0}>

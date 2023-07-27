@@ -107,7 +107,7 @@ import DeleteUser from "./DeleteUser";
 //   );
 // };
 
-const UserTable = ({ user }) => {
+const UserTable = ({  }) => {
   const [loading, setLoading] = useState(false);
   const { currentMode, BACKEND_URL, pageState, setpageState, User } =
     useStateContext();

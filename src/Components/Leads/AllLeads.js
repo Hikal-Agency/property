@@ -2133,8 +2133,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadId: row?.id,
           creationDate: row?.creationDate,
           leadName: row?.leadName || "-",
-          // leadContact:
-          //   row?.leadContact?.slice(1)?.replaceAll(" ", "") || "No Contact",
           leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
           project: row?.project || "-",
           ip: row?.ip,
