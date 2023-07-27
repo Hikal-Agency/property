@@ -363,10 +363,12 @@ const SingleEmployee = ({ user }) => {
                 className={` ${currentMode === "dark" ? "text-white" : "text-black"}`} />
             </IconButton>
           </Tooltip>
-          {params.row.deduction = 1 ?
+          {params.row.deduction === 1 ?
           (
             <Tooltip title="Don't Deduct Salary">
-              <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
+              <IconButton 
+                // onClick={(event) => updateReason(event, params?.row.id)}
+              >
                 <MdMoneyOff size={16} 
                   className={` ${currentMode === "dark" ? "text-white" : "text-black"}`} />
               </IconButton>
@@ -374,7 +376,9 @@ const SingleEmployee = ({ user }) => {
           )
           : (
             <Tooltip title="Deduct Salary">
-              <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
+              <IconButton 
+                // onClick={(event) => updateReason(event, params?.row.id)}
+              >
                 <MdAttachMoney size={16} 
                   className={` ${currentMode === "dark" ? "text-white" : "text-black"}`} />
               </IconButton>
@@ -585,6 +589,7 @@ const SingleEmployee = ({ user }) => {
             userName: row?.userName || "-",
             created_at: row?.created_at,
             updated_at: row?.updated_at,
+            // deduct_salary: row?.deduct_salary,
             deduction: row?.deduct_salary,
             cut_salary: row?.cut_salary || "-",
             off_day: row?.off_day || "-",
