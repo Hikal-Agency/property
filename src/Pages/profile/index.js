@@ -392,7 +392,6 @@ const ProfilePage = () => {
 
   return (
     <>
-      
       <div className="flex min-h-screen">
         {loading ? (
           <Loader />
@@ -498,7 +497,7 @@ const ProfilePage = () => {
                             </div>
                           </div>
 
-                          {User?.role === 1 ? (
+                          {/* {User?.role === 1 ? (
                             <div className="mt-5 text-center text-gray-600">
                               <Button
                                 className="bg-main-red-color shadow-none hover:shadow-none p-3"
@@ -509,7 +508,7 @@ const ProfilePage = () => {
                             </div>
                           ) : (
                             <></>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
