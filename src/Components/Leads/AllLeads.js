@@ -7,6 +7,7 @@ import {
   styled,
   Select,
   MenuItem,
+  Tooltip,
 } from "@mui/material";
 import "../../styles/index.css";
 import {
@@ -275,14 +276,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 100,
+      minWidth: 90,
       headerAlign: "center",
       flex: 1,
     },
     {
       field: "project",
       headerName: "Project",
-      minWidth: 50,
+      minWidth: 80,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -309,7 +310,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       field: "leadType",
       headerName: "Property",
-      minWidth: 50,
+      minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -335,7 +336,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "feedback",
       headerAlign: "center",
       headerName: "Feedback",
-      minWidth: 80,
+      minWidth: 100,
       flex: 1,
 
       hideable: false,
@@ -344,7 +345,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "priority",
       headerName: "Priority",
-      minWidth: 80,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
       hideable: false,
@@ -449,17 +450,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               }`}
               onClick={() => HandleReminderBtn(cellValues)}
             >
-              <IconButton sx={{ padding: 0 }}>
-                <BsAlarm size={16} />
-              </IconButton>
+              <Tooltip title="Set Reminder" arrow>
+                <IconButton sx={{ padding: 0 }}>
+                  <BsAlarm size={16} />
+                </IconButton>
+              </Tooltip>
             </p>
             {currentMode === "dark" ? (
               <p onClick={() => HandleEditFunc(cellValues)}>
-                <AiOutlineEdit size={16} color="white" />
+                <Tooltip title="Edit Lead Details" arrow>
+                  <AiOutlineEdit size={16} color="white" />
+                </Tooltip>
               </p>
             ) : (
               <p onClick={() => HandleEditFunc(cellValues)}>
-                <AiOutlineEdit size={16} color="black" />
+                <Tooltip title="Edit Lead Details" arrow>
+                  <AiOutlineEdit size={16} color="black" />
+                </Tooltip>
               </p>
             )}
 
@@ -472,7 +479,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     : "text-black bg-transparent rounded-md shadow-none "
                 }`}
               >
-                <AiOutlineHistory size={16} />
+                <Tooltip title="View Timeline" arrow>
+                  <AiOutlineHistory size={16} />
+                </Tooltip>
               </Link>
             )}
           </div>
@@ -520,14 +529,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 100,
+      minWidth: 90,
       flex: 1,
       headerAlign: "center",
     },
     {
       field: "project",
       headerName: "Project",
-      minWidth: 50,
+      minWidth: 80,
       flex: 1,
       headerAlign: "center",
       renderCell: (cellValues) => {
@@ -554,7 +563,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "leadType",
       headerName: "Property",
-      minWidth: 50,
+      minWidth: 80,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -569,7 +578,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "feedback",
       headerName: "Feedback",
-      minWidth: 80,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
 
@@ -579,7 +588,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "priority",
       headerName: "Priority",
-      minWidth: 80,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
       hideable: false,
@@ -689,9 +698,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               }`}
               onClick={() => HandleReminderBtn(cellValues)}
             >
-              <IconButton sx={{ padding: 0 }}>
-                <BsAlarm size={16} />
-              </IconButton>
+              <Tooltip title="Set Reminder" arrow>
+                <IconButton sx={{ padding: 0 }}>
+                  <BsAlarm size={16} />
+                </IconButton>
+              </Tooltip>
             </p>
             <p
               onMouseEnter={() => setHovered("edit")}
@@ -704,9 +715,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               }`}
               onClick={() => HandleEditFunc(cellValues)}
             >
-              <IconButton sx={{ padding: 0 }}>
-                <AiOutlineEdit size={16} />
-              </IconButton>
+              <Tooltip title="Edit Lead Details" arrow>
+                <IconButton sx={{ padding: 0 }}>
+                  <AiOutlineEdit size={16} />
+                </IconButton>
+              </Tooltip>
             </p>
 
             {cellValues.row.leadId !== null && (
@@ -719,12 +732,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                       : "bg-transparent rounded-md shadow-none"
                   }`}
                 >
-                  <IconButton
-                    sx={{ padding: 0 }}
-                    color={currentMode === "dark" ? "black" : "white"}
-                  >
-                    <AiOutlineHistory size={16} style={{ color: "inherit" }} />
-                  </IconButton>
+                  <Tooltip title="View Timeline" arrow>
+                    <IconButton
+                      sx={{ padding: 0 }}
+                      color={currentMode === "dark" ? "black" : "white"}
+                    >
+                      <AiOutlineHistory size={16} style={{ color: "inherit" }} />
+                    </IconButton>
+                  </Tooltip>
                 </Link>
               </p>
             )}
@@ -777,7 +792,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 100,
+      minWidth: 90,
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
@@ -800,7 +815,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "project",
       headerName: "Project",
       headerAlign: "center",
-      minWidth: 50,
+      minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -827,7 +842,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       field: "leadType",
       headerName: "Property",
-      minWidth: 50,
+      minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -864,7 +879,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "feedback",
       headerAlign: "center",
       headerName: "Feedback",
-      minWidth: 80,
+      minWidth: 100,
       flex: 1,
 
       hideable: false,
@@ -874,7 +889,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "priority",
       headerName: "Priority",
-      minWidth: 80,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
       hideable: false,
@@ -1067,9 +1082,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               }`}
               onClick={() => HandleReminderBtn(cellValues)}
             >
-              <IconButton sx={{ padding: 0 }}>
-                <BsAlarm size={16} />
-              </IconButton>
+              <Tooltip title="Set Reminder" arrow>
+                <IconButton sx={{ padding: 0 }}>
+                  <BsAlarm size={16} />
+                </IconButton>
+              </Tooltip>
             </p>
             <p
               style={{ cursor: "pointer" }}
@@ -1080,9 +1097,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               }`}
               onClick={() => HandleEditFunc(cellValues)}
             >
-              <IconButton sx={{ padding: 0 }}>
-                <AiOutlineEdit size={16} />
-              </IconButton>
+              <Tooltip title="Edit Lead Details" arrow>
+                <IconButton sx={{ padding: 0 }}>
+                  <AiOutlineEdit size={16} />
+                </IconButton>
+              </Tooltip>
             </p>
 
             {cellValues.row.leadId !== null && (
@@ -1095,12 +1114,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                       : "bg-transparent rounded-md shadow-none"
                   }`}
                 >
-                  <IconButton
-                    sx={{ padding: 0 }}
-                    color={currentMode === "dark" ? "black" : "white"}
-                  >
-                    <AiOutlineHistory size={16} style={{ color: "inherit" }} />
-                  </IconButton>
+                  <Tooltip title="View Timeline" arrow>
+                    <IconButton
+                      sx={{ padding: 0 }}
+                      color={currentMode === "dark" ? "black" : "white"}
+                    >
+                      <AiOutlineHistory size={16} style={{ color: "inherit" }} />
+                    </IconButton>
+                  </Tooltip>
                 </Link>
               </p>
             )}
@@ -1118,16 +1139,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   : "bg-transparent rounded-md shadow-none"
               }`}
             >
-              <IconButton
-                sx={{ padding: 0 }}
-                color={currentMode === "dark" ? "black" : "white"}
-              >
-                <BsTrash
-                  className="deleteLeadBtn"
-                  size={16}
-                  style={{ color: "inherit" }}
-                />
-              </IconButton>
+              <Tooltip title="Delete Lead" arrow>
+                <IconButton
+                  sx={{ padding: 0 }}
+                  color={currentMode === "dark" ? "black" : "white"}
+                >
+                  <BsTrash
+                    className="deleteLeadBtn"
+                    size={16}
+                    style={{ color: "inherit" }}
+                  />
+                </IconButton>
+              </Tooltip>
             </p>
           </div>
         );
@@ -1175,7 +1198,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 100,
+      minWidth: 90,
       headerAlign: "center",
       flex: 1,
     },
@@ -1184,7 +1207,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "project",
       headerName: "Project",
       headerAlign: "center",
-      minWidth: 50,
+      minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -1211,7 +1234,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       field: "leadType",
       headerName: "Property",
-      minWidth: 50,
+      minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -1248,7 +1271,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "feedback",
       headerAlign: "center",
       headerName: "Feedback",
-      minWidth: 80,
+      minWidth: 100,
       flex: 1,
 
       hideable: false,
@@ -1260,7 +1283,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "priority",
       headerName: "Priority",
-      minWidth: 80,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
       hideable: false,
@@ -1454,9 +1477,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               }`}
               onClick={() => HandleReminderBtn(cellValues)}
             >
-              <IconButton sx={{ padding: 0 }}>
-                <BsAlarm size={16} />
-              </IconButton>
+              <Tooltip title="Set Reminder" arrow>
+                <IconButton sx={{ padding: 0 }}>
+                  <BsAlarm size={16}  />
+                </IconButton>
+              </Tooltip>
             </p>
             <p
               style={{ cursor: "pointer" }}
@@ -1467,9 +1492,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               }`}
               onClick={() => HandleEditFunc(cellValues)}
             >
-              <IconButton sx={{ padding: 0 }}>
-                <AiOutlineEdit size={16} />
-              </IconButton>
+              <Tooltip title="Edit Lead Details" arrow>
+                <IconButton sx={{ padding: 0 }}>
+                  <AiOutlineEdit size={16} />
+                </IconButton>
+              </Tooltip>
             </p>
 
             {cellValues.row.leadId !== null && (
@@ -1482,12 +1509,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                       : "bg-transparent rounded-md shadow-none"
                   }`}
                 >
-                  <IconButton
-                    sx={{ padding: 0 }}
-                    color={currentMode === "dark" ? "black" : "white"}
-                  >
-                    <AiOutlineHistory size={16} style={{ color: "inherit" }} />
-                  </IconButton>
+                  <Tooltip title="View Timeline" arrow>
+                    <IconButton
+                      sx={{ padding: 0 }}
+                      color={currentMode === "dark" ? "black" : "white"}
+                    >
+                      <AiOutlineHistory size={16} style={{ color: "inherit" }} />
+                    </IconButton>
+                  </Tooltip>
                 </Link>
               </p>
             )}
@@ -1505,16 +1534,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   : "bg-transparent rounded-md shadow-none"
               }`}
             >
-              <IconButton
-                sx={{ padding: 0 }}
-                color={currentMode === "dark" ? "black" : "white"}
-              >
-                <BsTrash
-                  className="deleteLeadBtn"
-                  size={18}
-                  style={{ color: "inherit" }}
-                />
-              </IconButton>
+              <Tooltip title="Delete Lead" arrow>
+                <IconButton
+                  sx={{ padding: 0 }}
+                  color={currentMode === "dark" ? "black" : "white"}
+                >
+                  <BsTrash
+                    className="deleteLeadBtn"
+                    size={18}
+                    style={{ color: "inherit" }}
+                  />
+                </IconButton>
+              </Tooltip>
             </p>
           </div>
         );
@@ -1541,9 +1572,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       ...old,
       isLoading: true,
     }));
-    // LEADS URL GENERATON FOR HOT LEADS SECTION
 
-    // LEADS URL GENERATON FOR HOT LEADS SECTION
+    // LEADS URL GENERATON FOR FRESH LEADS SECTION
     if (lead_origin === "freshleads") {
       if (lead_type === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1631,7 +1661,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Unreachable`;
       }
     }
-    // LEADS URL GENERATON FOR THIRDPARTY PAGE
+    // LEADS URL GENERATON FOR THIRD PARTY LEADS PAGE
     else if (lead_origin === "thirdpartyleads") {
       if (lead_type === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1669,7 +1699,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Unreachable`;
       }
     }
-    // LEADS URL GENERATON FOR PERSONAL PAGE
+    // LEADS URL GENERATON FOR PERSONAL LEADS PAGE
     else if (lead_origin === "personalleads") {
       if (lead_type === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1707,7 +1737,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Unreachable`;
       }
     }
-    // LEADS URL GENERATON FOR WARM LEADS PAGE
+    // LEADS URL GENERATON FOR ARCHIVED LEADS PAGE
     else if (lead_origin === "archive") {
       if (lead_type === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1744,7 +1774,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Unreachable`;
       }
-    } else if (lead_origin === "transfferedleads") {
+    } 
+    
+    // LEADS URL GENERATON FOR RESHUFFLED LEADS PAGE
+    else if (lead_origin === "transfferedleads") {
       if (lead_type === "all") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&coldCall=0&leadStatus=Transferred`;
       } else if (lead_type === "new") {
@@ -1790,7 +1823,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           pageState.perpage || 14
         }&coldCall=0&feedback=Unreachable&leadStatus=Transferred`;
       }
-    } else if (lead_origin === "unassigned") {
+    } 
+    
+    // LEADS URL GENERATON FOR UNASSIGNED LEADS PAGE
+    else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page

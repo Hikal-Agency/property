@@ -276,7 +276,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                   currentMode === "dark"
                     ? "text-red-600"
                     : "text-main-red-color"
-                } text-xl font-bold my-2 text-center`}
+                } text-lg font-bold my-2 text-center`}
               >
                 Manager
               </div>
@@ -315,7 +315,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
 
                             {/* User Details */}
                             <div>
-                              <h2 className="text-xl font-bold">
+                              <h2 className="text-lg font-bold">
                                 {item?.userName}
                               </h2>
                               {item?.total_closed_deals > 0 && (
@@ -372,7 +372,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                   currentMode === "dark"
                     ? "text-red-600"
                     : "text-main-red-color"
-                } text-xl font-bold my-2 text-center`}
+                } text-lg font-bold my-2 text-center`}
               >
                 Agent
               </div>
@@ -409,7 +409,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                               {/* User Details */}
 
                               <div>
-                                <h2 className="text-xl font-bold">
+                                <h2 className="text-lg font-bold">
                                   {item?.userName}
                                 </h2>
                                 <p className="text-gray-500">
@@ -467,7 +467,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
 
                             {/* User Details */}
                             <div>
-                              <h2 className="text-xl font-bold">
+                              <h2 className="text-lg font-bold">
                                 {item?.userName}
                               </h2>
                               <p className="text-gray-500">

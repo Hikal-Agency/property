@@ -26,7 +26,7 @@ const ForgotPassword = () => {
                   alt=""
                 />
               </Link>
-              <h2 className="mt-6 text-center text-xl font-bold text-gray-900">
+              <h2 className="mt-6 text-center text-lg font-bold text-gray-900">
                 Reset Your Password
               </h2>
             </div>

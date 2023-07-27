@@ -718,7 +718,7 @@ const Clients = () => {
                   <h2
                     className={` ${
                       currentMode === "dark" ? "text-white" : "text-black"
-                    } font-semibold text-xl`}
+                    } font-semibold text-lg`}
                   >
                     Clients
                   </h2>

@@ -11,8 +11,7 @@ import {
 import axios from "../../axoisConfig";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate, useLocation } from "react-router-dom";
-import { TabPanel } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 import NotesGrid from "./NotesGrid";
 import {
   AiOutlineEdit,
@@ -46,66 +45,74 @@ const LeadNotes = ({ pageState, setpageState }) => {
     {
       field: "id",
       headerName: "#",
-      maxWidth: 70,
+      minWidth: 20,
+      maxWidth: 50,
       headerAlign: "center",
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <strong>
+            {cellValues.formattedValue}
+          </strong>
+        )
+      }
     },
     {
       field: "creationDate",
       headerName: "Date",
-      minWidth: 170,
+      minWidth: 70,
+      maxWidth: 90,
       headerAlign: "center",
       flex: 1,
     },
     {
       field: "leadName",
       headerName: "Lead name",
-      minWidth: 150,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
-          renderCell: (cellValues) => {
+      renderCell: (cellValues) => {
         return <p style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>{cellValues?.formattedValue}</p>
       }
     },
     {
       field: "project",
       headerName: "Project",
-      minWidth: 110,
+      minWidth: 80,
       flex: 1,
       headerAlign: "center",
       renderCell: (cellValues) => {
         return (
-          <>
-            <div className="flex flex-col items-center my-2">
-              <p>{cellValues.formattedValue}</p>
-              <p className="mt-2">{cellValues.row.enquiryType}</p>
-            </div>
-          </>
-        );
-      },
-           renderCell: (cellValues) => {
-        return (
-          <div className="w-full ">
+          <div className="w-full my-2">
             <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
-                <p>{cellValues.formattedValue}</p>
-              <p className="mt-2">{cellValues.row.enquiryType}</p>
+              <p>{cellValues.formattedValue}</p>
+              <p className="">{cellValues.row.leadType}</p>
             </p>
           </div>
         );
       },
     },
-
-    // {
-    //   field: "enquiryType",
-    //   headerName: "Enquiry",
-    //   minWidth: 110,
-    //   flex: 1,
-    //   headerAlign: "center",
-    // },
+    {
+      field: "enquiryType",
+      headerName: "Property",
+      minWidth: 80,
+      flex: 1,
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full my-2">
+            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+              <p>{cellValues.formattedValue}</p>
+              <p className="">{cellValues.row.leadFor}</p>
+            </p>
+          </div>
+        );
+      },
+    },
     {
       field: "leadNote",
       headerName: "Note",
-      minWidth: 500,
+      minWidth: 300,
       flex: 1,
       headerAlign: "center",
       renderCell: (cellValues) => {
@@ -114,8 +121,8 @@ const LeadNotes = ({ pageState, setpageState }) => {
     },
     {
       field: "userName",
-      headerName: "Added By",
-      minWidth: 110,
+      headerName: "Added by",
+      minWidth: 100,
       flex: 1,
       headerAlign: "center",
     },
@@ -154,11 +161,13 @@ const LeadNotes = ({ pageState, setpageState }) => {
                 (pageState.pageSize - 1) +
                 index
               : index + 1,
-          creationDate: row?.creationDate,
+          creationDate: row?.creationDate || "-",
           leadName: row?.leadName || "-",
           leadNote: row?.leadNote,
           project: row?.project || "-",
           enquiryType: row?.enquiryType || "-",
+          leadType: row?.leadType || "-",
+          leadFor: row?.leadFor || "-",
           userName: row?.userName || "-",
           leadId: row?.leadId,
         }));
@@ -279,7 +288,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
     );
   }
   return (
-    <div className="pb-10">
+    <div className="px-1 py-1">
       <Box
         sx={{
           ...darkModeColors,
@@ -296,23 +305,24 @@ const LeadNotes = ({ pageState, setpageState }) => {
             color: "red",
           },
         }}
-        className={`rounded-md overflow-hidden ${
+        className={`rounded-md overflow-hidden px-1 flex ${
           currentMode === "dark" ? "bg-black" : "bg-white"
         }`}
+        style={{justifyContent: "flex-end"}}
       >
         <Tabs value={value} onClick={handleChange} variant="standard">
           <Tab
             icon={
               value === 0 ? (
                 <AiOutlineAppstore
-                  size={22}
+                  size={20}
                   style={{
                     color: currentMode === "dark" ? "#ffffff" : "#000000",
                   }}
                 />
               ) : (
                 <AiOutlineTable
-                  size={22}
+                  size={20}
                   style={{
                     color: currentMode === "dark" ? "#ffffff" : "#000000",
                   }}
@@ -322,7 +332,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
           />
         </Tabs>
       </Box>
-      <div className="mt-3 pb-3">
+      <div className="pb-1">
         <TabPanel value={value} index={1}>
           <Box
             width={"100%"}
@@ -333,7 +343,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
               initialState={{
                 columns: {
                   columnVisibilityModel: {
-                    creationDate: false,
+                    creationDate: true,
                   },
                 },
               }}

@@ -15,7 +15,8 @@ import { useStateContext } from "../../context/ContextProvider";
 import axios from "../../axoisConfig";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
-import {BiBlock} from "react-icons/bi";
+import { BiBlock } from "react-icons/bi";
+import { BsPersonVcard } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const SingleLead = ({
@@ -30,6 +31,7 @@ const SingleLead = ({
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [lastNote, setLastNote] = useState("");
+  const [lastNoteDate, setLastNoteDate] = useState("");
   const [loading, setLoading] = useState(false);
 
   const style = {
@@ -164,7 +166,10 @@ const SingleLead = ({
         }
       );
       const lastNoteText = result.data?.notes?.data[0]?.leadNote;
+      const lastNoteDate = result.data?.notes?.data[0]?.creationDate;
       setLastNote(lastNoteText);
+      setLastNoteDate(lastNoteDate);
+
     } catch (error) {
       console.log(error);
     }
@@ -223,7 +228,7 @@ const SingleLead = ({
           <h1
             className={`${
               currentMode === "dark" ? "text-red-600" : "text-red-600"
-            } text-center font-bold text-xl pb-5`}
+            } text-center font-bold text-lg pb-5`}
           >
             Lead details
           </h1>
@@ -242,7 +247,7 @@ const SingleLead = ({
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        Lead Name :
+                        Lead name:
                       </h6>
                       <h6
                         className={`font-semibold ${
@@ -260,7 +265,7 @@ const SingleLead = ({
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        Contact Details:
+                        Contact details:
                       </h6>
                       <h6
                         className={`font-semibold ${
@@ -304,14 +309,14 @@ const SingleLead = ({
                     </span>
                   </div>
                   <p
-                    className={`italic text-sm ${
+                    className={` text-sm ${
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   >
                     Lead added on {LeadData?.creationDate}
                   </p>
                   <p
-                    className={`italic text-sm ${
+                    className={` text-sm ${
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   >
@@ -332,7 +337,7 @@ const SingleLead = ({
                   <h6 className="font-semibold">{LeadData?.project}</h6>
                 </div>
                 <div className="grid justify-center space-y-3 text-center">
-                  <h6 className="font-bold">How many bedrooms?</h6>
+                  <h6 className="font-bold">Enquiry about</h6>
                   <h6 className="font-semibold">{LeadData?.enquiryType}</h6>
                 </div>
                 <div className="grid justify-center space-y-3 text-center">
@@ -346,11 +351,11 @@ const SingleLead = ({
               </div>
 
               <div className="bg-main-red-color h-0.5 w-full mt-6 mb-4"></div>
-              <div className="flex justify-between items-center my-0 w-full">
+              <div className="flex justify-end items-center my-0 w-full">
                 <Link
                   sx={{ my: 0, w: "100%" }}
                   to={`/lead/${
-                    LeadData?.leadId || LeadData?.lid || LeadData?.id
+                    LeadData?.leadId || LeadData?.id
                   }`}
                   target="_blank"
                 >
@@ -363,7 +368,24 @@ const SingleLead = ({
                   >
                     View Lead Details
                   </Button>
+
+                  {/* <Tooltip title="View Lead Dettails" arrow>
+                    <Button
+                      className="rounded-full"
+                      sx={{
+                        "& svg": {
+                          color:
+                            currentMode === "dark"
+                              ? "white !important"
+                              : "black !important",
+                        },
+                      }}
+                    >
+                      <BsPersonVcard size={18}/>
+                    </Button>
+                  </Tooltip> */}
                 </Link>
+                
                 <Tooltip title="Block IP" arrow>
                   <IconButton onClick={() => handleBlockIP(LeadData)} sx={{
                   "& svg": {
@@ -379,9 +401,15 @@ const SingleLead = ({
               </div>
               <div className={`rounded-md mt-2`}>
                 {lastNote && (
-                  <Box style={{fontFamily: isArabic(lastNote) ? "Noto Kufi Arabic" : "inherit"}} className="bg-gray-300 rounded px-2 py-1 mt-3">
-                    {lastNote}
-                  </Box>
+                  <div className={`${
+                      currentMode === "dark" ? "text-white bg-black border-gray-800" : "text-black bg-gray-200 border-gray-300"
+                    } border-2 flex items-center my-2 w-full rounded-md`}>
+                    <p className="px-2 py-2 mx-1 text-center text-sm">{lastNoteDate}</p>
+                    <div className="bg-main-red-color h-10 w-0.5"></div>
+                    <p style={{fontFamily: isArabic(lastNote) ? "Noto Kufi Arabic" : "inherit"}} className="px-2 py-2 mx-1">
+                      {lastNote}
+                    </p>
+                  </div>
                 )}
                 <form
                   className="mt-5"

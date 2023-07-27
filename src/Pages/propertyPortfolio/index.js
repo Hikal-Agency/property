@@ -73,7 +73,7 @@ const PropertyPortfolio = () => {
             <h1
               className={`font-semibold ${
                 currentMode === "dark" ? "text-white" : "text-red-600"
-              } text-xl ml-2 mb-3 auto-cols-max gap-x-3`}
+              } text-lg ml-2 mb-3 auto-cols-max gap-x-3`}
             >
               Property Portfolio
             </h1>

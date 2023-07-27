@@ -217,7 +217,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
               <div
                 className={`${
                   currentMode === "dark" ? "text-red-600" : "text-red-500"
-                } text-xl font-bold`}
+                } text-lg font-bold`}
               >
                 Sales Manager
               </div>
@@ -330,7 +330,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                   currentMode === "dark"
                     ? "text-red-600"
                     : "text-main-red-color"
-                } text-xl font-bold`}
+                } text-lg font-bold`}
               >
                 Sales Agent
               </div>
@@ -435,7 +435,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
               <div
                 className={`${
                   currentMode === "dark" ? "text-red-600" : "text-red-500"
-                } text-xl font-bold`}
+                } text-lg font-bold`}
               >
                 Sales Manager
               </div>
@@ -524,7 +524,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                   currentMode === "dark"
                     ? "text-red-600"
                     : "text-main-red-color"
-                } text-xl font-bold`}
+                } text-lg font-bold`}
               >
                 Sales Agent
               </div>

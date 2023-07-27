@@ -62,6 +62,7 @@ const SingleEmployee = ({ user }) => {
     console.log("emp reason: ", employeeData);
   };
 
+  // ON LATE = YES 
   const deductSalary = async (e, btn, id) => {
     // Find the data with the matching id in the empdata array
     const employeeData = empData.find((employee) => employee.id === id);
@@ -203,7 +204,8 @@ const SingleEmployee = ({ user }) => {
       field: "check_datetime",
       headerAlign: "center",
       headerName: "Date",
-      minWidth: 120,
+      minWidth: 70,
+      flex: 1,
       renderCell: (cellValues) => {
         return (
           <div>
@@ -216,33 +218,38 @@ const SingleEmployee = ({ user }) => {
       field: "checkIns",
       headerAlign: "center",
       headerName: "In-time",
-      minWidth: 120,
+      minWidth: 90,
+      flex: 1,
     },
     {
       field: "attendanceSourcesForCheckIn",
       headerAlign: "center",
-      headerName: "In-Source",
-      minWidth: 120,
+      headerName: "In-source",
+      minWidth: 80,
+      flex: 1,
     },
     {
       field: "checkOuts",
       headerAlign: "center",
       headerName: "Out-time",
-      minWidth: 120,
+      minWidth: 90,
+      flex: 1,
     },
     {
       field: "attendanceSourcesForCheckOut",
       headerAlign: "center",
-      headerName: "Out-Source",
-      minWidth: 120,
+      headerName: "Out-source",
+      minWidth: 80,
+      flex: 1,
     },
 
     // OFFICE IN TIME
     {
       field: "default_datetime",
       headerAlign: "center",
-      headerName: "Office in-time",
-      minWidth: 120,
+      headerName: "Office time",
+      minWidth: 70,
+      flex: 1,
       renderCell: (cellValues) => {
         const formattedTime = cellValues.row.default_datetime
           ? convertTo12HourFormat(cellValues.row.default_datetime)
@@ -251,11 +258,13 @@ const SingleEmployee = ({ user }) => {
       },
     },
 
+    // LATE MINUTES 
     {
       field: "late_minutes",
       headerAlign: "center",
-      headerName: "Late ",
-      minWidth: 120,
+      headerName: "Late",
+      minWidth: 80,
+      flex: 1,
       renderCell: (params) => (
         <>
           {params.row.is_late === 1 || params.row.is_late === 2 ? (
@@ -271,6 +280,7 @@ const SingleEmployee = ({ user }) => {
                   }}
                   className="rounded-full"
                   onClick={(event) => deductSalary(event, 1, params?.row.id)}
+                  // onClick={() => handleCalculateLate(params.row['Default time'], params.row['In-time'])}
                   // disabled={completeLoading}
                 >
                   {/* {completeLoading ? (
@@ -307,38 +317,63 @@ const SingleEmployee = ({ user }) => {
         </>
       ),
     },
+    // LATE REASON 
     {
       field: "late_reason",
       headerAlign: "center",
-      headerName: "Reason",
-      minWidth: 200,
+      headerName: "Note/Reason",
+      minWidth: 120,
+      flex: 1,
     },
+    // SALARY DEDUCTION 
     {
       field: "cut_salary",
-      headerName: "Salary Deduction",
+      headerName: "Deduct",
       headerAlign: "center",
-      minWidth: 120,
-      // renderCell: (params) => <>{param}</>,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      headerAlign: "center",
-      width: "100%",
-      // minWidth: 120,
+      minWidth: 80,
+      flex: 1,
       renderCell: (params) => (
         <>
-          <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
-            <MdModeEdit />
-          </IconButton>
-          {/* <IconButton>
-            <MdDelete />
-          </IconButton> */}
+          {params.row.deduct_salary === "1" ? (
+            params.row.currency + " " + params.row.cut_salary
+          ) : (
+            <>
+              -
+            </>
+          )}
         </>
       ),
     },
+    // ACTION 
+    {
+      field: "deduct_salary",
+      headerName: "Action",
+      headerAlign: "center",
+      minWidth: 100,
+      sortable: false,
+      filterable: false,
+      flex: 1,
+      renderCell: (params) => (
+        <div
+            className={`space-x-1 w-full flex items-center justify-center`}
+          >
+          <Tooltip title="Edit Note/Reason">
+            <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
+              <MdModeEdit size={16} 
+                className={` ${currentMode === "dark" ? "text-white" : "text-black"}`} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Deduct Salary">
+            <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
+              <MdModeEdit size={16} 
+                className={` ${currentMode === "dark" ? "text-white" : "text-black"}`} />
+            </IconButton>
+          </Tooltip>
+        </div>
+      ),
+    },
   ];
-
+  
   // Custom function to check if it's a "checkin" or "in"
   function isCheckIn(row) {
     return (
@@ -686,7 +721,7 @@ const SingleEmployee = ({ user }) => {
                 </Box>
                 <div className="my-5 mb-10">
                   <div
-                    className={`grid grid-cols-8 ${
+                    className={`grid grid-cols-12 ${
                       currentMode === "dark"
                         ? "bg-gray-900 text-white"
                         : "bg-white text-gray-900 "
@@ -868,7 +903,7 @@ const SingleEmployee = ({ user }) => {
                     </div>
 
                     {/* section 2 */}
-                    <div className="col-span-6 ">
+                    <div className="col-span-10 ">
                       <Box
                         width={"100%"}
                         height={"100%"}

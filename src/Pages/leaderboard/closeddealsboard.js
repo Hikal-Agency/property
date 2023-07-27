@@ -206,7 +206,7 @@
 //                 <div
 //                   className={`${
 //                     currentMode === "dark" ? "text-red-600" : "text-red-500"
-//                   } text-xl font-bold`}
+//                   } text-lg font-bold`}
 //                 >
 //                   Sales Manager
 //                 </div>
@@ -282,7 +282,7 @@
 //                     currentMode === "dark"
 //                       ? "text-red-600"
 //                       : "text-main-red-color"
-//                   } text-xl font-bold`}
+//                   } text-lg font-bold`}
 //                 >
 //                   Sales Agent
 //                 </div>
@@ -354,7 +354,7 @@
 //                     currentMode === "dark"
 //                       ? "text-red-600"
 //                       : "text-main-red-color"
-//                   } text-xl font-bold`}
+//                   } text-lg font-bold`}
 //                 >
 //                   Sales Manager
 //                 </div>
@@ -412,7 +412,7 @@
 //                     <h2
 //                       className={`${
 //                         currentMode === "dark" ? "text-white" : "text-dark"
-//                       } text-xl font-bold mt-5`}
+//                       } text-lg font-bold mt-5`}
 //                     >
 //                       No data for this month.
 //                     </h2>
@@ -429,7 +429,7 @@
 //                     currentMode === "dark"
 //                       ? "text-red-600"
 //                       : "text-main-red-color"
-//                   } text-xl font-bold`}
+//                   } text-lg font-bold`}
 //                 >
 //                   Sales Agent
 //                 </div>
@@ -484,7 +484,7 @@
 //                     <h2
 //                       className={`${
 //                         currentMode === "dark" ? "text-white" : "text-dark"
-//                       } text-xl font-bold mt-5`}
+//                       } text-lg font-bold mt-5`}
 //                     >
 //                       No data for this month.
 //                     </h2>
@@ -515,7 +515,7 @@
 //                     currentMode === "dark"
 //                       ? "text-red-600"
 //                       : "text-main-red-color"
-//                   } text-xl font-bold`}
+//                   } text-lg font-bold`}
 //                 >
 //                   Sales Manager
 //                 </div>
@@ -573,7 +573,7 @@
 //                     <h2
 //                       className={`${
 //                         currentMode === "dark" ? "text-white" : "text-dark"
-//                       } text-xl font-bold mt-5`}
+//                       } text-lg font-bold mt-5`}
 //                     >
 //                       No data for this month.
 //                     </h2>
@@ -590,7 +590,7 @@
 //                     currentMode === "dark"
 //                       ? "text-red-600"
 //                       : "text-main-red-color"
-//                   } text-xl font-bold`}
+//                   } text-lg font-bold`}
 //                 >
 //                   Sales Agent
 //                 </div>
@@ -645,7 +645,7 @@
 //                     <h2
 //                       className={`${
 //                         currentMode === "dark" ? "text-white" : "text-dark"
-//                       } text-xl font-bold mt-5`}
+//                       } text-lg font-bold mt-5`}
 //                     >
 //                       No data for this month.
 //                     </h2>
@@ -875,7 +875,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                 <div
                   className={`${
                     currentMode === "dark" ? "text-red-600" : "text-red-500"
-                  } text-xl font-bold`}
+                  } text-lg font-bold`}
                 >
                   Sales Manager
                 </div>
@@ -951,7 +951,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                     currentMode === "dark"
                       ? "text-red-600"
                       : "text-main-red-color"
-                  } text-xl font-bold`}
+                  } text-lg font-bold`}
                 >
                   Sales Agent
                 </div>
@@ -1023,7 +1023,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                     currentMode === "dark"
                       ? "text-red-600"
                       : "text-main-red-color"
-                  } text-xl font-bold`}
+                  } text-lg font-bold`}
                 >
                   Sales Manager
                 </div>
@@ -1081,7 +1081,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                     <h2
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-dark"
-                      } text-xl font-bold mt-5`}
+                      } text-lg font-bold mt-5`}
                     >
                       No data for this month.
                     </h2>
@@ -1098,7 +1098,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                     currentMode === "dark"
                       ? "text-red-600"
                       : "text-main-red-color"
-                  } text-xl font-bold`}
+                  } text-lg font-bold`}
                 >
                   Sales Agent
                 </div>
@@ -1153,7 +1153,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                     <h2
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-dark"
-                      } text-xl font-bold mt-5`}
+                      } text-lg font-bold mt-5`}
                     >
                       No data for this month.
                     </h2>
@@ -1184,7 +1184,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                     currentMode === "dark"
                       ? "text-red-600"
                       : "text-main-red-color"
-                  } text-xl font-bold`}
+                  } text-lg font-bold`}
                 >
                   Sales Manager
                 </div>
@@ -1242,7 +1242,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                     <h2
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-dark"
-                      } text-xl font-bold mt-5`}
+                      } text-lg font-bold mt-5`}
                     >
                       No data for this month.
                     </h2>
@@ -1259,7 +1259,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                     currentMode === "dark"
                       ? "text-red-600"
                       : "text-main-red-color"
-                  } text-xl font-bold`}
+                  } text-lg font-bold`}
                 >
                   Sales Agent
                 </div>
@@ -1314,7 +1314,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                     <h2
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-dark"
-                      } text-xl font-bold mt-5`}
+                      } text-lg font-bold mt-5`}
                     >
                       No data for this month.
                     </h2>
