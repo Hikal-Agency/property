@@ -1,16 +1,24 @@
 // import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 import { useStateContext } from "../../context/ContextProvider";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import MyCalendar from "./MyCalendar";
 import { Box } from "@mui/system";
+import { toast } from "react-toastify";
+import axios from "../../axoisConfig";
 
 const OfficeSettings = () => {
-  const { currentMode, formatNum } = useStateContext();
+  const { currentMode, formatNum, BACKEND_URL } = useStateContext();
+  const token = localStorage.getItem("auth-token");
 
+  const [settings, setSettings] = useState();
+  const [btnLoading, setBtnLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  console.log("settings: ", settings);
+
   const handleEventClick = (eventClickInfo) => {
     console.log("Event clicked:", eventClickInfo.event);
   };
@@ -19,20 +27,98 @@ const OfficeSettings = () => {
     setIsEditing(true);
   };
 
-  const handleUpdateClick = () => {
-    // Perform update logic here
+  const fetchSettings = async () => {
+    try {
+      const get_settings = await axios.get(
+        `${BACKEND_URL}/agencies/1`,
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("settings:  ", get_settings);
+
+      setSettings(get_settings?.data?.data);
+
+      console.log("Response: ", get_settings);
+    } catch (error) {
+      toast.error("Unable to fetch settings.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
     setIsEditing(false);
   };
+
+  const handleUpdateClick = async () => {
+    setBtnLoading(true);
+    try {
+      const update_timings = await axios.post(
+        `${BACKEND_URL}/updateuser`,
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      setBtnLoading(false);
+
+      toast.success("Time updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      console.log("Response: ", update_timings);
+    } catch (error) {
+      setBtnLoading(false);
+      toast.error("Unable to update time.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    setIsEditing(false);
+  };
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
 
   return (
     <>
       <h4 className="text-red-600 font-bold text-xl mb-2 text-center">
         Office Time Settings
       </h4>
-      <Box className="h-[60vh] flex items-center justify-center">
+      {/* <Box className="h-[60vh] flex items-center justify-center">
         <img src="/coming-soon.png" width={"200px"} alt="" />
-      </Box>
-      
+      </Box> */}
+
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-5 pb-3">
         <div
           className={`${
@@ -67,9 +153,10 @@ const OfficeSettings = () => {
                       type="time"
                       style={{ padding: "0 6px" }}
                       defaultValue="09:30"
+                      set
                     />
                   ) : (
-                    <p>9:30AM</p>
+                    <p>{settings?.in_time}</p>
                   )}
                 </div>
                 <div className="flex justify-between mb-3">
@@ -81,7 +168,7 @@ const OfficeSettings = () => {
                       defaultValue="06:30"
                     />
                   ) : (
-                    <p>6:30PM</p>
+                    <p>{settings?.out_time}</p>
                   )}
                 </div>
                 <div className="flex justify-between mb-3">
@@ -93,7 +180,7 @@ const OfficeSettings = () => {
                       defaultValue="Sunday"
                     />
                   ) : (
-                    <p>Sunday</p>
+                    <p>{settings?.off_day}</p>
                   )}
                 </div>
               </div>
@@ -113,7 +200,7 @@ const OfficeSettings = () => {
                       defaultValue="10:45"
                     />
                   ) : (
-                    <p>10:45AM</p>
+                    <p>{settings?.in_late_time}</p>
                   )}
                 </div>
                 <div className="flex justify-between mb-3">
@@ -125,7 +212,7 @@ const OfficeSettings = () => {
                       defaultValue="08:00"
                     />
                   ) : (
-                    <p>08:00AM</p>
+                    <p>{settings?.out_late_time}</p>
                   )}
                 </div>
               </div>
@@ -149,7 +236,15 @@ const OfficeSettings = () => {
                   style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
                   onClick={handleUpdateClick}
                 >
-                  Update
+                  {btnLoading ? (
+                    <CircularProgress
+                      size={23}
+                      sx={{ color: "white" }}
+                      className="text-white"
+                    />
+                  ) : (
+                    <span>Update Settings</span>
+                  )}
                 </Button>
               )}
             </div>
