@@ -147,8 +147,11 @@ const UpdateUserPermissions = ({
             <div className="flex  items-center justify-center pl-3">
               <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
                 <div>
-                  <h2 className="text-center mt-3 text-xl font-bold text-gray-900">
-                    Update Role of <span className="text-red">{UserName}</span>
+                  <h2 className="text-center mt-3 text-xl font-bold text-gray-900 py-4">
+                    Update Role of{" "}
+                    <span style={{ color: "#DA1F26", fontWeight: "700" }}>
+                      {UserName}
+                    </span>
                   </h2>
                 </div>
 
@@ -159,9 +162,15 @@ const UpdateUserPermissions = ({
                     UpdateRole();
                   }}
                 >
-                  <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md">
+                  <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md justify-center items-center w-full h-full">
+                    {" "}
                     {dataLoading ? (
-                      <div className="w-full flex justify-center items-center">
+                      <div
+                        className="w-full flex justify-center items-center"
+                        style={{
+                          width: "500px",
+                        }}
+                      >
                         <CircularProgress />
                       </div>
                     ) : UserRole?.length > 0 ? (
