@@ -146,7 +146,7 @@ const SingleEmployee = ({ user }) => {
                     fontSize: "1rem",
                   }}
                   className="rounded-full"
-                  onClick={(event) => deductSalary(event, 1, params?.row.id)}
+                  onClick={(event) => lateSalary(event, 1, params?.row.id)}
                   // onClick={() => handleCalculateLate(params.row['Default time'], params.row['In-time'])}
                   // disabled={completeLoading}
                 >
@@ -168,7 +168,7 @@ const SingleEmployee = ({ user }) => {
                     marginLeft: "5%",
                   }}
                   className="rounded-full"
-                  onClick={(event) => deductSalary(event, 2, params?.row.id)}
+                  onClick={(event) => lateSalary(event, 2, params?.row.id)}
                   // disabled={cancleLoading}
                 >
                   {/* {cancleLoading ? (
@@ -201,7 +201,7 @@ const SingleEmployee = ({ user }) => {
       flex: 1,
       renderCell: (params) => (
         <>
-          {params.row.deduct_salary === "1" ? (
+          {params.row.deduction === 1 ? (
             params.row.currency + " " + params.row.cut_salary
           ) : (
             <>-</>
@@ -220,7 +220,7 @@ const SingleEmployee = ({ user }) => {
       flex: 1,
       renderCell: (params) => (
         <div className={`space-x-1 w-full flex items-center justify-center`}>
-          <Tooltip title="Edit Note/Reason">
+          <Tooltip title="Edit Note/Reason" arrow>
             <IconButton
               onClick={(event) => updateReason(event, params?.row.id)}
             >
@@ -233,9 +233,9 @@ const SingleEmployee = ({ user }) => {
             </IconButton>
           </Tooltip>
           {params.row.deduction === 1 ? (
-            <Tooltip title="Don't Deduct Salary">
+            <Tooltip title="Don't Deduct Salary" arrow>
               <IconButton
-              // onClick={(event) => updateReason(event, params?.row.id)}
+                onClick={(event) => undeductSalary(event, 2, params?.row.id)}
               >
                 <MdMoneyOff
                   size={16}
@@ -246,9 +246,9 @@ const SingleEmployee = ({ user }) => {
               </IconButton>
             </Tooltip>
           ) : (
-            <Tooltip title="Deduct Salary">
+            <Tooltip title="Deduct Salary" arrow>
               <IconButton
-              // onClick={(event) => updateReason(event, params?.row.id)}
+                onClick={(event) => deductSalary(event, 2, params?.row.id)}
               >
                 <MdAttachMoney
                   size={16}
@@ -465,10 +465,11 @@ const SingleEmployee = ({ user }) => {
             userName: row?.userName || "-",
             created_at: row?.created_at,
             updated_at: row?.updated_at,
-            // deduct_salary: row?.deduct_salary,
             deduction: row?.deduct_salary,
             cut_salary: row?.cut_salary || "-",
             off_day: row?.off_day || "-",
+            notify_status: row?.notify_status || "",
+            notify_deduct_salary: row?.notify_deduct_salary || "",
             edit: "edit",
           };
         }
@@ -572,8 +573,8 @@ const SingleEmployee = ({ user }) => {
       });
   };
 
-  // ON LATE = YES
-  const deductSalary = async (e, btn, id) => {
+  // ON LATE
+  const lateSalary = async (e, btn, id) => {
     console.log("id", id);
 
     // Find the data with the matching id in the empdata array
@@ -584,12 +585,6 @@ const SingleEmployee = ({ user }) => {
     console.log("check time: ", employeeData?.check_datetime);
 
     // Calculate the difference in minutes
-    //let lateMinutes = moment(
-    // employeeData?.check_datetime,
-    // pageState?.first_check?.check_datetime,
-    //  "HH:mm"
-    // ).diff(moment(employeeData?.default_datetime, "HH:mm"), "minutes");
-
     const checkTime = moment(employeeData?.check_datetime).format("HH:mm");
 
     let lateMinutes = moment(checkTime, "HH:mm").diff(
@@ -597,36 +592,6 @@ const SingleEmployee = ({ user }) => {
       "minutes"
     );
 
-    console.log("lateminutes logging:: ", lateMinutes);
-
-    // Take the absolute value of lateMinutes to make sure the result is positive
-    // const absoluteLateMinutes = Math.abs(lateMinutes);
-    // console.log("absolute late minutes: ", absoluteLateMinutes);
-
-    // Check if absoluteLateMinutes is greater than 60
-    // if (absoluteLateMinutes > 60) {
-    //   // Calculate the remaining minutes after removing complete hours
-    //   const remainingMinutes = absoluteLateMinutes % 60;
-
-    //   // Calculate the number of complete hours (after converting minutes to hours)
-    //   const completeHours = Math.floor(absoluteLateMinutes / 60);
-
-    //   // Calculate the final result by subtracting the value of the remaining minutes
-    //   // (after converting them back to minutes using the product of remainingMinutes and 60)
-    //   lateMinutes = Math.abs(absoluteLateMinutes - remainingMinutes * 60);
-
-    //   console.log("Original Difference in Minutes:", absoluteLateMinutes);
-    //   console.log("Complete Hours:", completeHours);
-    //   console.log("Remaining Minutes:", remainingMinutes);
-    //   console.log("Final Result:", lateMinutes);
-    // } else {
-    //   lateMinutes = moment(employeeData?.default_datetime, "HH:mm").diff(
-    //     moment(pageState?.first_check?.check_datetime, "HH:mm"),
-    //     "minutes"
-    //   );
-    // }
-
-    // setpageState({ ...pageState, lateMinutes: lateMinutes });
     setpageState((oldPageState) => ({
       ...oldPageState,
       lateMinutes: lateMinutes,
@@ -643,6 +608,8 @@ const SingleEmployee = ({ user }) => {
     let deduted_salary = monthly_salary / 2;
 
     const UpdateData = new FormData();
+
+    // LATE - YES
     if (btn === 1) {
       if (User?.role === 1) {
         console.log("deducted salary: ", deduted_salary);
@@ -659,7 +626,9 @@ const SingleEmployee = ({ user }) => {
         UpdateData.append("deduct_salary", 1);
         UpdateData.append("cut_salary", deduted_salary.toString());
       }
-    } else if (btn === 2) {
+    } 
+    // LATE - NO 
+    else if (btn === 2) {
       console.log("btn2");
 
       if (
@@ -692,7 +661,139 @@ const SingleEmployee = ({ user }) => {
         }
       );
 
-      toast.success("User updated successfully.", {
+      toast.success("Attendance updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setloading(false);
+      FetchAttendance();
+
+      console.log("Response: ", UpdateUser);
+    } catch (error) {
+      setloading(false);
+      console.log("Error: ", error);
+      toast.error("Unable to update.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  // DEDUCT SALARY
+  const deductSalary = async (e, id) => {
+    const employeeData = empData.find((employee) => employee.id === id);
+
+    setpageState((oldPageState) => ({
+      ...oldPageState,
+    }));
+
+    const monthly_salary = employeeData?.salary / 30;
+    let deduted_salary = monthly_salary / 2;
+
+    const UpdateData = new FormData();
+
+    if (User?.role === 1) {
+      UpdateData.append("deduct_salary", 1);
+      UpdateData.append("notify_status", "Direct");
+      UpdateData.append("cut_salary", deduted_salary.toString());
+    } else {
+      UpdateData.append("notify_status", "Pending");
+      UpdateData.append("notify_deduct_salary", 1);
+      UpdateData.append("cut_salary", deduted_salary.toString());
+    }
+
+    try {
+      const UpdateUser = await axios.post(
+        `${BACKEND_URL}/attendance/${employeeData?.id}`,
+        UpdateData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("Attendance updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setloading(false);
+      FetchAttendance();
+
+      console.log("Response: ", UpdateUser);
+    } catch (error) {
+      setloading(false);
+      console.log("Error: ", error);
+      toast.error("Unable to update.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  // UNDEDUCT SALARY 
+  const undeductSalary = async (e, id) => {
+    const employeeData = empData.find((employee) => employee.id === id);
+    
+    setpageState((oldPageState) => ({
+      ...oldPageState,
+    }));
+
+    const monthly_salary = employeeData?.salary / 30;
+    let deduted_salary = monthly_salary / 2;
+
+    const UpdateData = new FormData();
+
+    if (User?.role === 1) {
+      UpdateData.append("deduct_salary", 2);
+      UpdateData.append("notify_status", "Direct");
+      UpdateData.append("cut_salary", "No");
+      UpdateData.append("is_late", 2);
+    } else {
+      UpdateData.append("notify_status", "Pending");
+      UpdateData.append("notify_deduct_salary", 2);
+    }
+
+    try {
+      const UpdateUser = await axios.post(
+        `${BACKEND_URL}/attendance/${employeeData?.id}`,
+        UpdateData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("Attendance updated successfully.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,

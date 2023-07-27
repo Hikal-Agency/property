@@ -32,7 +32,7 @@ const OfficeSettings = () => {
       <Box className="h-[60vh] flex items-center justify-center">
         <img src="/coming-soon.png" width={"200px"} alt="" />
       </Box>
-      {/* 
+      
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-5 pb-3">
         <div
           className={`${
@@ -155,7 +155,7 @@ const OfficeSettings = () => {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </>
   );
 };
