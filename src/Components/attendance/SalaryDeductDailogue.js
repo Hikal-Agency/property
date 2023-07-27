@@ -26,11 +26,25 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
     pageState,
     setpageState,
   } = useStateContext();
-  const [reason, setReason] = useState(null);
+  const [reason, setReason] = useState(showDailogue?.late_reason);
   const [btnloading, setloading] = useState(false);
 
   const handleClick = async () => {
     setloading(true);
+    if (!reason) {
+      setloading(false);
+      toast.error("Kindy enter a reason.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
     try {
       const UpdateReason = await axios.post(
         `${BACKEND_URL}/attendance/${showDailogue?.id}`,
@@ -124,7 +138,7 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
               }}
               variant="outlined"
               size="medium"
-              value={showDailogue?.late_reason}
+              value={reason}
               onChange={(e) => setReason(e.target.value)}
               fullWidth
             />
