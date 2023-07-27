@@ -446,7 +446,7 @@ const Sidebarmui = () => {
         {
           name: "Tickets",
           icon: <HiTicket />,
-          link: "/tickets",
+          link: "/support",
         },
       ],
     },
