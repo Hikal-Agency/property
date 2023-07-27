@@ -7,18 +7,31 @@ import {
   RadioGroup,
 } from "@mui/material";
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const PermissionsCheckbox = ({
   permission,
   defaultRole,
-  formData,
-  setFormData,
+  selectedPermission,
+  setSelectedPermission,
+  handleCheckboxChange,
 }) => {
   console.log("roles checkbox", permission, defaultRole);
+  const [checked, setchecked] = useState(true);
 
   const handleClick = (e) => {
-    setFormData(e.target.value);
+    const permissionId = e.target.value;
+    const checked = e.target.checked;
+    setchecked(checked);
+    console.log("permissionID, checked:::: ", permissionId, checked);
+    handleCheckboxChange(permissionId, checked);
   };
+
+  useEffect(() => {
+    // When the component mounts, add the permission ID to the selectedPermission array
+    setSelectedPermission((prevSelected) => [...prevSelected, permission.id]);
+  }, []);
 
   return (
     <div className="w-[30%]">
@@ -26,10 +39,11 @@ const PermissionsCheckbox = ({
         control={
           <Checkbox
             value={permission?.id}
-            // onChange={handleClick}
-            checked
-            name="roleRadio"
+            onClick={handleClick}
+            checked={checked}
+            name="permissionCheckbox"
             fullWidth
+            inputProps={{ "aria-label": "controlled" }}
           />
         }
         label={permission?.permission}

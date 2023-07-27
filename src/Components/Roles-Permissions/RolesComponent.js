@@ -25,12 +25,30 @@ const RolesComponent = ({
 }) => {
   const { BACKEND_URL, currentMode, User } = useStateContext();
   const [formdata, setformdata] = useState({ user_id: User?.id, status: 1 });
+
+  const [selectedPermission, setSelectedPermission] = useState([]);
   const [permissions, setPermissions] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
   const [loading, setloading] = useState(false);
   const token = localStorage.getItem("auth-token");
 
   console.log("permissions:  ", permissions);
+  console.log("selectedpermission: ", selectedPermission);
+
+  const handleCheckboxChange = (permissionId, checked) => {
+    console.log("parent permission and checked::: ", permissionId, checked);
+    if (checked) {
+      setSelectedPermission((prevPermissionData) => [
+        ...prevPermissionData,
+        permissionId,
+      ]);
+    } else {
+      setSelectedPermission((prevPermissionData) =>
+        prevPermissionData.filter((id) => id !== permissionId)
+      );
+      console.log("permission removed: ", selectedPermission);
+    }
+  };
 
   const AddData = async () => {
     function isSafeInput(input) {
@@ -58,6 +76,7 @@ const RolesComponent = ({
     const AddData = new FormData();
     if (value === 0) {
       AddData.append("role", formdata?.data);
+      AddData.append("permission_id", selectedPermission);
     } else {
       AddData.append("permission", formdata?.data);
     }
@@ -157,9 +176,7 @@ const RolesComponent = ({
     >
       <div
         style={style}
-        className={`w-[calc(100%-20px)] md:w-[40%]  ${
-          currentMode === "dark" ? "bg-gray-900" : "bg-white"
-        } absolute top-1/2 left-1/2 p-5  rounded-md`}
+        className={`w-[calc(100%-20px)] md:w-[40%] absolute top-1/2 left-1/2 p-5  rounded-md`}
       >
         <div className="relative overflow-hidden">
           <div className={``}>
@@ -200,16 +217,27 @@ const RolesComponent = ({
                     </div>
                     {value === 0 && (
                       <>
-                        <div className="flex flex-wrap w-full">
-                          {!dataLoading && permissions?.length > 0
-                            ? permissions?.map((permission) => (
-                                <PermissionsCheckbox permission={permission} />
+                        <div className="col-span-6">
+                          <div className="grid grid-cols-3 gap-x-3">
+                            {!dataLoading && permissions?.length > 0 ? (
+                              permissions.map((permission) => (
+                                <PermissionsCheckbox
+                                  key={permission?.id}
+                                  permission={permission}
+                                  selectedPermission={selectedPermission}
+                                  setSelectedPermission={setSelectedPermission}
+                                  handleCheckboxChange={handleCheckboxChange}
+                                />
                               ))
-                            : "No permissions found."}
+                            ) : (
+                              <p>No permissions found.</p>
+                            )}
+                          </div>
                         </div>
                       </>
                     )}
                   </div>
+
                   <div>
                     <button
                       disabled={loading ? true : false}
