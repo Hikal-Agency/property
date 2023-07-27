@@ -2,13 +2,12 @@ import { CircularProgress, Modal, Backdrop, Button } from "@mui/material";
 import { IoIosAlert } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
 import { Select, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import "../../styles/app.css";
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import { toast, ToastContainer } from "react-toastify";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -16,14 +15,15 @@ const style = {
 };
 
 const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
+  const {Managers} = useStateContext();
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
+  const [fetchingRoles, setFetchingRoles] = useState(true);
   const [UserRole, setUserRole] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const { BACKEND_URL, currentMode } = useStateContext();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [allRoles, setAllRoles] = useState([]);
 
   const rolesMap = {
     "head of sales": 2,
@@ -81,7 +81,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     setformdata({ ...formdata, role: rolesMap[selectedRole] });
   };
 
-  // sql injuction
+  // sql injuction, 
   function isSafeInput(input) {
     const regex = /([';\/*-])/g; // Characters to look for in input
     return !regex.test(input);
@@ -118,6 +118,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     }
     if (formdata.password === formdata.c_password) {
       setloading(true);
+      console.log(formdata)
       await axios
         .post(`${BACKEND_URL}/register`, formdata)
         .then((result) => {
@@ -155,7 +156,27 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     }
   };
 
-  console.log("User Model: ");
+  const fetchData = async () => {
+    const token = localStorage.getItem("auth-token");
+      const rolesResult = await axios.get(
+        `${BACKEND_URL}/roles`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const data = rolesResult.data?.role?.data;
+      setAllRoles(data);
+      setFetchingRoles(false);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  console.log("User Model: ", formdata);
   return (
     <Modal
       keepMounted
@@ -178,6 +199,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
         <div className="relative overflow-hidden">
           <div className={``}>
             <div className="flex min-h-screen items-center justify-center pl-3">
+            {fetchingRoles ? <CircularProgress/> : 
               <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
                 <div>
                   <h2 className="text-center text-xl font-bold text-gray-900">
@@ -250,7 +272,8 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                   )}
 
                   <div className="col-span-3">
-                    <Select
+                    <TextField
+                    select
                       id="user-role"
                       value={UserRole}
                       label="User Role"
@@ -263,17 +286,20 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                       <MenuItem value="" disabled>
                         User Role
                       </MenuItem>
-                      {/* <MenuItem value={"admin"}>Admin</MenuItem> */}
-                      <MenuItem value={"manager"}>Manager</MenuItem>
-                      <MenuItem value={"agent"}>Agent</MenuItem>
-                    </Select>
+                      
+                      {allRoles?.map((role, index) => {
+                        return <MenuItem key={index} value={role?.role?.toLowerCase()}>{role?.role}</MenuItem>
+                      })}
+                      
+                    </TextField>
                   </div>
                   <div className="col-span-3">
                     {UserRole === "agent" && (
                       <TextField
+                      select
                         id="managerId"
                         type={"text"}
-                        label="Enter your managers code"
+                        label="Select Manager"
                         className="w-full mb-3"
                         variant="outlined"
                         size="medium"
@@ -286,7 +312,15 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                             isParent: e.target.value,
                           });
                         }}
-                      />
+                      >
+                      <MenuItem value="" disabled>
+                        Manager
+                      </MenuItem>
+
+                        {Managers?.map((manager, key) => {
+                          return <MenuItem value={manager?.id} key={key}>{manager?.userName}</MenuItem>
+                        })}
+                      </TextField>
                     )}
                     <TextField
                       id="username"
@@ -341,9 +375,8 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
 
                 </div>
               </form>
-
-
               </div>
+            }
             </div>
           </div>
         </div>
