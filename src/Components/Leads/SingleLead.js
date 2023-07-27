@@ -385,7 +385,7 @@ const SingleLead = ({
                     </Button>
                   </Tooltip> */}
                 </Link>
-                
+               {LeadData?.ip && 
                 <Tooltip title="Block IP" arrow>
                   <IconButton onClick={() => handleBlockIP(LeadData)} sx={{
                   "& svg": {
@@ -398,6 +398,7 @@ const SingleLead = ({
                       <BiBlock size={18}/>
                   </IconButton>
                 </Tooltip>
+               }
               </div>
               <div className={`rounded-md mt-2`}>
                 {lastNote && (
