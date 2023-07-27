@@ -302,11 +302,13 @@ const UpdateComponent = ({
                       className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-3 px-4 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
                     >
                       {loading ? (
-                        <CircularProgress
-                          sx={{ color: "white" }}
-                          size={25}
-                          className="text-white"
-                        />
+                        <div className="w-full flex justify-center items-center">
+                          <CircularProgress
+                            sx={{ color: "white", width: "500px" }}
+                            size={25}
+                            className="text-white"
+                          />
+                        </div>
                       ) : (
                         <span>Update</span>
                       )}
