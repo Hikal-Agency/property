@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
 import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
-import { MdModeEdit } from "react-icons/md";
+import { MdModeEdit, MdAttachMoney, MdMoneyOff } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
 
 import moment from "moment";
@@ -129,8 +129,8 @@ const SingleEmployee = ({ user }) => {
       } else {
         UpdateData.append("is_late", 1);
         UpdateData.append("late_minutes", lateMinutes);
-        UpdateData.append("notify_status", "Pending");
-        UpdateData.append("notify_deduct_salary", 1);
+        UpdateData.append("notify_status", "Direct");
+        UpdateData.append("deduct_salary", 1);
         UpdateData.append("cut_salary", deduted_salary.toString());
       }
     } else if (btn === 2) {
@@ -363,12 +363,24 @@ const SingleEmployee = ({ user }) => {
                 className={` ${currentMode === "dark" ? "text-white" : "text-black"}`} />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Deduct Salary">
-            <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
-              <MdModeEdit size={16} 
-                className={` ${currentMode === "dark" ? "text-white" : "text-black"}`} />
-            </IconButton>
-          </Tooltip>
+          {params.row.deduction = 1 ?
+          (
+            <Tooltip title="Don't Deduct Salary">
+              <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
+                <MdMoneyOff size={16} 
+                  className={` ${currentMode === "dark" ? "text-white" : "text-black"}`} />
+              </IconButton>
+            </Tooltip>
+          )
+          : (
+            <Tooltip title="Deduct Salary">
+              <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
+                <MdAttachMoney size={16} 
+                  className={` ${currentMode === "dark" ? "text-white" : "text-black"}`} />
+              </IconButton>
+            </Tooltip>
+          )}
+          
         </div>
       ),
     },
