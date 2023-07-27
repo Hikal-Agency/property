@@ -67,6 +67,7 @@ const Sidebarmui = () => {
     setSalesPerson,
     setManagers,
     setAppLoading,
+    setPermissions,
     fetchSidebarData,
     sidebarData,
   } = useStateContext();
@@ -2663,6 +2664,7 @@ const Sidebarmui = () => {
 
           // Create a new object with only the specific fields you want to store
           const user = {
+            permissions: result.data.roles.permissions,
             addedBy: result.data.user[0].addedBy,
             addedFor: result.data.user[0].addedFor,
             agency: result.data.user[0].agency,
@@ -2697,6 +2699,7 @@ const Sidebarmui = () => {
           };
 
           setUser(user);
+          setPermissions(user?.permissions);
           setIsUserSubscribed(checkUser(user));
           getAllLeadsMembers(user);
 
