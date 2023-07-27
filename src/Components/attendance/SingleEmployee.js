@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
 import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
-import { MdModeEdit } from "react-icons/md";
+import { MdModeEdit, MdAttachMoney, MdMoneyOff } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
 
 import moment from "moment";
@@ -60,139 +60,6 @@ const SingleEmployee = ({ user }) => {
     const employeeData = empData.find((employee) => employee.id === id);
     setDialogue(employeeData);
     console.log("emp reason: ", employeeData);
-  };
-
-  // ON LATE = YES 
-  const deductSalary = async (e, btn, id) => {
-    // Find the data with the matching id in the empdata array
-    const employeeData = empData.find((employee) => employee.id === id);
-    console.log("logging single emp row:::: ", employeeData);
-
-    // Calculate the difference in minutes
-    let lateMinutes = moment(employeeData?.default_datetime, "HH:mm").diff(
-      moment(pageState?.first_check?.check_datetime, "HH:mm"),
-      "minutes"
-    );
-
-    // Take the absolute value of lateMinutes to make sure the result is positive
-    const absoluteLateMinutes = Math.abs(lateMinutes);
-
-    // Check if absoluteLateMinutes is greater than 60
-    if (absoluteLateMinutes > 60) {
-      // Calculate the remaining minutes after removing complete hours
-      const remainingMinutes = absoluteLateMinutes % 60;
-
-      // Calculate the number of complete hours (after converting minutes to hours)
-      const completeHours = Math.floor(absoluteLateMinutes / 60);
-
-      // Calculate the final result by subtracting the value of the remaining minutes
-      // (after converting them back to minutes using the product of remainingMinutes and 60)
-      lateMinutes = Math.abs(absoluteLateMinutes - remainingMinutes * 60);
-
-      console.log("Original Difference in Minutes:", absoluteLateMinutes);
-      console.log("Complete Hours:", completeHours);
-      console.log("Remaining Minutes:", remainingMinutes);
-      console.log("Final Result:", lateMinutes);
-    } else {
-      lateMinutes = moment(employeeData?.default_datetime, "HH:mm").diff(
-        moment(pageState?.first_check?.check_datetime, "HH:mm"),
-        "minutes"
-      );
-    }
-
-    // setpageState({ ...pageState, lateMinutes: lateMinutes });
-    setpageState((oldPageState) => ({
-      ...oldPageState,
-      lateMinutes: lateMinutes,
-    }));
-
-    console.log(
-      "late minutes: ",
-      lateMinutes,
-      pageState?.first_check?.check_datetime,
-      employeeData?.default_datetime
-    );
-
-    const monthly_salary = employeeData?.salary / 30;
-    let deduted_salary = monthly_salary / 2;
-
-    const UpdateData = new FormData();
-    if (btn === 1) {
-      if (User?.role === 1) {
-        console.log("deducted salary: ", deduted_salary);
-
-        UpdateData.append("is_late", 1);
-        UpdateData.append("late_minutes", lateMinutes);
-        UpdateData.append("deduct_salary", 1);
-        UpdateData.append("notify_status", "Direct");
-        UpdateData.append("cut_salary", deduted_salary.toString());
-      } else {
-        UpdateData.append("is_late", 1);
-        UpdateData.append("late_minutes", lateMinutes);
-        UpdateData.append("notify_status", "Pending");
-        UpdateData.append("notify_deduct_salary", 1);
-        UpdateData.append("cut_salary", deduted_salary.toString());
-      }
-    } else if (btn === 2) {
-      console.log("btn2");
-
-      if (
-        moment(pageState?.first_check?.check_datetime, "HH:mm") >
-        moment(employeeData?.default_datetime, "HH:mm")
-      ) {
-        console.log("lates::::::::::::::");
-        UpdateData.append("is_late", 1);
-        UpdateData.append("late_minutes", lateMinutes);
-        UpdateData.append("deduct_salary", 2);
-      } else if (
-        moment(pageState?.first_check?.check_datetime, "HH:mm") <=
-        moment(employeeData?.default_datetime, "HH:mm")
-      ) {
-        console.log("No late:::::::::");
-        UpdateData.append("is_late", 2);
-      }
-    }
-
-    try {
-      const UpdateUser = await axios.post(
-        `${BACKEND_URL}/attendance/${employeeData?.id}`,
-        UpdateData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      toast.success("User updated successfully.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      setloading(false);
-
-      console.log("Response: ", UpdateUser);
-    } catch (error) {
-      setloading(false);
-      console.log("Error: ", error);
-      toast.error("Unable to update.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
   };
 
   console.log("emp data: ", empData);
@@ -258,7 +125,7 @@ const SingleEmployee = ({ user }) => {
       },
     },
 
-    // LATE MINUTES 
+    // LATE MINUTES
     {
       field: "late_minutes",
       headerAlign: "center",
@@ -317,7 +184,7 @@ const SingleEmployee = ({ user }) => {
         </>
       ),
     },
-    // LATE REASON 
+    // LATE REASON
     {
       field: "late_reason",
       headerAlign: "center",
@@ -325,7 +192,7 @@ const SingleEmployee = ({ user }) => {
       minWidth: 120,
       flex: 1,
     },
-    // SALARY DEDUCTION 
+    // SALARY DEDUCTION
     {
       field: "cut_salary",
       headerName: "Deduct",
@@ -337,14 +204,12 @@ const SingleEmployee = ({ user }) => {
           {params.row.deduct_salary === "1" ? (
             params.row.currency + " " + params.row.cut_salary
           ) : (
-            <>
-              -
-            </>
+            <>-</>
           )}
         </>
       ),
     },
-    // ACTION 
+    // ACTION
     {
       field: "deduct_salary",
       headerName: "Action",
@@ -354,26 +219,51 @@ const SingleEmployee = ({ user }) => {
       filterable: false,
       flex: 1,
       renderCell: (params) => (
-        <div
-            className={`space-x-1 w-full flex items-center justify-center`}
-          >
+        <div className={`space-x-1 w-full flex items-center justify-center`}>
           <Tooltip title="Edit Note/Reason">
-            <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
-              <MdModeEdit size={16} 
-                className={` ${currentMode === "dark" ? "text-white" : "text-black"}`} />
+            <IconButton
+              onClick={(event) => updateReason(event, params?.row.id)}
+            >
+              <MdModeEdit
+                size={16}
+                className={` ${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Deduct Salary">
-            <IconButton onClick={(event) => updateReason(event, params?.row.id)}>
-              <MdModeEdit size={16} 
-                className={` ${currentMode === "dark" ? "text-white" : "text-black"}`} />
-            </IconButton>
-          </Tooltip>
+          {params.row.deduction === 1 ? (
+            <Tooltip title="Don't Deduct Salary">
+              <IconButton
+              // onClick={(event) => updateReason(event, params?.row.id)}
+              >
+                <MdMoneyOff
+                  size={16}
+                  className={` ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
+                />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <Tooltip title="Deduct Salary">
+              <IconButton
+              // onClick={(event) => updateReason(event, params?.row.id)}
+              >
+                <MdAttachMoney
+                  size={16}
+                  className={` ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
+                />
+              </IconButton>
+            </Tooltip>
+          )}
         </div>
       ),
     },
   ];
-  
+
   // Custom function to check if it's a "checkin" or "in"
   function isCheckIn(row) {
     return (
@@ -489,6 +379,8 @@ const SingleEmployee = ({ user }) => {
           );
         });
 
+        console.log("first check in:: ", firstCheckIn);
+
         const workingDays = calculateWorkingDays(firstCheckIn?.off_day);
 
         console.log("working days: ", workingDays);
@@ -573,6 +465,7 @@ const SingleEmployee = ({ user }) => {
             userName: row?.userName || "-",
             created_at: row?.created_at,
             updated_at: row?.updated_at,
+            // deduct_salary: row?.deduct_salary,
             deduction: row?.deduct_salary,
             cut_salary: row?.cut_salary || "-",
             off_day: row?.off_day || "-",
@@ -677,6 +570,157 @@ const SingleEmployee = ({ user }) => {
         //   },
         // });
       });
+  };
+
+  // ON LATE = YES
+  const deductSalary = async (e, btn, id) => {
+    console.log("id", id);
+
+    // Find the data with the matching id in the empdata array
+    const employeeData = empData.find((employee) => employee.id === id);
+    console.log("logging single emp row:::: ", employeeData);
+
+    console.log("default time: ", employeeData?.default_datetime);
+    console.log("check time: ", employeeData?.check_datetime);
+
+    // Calculate the difference in minutes
+    //let lateMinutes = moment(
+    // employeeData?.check_datetime,
+    // pageState?.first_check?.check_datetime,
+    //  "HH:mm"
+    // ).diff(moment(employeeData?.default_datetime, "HH:mm"), "minutes");
+
+    const checkTime = moment(employeeData?.check_datetime).format("HH:mm");
+
+    let lateMinutes = moment(checkTime, "HH:mm").diff(
+      moment(employeeData?.default_datetime, "HH:mm"),
+      "minutes"
+    );
+
+    console.log("lateminutes logging:: ", lateMinutes);
+
+    // Take the absolute value of lateMinutes to make sure the result is positive
+    // const absoluteLateMinutes = Math.abs(lateMinutes);
+    // console.log("absolute late minutes: ", absoluteLateMinutes);
+
+    // Check if absoluteLateMinutes is greater than 60
+    // if (absoluteLateMinutes > 60) {
+    //   // Calculate the remaining minutes after removing complete hours
+    //   const remainingMinutes = absoluteLateMinutes % 60;
+
+    //   // Calculate the number of complete hours (after converting minutes to hours)
+    //   const completeHours = Math.floor(absoluteLateMinutes / 60);
+
+    //   // Calculate the final result by subtracting the value of the remaining minutes
+    //   // (after converting them back to minutes using the product of remainingMinutes and 60)
+    //   lateMinutes = Math.abs(absoluteLateMinutes - remainingMinutes * 60);
+
+    //   console.log("Original Difference in Minutes:", absoluteLateMinutes);
+    //   console.log("Complete Hours:", completeHours);
+    //   console.log("Remaining Minutes:", remainingMinutes);
+    //   console.log("Final Result:", lateMinutes);
+    // } else {
+    //   lateMinutes = moment(employeeData?.default_datetime, "HH:mm").diff(
+    //     moment(pageState?.first_check?.check_datetime, "HH:mm"),
+    //     "minutes"
+    //   );
+    // }
+
+    // setpageState({ ...pageState, lateMinutes: lateMinutes });
+    setpageState((oldPageState) => ({
+      ...oldPageState,
+      lateMinutes: lateMinutes,
+    }));
+
+    console.log(
+      "late minutes: ",
+      lateMinutes,
+      pageState?.first_check?.check_datetime,
+      employeeData?.default_datetime
+    );
+
+    const monthly_salary = employeeData?.salary / 30;
+    let deduted_salary = monthly_salary / 2;
+
+    const UpdateData = new FormData();
+    if (btn === 1) {
+      if (User?.role === 1) {
+        console.log("deducted salary: ", deduted_salary);
+
+        UpdateData.append("is_late", 1);
+        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("deduct_salary", 1);
+        UpdateData.append("notify_status", "Direct");
+        UpdateData.append("cut_salary", deduted_salary.toString());
+      } else {
+        UpdateData.append("is_late", 1);
+        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("notify_status", "Direct");
+        UpdateData.append("deduct_salary", 1);
+        UpdateData.append("cut_salary", deduted_salary.toString());
+      }
+    } else if (btn === 2) {
+      console.log("btn2");
+
+      if (
+        // moment(pageState?.first_check?.check_datetime, "HH:mm") >
+        moment(pageState?.first_check?.check_datetime, "HH:mm") >
+        moment(employeeData?.default_datetime, "HH:mm")
+      ) {
+        console.log("lates::::::::::::::");
+        UpdateData.append("is_late", 1);
+        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("deduct_salary", 2);
+      } else if (
+        moment(pageState?.first_check?.check_datetime, "HH:mm") <=
+        moment(employeeData?.default_datetime, "HH:mm")
+      ) {
+        console.log("No late:::::::::");
+        UpdateData.append("is_late", 2);
+      }
+    }
+
+    try {
+      const UpdateUser = await axios.post(
+        `${BACKEND_URL}/attendance/${employeeData?.id}`,
+        UpdateData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("User updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setloading(false);
+      FetchAttendance();
+
+      console.log("Response: ", UpdateUser);
+    } catch (error) {
+      setloading(false);
+      console.log("Error: ", error);
+      toast.error("Unable to update.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   useEffect(() => {

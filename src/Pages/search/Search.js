@@ -7,6 +7,7 @@ import {
   styled,
   Select,
   MenuItem,
+  Tooltip,
 } from "@mui/material";
 import "../../styles/index.css";
 import { BiImport } from "react-icons/bi";
@@ -65,11 +66,11 @@ const bulkUpdateBtnStyles = {
 const feedbacks = [
   "All",
   "New",
-  "No Answer",
-  "Meeting",
   "Follow Up",
+  "Meeting",
   "Low Budget",
   "Not Interested",
+  "No Answer",
   "Unreachable",
 ];
 
@@ -278,27 +279,25 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     }
   };
 
+  // ROLE 3
   const managerColumns = [
     {
       field: "id",
       headerName: "#",
-      minWidth: 40,
+      minWidth: 20,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <small>
-            <strong>{cellValues?.formattedValue}</strong>
-          </small>
+          <strong>{cellValues?.formattedValue}</strong>
         );
       },
     },
-
     {
       field: "leadName",
       headerAlign: "center",
       headerName: "Lead name",
-      minWidth: 120,
+      minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -532,27 +531,25 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
   ];
 
+  // ROLE 1 AND ROLE 2
   const columns = [
-      {
+    {
       field: "id",
       headerName: "#",
-      minWidth: 40,
+      minWidth: 20,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <small>
-            <strong>{cellValues?.formattedValue}</strong>
-          </small>
+          <strong>{cellValues?.formattedValue}</strong>
         );
       },
     },
-
     {
       field: "leadName",
       headerAlign: "center",
       headerName: "Lead name",
-      minWidth: 85,
+      minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -567,7 +564,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 115,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
     },
@@ -575,12 +572,13 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "project",
       headerName: "Project",
       headerAlign: "center",
-      minWidth: 40,
+      minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
+          <div className="flex flex-col">
+            <p>{cellValues?.formattedValue}</p>
+            <p>{cellValues.row.leadType}</p>
           </div>
         );
       },
@@ -589,13 +587,13 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerAlign: "center",
       field: "leadType",
       headerName: "Property",
-      minWidth: 85,
+      minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
-            <p>{cellValues.row.leadType}</p>
             <p>{cellValues.row.enquiryType}</p>
+            <p>{cellValues.row.leadFor}</p>
           </div>
         );
       },
@@ -604,7 +602,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerAlign: "center",
       field: "assignedToManager",
       headerName: "Manager",
-      minWidth: 90,
+      minWidth: 100,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
@@ -613,7 +611,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerAlign: "center",
       field: "assignedToSales",
       headerName: "Agent",
-      minWidth: 90,
+      minWidth: 100,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
@@ -622,43 +620,42 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "feedback",
       headerAlign: "center",
       headerName: "Feedback",
-      minWidth: 85,
+      minWidth: 100,
       flex: 1,
 
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
-        {
+    {
       field: "priority",
       headerName: "Priority",
-      minWidth: 85,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
-
     {
       field: "otp",
       headerName:
         lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
-      minWidth: 90,
+      minWidth: 80,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         if (lead_origin === "transfferedleads") {
           return (
-            <div style={{ fontSize: 10 }}>
+            <div style={{ fontSize: 11 }}>
               <p>{cellValues.row.transferredFromName || "No Name"}</p>
             </div>
           );
         } else {
           return (
-            <div style={{ fontSize: 10 }}>
+            <div style={{ fontSize: 9 }}>
               {cellValues.formattedValue === "Verified" && (
                 <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
-                    OTP VERIFIED
+                  <span className="bg-[#238e41] p-1 rounded-md w-24 text-center">
+                    VERIFIED
                   </span>
                 </div>
               )}
@@ -666,7 +663,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               {cellValues.formattedValue === "Not Verified" && (
                 <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
                   <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
-                    NOT VERIFIED
+                    UNVERIFIED
                   </span>
                 </div>
               )}
@@ -674,7 +671,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               {cellValues.formattedValue !== "Not Verified" &&
                 cellValues.formattedValue !== "Verified" && (
                   <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                    <span className="bg-[#000000] p-1 rounded-md w-24 text-center">
                       {cellValues.formattedValue}
                     </span>
                   </div>
@@ -684,11 +681,11 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }
       },
     },
-        {
+    {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
-      minWidth: 35,
+      minWidth: 30,
       headerAlign: "center",
       renderCell: (cellValues) => {
         console.log("Start::", cellValues.row.leadSource);
@@ -765,15 +762,14 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "language",
       headerName: "Lang",
       headerAlign: "center",
-      minWidth: 25,
+      minWidth: 30,
       flex: 1,
     },
-
     {
       field: "edit",
-      headerName: "Edit",
+      headerName: "Action",
       flex: 1,
-      width: "100%",
+      minWidth: 100,
       sortable: false,
       filterable: false,
       headerAlign: "center",
@@ -794,9 +790,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               }`}
               onClick={() => HandleReminderBtn(cellValues)}
             >
-              <IconButton sx={{ padding: 0 }}>
-                <BsAlarm size={19} />
-              </IconButton>
+              <Tooltip title="Set Reminder" arrow>
+                <IconButton sx={{ padding: 0 }}>
+                  <BsAlarm size={16} />
+                </IconButton>
+
+              </Tooltip>
             </p>
             <p
               style={{ cursor: "pointer" }}
@@ -807,9 +806,11 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               }`}
               onClick={() => HandleEditFunc(cellValues)}
             >
-              <IconButton sx={{ padding: 0 }}>
-                <AiOutlineEdit size={20} />
-              </IconButton>
+              <Tooltip title="Edit Lead Details" arrow>
+                <IconButton sx={{ padding: 0 }}>
+                  <AiOutlineEdit size={16} />
+                </IconButton>
+              </Tooltip>
             </p>
 
             {cellValues.row.leadId !== null && (
@@ -822,12 +823,14 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       : "bg-transparent rounded-md shadow-none"
                   }`}
                 >
-                  <IconButton
-                    sx={{ padding: 0 }}
-                    color={currentMode === "dark" ? "black" : "white"}
-                  >
-                    <AiOutlineHistory size={20} style={{ color: "inherit" }} />
-                  </IconButton>
+                  <Tooltip title="View Timeline" arrow>
+                    <IconButton
+                      sx={{ padding: 0 }}
+                      color={currentMode === "dark" ? "black" : "white"}
+                    >
+                      <AiOutlineHistory size={16} style={{ color: "inherit" }} />
+                    </IconButton>
+                  </Tooltip>
                 </Link>
               </p>
             )}
@@ -845,16 +848,18 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   : "bg-transparent rounded-md shadow-none"
               }`}
             >
-              <IconButton
-                sx={{ padding: 0 }}
-                color={currentMode === "dark" ? "black" : "white"}
-              >
-                <BsTrash
-                  className="deleteLeadBtn"
-                  size={18}
-                  style={{ color: "inherit" }}
-                />
-              </IconButton>
+              <Tooltip title="Delete Lead" arrow>
+                <IconButton
+                  sx={{ padding: 0 }}
+                  color={currentMode === "dark" ? "black" : "white"}
+                >
+                  <BsTrash
+                    className="deleteLeadBtn"
+                    size={16}
+                    style={{ color: "inherit" }}
+                  />
+                </IconButton>
+              </Tooltip>
             </p>
           </div>
         );
@@ -1462,10 +1467,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     setDeleteModelOpen(true);
   };
 
-  const handleCloseBulkImportModel = () => {
-    setBulkImportModelOpen(false);
-    bulkImportRef.current.value = "";
-  };
+  // const handleCloseBulkImportModel = () => {
+  //   setBulkImportModelOpen(false);
+  //   bulkImportRef.current.value = "";
+  // };
 
   const handleBulkImport = (event) => {
     const file = event.target.files[0];
@@ -2165,14 +2170,14 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             />
           )}
 
-          {bulkImportModelOpen && (
+          {/* {bulkImportModelOpen && (
             <BulkImport
               bulkImportModelOpen={bulkImportModelOpen}
               handleCloseBulkImportModel={handleCloseBulkImportModel}
               FetchLeads={FetchLeads}
               CSVData={CSVData}
             />
-          )}
+          )} */}
         </Box>
       </div>
     </>

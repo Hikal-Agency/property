@@ -221,7 +221,7 @@ const RolesComponent = ({
                     </div>
                     {value === 0 && (
                       <>
-                        <div className="col-span-6">
+                        <div className="col-span-6 max-h-[60vh] overflow-y-auto ">
                           <div className="grid grid-cols-3 gap-x-3">
                             {!dataLoading ? (
                               permissions?.length > 0 ? (

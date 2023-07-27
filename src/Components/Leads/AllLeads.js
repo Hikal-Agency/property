@@ -276,7 +276,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 90,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
     },
@@ -529,7 +529,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 90,
+      minWidth: 100,
       flex: 1,
       headerAlign: "center",
     },
@@ -792,7 +792,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 90,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
@@ -1198,7 +1198,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 90,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
     },

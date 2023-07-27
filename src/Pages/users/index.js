@@ -317,10 +317,12 @@ const Users = () => {
       minwidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
-        return <div className="flex items-center justify-center">
-          {cellValues?.formattedValue} AED
-        </div>
-      }
+        return (
+          <div className="flex items-center justify-center">
+            {cellValues?.formattedValue} AED
+          </div>
+        );
+      },
     },
     {
       field: "is_trainer",
@@ -438,9 +440,9 @@ const Users = () => {
                     }`}
                   >
                     {currentMode === "dark" ? (
-                      <FaBan style={{ color: "white" }} />
+                      <FaBan style={{ color: "white" }} size={18} />
                     ) : (
-                      <FaBan style={{ color: "black" }} />
+                      <FaBan style={{ color: "black" }} size={18} />
                     )}
                   </Button>
                 ) : (
@@ -459,9 +461,9 @@ const Users = () => {
                     }`}
                   >
                     {currentMode === "dark" ? (
-                      <FaUnlock style={{ color: "white" }} />
+                      <FaUnlock style={{ color: "white" }} size={18} />
                     ) : (
-                      <FaUnlock style={{ color: "black" }} />
+                      <FaUnlock style={{ color: "black" }} size={18} />
                     )}
                   </Button>
                 )}
@@ -497,7 +499,10 @@ const Users = () => {
                     : "text-black bg-transparent rounded-md p-1 shadow-none "
                 }`}
               >
-                <BsPersonFillLock style={{ color: "white" }} size={20} />
+                <BsPersonFillLock
+                  style={{ color: currentMode === "dark" ? "white" : "black" }}
+                  size={20}
+                />
               </Button>
             ) : null}
           </div>
