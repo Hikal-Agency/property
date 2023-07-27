@@ -766,42 +766,6 @@ const Users = () => {
                     fetchUser={fetchUsers}
                   />
                 )}
-                {/* <Box width={"100%"} sx={DataGridStyles}>
-                  <DataGrid
-                    autoHeight
-                    disableSelectionOnClick
-                    rows={pageState.data}
-                    columns={columns}
-                    rowCount={pageState.total}
-                    loading={pageState.isLoading}
-                    rowsPerPageOptions={[30, 50, 75, 100]}
-                    pagination
-                    width="auto"
-                    paginationMode="server"
-                    page={pageState.page - 1}
-                    pageSize={pageState.pageSize}
-                    onPageChange={(newPage) => {
-                      setpageState((old) => ({ ...old, page: newPage + 1 }));
-                    }}
-                    onPageSizeChange={(newPageSize) =>
-                      setpageState((old) => ({
-                        ...old,
-                        pageSize: newPageSize,
-                      }))
-                    }
-                    sx={{
-                      boxShadow: 2,
-                      "& .MuiDataGrid-cell:hover": {
-                        cursor: "pointer",
-                      },
-                    }}
-                    getRowClassName={(params) =>
-                      params.indexRelativeToCurrentPage % 2 === 0
-                        ? "even"
-                        : "odd"
-                    }
-                  />
-                </Box> */}
               </div>
             </div>
           </div>
