@@ -67,6 +67,7 @@ import AttendanceLogin from "./auth/attendanceLogin";
 import Search from "./search/Search";
 import Restricted from "./Restricted";
 import Role from "./roles";
+import usePermission from "../utils/usePermission";
 
 const libraries = ["places"];
 
@@ -81,21 +82,21 @@ const routes = [
     element: <RegisterAttendance />,
     pageName: "Register Attendance",
   },
-  {
-    path: "/fresh-logs",
-    element: <TodayCallLogs />,
-    pageName: "Fresh CallLogs",
-  },
-  {
-    path: "/attendanceLogin",
-    element: <AttendanceLogin />,
-    pageName: "Attendance Login",
-  },
-  {
-    path: "/",
-    element: <Home />,
-    pageName: "Home",
-  },
+  // {
+  //   path: "/fresh-logs",
+  //   element: <TodayCallLogs />,
+  //   pageName: "Fresh CallLogs",
+  // },
+  // {
+  //   path: "/attendanceLogin",
+  //   element: <AttendanceLogin />,
+  //   pageName: "Attendance Login",
+  // },
+  // {
+  //   path: "/",
+  //   element: <Home />,
+  //   pageName: "Home",
+  // },
   // {
   //   path: "/auth/signup",
   //   pageName: "Sign Up",
@@ -111,11 +112,6 @@ const routes = [
     path: "/change-password",
     element: <ChangePassword />,
     pageName: "Change Password",
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
-    pageName: "Dashboard",
   },
   {
     path: "/addlead",
@@ -394,9 +390,9 @@ const routes = [
 export const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-  const { setAllRoutes, currentMode, User } = useStateContext();
+  const { setAllRoutes, currentMode } = useStateContext();
   const location = useLocation();
-  const navigate = useNavigate();
+  const {hasPermission} = usePermission();
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -433,11 +429,6 @@ function App() {
           background: currentMode === "dark" ? "#000000" : "#ffffff",
         }}
       >
-        {/* {appLoading && hasSidebarOrNavbar() &&
-      <div style={{width: "100vw", height: "100vh", zIndex: 10000, position: "fixed", top: 0, left: 0}}>
-        <Loader/>
-      </div>
-        } */}
         <div className="flex" style={{ width: "99vw" }}>
           {hasSidebarOrNavbar() && <Sidebarmui />}
           <div
@@ -451,15 +442,17 @@ function App() {
               </div>
             )}
             <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/attendanceLogin" element={<AttendanceLogin />} />
+              <Route path="/fresh-logs" element={<TodayCallLogs />} />
+              <Route path="/dashboard" element={<Dashboard/>}/>
               {routes.map((route, index) => {
-                const isRestricted = route?.restrictedRoles?.includes(
-                  User?.role
-                );
+                
                 return (
                   <Route
                     key={index}
                     path={route.path}
-                    element={isRestricted ? <Restricted /> : route.element}
+                    element={hasPermission(route?.path) ? route.element : <Restricted />}
                   />
                 );
               })}

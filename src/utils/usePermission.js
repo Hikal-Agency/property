@@ -1,9 +1,19 @@
 import { useStateContext } from "../context/ContextProvider";
 
 const usePermission = () => {
-  const { permissions } = useStateContext();
+  const { User } = useStateContext();
 
-  return { hasPermission: (key) => permissions?.includes(key?.toLowerCase()) };
+  return {
+    hasPermission: (key) => {
+      const userPermissions = User?.permissions
+        ?.split(",")
+        ?.map((p) => `/${p}`.replaceAll(" ", "").trim());
+      const isPermitted = userPermissions?.some((permission) =>
+        key?.includes(permission)
+      );
+      return isPermitted;
+    },
+  };
 };
 
 export default usePermission;
