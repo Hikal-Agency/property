@@ -1,14 +1,5 @@
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
 const PermissionsCheckbox = ({
   permission,
@@ -17,21 +8,38 @@ const PermissionsCheckbox = ({
   setSelectedPermission,
   handleCheckboxChange,
 }) => {
-  console.log("roles checkbox", permission, defaultRole);
-  const [checked, setchecked] = useState(true);
-
-  const handleClick = (e) => {
-    const permissionId = e.target.value;
-    const checked = e.target.checked;
-    setchecked(checked);
-    console.log("permissionID, checked:::: ", permissionId, checked);
-    handleCheckboxChange(permissionId, checked);
-  };
+  const [checked, setChecked] = useState(true);
 
   useEffect(() => {
     // When the component mounts, add the permission ID to the selectedPermission array
     setSelectedPermission((prevSelected) => [...prevSelected, permission.id]);
+    setChecked(true);
+    console.log("useeffect:::::::");
   }, []);
+
+  const handleClick = (e) => {
+    const permissionId = e.target.value;
+    const checked = e.target.checked;
+    console.log("checked:   ", checked);
+    setChecked(checked);
+
+    setSelectedPermission((prevPermissionData) => {
+      if (!checked) {
+        // If checked, add the permissionId to the array
+
+        return prevPermissionData.filter(
+          (id) => Number(id) !== Number(permissionId)
+        );
+      } else {
+        // If unchecked, remove the permissionId from the array
+        return [...prevPermissionData, permissionId];
+      }
+    });
+
+    console.log();
+  };
+
+  console.log("updated permisssion: ", selectedPermission);
 
   return (
     <div className="w-[30%]">

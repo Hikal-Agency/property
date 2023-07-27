@@ -32,6 +32,7 @@ const UpdateUserPermissions = ({
 }) => {
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false);
   const [UserRole, setUserRole] = useState([]);
   const { BACKEND_URL, currentMode } = useStateContext();
   const navigate = useNavigate();
@@ -56,18 +57,18 @@ const UpdateUserPermissions = ({
       )
       .then((result) => {
         console.log("result", result);
-        if (result.data.success) {
-          toast.success("Role Updated Successfully", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
+
+        toast.success("Role Updated Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
         setloading(false);
         handleUserModelClose();
       })
@@ -87,7 +88,7 @@ const UpdateUserPermissions = ({
   };
 
   const fetchRoles = async () => {
-    setloading(true);
+    setDataLoading(true);
     await axios
       .get(`${BACKEND_URL}/roles`, {
         headers: {
@@ -100,9 +101,11 @@ const UpdateUserPermissions = ({
 
         setUserRole(result?.data?.role?.data);
 
-        setloading(false);
+        setDataLoading(false);
       })
       .catch((err) => {
+        setDataLoading(false);
+
         console.log("roles err: ", err);
         toast.error("Unable to fetch roles.", {
           position: "top-right",
@@ -114,7 +117,6 @@ const UpdateUserPermissions = ({
           progress: undefined,
           theme: "light",
         });
-        setloading(false);
       });
   };
 
@@ -158,18 +160,24 @@ const UpdateUserPermissions = ({
                   }}
                 >
                   <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md">
-                    {UserRole?.length > 0
-                      ? UserRole?.map((role) => (
-                          <div className="col-span-2">
-                            <RolesCheckbox
-                              role={role}
-                              defaultRole={UserData}
-                              formData={formdata}
-                              setFormData={setformdata}
-                            />
-                          </div>
-                        ))
-                      : "No Roles"}
+                    {dataLoading ? (
+                      <div className="w-full flex justify-center items-center">
+                        <CircularProgress />
+                      </div>
+                    ) : UserRole?.length > 0 ? (
+                      UserRole?.map((role) => (
+                        <div className="col-span-2">
+                          <RolesCheckbox
+                            role={role}
+                            defaultRole={UserData}
+                            formData={formdata}
+                            setFormData={setformdata}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      "No Roles"
+                    )}
                   </div>
 
                   <div>

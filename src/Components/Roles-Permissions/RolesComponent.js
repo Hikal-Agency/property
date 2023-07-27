@@ -76,7 +76,8 @@ const RolesComponent = ({
     const AddData = new FormData();
     if (value === 0) {
       AddData.append("role", formdata?.data);
-      AddData.append("permission_id", selectedPermission);
+
+      AddData.append("permissions", selectedPermission);
     } else {
       AddData.append("permission", formdata?.data);
     }
@@ -128,6 +129,8 @@ const RolesComponent = ({
   };
 
   const fetchPermissions = async () => {
+    setDataLoading(true);
+
     try {
       const permissions = await axios.get(`${BACKEND_URL}/permissions`, {
         headers: {
@@ -135,7 +138,6 @@ const RolesComponent = ({
           Authorization: "Bearer " + token,
         },
       });
-      setDataLoading(true);
 
       setPermissions(permissions?.data?.permission?.data);
 
@@ -159,7 +161,9 @@ const RolesComponent = ({
 
   console.log("User Model: ");
   useEffect(() => {
-    fetchPermissions();
+    if (value === 0) {
+      fetchPermissions();
+    }
   }, []);
   return (
     <Modal
@@ -219,18 +223,26 @@ const RolesComponent = ({
                       <>
                         <div className="col-span-6">
                           <div className="grid grid-cols-3 gap-x-3">
-                            {!dataLoading && permissions?.length > 0 ? (
-                              permissions.map((permission) => (
-                                <PermissionsCheckbox
-                                  key={permission?.id}
-                                  permission={permission}
-                                  selectedPermission={selectedPermission}
-                                  setSelectedPermission={setSelectedPermission}
-                                  handleCheckboxChange={handleCheckboxChange}
-                                />
-                              ))
+                            {!dataLoading ? (
+                              permissions?.length > 0 ? (
+                                permissions?.map((permission) => (
+                                  <PermissionsCheckbox
+                                    key={permission?.id}
+                                    permission={permission}
+                                    selectedPermission={selectedPermission}
+                                    setSelectedPermission={
+                                      setSelectedPermission
+                                    }
+                                    handleCheckboxChange={handleCheckboxChange}
+                                  />
+                                ))
+                              ) : (
+                                <p>No permissions found.</p>
+                              )
                             ) : (
-                              <p>No permissions found.</p>
+                              <div className="flex justify-center w-full my-3">
+                                <CircularProgress />{" "}
+                              </div>
                             )}
                           </div>
                         </div>
