@@ -8,12 +8,19 @@ import MyCalendar from "./MyCalendar";
 import { Box } from "@mui/system";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
+import moment from "moment";
 
 const OfficeSettings = () => {
   const { currentMode, formatNum, BACKEND_URL } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
-  const [settings, setSettings] = useState();
+  const [settings, setSettings] = useState({
+    in_time: null,
+    out_time: null,
+    in_late_time: null,
+    out_late_time: null,
+    off_day: null,
+  });
   const [btnLoading, setBtnLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -25,6 +32,104 @@ const OfficeSettings = () => {
 
   const handleEditClick = () => {
     setIsEditing(true);
+  };
+
+  const handleUpdateClick = async () => {
+    setBtnLoading(true);
+
+    if (!settings) {
+      toast.error("kindly enter data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    const formData = new FormData();
+    // formData.append("in_time", settings?.in_time);
+    // formData.append("out_time", settings?.out_time);
+    // formData.append("out_late_time", settings?.out_late_time);
+    // formData.append("in_late_time", settings?.in_late_time);
+    // formData.append("off_day", settings?.off_day);
+
+    // Convert and append in_time in 12-hour format with AM/PM
+    formData.append(
+      "in_time",
+      settings?.in_time
+        ? moment(settings.in_time, "HH:mm").format("hh:mm A")
+        : ""
+    );
+
+    formData.append(
+      "out_time",
+      settings?.out_time
+        ? moment(settings.out_time, "HH:mm").format("hh:mm A")
+        : ""
+    );
+
+    formData.append(
+      "out_late_time",
+      settings?.out_late_time
+        ? moment(settings.out_late_time, "HH:mm").format("hh:mm A")
+        : ""
+    );
+
+    formData.append(
+      "in_late_time",
+      settings?.in_late_time
+        ? moment(settings.in_late_time, "HH:mm").format("hh:mm A")
+        : ""
+    );
+
+    formData.append("off_day", settings?.off_day);
+    try {
+      const update_timings = await axios.post(
+        `${BACKEND_URL}/agencies/1`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      setBtnLoading(false);
+
+      toast.success("Time updated successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      fetchSettings();
+
+      console.log("Response: ", update_timings);
+    } catch (error) {
+      setBtnLoading(false);
+      toast.error("Unable to update time.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    setIsEditing(false);
   };
 
   const fetchSettings = async () => {
@@ -47,51 +152,6 @@ const OfficeSettings = () => {
       console.log("Response: ", get_settings);
     } catch (error) {
       toast.error("Unable to fetch settings.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-
-    setIsEditing(false);
-  };
-
-  const handleUpdateClick = async () => {
-    setBtnLoading(true);
-    try {
-      const update_timings = await axios.post(
-        `${BACKEND_URL}/updateuser`,
-
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      setBtnLoading(false);
-
-      toast.success("Time updated successfully.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      console.log("Response: ", update_timings);
-    } catch (error) {
-      setBtnLoading(false);
-      toast.error("Unable to update time.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -141,9 +201,7 @@ const OfficeSettings = () => {
                 <div className="flex justify-between mb-3">
                   <p
                     className={`${
-                      currentMode === "dark"
-                        ? "text-white-600"
-                        : "text-black-600"
+                      currentMode === "dark" ? "text-white" : "text-center"
                     }`}
                   >
                     Start Time
@@ -152,35 +210,83 @@ const OfficeSettings = () => {
                     <input
                       type="time"
                       style={{ padding: "0 6px" }}
-                      defaultValue="09:30"
-                      set
+                      value={settings?.in_time || ""}
+                      onChange={(e) => {
+                        console.log("clicked");
+                        setSettings({
+                          ...settings,
+                          in_time: e.target.value,
+                        });
+                      }}
                     />
                   ) : (
-                    <p>{settings?.in_time}</p>
+                    <p
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-center"
+                      }`}
+                    >
+                      {settings?.in_time}
+                    </p>
                   )}
                 </div>
                 <div className="flex justify-between mb-3">
-                  <p>End Time</p>
+                  <p
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-center"
+                    }`}
+                  >
+                    End Time
+                  </p>
                   {isEditing ? (
                     <input
                       type="time"
                       style={{ padding: "0 6px" }}
-                      defaultValue="06:30"
+                      value={settings?.out_time}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          out_time: e.target.value,
+                        })
+                      }
                     />
                   ) : (
-                    <p>{settings?.out_time}</p>
+                    <p
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-center"
+                      }`}
+                    >
+                      {settings?.out_time}
+                    </p>
                   )}
                 </div>
                 <div className="flex justify-between mb-3">
-                  <p>Off Day</p>
+                  <p
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-center"
+                    }`}
+                  >
+                    Off Day
+                  </p>
                   {isEditing ? (
                     <input
                       type="text"
                       style={{ padding: "0 6px" }}
-                      defaultValue="Sunday"
+                      value={settings?.off_day}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          off_day: e.target.value,
+                        })
+                      }
                     />
                   ) : (
-                    <p>{settings?.off_day}</p>
+                    <p
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-center"
+                      }`}
+                    >
+                      {settings?.off_day}
+                    </p>
                   )}
                 </div>
               </div>
@@ -192,27 +298,63 @@ const OfficeSettings = () => {
                 } p-4 shadow-md rounded-md`}
               >
                 <div className="flex justify-between mb-3">
-                  <p>Maximum Late Time</p>
+                  <p
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-center"
+                    }`}
+                  >
+                    Maximum Late Time
+                  </p>
                   {isEditing ? (
                     <input
                       type="time"
                       style={{ padding: "0 6px" }}
-                      defaultValue="10:45"
+                      value={settings?.in_late_time}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          in_late_time: e.target.value,
+                        })
+                      }
                     />
                   ) : (
-                    <p>{settings?.in_late_time}</p>
+                    <p
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-center"
+                      }`}
+                    >
+                      {settings?.in_late_time}
+                    </p>
                   )}
                 </div>
                 <div className="flex justify-between mb-3">
-                  <p>Overtime After</p>
+                  <p
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-center"
+                    }`}
+                  >
+                    Overtime After
+                  </p>
                   {isEditing ? (
                     <input
                       type="time"
                       style={{ padding: "0 6px" }}
-                      defaultValue="08:00"
+                      value={settings?.out_late_time}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          out_late_time: e.target.value,
+                        })
+                      }
                     />
                   ) : (
-                    <p>{settings?.out_late_time}</p>
+                    <p
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-center"
+                      }`}
+                    >
+                      {settings?.out_late_time}
+                    </p>
                   )}
                 </div>
               </div>
