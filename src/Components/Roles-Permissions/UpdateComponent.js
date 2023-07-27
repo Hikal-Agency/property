@@ -59,25 +59,41 @@ const UpdateComponent = ({
       return;
     }
 
-    const formdata = new FormData();
-    formdata.append("user_id", User?.id);
-    if (value === 0) {
-      formdata.append("role", data);
-    } else {
-      formdata.append("permission", data);
-    }
+    // const formdata = new FormData();
+    // formdata.append("user_id", User?.id);
+    // if (value === 0) {
+    //   formdata.append("role", data);
+    // } else {
+    //   formdata.append("permission", data);
+    // }
 
-    await axios
-      .post(
-        `${BACKEND_URL}/${value === 0 ? "roles" : "permissions"}/${UserData}`,
-        formdata,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
+    const formdata = {};
+    if (value === 0) {
+      formdata["role"] = data;
+
+      formdata["permission_ids"] = selectedPermission;
+    } else {
+      formdata["permission"] = data;
+    }
+    formdata["user_id"] = User?.id;
+    formdata["status"] = 1;
+
+    const method = value === 0 ? "put" : "post";
+
+    await axios[method](
+      `${BACKEND_URL}/${
+        value === 0
+          ? `roles/${UserData}/permissions/bulk`
+          : `permissions/${UserData}`
+      }`,
+      formdata,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
       .then((result) => {
         console.log("result", result);
         if (result.data.status === true) {
