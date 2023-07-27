@@ -73,21 +73,21 @@ const RolesComponent = ({
 
     setloading(true);
 
-    const AddData = new FormData();
+    const AddData = {};
     if (value === 0) {
-      AddData.append("role", formdata?.data);
+      AddData["role"] = formdata?.data;
 
-      AddData.append("permissions", selectedPermission);
+      AddData["permissions"] = selectedPermission;
     } else {
-      AddData.append("permission", formdata?.data);
+      AddData["permission"] = formdata?.data;
     }
-    AddData.append("user_id", User?.id);
-    AddData.append("status", 1);
+    AddData["user_id"] = User?.id;
+    AddData["status"] = 1;
 
     await axios
       .post(
         `${BACKEND_URL}/${value === 0 ? "roles" : "permissions"}`,
-        AddData,
+        JSON.stringify(AddData),
         {
           headers: {
             "Content-Type": "application/json",
