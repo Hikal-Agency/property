@@ -57,6 +57,7 @@ import { FaTwitter } from "react-icons/fa";
 import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
 import BlockIPModal from "./BlockIPModal";
+import Timeline from "../../Pages/timeline";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -155,6 +156,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
   const [AddReminderModelOpen, setAddReminderModelOpen] = useState(false);
+  const [timelineModelOpen, setTimelineModelOpen] = useState(false);
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
   const handleUpdateLeadModelClose = () => {
     setLeadModelOpen(false);
@@ -245,9 +247,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
-        return (
-          <strong>{cellValues?.formattedValue}</strong>
-        );
+        return <strong>{cellValues?.formattedValue}</strong>;
       },
     },
 
@@ -469,20 +469,22 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 </Tooltip>
               </p>
             )}
-
             {cellValues.row.leadId !== null && (
-              <Link
-                to={`/timeline/${cellValues.row.leadId}`}
-                className={`editLeadBtn ${
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
                   currentMode === "dark"
-                    ? "text-white bg-transparent rounded-md shadow-none "
-                    : "text-black bg-transparent rounded-md shadow-none "
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
                 }`}
+                onClick={() => HandleViewTimeline(cellValues)}
               >
                 <Tooltip title="View Timeline" arrow>
-                  <AiOutlineHistory size={16} />
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
+                  </IconButton>
                 </Tooltip>
-              </Link>
+              </p>
             )}
           </div>
         );
@@ -499,9 +501,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
-        return (
-          <strong>{cellValues?.formattedValue}</strong>
-        );
+        return <strong>{cellValues?.formattedValue}</strong>;
       },
     },
     {
@@ -705,8 +705,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               </Tooltip>
             </p>
             <p
-              onMouseEnter={() => setHovered("edit")}
-              onMouseLeave={() => setHovered("")}
               style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
@@ -723,24 +721,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             </p>
 
             {cellValues.row.leadId !== null && (
-              <p>
-                <Link
-                  to={`/timeline/${cellValues.row.leadId}`}
-                  className={`editLeadBtn cursor-pointer ${
-                    currentMode === "dark"
-                      ? "bg-transparent rounded-md shadow-none"
-                      : "bg-transparent rounded-md shadow-none"
-                  }`}
-                >
-                  <Tooltip title="View Timeline" arrow>
-                    <IconButton
-                      sx={{ padding: 0 }}
-                      color={currentMode === "dark" ? "black" : "white"}
-                    >
-                      <AiOutlineHistory size={16} style={{ color: "inherit" }} />
-                    </IconButton>
-                  </Tooltip>
-                </Link>
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
+                }`}
+                onClick={() => HandleViewTimeline(cellValues)}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
+                  </IconButton>
+                </Tooltip>
               </p>
             )}
           </div>
@@ -1030,7 +1024,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 30,
       flex: 1,
     },
-    
+
     {
       field: "creationDate",
       headerName:
@@ -1103,26 +1097,21 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 </IconButton>
               </Tooltip>
             </p>
-
-            {cellValues.row.leadId !== null && (
-              <p>
-                <Link
-                  to={`/timeline/${cellValues.row.leadId}`}
-                  className={`editLeadBtn cursor-pointer ${
-                    currentMode === "dark"
-                      ? "bg-transparent rounded-md shadow-none"
-                      : "bg-transparent rounded-md shadow-none"
-                  }`}
-                >
-                  <Tooltip title="View Timeline" arrow>
-                    <IconButton
-                      sx={{ padding: 0 }}
-                      color={currentMode === "dark" ? "black" : "white"}
-                    >
-                      <AiOutlineHistory size={16} style={{ color: "inherit" }} />
-                    </IconButton>
-                  </Tooltip>
-                </Link>
+ {cellValues.row.leadId !== null && (
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
+                }`}
+                onClick={() => HandleViewTimeline(cellValues)}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
+                  </IconButton>
+                </Tooltip>
               </p>
             )}
 
@@ -1167,9 +1156,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
-        return (
-          <strong>{cellValues?.formattedValue}</strong>
-        );
+        return <strong>{cellValues?.formattedValue}</strong>;
       },
     },
 
@@ -1215,7 +1202,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           //   <p
           //     className="text-center capitalize"
           //     style={{
-                // fontFamily: isArabic(cellValues?.formattedValue)
+          // fontFamily: isArabic(cellValues?.formattedValue)
           //         ? "Noto Kufi Arabic"
           //         : "inherit",
           //     }}
@@ -1275,9 +1262,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       flex: 1,
 
       hideable: false,
-      renderCell: (cellValues) => (
-        <RenderFeedback cellValues={cellValues} />
-      ),
+      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
 
     {
@@ -1287,9 +1272,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => (
-        <RenderPriority cellValues={cellValues} />
-      ),
+      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
 
     {
@@ -1425,7 +1408,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 30,
       flex: 1,
     },
-    
+
     {
       field: "creationDate",
       headerName:
@@ -1467,8 +1450,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
           >
             <p
-              onMouseEnter={() => setHovered("edit")}
-              onMouseLeave={() => setHovered("")}
               style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
@@ -1479,7 +1460,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             >
               <Tooltip title="Set Reminder" arrow>
                 <IconButton sx={{ padding: 0 }}>
-                  <BsAlarm size={16}  />
+                  <BsAlarm size={16} />
                 </IconButton>
               </Tooltip>
             </p>
@@ -1500,24 +1481,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             </p>
 
             {cellValues.row.leadId !== null && (
-              <p>
-                <Link
-                  to={`/timeline/${cellValues.row.leadId}`}
-                  className={`editLeadBtn cursor-pointer ${
-                    currentMode === "dark"
-                      ? "bg-transparent rounded-md shadow-none"
-                      : "bg-transparent rounded-md shadow-none"
-                  }`}
-                >
-                  <Tooltip title="View Timeline" arrow>
-                    <IconButton
-                      sx={{ padding: 0 }}
-                      color={currentMode === "dark" ? "black" : "white"}
-                    >
-                      <AiOutlineHistory size={16} style={{ color: "inherit" }} />
-                    </IconButton>
-                  </Tooltip>
-                </Link>
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
+                }`}
+                onClick={() => HandleViewTimeline(cellValues)}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
+                  </IconButton>
+                </Tooltip>
               </p>
             )}
 
@@ -1774,8 +1751,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Unreachable`;
       }
-    } 
-    
+    }
+
     // LEADS URL GENERATON FOR RESHUFFLED LEADS PAGE
     else if (lead_origin === "transfferedleads") {
       if (lead_type === "all") {
@@ -1823,8 +1800,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           pageState.perpage || 14
         }&coldCall=0&feedback=Unreachable&leadStatus=Transferred`;
       }
-    } 
-    
+    }
+
     // LEADS URL GENERATON FOR UNASSIGNED LEADS PAGE
     else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
@@ -2245,13 +2222,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     // setUpdateLeadModelOpen(true);
   };
   // EDIT BTN CLICK FUNC
-  const HandleEditFunc = async (params) => {
+  const HandleEditFunc = (params) => {
     console.log("LEADID: ", params);
     setsingleLeadData(params.row);
     handleUpdateLeadModelOpen();
-    // setUpdateLeadModelOpen(true);
   };
-  // Delete Lead
+
+  const HandleViewTimeline = (params) => {
+    setsingleLeadData(params.row);
+    setTimelineModelOpen(true);
+  };
 
   const handleBulkDelete = async () => {
     try {
@@ -2770,6 +2750,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               handleLeadModelClose={handleLeadModelClose}
               LeadData={singleLeadData}
               BACKEND_URL={BACKEND_URL}
+            />
+          )}
+          
+          {timelineModelOpen && (
+            <Timeline
+              timelineModelOpen={timelineModelOpen}
+              handleCloseTimelineModel={() => setTimelineModelOpen(false)}
+              LeadData={singleLeadData}
             />
           )}
 

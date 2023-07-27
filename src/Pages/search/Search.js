@@ -54,6 +54,7 @@ import BulkImport from "../../Components/Leads/BulkImport";
 import { langs } from "../../langCodes";
 import AddReminder from "../../Components/reminder/AddReminder";
 import RenderPriority from "../../Components/Leads/RenderPriority";
+import Timeline from "../timeline";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -174,6 +175,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [managers, setManagers] = useState(Managers || []);
   const [agents, setAgents] = useState(SalesPerson || {});
   const [searchText, setSearchText] = useState("");
+  const [timelineModelOpen, setTimelineModelOpen] = useState(false);
   const searchRef = useRef();
   const selectionModelRef = useRef([]);
   const [hovered, setHovered] = useState("");
@@ -211,6 +213,11 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const handleAdReminderModalClose = () => {
     setLeadModelOpen(false);
     setAddReminderModelOpen(false);
+  };
+
+  const HandleViewTimeline = (params) => {
+    setsingleLeadData(params.row);
+    setTimelineModelOpen(true);
   };
 
   const CustomColorSwitch = styled(() => ({
@@ -503,27 +510,22 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </p>
             )}
 
-            {/* <p
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </p> */}
-            {cellValues.row.leadId !== null && (
-              <Link
-                to={`/timeline/${cellValues.row.leadId}`}
-                className={`editLeadBtn ${
+             {cellValues.row.leadId !== null && (
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
                   currentMode === "dark"
-                    ? "text-white bg-transparent rounded-md shadow-none "
-                    : "text-black bg-transparent rounded-md shadow-none "
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
                 }`}
+                onClick={() => HandleViewTimeline(cellValues)}
               >
-                <AiOutlineHistory size={20} />
-              </Link>
+                <Tooltip title="View Timeline" arrow>
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
+                  </IconButton>
+                </Tooltip>
+              </p>
             )}
           </div>
         );
@@ -814,26 +816,22 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             </p>
 
             {cellValues.row.leadId !== null && (
-              <p>
-                <Link
-                  to={`/timeline/${cellValues.row.leadId}`}
-                  className={`editLeadBtn cursor-pointer ${
-                    currentMode === "dark"
-                      ? "bg-transparent rounded-md shadow-none"
-                      : "bg-transparent rounded-md shadow-none"
-                  }`}
-                >
-                  <Tooltip title="View Timeline" arrow>
-                    <IconButton
-                      sx={{ padding: 0 }}
-                      color={currentMode === "dark" ? "black" : "white"}
-                    >
-                      <AiOutlineHistory size={16} style={{ color: "inherit" }} />
-                    </IconButton>
-                  </Tooltip>
-                </Link>
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
+                }`}
+                onClick={() => HandleViewTimeline(cellValues)}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
+                  </IconButton>
+                </Tooltip>
               </p>
-            )}
+            )} 
 
             <p
               onClick={() => {
@@ -2154,6 +2152,15 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               LeadData={singleLeadData}
               BACKEND_URL={BACKEND_URL}
               FetchLeads={FetchLeads}
+            />
+          )}
+
+               
+          {timelineModelOpen && (
+            <Timeline
+              timelineModelOpen={timelineModelOpen}
+              handleCloseTimelineModel={() => setTimelineModelOpen(false)}
+              LeadData={singleLeadData}
             />
           )}
 

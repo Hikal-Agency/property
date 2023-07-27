@@ -1,6 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import Navbar from "../../Components/Navbar/Navbar";
-import { Box, Button as MuiButton } from "@mui/material";
+import { Box, IconButton, Button as MuiButton, Tooltip } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -83,11 +83,17 @@ const ClientLeads = ({
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
   const [bulkDeleteClicked, setBulkDeleteClicked] = useState(false);
   const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
+  const [timelineModelOpen, setTimelineModelOpen] = useState(false);
   const [CSVData, setCSVData] = useState({
     keys: [],
     rows: [],
   });
   const [client, setClient] = useState({});
+
+    const HandleViewTimeline = (params) => {
+    setsingleLeadData(params.row);
+    setTimelineModelOpen(true);
+  };
 
   const FetchClient = async (token) => {
     try {
@@ -353,16 +359,23 @@ const ClientLeads = ({
               <AiOutlineHistory size={20} />
             </Link> */}
 
-            <p
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </p>
+              {cellValues.row.leadId !== null && (
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
+                }`}
+                onClick={() => HandleViewTimeline(cellValues)}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
+                  </IconButton>
+                </Tooltip>
+              </p>
+            )} 
           </div>
         );
       },
@@ -532,21 +545,23 @@ const ClientLeads = ({
             >
               <AiOutlineHistory size={20} />
             </Button> */}
-            <Link
-              to={`/timeline/${cellValues.row.lid}`}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineHistory
-                size={20}
+                {cellValues.row.leadId !== null && (
+              <p
+                style={{ cursor: "pointer" }}
                 className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
+                  currentMode === "dark"
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
                 }`}
-              />
-            </Link>
+                onClick={() => HandleViewTimeline(cellValues)}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
+                  </IconButton>
+                </Tooltip>
+              </p>
+            )}
             {/* <Button
               onClick={() => {
                 setLeadToDelete(cellValues?.row.lid);
@@ -842,21 +857,23 @@ const ClientLeads = ({
             >
               <AiOutlineHistory size={20} />
             </Button> */}
-            <Link
-              to={`/timeline/${cellValues.row.lid}`}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineHistory
-                size={20}
+               {cellValues.row.leadId !== null && (
+              <p
+                style={{ cursor: "pointer" }}
                 className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
+                  currentMode === "dark"
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
                 }`}
-              />
-            </Link>
+                onClick={() => HandleViewTimeline(cellValues)}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <IconButton sx={{ padding: 0 }}>
+                    <AiOutlineHistory size={16} />
+                  </IconButton>
+                </Tooltip>
+              </p>
+            )}
             {/* <Button
               onClick={() => {
                 setLeadToDelete(cellValues?.row.lid);

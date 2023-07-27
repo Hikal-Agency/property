@@ -192,8 +192,6 @@ const SingleLead = ({
   return (
     <>
       
-      {console.log("lead data is")}
-      {console.log(LeadData)}
       <Modal
         keepMounted
         open={LeadModelOpen}
