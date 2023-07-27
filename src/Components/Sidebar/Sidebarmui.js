@@ -915,7 +915,9 @@ const Sidebarmui = () => {
 
   useEffect(() => {
     setLinksData([...links]);
+  }, [sidebarData]);
 
+  useEffect(() => {
     if (isUserSubscribed !== null && isUserSubscribed === true) {
       setLinksData([
         ...linksData,

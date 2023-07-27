@@ -109,7 +109,7 @@ const routes = [
   //   element: <ForgotPassword />,
   // },
   {
-    path: "/change-password",
+    path: "/changepassword",
     element: <ChangePassword />,
     pageName: "Change Password",
   },
@@ -390,7 +390,7 @@ const routes = [
 export const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-  const { setAllRoutes, currentMode } = useStateContext();
+  const { setAllRoutes, currentMode, User } = useStateContext();
   const location = useLocation();
   const {hasPermission} = usePermission();
 
@@ -446,7 +446,8 @@ function App() {
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
               <Route path="/dashboard" element={<Dashboard/>}/>
-              {routes.map((route, index) => {
+              {User?.permissions ? 
+              [routes.map((route, index) => {
                 
                 return (
                   <Route
@@ -455,7 +456,8 @@ function App() {
                     element={hasPermission(route?.path) ? route.element : <Restricted />}
                   />
                 );
-              })}
+              })]
+              : <></>}
             </Routes>
           </div>
         </div>

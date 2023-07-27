@@ -459,7 +459,7 @@ const Navbar = () => {
                   </MenuItem>
                   <MenuItem>
                     <Link
-                      to={"/change-password"}
+                      to={"/changepassword"}
                       onClick={() => setopenBackDrop(true)}
                     >
                       <div className="flex items-center space-x-2">
