@@ -23,11 +23,9 @@ const EditUser = ({ user }) => {
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [error, setError] = useState(false);
   const [userData, setUserData] = useState({
-    master: "",
-    package_name: "",
     position: "",
-    expiry_date: "",
     target: "",
+    salary: ""
   });
 
   console.log("UserData: ", userData);
@@ -67,6 +65,7 @@ const EditUser = ({ user }) => {
 
     updated_data.append("position", userData?.position);
     updated_data.append("target", userData?.target);
+    updated_data.append("salary", userData?.salary);
 
     try {
       const UpdateUser = await axios.post(
@@ -115,6 +114,7 @@ const EditUser = ({ user }) => {
       setUserData({
         position: user?.position,
         target: user?.target,
+        salary: user?.salary
       });
     }
   }, [user]);
@@ -182,6 +182,36 @@ const EditUser = ({ user }) => {
                             setUserData({
                               ...userData,
                               position: e.target.value,
+                            })
+                          }
+                          sx={{
+                            "& input": {
+                              color: currentMode === "light" && "#000000",
+                            },
+                            marginBottom: "20px",
+                            "& .Mui-selected": {
+                              color: currentMode === "light" && "#000000",
+                            },
+                          }}
+                        >
+                        </TextField>
+
+                        <br/>
+
+                        <InputLabel id="salary">Salary</InputLabel>
+                        <TextField
+                          id="salary"
+                          value={userData?.salary}
+                          InputLabel="Salary"
+                          size="medium"
+                          className="w-full mb-2"
+                          type="number"
+                          displayEmpty
+                          required
+                          onInput={(e) =>
+                            setUserData({
+                              ...userData,
+                              salary: e.target.value,
                             })
                           }
                           sx={{
