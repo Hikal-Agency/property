@@ -739,11 +739,6 @@ const Users = () => {
                     </Box>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    {/* <ListQa
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                    /> */}
                     <UserTable
                       tabValue={tabValue}
                       setTabValue={setTabValue}

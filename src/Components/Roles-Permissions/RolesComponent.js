@@ -240,7 +240,12 @@ const RolesComponent = ({
                                 <p>No permissions found.</p>
                               )
                             ) : (
-                              <div className="flex justify-center w-full my-3">
+                              <div
+                                className="flex justify-center w-full my-3"
+                                style={{
+                                  width: "500px",
+                                }}
+                              >
                                 <CircularProgress />{" "}
                               </div>
                             )}
