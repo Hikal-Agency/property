@@ -79,6 +79,7 @@ const BulkImport = ({
         LeadData["leadSource"] = "Bulk Import";
         LeadData["coldCall"] = coldCallCode;
         LeadData["feedback"] = "New";
+        LeadData["addedBy"] = User?.id;
 
         if(User?.role === 3 || User?.role === 2){
           LeadData["assignedToManager"] = User?.id;
