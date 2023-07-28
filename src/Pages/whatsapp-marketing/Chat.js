@@ -208,8 +208,9 @@ const Chat = () => {
       },
     });
     const findDevice = devices.data.instances.data.find(
-      (device) => device.instance_name === deviceName
+      (device) => `${device.user_id}-${device.instance_name}` === deviceName && device.user_id === User?.id
     );
+
     if (findDevice) {
       const deviceId = findDevice?.id;
       const DeviceData = new FormData();
@@ -289,7 +290,7 @@ const Chat = () => {
           Authorization: "Bearer " + token,
         },
       });
-      fetchDevices();
+      document.location.reload();
     }
   };
 
@@ -346,6 +347,7 @@ const Chat = () => {
       });
 
       socket.on("logged-out", (data) => {
+        console.log("Logged")
         if (data.status) {
           disconnectDevice(data.id);
           setloading(false);

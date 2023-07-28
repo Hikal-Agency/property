@@ -1386,8 +1386,14 @@ const AllLeads = () => {
           checkboxSelection
           onSelectionModelChange={(ids) => {
             setSelectedRows(
-              ids.map((id) => pageState?.data[id - 1]?.leadContact?.slice(1)?.replaceAll(" ", ""))
-            );
+              ids.map((id) => {
+                const contact = pageState?.data[id - 1]?.leadContact;
+                if(contact[0] === "+") {
+                    return contact?.slice(1)?.replaceAll(" ", "")
+                } else {
+                    return contact?.replaceAll(" ", "")
+                }
+              }));
           }}
           pageSize={pageState.pageSize}
           onPageChange={(newPage) => {
