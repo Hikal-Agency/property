@@ -54,6 +54,7 @@ const Users = () => {
   const [role, setUserRole] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [openPermissionModel, setOpenPermissionModel] = useState(false);
+  const token = localStorage.getItem("auth-token");
 
   const searchRef = useRef("");
 
@@ -113,6 +114,74 @@ const Users = () => {
     setOpenDeleteModel(false);
   };
 
+  const fetchUsers = async (token, keyword = "", pageNo = 1) => {
+    setpageState((old) => ({
+      ...old,
+      isLoading: true,
+    }));
+    try {
+      let url = "";
+      if (keyword) {
+        url = `${BACKEND_URL}/users?page=${pageNo}&title=${keyword}`;
+      } else {
+        url = `${BACKEND_URL}/users?page=${pageState.page}`;
+      }
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("Users: ", response);
+
+      let rowsDataArray = "";
+      if (response?.data?.managers?.current_page > 1) {
+        const theme_values = Object.values(response?.data?.managers?.data);
+        rowsDataArray = theme_values;
+      } else {
+        rowsDataArray = response?.data?.managers?.data;
+      }
+
+      let rowsdata = rowsDataArray?.map((row, index) => ({
+        id: row?.id,
+        userName: row?.userName || "No Name",
+        position: row?.position || "No Position",
+        userContact: row?.userContact || "No Contact",
+        userEmail: row?.userEmail || "No Email",
+        status: row?.status,
+        is_trainer: row?.is_trainer,
+        role: row?.role,
+        salary: row?.salary,
+        profile_picture: row?.profile_picture,
+        edit: "edit",
+      }));
+
+      console.log("Rows Data: ", rowsdata);
+
+      setpageState((old) => ({
+        ...old,
+        isLoading: false,
+        data: rowsdata,
+        pageSize: response?.data?.managers?.per_page,
+        total: response?.data?.managers?.total,
+      }));
+
+      setUser(response?.data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Unable to fetch users.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   const handleTrainerSwitchChange = async (cellValues) => {
     console.log("Id: ", cellValues?.id);
     const token = localStorage.getItem("auth-token");
@@ -148,6 +217,8 @@ const Users = () => {
         theme: "light",
       });
 
+      fetchUsers(token);
+
       console.log("Response: ", is_trainer);
     } catch (error) {
       toast.error("Unable to update user.", {
@@ -163,82 +234,17 @@ const Users = () => {
     }
   };
 
-  const fetchUsers = async (token, keyword = "", pageNo = 1) => {
-    setpageState((old) => ({
-      ...old,
-      isLoading: true,
-    }));
-    try {
-      let url = "";
-      if(keyword) {
-        url = `${BACKEND_URL}/users?page=${pageNo}&title=${keyword}`;
-      } else {
-        url = `${BACKEND_URL}/users?page=${pageState.page}`;
-      }
-      const response = await axios.get(
-        url, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      console.log("Users: ", response);
-
-      let rowsDataArray = "";
-      if (response?.data?.managers?.current_page > 1) {
-        const theme_values = Object.values(response?.data?.managers?.data);
-        rowsDataArray = theme_values;
-      } else {
-        rowsDataArray = response?.data?.managers?.data;
-      }
-
-      let rowsdata = rowsDataArray?.map((row, index) => ({
-        id: row?.id,
-        userName: row?.userName || "No Name",
-        position: row?.position || "No Position",
-        userContact: row?.userContact || "No Contact",
-        userEmail: row?.userEmail || "No Email",
-        status: row?.status,
-        is_trainer: row?.is_trainer,
-        salary: row?.salary,
-        profile_picture: row?.profile_picture,
-        edit: "edit",
-      }));
-
-      console.log("Rows Data: ", rowsdata);
-
-      setpageState((old) => ({
-        ...old,
-        isLoading: false,
-        data: rowsdata,
-        pageSize: response?.data?.managers?.per_page,
-        total: response?.data?.managers?.total,
-      }));
-
-      setUser(response?.data);
-    } catch (error) {
-      console.log(error);
-      toast.error("Unable to fetch users.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
   useEffect(() => {
     setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
     if (searchRef.current.querySelector("input").value) {
-      fetchUsers(token, searchRef.current.querySelector("input").value, pageState.page);
+      fetchUsers(
+        token,
+        searchRef.current.querySelector("input").value,
+        pageState.page
+      );
     } else {
       fetchUsers(token);
     }
@@ -635,31 +641,31 @@ const Users = () => {
                       />
                     </Tabs>
                   </Box>
-                  {value === 0 &&
-                  <div>
-                    <TextField
-                      placeholder="Search.."
-                      ref={searchRef}
-                      sx={{
-                        "& input": {
-                          borderBottom: "2px solid #ffffff6e",
-                        },
-                      }}
-                      variant="standard"
-                      onKeyUp={handleKeyUp}
-                      onInput={handleSearch}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <IconButton sx={{ padding: 0 }}>
-                              <BiSearch size={17} />
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </div>
-                  }
+                  {value === 0 && (
+                    <div>
+                      <TextField
+                        placeholder="Search.."
+                        ref={searchRef}
+                        sx={{
+                          "& input": {
+                            borderBottom: "2px solid #ffffff6e",
+                          },
+                        }}
+                        variant="standard"
+                        onKeyUp={handleKeyUp}
+                        onInput={handleSearch}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <IconButton sx={{ padding: 0 }}>
+                                <BiSearch size={17} />
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className="mt-3 pb-3">
                   <TabPanel value={value} index={0}>
