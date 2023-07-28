@@ -275,7 +275,6 @@ const SendMessageModal = ({
         return "~" + content + "~";
       },
     });
-    console.log(messageValue);
     const messageText = turndownService.turndown(messageValue);
     if (sendMessageModal.isWhatsapp) {
       sendWhatsappUltraMsg(messageText, selectedContacts);
