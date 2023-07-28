@@ -3,10 +3,9 @@ import { Checkbox, FormControlLabel } from "@mui/material";
 
 const PermissionsCheckbox = ({
   permission,
-  defaultRole,
   selectedPermission,
   setSelectedPermission,
-  handleCheckboxChange,
+  allChecked,
 }) => {
   const [checked, setChecked] = useState(true);
 
@@ -16,6 +15,14 @@ const PermissionsCheckbox = ({
     setChecked(true);
     console.log("useeffect:::::::");
   }, []);
+
+  useEffect(() => {
+    if (!allChecked) {
+      console.log("checked all: ", allChecked);
+      setSelectedPermission([]);
+    }
+    setChecked(allChecked);
+  }, [allChecked]);
 
   const handleClick = (e) => {
     const permissionId = e.target.value;
