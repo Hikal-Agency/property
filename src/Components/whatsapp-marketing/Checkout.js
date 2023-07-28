@@ -87,8 +87,6 @@ const Checkout = ({ allPlans, plan }) => {
         <BiArrowBack color={currentMode === "dark" ? "white" : "black"}/>
       </IconButton>
 
-      <ToastContainer/>
-
       <Box className="flex justify-center items-start mt-4">
         <Box className="flex flex-col items-center h-[100%] mr-12">
           <Box className="p-5 text-white bg-[#da1f26] rounded-md h-[100%]">

@@ -9,24 +9,19 @@ import {
 import "./messages.css";
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import moment from "moment";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { MdCampaign, MdSend } from "react-icons/md";
-import { FaSnapchat } from "react-icons/fa";
-import { BiImport } from "react-icons/bi";
 import { MdSms } from "react-icons/md";
-import { FaFacebook } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { IoMdChatboxes } from "react-icons/io";
-import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
 import { BsWhatsapp, BsImage } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { langs } from "../../langCodes";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
+import { socket } from "../App";
+import SendImageModal from "../../Components/whatsapp-marketing/SendImageModal";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh Leads" },
@@ -111,6 +106,7 @@ const AllLeads = () => {
   const [projectNameTyped, setProjectNameTyped] = useState("");
   const [managers, setManagers] = useState(Managers || []);
   const [agents, setAgents] = useState(SalesPerson || {});
+  const [sendImageModal, setSendImageModal] = useState();
   const [pageRange, setPageRange] = useState();
   const [error, setError] = useState(false);
 
@@ -309,6 +305,43 @@ const AllLeads = () => {
     },
   ];
 
+  const uploadImage = () => {
+    const waDevice = localStorage.getItem("authenticated-wa-device");
+    if (waDevice) {
+      socket.emit("check_device_exists", { id: waDevice });
+      socket.on("check_device", (result) => {
+        if (result) {
+          // Success
+          if (imagePickerRef.current?.click) {
+            imagePickerRef.current.click();
+          }
+        } else {
+          toast.error("Please connect your device first!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      });
+    } else {
+      toast.error("Please connect your device first!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   const managerColumns = [
     {
       field: "id",
@@ -426,56 +459,18 @@ const AllLeads = () => {
   const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
   const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
 
-  async function sendImage(img, contactList) {
-    try {
-      const responses = await Promise.all(
-        contactList.map((contact) => {
-          var urlencoded = new URLSearchParams();
-          urlencoded.append("token", ULTRA_MSG_TOKEN);
-          urlencoded.append("to", "+" + contact);
-          urlencoded.append("image", img);
-          urlencoded.append("caption", "Image Sent");
-
-          var myHeaders = new Headers();
-          myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-          return fetch(`${ULTRA_MSG_API}/instance24405/messages/image`, {
-            headers: myHeaders,
-            method: "POST",
-            body: urlencoded,
-          }).then((response) => response.json());
-        })
-      );
-
-      toast.success("Image Sent", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } catch (error) {
-      console.log(error);
-      toast.error("Image Couldn't be sent", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  }
-
   const handleInputChange = (event) => {
     let files = event.target.files;
     let reader = new FileReader();
     reader.readAsDataURL(files[0]);
 
     reader.onload = (e) => {
-      sendImage(e.target.result, selectedRows);
+      // sendImage(e.target.result, selectedRows);
+      setSendImageModal({
+        isOpen: true,
+        img: e.target.result,
+        rows: selectedRows,
+      });
     };
   };
 
@@ -1403,7 +1398,7 @@ const AllLeads = () => {
             <BsWhatsapp style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp
           </Button>
           <Button
-            onClick={() => imagePickerRef.current.click()}
+            onClick={uploadImage}
             type="button"
             variant="contained"
             sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
@@ -1440,7 +1435,7 @@ const AllLeads = () => {
           />
         </Box>
       )}
-
+      
       <Box
         width={"100%"}
         className={`${currentMode}-mode-datatable`}
@@ -1461,7 +1456,7 @@ const AllLeads = () => {
           checkboxSelection
           onSelectionModelChange={(ids) => {
             setSelectedRows(
-              ids.map((id) => pageState?.data[id - 1]?.leadContact)
+              ids.map((id) => pageState?.data[id - 1]?.leadContact?.slice(1)?.replaceAll(" ", ""))
             );
           }}
           pageSize={pageState.pageSize}
@@ -1524,6 +1519,13 @@ const AllLeads = () => {
           messageLogsModal={messageLogsModal}
           setMessageLogsModal={setMessageLogsModal}
           whatsappSenderNo={whatsappSenderNo}
+        />
+      )}
+
+      {sendImageModal?.isOpen && (
+        <SendImageModal
+          handleCloseImageModal={() => setSendImageModal({ isOpen: false })}
+          sendImageModal={sendImageModal}
         />
       )}
     </div>

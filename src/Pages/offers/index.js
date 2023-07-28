@@ -83,7 +83,6 @@ const Offers = () => {
 
   return (
     <>
-      {/* <ToastContainer/> */}
       <div className="flex relative min-h-screen">
       {loading ? <Loader/> :
         <div
