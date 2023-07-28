@@ -118,9 +118,13 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     }
     if (formdata.password === formdata.c_password) {
       setloading(true);
-      console.log(formdata)
+      const form = {...formdata};
+      if(UserRole === "manager") {
+          const isParent = Managers?.find((m) => m?.role === 2)?.id;
+          form["isParent"] = isParent;
+      }
       await axios
-        .post(`${BACKEND_URL}/register`, formdata)
+        .post(`${BACKEND_URL}/register`, form)
         .then((result) => {
           console.log("result", result);
           if (result.data.success) {
