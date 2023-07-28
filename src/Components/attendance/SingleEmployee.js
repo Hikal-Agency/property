@@ -866,7 +866,32 @@ const SingleEmployee = ({ user }) => {
           >
             <div className={`w-full `}>
               <div className="pl-3 mt-3">
-                <Box sx={darkModeColors}>
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginTop: "3%",
+                  }}
+                >
+                  <div className="flex justify-start">
+                    <Button
+                      className={`min-w-fit mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                      ripple={true}
+                      size="lg"
+                      type="submit"
+                      onClick={exportDataGridAsPDF}
+                      sx={{ background: "#D11E25" }}
+                    >
+                      <FaDownload
+                        size={10}
+                        color={`white`}
+                        style={{ marginRight: "8px" }}
+                      />
+
+                      <span className={`text-white`}> Export </span>
+                    </Button>
+                  </div>
                   <div className="flex justify-end">
                     <Select
                       id="monthSelect"
@@ -884,19 +909,6 @@ const SingleEmployee = ({ user }) => {
                         </MenuItem>
                       ))}
                     </Select>
-                  </div>
-                  <div className="flex justify-start">
-                    <Button
-                      className={`min-w-fit mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
-                      ripple={true}
-                      size="lg"
-                      type="submit"
-                      onClick={exportDataGridAsPDF}
-                    >
-                      <FaDownload size={10} style={{ marginRight: "8px" }} />
-
-                      <span> Export </span>
-                    </Button>
                   </div>
                 </Box>
                 <div className="my-5 mb-10">
