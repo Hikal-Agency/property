@@ -1,21 +1,16 @@
 import {
   CircularProgress,
   Modal,
-  Backdrop,
-  Button,
-  FormControlLabel,
-  Checkbox,
+  Backdrop, FormControlLabel,
+  Checkbox
 } from "@mui/material";
-import { IoIosAlert } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
-import { Select, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React, { useState } from "react";
-import MenuItem from "@mui/material/MenuItem";
 import "../../styles/app.css";
 // import axios from "axios";
 import axios from "../../axoisConfig";
-import { toast, ToastContainer } from "react-toastify";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useEffect } from "react";
 import PermissionsCheckbox from "../addUser/PermissionsCheckbox";
 
