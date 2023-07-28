@@ -1,4 +1,11 @@
-import { CircularProgress, Modal, Backdrop, Button } from "@mui/material";
+import {
+  CircularProgress,
+  Modal,
+  Backdrop,
+  Button,
+  FormControlLabel,
+  Checkbox,
+} from "@mui/material";
 import { IoIosAlert } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
 import { Select, TextField } from "@mui/material";
@@ -26,29 +33,18 @@ const RolesComponent = ({
   const { BACKEND_URL, currentMode, User } = useStateContext();
   const [formdata, setformdata] = useState({ user_id: User?.id, status: 1 });
 
+  const [allChecked, setAllChecked] = useState(true);
   const [selectedPermission, setSelectedPermission] = useState([]);
   const [permissions, setPermissions] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
   const [loading, setloading] = useState(false);
   const token = localStorage.getItem("auth-token");
 
+  const handleSelectAll = () => {
+    setAllChecked(!allChecked);
+  };
   console.log("permissions:  ", permissions);
   console.log("selectedpermission: ", selectedPermission);
-
-  const handleCheckboxChange = (permissionId, checked) => {
-    console.log("parent permission and checked::: ", permissionId, checked);
-    if (checked) {
-      setSelectedPermission((prevPermissionData) => [
-        ...prevPermissionData,
-        permissionId,
-      ]);
-    } else {
-      setSelectedPermission((prevPermissionData) =>
-        prevPermissionData.filter((id) => id !== permissionId)
-      );
-      console.log("permission removed: ", selectedPermission);
-    }
-  };
 
   const AddData = async () => {
     function isSafeInput(input) {
@@ -222,6 +218,18 @@ const RolesComponent = ({
                     {value === 0 && (
                       <>
                         <div className="col-span-6 max-h-[60vh] overflow-y-auto ">
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                value={allChecked}
+                                onClick={handleSelectAll}
+                                name="selectCheckbox"
+                                fullWidth
+                                inputProps={{ "aria-label": "controlled" }}
+                              />
+                            }
+                            label={allChecked ? "Deselect All" : "Select All"}
+                          />
                           <div className="grid grid-cols-3 gap-x-3">
                             {!dataLoading ? (
                               permissions?.length > 0 ? (
@@ -233,7 +241,7 @@ const RolesComponent = ({
                                     setSelectedPermission={
                                       setSelectedPermission
                                     }
-                                    handleCheckboxChange={handleCheckboxChange}
+                                    allChecked={allChecked}
                                   />
                                 ))
                               ) : (

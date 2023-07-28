@@ -178,7 +178,7 @@ const UpdateUserPermissions = ({
                         <div className="col-span-2">
                           <RolesCheckbox
                             role={role}
-                            defaultRole={UserData}
+                            defaultRole={userRole}
                             formData={formdata}
                             setFormData={setformdata}
                           />

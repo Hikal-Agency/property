@@ -7,9 +7,18 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
-import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 import { MdModeEdit, MdAttachMoney, MdMoneyOff } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 import moment from "moment";
 import {
@@ -17,6 +26,7 @@ import {
   RiCloseLine as CloseIcon,
 } from "react-icons/ri";
 import SalaryDeductDailogue from "./SalaryDeductDailogue";
+import { FaDownload } from "react-icons/fa";
 
 const SingleEmployee = ({ user }) => {
   const path = window.location.pathname;
@@ -626,8 +636,8 @@ const SingleEmployee = ({ user }) => {
         UpdateData.append("deduct_salary", 1);
         UpdateData.append("cut_salary", deduted_salary.toString());
       }
-    } 
-    // LATE - NO 
+    }
+    // LATE - NO
     else if (btn === 2) {
       console.log("btn2");
 
@@ -758,10 +768,10 @@ const SingleEmployee = ({ user }) => {
     }
   };
 
-  // UNDEDUCT SALARY 
+  // UNDEDUCT SALARY
   const undeductSalary = async (e, id) => {
     const employeeData = empData.find((employee) => employee.id === id);
-    
+
     setpageState((oldPageState) => ({
       ...oldPageState,
     }));
@@ -824,6 +834,18 @@ const SingleEmployee = ({ user }) => {
     }
   };
 
+  const exportDataGridAsPDF = () => {
+    const doc = new jsPDF();
+    const header = columns.map((column) => column.headerName); // Custom table header
+
+    doc.autoTable({
+      head: [header], // Table header
+      body: pageState?.data?.map(Object.values), // Table body data
+    });
+
+    doc.save(`${empData[0]?.userName}-attendance.pdf`);
+  };
+
   useEffect(() => {
     setopenBackDrop(false);
     // const token = localStorage.getItem("auth-token");
@@ -844,7 +866,32 @@ const SingleEmployee = ({ user }) => {
           >
             <div className={`w-full `}>
               <div className="pl-3 mt-3">
-                <Box sx={darkModeColors}>
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginTop: "3%",
+                  }}
+                >
+                  <div className="flex justify-start">
+                    <Button
+                      className={`min-w-fit mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                      ripple={true}
+                      size="lg"
+                      type="submit"
+                      onClick={exportDataGridAsPDF}
+                      sx={{ background: "#D11E25" }}
+                    >
+                      <FaDownload
+                        size={10}
+                        color={`white`}
+                        style={{ marginRight: "8px" }}
+                      />
+
+                      <span className={`text-white`}> Export </span>
+                    </Button>
+                  </div>
                   <div className="flex justify-end">
                     <Select
                       id="monthSelect"
@@ -1062,7 +1109,7 @@ const SingleEmployee = ({ user }) => {
                           columns={columns}
                           // rowCount={pageState.total}
                           loading={pageState.isLoading}
-                          // rowsPerPageOptions={[30, 50, 75, 100]}
+                          rowsPerPageOptions={[]}
                           pagination
                           componentsProps={{
                             toolbar: {
