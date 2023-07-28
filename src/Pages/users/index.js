@@ -672,7 +672,7 @@ const Users = () => {
                     <Box
                       className={`${currentMode}-mode-datatable`}
                       // width={"100%"}
-                      sx={DataGridStyles}
+                      sx={{ ...DataGridStyles, marginBottom: "5%" }}
                     >
                       <DataGrid
                         autoHeight
