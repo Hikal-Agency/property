@@ -15,7 +15,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import { MdModeEdit, MdAttachMoney, MdMoneyOff } from "react-icons/md";
+import { MdModeEdit, MdAttachMoney, MdMoneyOff, MdPendingActions } from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -57,6 +57,7 @@ const SingleEmployee = ({ user }) => {
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [empData, setEmpData] = useState(null);
   const [showDailogue, setDialogue] = useState(false);
+  const [showApproval, setApproval] = useState(false);
   console.log("cut: ", cut_salary);
 
   const handleDayFilter = (event) => {
@@ -65,6 +66,7 @@ const SingleEmployee = ({ user }) => {
     console.log("date range: ", event.target.value);
   };
 
+  // LATE REASON 
   const updateReason = async (e, id) => {
     console.log("ciklsd;kl", id);
     const employeeData = empData.find((employee) => employee.id === id);
@@ -72,11 +74,16 @@ const SingleEmployee = ({ user }) => {
     console.log("emp reason: ", employeeData);
   };
 
-  console.log("emp data: ", empData);
+  // APPROVAL REQUEST 
+  const notifyApproval = async (e, id) => {
+    // console.log("ciklsd;kl", id);
+    // const employeeData = empData.find((employee) => employee.id === id);
+    // setDialogue(employeeData);
+    // console.log("emp reason: ", employeeData);
+  };
 
   const columns = [
     // { field: "id", headerAlign: "center", headerName: "Sr.No", minWidth: 60 },
-
     {
       field: "check_datetime",
       headerAlign: "center",
@@ -119,7 +126,6 @@ const SingleEmployee = ({ user }) => {
       minWidth: 80,
       flex: 1,
     },
-
     // OFFICE IN TIME
     {
       field: "default_datetime",
@@ -134,7 +140,6 @@ const SingleEmployee = ({ user }) => {
         return <div>{formattedTime}</div>;
       },
     },
-
     // LATE MINUTES
     {
       field: "late_minutes",
@@ -242,32 +247,104 @@ const SingleEmployee = ({ user }) => {
               />
             </IconButton>
           </Tooltip>
-          {params.row.deduction === 1 ? (
-            <Tooltip title="Don't Deduct Salary" arrow>
-              <IconButton
-                onClick={(event) => undeductSalary(event, 2, params?.row.id)}
-              >
-                <MdMoneyOff
-                  size={16}
-                  className={` ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                />
-              </IconButton>
-            </Tooltip>
+          {/* PENDING FOR DEDUCT SALARY  */}
+          {(params.row.notify_status === "Pending" && params.row.notify_deduct_salary === 1) ? (
+            <>
+              {/* ROLE 1 */}
+              {User?.role === 1 ? (
+                <>
+                <Tooltip title="Pending Approval Request" arrow>
+                    <IconButton>
+                      {/* ON CLICK => OPEN POPUP SHOWING CHECK IN TIME AND LATE MINUTES AND LATE REASON WITH TWO ICON BUTTONS: GREEN TICK AND RED CROSS */}
+                      {/* GREEN TICK => notify_status = "Approved", deduct_salary = 1   */}
+                      {/* RED CROSS => notify_status = "Rejected", deduct_salary = 2, cut_salary = "No"  */}
+                      <MdPendingActions
+                        onClick={(event) => notifyApproval(event, params?.row.id)}
+                        size={16}
+                        className="text-red-600"
+                      />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              ) : (
+                <>
+                  {/* DO NOTHING */}
+                  <Tooltip title="Pending Approval" arrow>
+                    <IconButton>
+                      <MdPendingActions
+                        size={16}
+                        className="text-red-600"
+                      />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              )}
+            </>
+          ) 
+          // PENDING FOR UNDEDUCT SALARY 
+          : (params.row.notify_status === "Pending" && params.row.notify_deduct_salary === 2) ? (
+            <>
+              {/* ROLE 1 */}
+              {User?.role === 1 ? (
+                <>
+                <Tooltip title="Pending Approval Request" arrow>
+                    <IconButton>
+                      {/* ON CLICK => OPEN POPUP SHOWING CHECK IN TIME AND LATE MINUTES AND LATE REASON WITH TWO ICON BUTTONS: GREEN TICK AND RED CROSS */}
+                      {/* GREEN TICK => notify_status = "Approved", deduct_salary = 2, cut_salary = "No", is_late = 2   */}
+                      {/* RED CROSS => notify_status = "Rejected"  */}
+                      <MdPendingActions
+                        onClick={(event) => notifyApproval(event, params?.row.id)}
+                        size={16}
+                        className="text-red-600"
+                      />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              ) : (
+                <>
+                  {/* DO NOTHING */}
+                  <Tooltip title="Pending Approval" arrow>
+                    <IconButton>
+                      <MdPendingActions
+                        size={16}
+                        className="text-red-600"
+                      />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              )}
+            </>
           ) : (
-            <Tooltip title="Deduct Salary" arrow>
-              <IconButton
-                onClick={(event) => deductSalary(event, 2, params?.row.id)}
-              >
-                <MdAttachMoney
-                  size={16}
-                  className={` ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                />
-              </IconButton>
-            </Tooltip>
+            // NOT PENDING 
+            <>
+              {params.row.deduction === 1 ? (
+                <Tooltip title="Don't Deduct Salary" arrow>
+                  <IconButton
+                    onClick={(event) => undeductSalary(event, 2, params?.row.id)}
+                  >
+                    <MdMoneyOff
+                      size={16}
+                      className={` ${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
+                    />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Tooltip title="Deduct Salary" arrow>
+                  <IconButton
+                    onClick={(event) => deductSalary(event, 2, params?.row.id)}
+                  >
+                    <MdAttachMoney
+                      size={16}
+                      className={` ${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
+                    />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </>
           )}
         </div>
       ),
@@ -775,9 +852,6 @@ const SingleEmployee = ({ user }) => {
     setpageState((oldPageState) => ({
       ...oldPageState,
     }));
-
-    const monthly_salary = employeeData?.salary / 30;
-    let deduted_salary = monthly_salary / 2;
 
     const UpdateData = new FormData();
 
