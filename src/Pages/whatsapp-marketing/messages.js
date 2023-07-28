@@ -119,7 +119,6 @@ const AllLeads = () => {
     data: {},
   });
   const [whatsappSenderNo, setWhatsappSenderNo] = useState("");
-  const imagePickerRef = useRef();
 
   const getLangCode = (language) => {
     if (language) {
@@ -305,43 +304,6 @@ const AllLeads = () => {
     },
   ];
 
-  const uploadImage = () => {
-    const waDevice = localStorage.getItem("authenticated-wa-device");
-    if (waDevice) {
-      socket.emit("check_device_exists", { id: waDevice });
-      socket.on("check_device", (result) => {
-        if (result) {
-          // Success
-          if (imagePickerRef.current?.click) {
-            imagePickerRef.current.click();
-          }
-        } else {
-          toast.error("Please connect your device first!", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-      });
-    } else {
-      toast.error("Please connect your device first!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
   const managerColumns = [
     {
       field: "id",
@@ -458,21 +420,6 @@ const AllLeads = () => {
 
   const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
   const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
-
-  const handleInputChange = (event) => {
-    let files = event.target.files;
-    let reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-
-    reader.onload = (e) => {
-      // sendImage(e.target.result, selectedRows);
-      setSendImageModal({
-        isOpen: true,
-        img: e.target.result,
-        rows: selectedRows,
-      });
-    };
-  };
 
   const FetchLeads = async (
     token,
@@ -1397,16 +1344,6 @@ const AllLeads = () => {
           >
             <BsWhatsapp style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp
           </Button>
-          <Button
-            onClick={uploadImage}
-            type="button"
-            variant="contained"
-            sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
-            color="error"
-            size="small"
-          >
-            <BsImage style={{ marginRight: 8 }} size={20} /> Whatsapp Image
-          </Button>
 
           {selectedRows.length === 1 && (
             <Link
@@ -1426,13 +1363,6 @@ const AllLeads = () => {
               </Button>
             </Link>
           )}
-
-          <input
-            onInput={handleInputChange}
-            type="file"
-            ref={imagePickerRef}
-            hidden
-          />
         </Box>
       )}
       

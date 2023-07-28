@@ -1,5 +1,5 @@
 //import { useState } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Modal,
   Backdrop,
@@ -14,7 +14,9 @@ import { useStateContext } from "../../context/ContextProvider";
 import { MdSend } from "react-icons/md";
 import Base64 from "Base64";
 import { Box } from "@mui/system";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 // import axios from "axios";
+import { socket } from "../../Pages/App";
 import axios from "../../axoisConfig";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
@@ -39,12 +41,59 @@ const SendMessageModal = ({
   const [tabValue, setTabValue] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState(false);
   const [templates, setTemplates] = useState([]);
+  const [imgBinary, setImgBinary] = useState("");
   const [defaultMessageValue, setDefaultMessageValue] = useState("");
 
-  const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
-  const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
-
   var turndownService = new TurndownService();
+
+  const imagePickerRef = useRef();
+
+  const uploadImage = () => {
+    const waDevice = localStorage.getItem("authenticated-wa-device");
+    if (waDevice) {
+      socket.emit("check_device_exists", { id: waDevice });
+      socket.on("check_device", (result) => {
+        if (result) {
+          // Success
+          if (imagePickerRef.current?.click) {
+            imagePickerRef.current.click();
+          }
+        } else {
+          toast.error("Please connect your device first!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      });
+    } else {
+      toast.error("Please connect your device first!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const handleInputChange = (event) => {
+    let files = event.target.files;
+    let reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+
+    reader.onload = (e) => {
+      setImgBinary(e.target.result);
+    };
+  };
 
   async function sendSMS(messageText, contactList) {
     try {
@@ -115,71 +164,6 @@ const SendMessageModal = ({
     }
   }
 
-  async function sendWhatsappTwilioMsg(messageText, contactList) {
-    try {
-      setbtnloading(true);
-      const token = localStorage.getItem("auth-token");
-      const responses = await Promise.all(
-        contactList.map((contact) => {
-          return fetch(`${BACKEND_URL}/send-tw-whatsapp-message`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              Authorization: "Bearer " + token,
-            },
-            body: new URLSearchParams({
-              message: messageText,
-              to: "+" + contact,
-            }).toString(),
-          }).then((response) => response.json());
-        })
-      );
-
-      const allSentMessages = [];
-      responses.forEach((response, index) => {
-        if (!response?.error) {
-          const messageInfo = {
-            msg_to: contactList[index],
-            // msg_from: whatsappSenderNo,
-            message: messageText,
-            type: "sent",
-            userID: User?.id,
-            source: "whatsapp",
-            status: 1,
-          };
-          allSentMessages.push(messageInfo);
-        }
-      });
-
-      const responses2 = await Promise.all(
-        allSentMessages.map((msg) => {
-          return axios.post(`${BACKEND_URL}/messages`, JSON.stringify(msg), {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          });
-        })
-      );
-
-      setSendMessageModal({ open: false });
-      setbtnloading(false);
-
-      console.log(responses);
-      // toast.success("Messages Sent", {
-      //   position: "top-right",
-      //   autoClose: 3000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "light",
-      // });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   const saveMessages = async (allSentMessages) => {
     try {
       const token = localStorage.getItem("auth-token");
@@ -198,59 +182,84 @@ const SendMessageModal = ({
     }
   };
 
-  async function sendWhatsappUltraMsg(messageText, contactList) {
+  async function sendWhatsappMessage(messageText, contactList) {
     try {
       setbtnloading(true);
-      const responses = await Promise.all(
-        contactList.map((contact) => {
-          var urlencoded = new URLSearchParams();
-          urlencoded.append("token", ULTRA_MSG_TOKEN);
-          urlencoded.append("to", "+" + contact);
 
-          const modifiedMessageText = messageText
-            .toString()
-            .replaceAll("**", "*");
-          urlencoded.append("body", modifiedMessageText);
+      const waDevice = localStorage.getItem("authenticated-wa-device");
+      if (waDevice) {
+        socket.emit("check_device_exists", { id: waDevice });
+        socket.on("check_device", (result) => {
+          if (result) {
+            socket.emit("send-bulk-image", {
+              contacts: contactList,
+              img: imgBinary,
+              id: waDevice,
+              caption: messageText,
+            });
 
-          var myHeaders = new Headers();
-          myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-          return fetch(`${ULTRA_MSG_API}/instance24405/messages/chat`, {
-            headers: myHeaders,
-            method: "POST",
-            body: urlencoded,
-          }).then((response) => response.json());
-        })
-      );
-      console.log(responses);
-      const allSentMessages = [];
-      responses.forEach((response, index) => {
-        if (!response?.error) {
-          const messageInfo = {
-            msg_to: contactList[index],
-            msg_from: whatsappSenderNo,
-            message: messageText,
-            type: "sent",
-            userID: User?.id,
-            source: "whatsapp",
-            status: 1,
-          };
-          allSentMessages.push(messageInfo);
-        }
-      });
+            setbtnloading(true);
+            setSendMessageModal({ open: false });
+            toast.success("Messages are being sent. ", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
+        });
+      } else {
+        toast.error("Connect your device first! ", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
 
-      saveMessages(allSentMessages);
+      // const responses = await Promise.all(
+      //   contactList.map((contact) => {
+      //     var urlencoded = new URLSearchParams();
+      //     urlencoded.append("token", ULTRA_MSG_TOKEN);
+      //     urlencoded.append("to", "+" + contact);
 
-      setbtnloading(true);
-      setSendMessageModal({ open: false });
-      toast.success("Messages Sent", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      //     const modifiedMessageText = messageText
+      //       .toString()
+      //       .replaceAll("**", "*");
+      //     urlencoded.append("body", modifiedMessageText);
+
+      //     var myHeaders = new Headers();
+      //     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+      //     return fetch(`${ULTRA_MSG_API}/instance24405/messages/chat`, {
+      //       headers: myHeaders,
+      //       method: "POST",
+      //       body: urlencoded,
+      //     }).then((response) => response.json());
+      //   })
+      // );
+      // const allSentMessages = [];
+      // responses.forEach((response, index) => {
+      //   if (!response?.error) {
+      //     const messageInfo = {
+      //       msg_to: contactList[index],
+      //       msg_from: whatsappSenderNo,
+      //       message: messageText,
+      //       type: "sent",
+      //       userID: User?.id,
+      //       source: "whatsapp",
+      //       status: 1,
+      //     };
+      //     allSentMessages.push(messageInfo);
+      //   }
+      // });
+
+      // saveMessages(allSentMessages);
     } catch (error) {
       console.log(error);
       toast.error("Messages Couldn't be sent", {
@@ -268,7 +277,6 @@ const SendMessageModal = ({
 
   const handleSendMessage = (event) => {
     event.preventDefault();
-    // sendWhatsappMessages(messageValue, selectedContacts)
     turndownService.addRule("strikethrough", {
       filter: ["del", "s", "strike"],
       replacement: function (content) {
@@ -277,7 +285,7 @@ const SendMessageModal = ({
     });
     const messageText = turndownService.turndown(messageValue);
     if (sendMessageModal.isWhatsapp) {
-      sendWhatsappUltraMsg(messageText, selectedContacts);
+      sendWhatsappMessage(messageText, selectedContacts);
     } else {
       sendSMS(messageText, selectedContacts);
     }
@@ -331,9 +339,9 @@ const SendMessageModal = ({
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] md:w-[50%]  ${
+          className={`w-[calc(100%-20px)] md:w-[70%]  ${
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
-          } absolute top-1/2 left-1/2 p-5 rounded-md`}
+          } absolute top-1/2 left-1/2 p-5 rounded-md h-[80%]`}
         >
           <IconButton
             sx={{
@@ -356,27 +364,27 @@ const SendMessageModal = ({
             <Tab label="Templates" />
           </Tabs>
           <form onSubmit={handleSendMessage} action="">
+            {sendMessageModal.isWhatsapp && !imgBinary && (
+              <Button
+                onClick={uploadImage}
+                type="button"
+                variant="contained"
+                sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
+                color="error"
+                size="small"
+              >
+                Upload Image <AiOutlineCloudUpload className="ml-2" size={20} />
+              </Button>
+            )}
             {tabValue === 0 && (
-              <div style={{ height: 200, overflowY: "scroll" }}>
-                {/* <TextareaAutosize
-                  id="message"
-                  placeholder="Type here"
-                  type={"text"}
-                  required
-                  minRows={8}
-                  label="Message"
-                  className="w-full"
-                  style={{
-                    border: "1px solid",
-                    padding: 10,
-                    borderRadius: "4px",
-                    marginTop: "10px",
-                  }}
-                  variant="outlined"
-                  size="medium"
-                  value={messageValue}
-                  onInput={(e) => setMessageValue(e.target.value)}
-                /> */}
+              <div style={{ height: 250, overflowY: "scroll" }}>
+                {imgBinary && (
+                  <img
+                    className="w-[200px] p-3 rounded"
+                    alt=""
+                    src={imgBinary}
+                  />
+                )}
                 <RichEditor
                   messageValue={defaultMessageValue}
                   setMessageValue={setMessageValue}
@@ -387,27 +395,14 @@ const SendMessageModal = ({
             {tabValue === 1 && [
               selectedTemplate ? (
                 <>
-                  {/* <TextareaAutosize
-                    id="template-message"
-                    placeholder="Type here"
-                    type={"text"}
-                    minRows={8}
-                    label="Message"
-                    className="w-full mb-5"
-                    style={{
-                      marginBottom: "20px",
-                      border: "1px solid",
-                      padding: 10,
-                      borderRadius: "4px",
-                      marginTop: "10px",
-                    }}
-                    variant="outlined"
-                    required
-                    size="medium"
-                    value={messageValue}
-                    onInput={(e) => setMessageValue(e.target.value)}
-                  /> */}
-                  <div style={{ height: 200, overflowY: "scroll" }}>
+                  <div style={{ height: 250, overflowY: "scroll" }}>
+                    {imgBinary && (
+                      <img
+                        className="w-[200px] p-3 rounded"
+                        alt=""
+                        src={imgBinary}
+                      />
+                    )}
                     <RichEditor
                       messageValue={defaultMessageValue}
                       setMessageValue={setMessageValue}
@@ -430,11 +425,17 @@ const SendMessageModal = ({
                 </Box>
               ),
             ]}
+            <input
+              onInput={handleInputChange}
+              type="file"
+              ref={imagePickerRef}
+              hidden
+            />
             <Button
               ripple="true"
               variant="contained"
-              sx={{ p: "12px", mt: 2}}
-              style={{backgroundColor: '#da1f26'}}
+              sx={{ p: "12px", mt: 2 }}
+              style={{ backgroundColor: "#da1f26" }}
               type="submit"
             >
               {btnloading ? (
