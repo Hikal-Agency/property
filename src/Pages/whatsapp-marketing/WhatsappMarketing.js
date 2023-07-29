@@ -14,9 +14,8 @@ const pagesComponents = {
   templates: <TemplatesComponent />,
   instances: <Instances/>,
   payments: <Payments />,
-  transactions: <TransactionsComponent />,
-  all: <AllMessages />,
   chat: <Chat />,
+  all: <AllMessages />,
 };
 
 const WhatsappMarketing = ({pageName}) => {
