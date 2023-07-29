@@ -536,14 +536,10 @@ const Users = () => {
                     : "text-black bg-transparent rounded-md p-1 shadow-none "
                 }`}
               >
-<<<<<<< HEAD
                 <BsPersonFillLock
                   style={{ color: currentMode === "dark" ? "white" : "black" }}
                   size={20}
                 />
-=======
-                <BsPersonFillLock size={20} />
->>>>>>> rms
               </Button>
             ) : null}
           </div>
@@ -582,12 +578,7 @@ const Users = () => {
                       <span>{pageState?.total}</span>
                     </span>
                   </h1>
-<<<<<<< HEAD
-
-                  {User?.role === 1 || User?.role === 2 ? (
-=======
                   {hasPermission("users_create") ? (
->>>>>>> rms
                     <Button
                       className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
                       onClick={HandleOpenModel}
