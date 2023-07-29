@@ -715,7 +715,7 @@ const SingleEmployee = ({ user }) => {
       } else {
         UpdateData.append("is_late", 1);
         UpdateData.append("late_minutes", lateMinutes);
-        UpdateData.append("notify_status", "Pending");
+        UpdateData.append("notify_status", "Direct");
         UpdateData.append("deduct_salary", 1);
         UpdateData.append("cut_salary", deduted_salary.toString());
       }
