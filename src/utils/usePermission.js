@@ -36,7 +36,7 @@ const usePermission = () => {
           }
         } else {
           return {
-            isPermitted: isPermissionGiven
+            isPermitted: permits?.length > 0 && isPermissionGiven
           };
         }
       } else {

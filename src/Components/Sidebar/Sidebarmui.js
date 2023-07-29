@@ -1105,7 +1105,6 @@ const Sidebarmui = () => {
                       }
                     }
                   } else {
-                    console.log(hasPermission(item?.links[i]?.link, true), item?.links[i]?.link);
                     if (
                       hasPermission(item?.links[i]?.link, true)?.isPermitted
                     ) {

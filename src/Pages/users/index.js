@@ -581,7 +581,7 @@ const Users = () => {
                       <span>{pageState?.total}</span>
                     </span>
                   </h1>
-                  {hasPermission("role_add") ? (
+                  {hasPermission("users_create") ? (
                     <Button
                       className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
                       onClick={HandleOpenModel}
