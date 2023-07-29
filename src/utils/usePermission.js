@@ -7,7 +7,7 @@ const usePermission = () => {
   console.log(permits);
 
   return {
-    hasPermission: (key, isRoute = false) => {
+    hasPermission: (key, isRoute = false, isRouteComponent = false) => {
       let userPermissions = [];
 
       if (isRoute) {
@@ -17,13 +17,13 @@ const usePermission = () => {
         const isPermissionGiven = userPermissions?.some((permission) =>
           key?.includes(permission)
         );
-
-         if (permits?.length > 0) {
-           if (isPermissionGiven) {
-          return {
-            isPermitted: true,
-          };
-        }
+        if (isRouteComponent) {
+          if (permits?.length > 0) {
+            if (isPermissionGiven) {
+              return {
+                isPermitted: true,
+              };
+            }
             return {
               isPermitted: false,
               element: <Restricted />,
@@ -31,9 +31,14 @@ const usePermission = () => {
           } else {
             return {
               isPermitted: false,
-              element: <Loader/>,
+              element: <Loader />,
             };
           }
+        } else {
+          return {
+            isPermitted: isPermissionGiven
+          };
+        }
       } else {
         if (permits?.length === 0) {
           return false;

@@ -117,11 +117,234 @@ const Sidebarmui = () => {
     }
   };
 
+  
+  const FetchPermissions = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      axios
+        .get(`${BACKEND_URL}/profile`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          console.log("User data is");
+          console.log(result.data);
+
+          // Create a new object with only the specific fields you want to store
+
+          const allPermissions = result.data.roles.permissions;
+          setPermits(allPermissions);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const FetchProfile = async (token) => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      // If user data is stored in local storage, parse and set it in state
+      setUser(JSON.parse(storedUser));
+      setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
+      getAllLeadsMembers(JSON.parse(storedUser));
+      FetchPermissions();
+    } else {
+      axios
+        .get(`${BACKEND_URL}/profile`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          console.log("User data is");
+          console.log(result.data);
+
+          // Create a new object with only the specific fields you want to store
+          const user = {
+            permissions: result.data.roles.permissions,
+            addedBy: result.data.user[0].addedBy,
+            addedFor: result.data.user[0].addedFor,
+            agency: result.data.user[0].agency,
+            created_at: result.data.user[0].created_at,
+            creationDate: result.data.user[0].creationDate,
+            displayImg: result.data.user[0].profile_picture,
+            expiry_date: result.data.user[0].expiry_date,
+            gender: result.data.user[0].gender,
+            id: result.data.user[0].id,
+            idExpiryDate: result.data.user[0].idExpiryDate,
+            isParent: result.data.user[0].isParent,
+            is_online: result.data.user[0].is_online,
+            joiningDate: result.data.user[0].joiningDate,
+            loginId: result.data.user[0].loginId,
+            loginStatus: result.data.user[0].loginStatus,
+            master: result.data.user[0].master,
+            nationality: result.data.user[0].nationality,
+            notes: result.data.user[0].notes,
+            old_password: result.data.user[0].old_password,
+            package_name: result.data.user[0].package_name,
+            plusSales: result.data.user[0].plusSales,
+            position: result.data.user[0].position,
+            profile_picture: result.data.user[0].profile_picture,
+            role: result.data.user[0].role,
+            status: result.data.user[0].status,
+            target: result.data.user[0].target,
+            uid: result.data.user[0].uid,
+            updated_at: result.data.user[0].updated_at,
+            userEmail: result.data.user[0].userEmail,
+            userName: result.data.user[0].userName,
+            userType: result.data.user[0].userType,
+          };
+
+          setUser(user);
+          setIsUserSubscribed(checkUser(user));
+          getAllLeadsMembers(user);
+
+          FetchPermissions();
+          
+          localStorage.setItem("user", JSON.stringify(user));
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response?.status === 401) {
+            setopenBackDrop(false);
+            // setloading(false);
+
+            localStorage.removeItem("auth-token");
+            localStorage.removeItem("user");
+            localStorage.removeItem("leadsData");
+            navigate("/", {
+              state: {
+                error: "Please login to proceed.",
+                continueURL: location.pathname,
+              },
+            });
+            return;
+          }
+          toast.error("Sorry something went wrong. Kindly refresh the page.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        });
+    }
+  };
+
+  async function setSalesPersons(urls) {
+    const token = localStorage.getItem("auth-token");
+    const requests = urls.map((url) =>
+      axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      );
+      const responses = await Promise.all(requests);
+      const data = {};
+    for (let i = 0; i < responses.length; i++) {
+      const response = responses[i];
+      if (response.data?.team[0]?.isParent) {
+        const name = `manager-${response.data.team[0].isParent}`;
+        data[name] = response.data.team;
+      }
+    }
+    console.log("State: ", data);
+    setSalesPerson(data);
+    setAppLoading(false);
+  }
+
+  const getAllLeadsMembers = (user) => {
+    setAppLoading(true);
+    axios.get(`${BACKEND_URL}/managers`).then((result) => {
+      console.log("manager response is");
+      console.log(result);
+      const managers = result?.data?.managers.data;
+      setManagers(managers || []);
+      const urls = managers?.map((manager) => {
+        return `${BACKEND_URL}/teamMembers/${manager?.id}`;
+      });
+
+      setSalesPersons(urls || []);
+    });
+  };
+
   useEffect(() => {
     fetchSidebarData();
   }, []);
 
-  const links = [
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    if (User?.id && User?.loginId) {
+      FetchProfile(token);
+    } else {
+      if (token) {
+        FetchProfile(token);
+      } else {
+        if (document.location.pathname !== "/fresh-logs") {
+          navigate("/", {
+            state: {
+              error: "Please login to proceed.",
+              continueURL: location.pathname,
+            },
+          });
+        }
+      }
+    }
+
+    // eslint-disable-next-line
+  }, []);
+
+  const checkUser = (user) => {
+    if (user?.id) {
+      const expiry = new Date(user?.expiry_date).getTime();
+      const now = new Date().getTime();
+
+      const isExpired = now > expiry;
+
+      if (user?.role === 1) {
+        return true;
+      } else {
+        return (
+          isExpired === false &&
+          user?.package_name?.length > 0 &&
+          user?.package_name !== "unsubscribed"
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!(User?.uid && User?.loginId)) {
+      const token = localStorage.getItem("auth-token");
+      if (token) {
+        const user = localStorage.getItem("user");
+        setUser(JSON.parse(user));
+        setIsUserSubscribed(checkUser(JSON.parse(user)));
+      } else {
+        if (document.location.pathname !== "/fresh-logs") {
+          navigate("/", {
+            state: {
+              error: "Something Went Wrong! Please Try Again",
+              continueURL: location.pathname,
+            },
+          });
+        }
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
+
+
+  let links = [
     {
       title: "Dashboard",
       links: [
@@ -712,256 +935,28 @@ const Sidebarmui = () => {
     // },
   ];
 
-  const [linksData, setLinksData] = useState(links);
-
-  const FetchPermissions = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      axios
-        .get(`${BACKEND_URL}/profile`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
-          console.log("User data is");
-          console.log(result.data);
-
-          // Create a new object with only the specific fields you want to store
-          
-          const allPermissions = result.data.roles.permissions;
-          setPermits(allPermissions);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const FetchProfile = async (token) => {
-    const storedUser = localStorage.getItem("user");
-
-    if (storedUser) {
-      // If user data is stored in local storage, parse and set it in state
-      setUser(JSON.parse(storedUser));
-      setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
-      getAllLeadsMembers(JSON.parse(storedUser));
-      FetchPermissions();
-    } else {
-      axios
-        .get(`${BACKEND_URL}/profile`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
-          console.log("User data is");
-          console.log(result.data);
-
-          // Create a new object with only the specific fields you want to store
-          const user = {
-            permissions: result.data.roles.permissions,
-            addedBy: result.data.user[0].addedBy,
-            addedFor: result.data.user[0].addedFor,
-            agency: result.data.user[0].agency,
-            created_at: result.data.user[0].created_at,
-            creationDate: result.data.user[0].creationDate,
-            displayImg: result.data.user[0].profile_picture,
-            expiry_date: result.data.user[0].expiry_date,
-            gender: result.data.user[0].gender,
-            id: result.data.user[0].id,
-            idExpiryDate: result.data.user[0].idExpiryDate,
-            isParent: result.data.user[0].isParent,
-            is_online: result.data.user[0].is_online,
-            joiningDate: result.data.user[0].joiningDate,
-            loginId: result.data.user[0].loginId,
-            loginStatus: result.data.user[0].loginStatus,
-            master: result.data.user[0].master,
-            nationality: result.data.user[0].nationality,
-            notes: result.data.user[0].notes,
-            old_password: result.data.user[0].old_password,
-            package_name: result.data.user[0].package_name,
-            plusSales: result.data.user[0].plusSales,
-            position: result.data.user[0].position,
-            profile_picture: result.data.user[0].profile_picture,
-            role: result.data.user[0].role,
-            status: result.data.user[0].status,
-            target: result.data.user[0].target,
-            uid: result.data.user[0].uid,
-            updated_at: result.data.user[0].updated_at,
-            userEmail: result.data.user[0].userEmail,
-            userName: result.data.user[0].userName,
-            userType: result.data.user[0].userType,
-          };
-
-          setUser(user);
-          setIsUserSubscribed(checkUser(user));
-          getAllLeadsMembers(user);
-
-          FetchPermissions();
-
-          localStorage.setItem("user", JSON.stringify(user));
-        })
-        .catch((err) => {
-          console.log(err);
-          if (err.response?.status === 401) {
-            setopenBackDrop(false);
-            // setloading(false);
-
-            localStorage.removeItem("auth-token");
-            localStorage.removeItem("user");
-            localStorage.removeItem("leadsData");
-            navigate("/", {
-              state: {
-                error: "Please login to proceed.",
-                continueURL: location.pathname,
-              },
-            });
-            return;
-          }
-          toast.error("Sorry something went wrong. Kindly refresh the page.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        });
-    }
-  };
-
-  async function setSalesPersons(urls) {
-    const token = localStorage.getItem("auth-token");
-    const requests = urls.map((url) =>
-      axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-    );
-    const responses = await Promise.all(requests);
-    const data = {};
-    for (let i = 0; i < responses.length; i++) {
-      const response = responses[i];
-      if (response.data?.team[0]?.isParent) {
-        const name = `manager-${response.data.team[0].isParent}`;
-        data[name] = response.data.team;
-      }
-    }
-    console.log("State: ", data);
-    setSalesPerson(data);
-    setAppLoading(false);
-  }
-
-  const getAllLeadsMembers = (user) => {
-    setAppLoading(true);
-    axios.get(`${BACKEND_URL}/managers`).then((result) => {
-      console.log("manager response is");
-      console.log(result);
-      const managers = result?.data?.managers.data;
-      setManagers(managers || []);
-      const urls = managers?.map((manager) => {
-        return `${BACKEND_URL}/teamMembers/${manager?.id}`;
-      });
-
-      setSalesPersons(urls || []);
-    });
-  };
-
-  useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    if (User?.id && User?.loginId) {
-      FetchProfile(token);
-    } else {
-      if (token) {
-        FetchProfile(token);
-      } else {
-        if (document.location.pathname !== "/fresh-logs") {
-          navigate("/", {
-            state: {
-              error: "Please login to proceed.",
-              continueURL: location.pathname,
-            },
-          });
-        }
-      }
-    }
-
-    // eslint-disable-next-line
-  }, []);
-
-  const checkUser = (user) => {
-    if (user?.id) {
-      const expiry = new Date(user?.expiry_date).getTime();
-      const now = new Date().getTime();
-
-      const isExpired = now > expiry;
-
-      if (user?.role === 1) {
-        return true;
-      } else {
-        return (
-          isExpired === false &&
-          user?.package_name?.length > 0 &&
-          user?.package_name !== "unsubscribed"
-        );
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (!(User?.uid && User?.loginId)) {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        const user = localStorage.getItem("user");
-        setUser(JSON.parse(user));
-        setIsUserSubscribed(checkUser(JSON.parse(user)));
-      } else {
-        if (document.location.pathname !== "/fresh-logs") {
-          navigate("/", {
-            state: {
-              error: "Something Went Wrong! Please Try Again",
-              continueURL: location.pathname,
-            },
-          });
-        }
-      }
-    }
-    // eslint-disable-next-line
-  }, []);
-  
-  useEffect(() => {
-    setLinksData([...linksData]);
-    if (isUserSubscribed !== null && isUserSubscribed === true) {
-      setLinksData([
-        ...linksData,
+  if (isUserSubscribed !== null && isUserSubscribed === true) {
+    links = [...links, {
+      title: "MARKETING",
+      links: [
         {
-          title: "MARKETING",
-          links: [
-            {
-              name: "WhatsApp",
-              icon: <RiWhatsappFill />,
-              link: "/marketing/chat",
-            },
-            {
-              name: "Contacts",
-              icon: <MdContactPage />,
-              link: "/marketing/contacts",
-            },
-            {
-              name: "Templates",
-              icon: <FaMobile />,
-              link: "/marketing/templates",
-            },
-          ],
+          name: "WhatsApp",
+          icon: <RiWhatsappFill />,
+          link: "/marketing/chat",
         },
-      ]);
-    }
-  }, [sidebarData, isUserSubscribed]);
+        {
+          name: "Contacts",
+          icon: <MdContactPage />,
+          link: "/marketing/contacts",
+        },
+        {
+          name: "Templates",
+          icon: <FaMobile />,
+          link: "/marketing/templates",
+        },
+      ],
+    }];
+  }
 
   return (
     <div
@@ -1086,7 +1081,7 @@ const Sidebarmui = () => {
                 },
               }}
             >
-              {linksData.map((item, linkIndex) => {
+              {links.map((item, linkIndex) => {
                 let permittedLinksMoreThan0 = false;
                 for (let i = 0; i < item?.links.length; i++) {
                   const subMenu = item?.links[i]?.submenu;
@@ -1095,7 +1090,9 @@ const Sidebarmui = () => {
                       const anotherSubMenu = subMenu[k]?.submenu;
                       if (anotherSubMenu) {
                         for (let l = 0; l < anotherSubMenu?.length; l++) {
-                          if (hasPermission(anotherSubMenu[l]?.link, true)?.isPermitted) {
+                          if (
+                            hasPermission(anotherSubMenu[l]?.link, true)?.isPermitted
+                          ) {
                             permittedLinksMoreThan0 = true;
                             break;
                           }
@@ -1108,7 +1105,10 @@ const Sidebarmui = () => {
                       }
                     }
                   } else {
-                    if (hasPermission(item?.links[i]?.link, true)?.isPermitted) {
+                    console.log(hasPermission(item?.links[i]?.link, true), item?.links[i]?.link);
+                    if (
+                      hasPermission(item?.links[i]?.link, true)?.isPermitted
+                    ) {
                       permittedLinksMoreThan0 = true;
                       break;
                     }
@@ -1154,7 +1154,8 @@ const Sidebarmui = () => {
                         if (
                           hasPermission(link?.link, true)?.isPermitted ||
                           (link?.submenu &&
-                            hasPermission(link?.submenu[0]?.link, true)?.isPermitted) ||
+                            hasPermission(link?.submenu[0]?.link, true)
+                              ?.isPermitted) ||
                           link?.link === "/dashboard"
                         ) {
                           return (
