@@ -45,7 +45,7 @@ export const ContextProvider = ({ children }) => {
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [sidebarData, setSidebarData] = useState({});
   const [fbToken, setFBToken] = useState();
-  const [permissions, setPermissions] = useState([]);
+  const [permits, setPermits] = useState("");
 
   // DATA GRID
   const [pageState, setpageState] = useState({
@@ -202,7 +202,6 @@ export const ContextProvider = ({ children }) => {
           Authorization: "Bearer " + token,
         },
       });
-      console.log("Sidebar data::", response.data.data);
       setSidebarData({
         HotLeadsCount: response.data.data["HOT LEADS"],
         ColdLeadsCount: response.data.data["COLD LEADS"],
@@ -298,8 +297,9 @@ export const ContextProvider = ({ children }) => {
         allRoutes,
         setAllRoutes,
         isUserSubscribed,
-        setPermissions,
         setIsUserSubscribed,
+        permits, 
+        setPermits,
         appLoading,
         setAppLoading,
         sidebarData,

@@ -4,10 +4,12 @@ import { ChangePassword as ChangePasswordComponent } from "../../Components/prof
 import { useStateContext } from "../../context/ContextProvider";
 import { MdEmail } from "react-icons/md";
 import { Button } from "@material-tailwind/react";
+import usePermission from "../../utils/usePermission";
 
 const ChangePassword = () => {
   const { User, currentMode } = useStateContext();
   const [loading, setloading] = useState(true);
+  const {hasPermission} = usePermission();
 
   useEffect(() => {
     setloading(false);
@@ -100,7 +102,7 @@ const ChangePassword = () => {
                             </div>
                           </div>
 
-                          {User?.role === 1 ? (
+                          {hasPermission("delete_account") ? (
                             <div className="mt-5 text-center text-gray-600">
                               <Button
                                 className="px-2 bg-main-red-color shadow-none hover:shadow-none"

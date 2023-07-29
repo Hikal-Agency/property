@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { Button } from "@material-tailwind/react";
 // import axios from "axios";
+import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 import "react-phone-number-input/style.css";
@@ -31,6 +32,7 @@ function isEmailValid(email) {
 const AddLeadComponent = () => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
+  const {hasPermission} = usePermission();
   const {
     currentMode,
     darkModeColors,
@@ -421,7 +423,7 @@ const AddLeadComponent = () => {
                             >
                               Agent details
                             </h4>
-                            {(User?.role === 1 || User?.role === 2) && (
+                            {hasPermission("addlead_manager_dropdown") && (
                               <>
                                 <TextField
                                   id="Manager"
@@ -458,7 +460,7 @@ const AddLeadComponent = () => {
                               </>
                             )}
 
-                            {(User?.role === 1 || User?.role === 3) && (
+                            {hasPermission("addlead_agent_dropdown") && (
                               <>
                                 {/* <InputLabel id="sales-person-label">
                                   Select Sales Person

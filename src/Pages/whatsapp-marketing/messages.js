@@ -20,8 +20,12 @@ import { toast } from "react-toastify";
 import { langs } from "../../langCodes";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
+<<<<<<< HEAD
 import { socket } from "../App";
 import SendImageModal from "../../Components/whatsapp-marketing/SendImageModal";
+=======
+import usePermission from "../../utils/usePermission";
+>>>>>>> rms
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh Leads" },
@@ -109,6 +113,7 @@ const AllLeads = () => {
   const [sendImageModal, setSendImageModal] = useState();
   const [pageRange, setPageRange] = useState();
   const [error, setError] = useState(false);
+  const {hasPermission} = usePermission();
 
   const [openMessageModal, setOpenMessageModal] = useState({
     open: false,
@@ -273,118 +278,6 @@ const AllLeads = () => {
       headerAlign: "center",
       minWidth: 25,
       flex: 1,
-    },
-
-    {
-      field: "whatsapp-web",
-      headerName: "",
-      headerAlign: "center",
-      minWidth: 110,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <Link
-            to={`/marketing/chat?phoneNumber=${cellValues.row.leadContact
-              ?.slice(1)
-              ?.replaceAll(" ", "")}`}
-          >
-            <div
-              className="whatsapp-web-link"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-              }}
-            >
-              <BsWhatsapp size={24} color="green" />
-            </div>
-          </Link>
-        );
-      },
-    },
-  ];
-
-  const managerColumns = [
-    {
-      field: "id",
-      headerName: "#",
-      minWidth: 40,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <small>
-            <strong>{cellValues?.formattedValue}</strong>
-          </small>
-        );
-      },
-    },
-    {
-      field: "leadName",
-      headerAlign: "center",
-      headerName: "Lead name",
-      minWidth: 180,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full ">
-            <p className="text-center capitalize">
-              {cellValues?.formattedValue}
-            </p>
-          </div>
-        );
-      },
-    },
-    {
-      field: "leadContact",
-      headerName: "Contact",
-      minWidth: 140,
-      headerAlign: "center",
-      flex: 1,
-    },
-    {
-      field: "project",
-      headerName: "Project",
-      minWidth: 160,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full ">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    {
-      field: "language",
-      headerName: "Lang",
-      minWidth: 35,
-      headerAlign: "center",
-      flex: 1,
-    },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      // width: 110,
-      minWidth: 110,
-      headerAlign: "center",
-      flex: 1,
-    },
-
-    {
-      field: "leadType",
-      headerAlign: "center",
-      headerName: "Property",
-      minWidth: 140,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
     },
 
     {
@@ -1402,7 +1295,7 @@ const AllLeads = () => {
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-          columns={User?.role === 3 ? managerColumns : columns}
+          columns={columns?.filter((c) => hasPermission("leads_col_" + c?.field))}
           components={{
             // Toolbar: GridToolbar,
             Pagination: CustomPagination,

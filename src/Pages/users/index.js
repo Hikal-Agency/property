@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
+import usePermission from "../../utils/usePermission";
 
 import {
   AiOutlineEdit,
@@ -43,6 +44,7 @@ const Users = () => {
     User,
     darkModeColors,
   } = useStateContext();
+  const {hasPermission} = usePermission();
 
   const [user, setUser] = useState([]);
   const [tabValue, setTabValue] = useState(0);
@@ -457,7 +459,7 @@ const Users = () => {
       renderCell: (cellValues) => {
         return (
           <div className=" space-x-2 w-full flex items-center justify-center ">
-            {User?.role === 1 || User?.role === 2 ? (
+            {hasPermission("users_delete") ? (
               <>
                 {cellValues.row.status === 1 ? (
                   <Button
@@ -518,7 +520,7 @@ const Users = () => {
               </Link>
             </Button>
 
-            {User?.role === 1 || User?.role === 2 ? (
+            {hasPermission("role_update") ? (
               <Button
                 onClick={() =>
                   HandlePermissionModel(
@@ -534,10 +536,14 @@ const Users = () => {
                     : "text-black bg-transparent rounded-md p-1 shadow-none "
                 }`}
               >
+<<<<<<< HEAD
                 <BsPersonFillLock
                   style={{ color: currentMode === "dark" ? "white" : "black" }}
                   size={20}
                 />
+=======
+                <BsPersonFillLock size={20} />
+>>>>>>> rms
               </Button>
             ) : null}
           </div>
@@ -576,8 +582,12 @@ const Users = () => {
                       <span>{pageState?.total}</span>
                     </span>
                   </h1>
+<<<<<<< HEAD
 
                   {User?.role === 1 || User?.role === 2 ? (
+=======
+                  {hasPermission("users_create") ? (
+>>>>>>> rms
                     <Button
                       className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
                       onClick={HandleOpenModel}

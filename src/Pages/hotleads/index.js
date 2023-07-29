@@ -1,12 +1,8 @@
 // import axios from "axios";
-import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Footer from "../../Components/Footer/Footer";
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 import { Box } from "@mui/material";
 import { MdCampaign } from "react-icons/md";
@@ -17,6 +13,7 @@ import { BsSnow2 } from "react-icons/bs";
 import { FaTiktok } from "react-icons/fa";
 import { RiMessage2Line } from "react-icons/ri";
 import { FaWhatsapp } from "react-icons/fa";
+import usePermission from "../../utils/usePermission";
 
 const AllHotLeads = () => {
   const {
@@ -29,10 +26,12 @@ const AllHotLeads = () => {
   } = useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
+  const {hasPermission} = usePermission();
   const lead_type2 = location.pathname.split("/")[2];
   var lead_type = lead_type2.replace(/%20/g, " ");
   const pathname2 = location.pathname.split("/")[1];
   const [loading, setloading] = useState(true);
+  
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -76,7 +75,7 @@ const AllHotLeads = () => {
                       {pageState?.total}
                     </span>
                   </h1>
-                  {User?.role === 1 && (
+                  {hasPermission("leadSource_counts") && (
                     <div className="justify-self-end">
                       <div className=" px-4">
                         <div className="grid grid-cols-1 md:grid-cols-9 lg:grid-cols-9 gap-4">

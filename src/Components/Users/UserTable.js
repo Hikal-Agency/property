@@ -9,6 +9,7 @@ import axios from "../../axoisConfig";
 import { FaBan, FaEdit, FaEye, FaTrash, FaUnlock } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import SingleUser from "./SingleUser";
+import usePermission from "../../utils/usePermission";
 import DeleteUser from "./DeleteUser";
 
 // const UserTable = ({ user }) => {
@@ -121,6 +122,7 @@ const UserTable = ({  }) => {
   const [username, setUserName] = useState();
   const [currentPage, setCurrentPage] = useState();
   const token = localStorage.getItem("auth-token");
+  const {hasPermission} = usePermission();
 
   const handlePageChange = (event, value) => {
     setpageState({ ...pageState, page: value });
@@ -391,9 +393,8 @@ const UserTable = ({  }) => {
                             />
                           </Link>
 
-                          {User?.role === 1 || User?.role === 2 ? (
                             <>
-                              {User?.role === 1 || User?.role === 2 ? (
+                              {hasPermission("users_delete") ? (
                                 <>
                                   {item?.status === 1 ? (
                                     <Button
@@ -425,7 +426,6 @@ const UserTable = ({  }) => {
                                 </>
                               ) : null}
                             </>
-                          ) : null}
                         </div>
                       </div>
                     );

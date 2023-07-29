@@ -6,11 +6,13 @@ import CreateOffer from "../../Components/offers/createoffer";
 import axios from "axios";
 import Loader from "../../Components/Loader";
 import OffersList from "../../Components/offers/OffersList";
+import usePermission from "../../utils/usePermission";
 
 const Offers = () => {
   const { currentMode, darkModeColors, setopenBackDrop, User, BACKEND_URL } =
     useStateContext();
     const [value, setValue] = useState(0);
+    const {hasPermission} = usePermission();
     
     const [tabValue, setTabValue] = useState(0);
     const [pageBeingScrolled, setPageBeingScrolled] = useState(1);
@@ -123,15 +125,15 @@ const Offers = () => {
                     variant="standard"
                     className="w-full px-1 m-1"
                   >
-                    {User?.role !== 7 ? <Tab label="CREATE NEW OFFER" /> : ""}
-                    {(User?.role === 1 || User?.role === 2) && (
+                    {hasPermission("offers_create") ? <Tab label="CREATE NEW OFFER" /> : ""}
+                    {hasPermission("offers_manager_tab") && (
                       <Tab label="FOR MANAGERS" />
                     )}
                     <Tab label="FOR AGENTS" />
                   </Tabs>
                 </Box>
                 <div className="mt-3 pb-3">
-                  {User?.role !== 7 ? (
+                  {hasPermission("offers_create") ? (
                     <TabPanel value={value} index={0}>
                       <CreateOffer
                         isLoading={loading}
@@ -142,7 +144,7 @@ const Offers = () => {
                   ) : (
                     ""
                   )}
-                  {User?.role === 1 || User?.role === 2 ? (
+                  {hasPermission("offers_manager_tab") ? (
                     <TabPanel value={value} index={1}>
                       <OffersList
                         user={"manager"}

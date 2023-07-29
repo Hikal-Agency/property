@@ -171,12 +171,12 @@ const RolesComponent = ({
     >
       <div
         style={style}
-        className={`w-[calc(100%-20px)] md:w-[40%] absolute top-1/2 left-1/2 p-5  rounded-md`}
+        className={`w-[calc(100%-20px)] md:w-[60%] absolute top-1/2 left-1/2 p-5 overflow-scroll rounded-md`}
       >
-        <div className="relative overflow-hidden">
+        <div className="h-[80%] relative overflow-scroll">
           <div className={``}>
             <div className="flex  items-center justify-center pl-3">
-              <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+              <div className="w-full overflow-y-scroll space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
                 <div>
                   <h2 className="text-center text-xl font-bold text-gray-900 mt-4">
                     Create New {value === 0 ? " Role" : " Permissions"}

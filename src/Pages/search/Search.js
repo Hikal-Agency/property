@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import "../../styles/index.css";
+import usePermission from "../../utils/usePermission";
 import { BiImport } from "react-icons/bi";
 import {
   DataGrid,
@@ -135,7 +136,7 @@ const enquiryTypes = [
 
 const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const token = localStorage.getItem("auth-token");
-
+  
   const {
     currentMode,
     pageState,
@@ -158,6 +159,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [deletebtnloading, setdeletebtnloading] = useState(false);
   const [filt, setFilt] = useState([]);
   const [error, setError] = useState(false);
+  const {hasPermission} = usePermission();
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
@@ -286,6 +288,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     }
   };
 
+<<<<<<< HEAD
   // ROLE 3
   const managerColumns = [
     {
@@ -534,6 +537,8 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   ];
 
   // ROLE 1 AND ROLE 2
+=======
+>>>>>>> rms
   const columns = [
     {
       field: "id",
@@ -1731,7 +1736,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               ))}
             </Select>
           </div>
-          {(User?.role === 1 || User?.role === 2) &&
+          {hasPermission("search_leadSource_filter") &&
           <div style={{ position: "relative" }}>
             <label
               htmlFor="leadSource"
@@ -1817,7 +1822,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               required
             />
           </div>
-          {(User?.role === 1 || User?.role === 2) && (
+          {hasPermission("search_manager_filter") && (
             <div style={{ position: "relative" }}>
               <label
                 style={{ position: "absolute", top: "-20px", right: 0 }}
@@ -1868,7 +1873,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </Select>
             </div>
           )}
-          {User?.role <= 3 &&
+          {hasPermission("search_agent_filter") &&
           <div style={{ position: "relative" }}>
             <label
               style={{ position: "absolute", top: "-20px", right: 0 }}
@@ -1930,7 +1935,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }}
           className={`${currentMode}-mode-datatable`}
         >
-          {selectedRows.length > 0 && User?.role !== 7 && (
+          {(selectedRows.length > 0 && (hasPermission("leads_bulk_update"))) && (
             <MuiButton
               size="small"
               sx={{
@@ -1945,7 +1950,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
             </MuiButton>
           )}
-          {selectedRows.length > 0 && User?.role === 1 && (
+          {(selectedRows.length > 0 && (hasPermission("leads_bulk_delete"))) && (
             <MuiButton
               size="small"
               sx={{
@@ -2048,7 +2053,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 setpageState((old) => ({ ...old, pageSize: newPageSize }))
               }
               disableColumnFilter
-              columns={User?.role <= 2 ? columns : managerColumns}
+              columns={columns?.filter((c) => hasPermission("leads_col_" + c?.field))}
               components={{
                 Toolbar: GridToolbar,
                 Pagination: CustomPagination,

@@ -15,6 +15,7 @@ import Footer from "../../Components/Footer/Footer";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "./ImagePicker";
+import usePermission from "../../utils/usePermission";
 
 const ProfilePage = () => {
   const [loading, setloading] = useState(true);
@@ -35,6 +36,7 @@ const ProfilePage = () => {
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
+  const {hasPermission} = usePermission();
 
   // Btn loading
   const [btnloading, setbtnloading] = useState(false);
@@ -497,7 +499,11 @@ const ProfilePage = () => {
                             </div>
                           </div>
 
+<<<<<<< HEAD
                           {/* {User?.role === 1 ? (
+=======
+                          {hasPermission("delete_account") ? (
+>>>>>>> rms
                             <div className="mt-5 text-center text-gray-600">
                               <Button
                                 className="bg-main-red-color shadow-none hover:shadow-none p-3"

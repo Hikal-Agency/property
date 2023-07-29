@@ -214,12 +214,20 @@ const UpdateComponent = ({
     >
       <div
         style={style}
+<<<<<<< HEAD
         className={`w-[calc(100%-20px)] md:w-[40%] absolute top-1/2 left-1/2 p-5  rounded-md `}
+=======
+        className={`w-[calc(100%-20px)] md:w-[75%] absolute top-1/2 left-1/2 p-5  rounded-md `}
+>>>>>>> rms
       >
         <div className="relative overflow-hidden">
           <div className={` `}>
             <div className="flex items-center justify-center pl-3">
+<<<<<<< HEAD
               <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5] ">
+=======
+              <div className="w-full space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5] ">
+>>>>>>> rms
                 <div>
                   <h2 className="text-center text-xl font-bold text-gray-900 mt-4">
                     Update {value === 0 ? " Role" : " Permissions"}

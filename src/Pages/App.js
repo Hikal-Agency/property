@@ -67,6 +67,7 @@ import AttendanceLogin from "./auth/attendanceLogin";
 import Search from "./search/Search";
 import Restricted from "./Restricted";
 import Role from "./roles";
+import usePermission from "../utils/usePermission";
 
 const libraries = ["places"];
 
@@ -81,21 +82,21 @@ const routes = [
     element: <RegisterAttendance />,
     pageName: "Register Attendance",
   },
-  {
-    path: "/fresh-logs",
-    element: <TodayCallLogs />,
-    pageName: "Fresh CallLogs",
-  },
-  {
-    path: "/attendanceLogin",
-    element: <AttendanceLogin />,
-    pageName: "Attendance Login",
-  },
-  {
-    path: "/",
-    element: <Home />,
-    pageName: "Home",
-  },
+  // {
+  //   path: "/fresh-logs",
+  //   element: <TodayCallLogs />,
+  //   pageName: "Fresh CallLogs",
+  // },
+  // {
+  //   path: "/attendanceLogin",
+  //   element: <AttendanceLogin />,
+  //   pageName: "Attendance Login",
+  // },
+  // {
+  //   path: "/",
+  //   element: <Home />,
+  //   pageName: "Home",
+  // },
   // {
   //   path: "/auth/signup",
   //   pageName: "Sign Up",
@@ -108,14 +109,9 @@ const routes = [
   //   element: <ForgotPassword />,
   // },
   {
-    path: "/change-password",
+    path: "/changepassword",
     element: <ChangePassword />,
     pageName: "Change Password",
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
-    pageName: "Dashboard",
   },
   {
     path: "/addlead",
@@ -243,13 +239,33 @@ const routes = [
     pageName: "Profile",
   },
   {
-    path: "/marketing/:page",
-    element: <WhatsappMarketing />,
+    path: "/marketing/contacts",
+    element: <WhatsappMarketing pageName={"contacts"}/>,
+    pageName: "Marketing",
+  },
+  {
+    path: "/marketing/payments",
+    element: <WhatsappMarketing pageName={"payments"}/>,
+    pageName: "Marketing",
+  },
+  {
+    path: "/marketing/templates",
+    element: <WhatsappMarketing pageName={"templates"}/>,
+    pageName: "Marketing",
+  },
+    {
+    path: "/marketing/all",
+    element: <WhatsappMarketing pageName={"all"}/>,
+    pageName: "Marketing",
+  },
+  {
+    path: "/marketing/chat",
+    element: <WhatsappMarketing pageName={"chat"}/>,
     pageName: "Marketing",
   },
   {
     path: "/marketing/instances",
-    element: <WhatsappMarketing />,
+    element: <WhatsappMarketing pageName={"instances"}/>,
     pageName: "Marketing",
     restrictedRoles: [2, 3, 7],
   },
@@ -396,7 +412,7 @@ export const socket = io(process.env.REACT_APP_SOCKET_URL);
 function App() {
   const { setAllRoutes, currentMode, User } = useStateContext();
   const location = useLocation();
-  const navigate = useNavigate();
+  const {hasPermission} = usePermission();
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -433,11 +449,6 @@ function App() {
           background: currentMode === "dark" ? "#000000" : "#ffffff",
         }}
       >
-        {/* {appLoading && hasSidebarOrNavbar() &&
-      <div style={{width: "100vw", height: "100vh", zIndex: 10000, position: "fixed", top: 0, left: 0}}>
-        <Loader/>
-      </div>
-        } */}
         <div className="flex" style={{ width: "99vw" }}>
           {hasSidebarOrNavbar() && <Sidebarmui />}
           <div
@@ -451,18 +462,22 @@ function App() {
               </div>
             )}
             <Routes>
-              {routes.map((route, index) => {
-                const isRestricted = route?.restrictedRoles?.includes(
-                  User?.role
-                );
+              <Route path="/" element={<Home />} />
+              <Route path="/attendanceLogin" element={<AttendanceLogin />} />
+              <Route path="/fresh-logs" element={<TodayCallLogs />} />
+              <Route path="/dashboard" element={<Dashboard/>}/>
+              {User?.permissions ? 
+              [routes.map((route, index) => {
+                
                 return (
                   <Route
                     key={index}
                     path={route.path}
-                    element={isRestricted ? <Restricted /> : route.element}
+                    element={hasPermission(route?.path, true, true)?.isPermitted ? route.element : hasPermission(route?.path, true, true)?.element}
                   />
                 );
-              })}
+              })]
+              : <></>}
             </Routes>
           </div>
         </div>

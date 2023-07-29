@@ -140,7 +140,7 @@ const UpdateUserPermissions = ({
     >
       <div
         style={style}
-        className={`w-[calc(100%-20px)] md:w-[40%]  absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
+        className={`w-[calc(100%-20px)] md:w-[60%]  absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
       >
         <div className="relative overflow-hidden">
           <div className={``}>
