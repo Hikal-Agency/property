@@ -20,12 +20,9 @@ import { toast } from "react-toastify";
 import { langs } from "../../langCodes";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
-<<<<<<< HEAD
 import { socket } from "../App";
 import SendImageModal from "../../Components/whatsapp-marketing/SendImageModal";
-=======
 import usePermission from "../../utils/usePermission";
->>>>>>> rms
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh Leads" },
