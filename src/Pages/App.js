@@ -239,13 +239,28 @@ const routes = [
     pageName: "Profile",
   },
   {
-    path: "/marketing/:page",
-    element: <WhatsappMarketing />,
+    path: "/marketing/contacts",
+    element: <WhatsappMarketing pageName={"contacts"}/>,
+    pageName: "Marketing",
+  },
+  {
+    path: "/marketing/payments",
+    element: <WhatsappMarketing pageName={"payments"}/>,
+    pageName: "Marketing",
+  },
+  {
+    path: "/marketing/templates",
+    element: <WhatsappMarketing pageName={"templates"}/>,
+    pageName: "Marketing",
+  },
+  {
+    path: "/marketing/chat",
+    element: <WhatsappMarketing pageName={"chat"}/>,
     pageName: "Marketing",
   },
   {
     path: "/marketing/instances",
-    element: <WhatsappMarketing />,
+    element: <WhatsappMarketing pageName={"instances"}/>,
     pageName: "Marketing",
     restrictedRoles: [2, 3, 7],
   },

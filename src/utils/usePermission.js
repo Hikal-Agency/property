@@ -11,6 +11,7 @@ const usePermission = () => {
       const isPermitted = userPermissions?.some((permission) =>
         key?.includes(permission)
       );
+      console.log(key)
       return isPermitted;
     },
   };

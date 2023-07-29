@@ -19,15 +19,12 @@ const pagesComponents = {
   chat: <Chat />,
 };
 
-const WhatsappMarketing = () => {
+const WhatsappMarketing = ({pageName}) => {
   const { currentMode, User, setopenBackDrop, isUserSubscribed } =
     useStateContext();
-  const location = useLocation();
   const navigate = useNavigate();
 
-  const page = location.pathname.split("/")[2].replace(/%20/g, " ");
-
-  console.log("Page: ", page);
+  const page = pageName;
 
   useEffect(() => {
     setopenBackDrop(false);
