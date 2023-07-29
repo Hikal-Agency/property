@@ -322,55 +322,6 @@ const Sidebarmui = () => {
     }
   };
 
-<<<<<<< HEAD
-        // {
-        //   name: "Contacts",
-        //   icon: <MdContactPage />,
-        //   link: "/contacts",
-        // },
-        {
-          name: "Offers",
-          icon: <AiFillGift />,
-          link: "/offers",
-        },
-      ],
-    },
-    {
-      title: "Support",
-      links: [
-        {
-          name: "QA Form",
-          icon: <AiOutlineQuestionCircle />,
-          link: "/trainer",
-        },
-        {
-          name: "Tickets",
-          icon: <HiTicket />,
-          link: "/support",
-        },
-      ],
-    },
-    {
-      title: "BILLINGS",
-      links: [
-        {
-          name: "Payments",
-          icon: <BsFillCreditCard2FrontFill />,
-          link: "/marketing/payments",
-        },
-      ],
-    },
-    // {
-    //   title: "MISC",
-    //   links: [
-    //     {
-    //       name: "Settings",
-    //       icon: <FiSettings />,
-    //       link: "/settings",
-    //     },
-    //   ],
-    // },
-=======
   useEffect(() => {
     if (!(User?.uid && User?.loginId)) {
       const token = localStorage.getItem("auth-token");
@@ -391,7 +342,6 @@ const Sidebarmui = () => {
     }
     // eslint-disable-next-line
   }, []);
->>>>>>> rms
 
 
   let links = [
