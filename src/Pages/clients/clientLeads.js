@@ -1,5 +1,3 @@
-import { Button } from "@material-tailwind/react";
-import Navbar from "../../Components/Navbar/Navbar";
 import { Box, IconButton, Button as MuiButton, Tooltip } from "@mui/material";
 import {
   DataGrid,
@@ -18,7 +16,7 @@ import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
-import {BiImport} from "react-icons/bi";
+import { BiImport } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { langs } from "../../langCodes";
@@ -28,7 +26,7 @@ import Pagination from "@mui/material/Pagination";
 import SingleLead from "../../Components/Leads/SingleLead";
 import UpdateLead from "../../Components/Leads/UpdateLead";
 import BulkUpdateLeads from "../../Components/Leads/BulkUpdateLeads";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import RenderPriority from "../../Components/Leads/RenderPriority";
 import RenderFeedback from "../../Components/Leads/RenderFeedback";
 import RenderManagers from "../../Components/Leads/RenderManagers";
@@ -36,8 +34,6 @@ import RenderSalesperson from "../../Components/Leads/RenderSalesperson";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteLeadModel from "../../Components/Leads/DeleteLead";
 import BulkImport from "../../Components/Leads/BulkImport";
-import Footer from "../../Components/Footer/Footer";
-import { Link } from "react-router-dom";
 import Loader from "../../Components/Loader";
 
 const bulkUpdateBtnStyles = {
@@ -151,505 +147,6 @@ const ClientLeads = ({
     setUpdateLeadModelOpen(false);
   };
 
-  // ROLE 3
-  // eslint-disable-next-line
-  // const ManagerColumns = [
-  //   {
-  //     field: "id",
-  //     headerName: "#",
-  //     minWidth: 50,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //     renderCell: (cellValues) => {
-  //       return (
-  //         <div
-  //           className={`${
-  //             currentMode === "dark" ? "bg-gray-800" : "bg-gray-200"
-  //           } w-full h-full flex justify-center items-center px-5 font-semibold`}
-  //         >
-  //           {cellValues.formattedValue}
-  //         </div>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     field: "creationDate",
-  //     headerName: "Date",
-  //     // width: 120,
-  //     minWidth: 110,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //     sortable: false,
-  //     filterable: false,
-  //                 renderCell: (params) => <div className="flex flex-col">
-  //       <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-  //       <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-  //     </div>,
-  //   },
-  //   {
-  //     field: "leadName",
-  //     headerName: "Lead name",
-  //     // width: 170,
-  //     minWidth: 150,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //   },
-  //   {
-  //     field: "leadContact",
-  //     headerName: "Contact",
-  //     // width: 150,
-  //     minWidth: 150,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //   },
-  //   {
-  //     field: "project",
-  //     headerName: "Project",
-  //     // width: 110,
-  //     minWidth: 110,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //          renderCell: (cellValues) => {
-  //       return (
-  //         <div className="w-full ">
-  //           <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
-  //             {cellValues?.formattedValue}
-  //           </p>
-  //         </div>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     field: "enquiryType",
-  //     headerName: "Enquiry",
-  //     // width: 110,
-  //     minWidth: 110,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //   },
-  //   {
-  //     field: "leadType",
-  //     headerName: "Property",
-  //     // width: 100,
-  //     minWidth: 110,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //   },
-  //   {
-  //     field: "assignedToSales",
-  //     headerName: "Agent",
-  //     headerAlign: "center",
-  //     minWidth: 170,
-  //     flex: 1,
-  //     hideable: false,
-  //     renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
-  //   },
-  //   {
-  //     field: "feedback",
-  //     headerName: "Feedback",
-  //     // width: 150,
-  //     minWidth: 160,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //     hideable: false,
-  //     renderCell: (cellValues) => {
-  //       return (
-  //         <>
-  //           {cellValues.formattedValue === "Closed Deal" && (
-  //             <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-  //               <badge className="text-[#0f9d58] p-1 rounded-md">
-  //                 CLOSED DEAL
-  //               </badge>
-  //             </div>
-  //           )}
-
-  //           {cellValues.formattedValue !== "Closed Deal" && (
-  //             <RenderFeedback cellValues={cellValues} />
-  //           )}
-  //         </>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     field: "priority",
-  //     headerName: "Priority",
-  //     headerAlign: "center",
-  //     // width: 150,
-  //     minWidth: 160,
-  //     flex: 1,
-  //     hideable: false,
-  //     renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
-  //   },
-  //   {
-  //     field: "language",
-  //     headerName: "Language",
-  //     headerAlign: "center",
-  //     // width: 130,
-  //     minWidth: 100,
-  //     flex: 1,
-  //   },
-  //   {
-  //     field: "otp",
-  //     headerName: "OTP",
-  //     headerAlign: "center",
-  //     // width: "130",
-  //     minWidth: 110,
-  //     flex: 1,
-  //     renderCell: (cellValues) => {
-  //       return (
-  //         <>
-  //           {cellValues.formattedValue === "Verified" && (
-  //             <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-  //               <badge className="bg-[#0f9d58] p-1 rounded-md">OTP VERIFIED</badge>
-  //             </div>
-  //           )}
-
-  //           {cellValues.formattedValue === "Not Verified" && (
-  //             <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-  //               <badge className="bg-[#ff0000] p-1 rounded-md">
-  //                 NOT VERIFIED
-  //               </badge>
-  //             </div>
-  //           )}
-  //         </>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     field: "edit",
-  //     headerName: "Edit",
-  //     // width: 150,
-  //     minWidth: 170,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //     sortable: false,
-  //     filterable: false,
-
-  //     renderCell: (cellValues) => {
-  //       return (
-  //         <div className="deleteLeadBtn editLeadBtn space-x-2 w-full flex items-center justify-center ">
-  //           {/* <Button
-  //             onClick={() => HandleEditFunc(cellValues)}
-  //             className={`editLeadBtn ${
-  //               currentMode === "dark"
-  //                 ? "text-white bg-transparent rounded-md p-1 shadow-none "
-  //                 : "text-black bg-transparent rounded-md p-1 shadow-none "
-  //             }`}
-  //           >
-  //             <AiOutlineEdit size={20} />
-  //           </Button> */}
-  //           <p
-  //             onClick={() => HandleEditFunc(cellValues)}
-  //             className={`editLeadBtn ${
-  //               currentMode === "dark"
-  //                 ? "text-white bg-transparent rounded-md p-1 shadow-none "
-  //                 : "text-black bg-transparent rounded-md p-1 shadow-none "
-  //             }`}
-  //           >
-  //             <AiOutlineEdit size={20} />
-  //           </p>
-
-  //           {/* <Link
-  //             to={`/timeline/${cellValues.row.lid}`}
-  //             className={`editLeadBtn ${
-  //               currentMode === "dark"
-  //                 ? "text-white bg-transparent rounded-md p-1 shadow-none "
-  //                 : "text-black bg-transparent rounded-md p-1 shadow-none "
-  //             }`}
-  //           >
-             
-  //             <AiOutlineHistory size={20} />
-  //           </Link> */}
-
-<<<<<<< HEAD
-              {cellValues.row.leadId !== null && (
-              <p
-                style={{ cursor: "pointer" }}
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-transparent text-white rounded-md shadow-none"
-                    : "bg-transparent text-black rounded-md shadow-none"
-                }`}
-                onClick={() => HandleViewTimeline(cellValues)}
-              >
-                <Tooltip title="View Timeline" arrow>
-                  <IconButton sx={{ padding: 0 }}>
-                    <AiOutlineHistory size={16} />
-                  </IconButton>
-                </Tooltip>
-              </p>
-            )} 
-          </div>
-        );
-      },
-    },
-  ];
-=======
-  //           <p
-  //             onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-  //             className={`editLeadBtn ${
-  //               currentMode === "dark"
-  //                 ? "text-white bg-transparent rounded-md p-1 shadow-none "
-  //                 : "text-black bg-transparent rounded-md p-1 shadow-none "
-  //             }`}
-  //           >
-  //             <AiOutlineHistory size={20} />
-  //           </p>
-  //         </div>
-  //       );
-  //     },
-  //   },
-  // ];
->>>>>>> rms
-
-  // const AgentColumns = [
-  //   {
-  //     field: "creationDate",
-  //     headerName: "Date",
-  //     // width: 150,
-  //     minWidth: 110,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //     sortable: false,
-  //     filterable: false,
-  //                 renderCell: (params) => <div className="flex flex-col">
-  //       <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-  //       <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-  //     </div>,
-  //   },
-  //   {
-  //     field: "leadName",
-  //     headerName: "Lead name",
-  //     // width: 150,
-  //     minWidth: 150,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //   },
-  //   {
-  //     field: "leadContact",
-  //     headerName: "Contact",
-  //     // width: 150,
-  //     minWidth: 150,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //   },
-  //   {
-  //     field: "project",
-  //     headerName: "Project",
-  //     // width: 150,
-  //     minWidth: 110,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //          renderCell: (cellValues) => {
-  //       return (
-  //         <div className="w-full ">
-  //           <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
-  //             {cellValues?.formattedValue}
-  //           </p>
-  //         </div>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     field: "enquiryType",
-  //     headerName: "Enquiry",
-  //     // width: 150,
-  //     minWidth: 110,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //   },
-  //   {
-  //     field: "leadType",
-  //     headerName: "Property",
-  //     // width: 150,
-  //     minWidth: 110,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //   },
-  //   {
-  //     field: "feedback",
-  //     headerName: "Feedback",
-  //     // width: 150,
-  //     minWidth: 160,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //     hideable: false,
-  //     renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
-  //   },
-  //   {
-  //     field: "priority",
-  //     headerName: "Priority",
-  //     headerAlign: "center",
-  //     // width: 150,
-  //     minWidth: 160,
-  //     flex: 1,
-  //     hideable: false,
-  //     renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
-  //   },
-  //   {
-  //     field: "language",
-  //     headerName: "Language",
-  //     headerAlign: "center",
-  //     // width: 130,
-  //     minWidth: 100,
-  //     flex: 1,
-  //   },
-  //   {
-  //     field: "otp",
-  //     headerName: "OTP",
-  //     headerAlign: "center",
-  //     // width: "130",
-  //     minWidth: 110,
-  //     flex: 1,
-  //     renderCell: (cellValues) => {
-  //       return (
-  //         <>
-  //           {cellValues.formattedValue === "Verified" && (
-  //             <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-  //               <badge className="bg-[#0f9d58] p-1 rounded-md">OTP VERIFIED</badge>
-  //             </div>
-  //           )}
-
-  //           {cellValues.formattedValue === "Not Verified" && (
-  //             <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-  //               <badge className="bg-[#ff0000] p-1 rounded-md">
-  //                 NOT VERIFIED
-  //               </badge>
-  //             </div>
-  //           )}
-  //         </>
-  //       );
-  //     },
-  //   },
-  //   {
-  //     field: "edit",
-  //     headerName: "Edit",
-  //     // width: 150,
-  //     minWidth: 100,
-  //     flex: 1,
-  //     headerAlign: "center",
-  //     sortable: false,
-  //     filterable: false,
-
-  //     renderCell: (cellValues) => {
-  //       return (
-  //         <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
-  //           {/* <Button
-  //             onClick={() => HandleEditFunc(cellValues)}
-  //             className={`${
-  //               currentMode === "dark"
-  //                 ? "text-white bg-transparent rounded-md p-1 shadow-none "
-  //                 : "text-black bg-transparent rounded-md p-1 shadow-none "
-  //             }`}
-  //           >
-  //             <AiOutlineEdit size={20} />
-  //           </Button> */}
-  //           <p
-  //             onClick={() => HandleEditFunc(cellValues)}
-  //             className={`${
-  //               currentMode === "dark"
-  //                 ? "text-white bg-transparent rounded-md p-1 shadow-none "
-  //                 : "text-black bg-transparent rounded-md p-1 shadow-none "
-  //             }`}
-  //           >
-  //             <AiOutlineEdit size={20} />
-  //           </p>
-
-<<<<<<< HEAD
-            {/* <Button
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </Button> */}
-                {cellValues.row.leadId !== null && (
-              <p
-                style={{ cursor: "pointer" }}
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-transparent text-white rounded-md shadow-none"
-                    : "bg-transparent text-black rounded-md shadow-none"
-                }`}
-                onClick={() => HandleViewTimeline(cellValues)}
-              >
-                <Tooltip title="View Timeline" arrow>
-                  <IconButton sx={{ padding: 0 }}>
-                    <AiOutlineHistory size={16} />
-                  </IconButton>
-                </Tooltip>
-              </p>
-            )}
-            {/* <Button
-              onClick={() => {
-                setLeadToDelete(cellValues?.row.lid);
-                setDeleteModelOpen(true);
-                setBulkDeleteClicked(false);
-              }}
-              disabled={deleteloading ? true : false}
-              className={`deleteLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <BsTrash className="deleteLeadBtn" size={18} />
-            </Button> */}
-          </div>
-        );
-      },
-    },
-  ];
-=======
-  //           {/* <Button
-  //             onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-  //             className={`editLeadBtn ${
-  //               currentMode === "dark"
-  //                 ? "text-white bg-transparent rounded-md p-1 shadow-none "
-  //                 : "text-black bg-transparent rounded-md p-1 shadow-none "
-  //             }`}
-  //           >
-  //             <AiOutlineHistory size={20} />
-  //           </Button> */}
-  //           <Link
-  //             to={`/timeline/${cellValues.row.lid}`}
-  //             className={`editLeadBtn ${
-  //               currentMode === "dark"
-  //                 ? "text-white bg-transparent rounded-md p-1 shadow-none "
-  //                 : "text-black bg-transparent rounded-md p-1 shadow-none "
-  //             }`}
-  //           >
-  //             <AiOutlineHistory
-  //               size={20}
-  //               className={`${
-  //                 currentMode === "dark" ? "text-white" : "text-black"
-  //               }`}
-  //             />
-  //           </Link>
-  //           {/* <Button
-  //             onClick={() => {
-  //               setLeadToDelete(cellValues?.row.lid);
-  //               setDeleteModelOpen(true);
-  //               setBulkDeleteClicked(false);
-  //             }}
-  //             disabled={deleteloading ? true : false}
-  //             className={`deleteLeadBtn ${
-  //               currentMode === "dark"
-  //                 ? "text-white bg-transparent rounded-md p-1 shadow-none "
-  //                 : "text-black bg-transparent rounded-md p-1 shadow-none "
-  //             }`}
-  //           >
-  //             <BsTrash className="deleteLeadBtn" size={18} />
-  //           </Button> */}
-  //         </div>
-  //       );
-  //     },
-  //   },
-  // ];
->>>>>>> rms
 
   const columns = [
     {
@@ -894,16 +391,6 @@ const ClientLeads = ({
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
-            {/* <Button
-              onClick={() => HandleEditFunc(cellValues)}
-              className={`${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineEdit size={20} />
-            </Button> */}
             <p
               onClick={() => HandleEditFunc(cellValues)}
               className={`${
@@ -914,17 +401,6 @@ const ClientLeads = ({
             >
               <AiOutlineEdit size={20} />
             </p>
-
-            {/* <Button
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </Button> */}
                {cellValues.row.leadId !== null && (
               <p
                 style={{ cursor: "pointer" }}
@@ -942,21 +418,6 @@ const ClientLeads = ({
                 </Tooltip>
               </p>
             )}
-            {/* <Button
-              onClick={() => {
-                setLeadToDelete(cellValues?.row.lid);
-                setDeleteModelOpen(true);
-                setBulkDeleteClicked(false);
-              }}
-              disabled={deleteloading ? true : false}
-              className={`deleteLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <BsTrash className="deleteLeadBtn" size={18} />
-            </Button> */}
 
             <p
               onClick={() => {
@@ -965,11 +426,6 @@ const ClientLeads = ({
                 setBulkDeleteClicked(false);
               }}
               disabled={deleteloading ? true : false}
-              // className={`deleteLeadBtn ${
-              //   currentMode === "dark"
-              //     ? "text-white bg-transparent rounded-md p-1 shadow-none "
-              //     : "text-black bg-transparent rounded-md p-1 shadow-none "
-              // }`}
             >
               <BsTrash size={18} color="action" />
             </p>
