@@ -473,7 +473,7 @@ function App() {
                   <Route
                     key={index}
                     path={route.path}
-                    element={hasPermission(route?.path) ? route.element : <Restricted />}
+                    element={hasPermission(route?.path, true) ? route.element : <Restricted />}
                   />
                 );
               })]

@@ -5,6 +5,7 @@ import Avatar from "@mui/material/Avatar";
 import { Box, Tab, Tabs, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
+import usePermission from "../../utils/usePermission";
 
 import {
   AiOutlineEdit,
@@ -35,6 +36,7 @@ const Users = () => {
     User,
     darkModeColors,
   } = useStateContext();
+  const {hasPermission} = usePermission();
 
   const [user, setUser] = useState([]);
   const [tabValue, setTabValue] = useState(0);
@@ -579,16 +581,7 @@ const Users = () => {
                       <span>{pageState?.total}</span>
                     </span>
                   </h1>
-                  {/* <Link
-                    to="/adminAuth/signup"
-                    className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md "
-                  >
-                    <span className="flex justify-between items-center">
-                      <AiOutlinePlus style={{ marginRight: "0.5em" }} />
-                      Add User
-                    </span>
-                  </Link> */}
-                  {User?.role === 1 || User?.role === 2 ? (
+                  {hasPermission("add_role") ? (
                     <Button
                       className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
                       onClick={HandleOpenModel}
