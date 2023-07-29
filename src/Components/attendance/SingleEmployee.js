@@ -96,11 +96,13 @@ const SingleEmployee = ({ user }) => {
       minWidth: 70,
       flex: 1,
       renderCell: (cellValues) => {
-        return (
-          <div>
-            {moment(cellValues.row.check_datetime).format("YYYY-MM-DD")}
-          </div>
-        );
+        const date = moment(cellValues.row.check_datetime).format("YYYY-MM-DD");
+        return date;
+        // (
+        //   <div>
+        //     {moment(cellValues.row.check_datetime).format("YYYY-MM-DD")}
+        //   </div>
+        // );
       },
     },
     {
@@ -142,21 +144,71 @@ const SingleEmployee = ({ user }) => {
         const formattedTime = cellValues.row.default_datetime
           ? convertTo12HourFormat(cellValues.row.default_datetime)
           : "";
-        return <div>{formattedTime}</div>;
+        return formattedTime;
       },
     },
     // LATE MINUTES
+    // {
+    //   field: "late_minutes",
+    //   headerAlign: "center",
+    //   headerName: "Late",
+    //   minWidth: 80,
+    //   flex: 1,
+    //   renderCell: (params) => (
+    //     <>
+    //       {params.row.is_late === 1 || params.row.is_late === 2 ? (
+    //         // If late_minutes data exists, display it
+    //         <div>{params.row.late_minutes + " minutes"}</div>
+    //       ) : (
+    //         // If no late_minutes data, display buttons
+    //         <div className="flex justify-between px-5 py-3">
+    //           <Tooltip title="Yes" arrow>
+    //             <IconButton
+    //               style={{
+    //                 backgroundColor: "#4CAF50",
+    //                 color: "white",
+    //                 fontSize: "1rem",
+    //               }}
+    //               className="rounded-full"
+    //               onClick={(event) => lateSalary(event, 1, params?.row.id)}
+    //             >
+    //               <CheckIcon />
+    //             </IconButton>
+    //           </Tooltip>
+
+    //           <Tooltip title="No" arrow>
+    //             <IconButton
+    //               style={{
+    //                 backgroundColor: "#DC2626",
+    //                 color: "white",
+    //                 fontSize: "1rem",
+    //                 marginLeft: "5%",
+    //               }}
+    //               className="rounded-full"
+    //               onClick={(event) => lateSalary(event, 2, params?.row.id)}
+    //             >
+    //               <CloseIcon />
+    //             </IconButton>
+    //           </Tooltip>
+    //         </div>
+    //       )}
+    //     </>
+    //   ),
+    // },
+
     {
       field: "late_minutes",
       headerAlign: "center",
       headerName: "Late",
       minWidth: 80,
       flex: 1,
-      renderCell: (params) => (
-        <>
-          {params.row.is_late === 1 || params.row.is_late === 2 ? (
-            params.row.late_minutes + " minutes"
-          ) : (
+      renderCell: (params) => {
+        if (params.row.is_late === 1 || params.row.is_late === 2) {
+          // If there are late minutes, display the number of minutes as a string
+          return params.row.late_minutes + " minutes";
+        } else {
+          // If there are no late minutes, return the buttons wrapped in a component
+          return (
             <div className="flex justify-between px-5 py-3">
               <Tooltip title="Yes" arrow>
                 <IconButton
@@ -167,14 +219,7 @@ const SingleEmployee = ({ user }) => {
                   }}
                   className="rounded-full"
                   onClick={(event) => lateSalary(event, 1, params?.row.id)}
-                  // onClick={() => handleCalculateLate(params.row['Default time'], params.row['In-time'])}
-                  // disabled={completeLoading}
                 >
-                  {/* {completeLoading ? (
-                    <CircularProgress color="inherit" size={20} />
-                  ) : (
-                    <CheckIcon />
-                  )} */}
                   <CheckIcon />
                 </IconButton>
               </Tooltip>
@@ -189,21 +234,16 @@ const SingleEmployee = ({ user }) => {
                   }}
                   className="rounded-full"
                   onClick={(event) => lateSalary(event, 2, params?.row.id)}
-                  // disabled={cancleLoading}
                 >
-                  {/* {cancleLoading ? (
-                    <CircularProgress color="inherit" size={20} />
-                  ) : (
-                    <CloseIcon />
-                  )} */}
                   <CloseIcon />
                 </IconButton>
               </Tooltip>
             </div>
-          )}
-        </>
-      ),
+          );
+        }
+      },
     },
+
     // LATE REASON
     {
       field: "late_reason",
@@ -213,21 +253,20 @@ const SingleEmployee = ({ user }) => {
       flex: 1,
     },
     // SALARY DEDUCTION
+
     {
       field: "cut_salary",
       headerName: "Deduct",
       headerAlign: "center",
       minWidth: 80,
       flex: 1,
-      renderCell: (params) => (
-        <>
-          {params.row.deduction === 1 ? (
-            params.row.currency + " " + params.row.cut_salary
-          ) : (
-            <>-</>
-          )}
-        </>
-      ),
+      renderCell: (params) => {
+        if (params.row.deduction === 1) {
+          return params.row.currency + " " + params.row.cut_salary;
+        } else {
+          return "-";
+        }
+      },
     },
     // ACTION
     {
@@ -914,16 +953,64 @@ const SingleEmployee = ({ user }) => {
     }
   };
 
+  // const exportDataGridAsPDF = () => {
+  //   const doc = new jsPDF();
+  //   const header = columns.map((column) => column.headerName); // Custom table header
+
+  //   doc.autoTable({
+  //     head: [header], // Table header
+  //     body: pageState?.data?.map(Object.values), // Table body data
+  //   });
+
+  //   doc.save(`${empData[0]?.userName}-attendance.pdf`);
+  // };
+
   const exportDataGridAsPDF = () => {
     const doc = new jsPDF();
-    const header = columns.map((column) => column.headerName); // Custom table header
 
-    doc.autoTable({
-      head: [header], // Table header
-      body: pageState?.data?.map(Object.values), // Table body data
-    });
+    // Custom table headers (exclude the "Action" column)
+    const headers = columns
+      .filter((column) => column.field !== "deduct_salary")
+      .map((column) => column.headerName);
 
-    doc.save(`${empData[0]?.userName}-attendance.pdf`);
+    // Extract data from each row for each column (exclude the "Action" column)
+    const tableData = pageState?.data?.map((row) =>
+      columns
+        .filter((column) => column.field !== "deduct_salary")
+        .map((column) => {
+          console.log("columns:: ", column);
+          console.log("rows:: ", row);
+          if (column.field === "late_minutes") {
+            // If "Late" column contains buttons, return null
+            if (row.is_late === 1 || row.is_late === 2) {
+              return column.renderCell
+                ? column.renderCell({ row })
+                : row[column.field];
+            } else {
+              return "null";
+            }
+          } else {
+            // For other columns, return the data
+            return column.renderCell
+              ? column.renderCell({ row })
+              : row[column.field];
+          }
+        })
+    );
+
+    // Add the table to the PDF only if there are valid rows with data
+    if (tableData.length > 0) {
+      doc.autoTable({
+        head: [headers],
+        body: tableData,
+      });
+
+      // Save the PDF with the specified file name
+      doc.save(`${empData[0]?.userName}-attendance.pdf`);
+    } else {
+      // Handle the case when there are no valid rows to export
+      alert("No valid data to export!");
+    }
   };
 
   useEffect(() => {
