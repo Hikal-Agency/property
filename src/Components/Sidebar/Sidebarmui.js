@@ -1101,20 +1101,20 @@ const Sidebarmui = () => {
                       const anotherSubMenu = subMenu[k]?.submenu;
                       if (anotherSubMenu) {
                         for (let l = 0; l < anotherSubMenu?.length; l++) {
-                          if (hasPermission(anotherSubMenu[l]?.link, true)) {
+                          if (hasPermission(anotherSubMenu[l]?.link, true)?.isPermitted) {
                             permittedLinksMoreThan0 = true;
                             break;
                           }
                         }
                       } else {
-                        if (hasPermission(subMenu[k]?.link, true)) {
+                        if (hasPermission(subMenu[k]?.link, true).isPermitted) {
                           permittedLinksMoreThan0 = true;
                           break;
                         }
                       }
                     }
                   } else {
-                    if (hasPermission(item?.links[i]?.link, true)) {
+                    if (hasPermission(item?.links[i]?.link, true)?.isPermitted) {
                       permittedLinksMoreThan0 = true;
                       break;
                     }
@@ -1158,9 +1158,9 @@ const Sidebarmui = () => {
                       )}
                       {item.links.map((link, menuIndex) => {
                         if (
-                          hasPermission(link?.link, true) ||
+                          hasPermission(link?.link, true)?.isPermitted ||
                           (link?.submenu &&
-                            hasPermission(link?.submenu[0]?.link, true)) ||
+                            hasPermission(link?.submenu[0]?.link, true)?.isPermitted) ||
                           link?.link === "/dashboard"
                         ) {
                           return (
