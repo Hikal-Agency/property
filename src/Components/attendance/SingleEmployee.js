@@ -15,7 +15,12 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import { MdModeEdit, MdAttachMoney, MdMoneyOff, MdPendingActions } from "react-icons/md";
+import {
+  MdModeEdit,
+  MdAttachMoney,
+  MdMoneyOff,
+  MdPendingActions,
+} from "react-icons/md";
 import { Select, MenuItem } from "@mui/material";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -66,20 +71,20 @@ const SingleEmployee = ({ user }) => {
     console.log("date range: ", event.target.value);
   };
 
-  // LATE REASON 
+  // LATE REASON
   const updateReason = async (e, id) => {
     console.log("ciklsd;kl", id);
     const employeeData = empData.find((employee) => employee.id === id);
-    setDialogue(employeeData);
+    setDialogue([employeeData, 0]);
     console.log("emp reason: ", employeeData);
   };
 
-  // APPROVAL REQUEST 
+  // APPROVAL REQUEST
   const notifyApproval = async (e, id) => {
-    // console.log("ciklsd;kl", id);
-    // const employeeData = empData.find((employee) => employee.id === id);
-    // setDialogue(employeeData);
-    // console.log("emp reason: ", employeeData);
+    console.log("ciklsd;kl", id);
+    const employeeData = empData.find((employee) => employee.id === id);
+    setDialogue([employeeData, 1]);
+    console.log("emp reason: ", employeeData);
   };
 
   const columns = [
@@ -248,18 +253,21 @@ const SingleEmployee = ({ user }) => {
             </IconButton>
           </Tooltip>
           {/* PENDING FOR DEDUCT SALARY  */}
-          {(params.row.notify_status === "Pending" && params.row.notify_deduct_salary === 1) ? (
+          {params.row.notify_status === "Pending" &&
+          params.row.notify_deduct_salary === 1 ? (
             <>
               {/* ROLE 1 */}
               {User?.role === 1 ? (
                 <>
-                <Tooltip title="Pending Approval Request" arrow>
+                  <Tooltip title="Pending Approval Request" arrow>
                     <IconButton>
                       {/* ON CLICK => OPEN POPUP SHOWING CHECK IN TIME AND LATE MINUTES AND LATE REASON WITH TWO ICON BUTTONS: GREEN TICK AND RED CROSS */}
                       {/* GREEN TICK => notify_status = "Approved", deduct_salary = 1   */}
                       {/* RED CROSS => notify_status = "Rejected", deduct_salary = 2, cut_salary = "No"  */}
                       <MdPendingActions
-                        onClick={(event) => notifyApproval(event, params?.row.id)}
+                        onClick={(event) =>
+                          notifyApproval(event, params?.row.id)
+                        }
                         size={16}
                         className="text-red-600"
                       />
@@ -271,29 +279,28 @@ const SingleEmployee = ({ user }) => {
                   {/* DO NOTHING */}
                   <Tooltip title="Pending Approval" arrow>
                     <IconButton>
-                      <MdPendingActions
-                        size={16}
-                        className="text-red-600"
-                      />
+                      <MdPendingActions size={16} className="text-red-600" />
                     </IconButton>
                   </Tooltip>
                 </>
               )}
             </>
-          ) 
-          // PENDING FOR UNDEDUCT SALARY 
-          : (params.row.notify_status === "Pending" && params.row.notify_deduct_salary === 2) ? (
+          ) : // PENDING FOR UNDEDUCT SALARY
+          params.row.notify_status === "Pending" &&
+            params.row.notify_deduct_salary === 2 ? (
             <>
               {/* ROLE 1 */}
               {User?.role === 1 ? (
                 <>
-                <Tooltip title="Pending Approval Request" arrow>
+                  <Tooltip title="Pending Approval Request" arrow>
                     <IconButton>
                       {/* ON CLICK => OPEN POPUP SHOWING CHECK IN TIME AND LATE MINUTES AND LATE REASON WITH TWO ICON BUTTONS: GREEN TICK AND RED CROSS */}
                       {/* GREEN TICK => notify_status = "Approved", deduct_salary = 2, cut_salary = "No", is_late = 2   */}
                       {/* RED CROSS => notify_status = "Rejected"  */}
                       <MdPendingActions
-                        onClick={(event) => notifyApproval(event, params?.row.id)}
+                        onClick={(event) =>
+                          notifyApproval(event, params?.row.id)
+                        }
                         size={16}
                         className="text-red-600"
                       />
@@ -305,22 +312,21 @@ const SingleEmployee = ({ user }) => {
                   {/* DO NOTHING */}
                   <Tooltip title="Pending Approval" arrow>
                     <IconButton>
-                      <MdPendingActions
-                        size={16}
-                        className="text-red-600"
-                      />
+                      <MdPendingActions size={16} className="text-red-600" />
                     </IconButton>
                   </Tooltip>
                 </>
               )}
             </>
           ) : (
-            // NOT PENDING 
+            // NOT PENDING
             <>
               {params.row.deduction === 1 ? (
                 <Tooltip title="Don't Deduct Salary" arrow>
                   <IconButton
-                    onClick={(event) => undeductSalary(event, 2, params?.row.id)}
+                    onClick={(event) =>
+                      undeductSalary(event, 2, params?.row.id)
+                    }
                   >
                     <MdMoneyOff
                       size={16}
@@ -709,7 +715,7 @@ const SingleEmployee = ({ user }) => {
       } else {
         UpdateData.append("is_late", 1);
         UpdateData.append("late_minutes", lateMinutes);
-        UpdateData.append("notify_status", "Direct");
+        UpdateData.append("notify_status", "Pending");
         UpdateData.append("deduct_salary", 1);
         UpdateData.append("cut_salary", deduted_salary.toString());
       }
