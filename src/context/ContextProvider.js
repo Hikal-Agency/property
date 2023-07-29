@@ -202,7 +202,6 @@ export const ContextProvider = ({ children }) => {
           Authorization: "Bearer " + token,
         },
       });
-      console.log("Sidebar data::", response.data.data);
       setSidebarData({
         HotLeadsCount: response.data.data["HOT LEADS"],
         ColdLeadsCount: response.data.data["COLD LEADS"],

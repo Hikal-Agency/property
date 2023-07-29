@@ -117,8 +117,6 @@ const Sidebarmui = () => {
     }
   };
 
-  console.log("SidebarData: ", sidebarData);
-
   useEffect(() => {
     fetchSidebarData();
   }, []);
@@ -151,7 +149,6 @@ const Sidebarmui = () => {
               name: "Fresh leads",
               link: "/unassigned/fresh",
               icon: <SiHotjar />,
-              // count: sidebarData?.UNASSIGNED?.fresh,
               submenu: [
                 {
                   name: "All",
@@ -936,12 +933,9 @@ const Sidebarmui = () => {
     }
     // eslint-disable-next-line
   }, []);
-
+  
   useEffect(() => {
-    setLinksData([...links]);
-  }, [sidebarData]);
-
-  useEffect(() => {
+    setLinksData([...linksData]);
     if (isUserSubscribed !== null && isUserSubscribed === true) {
       setLinksData([
         ...linksData,
