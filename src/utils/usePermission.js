@@ -1,11 +1,12 @@
 import { useStateContext } from "../context/ContextProvider";
 
 const usePermission = () => {
-  const { User } = useStateContext();
+  const { permits } = useStateContext();
+  console.log(permits);
 
   return {
     hasPermission: (key) => {
-      const userPermissions = User?.permissions
+      const userPermissions = permits
         ?.split(",")
         ?.map((p) => `/${p}`.replaceAll(" ", "").trim());
       const isPermitted = userPermissions?.some((permission) =>

@@ -67,6 +67,7 @@ const Sidebarmui = () => {
     setManagers,
     setAppLoading,
     fetchSidebarData,
+    setPermits,
     sidebarData,
   } = useStateContext();
   const navigate = useNavigate();
@@ -716,6 +717,30 @@ const Sidebarmui = () => {
 
   const [linksData, setLinksData] = useState(links);
 
+  const FetchPermissions = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      axios
+        .get(`${BACKEND_URL}/profile`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          console.log("User data is");
+          console.log(result.data);
+
+          // Create a new object with only the specific fields you want to store
+          
+          const allPermissions = result.data.roles.permissions;
+          setPermits(allPermissions);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const FetchProfile = async (token) => {
     const storedUser = localStorage.getItem("user");
 
@@ -724,9 +749,9 @@ const Sidebarmui = () => {
       setUser(JSON.parse(storedUser));
       setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
-      console.log("User from navbar", User);
+      FetchPermissions();
     } else {
-      await axios
+      axios
         .get(`${BACKEND_URL}/profile`, {
           headers: {
             "Content-Type": "application/json",
@@ -777,9 +802,8 @@ const Sidebarmui = () => {
           setIsUserSubscribed(checkUser(user));
           getAllLeadsMembers(user);
 
-          console.log("Localstorage: ", user);
+          FetchPermissions();
 
-          // Save user data to local storage
           localStorage.setItem("user", JSON.stringify(user));
         })
         .catch((err) => {
