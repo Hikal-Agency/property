@@ -11,8 +11,7 @@ import { GeneralInfo as GeneralInfoTab } from "../../Components/profile/GeneralI
 import { PersonalInfo as PersonalInfoTab } from "../../Components/profile/PersonalInfo";
 import { ChangePassword as ChangePasswordTab } from "../../Components/profile/ChangePassword";
 import Loader from "../../Components/Loader";
-import Footer from "../../Components/Footer/Footer";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "./ImagePicker";
 import usePermission from "../../utils/usePermission";
@@ -123,63 +122,6 @@ const ProfilePage = () => {
 
   const UpdateProfile = async (data) => {
     console.log("Profile: ", data);
-
-    // if (data?.userAltEmail) {
-    //   // check if data contains userAltEmail
-    //   console.log("email: ", data?.userAltEmail);
-
-    //   const emailRegex = /^\S+@\S+\.\S+$/;
-    //   if (!emailRegex.test(data?.userAltEmail)) {
-    //     return;
-    //   }
-    // }
-
-    // if (data?.userAltEmail) {
-    //   // check if data contains userAltEmail
-    //   console.log("email is here: ", data?.userAltEmail);
-
-    //   // regex for validating the username
-    //   const usernameRegex = /^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9]$/;
-    //   // regex for validating the domain name
-    //   const domainRegex = /^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/;
-    //   // regex for validating the TLD
-    //   const tldRegex = /^[a-zA-Z]+$/;
-
-    //   const parts = data.userAltEmail.split("@");
-    //   if (parts.length !== 2) {
-    //     // the email address must contain one "@" symbol
-
-    //     return;
-    //   }
-
-    //   const username = parts[0];
-    //   const domain = parts[1].split(".");
-    //   if (domain.length < 2) {
-    //     // the domain name must contain at least one "." symbol
-    //     return;
-    //   }
-
-    //   const tld = domain[domain.length - 1];
-    //   const domainName = domain.slice(0, domain.length - 1).join(".");
-
-    //   if (
-    //     !usernameRegex.test(username) ||
-    //     !domainRegex.test(domainName) ||
-    //     !tldRegex.test(tld)
-    //   ) {
-    //     console.log("Email is not valid");
-    //     toast.error("Invalid Email", {
-    //       position: "top-right",
-    //       autoClose: 3000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "light",
-    //     });
-    //     return;
-    //   }
-    // }
 
     const validateEmail = (email) => {
       // regex for validating the username
