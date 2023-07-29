@@ -422,7 +422,7 @@ const Users = () => {
       renderCell: (cellValues) => {
         return (
           <div className=" space-x-2 w-full flex items-center justify-center ">
-            {User?.role === 1 || User?.role === 2 ? (
+            {hasPermission("users_delete") ? (
               <>
                 {cellValues.row.status === 1 ? (
                   <Button
@@ -483,7 +483,7 @@ const Users = () => {
               </Link>
             </Button>
 
-            {User?.role === 1 || User?.role === 2 ? (
+            {hasPermission("role_update") ? (
               <Button
                 onClick={() =>
                   HandlePermissionModel(
@@ -499,7 +499,7 @@ const Users = () => {
                     : "text-black bg-transparent rounded-md p-1 shadow-none "
                 }`}
               >
-                <BsPersonFillLock style={{ color: "white" }} size={20} />
+                <BsPersonFillLock size={20} />
               </Button>
             ) : null}
           </div>
@@ -581,7 +581,7 @@ const Users = () => {
                       <span>{pageState?.total}</span>
                     </span>
                   </h1>
-                  {hasPermission("add_role") ? (
+                  {hasPermission("role_add") ? (
                     <Button
                       className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
                       onClick={HandleOpenModel}

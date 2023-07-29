@@ -14,6 +14,7 @@ import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
+import usePermission from "../../utils/usePermission";
 import {BiSearch} from "react-icons/bi";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
@@ -56,26 +57,10 @@ const Newleads = ({
     setopenBackDrop,
     User,
   } = useStateContext();
-  const [searchText, setSearchText] = useState("");
   const [openDialog, setopenDialog] = useState(false);
   const [LeadToDelete, setLeadToDelete] = useState();
-
-  const SelectStyles = {
-    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium,& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
-      {
-        color: currentMode === "dark" ? "white" : "black",
-        borderColor: currentMode === "dark" ? "white" : "black",
-        fontSize: "0.9rem",
-        fontWeight: "500",
-      },
-    "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: currentMode === "dark" ? "white" : "black",
-    },
-    "& .MuiDataGrid-cell .MuiDataGrid-cellContent": {
-      justifyContent: "center",
-    },
-  };
-
+  const {hasPermission} = usePermission();
+  
     const getLangCode = (language) => {
     if(language) {
       const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
@@ -107,150 +92,7 @@ const Newleads = ({
     setUpdateLeadModelOpen(false);
   };
 
-  // ROLE 7
-  const AgentColumns = [
-    {
-      field: "creationDate",
-      headerName: "Date",
-      // width: 120,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-      renderCell: (params) => (
-        <div className="flex flex-col">
-          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-        </div>
-      ),
-    },
-    {
-      field: "leadName",
-      headerName: "Lead name",
-      // width: 170,
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "leadContact",
-      headerName: "Contact",
-      // width: 150,
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "project",
-      headerName: "Project",
-      // width: 110,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      // width: 110,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "leadType",
-      headerName: "Property",
-      // width: 100,
-      minWidth: 110,
-      flex: 1,
-      headerAlign: "center",
-    },
-    {
-      field: "feedback",
-      headerName: "Feedback",
-      // width: 150,
-      minWidth: 160,
-      flex: 1,
-      headerAlign: "center",
-      hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
-    },
-
-    {
-      field: "priority",
-      headerName: "Priority",
-      headerAlign: "center",
-      // width: 150,
-      minWidth: 160,
-      flex: 1,
-      hideable: false,
-      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
-    },
-    {
-      field: "language",
-      headerName: "Language",
-      headerAlign: "center",
-      // width: 130,
-      minWidth: 100,
-      flex: 1,
-    },
-    {
-      field: "otp",
-      headerName: "OTP",
-      headerAlign: "center",
-      // width: "130",
-      minWidth: 110,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <>
-            {cellValues.formattedValue === "Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md">OTP VERIFIED</badge>
-              </div>
-            )}
-
-            {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#ff0000] p-1 rounded-md">
-                  NOT VERIFIED
-                </badge>
-              </div>
-            )}
-          </>
-        );
-      },
-    },
-    {
-      field: "edit",
-      headerName: "Edit",
-      // width: 150,
-      minWidth: 100,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-
-      renderCell: (cellValues) => {
-        return (
-          <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center ">
-            <Button
-              onClick={() => HandleEditFunc(cellValues)}
-              className={`${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              {/* <AiTwotoneEdit size={20} /> */}
-              <AiOutlineEdit size={20} />
-            </Button>
-          </div>
-        );
-      },
-    },
-  ];
-
+  // ROLE 
   const columns = [
     {
       field: "creationDate",
@@ -874,7 +716,7 @@ const Newleads = ({
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-          columns={(User?.role === 1 || User?.role === 2) ? columns : AgentColumns}
+            columns={columns?.filter((c) => hasPermission("leads_col_" + c?.field))}
           // columns={columns}
           components={{
             Toolbar: GridToolbar,

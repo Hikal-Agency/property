@@ -2523,7 +2523,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           }}
           className={`${currentMode}-mode-datatable`}
         >
-          {selectedRows.length > 0 && User?.role !== 7 && (
+          {selectedRows.length > 0 && (hasPermission("leads_bulk_update")) && (
             <MuiButton
               size="small"
               sx={{
@@ -2538,7 +2538,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
             </MuiButton>
           )}
-          {selectedRows.length > 0 && User?.role === 1 && (
+          {selectedRows.length > 0 && (hasPermission('leads_bulk_delete')) && (
             <MuiButton
               size="small"
               sx={{

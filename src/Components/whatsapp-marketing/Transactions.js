@@ -119,15 +119,15 @@ const Transactions = () => {
           width="auto"
           paginationMode="server"
           rows={rows}
-            componentsProps={{
-              toolbar: {
-                showQuickFilter: false,
-                                  printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
-                // value: searchText,
-                // onChange: HandleQuicSearch,
-              },
-            }}
+          componentsProps={{
+            toolbar: {
+              showQuickFilter: false,
+              printOptions: { disableToolbarButton: User?.role !== 1 },
+              csvOptions: { disableToolbarButton: User?.role !== 1 },
+              // value: searchText,
+              // onChange: HandleQuicSearch,
+            },
+          }}
           columns={columns}
           sx={{
             boxShadow: 2,

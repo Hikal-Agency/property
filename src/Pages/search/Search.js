@@ -9,6 +9,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import "../../styles/index.css";
+import usePermission from "../../utils/usePermission";
 import { BiImport } from "react-icons/bi";
 import {
   DataGrid,
@@ -133,7 +134,7 @@ const enquiryTypes = [
 
 const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const token = localStorage.getItem("auth-token");
-
+  
   const {
     currentMode,
     pageState,
@@ -156,6 +157,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [deletebtnloading, setdeletebtnloading] = useState(false);
   const [filt, setFilt] = useState([]);
   const [error, setError] = useState(false);
+  const {hasPermission} = usePermission();
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
@@ -277,260 +279,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       return null;
     }
   };
-
-  const managerColumns = [
-    {
-      field: "id",
-      headerName: "#",
-      minWidth: 40,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <small>
-            <strong>{cellValues?.formattedValue}</strong>
-          </small>
-        );
-      },
-    },
-
-    {
-      field: "leadName",
-      headerAlign: "center",
-      headerName: "Lead name",
-      minWidth: 120,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full ">
-            <p className="text-center capitalize">
-              {cellValues?.formattedValue}
-            </p>
-          </div>
-        );
-      },
-    },
-    {
-      field: "leadContact",
-      headerName: "Contact",
-      minWidth: 115,
-      headerAlign: "center",
-      flex: 1,
-    },
-    {
-      field: "project",
-      headerName: "Project",
-      minWidth: 85,
-      headerAlign: "center",
-      flex: 1,
-           renderCell: (cellValues) => {
-        return (
-          <div className="w-full ">
-            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
-              {cellValues?.formattedValue}
-            </p>
-          </div>
-        );
-      },
-    },
-    {
-      headerAlign: "center",
-      field: "leadType",
-      headerName: "Property",
-      minWidth: 85,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="flex flex-col">
-            <p>{cellValues.row.enquiryType}</p>
-            <p>{cellValues.row.leadType}</p>
-          </div>
-        );
-      },
-    },
-    {
-      field: "assignedToSales",
-      headerName: "Agent",
-      minWidth: 85,
-      headerAlign: "center",
-      flex: 1,
-      hideable: false,
-      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
-    },
-    {
-      field: "feedback",
-      headerAlign: "center",
-      headerName: "Feedback",
-      minWidth: 85,
-      flex: 1,
-
-      hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
-    },
-    {
-      field: "priority",
-      headerName: "Priority",
-      minWidth: 85,
-      headerAlign: "center",
-      flex: 1,
-      hideable: false,
-      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
-    },
-    {
-      field: "otp",
-      headerName:
-        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
-      minWidth: 90,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        if (lead_origin === "transfferedleads") {
-          return (
-            <div style={{ fontSize: 10 }}>
-              <p>{cellValues.row.transferredFromName || "No Name"}</p>
-            </div>
-          );
-        } else {
-          return (
-            <div style={{ fontSize: 10 }}>
-              {cellValues.formattedValue === "Verified" && (
-                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
-                    OTP VERIFIED
-                  </span>
-                </div>
-              )}
-
-              {cellValues.formattedValue === "Not Verified" && (
-                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
-                    NOT VERIFIED
-                  </span>
-                </div>
-              )}
-
-              {cellValues.formattedValue !== "Not Verified" &&
-                cellValues.formattedValue !== "Verified" && (
-                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
-                      {cellValues.formattedValue}
-                    </span>
-                  </div>
-                )}
-            </div>
-          );
-        }
-      },
-    },
-    {
-      field: "language",
-      headerName: "Lang",
-      minWidth: 55,
-      headerAlign: "center",
-      flex: 1,
-    },
-
-    {
-      field: "edit",
-      headerName: "Edit",
-      flex: 1,
-      headerAlign: "center",
-      width: "100%",
-      sortable: false,
-      filterable: false,
-
-      renderCell: (cellValues) => {
-        return (
-          <div className="deleteLeadBtn space-x-1 w-full flex items-center justify-center ">
-            <p
-              onMouseEnter={() => setHovered("edit")}
-              onMouseLeave={() => setHovered("")}
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "bg-transparent text-white rounded-md shadow-none"
-                  : "bg-transparent text-black rounded-md shadow-none"
-              }`}
-              onClick={() => HandleReminderBtn(cellValues)}
-            >
-              <IconButton sx={{ padding: 0 }}>
-                <BsAlarm size={19} />
-              </IconButton>
-            </p>
-            {currentMode === "dark" ? (
-              <p
-                onClick={() => HandleEditFunc(cellValues)}
-                // className={`${
-                //   currentMode === "dark"
-                //     ? "text-white bg-transparent rounded-md shadow-none "
-                //     : "text-black bg-transparent rounded-md shadow-none "
-                // }`}
-              >
-                <AiOutlineEdit size={20} color="white" />
-
-                {/* {currentMode === "dark" ? (
-                  <AiOutlineEdit
-                    size={20}
-                    color="white"
-                    // sx={{ color: "red" }}
-                  />
-                ) : (
-                  <AiOutlineEdit size={20} color="black" />
-                )} */}
-              </p>
-            ) : (
-              <p
-                onClick={() => HandleEditFunc(cellValues)}
-                // className={`${
-                //   currentMode === "dark"
-                //     ? "text-white bg-transparent rounded-md shadow-none "
-                //     : "text-black bg-transparent rounded-md shadow-none "
-                // }`}
-              >
-                <AiOutlineEdit
-                  size={20}
-                  color="black"
-                  // sx={{ color: "red" }}
-                />
-                {/* {currentMode === "dark" ? (
-                  <AiOutlineEdit
-                    size={20}
-                    color="white"
-                    // sx={{ color: "red" }}
-                  />
-                ) : (
-                  <AiOutlineEdit size={20} color="black" />
-                )} */}
-              </p>
-            )}
-
-            {/* <p
-              onClick={() => navigate(`/timeline/${cellValues.row.lid}`)}
-              className={`editLeadBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <AiOutlineHistory size={20} />
-            </p> */}
-            {cellValues.row.leadId !== null && (
-              <Link
-                to={`/timeline/${cellValues.row.leadId}`}
-                className={`editLeadBtn ${
-                  currentMode === "dark"
-                    ? "text-white bg-transparent rounded-md shadow-none "
-                    : "text-black bg-transparent rounded-md shadow-none "
-                }`}
-              >
-                <AiOutlineHistory size={20} />
-              </Link>
-            )}
-          </div>
-        );
-      },
-    },
-  ];
 
   const columns = [
       {
@@ -1728,7 +1476,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               ))}
             </Select>
           </div>
-          {(User?.role === 1 || User?.role === 2) &&
+          {hasPermission("search_leadSource_filter") &&
           <div style={{ position: "relative" }}>
             <label
               htmlFor="leadSource"
@@ -1814,7 +1562,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               required
             />
           </div>
-          {(User?.role === 1 || User?.role === 2) && (
+          {hasPermission("search_manager_filter") && (
             <div style={{ position: "relative" }}>
               <label
                 style={{ position: "absolute", top: "-20px", right: 0 }}
@@ -1865,7 +1613,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </Select>
             </div>
           )}
-          {User?.role <= 3 &&
+          {hasPermission("search_agent_filter") &&
           <div style={{ position: "relative" }}>
             <label
               style={{ position: "absolute", top: "-20px", right: 0 }}
@@ -1927,7 +1675,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }}
           className={`${currentMode}-mode-datatable`}
         >
-          {selectedRows.length > 0 && User?.role !== 7 && (
+          {(selectedRows.length > 0 && (hasPermission("leads_bulk_update"))) && (
             <MuiButton
               size="small"
               sx={{
@@ -1942,7 +1690,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
             </MuiButton>
           )}
-          {selectedRows.length > 0 && User?.role === 1 && (
+          {(selectedRows.length > 0 && (hasPermission("leads_bulk_delete"))) && (
             <MuiButton
               size="small"
               sx={{
@@ -2045,7 +1793,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 setpageState((old) => ({ ...old, pageSize: newPageSize }))
               }
               disableColumnFilter
-              columns={User?.role <= 2 ? columns : managerColumns}
+              columns={columns?.filter((c) => hasPermission("leads_col_" + c?.field))}
               components={{
                 Toolbar: GridToolbar,
                 Pagination: CustomPagination,

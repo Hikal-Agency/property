@@ -211,21 +211,9 @@ const DashboardPanel = ({ setloading }) => {
             onClick={() => setopenBackDrop(true)}
           >
             <div>
-              {User?.role === 3 && (
                 <p className="text-2xl font-bold pb-3 text-red-600">
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
-              )}
-              {User?.role === 7 && (
-                <p className="text-2xl font-bold pb-3 text-red-600">
-                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
-                </p>
-              )}
-              {(User?.role === 1 || User?.role === 2) && (
-                <p className="text-2xl font-bold pb-3 text-red-600">
-                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
-                </p>
-              )}
               <p
                 className={`text-sm ${
                   currentMode === "dark"
@@ -556,9 +544,7 @@ const DashboardPanel = ({ setloading }) => {
           </div>
         </motion.div>
       </div>
-      {/* 3RD ROW END [REVENUE, TOTAL SALES] */}
-
-      {/* 4TH ROW [UPCOMING MEETING] */}
+      
       <div className="grid grid-cols-1 pb-3">
         <motion.div
           initial={{ opacity: 0 }}
@@ -568,35 +554,17 @@ const DashboardPanel = ({ setloading }) => {
             currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
           } col-span-1 h-fit rounded-md p-5 cursor-pointer hover:shadow-sm`}
         >
-          {/* {console.log("User is")}
-          {console.log(User)} */}
           <h4
             className="font-semibold pb-5"
             style={{ textTransform: "capitalize" }}
           >
             Upcoming meetings
           </h4>
-          {User?.role === 1 || User?.role === 2 ? (
             <UpcomingMeeting
               upcoming_meetings={DashboardData?.upcoming_meetings}
             />
-          ) : null}
-          {User?.role === 3 && (
-            <UpcomingMeeting
-              upcoming_meetings={DashboardData?.upcoming_meetings}
-            />
-          )}
-          {User?.role === 7 && (
-            <UpcomingMeetingAgent
-              upcoming_meetings={DashboardData?.upcoming_meetings}
-            />
-          )}
-          {/* <UserLocation /> */}
         </motion.div>
       </div>
-      {/* 4TH ROW END [UPCOMING MEETING] */}
-
-      {/* 5TH ROW [REMINDER] */}
 
       {visible === true && (
         <div className="grid grid-cols-1 pb-3">

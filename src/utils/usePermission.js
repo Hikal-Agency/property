@@ -6,13 +6,13 @@ const usePermission = () => {
 
   return {
     hasPermission: (key, isRoute = false) => {
-      
       let userPermissions = [];
-      
+
       if (isRoute) {
         userPermissions = permits
-        ?.split(",")
-        ?.map((p) => `/${p}`.replaceAll(" ", "").trim());
+          ?.split(",")
+          ?.map((p) => `/${p}`.replaceAll(" ", "").trim());
+        return userPermissions?.some((permission) => key?.includes(permission));
       } else {
         if (permits?.length === 0) {
           return false;
@@ -20,12 +20,8 @@ const usePermission = () => {
         userPermissions = permits
           ?.split(",")
           ?.map((p) => p.replaceAll(" ", "").trim());
+        return userPermissions?.some((permission) => key.toLowerCase() === permission.toLowerCase());
       }
-
-      const isPermitted = userPermissions?.some((permission) =>
-        key?.includes(permission)
-      );
-      return isPermitted;
     },
   };
 };
