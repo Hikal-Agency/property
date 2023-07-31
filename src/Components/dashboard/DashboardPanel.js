@@ -221,7 +221,7 @@ const DashboardPanel = ({ setloading }) => {
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
-              {(User?.role === 1 || User?.role === 2) && (
+              {(User?.role === 1 || User?.role === 2 || User?.role === 8) && (
                 <p className="text-2xl font-bold pb-3 text-red-600">
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
@@ -239,7 +239,7 @@ const DashboardPanel = ({ setloading }) => {
           </Link>
           {/* )} */}
 
-          {(User?.role === 1 || User?.role === 2) ? (
+          {(User?.role === 1 || User?.role === 2 || User?.role === 8) ? (
             HeadData.map((item, index) => {
               return (
                 <Link
@@ -335,7 +335,7 @@ const DashboardPanel = ({ setloading }) => {
 
         {/* CHART  */}
         <>
-          {(User?.role === 1 || User?.role === 2) ? (
+          {(User?.role === 1 || User?.role === 2 || User?.role === 8) ? (
             <>
               <motion.div
                 initial={{ x: 120 }}
@@ -407,7 +407,7 @@ const DashboardPanel = ({ setloading }) => {
       </div>
 
       {/* 2ND ROW [CHARTS FOR ADMIN ONLY] */}
-      {(User?.role === 1 || User?.role === 2) ? (
+      {(User?.role === 1 || User?.role === 2 || User?.role === 8) ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
             <div
