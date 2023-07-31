@@ -3,13 +3,18 @@ import { useStateContext } from "../context/ContextProvider";
 import Loader from "../Components/Loader";
 
 const usePermission = () => {
-  const { permits } = useStateContext();
+  const { permits, User } = useStateContext();
   console.log(permits);
 
   return {
     hasPermission: (key, isRoute = false, isRouteComponent = false) => {
+      if(User?.role === 1){
+        return {
+          isPermitted: true
+        };
+      }
+      
       let userPermissions = [];
-
       if (isRoute) {
         userPermissions = permits
           ?.split(",")
