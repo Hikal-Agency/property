@@ -1,5 +1,11 @@
-import { CircularProgress, Modal, Backdrop, Button } from "@mui/material";
-import { IoIosAlert } from "react-icons/io";
+import {
+  CircularProgress,
+  Modal,
+  Backdrop,
+  Button,
+  IconButton,
+} from "@mui/material";
+import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
 import { Select, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -192,6 +198,17 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
         timeout: 500,
       }}
     >
+      {/* <IconButton
+        sx={{
+          position: "absolute",
+          right: 12,
+          top: 10,
+          // color: (theme) => theme.palette.grey[500],
+        }}
+        // onClick={() => setDialogue(false)}
+      >
+        <IoMdClose size={18} />
+      </IconButton> */}
       <div
         style={style}
         className={`w-[calc(100%-20px)] md:w-[40%]  absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
