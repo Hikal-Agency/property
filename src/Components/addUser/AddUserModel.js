@@ -28,7 +28,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
   const [UserRole, setUserRole] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const { BACKEND_URL, currentMode } = useStateContext();
+  const { BACKEND_URL, currentMode, User } = useStateContext();
   const [allRoles, setAllRoles] = useState([]);
 
   const rolesMap = {
@@ -129,6 +129,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
         const isParent = Managers?.find((m) => m?.role === 2)?.id;
         form["isParent"] = isParent;
       }
+      form["agency"] = User?.role === 1 ? formdata?.agency : User?.agency;
       console.log("Form: ", form);
       await axios
         .post(`${BACKEND_URL}/register`, form)
@@ -367,6 +368,26 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                           }}
                         />
                       </div>
+                      {User?.role === 1 && (
+                        <div className="col-span-6">
+                          <TextField
+                            id="agency"
+                            type={"number"}
+                            label="Agency Id"
+                            className="w-full mt-3"
+                            variant="outlined"
+                            size="medium"
+                            required
+                            value={formdata?.agency}
+                            onChange={(e) => {
+                              setformdata({
+                                ...formdata,
+                                agency: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                      )}
                       <div className="col-span-6">
                         <TextField
                           id="email"
