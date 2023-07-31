@@ -290,6 +290,7 @@ const Chat = () => {
           Authorization: "Bearer " + token,
         },
       });
+      
       document.location.reload();
     }
   };
