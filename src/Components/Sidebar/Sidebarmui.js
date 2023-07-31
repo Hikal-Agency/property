@@ -936,6 +936,33 @@ const Sidebarmui = () => {
   ];
 
   if (isUserSubscribed !== null && isUserSubscribed === true) {
+    if(User?.role === 1) {
+       links = [...links, {
+      title: "MARKETING",
+      links: [
+         {
+          name: "Instances",
+          icon: <BsFillLayersFill />,
+          link: "/instances",
+        },
+        {
+          name: "WhatsApp",
+          icon: <RiWhatsappFill />,
+          link: "/marketing/chat",
+        },
+        {
+          name: "Contacts",
+          icon: <MdContactPage />,
+          link: "/marketing/contacts",
+        },
+        {
+          name: "Templates",
+          icon: <FaMobile />,
+          link: "/marketing/templates",
+        },
+      ],
+    }];
+    } else {
     links = [...links, {
       title: "MARKETING",
       links: [
@@ -956,6 +983,7 @@ const Sidebarmui = () => {
         },
       ],
     }];
+  }
   }
 
   return (

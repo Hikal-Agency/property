@@ -264,7 +264,7 @@ const routes = [
     pageName: "Marketing",
   },
   {
-    path: "/marketing/instances",
+    path: "/instances",
     element: <WhatsappMarketing pageName={"instances"}/>,
     pageName: "Marketing",
     restrictedRoles: [2, 3, 7],
