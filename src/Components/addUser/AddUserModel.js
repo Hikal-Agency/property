@@ -194,9 +194,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     >
       <div
         style={style}
-        className={`w-[calc(100%-20px)] md:w-[40%]  ${
-          currentMode === "dark" ? "bg-gray-900" : "bg-white"
-        } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
+        className={`w-[calc(100%-20px)] md:w-[40%]  absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
       >
         <div className="relative overflow-hidden">
           <div className={``}>
@@ -206,7 +204,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
               ) : (
                 <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
                   <div>
-                    <h2 className="text-center text-xl font-bold text-gray-900">
+                    <h2 className="text-center text-xl font-bold text-gray-900 mt-3">
                       Create A New Account
                     </h2>
                   </div>
