@@ -14,6 +14,7 @@ import "../../styles/app.css";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
+import { RiCloseLine as CloseIcon } from "react-icons/ri";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -198,17 +199,18 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
       BackdropProps={{
         timeout: 500,
       }}
+      className="relative"
     >
       {/* <IconButton
         sx={{
           position: "absolute",
           right: 12,
           top: 10,
-          // color: (theme) => theme.palette.grey[500],
+          color: "#000000",
         }}
-        // onClick={() => setDialogue(false)}
+        onClick={addUserModelClose}
       >
-        <IoMdClose size={18} />
+        <CloseIcon size={18} color="#000000" />
       </IconButton> */}
       <div
         style={style}
