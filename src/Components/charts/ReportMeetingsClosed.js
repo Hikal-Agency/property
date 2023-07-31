@@ -15,6 +15,7 @@ import {
 import { Chart } from "react-chartjs-2";
 // import axios from "axios";
 import axios from "../../axoisConfig";
+import moment from "moment";
 // import faker from 'faker';
 
 ChartJS.register(
@@ -29,14 +30,37 @@ ChartJS.register(
   BarController
 );
 
-const ReportMeetingsClosed = () => {
+const ReportMeetingsClosed = ({ selectedMonth }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [performanceChartData, setPerformanceChartData] = useState([]);
+  const token = localStorage.getItem("auth-token");
 
-  useEffect(() => {
-    const token = localStorage.getItem("auth-token");
+  const fetchPerformance = () => {
+    let params = {};
+
+    if (selectedMonth) {
+      if (selectedMonth === "lastmonth") {
+        const lastMonthStartDate = moment()
+          .subtract(1, "months")
+          .startOf("month")
+          .format("YYYY-MM-DD");
+        const lastMonthEndDate = moment()
+          .subtract(1, "months")
+          .endOf("month")
+          .format("YYYY-MM-DD");
+        params.date_range = `${lastMonthStartDate},${lastMonthEndDate}`;
+      } else if (selectedMonth === "thismonth") {
+        const thisMonthStartDate = moment()
+          .startOf("month")
+          .format("YYYY-MM-DD");
+        const thisMonthEndDate = moment().endOf("month").format("YYYY-MM-DD");
+        params.date_range = `${thisMonthStartDate},${thisMonthEndDate}`;
+      }
+    }
+
     axios
       .get(`${BACKEND_URL}/performance`, {
+        params,
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -51,8 +75,15 @@ const ReportMeetingsClosed = () => {
       .catch((err) => {
         console.log(err);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
+
+  useEffect(() => {
+    fetchPerformance();
   }, []);
+
+  useEffect(() => {
+    fetchPerformance();
+  }, [selectedMonth]);
 
   return (
     <span>

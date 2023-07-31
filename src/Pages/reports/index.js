@@ -11,7 +11,6 @@ import { CircularProgress } from "@mui/material";
 import SocialChart from "../../Components/charts/SocialChart";
 import { toast } from "react-toastify";
 
-
 const Reports = () => {
   const {
     currentMode,
@@ -23,6 +22,7 @@ const Reports = () => {
   const [saleschart_loading, setsaleschart_loading] = useState(true);
   const [loading, setloading] = useState(true);
   const [socialChartData, setSocialChartData] = useState([]);
+  const [selectedMonth, setSelectedMonth] = useState();
 
   const FetchProfile = (token) => {
     axios
@@ -76,7 +76,6 @@ const Reports = () => {
       console.log(error);
     }
   };
-
 
   const fetchSocialChart = async () => {
     try {
@@ -222,6 +221,10 @@ const Reports = () => {
                                 ? "bg-black text-white"
                                 : "bg-white text-black"
                             } text-xs rounded-md p-1`}
+                            value={selectedMonth}
+                            onChange={(e) => {
+                              setSelectedMonth(e.target.value);
+                            }}
                           >
                             <option value="alltime">All-Time</option>
                             <option value="lastmonth">Last Month</option>
@@ -230,7 +233,7 @@ const Reports = () => {
                         </span>
                       </h6>
                       <div className="justify-between items-center">
-                        <ReportMeetingsClosed />
+                        <ReportMeetingsClosed selectedMonth={selectedMonth} />
                       </div>
                     </div>
 
