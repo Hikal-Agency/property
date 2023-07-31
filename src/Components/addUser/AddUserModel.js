@@ -1,5 +1,11 @@
-import { CircularProgress, Modal, Backdrop, Button } from "@mui/material";
-import { IoIosAlert } from "react-icons/io";
+import {
+  CircularProgress,
+  Modal,
+  Backdrop,
+  Button,
+  IconButton,
+} from "@mui/material";
+import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
 import { Select, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -22,7 +28,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
   const [UserRole, setUserRole] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const { BACKEND_URL, currentMode } = useStateContext();
+  const { BACKEND_URL, currentMode, User } = useStateContext();
   const [allRoles, setAllRoles] = useState([]);
 
   const rolesMap = {
@@ -123,6 +129,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
         const isParent = Managers?.find((m) => m?.role === 2)?.id;
         form["isParent"] = isParent;
       }
+      form["agency"] = User?.role === 1 ? formdata?.agency : User?.agency;
       console.log("Form: ", form);
       await axios
         .post(`${BACKEND_URL}/register`, form)
@@ -192,6 +199,17 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
         timeout: 500,
       }}
     >
+      {/* <IconButton
+        sx={{
+          position: "absolute",
+          right: 12,
+          top: 10,
+          // color: (theme) => theme.palette.grey[500],
+        }}
+        // onClick={() => setDialogue(false)}
+      >
+        <IoMdClose size={18} />
+      </IconButton> */}
       <div
         style={style}
         className={`w-[calc(100%-20px)] md:w-[40%]  absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
@@ -350,6 +368,26 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                           }}
                         />
                       </div>
+                      {User?.role === 1 && (
+                        <div className="col-span-6">
+                          <TextField
+                            id="agency"
+                            type={"number"}
+                            label="Agency Id"
+                            className="w-full mt-3"
+                            variant="outlined"
+                            size="medium"
+                            required
+                            value={formdata?.agency}
+                            onChange={(e) => {
+                              setformdata({
+                                ...formdata,
+                                agency: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                      )}
                       <div className="col-span-6">
                         <TextField
                           id="email"
