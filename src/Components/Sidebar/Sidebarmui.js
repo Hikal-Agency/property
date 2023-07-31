@@ -1011,10 +1011,10 @@ const Sidebarmui = () => {
           >
             <div className="flex justify-between items-center h-[50px]">
               <Link
-                to="/dashboard"
+                to={User?.role !== 5 ? "/dashboard" : "/attendance/officeSettings"}
                 className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
                 onClick={() => {
-                  setSelected({ name: "Dashboard", index: 0 });
+                  setSelected({ name: User?.role !== 5 ? "Dashboard" : "Office Settings", index: 0 });
                 }}
               >
                 {isCollapsed ? (
@@ -1144,7 +1144,7 @@ const Sidebarmui = () => {
 
                 if (
                   permittedLinksMoreThan0 ||
-                  item?.links[0]?.link === "/dashboard"
+                  (item?.links[0]?.link === "/dashboard" && User?.role !== 5)
                 ) {
                   return (
                     <div key={linkIndex}>
@@ -1183,7 +1183,7 @@ const Sidebarmui = () => {
                           (link?.submenu &&
                             hasPermission(link?.submenu[0]?.link, true)
                               ?.isPermitted) ||
-                          link?.link === "/dashboard"
+                          (link?.link === "/dashboard" && User?.role !== 5)
                         ) {
                           return (
                             <Tooltip

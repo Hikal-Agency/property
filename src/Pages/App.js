@@ -410,7 +410,7 @@ const routes = [
 export const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-  const { setAllRoutes, currentMode } = useStateContext();
+  const { setAllRoutes, currentMode, User} = useStateContext();
   const location = useLocation();
   const {hasPermission} = usePermission();
 
@@ -465,7 +465,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
-              <Route path="/dashboard" element={<Dashboard/>}/>
+              {User?.role !== 5 &&
+                  <Route path="/dashboard" element={<Dashboard/>}/>
+              }
               {routes.map((route, index) => {
                 
                 return (

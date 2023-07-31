@@ -43,7 +43,7 @@ const Home = () => {
           localStorage.setItem("auth-token", result.data.data.token);
           document.location.href =
             result.data.data.role === 5
-              ? "/attendance/employeesList"
+              ? "/attendance/officeSettings"
               : location?.state?.continueURL || "/dashboard";
           toast.success("Login Successfull", {
             position: "top-right",
