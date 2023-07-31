@@ -211,9 +211,21 @@ const DashboardPanel = ({ setloading }) => {
             onClick={() => setopenBackDrop(true)}
           >
             <div>
+                   {User?.role === 3 && (
                 <p className="text-2xl font-bold pb-3 text-red-600">
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
+              )}
+              {User?.role === 7 && (
+                <p className="text-2xl font-bold pb-3 text-red-600">
+                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
+                </p>
+              )}
+              {(User?.role === 1 || User?.role === 2) && (
+                <p className="text-2xl font-bold pb-3 text-red-600">
+                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
+                </p>
+              )}
               <p
                 className={`text-sm ${
                   currentMode === "dark"
@@ -227,30 +239,9 @@ const DashboardPanel = ({ setloading }) => {
           </Link>
           {/* )} */}
 
-          {DashboardData?.designation === "Head" ? (
+          {(User?.role === 1 || User?.role === 2) ? (
             HeadData.map((item, index) => {
               return (
-                // <div
-                //   key={index}
-                //   className={`${
-                //     currentMode === "dark"
-                //       ? "bg-gray-900 text-white "
-                //       : "bg-gray-200 text-main-dark-bg"
-                //   }  h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
-                // >
-                //   <p className="text-2xl font-bold pb-3 text-red-600">
-                //     {item.amount}
-                //   </p>
-                //   <p
-                //     className={`text-sm ${
-                //       currentMode === "dark"
-                //         ? "text-white"
-                //         : "text-main-dark-bg-2 font-semibold"
-                //     }   `}
-                //   >
-                //     {item?.title}
-                //   </p>
-                // </div>
                 <Link
                   key={index}
                   to={item?.link}
@@ -275,7 +266,7 @@ const DashboardPanel = ({ setloading }) => {
                 </Link>
               );
             })
-          ) : DashboardData?.designation === "Manager" ? (
+          ) : User?.role === 3 ? (
             <>
               {ManagerData.map((item, index) => {
                 return (
@@ -344,7 +335,7 @@ const DashboardPanel = ({ setloading }) => {
 
         {/* CHART  */}
         <>
-          {DashboardData?.designation === "Head" ? (
+          {(User?.role === 1 || User?.role === 2) ? (
             <>
               <motion.div
                 initial={{ x: 120 }}
@@ -362,7 +353,7 @@ const DashboardPanel = ({ setloading }) => {
                 </div>
               </motion.div>
             </>
-          ) : DashboardData?.designation === "Manager" ? (
+          ) : User?.role === 3 ? (
             <>
               <div
                 className={`${
@@ -416,7 +407,7 @@ const DashboardPanel = ({ setloading }) => {
       </div>
 
       {/* 2ND ROW [CHARTS FOR ADMIN ONLY] */}
-      {DashboardData?.designation === "Head" ? (
+      {(User?.role === 1 || User?.role === 2) ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
             <div
@@ -450,7 +441,7 @@ const DashboardPanel = ({ setloading }) => {
           {/* MANAGER TAGET PROGRESS BAR  */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3"></div>
         </>
-      ) : DashboardData?.designation === "Manager" ? (
+      ) : User?.role === 3 ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3">
             <div
