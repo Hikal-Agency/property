@@ -11,11 +11,17 @@ import moment from "moment";
 
 const EmployeesList = ({ user }) => {
   const [loading, setLoading] = useState(false);
-  const { currentMode, BACKEND_URL, pageState, setpageState, darkModeColors } =
-    useStateContext();
+  const {
+    currentMode,
+    BACKEND_URL,
+    pageState,
+    setpageState,
+    darkModeColors,
+    User,
+  } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
-  
+
   const [selectedDay, setSelectedDay] = useState("today");
   // const [selectedDay, setSelectedDay] = useState("");
 
@@ -64,6 +70,7 @@ const EmployeesList = ({ user }) => {
     try {
       const params = {
         page: pageState.page,
+        agency_id: User?.agency,
       };
 
       if (selectedDay) {
@@ -128,7 +135,9 @@ const EmployeesList = ({ user }) => {
                     {/* <MenuItem selected value="selected">
                       Select a day
                     </MenuItem> */}
-                    <MenuItem selected value="today">Today</MenuItem>
+                    <MenuItem selected value="today">
+                      Today
+                    </MenuItem>
                     <MenuItem value="yesterday">Yesterday</MenuItem>
                   </Select>
                 </div>
@@ -162,13 +171,11 @@ const EmployeesList = ({ user }) => {
                           onClick={(e) => handleClick(e, item?.user_id)}
                         >
                           {/* ATTENDANCE TYPE  */}
-                          <div className={`${bgColor} p-2 rounded-sm flex justify-between text-sm text-white font-semibold`} >
-                            <p className="text-left">
-                              {item?.attendance_type}
-                            </p>
-                            <p className="text-right">
-                              {item?.check_datetime}
-                            </p>
+                          <div
+                            className={`${bgColor} p-2 rounded-sm flex justify-between text-sm text-white font-semibold`}
+                          >
+                            <p className="text-left">{item?.attendance_type}</p>
+                            <p className="text-right">{item?.check_datetime}</p>
                           </div>
 
                           {/* IMAGE  */}
@@ -193,7 +200,9 @@ const EmployeesList = ({ user }) => {
                             <h4 className="font-bold text-base capitalize">
                               {item?.userName}
                             </h4>
-                            <p className="text-sm">{item?.position.toUpperCase()}</p>
+                            <p className="text-sm">
+                              {item?.position.toUpperCase()}
+                            </p>
                             {/* <p className="text-sm">
                               {item?.department === 1
                                 ? "Admin"
