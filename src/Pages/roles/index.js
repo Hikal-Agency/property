@@ -416,14 +416,15 @@ const Role = () => {
                       <DataGrid
                         autoHeight
                         disableSelectionOnClick
+                        rowHeight={45}
                         rows={pageState.data}
                         columns={columns}
                         rowCount={pageState.total}
                         loading={pageState.isLoading}
-                        rowsPerPageOptions={[30, 50, 75, 100]}
+                        rowsPerPageOptions={[]}
                         pagination
                         // width="auto"
-                        getRowHeight={() => "auto"}
+                        // getRowHeight={() => "auto"}
                         paginationMode="server"
                         page={pageState.page - 1}
                         pageSize={pageState.pageSize}
