@@ -188,8 +188,8 @@ const SendMessageModal = ({
 
       const waDevice = localStorage.getItem("authenticated-wa-device");
       if (waDevice) {
-        socket.emit("check_device_exists", { id: waDevice });
-        socket.on("check_device", (result) => {
+        socket.emit("check_device_exists_send_msg_modal", { id: waDevice });
+        socket.on("check_device_send_msg_modal", (result) => {
           if (result) {
             socket.emit("send-bulk-image", {
               contacts: contactList,
@@ -198,7 +198,7 @@ const SendMessageModal = ({
               caption: messageText,
             });
 
-            setbtnloading(true);
+            setbtnloading(false);
             setSendMessageModal({ open: false });
             toast.success("Messages are being sent. ", {
               position: "top-right",

@@ -21,7 +21,6 @@ import { langs } from "../../langCodes";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
 import { socket } from "../App";
-import SendImageModal from "../../Components/whatsapp-marketing/SendImageModal";
 import usePermission from "../../utils/usePermission";
 
 const leadOrigins = [
@@ -107,7 +106,6 @@ const AllLeads = () => {
   const [projectNameTyped, setProjectNameTyped] = useState("");
   const [managers, setManagers] = useState(Managers || []);
   const [agents, setAgents] = useState(SalesPerson || {});
-  const [sendImageModal, setSendImageModal] = useState();
   const [pageRange, setPageRange] = useState();
   const [error, setError] = useState(false);
   const {hasPermission} = usePermission();
@@ -1345,13 +1343,6 @@ const AllLeads = () => {
           messageLogsModal={messageLogsModal}
           setMessageLogsModal={setMessageLogsModal}
           whatsappSenderNo={whatsappSenderNo}
-        />
-      )}
-
-      {sendImageModal?.isOpen && (
-        <SendImageModal
-          handleCloseImageModal={() => setSendImageModal({ isOpen: false })}
-          sendImageModal={sendImageModal}
         />
       )}
     </div>
