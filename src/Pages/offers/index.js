@@ -11,30 +11,28 @@ import usePermission from "../../utils/usePermission";
 const Offers = () => {
   const { currentMode, darkModeColors, setopenBackDrop, User, BACKEND_URL } =
     useStateContext();
-    const [value, setValue] = useState(0);
-    const {hasPermission} = usePermission();
-    
-    const [tabValue, setTabValue] = useState(0);
-    const [pageBeingScrolled, setPageBeingScrolled] = useState(1);
-    const [lastPage, setLastPage] = useState(0);
-    const [loading, setLoading] = useState(true);
-    const [offers, setOffers] = useState([]);
-    const [btnloading, setbtnloading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
+  const [value, setValue] = useState(0);
+  const { hasPermission } = usePermission();
 
-    const handleChange = (event, newValue) => {
-      console.log("newvalue: ", newValue);
-      setValue(newValue);
-      setbtnloading(false);
-      setCurrentPage(1);
-      setPageBeingScrolled(1);
-    };
+  const [tabValue, setTabValue] = useState(0);
+  const [pageBeingScrolled, setPageBeingScrolled] = useState(1);
+  const [lastPage, setLastPage] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [offers, setOffers] = useState([]);
+  const [btnloading, setbtnloading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    setbtnloading(false);
+    setCurrentPage(1);
+    setPageBeingScrolled(1);
+  };
 
   useEffect(() => {
     setopenBackDrop(false);
     // eslint-disable-next-line
   }, []);
-
 
   const FetchOffers = async (token, page = 1) => {
     if (page > 1) {
@@ -77,7 +75,6 @@ const Offers = () => {
     }
   };
 
-
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchOffers(token, currentPage);
@@ -86,92 +83,92 @@ const Offers = () => {
   return (
     <>
       <div className="flex relative min-h-screen">
-      {loading ? <Loader/> :
-        <div
-          className={`w-full ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
-          }`}
-        >
-          <div className={`w-full `}>
-            <div className="pl-3">
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-gray-900 text-white"
-                    : "bg-gray-200 text-black"
-                } p-5 rounded-md my-5 mb-10`}
-              >
-                <h4 className="font-semibold pb-5">Offers</h4>
-                <Box
-                  sx={{
-                    ...darkModeColors,
-                    "& .MuiTabs-indicator": {
-                      height: "100%",
-                      borderRadius: "5px",
-                      backgroundColor: "#da1f26",
-                    },
-                    "& .Mui-selected": {
-                      color: "white !important",
-                      zIndex: "1",
-                    },
-                  }}
-                  className={`w-full rounded-md overflow-hidden ${
-                    currentMode === "dark" ? "bg-black" : "bg-white"
-                  } `}
+        {loading ? (
+          <Loader />
+        ) : (
+          <div
+            className={`w-full ${
+              currentMode === "dark" ? "bg-black" : "bg-white"
+            }`}
+          >
+            <div className={`w-full `}>
+              <div className="pl-3">
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-gray-900 text-white"
+                      : "bg-gray-200 text-black"
+                  } p-5 rounded-md my-5 mb-10`}
                 >
-                  <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    variant="standard"
-                    className="w-full px-1 m-1"
+                  <h4 className="font-semibold pb-5">Offers</h4>
+                  <Box
+                    sx={{
+                      ...darkModeColors,
+                      "& .MuiTabs-indicator": {
+                        height: "100%",
+                        borderRadius: "5px",
+                        backgroundColor: "#da1f26",
+                      },
+                      "& .Mui-selected": {
+                        color: "white !important",
+                        zIndex: "1",
+                      },
+                    }}
+                    className={`w-full rounded-md overflow-hidden ${
+                      currentMode === "dark" ? "bg-black" : "bg-white"
+                    } `}
                   >
-                    {hasPermission("offers_create") ? <Tab label="CREATE NEW OFFER" /> : ""}
-                    {hasPermission("offers_manager_tab") && (
-                      <Tab label="FOR MANAGERS" />
+                    <Tabs
+                      value={value}
+                      onChange={handleChange}
+                      variant="standard"
+                      className="w-full px-1 m-1"
+                    >
+                      {hasPermission("offers_create") ? (
+                        <Tab label="CREATE NEW OFFER" />
+                      ) : (
+                        ""
+                      )}
+                      {hasPermission("offers_manager_tab") && (
+                        <Tab label="FOR MANAGERS" />
+                      )}
+                      <Tab label="FOR AGENTS" />
+                    </Tabs>
+                  </Box>
+                  <div className="mt-3 pb-3">
+                    {hasPermission("offers_create") ? (
+                      <TabPanel value={value} index={0}>
+                        <CreateOffer
+                          isLoading={loading}
+                          tabValue={tabValue}
+                          setTabValue={setTabValue}
+                        />
+                      </TabPanel>
+                    ) : (
+                      ""
                     )}
-                    <Tab label="FOR AGENTS" />
-                  </Tabs>
-                </Box>
-                <div className="mt-3 pb-3">
-                  {hasPermission("offers_create") ? (
-                    <TabPanel value={value} index={0}>
-                      <CreateOffer
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                      />
-                    </TabPanel>
-                  ) : (
-                    ""
-                  )}
-                  {hasPermission("offers_manager_tab") ? (
-                    <TabPanel value={value} index={1}>
+                    {hasPermission("offers_manager_tab") ? (
+                      <TabPanel value={value} index={1}>
+                        <OffersList
+                          user={"manager"}
+                          lastPage={lastPage}
+                          setLastPage={setLastPage}
+                          pageBeingScrolled={pageBeingScrolled}
+                          setPageBeingScrolled={setPageBeingScrolled}
+                          btnloading={btnloading}
+                          currentPage={currentPage}
+                          offers={offers}
+                          setCurrentPage={setCurrentPage}
+                        />
+                      </TabPanel>
+                    ) : (
+                      ""
+                    )}
+                    <TabPanel
+                      value={value}
+                      index={hasPermission("offers_manager_tab") ? 2 : 0}
+                    >
                       <OffersList
-                        user={"manager"}
-                        lastPage={lastPage}
-                        setLastPage={setLastPage}
-                        pageBeingScrolled={pageBeingScrolled}
-                        setPageBeingScrolled={setPageBeingScrolled}
-                        btnloading={btnloading}
-                        currentPage={currentPage}
-                        offers={offers}
-                        setCurrentPage={setCurrentPage}
-                      />
-                    </TabPanel>
-                  ) : (
-                    ""
-                  )}
-                  <TabPanel
-                    value={value}
-                    index={
-                      User?.role === 1 || User?.role === 2
-                        ? 2
-                        : User?.role === 3
-                        ? 1
-                        : 0
-                    }
-                  >
-                     <OffersList
                         user={"salesperson"}
                         lastPage={lastPage}
                         setLastPage={setLastPage}
@@ -182,19 +179,21 @@ const Offers = () => {
                         offers={offers}
                         setCurrentPage={setCurrentPage}
                       />
-                  </TabPanel>
+                    </TabPanel>
+                  </div>
                 </div>
               </div>
             </div>
+            {/* <Footer /> */}
           </div>
-          {/* <Footer /> */}
-        </div>
-      }
+        )}
         {value ? (
           <Box className="fixed z-[10] rounded-t rounded-b rounded-tr-none rounded-br-none top-[100px] right-0 w-max px-2 py-1 bg-black text-white">
             Page {pageBeingScrolled} of {lastPage}
           </Box>
-        ) : ""}
+        ) : (
+          ""
+        )}
       </div>
     </>
   );
