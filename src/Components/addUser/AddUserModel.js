@@ -14,7 +14,7 @@ import "../../styles/app.css";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
-import { RiCloseLine as CloseIcon } from "react-icons/ri";
+import { GridCloseIcon } from "@mui/x-data-grid";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -218,11 +218,22 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
       >
         <div className="relative overflow-hidden">
           <div className={``}>
-            <div className="flex min-h-screen items-center justify-center pl-3">
+            <div className="flex pt-3 items-center justify-center pl-3">
               {fetchingRoles ? (
                 <CircularProgress />
               ) : (
-                <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+                <div className="pt-20 w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+                  <IconButton
+                    sx={{
+                      position: "absolute",
+                      right: 12,
+                      top: 20,
+                      color: currentMode === "dark" ? "#ffffff" : "#000000",
+                    }}
+                    onClick={addUserModelClose}
+                  >
+                    <GridCloseIcon size={18} />
+                  </IconButton>
                   <div>
                     <h2 className="text-center text-xl font-bold text-gray-900 mt-3">
                       Create A New Account

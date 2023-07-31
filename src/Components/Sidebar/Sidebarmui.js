@@ -117,7 +117,6 @@ const Sidebarmui = () => {
     }
   };
 
-  
   const FetchPermissions = async () => {
     try {
       const token = localStorage.getItem("auth-token");
@@ -204,7 +203,7 @@ const Sidebarmui = () => {
           getAllLeadsMembers(user);
 
           FetchPermissions();
-          
+
           localStorage.setItem("user", JSON.stringify(user));
         })
         .catch((err) => {
@@ -246,9 +245,9 @@ const Sidebarmui = () => {
           Authorization: "Bearer " + token,
         },
       })
-      );
-      const responses = await Promise.all(requests);
-      const data = {};
+    );
+    const responses = await Promise.all(requests);
+    const data = {};
     for (let i = 0; i < responses.length; i++) {
       const response = responses[i];
       if (response.data?.team[0]?.isParent) {
@@ -279,7 +278,6 @@ const Sidebarmui = () => {
   useEffect(() => {
     fetchSidebarData();
   }, []);
-
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
@@ -342,7 +340,6 @@ const Sidebarmui = () => {
     }
     // eslint-disable-next-line
   }, []);
-
 
   let links = [
     {
@@ -936,26 +933,60 @@ const Sidebarmui = () => {
   ];
 
   if (isUserSubscribed !== null && isUserSubscribed === true) {
-    links = [...links, {
-      title: "MARKETING",
-      links: [
+    if (User?.role === 1) {
+      links = [
+        ...links,
         {
-          name: "WhatsApp",
-          icon: <RiWhatsappFill />,
-          link: "/marketing/chat",
+          title: "MARKETING",
+          links: [
+            {
+              name: "Instances",
+              icon: <BsFillLayersFill />,
+              link: "/instances",
+            },
+            {
+              name: "WhatsApp",
+              icon: <RiWhatsappFill />,
+              link: "/marketing/chat",
+            },
+            {
+              name: "Contacts",
+              icon: <MdContactPage />,
+              link: "/marketing/contacts",
+            },
+            {
+              name: "Templates",
+              icon: <FaMobile />,
+              link: "/marketing/templates",
+            },
+          ],
         },
+      ];
+    } else {
+      links = [
+        ...links,
         {
-          name: "Contacts",
-          icon: <MdContactPage />,
-          link: "/marketing/contacts",
+          title: "MARKETING",
+          links: [
+            {
+              name: "WhatsApp",
+              icon: <RiWhatsappFill />,
+              link: "/marketing/chat",
+            },
+            {
+              name: "Contacts",
+              icon: <MdContactPage />,
+              link: "/marketing/contacts",
+            },
+            {
+              name: "Templates",
+              icon: <FaMobile />,
+              link: "/marketing/templates",
+            },
+          ],
         },
-        {
-          name: "Templates",
-          icon: <FaMobile />,
-          link: "/marketing/templates",
-        },
-      ],
-    }];
+      ];
+    }
   }
 
   return (
@@ -1091,7 +1122,8 @@ const Sidebarmui = () => {
                       if (anotherSubMenu) {
                         for (let l = 0; l < anotherSubMenu?.length; l++) {
                           if (
-                            hasPermission(anotherSubMenu[l]?.link, true)?.isPermitted
+                            hasPermission(anotherSubMenu[l]?.link, true)
+                              ?.isPermitted
                           ) {
                             permittedLinksMoreThan0 = true;
                             break;

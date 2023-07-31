@@ -264,7 +264,7 @@ const routes = [
     pageName: "Marketing",
   },
   {
-    path: "/marketing/instances",
+    path: "/instances",
     element: <WhatsappMarketing pageName={"instances"}/>,
     pageName: "Marketing",
     restrictedRoles: [2, 3, 7],
@@ -410,7 +410,7 @@ const routes = [
 export const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-  const { setAllRoutes, currentMode, User } = useStateContext();
+  const { setAllRoutes, currentMode } = useStateContext();
   const location = useLocation();
   const {hasPermission} = usePermission();
 
@@ -466,8 +466,7 @@ function App() {
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
               <Route path="/dashboard" element={<Dashboard/>}/>
-              {User?.permissions ? 
-              [routes.map((route, index) => {
+              {routes.map((route, index) => {
                 
                 return (
                   <Route
@@ -476,8 +475,7 @@ function App() {
                     element={hasPermission(route?.path, true, true)?.isPermitted ? route.element : hasPermission(route?.path, true, true)?.element}
                   />
                 );
-              })]
-              : <></>}
+              })}
             </Routes>
           </div>
         </div>

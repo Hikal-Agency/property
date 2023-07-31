@@ -32,7 +32,7 @@ function isEmailValid(email) {
 const AddLeadComponent = () => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
-  const {hasPermission} = usePermission();
+  const { hasPermission } = usePermission();
   const {
     currentMode,
     darkModeColors,
@@ -63,24 +63,6 @@ const AddLeadComponent = () => {
   const [LeadNotes, setLeadNotes] = useState("");
   const [value, setValue] = useState();
   const [error, setError] = useState(false);
-
-  // const handleEmail = (e) => {
-  //   setEmailError(false);
-  //   const value = e.target.value;
-  //   console.log(value);
-  //   const emailRegex = /^\S+@\S+\.\S+$/;
-  //   if (emailRegex.test(value)) {
-  //     setEmailError(false);
-  //   } else {
-  //     setEmailError("Kindly enter a valid email.");
-  //     // setLeadEmail("");
-  //     return;
-  //   }
-
-  //   setLeadEmail(value);
-
-  //   console.log("Email state: ", LeadEmail);
-  // };
 
   const handleEmail = (e) => {
     setEmailError(false);
@@ -376,7 +358,6 @@ const AddLeadComponent = () => {
 
   return (
     <>
-      
       {pageloading ? (
         <Loader />
       ) : (
@@ -884,27 +865,47 @@ const AddLeadComponent = () => {
                                   *
                                 </span>
                               </MenuItem>
-                              <MenuItem value={"Website"}>Website</MenuItem>
-                              <MenuItem value={"Property Finder"}>
-                                Property Finder
-                              </MenuItem>
-                              <MenuItem value={"Campaign"}>Campaign</MenuItem>
-                              <MenuItem value={"Personal"}>Personal</MenuItem>
-                              <MenuItem value={"Whatsapp"}>Whatsapp</MenuItem>
-                              <MenuItem value={"Comment"}>Comment</MenuItem>
-                              <MenuItem value={"Message"}>Message</MenuItem>
-                              <MenuItem value={"Campaign Snapchat"}>
-                                Campaign Snapchat
-                              </MenuItem>
-                              <MenuItem value={"Campaign Tiktok"}>
-                                Campaign Tiktok
-                              </MenuItem>
-                              <MenuItem value={"Campaign Facebook"}>
-                                Campaign Facebook
-                              </MenuItem>
-                              <MenuItem value={"Campaign GoogleAds"}>
-                                Campaign GoogleAds
-                              </MenuItem>
+                              {hasPermission("freshleads") && (
+                                <>
+                                  <MenuItem value={"Website"}>Website</MenuItem>
+                                  <MenuItem value={"Campaign"}>
+                                    Campaign
+                                  </MenuItem>
+                                  <MenuItem value={"Whatsapp"}>
+                                    Whatsapp
+                                  </MenuItem>
+                                  <MenuItem value={"Comment"}>Comment</MenuItem>
+                                  <MenuItem value={"Message"}>Message</MenuItem>
+                                  <MenuItem value={"Campaign Tiktok"}>
+                                    Campaign Tiktok
+                                  </MenuItem>
+                                  <MenuItem value={"Campaign Facebook"}>
+                                    Campaign Facebook
+                                  </MenuItem>
+                                  <MenuItem value={"Campaign GoogleAds"}>
+                                    Campaign GoogleAds
+                                  </MenuItem>
+                                  <MenuItem value={"Campaign Snapchat"}>
+                                    Campaign Snapchat
+                                  </MenuItem>
+                                </>
+                              )}
+
+                              {hasPermission("thirdpartyleads") && (
+                                <>
+                                  <MenuItem value={"Property Finder"}>
+                                    Property Finder
+                                  </MenuItem>
+                                </>
+                              )}
+
+                              {hasPermission("personalleads") && (
+                                <>
+                                  <MenuItem value={"Personal"}>
+                                    Personal
+                                  </MenuItem>
+                                </>
+                              )}
                             </TextField>
                           </Box>
                         </div>
