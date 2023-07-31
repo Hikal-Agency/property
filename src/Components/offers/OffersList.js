@@ -50,14 +50,18 @@ const ribbonStyles = {
   },
 };
 
-const OffersList = ({ user, lastPage, offers, currentPage, btnloading, setCurrentPage, setPageBeingScrolled }) => {
-  const { currentMode, } = useStateContext();
+const OffersList = ({
+  user,
+  lastPage,
+  offers,
+  currentPage,
+  btnloading,
+  setCurrentPage,
+  setPageBeingScrolled,
+}) => {
+  const { currentMode } = useStateContext();
 
-
-  const imagePaths = [
-    "../assets/offers_static_img.png",
-  ];
-
+  const imagePaths = ["../assets/offers_static_img.png"];
 
   const isElementVisible = (element) => {
     const elementRect = element.getBoundingClientRect();
@@ -91,95 +95,101 @@ const OffersList = ({ user, lastPage, offers, currentPage, btnloading, setCurren
     };
   }, []);
 
-  const offersArr = user === "manager" ? offers?.filter((off) => off?.validToManager === 1) : offers?.filter((off) => off?.validToSales === 1);
+  const offersArr =
+    user === "manager"
+      ? offers?.filter((off) => off?.validToManager === 1)
+      : offers?.filter((off) => off?.validToSales === 1);
+
   return (
     <div className="relative">
-      <Box
-        className="mt-1 p-5"
-      >
+      <Box className="mt-1 p-5">
         <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-4 text-center">
           {offersArr?.map((offer, index) => {
             return (
-                <div
-                  className={`relative overflow-hidden offers-page-${offer?.page} ${
-                    currentMode === "dark"
-                      ? "bg-black text-white"
-                      : "bg-white text-black"
-                  } `}
-                >
-                {offer?.status?.toLowerCase() === "expired" &&
+              <div
+                className={`relative overflow-hidden offers-page-${
+                  offer?.page
+                } ${
+                  currentMode === "dark"
+                    ? "bg-black text-white"
+                    : "bg-white text-black"
+                } `}
+              >
+                {offer?.status?.toLowerCase() === "expired" && (
                   <Box sx={{ ...ribbonStyles }}>
                     <div className="wrap">
                       <span>Expired</span>
                     </div>
                   </Box>
-                }
-                  <div style={{
-                          filter: offer?.status?.toLowerCase() === "expired" ? "grayscale(1)" : ""
-                        }}  className="p-5 rounded-md h-[500px] flex flex-col justify-between">
-                    <div className=" top-0 left-0 z-10 flex gap-1">
-                      <div className="h-1 w-7 bg-red-500"></div>
-                      <div className="h-1 w-7 bg-red-500"></div>
-                      <div className="h-1 w-7 bg-red-500"></div>
-                    </div>
-                    <div>
-                      {offer?.offer_image ? (
-                        <img
-                          src={offer?.offer_image}
-                          alt="offer"
-                          className="w-full object-cover h-[200px]"
-                        />
-                      ) : (
-                        <img
-                          src={
-                            imagePaths[
-                              0
-                            ]
-                          }
-                          alt="offer"
-                          className="w-full h-[200px] object-cover"
-                        />
-                      )}
-                    </div>
-                    <p
-                      className={`${
-                        currentMode === "dark" ? "text-white" : "text-[#000000]"
-                      }  text-xs text-start`}
-                      style={{ textTransform: "capitalize" }}
-                    >
-                      Offer from:{" "}
-                      <span className="text-[#DA1F26] font-bold">
-                        {offer?.offerFromName}
-                      </span>
-                    </p>
-                    <h1
-                      className={`${
-                        currentMode === "dark" ? "text-white" : "text-[#000000]"
-                      } text-white font-bold rounded-md mb-3 text-start text-lg`}
-                      style={{
-                        textTransform: "capitalize",
-                        color: currentMode === "dark" ? "#ffffff" : "#000000",
-                      }}
-                    >
-                      {offer?.offerTitle}
-                    </h1>
-                    <p className="mb-3 text-start">{offer?.offerDescription}</p>
-                    <hr className="mb-1"></hr>
-                    <h1 className="font-semibold mb-1">
-                      Valid from{" "}
-                      <span className="text-[#DA1F26]">{offer?.validFrom}</span>{" "}
-                      to{" "}
-                      <span className="text-[#DA1F26]">{offer?.validTill}</span>
-                    </h1>
-                    <hr className="mb-1"></hr>
+                )}
+                <div
+                  style={{
+                    filter:
+                      offer?.status?.toLowerCase() === "expired"
+                        ? "grayscale(1)"
+                        : "",
+                  }}
+                  className="p-5 rounded-md h-[500px] flex flex-col justify-between"
+                >
+                  <div className=" top-0 left-0 z-10 flex gap-1">
+                    <div className="h-1 w-7 bg-red-500"></div>
+                    <div className="h-1 w-7 bg-red-500"></div>
+                    <div className="h-1 w-7 bg-red-500"></div>
                   </div>
-                  {/* <h6
+                  <div>
+                    {offer?.offer_image ? (
+                      <img
+                        src={offer?.offer_image}
+                        alt="offer"
+                        className="w-full object-cover h-[200px]"
+                      />
+                    ) : (
+                      <img
+                        src={imagePaths[0]}
+                        alt="offer"
+                        className="w-full h-[200px] object-cover"
+                      />
+                    )}
+                  </div>
+                  <p
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-[#000000]"
+                    }  text-xs text-start`}
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    Offer from:{" "}
+                    <span className="text-[#DA1F26] font-bold">
+                      {offer?.offerFromName}
+                    </span>
+                  </p>
+                  <h1
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-[#000000]"
+                    } text-white font-bold rounded-md mb-3 text-start text-lg`}
+                    style={{
+                      textTransform: "capitalize",
+                      color: currentMode === "dark" ? "#ffffff" : "#000000",
+                    }}
+                  >
+                    {offer?.offerTitle}
+                  </h1>
+                  <p className="mb-3 text-start">{offer?.offerDescription}</p>
+                  <hr className="mb-1"></hr>
+                  <h1 className="font-semibold mb-1">
+                    Valid from{" "}
+                    <span className="text-[#DA1F26]">{offer?.validFrom}</span>{" "}
+                    to{" "}
+                    <span className="text-[#DA1F26]">{offer?.validTill}</span>
+                  </h1>
+                  <hr className="mb-1"></hr>
+                </div>
+                {/* <h6
                   className="mb-3 bg-main-red-color text-white p-2 rounded-md"
                   style={{ textTransform: "capitalize" }}
                 >
                   Offer from Mr. {offer?.offerFrom}
                 </h6> */}
-                </div>
+              </div>
             );
           })}
         </div>
@@ -202,7 +212,6 @@ const OffersList = ({ user, lastPage, offers, currentPage, btnloading, setCurren
           </div>
         )}
       </Box>
-    
     </div>
   );
 };
