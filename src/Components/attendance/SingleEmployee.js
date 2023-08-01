@@ -970,7 +970,10 @@ const SingleEmployee = ({ user }) => {
   // };
 
   // const exportDataGridAsPDF = () => {
-  //   const doc = new jsPDF();
+  //   const doc = new jsPDF({
+  //     format: [300, 300], // Set the custom page size (width, height) in user units
+  //     unit: "mm", // Set the unit of measurement to millimeters
+  //   });
 
   //   // Custom table headers (exclude the "Action" column)
   //   const headers = columns
@@ -982,8 +985,6 @@ const SingleEmployee = ({ user }) => {
   //     columns
   //       .filter((column) => column.field !== "deduct_salary")
   //       .map((column) => {
-  //         console.log("columns:: ", column);
-  //         console.log("rows:: ", row);
   //         if (column.field === "late_minutes") {
   //           // If "Late" column contains buttons, return null
   //           if (row.is_late === 1 || row.is_late === 2) {
@@ -1004,9 +1005,48 @@ const SingleEmployee = ({ user }) => {
 
   //   // Add the table to the PDF only if there are valid rows with data
   //   if (tableData.length > 0) {
+  //     // Calculate the total width of the table
+  //     const totalWidth = headers.length * 30;
+
+  //     // Reduce the font size for the table content
+  //     const fontSize = 8;
+
+  //     // Show the total salary separately
+  //     const totalSalary = pageState?.totalSalary || "No Salary Data";
+  //     const leaveDaySalary = pageState?.leaveDaySalary || "No Data";
+  //     const lateDaySalary = pageState?.lateDaySalary || "No Data";
+  //     const lateattedanceDays = pageState?.late_count || "No Data";
+  //     const leaveDays = pageState?.leave_count || "No Data";
+  //     const attendedDays = pageState?.attended_count || "No Data";
+  //     const workingDays = pageState?.workingDays || "No Data";
+  //     const salaryPerDay = pageState?.perDaySalary || "No Data";
+  //     const monthly_salary = empData[0]?.salary || "No Data";
+  //     const username = empData[0]?.userName || "No Name";
+  //     const position = empData[0]?.position || "No Position";
+  //     const currency = empData[0]?.currency || "No Curency";
+  //     doc.text(`Total Salary: ${totalSalary} ${currency}`, 15, 100);
+  //     doc.text(`Leave Day Salary: ${leaveDaySalary} ${currency}`, 15, 107);
+  //     doc.text(`Late Day Salary: ${lateDaySalary} ${currency}`, 15, 114);
+  //     doc.text(`Late Attended Days: ${lateattedanceDays} `, 15, 121);
+  //     doc.text(`Leave Days: ${leaveDays} `, 15, 128);
+  //     doc.text(`Attended Days: ${attendedDays} `, 15, 135);
+  //     doc.text(`Working Days: ${workingDays} `, 15, 142);
+  //     doc.text(`Salary Per Day: ${salaryPerDay} `, 15, 149);
+  //     doc.text(`Monthly Salary: ${monthly_salary} ${currency}`, 15, 156);
+  //     doc.text(`Username : ${username}  `, 10, 12);
+  //     doc.text(`Position : ${position}  `, 10, 18);
+
   //     doc.autoTable({
   //       head: [headers],
   //       body: tableData,
+  //       tableWidth: totalWidth,
+  //       styles: {
+  //         fontSize: fontSize,
+  //         cellPadding: 2,
+  //       },
+  //       autoSize: true,
+  //       minCellWidth: 40,
+  //       margin: { top: 30, right: 15, bottom: 20, left: 15 }, // Adjust margins
   //     });
 
   //     // Save the PDF with the specified file name
@@ -1016,6 +1056,7 @@ const SingleEmployee = ({ user }) => {
   //     alert("No valid data to export!");
   //   }
   // };
+
   const exportDataGridAsPDF = () => {
     const doc = new jsPDF({
       format: [300, 300], // Set the custom page size (width, height) in user units
@@ -1059,21 +1100,96 @@ const SingleEmployee = ({ user }) => {
       const fontSize = 8;
 
       // Show the total salary separately
-      const totalSalary = pageState?.totalSalary || "No Salary Data";
-      const currency = empData[0]?.currency || "No Curency";
-      doc.text(`Total Salary: ${totalSalary} ${currency}`, 15, 100);
+      const currency = empData[0]?.currency || "No Currency";
+      const formatText = (text) => `• ${text}`; // Function to format the text as bullet points
+
+      doc.setTextColor("#1976D2"); // Set text color to a nice blue
+
+      // Position the salary text above the table
+      doc.text(`Employee Information`, 15, 10);
+      doc.setTextColor("#000"); // Reset text color to black
+
+      doc.text(`Username: ${empData[0]?.userName || "No Name"}`, 15, 18);
+      doc.text(`Position: ${empData[0]?.position || "No Position"}`, 15, 24);
+
+      doc.setTextColor("#1976D2"); // Set text color to a nice blue
+      doc.text(`Salary Information`, 15, 35);
+      doc.setTextColor("#000"); // Reset text color to black
+
+      doc.text(
+        formatText(
+          `Total Salary: ${
+            pageState?.totalSalary || "No Salary Data"
+          } ${currency}`
+        ),
+        15,
+        43
+      );
+      doc.text(
+        formatText(
+          `Leave Day Salary: ${
+            pageState?.leaveDaySalary || "No Data"
+          } ${currency}`
+        ),
+        15,
+        50
+      );
+      doc.text(
+        formatText(
+          `Late Day Salary: ${
+            pageState?.lateDaySalary || "No Data"
+          } ${currency}`
+        ),
+        15,
+        57
+      );
+      doc.text(
+        formatText(`Late Attended Days: ${pageState?.late_count || "No Data"}`),
+        15,
+        64
+      );
+      doc.text(
+        formatText(`Leave Days: ${pageState?.leave_count || "No Data"}`),
+        15,
+        71
+      );
+      doc.text(
+        formatText(`Attended Days: ${pageState?.attended_count || "No Data"}`),
+        15,
+        78
+      );
+      doc.text(
+        formatText(`Working Days: ${pageState?.workingDays || "No Data"}`),
+        15,
+        85
+      );
+      doc.text(
+        formatText(`Salary Per Day: ${pageState?.perDaySalary || "No Data"}`),
+        15,
+        92
+      );
+      doc.text(
+        formatText(
+          `Monthly Salary: ${empData[0]?.salary || "No Data"} ${currency}`
+        ),
+        15,
+        99
+      );
+
+      doc.setTextColor("#000"); // Reset text color to black
 
       doc.autoTable({
         head: [headers],
         body: tableData,
         tableWidth: totalWidth,
+        startY: 110, // Adjust the starting y-coordinate for the table to avoid overlapping with the salary text
         styles: {
           fontSize: fontSize,
           cellPadding: 2,
         },
         autoSize: true,
         minCellWidth: 40,
-        margin: { top: 15, right: 15, bottom: 15, left: 15 }, // Adjust margins
+        margin: { top: 130, right: 15, bottom: 20, left: 15 }, // Adjust margins
       });
 
       // Save the PDF with the specified file name
