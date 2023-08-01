@@ -1073,6 +1073,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   Toolbar: GridToolbar,
                   // Pagination: CustomPagination,
                 }}
+                rowsPerPageOptions={[]}
                 componentsProps={{
                   toolbar: {
                     printOptions: { disableToolbarButton: User?.role !== 1 },
