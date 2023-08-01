@@ -42,6 +42,7 @@ const SendMessageModal = ({
   const [selectedTemplate, setSelectedTemplate] = useState(false);
   const [templates, setTemplates] = useState([]);
   const [imgBinary, setImgBinary] = useState("");
+  const [messagesSent, setMessagesSent] = useState(false);
   const [defaultMessageValue, setDefaultMessageValue] = useState("");
 
   var turndownService = new TurndownService();
@@ -199,7 +200,8 @@ const SendMessageModal = ({
             });
 
             setbtnloading(false);
-            setSendMessageModal({ open: false });
+            // setSendMessageModal({ open: false });
+            setMessagesSent(true);
             toast.success("Messages are being sent. ", {
               position: "top-right",
               autoClose: 3000,
@@ -341,7 +343,7 @@ const SendMessageModal = ({
           style={style}
           className={`w-[calc(100%-20px)] md:w-[70%]  ${
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
-          } absolute top-1/2 left-1/2 p-5 rounded-md h-[80%]`}
+          } absolute top-1/2 left-1/2 p-5 rounded-md h-[80%] overflow-y-scroll`}
         >
           <IconButton
             sx={{
@@ -354,6 +356,15 @@ const SendMessageModal = ({
           >
             <IoMdClose size={18} />
           </IconButton>
+          {messagesSent ? <div>
+            <p className="text-2xl mb-4">Messages are being sent to these contacts:</p>
+            <ul className="ml-5">
+            {selectedContacts?.map((contact) => {
+              return <li style={{listStyleType: "number"}} className="font-bold text-red-600 mb-1">+{contact}</li>;
+            })}
+            </ul>
+          </div> :
+          <>
           <Tabs
             value={tabValue}
             sx={{ mb: 2 }}
@@ -448,6 +459,8 @@ const SendMessageModal = ({
               )}
             </Button>
           </form>
+          </>
+          }
         </div>
       </Modal>
     </>
