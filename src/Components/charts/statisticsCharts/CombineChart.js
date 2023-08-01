@@ -275,6 +275,7 @@ const CombineChart = ({ combineData }) => {
 
   const chartOptions = {
     responsive: true,
+    width: "100%",
     plugins: {
       legend: {
         position: "top",
@@ -307,7 +308,7 @@ const CombineChart = ({ combineData }) => {
   return (
     <div
       className="lineChartDiv flex items-center"
-      style={{ height: "250px", width: "300px !important" }}
+      style={{ height: "250px", width: "500px" }}
     >
       <Line data={chartData} options={chartOptions} />
     </div>
