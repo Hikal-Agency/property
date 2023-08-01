@@ -11,7 +11,7 @@ import { Button } from "@material-tailwind/react";
 // import axios from "axios";
 import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-phone-number-input/style.css";
 
 import PhoneInput, {
@@ -22,12 +22,6 @@ import PhoneInput, {
 import classNames from "classnames";
 import Loader from "../Loader";
 
-const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-function isEmailValid(email) {
-  console.log("Validating email: ", email);
-  return emailRegex.test(email);
-}
 
 const AddLeadComponent = () => {
   const [loading, setloading] = useState(false);

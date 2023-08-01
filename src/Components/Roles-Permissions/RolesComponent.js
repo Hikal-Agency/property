@@ -1,8 +1,10 @@
 import {
   CircularProgress,
   Modal,
-  Backdrop, FormControlLabel,
-  Checkbox
+  Backdrop,
+  FormControlLabel,
+  Checkbox,
+  IconButton,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { TextField } from "@mui/material";
@@ -13,6 +15,7 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import PermissionsCheckbox from "../addUser/PermissionsCheckbox";
+import { GridCloseIcon } from "@mui/x-data-grid";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -171,12 +174,24 @@ const RolesComponent = ({
     >
       <div
         style={style}
-        className={`w-[calc(100%-20px)] md:w-[60%] absolute top-1/2 left-1/2 p-5 overflow-scroll rounded-md`}
+        className={`w-[calc(100%-20px)] md:w-[60%] absolute top-1/2 left-1/2 rounded-md`}
       >
-        <div className="h-[80%] relative overflow-scroll">
+        <div className="h-[80%] relative p-6">
           <div className={``}>
-            <div className="flex  items-center justify-center pl-3">
-              <div className="w-full overflow-y-scroll space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+            <div className="flex items-center justify-center pl-3">
+              <div className="w-full pt-16 space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    right: 30,
+                    top: 30,
+                    color: "#000000",
+                  }}
+                  onClick={addUserModelClose}
+                >
+                  <GridCloseIcon size={18} />
+                </IconButton>
+
                 <div>
                   <h2 className="text-center text-xl font-bold text-gray-900 mt-4">
                     Create New {value === 0 ? " Role" : " Permissions"}
