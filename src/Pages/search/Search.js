@@ -136,7 +136,7 @@ const enquiryTypes = [
 
 const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const token = localStorage.getItem("auth-token");
-  
+
   const {
     currentMode,
     pageState,
@@ -159,7 +159,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [deletebtnloading, setdeletebtnloading] = useState(false);
   const [filt, setFilt] = useState([]);
   const [error, setError] = useState(false);
-  const {hasPermission} = usePermission();
+  const { hasPermission } = usePermission();
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
@@ -296,9 +296,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
-        return (
-          <strong>{cellValues?.formattedValue}</strong>
-        );
+        return <strong>{cellValues?.formattedValue}</strong>;
       },
     },
     {
@@ -453,7 +451,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             <img
               src={"/assets/tiktok-app.svg"}
               alt=""
-              style={{margin: "0 auto"}}
+              style={{ margin: "0 auto" }}
               height={18}
               width={18}
               className="object-cover"
@@ -506,7 +504,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     },
                   }}
                 >
-                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()] ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]() : "-"}
+                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()]
+                    ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]()
+                    : "-"}
                 </Box>
               )}
             </div>
@@ -550,7 +550,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 <IconButton sx={{ padding: 0 }}>
                   <BsAlarm size={16} />
                 </IconButton>
-
               </Tooltip>
             </p>
             <p
@@ -585,7 +584,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   </IconButton>
                 </Tooltip>
               </p>
-            )} 
+            )}
 
             <p
               onClick={() => {
@@ -1254,7 +1253,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   }
   return (
     <>
-      
       <div className="pb-10 p-4">
         {leadOriginSelected?.id === "unassigned" &&
           leadTypeSelected?.id === "fresh" && (
@@ -1373,6 +1371,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 "& .MuiOutlinedInput-notchedOutline": {
                   borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
                 },
+                "& .MuiSelect-select": {
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
                 "&:hover:not (.Mui-disabled):before": {
                   borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
                 },
@@ -1382,7 +1383,11 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 Lead Origin
               </MenuItem>
               {leadOrigins?.map((origin, index) => (
-                <MenuItem key={index} value={origin?.id || ""}>
+                <MenuItem
+                  key={index}
+                  value={origin?.id || ""}
+                  // sx={{ color: "#ffffff" }}
+                >
                   {origin?.formattedValue}
                 </MenuItem>
               ))}
@@ -1408,6 +1413,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 },
                 "&:hover:not (.Mui-disabled):before": {
                   borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "& .MuiSelect-select": {
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
                 },
               }}
             >
@@ -1467,6 +1475,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 "&:hover:not (.Mui-disabled):before": {
                   borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
                 },
+                "& .MuiSelect-select": {
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
               }}
             >
               <MenuItem
@@ -1485,71 +1496,78 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               ))}
             </Select>
           </div>
-          {hasPermission("search_leadSource_filter") &&
-          <div style={{ position: "relative" }}>
-            <label
-              htmlFor="leadSource"
-              style={{ position: "absolute", top: "-20px", right: 0 }}
-              className={`flex justify-end items-center ${
-                currentMode === "dark" ? "text-white" : "text-dark"
-              } `}
-            >
-              {leadSourceSelected ? (
-                <strong
-                  className="ml-4 text-red-600 cursor-pointer"
-                  onClick={() => setLeadSourceSelected(0)}
-                >
-                  Clear
-                </strong>
-              ) : (
-                ""
-              )}
-            </label>
-            <Select
-              id="leadSource"
-              value={leadSourceSelected}
-              className={`w-full mt-1 mb-5`}
-              onChange={(event) => {
-                searchRef.current.querySelector("input").value = "";
-                setLeadSourceSelected(event.target.value);
-              }}
-              displayEmpty
-              size="small"
-              required
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-                "&:hover:not (.Mui-disabled):before": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-              }}
-            >
-              <MenuItem
-                value="0"
-                disabled
+          {hasPermission("search_leadSource_filter") && (
+            <div style={{ position: "relative" }}>
+              <label
+                htmlFor="leadSource"
+                style={{ position: "absolute", top: "-20px", right: 0 }}
+                className={`flex justify-end items-center ${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                } `}
+              >
+                {leadSourceSelected ? (
+                  <strong
+                    className="ml-4 text-red-600 cursor-pointer"
+                    onClick={() => setLeadSourceSelected(0)}
+                  >
+                    Clear
+                  </strong>
+                ) : (
+                  ""
+                )}
+              </label>
+              <Select
+                id="leadSource"
+                value={leadSourceSelected}
+                className={`w-full mt-1 mb-5`}
+                onChange={(event) => {
+                  searchRef.current.querySelector("input").value = "";
+                  setLeadSourceSelected(event.target.value);
+                }}
+                displayEmpty
+                size="small"
+                required
                 sx={{
-                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "&:hover:not (.Mui-disabled):before": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "& .MuiSelect-select": {
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
                 }}
               >
-                Source
-              </MenuItem>
-              <MenuItem value={"Website"}>Website</MenuItem>
-              <MenuItem value={"Property Finder"}>Property Finder</MenuItem>
-              <MenuItem value={"Campaign"}>Campaign</MenuItem>
-              <MenuItem value={"Personal"}>Personal</MenuItem>
-              <MenuItem value={"Whatsapp"}>Whatsapp</MenuItem>
-              <MenuItem value={"Comment"}>Comment</MenuItem>
-              <MenuItem value={"Message"}>Message</MenuItem>
-              <MenuItem value={"Campaign Snapchat"}>Campaign Snapchat</MenuItem>
-              <MenuItem value={"Campaign Tiktok"}>Campaign Tiktok</MenuItem>
-              <MenuItem value={"Campaign Facebook"}>Campaign Facebook</MenuItem>
-              <MenuItem value={"Campaign GoogleAds"}>
-                Campaign GoogleAds
-              </MenuItem>
-            </Select>
-          </div>
-          }
+                <MenuItem
+                  value="0"
+                  disabled
+                  sx={{
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  }}
+                >
+                  Source
+                </MenuItem>
+                <MenuItem value={"Website"}>Website</MenuItem>
+                <MenuItem value={"Property Finder"}>Property Finder</MenuItem>
+                <MenuItem value={"Campaign"}>Campaign</MenuItem>
+                <MenuItem value={"Personal"}>Personal</MenuItem>
+                <MenuItem value={"Whatsapp"}>Whatsapp</MenuItem>
+                <MenuItem value={"Comment"}>Comment</MenuItem>
+                <MenuItem value={"Message"}>Message</MenuItem>
+                <MenuItem value={"Campaign Snapchat"}>
+                  Campaign Snapchat
+                </MenuItem>
+                <MenuItem value={"Campaign Tiktok"}>Campaign Tiktok</MenuItem>
+                <MenuItem value={"Campaign Facebook"}>
+                  Campaign Facebook
+                </MenuItem>
+                <MenuItem value={"Campaign GoogleAds"}>
+                  Campaign GoogleAds
+                </MenuItem>
+              </Select>
+            </div>
+          )}
           <div>
             <TextField
               className={`w-full`}
@@ -1609,6 +1627,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   "&:hover:not (.Mui-disabled):before": {
                     borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
                   },
+                  "& .MuiSelect-select": {
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
                 }}
               >
                 <MenuItem value="" selected disabled>
@@ -1622,59 +1643,62 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </Select>
             </div>
           )}
-          {hasPermission("search_agent_filter") &&
-          <div style={{ position: "relative" }}>
-            <label
-              style={{ position: "absolute", top: "-20px", right: 0 }}
-              htmlFor="Agent"
-              className={`flex justify-end items-center ${
-                currentMode === "dark" ? "text-white" : "text-dark"
-              } `}
-            >
-              {agentSelected ? (
-                <strong
-                  className="ml-4 text-red-600 cursor-pointer"
-                  onClick={() => {
-                    setAgentSelected("");
-                  }}
-                >
-                  Clear
-                </strong>
-              ) : (
-                ""
-              )}
-            </label>
-            <Select
-              id="Agent"
-              value={agentSelected || ""}
-              onChange={(event) => {
-                searchRef.current.querySelector("input").value = "";
-                setAgentSelected(event.target.value);
-              }}
-              size="small"
-              className={`w-full mt-1 mb-5 `}
-              displayEmpty
-              required
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-                "&:hover:not (.Mui-disabled):before": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-              }}
-            >
-              <MenuItem selected value="" disabled>
-                Agent
-              </MenuItem>
-              {allAgents?.map((agent, index) => (
-                <MenuItem key={index} value={agent?.id || ""}>
-                  {agent?.userName}
+          {hasPermission("search_agent_filter") && (
+            <div style={{ position: "relative" }}>
+              <label
+                style={{ position: "absolute", top: "-20px", right: 0 }}
+                htmlFor="Agent"
+                className={`flex justify-end items-center ${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                } `}
+              >
+                {agentSelected ? (
+                  <strong
+                    className="ml-4 text-red-600 cursor-pointer"
+                    onClick={() => {
+                      setAgentSelected("");
+                    }}
+                  >
+                    Clear
+                  </strong>
+                ) : (
+                  ""
+                )}
+              </label>
+              <Select
+                id="Agent"
+                value={agentSelected || ""}
+                onChange={(event) => {
+                  searchRef.current.querySelector("input").value = "";
+                  setAgentSelected(event.target.value);
+                }}
+                size="small"
+                className={`w-full mt-1 mb-5 `}
+                displayEmpty
+                required
+                sx={{
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "&:hover:not (.Mui-disabled):before": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "& .MuiSelect-select": {
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                }}
+              >
+                <MenuItem selected value="" disabled>
+                  Agent
                 </MenuItem>
-              ))}
-            </Select>
-          </div>
-          }
+                {allAgents?.map((agent, index) => (
+                  <MenuItem key={index} value={agent?.id || ""}>
+                    {agent?.userName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </div>
+          )}
         </Box>
         <Box
           sx={{
@@ -1684,7 +1708,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }}
           className={`${currentMode}-mode-datatable`}
         >
-          {(selectedRows.length > 0 && (hasPermission("leads_bulk_update"))) && (
+          {selectedRows.length > 0 && hasPermission("leads_bulk_update") && (
             <MuiButton
               size="small"
               sx={{
@@ -1699,7 +1723,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
             </MuiButton>
           )}
-          {(selectedRows.length > 0 && (hasPermission("leads_bulk_delete"))) && (
+          {selectedRows.length > 0 && hasPermission("leads_bulk_delete") && (
             <MuiButton
               size="small"
               sx={{
@@ -1802,7 +1826,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 setpageState((old) => ({ ...old, pageSize: newPageSize }))
               }
               disableColumnFilter
-              columns={columns?.filter((c) => hasPermission("leads_col_" + c?.field))}
+              columns={columns?.filter((c) =>
+                hasPermission("leads_col_" + c?.field)
+              )}
               components={{
                 Toolbar: GridToolbar,
                 Pagination: CustomPagination,
@@ -1909,7 +1935,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             />
           )}
 
-               
           {timelineModelOpen && (
             <Timeline
               timelineModelOpen={timelineModelOpen}
