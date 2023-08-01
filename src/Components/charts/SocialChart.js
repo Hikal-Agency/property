@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -7,8 +7,8 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
 import { RiMessage2Line } from "react-icons/ri";
 import { FaWhatsapp } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
@@ -16,7 +16,7 @@ import { FaTwitter } from "react-icons/fa";
 import { FaComment } from "react-icons/fa";
 import { FaGlobe } from "react-icons/fa";
 import { FaSnapchat } from "react-icons/fa";
-import { BsPersonCircle, BsSnow2} from "react-icons/bs";
+import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
@@ -31,9 +31,10 @@ ChartJS.register(
   Legend
 );
 
-function SocialChart({data}) {
+function SocialChart({ data, selectedMonthSocial }) {
   const labels = data?.map((elem) => elem?.leadSource);
-  
+  console.log("social chart : ", data);
+
   const sourceIcons = {
     "campaign snapchat": () => <FaSnapchat size={22} color={"#f6d80a"} />,
     "bulk import": () => <FaSnapchat size={22} color={"#f6d80a"} />,
@@ -62,17 +63,17 @@ function SocialChart({data}) {
     "campaign youtube": () => <FaYoutube size={22} color={"#FF0000"} />,
     "campaign twitter": () => <FaTwitter size={22} color={"#14539a"} />,
   };
-  
+
   const options = {
     plugins: {
       title: {
         display: true,
-        text: 'Social Campaigns',
+        text: "Social Campaigns",
       },
     },
     responsive: true,
     interaction: {
-      mode: 'index',
+      mode: "index",
       intersect: false,
     },
     scales: {
@@ -84,18 +85,21 @@ function SocialChart({data}) {
       },
     },
   };
-  
 
-const graphData = {
-  labels,
-   datasets: [
-        {
-          label: "All",
-          data: data?.map((elem) => elem?.total),
-          backgroundColor: ["rgba(218, 31, 38, 1)"],
-        },
-      ],
-};
+  const graphData = {
+    labels,
+    datasets: [
+      {
+        label: "All",
+        data: data?.map((elem) => elem?.total),
+        backgroundColor: ["rgba(218, 31, 38, 1)"],
+      },
+    ],
+  };
+
+  useEffect(() => {
+    //re-render
+  }, [selectedMonthSocial]);
 
   return <Bar options={options} data={graphData} />;
 }

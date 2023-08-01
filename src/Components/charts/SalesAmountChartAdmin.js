@@ -11,13 +11,15 @@ import { useStateContext } from "../../context/ContextProvider";
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
-const SalesAmountChartAdmin = () => {
+const SalesAmountChartAdmin = ({ selectedMonthSales }) => {
   const { currentMode, Sales_chart_data } = useStateContext();
   console.log("sales chart: ", Sales_chart_data);
   const [salesData, setSalesData] = useState({
     labels: [],
     datasets: [],
   });
+
+  // const [salesChartData2, setSalesChartData2] = useState(Sales_chart_data);
 
   useEffect(() => {
     setSalesData({

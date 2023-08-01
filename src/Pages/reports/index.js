@@ -10,6 +10,7 @@ import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import SocialChart from "../../Components/charts/SocialChart";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 const Reports = () => {
   const {
@@ -23,10 +24,36 @@ const Reports = () => {
   const [loading, setloading] = useState(true);
   const [socialChartData, setSocialChartData] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState();
+  const [selectedMonthSocial, setSelectedMonthSocial] = useState();
+  const [selectedMonthProject, setSelectedMonthProject] = useState();
+  const [selectedMonthSales, setSelectedMonthSales] = useState();
 
   const FetchProfile = (token) => {
+    let params = {
+      page: 1,
+    };
+    if (selectedMonthProject) {
+      if (selectedMonthProject === "lastmonth") {
+        const lastMonthStartDate = moment()
+          .subtract(1, "months")
+          .startOf("month")
+          .format("YYYY-MM-DD");
+        const lastMonthEndDate = moment()
+          .subtract(1, "months")
+          .endOf("month")
+          .format("YYYY-MM-DD");
+        params.date_range = `${lastMonthStartDate},${lastMonthEndDate}`;
+      } else if (selectedMonthProject === "thismonth") {
+        const thisMonthStartDate = moment()
+          .startOf("month")
+          .format("YYYY-MM-DD");
+        const thisMonthEndDate = moment().endOf("month").format("YYYY-MM-DD");
+        params.date_range = `${thisMonthStartDate},${thisMonthEndDate}`;
+      }
+    }
     axios
-      .get(`${BACKEND_URL}/dashboard?page=1`, {
+      .get(`${BACKEND_URL}/dashboard`, {
+        params,
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -78,12 +105,35 @@ const Reports = () => {
   };
 
   const fetchSocialChart = async () => {
+    let params = {};
+
+    if (selectedMonthSocial) {
+      if (selectedMonthSocial === "lastmonth") {
+        const lastMonthStartDate = moment()
+          .subtract(1, "months")
+          .startOf("month")
+          .format("YYYY-MM-DD");
+        const lastMonthEndDate = moment()
+          .subtract(1, "months")
+          .endOf("month")
+          .format("YYYY-MM-DD");
+        params.date_range = `${lastMonthStartDate},${lastMonthEndDate}`;
+      } else if (selectedMonthSocial === "thismonth") {
+        const thisMonthStartDate = moment()
+          .startOf("month")
+          .format("YYYY-MM-DD");
+        const thisMonthEndDate = moment().endOf("month").format("YYYY-MM-DD");
+        params.date_range = `${thisMonthStartDate},${thisMonthEndDate}`;
+      }
+    }
+
     try {
       const token = localStorage.getItem("auth-token");
       const urls = [`${BACKEND_URL}/socialchart`];
       const responses = await Promise.all(
         urls.map((url) => {
           return axios.get(url, {
+            params,
             headers: {
               "Content-Type": "application/json",
               Authorization: "Bearer " + token,
@@ -122,6 +172,20 @@ const Reports = () => {
     FetchProfile(token);
   }, []);
 
+  useEffect(() => {
+    // fetchData();
+    fetchSocialChart(selectedMonthSocial);
+    // const token = localStorage.getItem("auth-token");
+    // FetchProfile(token);
+  }, [selectedMonthSocial]);
+
+  useEffect(() => {
+    // fetchData();
+    // fetchSocialChart(selectedMonthSocial);
+    const token = localStorage.getItem("auth-token");
+    FetchProfile(token);
+  }, [selectedMonthProject]);
+
   if (loading) {
     return <Loader />;
   } else {
@@ -154,6 +218,10 @@ const Reports = () => {
                                 ? "bg-black text-white"
                                 : "bg-white text-black"
                             } text-xs rounded-md p-1`}
+                            value={selectedMonthSales}
+                            onChange={(e) => {
+                              setSelectedMonthSales(e.target.value);
+                            }}
                           >
                             <option value="alltime">All-Time</option>
                             <option value="lastmonth">Last Month</option>
@@ -167,7 +235,9 @@ const Reports = () => {
                             <CircularProgress size={20} /> <span>Loading</span>
                           </div>
                         ) : (
-                          <SalesAmountChartAdmin />
+                          <SalesAmountChartAdmin
+                            selectedMonthSales={selectedMonthSales}
+                          />
                         )}
                       </div>
                     </div>
@@ -253,6 +323,10 @@ const Reports = () => {
                                 ? "bg-black text-white"
                                 : "bg-white text-black"
                             } text-xs rounded-md p-1`}
+                            value={selectedMonthSocial}
+                            onChange={(e) => {
+                              setSelectedMonthSocial(e.target.value);
+                            }}
                           >
                             <option value="alltime">All-Time</option>
                             <option value="lastmonth">Last Month</option>
@@ -266,7 +340,10 @@ const Reports = () => {
                             <CircularProgress size={20} /> <span>Loading</span>
                           </div>
                         ) : (
-                          <SocialChart data={socialChartData} />
+                          <SocialChart
+                            data={socialChartData}
+                            selectedMonthSocial={selectedMonthSocial}
+                          />
                         )}
                       </div>
                     </div>
@@ -287,6 +364,10 @@ const Reports = () => {
                                 ? "bg-black text-white"
                                 : "bg-white text-black"
                             } text-xs rounded-md p-1`}
+                            value={selectedMonthProject}
+                            onChange={(e) => {
+                              setSelectedMonthProject(e.target.value);
+                            }}
                           >
                             <option value="alltime">All-Time</option>
                             <option value="lastmonth">Last Month</option>
@@ -297,6 +378,7 @@ const Reports = () => {
                       <div className="justify-between items-center">
                         <ReportProjectBar
                           total_projects={DashboardData?.total_projects}
+                          selectedMonthProject={selectedMonthProject}
                         />
                       </div>
                     </div>
