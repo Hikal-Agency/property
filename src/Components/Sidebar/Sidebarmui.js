@@ -950,7 +950,7 @@ const Sidebarmui = () => {
               link: "/marketing/chat",
             },
             {
-              name: "Contacts",
+              name: "Contacts/SMS",
               icon: <MdContactPage />,
               link: "/marketing/contacts",
             },
