@@ -85,7 +85,7 @@ import "./styling.css";
 
 const MapChartStatistics = ({ locationData }) => {
   return (
-    <div className="w-full" style={{ maxHeight: "300px", overflow: "auto" }}>
+    <div className="w-full" style={{ maxHeight: "200px", overflow: "auto" }}>
       <table className="w-full">
         <thead>
           <tr>
