@@ -60,46 +60,6 @@ const SingleLead = ({
     }
   };
 
-  const handleBlockIP = async (LeadData) => {
-    setLoading(true);
-     try {
-      const token = localStorage.getItem("auth-token");
-      setLoading(true);
-      await axios.post(`${BACKEND_URL}/blocked`, JSON.stringify({
-        byIP: LeadData?.ip
-      }), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      toast.success("IP Blocked successfuly!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      handleLeadModelClose();
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to fetch blocked IPs", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  }
-
   const AddNote = () => {
     setaddNoteloading(true);
     const token = localStorage.getItem("auth-token");
@@ -383,20 +343,7 @@ const SingleLead = ({
                     </Button>
                   </Tooltip> */}
                 </Link>
-               {LeadData?.ip && 
-                <Tooltip title="Block IP" arrow>
-                  <IconButton onClick={() => handleBlockIP(LeadData)} sx={{
-                  "& svg": {
-                    color:
-                      currentMode === "dark"
-                        ? "white !important"
-                        : "black !important",
-                  },
-                  }}>
-                      <BiBlock size={18}/>
-                  </IconButton>
-                </Tooltip>
-               }
+  
               </div>
               <div className={`rounded-md mt-2`}>
                 {lastNote && (

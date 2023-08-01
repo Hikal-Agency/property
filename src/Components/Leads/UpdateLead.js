@@ -818,7 +818,7 @@ const UpdateLead = ({
                     </Box>
                   </div>
                 </div>
-            {lead_origin === "freshleads" && <div className="flex items-center justify-end mb-3">
+            {(lead_origin === "freshleads" && LeadData?.ip) && <div className="flex items-center justify-end mb-3">
               <p
                 style={{ cursor: "pointer", display: "inline-block" }}
                 className={`${
