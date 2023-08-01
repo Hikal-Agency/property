@@ -22,7 +22,6 @@ import PhoneInput, {
 import classNames from "classnames";
 import Loader from "../Loader";
 
-
 const AddLeadComponent = () => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);

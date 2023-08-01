@@ -77,7 +77,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const [deletebtnloading, setdeletebtnloading] = useState(false);
   const [filt, setFilt] = useState([]);
   const [error, setError] = useState(false);
-  const {hasPermission} = usePermission();
+  const { hasPermission } = usePermission();
   console.log("LeadType::", lead_type);
 
   const [selectedRows, setSelectedRows] = useState([]);
@@ -264,6 +264,24 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 100,
       headerAlign: "center",
       flex: 1,
+      renderCell: (params) => {
+        const contactNumber = params.getValue(params.id, "leadContact");
+        // const countryCode = `(+${contactNumber.slice(0, 1)} ${contactNumber.slice(1, 3)})`;
+
+        // Replace last 4 digits with "*"
+        const lastFourDigits = contactNumber.slice(-4).replace(/\d/g, "*");
+
+        const stearics = contactNumber + lastFourDigits;
+        let finalNumber;
+
+        if (!hasPermission("number_masking")) {
+          finalNumber = ` ${stearics}`;
+        } else {
+          finalNumber = contactNumber;
+        }
+
+        return <span>{finalNumber}</span>;
+      },
     },
 
     {
@@ -1554,7 +1572,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           }}
           className={`${currentMode}-mode-datatable`}
         >
-          {selectedRows.length > 0 && (hasPermission("leads_bulk_update")) && (
+          {selectedRows.length > 0 && hasPermission("leads_bulk_update") && (
             <MuiButton
               size="small"
               sx={{
@@ -1569,7 +1587,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
             </MuiButton>
           )}
-          {selectedRows.length > 0 && (hasPermission('leads_bulk_delete')) && (
+          {selectedRows.length > 0 && hasPermission("leads_bulk_delete") && (
             <MuiButton
               size="small"
               sx={{
@@ -1729,7 +1747,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               onPageSizeChange={(newPageSize) =>
                 setpageState((old) => ({ ...old, pageSize: newPageSize }))
               }
-              columns={columns?.filter((c) => hasPermission("leads_col_" + c?.field))}
+              columns={columns?.filter((c) =>
+                hasPermission("leads_col_" + c?.field)
+              )}
               filterModel={{
                 items: filt,
               }}
@@ -1789,7 +1809,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               BACKEND_URL={BACKEND_URL}
             />
           )}
-          
+
           {timelineModelOpen && (
             <Timeline
               timelineModelOpen={timelineModelOpen}

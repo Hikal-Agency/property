@@ -3,7 +3,7 @@ import React from "react";
 const TopCampaignsTable = ({ tablData }) => {
   console.log("Top Campaigns", tablData);
   return (
-    <div className="w-full" style={{ maxHeight: "300px", overflow: "auto" }}>
+    <div className="w-full" style={{ maxHeight: "200px", overflow: "auto" }}>
       <table className="w-full">
         <thead>
           <tr>

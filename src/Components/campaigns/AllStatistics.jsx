@@ -64,9 +64,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
         `https://graph.facebook.com/v16.0/${campaignId}/insights?access_token=${graph_api_token}&fields=impressions,clicks,cpc,cpm,ctr,spend,website_ctr,actions`
       );
 
+      console.log("overallpromise: ", overallInsightsPromise);
+
       const [
-        adsetsResult,
-        adsResult,
         insightsWithBreakdownsResult,
         insightsWithDeviceBreakdownsResult,
         overallInsightsResult,
@@ -78,25 +78,26 @@ const AllStatistics = ({ pageState, setpageState }) => {
         overallInsightsPromise,
       ]);
 
-      const adsetsCount = adsetsResult.data.summary.total_count;
-      const adsCount = adsResult.data.summary.total_count;
+      console.log("overallinsights: ", overallInsightsResult);
+      // const adsetsCount = adsetsResult.data.data;
+      // const adsCount = adsResult.data.data;
 
-      const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
-        if (ad.status === "ACTIVE") {
-          count++;
-        }
-        return count;
-      }, 0);
+      // const activeAdsCount = adsResult.data.data.reduce((count, ad) => {
+      //   if (ad.status === "ACTIVE") {
+      //     count++;
+      //   }
+      //   return count;
+      // }, 0);
 
-      const activeAdsetsCount = adsetsResult.data.data.reduce(
-        (count, adset) => {
-          if (adset.status === "ACTIVE") {
-            count++;
-          }
-          return count;
-        },
-        0
-      );
+      // const activeAdsetsCount = adsetsResult.data.data.reduce(
+      //   (count, adset) => {
+      //     if (adset.status === "ACTIVE") {
+      //       count++;
+      //     }
+      //     return count;
+      //   },
+      //   0
+      // );
 
       const genderData = insightsWithBreakdownsResult.data.data.map(
         (insight) => insight.gender
@@ -123,9 +124,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
       setdevices(devices);
 
       const campaignStats = {
-        adsetsCount: adsetsCount,
-        adsCount: adsCount,
-        activeAdsCount: activeAdsCount,
+        // adsetsCount: adsetsCount,
+        // adsCount: adsCount,
+        // activeAdsCount: activeAdsCount,
         // activeAdsetCount: activeAdsetCount,
         genderData: genderData,
         ageData: ageData,
@@ -294,6 +295,8 @@ const AllStatistics = ({ pageState, setpageState }) => {
     ctr: campaignStats?.ctr || "0",
     spend: campaignStats?.spend || "0",
   };
+
+  console.log("totalCounts: ", totalCounts);
 
   const data = [
     { amount: totalCounts.cpc, title: "CPC" },
@@ -884,7 +887,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       } rounded-lg h-20 p-2 shadow cursor-pointer hover:shadow-sm grid content-center`}
                     >
                       <p className="text-xl font-bold pb-2 text-white">
-                        <CountUp end={item?.amount} duration={3} />
+                        {item?.amount}
                       </p>
                       <p
                         className={`text-sm ${
@@ -915,6 +918,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       ? "bg-gray-900 text-white "
                       : "bg-white"
                   } col-span-1 h-96 shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                  // style={{ height: "300px" }}
                 >
                   <div className="justify-between items-center ">
                     <h6 className="font-semibold pb-3 text-red-600">
@@ -946,7 +950,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     currentMode === "dark"
                       ? "bg-gray-900 text-white "
                       : "bg-white"
-                  } col-span-1 h-96 w-full shadow rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                  } col-span-1 w-full h-[300px] shadow rounded-md p-5 cursor-pointer hover:shadow-sm`}
                   sx={{
                     height: "300px",
                     width: "300px",
@@ -967,7 +971,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   } col-span-1 h-96 shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                 >
                   <div className="justify-between items-center">
-                    <h6 className="font-semibold pb-3 text-red-600">
+                    <h6 className="font-semibold pb-3  text-red-600">
                       Ads Data
                     </h6>
                     <CombinationChartTable tablData={row} />
@@ -981,7 +985,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     currentMode === "dark"
                       ? "bg-gray-900 text-white "
                       : "bg-white"
-                  } col-span-1 h-96 shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm flex flex-col justify-start`}
+                  } col-span-1 h-[450px] shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm flex flex-col justify-start`}
                 >
                   <h6 className="font-semibold pb-3 text-red-600">
                     Frequency And Reach
@@ -1069,6 +1073,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   Toolbar: GridToolbar,
                   // Pagination: CustomPagination,
                 }}
+                rowsPerPageOptions={[]}
                 componentsProps={{
                   toolbar: {
                     printOptions: { disableToolbarButton: User?.role !== 1 },
