@@ -858,8 +858,6 @@ const AddLeadComponent = () => {
                                   *
                                 </span>
                               </MenuItem>
-                              {hasPermission("freshleads") && (
-                                <>
                                   <MenuItem value={"Website"}>Website</MenuItem>
                                   <MenuItem value={"Campaign"}>
                                     Campaign
@@ -881,24 +879,14 @@ const AddLeadComponent = () => {
                                   <MenuItem value={"Campaign Snapchat"}>
                                     Campaign Snapchat
                                   </MenuItem>
-                                </>
-                              )}
 
-                              {hasPermission("thirdpartyleads") && (
-                                <>
                                   <MenuItem value={"Property Finder"}>
                                     Property Finder
                                   </MenuItem>
-                                </>
-                              )}
 
-                              {hasPermission("personalleads") && (
-                                <>
                                   <MenuItem value={"Personal"}>
                                     Personal
                                   </MenuItem>
-                                </>
-                              )}
                             </TextField>
                           </Box>
                         </div>
