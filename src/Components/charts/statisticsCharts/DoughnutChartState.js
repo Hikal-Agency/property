@@ -80,7 +80,7 @@ const DoughnutChart = ({ doughnutChart }) => {
   };
 
   return (
-    <div style={{ height: "350px", width: "400px" }}>
+    <div style={{ height: "300px", width: "400px" }}>
       <Doughnut
         data={chartData}
         options={{

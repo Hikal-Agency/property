@@ -950,9 +950,9 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     currentMode === "dark"
                       ? "bg-gray-900 text-white "
                       : "bg-white"
-                  } col-span-1 w-full shadow rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                  } col-span-1 w-full h-[300px] shadow rounded-md p-5 cursor-pointer hover:shadow-sm`}
                   sx={{
-                    height: "200px",
+                    height: "300px",
                     width: "300px",
                   }}
                 >
