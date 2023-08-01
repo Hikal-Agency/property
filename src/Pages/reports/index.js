@@ -84,12 +84,34 @@ const Reports = () => {
   };
 
   const fetchData = async () => {
+    let params = {};
+    if (selectedMonthSales) {
+      if (selectedMonthSales === "lastmonth") {
+        const lastMonthStartDate = moment()
+          .subtract(1, "months")
+          .startOf("month")
+          .format("YYYY-MM-DD");
+        const lastMonthEndDate = moment()
+          .subtract(1, "months")
+          .endOf("month")
+          .format("YYYY-MM-DD");
+        params.date_range = `${lastMonthStartDate},${lastMonthEndDate}`;
+      } else if (selectedMonthSales === "thismonth") {
+        const thisMonthStartDate = moment()
+          .startOf("month")
+          .format("YYYY-MM-DD");
+        const thisMonthEndDate = moment().endOf("month").format("YYYY-MM-DD");
+        params.date_range = `${thisMonthStartDate},${thisMonthEndDate}`;
+      }
+    }
+
     try {
       const token = localStorage.getItem("auth-token");
       const urls = [`${BACKEND_URL}/memberdeals`];
       const responses = await Promise.all(
         urls.map((url) => {
           return axios.get(url, {
+            params,
             headers: {
               "Content-Type": "application/json",
               Authorization: "Bearer " + token,
@@ -185,6 +207,13 @@ const Reports = () => {
     const token = localStorage.getItem("auth-token");
     FetchProfile(token);
   }, [selectedMonthProject]);
+
+  useEffect(() => {
+    fetchData();
+    // fetchSocialChart(selectedMonthSocial);
+    // const token = localStorage.getItem("auth-token");
+    // FetchProfile(token);
+  }, [selectedMonthSales]);
 
   if (loading) {
     return <Loader />;
