@@ -90,6 +90,9 @@ const EmployeesList = ({ user }) => {
 
       const response = await axios.get(`${BACKEND_URL}/attendance`, {
         params,
+        // params: {
+        //   date_range: "2023-07-01,2023-08-31",
+        // },
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

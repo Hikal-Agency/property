@@ -640,8 +640,12 @@ const SingleEmployee = ({ user }) => {
         const per_day_salary = firstCheckIn?.salary / 30;
         const LEAVE_DAY_SALARY = per_day_salary * leave_count;
         const LATE_DAY_SALARY = (per_day_salary * late_count) / 2;
-        const TOTAl_SALARY =
-          firstCheckIn?.salary - (LEAVE_DAY_SALARY + LATE_DAY_SALARY);
+        // const TOTAl_SALARY =
+        //   firstCheckIn?.salary - (LEAVE_DAY_SALARY + LATE_DAY_SALARY);
+        const TOTAl_SALARY = (
+          firstCheckIn?.salary -
+          (LEAVE_DAY_SALARY + LATE_DAY_SALARY)
+        ).toFixed(2);
 
         let deductionValue = "";
         let cutSalaryValue = "";
@@ -965,8 +969,58 @@ const SingleEmployee = ({ user }) => {
   //   doc.save(`${empData[0]?.userName}-attendance.pdf`);
   // };
 
+  // const exportDataGridAsPDF = () => {
+  //   const doc = new jsPDF();
+
+  //   // Custom table headers (exclude the "Action" column)
+  //   const headers = columns
+  //     .filter((column) => column.field !== "deduct_salary")
+  //     .map((column) => column.headerName);
+
+  //   // Extract data from each row for each column (exclude the "Action" column)
+  //   const tableData = pageState?.data?.map((row) =>
+  //     columns
+  //       .filter((column) => column.field !== "deduct_salary")
+  //       .map((column) => {
+  //         console.log("columns:: ", column);
+  //         console.log("rows:: ", row);
+  //         if (column.field === "late_minutes") {
+  //           // If "Late" column contains buttons, return null
+  //           if (row.is_late === 1 || row.is_late === 2) {
+  //             return column.renderCell
+  //               ? column.renderCell({ row })
+  //               : row[column.field];
+  //           } else {
+  //             return "null";
+  //           }
+  //         } else {
+  //           // For other columns, return the data
+  //           return column.renderCell
+  //             ? column.renderCell({ row })
+  //             : row[column.field];
+  //         }
+  //       })
+  //   );
+
+  //   // Add the table to the PDF only if there are valid rows with data
+  //   if (tableData.length > 0) {
+  //     doc.autoTable({
+  //       head: [headers],
+  //       body: tableData,
+  //     });
+
+  //     // Save the PDF with the specified file name
+  //     doc.save(`${empData[0]?.userName}-attendance.pdf`);
+  //   } else {
+  //     // Handle the case when there are no valid rows to export
+  //     alert("No valid data to export!");
+  //   }
+  // };
   const exportDataGridAsPDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({
+      format: [300, 300], // Set the custom page size (width, height) in user units
+      unit: "mm", // Set the unit of measurement to millimeters
+    });
 
     // Custom table headers (exclude the "Action" column)
     const headers = columns
@@ -978,8 +1032,6 @@ const SingleEmployee = ({ user }) => {
       columns
         .filter((column) => column.field !== "deduct_salary")
         .map((column) => {
-          console.log("columns:: ", column);
-          console.log("rows:: ", row);
           if (column.field === "late_minutes") {
             // If "Late" column contains buttons, return null
             if (row.is_late === 1 || row.is_late === 2) {
@@ -1000,9 +1052,28 @@ const SingleEmployee = ({ user }) => {
 
     // Add the table to the PDF only if there are valid rows with data
     if (tableData.length > 0) {
+      // Calculate the total width of the table
+      const totalWidth = headers.length * 30;
+
+      // Reduce the font size for the table content
+      const fontSize = 8;
+
+      // Show the total salary separately
+      const totalSalary = pageState?.totalSalary || "No Salary Data";
+      const currency = empData[0]?.currency || "No Curency";
+      doc.text(`Total Salary: ${totalSalary} ${currency}`, 15, 100);
+
       doc.autoTable({
         head: [headers],
         body: tableData,
+        tableWidth: totalWidth,
+        styles: {
+          fontSize: fontSize,
+          cellPadding: 2,
+        },
+        autoSize: true,
+        minCellWidth: 40,
+        margin: { top: 15, right: 15, bottom: 15, left: 15 }, // Adjust margins
       });
 
       // Save the PDF with the specified file name
