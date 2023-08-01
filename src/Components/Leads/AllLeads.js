@@ -66,6 +66,10 @@ const bulkUpdateBtnStyles = {
   fontWeight: "500",
 };
 
+const feedbacks = [
+  "All", "New", "No Answer", "Meeting", "Follow Up", "Low Budget", "Not Interested", "Unreachable"
+];
+
 const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const token = localStorage.getItem("auth-token");
   const [singleLeadData, setsingleLeadData] = useState({});
@@ -1489,7 +1493,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   return (
     <>
       <div className="pb-10">
-        {/* {lead_origin === "unassigned" && lead_type === "fresh" && (
+        {lead_origin === "unassigned" && lead_type === "fresh" && (
           <Box
             sx={{
               ...darkModeColors,
@@ -1541,7 +1545,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               ))}
             </Select>
           </Box>
-        )} */}
+        )}
         <Box
           sx={{
             ...DataGridStyles,
