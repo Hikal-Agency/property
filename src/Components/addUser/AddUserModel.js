@@ -1,4 +1,10 @@
-import { CircularProgress, Modal, Backdrop, Button, IconButton } from "@mui/material";
+import {
+  CircularProgress,
+  Modal,
+  Backdrop,
+  Button,
+  IconButton,
+} from "@mui/material";
 import { IoIosAlert } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
 import { Select, TextField } from "@mui/material";
@@ -16,7 +22,7 @@ const style = {
 };
 
 const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
-  const {Managers, User} = useStateContext();
+  const { Managers, User } = useStateContext();
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
   const [fetchingRoles, setFetchingRoles] = useState(true);
@@ -71,7 +77,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     setformdata({ ...formdata, role: selectedRole });
   };
 
-  // sql injuction, 
+  // sql injuction,
   function isSafeInput(input) {
     const regex = /([';\/*-])/g; // Characters to look for in input
     return !regex.test(input);
@@ -100,12 +106,12 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     }
     if (formdata.password === formdata.c_password) {
       setloading(true);
-      const form = {...formdata};
-      if(UserRole === "Sales Manager") {
-          const isParent = Managers?.find((m) => m?.role === 2)?.id;
-          if(isParent) {
-            form["isParent"] = isParent;
-          }
+      const form = { ...formdata };
+      if (UserRole === "Sales Manager") {
+        const isParent = Managers?.find((m) => m?.role === 2)?.id;
+        if (isParent) {
+          form["isParent"] = isParent;
+        }
       }
       await axios
         .post(`${BACKEND_URL}/register`, form)
@@ -146,19 +152,16 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
 
   const fetchData = async () => {
     const token = localStorage.getItem("auth-token");
-      const rolesResult = await axios.get(
-        `${BACKEND_URL}/roles`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      const data = rolesResult.data?.role?.data;
-      setAllRoles(data);
-      setFetchingRoles(false);
-  }
+    const rolesResult = await axios.get(`${BACKEND_URL}/roles`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    const data = rolesResult.data?.role?.data;
+    setAllRoles(data);
+    setFetchingRoles(false);
+  };
 
   useEffect(() => {
     fetchData();
@@ -204,130 +207,142 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
               ) : (
                 <div>
                   <div className="pt-20 w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
-                    {/* <IconButton
+                    <IconButton
                       sx={{
                         position: "absolute",
                         right: 12,
                         top: 20,
-                        color: "#000000",
+                        color: currentMode === "dark" ? "#ffffff" : "#000000",
                       }}
                       onClick={addUserModelClose}
                     >
                       <GridCloseIcon size={18} />
-                    </IconButton> */}
+                    </IconButton>
                     <div>
                       <h2 className="text-center text-xl font-bold text-gray-900 mt-3">
                         Create A New Account
                       </h2>
                     </div>
-                  
-                                 <form
-                  className="mt-8 space-y-6"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    RegisterUser();
-                  }}
-                                >
-                  <input type="hidden" name="remember" defaultValue="true" />
-                  <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md">
-                    <div className="col-span-6">
-                      <TextField
-                        id="login-id"
-                        type={"text"}
-                        label="Login ID"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={formdata?.loginId}
-                        onChange={(e) => {
-                          setformdata({ ...formdata, loginId: e.target.value });
-                        }}
+
+                    <form
+                      className="mt-8 space-y-6"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        RegisterUser();
+                      }}
+                    >
+                      <input
+                        type="hidden"
+                        name="remember"
+                        defaultValue="true"
                       />
-                    </div>
-                    <div className="col-span-3">
-                      <TextField
-                        id="password"
-                        type={"password"}
-                        label="Password"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={formdata?.password}
-                        onChange={handlePassword}
-                        helperText={"Example: Abc123@#"}
-                      />
-                    </div>
-                    <div className="col-span-3">
-                      <TextField
-                        id="confirm-password"
-                        type={"password"}
-                        label="Confirm Password"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={formdata?.c_password}
-                        onChange={(e) => {
-                          setPasswordError(false);
-                          setformdata({
-                            ...formdata,
-                            c_password: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    {passwordError && (
-                      <div className="col-span-6">
-                        <p className="italic text-red-900">{passwordError}</p>
-                      </div>
-                    )}
-                    <div className="col-span-3">
-                      <TextField
-                      select
-                        id="user-role"
-                        value={UserRole}
-                        label="User Role"
-                        onChange={ChangeUserRole}
-                        size="medium"
-                        className="w-full"
-                        displayEmpty
-                        required
-                      >
-                        <MenuItem value="" disabled>
-                          User Role
-                        </MenuItem>
-                  
-                        {allRoles?.map((role, index) => {
-                          return <MenuItem key={index} value={role?.role}>{role?.role}</MenuItem>
-                        })}
-                  
-                      </TextField>
-                    </div>
-                    <div className="col-span-3">
-                      {UserRole === "Sales Agent" && (
-                        <TextField
-                        select
-                          id="managerId"
-                          type={"text"}
-                          label="Select Manager"
-                          className="w-full mb-3"
-                          variant="outlined"
-                          size="medium"
-                          sx={{ marginBottom: "7px" }}
-                          required
-                          value={formdata?.isParent}
-                          onChange={(e) => {
-                            setformdata({
-                              ...formdata,
-                              isParent: e.target.value,
-                            });
-                          }}
-                        >
-                        <MenuItem value="" disabled>
-                          Manager
-                        </MenuItem>
+                      <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md">
+                        <div className="col-span-6">
+                          <TextField
+                            id="login-id"
+                            type={"text"}
+                            label="Login ID"
+                            className="w-full"
+                            variant="outlined"
+                            size="medium"
+                            required
+                            value={formdata?.loginId}
+                            onChange={(e) => {
+                              setformdata({
+                                ...formdata,
+                                loginId: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                        <div className="col-span-3">
+                          <TextField
+                            id="password"
+                            type={"password"}
+                            label="Password"
+                            className="w-full"
+                            variant="outlined"
+                            size="medium"
+                            required
+                            value={formdata?.password}
+                            onChange={handlePassword}
+                            helperText={"Example: Abc123@#"}
+                          />
+                        </div>
+                        <div className="col-span-3">
+                          <TextField
+                            id="confirm-password"
+                            type={"password"}
+                            label="Confirm Password"
+                            className="w-full"
+                            variant="outlined"
+                            size="medium"
+                            required
+                            value={formdata?.c_password}
+                            onChange={(e) => {
+                              setPasswordError(false);
+                              setformdata({
+                                ...formdata,
+                                c_password: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                        {passwordError && (
+                          <div className="col-span-6">
+                            <p className="italic text-red-900">
+                              {passwordError}
+                            </p>
+                          </div>
+                        )}
+                        <div className="col-span-3">
+                          <TextField
+                            select
+                            id="user-role"
+                            value={UserRole}
+                            label="User Role"
+                            onChange={ChangeUserRole}
+                            size="medium"
+                            className="w-full"
+                            displayEmpty
+                            required
+                          >
+                            <MenuItem value="" disabled>
+                              User Role
+                            </MenuItem>
+
+                            {allRoles?.map((role, index) => {
+                              return (
+                                <MenuItem key={index} value={role?.role}>
+                                  {role?.role}
+                                </MenuItem>
+                              );
+                            })}
+                          </TextField>
+                        </div>
+                        <div className="col-span-3">
+                          {UserRole === "Sales Agent" && (
+                            <TextField
+                              select
+                              id="managerId"
+                              type={"text"}
+                              label="Select Manager"
+                              className="w-full mb-3"
+                              variant="outlined"
+                              size="medium"
+                              sx={{ marginBottom: "7px" }}
+                              required
+                              value={formdata?.isParent}
+                              onChange={(e) => {
+                                setformdata({
+                                  ...formdata,
+                                  isParent: e.target.value,
+                                });
+                              }}
+                            >
+                              <MenuItem value="" disabled>
+                                Manager
+                              </MenuItem>
                               {Managers?.map((manager, key) => {
                                 return (
                                   <MenuItem value={manager?.id} key={key}>
@@ -413,9 +428,8 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                       </div>
                     </form>
                   </div>
-                  
                 </div>
-            )}
+              )}
             </div>
           </div>
         </div>

@@ -1,4 +1,10 @@
-import { CircularProgress, Modal, Backdrop, Button } from "@mui/material";
+import {
+  CircularProgress,
+  Modal,
+  Backdrop,
+  Button,
+  IconButton,
+} from "@mui/material";
 import { IoIosAlert } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
 import { Select, TextField } from "@mui/material";
@@ -11,6 +17,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import UpdatePermissionsCheckbox from "../addUser/UpdatePermissionCheckbox";
+import { GridCloseIcon } from "@mui/x-data-grid";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -220,6 +227,17 @@ const UpdateComponent = ({
           <div className={` `}>
             <div className="flex items-center justify-center pl-3">
               <div className="w-full space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5] ">
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    right: 12,
+                    top: 20,
+                    color: "#00000",
+                  }}
+                  onClick={addUserModelClose}
+                >
+                  <GridCloseIcon size={18} />
+                </IconButton>
                 <div>
                   <h2 className="text-center text-xl font-bold text-gray-900 mt-4">
                     Update {value === 0 ? " Role" : " Permissions"}
