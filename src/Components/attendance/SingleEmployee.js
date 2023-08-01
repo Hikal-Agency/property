@@ -1110,7 +1110,7 @@ const SingleEmployee = ({ user }) => {
       doc.setTextColor("#000"); // Reset text color to black
 
       doc.text(`Username: ${empData[0]?.userName || "No Name"}`, 15, 18);
-      doc.text(`Position: ${empData[0]?.position || "No Position"}`, 15, 24);
+      // doc.text(`Position: ${empData[0]?.position || "No Position"}`, 15, 24);
 
       doc.setTextColor("#1976D2"); // Set text color to a nice blue
       doc.text(`Salary Information`, 15, 35);
@@ -1118,27 +1118,27 @@ const SingleEmployee = ({ user }) => {
 
       doc.text(
         formatText(
-          `Total Salary: ${
+          `Total Salary:  ${currency} ${
             pageState?.totalSalary || "No Salary Data"
-          } ${currency}`
+          }`
         ),
         15,
         43
       );
       doc.text(
         formatText(
-          `Leave Day Salary: ${
+          `Leave Day Salary: ${currency} ${
             pageState?.leaveDaySalary || "No Data"
-          } ${currency}`
+          } `
         ),
         15,
         50
       );
       doc.text(
         formatText(
-          `Late Day Salary: ${
+          `Late Day Salary: ${currency} ${
             pageState?.lateDaySalary || "No Data"
-          } ${currency}`
+          } `
         ),
         15,
         57
@@ -1170,7 +1170,7 @@ const SingleEmployee = ({ user }) => {
       );
       doc.text(
         formatText(
-          `Monthly Salary: ${empData[0]?.salary || "No Data"} ${currency}`
+          `Monthly Salary: ${currency} ${empData[0]?.salary || "No Data"} `
         ),
         15,
         99
