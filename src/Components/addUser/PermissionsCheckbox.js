@@ -11,15 +11,16 @@ const PermissionsCheckbox = ({
 
   useEffect(() => {
     // When the component mounts, add the permission ID to the selectedPermission array
-    setSelectedPermission((prevSelected) => [...prevSelected, permission.id]);
-    setChecked(true);
+    setSelectedPermission([]);
+    // setSelectedPermission((prevSelected) => [...prevSelected, permission.id]);
+    // setChecked(true);
     console.log("useeffect:::::::");
   }, []);
 
   useEffect(() => {
-    if (!allChecked) {
+    if (allChecked) {
       console.log("checked all: ", allChecked);
-      setSelectedPermission([]);
+      setSelectedPermission((prevSelected) => [...prevSelected, permission.id]);
     }
     setChecked(allChecked);
   }, [allChecked]);
