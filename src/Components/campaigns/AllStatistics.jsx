@@ -915,6 +915,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       ? "bg-gray-900 text-white "
                       : "bg-white"
                   } col-span-1 h-96 shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+                  // style={{ height: "300px" }}
                 >
                   <div className="justify-between items-center ">
                     <h6 className="font-semibold pb-3 text-red-600">
@@ -981,7 +982,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     currentMode === "dark"
                       ? "bg-gray-900 text-white "
                       : "bg-white"
-                  } col-span-1 h-96 shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm flex flex-col justify-start`}
+                  } col-span-1 h-[450px] shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm flex flex-col justify-start`}
                 >
                   <h6 className="font-semibold pb-3 text-red-600">
                     Frequency And Reach

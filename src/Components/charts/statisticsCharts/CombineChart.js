@@ -305,7 +305,10 @@ const CombineChart = ({ combineData }) => {
   };
 
   return (
-    <div className="lineChartDiv flex items-center" style={{ height: "300px", width: "100%" }}>
+    <div
+      className="lineChartDiv flex items-center"
+      style={{ height: "250px", width: "300px !important" }}
+    >
       <Line data={chartData} options={chartOptions} />
     </div>
   );
