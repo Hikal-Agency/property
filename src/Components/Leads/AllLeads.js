@@ -228,7 +228,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "id",
       headerName: "#",
-      minWidth: 20,
+      minWidth: 40,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {

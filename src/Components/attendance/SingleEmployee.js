@@ -140,12 +140,12 @@ const SingleEmployee = ({ user }) => {
       headerName: "Office time",
       minWidth: 70,
       flex: 1,
-      renderCell: (cellValues) => {
-        const formattedTime = cellValues.row.default_datetime
-          ? convertTo12HourFormat(cellValues.row.default_datetime)
-          : "";
-        return formattedTime;
-      },
+      // renderCell: (cellValues) => {
+      //   const formattedTime = cellValues.row.default_datetime
+      //     ? convertTo12HourFormat(cellValues.row.default_datetime)
+      //     : "";
+      //   return formattedTime;
+      // },
     },
     // LATE MINUTES
     // {
@@ -360,7 +360,7 @@ const SingleEmployee = ({ user }) => {
           ) : (
             // NOT PENDING
             <>
-              {params.row.deduction === 1 ? (
+              {params.row.is_late === 1 ? (
                 <Tooltip title="Don't Deduct Salary" arrow>
                   <IconButton
                     onClick={(event) =>
@@ -375,7 +375,8 @@ const SingleEmployee = ({ user }) => {
                     />
                   </IconButton>
                 </Tooltip>
-              ) : (
+              ) : params.row.is_late === 2
+              ? (
                 <Tooltip title="Deduct Salary" arrow>
                   <IconButton
                     onClick={(event) => deductSalary(event, 2, params?.row.id)}
@@ -388,6 +389,8 @@ const SingleEmployee = ({ user }) => {
                     />
                   </IconButton>
                 </Tooltip>
+              ) : (
+                <></>
               )}
             </>
           )}
