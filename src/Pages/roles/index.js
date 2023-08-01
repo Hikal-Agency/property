@@ -115,7 +115,9 @@ const Role = () => {
           rowsDataArray = response?.data?.role?.data;
         }
 
-        rowsDataArray = rowsDataArray?.filter((role) => role?.role !== "Administrator");
+        rowsDataArray = rowsDataArray?.filter(
+          (role) => role?.role !== "Administrator"
+        );
 
         rowsdata = rowsDataArray?.map((row, index) => ({
           id:
@@ -489,7 +491,8 @@ const Role = () => {
                         rowsPerPageOptions={[30, 50, 75, 100]}
                         pagination
                         // width="auto"
-                        getRowHeight={() => "auto"}
+                        // getRowHeight={() => "auto"}
+                        rowHeight={45}
                         paginationMode="server"
                         page={pageState.page - 1}
                         pageSize={pageState.pageSize}
