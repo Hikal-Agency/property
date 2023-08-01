@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
+import usePermission from "../../utils/usePermission";
 import {
   Avatar,
   Box,
@@ -55,6 +56,7 @@ const SingleEmployee = ({ user }) => {
   const token = localStorage.getItem("auth-token");
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const { hasPermission } = usePermission();
 
   const [cut_salary, setCutSalary] = useState();
   const [PersonalInfo, setPersonalInfo] = useState({});
@@ -280,16 +282,29 @@ const SingleEmployee = ({ user }) => {
       renderCell: (params) => (
         <div className={`space-x-1 w-full flex items-center justify-center`}>
           <Tooltip title="Edit Note/Reason" arrow>
-            <IconButton
-              onClick={(event) => updateReason(event, params?.row.id)}
-            >
-              <MdModeEdit
-                size={16}
-                className={` ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
-              />
-            </IconButton>
+            {hasPermission("late_reason") ? (
+              <IconButton
+                onClick={(event) => updateReason(event, params?.row.id)}
+              >
+                <MdModeEdit
+                  size={16}
+                  className={` ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
+                />
+              </IconButton>
+            ) : (
+              <IconButton
+              // onClick={(event) => updateReason(event, params?.row.id)}
+              >
+                <MdModeEdit
+                  size={16}
+                  className={` ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
+                />
+              </IconButton>
+            )}
           </Tooltip>
           {/* PENDING FOR DEDUCT SALARY  */}
           {params.row.notify_status === "Pending" &&
@@ -363,9 +378,7 @@ const SingleEmployee = ({ user }) => {
               {params.row.deduction === 1 ? (
                 <Tooltip title="Don't Deduct Salary" arrow>
                   <IconButton
-                    onClick={(event) =>
-                      undeductSalary(event, 2, params?.row.id)
-                    }
+                    onClick={(event) => undeductSalary(event, params?.row.id)}
                   >
                     <MdMoneyOff
                       size={16}
@@ -378,7 +391,7 @@ const SingleEmployee = ({ user }) => {
               ) : (
                 <Tooltip title="Deduct Salary" arrow>
                   <IconButton
-                    onClick={(event) => deductSalary(event, 2, params?.row.id)}
+                    onClick={(event) => deductSalary(event, params?.row.id)}
                   >
                     <MdAttachMoney
                       size={16}
@@ -830,7 +843,10 @@ const SingleEmployee = ({ user }) => {
 
   // DEDUCT SALARY
   const deductSalary = async (e, id) => {
+    console.log("user id : ", id);
     const employeeData = empData.find((employee) => employee.id === id);
+
+    console.log("deduct_salary_emp_data: ", employeeData);
 
     setpageState((oldPageState) => ({
       ...oldPageState,
@@ -838,6 +854,8 @@ const SingleEmployee = ({ user }) => {
 
     const monthly_salary = employeeData?.salary / 30;
     let deduted_salary = monthly_salary / 2;
+
+    console.log("deduct_salary: ", deduted_salary);
 
     const UpdateData = new FormData();
 
@@ -896,6 +914,7 @@ const SingleEmployee = ({ user }) => {
 
   // UNDEDUCT SALARY
   const undeductSalary = async (e, id) => {
+    console.log("undeduct id: ", id);
     const employeeData = empData.find((employee) => employee.id === id);
 
     setpageState((oldPageState) => ({
