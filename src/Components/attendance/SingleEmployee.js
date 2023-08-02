@@ -246,7 +246,7 @@ const SingleEmployee = ({ user }) => {
             </div>
           );
         } else {
-          return "No Data";
+          return "-";
         }
       },
     },
@@ -388,19 +388,19 @@ const SingleEmployee = ({ user }) => {
                         />
                       </IconButton>
                     </Tooltip>
-                  ) : params.row.is_late === 2 ? (
-                    <Tooltip title="Deduct Salary" arrow>
-                      <IconButton
-                        onClick={(event) => deductSalary(event, params?.row.id)}
-                      >
-                        <MdAttachMoney
-                          size={16}
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
-                        />
-                      </IconButton>
-                    </Tooltip>
+                  // ) : params.row.is_late === 2 ? (
+                  //   <Tooltip title="Deduct Salary" arrow>
+                  //     <IconButton
+                  //       onClick={(event) => deductSalary(event, params?.row.id)}
+                  //     >
+                  //       <MdAttachMoney
+                  //         size={16}
+                  //         className={`${
+                  //           currentMode === "dark" ? "text-white" : "text-black"
+                  //         }`}
+                  //       />
+                  //     </IconButton>
+                  //   </Tooltip>
                   ) : (
                     <></>
                   )}
@@ -1358,7 +1358,7 @@ const SingleEmployee = ({ user }) => {
                             </div>
                             {empData[0]?.salary
                               ? `${empData[0]?.currency} ${empData[0]?.salary} `
-                              : "No data"}
+                              : "-"}
                           </div>
                           <div className="text-center">
                             <div className="flex items-center justify-center">
@@ -1366,7 +1366,7 @@ const SingleEmployee = ({ user }) => {
                             </div>
                             {empData[0]?.salary && empData[0]?.salary !== null
                               ? `${empData[0]?.currency} ${pageState?.perDaySalary}`
-                              : "No data"}
+                              : "-"}
                           </div>
                         </div>
                       </div>
@@ -1439,7 +1439,7 @@ const SingleEmployee = ({ user }) => {
                               {/* (SALARY_PER_DAY * TOTAL_LEAVE_DAYS) =========== TOTAL_LEAVE_DAYS = WORKING_DAYS - ATTENDED_DAYS */}
                               {empData[0]?.salary
                                 ? `${empData[0]?.currency} ${pageState?.leaveDaySalary} `
-                                : "No data"}
+                                : "-"}
                             </div>
                             <div className="text-center">
                               <div className="flex items-center justify-center">
@@ -1450,7 +1450,7 @@ const SingleEmployee = ({ user }) => {
                               {/* (SALARY_PER_DAY * TOTAL_LATE_DAYS) / 2 ========== TOTAL_LATE_DAYS = COUNT(is_late) WHERE is_late = 1 */}
                               {empData[0]?.salary && empData[0]?.salary !== null
                                 ? `${empData[0]?.currency} ${pageState?.lateDaySalary}`
-                                : "No data"}
+                                : "-"}
                             </div>
                           </div>
                         </div>
@@ -1471,7 +1471,7 @@ const SingleEmployee = ({ user }) => {
                             {/* MONTHLY_SALARY - (LEAVE_DAY_SALARY + LATE_DAYA_SALARY) */}
                             {empData[0]?.salary
                               ? `${empData[0]?.currency} ${pageState?.totalSalary} `
-                              : "No data"}
+                              : "-"}
                           </div>
                         </div>
                       </div>

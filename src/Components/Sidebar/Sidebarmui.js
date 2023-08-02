@@ -904,7 +904,7 @@ const Sidebarmui = () => {
           link: "/attendance/employeesList",
         },
         {
-          name: "Self Attendance",
+          name: "My Attendance",
           icon: <FiUsers />,
           link: "/attendance/attendance_self",
         },
