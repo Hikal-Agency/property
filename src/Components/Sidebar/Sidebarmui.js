@@ -961,9 +961,8 @@ const Sidebarmui = () => {
       ];
     }
   }
-
   useEffect(() => {
-    const url = location.pathname;
+     const url = location.pathname?.replaceAll("%20", " ");
 
     links?.forEach((link, linkIndex) => {
       link?.links?.forEach((l, menuIndex) => {
@@ -971,9 +970,9 @@ const Sidebarmui = () => {
           l?.submenu?.forEach((sub) => {
             if (sub?.link === url) {
               setActiveSidebarHeading(linkIndex);
-              setOpenedSubMenu({
-                linkIndex: linkIndex,
-                menuIndex: menuIndex + 1,
+              setOpenSubMenu({
+                linkIndex,
+                sub: false,
               });
               return;
             }
@@ -987,6 +986,34 @@ const Sidebarmui = () => {
       });
     });
   }, [location.pathname]);
+
+  useEffect(() => {
+    const url = location.pathname?.replaceAll("%20", " ");
+
+    links?.forEach((link, linkIndex) => {
+      link?.links?.forEach((l, menuIndex) => {
+        if (l?.submenu) {
+          l?.submenu?.forEach((sub) => {
+            if (sub?.link === url) {
+              setActiveSidebarHeading(linkIndex);
+              setOpenSubMenu({
+                menuIndex: menuIndex + 1,
+                linkIndex,
+                sub: false,
+              });
+              return;
+            }
+          });
+        } else {
+          if (url === l?.link) {
+            setActiveSidebarHeading(linkIndex);
+            return;
+          }
+        }
+      });
+    });
+  }, []);
+
 
   return (
     <div
