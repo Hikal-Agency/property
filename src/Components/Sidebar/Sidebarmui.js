@@ -1,4 +1,4 @@
-import { Box, ListItemIcon } from "@mui/material";
+import { Box, ListItemIcon, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { AiFillGift } from "react-icons/ai";
 import { FaLink, FaSnowflake, FaMobile } from "react-icons/fa";
@@ -15,7 +15,7 @@ import { HiTicket, HiDocumentReport, HiUsers, HiSearch } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill, BsFillLayersFill } from "react-icons/bs";
 import { FaFacebookSquare, FaUsers, FaHandshake } from "react-icons/fa";
-import {MdLocationOn} from "react-icons/md";
+import { MdLocationOn } from "react-icons/md";
 import { RiRadioButtonLine } from "react-icons/ri";
 import { BiBlock } from "react-icons/bi";
 import { BiCalendar, BiSupport } from "react-icons/bi";
@@ -34,7 +34,8 @@ import {
 } from "react-icons/md";
 import {
   RiWhatsappFill,
-  RiDashboardFill, RiBuilding2Fill
+  RiDashboardFill,
+  RiBuilding2Fill,
 } from "react-icons/ri";
 import { SiHotjar } from "react-icons/si";
 import { ImBookmark } from "react-icons/im";
@@ -45,6 +46,7 @@ import {
   SubMenu,
   sidebarClasses,
 } from "react-pro-sidebar";
+import { useProSidebar } from "react-pro-sidebar";
 import { MdCampaign } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
 import { ImLock, ImUsers, ImLocation } from "react-icons/im";
@@ -73,13 +75,15 @@ const Sidebarmui = () => {
     setAppLoading,
     fetchSidebarData,
     setPermits,
+    setIsCollapsed,
     sidebarData,
   } = useStateContext();
 
-  const [activeSidebarHeading, setActiveSidebarHeading] = useState("");
+  const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
   const navigate = useNavigate();
   const location = useLocation();
   const { hasPermission } = usePermission();
+  const { collapseSidebar } = useProSidebar();
 
   const [openedSubMenu, setOpenSubMenu] = useState({
     menuIndex: 0,
@@ -374,7 +378,7 @@ const Sidebarmui = () => {
 
     {
       title: "Leads",
-      icon: <FaUsers/>,
+      icon: <FaUsers />,
       links: [
         {
           name: "Add lead",
@@ -728,7 +732,7 @@ const Sidebarmui = () => {
     },
     {
       title: "Deals",
-      icon: <FaHandshake/>,
+      icon: <FaHandshake />,
       links: [
         {
           name: "Booked deals",
@@ -744,7 +748,7 @@ const Sidebarmui = () => {
     },
     {
       title: "Apps",
-      icon: <MdApps/>,
+      icon: <MdApps />,
       links: [
         {
           name: "Appointments",
@@ -816,7 +820,7 @@ const Sidebarmui = () => {
     },
     {
       title: "Social Media",
-      icon: <GoBrowser/>,
+      icon: <GoBrowser />,
       links: [
         {
           name: "Facebook",
@@ -834,7 +838,7 @@ const Sidebarmui = () => {
     },
     {
       title: "LOCATION",
-      icon: <MdLocationOn/>,
+      icon: <MdLocationOn />,
       links: [
         {
           name: "Meetings",
@@ -850,7 +854,7 @@ const Sidebarmui = () => {
     },
     {
       title: "SUPPORT",
-      icon: <BiSupport/>, 
+      icon: <BiSupport />,
 
       links: [
         {
@@ -876,7 +880,7 @@ const Sidebarmui = () => {
     },
     {
       title: "BILLINGS",
-      icon: <MdOutlinePayment/>,
+      icon: <MdOutlinePayment />,
       links: [
         {
           name: "Payments",
@@ -887,7 +891,7 @@ const Sidebarmui = () => {
     },
     {
       title: "ATTENDANCE",
-      icon: <AiTwotoneCalendar/>,
+      icon: <AiTwotoneCalendar />,
       links: [
         {
           name: "Office Settings ",
@@ -929,7 +933,7 @@ const Sidebarmui = () => {
         ...links,
         {
           title: "MARKETING",
-          icon: <MdCampaign/>,
+          icon: <MdCampaign />,
           links: [
             {
               name: "Instances",
@@ -959,7 +963,7 @@ const Sidebarmui = () => {
         ...links,
         {
           title: "MARKETING",
-          icon: <MdCampaign/>,
+          icon: <MdCampaign />,
           links: [
             {
               name: "WhatsApp",
@@ -982,58 +986,60 @@ const Sidebarmui = () => {
     }
   }
   useEffect(() => {
-     const url = location.pathname?.replaceAll("%20", " ");
+    const url = location.pathname?.replaceAll("%20", " ");
 
-    links?.forEach((link, linkIndex) => {
-      link?.links?.forEach((l, menuIndex) => {
-        if (l?.submenu) {
-          l?.submenu?.forEach((sub) => {
-            if (sub?.link === url) {
+      links?.forEach((link, linkIndex) => {
+        link?.links?.forEach((l, menuIndex) => {
+          if (l?.submenu) {
+            l?.submenu?.forEach((sub) => {
+              if (sub?.link === url) {
+                setActiveSidebarHeading(linkIndex);
+                setOpenSubMenu({
+                  menuIndex: menuIndex + 1,
+                  linkIndex,
+                  sub: false,
+                });
+                return;
+              }
+            });
+          } else {
+            if (url === l?.link) {
               setActiveSidebarHeading(linkIndex);
-              setOpenSubMenu({
-                linkIndex,
-                sub: false,
-              });
               return;
             }
-          });
-        } else {
-          if (url === l?.link) {
-            setActiveSidebarHeading(linkIndex);
-            return;
           }
-        }
+        });
       });
-    });
   }, [location.pathname]);
 
   useEffect(() => {
     const url = location.pathname?.replaceAll("%20", " ");
 
-    links?.forEach((link, linkIndex) => {
-      link?.links?.forEach((l, menuIndex) => {
-        if (l?.submenu) {
-          l?.submenu?.forEach((sub) => {
-            if (sub?.link === url) {
+    if(url !== "/dashboard") {
+      links?.forEach((link, linkIndex) => {
+        link?.links?.forEach((l, menuIndex) => {
+          if (l?.submenu) {
+            l?.submenu?.forEach((sub) => {
+              if (sub?.link === url) {
+                setActiveSidebarHeading(linkIndex);
+                setOpenSubMenu({
+                  menuIndex: menuIndex + 1,
+                  linkIndex,
+                  sub: false,
+                });
+                return;
+              }
+            });
+          } else {
+            if (url === l?.link) {
               setActiveSidebarHeading(linkIndex);
-              setOpenSubMenu({
-                menuIndex: menuIndex + 1,
-                linkIndex,
-                sub: false,
-              });
               return;
             }
-          });
-        } else {
-          if (url === l?.link) {
-            setActiveSidebarHeading(linkIndex);
-            return;
           }
-        }
+        });
       });
-    });
+    }
   }, []);
-
 
   return (
     <div
@@ -1275,7 +1281,13 @@ const Sidebarmui = () => {
                               window.location.pathname.replaceAll("%20", " ")
                             }
                           >
-                            <div className="flex items-center gap-4  rounded-lg text-md  ">
+                            <div
+                              className={`flex items-center ${
+                                isCollapsed ? "gap-4" : ""
+                              } rounded-lg text-md ${
+                                !isCollapsed ? "justify-center" : ""
+                              }`}
+                            >
                               <span className={`${!isCollapsed && "text-xl"}`}>
                                 {link?.links[0]?.icon}
                               </span>
@@ -1292,253 +1304,308 @@ const Sidebarmui = () => {
                   }
 
                   if (permittedLinksMoreThan0) {
-                    if(!isCollapsed) {
-                      return link?.icon;
-                    }
                     return (
                       <Box
                         key={linkIndex}
                         onClick={(e) => handleExpandHeading(e, linkIndex)}
                       >
-                        <SubMenu
-                          open={activeSidebarHeading === linkIndex}
-                          label={link?.title?.toUpperCase()}
-                        >
-                          {link.links.map((menu, index) => {
-                            if (
-                              hasPermission(menu?.link, true)?.isPermitted ||
-                              (menu?.submenu &&
-                                hasPermission(menu?.submenu[0]?.link, true)
-                                  ?.isPermitted) ||
-                              (menu?.link === "/dashboard" && User?.role !== 5)
-                            ) {
-                              if (menu?.submenu) {
-                                return (
-                                  <Box
-                                    key={index}
-                                    onClick={(e) => {
-                                      handleExpand(
-                                        e,
-                                        {
-                                          menuIndex: index + 1,
-                                          linkIndex,
-                                        },
-                                        true
-                                      );
-                                    }}
-                                    sx={{
-                                      // FOR DARK MODE MENU SETTINGS
-                                      "& .css-1mfnem1": {
-                                        borderRadius: "5px",
-                                      },
-                                      "& .css-1mfnem1:hover": {
-                                        backgroundColor: "#DA1F26",
-                                      },
-                                      // submenu containerr color
-                                      "& .css-z5rm24": {
-                                        backgroundColor:
-                                          currentMode === "dark" && "#3b3d44",
-                                        borderRadius: "5px",
-                                      },
-                                      // Submenu count color
-                                      "& .css-1rnkhs0": {
-                                        color:
-                                          currentMode === "dark" && "white",
-                                      },
-                                      // LIGHT MODE SETTINGS
-                                      "& .css-1ohfb25:hover": {
-                                        backgroundColor: "#DA1F26",
-                                        color: "white",
-                                        borderRadius: "5px",
-                                      },
-                                      "& .css-wx7wi4": {
-                                        width: "18px",
-                                        minWidth: "18px",
-                                      },
-                                    }}
-                                    className="my-1 sub"
-                                  >
-                                    <SubMenu
-                                      label={menu.name}
-                                      icon={menu.icon}
-                                      open={
-                                        openedSubMenu.menuIndex === index + 1 &&
-                                        openedSubMenu.linkIndex === linkIndex
-                                      }
-                                    >
-                                      {menu?.submenu.map((m, index) => {
-                                        return (
-                                          <Link key={index} to={`${m.link}`}>
-                                            <Box
-                                              sx={{
-                                                // STYLING FOR LIGHT MODE
-                                                "& .css-1mfnem1": {
-                                                  borderRadius: "5px",
-                                                },
-                                                "& .css-1mfnem1:hover": {
-                                                  backgroundColor: "#DA1F26",
-                                                },
-                                                "& .css-1ogoo8i": {
-                                                  backgroundColor: "#DA1F26",
-                                                },
-                                                // STYLING FOR DARK MODE
-                                                "& .css-yktbuo": {
-                                                  backgroundColor: "#DA1F26",
-                                                },
-                                                "& .css-1f8bwsm": {
-                                                  minWidth: "10px !important",
-                                                },
-                                                "& .css-yktbuo:hover": {
-                                                  backgroundColor: "#DA1F26",
-                                                },
-                                                "& .css-1v6ithu": {
-                                                  color: "white",
-                                                },
-                                                "& .leads_counter": {
-                                                  color: m?.countColor
-                                                    ? m?.countColor
-                                                    : currentMode === "dark"
-                                                    ? "white"
-                                                    : "black",
-                                                },
-                                                "& .css-cveggr-MuiListItemIcon-root":
-                                                  {
-                                                    minWidth: "10px !important",
-                                                  },
-                                              }}
-                                              className="relative my-1"
-                                            >
-                                              <MenuItem
-                                                active={
-                                                  m.link ===
-                                                  window.location.pathname.replaceAll(
-                                                    "%20",
-                                                    " "
-                                                  )
-                                                }
-                                                className="flex"
-                                              >
-                                                {m?.icon && (
-                                                  <ListItemIcon
-                                                    style={{
-                                                      minWidth:
-                                                        "23px !important",
-                                                    }}
-                                                  >
-                                                    {m?.icon}
-                                                  </ListItemIcon>
-                                                )}{" "}
-                                                <span className=" ">
-                                                  {" "}
-                                                  {m?.name || ""}
-                                                </span>
-                                              </MenuItem>
-                                              {m?.count != null && (
-                                                <span
-                                                  className="leads_counter block absolute right-5"
-                                                  style={{
-                                                    top: "50%",
-                                                    transform:
-                                                      "translateY(-50%)",
-                                                  }}
-                                                >
-                                                  {m?.count !== null &&
-                                                  m?.count !== undefined
-                                                    ? m?.count
-                                                    : ""}
-                                                </span>
-                                              )}
-                                            </Box>
-                                          </Link>
-                                        );
-                                      })}
-                                    </SubMenu>
-                                  </Box>
-                                );
-                              } else {
-                                return (
-                                  <Link
-                                    key={index}
-                                    to={`${menu.link}`}
-                                    onClick={() => setopenBackDrop(true)}
-                                  >
+                        {!isCollapsed ? (
+                          <Tooltip title={link?.title} placement="right">
+                            <Link
+                              key={linkIndex}
+                              onClick={() => {
+                                setopenBackDrop(true);
+                                setOpenSubMenu(0);
+                                setActiveSidebarHeading(linkIndex);
+                                collapseSidebar();
+                                setIsCollapsed(true);
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  // STYLING FOR LIGHT MODE
+                                  "& .css-1mfnem1": {
+                                    borderRadius: "5px",
+                                  },
+                                  "& .css-1mfnem1:hover": {
+                                    backgroundColor: "#DA1F26",
+                                  },
+                                  "& .css-1ogoo8i": {
+                                    backgroundColor: "#DA1F26",
+                                  },
+                                  // STYLING FOR DARK MODE
+                                  "& .css-yktbuo": {
+                                    backgroundColor: "#DA1F26",
+                                  },
+                                  "& .css-yktbuo:hover": {
+                                    backgroundColor: "#DA1F26",
+                                  },
+                                  "& .css-1v6ithu": {
+                                    color: "white",
+                                  },
+                                }}
+                                className="relative my-1"
+                              >
+                                <MenuItem
+                                  active={
+                                    link?.links[0]?.link ===
+                                    window.location.pathname.replaceAll(
+                                      "%20",
+                                      " "
+                                    )
+                                  }
+                                >
+                                  <div className="flex my-1 h-[38px] items-center justify-center text-2xl">
+                                    {link?.icon}
+                                  </div>
+                                </MenuItem>
+                              </Box>
+                            </Link>
+                          </Tooltip>
+                        ) : (
+                          <SubMenu
+                            open={activeSidebarHeading === linkIndex}
+                            label={link?.title?.toUpperCase()}
+                          >
+                            {link.links.map((menu, index) => {
+                              if (
+                                hasPermission(menu?.link, true)?.isPermitted ||
+                                (menu?.submenu &&
+                                  hasPermission(menu?.submenu[0]?.link, true)
+                                    ?.isPermitted) ||
+                                (menu?.link === "/dashboard" &&
+                                  User?.role !== 5)
+                              ) {
+                                if (menu?.submenu) {
+                                  return (
                                     <Box
+                                      key={index}
+                                      onClick={(e) => {
+                                        handleExpand(
+                                          e,
+                                          {
+                                            menuIndex: index + 1,
+                                            linkIndex,
+                                          },
+                                          true
+                                        );
+                                      }}
                                       sx={{
-                                        // STYLING FOR LIGHT MODE
+                                        // FOR DARK MODE MENU SETTINGS
                                         "& .css-1mfnem1": {
                                           borderRadius: "5px",
                                         },
                                         "& .css-1mfnem1:hover": {
                                           backgroundColor: "#DA1F26",
                                         },
-                                        "& .css-1ogoo8i": {
-                                          backgroundColor: "#DA1F26",
+                                        // submenu containerr color
+                                        "& .css-z5rm24": {
+                                          backgroundColor:
+                                            currentMode === "dark" && "#3b3d44",
+                                          borderRadius: "5px",
                                         },
-                                        // STYLING FOR DARK MODE
-                                        "& .css-yktbuo": {
-                                          backgroundColor: "#DA1F26",
-                                        },
-                                        "& .css-yktbuo:hover": {
-                                          backgroundColor: "#DA1F26",
-                                        },
-                                        "& .css-1v6ithu": {
-                                          color: "white",
-                                        },
-                                        "& .leads_counter": {
+                                        // Submenu count color
+                                        "& .css-1rnkhs0": {
                                           color:
-                                            currentMode === "dark"
-                                              ? menu?.countColor
-                                              : "black",
+                                            currentMode === "dark" && "white",
+                                        },
+                                        // LIGHT MODE SETTINGS
+                                        "& .css-1ohfb25:hover": {
+                                          backgroundColor: "#DA1F26",
+                                          color: "white",
+                                          borderRadius: "5px",
+                                        },
+                                        "& .css-wx7wi4": {
+                                          width: "18px",
+                                          minWidth: "18px",
                                         },
                                       }}
-                                      className="relative my-1"
+                                      className="my-1 sub"
                                     >
-                                      <MenuItem
-                                        active={
-                                          menu.link ===
-                                          window.location.pathname.replaceAll(
-                                            "%20",
-                                            " "
-                                          )
+                                      <SubMenu
+                                        label={menu.name}
+                                        icon={menu.icon}
+                                        open={
+                                          openedSubMenu.menuIndex ===
+                                            index + 1 &&
+                                          openedSubMenu.linkIndex === linkIndex
                                         }
                                       >
-                                        <div className="flex items-center gap-4  rounded-lg text-md  ">
-                                          <span
-                                            className={`${
-                                              !isCollapsed && "text-xl"
-                                            }`}
-                                          >
-                                            {menu.icon}
-                                          </span>
-                                          {isCollapsed && (
-                                            <span className="capitalize">
-                                              {menu.name}
+                                        {menu?.submenu.map((m, index) => {
+                                          return (
+                                            <Link key={index} to={`${m.link}`}>
+                                              <Box
+                                                sx={{
+                                                  // STYLING FOR LIGHT MODE
+                                                  "& .css-1mfnem1": {
+                                                    borderRadius: "5px",
+                                                  },
+                                                  "& .css-1mfnem1:hover": {
+                                                    backgroundColor: "#DA1F26",
+                                                  },
+                                                  "& .css-1ogoo8i": {
+                                                    backgroundColor: "#DA1F26",
+                                                  },
+                                                  // STYLING FOR DARK MODE
+                                                  "& .css-yktbuo": {
+                                                    backgroundColor: "#DA1F26",
+                                                  },
+                                                  "& .css-1f8bwsm": {
+                                                    minWidth: "10px !important",
+                                                  },
+                                                  "& .css-yktbuo:hover": {
+                                                    backgroundColor: "#DA1F26",
+                                                  },
+                                                  "& .css-1v6ithu": {
+                                                    color: "white",
+                                                  },
+                                                  "& .leads_counter": {
+                                                    color: m?.countColor
+                                                      ? m?.countColor
+                                                      : currentMode === "dark"
+                                                      ? "white"
+                                                      : "black",
+                                                  },
+                                                  "& .css-cveggr-MuiListItemIcon-root":
+                                                    {
+                                                      minWidth:
+                                                        "10px !important",
+                                                    },
+                                                }}
+                                                className="relative my-1"
+                                              >
+                                                <MenuItem
+                                                  active={
+                                                    m.link ===
+                                                    window.location.pathname.replaceAll(
+                                                      "%20",
+                                                      " "
+                                                    )
+                                                  }
+                                                  className="flex"
+                                                >
+                                                  {m?.icon && (
+                                                    <ListItemIcon
+                                                      style={{
+                                                        minWidth:
+                                                          "23px !important",
+                                                      }}
+                                                    >
+                                                      {m?.icon}
+                                                    </ListItemIcon>
+                                                  )}{" "}
+                                                  <span className=" ">
+                                                    {" "}
+                                                    {m?.name || ""}
+                                                  </span>
+                                                </MenuItem>
+                                                {m?.count != null && (
+                                                  <span
+                                                    className="leads_counter block absolute right-5"
+                                                    style={{
+                                                      top: "50%",
+                                                      transform:
+                                                        "translateY(-50%)",
+                                                    }}
+                                                  >
+                                                    {m?.count !== null &&
+                                                    m?.count !== undefined
+                                                      ? m?.count
+                                                      : ""}
+                                                  </span>
+                                                )}
+                                              </Box>
+                                            </Link>
+                                          );
+                                        })}
+                                      </SubMenu>
+                                    </Box>
+                                  );
+                                } else {
+                                  return (
+                                    <Link
+                                      key={index}
+                                      to={`${menu.link}`}
+                                      onClick={() => setopenBackDrop(true)}
+                                    >
+                                      <Box
+                                        sx={{
+                                          // STYLING FOR LIGHT MODE
+                                          "& .css-1mfnem1": {
+                                            borderRadius: "5px",
+                                          },
+                                          "& .css-1mfnem1:hover": {
+                                            backgroundColor: "#DA1F26",
+                                          },
+                                          "& .css-1ogoo8i": {
+                                            backgroundColor: "#DA1F26",
+                                          },
+                                          // STYLING FOR DARK MODE
+                                          "& .css-yktbuo": {
+                                            backgroundColor: "#DA1F26",
+                                          },
+                                          "& .css-yktbuo:hover": {
+                                            backgroundColor: "#DA1F26",
+                                          },
+                                          "& .css-1v6ithu": {
+                                            color: "white",
+                                          },
+                                          "& .leads_counter": {
+                                            color:
+                                              currentMode === "dark"
+                                                ? menu?.countColor
+                                                : "black",
+                                          },
+                                        }}
+                                        className="relative my-1"
+                                      >
+                                        <MenuItem
+                                          active={
+                                            menu.link ===
+                                            window.location.pathname.replaceAll(
+                                              "%20",
+                                              " "
+                                            )
+                                          }
+                                        >
+                                          <div className="flex items-center gap-4  rounded-lg text-md  ">
+                                            <span
+                                              className={`${
+                                                !isCollapsed && "text-xl"
+                                              }`}
+                                            >
+                                              {menu.icon}
+                                            </span>
+                                            {isCollapsed && (
+                                              <span className="capitalize">
+                                                {menu.name}
+                                              </span>
+                                            )}
+                                          </div>
+                                        </MenuItem>
+                                        {menu?.count !== null &&
+                                          menu?.count !== undefined && (
+                                            <span
+                                              className="leads_counter block absolute right-5"
+                                              style={{
+                                                top: "50%",
+                                                transform: "translateY(-50%)",
+                                              }}
+                                            >
+                                              {menu?.count !== null &&
+                                              menu?.count !== undefined
+                                                ? menu?.count
+                                                : ""}
                                             </span>
                                           )}
-                                        </div>
-                                      </MenuItem>
-                                      {menu?.count !== null &&
-                                        menu?.count !== undefined && (
-                                          <span
-                                            className="leads_counter block absolute right-5"
-                                            style={{
-                                              top: "50%",
-                                              transform: "translateY(-50%)",
-                                            }}
-                                          >
-                                            {menu?.count !== null &&
-                                            menu?.count !== undefined
-                                              ? menu?.count
-                                              : ""}
-                                          </span>
-                                        )}
-                                    </Box>
-                                  </Link>
-                                );
+                                      </Box>
+                                    </Link>
+                                  );
+                                }
                               }
-                            }
-                          })}
-                        </SubMenu>
+                            })}
+                          </SubMenu>
+                        )}
                       </Box>
                     );
                   }
