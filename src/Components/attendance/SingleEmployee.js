@@ -1150,34 +1150,23 @@ const SingleEmployee = ({ user }) => {
       doc.setTextColor("#000"); // Reset text color to black
 
       doc.text(
-        formatText(
-          `Total Salary:  ${currency} ${
-            pageState?.totalSalary || "No Salary Data"
-          }`
-        ),
+        formatText(`Monthly Salary: ${currency} ${empData[0]?.salary || "0"} `),
         15,
         43
       );
       doc.text(
-        formatText(
-          `Leave Day Salary: ${currency} ${
-            pageState?.leaveDaySalary || "No Data"
-          } `
-        ),
+        formatText(`Salary Per Day: ${pageState?.perDaySalary || "0"}`),
         15,
         50
       );
+
       doc.text(
-        formatText(
-          `Late Day Salary: ${currency} ${
-            pageState?.lateDaySalary || "No Data"
-          } `
-        ),
+        formatText(`Working Days: ${pageState?.workingDays || "No Data"}`),
         15,
         57
       );
       doc.text(
-        formatText(`Late Attended Days: ${pageState?.late_count || "No Data"}`),
+        formatText(`Attended Days: ${pageState?.attended_count || "No Data"}`),
         15,
         64
       );
@@ -1186,24 +1175,31 @@ const SingleEmployee = ({ user }) => {
         15,
         71
       );
+
       doc.text(
-        formatText(`Attended Days: ${pageState?.attended_count || "No Data"}`),
+        formatText(`Late Attended Days: ${pageState?.late_count || "No Data"}`),
         15,
         78
       );
+
       doc.text(
-        formatText(`Working Days: ${pageState?.workingDays || "No Data"}`),
+        formatText(
+          `Leave Day Salary: ${currency} ${pageState?.leaveDaySalary || "0"} `
+        ),
         15,
         85
       );
       doc.text(
-        formatText(`Salary Per Day: ${pageState?.perDaySalary || "No Data"}`),
+        formatText(
+          `Late Day Salary: ${currency} ${pageState?.lateDaySalary || "0"} `
+        ),
         15,
         92
       );
+
       doc.text(
         formatText(
-          `Monthly Salary: ${currency} ${empData[0]?.salary || "No Data"} `
+          `Total Salary:  ${currency} ${pageState?.totalSalary || "0"}`
         ),
         15,
         99
