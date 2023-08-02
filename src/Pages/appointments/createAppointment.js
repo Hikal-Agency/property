@@ -7,10 +7,10 @@ import { Box } from "@mui/material";
 const CreateAppointment = () => {
   const [loading, setloading] = useState(true);
   const { currentMode, setopenBackDrop } = useStateContext();
-
   useEffect(() => {
     setopenBackDrop(false);
     setloading(false);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -36,8 +36,10 @@ const CreateAppointment = () => {
                   >
                     ● Create Appointment
                   </h1>
-                  <GoogleCalendarAppointment />
-                  {/* <Box className="h-[60vh] flex items-center justify-center"><img src="/coming-soon.png" width={"200px"} alt=""/></Box> */}
+                  {/* <GoogleCalendarAppointment/> */}
+                  <Box className="h-[60vh] flex items-center justify-center">
+                    <img src="/coming-soon.png" width={"200px"} alt="" />
+                  </Box>
                 </div>
               </div>
             </div>
