@@ -157,15 +157,19 @@ background-color: "#DA1F26";
   background-color: white;
 }
 
-.dark-mode-sidebar .ps-menu-root > ul > div div:nth-child(2) .ps-menuitem-root >.ps-menu-button {
-  color: black !important;
-}
-
 .dark-mode-sidebar .ps-submenu-content > ul div:not(.sub) a span {
   color: white;
 }
  .dark-mode-sidebar .ps-submenu-content > ul > a span {
+  color: white;
+}
+/* 
+.dark-mode-sidebar .top-level-dropdown > .ps-submenu-content > ul > a .ps-menu-label span {
   color: black;
+}  */
+
+.dark-mode-sidebar .ps-submenu-content {
+  background: #3b3d44;
 }
 
 .dark-mode-sidebar .ps-submenu-content > ul .ps-menu-button:not(.ps-active):hover span {

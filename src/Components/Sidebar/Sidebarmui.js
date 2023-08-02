@@ -1367,6 +1367,7 @@ const Sidebarmui = () => {
                           <SubMenu
                             open={activeSidebarHeading === linkIndex}
                             label={link?.title?.toUpperCase()}
+                            className="top-level-dropdown"
                           >
                             {link.links.map((menu, index) => {
                               if (
