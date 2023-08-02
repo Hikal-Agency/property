@@ -1,25 +1,30 @@
-import { Box, ListItemIcon, Tooltip } from "@mui/material";
+import { Box, ListItemIcon } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { AiFillGift, AiFillMessage } from "react-icons/ai";
+import { AiFillGift } from "react-icons/ai";
 import { FaLink, FaSnowflake, FaMobile } from "react-icons/fa";
-import { FiSettings } from "react-icons/fi";
 import {
   BsStopCircleFill,
   BsCalendarWeekFill,
   BsFillCreditCard2FrontFill,
 } from "react-icons/bs";
+
+import { MdOutlinePayment } from "react-icons/md";
+import { AiTwotoneCalendar } from "react-icons/ai";
+
 import { HiTicket, HiDocumentReport, HiUsers, HiSearch } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { BsEnvelopeFill, BsFillLayersFill } from "react-icons/bs";
-import { FaFacebookSquare, FaChartLine, FaUser } from "react-icons/fa";
+import { FaFacebookSquare, FaUsers, FaHandshake } from "react-icons/fa";
+import {MdLocationOn} from "react-icons/md";
 import { RiRadioButtonLine } from "react-icons/ri";
 import { BiBlock } from "react-icons/bi";
-import { BiCalendar } from "react-icons/bi";
+import { BiCalendar, BiSupport } from "react-icons/bi";
+import { MdApps } from "react-icons/md";
 import { FiUsers } from "react-icons/fi";
-import { FaFire } from "react-icons/fa";
 import { FaRandom } from "react-icons/fa";
 import { BsPersonFillLock } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
+import { GoBrowser } from "react-icons/go";
 import {
   MdLeaderboard,
   MdPersonAdd,
@@ -29,9 +34,7 @@ import {
 } from "react-icons/md";
 import {
   RiWhatsappFill,
-  RiDashboardFill,
-  RiFileTransferFill,
-  RiBuilding2Fill,
+  RiDashboardFill, RiBuilding2Fill
 } from "react-icons/ri";
 import { SiHotjar } from "react-icons/si";
 import { ImBookmark } from "react-icons/im";
@@ -42,6 +45,7 @@ import {
   SubMenu,
   sidebarClasses,
 } from "react-pro-sidebar";
+import { MdCampaign } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
 import { ImLock, ImUsers, ImLocation } from "react-icons/im";
 // import axios from "axios";
@@ -370,6 +374,7 @@ const Sidebarmui = () => {
 
     {
       title: "Leads",
+      icon: <FaUsers/>,
       links: [
         {
           name: "Add lead",
@@ -723,6 +728,7 @@ const Sidebarmui = () => {
     },
     {
       title: "Deals",
+      icon: <FaHandshake/>,
       links: [
         {
           name: "Booked deals",
@@ -738,6 +744,7 @@ const Sidebarmui = () => {
     },
     {
       title: "Apps",
+      icon: <MdApps/>,
       links: [
         {
           name: "Appointments",
@@ -809,6 +816,7 @@ const Sidebarmui = () => {
     },
     {
       title: "Social Media",
+      icon: <GoBrowser/>,
       links: [
         {
           name: "Facebook",
@@ -826,6 +834,7 @@ const Sidebarmui = () => {
     },
     {
       title: "LOCATION",
+      icon: <MdLocationOn/>,
       links: [
         {
           name: "Meetings",
@@ -841,6 +850,8 @@ const Sidebarmui = () => {
     },
     {
       title: "SUPPORT",
+      icon: <BiSupport/>, 
+
       links: [
         {
           name: "QA ",
@@ -865,6 +876,7 @@ const Sidebarmui = () => {
     },
     {
       title: "BILLINGS",
+      icon: <MdOutlinePayment/>,
       links: [
         {
           name: "Payments",
@@ -875,6 +887,7 @@ const Sidebarmui = () => {
     },
     {
       title: "ATTENDANCE",
+      icon: <AiTwotoneCalendar/>,
       links: [
         {
           name: "Office Settings ",
@@ -911,6 +924,7 @@ const Sidebarmui = () => {
         ...links,
         {
           title: "MARKETING",
+          icon: <MdCampaign/>,
           links: [
             {
               name: "Instances",
@@ -940,6 +954,7 @@ const Sidebarmui = () => {
         ...links,
         {
           title: "MARKETING",
+          icon: <MdCampaign/>,
           links: [
             {
               name: "WhatsApp",
@@ -1272,6 +1287,9 @@ const Sidebarmui = () => {
                   }
 
                   if (permittedLinksMoreThan0) {
+                    if(!isCollapsed) {
+                      return link?.icon;
+                    }
                     return (
                       <Box
                         key={linkIndex}

@@ -308,7 +308,13 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize">
+            <p
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -330,9 +336,27 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="flex flex-col">
-            <p>{cellValues?.formattedValue}</p>
-            <p>{cellValues.row.leadType}</p>
+          // <div className="w-full ">
+          //   <p
+          //     className="text-center capitalize"
+          //     style={{
+          // fontFamily: isArabic(cellValues?.formattedValue)
+          //         ? "Noto Kufi Arabic"
+          //         : "inherit",
+          //     }}
+          //   >
+          //     {cellValues?.formattedValue}
+          //   </p>
+          // </div>
+          <div
+              style={{
+          fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+           className="flex flex-col">
+            <p>{cellValues.row.project}</p>
+            <p>{cellValues.row.leadFor}</p>
           </div>
         );
       },
