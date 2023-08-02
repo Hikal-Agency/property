@@ -987,7 +987,7 @@ const Sidebarmui = () => {
   }
   useEffect(() => {
     const url = location.pathname?.replaceAll("%20", " ");
-
+    if(activeSidebarHeading !== 1) {
       links?.forEach((link, linkIndex) => {
         link?.links?.forEach((l, menuIndex) => {
           if (l?.submenu) {
@@ -1010,6 +1010,8 @@ const Sidebarmui = () => {
           }
         });
       });
+
+    }
   }, [location.pathname]);
 
   useEffect(() => {
