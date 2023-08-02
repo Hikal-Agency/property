@@ -211,7 +211,7 @@ const SingleEmployee = ({ user }) => {
         if (params.row.is_late === 1 || params.row.is_late === 2) {
           // If there are late minutes, display the number of minutes as a string
           return params.row.late_minutes + " minutes";
-        } else {
+        } else if (hasPermission("mark_late")) {
           // If there are no late minutes, return the buttons wrapped in a component
           return (
             <div className="flex justify-between px-5 py-3">
@@ -245,6 +245,8 @@ const SingleEmployee = ({ user }) => {
               </Tooltip>
             </div>
           );
+        } else {
+          return "No Data";
         }
       },
     },
@@ -347,7 +349,7 @@ const SingleEmployee = ({ user }) => {
             params.row.notify_deduct_salary === 2 ? (
             <>
               {/* ROLE 1 */}
-              {User?.role === 1 ? (
+              {hasPermission("deduct_salary") && (
                 <>
                   <Tooltip title="Pending Approval Request" arrow>
                     <IconButton>
@@ -364,46 +366,45 @@ const SingleEmployee = ({ user }) => {
                     </IconButton>
                   </Tooltip>
                 </>
-              ) : (
-                <>
-                  {/* DO NOTHING */}
-                  <Tooltip title="Pending Approval" arrow>
-                    <IconButton>
-                      <MdPendingActions size={16} className="text-red-600" />
-                    </IconButton>
-                  </Tooltip>
-                </>
               )}
             </>
           ) : (
             // NOT PENDING
             <>
-              {params.row.is_late === 1 ? (
-                <Tooltip title="Don't Deduct Salary" arrow>
-                  <IconButton
-                    onClick={(event) => undeductSalary(event, params?.row.id)}
-                  >
-                    <MdMoneyOff
-                      size={16}
-                      className={` ${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
-                    />
-                  </IconButton>
-                </Tooltip>
-              ) : params.row.is_late === 2 ? (
-                <Tooltip title="Deduct Salary" arrow>
-                  <IconButton
-                    onClick={(event) => deductSalary(event, params?.row.id)}
-                  >
-                    <MdAttachMoney
-                      size={16}
-                      className={` ${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
-                    />
-                  </IconButton>
-                </Tooltip>
+              {hasPermission("deduct_salary") ? (
+                <>
+                  {params.row.is_late === 1 ? (
+                    <Tooltip title="Don't Deduct Salary" arrow>
+                      <IconButton
+                        onClick={(event) =>
+                          undeductSalary(event, params?.row.id)
+                        }
+                      >
+                        <MdMoneyOff
+                          size={16}
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  ) : params.row.is_late === 2 ? (
+                    <Tooltip title="Deduct Salary" arrow>
+                      <IconButton
+                        onClick={(event) => deductSalary(event, params?.row.id)}
+                      >
+                        <MdAttachMoney
+                          size={16}
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <></>
+                  )}
+                </>
               ) : (
                 <></>
               )}
@@ -765,22 +766,30 @@ const SingleEmployee = ({ user }) => {
 
     // LATE - YES
     if (btn === 1) {
-      if (User?.role === 1) {
-        console.log("deducted salary: ", deduted_salary);
-
-        UpdateData.append("is_late", 1);
-        UpdateData.append("late_minutes", lateMinutes);
-        UpdateData.append("deduct_salary", 1);
-        UpdateData.append("notify_status", "Direct");
-        UpdateData.append("cut_salary", deduted_salary.toString());
-      } else {
-        UpdateData.append("is_late", 1);
-        UpdateData.append("late_minutes", lateMinutes);
-        UpdateData.append("notify_status", "Direct");
-        UpdateData.append("deduct_salary", 1);
-        UpdateData.append("cut_salary", deduted_salary.toString());
-      }
+      console.log("deducted salary: ", deduted_salary);
+      UpdateData.append("is_late", 1);
+      UpdateData.append("late_minutes", lateMinutes);
+      UpdateData.append("deduct_salary", 1);
+      UpdateData.append("notify_status", "Direct");
+      UpdateData.append("cut_salary", deduted_salary.toString());
     }
+    // if (btn === 1) {
+    //   if (User?.role === 1) {
+    //     console.log("deducted salary: ", deduted_salary);
+
+    //     UpdateData.append("is_late", 1);
+    //     UpdateData.append("late_minutes", lateMinutes);
+    //     UpdateData.append("deduct_salary", 1);
+    //     UpdateData.append("notify_status", "Direct");
+    //     UpdateData.append("cut_salary", deduted_salary.toString());
+    //   } else {
+    //     UpdateData.append("is_late", 1);
+    //     UpdateData.append("late_minutes", lateMinutes);
+    //     UpdateData.append("notify_status", "Direct");
+    //     UpdateData.append("deduct_salary", 1);
+    //     UpdateData.append("cut_salary", deduted_salary.toString());
+    //   }
+    // }
     // LATE - NO
     else if (btn === 2) {
       console.log("btn2");
@@ -1141,34 +1150,23 @@ const SingleEmployee = ({ user }) => {
       doc.setTextColor("#000"); // Reset text color to black
 
       doc.text(
-        formatText(
-          `Total Salary:  ${currency} ${
-            pageState?.totalSalary || "No Salary Data"
-          }`
-        ),
+        formatText(`Monthly Salary: ${currency} ${empData[0]?.salary || "0"} `),
         15,
         43
       );
       doc.text(
-        formatText(
-          `Leave Day Salary: ${currency} ${
-            pageState?.leaveDaySalary || "No Data"
-          } `
-        ),
+        formatText(`Salary Per Day: ${pageState?.perDaySalary || "0"}`),
         15,
         50
       );
+
       doc.text(
-        formatText(
-          `Late Day Salary: ${currency} ${
-            pageState?.lateDaySalary || "No Data"
-          } `
-        ),
+        formatText(`Working Days: ${pageState?.workingDays || "No Data"}`),
         15,
         57
       );
       doc.text(
-        formatText(`Late Attended Days: ${pageState?.late_count || "No Data"}`),
+        formatText(`Attended Days: ${pageState?.attended_count || "No Data"}`),
         15,
         64
       );
@@ -1177,24 +1175,31 @@ const SingleEmployee = ({ user }) => {
         15,
         71
       );
+
       doc.text(
-        formatText(`Attended Days: ${pageState?.attended_count || "No Data"}`),
+        formatText(`Late Attended Days: ${pageState?.late_count || "No Data"}`),
         15,
         78
       );
+
       doc.text(
-        formatText(`Working Days: ${pageState?.workingDays || "No Data"}`),
+        formatText(
+          `Leave Day Salary: ${currency} ${pageState?.leaveDaySalary || "0"} `
+        ),
         15,
         85
       );
       doc.text(
-        formatText(`Salary Per Day: ${pageState?.perDaySalary || "No Data"}`),
+        formatText(
+          `Late Day Salary: ${currency} ${pageState?.lateDaySalary || "0"} `
+        ),
         15,
         92
       );
+
       doc.text(
         formatText(
-          `Monthly Salary: ${currency} ${empData[0]?.salary || "No Data"} `
+          `Total Salary:  ${currency} ${pageState?.totalSalary || "0"}`
         ),
         15,
         99

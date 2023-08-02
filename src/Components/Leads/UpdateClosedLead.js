@@ -26,7 +26,8 @@ const UpdateLead = ({
   LeadData,
 }) => {
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL } = useStateContext();
+  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum } =
+    useStateContext();
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
   const style = {
@@ -150,13 +151,16 @@ const UpdateLead = ({
     // eslint-disable-next-line
   }, [Manager]);
 
+  console.log("leadDate:: ", leadDate);
+
   const UpdateLeadFunc = async () => {
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     // UpdateLeadData.append("id", User.id);
+    const updateLeadDate = dayjs(leadDate).format("YYYY-MM-DD");
     UpdateLeadData.append("amount", leadAmount);
-    UpdateLeadData.append("dealDate", leadDate);
+    UpdateLeadData.append("dealDate", updateLeadDate);
 
     await axios
       .post(`${BACKEND_URL}/editdeal/${LeadData.lid}`, UpdateLeadData, {
@@ -265,12 +269,13 @@ const UpdateLead = ({
                         required
                         onChange={(newValue) => {
                           setLeadDateValue(newValue);
+                          console.log("newvalue: ", newValue);
                           setLeadDate(
-                            format(newValue.$d.getUTCFullYear()) +
+                            formatNum(newValue.$d.getUTCFullYear()) +
                               "-" +
-                              format(newValue.$d.getUTCMonth() + 1) +
+                              formatNum(newValue.$d.getUTCMonth() + 1) +
                               "-" +
-                              format(newValue.$d.getUTCDate() + 1)
+                              formatNum(newValue.$d.getUTCDate() + 1)
                           );
                         }}
                         format="yyyy-MM-dd"
