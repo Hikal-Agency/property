@@ -4,12 +4,14 @@ import { useStateContext } from "../../context/ContextProvider";
 import axios from "axios";
 import { CgUnblock } from "react-icons/cg";
 import { toast } from "react-toastify";
-import {RxCross2} from "react-icons/rx";
+import { RxCross2 } from "react-icons/rx";
 import { FaCheck } from "react-icons/fa";
+import IPLeadsModal from "./IPLeadsModal";
 
 const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [loading, setLoading] = useState(false);
+  const [IPLeadsModalOpen, setIPLeadsModalOpen] = useState(false);
 
   const handleUnblock = async (ip) => {
     try {
@@ -56,12 +58,16 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
       const data = {
         status: 1,
       };
-      await axios.post(`${BACKEND_URL}/blocked/${ip?.id}`, JSON.stringify(data), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      await axios.post(
+        `${BACKEND_URL}/blocked/${ip?.id}`,
+        JSON.stringify(data),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       toast.success("IP blocked successfuly!", {
         position: "top-right",
         autoClose: 3000,
@@ -90,19 +96,23 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
     }
   };
 
-    const handleReject = async (ip) => {
+  const handleReject = async (ip) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
       const data = {
         status: 2,
       };
-      await axios.post(`${BACKEND_URL}/blocked/${ip?.id}`, JSON.stringify(data), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      await axios.post(
+        `${BACKEND_URL}/blocked/${ip?.id}`,
+        JSON.stringify(data),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       toast.success("Request rejected successfuly!", {
         position: "top-right",
         autoClose: 3000,
@@ -132,65 +142,77 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
   };
 
   return (
-    <div className="relative rounded m-2 w-[30%] px-3 py-4 text-black bg-[#cbcbcb]">
-      {loading ? <div className="flex py-4 justify-center items-center">
-          <CircularProgress size={22}/>
-      </div> :
-      <div>
-
-        <div className="flex flex-col">
-          <strong className="text-[#da1f26] mb-2">{ip?.byIP}</strong>
-        <p className="font-bold text-black mb-2">{ip?.reason}</p>
-        <p>Requested by: {ip?.blocked_by_name}</p>
-          <small>Blocked on {new Date(ip?.created_at)?.toUTCString()}</small>
+    <>
+    <div
+      onClick={() => setIPLeadsModalOpen(true)}
+      className="relative rounded m-2 w-[30%] px-3 py-4 text-black bg-[#cbcbcb]"
+    >
+      {loading ? (
+        <div className="flex py-4 justify-center items-center">
+          <CircularProgress size={22} />
         </div>
-
-    {isRequest ? 
-            <div className="flex mt-4 items-center">
-            <IconButton
-              style={{ backgroundColor: "#4CAF50" }}
-              className="rounded-full"
-              onClick={() => handleBlock(ip)}
-              sx={{
-                "& svg": {
-                  color: currentMode === "dark" ? "white" : "white",
-                },
-                padding: "4px", 
-                marginRight: "6px"
-              }}
-            >
-              <FaCheck />
-            </IconButton>
-            <IconButton
-              style={{ backgroundColor: "#DC2626" }}
-              className="rounded-full"
-              onClick={() => handleReject(ip)}
-              sx={{
-                "& svg": {
-                  color: currentMode === "dark" ? "white" : "white",
-                },
-                padding: "4px"
-              }}
-            >
-              <RxCross2 />
-            </IconButton>
+      ) : (
+        <div>
+          <div className="flex flex-col">
+            <strong className="text-[#da1f26] mb-2">{ip?.byIP}</strong>
+            <p className="font-bold text-black mb-2">{ip?.reason}</p>
+            <p>Requested by: {ip?.blocked_by_name}</p>
+            <small>Blocked on {new Date(ip?.created_at)?.toUTCString()}</small>
           </div>
-    : (!isRejected ? <IconButton
-            onClick={() => handleUnblock(ip)}
-              style={{ backgroundColor: "black"}}
+
+          {isRequest ? (
+            <div className="flex mt-4 items-center">
+              <IconButton
+                style={{ backgroundColor: "#4CAF50" }}
+                className="rounded-full"
+                onClick={() => handleBlock(ip)}
+                sx={{
+                  "& svg": {
+                    color: currentMode === "dark" ? "white" : "white",
+                  },
+                  padding: "4px",
+                  marginRight: "6px",
+                }}
+              >
+                <FaCheck />
+              </IconButton>
+              <IconButton
+                style={{ backgroundColor: "#DC2626" }}
+                className="rounded-full"
+                onClick={() => handleReject(ip)}
+                sx={{
+                  "& svg": {
+                    color: currentMode === "dark" ? "white" : "white",
+                  },
+                  padding: "4px",
+                }}
+              >
+                <RxCross2 />
+              </IconButton>
+            </div>
+          ) : !isRejected ? (
+            <IconButton
+              onClick={() => handleUnblock(ip)}
+              style={{ backgroundColor: "black" }}
               className="rounded-full"
-            sx={{
-              "& svg": {
-                color: "white"
-              },
-              marginTop: "10px"
-            }}
-          >
-            <CgUnblock />
-          </IconButton> : <></>)}
-      </div>
-      }
+              sx={{
+                "& svg": {
+                  color: "white",
+                },
+                marginTop: "10px",
+              }}
+            >
+              <CgUnblock />
+            </IconButton>
+          ) : (
+            <></>
+          )}
+        </div>
+      )}
+
     </div>
+      {IPLeadsModalOpen && <IPLeadsModal ip={ip?.byIP} blockIPModalOpened={IPLeadsModalOpen} handleCloseIPModal={() => setIPLeadsModalOpen(false)}/>}
+      </>
   );
 };
 
