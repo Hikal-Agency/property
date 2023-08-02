@@ -77,6 +77,10 @@ background-color: "#DA1F26";
   font-weight: bold;
 }
 
+.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-submenu-expand-icon {
+  color: #da1f26;
+}
+
 .ps-submenu-content ul a:hover .leads_counter {
   color: white !important;
 }

@@ -1633,72 +1633,105 @@ const Sidebarmui = () => {
                 className="my-1"
               >
                 {links?.map((link, linkIndex) => {
-                  if (
-                    link?.title?.toLowerCase() === "dashboard" &&
-                    User?.role !== 5
-                  ) {
-                    return (
-                      <Link
-                        key={linkIndex}
-                        to={`${link.links[0]?.link}`}
-                        onClick={() => {
-                          setopenBackDrop(true);
-                          setActiveSidebarHeading("");
-                          setOpenSubMenu(0);
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            // STYLING FOR LIGHT MODE
-                            "& .css-1mfnem1": {
-                              borderRadius: "5px",
-                            },
-                            "& .css-1mfnem1:hover": {
-                              backgroundColor: "#DA1F26",
-                            },
-                            "& .css-1ogoo8i": {
-                              backgroundColor: "#DA1F26",
-                            },
-                            // STYLING FOR DARK MODE
-                            "& .css-yktbuo": {
-                              backgroundColor: "#DA1F26",
-                            },
-                            "& .css-yktbuo:hover": {
-                              backgroundColor: "#DA1F26",
-                            },
-                            "& .css-1v6ithu": {
-                              color: "white",
-                            },
-                            "& .leads_counter": {
-                              color:
-                                currentMode === "dark"
-                                  ? link?.countColor
-                                  : "black",
-                            },
-                          }}
-                          className="relative my-1"
-                        >
-                          <MenuItem
-                            active={
-                              link.links[0]?.link ===
-                              window.location.pathname.replaceAll("%20", " ")
-                            }
-                          >
-                            <div className="flex items-center gap-4  rounded-lg text-md  ">
-                              <span className={`${!isCollapsed && "text-xl"}`}>
-                                {link?.links[0]?.icon}
-                              </span>
-                              {isCollapsed && (
-                                <span className="capitalize">
-                                  {link?.links[0]?.name}
-                                </span>
-                              )}
-                            </div>
-                          </MenuItem>
-                        </Box>
-                      </Link>
-                    );
+               let permittedLinksMoreThan0 = false;
+                for (let i = 0; i < link?.links.length; i++) {
+                  const subMenu = link?.links[i]?.submenu;
+                  if (subMenu) {
+                    for (let k = 0; k < subMenu.length; k++) {
+                      const anotherSubMenu = subMenu[k]?.submenu;
+                      if (anotherSubMenu) {
+                        for (let l = 0; l < anotherSubMenu?.length; l++) {
+                          if (
+                            hasPermission(anotherSubMenu[l]?.link, true)
+                              ?.isPermitted
+                          ) {
+                            permittedLinksMoreThan0 = true;
+                            break;
+                          }
+                        }
+                      } else {
+                        if (hasPermission(subMenu[k]?.link, true).isPermitted) {
+                          permittedLinksMoreThan0 = true;
+                          break;
+                        }
+                      }
+                    }
                   } else {
+                    if (
+                      hasPermission(link?.links[i]?.link, true)?.isPermitted
+                    ) {
+                      permittedLinksMoreThan0 = true;
+                      break;
+                    }
+                  }
+                }
+
+                         if((link?.links[0]?.link === "/dashboard" && User?.role !== 5)) {
+                        return (
+                              <Link
+                                key={linkIndex}
+                                to={`${link?.links[0]?.link}`}
+                                onClick={() => {
+                                  setopenBackDrop(true);
+                                  setOpenSubMenu(0);
+                                  setActiveSidebarHeading("");
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    // STYLING FOR LIGHT MODE
+                                    "& .css-1mfnem1": {
+                                      borderRadius: "5px",
+                                    },
+                                    "& .css-1mfnem1:hover": {
+                                      backgroundColor: "#DA1F26",
+                                    },
+                                    "& .css-1ogoo8i": {
+                                      backgroundColor: "#DA1F26",
+                                    },
+                                    // STYLING FOR DARK MODE
+                                    "& .css-yktbuo": {
+                                      backgroundColor: "#DA1F26",
+                                    },
+                                    "& .css-yktbuo:hover": {
+                                      backgroundColor: "#DA1F26",
+                                    },
+                                    "& .css-1v6ithu": {
+                                      color: "white",
+                                    },
+                                  }}
+                                  className="relative my-1"
+                                >
+                                  <MenuItem
+                                    active={
+                                      link?.links[0]?.link ===
+                                      window.location.pathname.replaceAll(
+                                        "%20",
+                                        " "
+                                      )
+                                    }
+                                  >
+                                    <div className="flex items-center gap-4  rounded-lg text-md  ">
+                                      <span
+                                        className={`${
+                                          !isCollapsed && "text-xl"
+                                        }`}
+                                      >
+                                        {link?.links[0]?.icon}
+                                      </span>
+                                      {isCollapsed && (
+                                        <span className="capitalize">
+                                          {link?.links[0]?.name}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </MenuItem>
+                                </Box>
+                              </Link>
+                            );
+                    }
+
+                if( permittedLinksMoreThan0 ) {
                     return (
                       <Box
                         key={linkIndex}
@@ -1709,6 +1742,13 @@ const Sidebarmui = () => {
                           label={link?.title?.toUpperCase()}
                         >
                           {link.links.map((menu, index) => {
+                              if (
+                          hasPermission(menu?.link, true)?.isPermitted ||
+                          (menu?.submenu &&
+                            hasPermission(menu?.submenu[0]?.link, true)
+                              ?.isPermitted) ||
+                          (menu?.link === "/dashboard" && User?.role !== 5)
+                        )
                             if (menu?.submenu) {
                               return (
                                 <Box
