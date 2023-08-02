@@ -117,7 +117,7 @@ const EditUser = ({ user }) => {
         position: user?.position,
         target: user?.target,
         salary: user?.salary,
-        currency: user?.currency
+        currency: user?.currency,
       });
     }
   }, [user]);
@@ -144,7 +144,7 @@ const EditUser = ({ user }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 md:grid-cols- sm:grid-cols-1 gap-5">
                     <div>
                       <Box sx={darkModeColors}>
-                      <InputLabel id="position">Position</InputLabel>
+                        <InputLabel id="position">Position</InputLabel>
                         <TextField
                           id="position"
                           value={userData?.position}
@@ -168,9 +168,8 @@ const EditUser = ({ user }) => {
                               color: currentMode === "light" && "#000000",
                             },
                           }}
-                        >
-                        </TextField>
-                        
+                        ></TextField>
+
                         <br />
 
                         <TextField
@@ -199,10 +198,9 @@ const EditUser = ({ user }) => {
                           }
                         />
 
-                        
                         <div className="mb-5 h-0.5 w-full bg-[#DA1F26]"></div>
 
-                        <InputLabel id="currency">Currency</InputLabel>
+                        {/* <InputLabel id="currency">Currency</InputLabel>
                         <TextField
                           id="currency"
                           value={userData?.currency}
@@ -228,9 +226,44 @@ const EditUser = ({ user }) => {
                             },
                           }}
                         >
+                        </TextField> */}
+
+                        <TextField
+                          id="LeadSource"
+                          value={userData?.currency || "AED"}
+                          label="Currency"
+                          onChange={(e) =>
+                            setUserData({
+                              ...userData,
+                              currency: e.target.value,
+                            })
+                          }
+                          size="medium"
+                          className="w-full mb-5"
+                          sx={{
+                            "&": {
+                              marginBottom: "1.25rem !important",
+                            },
+                          }}
+                          displayEmpty
+                          select
+                          required
+                        >
+                          <MenuItem value="" disabled>
+                            Currency
+                            <span className="ml-1" style={{ color: "red" }}>
+                              *
+                            </span>
+                          </MenuItem>
+                          <MenuItem value={"AED"}>AED</MenuItem>
+                          <MenuItem value={"USD"}>USD</MenuItem>
+                          <MenuItem value={"PKR"}>PKR</MenuItem>
+                          <MenuItem value={"SAR"}>SAR</MenuItem>
+                          <MenuItem value={"EGP"}>EGP</MenuItem>
+                          <MenuItem value={"ILS"}>ILS</MenuItem>
                         </TextField>
 
-                        <br/>
+                        <br />
 
                         <InputLabel id="salary">Salary</InputLabel>
                         <TextField
@@ -257,8 +290,7 @@ const EditUser = ({ user }) => {
                               color: currentMode === "light" && "#000000",
                             },
                           }}
-                        >
-                        </TextField>
+                        ></TextField>
                       </Box>
                     </div>
                   </div>
