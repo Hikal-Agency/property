@@ -790,17 +790,32 @@ const SingleEmployee = ({ user }) => {
     //     UpdateData.append("cut_salary", deduted_salary.toString());
     //   }
     // }
+
     // LATE - NO
     else if (btn === 2) {
       console.log("btn2");
 
+      const defaultDatetime = employeeData?.default_datetime;
+      const formattedDatetime = moment(defaultDatetime, "HH:mm");
+      const datetimePlus10Minutes = formattedDatetime.clone().add(10, 'minutes');
+
+      console.log("10mins::::::::::::::::::::::::: " + (datetimePlus10Minutes.format("HH:mm")));
+
       if (
+        moment(pageState?.first_check?.check_datetime, "HH:mm") > (datetimePlus10Minutes.format("HH:mm"))
+      ) {
+        console.log("lates::::::::::::::");
+        UpdateData.append("is_late", 1);
+        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("deduct_salary", 2);
+      }
+      else if (
         // moment(pageState?.first_check?.check_datetime, "HH:mm") >
         moment(pageState?.first_check?.check_datetime, "HH:mm") >
         moment(employeeData?.default_datetime, "HH:mm")
       ) {
         console.log("lates::::::::::::::");
-        UpdateData.append("is_late", 1);
+        UpdateData.append("is_late", 2);
         UpdateData.append("late_minutes", lateMinutes);
         UpdateData.append("deduct_salary", 2);
       } else if (
