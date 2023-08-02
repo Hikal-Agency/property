@@ -388,20 +388,20 @@ const SingleEmployee = ({ user }) => {
                         />
                       </IconButton>
                     </Tooltip>
-                  // ) : params.row.is_late === 2 ? (
-                  //   <Tooltip title="Deduct Salary" arrow>
-                  //     <IconButton
-                  //       onClick={(event) => deductSalary(event, params?.row.id)}
-                  //     >
-                  //       <MdAttachMoney
-                  //         size={16}
-                  //         className={`${
-                  //           currentMode === "dark" ? "text-white" : "text-black"
-                  //         }`}
-                  //       />
-                  //     </IconButton>
-                  //   </Tooltip>
                   ) : (
+                    // ) : params.row.is_late === 2 ? (
+                    //   <Tooltip title="Deduct Salary" arrow>
+                    //     <IconButton
+                    //       onClick={(event) => deductSalary(event, params?.row.id)}
+                    //     >
+                    //       <MdAttachMoney
+                    //         size={16}
+                    //         className={`${
+                    //           currentMode === "dark" ? "text-white" : "text-black"
+                    //         }`}
+                    //       />
+                    //     </IconButton>
+                    //   </Tooltip>
                     <></>
                   )}
                 </>

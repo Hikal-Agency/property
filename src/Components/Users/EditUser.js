@@ -244,6 +244,10 @@ const EditUser = ({ user }) => {
                             "&": {
                               marginBottom: "1.25rem !important",
                             },
+                            "& .MuiOutlinedInput-input": {
+                              color:
+                                currentMode === "dark" ? "#ffffff" : "#000000",
+                            },
                           }}
                           displayEmpty
                           select
