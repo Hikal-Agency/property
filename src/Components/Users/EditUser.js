@@ -25,7 +25,8 @@ const EditUser = ({ user }) => {
   const [userData, setUserData] = useState({
     position: "",
     target: "",
-    salary: ""
+    salary: "",
+    currency: "",
   });
 
   console.log("UserData: ", userData);
@@ -66,6 +67,7 @@ const EditUser = ({ user }) => {
     updated_data.append("position", userData?.position);
     updated_data.append("target", userData?.target);
     updated_data.append("salary", userData?.salary);
+    updated_data.append("currency", userData?.currency);
 
     try {
       const UpdateUser = await axios.post(
@@ -114,7 +116,8 @@ const EditUser = ({ user }) => {
       setUserData({
         position: user?.position,
         target: user?.target,
-        salary: user?.salary
+        salary: user?.salary,
+        currency: user?.currency
       });
     }
   }, [user]);
@@ -141,6 +144,35 @@ const EditUser = ({ user }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 md:grid-cols- sm:grid-cols-1 gap-5">
                     <div>
                       <Box sx={darkModeColors}>
+                      <InputLabel id="position">Position</InputLabel>
+                        <TextField
+                          id="position"
+                          value={userData?.position}
+                          InputLabel="Position"
+                          size="medium"
+                          className="w-full mb-5"
+                          displayEmpty
+                          required
+                          onInput={(e) =>
+                            setUserData({
+                              ...userData,
+                              position: e.target.value,
+                            })
+                          }
+                          sx={{
+                            "& input": {
+                              color: currentMode === "light" && "#000000",
+                            },
+                            marginBottom: "20px",
+                            "& .Mui-selected": {
+                              color: currentMode === "light" && "#000000",
+                            },
+                          }}
+                        >
+                        </TextField>
+                        
+                        <br />
+
                         <TextField
                           id="target"
                           type={"number"}
@@ -167,21 +199,23 @@ const EditUser = ({ user }) => {
                           }
                         />
 
-                        <br />
+                        
+                        <div className="mb-5 h-0.5 w-full bg-[#DA1F26]"></div>
 
-                        <InputLabel id="position">Position</InputLabel>
+                        <InputLabel id="currency">Currency</InputLabel>
                         <TextField
-                          id="position"
-                          value={userData?.position}
-                          InputLabel="Position"
+                          id="currency"
+                          value={userData?.currency}
+                          InputLabel="currency"
                           size="medium"
-                          className="w-full mb-5"
+                          className="w-full mb-2"
+                          type="number"
                           displayEmpty
                           required
                           onInput={(e) =>
                             setUserData({
                               ...userData,
-                              position: e.target.value,
+                              currency: e.target.value,
                             })
                           }
                           sx={{
