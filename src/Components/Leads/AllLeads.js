@@ -311,7 +311,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           //     {cellValues?.formattedValue}
           //   </p>
           // </div>
-          <div className="flex flex-col">
+          <div
+              style={{
+          fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+           className="flex flex-col">
             <p>{cellValues.row.project}</p>
             <p>{cellValues.row.leadFor}</p>
           </div>
