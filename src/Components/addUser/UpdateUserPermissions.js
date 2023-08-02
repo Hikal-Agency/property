@@ -5,6 +5,7 @@ import {
   Button,
   FormControlLabel,
   Checkbox,
+  IconButton,
 } from "@mui/material";
 import { IoIosAlert } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
@@ -17,6 +18,7 @@ import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import RolesCheckbox from "./RolesCheckbox";
+import { GridCloseIcon } from "@mui/x-data-grid";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -147,6 +149,17 @@ const UpdateUserPermissions = ({
             <div className="flex  items-center justify-center pl-3">
               <div className="w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
                 <div>
+                  <IconButton
+                    sx={{
+                      position: "absolute",
+                      // right: 4,
+                      top: 10,
+                      color: "#000000",
+                    }}
+                    onClick={handleUserModelClose}
+                  >
+                    <GridCloseIcon size={18} />
+                  </IconButton>
                   <h2 className="text-center mt-3 text-xl font-bold text-gray-900 py-4">
                     Update Role of{" "}
                     <span style={{ color: "#DA1F26", fontWeight: "700" }}>
