@@ -44,7 +44,7 @@ const Users = () => {
     User,
     darkModeColors,
   } = useStateContext();
-  const {hasPermission} = usePermission();
+  const { hasPermission } = usePermission();
 
   const [user, setUser] = useState([]);
   const [tabValue, setTabValue] = useState(0);
@@ -154,6 +154,7 @@ const Users = () => {
         is_trainer: row?.is_trainer,
         role: row?.role,
         salary: row?.salary,
+        currency: row?.currency,
         profile_picture: row?.profile_picture,
         edit: "edit",
       }));
@@ -356,7 +357,7 @@ const Users = () => {
       renderCell: (cellValues) => {
         return (
           <div className="flex items-center justify-center">
-            {cellValues?.formattedValue} AED
+            {cellValues?.row?.currency} {cellValues?.formattedValue}
           </div>
         );
       },
