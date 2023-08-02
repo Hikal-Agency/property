@@ -30,6 +30,9 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
       case 2:
         period = "monthly";
         break;
+      case 3:
+        period = "last_month";
+        break;
       default:
         period = "daily";
         break;
@@ -125,13 +128,12 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
 
   return (
     <div>
-      
       <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={tabValue} onChange={handleChange} variant="standard">
           <Tab label="Today" />
           <Tab label="Yesterday" />
           <Tab label="This month" />
-          {/* <Tab label="LAST MONTH" /> */}
+          <Tab label="LAST MONTH" />
         </Tabs>
       </Box>
       <Box
@@ -545,6 +547,205 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
 
         {/* THIS MONTH  */}
         <TabPanel value={tabValue} index={2}>
+          {loading ? (
+            <Loader />
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
+                {!noData &&
+                  callLogs?.length > 0 &&
+                  callLogs?.map((call, index) => {
+                    return (
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-gray-900 text-white"
+                            : "bg-gray-200 text-black"
+                        } p-3 rounded-md`}
+                      >
+                        <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
+                          <h5 className="font-bold text-main-red-color col-span-5">
+                            {call?.userName}
+                          </h5>
+                        </div>
+                        <div className="grid gap-3">
+                          <div
+                            className={`${
+                              currentMode === "dark"
+                                ? "bg-black text-white"
+                                : "bg-white text-black"
+                            } rounded-md p-2`}
+                          >
+                            <h6 className="text-center text-xs font-semibold">
+                              Outgoing
+                            </h6>
+                            <hr></hr>
+                            <div className="block gap-3 mt-2">
+                              <div>
+                                <h1 className="text-sm">
+                                  DIALED&nbsp;
+                                  <span className="font-semibold text-main-red-color float-right">
+                                    {call?.dialed || 0}
+                                  </span>
+                                </h1>
+                              </div>
+                              <div>
+                                <h1 className="text-sm">
+                                  ANSWERED&nbsp;
+                                  <span className="font-semibold text-main-red-color float-right">
+                                    {call?.answered || 0}
+                                  </span>
+                                </h1>
+                              </div>
+                              <div>
+                                <h1 className="text-sm">
+                                  NOT ANSWERED&nbsp;
+                                  <span className="font-semibold text-main-red-color float-right">
+                                    {call?.notanswered || 0}
+                                  </span>
+                                </h1>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            className={`${
+                              currentMode === "dark"
+                                ? "bg-black text-white"
+                                : "bg-white text-black"
+                            } rounded-md p-2`}
+                          >
+                            <h6 className="text-center text-xs font-semibold">
+                              Incoming
+                            </h6>
+                            <hr></hr>
+                            <div className="block gap-3 mt-2">
+                              <div>
+                                <h1 className="text-sm">
+                                  RECEIVED&nbsp;
+                                  <span className="font-semibold text-main-red-color float-right">
+                                    {call.received || 0}
+                                  </span>
+                                </h1>
+                              </div>
+                              <div>
+                                <h1 className="text-sm">
+                                  MISSED&nbsp;
+                                  <span className="font-semibold text-main-red-color float-right">
+                                    {call.missed || 0}
+                                  </span>
+                                </h1>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                {/* <div
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-gray-900 text-white"
+                    : "bg-gray-200 text-black"
+                } p-3 rounded-md`}
+              >
+                <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
+                  <h5 className="font-bold text-main-red-color col-span-5">
+                    {calldata.userName}
+                  </h5>
+                </div>
+                <div className="grid gap-3">
+                  <div
+                    className={`${
+                      currentMode === "dark"
+                        ? "bg-black text-white"
+                        : "bg-white text-black"
+                    } rounded-md p-2`}
+                  >
+                    <h6 className="text-center text-xs font-semibold">
+                      Outgoing
+                    </h6>
+                    <hr></hr>
+                    <div className="block gap-3 mt-2">
+                      <div>
+                        <h1 className="text-sm">
+                          DIALED&nbsp;
+                          <span className="font-semibold text-main-red-color float-right">
+                            {callLogs?.dialed}
+                          </span>
+                        </h1>
+                      </div>
+                      <div>
+                        <h1 className="text-sm">
+                          NOT ANSWERED&nbsp;
+                          <span className="font-semibold text-main-red-color float-right">
+                            {callLogs?.notanswered}
+                          </span>
+                        </h1>
+                      </div>
+                      <div>
+                        <h1 className="text-sm">
+                          ANSWERED&nbsp;
+                          <span className="font-semibold text-main-red-color float-right">
+                            {callLogs?.answered}
+                          </span>
+                        </h1>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className={`${
+                      currentMode === "dark"
+                        ? "bg-black text-white"
+                        : "bg-white text-black"
+                    } rounded-md p-2`}
+                  >
+                    <h6 className="text-center text-xs font-semibold">
+                      Incoming
+                    </h6>
+                    <hr></hr>
+                    <div className="block gap-3 mt-2">
+                      <div>
+                        <h1 className="text-sm">
+                          RECEIVED&nbsp;
+                          <span className="font-semibold text-main-red-color float-right">
+                            {callLogs?.recieved}
+                          </span>
+                        </h1>
+                      </div>
+                      <div>
+                        <h1 className="text-sm">
+                          MISSED&nbsp;
+                          <span className="font-semibold text-main-red-color float-right">
+                            {callLogs?.missed}
+                          </span>
+                        </h1>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> */}
+              </div>
+              {noData && (
+                <div className="flex flex-col items-center justify-center h-screen ">
+                  {/* <h1
+                    className={
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }
+                  >
+                    No data available.
+                  </h1> */}
+                  <img
+                    src="./no_data.png"
+                    alt="No data Illustration"
+                    className="w-[600px] h-[600px] object-cover"
+                  />
+                </div>
+              )}
+            </>
+          )}
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={3}>
           {loading ? (
             <Loader />
           ) : (
