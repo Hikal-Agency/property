@@ -1823,6 +1823,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               handleLeadModelClose={handleLeadModelClose}
               LeadData={singleLeadData}
               BACKEND_URL={BACKEND_URL}
+              lead_origin={lead_origin}
             />
           )}
 

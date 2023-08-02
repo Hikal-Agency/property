@@ -17,7 +17,7 @@ const style = {
   boxShadow: 24,
 };
 
-const BlockIPModal = ({ handleCloseIPModal, blockIPModalOpened, lead }) => {
+const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead }) => {
   const { currentMode, BACKEND_URL, User, darkModeColors } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [reason, setReason] = useState("");
@@ -40,6 +40,9 @@ const BlockIPModal = ({ handleCloseIPModal, blockIPModalOpened, lead }) => {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
+      });
+      addNote({
+        note: reason
       });
       toast.success("Requested successfuly to block this IP!", {
         position: "top-right",

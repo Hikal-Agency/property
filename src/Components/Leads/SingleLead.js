@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 
 import axios from "../../axoisConfig";
+import BlockIPModal from "./BlockIPModal";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { BiBlock } from "react-icons/bi";
@@ -25,6 +26,7 @@ const SingleLead = ({
   handleLeadModelOpen,
   handleLeadModelClose,
   LeadData,
+  lead_origin,
   setLeadData,
 }) => {
   const { darkModeColors, currentMode, User, BACKEND_URL, isArabic } = useStateContext();
@@ -33,6 +35,10 @@ const SingleLead = ({
   const [lastNote, setLastNote] = useState("");
   const [lastNoteDate, setLastNoteDate] = useState("");
   const [loading, setLoading] = useState(false);
+  const [blockIPModalOpened, setBlockIPModalOpened] = useState({
+    lead: null, 
+    isOpened: false
+  })
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -60,19 +66,15 @@ const SingleLead = ({
     }
   };
 
-  const AddNote = () => {
+  const AddNote = ({note = ""}) => {
     setaddNoteloading(true);
     const token = localStorage.getItem("auth-token");
-    console.log("lead data is");
-    console.log(LeadData);
 
     const data = {
       leadId: LeadData.leadId || LeadData.id,
-      leadNote: AddNoteTxt,
+      leadNote: note || AddNoteTxt,
       addedBy: User?.id,
     };
-    console.log("Data: ");
-    console.log("Data: ", data);
     axios
       .post(`${BACKEND_URL}/leadNotes`, data, {
         headers: {
@@ -85,17 +87,18 @@ const SingleLead = ({
         console.log("Result: ", result);
         setaddNoteloading(false);
         setAddNoteTxt("");
-        toast.success("Note added Successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        // console.log(result);
+        if(!note) {
+          toast.success("Note added Successfully", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
       })
       .catch((err) => {
         setaddNoteloading(false);
@@ -133,6 +136,13 @@ const SingleLead = ({
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const HandleBlockIP = async (params) => {
+    setBlockIPModalOpened({
+      lead: params, 
+      isOpened: true
+    });
   };
 
   useEffect(() => {
@@ -309,7 +319,25 @@ const SingleLead = ({
               </div>
 
               <div className="bg-main-red-color h-0.5 w-full mt-6 mb-4"></div>
-              <div className="flex justify-end items-center my-0 w-full">
+              <div className="flex mb-6 justify-end items-center mt-0 w-full">
+            
+            {(lead_origin === "freshleads" && LeadData?.ip) && <div className="flex items-center mr-3 justify-end">
+              <p
+                style={{ cursor: "pointer", display: "inline-block" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-transparent text-white rounded-md shadow-none"
+                    : "bg-transparent text-black rounded-md shadow-none"
+                }`}
+                onClick={() => HandleBlockIP(LeadData)}
+              >
+                <IconButton sx={{ padding: 0, "& svg": {
+                  color: "red !important"
+                }}}>
+                  <BiBlock size={19} />
+                </IconButton>
+              </p>
+            </div>}
                 <Link
                   sx={{ my: 0, w: "100%" }}
                   to={`/lead/${
@@ -400,6 +428,15 @@ const SingleLead = ({
           )}
         </div>
       </Modal>
+        <BlockIPModal
+        addNote={AddNote}
+          blockIPModalOpened={blockIPModalOpened?.isOpened}
+          handleCloseIPModal={() => setBlockIPModalOpened({
+            isOpened: false, 
+            lead: null
+          })}
+          lead={LeadData}
+        />
     </>
   );
 };
