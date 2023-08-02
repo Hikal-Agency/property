@@ -388,8 +388,7 @@ const SingleEmployee = ({ user }) => {
                     />
                   </IconButton>
                 </Tooltip>
-              ) : params.row.is_late === 2
-              ? (
+              ) : params.row.is_late === 2 ? (
                 <Tooltip title="Deduct Salary" arrow>
                   <IconButton
                     onClick={(event) => deductSalary(event, params?.row.id)}
@@ -884,7 +883,7 @@ const SingleEmployee = ({ user }) => {
         }
       );
 
-      toast.success("Attendance updated successfully.", {
+      toast.success("Salary Deduction Request Sent Successfully.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -948,7 +947,7 @@ const SingleEmployee = ({ user }) => {
         }
       );
 
-      toast.success("Attendance updated successfully.", {
+      toast.success("Salary Undeduct Request Sent successfully.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
