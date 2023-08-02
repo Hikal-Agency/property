@@ -72,6 +72,11 @@ background-color: "#DA1F26";
   color: black !important;
 }
 
+.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-label{
+  color: #da1f26;
+  font-weight: bold;
+}
+
 .ps-submenu-content ul a:hover .leads_counter {
   color: white !important;
 }
@@ -435,10 +440,6 @@ label[for="bulkImport"] .MuiButtonBase-root {
 .light-mode-sidebar .sub .ps-open .MuiBox-root {
   background: #cac4c4;
   margin: 0 !important;
-}
-
-.ps-submenu-content .sub .ps-submenu-root > .ps-menu-button {
-  padding-left: 40px;
 }
 
 .dark-mode-sidebar .sub .ps-open .MuiBox-root {
