@@ -157,6 +157,21 @@ background-color: "#DA1F26";
   background-color: white;
 }
 
+.dark-mode-sidebar .ps-menu-root > ul > div div:nth-child(2) .ps-menuitem-root >.ps-menu-button {
+  color: black !important;
+}
+
+.dark-mode-sidebar .ps-submenu-content > ul div:not(.sub) a span {
+  color: white;
+}
+ .dark-mode-sidebar .ps-submenu-content > ul > a span {
+  color: black;
+}
+
+.dark-mode-sidebar .ps-submenu-content > ul .ps-menu-button:not(.ps-active):hover span {
+  color: black;
+}
+
 .image-picker .progress-bar {
   width: 100px;
   height: 100px;
@@ -453,10 +468,6 @@ label[for="bulkImport"] .MuiButtonBase-root {
 
 .light-mode-sidebar .ps-open .ps-menu-button:not(.ps-active):hover {
   background: #c5c5c5;
-}
-
-.light-mode-sidebar .sub .ps-open .ps-menu-button:not(.ps-active):hover {
-  background: #e5e5e5;
 }
 
 .light-mode-sidebar .ps-menu-button.ps-open {

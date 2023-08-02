@@ -276,7 +276,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         // const countryCode = `(+${contactNumber.slice(0, 1)} ${contactNumber.slice(1, 3)})`;
 
         // Replace last 4 digits with "*"
-        const lastFourDigits = contactNumber.slice(-4).replace(/\d/g, "*");
+        const lastFourDigits = contactNumber?.slice(-4).replace(/\d/g, "*");
 
         const stearics = contactNumber + lastFourDigits;
         let finalNumber;
@@ -1508,7 +1508,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       const text = e.target.result;
       const rows = text.split("\n");
       const keys = rows[0].split(",").map((key) => key.toString().trim());
-      const data = rows.slice(1, rows.length);
+      const data = rows?.slice(1, rows.length);
       const formatted = data.map((row) =>
         row.split(",").map((value) => value.toString().trim())
       );
