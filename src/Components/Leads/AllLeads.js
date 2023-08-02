@@ -67,7 +67,14 @@ const bulkUpdateBtnStyles = {
 };
 
 const feedbacks = [
-  "All", "New", "No Answer", "Meeting", "Follow Up", "Low Budget", "Not Interested", "Unreachable"
+  "All",
+  "New",
+  "No Answer",
+  "Meeting",
+  "Follow Up",
+  "Low Budget",
+  "Not Interested",
+  "Unreachable",
 ];
 
 const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
@@ -1546,6 +1553,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               sx={{
                 "& .MuiOutlinedInput-notchedOutline": {
                   borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "& .MuiSelect-select": {
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
                 },
                 "&:hover:not (.Mui-disabled):before": {
                   borderColor: currentMode === "dark" ? "#ffffff" : "#000000",

@@ -8,6 +8,7 @@ import Avatar from "@mui/material/Avatar";
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import { ToastContainer, toast } from "react-toastify";
 
 const EmployeesList = ({ user }) => {
   const [loading, setLoading] = useState(false);
@@ -104,6 +105,16 @@ const EmployeesList = ({ user }) => {
       setMaxPage(response.data?.Record?.last_page);
     } catch (error) {
       console.error("Error fetching users:", error);
+      toast.error("Unable to fetch attendance.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } finally {
       setLoading(false);
     }
@@ -115,6 +126,7 @@ const EmployeesList = ({ user }) => {
 
   return (
     <>
+      <ToastContainer />
       <div className="min-h-screen">
         {loading ? (
           <Loader />

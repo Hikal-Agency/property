@@ -35,13 +35,6 @@ import SalaryDeductDailogue from "./SalaryDeductDailogue";
 import { FaDownload } from "react-icons/fa";
 
 const SingleEmployee = ({ user }) => {
-  const path = window.location.pathname;
-  const id = path.split("/").pop();
-
-  console.log("id: ", id);
-  console.log("user: ", user);
-
-  const [loading, setloading] = useState(true);
   const {
     User,
     currentMode,
@@ -53,6 +46,16 @@ const SingleEmployee = ({ user }) => {
     pageState,
     setpageState,
   } = useStateContext();
+
+  const path = window.location.pathname;
+  const location = path.split("/").pop();
+  const id = location === "attendance_self" ? User?.id : location;
+
+  console.log("id: ", id);
+  console.log("user: ", user);
+
+  const [loading, setloading] = useState(true);
+
   const token = localStorage.getItem("auth-token");
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
@@ -1324,7 +1327,7 @@ const SingleEmployee = ({ user }) => {
                                 : "text-black"
                             }  text-center font-bold text-base`}
                           >
-                            {empData[0]?.userName}
+                            {empData[0]?.userName || User?.userName}
                           </h1>
                           <h3
                             className={`${
@@ -1333,7 +1336,7 @@ const SingleEmployee = ({ user }) => {
                                 : "text-gray-600"
                             }  text-center text-sm`}
                           >
-                            {empData[0]?.position}
+                            {empData[0]?.position || User?.position}
                           </h3>
                         </div>
                       </div>

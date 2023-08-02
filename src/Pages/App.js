@@ -240,32 +240,32 @@ const routes = [
   },
   {
     path: "/marketing/contacts",
-    element: <WhatsappMarketing pageName={"contacts"}/>,
+    element: <WhatsappMarketing pageName={"contacts"} />,
     pageName: "Marketing",
   },
   {
     path: "/marketing/payments",
-    element: <WhatsappMarketing pageName={"payments"}/>,
+    element: <WhatsappMarketing pageName={"payments"} />,
     pageName: "Marketing",
   },
   {
     path: "/marketing/templates",
-    element: <WhatsappMarketing pageName={"templates"}/>,
+    element: <WhatsappMarketing pageName={"templates"} />,
     pageName: "Marketing",
   },
-    {
+  {
     path: "/marketing/all",
-    element: <WhatsappMarketing pageName={"all"}/>,
+    element: <WhatsappMarketing pageName={"all"} />,
     pageName: "Marketing",
   },
   {
     path: "/marketing/chat",
-    element: <WhatsappMarketing pageName={"chat"}/>,
+    element: <WhatsappMarketing pageName={"chat"} />,
     pageName: "Marketing",
   },
   {
     path: "/instances",
-    element: <WhatsappMarketing pageName={"instances"}/>,
+    element: <WhatsappMarketing pageName={"instances"} />,
     pageName: "Marketing",
     restrictedRoles: [2, 3, 7],
   },
@@ -387,6 +387,12 @@ const routes = [
     restrictedRoles: [3, 7],
   },
   {
+    path: "/attendance/attendance_self",
+    pageName: "Employees",
+    element: <SingleEmployee />,
+    // restrictedRoles: [3, 7],
+  },
+  {
     path: "/settings",
     pageName: "Settings",
     element: <Settings />,
@@ -410,9 +416,9 @@ const routes = [
 export const socket = io(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-  const { setAllRoutes, currentMode, User} = useStateContext();
+  const { setAllRoutes, currentMode, User } = useStateContext();
   const location = useLocation();
-  const {hasPermission} = usePermission();
+  const { hasPermission } = usePermission();
 
   useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -465,16 +471,19 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
-              {User?.role !== 5 &&
-                  <Route path="/dashboard" element={<Dashboard/>}/>
-              }
+              {User?.role !== 5 && (
+                <Route path="/dashboard" element={<Dashboard />} />
+              )}
               {routes.map((route, index) => {
-                
                 return (
                   <Route
                     key={index}
                     path={route.path}
-                    element={hasPermission(route?.path, true, true)?.isPermitted ? route.element : hasPermission(route?.path, true, true)?.element}
+                    element={
+                      hasPermission(route?.path, true, true)?.isPermitted
+                        ? route.element
+                        : hasPermission(route?.path, true, true)?.element
+                    }
                   />
                 );
               })}
