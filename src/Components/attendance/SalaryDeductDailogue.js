@@ -101,12 +101,12 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
     if (btn === 1) {
       setApproveloading(true);
       formData.append("notify_status", "Approved");
-      formData.append("deduct_salary", 1);
+      formData.append("deduct_salary", 2);
+      formData.append("cut_salary", "No");
+      formData.append("is_late", 2);
     } else {
       setCancelLoading(true);
       formData.append("notify_status", "Rejected");
-      formData.append("deduct_salary", 2);
-      formData.append("cut_salary", "No");
     }
 
     try {
@@ -125,7 +125,7 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
       setCancelLoading(false);
 
       toast.success(
-        btn === 1 ? "Salary deduction approved." : "Salary deduction rejected.",
+        btn === 1 ? "Salary undeduction approved." : "Salary undeduction rejected.",
         {
           position: "top-right",
           autoClose: 3000,
