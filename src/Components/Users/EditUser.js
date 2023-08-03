@@ -200,7 +200,10 @@ const EditUser = ({ user }) => {
                           }
                         />
 
-                        <div className="mb-5 h-0.5 w-full bg-[#DA1F26]"></div>
+                        <div
+                          className="mt-4 h-0.5 w-full bg-[#DA1F26]"
+                          style={{ marginBottom: "40px" }}
+                        ></div>
 
                         {/* <InputLabel id="currency">Currency</InputLabel>
                         <TextField
