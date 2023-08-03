@@ -45,8 +45,8 @@ const Chat = () => {
   const fetchChatMessages = async (contact, callback) => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
     if (waDevice) {
-      socket.emit("get_chat", { id: waDevice, contact: contact });
-      socket.on("chat", (data) => {
+      socket.emit("whatsapp_get_chat", { id: waDevice, contact: contact });
+      socket.on("whatsapp_chat", (data) => {
         if (data?.length > 0) {
             setChatMessages([...data]);
           if (callback) callback();
@@ -62,14 +62,14 @@ const Chat = () => {
     setBtnLoading(true);
     if (type === "text") {
       if (messageInputRef.current?.querySelector("input").value && socket?.id) {
-        socket.emit("send-message", {
+        socket.emit("whatsapp_send-message", {
           id: waDevice,
           to: activeChat.phoneNumber + "@c.us",
           msg: messageInputRef?.current?.querySelector("input").value,
           type: "text",
         });
 
-        socket.on("sent", () => {
+        socket.on("whatsapp_sent", () => {
           fetchChatMessages(activeChat.phoneNumber, () => {
             setBtnLoading(false);
           });
@@ -78,7 +78,7 @@ const Chat = () => {
           }
         });
 
-        socket.on("failed", () => {
+        socket.on("whatsapp_failed", () => {
           toast.error("Message Couldn't be sent", {
             position: "top-right",
             autoClose: 3000,
@@ -102,14 +102,14 @@ const Chat = () => {
       }
     } else if (type === "img") {
       setBtnLoading(true);
-      socket.emit("send-message", {
+      socket.emit("whatsapp_send-message", {
         to: activeChat.phoneNumber + "@c.us",
         id: waDevice,
         type: "img",
         base64: base64,
       });
 
-      socket.on("sent", () => {
+      socket.on("whatsapp_sent", () => {
         fetchChatMessages(activeChat.phoneNumber, () => {
           setBtnLoading(false);
         });
@@ -118,7 +118,7 @@ const Chat = () => {
           }
       });
 
-      socket.on("failed", () => {
+      socket.on("whatsapp_failed", () => {
         toast.error("Message Couldn't be sent", {
           position: "top-right",
           autoClose: 3000,
@@ -136,7 +136,7 @@ const Chat = () => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
     if (socket?.id) {
       setloading(true);
-      socket.emit("logout-user", { id: waDevice });
+      socket.emit("whatsapp_logout-user", { id: waDevice });
     } else {
       toast.error("Server is disconnected!", {
         position: "top-right",
@@ -234,8 +234,8 @@ const Chat = () => {
       if (User && socket) {
         if (waDevice) {
           setloading(true);
-          socket.emit("check_device_exists", { id: waDevice });
-          socket.on("check_device", (result) => {
+          socket.emit("whatsapp_check_device_exists", { id: waDevice });
+          socket.on("whatsapp_check_device", (result) => {
             console.log("Result:", result);
             if (result) {
               setData({
@@ -246,7 +246,7 @@ const Chat = () => {
               setloading(false);
             } else {
               disconnectDevice(waDevice);
-              socket.emit("destroy_client", waDevice);
+              socket.emit("whatsapp_destroy_client", waDevice);
               setSelectedDevice(null);
               setQr(null);
               setReady(false);
@@ -256,7 +256,7 @@ const Chat = () => {
           });
         } else {
           if (selectedDevice?.sessionId && !ready) {
-            socket.emit("destroy_client", selectedDevice?.sessionId);
+            socket.emit("whatsapp_destroy_client", selectedDevice?.sessionId);
             setSelectedDevice(null);
             setQr(null);
             setReady(false);
@@ -299,15 +299,15 @@ const Chat = () => {
     if (socket && User) {
       console.log("Socket connectd");
 
-      socket.on("qr", (qr) => {
+      socket.on("whatsapp_qr", (qr) => {
         console.log("QR Received:", qr);
         setQr(qr);
         setloading(false);
       });
 
-      socket.on("user_ready", (info) => {
-        socket.emit("get_profile_picture", { id: info.sessionId });
-        socket.on("profile_picture", (url) => {
+      socket.on("whatsapp_user_ready", (info) => {
+        socket.emit("whatsapp_get_profile_picture", { id: info.sessionId });
+        socket.on("whatsapp_profile_picture", (url) => {
           localStorage.setItem("authenticated-wa-device", info.sessionId);
           console.log("url: ", url);
           if (url !== null) {
@@ -332,22 +332,22 @@ const Chat = () => {
         });
       });
 
-      socket.on("new_message", () => {
+      socket.on("whatsapp_new_message", () => {
         fetchChatMessages(activeChat.phoneNumber);
       });
 
-      socket.on("user_disconnected", (id) => {
+      socket.on("whatsapp_user_disconnected", (id) => {
         disconnectDevice(id);
         handleLogout();
       });
 
-      socket.on("authenticating", (data) => {
+      socket.on("whatsapp_authenticating", (data) => {
         if (data === 0) {
           setWALoadingScreen(true);
         }
       });
 
-      socket.on("logged-out", (data) => {
+      socket.on("whatsapp_logged-out", (data) => {
         console.log("Logged")
         if (data.status) {
           disconnectDevice(data.id);
@@ -355,7 +355,7 @@ const Chat = () => {
           logout();
         }
       });
-      // socket.on("disconnect", () => {
+      // socket.on("whatsapp_disconnect", () => {
       //   const waDevice = localStorage.getItem("authenticated-wa-device");
       //   if (waDevice) {
       //     disconnectDevice(waDevice);
@@ -373,8 +373,8 @@ const Chat = () => {
 
     const waDevice = localStorage.getItem("authenticated-wa-device");
     if (waDevice) {
-      socket.emit("get-all-chats", { id: waDevice });
-      socket.on("all-chats", (data) => {
+      socket.emit("whatsapp_get-all-chats", { id: waDevice });
+      socket.on("whatsapp_all-chats", (data) => {
         console.log("All Chats:", data);
         if (data.length > 0) {
           setLoadingConversations(false);
@@ -445,7 +445,7 @@ const Chat = () => {
         .replaceAll(" ", "-")}`;
       if (socket?.id) {
         setSelectedDevice({ sessionId, deviceId });
-        socket.emit("create_session", { id: sessionId, deviceId });
+        socket.emit("whatsapp_create_session", { id: sessionId, deviceId });
       } else {
         toast.error("Server is disconnected!", {
           position: "top-right",
