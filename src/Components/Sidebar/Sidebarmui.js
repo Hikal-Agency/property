@@ -133,7 +133,10 @@ const Sidebarmui = () => {
       if (headingIndex === activeSidebarHeading) {
         setActiveSidebarHeading("");
       } else {
-        setActiveSidebarHeading(headingIndex);
+        setActiveSidebarHeading("");
+        setTimeout(() => {
+          setActiveSidebarHeading(headingIndex);
+        }, 0);
       }
 
       setOpenedSubMenu(0);
