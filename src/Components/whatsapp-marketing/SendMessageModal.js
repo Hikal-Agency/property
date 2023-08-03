@@ -52,8 +52,8 @@ const SendMessageModal = ({
   const uploadImage = () => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
     if (waDevice) {
-      socket.emit("check_device_exists", { id: waDevice });
-      socket.on("check_device", (result) => {
+      socket.emit("whatsapp_check_device_exists", { id: waDevice });
+      socket.on("whatsapp_check_device", (result) => {
         if (result) {
           // Success
           if (imagePickerRef.current?.click) {
@@ -189,10 +189,10 @@ const SendMessageModal = ({
 
       const waDevice = localStorage.getItem("authenticated-wa-device");
       if (waDevice) {
-        socket.emit("check_device_exists_send_msg_modal", { id: waDevice });
-        socket.on("check_device_send_msg_modal", (result) => {
+        socket.emit("whatsapp_check_device_exists_send_msg_modal", { id: waDevice });
+        socket.on("whatsapp_check_device_send_msg_modal", (result) => {
           if (result) {
-            socket.emit("send-bulk-image", {
+            socket.emit("whatsapp_send-bulk-image", {
               contacts: contactList,
               img: imgBinary,
               id: waDevice,

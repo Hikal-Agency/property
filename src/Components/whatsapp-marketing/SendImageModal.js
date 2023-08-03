@@ -31,7 +31,7 @@ const SendImageModal = ({ sendImageModal, handleCloseImageModal }) => {
       const waDevice = localStorage.getItem("authenticated-wa-device");
       if (waDevice) {
         console.log(sendImageModal?.rows)
-        socket.emit("send-bulk-image", {
+        socket.emit("whatsapp_send-bulk-image", {
           contacts: sendImageModal?.rows,
           img: sendImageModal?.img,
           id: waDevice,
