@@ -144,7 +144,11 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
   return (
     <>
     <div
-      onClick={() => setIPLeadsModalOpen(true)}
+      onClick={(e) => {
+        if(!e.target.closest(".MuiButtonBase-root")) {
+        setIPLeadsModalOpen(true);
+        }
+      }}
       className="relative rounded m-2 w-[30%] px-3 py-4 text-black bg-[#cbcbcb]"
     >
       {loading ? (
