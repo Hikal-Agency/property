@@ -4,7 +4,6 @@ import Loader from "../Components/Loader";
 
 const usePermission = () => {
   const { permits, User } = useStateContext();
-  console.log(permits);
 
   return {
     hasPermission: (key, isRoute = false, isRouteComponent = false) => {

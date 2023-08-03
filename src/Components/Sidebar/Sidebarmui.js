@@ -262,43 +262,35 @@ const Sidebarmui = () => {
     }
   };
 
-  async function setSalesPersons(urls) {
+  const getAllLeadsMembers = (user) => {
+    setAppLoading(true);
     const token = localStorage.getItem("auth-token");
-    const requests = urls.map((url) =>
-      axios.get(url, {
+    axios
+      .get(`${BACKEND_URL}/getTree`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       })
-    );
-    const responses = await Promise.all(requests);
-    const data = {};
-    for (let i = 0; i < responses.length; i++) {
-      const response = responses[i];
-      if (response.data?.team[0]?.isParent) {
-        const name = `manager-${response.data.team[0].isParent}`;
-        data[name] = response.data.team;
-      }
-    }
-    console.log("State: ", data);
-    setSalesPerson(data);
-    setAppLoading(false);
-  }
+      .then((result) => {
+        const managers = result?.data?.data?.filter(
+          (manager) => manager?.agency === 1
+        );
+        setManagers(managers || []);
+        const agents = {};
+        managers?.forEach((manager) => {
+          if (manager?.agents?.length > 0) {
+            agents[`manager-${manager?.id}`] = manager?.agents?.filter(
+              (agent) => agent?.agency === 1
+            );
+          }
+        });
+        setSalesPerson(agents || []);
 
-  const getAllLeadsMembers = (user) => {
-    setAppLoading(true);
-    axios.get(`${BACKEND_URL}/managers`).then((result) => {
-      console.log("manager response is");
-      console.log(result);
-      const managers = result?.data?.managers.data;
-      setManagers(managers || []);
-      const urls = managers?.map((manager) => {
-        return `${BACKEND_URL}/teamMembers/${manager?.id}`;
+        console.log("Tree:", managers, agents);
+
+        setAppLoading(false);
       });
-
-      setSalesPersons(urls || []);
-    });
   };
 
   useEffect(() => {
