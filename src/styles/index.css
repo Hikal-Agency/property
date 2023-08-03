@@ -471,7 +471,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .light-mode-sidebar .ps-open .ps-menu-button:not(.ps-active):hover {
-  background: #c5c5c5;
+  background: #e4e4e4;
 }
 
 .light-mode-sidebar .ps-menu-button.ps-open {
