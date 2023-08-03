@@ -814,24 +814,6 @@ const Sidebarmui = () => {
       ],
     },
     {
-      title: "Social Media",
-      icon: <GoBrowser />,
-      links: [
-        {
-          name: "Facebook",
-          // icon: <FaChartLine />,
-          icon: <FaFacebookSquare />,
-          link: "/facebook",
-        },
-        // {
-        //   name: "campaigns",
-        //   icon: <FaFacebookSquare />,
-        //   link: "/campaigns",
-        // },
-        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
-      ],
-    },
-    {
       title: "LOCATION",
       icon: <MdLocationOn />,
       links: [
@@ -848,29 +830,21 @@ const Sidebarmui = () => {
       ],
     },
     {
-      title: "SUPPORT",
-      icon: <BiSupport />,
-
+      title: "Social Media",
+      icon: <GoBrowser />,
       links: [
         {
-          name: "QA ",
-          icon: <AiOutlineQuestionCircle />,
-          submenu: [
-            {
-              name: "QA Form",
-              link: "/trainer",
-            },
-            {
-              name: "All QA",
-              link: "/qa",
-            },
-          ],
+          name: "Facebook",
+          // icon: <FaChartLine />,
+          icon: <FaFacebookSquare />,
+          link: "/facebook",
         },
-        {
-          name: "Tickets",
-          icon: <HiTicket />,
-          link: "/support",
-        },
+        // {
+        //   name: "campaigns",
+        //   icon: <FaFacebookSquare />,
+        //   link: "/campaigns",
+        // },
+        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
       ],
     },
     {
@@ -905,6 +879,33 @@ const Sidebarmui = () => {
         },
       ],
     },
+    {
+      title: "SUPPORT",
+      icon: <BiSupport />,
+
+      links: [
+        {
+          name: "QA ",
+          icon: <AiOutlineQuestionCircle />,
+          submenu: [
+            {
+              name: "QA Form",
+              link: "/trainer",
+            },
+            {
+              name: "All QA",
+              link: "/qa",
+            },
+          ],
+        },
+        {
+          name: "Tickets",
+          icon: <HiTicket />,
+          link: "/support",
+        },
+      ],
+    },
+
     // {
     //   title: "MISC",
     //   links: [
@@ -924,60 +925,54 @@ const Sidebarmui = () => {
 
   if (isUserSubscribed !== null && isUserSubscribed === true) {
     if (User?.role === 1) {
-      links = [
-        ...links,
-        {
-          title: "MARKETING",
-          icon: <MdCampaign />,
-          links: [
-            {
-              name: "Instances",
-              icon: <BsFillLayersFill />,
-              link: "/instances",
-            },
-            {
-              name: "WhatsApp",
-              icon: <RiWhatsappFill />,
-              link: "/marketing/chat",
-            },
-            {
-              name: "Contacts/SMS",
-              icon: <MdContactPage />,
-              link: "/marketing/contacts",
-            },
-            {
-              name: "Templates",
-              icon: <FaMobile />,
-              link: "/marketing/templates",
-            },
-          ],
-        },
-      ];
+      links.splice(5, 0, {
+        title: "MARKETING",
+        icon: <MdCampaign />,
+        links: [
+          {
+            name: "Instances",
+            icon: <BsFillLayersFill />,
+            link: "/instances",
+          },
+          {
+            name: "WhatsApp",
+            icon: <RiWhatsappFill />,
+            link: "/marketing/chat",
+          },
+          {
+            name: "Contacts/SMS",
+            icon: <MdContactPage />,
+            link: "/marketing/contacts",
+          },
+          {
+            name: "Templates",
+            icon: <FaMobile />,
+            link: "/marketing/templates",
+          },
+        ],
+      });
     } else {
-      links = [
-        ...links,
-        {
-          title: "MARKETING",
-          icon: <MdCampaign />,
-          links: [
-            {
-              name: "WhatsApp",
-              icon: <RiWhatsappFill />,
-              link: "/marketing/chat",
-            },
-            {
-              name: "Contacts",
-              icon: <MdContactPage />,
-              link: "/marketing/contacts",
-            },
-            {
-              name: "Templates",
-              icon: <FaMobile />,
-              link: "/marketing/templates",
-            },
-          ],
-        },
-      ];
+      links.splice(5, 0, {
+        title: "MARKETING",
+        icon: <MdCampaign />,
+        links: [
+          {
+            name: "WhatsApp",
+            icon: <RiWhatsappFill />,
+            link: "/marketing/chat",
+          },
+          {
+            name: "Contacts",
+            icon: <MdContactPage />,
+            link: "/marketing/contacts",
+          },
+          {
+            name: "Templates",
+            icon: <FaMobile />,
+            link: "/marketing/templates",
+          },
+        ],
+      });
     }
   }
   useEffect(() => {
@@ -1360,6 +1355,7 @@ const Sidebarmui = () => {
                           </Tooltip>
                         ) : (
                           <SubMenu
+                            icon={link?.icon}
                             open={activeSidebarHeading === linkIndex}
                             label={link?.title?.toUpperCase()}
                             className="top-level-dropdown"

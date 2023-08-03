@@ -77,6 +77,13 @@ background-color: "#DA1F26";
   font-weight: bold;
 }
 
+.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-icon{
+  color: #da1f26;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+
 .sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-submenu-expand-icon {
   color: #da1f26;
 }
