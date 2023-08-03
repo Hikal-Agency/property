@@ -114,7 +114,6 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
 
     if (User?.role === 3) {
       validToSales = 1;
-      validToManager = 1;
     } else {
       validToSales = offerData.validToSales;
       validToManager = offerData.validToManager;
