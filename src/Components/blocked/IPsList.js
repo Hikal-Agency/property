@@ -20,7 +20,13 @@ const IPsList = ({ ips, heading, isRequest, fetchBlockedIPs, isRejected }) => {
             ips?.map((ip) => {
               if (ip?.byIP) {
                 return (
-                  <IPCard isRejected={isRejected} fetchBlockedIPs={fetchBlockedIPs} isRequest={isRequest} ip={ip} key={ip?.id} />
+                  <IPCard
+                    isRejected={isRejected}
+                    fetchBlockedIPs={fetchBlockedIPs}
+                    isRequest={isRequest}
+                    ip={ip}
+                    key={ip?.id}
+                  />
                 );
               }
             }),

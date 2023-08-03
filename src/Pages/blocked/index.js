@@ -55,32 +55,29 @@ const BlockedIps = () => {
       >
         <div className="pl-3">
           <div className="my-5 md:mt-2">
-            {User?.role === 1 && (
-              <div>
-                <div>
-                  <IPsList
-                  isRequest={true}
-                    heading="Requests"
-                    ips={IPs?.filter((ip) => !Number(ip?.status))}
-                    fetchBlockedIPs={fetchBlockedIPs}
-                  />
-                </div>
-                <div>
-                  <IPsList
-                    isRejected={true}
-                    heading="Rejected"
-                    ips={IPs?.filter((ip) => Number(ip?.status) === 2)}
-                    fetchBlockedIPs={fetchBlockedIPs}
-                  />
-                </div>
-              </div>
-            )}
+            <div>
+              <IPsList
+                isRequest={true}
+                heading="Requests"
+                ips={IPs?.filter((ip) => !Number(ip?.status))}
+                fetchBlockedIPs={fetchBlockedIPs}
+              />
+            </div>
 
             <div>
               <IPsList
                 heading="Blocked"
-                  fetchBlockedIPs={fetchBlockedIPs}
+                fetchBlockedIPs={fetchBlockedIPs}
                 ips={IPs?.filter((ip) => Number(ip?.status) === 1)}
+              />
+            </div>
+
+            <div>
+              <IPsList
+                isRejected={true}
+                heading="Rejected"
+                ips={IPs?.filter((ip) => Number(ip?.status) === 2)}
+                fetchBlockedIPs={fetchBlockedIPs}
               />
             </div>
           </div>
