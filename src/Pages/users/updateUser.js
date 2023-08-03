@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 
 import { useEffect, useState } from "react";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import EditUser from "../../Components/Users/EditUser";

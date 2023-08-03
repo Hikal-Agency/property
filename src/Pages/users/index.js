@@ -22,7 +22,7 @@ import {
 } from "react-icons/ai";
 import SingleUser from "../../Components/Users/SingleUser";
 import { useEffect, useState, useRef } from "react";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";

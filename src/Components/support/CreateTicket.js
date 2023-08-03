@@ -15,7 +15,7 @@ import { BsWhatsapp } from "react-icons/bs";
 import { MdVideoCameraFront } from "react-icons/md";
 import { toast } from "react-toastify";
 import { useState } from "react";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 
 const CreateTicket = ({ categories, setCategories }) => {

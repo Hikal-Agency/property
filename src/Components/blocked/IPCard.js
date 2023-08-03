@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CircularProgress, IconButton } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import { CgUnblock } from "react-icons/cg";
 import { toast } from "react-toastify";
 import { RxCross2 } from "react-icons/rx";

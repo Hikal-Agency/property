@@ -5,7 +5,7 @@ import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";

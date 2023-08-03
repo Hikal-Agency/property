@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Modal, Backdrop, IconButton, Box, CircularProgress } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 import IPLead from "./IPLead";
 import Loader from "../Loader";

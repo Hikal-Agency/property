@@ -7,7 +7,7 @@ import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../Components/Navbar/Navbar";
 import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import Footer from "../../Components/Footer/Footer";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 import { Button } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";

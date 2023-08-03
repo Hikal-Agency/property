@@ -12,7 +12,6 @@ import { useStateContext } from "../../context/ContextProvider";
 import { FaFacebook } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import { useEffect } from "react";
-import axios from "axios";
 
 const FbIntegration = () => {
   const { currentMode, fbToken, setFBToken, darkModeColors } =

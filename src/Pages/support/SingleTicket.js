@@ -5,7 +5,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import Footer from "../../Components/Footer/Footer";
 import SingleTickt from "../../Components/support/SingleTickt";
 import { useLocation } from "react-router-dom";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 import { CircularProgress } from "@mui/material";
 

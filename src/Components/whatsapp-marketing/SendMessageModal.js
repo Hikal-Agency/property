@@ -15,7 +15,7 @@ import { MdSend } from "react-icons/md";
 import Base64 from "Base64";
 import { Box } from "@mui/system";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-// import axios from "axios";
+
 import { socket } from "../../Pages/App";
 import axios from "../../axoisConfig";
 import { IoMdClose } from "react-icons/io";

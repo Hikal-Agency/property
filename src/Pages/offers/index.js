@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
 import CreateOffer from "../../Components/offers/createoffer";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import Loader from "../../Components/Loader";
 import OffersList from "../../Components/offers/OffersList";
 import usePermission from "../../utils/usePermission";

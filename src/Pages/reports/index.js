@@ -6,7 +6,7 @@ import SalesAmountChartAdmin from "../../Components/charts/SalesAmountChartAdmin
 import ReportClosedMeetingDoughnut from "../../Components/charts/ReportClosedMeetingDoughnut";
 import { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import { CircularProgress } from "@mui/material";
 import SocialChart from "../../Components/charts/SocialChart";
 import { toast } from "react-toastify";
