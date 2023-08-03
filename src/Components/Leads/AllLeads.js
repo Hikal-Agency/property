@@ -1279,8 +1279,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    FetchLeads(token);
+    if(lead_origin === "unassigned") {
+      const token = localStorage.getItem("auth-token");
+      FetchLeads(token);
+    }
   }, [unassignedFeedback]);
 
   useEffect(() => {
@@ -1297,7 +1299,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     if (searchRef.current.querySelector("input").value) {
       FetchSearchedLeads(token, searchRef.current.querySelector("input").value);
     } else {
-      FetchLeads(token);
+      if(pageState?.page > 0) {
+        FetchLeads(token);
+      }
     }
   }, [pageState.page, pageState.perpage, lead_type, reloadDataGrid]);
 
