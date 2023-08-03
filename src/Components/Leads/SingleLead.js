@@ -7,7 +7,7 @@ import {
   IconButton,
   Button,
   Box,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -29,16 +29,17 @@ const SingleLead = ({
   lead_origin,
   setLeadData,
 }) => {
-  const { darkModeColors, currentMode, User, BACKEND_URL, isArabic } = useStateContext();
+  const { darkModeColors, currentMode, User, BACKEND_URL, isArabic } =
+    useStateContext();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [lastNote, setLastNote] = useState("");
   const [lastNoteDate, setLastNoteDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [blockIPModalOpened, setBlockIPModalOpened] = useState({
-    lead: null, 
-    isOpened: false
-  })
+    lead: null,
+    isOpened: false,
+  });
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -66,7 +67,7 @@ const SingleLead = ({
     }
   };
 
-  const AddNote = ({note = ""}) => {
+  const AddNote = ({ note = "" }) => {
     setaddNoteloading(true);
     const token = localStorage.getItem("auth-token");
 
@@ -87,7 +88,7 @@ const SingleLead = ({
         console.log("Result: ", result);
         setaddNoteloading(false);
         setAddNoteTxt("");
-        if(!note) {
+        if (!note) {
           toast.success("Note added Successfully", {
             position: "top-right",
             autoClose: 3000,
@@ -132,7 +133,6 @@ const SingleLead = ({
       const lastNoteDate = result.data?.notes?.data[0]?.creationDate;
       setLastNote(lastNoteText);
       setLastNoteDate(lastNoteDate);
-
     } catch (error) {
       console.log(error);
     }
@@ -140,8 +140,8 @@ const SingleLead = ({
 
   const HandleBlockIP = async (params) => {
     setBlockIPModalOpened({
-      lead: params, 
-      isOpened: true
+      lead: params,
+      isOpened: true,
     });
   };
 
@@ -161,7 +161,6 @@ const SingleLead = ({
 
   return (
     <>
-      
       <Modal
         keepMounted
         open={LeadModelOpen}
@@ -320,31 +319,37 @@ const SingleLead = ({
 
               <div className="bg-main-red-color h-0.5 w-full mt-6 mb-4"></div>
               <div className="flex mb-6 justify-end items-center mt-0 w-full">
-            
-            {(lead_origin === "freshleads" && LeadData?.ip && LeadData?.is_blocked !== 1) && <div className="flex items-center mr-3 justify-end">
-              <p
-                style={{ cursor: "pointer", display: "inline-block" }}
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-transparent text-white rounded-md shadow-none"
-                    : "bg-transparent text-black rounded-md shadow-none"
-                }`}
-                onClick={() => HandleBlockIP(LeadData)}
-              >
-                <Tooltip title="Block IP">
-                  <IconButton sx={{ padding: 0, "& svg": {
-                    color: "red !important"
-                  }}}>
-                    <BiBlock size={19} />
-                  </IconButton>
-                </Tooltip>
-              </p>
-            </div>}
+                {lead_origin === "freshleads" &&
+                  LeadData?.ip &&
+                  LeadData?.is_blocked !== 1 && (
+                    <div className="flex items-center mr-3 justify-end">
+                      <p
+                        style={{ cursor: "pointer", display: "inline-block" }}
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-transparent text-white rounded-md shadow-none"
+                            : "bg-transparent text-black rounded-md shadow-none"
+                        }`}
+                        onClick={() => HandleBlockIP(LeadData)}
+                      >
+                        <Tooltip title="Block IP">
+                          <IconButton
+                            sx={{
+                              padding: 0,
+                              "& svg": {
+                                color: "red !important",
+                              },
+                            }}
+                          >
+                            <BiBlock size={19} />
+                          </IconButton>
+                        </Tooltip>
+                      </p>
+                    </div>
+                  )}
                 <Link
                   sx={{ my: 0, w: "100%" }}
-                  to={`/lead/${
-                    LeadData?.leadId || LeadData?.id
-                  }`}
+                  to={`/lead/${LeadData?.leadId || LeadData?.id}`}
                   target="_blank"
                 >
                   <Button
@@ -373,16 +378,28 @@ const SingleLead = ({
                     </Button>
                   </Tooltip> */}
                 </Link>
-  
               </div>
               <div className={`rounded-md mt-2`}>
                 {lastNote && (
-                  <div className={`${
-                      currentMode === "dark" ? "text-white bg-black border-gray-800" : "text-black bg-gray-200 border-gray-300"
-                    } border-2 flex items-center my-2 w-full rounded-md`}>
-                    <p className="px-2 py-2 mx-1 text-center text-sm">{lastNoteDate}</p>
+                  <div
+                    className={`${
+                      currentMode === "dark"
+                        ? "text-white bg-black border-gray-800"
+                        : "text-black bg-gray-200 border-gray-300"
+                    } border-2 flex items-center my-2 w-full rounded-md`}
+                  >
+                    <p className="px-2 py-2 mx-1 text-center text-sm">
+                      {lastNoteDate}
+                    </p>
                     <div className="bg-main-red-color h-10 w-0.5"></div>
-                    <p style={{fontFamily: isArabic(lastNote) ? "Noto Kufi Arabic" : "inherit"}} className="px-2 py-2 mx-1">
+                    <p
+                      style={{
+                        fontFamily: isArabic(lastNote)
+                          ? "Noto Kufi Arabic"
+                          : "inherit",
+                      }}
+                      className="px-2 py-2 mx-1"
+                    >
                       {lastNote}
                     </p>
                   </div>
@@ -395,9 +412,12 @@ const SingleLead = ({
                   }}
                 >
                   <TextField
-                    sx={{...darkModeColors, "& input": {
-                      fontFamily: "Noto Kufi Arabic"
-                    }}}
+                    sx={{
+                      ...darkModeColors,
+                      "& input": {
+                        fontFamily: "Noto Kufi Arabic",
+                      },
+                    }}
                     id="note"
                     type={"text"}
                     label="Your Note"
@@ -430,15 +450,17 @@ const SingleLead = ({
           )}
         </div>
       </Modal>
-        <BlockIPModal
+      <BlockIPModal
         addNote={AddNote}
-          blockIPModalOpened={blockIPModalOpened?.isOpened}
-          handleCloseIPModal={() => setBlockIPModalOpened({
-            isOpened: false, 
-            lead: null
-          })}
-          lead={LeadData}
-        />
+        blockIPModalOpened={blockIPModalOpened?.isOpened}
+        handleCloseIPModal={() =>
+          setBlockIPModalOpened({
+            isOpened: false,
+            lead: null,
+          })
+        }
+        lead={LeadData}
+      />
     </>
   );
 };
