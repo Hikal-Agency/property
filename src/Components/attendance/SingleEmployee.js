@@ -1,4 +1,4 @@
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -22,6 +22,7 @@ import {
   MdMoneyOff,
   MdPendingActions,
 } from "react-icons/md";
+import { TfiCheck, TfiClose } from "react-icons/tfi";
 import { Select, MenuItem } from "@mui/material";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -30,6 +31,7 @@ import moment from "moment";
 import {
   RiCheckLine as CheckIcon,
   RiCloseLine as CloseIcon,
+  RiEyeCloseFill,
 } from "react-icons/ri";
 import SalaryDeductDailogue from "./SalaryDeductDailogue";
 import { FaDownload } from "react-icons/fa";
@@ -145,61 +147,7 @@ const SingleEmployee = ({ user }) => {
       headerName: "Office time",
       minWidth: 70,
       flex: 1,
-      // renderCell: (cellValues) => {
-      //   const formattedTime = cellValues.row.default_datetime
-      //     ? convertTo12HourFormat(cellValues.row.default_datetime)
-      //     : "";
-      //   return formattedTime;
-      // },
     },
-    // LATE MINUTES
-    // {
-    //   field: "late_minutes",
-    //   headerAlign: "center",
-    //   headerName: "Late",
-    //   minWidth: 80,
-    //   flex: 1,
-    //   renderCell: (params) => (
-    //     <>
-    //       {params.row.is_late === 1 || params.row.is_late === 2 ? (
-    //         // If late_minutes data exists, display it
-    //         <div>{params.row.late_minutes + " minutes"}</div>
-    //       ) : (
-    //         // If no late_minutes data, display buttons
-    //         <div className="flex justify-between px-5 py-3">
-    //           <Tooltip title="Yes" arrow>
-    //             <IconButton
-    //               style={{
-    //                 backgroundColor: "#4CAF50",
-    //                 color: "white",
-    //                 fontSize: "1rem",
-    //               }}
-    //               className="rounded-full"
-    //               onClick={(event) => lateSalary(event, 1, params?.row.id)}
-    //             >
-    //               <CheckIcon />
-    //             </IconButton>
-    //           </Tooltip>
-
-    //           <Tooltip title="No" arrow>
-    //             <IconButton
-    //               style={{
-    //                 backgroundColor: "#DC2626",
-    //                 color: "white",
-    //                 fontSize: "1rem",
-    //                 marginLeft: "5%",
-    //               }}
-    //               className="rounded-full"
-    //               onClick={(event) => lateSalary(event, 2, params?.row.id)}
-    //             >
-    //               <CloseIcon />
-    //             </IconButton>
-    //           </Tooltip>
-    //         </div>
-    //       )}
-    //     </>
-    //   ),
-    // },
 
     {
       field: "late_minutes",
@@ -299,9 +247,7 @@ const SingleEmployee = ({ user }) => {
                 />
               </IconButton>
             ) : (
-              <IconButton
-              // onClick={(event) => updateReason(event, params?.row.id)}
-              >
+              <IconButton>
                 <MdModeEdit
                   size={16}
                   className={` ${
@@ -312,18 +258,18 @@ const SingleEmployee = ({ user }) => {
             )}
           </Tooltip>
           {/* PENDING FOR DEDUCT SALARY  */}
-          {params.row.notify_status === "Pending" &&
+          {/* {params.row.notify_status === "Pending" &&
           params.row.notify_deduct_salary === 1 ? (
-            <>
+            <> */}
               {/* ROLE 1 */}
-              {User?.role === 1 ? (
-                <>
+              {/* {User?.role === 1 ? ( */}
+                {/* <>
                   <Tooltip title="Pending Approval Request" arrow>
-                    <IconButton>
+                    <IconButton> */}
                       {/* ON CLICK => OPEN POPUP SHOWING CHECK IN TIME AND LATE MINUTES AND LATE REASON WITH TWO ICON BUTTONS: GREEN TICK AND RED CROSS */}
                       {/* GREEN TICK => notify_status = "Approved", deduct_salary = 1   */}
                       {/* RED CROSS => notify_status = "Rejected", deduct_salary = 2, cut_salary = "No"  */}
-                      <MdPendingActions
+                      {/* <MdPendingActions
                         onClick={(event) =>
                           notifyApproval(event, params?.row.id)
                         }
@@ -332,41 +278,79 @@ const SingleEmployee = ({ user }) => {
                       />
                     </IconButton>
                   </Tooltip>
-                </>
-              ) : (
-                <>
+                </> */}
+              {/* ) : ( */}
+                {/* <> */}
                   {/* DO NOTHING */}
-                  <Tooltip title="Pending Approval" arrow>
+                  {/* <Tooltip title="Pending Approval" arrow>
                     <IconButton>
                       <MdPendingActions size={16} className="text-red-600" />
                     </IconButton>
                   </Tooltip>
-                </>
-              )}
+                </> */}
+              {/* )}
             </>
-          ) : // PENDING FOR UNDEDUCT SALARY
-          params.row.notify_status === "Pending" &&
+          ) : // PENDING FOR UNDEDUCT SALARY */}
+          {params.row.notify_status === "Pending" &&
             params.row.notify_deduct_salary === 2 ? (
             <>
               {/* ROLE 1 */}
               {hasPermission("deduct_salary") && (
                 <>
                   <Tooltip title="Pending Approval Request" arrow>
-                    <IconButton>
-                      {/* ON CLICK => OPEN POPUP SHOWING CHECK IN TIME AND LATE MINUTES AND LATE REASON WITH TWO ICON BUTTONS: GREEN TICK AND RED CROSS */}
-                      {/* GREEN TICK => notify_status = "Approved", deduct_salary = 2, cut_salary = "No", is_late = 2   */}
-                      {/* RED CROSS => notify_status = "Rejected"  */}
-                      <MdPendingActions
-                        onClick={(event) =>
-                          notifyApproval(event, params?.row.id)
-                        }
+                    {User?.role === 1 ? (  
+                      <IconButton>
+                        {/* ON CLICK => OPEN POPUP SHOWING CHECK IN TIME AND LATE MINUTES AND LATE REASON WITH TWO ICON BUTTONS: GREEN TICK AND RED CROSS */}
+                        {/* GREEN TICK => notify_status = "Approved", deduct_salary = 2, cut_salary = "No", is_late = 2   */}
+                        {/* RED CROSS => notify_status = "Rejected"  */}
+
+                        <MdPendingActions
+                          onClick={(event) =>
+                            notifyApproval(event, params?.row.id)
+                          }
+                          size={16}
+                          className="text-red-600"
+                        />
+                      </IconButton>
+                    ) : (
+                      <IconButton>
+                        <MdPendingActions
                         size={16}
                         className="text-red-600"
                       />
-                    </IconButton>
+                      </IconButton>
+                    )}
                   </Tooltip>
                 </>
               )}
+            </>
+          ) : params.row.notify_status === "Rejected" ? (
+            // REJECTED
+            <>
+              <Tooltip title="Rejected" arrow>
+                <IconButton>
+                  <TfiClose
+                    size={20}
+                    className={`${
+                      currentMode === "dark" ? "text-red-600" : "text-red-600"
+                    }`}
+                  />
+                </IconButton>
+              </Tooltip>
+            </>
+          ) : params.row.notify_status === "Approved" ? (
+            // APPROVED
+            <>
+              <Tooltip title="Approved" arrow>
+                <IconButton>
+                  <TfiCheck
+                    size={20}
+                    className={`${
+                      currentMode === "dark" ? "text-green-600" : "text-green-600"
+                    }`}
+                  />
+                </IconButton>
+              </Tooltip>
             </>
           ) : (
             // NOT PENDING
@@ -389,19 +373,6 @@ const SingleEmployee = ({ user }) => {
                       </IconButton>
                     </Tooltip>
                   ) : (
-                    // ) : params.row.is_late === 2 ? (
-                    //   <Tooltip title="Deduct Salary" arrow>
-                    //     <IconButton
-                    //       onClick={(event) => deductSalary(event, params?.row.id)}
-                    //     >
-                    //       <MdAttachMoney
-                    //         size={16}
-                    //         className={`${
-                    //           currentMode === "dark" ? "text-white" : "text-black"
-                    //         }`}
-                    //       />
-                    //     </IconButton>
-                    //   </Tooltip>
                     <></>
                   )}
                 </>
@@ -974,16 +945,29 @@ const SingleEmployee = ({ user }) => {
         }
       );
 
-      toast.success("Salary Undeduct Request Sent successfully.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      if (User?.role === 1) {
+        toast.success("Salary Undeducted successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        toast.success("Salary Undeduct Request Sent successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
 
       setloading(false);
       FetchAttendance();

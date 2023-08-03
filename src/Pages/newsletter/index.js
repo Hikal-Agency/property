@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import Loader from "../../Components/Loader";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import GridNewsletter from "../../Components/newsletter/GridNewsletter";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 
 const Newsletter = () => {

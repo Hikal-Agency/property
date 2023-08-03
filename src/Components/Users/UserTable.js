@@ -4,7 +4,7 @@ import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 import { FaBan, FaEdit, FaEye, FaTrash, FaUnlock } from "react-icons/fa";
 import { Link } from "react-router-dom";

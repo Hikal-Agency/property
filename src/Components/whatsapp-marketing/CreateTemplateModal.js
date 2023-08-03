@@ -8,7 +8,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";

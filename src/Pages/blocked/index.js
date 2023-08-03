@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import Loader from "../../Components/Loader";
 import IPsList from "../../Components/blocked/IPsList";

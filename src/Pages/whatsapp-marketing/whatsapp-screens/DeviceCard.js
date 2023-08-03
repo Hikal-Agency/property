@@ -3,7 +3,7 @@ import { Avatar, Box, CircularProgress } from "@mui/material";
 import { BsTrash } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axios from "../../../axoisConfig";
 import { useStateContext } from "../../../context/ContextProvider";
 
 const DeviceCard = ({

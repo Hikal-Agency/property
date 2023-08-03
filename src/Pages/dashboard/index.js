@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 import Loader from "../../Components/Loader";
 import Footer from "../../Components/Footer/Footer";

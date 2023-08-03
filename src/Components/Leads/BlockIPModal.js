@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { IoIosAlert } from "react-icons/io";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 
 const style = {

@@ -13,7 +13,7 @@ import { FaBan } from "react-icons/fa";
 import SingleUser from "../../Components/Users/SingleUser";
 import { useState } from "react";
 import { useEffect } from "react";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 import { useNavigate, useLocation } from "react-router";
 import DeactivateModel from "./deactivateModel";

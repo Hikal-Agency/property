@@ -5,7 +5,7 @@ import { Tab, Tabs } from "@mui/material";
 import CreateTicket from "../../Components/support/CreateTicket";
 import AllTickets from "../../Components/support/AllTickets";
 import Loader from "../../Components/Loader";
-// import axios from "axios";
+
 import axios from "../../axoisConfig";
 
 const Tickets = () => {
