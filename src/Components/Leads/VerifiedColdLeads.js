@@ -90,10 +90,14 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
     },
   };
 
-    const getLangCode = (language) => {
-    if(language) {
-      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
-      if(l) {
+  const getLangCode = (language) => {
+    if (language) {
+      const l = langs.find(
+        (lang) =>
+          lang["name"].toLowerCase() === String(language).toLowerCase() ||
+          lang["nativeName"].toLowerCase() === String(language).toLowerCase()
+      );
+      if (l) {
         return l.code.toUpperCase();
       } else {
         return "Invalid";
@@ -101,10 +105,10 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
     } else {
       return null;
     }
-  }
+  };
 
   const columns = [
-        {
+    {
       field: "id",
       headerName: "#",
       minWidth: 40,
@@ -136,6 +140,27 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       headerName: "Contact",
       width: 150,
       headerAlign: "center",
+      renderCell: (params) => {
+        const contactNumber = params.getValue(params.id, "leadContact");
+        // const countryCode = `(+${contactNumber.slice(0, 1)} ${contactNumber.slice(1, 3)})`;
+
+        // Replace last 4 digits with "*"
+        const stearics =
+          contactNumber?.slice(0, contactNumber?.length - 4) + "****";
+        let finalNumber;
+
+        if (hasPermission("number_masking")) {
+          if (User?.role === 1) {
+            finalNumber = contactNumber;
+          } else {
+            finalNumber = `${stearics}`;
+          }
+        } else {
+          finalNumber = contactNumber;
+        }
+
+        return <span>{finalNumber}</span>;
+      },
     },
     {
       field: "project",
@@ -270,17 +295,19 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
 
   return (
     <div className="pb-10">
-      
-
-      <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
+      <Box
+        width={"100%"}
+        className={`${currentMode}-mode-datatable`}
+        sx={DataGridStyles}
+      >
         <DataGrid
           initialState={{
-                columns: {
-                  columnVisibilityModel: {
-                    creationDate: false,
-                  },
-                },
-              }}
+            columns: {
+              columnVisibilityModel: {
+                creationDate: false,
+              },
+            },
+          }}
           autoHeight
           disableSelectionOnClick
           rows={pageState.data}
@@ -305,8 +332,8 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
           }}
           componentsProps={{
             toolbar: {
-                                printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+              printOptions: { disableToolbarButton: User?.role !== 1 },
+              csvOptions: { disableToolbarButton: User?.role !== 1 },
               showQuickFilter: true,
               //   value: searchText,
               //   onChange: HandleQuicSearch,
