@@ -275,16 +275,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         // const countryCode = `(+${contactNumber.slice(0, 1)} ${contactNumber.slice(1, 3)})`;
 
         // Replace last 4 digits with "*"
-        const lastFourDigits = contactNumber?.slice(-4).replace(/\d/g, "*");
-
-        const stearics = contactNumber + lastFourDigits;
+        const stearics =
+          contactNumber?.slice(0, contactNumber?.length - 4) + "****";
         let finalNumber;
 
         if (hasPermission("number_masking")) {
           if (User?.role === 1) {
             finalNumber = contactNumber;
           } else {
-            finalNumber = ` ${stearics}`;
+            finalNumber = `${stearics}`;
           }
         } else {
           finalNumber = contactNumber;

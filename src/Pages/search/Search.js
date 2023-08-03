@@ -21,7 +21,6 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 
-
 import axios from "../../axoisConfig";
 import { FaComment, FaArchive, FaUser, FaBell } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
@@ -327,6 +326,27 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 100,
       headerAlign: "center",
       flex: 1,
+      renderCell: (params) => {
+        const contactNumber = params.getValue(params.id, "leadContact");
+        // const countryCode = `(+${contactNumber.slice(0, 1)} ${contactNumber.slice(1, 3)})`;
+
+        // Replace last 4 digits with "*"
+        const stearics =
+          contactNumber?.slice(0, contactNumber?.length - 4) + "****";
+        let finalNumber;
+
+        if (hasPermission("number_masking")) {
+          if (User?.role === 1) {
+            finalNumber = contactNumber;
+          } else {
+            finalNumber = `${stearics}`;
+          }
+        } else {
+          finalNumber = contactNumber;
+        }
+
+        return <span>{finalNumber}</span>;
+      },
     },
     {
       field: "project",
@@ -349,12 +369,13 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           //   </p>
           // </div>
           <div
-              style={{
-          fontFamily: isArabic(cellValues?.formattedValue)
-                  ? "Noto Kufi Arabic"
-                  : "inherit",
-              }}
-           className="flex flex-col">
+            style={{
+              fontFamily: isArabic(cellValues?.formattedValue)
+                ? "Noto Kufi Arabic"
+                : "inherit",
+            }}
+            className="flex flex-col"
+          >
             <p>{cellValues.row.project}</p>
             <p>{cellValues.row.leadFor}</p>
           </div>

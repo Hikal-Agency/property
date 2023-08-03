@@ -55,7 +55,7 @@ const ClientLeads = ({
   const [loading, setloading] = useState(true);
 
   const navigate = useNavigate();
-  const {hasPermission} = usePermission();
+  const { hasPermission } = usePermission();
   const [singleLeadData, setsingleLeadData] = useState();
   const [deleteloading, setdeleteloading] = useState(false);
   const { client_id } = useParams();
@@ -63,10 +63,14 @@ const ClientLeads = ({
 
   const [deletebtnloading, setdeletebtnloading] = useState(false);
 
-    const getLangCode = (language) => {
-    if(language) {
-      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
-      if(l) {
+  const getLangCode = (language) => {
+    if (language) {
+      const l = langs.find(
+        (lang) =>
+          lang["name"].toLowerCase() === String(language).toLowerCase() ||
+          lang["nativeName"].toLowerCase() === String(language).toLowerCase()
+      );
+      if (l) {
         return l.code.toUpperCase();
       } else {
         return "Invalid";
@@ -74,7 +78,7 @@ const ClientLeads = ({
     } else {
       return null;
     }
-  }
+  };
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
@@ -88,7 +92,7 @@ const ClientLeads = ({
   });
   const [client, setClient] = useState({});
 
-    const HandleViewTimeline = (params) => {
+  const HandleViewTimeline = (params) => {
     setsingleLeadData(params.row);
     setTimelineModelOpen(true);
   };
@@ -147,7 +151,6 @@ const ClientLeads = ({
     setUpdateLeadModelOpen(false);
   };
 
-
   const columns = [
     {
       field: "id",
@@ -179,10 +182,12 @@ const ClientLeads = ({
       headerAlign: "center",
       sortable: false,
       filterable: false,
-                  renderCell: (params) => <div className="flex flex-col">
-        <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
-        <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
-      </div>,
+      renderCell: (params) => (
+        <div className="flex flex-col">
+          <p>{moment(params?.formattedValue).format("YY-MM-DD")}</p>
+          <p>{moment(params?.formattedValue).format("HH:mm:ss")}</p>
+        </div>
+      ),
     },
     {
       field: "leadName",
@@ -199,6 +204,27 @@ const ClientLeads = ({
       minWidth: 150,
       flex: 1,
       headerAlign: "center",
+      renderCell: (params) => {
+        const contactNumber = params.getValue(params.id, "leadContact");
+        // const countryCode = `(+${contactNumber.slice(0, 1)} ${contactNumber.slice(1, 3)})`;
+
+        // Replace last 4 digits with "*"
+        const stearics =
+          contactNumber?.slice(0, contactNumber?.length - 4) + "****";
+        let finalNumber;
+
+        if (hasPermission("number_masking")) {
+          if (User?.role === 1) {
+            finalNumber = contactNumber;
+          } else {
+            finalNumber = `${stearics}`;
+          }
+        } else {
+          finalNumber = contactNumber;
+        }
+
+        return <span>{finalNumber}</span>;
+      },
     },
     {
       field: "project",
@@ -207,10 +233,17 @@ const ClientLeads = ({
       minWidth: 110,
       flex: 1,
       headerAlign: "center",
-           renderCell: (cellValues) => {
+      renderCell: (cellValues) => {
         return (
           <div className="w-full ">
-            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
+            <p
+              className="text-center capitalize"
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -294,8 +327,7 @@ const ClientLeads = ({
                 Campaign
               </div>
             )}
-                                {cellValues.row.leadSource?.toLowerCase() ===
-              "bulk import" && (
+            {cellValues.row.leadSource?.toLowerCase() === "bulk import" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <BiImport size={22} color={"#da1f26"} />
               </div>
@@ -363,7 +395,9 @@ const ClientLeads = ({
           <>
             {cellValues.formattedValue === "Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md">OTP VERIFIED</badge>
+                <badge className="bg-[#0f9d58] p-1 rounded-md">
+                  OTP VERIFIED
+                </badge>
               </div>
             )}
 
@@ -401,7 +435,7 @@ const ClientLeads = ({
             >
               <AiOutlineEdit size={20} />
             </p>
-               {cellValues.row.leadId !== null && (
+            {cellValues.row.leadId !== null && (
               <p
                 style={{ cursor: "pointer" }}
                 className={`${
@@ -503,7 +537,10 @@ const ClientLeads = ({
           leadStatus: row?.leadStatus || "-",
           leadCategory: leadCategory || "-",
           notes: row?.notes || "-",
-          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
+          otp:
+            row?.otp === "No OTP" || row?.otp === "No OTP Used"
+              ? "No OTP Used"
+              : row?.otp || "No OTP Used",
           edit: "edit",
         }));
 
@@ -572,7 +609,6 @@ const ClientLeads = ({
       });
   };
 
-   
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
     // setSearchTerm(e.target.value);
@@ -585,7 +621,7 @@ const ClientLeads = ({
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-      FetchLeads(token);
+    FetchLeads(token);
     FetchClient(token);
     setCEOColumns([...CEOColumns]);
     // eslint-disable-next-line
@@ -764,8 +800,6 @@ const ClientLeads = ({
   };
   return (
     <>
-      
-
       {/* <div className="flex min-h-screen">
         <div
           className={`w-full ${
@@ -975,7 +1009,7 @@ const ClientLeads = ({
                       : "text-red-600 font-bold border-red-600"
                   }`}
                 >
-                  ● {client?.name} {" "}
+                  ● {client?.name}{" "}
                   <span className="capitalize mt-5">
                     {client?.businessName}
                   </span>{" "}
@@ -1141,14 +1175,14 @@ const ClientLeads = ({
                 </div>
 
                 <Box
-                className={`${currentMode}-mode-datatable`}
+                  className={`${currentMode}-mode-datatable`}
                   width={"100%"}
                   sx={{ ...DataGridStyles, position: "relative" }}
                 >
                   {selectedRows.length > 0 && (
                     <MuiButton
                       size="small"
-                      sx={{...bulkUpdateBtnStyles, zIndex: "5 !important"}}
+                      sx={{ ...bulkUpdateBtnStyles, zIndex: "5 !important" }}
                       variant="text"
                       onClick={handleClickBulkUpdate}
                     >
@@ -1159,7 +1193,11 @@ const ClientLeads = ({
                   {selectedRows.length > 0 && (
                     <MuiButton
                       size="small"
-                      sx={{ ...bulkUpdateBtnStyles, left: "64%", zIndex: "5 !important" }}
+                      sx={{
+                        ...bulkUpdateBtnStyles,
+                        left: "64%",
+                        zIndex: "5 !important",
+                      }}
                       variant="text"
                       onClick={handleClickBulkDelete}
                     >
@@ -1171,7 +1209,11 @@ const ClientLeads = ({
                     <MuiButton
                       onClick={() => bulkImportRef.current.click()}
                       size="small"
-                      sx={{ ...bulkUpdateBtnStyles, left: "50.5%", zIndex: "5 !important" }}
+                      sx={{
+                        ...bulkUpdateBtnStyles,
+                        left: "50.5%",
+                        zIndex: "5 !important",
+                      }}
                       variant="text"
                     >
                       <TbFileImport size={18} />{" "}
@@ -1187,12 +1229,12 @@ const ClientLeads = ({
                   />
                   <DataGrid
                     initialState={{
-                columns: {
-                  columnVisibilityModel: {
-                    creationDate: false,
-                  },
-                },
-              }}
+                      columns: {
+                        columnVisibilityModel: {
+                          creationDate: false,
+                        },
+                      },
+                    }}
                     autoHeight
                     disableSelectionOnClick
                     rows={pageState?.data}
@@ -1220,7 +1262,9 @@ const ClientLeads = ({
                         pageSize: newPageSize,
                       }))
                     }
-              columns={columns?.filter((c) => hasPermission("leads_col_" + c?.field))}
+                    columns={columns?.filter((c) =>
+                      hasPermission("leads_col_" + c?.field)
+                    )}
                     // columns={columns}
                     components={{
                       Toolbar: GridToolbar,
@@ -1228,8 +1272,10 @@ const ClientLeads = ({
                     }}
                     componentsProps={{
                       toolbar: {
-                                          printOptions: { disableToolbarButton: User?.role !== 1 },
-            csvOptions: { disableToolbarButton: User?.role !==  1},
+                        printOptions: {
+                          disableToolbarButton: User?.role !== 1,
+                        },
+                        csvOptions: { disableToolbarButton: User?.role !== 1 },
                         showQuickFilter: true,
                         value: searchText,
                         onChange: HandleQuicSearch,

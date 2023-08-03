@@ -1,5 +1,12 @@
 import { Button } from "@material-tailwind/react";
-import { Box, CircularProgress, Dialog, TextField, IconButton, InputAdornment } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Dialog,
+  TextField,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -15,10 +22,10 @@ import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit } from "react-icons/ai";
 import { MdCampaign } from "react-icons/md";
 import usePermission from "../../utils/usePermission";
-import {BiSearch} from "react-icons/bi";
+import { BiSearch } from "react-icons/bi";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
-import {BiImport} from "react-icons/bi";
+import { BiImport } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
 import { IoIosAlert } from "react-icons/io";
@@ -30,7 +37,7 @@ import UpdateLead from "./UpdateLead";
 import Image from "next/image";
 import { toast, ToastContainer } from "react-toastify";
 import RenderPriority from "./RenderPriority";
-import {langs} from "../../langCodes";
+import { langs } from "../../langCodes";
 import RenderFeedback from "./RenderFeedback";
 import RenderManagers from "./RenderManagers";
 
@@ -59,12 +66,16 @@ const Newleads = ({
   } = useStateContext();
   const [openDialog, setopenDialog] = useState(false);
   const [LeadToDelete, setLeadToDelete] = useState();
-  const {hasPermission} = usePermission();
-  
-    const getLangCode = (language) => {
-    if(language) {
-      const l = langs.find((lang) => lang["name"].toLowerCase() === String(language).toLowerCase() || lang['nativeName'].toLowerCase() === String(language).toLowerCase());
-      if(l) {
+  const { hasPermission } = usePermission();
+
+  const getLangCode = (language) => {
+    if (language) {
+      const l = langs.find(
+        (lang) =>
+          lang["name"].toLowerCase() === String(language).toLowerCase() ||
+          lang["nativeName"].toLowerCase() === String(language).toLowerCase()
+      );
+      if (l) {
         return l.code.toUpperCase();
       } else {
         return "Invalid";
@@ -72,7 +83,7 @@ const Newleads = ({
     } else {
       return null;
     }
-  }
+  };
 
   const searchRef = useRef();
 
@@ -92,7 +103,7 @@ const Newleads = ({
     setUpdateLeadModelOpen(false);
   };
 
-  // ROLE 
+  // ROLE
   const columns = [
     {
       field: "creationDate",
@@ -125,6 +136,27 @@ const Newleads = ({
       minWidth: 150,
       flex: 1,
       headerAlign: "center",
+      renderCell: (params) => {
+        const contactNumber = params.getValue(params.id, "leadContact");
+        // const countryCode = `(+${contactNumber.slice(0, 1)} ${contactNumber.slice(1, 3)})`;
+
+        // Replace last 4 digits with "*"
+        const stearics =
+          contactNumber?.slice(0, contactNumber?.length - 4) + "****";
+        let finalNumber;
+
+        if (hasPermission("number_masking")) {
+          if (User?.role === 1) {
+            finalNumber = contactNumber;
+          } else {
+            finalNumber = `${stearics}`;
+          }
+        } else {
+          finalNumber = contactNumber;
+        }
+
+        return <span>{finalNumber}</span>;
+      },
     },
     {
       field: "project",
@@ -204,8 +236,7 @@ const Newleads = ({
                 <FaSnapchat size={22} color={"#f6d80a"} />
               </div>
             )}
-                                {cellValues.row.leadSource?.toLowerCase() ===
-              "bulk import" && (
+            {cellValues.row.leadSource?.toLowerCase() === "bulk import" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
                 <BiImport size={22} color={"#da1f26"} />
               </div>
@@ -267,7 +298,9 @@ const Newleads = ({
           <>
             {cellValues.formattedValue === "Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md">OTP VERIFIED</badge>
+                <badge className="bg-[#0f9d58] p-1 rounded-md">
+                  OTP VERIFIED
+                </badge>
               </div>
             )}
 
@@ -448,7 +481,10 @@ const Newleads = ({
           leadStatus: row?.leadStatus || "-",
           leadCategory: leadCategory || "-",
           notes: row?.notes || "-",
-          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
+          otp:
+            row?.otp === "No OTP" || row?.otp === "No OTP Used"
+              ? "No OTP Used"
+              : row?.otp || "No OTP Used",
           edit: "edit",
         }));
 
@@ -479,8 +515,7 @@ const Newleads = ({
       url += `&coldCall=${coldCallCode}`;
     }
 
-
-    if(lead_origin === "transfferedleads") {
+    if (lead_origin === "transfferedleads") {
       url += `&status=Transferred`;
     }
 
@@ -504,8 +539,7 @@ const Newleads = ({
           leadId: row?.id,
           creationDate: row?.creationDate,
           leadName: row?.leadName || "-",
-          leadContact:
-            row?.leadContact?.slice(1)?.replaceAll(" ", "") || "-",
+          leadContact: row?.leadContact?.slice(1)?.replaceAll(" ", "") || "-",
           project: row?.project || "-",
           enquiryType: row?.enquiryType || "-",
           leadType: row?.leadType || "-",
@@ -522,7 +556,10 @@ const Newleads = ({
           coldCall: row?.coldcall,
           leadCategory: leadCategory || "-",
           notes: row?.notes || "-",
-          otp: (row?.otp === "No OTP" || row?.otp === "No OTP Used") ? "No OTP Used" : (row?.otp || "No OTP Used"),
+          otp:
+            row?.otp === "No OTP" || row?.otp === "No OTP Used"
+              ? "No OTP Used"
+              : row?.otp || "No OTP Used",
           edit: "edit",
         }));
         setpageState((old) => ({
@@ -663,41 +700,42 @@ const Newleads = ({
 
   return (
     <div className="pb-10">
-      
       <Box
         width={"100%"}
         className={`${currentMode}-mode-datatable`}
         sx={{ ...DataGridStyles, position: "relative" }}
       >
-                    <div className="absolute top-[7px] right-[20px] z-[5]">
-            <TextField
-              placeholder="Search.."
-              ref={searchRef}
-              sx={{"& input": {
-                borderBottom: "2px solid #ffffff6e"
-              }}}
-              variant="standard"
-              onKeyUp={handleKeyUp}
-              onInput={handleSearch}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <IconButton sx={{padding: 0}}>
-                      <BiSearch size={17} />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
+        <div className="absolute top-[7px] right-[20px] z-[5]">
+          <TextField
+            placeholder="Search.."
+            ref={searchRef}
+            sx={{
+              "& input": {
+                borderBottom: "2px solid #ffffff6e",
+              },
+            }}
+            variant="standard"
+            onKeyUp={handleKeyUp}
+            onInput={handleSearch}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton sx={{ padding: 0 }}>
+                    <BiSearch size={17} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
         <DataGrid
           initialState={{
-                columns: {
-                  columnVisibilityModel: {
-                    creationDate: false,
-                  },
-                },
-              }}
+            columns: {
+              columnVisibilityModel: {
+                creationDate: false,
+              },
+            },
+          }}
           autoHeight
           disableSelectionOnClick
           rows={pageState.data}
@@ -716,7 +754,9 @@ const Newleads = ({
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-            columns={columns?.filter((c) => hasPermission("leads_col_" + c?.field))}
+          columns={columns?.filter((c) =>
+            hasPermission("leads_col_" + c?.field)
+          )}
           // columns={columns}
           components={{
             Toolbar: GridToolbar,

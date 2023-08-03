@@ -69,7 +69,7 @@ const BookedDeals = ({
   const token = localStorage.getItem("auth-token");
   const [singleLeadData, setsingleLeadData] = useState();
   const [filt, setFilt] = useState([]);
-  const {hasPermission} = usePermission();
+  const { hasPermission } = usePermission();
 
   //eslint-disable-next-line
   const [deleteloading, setdeleteloading] = useState(false);
@@ -431,7 +431,7 @@ const BookedDeals = ({
       headerName: "Lead name",
       minWidth: 85,
       flex: 1,
-            renderCell: (cellValues) => {
+      renderCell: (cellValues) => {
         return (
           <div className="w-full ">
             <p
@@ -453,6 +453,27 @@ const BookedDeals = ({
       minWidth: 115,
       headerAlign: "center",
       flex: 1,
+      renderCell: (params) => {
+        const contactNumber = params.getValue(params.id, "leadContact");
+        // const countryCode = `(+${contactNumber.slice(0, 1)} ${contactNumber.slice(1, 3)})`;
+
+        // Replace last 4 digits with "*"
+        const stearics =
+          contactNumber?.slice(0, contactNumber?.length - 4) + "****";
+        let finalNumber;
+
+        if (hasPermission("number_masking")) {
+          if (User?.role === 1) {
+            finalNumber = contactNumber;
+          } else {
+            finalNumber = `${stearics}`;
+          }
+        } else {
+          finalNumber = contactNumber;
+        }
+
+        return <span>{finalNumber}</span>;
+      },
     },
     {
       field: "project",
@@ -695,7 +716,7 @@ const BookedDeals = ({
               </IconButton>
             </p>
 
-               {cellValues.row.leadId !== null && (
+            {cellValues.row.leadId !== null && (
               <p
                 style={{ cursor: "pointer" }}
                 className={`${
@@ -717,7 +738,6 @@ const BookedDeals = ({
       },
     },
   ];
-
 
   const FetchLeads = async (token) => {
     console.log("lead type is");
@@ -1013,12 +1033,11 @@ const BookedDeals = ({
 
   // ROW CLICK FUNCTION
   const handleRowClick = (params, event) => {
-      if(!event.target.closest(".deleteLeadBtn")) {
+    if (!event.target.closest(".deleteLeadBtn")) {
       setsingleLeadData(params.row);
       handleLeadModelOpen();
-        
-      }
     }
+  };
   // EDIT BTN CLICK FUNC
   const HandleEditFunc = async (params) => {
     console.log(params.row);
@@ -1148,7 +1167,9 @@ const BookedDeals = ({
             onPageSizeChange={(newPageSize) =>
               setpageState((old) => ({ ...old, pageSize: newPageSize }))
             }
-              columns={columns?.filter((c) => hasPermission("leads_col_" + c?.field))}
+            columns={columns?.filter((c) =>
+              hasPermission("leads_col_" + c?.field)
+            )}
             filterModel={{
               items: filt,
             }}
@@ -1181,15 +1202,14 @@ const BookedDeals = ({
             }
           />
         </div>
-                
-          {timelineModelOpen && (
-            <Timeline
-              timelineModelOpen={timelineModelOpen}
-              handleCloseTimelineModel={() => setTimelineModelOpen(false)}
-              LeadData={singleLeadData}
-            />
-          )}
 
+        {timelineModelOpen && (
+          <Timeline
+            timelineModelOpen={timelineModelOpen}
+            handleCloseTimelineModel={() => setTimelineModelOpen(false)}
+            LeadData={singleLeadData}
+          />
+        )}
 
         {!UpdateLeadModelOpen && (
           <SingleLead

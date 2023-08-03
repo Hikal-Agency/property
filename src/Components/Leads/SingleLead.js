@@ -12,6 +12,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 
+import usePermission from "../../utils/usePermission";
+
 import axios from "../../axoisConfig";
 import BlockIPModal from "./BlockIPModal";
 import { IoMdClose } from "react-icons/io";
@@ -31,6 +33,7 @@ const SingleLead = ({
 }) => {
   const { darkModeColors, currentMode, User, BACKEND_URL, isArabic } =
     useStateContext();
+  const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [lastNote, setLastNote] = useState("");
@@ -159,6 +162,21 @@ const SingleLead = ({
     console.log("LeadData::", LeadData);
   }, [LeadData]);
 
+  // Replace last 4 digits with "*"
+  const stearics =
+    LeadData?.leadContact?.slice(0, LeadData?.leadContact?.length - 4) + "****";
+  let contact;
+
+  if (hasPermission("number_masking")) {
+    if (User?.role === 1) {
+      contact = LeadData?.leadContact;
+    } else {
+      contact = `${stearics}`;
+    }
+  } else {
+    contact = LeadData?.leadContact;
+  }
+
   return (
     <>
       <Modal
@@ -239,7 +257,7 @@ const SingleLead = ({
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        {LeadData?.leadContact}
+                        {contact}
                       </h6>
                       <h6
                         className={`font-semibold ${

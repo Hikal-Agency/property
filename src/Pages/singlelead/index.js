@@ -23,6 +23,7 @@ import moment from "moment";
 import axios from "../../axoisConfig";
 import { useParams } from "react-router-dom";
 import Error404 from "../Error";
+import usePermission from "../../utils/usePermission";
 
 const SingleLeadPage = () => {
   const [loading, setloading] = useState(true);
@@ -32,8 +33,16 @@ const SingleLeadPage = () => {
   const [LeadNotesData, setLeadNotesData] = useState(null);
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [addNoteloading, setaddNoteloading] = useState(false);
-  const { currentMode, setopenBackDrop, User, BACKEND_URL, darkModeColors, isArabic } =
-    useStateContext();
+  const {
+    currentMode,
+    setopenBackDrop,
+    User,
+    BACKEND_URL,
+    darkModeColors,
+    isArabic,
+  } = useStateContext();
+
+  const { hasPermission } = usePermission();
 
   const { lid } = useParams();
 
@@ -150,12 +159,26 @@ const SingleLeadPage = () => {
     }
   };
   useEffect(() => {
-    console.log("Lead::", LeadData)
+    console.log("Lead::", LeadData);
     if (LeadData?.id) {
       fetchLeadNotes();
       console.log(LeadData);
     }
   }, [LeadData]);
+  // Replace last 4 digits with "*"
+  const stearics =
+    LeadData?.leadContact?.slice(0, LeadData?.leadContact?.length - 4) + "****";
+  let contact;
+
+  if (hasPermission("number_masking")) {
+    if (User?.role === 1) {
+      contact = LeadData?.leadContact;
+    } else {
+      contact = `${stearics}`;
+    }
+  } else {
+    contact = LeadData?.leadContact;
+  }
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -211,7 +234,11 @@ const SingleLeadPage = () => {
                                 Lead name:
                               </h6>
                               <h6
-                              style={{fontFamily: isArabic(LeadData?.leadName) ? "Noto Kufi Arabic" : "inherit"}}
+                                style={{
+                                  fontFamily: isArabic(LeadData?.leadName)
+                                    ? "Noto Kufi Arabic"
+                                    : "inherit",
+                                }}
                                 className={`font-semibold ${
                                   currentMode === "dark"
                                     ? "text-white"
@@ -240,7 +267,7 @@ const SingleLeadPage = () => {
                                     : "text-black"
                                 }`}
                               >
-                                {LeadData?.leadContact}
+                                {contact}
                               </h6>
                               <h6
                                 className={`font-semibold ${
@@ -281,11 +308,15 @@ const SingleLeadPage = () => {
                             <span className="p-2 bg-main-red-color text-white rounded-md">
                               {LeadData?.feedback ?? "No Feedback"}
                             </span>
-                            <Box className="float-right" sx={{
-                              "& svg": {
-                                color: currentMode === "dark" ? "white" : "black"
-                              }
-                            }}>
+                            <Box
+                              className="float-right"
+                              sx={{
+                                "& svg": {
+                                  color:
+                                    currentMode === "dark" ? "white" : "black",
+                                },
+                              }}
+                            >
                               {LeadData?.coldcall === 0 ? (
                                 <BsFire size={20} />
                               ) : LeadData?.coldcall === 1 ? (
@@ -433,7 +464,15 @@ const SingleLeadPage = () => {
                                         {row?.userName}
                                       </TableCell>
                                       <TableCell align="left">
-                                        <p style={{fontFamily: isArabic(row?.leadNote) ? "Noto Kufi Arabic" : "inherit"}}>{row?.leadNote}</p>
+                                        <p
+                                          style={{
+                                            fontFamily: isArabic(row?.leadNote)
+                                              ? "Noto Kufi Arabic"
+                                              : "inherit",
+                                          }}
+                                        >
+                                          {row?.leadNote}
+                                        </p>
                                       </TableCell>
                                     </TableRow>
                                   )
@@ -451,9 +490,12 @@ const SingleLeadPage = () => {
                           }}
                         >
                           <TextField
-                            sx={{...darkModeColors, "& input": {
-                              fontFamily: "Noto Kufi Arabic"
-                            }}}
+                            sx={{
+                              ...darkModeColors,
+                              "& input": {
+                                fontFamily: "Noto Kufi Arabic",
+                              },
+                            }}
                             id="note"
                             type={"text"}
                             label="Your Note"
