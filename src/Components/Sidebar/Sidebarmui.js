@@ -1,11 +1,12 @@
 import { Box, ListItemIcon, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { AiFillGift } from "react-icons/ai";
-import { FaLink, FaSnowflake, FaMobile } from "react-icons/fa";
+import { FaLink, FaSnowflake, FaMobile, FaAppStore } from "react-icons/fa";
 import {
   BsStopCircleFill,
   BsCalendarWeekFill,
   BsFillCreditCard2FrontFill,
+  BsCircleFill,
 } from "react-icons/bs";
 
 import { MdOutlinePayment } from "react-icons/md";
@@ -902,6 +903,19 @@ const Sidebarmui = () => {
           name: "Tickets",
           icon: <HiTicket />,
           link: "/support",
+        },
+      ],
+    },
+
+       {
+      title: "Messaging",
+      icon: <MdApps />,
+
+      links: [
+        {
+          name: "Chat",
+          icon: <BsCircleFill />,
+          link: "/chat",
         },
       ],
     },

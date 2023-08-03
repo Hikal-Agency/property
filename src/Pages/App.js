@@ -65,13 +65,18 @@ import RegisterAttendance from "./attendanceModule/RegisterAttendance";
 import TodayCallLogs from "./leaderboard/TodayCallLogs";
 import AttendanceLogin from "./auth/attendanceLogin";
 import Search from "./search/Search";
-import Restricted from "./Restricted";
+import ChatPage from "./chat";
 import Role from "./roles";
 import usePermission from "../utils/usePermission";
 
 const libraries = ["places"];
 
 const routes = [
+  {
+    path: "/chat",
+    element: <ChatPage />,
+    pageName: "Chat",
+  },
   {
     path: "/callLogs",
     element: <CallLogsNoHeadFoot />,
