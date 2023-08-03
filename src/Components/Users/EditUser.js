@@ -16,11 +16,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 // import axios from "axios";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
-
+import usePermission from "../../utils/usePermission";
 const EditUser = ({ user }) => {
   console.log("Edit User: ", user);
   const [loading, setloading] = useState(false);
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
+  const { hasPermission } = usePermission();
+
   const [error, setError] = useState(false);
   const [userData, setUserData] = useState({
     position: "",
@@ -228,73 +230,79 @@ const EditUser = ({ user }) => {
                         >
                         </TextField> */}
 
-                        <TextField
-                          id="LeadSource"
-                          value={userData?.currency || "AED"}
-                          label="Currency"
-                          onChange={(e) =>
-                            setUserData({
-                              ...userData,
-                              currency: e.target.value,
-                            })
-                          }
-                          size="medium"
-                          className="w-full mb-5"
-                          sx={{
-                            "&": {
-                              marginBottom: "1.25rem !important",
-                            },
-                            "& .MuiOutlinedInput-input": {
-                              color:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                            },
-                          }}
-                          displayEmpty
-                          select
-                          required
-                        >
-                          <MenuItem value="" disabled>
-                            Currency
-                            <span className="ml-1" style={{ color: "red" }}>
-                              *
-                            </span>
-                          </MenuItem>
-                          <MenuItem value={"AED"}>AED</MenuItem>
-                          <MenuItem value={"USD"}>USD</MenuItem>
-                          <MenuItem value={"PKR"}>PKR</MenuItem>
-                          <MenuItem value={"SAR"}>SAR</MenuItem>
-                          <MenuItem value={"EGP"}>EGP</MenuItem>
-                          <MenuItem value={"ILS"}>ILS</MenuItem>
-                        </TextField>
+                        {hasPermission("edit_user") && (
+                          <>
+                            <TextField
+                              id="LeadSource"
+                              value={userData?.currency || "AED"}
+                              label="Currency"
+                              onChange={(e) =>
+                                setUserData({
+                                  ...userData,
+                                  currency: e.target.value,
+                                })
+                              }
+                              size="medium"
+                              className="w-full mb-5"
+                              sx={{
+                                "&": {
+                                  marginBottom: "1.25rem !important",
+                                },
+                                "& .MuiOutlinedInput-input": {
+                                  color:
+                                    currentMode === "dark"
+                                      ? "#ffffff"
+                                      : "#000000",
+                                },
+                              }}
+                              displayEmpty
+                              select
+                              required
+                            >
+                              <MenuItem value="" disabled>
+                                Currency
+                                <span className="ml-1" style={{ color: "red" }}>
+                                  *
+                                </span>
+                              </MenuItem>
+                              <MenuItem value={"AED"}>AED</MenuItem>
+                              <MenuItem value={"USD"}>USD</MenuItem>
+                              <MenuItem value={"PKR"}>PKR</MenuItem>
+                              <MenuItem value={"SAR"}>SAR</MenuItem>
+                              <MenuItem value={"EGP"}>EGP</MenuItem>
+                              <MenuItem value={"ILS"}>ILS</MenuItem>
+                            </TextField>
 
-                        <br />
+                            <br />
 
-                        <InputLabel id="salary">Salary</InputLabel>
-                        <TextField
-                          id="salary"
-                          value={userData?.salary}
-                          InputLabel="Salary"
-                          size="medium"
-                          className="w-full mb-2"
-                          type="number"
-                          displayEmpty
-                          required
-                          onInput={(e) =>
-                            setUserData({
-                              ...userData,
-                              salary: e.target.value,
-                            })
-                          }
-                          sx={{
-                            "& input": {
-                              color: currentMode === "light" && "#000000",
-                            },
-                            marginBottom: "20px",
-                            "& .Mui-selected": {
-                              color: currentMode === "light" && "#000000",
-                            },
-                          }}
-                        ></TextField>
+                            <InputLabel id="salary">Salary</InputLabel>
+                            <TextField
+                              id="salary"
+                              value={userData?.salary}
+                              InputLabel="Salary"
+                              size="medium"
+                              className="w-full mb-2"
+                              type="number"
+                              displayEmpty
+                              required
+                              onInput={(e) =>
+                                setUserData({
+                                  ...userData,
+                                  salary: e.target.value,
+                                })
+                              }
+                              sx={{
+                                "& input": {
+                                  color: currentMode === "light" && "#000000",
+                                },
+                                marginBottom: "20px",
+                                "& .Mui-selected": {
+                                  color: currentMode === "light" && "#000000",
+                                },
+                              }}
+                            ></TextField>
+                          </>
+                        )}
                       </Box>
                     </div>
                   </div>
