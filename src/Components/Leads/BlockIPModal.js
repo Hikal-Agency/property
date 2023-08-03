@@ -41,9 +41,7 @@ const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead })
           Authorization: "Bearer " + token,
         },
       });
-      addNote({
-        note: reason
-      });
+      addNote(reason);
       toast.success("Requested successfuly to block this IP!", {
         position: "top-right",
         autoClose: 3000,

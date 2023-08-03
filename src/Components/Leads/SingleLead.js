@@ -66,7 +66,7 @@ const SingleLead = ({
     }
   };
 
-  const AddNote = ({note = ""}) => {
+  const AddNote = (note = "") => {
     setaddNoteloading(true);
     const token = localStorage.getItem("auth-token");
 
