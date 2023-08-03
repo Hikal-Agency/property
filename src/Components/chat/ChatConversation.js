@@ -9,19 +9,16 @@ import {
 } from "@mui/material";
 import { useRef } from "react";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
-import ConversationItem from "./ConversationItem";
-import MessageFromMe from "./MessageFromMe";
 import { BiLogOut, BiUser } from "react-icons/bi";
 import { BsImage } from "react-icons/bs";
-import MessageFromOther from "./MessageFromOther";
 import { IoMdSend } from "react-icons/io";
 import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import { useStateContext } from "../../context/ContextProvider";
 import ChatMessageFromMe from "./ChatMessageFromMe";
 import ChatMessageFromOther from "./ChatMessageFromOther";
+import ChatConversationItem from "./ChatConversationItem";
 
 const ChatConversation = ({
-  handleLogout,
   chatMessages,
   handleSendMessage,
   chatLoading,
@@ -30,7 +27,6 @@ const ChatConversation = ({
   currentMode,
   messageInputRef,
   activeChat,
-  logout,
   setActiveChat,
   loadingConversations,
   messagesContainerRef,
@@ -59,20 +55,7 @@ const ChatConversation = ({
   };
   return (
     <>
-      <div className="flex justify-end items-center pr-5">
-        <Button
-          onClick={() => logout(false)}
-          type="button"
-          variant="contained"
-          sx={{ padding: "7px 6px", mb: 1 }}
-          color="error"
-          size="small"
-        >
-          <HiOutlineSwitchHorizontal style={{ marginRight: 8 }} size={20} />
-          Switch Device
-        </Button>
-      </div>
-      <div className={`mt-3 h-[530px] section-container-${currentMode}`}>
+      <div className={`mt-3 h-[90vh] section-container-${currentMode}`}>
         <div className="border border-[#bfbfbf] rounded-sm flex h-full">
           <Box className="w-[45%] border-[#bfbfbf] border-r relative">
             <p
@@ -92,7 +75,7 @@ const ChatConversation = ({
                 [
                   allChats?.map((chat) => {
                     return (
-                      <ConversationItem
+                      <ChatConversationItem
                         key={chat?.id?.user}
                         setActiveChat={setActiveChat}
                         chat={chat}
@@ -117,9 +100,6 @@ const ChatConversation = ({
                   {User?.userName}
                 </p>
               </Box>
-              <IconButton onClick={handleLogout}>
-                <BiLogOut />
-              </IconButton>
             </Box>
           </Box>
           <Box className="w-full">
