@@ -20,7 +20,6 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 
-
 import axios from "../../axoisConfig";
 import { FaComment } from "react-icons/fa";
 import { FaGlobe } from "react-icons/fa";
@@ -281,8 +280,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         const stearics = contactNumber + lastFourDigits;
         let finalNumber;
 
-        if (!hasPermission("number_masking")) {
-          finalNumber = ` ${stearics}`;
+        if (hasPermission("number_masking")) {
+          if (User?.role === 1) {
+            finalNumber = contactNumber;
+          } else {
+            finalNumber = ` ${stearics}`;
+          }
         } else {
           finalNumber = contactNumber;
         }
@@ -312,12 +315,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           //   </p>
           // </div>
           <div
-              style={{
-          fontFamily: isArabic(cellValues?.formattedValue)
-                  ? "Noto Kufi Arabic"
-                  : "inherit",
-              }}
-           className="flex flex-col">
+            style={{
+              fontFamily: isArabic(cellValues?.formattedValue)
+                ? "Noto Kufi Arabic"
+                : "inherit",
+            }}
+            className="flex flex-col"
+          >
             <p>{cellValues.row.project}</p>
             <p>{cellValues.row.leadFor}</p>
           </div>
@@ -1279,7 +1283,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   };
 
   useEffect(() => {
-    if(lead_origin === "unassigned") {
+    if (lead_origin === "unassigned") {
       const token = localStorage.getItem("auth-token");
       FetchLeads(token);
     }
@@ -1299,7 +1303,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     if (searchRef.current.querySelector("input").value) {
       FetchSearchedLeads(token, searchRef.current.querySelector("input").value);
     } else {
-      if(pageState?.page > 0) {
+      if (pageState?.page > 0) {
         FetchLeads(token);
       }
     }

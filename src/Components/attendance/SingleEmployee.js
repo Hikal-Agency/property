@@ -16,6 +16,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
+import FormControl from '@mui/material/FormControl';
 import {
   MdModeEdit,
   MdAttachMoney,
@@ -1252,47 +1253,51 @@ const SingleEmployee = ({ user }) => {
                   sx={{
                     ...darkModeColors,
                     display: "flex",
-                    justifyContent: "space-between",
+                    justifyContent: "right",
                     marginTop: "3%",
                   }}
                 >
-                  <div className="flex justify-start">
-                    <Button
-                      className={`min-w-fit mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
-                      ripple={true}
-                      size="lg"
-                      type="submit"
-                      onClick={exportDataGridAsPDF}
-                      sx={{ background: "#D11E25" }}
-                    >
-                      <FaDownload
-                        size={10}
-                        color={`white`}
-                        style={{ marginRight: "8px" }}
-                      />
-
-                      <span className={`text-white`}> Export </span>
-                    </Button>
+                  <div className="flex">
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 30 }}>
+                      <Select
+                        id="monthSelect"
+                        // size="small"
+                        className="w-[100px]"
+                        displayEmpty
+                        value={selectedMonth}
+                        onChange={handleDayFilter}
+                      >
+                        {/* <MenuItem value="today">Today</MenuItem>
+                        <MenuItem value="yesterday">Yesterday</MenuItem> */}
+                        {lastThreeMonths?.map((month) => (
+                          <MenuItem key={month.value} value={month.value + 1}>
+                            {month.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      </FormControl>
                   </div>
-                  <div className="flex justify-end">
-                    <Select
-                      id="monthSelect"
-                      size="small"
-                      className="w-[100px]"
-                      displayEmpty
-                      value={selectedMonth}
-                      onChange={handleDayFilter}
-                    >
-                      {/* <MenuItem value="today">Today</MenuItem>
-                      <MenuItem value="yesterday">Yesterday</MenuItem> */}
-                      {lastThreeMonths?.map((month) => (
-                        <MenuItem key={month.value} value={month.value + 1}>
-                          {month.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
+
+                  <div className="flex mx-3">
+                    <Tooltip title="Download Report" arrow>
+                      <IconButton
+                        className={`p-1 disabled:opacity-50 disabled:cursor-not-allowed`}
+                        ripple={true}
+                        size="small"
+                        type="submit"
+                        onClick={exportDataGridAsPDF}
+                        // sx={{ border: "1px solid #DA1F26" }}
+                      >
+                        <FaDownload
+                          size={14}
+                          color={`#DA1F26`}
+                        />
+                      </IconButton>
+                    </Tooltip>
                   </div>
                 </Box>
+
+                {/* SALARY CALC & TABLE  */}
                 <div className="my-5 mb-10">
                   <div
                     className={`grid grid-cols-12 ${
