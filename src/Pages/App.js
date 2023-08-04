@@ -387,7 +387,7 @@ const routes = [
     restrictedRoles: [3, 7],
   },
   {
-    path: "/attendance/attendance_self",
+    path: "/attendance_self",
     pageName: "My Attendance",
     element: <SingleEmployee />,
     restrictedRoles: [3, 7],

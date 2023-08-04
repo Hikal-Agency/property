@@ -875,7 +875,7 @@ const Sidebarmui = () => {
         {
           name: "My Attendance",
           icon: <FiUsers />,
-          link: "/attendance/attendance_self",
+          link: "/attendance_self",
         },
       ],
     },
@@ -1037,7 +1037,6 @@ const Sidebarmui = () => {
       style={{ display: "flex", height: "100%" }}
       className={`max-w-[200px] z-[1000] sticky top-0 left-0 `}
     >
-
       <Sidebar
         rootStyles={{
           [`.${sidebarClasses.container}`]: {

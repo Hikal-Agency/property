@@ -79,7 +79,7 @@ const RegisterAttendance = () => {
       AddAttendance.append("check_datetime", currentDateTime);
       AddAttendance.append("attendance_type", attendanceType);
       AddAttendance.append("attendance_source", "qr");
-      AddAttendance.append("agency_id", User?.agency);
+      AddAttendance.append("agency_id", User?.agency || "");
 
       const registerAttendance = await axios.post(
         `${BACKEND_URL}/attendance`,
