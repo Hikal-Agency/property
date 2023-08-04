@@ -17,6 +17,9 @@ axiosInstance.interceptors.response.use(
       // Show toast message here
       console.log("Unauth::::::::");
       showToastMessage("System updated. Kindly logout and login again.");
+
+      // Redirect the user to the "/" route
+      window.location.href = "/";
     }
     return Promise.reject(error);
   }
