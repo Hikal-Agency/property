@@ -294,7 +294,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "id",
       headerName: "#",
-      minWidth: 20,
+      minWidth: 50,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -1356,9 +1356,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </Select>
             </Box>
           )}
-        <Box className="mb-5"></Box>
+        <Box></Box>
         <h1
-          className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
+          className={`text-lg border-l-[4px] ml-1 pl-1 my-2 font-bold ${
             currentMode === "dark"
               ? "text-white border-white"
               : "text-main-red-color font-bold border-main-red-color"
@@ -1372,8 +1372,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
         <Box
           sx={{
+            // darkModeColors, 
             ...darkModeColors,
-            marginTop: "34px",
+            marginTop: "15px",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "end",
             "& .MuiSelect-select": {
               padding: "2px",
               paddingLeft: "6px !important",
@@ -1399,10 +1403,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               marginRight: "3px",
             },
           }}
-          className={"flex items-center"}
+          className={"items-center mb-1"}
         >
           {/* LEAD CATEGORY  */}
-          <Box sx={{ minWidth: "90px" }}>
+          <Box className="m-1" sx={{ minWidth: "90px" }}>
             <FormControl fullWidth>
               <InputLabel>Category</InputLabel>
               <Select
@@ -1415,7 +1419,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     leadOrigins.find((origin) => origin.id === event.target.value)
                   );
                 }}
-                className={`w-full py-1 px-3 mb-5`}
+                className={`w-full py-2 px-3`}
                 displayEmpty
                 required
                 sx={{
@@ -1448,7 +1452,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           </Box>
 
           {/* FEEDBACK  */}
-          <Box sx={{ minWidth: "90px" }}>
+          <Box className="m-1" sx={{ minWidth: "90px" }}>
             <FormControl fullWidth>
               <InputLabel>Feedback</InputLabel>
               <Select
@@ -1461,8 +1465,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     leadTypes.find((type) => type.id === event.target.value)
                   );
                 }}
-                size="small"
-                className={`w-full py-1 px-3 mb-5`}
+                className={`w-full py-2 px-3`}
                 displayEmpty
                 required
                 sx={{
@@ -1496,6 +1499,8 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             </FormControl>
           </Box>
 
+          
+
           {/* ENQUIRY TYPE  */}
           <div style={{ position: "relative" }}>
             <label
@@ -1516,14 +1521,14 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 ""
               )}
             </label>
-            <Box sx={{ minWidth: "90px" }}>
+            <Box className="m-1" sx={{ minWidth: "90px" }}>
               <FormControl fullWidth>
                 <InputLabel>Enquiry</InputLabel>
                 <Select
                 label="Enquiry"
                   id="enquiryType"
                   value={enquiryTypeSelected?.id}
-                  className={`w-full mb-5 py-1 px-3`}
+                  className={`w-full py-2 px-3`}
                   onChange={(event) => {
                     searchRef.current.querySelector("input").value = "";
                     setEnquiryTypeSelected(
@@ -1586,14 +1591,14 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ""
                 )}
               </label>
-              <Box sx={{ minWidth: "90px" }}>
+              <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
                   <InputLabel>Source</InputLabel>
                   <Select
                     label="Source"
                     id="leadSource"
                     value={leadSourceSelected}
-                    className={`w-full mb-5 py-1 px-3`}
+                    className={`w-full py-2 px-3`}
                     onChange={(event) => {
                       searchRef.current.querySelector("input").value = "";
                       setLeadSourceSelected(event.target.value);
@@ -1642,29 +1647,27 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             </div>
           )}
 
-
-          <div>
           {/* PROJECT NAME  */}
-            <TextField
-              className={`w-full`}
-              id="Project"
-              type={"text"}
-              label="Project Name"
-              variant="outlined"
-              sx={{
-                marginTop: "-12px",
-                "& input:placeholder": {
-                  fontSize: 14,
-                },
-              }}
-              size="small"
-              onChange={(e) => {
-                searchRef.current.querySelector("input").value = "";
-                setProjectNameTyped(e.target.value);
-              }}
-              required
-            />
-          </div>
+          <Box className="m-1" sx={{ minWidth: "90px" }}>
+              <TextField
+                className={`w-full py-2 px-3`}
+                id="Project"
+                type={"text"}
+                label="Project"
+                variant="outlined"
+                size="medium"
+                value=""
+                sx={{
+                  minWidth: "90px",
+                }}
+                onChange={(e) => {
+                  searchRef.current.querySelector("input").value = "";
+                  setProjectNameTyped(e.target.value);
+                }}
+                required
+              />
+          </Box>
+
 
           {/* MANAGER  */}
           {hasPermission("search_manager_filter") && (
@@ -1687,9 +1690,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ""
                 )}
               </label>
-              <Box sx={{ minWidth: "90px" }}>
+              <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  {/* <InputLabel>Manager</InputLabel> */}
+                  <InputLabel>Manager</InputLabel>
                   <Select
                     label="Manager"
                     id="Manager"
@@ -1698,9 +1701,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       searchRef.current.querySelector("input").value = "";
                       setManagerSelected(event.target.value);
                     }}
-                    className={`w-full mb-5 py-1 px-3`}
+                    className={`w-full py-2 px-3`}
                     displayEmpty
-                    // required
+                    required
                     sx={{
                       "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
@@ -1711,14 +1714,14 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       "& .MuiSelect-select": {
                         color: currentMode === "dark" ? "#ffffff" : "#000000",
                       },
-                      minWidth: "90px !important"
+                      minWidth: "100px !important"
                     }}
                   >
                     <MenuItem value="" disabled
                       sx={{
                         color: currentMode === "dark" ? "#ffffff" : "#000000",
                       }}>
-                      <span className="text-gray-400">Manager</span>
+                      {/* <span className="text-gray-400"></span> */}
                     </MenuItem>
                     {managers?.map((manager, index) => (
                       <MenuItem key={index} value={manager?.id || ""}>
@@ -1728,6 +1731,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   </Select>
                 </FormControl>
               </Box>
+
             </div>
           )}
 
@@ -1754,9 +1758,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ""
                 )}
               </label>
-              <Box sx={{ minWidth: "90px" }}>
+              <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  {/* <InputLabel>Agent</InputLabel> */}
+                  <InputLabel>Agent</InputLabel>
                   <Select
                     label="Agent"
                     id="Agent"
@@ -1765,7 +1769,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       searchRef.current.querySelector("input").value = "";
                       setAgentSelected(event.target.value);
                     }}
-                    className={`w-full mb-5 py-1 px-3`}
+                    className={`w-full py-2 px-3`}
                     displayEmpty
                     required
                     sx={{
@@ -1778,11 +1782,11 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       "& .MuiSelect-select": {
                         color: currentMode === "dark" ? "#ffffff" : "#000000",
                       },
-                      minWidth: "90px",
+                      minWidth: "100px",
                     }}
                   >
                     <MenuItem selected value="" disabled>
-                      <span className="text-gray-400">Agent</span>
+                      {/* <span className="text-gray-400">Agent</span> */}
                     </MenuItem>
                     {allAgents?.map((agent, index) => (
                       <MenuItem key={index} value={agent?.id || ""}>
@@ -1795,6 +1799,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             </div>
           )}
         </Box>
+
         <Box
           sx={{
             ...DataGridStyles,
