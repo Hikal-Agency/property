@@ -1035,7 +1035,7 @@ const SingleEmployee = ({ user }) => {
       const totalWidth = headers.length * 30;
 
       // Reduce the font size for the table content
-      const fontSize = 8;
+      const fontSize = 7;
 
       // Show the total salary separately
       const currency = empData[0]?.currency || "No Currency";
@@ -1044,10 +1044,10 @@ const SingleEmployee = ({ user }) => {
       doc.setTextColor("#1976D2"); // Set text color to a nice blue
 
       // Position the salary text above the table
-      doc.text(`Employee Information`, 15, 10);
-      doc.setTextColor("#000"); // Reset text color to black
+      // doc.text(`Employee Information`, 15, 10);
+      // doc.setTextColor("#000"); // Reset text color to black
 
-      doc.text(`Username: ${empData[0]?.userName || "No Name"}`, 15, 18);
+      doc.text(`${empData[0]?.userName || "No Name"}`, 15, 18);
       // doc.text(`Position: ${empData[0]?.position || "No Position"}`, 15, 24);
 
       doc.setTextColor("#1976D2"); // Set text color to a nice blue
@@ -1112,7 +1112,7 @@ const SingleEmployee = ({ user }) => {
 
       doc.setTextColor("#000"); // Reset text color to black
 
-      // Create a watermark canvas and apply blur effect
+      // Create a watermark canvas and apply opacity
       const watermarkCanvas = document.createElement("canvas");
       const ctx = watermarkCanvas.getContext("2d");
       const watermarkImg = new Image();
@@ -1120,35 +1120,31 @@ const SingleEmployee = ({ user }) => {
       watermarkImg.src = "/assets/hikal_watermark.png"; // Correct URL to the watermark image
 
       watermarkImg.onload = () => {
-        const imgWidth = 400; // Adjust the image width as needed
-        const imgHeight = 400; // Adjust the image height as needed
+        const imgWidth = 120; // Adjust the image width as needed
+        const imgHeight = 120; // Adjust the image height as needed
 
-        // Set the canvas size
+        // Set the canvas size to match the image size
         watermarkCanvas.width = imgWidth;
         watermarkCanvas.height = imgHeight;
 
-        // Apply blur to the watermark image
-        ctx.filter = "blur(1px)"; // Adjust the blur level as needed
-        ctx.globalAlpha = 0.1; // Adjust the opacity level (0 to 1, where 0 is fully transparent and 1 is fully opaque)
+        // Apply opacity to the watermark image
+        ctx.globalAlpha = 0.3; // Adjust the opacity level (0 to 1, where 0 is fully transparent and 1 is fully opaque)
 
-        ctx.translate(watermarkCanvas.width / 2, watermarkCanvas.height / 2);
-        ctx.rotate(-30 * (Math.PI / 180)); // Adjust the tilt angle as needed
-        ctx.drawImage(
-          watermarkImg,
-          -watermarkCanvas.width / 2,
-          -watermarkCanvas.height / 2,
-          imgWidth,
-          imgHeight
-        );
+        // Calculate the position to center the logo on the page
+        const centerX = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
+        const centerY = (doc.internal.pageSize.getHeight() - imgHeight) / 2;
 
-        // Add the blurred watermark as an image to the PDF in the background
+        // Draw the watermark image with opacity and centered on the page
+        ctx.drawImage(watermarkImg, 0, 0, imgWidth, imgHeight);
+
+        // Add the watermark as an image to the PDF in the background
         doc.addImage(
           watermarkCanvas.toDataURL("image/png"),
           "PNG",
-          0,
-          0,
-          doc.internal.pageSize.getWidth(),
-          doc.internal.pageSize.getHeight()
+          centerX,
+          centerY,
+          imgWidth,
+          imgHeight
         );
 
         // Add the table to the PDF
@@ -1168,6 +1164,11 @@ const SingleEmployee = ({ user }) => {
 
         // Save the PDF with the specified file name
         doc.save(`${empData[0]?.userName}-attendance.pdf`);
+      };
+
+      // Handle image load error
+      watermarkImg.onerror = () => {
+        console.error("Error loading the watermark image.");
       };
     } else {
       // Handle the case when there are no valid rows to export

@@ -426,9 +426,9 @@ const Sidebarmui = () => {
               link: "/freshleads/new",
             },
             {
-              name: "No Answer",
-              count: sidebarData?.HotLeadsCount?.no_nswer,
-              link: "/freshleads/no answer",
+              name: "Follow Up",
+              count: sidebarData?.HotLeadsCount?.follow_up,
+              link: "/freshleads/follow up",
             },
             {
               name: "Meeting",
@@ -436,14 +436,14 @@ const Sidebarmui = () => {
               link: "/freshleads/meeting",
             },
             {
-              name: "Follow Up",
-              count: sidebarData?.HotLeadsCount?.follow_up,
-              link: "/freshleads/follow up",
-            },
-            {
               name: "Low Budget",
               count: sidebarData?.HotLeadsCount?.low_budget,
               link: "/freshleads/low budget",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.HotLeadsCount?.no_nswer,
+              link: "/freshleads/no answer",
             },
             {
               name: "Not Interested",
@@ -473,9 +473,9 @@ const Sidebarmui = () => {
               link: "/thirdpartyleads/new",
             },
             {
-              name: "No Answer",
-              count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
-              link: "/thirdpartyleads/no answer",
+              name: "Follow Up",
+              count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
+              link: "/thirdpartyleads/follow up",
             },
             {
               name: "Meeting",
@@ -483,14 +483,14 @@ const Sidebarmui = () => {
               link: "/thirdpartyleads/meeting",
             },
             {
-              name: "Follow Up",
-              count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
-              link: "/thirdpartyleads/follow up",
-            },
-            {
               name: "Low Budget",
               count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
               link: "/thirdpartyleads/low budget",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
+              link: "/thirdpartyleads/no answer",
             },
             {
               name: "Not Interested",
@@ -514,11 +514,6 @@ const Sidebarmui = () => {
               link: "/coldleads/all",
             },
             {
-              name: "New",
-              count: sidebarData?.ColdLeadsCount?.new,
-              link: "/coldleads/new",
-            },
-            {
               name: "Verified",
               count: sidebarData?.ColdLeadsCount?.verified, //TODO
               link: "/coldleads/coldLeadsVerified",
@@ -540,14 +535,9 @@ const Sidebarmui = () => {
               countColor: "#FFA500",
             },
             {
-              name: "No Answer",
-              count: sidebarData?.ColdLeadsCount?.no_nswer,
-              link: "/coldleads/no answer",
-            },
-            {
-              name: "Meeting",
-              count: sidebarData?.ColdLeadsCount?.Meeting,
-              link: "/coldleads/meeting",
+              name: "New",
+              count: sidebarData?.ColdLeadsCount?.new,
+              link: "/coldleads/new",
             },
             {
               name: "Follow Up",
@@ -555,9 +545,19 @@ const Sidebarmui = () => {
               link: "/coldleads/follow up",
             },
             {
+              name: "Meeting",
+              count: sidebarData?.ColdLeadsCount?.Meeting,
+              link: "/coldleads/meeting",
+            },
+            {
               name: "Low Budget",
               count: sidebarData?.ColdLeadsCount?.low_budget,
               link: "/coldleads/low budget",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.ColdLeadsCount?.no_nswer,
+              link: "/coldleads/no answer",
             },
             {
               name: "Not Interested",
@@ -588,9 +588,9 @@ const Sidebarmui = () => {
               link: "/reshuffleleads/new",
             },
             {
-              name: "No Answer",
-              count: sidebarData?.Reshuffle?.no_answer,
-              link: "/reshuffleleads/no answer",
+              name: "Follow Up",
+              count: sidebarData?.Reshuffle?.follow_up,
+              link: "/reshuffleleads/follow up",
             },
             {
               name: "Meeting",
@@ -598,14 +598,14 @@ const Sidebarmui = () => {
               link: "/reshuffleleads/meeting",
             },
             {
-              name: "Follow Up",
-              count: sidebarData?.Reshuffle?.follow_up,
-              link: "/reshuffleleads/follow up",
-            },
-            {
               name: "Low Budget",
               count: sidebarData?.Reshuffle?.low_budget,
               link: "/reshuffleleads/low budget",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.Reshuffle?.no_answer,
+              link: "/reshuffleleads/no answer",
             },
             {
               name: "Not Interested",
@@ -634,9 +634,9 @@ const Sidebarmui = () => {
               link: "/personalleads/new",
             },
             {
-              name: "No Answer",
-              count: sidebarData?.PersonalLeadsCount?.no_nswer,
-              link: "/personalleads/no answer",
+              name: "Follow Up",
+              count: sidebarData?.PersonalLeadsCount?.follow_up,
+              link: "/personalleads/follow up",
             },
             {
               name: "Meeting",
@@ -644,14 +644,14 @@ const Sidebarmui = () => {
               link: "/personalleads/meeting",
             },
             {
-              name: "Follow Up",
-              count: sidebarData?.PersonalLeadsCount?.follow_up,
-              link: "/personalleads/follow up",
-            },
-            {
               name: "Low Budget",
               count: sidebarData?.PersonalLeadsCount?.low_budget,
               link: "/personalleads/low budget",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.PersonalLeadsCount?.no_nswer,
+              link: "/personalleads/no answer",
             },
             {
               name: "Not Interested",
@@ -681,9 +681,9 @@ const Sidebarmui = () => {
               link: "/archive/new",
             },
             {
-              name: "No Answer",
-              count: sidebarData?.WarmLeadCount?.no_nswer,
-              link: "/archive/no answer",
+              name: "Follow Up",
+              count: sidebarData?.WarmLeadCount?.follow_up,
+              link: "/archive/follow up",
             },
             {
               name: "Meeting",
@@ -691,14 +691,14 @@ const Sidebarmui = () => {
               link: "/archive/meeting",
             },
             {
-              name: "Follow Up",
-              count: sidebarData?.WarmLeadCount?.follow_up,
-              link: "/archive/follow up",
-            },
-            {
               name: "Low Budget",
               count: sidebarData?.WarmLeadCount?.low_budget,
               link: "/archive/low budget",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.WarmLeadCount?.no_nswer,
+              link: "/archive/no answer",
             },
             {
               name: "Not Intrested",
@@ -1037,6 +1037,7 @@ const Sidebarmui = () => {
       style={{ display: "flex", height: "100%" }}
       className={`max-w-[200px] z-[1000] sticky top-0 left-0 `}
     >
+
       <Sidebar
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
