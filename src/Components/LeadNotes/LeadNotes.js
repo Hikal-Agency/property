@@ -305,22 +305,28 @@ const LeadNotes = ({ pageState, setpageState }) => {
             color: "red",
           },
         }}
-        className={`rounded-md overflow-hidden px-1 flex ${
+        className={`rounded-md overflow-hidden flex ${
           currentMode === "dark" ? "bg-black" : "bg-white"
         }`}
         style={{justifyContent: "flex-end"}}
       >
-        <Tabs value={value} onClick={handleChange} variant="standard">
+        <Tabs value={value} onClick={handleChange} variant="standard" >
           <Tab
             icon={
-              value === 0 ? (
+              // value === 0 ? 
+              (
                 <AiOutlineAppstore
                   size={20}
                   style={{
                     color: currentMode === "dark" ? "#ffffff" : "#000000",
                   }}
                 />
-              ) : (
+              )
+            }
+          />
+          <Tab
+            icon={
+              (
                 <AiOutlineTable
                   size={20}
                   style={{
