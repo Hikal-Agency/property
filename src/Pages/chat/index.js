@@ -2,112 +2,90 @@ import { useEffect, useRef, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import ChatConversation from "../../Components/chat/ChatConversation";
 import { useProSidebar } from "react-pro-sidebar";
+import { socket } from "../App";
 
 const ChatPage = () => {
-  const { currentMode, isCollapsed, setIsCollapsed } = useStateContext();
+  const { currentMode, isCollapsed, setIsCollapsed, User } = useStateContext();
   const { collapseSidebar } = useProSidebar();
-  const [activeChat, setActiveChat] = useState({
-    name: "Muhammad Junaid",
-    phoneNumber: "+923458880651"
-  });
+  const [activeChat, setActiveChat] = useState(User);
   const [loadingConversations, setLoadingConversation] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
 
-  const [allChats, setAllChats] = useState([
-    {
-    name: "Muhammad Junaid"
-  },
-    {
-    name: "Ubaid Ur Rehman"
-  },
-    {
-    name: "Rimsha Sehar"
-  },
-    {
-    name: "Qasim Ali"
-  },
-    {
-    name: "Hikal"
-  },
-    {
-    name: "Ubaid Ur Rehman"
-  },
-    {
-    name: "Rimsha Sehar"
-  },
-    {
-    name: "Muskan"
-  },
-]);
+  const [recentChats, setRecentChats] = useState([
+    User, 
+    User, 
+    User
+  ]);
+  const [onlineChats, setOnlineChats] = useState([]);
   const [chatMessages, setChatMessages] = useState([
     {
-      type: "text", 
-      body: "Hello This is a test message", 
+      type: "text",
+      body: "Hello This is a test message",
       id: {
-        fromMe: true
+        fromMe: true,
       },
-      to: "+923458880651"
-    }, 
+      to: "+923458880651",
+    },
     {
-      type: "text", 
-      body: "Hello This is another test message", 
-      from: "+923458880651"
-    }, 
+      type: "text",
+      body: "Hello This is another test message",
+      from: "+923458880651",
+    },
     {
-      type: "text", 
-      body: "Hello This is a test message", 
+      type: "text",
+      body: "Hello This is a test message",
       id: {
-        fromMe: true
+        fromMe: true,
       },
-      to: "+923458880651"
-    }, 
+      to: "+923458880651",
+    },
     {
-      type: "text", 
-      body: "Hello This is another test message", 
-      from: "+923458880651"
-    }, 
+      type: "text",
+      body: "Hello This is another test message",
+      from: "+923458880651",
+    },
     {
-      type: "text", 
-      body: "Hello This is another test message", 
-      from: "+923458880651"
-    }, 
+      type: "text",
+      body: "Hello This is another test message",
+      from: "+923458880651",
+    },
     {
-      type: "text", 
-      body: "Hello This is another test message", 
-      from: "+923458880651"
-    }, 
+      type: "text",
+      body: "Hello This is another test message",
+      from: "+923458880651",
+    },
     {
-      type: "text", 
-      body: "Hello This is another test message", 
-      from: "+923458880651"
-    }, 
+      type: "text",
+      body: "Hello This is another test message",
+      from: "+923458880651",
+    },
     {
-      type: "text", 
-      body: "Hello This is another test message", 
-      from: "+923458880651"
-    }, 
+      type: "text",
+      body: "Hello This is another test message",
+      from: "+923458880651",
+    },
     {
-      type: "text", 
-      body: "Hello This is another test message", 
-      from: "+923458880651"
-    }, 
+      type: "text",
+      body: "Hello This is another test message",
+      from: "+923458880651",
+    },
     {
-      type: "text", 
-      body: "Hello This is a test message", 
+      type: "text",
+      body: "Hello This is a test message",
       id: {
-        fromMe: true
+        fromMe: true,
       },
-      to: "+923458880651"
-    }, 
+      to: "+923458880651",
+    },
     {
-      type: "text", 
-      body: "Hello This is a test message", 
+      type: "text",
+      body: "Hello This is a test message",
       id: {
-        fromMe: true
+        fromMe: true,
       },
-      to: "+923458880651"
-    }, 
+      to: "+923458880651",
+    },
   ]);
 
   const messageInputRef = useRef();
@@ -115,23 +93,37 @@ const ChatPage = () => {
 
   const handleSendMessage = () => {};
 
-  useEffect(() => {
-    // setChatMessages([]);
-  }, [activeChat]);
+  // useEffect(() => {
+  //   // setChatMessages([]);
+  // }, [activeChat]);
 
   // useEffect(() => {
   //   setIsCollapsed(false);
   //   collapseSidebar();
   // }, []);
 
+  useEffect(() => {
+    if (User?.id) {
+      socket.emit("addUser", User);
+
+      socket.on("getOnlineUsers", (data) => {
+        console.log(data);
+        setOnlineChats(data);
+      });
+    }
+  }, [User]);
+
   return (
-    <div style={{
-      height: "calc(100vh - 60px)"
-    }}>
+    <div
+      style={{
+        height: "calc(100vh - 60px)",
+      }}
+    >
       <ChatConversation
         currentMode={currentMode}
         setActiveChat={setActiveChat}
-        allChats={allChats}
+        recentChats={recentChats}
+        onlineChats={onlineChats}
         chatMessages={chatMessages}
         loadingConversations={loadingConversations}
         handleSendMessage={handleSendMessage}
