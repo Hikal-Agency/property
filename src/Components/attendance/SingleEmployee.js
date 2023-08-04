@@ -449,6 +449,7 @@ const SingleEmployee = ({ user }) => {
   const FetchAttendance = async (token) => {
     const params = {
       page: pageState.page,
+      agency_id: User?.agency || 1,
     };
 
     if (selectedMonth) {
