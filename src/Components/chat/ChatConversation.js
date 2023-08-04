@@ -7,14 +7,12 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
-import { BsFillChatLeftDotsFill, BsThreeDots } from "react-icons/bs";
-import { BiUser } from "react-icons/bi";
+import { BsFillChatLeftDotsFill } from "react-icons/bs";
 import { BsImage, BsFillChatLeftTextFill } from "react-icons/bs";
-import { IoMdSend } from "react-icons/io";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import { HiOutlinePencilAlt } from "react-icons/hi";
-import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import { useStateContext } from "../../context/ContextProvider";
 import ChatMessageFromMe from "./ChatMessageFromMe";
 import ChatMessageFromOther from "./ChatMessageFromOther";
@@ -34,6 +32,7 @@ const ChatConversation = ({
   messagesContainerRef,
 }) => {
   const imagePickerRef = useRef();
+  const [userDetailsSidebarOpened, setUserDetailsSidebarOpened] = useState(false);
   const { User } = useStateContext();
 
   console.log("Chat", chatMessages);
@@ -121,7 +120,7 @@ const ChatConversation = ({
               )}
             </div>
           </Box>
-          <Box className="w-full">
+          <Box className="flex-1">
             {activeChat.phoneNumber && (
               <Box className="px-12 flex justify-between items-center shadow py-3 w-full">
                 <Box className="flex items-center w-full">
@@ -149,8 +148,8 @@ const ChatConversation = ({
                     <p className="text-[#c6c6c6]">@junaid.hikal</p>
                   </Box>
                 </Box>
-                <IconButton>
-                  <BsThreeDots size={20} />
+                <IconButton onClick={() => setUserDetailsSidebarOpened(true)}>
+                  <AiOutlineInfoCircle size={20} />
                 </IconButton>
               </Box>
             )}
@@ -216,11 +215,11 @@ const ChatConversation = ({
                         disableUnderline: true,
                         startAdornment: (
                           <InputAdornment className="pl-3" position="start">
-                                 <IconButton
-                        onClick={() => imagePickerRef.current.click()}
-                      >
-                        <BsImage size={18} />
-                      </IconButton>
+                            <IconButton
+                              onClick={() => imagePickerRef.current.click()}
+                            >
+                              <BsImage size={18} />
+                            </IconButton>
                           </InputAdornment>
                         ),
                       }}
@@ -235,6 +234,66 @@ const ChatConversation = ({
                       hidden
                     />
                   </form>
+                </div>
+              )}
+            </div>
+          </Box>
+          <Box className="w-[25%] relative">
+            <div className="flex items-center px-5 justify-between">
+              <p style={{ paddingBottom: "1.2rem" }} className="text-2xl pt-5">
+                <strong>Messages</strong>
+              </p>
+              <IconButton sx={{ padding: "0 !important" }}>
+                <HiOutlinePencilAlt style={{ color: "#da1f26" }} size={22} />
+              </IconButton>
+            </div>
+
+            <div className="w-full px-5">
+              <TextField
+                fullWidth
+                variant="standard"
+                size="small"
+                className="px-3 rounded-lg"
+                sx={{
+                  background: "#f5f5f5",
+                  "& input": {
+                    padding: "12px 6px 12px 0",
+                  },
+                }}
+                InputProps={{
+                  disableUnderline: true,
+                  startAdornment: (
+                    <InputAdornment className="pl-3" position="start">
+                      <BiSearch size={17} />
+                    </InputAdornment>
+                  ),
+                }}
+                placeholder="Search.."
+              />
+            </div>
+
+            <div className="flex mb-3 mt-6 px-5 items-center text-sm font-bold text-[#a4a6a8]">
+              <BsFillChatLeftTextFill />{" "}
+              <p className="uppercase ml-2">All Chats</p>
+            </div>
+            <div className="h-[72%]">
+              {loadingConversations ? (
+                <div className="flex h-full flex-col items-center justify-center">
+                  <CircularProgress color="error" size={18} />
+                  <p className="mt-3">Loading Conversations..</p>
+                </div>
+              ) : (
+                <div className="h-full overflow-y-scroll">
+                  {allChats?.map((chat) => {
+                    return (
+                      <ChatConversationItem
+                        key={chat?.id?.user}
+                        setActiveChat={setActiveChat}
+                        chat={chat}
+                        isActive={activeChat?.phoneNumber === chat?.id?.user}
+                      />
+                    );
+                  })}
                 </div>
               )}
             </div>
