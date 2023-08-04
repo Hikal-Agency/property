@@ -34,6 +34,7 @@ import {
   RiEyeCloseFill,
 } from "react-icons/ri";
 import SalaryDeductDailogue from "./SalaryDeductDailogue";
+import PasswordDialogue from "./PasswordDialogue";
 import { FaDownload } from "react-icons/fa";
 
 const SingleEmployee = ({ user }) => {
@@ -70,6 +71,7 @@ const SingleEmployee = ({ user }) => {
   const [empData, setEmpData] = useState(null);
   const [showDailogue, setDialogue] = useState(false);
   const [showApproval, setApproval] = useState(false);
+  const [passwordConfirm, setPasswordConfirm] = useState(false);
   console.log("cut: ", cut_salary);
 
   const handleDayFilter = (event) => {
@@ -1229,7 +1231,7 @@ const SingleEmployee = ({ user }) => {
                         ripple={true}
                         size="small"
                         type="submit"
-                        onClick={exportDataGridAsPDF}
+                        onClick={() => setPasswordConfirm(true)}
                         // sx={{ border: "1px solid #DA1F26" }}
                       >
                         <FaDownload size={14} color={`#DA1F26`} />
@@ -1501,6 +1503,13 @@ const SingleEmployee = ({ user }) => {
         <ImagePicker
           imagePickerModal={imagePickerModal}
           setImagePickerModal={setImagePickerModal}
+        />
+      )}
+      {passwordConfirm && (
+        <PasswordDialogue
+          passwordConfirm={passwordConfirm}
+          setPasswordConfirm={setPasswordConfirm}
+          exportDataGridAsPDF={exportDataGridAsPDF}
         />
       )}
     </>
