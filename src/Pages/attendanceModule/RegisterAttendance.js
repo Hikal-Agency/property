@@ -212,6 +212,7 @@ const RegisterAttendance = () => {
     }
   };
   useEffect(() => {
+    alert("yo")
     if (User?.id && User?.loginId) {
       FetchProfile(token);
     } else {

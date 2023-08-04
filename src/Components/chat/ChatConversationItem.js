@@ -4,8 +4,8 @@ import { BiUser } from "react-icons/bi";
 import moment from "moment";
 
 const ChatConversationItem = ({ chat, setActiveChat, isActive }) => {
-  const [lastMessageText, setLastMessageText] = useState("");
-  const [lastMessageTime, setLastMessageTime] = useState("");
+  const [lastMessageText, setLastMessageText] = useState("You: Great!");
+  const [lastMessageTime, setLastMessageTime] = useState("4:30 pm");
 
   useEffect(() => {
     if (chat?.lastMessage) {
@@ -63,29 +63,25 @@ const ChatConversationItem = ({ chat, setActiveChat, isActive }) => {
     <Box
       onClick={() => setActiveChat({ phoneNumber: chat?.id?.user, name: chat?.name })}
       className={`w-full cursor-pointer ${
-        isActive ? "bg-white" : "bg-[#e9e9e9]"
-      } border-b border-[#bfbfbf] px-4 py-3 flex items-center`}
+        isActive ? "bg-[#e9e9e9]" : "bg-white"
+      } border-b border-[#f3f4f6] px-4 py-4 flex items-center`}
     >
       <Box className="flex items-center w-full">
         <Avatar
-          sx={{ width: 36, height: 36, background: "#da1f26", fontSize: 15 }}
+          sx={{ width: 40, height: 40, background: "#da1f26", fontSize: 15 }}
           className="mr-3"
         >
-          {chat?.name[0] !== "+" ? (
-            <strong>{chat?.name[0].toUpperCase()}</strong>
-          ) : (
-            <BiUser size={18} />
-          )}
+        <img className="object-cover w-full h-full" src="https://img.freepik.com/free-photo/handsome-confident-smiling-man-with-hands-crossed-chest_176420-18743.jpg?w=2000" alt=""/>
         </Avatar>
         <Box className="w-full">
-          <p style={{ marginBottom: "0" }} className="mb-0">
+          <p style={{ marginBottom: "0" }} className="mb-0 text-lg">
             <strong>{chat?.name || "+" + chat?.id?.user}</strong>
           </p>
           <Box className="flex items-center justify-between">
-            <p className="text-[#00000091]" style={{ lineHeight: 1 }}>
-              <small>{lastMessageText}</small>
+            <p className="text-[#c6c6c6]" style={{ lineHeight: 1 }}>
+              <p>{lastMessageText}</p>
             </p>
-            <p className="text-[#00000091]">
+            <p className="text-[#c6c6c6]">
               <small>{lastMessageTime}</small>
             </p>
           </Box>
