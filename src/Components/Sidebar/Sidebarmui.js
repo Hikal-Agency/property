@@ -2,6 +2,7 @@ import { Box, ListItemIcon, Tooltip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { AiFillGift } from "react-icons/ai";
 import { FaLink, FaSnowflake, FaMobile, FaAppStore } from "react-icons/fa";
+import { socket } from "../../Pages/App";
 import {
   BsStopCircleFill,
   BsCalendarWeekFill,
@@ -177,6 +178,7 @@ const Sidebarmui = () => {
       setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
       FetchPermissions();
+      socket.emit("chat_addUser", JSON.parse(storedUser));
     } else {
       axios
         .get(`${BACKEND_URL}/profile`, {
@@ -232,6 +234,7 @@ const Sidebarmui = () => {
           getAllLeadsMembers(user);
 
           FetchPermissions();
+          socket.emit("chat_addUser", user);
 
           localStorage.setItem("user", JSON.stringify(user));
         })
@@ -909,7 +912,7 @@ const Sidebarmui = () => {
       ],
     },
 
-       {
+    {
       title: "Messaging",
       icon: <MdApps />,
 

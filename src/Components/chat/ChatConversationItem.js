@@ -69,9 +69,13 @@ const ChatConversationItem = ({ chat, setActiveChat, isActive }) => {
       <Box className="flex items-center w-full">
         <Avatar
           sx={{ width: 40, height: 40, background: "#da1f26", fontSize: 15 }}
-          className="mr-3"
+          className="mr-3 relative"
         >
-        <img className="object-cover w-full h-full" src={chat?.profile_picture} alt=""/>
+          <img
+            className="object-cover w-full h-full"
+            src={chat?.profile_picture || chat?.displayImg}
+            alt=""
+          />
         </Avatar>
         <Box className="w-full">
           <p style={{ marginBottom: "0" }} className="mb-0 text-lg">

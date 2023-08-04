@@ -7,88 +7,15 @@ import { socket } from "../App";
 const ChatPage = () => {
   const { currentMode, isCollapsed, setIsCollapsed, User } = useStateContext();
   const { collapseSidebar } = useProSidebar();
-  const [activeChat, setActiveChat] = useState(User);
+  const [activeChat, setActiveChat] = useState(null);
   const [loadingConversations, setLoadingConversation] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
 
-  const [recentChats, setRecentChats] = useState([
-    User, 
-    User, 
-    User
-  ]);
+  const [recentChats, setRecentChats] = useState([]);
   const [onlineChats, setOnlineChats] = useState([]);
-  const [chatMessages, setChatMessages] = useState([
-    {
-      type: "text",
-      body: "Hello This is a test message",
-      id: {
-        fromMe: true,
-      },
-      to: "+923458880651",
-    },
-    {
-      type: "text",
-      body: "Hello This is another test message",
-      from: "+923458880651",
-    },
-    {
-      type: "text",
-      body: "Hello This is a test message",
-      id: {
-        fromMe: true,
-      },
-      to: "+923458880651",
-    },
-    {
-      type: "text",
-      body: "Hello This is another test message",
-      from: "+923458880651",
-    },
-    {
-      type: "text",
-      body: "Hello This is another test message",
-      from: "+923458880651",
-    },
-    {
-      type: "text",
-      body: "Hello This is another test message",
-      from: "+923458880651",
-    },
-    {
-      type: "text",
-      body: "Hello This is another test message",
-      from: "+923458880651",
-    },
-    {
-      type: "text",
-      body: "Hello This is another test message",
-      from: "+923458880651",
-    },
-    {
-      type: "text",
-      body: "Hello This is another test message",
-      from: "+923458880651",
-    },
-    {
-      type: "text",
-      body: "Hello This is a test message",
-      id: {
-        fromMe: true,
-      },
-      to: "+923458880651",
-    },
-    {
-      type: "text",
-      body: "Hello This is a test message",
-      id: {
-        fromMe: true,
-      },
-      to: "+923458880651",
-    },
-  ]);
+  const [chatMessages, setChatMessages] = useState([]);
 
-  const messageInputRef = useRef();
   const messagesContainerRef = useRef();
 
   const handleSendMessage = () => {};
@@ -104,10 +31,8 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (User?.id) {
-      socket.emit("addUser", User);
-
-      socket.on("getOnlineUsers", (data) => {
-        console.log(data);
+      socket.emit("chat_addUser", User);
+      socket.on("chat_getOnlineUsers", (data) => {
         setOnlineChats(data);
       });
     }
@@ -129,7 +54,6 @@ const ChatPage = () => {
         handleSendMessage={handleSendMessage}
         chatLoading={chatLoading}
         btnLoading={btnLoading}
-        messageInputRef={messageInputRef}
         activeChat={activeChat}
         messagesContainerRef={messagesContainerRef}
       />

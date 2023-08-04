@@ -7,10 +7,11 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
-import { useRef, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import CreateMessageModal from "./CreateMessageModal";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
+import { socket } from "../../Pages/App";
 import {
   BsPersonFill,
   BsImage,
@@ -33,7 +34,6 @@ const ChatConversation = ({
   onlineChats,
   recentChats,
   currentMode,
-  messageInputRef,
   activeChat,
   setActiveChat,
   loadingConversations,
@@ -42,7 +42,9 @@ const ChatConversation = ({
   const imagePickerRef = useRef();
   const [userDetailsSidebarOpened, setUserDetailsSidebarOpened] =
     useState(false);
+  const [messageInputVal, setMessageInputVal] = useState("");
   const [activeTab, setActiveTab] = useState("recent");
+  const [isTyping, setIsTyping] = useState(false);
   const [createMessageModal, setCreateMessageModal] = useState({
     isOpened: false,
   });
@@ -68,10 +70,35 @@ const ChatConversation = ({
     reader.readAsDataURL(files[0]);
   };
 
-  const chats =
-    activeTab === "recent"
-      ? recentChats
-      : onlineChats?.filter((chat) => chat?.loginId !== User?.loginId);
+  const handleMessageInputVal = (e) => {
+    setMessageInputVal(e.target.value);
+    setTimeout(() =>{
+      socket.emit("chat_user-typing", { userId: User?.loginId });
+    }, 500);
+  };
+
+  useEffect(() => {
+    if (User) {
+      socket.on("chat_user-typing", ({ userId }) => {
+        let typingTimeout;
+        if (userId === activeChat?.loginId) {
+          if (!isTyping) {
+            setIsTyping(true);
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => {
+              setIsTyping(false);
+            }, 1500);
+          } else {
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => {
+              setIsTyping(false);
+            }, 1500);
+          }
+        }
+      });
+    }
+  }, [User, activeChat]);
+
   return (
     <>
       <div className={`mt-3 h-full overflow-y-hidden`}>
@@ -113,7 +140,7 @@ const ChatConversation = ({
               />
             </div>
 
-            <div className="flex mb-4 mt-6 px-5 items-center">
+            <div className="flex my-6 px-5 items-center">
               <Button
                 onClick={() => setActiveTab("recent")}
                 className="flex-1"
@@ -149,34 +176,60 @@ const ChatConversation = ({
                 </div>
               ) : (
                 <div className="h-full overflow-y-scroll">
-                  {chats?.length > 0 ? (
-                    [
-                      chats?.map((chat) => {
-                        return (
-                          <ChatConversationItem
-                            key={chat?.id}
-                            setActiveChat={setActiveChat}
-                            chat={chat}
-                            isActive={activeChat?.loginId === chat?.loginId}
-                          />
-                        );
-                      }),
-                    ]
-                  ) : (
-                    <div className="mt-4 flex justify-center items-center">
-                      <p className="font-bold text-lg text-[#da1f26]">
-                        {activeTab === "online"
-                          ? "Seems ilke no one is Online at this moment."
-                          : "You dont have any recent chat with anyone!"}
-                      </p>
-                    </div>
-                  )}
+                  {activeTab === "online" && [
+                    onlineChats?.filter(
+                      (chat) => chat?.loginId !== User?.loginId
+                    )?.length > 0 ? (
+                      [
+                        onlineChats
+                          ?.filter((chat) => chat?.loginId !== User?.loginId)
+                          ?.map((chat) => {
+                            return (
+                              <ChatConversationItem
+                                key={chat?.id}
+                                setActiveChat={setActiveChat}
+                                chat={chat}
+                                isActive={activeChat?.loginId === chat?.loginId}
+                              />
+                            );
+                          }),
+                      ]
+                    ) : (
+                      <div className="mt-4 flex justify-center items-center">
+                        <p className="font-bold text-[#da1f26]">
+                          Seems ilke no one is Online at this moment.
+                        </p>
+                      </div>
+                    ),
+                  ]}
+                  {activeTab === "recent" && [
+                    recentChats?.length > 0 ? (
+                      [
+                        recentChats?.map((chat) => {
+                          return (
+                            <ChatConversationItem
+                              key={chat?.id}
+                              setActiveChat={setActiveChat}
+                              chat={chat}
+                              isActive={activeChat?.loginId === chat?.loginId}
+                            />
+                          );
+                        }),
+                      ]
+                    ) : (
+                      <div className="mt-4 flex justify-center items-center">
+                        <p className="font-bold text-[#da1f26]">
+                          You dont have any recent chat with anyone!
+                        </p>
+                      </div>
+                    ),
+                  ]}
                 </div>
               )}
             </div>
           </Box>
           <Box className="flex-1">
-            {activeChat.loginId && (
+            {activeChat?.loginId && (
               <Box className="px-12 flex justify-between items-center shadow py-3 w-full">
                 <Box className="flex items-center w-full">
                   <Avatar
@@ -190,15 +243,33 @@ const ChatConversation = ({
                   >
                     <img
                       className="w-full h-full object-cover"
-                      src={activeChat?.profile_picture}
+                      src={
+                        activeChat?.profile_picture || activeChat?.displayImg
+                      }
                       alt=""
                     />
                   </Avatar>
                   <Box>
                     <p className="mb-0">
-                      <strong className="text-xl">{activeChat.userName}</strong>
+                      <strong className="text-xl">
+                        {activeChat?.userName}
+                      </strong>
                     </p>
-                    <p className="text-[#838383]">@{activeChat.loginId}</p>
+                    <p>
+                      {isTyping ? (
+                        <span>Typing..</span>
+                      ) : (
+                        [
+                          onlineChats?.some(
+                            (chat) => chat?.loginId === activeChat?.loginId
+                          ) ? (
+                            <span className="text-green-600">Online</span>
+                          ) : (
+                            <span className="text-[#838383]">Offline</span>
+                          ),
+                        ]
+                      )}
+                    </p>
                   </Box>
                 </Box>
                 {!userDetailsSidebarOpened && (
@@ -232,7 +303,7 @@ const ChatConversation = ({
                         />
                       );
                     } else if (
-                      message.from === activeChat.loginId &&
+                      message.from === activeChat?.loginId &&
                       message.to === User?.loginId
                     ) {
                       return (
@@ -247,7 +318,7 @@ const ChatConversation = ({
                   <p className="mt-3">Start the Conversation!</p>
                 </div>
               )}
-              {activeChat.loginId && (
+              {activeChat?.loginId && (
                 <div className="p-5 border border-[#e8e8e8]">
                   <form
                     className="relative"
@@ -264,7 +335,8 @@ const ChatConversation = ({
                         },
                       }}
                       autoComplete="off"
-                      ref={messageInputRef}
+                      value={messageInputVal}
+                      onInput={handleMessageInputVal}
                       type="text"
                       fullWidth
                       variant="standard"
@@ -319,19 +391,21 @@ const ChatConversation = ({
                   <div className="flex mt-6 mb-1 items-center text-sm font-bold text-[#a4a6a8]">
                     <CgDetailsMore /> <p className="uppercase ml-2">Email</p>
                   </div>
-                  <p>{User?.userEmail || User?.userAltEmail || "-"}</p>
+                  <p>
+                    {activeChat?.userEmail || activeChat?.userAltEmail || "-"}
+                  </p>
                 </div>
                 <div className="mb-3">
                   <div className="flex mb-1 mt-6 items-center text-sm font-bold text-[#a4a6a8]">
                     <BsPhone /> <p className="uppercase ml-2">Phone Number</p>
                   </div>
-                  <p>{User?.userContact || "-"}</p>
+                  <p>{activeChat?.userContact || "-"}</p>
                 </div>
                 <div className="mb-3">
                   <div className="flex mb-1 mt-6 items-center text-sm font-bold text-[#a4a6a8]">
                     <BsPersonFill /> <p className="uppercase ml-2">Position</p>
                   </div>
-                  <p>{User?.position}</p>
+                  <p>{activeChat?.position}</p>
                 </div>
               </div>
             )}
