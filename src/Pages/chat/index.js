@@ -126,7 +126,7 @@ const ChatPage = () => {
 
   return (
     <div style={{
-      height: "calc(100vh - 45px)"
+      height: "calc(100vh - 60px)"
     }}>
       <ChatConversation
         currentMode={currentMode}

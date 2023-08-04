@@ -9,14 +9,22 @@ import {
 } from "@mui/material";
 import { useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
+import CreateMessageModal from "./CreateMessageModal";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
-import { BsImage, BsFillChatLeftTextFill } from "react-icons/bs";
-import { AiOutlineInfoCircle } from "react-icons/ai";
+import {
+  BsPersonFill,
+  BsImage,
+  BsFillChatLeftTextFill,
+  BsPhone,
+} from "react-icons/bs";
+import { AiOutlineInfoCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import { HiOutlinePencilAlt } from "react-icons/hi";
 import { useStateContext } from "../../context/ContextProvider";
+import { CgDetailsMore } from "react-icons/cg";
 import ChatMessageFromMe from "./ChatMessageFromMe";
 import ChatMessageFromOther from "./ChatMessageFromOther";
 import ChatConversationItem from "./ChatConversationItem";
+import { stubFalse } from "lodash";
 
 const ChatConversation = ({
   chatMessages,
@@ -32,7 +40,11 @@ const ChatConversation = ({
   messagesContainerRef,
 }) => {
   const imagePickerRef = useRef();
-  const [userDetailsSidebarOpened, setUserDetailsSidebarOpened] = useState(false);
+  const [userDetailsSidebarOpened, setUserDetailsSidebarOpened] =
+    useState(false);
+    const [createMessageModal, setCreateMessageModal] = useState({
+      isOpened: false
+    })
   const { User } = useStateContext();
 
   console.log("Chat", chatMessages);
@@ -65,7 +77,7 @@ const ChatConversation = ({
               <p style={{ paddingBottom: "1.2rem" }} className="text-2xl pt-5">
                 <strong>Messages</strong>
               </p>
-              <IconButton sx={{ padding: "0 !important" }}>
+              <IconButton onClick={() => setCreateMessageModal({isOpened: true})} sx={{ padding: "0 !important" }}>
                 <HiOutlinePencilAlt style={{ color: "#da1f26" }} size={22} />
               </IconButton>
             </div>
@@ -98,7 +110,7 @@ const ChatConversation = ({
               <BsFillChatLeftTextFill />{" "}
               <p className="uppercase ml-2">All Chats</p>
             </div>
-            <div className="h-[72%]">
+            <div className="h-[75%]">
               {loadingConversations ? (
                 <div className="flex h-full flex-col items-center justify-center">
                   <CircularProgress color="error" size={18} />
@@ -148,9 +160,11 @@ const ChatConversation = ({
                     <p className="text-[#c6c6c6]">@junaid.hikal</p>
                   </Box>
                 </Box>
-                <IconButton onClick={() => setUserDetailsSidebarOpened(true)}>
-                  <AiOutlineInfoCircle size={20} />
-                </IconButton>
+                {!userDetailsSidebarOpened && (
+                  <IconButton onClick={() => setUserDetailsSidebarOpened(true)}>
+                    <AiOutlineInfoCircle size={20} />
+                  </IconButton>
+                )}
               </Box>
             )}
             <div className="flex-1 flex flex-col h-[88%]">
@@ -238,68 +252,50 @@ const ChatConversation = ({
               )}
             </div>
           </Box>
-          <Box className="w-[25%] relative">
-            <div className="flex items-center px-5 justify-between">
-              <p style={{ paddingBottom: "1.2rem" }} className="text-2xl pt-5">
-                <strong>Messages</strong>
-              </p>
-              <IconButton sx={{ padding: "0 !important" }}>
-                <HiOutlinePencilAlt style={{ color: "#da1f26" }} size={22} />
-              </IconButton>
-            </div>
-
-            <div className="w-full px-5">
-              <TextField
-                fullWidth
-                variant="standard"
-                size="small"
-                className="px-3 rounded-lg"
-                sx={{
-                  background: "#f5f5f5",
-                  "& input": {
-                    padding: "12px 6px 12px 0",
-                  },
-                }}
-                InputProps={{
-                  disableUnderline: true,
-                  startAdornment: (
-                    <InputAdornment className="pl-3" position="start">
-                      <BiSearch size={17} />
-                    </InputAdornment>
-                  ),
-                }}
-                placeholder="Search.."
-              />
-            </div>
-
-            <div className="flex mb-3 mt-6 px-5 items-center text-sm font-bold text-[#a4a6a8]">
-              <BsFillChatLeftTextFill />{" "}
-              <p className="uppercase ml-2">All Chats</p>
-            </div>
-            <div className="h-[72%]">
-              {loadingConversations ? (
-                <div className="flex h-full flex-col items-center justify-center">
-                  <CircularProgress color="error" size={18} />
-                  <p className="mt-3">Loading Conversations..</p>
+          <Box
+            className={`${userDetailsSidebarOpened ? "w-[22%]" : "w-0"} ${
+              userDetailsSidebarOpened && "px-8"
+            } relative`}
+            style={{
+              transition: "width .4s ease-in-out",
+            }}
+          >
+            {userDetailsSidebarOpened && (
+              <div>
+                {userDetailsSidebarOpened && (
+                  <div className="flex mb-4 items-center justify-end">
+                    <IconButton
+                      onClick={() => setUserDetailsSidebarOpened(false)}
+                    >
+                      <AiOutlineCloseCircle />
+                    </IconButton>
+                  </div>
+                )}
+                <div className="mb-3">
+                  <div className="flex mt-6 items-center text-sm font-bold text-[#a4a6a8]">
+                    <CgDetailsMore /> <p className="uppercase ml-2">Email</p>
+                  </div>
+                  <p>mjunaid.swe@gmail.com</p>
                 </div>
-              ) : (
-                <div className="h-full overflow-y-scroll">
-                  {allChats?.map((chat) => {
-                    return (
-                      <ChatConversationItem
-                        key={chat?.id?.user}
-                        setActiveChat={setActiveChat}
-                        chat={chat}
-                        isActive={activeChat?.phoneNumber === chat?.id?.user}
-                      />
-                    );
-                  })}
+                <div className="mb-3">
+                  <div className="flex mt-6 items-center text-sm font-bold text-[#a4a6a8]">
+                    <BsPhone /> <p className="uppercase ml-2">Phone Number</p>
+                  </div>
+                  <p>+923458880651</p>
                 </div>
-              )}
-            </div>
+                <div className="mb-3">
+                  <div className="flex mt-6 items-center text-sm font-bold text-[#a4a6a8]">
+                    <BsPersonFill /> <p className="uppercase ml-2">Position</p>
+                  </div>
+                  <p>Manager</p>
+                </div>
+              </div>
+            )}
           </Box>
         </div>
       </div>
+
+      {createMessageModal?.isOpened && <CreateMessageModal allChats={allChats} createMessageModal={createMessageModal} handleCloseCreateMessageModal={() => setCreateMessageModal({isOpened: false})}/>}
     </>
   );
 };
