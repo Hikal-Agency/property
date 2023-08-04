@@ -191,6 +191,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const dataTableRef = useRef();
 
   console.log("Path in alleads component: ", lead_origin);
+  console.log("Sales:", SalesPerson);
 
   // eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
@@ -1293,7 +1294,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
 
   let allAgents = [];
-  if (User?.role === 1 || User?.role === 2) {
+  if (User?.role === 1 || User?.role === 2 || User?.role === 8) {
     allAgents = agents[`manager-${managerSelected}`];
   } else {
     allAgents = agents[`manager-${User?.id}`];
