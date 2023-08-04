@@ -126,6 +126,7 @@ const RegisterAttendance = () => {
     if (storedUser) {
       // If user data is stored in local storage, parse and set it in state
       setUser(JSON.parse(storedUser));
+      console.log("storedUser", storedUser);
 
       console.log("User from navbar", User);
     } else {
@@ -186,7 +187,7 @@ const RegisterAttendance = () => {
           console.log(err);
           if (err.response?.status === 401) {
             setopenBackDrop(false);
-            // setloading(false);
+            setLoading(false);
 
             localStorage.removeItem("auth-token");
             localStorage.removeItem("user");
@@ -212,6 +213,7 @@ const RegisterAttendance = () => {
     }
   };
   useEffect(() => {
+    console.log("attendnace page.");
     if (User?.id && User?.loginId) {
       FetchProfile(token);
     } else {
