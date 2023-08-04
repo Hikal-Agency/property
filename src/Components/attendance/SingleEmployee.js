@@ -1,4 +1,3 @@
-
 import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -16,7 +15,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import FormControl from '@mui/material/FormControl';
+import FormControl from "@mui/material/FormControl";
 import {
   MdModeEdit,
   MdAttachMoney,
@@ -262,15 +261,15 @@ const SingleEmployee = ({ user }) => {
           {/* {params.row.notify_status === "Pending" &&
           params.row.notify_deduct_salary === 1 ? (
             <> */}
-              {/* ROLE 1 */}
-              {/* {User?.role === 1 ? ( */}
-                {/* <>
+          {/* ROLE 1 */}
+          {/* {User?.role === 1 ? ( */}
+          {/* <>
                   <Tooltip title="Pending Approval Request" arrow>
                     <IconButton> */}
-                      {/* ON CLICK => OPEN POPUP SHOWING CHECK IN TIME AND LATE MINUTES AND LATE REASON WITH TWO ICON BUTTONS: GREEN TICK AND RED CROSS */}
-                      {/* GREEN TICK => notify_status = "Approved", deduct_salary = 1   */}
-                      {/* RED CROSS => notify_status = "Rejected", deduct_salary = 2, cut_salary = "No"  */}
-                      {/* <MdPendingActions
+          {/* ON CLICK => OPEN POPUP SHOWING CHECK IN TIME AND LATE MINUTES AND LATE REASON WITH TWO ICON BUTTONS: GREEN TICK AND RED CROSS */}
+          {/* GREEN TICK => notify_status = "Approved", deduct_salary = 1   */}
+          {/* RED CROSS => notify_status = "Rejected", deduct_salary = 2, cut_salary = "No"  */}
+          {/* <MdPendingActions
                         onClick={(event) =>
                           notifyApproval(event, params?.row.id)
                         }
@@ -280,26 +279,26 @@ const SingleEmployee = ({ user }) => {
                     </IconButton>
                   </Tooltip>
                 </> */}
-              {/* ) : ( */}
-                {/* <> */}
-                  {/* DO NOTHING */}
-                  {/* <Tooltip title="Pending Approval" arrow>
+          {/* ) : ( */}
+          {/* <> */}
+          {/* DO NOTHING */}
+          {/* <Tooltip title="Pending Approval" arrow>
                     <IconButton>
                       <MdPendingActions size={16} className="text-red-600" />
                     </IconButton>
                   </Tooltip>
                 </> */}
-              {/* )}
+          {/* )}
             </>
           ) : // PENDING FOR UNDEDUCT SALARY */}
           {params.row.notify_status === "Pending" &&
-            params.row.notify_deduct_salary === 2 ? (
+          params.row.notify_deduct_salary === 2 ? (
             <>
               {/* ROLE 1 */}
               {hasPermission("deduct_salary") && (
                 <>
                   <Tooltip title="Pending Approval Request" arrow>
-                    {User?.role === 1 ? (  
+                    {User?.role === 1 ? (
                       <IconButton>
                         {/* ON CLICK => OPEN POPUP SHOWING CHECK IN TIME AND LATE MINUTES AND LATE REASON WITH TWO ICON BUTTONS: GREEN TICK AND RED CROSS */}
                         {/* GREEN TICK => notify_status = "Approved", deduct_salary = 2, cut_salary = "No", is_late = 2   */}
@@ -315,10 +314,7 @@ const SingleEmployee = ({ user }) => {
                       </IconButton>
                     ) : (
                       <IconButton>
-                        <MdPendingActions
-                        size={16}
-                        className="text-red-600"
-                      />
+                        <MdPendingActions size={16} className="text-red-600" />
                       </IconButton>
                     )}
                   </Tooltip>
@@ -347,7 +343,9 @@ const SingleEmployee = ({ user }) => {
                   <TfiCheck
                     size={20}
                     className={`${
-                      currentMode === "dark" ? "text-green-600" : "text-green-600"
+                      currentMode === "dark"
+                        ? "text-green-600"
+                        : "text-green-600"
                     }`}
                   />
                 </IconButton>
@@ -769,19 +767,24 @@ const SingleEmployee = ({ user }) => {
 
       const defaultDatetime = employeeData?.default_datetime;
       const formattedDatetime = moment(defaultDatetime, "HH:mm");
-      const datetimePlus10Minutes = formattedDatetime.clone().add(10, 'minutes');
+      const datetimePlus10Minutes = formattedDatetime
+        .clone()
+        .add(10, "minutes");
 
-      console.log("10mins::::::::::::::::::::::::: " + (datetimePlus10Minutes.format("HH:mm")));
+      console.log(
+        "10mins::::::::::::::::::::::::: " +
+          datetimePlus10Minutes.format("HH:mm")
+      );
 
       if (
-        moment(pageState?.first_check?.check_datetime, "HH:mm") > (datetimePlus10Minutes.format("HH:mm"))
+        moment(pageState?.first_check?.check_datetime, "HH:mm") >
+        datetimePlus10Minutes.format("HH:mm")
       ) {
         console.log("lates::::::::::::::");
         UpdateData.append("is_late", 1);
         UpdateData.append("late_minutes", lateMinutes);
         UpdateData.append("deduct_salary", 2);
-      }
-      else if (
+      } else if (
         // moment(pageState?.first_check?.check_datetime, "HH:mm") >
         moment(pageState?.first_check?.check_datetime, "HH:mm") >
         moment(employeeData?.default_datetime, "HH:mm")
@@ -990,106 +993,6 @@ const SingleEmployee = ({ user }) => {
     }
   };
 
-  // const exportDataGridAsPDF = () => {
-  //   const doc = new jsPDF();
-  //   const header = columns.map((column) => column.headerName); // Custom table header
-
-  //   doc.autoTable({
-  //     head: [header], // Table header
-  //     body: pageState?.data?.map(Object.values), // Table body data
-  //   });
-
-  //   doc.save(`${empData[0]?.userName}-attendance.pdf`);
-  // };
-
-  // const exportDataGridAsPDF = () => {
-  //   const doc = new jsPDF({
-  //     format: [300, 300], // Set the custom page size (width, height) in user units
-  //     unit: "mm", // Set the unit of measurement to millimeters
-  //   });
-
-  //   // Custom table headers (exclude the "Action" column)
-  //   const headers = columns
-  //     .filter((column) => column.field !== "deduct_salary")
-  //     .map((column) => column.headerName);
-
-  //   // Extract data from each row for each column (exclude the "Action" column)
-  //   const tableData = pageState?.data?.map((row) =>
-  //     columns
-  //       .filter((column) => column.field !== "deduct_salary")
-  //       .map((column) => {
-  //         if (column.field === "late_minutes") {
-  //           // If "Late" column contains buttons, return null
-  //           if (row.is_late === 1 || row.is_late === 2) {
-  //             return column.renderCell
-  //               ? column.renderCell({ row })
-  //               : row[column.field];
-  //           } else {
-  //             return "null";
-  //           }
-  //         } else {
-  //           // For other columns, return the data
-  //           return column.renderCell
-  //             ? column.renderCell({ row })
-  //             : row[column.field];
-  //         }
-  //       })
-  //   );
-
-  //   // Add the table to the PDF only if there are valid rows with data
-  //   if (tableData.length > 0) {
-  //     // Calculate the total width of the table
-  //     const totalWidth = headers.length * 30;
-
-  //     // Reduce the font size for the table content
-  //     const fontSize = 8;
-
-  //     // Show the total salary separately
-  //     const totalSalary = pageState?.totalSalary || "No Salary Data";
-  //     const leaveDaySalary = pageState?.leaveDaySalary || "No Data";
-  //     const lateDaySalary = pageState?.lateDaySalary || "No Data";
-  //     const lateattedanceDays = pageState?.late_count || "No Data";
-  //     const leaveDays = pageState?.leave_count || "No Data";
-  //     const attendedDays = pageState?.attended_count || "No Data";
-  //     const workingDays = pageState?.workingDays || "No Data";
-  //     const salaryPerDay = pageState?.perDaySalary || "No Data";
-  //     const monthly_salary = empData[0]?.salary || "No Data";
-  //     const username = empData[0]?.userName || "No Name";
-  //     const position = empData[0]?.position || "No Position";
-  //     const currency = empData[0]?.currency || "No Curency";
-  //     doc.text(`Total Salary: ${totalSalary} ${currency}`, 15, 100);
-  //     doc.text(`Leave Day Salary: ${leaveDaySalary} ${currency}`, 15, 107);
-  //     doc.text(`Late Day Salary: ${lateDaySalary} ${currency}`, 15, 114);
-  //     doc.text(`Late Attended Days: ${lateattedanceDays} `, 15, 121);
-  //     doc.text(`Leave Days: ${leaveDays} `, 15, 128);
-  //     doc.text(`Attended Days: ${attendedDays} `, 15, 135);
-  //     doc.text(`Working Days: ${workingDays} `, 15, 142);
-  //     doc.text(`Salary Per Day: ${salaryPerDay} `, 15, 149);
-  //     doc.text(`Monthly Salary: ${monthly_salary} ${currency}`, 15, 156);
-  //     doc.text(`Username : ${username}  `, 10, 12);
-  //     doc.text(`Position : ${position}  `, 10, 18);
-
-  //     doc.autoTable({
-  //       head: [headers],
-  //       body: tableData,
-  //       tableWidth: totalWidth,
-  //       styles: {
-  //         fontSize: fontSize,
-  //         cellPadding: 2,
-  //       },
-  //       autoSize: true,
-  //       minCellWidth: 40,
-  //       margin: { top: 30, right: 15, bottom: 20, left: 15 }, // Adjust margins
-  //     });
-
-  //     // Save the PDF with the specified file name
-  //     doc.save(`${empData[0]?.userName}-attendance.pdf`);
-  //   } else {
-  //     // Handle the case when there are no valid rows to export
-  //     alert("No valid data to export!");
-  //   }
-  // };
-
   const exportDataGridAsPDF = () => {
     const doc = new jsPDF({
       format: [300, 300], // Set the custom page size (width, height) in user units
@@ -1184,14 +1087,14 @@ const SingleEmployee = ({ user }) => {
 
       doc.text(
         formatText(
-          `Leave Day Salary: ${currency} ${pageState?.leaveDaySalary || "0"} `
+          `Leave Day Salary: ${currency} ${pageState?.leaveDaySalary || "0"}`
         ),
         15,
         85
       );
       doc.text(
         formatText(
-          `Late Day Salary: ${currency} ${pageState?.lateDaySalary || "0"} `
+          `Late Day Salary: ${currency} ${pageState?.lateDaySalary || "0"}`
         ),
         15,
         92
@@ -1207,22 +1110,63 @@ const SingleEmployee = ({ user }) => {
 
       doc.setTextColor("#000"); // Reset text color to black
 
-      doc.autoTable({
-        head: [headers],
-        body: tableData,
-        tableWidth: totalWidth,
-        startY: 110, // Adjust the starting y-coordinate for the table to avoid overlapping with the salary text
-        styles: {
-          fontSize: fontSize,
-          cellPadding: 2,
-        },
-        autoSize: true,
-        minCellWidth: 40,
-        margin: { top: 130, right: 15, bottom: 20, left: 15 }, // Adjust margins
-      });
+      // Create a watermark canvas and apply blur effect
+      const watermarkCanvas = document.createElement("canvas");
+      const ctx = watermarkCanvas.getContext("2d");
+      const watermarkImg = new Image();
 
-      // Save the PDF with the specified file name
-      doc.save(`${empData[0]?.userName}-attendance.pdf`);
+      watermarkImg.src = "/assets/hikal_watermark.png"; // Correct URL to the watermark image
+
+      watermarkImg.onload = () => {
+        const imgWidth = 400; // Adjust the image width as needed
+        const imgHeight = 400; // Adjust the image height as needed
+
+        // Set the canvas size
+        watermarkCanvas.width = imgWidth;
+        watermarkCanvas.height = imgHeight;
+
+        // Apply blur to the watermark image
+        ctx.filter = "blur(1px)"; // Adjust the blur level as needed
+        ctx.globalAlpha = 0.1; // Adjust the opacity level (0 to 1, where 0 is fully transparent and 1 is fully opaque)
+
+        ctx.translate(watermarkCanvas.width / 2, watermarkCanvas.height / 2);
+        ctx.rotate(-30 * (Math.PI / 180)); // Adjust the tilt angle as needed
+        ctx.drawImage(
+          watermarkImg,
+          -watermarkCanvas.width / 2,
+          -watermarkCanvas.height / 2,
+          imgWidth,
+          imgHeight
+        );
+
+        // Add the blurred watermark as an image to the PDF in the background
+        doc.addImage(
+          watermarkCanvas.toDataURL("image/png"),
+          "PNG",
+          0,
+          0,
+          doc.internal.pageSize.getWidth(),
+          doc.internal.pageSize.getHeight()
+        );
+
+        // Add the table to the PDF
+        doc.autoTable({
+          head: [headers],
+          body: tableData,
+          tableWidth: totalWidth,
+          startY: 110, // Adjust the starting y-coordinate for the table to avoid overlapping with the salary text
+          styles: {
+            fontSize: fontSize,
+            cellPadding: 2,
+          },
+          autoSize: true,
+          minCellWidth: 40,
+          margin: { top: 130, right: 15, bottom: 20, left: 15 }, // Adjust margins
+        });
+
+        // Save the PDF with the specified file name
+        doc.save(`${empData[0]?.userName}-attendance.pdf`);
+      };
     } else {
       // Handle the case when there are no valid rows to export
       alert("No valid data to export!");
@@ -1275,7 +1219,7 @@ const SingleEmployee = ({ user }) => {
                           </MenuItem>
                         ))}
                       </Select>
-                      </FormControl>
+                    </FormControl>
                   </div>
 
                   <div className="flex mx-3">
@@ -1288,10 +1232,7 @@ const SingleEmployee = ({ user }) => {
                         onClick={exportDataGridAsPDF}
                         // sx={{ border: "1px solid #DA1F26" }}
                       >
-                        <FaDownload
-                          size={14}
-                          color={`#DA1F26`}
-                        />
+                        <FaDownload size={14} color={`#DA1F26`} />
                       </IconButton>
                     </Tooltip>
                   </div>
