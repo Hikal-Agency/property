@@ -1040,66 +1040,41 @@ const SingleEmployee = ({ user }) => {
       // Show the total salary separately
       const currency = empData[0]?.currency || "No Currency";
       const formatText = (text) => `• ${text}`; // Function to format the text as bullet points
+      doc.setTextColor("#000"); // Set text color to a nice blue
 
-      doc.setTextColor("#1976D2"); // Set text color to a nice blue
-
-      // Position the salary text above the table
-      // doc.text(`Employee Information`, 15, 10);
-      // doc.setTextColor("#000"); // Reset text color to black
-
-      doc.text(`${empData[0]?.userName || "No Name"}`, 15, 18);
-      // doc.text(`Position: ${empData[0]?.position || "No Position"}`, 15, 24);
-
-      doc.setTextColor("#1976D2"); // Set text color to a nice blue
-      doc.text(`Salary Information`, 15, 35);
-      doc.setTextColor("#000"); // Reset text color to black
+      // Horizontally center the username and make it bold
+      const usernameWidth = doc.getTextWidth(empData[0]?.userName || "No Name");
+      const usernameX = (doc.internal.pageSize.getWidth() - usernameWidth) / 2;
+      doc.setFont("helvetica", "bold"); // Set font to bold
+      doc.text(`${empData[0]?.userName || "No Name"}`, usernameX, 18);
+      doc.setFont("helvetica", "normal"); // Reset font to normal
 
       doc.text(
-        formatText(`Monthly Salary: ${currency} ${empData[0]?.salary || "0"} `),
+        formatText(`Monthly Salary: ${currency} ${empData[0]?.salary || "0"}`),
         15,
-        43
+        35
       );
       doc.text(
         formatText(`Salary Per Day: ${pageState?.perDaySalary || "0"}`),
         15,
-        50
+        45
       );
 
-      doc.text(
-        formatText(`Working Days: ${pageState?.workingDays || "No Data"}`),
-        15,
-        57
-      );
-      doc.text(
-        formatText(`Attended Days: ${pageState?.attended_count || "No Data"}`),
-        15,
-        64
-      );
-      doc.text(
-        formatText(`Leave Days: ${pageState?.leave_count || "No Data"}`),
-        15,
-        71
-      );
-
-      doc.text(
-        formatText(`Late Attended Days: ${pageState?.late_count || "No Data"}`),
-        15,
-        78
-      );
+      doc.setTextColor("#000"); // Set text color to black
 
       doc.text(
         formatText(
           `Leave Day Salary: ${currency} ${pageState?.leaveDaySalary || "0"}`
         ),
         15,
-        85
+        55
       );
       doc.text(
         formatText(
           `Late Day Salary: ${currency} ${pageState?.lateDaySalary || "0"}`
         ),
         15,
-        92
+        65
       );
 
       doc.text(
@@ -1107,10 +1082,31 @@ const SingleEmployee = ({ user }) => {
           `Total Salary:  ${currency} ${pageState?.totalSalary || "0"}`
         ),
         15,
-        99
+        75
       );
 
-      doc.setTextColor("#000"); // Reset text color to black
+      // Right side fields
+      doc.text(
+        formatText(`Working Days: ${pageState?.workingDays || "0"}`),
+        doc.internal.pageSize.getWidth() / 2 + 15,
+        35
+      );
+      doc.text(
+        formatText(`Attended Days: ${pageState?.attended_count || "0"}`),
+        doc.internal.pageSize.getWidth() / 2 + 15,
+        45
+      );
+      doc.text(
+        formatText(`Leave Days: ${pageState?.leave_count || "0"}`),
+        doc.internal.pageSize.getWidth() / 2 + 15,
+        55
+      );
+
+      doc.text(
+        formatText(`Late Attended Days: ${pageState?.late_count || "0"}`),
+        doc.internal.pageSize.getWidth() / 2 + 15,
+        65
+      );
 
       // Create a watermark canvas and apply opacity
       const watermarkCanvas = document.createElement("canvas");
@@ -1120,8 +1116,8 @@ const SingleEmployee = ({ user }) => {
       watermarkImg.src = "/assets/hikal_watermark.png"; // Correct URL to the watermark image
 
       watermarkImg.onload = () => {
-        const imgWidth = 120; // Adjust the image width as needed
-        const imgHeight = 120; // Adjust the image height as needed
+        const imgWidth = 100; // Adjust the image width as needed
+        const imgHeight = 100; // Adjust the image height as needed
 
         // Set the canvas size to match the image size
         watermarkCanvas.width = imgWidth;
@@ -1175,6 +1171,367 @@ const SingleEmployee = ({ user }) => {
       alert("No valid data to export!");
     }
   };
+  // const exportDataGridAsPDF = () => {
+  //   const doc = new jsPDF({
+  //     format: [300, 300], // Set the custom page size (width, height) in user units
+  //     unit: "mm", // Set the unit of measurement to millimeters
+  //   });
+
+  //   // Custom table headers (exclude the "Action" column)
+  //   const headers = columns
+  //     .filter((column) => column.field !== "deduct_salary")
+  //     .map((column) => column.headerName);
+
+  //   // Extract data from each row for each column (exclude the "Action" column)
+  //   const tableData = pageState?.data?.map((row) =>
+  //     columns
+  //       .filter((column) => column.field !== "deduct_salary")
+  //       .map((column) => {
+  //         if (column.field === "late_minutes") {
+  //           // If "Late" column contains buttons, return null
+  //           if (row.is_late === 1 || row.is_late === 2) {
+  //             return column.renderCell
+  //               ? column.renderCell({ row })
+  //               : row[column.field];
+  //           } else {
+  //             return "null";
+  //           }
+  //         } else {
+  //           // For other columns, return the data
+  //           return column.renderCell
+  //             ? column.renderCell({ row })
+  //             : row[column.field];
+  //         }
+  //       })
+  //   );
+
+  //   // Add the table to the PDF only if there are valid rows with data
+  //   if (tableData.length > 0) {
+  //     // Calculate the total width of the table
+  //     const totalWidth = headers.length * 30;
+
+  //     // Reduce the font size for the table content
+  //     const fontSize = 7;
+
+  //     // Show the total salary separately
+  //     const currency = empData[0]?.currency || "No Currency";
+  //     const formatText = (text) => `• ${text}`; // Function to format the text as bullet points
+
+  //     doc.setTextColor("#1976D2"); // Set text color to a nice blue
+
+  //     // Position the salary text above the table
+  //     // doc.text(`Employee Information`, 15, 10);
+  //     // doc.setTextColor("#000"); // Reset text color to black
+
+  //     doc.text(`${empData[0]?.userName || "No Name"}`, 15, 18);
+  //     // doc.text(`Position: ${empData[0]?.position || "No Position"}`, 15, 24);
+
+  //     doc.setTextColor("#1976D2"); // Set text color to a nice blue
+  //     doc.text(`Salary Information`, 15, 35);
+  //     doc.setTextColor("#000"); // Reset text color to black
+
+  //     doc.text(
+  //       formatText(`Monthly Salary: ${currency} ${empData[0]?.salary || "0"} `),
+  //       15,
+  //       43
+  //     );
+  //     doc.text(
+  //       formatText(`Salary Per Day: ${pageState?.perDaySalary || "0"}`),
+  //       15,
+  //       50
+  //     );
+
+  //     doc.text(
+  //       formatText(`Working Days: ${pageState?.workingDays || "No Data"}`),
+  //       15,
+  //       57
+  //     );
+  //     doc.text(
+  //       formatText(`Attended Days: ${pageState?.attended_count || "No Data"}`),
+  //       15,
+  //       64
+  //     );
+  //     doc.text(
+  //       formatText(`Leave Days: ${pageState?.leave_count || "No Data"}`),
+  //       15,
+  //       71
+  //     );
+
+  //     doc.text(
+  //       formatText(`Late Attended Days: ${pageState?.late_count || "No Data"}`),
+  //       15,
+  //       78
+  //     );
+
+  //     doc.text(
+  //       formatText(
+  //         `Leave Day Salary: ${currency} ${pageState?.leaveDaySalary || "0"}`
+  //       ),
+  //       15,
+  //       85
+  //     );
+  //     doc.text(
+  //       formatText(
+  //         `Late Day Salary: ${currency} ${pageState?.lateDaySalary || "0"}`
+  //       ),
+  //       15,
+  //       92
+  //     );
+
+  //     doc.text(
+  //       formatText(
+  //         `Total Salary:  ${currency} ${pageState?.totalSalary || "0"}`
+  //       ),
+  //       15,
+  //       99
+  //     );
+
+  //     doc.setTextColor("#000"); // Reset text color to black
+
+  //     // Create a watermark canvas and apply opacity
+  //     const watermarkCanvas = document.createElement("canvas");
+  //     const ctx = watermarkCanvas.getContext("2d");
+  //     const watermarkImg = new Image();
+
+  //     watermarkImg.src = "/assets/hikal_watermark.png"; // Correct URL to the watermark image
+
+  //     watermarkImg.onload = () => {
+  //       const imgWidth = 120; // Adjust the image width as needed
+  //       const imgHeight = 120; // Adjust the image height as needed
+
+  //       // Set the canvas size to match the image size
+  //       watermarkCanvas.width = imgWidth;
+  //       watermarkCanvas.height = imgHeight;
+
+  //       // Apply opacity to the watermark image
+  //       ctx.globalAlpha = 0.3; // Adjust the opacity level (0 to 1, where 0 is fully transparent and 1 is fully opaque)
+
+  //       // Calculate the position to center the logo on the page
+  //       const centerX = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
+  //       const centerY = (doc.internal.pageSize.getHeight() - imgHeight) / 2;
+
+  //       // Draw the watermark image with opacity and centered on the page
+  //       ctx.drawImage(watermarkImg, 0, 0, imgWidth, imgHeight);
+
+  //       // Add the watermark as an image to the PDF in the background
+  //       doc.addImage(
+  //         watermarkCanvas.toDataURL("image/png"),
+  //         "PNG",
+  //         centerX,
+  //         centerY,
+  //         imgWidth,
+  //         imgHeight
+  //       );
+
+  //       // Add the table to the PDF
+  //       doc.autoTable({
+  //         head: [headers],
+  //         body: tableData,
+  //         tableWidth: totalWidth,
+  //         startY: 110, // Adjust the starting y-coordinate for the table to avoid overlapping with the salary text
+  //         styles: {
+  //           fontSize: fontSize,
+  //           cellPadding: 2,
+  //         },
+  //         autoSize: true,
+  //         minCellWidth: 40,
+  //         margin: { top: 130, right: 15, bottom: 20, left: 15 }, // Adjust margins
+  //       });
+
+  //       // Save the PDF with the specified file name
+  //       doc.save(`${empData[0]?.userName}-attendance.pdf`);
+  //     };
+
+  //     // Handle image load error
+  //     watermarkImg.onerror = () => {
+  //       console.error("Error loading the watermark image.");
+  //     };
+  //   } else {
+  //     // Handle the case when there are no valid rows to export
+  //     alert("No valid data to export!");
+  //   }
+  // };
+
+  // const exportDataGridAsPDF = () => {
+  //   const doc = new jsPDF({
+  //     format: [300, 300], // Set the custom page size (width, height) in user units
+  //     unit: "mm", // Set the unit of measurement to millimeters
+  //   });
+
+  //   // Custom table headers (exclude the "Action" column)
+  //   const headers = columns
+  //     .filter((column) => column.field !== "deduct_salary")
+  //     .map((column) => column.headerName);
+
+  //   // Extract data from each row for each column (exclude the "Action" column)
+  //   const tableData = pageState?.data?.map((row) =>
+  //     columns
+  //       .filter((column) => column.field !== "deduct_salary")
+  //       .map((column) => {
+  //         if (column.field === "late_minutes") {
+  //           // If "Late" column contains buttons, return null
+  //           if (row.is_late === 1 || row.is_late === 2) {
+  //             return column.renderCell
+  //               ? column.renderCell({ row })
+  //               : row[column.field];
+  //           } else {
+  //             return "null";
+  //           }
+  //         } else {
+  //           // For other columns, return the data
+  //           return column.renderCell
+  //             ? column.renderCell({ row })
+  //             : row[column.field];
+  //         }
+  //       })
+  //   );
+
+  //   // Add the table to the PDF only if there are valid rows with data
+  //   if (tableData.length > 0) {
+  //     // Calculate the total width of the table
+  //     const totalWidth = headers.length * 30;
+
+  //     // Reduce the font size for the table content
+  //     const fontSize = 7;
+
+  //     // Show the total salary separately
+  //     const currency = empData[0]?.currency || "No Currency";
+  //     const formatText = (text) => `• ${text}`; // Function to format the text as bullet points
+
+  //     doc.setTextColor("#000"); // Set text color to a nice blue
+
+  //     // Horizontally center the username and make it bold
+  //     const usernameWidth = doc.getTextWidth(empData[0]?.userName || "No Name");
+  //     const usernameX = (doc.internal.pageSize.getWidth() - usernameWidth) / 2;
+  //     doc.setFont("helvetica", "bold"); // Set font to bold
+  //     doc.text(`${empData[0]?.userName || "No Name"}`, usernameX, 18);
+  //     doc.setFont("helvetica", "normal"); // Reset font to normal
+
+  //     doc.text(
+  //       formatText(`Monthly Salary: ${currency} ${empData[0]?.salary || "0"}`),
+  //       15,
+  //       35
+  //     );
+  //     doc.text(
+  //       formatText(`Salary Per Day: ${pageState?.perDaySalary || "0"}`),
+  //       15,
+  //       45
+  //     );
+
+  //     doc.setTextColor("#000"); // Set text color to black
+
+  //     doc.text(
+  //       formatText(
+  //         `Leave Day Salary: ${currency} ${pageState?.leaveDaySalary || "0"}`
+  //       ),
+  //       15,
+  //       55
+  //     );
+  //     doc.text(
+  //       formatText(
+  //         `Late Day Salary: ${currency} ${pageState?.lateDaySalary || "0"}`
+  //       ),
+  //       15,
+  //       65
+  //     );
+
+  //     doc.text(
+  //       formatText(
+  //         `Total Salary:  ${currency} ${pageState?.totalSalary || "0"}`
+  //       ),
+  //       15,
+  //       75
+  //     );
+
+  //     // Right side fields
+  //     doc.text(
+  //       formatText(`Working Days: ${pageState?.workingDays || "No Data"}`),
+  //       doc.internal.pageSize.getWidth() / 2 + 15,
+  //       35
+  //     );
+  //     doc.text(
+  //       formatText(`Attended Days: ${pageState?.attended_count || "No Data"}`),
+  //       doc.internal.pageSize.getWidth() / 2 + 15,
+  //       45
+  //     );
+  //     doc.text(
+  //       formatText(`Leave Days: ${pageState?.leave_count || "No Data"}`),
+  //       doc.internal.pageSize.getWidth() / 2 + 15,
+  //       55
+  //     );
+
+  //     doc.text(
+  //       formatText(`Late Attended Days: ${pageState?.late_count || "No Data"}`),
+  //       doc.internal.pageSize.getWidth() / 2 + 15,
+  //       65
+  //     );
+
+  //     // Add margin at the bottom
+  //     doc.text("", 15, doc.internal.pageSize.getHeight() - 15);
+
+  //     // Create a watermark canvas and apply opacity
+  //     const watermarkCanvas = document.createElement("canvas");
+  //     const ctx = watermarkCanvas.getContext("2d");
+  //     const watermarkImg = new Image();
+
+  //     watermarkImg.src = "/assets/hikal_watermark.png"; // Correct URL to the watermark image
+
+  //     watermarkImg.onload = () => {
+  //       const imgWidth = 100; // Adjust the image width as needed
+  //       const imgHeight = 100; // Adjust the image height as needed
+
+  //       // Set the canvas size to match the image size
+  //       watermarkCanvas.width = imgWidth;
+  //       watermarkCanvas.height = imgHeight;
+
+  //       // Apply opacity to the watermark image
+  //       ctx.globalAlpha = 0.6; // Adjust the opacity level (0 to 1, where 0 is fully transparent and 1 is fully opaque)
+
+  //       // Calculate the position to center the logo on the page
+  //       const centerX = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
+  //       const centerY = (doc.internal.pageSize.getHeight() - imgHeight) / 2;
+
+  //       // Draw the watermark image with opacity and centered on the page
+  //       ctx.drawImage(watermarkImg, centerX, centerY, imgWidth, imgHeight);
+
+  //       // Add the watermark as an image to the PDF in the background
+  //       doc.addImage(
+  //         watermarkCanvas.toDataURL("image/png"),
+  //         "PNG",
+  //         0,
+  //         0,
+  //         doc.internal.pageSize.getWidth(),
+  //         doc.internal.pageSize.getHeight()
+  //       );
+
+  //       // Add the table to the PDF
+  //       doc.autoTable({
+  //         head: [headers],
+  //         body: tableData,
+  //         tableWidth: totalWidth,
+  //         startY: 110, // Adjust the starting y-coordinate for the table to avoid overlapping with the salary text
+  //         styles: {
+  //           fontSize: fontSize,
+  //           cellPadding: 2,
+  //         },
+  //         autoSize: true,
+  //         minCellWidth: 40,
+  //         margin: { top: 130, right: 15, bottom: 40, left: 15 }, // Adjust margins
+  //       });
+
+  //       // Save the PDF with the specified file name
+  //       doc.save(`${empData[0]?.userName}-attendance.pdf`);
+  //     };
+
+  //     // Handle image load error
+  //     watermarkImg.onerror = () => {
+  //       console.error("Error loading the watermark image.");
+  //     };
+  //   } else {
+  //     // Handle the case when there are no valid rows to export
+  //     alert("No valid data to export!");
+  //   }
+  // };
 
   useEffect(() => {
     setopenBackDrop(false);
