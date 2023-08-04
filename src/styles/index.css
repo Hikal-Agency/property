@@ -289,7 +289,7 @@ aside.ps-sidebar-root {
   text-align: center !important;
 }
 .MuiDataGrid-cell {
-  padding: 0 3px !important;
+  padding: 0 !important;
 }
 
 .MuiDataGrid-cell[data-field="id"] div {
@@ -306,7 +306,7 @@ aside.ps-sidebar-root {
 }
 .MuiDataGrid-main .MuiSelect-select {
   padding: 3px 2px !important;
-  padding-right: 8px !important;
+  padding-right: 18px !important;
   width: 78% !important;
 }
 

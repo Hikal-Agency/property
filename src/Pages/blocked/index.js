@@ -15,7 +15,7 @@ const BlockedIps = () => {
   const [loading, setLoading] = useState(true);
   const [IPs, setIPs] = useState([]);
 
-      const [expanded, setExpanded] = useState(false);
+      const [expanded, setExpanded] = useState("panel1");
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
