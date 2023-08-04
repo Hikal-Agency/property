@@ -133,7 +133,9 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     Offer.append("validTill", validToDate);
     Offer.append("offerFrom", User?.id);
     Offer.append("offerAgency", User?.agency);
-    Offer.append("validToManager", validToManager);
+    if(User?.role !== 3) {
+      Offer.append("validToManager", validToManager);
+    }
     Offer.append("validToSales", validToSales);
 
     console.log("Offer append: ", Offer);
