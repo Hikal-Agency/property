@@ -387,12 +387,6 @@ const routes = [
     restrictedRoles: [3, 7],
   },
   {
-    path: "/attendance/attendance_self",
-    pageName: "Employees",
-    element: <SingleEmployee />,
-    // restrictedRoles: [3, 7],
-  },
-  {
     path: "/settings",
     pageName: "Settings",
     element: <Settings />,
@@ -469,6 +463,7 @@ function App() {
             )}
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/attendance" element={<RegisterAttendance />} />
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
               {User?.role !== 5 && (
