@@ -337,7 +337,7 @@ const SingleLead = ({
 
               <div className="bg-main-red-color h-0.5 w-full mt-6 mb-4"></div>
               <div className="flex mb-6 justify-end items-center mt-0 w-full">
-                {lead_origin === "freshleads" &&
+                {
                   LeadData?.ip &&
                   LeadData?.is_blocked !== 1 && (
                     <div className="flex items-center mr-3 justify-end">
