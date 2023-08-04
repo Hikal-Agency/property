@@ -346,7 +346,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       field: "assignedToManager",
       headerName: "Manager",
-      minWidth: 100,
+      minWidth: 90,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
@@ -357,7 +357,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       field: "assignedToSales",
       headerName: "Agent",
-      minWidth: 100,
+      minWidth: 90,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
@@ -368,7 +368,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "feedback",
       headerAlign: "center",
       headerName: "Feedback",
-      minWidth: 100,
+      minWidth: 90,
       flex: 1,
 
       hideable: false,
@@ -378,7 +378,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "priority",
       headerName: "Priority",
-      minWidth: 100,
+      minWidth: 80,
       headerAlign: "center",
       flex: 1,
       hideable: false,
