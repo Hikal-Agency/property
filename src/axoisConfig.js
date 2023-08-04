@@ -19,7 +19,7 @@ axiosInstance.interceptors.response.use(
       showToastMessage("System updated. Kindly logout and login again.");
 
       // Redirect the user to the "/" route
-      window.location.href = "/";
+      // window.location.href = "/";
     }
     return Promise.reject(error);
   }
