@@ -463,6 +463,7 @@ function App() {
             )}
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/attendance" element={<RegisterAttendance />} />
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
               {User?.role !== 5 && (
