@@ -8,6 +8,8 @@ import {
   Select,
   MenuItem,
   Tooltip,
+  FormControl,
+  InputLabel
 } from "@mui/material";
 import "../../styles/index.css";
 import usePermission from "../../utils/usePermission";
@@ -1399,86 +1401,94 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           className={"flex items-center"}
         >
           <div>
-            <Select
-              id="leadOrigin"
-              value={leadOriginSelected?.id || "hotleads"}
-              onChange={(event) => {
-                searchRef.current.querySelector("input").value = "";
-                setLeadOriginSelected(
-                  leadOrigins.find((origin) => origin.id === event.target.value)
-                );
-              }}
-              size="small"
-              className={`w-full mt-1 mb-5 `}
-              displayEmpty
-              required
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-                "& .MuiSelect-select": {
-                  color: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-                "&:hover:not (.Mui-disabled):before": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-              }}
-            >
-              <MenuItem value="0" disabled>
-                Lead Origin
-              </MenuItem>
-              {leadOrigins?.map((origin, index) => (
-                <MenuItem
-                  key={index}
-                  value={origin?.id || ""}
-                  // sx={{ color: "#ffffff" }}
-                >
-                  {origin?.formattedValue}
-                </MenuItem>
-              ))}
-            </Select>
-          </div>
-          <div>
-            <Select
-              id="leadType"
-              value={leadTypeSelected?.id || "all"}
-              onChange={(event) => {
-                searchRef.current.querySelector("input").value = "";
-                setLeadTypeSelected(
-                  leadTypes.find((type) => type.id === event.target.value)
-                );
-              }}
-              size="small"
-              className={`w-full mt-1 mb-5`}
-              displayEmpty
-              required
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-                "&:hover:not (.Mui-disabled):before": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-                "& .MuiSelect-select": {
-                  color: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-              }}
-            >
-              <MenuItem
-                value="0"
-                disabled
+          <FormControl fullWidth>
+            <InputLabel>Lead Category</InputLabel>
+              <Select
+                id="leadOrigin"
+                label="Lead Category"
+                value={leadOriginSelected?.id || "hotleads"}
+                onChange={(event) => {
+                  searchRef.current.querySelector("input").value = "";
+                  setLeadOriginSelected(
+                    leadOrigins.find((origin) => origin.id === event.target.value)
+                  );
+                }}
+                size="small"
+                className={`w-full mt-1 mb-5 `}
+                displayEmpty
+                required
                 sx={{
-                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "& .MuiSelect-select": {
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "&:hover:not (.Mui-disabled):before": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
                 }}
               >
-                Lead Type
-              </MenuItem>
-              {leadTypes?.map((type, index) => (
-                <MenuItem key={index} value={type?.id || ""}>
-                  {type?.formattedValue}
+                <MenuItem value="0" disabled>
+                  Lead Origin
                 </MenuItem>
-              ))}
-            </Select>
+                {leadOrigins?.map((origin, index) => (
+                  <MenuItem
+                    key={index}
+                    value={origin?.id || ""}
+                    // sx={{ color: "#ffffff" }}
+                  >
+                    {origin?.formattedValue}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <div>
+          <FormControl fullWidth>
+            <InputLabel>Feedback</InputLabel>
+              <Select
+                id="leadType"
+                label="Feedback"
+                value={leadTypeSelected?.id || "all"}
+                onChange={(event) => {
+                  searchRef.current.querySelector("input").value = "";
+                  setLeadTypeSelected(
+                    leadTypes.find((type) => type.id === event.target.value)
+                  );
+                }}
+                size="small"
+                className={`w-full mt-1 mb-5`}
+                displayEmpty
+                required
+                sx={{
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "&:hover:not (.Mui-disabled):before": {
+                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                  "& .MuiSelect-select": {
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  },
+                }}
+              >
+                <MenuItem
+                  value="0"
+                  disabled
+                  sx={{
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  }}
+                >
+                  Lead Type
+                </MenuItem>
+                {leadTypes?.map((type, index) => (
+                  <MenuItem key={index} value={type?.id || ""}>
+                    {type?.formattedValue}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
 
           <div style={{ position: "relative" }}>

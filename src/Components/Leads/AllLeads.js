@@ -960,7 +960,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         }&perpage=${
           pageState.perpage || 14
         }&unassigned=1&coldCall=0&feedback=Unreachable`;
-      } else if (lead_type === "cold") {
+      } else if (lead_type === "coldleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&unassigned=1&coldCall=1`;
@@ -968,7 +968,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&unassigned=1&coldCall=4`;
-      } else if (lead_type === "personal") {
+      } else if (lead_type === "personalleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&unassigned=1&coldCall=2`;
@@ -1292,7 +1292,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   }, [lead_type]);
 
   useEffect(() => {
-    setpageState((oldPageState) => ({ ...oldPageState, page: 0 }));
+    setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
     searchRef.current.querySelector("input").value = "";
   }, [lead_type, lead_origin]);
 
@@ -1300,7 +1300,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     if (searchRef.current.querySelector("input").value) {
       FetchSearchedLeads(token, searchRef.current.querySelector("input").value);
     } else {
+      if(pageState?.page > 0) {
         FetchLeads(token);
+      }
     }
   }, [pageState.page, pageState.perpage, lead_type, reloadDataGrid]);
 
