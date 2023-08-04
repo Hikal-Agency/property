@@ -191,6 +191,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const dataTableRef = useRef();
 
   console.log("Path in alleads component: ", lead_origin);
+  console.log("Sales:", SalesPerson);
 
   // eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
@@ -1293,7 +1294,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
 
   let allAgents = [];
-  if (User?.role === 1 || User?.role === 2) {
+  if (User?.role === 1 || User?.role === 2 || User?.role === 8) {
     allAgents = agents[`manager-${managerSelected}`];
   } else {
     allAgents = agents[`manager-${User?.id}`];
@@ -1400,12 +1401,13 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }}
           className={"flex items-center"}
         >
-          <div>
-          <FormControl fullWidth>
-            <InputLabel>Lead Category</InputLabel>
+          {/* LEAD CATEGORY  */}
+          <Box sx={{ minWidth: "90px" }}>
+            <FormControl fullWidth>
+              <InputLabel>Category</InputLabel>
               <Select
                 id="leadOrigin"
-                label="Lead Category"
+                label="Category"
                 value={leadOriginSelected?.id || "hotleads"}
                 onChange={(event) => {
                   searchRef.current.querySelector("input").value = "";
@@ -1413,8 +1415,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     leadOrigins.find((origin) => origin.id === event.target.value)
                   );
                 }}
-                size="small"
-                className={`w-full mt-1 mb-5 `}
+                className={`w-full py-1 px-3 mb-5`}
                 displayEmpty
                 required
                 sx={{
@@ -1427,6 +1428,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   "&:hover:not (.Mui-disabled):before": {
                     borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
                   },
+                  minWidth: "90px !important"
                 }}
               >
                 <MenuItem value="0" disabled>
@@ -1443,10 +1445,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 ))}
               </Select>
             </FormControl>
-          </div>
-          <div>
-          <FormControl fullWidth>
-            <InputLabel>Feedback</InputLabel>
+          </Box>
+
+          {/* FEEDBACK  */}
+          <Box sx={{ minWidth: "90px" }}>
+            <FormControl fullWidth>
+              <InputLabel>Feedback</InputLabel>
               <Select
                 id="leadType"
                 label="Feedback"
@@ -1458,7 +1462,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   );
                 }}
                 size="small"
-                className={`w-full mt-1 mb-5`}
+                className={`w-full py-1 px-3 mb-5`}
                 displayEmpty
                 required
                 sx={{
@@ -1471,6 +1475,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   "& .MuiSelect-select": {
                     color: currentMode === "dark" ? "#ffffff" : "#000000",
                   },
+                  minWidth: "90px !important"
                 }}
               >
                 <MenuItem
@@ -1480,7 +1485,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     color: currentMode === "dark" ? "#ffffff" : "#000000",
                   }}
                 >
-                  Lead Type
+                  Feedback
                 </MenuItem>
                 {leadTypes?.map((type, index) => (
                   <MenuItem key={index} value={type?.id || ""}>
@@ -1489,8 +1494,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 ))}
               </Select>
             </FormControl>
-          </div>
+          </Box>
 
+          {/* ENQUIRY TYPE  */}
           <div style={{ position: "relative" }}>
             <label
               htmlFor="enquiryType"
@@ -1510,47 +1516,56 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 ""
               )}
             </label>
-            <Select
-              id="enquiryType"
-              value={enquiryTypeSelected?.id}
-              className={`w-full mt-1 mb-5`}
-              onChange={(event) => {
-                searchRef.current.querySelector("input").value = "";
-                setEnquiryTypeSelected(
-                  enquiryTypes.find((type) => type.id === event.target.value)
-                );
-              }}
-              displayEmpty
-              size="small"
-              required
-              sx={{
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-                "&:hover:not (.Mui-disabled):before": {
-                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-                "& .MuiSelect-select": {
-                  color: currentMode === "dark" ? "#ffffff" : "#000000",
-                },
-              }}
-            >
-              <MenuItem
-                value="0"
-                disabled
-                sx={{
-                  color: currentMode === "dark" ? "#ffffff" : "#000000",
-                }}
-              >
-                Enquiry
-              </MenuItem>
-              {enquiryTypes?.map((type, index) => (
-                <MenuItem key={index} value={type?.id || ""}>
-                  {type?.formattedValue}
-                </MenuItem>
-              ))}
-            </Select>
+            <Box sx={{ minWidth: "90px" }}>
+              <FormControl fullWidth>
+                <InputLabel>Enquiry</InputLabel>
+                <Select
+                label="Enquiry"
+                  id="enquiryType"
+                  value={enquiryTypeSelected?.id}
+                  className={`w-full mb-5 py-1 px-3`}
+                  onChange={(event) => {
+                    searchRef.current.querySelector("input").value = "";
+                    setEnquiryTypeSelected(
+                      enquiryTypes.find((type) => type.id === event.target.value)
+                    );
+                  }}
+                  displayEmpty
+                  size="small"
+                  required
+                  sx={{
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                    },
+                    "&:hover:not (.Mui-disabled):before": {
+                      borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                    },
+                    "& .MuiSelect-select": {
+                      color: currentMode === "dark" ? "#ffffff" : "#000000",
+                    },
+                    minWidth: "90px !important"
+                  }}
+                >
+                  <MenuItem
+                    value="0"
+                    disabled
+                    sx={{
+                      color: currentMode === "dark" ? "#ffffff" : "#000000",
+                    }}
+                  >
+                    <span className="text-gray-400">- - -</span>
+                  </MenuItem>
+                  {enquiryTypes?.map((type, index) => (
+                    <MenuItem key={index} value={type?.id || ""}>
+                      {type?.formattedValue}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
           </div>
+
+          {/* LEAD SOURCE  */}
           {hasPermission("search_leadSource_filter") && (
             <div style={{ position: "relative" }}>
               <label
@@ -1571,59 +1586,65 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ""
                 )}
               </label>
-              <Select
-                id="leadSource"
-                value={leadSourceSelected}
-                className={`w-full mt-1 mb-5`}
-                onChange={(event) => {
-                  searchRef.current.querySelector("input").value = "";
-                  setLeadSourceSelected(event.target.value);
-                }}
-                displayEmpty
-                size="small"
-                required
-                sx={{
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  "&:hover:not (.Mui-disabled):before": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  "& .MuiSelect-select": {
-                    color: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                }}
-              >
-                <MenuItem
-                  value="0"
-                  disabled
-                  sx={{
-                    color: currentMode === "dark" ? "#ffffff" : "#000000",
-                  }}
-                >
-                  Source
-                </MenuItem>
-                <MenuItem value={"Website"}>Website</MenuItem>
-                <MenuItem value={"Property Finder"}>Property Finder</MenuItem>
-                <MenuItem value={"Campaign"}>Campaign</MenuItem>
-                <MenuItem value={"Personal"}>Personal</MenuItem>
-                <MenuItem value={"Whatsapp"}>Whatsapp</MenuItem>
-                <MenuItem value={"Comment"}>Comment</MenuItem>
-                <MenuItem value={"Message"}>Message</MenuItem>
-                <MenuItem value={"Campaign Snapchat"}>
-                  Campaign Snapchat
-                </MenuItem>
-                <MenuItem value={"Campaign Tiktok"}>Campaign Tiktok</MenuItem>
-                <MenuItem value={"Campaign Facebook"}>
-                  Campaign Facebook
-                </MenuItem>
-                <MenuItem value={"Campaign GoogleAds"}>
-                  Campaign GoogleAds
-                </MenuItem>
-              </Select>
+              <Box sx={{ minWidth: "90px" }}>
+                <FormControl fullWidth>
+                  <InputLabel>Source</InputLabel>
+                  <Select
+                    label="Source"
+                    id="leadSource"
+                    value={leadSourceSelected}
+                    className={`w-full mb-5 py-1 px-3`}
+                    onChange={(event) => {
+                      searchRef.current.querySelector("input").value = "";
+                      setLeadSourceSelected(event.target.value);
+                    }}
+                    displayEmpty
+                    size="small"
+                    required
+                    sx={{
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      },
+                      "&:hover:not (.Mui-disabled):before": {
+                        borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      },
+                      "& .MuiSelect-select": {
+                        color: currentMode === "dark" ? "#ffffff" : "#000000",
+                      },
+                      minWidth: "90px !important"
+                    }}
+                  >
+                    <MenuItem
+                      value="0"
+                      disabled
+                      sx={{
+                        color: currentMode === "dark" ? "#ffffff" : "#000000",
+                      }}
+                    >
+                      <span className="text-gray-400">- - -</span>
+                    </MenuItem>
+                    <MenuItem value={"Website"}>Website</MenuItem>
+                    <MenuItem value={"Campaign Facebook"}>Facebook</MenuItem>
+                    <MenuItem value={"Campaign Snapchat"}>Snapchat</MenuItem>
+                    <MenuItem value={"Campaign Tiktok"}>Tiktok</MenuItem>
+                    <MenuItem value={"Campaign GoogleAds"}>GoogleAds</MenuItem>
+                    <MenuItem value={"Campaign YouTube"}>YouTube</MenuItem>
+                    <MenuItem value={"Campaign"}>Campaign</MenuItem>
+                    <MenuItem value={"Whatsapp"}>Whatsapp</MenuItem>
+                    <MenuItem value={"Comment"}>Comment</MenuItem>
+                    <MenuItem value={"Message"}>Message</MenuItem>
+                    <MenuItem value={"Property Finder"}>Property Finder</MenuItem>
+                    <MenuItem value={"Bulk Import"}>Bulk Import</MenuItem>
+                    <MenuItem value={"Personal"}>Personal</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
             </div>
           )}
+
+
           <div>
+          {/* PROJECT NAME  */}
             <TextField
               className={`w-full`}
               id="Project"
@@ -1644,6 +1665,8 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               required
             />
           </div>
+
+          {/* MANAGER  */}
           {hasPermission("search_manager_filter") && (
             <div style={{ position: "relative" }}>
               <label
@@ -1664,40 +1687,51 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ""
                 )}
               </label>
-              <Select
-                id="Manager"
-                value={managerSelected || ""}
-                onChange={(event) => {
-                  searchRef.current.querySelector("input").value = "";
-                  setManagerSelected(event.target.value);
-                }}
-                size="small"
-                className={`w-full mt-1 mb-5 `}
-                displayEmpty
-                required
-                sx={{
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  "&:hover:not (.Mui-disabled):before": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  "& .MuiSelect-select": {
-                    color: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                }}
-              >
-                <MenuItem value="" selected disabled>
-                  Manager
-                </MenuItem>
-                {managers?.map((manager, index) => (
-                  <MenuItem key={index} value={manager?.id || ""}>
-                    {manager?.userName}
-                  </MenuItem>
-                ))}
-              </Select>
+              <Box sx={{ minWidth: "90px" }}>
+                <FormControl fullWidth>
+                  {/* <InputLabel>Manager</InputLabel> */}
+                  <Select
+                    label="Manager"
+                    id="Manager"
+                    value={managerSelected || ""}
+                    onChange={(event) => {
+                      searchRef.current.querySelector("input").value = "";
+                      setManagerSelected(event.target.value);
+                    }}
+                    className={`w-full mb-5 py-1 px-3`}
+                    displayEmpty
+                    // required
+                    sx={{
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      },
+                      "&:hover:not (.Mui-disabled):before": {
+                        borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      },
+                      "& .MuiSelect-select": {
+                        color: currentMode === "dark" ? "#ffffff" : "#000000",
+                      },
+                      minWidth: "90px !important"
+                    }}
+                  >
+                    <MenuItem value="" disabled
+                      sx={{
+                        color: currentMode === "dark" ? "#ffffff" : "#000000",
+                      }}>
+                      <span className="text-gray-400">Manager</span>
+                    </MenuItem>
+                    {managers?.map((manager, index) => (
+                      <MenuItem key={index} value={manager?.id || ""}>
+                        {manager?.userName}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
             </div>
           )}
+
+          {/* AGENT  */}
           {hasPermission("search_agent_filter") && (
             <div style={{ position: "relative" }}>
               <label
@@ -1720,38 +1754,44 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ""
                 )}
               </label>
-              <Select
-                id="Agent"
-                value={agentSelected || ""}
-                onChange={(event) => {
-                  searchRef.current.querySelector("input").value = "";
-                  setAgentSelected(event.target.value);
-                }}
-                size="small"
-                className={`w-full mt-1 mb-5 `}
-                displayEmpty
-                required
-                sx={{
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  "&:hover:not (.Mui-disabled):before": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  "& .MuiSelect-select": {
-                    color: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                }}
-              >
-                <MenuItem selected value="" disabled>
-                  Agent
-                </MenuItem>
-                {allAgents?.map((agent, index) => (
-                  <MenuItem key={index} value={agent?.id || ""}>
-                    {agent?.userName}
-                  </MenuItem>
-                ))}
-              </Select>
+              <Box sx={{ minWidth: "90px" }}>
+                <FormControl fullWidth>
+                  {/* <InputLabel>Agent</InputLabel> */}
+                  <Select
+                    label="Agent"
+                    id="Agent"
+                    value={agentSelected || ""}
+                    onChange={(event) => {
+                      searchRef.current.querySelector("input").value = "";
+                      setAgentSelected(event.target.value);
+                    }}
+                    className={`w-full mb-5 py-1 px-3`}
+                    displayEmpty
+                    required
+                    sx={{
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      },
+                      "&:hover:not (.Mui-disabled):before": {
+                        borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      },
+                      "& .MuiSelect-select": {
+                        color: currentMode === "dark" ? "#ffffff" : "#000000",
+                      },
+                      minWidth: "90px",
+                    }}
+                  >
+                    <MenuItem selected value="" disabled>
+                      <span className="text-gray-400">Agent</span>
+                    </MenuItem>
+                    {allAgents?.map((agent, index) => (
+                      <MenuItem key={index} value={agent?.id || ""}>
+                        {agent?.userName}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
             </div>
           )}
         </Box>
