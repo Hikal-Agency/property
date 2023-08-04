@@ -1087,23 +1087,23 @@ const SingleEmployee = ({ user }) => {
 
       // Right side fields
       doc.text(
-        formatText(`Working Days: ${pageState?.workingDays || "No Data"}`),
+        formatText(`Working Days: ${pageState?.workingDays || "0"}`),
         doc.internal.pageSize.getWidth() / 2 + 15,
         35
       );
       doc.text(
-        formatText(`Attended Days: ${pageState?.attended_count || "No Data"}`),
+        formatText(`Attended Days: ${pageState?.attended_count || "0"}`),
         doc.internal.pageSize.getWidth() / 2 + 15,
         45
       );
       doc.text(
-        formatText(`Leave Days: ${pageState?.leave_count || "No Data"}`),
+        formatText(`Leave Days: ${pageState?.leave_count || "0"}`),
         doc.internal.pageSize.getWidth() / 2 + 15,
         55
       );
 
       doc.text(
-        formatText(`Late Attended Days: ${pageState?.late_count || "No Data"}`),
+        formatText(`Late Attended Days: ${pageState?.late_count || "0"}`),
         doc.internal.pageSize.getWidth() / 2 + 15,
         65
       );
@@ -1116,8 +1116,8 @@ const SingleEmployee = ({ user }) => {
       watermarkImg.src = "/assets/hikal_watermark.png"; // Correct URL to the watermark image
 
       watermarkImg.onload = () => {
-        const imgWidth = 120; // Adjust the image width as needed
-        const imgHeight = 120; // Adjust the image height as needed
+        const imgWidth = 100; // Adjust the image width as needed
+        const imgHeight = 100; // Adjust the image height as needed
 
         // Set the canvas size to match the image size
         watermarkCanvas.width = imgWidth;
