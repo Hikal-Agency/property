@@ -211,6 +211,7 @@ const Sidebarmui = () => {
             nationality: result.data.user[0].nationality,
             notes: result.data.user[0].notes,
             old_password: result.data.user[0].old_password,
+
             package_name: result.data.user[0].package_name,
             plusSales: result.data.user[0].plusSales,
             position: result.data.user[0].position,
@@ -221,6 +222,7 @@ const Sidebarmui = () => {
             uid: result.data.user[0].uid,
             updated_at: result.data.user[0].updated_at,
             userEmail: result.data.user[0].userEmail,
+            userContact: result.data.user[0].userContact,
             userName: result.data.user[0].userName,
             userType: result.data.user[0].userType,
           };

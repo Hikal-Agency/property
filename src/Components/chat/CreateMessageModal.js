@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Modal,
   Backdrop,
@@ -14,7 +14,6 @@ import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import ChatConversationItem from "./ChatConversationItem";
 import axios from "../../axoisConfig"
-import ChatUser from "./ChatUser";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -22,7 +21,7 @@ const style = {
 };
 
 const CreateMessageModal = ({
-  allChats,
+  recentChats,
   createMessageModal,
   handleCloseCreateMessageModal,
 }) => {
@@ -83,10 +82,18 @@ const CreateMessageModal = ({
     setLoading(true);
     if(e.target.value === "") {
       setLoading(false);
-    } else {
-      fetchUsers(e.target.value);
     }
   }
+
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      if (userSearchVal.trim() !== '') {
+        fetchUsers(userSearchVal);
+      }
+    }, 600);
+
+    return () => clearTimeout(debounceTimeout);
+  }, [userSearchVal]);
 
   return (
     <Modal
@@ -157,9 +164,11 @@ const CreateMessageModal = ({
                     <BsFillChatLeftTextFill />{" "}
                     <p className="uppercase ml-2">Search Results</p>
                   </div>
-                  {searchedUsers?.map((chat) => {
-                    return <ChatUser key={chat?.id?.user} chat={chat} />;
-                  })}
+                  {searchedUsers?.length > 0 ? 
+                  [searchedUsers?.map((chat) => {
+                    return <ChatConversationItem key={chat?.id} chat={chat} />;
+                  })]
+                  : <p className="px-5 text-[#da1f26]">No results found</p>}
                 </div>
               ) : (
                 <div>
@@ -167,9 +176,11 @@ const CreateMessageModal = ({
                     <BsFillChatLeftTextFill />{" "}
                     <p className="uppercase ml-2">Recent Chats</p>
                   </div>
-                  {allChats?.map((chat) => {
-                    return <ChatUser key={chat?.id?.user} chat={chat} />;
-                  })}
+                  {recentChats?.length > 0 ? 
+                  [recentChats?.map((chat) => {
+                    return <ChatConversationItem key={chat?.id} chat={chat} />;
+                  })]
+                  : <p>You dont have any recent chat with anyone!</p>}
                 </div>
               ),
             ]

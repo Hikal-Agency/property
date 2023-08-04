@@ -63,7 +63,7 @@ const ChatConversationItem = ({ chat, setActiveChat, isActive }) => {
     <Box
       onClick={() => setActiveChat(chat)}
       className={`w-full cursor-pointer ${
-        isActive ? "bg-[#e9e9e9]" : "bg-white"
+        isActive ? "bg-[whitesmoke]" : "bg-white"
       } border-b border-[#f3f4f6] px-4 py-4 flex items-center`}
     >
       <Box className="flex items-center w-full">
@@ -76,13 +76,13 @@ const ChatConversationItem = ({ chat, setActiveChat, isActive }) => {
         <Box className="w-full">
           <p style={{ marginBottom: "0" }} className="mb-0 text-lg">
             <strong>{chat?.userName}</strong>
-            <p className="text-[#c6c6c6]">@{chat?.loginId}</p>
+            <p className="text-[#838383]">@{chat?.loginId}</p>
           </p>
           <Box className="flex items-center justify-between">
             {/* <p className="text-[#c6c6c6]" style={{ lineHeight: 1 }}>
               <p>{lastMessageText}</p>
             </p> */}
-            <p className="text-[#c6c6c6]">
+            <p className="text-[#838383]">
               <small>{lastMessageTime}</small>
             </p>
           </Box>

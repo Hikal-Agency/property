@@ -68,8 +68,10 @@ const ChatConversation = ({
     reader.readAsDataURL(files[0]);
   };
 
-
-  const chats = activeTab === "recent" ? recentChats : onlineChats;
+  const chats =
+    activeTab === "recent"
+      ? recentChats
+      : onlineChats?.filter((chat) => chat?.loginId !== User?.loginId);
   return (
     <>
       <div className={`mt-3 h-full overflow-y-hidden`}>
@@ -120,7 +122,7 @@ const ChatConversation = ({
                   boxShadow: "none",
                   background: activeTab === "recent" ? "#da1f26" : "#f7f7f7",
                   color: activeTab === "recent" ? "white" : "black",
-                  padding: "10px 0"
+                  padding: "10px 0",
                 }}
               >
                 Recent Chats
@@ -133,7 +135,7 @@ const ChatConversation = ({
                   background: activeTab === "online" ? "#da1f26" : "#f7f7f7",
                   boxShadow: "none",
                   color: activeTab === "online" ? "white" : "black",
-                  padding: "10px 0"
+                  padding: "10px 0",
                 }}
               >
                 Online Users
@@ -147,16 +149,28 @@ const ChatConversation = ({
                 </div>
               ) : (
                 <div className="h-full overflow-y-scroll">
-                  {chats?.map((chat) => {
-                    return (
-                      <ChatConversationItem
-                        key={chat?.id}
-                        setActiveChat={setActiveChat}
-                        chat={chat}
-                        isActive={activeChat?.loginId === chat?.loginId}
-                      />
-                    );
-                  })}
+                  {chats?.length > 0 ? (
+                    [
+                      chats?.map((chat) => {
+                        return (
+                          <ChatConversationItem
+                            key={chat?.id}
+                            setActiveChat={setActiveChat}
+                            chat={chat}
+                            isActive={activeChat?.loginId === chat?.loginId}
+                          />
+                        );
+                      }),
+                    ]
+                  ) : (
+                    <div className="mt-4 flex justify-center items-center">
+                      <p className="font-bold text-lg text-[#da1f26]">
+                        {activeTab === "online"
+                          ? "Seems ilke no one is Online at this moment."
+                          : "You dont have any recent chat with anyone!"}
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -176,17 +190,15 @@ const ChatConversation = ({
                   >
                     <img
                       className="w-full h-full object-cover"
-                      src="https://img.freepik.com/free-photo/handsome-confident-smiling-man-with-hands-crossed-chest_176420-18743.jpg?w=2000"
+                      src={activeChat?.profile_picture}
                       alt=""
                     />
                   </Avatar>
                   <Box>
                     <p className="mb-0">
-                      <strong className="text-xl">
-                        {activeChat.name}
-                      </strong>
+                      <strong className="text-xl">{activeChat.userName}</strong>
                     </p>
-                    <p className="text-[#c6c6c6]">@{activeChat.loginId}</p>
+                    <p className="text-[#838383]">@{activeChat.loginId}</p>
                   </Box>
                 </Box>
                 {!userDetailsSidebarOpened && (
@@ -209,7 +221,8 @@ const ChatConversation = ({
                 >
                   {chatMessages?.map((message, index) => {
                     if (
-                      message?.from === User?.loginId && message.to === activeChat?.loginId
+                      message?.from === User?.loginId &&
+                      message.to === activeChat?.loginId
                     ) {
                       return (
                         <ChatMessageFromMe
@@ -218,7 +231,10 @@ const ChatConversation = ({
                           message={message}
                         />
                       );
-                    } else if (message.from === activeChat.loginId && message.to === User?.loginId) {
+                    } else if (
+                      message.from === activeChat.loginId &&
+                      message.to === User?.loginId
+                    ) {
                       return (
                         <ChatMessageFromOther key={index} message={message} />
                       );
@@ -226,7 +242,7 @@ const ChatConversation = ({
                   })}
                 </div>
               ) : (
-                <div className="bg-[#fafafa] justify-end flex-1 flex flex-col items-center justify-center">
+                <div className="bg-[#fafafa] flex-1 flex flex-col items-center justify-center">
                   <BsFillChatLeftDotsFill size={40} />
                   <p className="mt-3">Start the Conversation!</p>
                 </div>
@@ -300,22 +316,22 @@ const ChatConversation = ({
                   </div>
                 )}
                 <div className="mb-3">
-                  <div className="flex mt-6 items-center text-sm font-bold text-[#a4a6a8]">
+                  <div className="flex mt-6 mb-1 items-center text-sm font-bold text-[#a4a6a8]">
                     <CgDetailsMore /> <p className="uppercase ml-2">Email</p>
                   </div>
-                  <p>mjunaid.swe@gmail.com</p>
+                  <p>{User?.userEmail || User?.userAltEmail || "-"}</p>
                 </div>
                 <div className="mb-3">
-                  <div className="flex mt-6 items-center text-sm font-bold text-[#a4a6a8]">
+                  <div className="flex mb-1 mt-6 items-center text-sm font-bold text-[#a4a6a8]">
                     <BsPhone /> <p className="uppercase ml-2">Phone Number</p>
                   </div>
-                  <p>+923458880651</p>
+                  <p>{User?.userContact || "-"}</p>
                 </div>
                 <div className="mb-3">
-                  <div className="flex mt-6 items-center text-sm font-bold text-[#a4a6a8]">
+                  <div className="flex mb-1 mt-6 items-center text-sm font-bold text-[#a4a6a8]">
                     <BsPersonFill /> <p className="uppercase ml-2">Position</p>
                   </div>
-                  <p>Manager</p>
+                  <p>{User?.position}</p>
                 </div>
               </div>
             )}
@@ -325,7 +341,7 @@ const ChatConversation = ({
 
       {createMessageModal?.isOpened && (
         <CreateMessageModal
-          allChats={chats}
+          recentChats={recentChats}
           createMessageModal={createMessageModal}
           handleCloseCreateMessageModal={() =>
             setCreateMessageModal({ isOpened: false })
