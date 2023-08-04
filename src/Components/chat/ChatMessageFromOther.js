@@ -29,16 +29,15 @@ const ChatMessageFromOther = ({ message, phoneNumber }) => {
           <div
             style={{
               position: "relative",
-              backgroundImage:
-                "linear-gradient(to top, dimgrey, rgb(52, 62, 73))",
+             background: "#f0f0f0"
             }}
-            className="max-w-[600px] mb-2 rounded-md p-2"
+            className="max-w-[600px] mb-2 rounded-lg rounded-tl-none p-4"
           >
             <Box>
               {message.type === "revoked" ? (
-                <i className="text-gray-200">This message was deleted</i>
+                <i className="text-black">This message was deleted</i>
               ) : (
-                <span className="text-white">{message.body}</span>
+                <span className="text-black">{message.body}</span>
               )}
             </Box>
           </div>

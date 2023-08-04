@@ -23,7 +23,7 @@ const ChatMessageFromMe = ({ message, data }) => {
             position: "relative",
             background: "#da1f26",
           }}
-          className="max-w-[600px] mb-3 rounded-md mr-2 p-2"
+          className="max-w-[600px] mb-3 rounded-lg rounded-tr-none mr-2 p-4"
         >
           {message.type === "revoked" ? (
             <i className="text-gray-200">This message was deleted</i>

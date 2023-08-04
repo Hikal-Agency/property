@@ -54,6 +54,60 @@ const ChatPage = () => {
       body: "Hello This is another test message", 
       from: "+923458880651"
     }, 
+    {
+      type: "text", 
+      body: "Hello This is a test message", 
+      id: {
+        fromMe: true
+      },
+      to: "+923458880651"
+    }, 
+    {
+      type: "text", 
+      body: "Hello This is another test message", 
+      from: "+923458880651"
+    }, 
+    {
+      type: "text", 
+      body: "Hello This is another test message", 
+      from: "+923458880651"
+    }, 
+    {
+      type: "text", 
+      body: "Hello This is another test message", 
+      from: "+923458880651"
+    }, 
+    {
+      type: "text", 
+      body: "Hello This is another test message", 
+      from: "+923458880651"
+    }, 
+    {
+      type: "text", 
+      body: "Hello This is another test message", 
+      from: "+923458880651"
+    }, 
+    {
+      type: "text", 
+      body: "Hello This is another test message", 
+      from: "+923458880651"
+    }, 
+    {
+      type: "text", 
+      body: "Hello This is a test message", 
+      id: {
+        fromMe: true
+      },
+      to: "+923458880651"
+    }, 
+    {
+      type: "text", 
+      body: "Hello This is a test message", 
+      id: {
+        fromMe: true
+      },
+      to: "+923458880651"
+    }, 
   ]);
 
   const messageInputRef = useRef();

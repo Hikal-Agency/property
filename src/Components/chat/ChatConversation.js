@@ -185,7 +185,7 @@ const ChatConversation = ({
                   })}
                 </div>
               ) : (
-                <div className="bg-[#fafafa] flex-1 flex flex-col items-center justify-center">
+                <div className="bg-[#fafafa] justify-end flex-1 flex flex-col items-center justify-center">
                   <BsFillChatLeftDotsFill size={40} />
                   <p className="mt-3">Start the Conversation!</p>
                 </div>
