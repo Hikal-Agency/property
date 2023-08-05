@@ -27,7 +27,7 @@ import { FaRandom } from "react-icons/fa";
 import { BsPersonFillLock } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 import { GoBrowser } from "react-icons/go";
-import ringtone from '../../assets/new-message-ringtone.mp3';
+import ringtone from "../../assets/new-message-ringtone.mp3";
 import {
   MdLeaderboard,
   MdPersonAdd,
@@ -85,6 +85,7 @@ const Sidebarmui = () => {
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
   const [newMessageReceived, setNewMessageReceived] = useState(false);
   const [messagesCount, setMessagesCount] = useState(0);
+  const [blink, setBlink] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const ringtoneElem = useRef();
@@ -1057,18 +1058,27 @@ const Sidebarmui = () => {
 
   useEffect(() => {
     socket.on("chat_message-received", (data) => {
-      ringtoneElem.current.play();
+      if (window.location.pathname !== "/chat") {
+          ringtoneElem.current.play();
         setMessagesCount((prevCount) => prevCount + 1);
-          setNewMessageReceived(data?.to?.loginId);
-      });
+        setBlink(true);
+        setTimeout(() => {
+          setBlink(false);
+        }, 500);
+        setNewMessageReceived(data?.to?.loginId);
+      } else {
+        setMessagesCount(0);
+        setNewMessageReceived(false);
+      }
+    });
   }, []);
 
   return (
     <>
-       <audio ref={ringtoneElem} className="hidden">
-  <source src={ringtone} type="audio/ogg"/>
-  <source src={ringtone} type="audio/mpeg"/>
-</audio>
+      <audio ref={ringtoneElem} className="hidden">
+        <source src={ringtone} type="audio/ogg" />
+        <source src={ringtone} type="audio/mpeg" />
+      </audio>
       <div
         style={{ display: "flex", height: "100%" }}
         className={`max-w-[200px] z-[1000] sticky top-0 left-0 `}
@@ -1662,19 +1672,26 @@ const Sidebarmui = () => {
           </div>
         </Sidebar>
       </div>
-    
-    {(newMessageReceived === User?.loginId && location.pathname !== "/chat") &&
-      <div className="message-received-float">
-        <Link onClick={() => {setNewMessageReceived(false); setMessagesCount(0)}} to="/chat">
-          <FaInbox size={22}/>
-        </Link>
 
-        <div className="bg-black p-1 w-[18px] h-[18px] rounded-full absolute top-0 left-0 flex justify-center items-center text-white">
+      {newMessageReceived === User?.loginId &&
+        location.pathname !== "/chat" && (
+          <div className={`message-received-float ${blink ? 'animate' : ''}`}>
+            <Link
+            className="p-[12px]"
+              onClick={() => {
+                setNewMessageReceived(false);
+                setMessagesCount(0);
+              }}
+              to="/chat"
+            >
+              <FaInbox size={22} />
+            </Link>
+
+            <div className="bg-black p-1 w-[18px] h-[18px] rounded-full absolute top-0 left-0 flex justify-center items-center text-white">
               {messagesCount}
-        </div>
-      </div>
-    }
-  
+            </div>
+          </div>
+        )}
     </>
   );
 };

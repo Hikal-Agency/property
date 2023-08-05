@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { BiUser } from "react-icons/bi";
 import moment from "moment";
 
-const ChatConversationItem = ({ chat, setActiveChat, isActive }) => {
+const ChatConversationItem = ({ chat, onClick, isActive }) => {
   const [lastMessageText, setLastMessageText] = useState("");
   const [lastMessageTime, setLastMessageTime] = useState("");
 
@@ -61,7 +61,7 @@ const ChatConversationItem = ({ chat, setActiveChat, isActive }) => {
   // }, [chat?.lastMessage]);
   return (
     <Box
-      onClick={() => setActiveChat(chat)}
+      onClick={onClick}
       className={`w-full cursor-pointer ${
         isActive ? "bg-[whitesmoke]" : "bg-white"
       } border-b border-[#f3f4f6] px-4 py-4 flex items-center`}

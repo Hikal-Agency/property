@@ -190,7 +190,7 @@ const ChatConversation = ({
                               return (
                                 <ChatConversationItem
                                   key={chat?.id}
-                                  setActiveChat={setActiveChat}
+                                  onClick={() => setActiveChat(chat)}
                                   chat={chat}
                                   isActive={
                                     activeChat?.loginId === chat?.loginId
@@ -218,7 +218,7 @@ const ChatConversation = ({
                             return (
                               <ChatConversationItem
                                 key={chat?.id}
-                                setActiveChat={setActiveChat}
+                                onClick={() => setActiveChat(chat)}
                                 chat={chat}
                                 isActive={activeChat?.loginId === chat?.loginId}
                               />
@@ -432,6 +432,7 @@ const ChatConversation = ({
 
       {createMessageModal?.isOpened && (
         <CreateMessageModal
+          setActiveChat={setActiveChat}
           recentChats={recentChats}
           createMessageModal={createMessageModal}
           handleCloseCreateMessageModal={() =>

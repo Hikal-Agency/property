@@ -23,6 +23,7 @@ const style = {
 const CreateMessageModal = ({
   recentChats,
   createMessageModal,
+  setActiveChat,
   handleCloseCreateMessageModal,
 }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
@@ -168,7 +169,14 @@ const CreateMessageModal = ({
                     [
                       searchedUsers?.map((chat) => {
                         return (
-                          <ChatConversationItem key={chat?.id} chat={chat} />
+                          <ChatConversationItem
+                            onClick={() => {
+                              setActiveChat(chat);
+                              handleCloseCreateMessageModal();
+                            }}
+                            key={chat?.id}
+                            chat={chat}
+                          />
                         );
                       }),
                     ]
@@ -186,12 +194,21 @@ const CreateMessageModal = ({
                     [
                       recentChats?.map((chat) => {
                         return (
-                          <ChatConversationItem key={chat?.id} chat={chat} />
+                          <ChatConversationItem
+                            onClick={() => {
+                              setActiveChat(chat);
+                              handleCloseCreateMessageModal();
+                            }}
+                            key={chat?.id}
+                            chat={chat}
+                          />
                         );
                       }),
                     ]
                   ) : (
-                    <p>You dont have any recent chat with anyone!</p>
+                    <p className="px-5 text-[#da1f26]">
+                      You dont have any recent chat with anyone!
+                    </p>
                   )}
                 </div>
               ),
