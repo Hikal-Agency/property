@@ -74,7 +74,7 @@ const ChatConversation = ({
     setMessageInputVal(e.target.value);
     setTimeout(() => {
       socket.emit("chat_user-typing", { userId: activeChat?.loginId });
-    }, 400);
+    }, 100);
   };
 
   useEffect(() => {
