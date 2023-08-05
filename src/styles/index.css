@@ -578,3 +578,17 @@ label[for="bulkImport"] .MuiButtonBase-root {
 .whatsapp-logo-animation {
   animation: whatsappAnimation 2s infinite;
 }
+
+.active-tab {
+  display: block;
+  animation: fade 0.4s ease-in-out;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

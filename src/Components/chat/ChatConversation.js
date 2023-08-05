@@ -73,15 +73,15 @@ const ChatConversation = ({
   const handleMessageInputVal = (e) => {
     setMessageInputVal(e.target.value);
     setTimeout(() =>{
-      socket.emit("chat_user-typing", { userId: User?.loginId });
+      socket.emit("chat_user-typing", { userId: activeChat?.loginId });
     }, 500);
   };
 
   useEffect(() => {
     if (User) {
-      socket.on("chat_user-typing", ({ userId }) => {
+      socket.on("chat_user-typing", (user) => {
         let typingTimeout;
-        if (userId === activeChat?.loginId) {
+        if (user?.loginId === User?.loginId) {
           if (!isTyping) {
             setIsTyping(true);
             clearTimeout(typingTimeout);
@@ -143,7 +143,7 @@ const ChatConversation = ({
             <div className="flex my-6 px-5 items-center">
               <Button
                 onClick={() => setActiveTab("recent")}
-                className="flex-1"
+                className={`flex-1`}
                 variant="contained"
                 style={{
                   boxShadow: "none",
@@ -156,7 +156,7 @@ const ChatConversation = ({
               </Button>
               <Button
                 onClick={() => setActiveTab("online")}
-                className="flex-1"
+               className={`flex-1`}
                 variant="contained"
                 style={{
                   background: activeTab === "online" ? "#da1f26" : "#f7f7f7",
@@ -176,14 +176,39 @@ const ChatConversation = ({
                 </div>
               ) : (
                 <div className="h-full overflow-y-scroll">
-                  {activeTab === "online" && [
-                    onlineChats?.filter(
-                      (chat) => chat?.loginId !== User?.loginId
-                    )?.length > 0 ? (
-                      [
-                        onlineChats
-                          ?.filter((chat) => chat?.loginId !== User?.loginId)
-                          ?.map((chat) => {
+                  <div className={`${activeTab === "online" ? 'active-tab' : ''}`}>
+                    {activeTab === "online" && [
+                      onlineChats?.filter(
+                        (chat) => chat?.loginId !== User?.loginId
+                      )?.length > 0 ? (
+                        [
+                          onlineChats
+                            ?.filter((chat) => chat?.loginId !== User?.loginId)
+                            ?.map((chat) => {
+                              return (
+                                <ChatConversationItem
+                                  key={chat?.id}
+                                  setActiveChat={setActiveChat}
+                                  chat={chat}
+                                  isActive={activeChat?.loginId === chat?.loginId}
+                                />
+                              );
+                            }),
+                        ]
+                      ) : (
+                        <div className="mt-4 flex justify-center items-center">
+                          <p className="font-bold text-[#da1f26]">
+                            Seems ilke no one is Online at this moment.
+                          </p>
+                        </div>
+                      ),
+                    ]}
+                  </div>
+                  <div className={`${activeTab === "recent" ? 'active-tab' : ''}`}>
+                    {activeTab === "recent" && [
+                      recentChats?.length > 0 ? (
+                        [
+                          recentChats?.map((chat) => {
                             return (
                               <ChatConversationItem
                                 key={chat?.id}
@@ -193,37 +218,16 @@ const ChatConversation = ({
                               />
                             );
                           }),
-                      ]
-                    ) : (
-                      <div className="mt-4 flex justify-center items-center">
-                        <p className="font-bold text-[#da1f26]">
-                          Seems ilke no one is Online at this moment.
-                        </p>
-                      </div>
-                    ),
-                  ]}
-                  {activeTab === "recent" && [
-                    recentChats?.length > 0 ? (
-                      [
-                        recentChats?.map((chat) => {
-                          return (
-                            <ChatConversationItem
-                              key={chat?.id}
-                              setActiveChat={setActiveChat}
-                              chat={chat}
-                              isActive={activeChat?.loginId === chat?.loginId}
-                            />
-                          );
-                        }),
-                      ]
-                    ) : (
-                      <div className="mt-4 flex justify-center items-center">
-                        <p className="font-bold text-[#da1f26]">
-                          You dont have any recent chat with anyone!
-                        </p>
-                      </div>
-                    ),
-                  ]}
+                        ]
+                      ) : (
+                        <div className="mt-4 flex justify-center items-center">
+                          <p className="font-bold text-[#da1f26]">
+                            You dont have any recent chat with anyone!
+                          </p>
+                        </div>
+                      ),
+                    ]}
+                  </div>
                 </div>
               )}
             </div>
