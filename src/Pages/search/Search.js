@@ -1813,7 +1813,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               label="Project"
               variant="outlined"
               size="medium"
-              value=""
               sx={{
                 minWidth: "90px",
               }}
