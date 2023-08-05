@@ -12,10 +12,9 @@ import {
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
-import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import Error from "../Error";
@@ -116,7 +115,7 @@ const SingleLeadNote = (props) => {
         <title>HIKAL CRM - Lead Note</title>
         <meta name="description" content="User Dashboard - HIKAL CRM" />
       </Head> */}
-      
+
       <div className="flex min-h-screen">
         {loading ? (
           <Loader />
@@ -360,6 +359,7 @@ const SingleLeadNote = (props) => {
                                   <TableCell align="center">Added On</TableCell>
                                   <TableCell align="center">Added By</TableCell>
                                   <TableCell align="center">Note</TableCell>
+                                  <TableCell align="center"></TableCell>
                                 </TableRow>
                               </TableHead>
 
