@@ -1,7 +1,7 @@
 import { Box, Avatar } from "@mui/material";
 import { BiUser } from "react-icons/bi";
 
-const ChatMessageFromOther = ({ message, phoneNumber }) => {
+const ChatMessageFromOther = ({ message }) => {
   return (
     <>
       <div className="flex items-start self-start">
@@ -9,7 +9,12 @@ const ChatMessageFromOther = ({ message, phoneNumber }) => {
           sx={{ width: 20, height: 20, background: "black" }}
           className="mr-2"
         >
-          <BiUser size={15} />
+          
+          <img
+            className="object-cover w-full h-full"
+            src={message?.from?.profile_picture || message?.from?.displayImg}
+            alt=""
+          />
         </Avatar>
         {message.type === "image" ? (
           <div className="mb-3">
@@ -37,7 +42,7 @@ const ChatMessageFromOther = ({ message, phoneNumber }) => {
               {message.type === "revoked" ? (
                 <i className="text-black">This message was deleted</i>
               ) : (
-                <span className="text-black">{message.body}</span>
+                <span className="text-black">{message.content}</span>
               )}
             </Box>
           </div>

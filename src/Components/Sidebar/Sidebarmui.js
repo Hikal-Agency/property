@@ -1,7 +1,7 @@
-import { Box, ListItemIcon, Tooltip } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Box, IconButton, ListItemIcon, Tooltip } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
 import { AiFillGift } from "react-icons/ai";
-import { FaLink, FaSnowflake, FaMobile, FaAppStore } from "react-icons/fa";
+import { FaLink, FaSnowflake, FaMobile, FaInbox } from "react-icons/fa";
 import { socket } from "../../Pages/App";
 import {
   BsStopCircleFill,
@@ -27,6 +27,7 @@ import { FaRandom } from "react-icons/fa";
 import { BsPersonFillLock } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 import { GoBrowser } from "react-icons/go";
+import ringtone from '../../assets/new-message-ringtone.mp3';
 import {
   MdLeaderboard,
   MdPersonAdd,
@@ -82,8 +83,11 @@ const Sidebarmui = () => {
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
+  const [newMessageReceived, setNewMessageReceived] = useState(false);
+  const [messagesCount, setMessagesCount] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const ringtoneElem = useRef();
   const { hasPermission } = usePermission();
   const { collapseSidebar } = useProSidebar();
 
@@ -1051,44 +1055,80 @@ const Sidebarmui = () => {
     }
   }, []);
 
+  useEffect(() => {
+    socket.on("chat_message-received", (data) => {
+      ringtoneElem.current.play();
+        setMessagesCount((prevCount) => prevCount + 1);
+          setNewMessageReceived(data?.to?.loginId);
+      });
+  }, []);
+
   return (
-    <div
-      style={{ display: "flex", height: "100%" }}
-      className={`max-w-[200px] z-[1000] sticky top-0 left-0 `}
-    >
-      <Sidebar
-        rootStyles={{
-          [`.${sidebarClasses.container}`]: {
-            backgroundColor: currentMode === "dark" ? "#000000" : "#ffffff",
-          },
-        }}
-        className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
+    <>
+       <audio ref={ringtoneElem} className="hidden">
+  <source src={ringtone} type="audio/ogg"/>
+  <source src={ringtone} type="audio/mpeg"/>
+</audio>
+      <div
+        style={{ display: "flex", height: "100%" }}
+        className={`max-w-[200px] z-[1000] sticky top-0 left-0 `}
       >
-        <div className="mt-3">
-          <div
-            className="sidebar-top"
-            style={{
-              position: "sticky",
-              top: 0,
-              background: currentMode === "dark" ? "black" : "white",
-              zIndex: 1000,
-            }}
-          >
-            <div className="flex justify-between items-center h-[50px]">
-              <Link
-                to={
-                  User?.role !== 5 ? "/dashboard" : "/attendance/officeSettings"
-                }
-                className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
-                onClick={() => {
-                  setSelected({
-                    name: User?.role !== 5 ? "Dashboard" : "Office Settings",
-                    index: 0,
-                  });
-                }}
-              >
-                {isCollapsed ? (
-                  <div className="flex items-center space-x-2">
+        <Sidebar
+          rootStyles={{
+            [`.${sidebarClasses.container}`]: {
+              backgroundColor: currentMode === "dark" ? "#000000" : "#ffffff",
+            },
+          }}
+          className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
+        >
+          <div className="mt-3">
+            <div
+              className="sidebar-top"
+              style={{
+                position: "sticky",
+                top: 0,
+                background: currentMode === "dark" ? "black" : "white",
+                zIndex: 1000,
+              }}
+            >
+              <div className="flex justify-between items-center h-[50px]">
+                <Link
+                  to={
+                    User?.role !== 5
+                      ? "/dashboard"
+                      : "/attendance/officeSettings"
+                  }
+                  className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
+                  onClick={() => {
+                    setSelected({
+                      name: User?.role !== 5 ? "Dashboard" : "Office Settings",
+                      index: 0,
+                    });
+                  }}
+                >
+                  {isCollapsed ? (
+                    <div className="flex items-center space-x-2">
+                      <img
+                        height={100}
+                        width={100}
+                        className="h-[40px] w-auto"
+                        src="/favicon.png"
+                        alt=""
+                      />
+
+                      <div className="relative">
+                        <h1
+                          className={`overflow-hidden ${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-gray-900"
+                          }`}
+                        >
+                          HIKAL CRM
+                        </h1>
+                      </div>
+                    </div>
+                  ) : (
                     <img
                       height={100}
                       width={100}
@@ -1096,538 +1136,546 @@ const Sidebarmui = () => {
                       src="/favicon.png"
                       alt=""
                     />
-
-                    <div className="relative">
+                  )}
+                </Link>
+              </div>
+              <div className="profile-section border-t border-b mt-2 px-1 py-2">
+                {isCollapsed ? (
+                  <>
+                    <Link
+                      to={"/profile"}
+                      onClick={() => setopenBackDrop(true)}
+                      className="flex flex-col items-center justify-center"
+                    >
+                      <img
+                        src={
+                          User?.displayImg
+                            ? User?.displayImg
+                            : "/assets/user.png"
+                        }
+                        height={60}
+                        width={60}
+                        className="rounded-full object-cover"
+                        alt=""
+                      />
                       <h1
-                        className={`overflow-hidden ${
+                        className={`my-2 font-bold text-lg ${
                           currentMode === "dark"
                             ? "text-white"
-                            : "text-gray-900"
+                            : "text-main-dark-bg"
                         }`}
                       >
-                        HIKAL CRM
+                        {User?.userName ? User?.userName : "No username"}
                       </h1>
-                    </div>
-                  </div>
+                      <span
+                        className={`block rounded-md px-2 py-1 text-sm  bg-main-red-color text-white`}
+                      >
+                        {User?.position || ""}
+                      </span>
+                    </Link>
+                  </>
                 ) : (
-                  <img
-                    height={100}
-                    width={100}
-                    className="h-[40px] w-auto"
-                    src="/favicon.png"
-                    alt=""
-                  />
-                )}
-              </Link>
-            </div>
-            <div className="profile-section border-t border-b mt-2 px-1 py-2">
-              {isCollapsed ? (
-                <>
-                  <Link
-                    to={"/profile"}
-                    onClick={() => setopenBackDrop(true)}
-                    className="flex flex-col items-center justify-center"
-                  >
+                  <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
                     <img
-                      src={
-                        User?.displayImg ? User?.displayImg : "/assets/user.png"
-                      }
+                      src={User?.displayImg}
                       height={60}
                       width={60}
-                      className="rounded-full object-cover"
+                      className="rounded-full cursor-pointer"
                       alt=""
                     />
-                    <h1
-                      className={`my-2 font-bold text-lg ${
-                        currentMode === "dark"
-                          ? "text-white"
-                          : "text-main-dark-bg"
-                      }`}
-                    >
-                      {User?.userName ? User?.userName : "No username"}
-                    </h1>
-                    <span
-                      className={`block rounded-md px-2 py-1 text-sm  bg-main-red-color text-white`}
-                    >
-                      {User?.position || ""}
-                    </span>
                   </Link>
-                </>
-              ) : (
-                <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-                  <img
-                    src={User?.displayImg}
-                    height={60}
-                    width={60}
-                    className="rounded-full cursor-pointer"
-                    alt=""
-                  />
-                </Link>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-          <div className="sidebar-root mt-4 mb-4">
-            <Menu
-              menuItemStyles={{
-                button: ({ level, active, disabled }) => {
-                  // only apply styles on first level elements of the tree
-                  if (level === 0) {
-                    return {
-                      color: currentMode === "dark" ? "#ffffff" : "#000000",
-                    };
-                  }
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  // FOR DARK MODE MENU SETTINGS
-                  "& .css-1mfnem1": {
-                    borderRadius: "5px",
-                  },
-                  "& .css-1mfnem1:hover": {
-                    backgroundColor: "#DA1F26",
-                  },
-                  // submenu containerr color
-                  "& .css-z5rm24": {
-                    backgroundColor: currentMode === "dark" && "#3b3d44",
-                    borderRadius: "5px",
-                  },
-                  // Submenu count color
-                  "& .css-1rnkhs0": {
-                    color: currentMode === "dark" && "white",
-                  },
-                  // LIGHT MODE SETTINGS
-                  "& .css-1ohfb25:hover": {
-                    backgroundColor: "#DA1F26",
-                    color: "white",
-                    borderRadius: "5px",
-                  },
-                  "& .css-wx7wi4": {
-                    width: "18px",
-                    minWidth: "18px",
+            <div className="sidebar-root mt-4 mb-4">
+              <Menu
+                menuItemStyles={{
+                  button: ({ level, active, disabled }) => {
+                    // only apply styles on first level elements of the tree
+                    if (level === 0) {
+                      return {
+                        color: currentMode === "dark" ? "#ffffff" : "#000000",
+                      };
+                    }
                   },
                 }}
-                className="my-1"
               >
-                {links?.map((link, linkIndex) => {
-                  let permittedLinksMoreThan0 = false;
-                  for (let i = 0; i < link?.links.length; i++) {
-                    const subMenu = link?.links[i]?.submenu;
-                    if (subMenu) {
-                      for (let k = 0; k < subMenu.length; k++) {
-                        const anotherSubMenu = subMenu[k]?.submenu;
-                        if (anotherSubMenu) {
-                          for (let l = 0; l < anotherSubMenu?.length; l++) {
+                <Box
+                  sx={{
+                    // FOR DARK MODE MENU SETTINGS
+                    "& .css-1mfnem1": {
+                      borderRadius: "5px",
+                    },
+                    "& .css-1mfnem1:hover": {
+                      backgroundColor: "#DA1F26",
+                    },
+                    // submenu containerr color
+                    "& .css-z5rm24": {
+                      backgroundColor: currentMode === "dark" && "#3b3d44",
+                      borderRadius: "5px",
+                    },
+                    // Submenu count color
+                    "& .css-1rnkhs0": {
+                      color: currentMode === "dark" && "white",
+                    },
+                    // LIGHT MODE SETTINGS
+                    "& .css-1ohfb25:hover": {
+                      backgroundColor: "#DA1F26",
+                      color: "white",
+                      borderRadius: "5px",
+                    },
+                    "& .css-wx7wi4": {
+                      width: "18px",
+                      minWidth: "18px",
+                    },
+                  }}
+                  className="my-1"
+                >
+                  {links?.map((link, linkIndex) => {
+                    let permittedLinksMoreThan0 = false;
+                    for (let i = 0; i < link?.links.length; i++) {
+                      const subMenu = link?.links[i]?.submenu;
+                      if (subMenu) {
+                        for (let k = 0; k < subMenu.length; k++) {
+                          const anotherSubMenu = subMenu[k]?.submenu;
+                          if (anotherSubMenu) {
+                            for (let l = 0; l < anotherSubMenu?.length; l++) {
+                              if (
+                                hasPermission(anotherSubMenu[l]?.link, true)
+                                  ?.isPermitted
+                              ) {
+                                permittedLinksMoreThan0 = true;
+                                break;
+                              }
+                            }
+                          } else {
                             if (
-                              hasPermission(anotherSubMenu[l]?.link, true)
-                                ?.isPermitted
+                              hasPermission(subMenu[k]?.link, true).isPermitted
                             ) {
                               permittedLinksMoreThan0 = true;
                               break;
                             }
                           }
-                        } else {
-                          if (
-                            hasPermission(subMenu[k]?.link, true).isPermitted
-                          ) {
-                            permittedLinksMoreThan0 = true;
-                            break;
-                          }
+                        }
+                      } else {
+                        if (
+                          hasPermission(link?.links[i]?.link, true)?.isPermitted
+                        ) {
+                          permittedLinksMoreThan0 = true;
+                          break;
                         }
                       }
-                    } else {
-                      if (
-                        hasPermission(link?.links[i]?.link, true)?.isPermitted
-                      ) {
-                        permittedLinksMoreThan0 = true;
-                        break;
-                      }
                     }
-                  }
 
-                  if (
-                    link?.links[0]?.link === "/dashboard" &&
-                    User?.role !== 5
-                  ) {
-                    return (
-                      <Link
-                        key={linkIndex}
-                        to={`${link?.links[0]?.link}`}
-                        onClick={() => {
-                          setopenBackDrop(true);
-                          setOpenSubMenu(0);
-                          setActiveSidebarHeading("");
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            // STYLING FOR LIGHT MODE
-                            "& .css-1mfnem1": {
-                              borderRadius: "5px",
-                            },
-                            "& .css-1mfnem1:hover": {
-                              backgroundColor: "#DA1F26",
-                            },
-                            "& .css-1ogoo8i": {
-                              backgroundColor: "#DA1F26",
-                            },
-                            // STYLING FOR DARK MODE
-                            "& .css-yktbuo": {
-                              backgroundColor: "#DA1F26",
-                            },
-                            "& .css-yktbuo:hover": {
-                              backgroundColor: "#DA1F26",
-                            },
-                            "& .css-1v6ithu": {
-                              color: "white",
-                            },
+                    if (
+                      link?.links[0]?.link === "/dashboard" &&
+                      User?.role !== 5
+                    ) {
+                      return (
+                        <Link
+                          key={linkIndex}
+                          to={`${link?.links[0]?.link}`}
+                          onClick={() => {
+                            setopenBackDrop(true);
+                            setOpenSubMenu(0);
+                            setActiveSidebarHeading("");
                           }}
-                          className="relative my-1"
                         >
-                          <MenuItem
-                            active={
-                              link?.links[0]?.link ===
-                              window.location.pathname.replaceAll("%20", " ")
-                            }
+                          <Box
+                            sx={{
+                              // STYLING FOR LIGHT MODE
+                              "& .css-1mfnem1": {
+                                borderRadius: "5px",
+                              },
+                              "& .css-1mfnem1:hover": {
+                                backgroundColor: "#DA1F26",
+                              },
+                              "& .css-1ogoo8i": {
+                                backgroundColor: "#DA1F26",
+                              },
+                              // STYLING FOR DARK MODE
+                              "& .css-yktbuo": {
+                                backgroundColor: "#DA1F26",
+                              },
+                              "& .css-yktbuo:hover": {
+                                backgroundColor: "#DA1F26",
+                              },
+                              "& .css-1v6ithu": {
+                                color: "white",
+                              },
+                            }}
+                            className="relative my-1"
                           >
-                            <div
-                              className={`flex items-center ${
-                                isCollapsed ? "gap-4" : ""
-                              } rounded-lg text-md ${
-                                !isCollapsed ? "justify-center" : ""
-                              }`}
+                            <MenuItem
+                              active={
+                                link?.links[0]?.link ===
+                                window.location.pathname.replaceAll("%20", " ")
+                              }
                             >
-                              <span className={`${!isCollapsed && "text-xl"}`}>
-                                {link?.links[0]?.icon}
-                              </span>
-                              {isCollapsed && (
-                                <span className="capitalize">
-                                  {link?.links[0]?.name}
-                                </span>
-                              )}
-                            </div>
-                          </MenuItem>
-                        </Box>
-                      </Link>
-                    );
-                  }
-
-                  if (permittedLinksMoreThan0) {
-                    return (
-                      <Box
-                        key={linkIndex}
-                        onClick={(e) => handleExpandHeading(e, linkIndex)}
-                      >
-                        {!isCollapsed ? (
-                          <Tooltip title={link?.title} placement="right">
-                            <Link
-                              key={linkIndex}
-                              onClick={() => {
-                                setopenBackDrop(true);
-                                setOpenSubMenu(0);
-                                setActiveSidebarHeading(linkIndex);
-                                collapseSidebar();
-                                setIsCollapsed(true);
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  // STYLING FOR LIGHT MODE
-                                  "& .css-1mfnem1": {
-                                    borderRadius: "5px",
-                                  },
-                                  "& .css-1mfnem1:hover": {
-                                    backgroundColor: "#DA1F26",
-                                  },
-                                  "& .css-1ogoo8i": {
-                                    backgroundColor: "#DA1F26",
-                                  },
-                                  // STYLING FOR DARK MODE
-                                  "& .css-yktbuo": {
-                                    backgroundColor: "#DA1F26",
-                                  },
-                                  "& .css-yktbuo:hover": {
-                                    backgroundColor: "#DA1F26",
-                                  },
-                                  "& .css-1v6ithu": {
-                                    color: "white",
-                                  },
-                                }}
-                                className="relative my-1"
+                              <div
+                                className={`flex items-center ${
+                                  isCollapsed ? "gap-4" : ""
+                                } rounded-lg text-md ${
+                                  !isCollapsed ? "justify-center" : ""
+                                }`}
                               >
-                                <MenuItem
-                                  active={
-                                    link?.links[0]?.link ===
-                                    window.location.pathname.replaceAll(
-                                      "%20",
-                                      " "
-                                    )
-                                  }
+                                <span
+                                  className={`${!isCollapsed && "text-xl"}`}
                                 >
-                                  <div className="flex my-1 h-[38px] items-center justify-center text-2xl">
-                                    {link?.icon}
-                                  </div>
-                                </MenuItem>
-                              </Box>
-                            </Link>
-                          </Tooltip>
-                        ) : (
-                          <SubMenu
-                            icon={link?.icon}
-                            open={activeSidebarHeading === linkIndex}
-                            label={link?.title?.toUpperCase()}
-                            className="top-level-dropdown"
-                          >
-                            {link.links.map((menu, index) => {
-                              if (
-                                hasPermission(menu?.link, true)?.isPermitted ||
-                                (menu?.submenu &&
-                                  hasPermission(menu?.submenu[0]?.link, true)
-                                    ?.isPermitted) ||
-                                (menu?.link === "/dashboard" &&
-                                  User?.role !== 5)
-                              ) {
-                                if (menu?.submenu) {
-                                  return (
-                                    <Box
-                                      key={index}
-                                      onClick={(e) => {
-                                        handleExpand(
-                                          e,
-                                          {
-                                            menuIndex: index + 1,
-                                            linkIndex,
-                                          },
-                                          true
-                                        );
-                                      }}
-                                      sx={{
-                                        // FOR DARK MODE MENU SETTINGS
-                                        "& .css-1mfnem1": {
-                                          borderRadius: "5px",
-                                        },
-                                        "& .css-1mfnem1:hover": {
-                                          backgroundColor: "#DA1F26",
-                                        },
-                                        // submenu containerr color
-                                        "& .css-z5rm24": {
-                                          backgroundColor:
-                                            currentMode === "dark" && "#3b3d44",
-                                          borderRadius: "5px",
-                                        },
-                                        // Submenu count color
-                                        "& .css-1rnkhs0": {
-                                          color:
-                                            currentMode === "dark" && "white",
-                                        },
-                                        // LIGHT MODE SETTINGS
-                                        "& .css-1ohfb25:hover": {
-                                          backgroundColor: "#DA1F26",
-                                          color: "white",
-                                          borderRadius: "5px",
-                                        },
-                                        "& .css-wx7wi4": {
-                                          width: "18px",
-                                          minWidth: "18px",
-                                        },
-                                      }}
-                                      className="my-1 sub"
-                                    >
-                                      <SubMenu
-                                        label={menu.name}
-                                        icon={menu.icon}
-                                        open={
-                                          openedSubMenu.menuIndex ===
-                                            index + 1 &&
-                                          openedSubMenu.linkIndex === linkIndex
-                                        }
-                                      >
-                                        {menu?.submenu.map((m, index) => {
-                                          return (
-                                            <Link key={index} to={`${m.link}`}>
-                                              <Box
-                                                sx={{
-                                                  // STYLING FOR LIGHT MODE
-                                                  "& .css-1mfnem1": {
-                                                    borderRadius: "5px",
-                                                  },
-                                                  "& .css-1mfnem1:hover": {
-                                                    backgroundColor: "#DA1F26",
-                                                  },
-                                                  "& .css-1ogoo8i": {
-                                                    backgroundColor: "#DA1F26",
-                                                  },
-                                                  // STYLING FOR DARK MODE
-                                                  "& .css-yktbuo": {
-                                                    backgroundColor: "#DA1F26",
-                                                  },
-                                                  "& .css-1f8bwsm": {
-                                                    minWidth: "10px !important",
-                                                  },
-                                                  "& .css-yktbuo:hover": {
-                                                    backgroundColor: "#DA1F26",
-                                                  },
-                                                  "& .css-1v6ithu": {
-                                                    color: "white",
-                                                  },
-                                                  "& .leads_counter": {
-                                                    color: m?.countColor
-                                                      ? m?.countColor
-                                                      : currentMode === "dark"
-                                                      ? "white"
-                                                      : "black",
-                                                  },
-                                                  "& .css-cveggr-MuiListItemIcon-root":
-                                                    {
-                                                      minWidth:
-                                                        "10px !important",
-                                                    },
-                                                }}
-                                                className="relative my-1"
-                                              >
-                                                <MenuItem
-                                                  active={
-                                                    m.link ===
-                                                    window.location.pathname.replaceAll(
-                                                      "%20",
-                                                      " "
-                                                    )
-                                                  }
-                                                  className="flex"
-                                                >
-                                                  {m?.icon && (
-                                                    <ListItemIcon
-                                                      style={{
-                                                        minWidth:
-                                                          "23px !important",
-                                                      }}
-                                                    >
-                                                      {m?.icon}
-                                                    </ListItemIcon>
-                                                  )}{" "}
-                                                  <span className=" ">
-                                                    {" "}
-                                                    {m?.name || ""}
-                                                  </span>
-                                                </MenuItem>
-                                                {m?.count != null && (
-                                                  <span
-                                                    className="leads_counter block absolute right-5"
-                                                    style={{
-                                                      top: "50%",
-                                                      transform:
-                                                        "translateY(-50%)",
-                                                    }}
-                                                  >
-                                                    {m?.count !== null &&
-                                                    m?.count !== undefined
-                                                      ? m?.count
-                                                      : ""}
-                                                  </span>
-                                                )}
-                                              </Box>
-                                            </Link>
-                                          );
-                                        })}
-                                      </SubMenu>
-                                    </Box>
-                                  );
-                                } else {
-                                  return (
-                                    <Link
-                                      key={index}
-                                      to={`${menu.link}`}
-                                      onClick={() => setopenBackDrop(true)}
-                                    >
+                                  {link?.links[0]?.icon}
+                                </span>
+                                {isCollapsed && (
+                                  <span className="capitalize">
+                                    {link?.links[0]?.name}
+                                  </span>
+                                )}
+                              </div>
+                            </MenuItem>
+                          </Box>
+                        </Link>
+                      );
+                    }
+
+                    if (permittedLinksMoreThan0) {
+                      return (
+                        <Box
+                          key={linkIndex}
+                          onClick={(e) => handleExpandHeading(e, linkIndex)}
+                        >
+                          {!isCollapsed ? (
+                            <Tooltip title={link?.title} placement="right">
+                              <Link
+                                key={linkIndex}
+                                onClick={() => {
+                                  setopenBackDrop(true);
+                                  setOpenSubMenu(0);
+                                  setActiveSidebarHeading(linkIndex);
+                                  collapseSidebar();
+                                  setIsCollapsed(true);
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    // STYLING FOR LIGHT MODE
+                                    "& .css-1mfnem1": {
+                                      borderRadius: "5px",
+                                    },
+                                    "& .css-1mfnem1:hover": {
+                                      backgroundColor: "#DA1F26",
+                                    },
+                                    "& .css-1ogoo8i": {
+                                      backgroundColor: "#DA1F26",
+                                    },
+                                    // STYLING FOR DARK MODE
+                                    "& .css-yktbuo": {
+                                      backgroundColor: "#DA1F26",
+                                    },
+                                    "& .css-yktbuo:hover": {
+                                      backgroundColor: "#DA1F26",
+                                    },
+                                    "& .css-1v6ithu": {
+                                      color: "white",
+                                    },
+                                  }}
+                                  className="relative my-1"
+                                >
+                                  <MenuItem
+                                    active={
+                                      link?.links[0]?.link ===
+                                      window.location.pathname.replaceAll(
+                                        "%20",
+                                        " "
+                                      )
+                                    }
+                                  >
+                                    <div className="flex my-1 h-[38px] items-center justify-center text-2xl">
+                                      {link?.icon}
+                                    </div>
+                                  </MenuItem>
+                                </Box>
+                              </Link>
+                            </Tooltip>
+                          ) : (
+                            <SubMenu
+                              icon={link?.icon}
+                              open={activeSidebarHeading === linkIndex}
+                              label={link?.title?.toUpperCase()}
+                              className="top-level-dropdown"
+                            >
+                              {link.links.map((menu, index) => {
+                                if (
+                                  hasPermission(menu?.link, true)
+                                    ?.isPermitted ||
+                                  (menu?.submenu &&
+                                    hasPermission(menu?.submenu[0]?.link, true)
+                                      ?.isPermitted) ||
+                                  (menu?.link === "/dashboard" &&
+                                    User?.role !== 5)
+                                ) {
+                                  if (menu?.submenu) {
+                                    return (
                                       <Box
+                                        key={index}
+                                        onClick={(e) => {
+                                          handleExpand(
+                                            e,
+                                            {
+                                              menuIndex: index + 1,
+                                              linkIndex,
+                                            },
+                                            true
+                                          );
+                                        }}
                                         sx={{
-                                          // STYLING FOR LIGHT MODE
+                                          // FOR DARK MODE MENU SETTINGS
                                           "& .css-1mfnem1": {
                                             borderRadius: "5px",
                                           },
                                           "& .css-1mfnem1:hover": {
                                             backgroundColor: "#DA1F26",
                                           },
-                                          "& .css-1ogoo8i": {
-                                            backgroundColor: "#DA1F26",
+                                          // submenu containerr color
+                                          "& .css-z5rm24": {
+                                            backgroundColor:
+                                              currentMode === "dark" &&
+                                              "#3b3d44",
+                                            borderRadius: "5px",
                                           },
-                                          // STYLING FOR DARK MODE
-                                          "& .css-yktbuo": {
-                                            backgroundColor: "#DA1F26",
-                                          },
-                                          "& .css-yktbuo:hover": {
-                                            backgroundColor: "#DA1F26",
-                                          },
-                                          "& .css-1v6ithu": {
-                                            color: "white",
-                                          },
-                                          "& .leads_counter": {
+                                          // Submenu count color
+                                          "& .css-1rnkhs0": {
                                             color:
-                                              currentMode === "dark"
-                                                ? menu?.countColor
-                                                : "black",
+                                              currentMode === "dark" && "white",
+                                          },
+                                          // LIGHT MODE SETTINGS
+                                          "& .css-1ohfb25:hover": {
+                                            backgroundColor: "#DA1F26",
+                                            color: "white",
+                                            borderRadius: "5px",
+                                          },
+                                          "& .css-wx7wi4": {
+                                            width: "18px",
+                                            minWidth: "18px",
                                           },
                                         }}
-                                        className="relative my-1"
+                                        className="my-1 sub"
                                       >
-                                        <MenuItem
-                                          active={
-                                            menu.link ===
-                                            window.location.pathname.replaceAll(
-                                              "%20",
-                                              " "
-                                            )
+                                        <SubMenu
+                                          label={menu.name}
+                                          icon={menu.icon}
+                                          open={
+                                            openedSubMenu.menuIndex ===
+                                              index + 1 &&
+                                            openedSubMenu.linkIndex ===
+                                              linkIndex
                                           }
                                         >
-                                          <div className="flex items-center gap-4  rounded-lg text-md  ">
-                                            <span
-                                              className={`${
-                                                !isCollapsed && "text-xl"
-                                              }`}
-                                            >
-                                              {menu.icon}
-                                            </span>
-                                            {isCollapsed && (
-                                              <span className="capitalize">
-                                                {menu.name}
+                                          {menu?.submenu.map((m, index) => {
+                                            return (
+                                              <Link
+                                                key={index}
+                                                to={`${m.link}`}
+                                              >
+                                                <Box
+                                                  sx={{
+                                                    // STYLING FOR LIGHT MODE
+                                                    "& .css-1mfnem1": {
+                                                      borderRadius: "5px",
+                                                    },
+                                                    "& .css-1mfnem1:hover": {
+                                                      backgroundColor:
+                                                        "#DA1F26",
+                                                    },
+                                                    "& .css-1ogoo8i": {
+                                                      backgroundColor:
+                                                        "#DA1F26",
+                                                    },
+                                                    // STYLING FOR DARK MODE
+                                                    "& .css-yktbuo": {
+                                                      backgroundColor:
+                                                        "#DA1F26",
+                                                    },
+                                                    "& .css-1f8bwsm": {
+                                                      minWidth:
+                                                        "10px !important",
+                                                    },
+                                                    "& .css-yktbuo:hover": {
+                                                      backgroundColor:
+                                                        "#DA1F26",
+                                                    },
+                                                    "& .css-1v6ithu": {
+                                                      color: "white",
+                                                    },
+                                                    "& .leads_counter": {
+                                                      color: m?.countColor
+                                                        ? m?.countColor
+                                                        : currentMode === "dark"
+                                                        ? "white"
+                                                        : "black",
+                                                    },
+                                                    "& .css-cveggr-MuiListItemIcon-root":
+                                                      {
+                                                        minWidth:
+                                                          "10px !important",
+                                                      },
+                                                  }}
+                                                  className="relative my-1"
+                                                >
+                                                  <MenuItem
+                                                    active={
+                                                      m.link ===
+                                                      window.location.pathname.replaceAll(
+                                                        "%20",
+                                                        " "
+                                                      )
+                                                    }
+                                                    className="flex"
+                                                  >
+                                                    {m?.icon && (
+                                                      <ListItemIcon
+                                                        style={{
+                                                          minWidth:
+                                                            "23px !important",
+                                                        }}
+                                                      >
+                                                        {m?.icon}
+                                                      </ListItemIcon>
+                                                    )}{" "}
+                                                    <span className=" ">
+                                                      {" "}
+                                                      {m?.name || ""}
+                                                    </span>
+                                                  </MenuItem>
+                                                  {m?.count != null && (
+                                                    <span
+                                                      className="leads_counter block absolute right-5"
+                                                      style={{
+                                                        top: "50%",
+                                                        transform:
+                                                          "translateY(-50%)",
+                                                      }}
+                                                    >
+                                                      {m?.count !== null &&
+                                                      m?.count !== undefined
+                                                        ? m?.count
+                                                        : ""}
+                                                    </span>
+                                                  )}
+                                                </Box>
+                                              </Link>
+                                            );
+                                          })}
+                                        </SubMenu>
+                                      </Box>
+                                    );
+                                  } else {
+                                    return (
+                                      <Link
+                                        key={index}
+                                        to={`${menu.link}`}
+                                        onClick={() => setopenBackDrop(true)}
+                                      >
+                                        <Box
+                                          sx={{
+                                            // STYLING FOR LIGHT MODE
+                                            "& .css-1mfnem1": {
+                                              borderRadius: "5px",
+                                            },
+                                            "& .css-1mfnem1:hover": {
+                                              backgroundColor: "#DA1F26",
+                                            },
+                                            "& .css-1ogoo8i": {
+                                              backgroundColor: "#DA1F26",
+                                            },
+                                            // STYLING FOR DARK MODE
+                                            "& .css-yktbuo": {
+                                              backgroundColor: "#DA1F26",
+                                            },
+                                            "& .css-yktbuo:hover": {
+                                              backgroundColor: "#DA1F26",
+                                            },
+                                            "& .css-1v6ithu": {
+                                              color: "white",
+                                            },
+                                            "& .leads_counter": {
+                                              color:
+                                                currentMode === "dark"
+                                                  ? menu?.countColor
+                                                  : "black",
+                                            },
+                                          }}
+                                          className="relative my-1"
+                                        >
+                                          <MenuItem
+                                            active={
+                                              menu.link ===
+                                              window.location.pathname.replaceAll(
+                                                "%20",
+                                                " "
+                                              )
+                                            }
+                                          >
+                                            <div className="flex items-center gap-4  rounded-lg text-md  ">
+                                              <span
+                                                className={`${
+                                                  !isCollapsed && "text-xl"
+                                                }`}
+                                              >
+                                                {menu.icon}
+                                              </span>
+                                              {isCollapsed && (
+                                                <span className="capitalize">
+                                                  {menu.name}
+                                                </span>
+                                              )}
+                                            </div>
+                                          </MenuItem>
+                                          {menu?.count !== null &&
+                                            menu?.count !== undefined && (
+                                              <span
+                                                className="leads_counter block absolute right-5"
+                                                style={{
+                                                  top: "50%",
+                                                  transform: "translateY(-50%)",
+                                                }}
+                                              >
+                                                {menu?.count !== null &&
+                                                menu?.count !== undefined
+                                                  ? menu?.count
+                                                  : ""}
                                               </span>
                                             )}
-                                          </div>
-                                        </MenuItem>
-                                        {menu?.count !== null &&
-                                          menu?.count !== undefined && (
-                                            <span
-                                              className="leads_counter block absolute right-5"
-                                              style={{
-                                                top: "50%",
-                                                transform: "translateY(-50%)",
-                                              }}
-                                            >
-                                              {menu?.count !== null &&
-                                              menu?.count !== undefined
-                                                ? menu?.count
-                                                : ""}
-                                            </span>
-                                          )}
-                                      </Box>
-                                    </Link>
-                                  );
+                                        </Box>
+                                      </Link>
+                                    );
+                                  }
                                 }
-                              }
-                            })}
-                          </SubMenu>
-                        )}
-                      </Box>
-                    );
-                  }
-                })}
-              </Box>
-            </Menu>
+                              })}
+                            </SubMenu>
+                          )}
+                        </Box>
+                      );
+                    }
+                  })}
+                </Box>
+              </Menu>
+            </div>
           </div>
+        </Sidebar>
+      </div>
+    
+    {(newMessageReceived === User?.loginId && location.pathname !== "/chat") &&
+      <div className="message-received-float">
+        <Link onClick={() => {setNewMessageReceived(false); setMessagesCount(0)}} to="/chat">
+          <FaInbox size={22}/>
+        </Link>
+
+        <div className="bg-black p-1 w-[18px] h-[18px] rounded-full absolute top-0 left-0 flex justify-center items-center text-white">
+              {messagesCount}
         </div>
-      </Sidebar>
-    </div>
+      </div>
+    }
+  
+    </>
   );
 };
 export default Sidebarmui;

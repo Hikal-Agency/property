@@ -28,7 +28,7 @@ const ChatMessageFromMe = ({ message, data }) => {
           {message.type === "revoked" ? (
             <i className="text-gray-200">This message was deleted</i>
           ) : (
-            <span className="text-white">{message.body}</span>
+            <span className="text-white">{message.content}</span>
           )}
         </div>
       )}
@@ -36,9 +36,11 @@ const ChatMessageFromMe = ({ message, data }) => {
         sx={{ width: 20, height: 20, background: "#da1f26" }}
         className="mr-2"
       >
-        <p style={{ fontSize: 11 }}>
-          {data?.userInfo?.pushname[0]?.toUpperCase()}
-        </p>
+          <img
+            className="object-cover w-full h-full"
+            src={data?.profile_picture || data?.displayImg}
+            alt=""
+          />
       </Avatar>
     </div>
   );

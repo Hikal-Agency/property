@@ -9,6 +9,7 @@ body {
 }
 
 html, body {
+  scroll-behavior: smooth;
   font-size: 12px;
 }
 
@@ -579,6 +580,24 @@ label[for="bulkImport"] .MuiButtonBase-root {
   animation: whatsappAnimation 2s infinite;
 }
 
+.message-received-float {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 52px;
+  height: 52px;
+  background: #da1f26;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 110px;
+  right: 36px;
+  animation: blink 1s;
+}
+
+.message-received-float svg {
+  color: white;
+}
+
 .active-tab {
   display: block;
   animation: fade 0.4s ease-in-out;
@@ -592,3 +611,21 @@ label[for="bulkImport"] .MuiButtonBase-root {
     opacity: 1;
   }
 }
+
+
+@keyframes blink {
+  0%{
+    opacity: 0;
+  }
+
+  15%, 35%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+
+

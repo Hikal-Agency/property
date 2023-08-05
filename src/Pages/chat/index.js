@@ -18,7 +18,34 @@ const ChatPage = () => {
 
   const messagesContainerRef = useRef();
 
-  const handleSendMessage = () => {};
+  const handleSendMessage = ({ e, type, content }) => {
+    e.preventDefault();
+    if (content) {
+      if (type === "text") {
+        const message = {
+          from: User,
+          to: activeChat,
+          content: content,
+          type,
+        };
+        socket.emit("chat_send-message", message);
+
+        setChatMessages((prevChatMessages) => [...prevChatMessages, message]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    socket.on("chat_message-received", (data) => {
+        setChatMessages((prevChatMessages) => [...prevChatMessages, data]);
+    });
+  }, []);
+
+  useEffect(() => {
+    if(messagesContainerRef?.current) {
+       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [chatMessages]);
 
   // useEffect(() => {
   //   // setChatMessages([]);
@@ -49,7 +76,7 @@ const ChatPage = () => {
         setActiveChat={setActiveChat}
         recentChats={recentChats}
         onlineChats={onlineChats}
-        chatMessages={chatMessages}
+        chatMessages={activeChat?.loginId ? chatMessages : []}
         loadingConversations={loadingConversations}
         handleSendMessage={handleSendMessage}
         chatLoading={chatLoading}

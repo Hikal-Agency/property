@@ -72,9 +72,9 @@ const ChatConversation = ({
 
   const handleMessageInputVal = (e) => {
     setMessageInputVal(e.target.value);
-    setTimeout(() =>{
+    setTimeout(() => {
       socket.emit("chat_user-typing", { userId: activeChat?.loginId });
-    }, 500);
+    }, 400);
   };
 
   useEffect(() => {
@@ -87,12 +87,12 @@ const ChatConversation = ({
             clearTimeout(typingTimeout);
             typingTimeout = setTimeout(() => {
               setIsTyping(false);
-            }, 1500);
+            }, 1400);
           } else {
             clearTimeout(typingTimeout);
             typingTimeout = setTimeout(() => {
               setIsTyping(false);
-            }, 1500);
+            }, 1400);
           }
         }
       });
@@ -156,7 +156,7 @@ const ChatConversation = ({
               </Button>
               <Button
                 onClick={() => setActiveTab("online")}
-               className={`flex-1`}
+                className={`flex-1`}
                 variant="contained"
                 style={{
                   background: activeTab === "online" ? "#da1f26" : "#f7f7f7",
@@ -176,7 +176,9 @@ const ChatConversation = ({
                 </div>
               ) : (
                 <div className="h-full overflow-y-scroll">
-                  <div className={`${activeTab === "online" ? 'active-tab' : ''}`}>
+                  <div
+                    className={`${activeTab === "online" ? "active-tab" : ""}`}
+                  >
                     {activeTab === "online" && [
                       onlineChats?.filter(
                         (chat) => chat?.loginId !== User?.loginId
@@ -190,7 +192,9 @@ const ChatConversation = ({
                                   key={chat?.id}
                                   setActiveChat={setActiveChat}
                                   chat={chat}
-                                  isActive={activeChat?.loginId === chat?.loginId}
+                                  isActive={
+                                    activeChat?.loginId === chat?.loginId
+                                  }
                                 />
                               );
                             }),
@@ -204,7 +208,9 @@ const ChatConversation = ({
                       ),
                     ]}
                   </div>
-                  <div className={`${activeTab === "recent" ? 'active-tab' : ''}`}>
+                  <div
+                    className={`${activeTab === "recent" ? "active-tab" : ""}`}
+                  >
                     {activeTab === "recent" && [
                       recentChats?.length > 0 ? (
                         [
@@ -292,12 +298,12 @@ const ChatConversation = ({
               ) : chatMessages.length > 0 ? (
                 <div
                   ref={messagesContainerRef}
-                  className="bg-[#fafafa] overflow-y-scroll p-3 flex-1 flex flex-col items-end"
+                  className="bg-[#fafafa] scroll-smooth overflow-y-scroll p-3 flex-1 flex flex-col items-end"
                 >
                   {chatMessages?.map((message, index) => {
                     if (
-                      message?.from === User?.loginId &&
-                      message.to === activeChat?.loginId
+                      message?.from?.loginId === User?.loginId &&
+                      message.to?.loginId === activeChat?.loginId
                     ) {
                       return (
                         <ChatMessageFromMe
@@ -307,8 +313,8 @@ const ChatConversation = ({
                         />
                       );
                     } else if (
-                      message.from === activeChat?.loginId &&
-                      message.to === User?.loginId
+                      message.from?.loginId === activeChat?.loginId &&
+                      message.to?.loginId === User?.loginId
                     ) {
                       return (
                         <ChatMessageFromOther key={index} message={message} />
@@ -326,7 +332,14 @@ const ChatConversation = ({
                 <div className="p-5 border border-[#e8e8e8]">
                   <form
                     className="relative"
-                    onSubmit={(e) => handleSendMessage(e, "text")}
+                    onSubmit={(e) => {
+                      handleSendMessage({
+                        e,
+                        type: "text",
+                        content: messageInputVal?.trim(),
+                      });
+                      setMessageInputVal("");
+                    }}
                   >
                     <TextField
                       sx={{
