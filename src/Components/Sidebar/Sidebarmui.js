@@ -355,6 +355,7 @@ const Sidebarmui = () => {
       if (token) {
         const user = localStorage.getItem("user");
         setUser(JSON.parse(user));
+        socket.emit("chat_addUser", JSON.parse(user));
         setIsUserSubscribed(checkUser(JSON.parse(user)));
       } else {
         if (document.location.pathname !== "/fresh-logs") {
