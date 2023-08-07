@@ -51,10 +51,10 @@ const ChatPage = () => {
   //   // setChatMessages([]);
   // }, [activeChat]);
 
-  // useEffect(() => {
-  //   setIsCollapsed(false);
-  //   collapseSidebar();
-  // }, []);
+  useEffect(() => {
+    setIsCollapsed(false);
+    collapseSidebar();
+  }, []);
 
   useEffect(() => {
     if (User?.id) {
