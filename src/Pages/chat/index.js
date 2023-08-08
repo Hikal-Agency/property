@@ -55,7 +55,7 @@ const ChatPage = () => {
       console.log("User added in chat::")
       socket.on("chat_getOnlineUsers", (data) => {
         console.log("online users::", data)
-        setOnlineChats(data);
+        setOnlineChats(data?.filter((chat) => chat?.loginId && chat?.loginId !== User?.loginId));
       });
     }
   }, [User]);

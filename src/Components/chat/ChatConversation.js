@@ -185,7 +185,6 @@ const ChatConversation = ({
                       )?.length > 0 ? (
                         [
                           onlineChats
-                            ?.filter((chat) => chat?.loginId !== User?.loginId)
                             ?.map((chat) => {
                               return (
                                 <ChatConversationItem
