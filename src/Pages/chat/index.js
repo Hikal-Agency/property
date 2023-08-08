@@ -29,6 +29,7 @@ const ChatPage = () => {
           type,
         };
         socket.emit("chat_send-message", message);
+        console.log("chat message sent ", message);
 
         setChatMessages((prevChatMessages) => [...prevChatMessages, message]);
       }
@@ -37,6 +38,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     socket.on("chat_message-received", (data) => {
+        console.log("chat message received::", data);
         setChatMessages((prevChatMessages) => [...prevChatMessages, data]);
     });
   }, []);
@@ -50,7 +52,9 @@ const ChatPage = () => {
   useEffect(() => {
     if (User?.id) {
       socket.emit("chat_addUser", User);
+      console.log("User added in chat::")
       socket.on("chat_getOnlineUsers", (data) => {
+        console.log("online users::", data)
         setOnlineChats(data);
       });
     }
