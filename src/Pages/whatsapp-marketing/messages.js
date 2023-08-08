@@ -849,7 +849,7 @@ const AllLeads = () => {
         </Button>
 
         <div
-          className={`absolute w-[250px] z-[1000] bg-[#f3f3f3] p-4 rounded top-[125%] right-0 ${darkModeColors}`}
+          className={`fixed w-[250px] z-[1000] bg-[#f3f3f3] p-4 rounded top-[17%] right-[6px] ${darkModeColors}`}
         >
           <Select
             fullWidth
