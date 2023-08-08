@@ -591,6 +591,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
   position: fixed;
   bottom: 110px;
   right: 36px;
+  z-index: 1000;
 }
 
 .message-received-float.animate {
