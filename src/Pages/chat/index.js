@@ -47,15 +47,6 @@ const ChatPage = () => {
     }
   }, [chatMessages]);
 
-  // useEffect(() => {
-  //   // setChatMessages([]);
-  // }, [activeChat]);
-
-  useEffect(() => {
-    setIsCollapsed(false);
-    collapseSidebar();
-  }, []);
-
   useEffect(() => {
     if (User?.id) {
       socket.emit("chat_addUser", User);
