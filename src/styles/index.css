@@ -632,4 +632,9 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 
-
+/* ATTENDANCE  */
+/* Customize dark mode calendar */
+.custom-dark-calendar {
+  background-color: #111827; /* Dark background color */
+  color: #ffffff; /* Text color for dark mode */
+}
