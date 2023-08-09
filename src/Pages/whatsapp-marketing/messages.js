@@ -18,6 +18,7 @@ import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { toast } from "react-toastify";
 import { langs } from "../../langCodes";
+import { BiFilter } from "react-icons/bi";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
 import { socket } from "../App";
@@ -108,7 +109,7 @@ const AllLeads = () => {
   const [agents, setAgents] = useState(SalesPerson || {});
   const [pageRange, setPageRange] = useState();
   const [error, setError] = useState(false);
-  const {hasPermission} = usePermission();
+  const { hasPermission } = usePermission();
 
   const [openMessageModal, setOpenMessageModal] = useState({
     open: false,
@@ -193,79 +194,17 @@ const AllLeads = () => {
     },
     {
       field: "leadContact",
-      headerName: "Contact",
+      headerName: "Phone",
       minWidth: 115,
       headerAlign: "center",
       flex: 1,
     },
     {
-      field: "project",
-      headerName: "Project",
+      field: "email",
+      headerName: "Email",
+      minWidth: 115,
       headerAlign: "center",
-      minWidth: 40,
       flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full ">
-            <p className="capitalize">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    {
-      headerAlign: "center",
-      field: "leadType",
-      headerName: "Property",
-      minWidth: 85,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="flex flex-col">
-            <p>{cellValues.row.leadType}</p>
-            <p>{cellValues.row.enquiryType}</p>
-          </div>
-        );
-      },
-    },
-
-    {
-      field: "otp",
-      headerName: "OTP",
-      minWidth: 72,
-      headerAlign: "center",
-      // headerClassName: headerClasses.header,
-      headerClassName: "break-normal",
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div style={{ fontSize: 10 }}>
-            {cellValues.formattedValue === "Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
-                  OTP VERIFIED
-                </span>
-              </div>
-            )}
-
-            {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
-                  NOT VERIFIED
-                </span>
-              </div>
-            )}
-
-            {cellValues.formattedValue !== "Not Verified" &&
-              cellValues.formattedValue !== "Verified" && (
-                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
-                    {cellValues.formattedValue}
-                  </span>
-                </div>
-              )}
-          </div>
-        );
-      },
     },
     {
       field: "language",
@@ -692,6 +631,7 @@ const AllLeads = () => {
           leadName: row?.leadName || "-",
           leadContact: row?.leadContact || "-",
           project: row?.project || "-",
+          email: row?.leadEmail || "-",
           otp: row?.otp || "-",
           leadType: row?.leadType || "-",
           language: getLangCode(row?.language) || "-",
@@ -900,9 +840,19 @@ const AllLeads = () => {
 
   return (
     <div className="pb-10">
-      <div className={`grid grid-cols-6 mt-6 gap-1 ${darkModeColors}`}>
-        <div>
+      <div className="flex justify-end mt-5 relative">
+        <Button
+          style={{ color: "#da1f26", background: "rgb(218 31 38 / 16%)" }}
+          className="flex items-center"
+        >
+          <span>Filters</span> <BiFilter size={19} />
+        </Button>
+
+        <div
+          className={`fixed w-[250px] z-[1000] bg-[#f3f3f3] p-4 rounded top-[17%] right-[6px] ${darkModeColors}`}
+        >
           <Select
+            fullWidth
             id="leadOrigin"
             value={leadOriginSelected?.id || "hotleads"}
             onChange={(event) =>
@@ -911,7 +861,7 @@ const AllLeads = () => {
               )
             }
             size="small"
-            className={`w-full mt-1 mb-5 `}
+            className={`w-full mt-1 mb-3`}
             displayEmpty
             required
             sx={{
@@ -932,10 +882,9 @@ const AllLeads = () => {
               </MenuItem>
             ))}
           </Select>
-        </div>
-        <div>
           <Select
             id="leadType"
+            fullWidth
             value={leadTypeSelected?.id || "all"}
             onChange={(event) =>
               setLeadTypeSelected(
@@ -943,7 +892,7 @@ const AllLeads = () => {
               )
             }
             size="small"
-            className={`w-full mt-1 mb-5`}
+            className={`w-full mt-1 mb-3`}
             displayEmpty
             required
             sx={{
@@ -970,169 +919,173 @@ const AllLeads = () => {
               </MenuItem>
             ))}
           </Select>
-        </div>
-        <div style={{ position: "relative" }}>
-          <label
-            htmlFor="enquiryType"
-            style={{ position: "absolute", top: "-20px", right: 0 }}
-            className={`flex justify-end items-center ${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            } `}
-          >
-            {enquiryTypeSelected?.id ? (
-              <strong
-                className="ml-4 text-red-600 cursor-pointer"
-                onClick={() => setEnquiryTypeSelected({ id: 0 })}
-              >
-                Clear
-              </strong>
-            ) : (
-              ""
-            )}
-          </label>
-          <Select
-            id="enquiryType"
-            value={enquiryTypeSelected?.id}
-            className={`w-full mt-1 mb-5`}
-            onChange={(event) =>
-              setEnquiryTypeSelected(
-                enquiryTypes.find((type) => type.id === event.target.value)
-              )
-            }
-            displayEmpty
-            size="small"
-            required
-            sx={{
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-              "&:hover:not (.Mui-disabled):before": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-            }}
-          >
-            <MenuItem
-              value="0"
-              disabled
+          <div style={{ position: "relative", width: "100%", marginTop: enquiryTypeSelected.id ? "25px" : "0" }}>
+            <label
+              htmlFor="enquiryType"
+              style={{ position: "absolute", top: "-20px", right: 0 }}
+              className={`flex justify-end items-center ${
+                currentMode === "dark" ? "text-white" : "text-dark"
+              } `}
+            >
+              {enquiryTypeSelected?.id ? (
+                <strong
+                  className="ml-4 text-red-600 cursor-pointer"
+                  onClick={() => setEnquiryTypeSelected({ id: 0 })}
+                >
+                  Clear
+                </strong>
+              ) : (
+                ""
+              )}
+            </label>
+            <Select
+              fullWidth
+              id="enquiryType"
+              value={enquiryTypeSelected?.id}
+              className={`w-full mt-1 mb-3`}
+              onChange={(event) =>
+                setEnquiryTypeSelected(
+                  enquiryTypes.find((type) => type.id === event.target.value)
+                )
+              }
+              displayEmpty
+              size="small"
+              required
               sx={{
-                color: currentMode === "dark" ? "#ffffff" : "#000000",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
               }}
             >
-              Select Enquiry Type
-            </MenuItem>
-            {enquiryTypes?.map((type, index) => (
-              <MenuItem key={index} value={type?.id || ""}>
-                {type?.formattedValue}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-        <div className="mt-1">
-          <TextField
-            className={`w-full`}
-            id="Project"
-            type={"text"}
-            label="Project Name"
-            variant="outlined"
-            size="small"
-            onChange={(e) => setProjectNameTyped(e.target.value)}
-            required
-          />
-        </div>
-        <div style={{ position: "relative" }}>
-          <label
-            style={{ position: "absolute", top: "-20px", right: 0 }}
-            htmlFor="Manager"
-            className={`flex justify-end items-center ${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            } `}
-          >
-            {managerSelected ? (
-              <strong
-                className="ml-4 text-red-600 cursor-pointer"
-                onClick={() => setManagerSelected("")}
-              >
-                Clear
-              </strong>
-            ) : (
-              ""
-            )}
-          </label>
-          <Select
-            id="Manager"
-            value={managerSelected || ""}
-            onChange={(event) => setManagerSelected(event.target.value)}
-            size="small"
-            className={`w-full mt-1 mb-5 `}
-            displayEmpty
-            required
-            sx={{
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-              "&:hover:not (.Mui-disabled):before": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-            }}
-          >
-            <MenuItem value="" selected disabled>
-              Manager
-            </MenuItem>
-            {managers?.map((manager, index) => (
-              <MenuItem key={index} value={manager?.id || ""}>
-                {manager?.userName}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-        <div style={{ position: "relative" }}>
-          <label
-            style={{ position: "absolute", top: "-20px", right: 0 }}
-            htmlFor="Agent"
-            className={`flex justify-end items-center ${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            } `}
-          >
-            {agentSelected ? (
-              <strong
-                className="ml-4 text-red-600 cursor-pointer"
-                onClick={() => {
-                  setAgentSelected("");
-                  setAgents([]);
+              <MenuItem
+                value="0"
+                disabled
+                sx={{
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
                 }}
               >
-                Clear
-              </strong>
-            ) : (
-              ""
-            )}
-          </label>
-          <Select
-            id="Agent"
-            value={agentSelected || ""}
-            onChange={(event) => setAgentSelected(event.target.value)}
-            size="small"
-            className={`w-full mt-1 mb-5 `}
-            displayEmpty
-            required
-            sx={{
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-              "&:hover:not (.Mui-disabled):before": {
-                borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-              },
-            }}
-          >
-            <MenuItem selected value="" disabled>
-              Agent
-            </MenuItem>
-            {agents[`manager-${managerSelected}`]?.map((agent, index) => (
-              <MenuItem key={index} value={agent?.id || ""}>
-                {agent?.userName}
+                Select Enquiry Type
               </MenuItem>
-            ))}
-          </Select>
+              {enquiryTypes?.map((type, index) => (
+                <MenuItem key={index} value={type?.id || ""}>
+                  {type?.formattedValue}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+          <div className="mb-3">
+            <TextField
+              className={`w-full`}
+              id="Project"
+              type={"text"}
+              label="Project Name"
+              variant="outlined"
+              fullWidth
+              size="small"
+              onChange={(e) => setProjectNameTyped(e.target.value)}
+              required
+            />
+          </div>
+          <div style={{ position: "relative", width: "100%", marginTop: managerSelected ? "25px" : "0" }}>
+            <label
+              style={{ position: "absolute", top: "-20px", right: 0 }}
+              htmlFor="Manager"
+              className={`flex justify-end items-center ${
+                currentMode === "dark" ? "text-white" : "text-dark"
+              } `}
+            >
+              {managerSelected ? (
+                <strong
+                  className="ml-4 text-red-600 cursor-pointer"
+                  onClick={() => setManagerSelected("")}
+                >
+                  Clear
+                </strong>
+              ) : (
+                ""
+              )}
+            </label>
+            <Select
+              id="Manager"
+              value={managerSelected || ""}
+              onChange={(event) => setManagerSelected(event.target.value)}
+              size="small"
+              fullWidth
+              className={`w-full mt-1 mb-3 `}
+              displayEmpty
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem value="" selected disabled>
+                Manager
+              </MenuItem>
+              {managers?.map((manager, index) => (
+                <MenuItem key={index} value={manager?.id || ""}>
+                  {manager?.userName}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
+          <div style={{ position: "relative", width: "100%", marginTop: agentSelected ? "25px" : "0" }}>
+            <label
+              style={{ position: "absolute", top: "-20px", right: 0 }}
+              htmlFor="Agent"
+              className={`flex justify-end items-center ${
+                currentMode === "dark" ? "text-white" : "text-dark"
+              } `}
+            >
+              {agentSelected ? (
+                <strong
+                  className="ml-4 text-red-600 cursor-pointer"
+                  onClick={() => {
+                    setAgentSelected("");
+                    setAgents([]);
+                  }}
+                >
+                  Clear
+                </strong>
+              ) : (
+                ""
+              )}
+            </label>
+            <Select
+              id="Agent"
+              fullWidth
+              value={agentSelected || ""}
+              onChange={(event) => setAgentSelected(event.target.value)}
+              size="small"
+              className={`w-full mt-1 mb-3`}
+              displayEmpty
+              required
+              sx={{
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+                "&:hover:not (.Mui-disabled):before": {
+                  borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                },
+              }}
+            >
+              <MenuItem selected value="" disabled>
+                Agent
+              </MenuItem>
+              {agents[`manager-${managerSelected}`]?.map((agent, index) => (
+                <MenuItem key={index} value={agent?.id || ""}>
+                  {agent?.userName}
+                </MenuItem>
+              ))}
+            </Select>
+          </div>
         </div>
       </div>
 
@@ -1184,10 +1137,6 @@ const AllLeads = () => {
           />
         </div>
       </Box> */}
-
-      <Box sx={{ width: "100%" }} className="mb-5">
-        <div className="grid grid-cols-2 gap-4"></div>
-      </Box>
 
       <h1
         className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
@@ -1253,7 +1202,7 @@ const AllLeads = () => {
           )}
         </Box>
       )}
-      
+
       <Box
         width={"100%"}
         className={`${currentMode}-mode-datatable`}
@@ -1276,12 +1225,13 @@ const AllLeads = () => {
             setSelectedRows(
               ids.map((id) => {
                 const contact = pageState?.data[id - 1]?.leadContact;
-                if(contact[0] === "+") {
-                    return contact?.slice(1)?.replaceAll(" ", "")
+                if (contact[0] === "+") {
+                  return contact?.slice(1)?.replaceAll(" ", "");
                 } else {
-                    return contact?.replaceAll(" ", "")
+                  return contact?.replaceAll(" ", "");
                 }
-              }));
+              })
+            );
           }}
           pageSize={pageState.pageSize}
           onPageChange={(newPage) => {
@@ -1290,7 +1240,9 @@ const AllLeads = () => {
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-          columns={columns?.filter((c) => hasPermission("leads_col_" + c?.field))}
+          columns={columns?.filter((c) =>
+            hasPermission("leads_col_" + c?.field)
+          )}
           components={{
             // Toolbar: GridToolbar,
             Pagination: CustomPagination,

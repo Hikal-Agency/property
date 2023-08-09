@@ -10,6 +10,7 @@ const Settings = () => {
     currentMode,
     setopenBackDrop,
   } = useStateContext();
+
   useEffect(() => {
     setopenBackDrop(false);
     // eslint-disable-next-line
