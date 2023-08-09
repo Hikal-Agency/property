@@ -186,7 +186,9 @@ const OfficeSettings = () => {
           } w-full col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 p-5`}
           //   style={{ height: "700px" }}
         >
-          <div>
+          <div
+            className={`${currentMode === "dark" ? "text-white" : "text-dark"}`}
+          >
             <MyCalendar />
           </div>
         </div>
