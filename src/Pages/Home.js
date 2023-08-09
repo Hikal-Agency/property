@@ -148,9 +148,9 @@ const Home = () => {
     if (location?.state?.error) {
       console.log("location data: ", location?.state);
       setErrorMsg("😀  The system has been update! Please login again!");
-      // setTimeout(() => {
-      //   setErrorMsg(false);
-      // }, 6000);
+      setTimeout(() => {
+        setErrorMsg(false);
+      }, 6000);
     }
     // if (location?.state?.error) {
     //   toast.error(
