@@ -196,11 +196,13 @@ const CreateMessageModal = ({
                         return (
                           <ChatConversationItem
                             onClick={() => {
-                              setActiveChat(chat);
+                              setActiveChat({...JSON.parse(chat.toData)})
                               handleCloseCreateMessageModal();
                             }}
                             key={chat?.id}
-                            chat={chat}
+                                chat={{
+                                  ...JSON.parse(chat.toData),
+                                }}
                           />
                         );
                       }),

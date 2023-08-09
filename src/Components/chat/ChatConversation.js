@@ -213,10 +213,31 @@ const ChatConversation = ({
                           recentChats?.map((chat) => {
                             return (
                               <ChatConversationItem
-                                key={chat?.id}
-                                onClick={() => setActiveChat(chat)}
-                                chat={chat}
-                                isActive={activeChat?.loginId === chat?.loginId}
+                                key={chat?._id}
+                                onClick={() =>
+                                  setActiveChat({
+                                    ...JSON.parse(
+                                      User?.loginId === chat?.from
+                                        ? chat?.toData
+                                        : chat?.fromData
+                                    ),
+                                  })
+                                }
+                                chat={
+                                  User?.loginId === chat?.from
+                                    ? {
+                                        ...JSON.parse(chat?.toData),
+                                      }
+                                    : {
+                                        ...JSON.parse(chat?.fromData),
+                                      }
+                                }
+                                isActive={
+                                  activeChat?.loginId ===
+                                  (User?.loginId === chat?.from
+                                    ? chat?.to
+                                    : chat?.from)
+                                }
                               />
                             );
                           }),
