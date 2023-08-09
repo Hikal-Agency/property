@@ -184,19 +184,16 @@ const ChatConversation = ({
                         (chat) => chat?.loginId !== User?.loginId
                       )?.length > 0 ? (
                         [
-                          onlineChats
-                            ?.map((chat) => {
-                              return (
-                                <ChatConversationItem
-                                  key={chat?.id}
-                                  onClick={() => setActiveChat(chat)}
-                                  chat={chat}
-                                  isActive={
-                                    activeChat?.loginId === chat?.loginId
-                                  }
-                                />
-                              );
-                            }),
+                          onlineChats?.map((chat) => {
+                            return (
+                              <ChatConversationItem
+                                key={chat?.id}
+                                onClick={() => setActiveChat(chat)}
+                                chat={chat}
+                                isActive={activeChat?.loginId === chat?.loginId}
+                              />
+                            );
+                          }),
                         ]
                       ) : (
                         <div className="mt-4 flex justify-center items-center">

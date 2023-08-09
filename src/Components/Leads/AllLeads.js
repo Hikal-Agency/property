@@ -20,23 +20,28 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 
-import axios from "../../axoisConfig";
 import { FaComment } from "react-icons/fa";
 import { FaGlobe } from "react-icons/fa";
-import { useEffect, useState, useRef } from "react";
-import { useStateContext } from "../../context/ContextProvider";
-import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
 import { FaSnapchat } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { FaArchive } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
+import { TbFileImport } from "react-icons/tb";
+import { RiMessage2Line } from "react-icons/ri";
+import { FaWhatsapp } from "react-icons/fa";
+import { FaYoutube } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
+
+import axios from "../../axoisConfig";
+import { useEffect, useState, useRef } from "react";
+import { useStateContext } from "../../context/ContextProvider";
+import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { useLocation } from "react-router-dom";
 
 import { BsPersonCircle, BsSnow2, BsTrash, BsAlarm } from "react-icons/bs";
-import { TbFileImport } from "react-icons/tb";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "./SingleLead";
@@ -49,10 +54,6 @@ import RenderManagers from "./RenderManagers";
 import RenderSalesperson from "./RenderSalesperson";
 import DeleteLeadModel from "./DeleteLead";
 import BulkImport from "./BulkImport";
-import { RiMessage2Line } from "react-icons/ri";
-import { FaWhatsapp } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
 import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
 import Timeline from "../../Pages/timeline";
