@@ -207,7 +207,7 @@ const OfficeSettings = () => {
           <div
             className={`${currentMode === "dark" ? "text-white" : "text-dark"}`}
           >
-            <MyCalendar />
+            <MyCalendar isOffDay={isOffDay} />
           </div>
         </div>
         <div className="h-full w-full">
