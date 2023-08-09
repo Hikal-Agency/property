@@ -23,6 +23,7 @@ const Home = () => {
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
   const [openBackDrop, setOpenBackDrop] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -144,22 +145,29 @@ const Home = () => {
   useEffect(() => {
     dotsanimation();
     if (location?.state?.error) {
-      toast.error(
-        location?.state?.error
-          ? location?.state?.error
-          : "Something Went Wrong! Try Again",
-        {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      setErrorMsg(location?.state?.error);
+      setTimeout(() => {
+        setErrorMsg(false);
+      }, 3000);
     }
+    // if (location?.state?.error) {
+    //   toast.error(
+    //     location?.state?.error
+    //       ? location?.state?.error
+    //       : "Something Went Wrong! Try Again",
+    //     {
+    //       position: "top-center",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: false,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     }
+    //   );
+    // }
+
     const token = localStorage.getItem("auth-token");
     if (!location?.state?.error) {
       if (token) {
@@ -190,6 +198,9 @@ const Home = () => {
         >
           <div className="flex min-h-screen items-center justify-center mt-5 pl-3">
             <div className="w-[calc(100vw-50px)] md:max-w-[500px] space-y-4 md:space-y-6 bg-white py-8 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+              <div className="text-center p-5 bg-[#f8d7da] font-bold text-lg">
+                {errorMsg}
+              </div>
               <div>
                 <Link to={"/"} className="cursor-pointer">
                   <img
@@ -202,7 +213,6 @@ const Home = () => {
                   Sign in to your account
                 </h2>
               </div>
-
               <div>
                 <Backdrop
                   sx={{
