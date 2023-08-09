@@ -150,6 +150,13 @@ const OfficeSettings = () => {
       setSettings(get_settings?.data?.data);
 
       console.log("Response: ", get_settings);
+
+      // OFF DAYS
+      const offDaysFromApi = get_settings?.data?.data?.off_day || "";
+      const offDaysArray = offDaysFromApi.split(", ").filter(Boolean); // Split and remove empty entries
+      setOffDays(offDaysArray);
+
+      console.log("offDayArray=====================> ", offDaysArray);
     } catch (error) {
       toast.error("Unable to fetch settings.", {
         position: "top-right",
@@ -166,8 +173,19 @@ const OfficeSettings = () => {
     setIsEditing(false);
   };
 
+  // OFF DAYS
+  const [offDays, setOffDays] = useState([]);
+  // const isOffDay = (offDay) => {
+  //   return offDays.includes(offDay);
+  // };
+  const isOffDay = (offDay) => {
+    const formattedOffDay = moment(offDay).format("dddd"); // Convert date to day name (e.g., "Sunday")
+    return offDays.includes(formattedOffDay);
+  };
+
   useEffect(() => {
     fetchSettings();
+    // fetchOffDays();
   }, []);
 
   return (
@@ -186,8 +204,10 @@ const OfficeSettings = () => {
           } w-full col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 p-5`}
           //   style={{ height: "700px" }}
         >
-          <div>
-            <MyCalendar />
+          <div
+            className={`${currentMode === "dark" ? "text-white" : "text-dark"}`}
+          >
+            <MyCalendar isOffDay={isOffDay} />
           </div>
         </div>
         <div className="h-full w-full">

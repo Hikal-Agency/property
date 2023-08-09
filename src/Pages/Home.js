@@ -215,7 +215,7 @@ const Home = () => {
                     <CircularProgress sx={{ color: "white" }} />
 
                     <h1 className="font-semibold text-lg">
-                      Redirecting you to the New World of Real Estate ! Please
+                      Redirecting you to the New World of Real Estate! Please
                       wait a while.
                     </h1>
                   </div>
@@ -314,7 +314,7 @@ const Home = () => {
                         <span>Sign in</span>
                       )}
                     </button>
-                    <div className="flex justify-center">
+                    {/* <div className="flex justify-center">
                       <Link
                         to={"/auth/signup"}
                         state={{ continueURL: location?.state?.continueURL }}
@@ -324,7 +324,7 @@ const Home = () => {
                           Don&apos;t Have an Account? Register Now
                         </button>
                       </Link>
-                    </div>
+                    </div> */}
                   </div>
                 </form>
               </div>
