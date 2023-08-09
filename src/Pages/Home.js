@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
+import { IoHappySharp } from "react-icons/io5";
 
 const Home = () => {
   let canvas = useRef();
@@ -23,6 +24,7 @@ const Home = () => {
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
   const [openBackDrop, setOpenBackDrop] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -144,22 +146,30 @@ const Home = () => {
   useEffect(() => {
     dotsanimation();
     if (location?.state?.error) {
-      toast.error(
-        location?.state?.error
-          ? location?.state?.error
-          : "Something Went Wrong! Try Again",
-        {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
+      console.log("location data: ", location?.state);
+      setErrorMsg("😀  The system has been update! Please login again!");
+      setTimeout(() => {
+        setErrorMsg(false);
+      }, 6000);
     }
+    // if (location?.state?.error) {
+    //   toast.error(
+    //     location?.state?.error
+    //       ? location?.state?.error
+    //       : "Something Went Wrong! Try Again",
+    //     {
+    //       position: "top-center",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: false,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     }
+    //   );
+    // }
+
     const token = localStorage.getItem("auth-token");
     if (!location?.state?.error) {
       if (token) {
@@ -190,6 +200,16 @@ const Home = () => {
         >
           <div className="flex min-h-screen items-center justify-center mt-5 pl-3">
             <div className="w-[calc(100vw-50px)] md:max-w-[500px] space-y-4 md:space-y-6 bg-white py-8 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+              {errorMsg && (
+                <div className="flex flex-col items-center text-center p-5 bg-[#d4edda] font-bold text-lg">
+                  {/* <IoHappySharp
+                    color={"#FFC83D"}
+                    size={"30"}
+                    className="text-center mb-3"
+                  /> */}
+                  {errorMsg}
+                </div>
+              )}
               <div>
                 <Link to={"/"} className="cursor-pointer">
                   <img
@@ -202,7 +222,6 @@ const Home = () => {
                   Sign in to your account
                 </h2>
               </div>
-
               <div>
                 <Backdrop
                   sx={{
