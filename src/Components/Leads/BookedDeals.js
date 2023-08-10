@@ -23,22 +23,9 @@ import {
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
-import { BiSearch } from "react-icons/bi";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { FaSnapchat } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
-import { FaComment, FaArchive, FaUser } from "react-icons/fa";
-import { GiMagnifyingGlass } from "react-icons/gi";
-import { FaGlobe } from "react-icons/fa";
 import moment from "moment/moment";
-import { RiMessage2Line } from "react-icons/ri";
-import { FaWhatsapp } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
 
 import Pagination from "@mui/material/Pagination";
 import { langs } from "../../langCodes";
@@ -48,12 +35,44 @@ import { toast } from "react-toastify";
 import RenderManagers from "./RenderManagers";
 import UpdateBookedDeal from "./UpdateBookedDeal";
 import { useNavigate, Link } from "react-router-dom";
-import { IoIosAlert, IoMdClose } from "react-icons/io";
 import RenderSalesperson from "./RenderSalesperson";
 import RenderPriority from "./RenderPriority";
 import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Timeline from "../../Pages/timeline";
+
+import { 
+  FaSnapchatGhost,
+  FaFacebookF,
+  FaTiktok,
+  FaRegComments,
+  FaUser,
+  FaWhatsapp,
+  FaYoutube,
+  FaTwitter
+} from "react-icons/fa";
+import { 
+  AiOutlineEdit, 
+  AiOutlineHistory 
+} from "react-icons/ai";
+import { 
+  BsPersonCircle, 
+  BsSnow2 
+} from "react-icons/bs";
+import { 
+  BiSearch,
+  BiImport,
+  BiArchive,
+  BiMessageRoundedDots
+} from "react-icons/bi";
+import { 
+  IoIosAlert, 
+  IoMdClose 
+} from "react-icons/io";
+import { FcGoogle } from "react-icons/fc";
+import { GiMagnifyingGlass } from "react-icons/gi";
+import { MdCampaign } from "react-icons/md";
+import { TbWorldWww } from "react-icons/tb"; 
 
 const BookedDeals = ({
   BACKEND_URL,
@@ -429,7 +448,7 @@ const BookedDeals = ({
       field: "leadName",
       headerAlign: "center",
       headerName: "Lead name",
-      minWidth: 85,
+      minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -450,7 +469,7 @@ const BookedDeals = ({
     {
       field: "leadContact",
       headerName: "Contact",
-      minWidth: 115,
+      minWidth: 100,
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
@@ -479,21 +498,20 @@ const BookedDeals = ({
       field: "project",
       headerName: "Project",
       headerAlign: "center",
-      minWidth: 40,
+      minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
-            <p
-              className="text-center capitalize"
-              style={{
-                fontFamily: isArabic(cellValues?.formattedValue)
-                  ? "Noto Kufi Arabic"
-                  : "inherit",
-              }}
-            >
-              {cellValues?.formattedValue}
-            </p>
+          <div
+            style={{
+              fontFamily: isArabic(cellValues?.formattedValue)
+                ? "Noto Kufi Arabic"
+                : "inherit",
+            }}
+            className="flex flex-col"
+          >
+            <p>{cellValues.row.project}</p>
+            <p>{cellValues.row.leadFor}</p>
           </div>
         );
       },
@@ -502,13 +520,13 @@ const BookedDeals = ({
       headerAlign: "center",
       field: "leadType",
       headerName: "Property",
-      minWidth: 85,
+      minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
-            <p>{cellValues.row.leadType}</p>
             <p>{cellValues.row.enquiryType}</p>
+            <p>{cellValues.row.leadType}</p>
           </div>
         );
       },
@@ -517,7 +535,7 @@ const BookedDeals = ({
       headerAlign: "center",
       field: "assignedToManager",
       headerName: "Manager",
-      minWidth: 90,
+      minWidth: 100,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
@@ -526,7 +544,7 @@ const BookedDeals = ({
       headerAlign: "center",
       field: "assignedToSales",
       headerName: "Agent",
-      minWidth: 90,
+      minWidth: 100,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
@@ -535,7 +553,7 @@ const BookedDeals = ({
       field: "feedback",
       headerAlign: "center",
       headerName: "Feedback",
-      minWidth: 85,
+      minWidth: 100,
       flex: 1,
 
       hideable: false,
@@ -545,7 +563,7 @@ const BookedDeals = ({
     {
       field: "priority",
       headerName: "Priority",
-      minWidth: 85,
+      minWidth: 90,
       headerAlign: "center",
       flex: 1,
       hideable: false,
@@ -556,7 +574,7 @@ const BookedDeals = ({
       field: "otp",
       headerName:
         lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
-      minWidth: 72,
+      minWidth: 80,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
       headerClassName: "break-normal",
@@ -570,11 +588,11 @@ const BookedDeals = ({
           );
         } else {
           return (
-            <div style={{ fontSize: 10 }}>
+            <div style={{ fontSize: 9 }}>
               {cellValues.formattedValue === "Verified" && (
                 <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
-                    OTP VERIFIED
+                  <span className="bg-[#238e41] p-1 rounded-md w-24 text-center">
+                    VERIFIED
                   </span>
                 </div>
               )}
@@ -582,15 +600,15 @@ const BookedDeals = ({
               {cellValues.formattedValue === "Not Verified" && (
                 <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
                   <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
-                    NOT VERIFIED
+                    UNVERIFIED
                   </span>
                 </div>
               )}
 
               {cellValues.formattedValue !== "Not Verified" &&
                 cellValues.formattedValue !== "Verified" && (
-                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                    <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                  <div className="w-full h-full flex justify-center items-center text-white  text-center font-semibold">
+                    <span className="bg-[#000000] p-1 rounded-md w-24text-center">
                       {cellValues.formattedValue}
                     </span>
                   </div>
@@ -605,67 +623,126 @@ const BookedDeals = ({
       field: "leadSource",
       headerName: "Src",
       flex: 1,
-      minWidth: 35,
+      minWidth: 30,
       headerAlign: "center",
       renderCell: (cellValues) => {
         console.log("Start::", cellValues.row.leadSource);
         const sourceIcons = {
-          "campaign snapchat": () => <FaSnapchat size={22} color={"#f6d80a"} />,
-          "bulk import": () => <FaSnapchat size={22} color={"#f6d80a"} />,
-          "campaign facebook": () => <FaFacebook size={22} color={"#0e82e1"} />,
-          "campaign tiktok": () => (
-            <img
-              src={"/assets/tiktok-app.svg"}
-              alt=""
-              style={{ margin: "0 auto" }}
-              height={18}
-              width={18}
-              className="object-cover"
-            />
-          ),
-          "campaign googleads": () => <FcGoogle size={22} />,
-          campaign: () => <FcGoogle size={22} />,
-          cold: () => <BsSnow2 size={22} color={"#0ec7ff"} />,
-          personal: () => <BsPersonCircle size={22} color={"#14539a"} />,
-          whatsapp: () => <FaWhatsapp size={22} color={"#29EC62"} />,
-          message: () => <RiMessage2Line size={22} color={"#14539a"} />,
-          comment: () => <FaComment size={22} color={"#14539a"} />,
-          website: () => <FaGlobe size={22} color={"#14539a"} />,
-          "property finder": () => (
-            <GiMagnifyingGlass size={22} color={"#14539a"} />
-          ),
-          "propety finder": () => (
-            <GiMagnifyingGlass size={22} color={"#14539a"} />
-          ),
-          self: () => <FaUser size={22} color={"#14539a"} />,
-          "campaign youtube": () => <FaYoutube size={22} color={"#FF0000"} />,
-          "campaign twitter": () => <FaTwitter size={22} color={"#14539a"} />,
+          "campaign snapchat": () => 
+            <FaSnapchatGhost 
+            size={16} 
+            color={"#f6d80a"} 
+            className="p-1"  />,
+
+          "campaign facebook": () => 
+            <FaFacebookF
+            size={16} 
+            color={"#0e82e1"} 
+            className="p-1"  />,
+
+          "campaign tiktok": () => 
+            <FaTiktok 
+            size={16} 
+            color={`${ currentMode === "dark" ? "#ffffff" : "#000000" }`} 
+            className="p-1"  />,
+
+          "campaign googleads": () => 
+            <FcGoogle 
+            size={16}
+            className="p-1" />,
+            
+          "campaign youtube": () => 
+            <FaYoutube 
+            size={16} 
+            color={"#FF0000"}
+            className="p-1" />,
+
+          "campaign twitter": () => 
+            <FaTwitter 
+            size={16} 
+            color={"#00acee"}
+            className="p-1" />,
+
+          "bulk import": () => 
+            <BiImport 
+            size={16} 
+            color={"#da1f26"} 
+            className="p-1"  />,
+
+            "property finder": () =>
+              <GiMagnifyingGlass 
+              size={16} 
+              color={"#ef5e4e"}
+              className="p-1" />,
+
+          campaign: () => 
+            <MdCampaign 
+            size={16} 
+            color={"#696969"}
+            className="p-0.5" />,
+
+          cold: () => 
+            <BsSnow2 
+            size={16} 
+            color={"#0ec7ff"}
+            className="p-1" />,
+
+          personal: () => 
+            <BsPersonCircle 
+            size={16} 
+            color={"#6C7A89"}
+            className="p-1" />,
+
+          whatsapp: () => 
+            <FaWhatsapp 
+            size={16} 
+            color={"#53cc60"}
+            className="p-1" />,
+
+          message: () => 
+            <BiMessageRoundedDots 
+            size={16} 
+            color={"#6A5ACD"}
+            className="p-0.5" />,
+
+          comment: () => 
+            <FaRegComments 
+            size={16} 
+            color={"#a9b3c6"}
+            className="p-0.5" />,
+
+          website: () => 
+            <TbWorldWww 
+            size={16} 
+            color={"#AED6F1"}
+            className="p-0.5" />,
+          
+          self: () =>
+            <FaUser 
+            size={16} 
+            color={"#6C7A89"}
+            className="p-0.5" />,
         };
         return (
           <>
             <div className="flex items-center justify-center">
               {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
-                <FaArchive
+                <BiArchive
                   style={{
-                    background: "white",
-                    padding: "5px",
-                    borderRadius: "50%",
-                    width: "70%",
-                    height: "100%",
+                    width: "50%",
+                    height: "50%",
                     margin: "0 auto",
                   }}
-                  size={22}
-                  color={"#14539a"}
+                  size={16}
+                  color={"#AEC6CF"}
+                  className="p-0.5"
                 />
               ) : (
                 <Box
                   sx={{
                     "& svg": {
-                      background: "white",
-                      padding: "5px",
-                      borderRadius: "50%",
-                      width: "70%",
-                      height: "100%",
+                      width: "50%",
+                      height: "50%",
                       margin: "0 auto",
                     },
                   }}
@@ -684,7 +761,7 @@ const BookedDeals = ({
       field: "language",
       headerName: "Lang",
       headerAlign: "center",
-      minWidth: 25,
+      minWidth: 30,
       flex: 1,
     },
 
@@ -692,7 +769,7 @@ const BookedDeals = ({
       field: "edit",
       headerName: "Edit",
       flex: 1,
-      width: "100%",
+      minWidth: 100,
       sortable: false,
       filterable: false,
       headerAlign: "center",
@@ -704,7 +781,7 @@ const BookedDeals = ({
           >
             <p
               style={{ cursor: "pointer" }}
-              className={`${
+              className={`mx-1 ${
                 currentMode === "dark"
                   ? "bg-transparent text-white rounded-md shadow-none"
                   : "bg-transparent text-black rounded-md shadow-none"
@@ -712,14 +789,14 @@ const BookedDeals = ({
               onClick={() => HandleEditFunc(cellValues)}
             >
               <IconButton sx={{ padding: 0 }}>
-                <AiOutlineEdit size={20} />
+                <AiOutlineEdit size={16} />
               </IconButton>
             </p>
 
             {cellValues.row.leadId !== null && (
               <p
                 style={{ cursor: "pointer" }}
-                className={`${
+                className={` mx-1 ${
                   currentMode === "dark"
                     ? "bg-transparent text-white rounded-md shadow-none"
                     : "bg-transparent text-black rounded-md shadow-none"
