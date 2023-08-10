@@ -20,20 +20,33 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 
-import { FaComment } from "react-icons/fa";
-import { FaGlobe } from "react-icons/fa";
-import { BiSearch } from "react-icons/bi";
-import { FaSnapchat } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
+import { 
+  FaComment, 
+  FaSnapchatGhost, 
+  FaTiktok,
+  FaFacebookF,
+  FaGlobe,
+  FaArchive,
+  FaWhatsapp,
+  FaYoutube,
+  FaTwitter,
+  FaUser,
+  FaRegComments
+} from "react-icons/fa";
+import {
+  MdCampaign
+} from "react-icons/md";
+import { 
+  BiSearch,
+  BiImport,
+  BiMessageRoundedDots,
+  BiCommentDetail,
+  BiArchive
+} from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
-import { FaArchive } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
-import { TbFileImport } from "react-icons/tb";
+import { TbFileImport, TbWorldWww } from "react-icons/tb";
 import { RiMessage2Line } from "react-icons/ri";
-import { FaWhatsapp } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
 
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
@@ -347,7 +360,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       field: "assignedToManager",
       headerName: "Manager",
-      minWidth: 90,
+      minWidth: 100,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
@@ -358,7 +371,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       field: "assignedToSales",
       headerName: "Agent",
-      minWidth: 90,
+      minWidth: 100,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
@@ -369,9 +382,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "feedback",
       headerAlign: "center",
       headerName: "Feedback",
-      minWidth: 90,
+      minWidth: 100,
       flex: 1,
-
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
@@ -442,62 +454,121 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       renderCell: (cellValues) => {
         console.log("Start::", cellValues.row.leadSource);
         const sourceIcons = {
-          "campaign snapchat": () => <FaSnapchat size={22} color={"#f6d80a"} />,
-          "bulk import": () => <FaSnapchat size={22} color={"#f6d80a"} />,
-          "campaign facebook": () => <FaFacebook size={22} color={"#0e82e1"} />,
-          "campaign tiktok": () => (
-            <img
-              src={"/assets/tiktok-app.svg"}
-              alt=""
-              style={{ margin: "0 auto" }}
-              height={18}
-              width={18}
-              className="object-cover"
-            />
-          ),
-          "campaign googleads": () => <FcGoogle size={22} />,
-          campaign: () => <FcGoogle size={22} />,
-          cold: () => <BsSnow2 size={22} color={"#0ec7ff"} />,
-          personal: () => <BsPersonCircle size={22} color={"#14539a"} />,
-          whatsapp: () => <FaWhatsapp size={22} color={"#29EC62"} />,
-          message: () => <RiMessage2Line size={22} color={"#14539a"} />,
-          comment: () => <FaComment size={22} color={"#14539a"} />,
-          website: () => <FaGlobe size={22} color={"#14539a"} />,
-          "property finder": () => (
-            <GiMagnifyingGlass size={22} color={"#14539a"} />
-          ),
-          "propety finder": () => (
-            <GiMagnifyingGlass size={22} color={"#14539a"} />
-          ),
-          self: () => <FaUser size={22} color={"#14539a"} />,
-          "campaign youtube": () => <FaYoutube size={22} color={"#FF0000"} />,
-          "campaign twitter": () => <FaTwitter size={22} color={"#14539a"} />,
+          "campaign snapchat": () => 
+            <FaSnapchatGhost 
+            size={16} 
+            color={"#f6d80a"} 
+            className="p-1"  />,
+
+          "campaign facebook": () => 
+            <FaFacebookF
+            size={16} 
+            color={"#0e82e1"} 
+            className="p-1"  />,
+
+          "campaign tiktok": () => 
+            <FaTiktok 
+            size={16} 
+            color={`${ currentMode === "dark" ? "#ffffff" : "#000000" }`} 
+            className="p-1"  />,
+
+          "campaign googleads": () => 
+            <FcGoogle 
+            size={16}
+            className="p-1" />,
+            
+          "campaign youtube": () => 
+            <FaYoutube 
+            size={16} 
+            color={"#FF0000"}
+            className="p-1" />,
+
+          "campaign twitter": () => 
+            <FaTwitter 
+            size={16} 
+            color={"#00acee"}
+            className="p-1" />,
+
+          "bulk import": () => 
+            <BiImport 
+            size={16} 
+            color={"#da1f26"} 
+            className="p-1"  />,
+
+            "property finder": () =>
+              <GiMagnifyingGlass 
+              size={16} 
+              color={"#ef5e4e"}
+              className="p-1" />,
+
+          campaign: () => 
+            <MdCampaign 
+            size={16} 
+            color={"#696969"}
+            className="p-0.5" />,
+
+          cold: () => 
+            <BsSnow2 
+            size={16} 
+            color={"#0ec7ff"}
+            className="p-1" />,
+
+          personal: () => 
+            <BsPersonCircle 
+            size={16} 
+            color={"#6C7A89"}
+            className="p-1" />,
+
+          whatsapp: () => 
+            <FaWhatsapp 
+            size={16} 
+            color={"#53cc60"}
+            className="p-1" />,
+
+          message: () => 
+            <BiMessageRoundedDots 
+            size={16} 
+            color={"#6A5ACD"}
+            className="p-0.5" />,
+
+          comment: () => 
+            <FaRegComments 
+            size={16} 
+            color={"#a9b3c6"}
+            className="p-0.5" />,
+
+          website: () => 
+            <TbWorldWww 
+            size={16} 
+            color={"#AED6F1"}
+            className="p-0.5" />,
+          
+          self: () =>
+            <FaUser 
+            size={16} 
+            color={"#6C7A89"}
+            className="p-0.5" />,
         };
         return (
           <>
             <div className="flex items-center justify-center">
               {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
-                <FaArchive
+                <BiArchive
                   style={{
-                    background: "white",
-                    padding: "5px",
-                    borderRadius: "50%",
-                    width: "70%",
-                    height: "100%",
+                    width: "50%",
+                    height: "50%",
                     margin: "0 auto",
                   }}
-                  size={22}
-                  color={"#14539a"}
+                  size={16}
+                  color={"#AEC6CF"}
+                  className="p-0.5"
                 />
               ) : (
                 <Box
                   sx={{
                     "& svg": {
-                      background: "white",
-                      padding: "5px",
-                      borderRadius: "50%",
-                      width: "70%",
-                      height: "100%",
+                      width: "50%",
+                      height: "50%",
                       margin: "0 auto",
                     },
                   }}

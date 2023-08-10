@@ -189,7 +189,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
       {noAgents ? (
         <p
           style={{
-            color: currentMode === "light" ? "#0000005c" : "#ffffff",
+            color: currentMode === "light" ? "#000000" : "#ffffff",
             textAlign: "left",
             width: "85%",
           }}

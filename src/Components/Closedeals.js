@@ -1,25 +1,8 @@
 import { Button } from "@material-tailwind/react";
-import { FaComment } from "react-icons/fa";
-import { FaGlobe } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../context/ContextProvider";
-import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
-import { MdCampaign } from "react-icons/md";
-import { FaSnapchat } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { FaArchive } from "react-icons/fa";
-import { GiMagnifyingGlass } from "react-icons/gi";
-import { FaUser } from "react-icons/fa";
-
-import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
 import moment from "moment/moment";
 import { useNavigate } from "react-router-dom";
-import { RiMessage2Line } from "react-icons/ri";
-import { FaWhatsapp } from "react-icons/fa";
-import { BiImport } from "react-icons/bi";
-import { FaYoutube } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
 
 import { MenuItem, Pagination, Select } from "@mui/material";
 import { Box } from "@mui/system";
@@ -35,6 +18,35 @@ import {
 import axios from "../axoisConfig";
 import UpdateClosedLead from "./Leads/UpdateClosedLead";
 import Timeline from "../Pages/timeline";
+
+
+import { 
+  AiOutlineEdit, 
+  AiOutlineHistory 
+} from "react-icons/ai";
+import { MdCampaign } from "react-icons/md";
+import { 
+  FaSnapchatGhost, 
+  FaFacebookF,
+  FaUser,
+  FaWhatsapp,
+  FaTwitter,
+  FaYoutube,
+  FaTiktok,
+  FaRegComments
+} from "react-icons/fa";
+import { 
+  BiImport,
+  BiMessageRoundedDots,
+  BiArchive
+} from "react-icons/bi";
+import {
+  BsPersonCircle, 
+  BsSnow2 
+} from "react-icons/bs";
+import { FcGoogle } from "react-icons/fc";
+import { GiMagnifyingGlass } from "react-icons/gi";
+import { TbWorldWww } from "react-icons/tb";
 
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
@@ -75,158 +87,152 @@ const Closedeals = ({ pageState, setpageState }) => {
   };
 
   const columns = [
+    // SOURCE 
     {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
-      minWidth: 45,
+      minWidth: 40,
       headerAlign: "center",
       renderCell: (cellValues) => {
+        const sourceIcons = {
+          "campaign snapchat": () => 
+            <FaSnapchatGhost 
+            size={16} 
+            color={"#f6d80a"} 
+            className="p-1"  />,
+
+          "campaign facebook": () => 
+            <FaFacebookF
+            size={16} 
+            color={"#0e82e1"} 
+            className="p-1"  />,
+
+          "campaign tiktok": () => 
+            <FaTiktok 
+            size={16} 
+            color={`${ currentMode === "dark" ? "#ffffff" : "#000000" }`} 
+            className="p-1"  />,
+
+          "campaign googleads": () => 
+            <FcGoogle 
+            size={16}
+            className="p-1" />,
+            
+          "campaign youtube": () => 
+            <FaYoutube 
+            size={16} 
+            color={"#FF0000"}
+            className="p-1" />,
+
+          "campaign twitter": () => 
+            <FaTwitter 
+            size={16} 
+            color={"#00acee"}
+            className="p-1" />,
+
+          "bulk import": () => 
+            <BiImport 
+            size={16} 
+            color={"#da1f26"} 
+            className="p-1"  />,
+
+            "property finder": () =>
+              <GiMagnifyingGlass 
+              size={16} 
+              color={"#ef5e4e"}
+              className="p-1" />,
+
+          campaign: () => 
+            <MdCampaign 
+            size={16} 
+            color={"#696969"}
+            className="p-0.5" />,
+
+          cold: () => 
+            <BsSnow2 
+            size={16} 
+            color={"#0ec7ff"}
+            className="p-1" />,
+
+          personal: () => 
+            <BsPersonCircle 
+            size={16} 
+            color={"#6C7A89"}
+            className="p-1" />,
+
+          whatsapp: () => 
+            <FaWhatsapp 
+            size={16} 
+            color={"#53cc60"}
+            className="p-1" />,
+
+          message: () => 
+            <BiMessageRoundedDots 
+            size={16} 
+            color={"#6A5ACD"}
+            className="p-0.5" />,
+
+          comment: () => 
+            <FaRegComments 
+            size={16} 
+            color={"#a9b3c6"}
+            className="p-0.5" />,
+
+          website: () => 
+            <TbWorldWww 
+            size={16} 
+            color={"#AED6F1"}
+            className="p-0.5" />,
+          
+          self: () =>
+            <FaUser 
+            size={16} 
+            color={"#6C7A89"}
+            className="p-0.5" />,
+        };
         return (
           <>
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "campaign snapchat" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaSnapchat size={22} color={"#f6d80a"} />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() === "bulk import" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <BiImport size={22} color={"#da1f26"} />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "campaign facebook" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaFacebook size={22} color={"#0e82e1"} />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() === "campaign tiktok" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <img
-                  src={"/assets/tiktok-app.svg"}
-                  alt=""
-                  height={22}
-                  width={22}
-                  className="object-cover"
+            <div className="flex items-center justify-center">
+              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
+                <BiArchive
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={"#AEC6CF"}
+                  className="p-0.5"
                 />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "campaign googleads" && (
-              <div className="bg-white w-max rounded-full text-white flex items-center justify-center">
-                <FcGoogle size={22} />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() === "campaign" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <MdCampaign size={22} color={"#000000"} />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() === "cold" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <BsSnow2 size={22} color={"#0ec7ff"} />
-              </div>
-            )}
-            {cellValues.row.leadSource?.toLowerCase() === "personal" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <BsPersonCircle size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() === "whatsapp" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaWhatsapp size={22} color={"#29EC62"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() === "message" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <RiMessage2Line size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() === "comment" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaComment size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() === "website" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaGlobe size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {(cellValues.row.leadSource?.toLowerCase() === "property finder" ||
-              cellValues.row.leadSource?.toLowerCase() ===
-                "propety finder") && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <GiMagnifyingGlass size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() === "self" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaUser size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "campaign youtube" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaYoutube size={22} color={"#FF0000"} />
-              </div>
-            )}
-
-            {cellValues.row.leadSource?.toLowerCase() ===
-              "campaign twitter" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaTwitter size={22} color={"#14539a"} />
-              </div>
-            )}
-
-            {/* {cellValues.row.leadSource?.toLowerCase() ===
-              "warm (Hubspot: shery@hikalagency.ae)" && (
-              <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <FaFire size={22} color={"#14539a"} />
-              </div>
-            )} */}
-
-            {(() => {
-              const leadSource = cellValues.row.leadSource?.toLowerCase();
-
-              if (leadSource && leadSource.startsWith("warm")) {
-                const firstWord = leadSource.split(" ")[0];
-
-                return (
-                  <div className="bg-white w-max rounded-full flex items-center justify-center">
-                    <FaArchive size={22} color={"#14539a"} />
-                  </div>
-                );
-              }
-
-              return null; // Return null if the condition is not met
-            })()}
+              ) : (
+                <Box
+                  sx={{
+                    "& svg": {
+                      width: "50%",
+                      height: "50%",
+                      margin: "0 auto",
+                    },
+                  }}
+                >
+                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()]
+                    ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]()
+                    : "-"}
+                </Box>
+              )}
+            </div>
           </>
         );
       },
     },
-    {
-      field: "dealDate",
-      headerName: "Deal date",
-      minWidth: 50,
-      headerAlign: "center",
-      flex: 1,
-      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
-    },
+    // LEAD NAME 
     {
       field: "leadName",
       headerName: "Lead name",
-      minWidth: 60,
+      minWidth: 100,
       flex: 1,
       headerAlign: "center",
-            renderCell: (cellValues) => {
+      renderCell: (cellValues) => {
         return (
           <div className="w-full ">
             <p
@@ -242,53 +248,96 @@ const Closedeals = ({ pageState, setpageState }) => {
         );
       },
     },
+    // PROJECT 
     {
       field: "project",
       headerName: "Project",
       headerAlign: "center",
-
-      minWidth: 60,
+      minWidth: 80,
       flex: 1,
-           renderCell: (cellValues) => {
+      renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
-            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
-              {cellValues?.formattedValue}
-            </p>
+          <div
+            style={{
+              fontFamily: isArabic(cellValues?.formattedValue)
+                ? "Noto Kufi Arabic"
+                : "inherit",
+            }}
+            className="flex flex-col"
+          >
+            <p>{cellValues.row.project}</p>
+            <p>{cellValues.row.leadFor}</p>
           </div>
         );
       },
     },
+    // ENQUIRY 
     {
-      field: "enquiryType",
-      headerName: "Enquiry",
       headerAlign: "center",
-
-      minWidth: 60,
-      flex: 1,
-    },
-    {
       field: "leadType",
-      headerAlign: "center",
-
       headerName: "Property",
-      minWidth: 60,
+      minWidth: 80,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-col">
+            <p>{cellValues.row.enquiryType}</p>
+            <p>{cellValues.row.leadType}</p>
+          </div>
+        );
+      },
     },
-
+    // AMOUNT 
+    {
+      field: "amount",
+      headerAlign: "center",
+      headerName: "Amount (AED)",
+      minWidth: 80,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <span className="font-semibold text-red-600">
+            AED {cellValues.formattedValue}
+          </span>
+        )
+      }
+    },
+    // DEAL DATE
+    {
+      field: "dealDate",
+      headerName: "Deal date",
+      minWidth: 50,
+      headerAlign: "center",
+      flex: 1,
+      valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
+    },
+    // CONSULTANT 
+    {
+      field: "userName",
+      headerAlign: "center",
+      headerName: "Consultant",
+      minWidth: 100,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div style={{ textWrap: "wrap" }}>{cellValues.formattedValue}</div>
+        );
+      },
+    },
+    // OTP 
     {
       field: "otp",
       headerName: "OTP",
-      minWidth: 72,
+      minWidth: 50,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div style={{ fontSize: 10 }}>
+          <div style={{ fontSize: 9 }}>
             {cellValues.formattedValue === "Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                <span className="bg-[#0F9D58] p-1 rounded-md w-24 text-center">
-                  OTP VERIFIED
+                <span className="bg-[#238e41] p-1 rounded-md w-24 text-center">
+                  VERIFIED
                 </span>
               </div>
             )}
@@ -296,15 +345,15 @@ const Closedeals = ({ pageState, setpageState }) => {
             {cellValues.formattedValue === "Not Verified" && (
               <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
                 <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
-                  NOT VERIFIED
+                  UNVERIFIED
                 </span>
               </div>
             )}
 
             {cellValues.formattedValue !== "Not Verified" &&
               cellValues.formattedValue !== "Verified" && (
-                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <span className="bg-[#070707] p-1 rounded-md w-24 text-center">
+                <div className="w-full h-full flex justify-center items-center text-white  text-center font-semibold">
+                  <span className="bg-[#000000] p-1 rounded-md w-24text-center">
                     {cellValues.formattedValue}
                   </span>
                 </div>
@@ -313,44 +362,10 @@ const Closedeals = ({ pageState, setpageState }) => {
         );
       },
     },
-
-    {
-      field: "amount",
-      headerAlign: "center",
-      headerName: "Amount in AED",
-      minWidth: 40,
-      flex: 1,
-    },
-    {
-      field: "userName",
-      headerAlign: "center",
-      headerName: "Property Consultant",
-      minWidth: 40,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div style={{ textWrap: "wrap" }}>{cellValues.formattedValue}</div>
-        );
-      },
-    },
-    // {
-    //   field: "manager",
-    //   headerName: "Manager",
-    //   minWidth: 150,
-    //   flex: 1,
-    //   headerAlign: "center",
-    // },
-    // {
-    //   field: "salesperson",
-    //   headerName: "Agent",
-    //   minWidth: 150,
-    //   flex: 1,
-    //   headerAlign: "center",
-    // },
     {
       field: "",
       headerName: "Action",
-      minWidth: 80,
+      minWidth: 50,
       flex: 1,
       sortable: false,
       headerAlign: "center",
@@ -366,7 +381,7 @@ const Closedeals = ({ pageState, setpageState }) => {
               }`}
             >
               <AiOutlineHistory
-                size={20}
+                size={16}
                 onClick={() => HandleViewTimeline(cellValues)}
               />
             </Button>
@@ -378,7 +393,7 @@ const Closedeals = ({ pageState, setpageState }) => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
-              <AiOutlineEdit size={20} />
+              <AiOutlineEdit size={16} />
             </Button>
           </div>
         );
