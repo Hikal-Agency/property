@@ -6,6 +6,7 @@ import {
   AiOutlineEdit,
   AiOutlineTable,
 } from "react-icons/ai";
+import { MdLocationOn } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Loader from "../../Components/Loader";
@@ -110,50 +111,15 @@ const Meetings = () => {
   });
 
   const columns = [
-    {
-      field: "leadName",
-      headerName: "Lead name",
-      headerAlign: "center",
-      minWidth: 160,
-      flex: 1,
-    },
-    {
-      field: "project",
-      headerName: "Project",
-      headerAlign: "center",
-      minWidth: 100,
-      flex: 1,
-    },
-    {
-      field: "enquiryType",
-      headerName: "Enquiry",
-      minWidth: 100,
-      headerAlign: "center",
-      flex: 1,
-    },
-    {
-      field: "leadType",
-      headerName: "Property",
-      minWidth: 100,
-      headerAlign: "center",
-      flex: 1,
-    },
-
-    {
-      field: "meetingBy",
-      headerName: "Meeting By",
-      minWidth: 160,
-      headerAlign: "center",
-      flex: 1,
-    },
-
+    // MEETING DATE 
     {
       field: "meetingDate",
       headerName: "Meeting Date",
-      minWidth: 110,
+      minWidth: 50,
       headerAlign: "center",
       flex: 1,
     },
+    // MEETING TIME 
     {
       field: "meetingTime",
       headerName: "Meeting Time",
@@ -161,54 +127,113 @@ const Meetings = () => {
       headerAlign: "center",
       flex: 1,
     },
+    // LEAD NAME 
+    {
+      field: "leadName",
+      headerName: "Lead name",
+      headerAlign: "center",
+      minWidth: 100,
+      flex: 1,
+    },
+    // PROJECT 
+    {
+      field: "project",
+      headerName: "Project",
+      headerAlign: "center",
+      minWidth: 80,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-col">
+            <p>{cellValues.row.project}</p>
+            <p>{cellValues.row.leadFor}</p>
+          </div>
+        );
+      },
+    },
+    // PROPERTY 
+    {
+      field: "enquiryType",
+      headerName: "Property",
+      minWidth: 80,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-col">
+            <p>{cellValues.row.enquiryType}</p>
+            <p>{cellValues.row.leadType}</p>
+          </div>
+        );
+      },
+    },
+    // STATUS 
     {
       field: "meetingStatus",
       headerName: "Status",
-      width: 150,
+      width: 100,
       flex: 1,
       sortable: false,
       headerAlign: "center",
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          <div className="text-white w-[100%] flex justify-center">
+          <div className="p-1 rounded-md">
+            {cellValues.formattedValue === "Attended" && (
+              <div className={`${ currentMode === "dark" ? "bg-green-900" : "bg-green-100"} mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
+                <span className="text-[#238e41] p-1 rounded-md w-24 text-center">
+                  ATTENDED
+                </span>
+              </div>
+            )}
+
             {cellValues.formattedValue === "Cancelled" && (
-              <div className="w-full h-full flex align-center items-center bg-[#ff0000] rounded-lg">
-                CANCELLED
+              <div className={`${ currentMode === "dark" ? "bg-red-900" : "bg-red-100"} p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
+                <span className="text-[#DA1F26] p-1 rounded-md w-24 text-center">
+                  CANCELLED
+                </span>
+              </div>
+            )}
+
+            {cellValues.formattedValue === "Postponed" && (
+              <div className={`${ currentMode === "dark" ? "bg-orange-900" : "bg-orange-100"} p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
+                <span className="text-[#f27f25] p-1 rounded-md w-24 text-center">
+                  POSTPONED
+                </span>
               </div>
             )}
 
             {cellValues.formattedValue === "Pending" && (
-              <div className="w-full h-full flex align-center p-2 items-center bg-[#f27f25] rounded-lg">
-                PENDING
-              </div>
-            )}
-            {cellValues.formattedValue === "Postponed" && (
-              <div className="w-full h-full flex align-center p-2 items-center bg-[#f27f25] rounded-lg">
-                POSTPONED
-              </div>
-            )}
-            {cellValues.formattedValue === "Attended" && (
-              <div className="w-full h-full flex align-center p-2 items-center bg-[#0f9d58] rounded-lg">
-                ATTENDED
+              <div className={`${ currentMode === "dark" ? "bg-yellow-900" : "bg-yellow-100"} p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
+                <span className="text-[#ebc24d] p-1 rounded-md w-24 text-center">
+                  PENDING
+                </span>
               </div>
             )}
           </div>
         );
       },
     },
+    // MEETING BY 
+    {
+      field: "meetingBy",
+      headerName: "Meeting By",
+      minWidth: 100,
+      headerAlign: "center",
+      flex: 1,
+    },
+    // ACTION 
     {
       field: "edit",
-      headerName: "Actions",
+      headerName: "Action",
       headerAlign: "center",
-      minWidth: "110",
+      minWidth: "50",
       flex: 1,
       renderCell: (cellValues) => {
         return (
           <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center align-center">
             <Button
               onClick={() => handleEditMeeting(cellValues)}
-              // onClick={() => HandleEditFunc(cellValues)}
               className={`${
                 currentMode === "dark"
                   ? "text-white bg-transparent rounded-md p-1 shadow-none "
@@ -216,13 +241,56 @@ const Meetings = () => {
               }`}
             >
               {/* <AiTwotoneEdit size={20} /> */}
-              <AiOutlineEdit size={20} />
+              <AiOutlineEdit size={16} />
             </Button>
+
+            {cellValues.row.mLat === "" ? (
+              <>
+              </>
+            ) : (
+              <Button
+                onClick={() => showLocation(cellValues.row.mLat, cellValues.row.mLong)}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                    : "text-black bg-transparent rounded-md p-1 shadow-none "
+                }`}
+              >
+                <MdLocationOn size={16} />
+              </Button>
+            )}
           </div>
         );
       },
     },
   ];
+
+  const showLocation = (mLat, mLong) => {
+    setLocationModalOpen(true);
+    if (!mLat || !mLong) {
+      setMeetingLocation({
+        lat: "",
+        lng: "",
+        addressText: "",
+      });
+    } else {
+      const geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode(
+        { location: { lat: Number(mLat), lng: Number(mLong) } },
+        (results, status) => {
+          if (status === "OK") {
+            setMeetingLocation({
+              lat: Number(mLat),
+              lng: Number(mLong),
+              addressText: results[0].formatted_address,
+            });
+          } else {
+            console.log("Getting address failed due to: " + status);
+          }
+        }
+      );
+    }
+  };
 
   const FetchLeads = async (token) => {
     setpageState((old) => ({
@@ -443,27 +511,28 @@ const Meetings = () => {
                     >
                       <Tab
                         icon={
-                          value === 0 ? (
-                            <AiOutlineAppstore
-                              size={22}
-                              style={{
-                                color:
-                                  currentMode === "dark"
-                                    ? "#ffffff"
-                                    : "#000000",
-                              }}
-                            />
-                          ) : (
-                            <AiOutlineTable
-                              size={22}
-                              style={{
-                                color:
-                                  currentMode === "dark"
-                                    ? "#ffffff"
-                                    : "#000000",
-                              }}
-                            />
-                          )
+                          <AiOutlineTable
+                            size={22}
+                            style={{
+                              color:
+                                currentMode === "dark"
+                                  ? "#ffffff"
+                                  : "#000000",
+                            }}
+                          />
+                        }
+                      />
+                      <Tab
+                        icon={
+                          <AiOutlineAppstore
+                            size={22}
+                            style={{
+                              color:
+                                currentMode === "dark"
+                                  ? "#ffffff"
+                                  : "#000000",
+                            }}
+                          />
                         }
                       />
                     </Tabs>
@@ -479,12 +548,12 @@ const Meetings = () => {
                     >
                       <DataGrid
                         initialState={{
-                columns: {
-                  columnVisibilityModel: {
-                    creationDate: false,
-                  },
-                },
-              }}
+                          columns: {
+                            columnVisibilityModel: {
+                              creationDate: false,
+                            },
+                          },
+                        }}
                         autoHeight
                         rows={pageState.data}
                         rowCount={pageState.total}
