@@ -14,6 +14,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { MdSms } from "react-icons/md";
 import { IoMdChatboxes } from "react-icons/io";
 import { BsWhatsapp } from "react-icons/bs";
+import {HiMail} from "react-icons/hi";
 import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { langs } from "../../langCodes";
@@ -47,11 +48,18 @@ const AllLeads = () => {
     darkModeColors,
     Managers,
     SalesPerson,
+    formatNum,
     User,
   } = useStateContext();
   console.log("Managers: ", Managers);
   const token = localStorage.getItem("auth-token");
   const [selectedRows, setSelectedRows] = useState([]);
+  const [otpSelected, setOtpSelected] = useState({ id: 0 });
+  const [phoneNumberFilter, setPhoneNumberFilter] = useState("");
+  const [emailFilter, setEmailFilter] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [languageFilter, setLanguageFilter] = useState("");
   const [leadOriginSelected, setLeadOriginSelected] = useState({
     id: "hotleads",
     formattedValue: "Fresh Leads",
@@ -138,7 +146,7 @@ const AllLeads = () => {
     {
       field: "leadName",
       headerAlign: "center",
-      headerName: "Lead name",
+      headerName: "Name",
       minWidth: 85,
       flex: 1,
       renderCell: (cellValues) => {
@@ -175,7 +183,8 @@ const AllLeads = () => {
 
     {
       field: "otp",
-      headerName: leadOriginSelected?.id === "transfferedleads" ? "Ex-Agent" : "OTP",
+      headerName:
+        leadOriginSelected?.id === "transfferedleads" ? "Ex-Agent" : "OTP",
       minWidth: 80,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
@@ -221,7 +230,7 @@ const AllLeads = () => {
       },
     },
 
-       {
+    {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
@@ -332,9 +341,6 @@ const AllLeads = () => {
 
   const [columnsArr, setColumnsArr] = useState(columns);
 
-  const ULTRA_MSG_API = process.env.REACT_APP_ULTRAMSG_API_URL;
-  const ULTRA_MSG_TOKEN = process.env.REACT_APP_ULTRAMSG_API_TOKEN;
-
   const FetchLeads = async (
     token,
     lead_origin,
@@ -342,7 +348,12 @@ const AllLeads = () => {
     projectName,
     enquiryType,
     assignedManager,
-    assignedAgent
+    assignedAgent,
+    otp,
+    phoneNumber,
+    email,
+    language,
+    dateRange
   ) => {
     console.log("lead type is");
     console.log(lead_type);
@@ -686,8 +697,23 @@ const AllLeads = () => {
       FetchLeads_url += `&agentAssigned=${assignedAgent}`;
     }
 
-    console.log(FetchLeads_url);
+    if (otp) {
+      FetchLeads_url += `&otp=${otp}`;
+    }
 
+    if (phoneNumber) {
+      FetchLeads_url += `&hasphone=${phoneNumber === "with" ? 1 : 0}`;
+    }
+
+    if (email) {
+      FetchLeads_url += `&hasmail=${email === "with" ? 1 : 0}`;
+    }
+    if (language) {
+      FetchLeads_url += `&language=${language}`;
+    }
+    if (dateRange) {
+      FetchLeads_url += `&date_range=${dateRange}`;
+    }
     axios
       .get(FetchLeads_url, {
         headers: {
@@ -742,29 +768,6 @@ const AllLeads = () => {
         console.log(err);
       });
   };
-
-  const fetchUltraMsgInstance = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      const response = await axios.get(
-        `${ULTRA_MSG_API}/instance/me?token=${ULTRA_MSG_TOKEN}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      const waNo = response.data?.id?.slice(0, response.data?.id?.indexOf("@"));
-      setWhatsappSenderNo(waNo);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUltraMsgInstance();
-  }, []);
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
@@ -828,6 +831,16 @@ const AllLeads = () => {
     setAgents(SalesPerson);
   }, [Managers, SalesPerson]);
 
+  const formatDate = (dateObj) => {
+    return (
+      formatNum(dateObj?.$d?.getUTCFullYear()) +
+      "-" +
+      formatNum(dateObj?.$d?.getUTCMonth() + 1) +
+      "-" +
+      formatNum(dateObj?.$d?.getUTCDate() + 1)
+    );
+  };
+
   useEffect(() => {
     FetchLeads(
       token,
@@ -836,7 +849,14 @@ const AllLeads = () => {
       projectNameTyped,
       enquiryTypeSelected?.id,
       managerSelected,
-      agentSelected
+      agentSelected,
+      otpSelected?.id,
+      phoneNumberFilter,
+      emailFilter,
+      languageFilter,
+      startDate && endDate
+        ? `${formatDate(startDate)},${formatDate(endDate)}`
+        : ""
     );
     setColumnsArr([...columnsArr]);
     // eslint-disable-next-line
@@ -850,7 +870,14 @@ const AllLeads = () => {
     enquiryTypeSelected,
     reloadDataGrid,
     pageState.perpage,
+    phoneNumberFilter,
+    otpSelected,
+    emailFilter,
+    languageFilter,
+    startDate, 
+    endDate
   ]);
+
 
   const handleRowClick = async (params, event) => {
     if (!event.target.closest(".whatsapp-web-link")) {
@@ -934,9 +961,21 @@ const AllLeads = () => {
         leadOriginSelected={leadOriginSelected}
         projectNameTyped={projectNameTyped}
         leadTypeSelected={leadTypeSelected}
+        emailFilter={emailFilter}
+        setEmailFilter={setEmailFilter}
         managerSelected={managerSelected}
+        languageFilter={languageFilter}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
+        setLanguageFilter={setLanguageFilter}
         managers={managers}
+        otpSelected={otpSelected}
+        setOtpSelected={setOtpSelected}
         setAgentSelected={setAgentSelected}
+        phoneNumberFilter={phoneNumberFilter}
+        setPhoneNumberFilter={setPhoneNumberFilter}
         setAgents={setAgents}
         setEnquiryTypeSelected={setEnquiryTypeSelected}
         setLeadOriginSelected={setLeadOriginSelected}
@@ -1023,7 +1062,7 @@ const AllLeads = () => {
             color="error"
             size="small"
           >
-            <MdSms style={{ marginRight: 8 }} size={20} /> Bulk SMS
+            <MdSms size={20} /> 
           </Button>
           <Button
             onClick={() =>
@@ -1035,7 +1074,18 @@ const AllLeads = () => {
             color="error"
             size="small"
           >
-            <BsWhatsapp style={{ marginRight: 8 }} size={20} /> Bulk Whatsapp
+            <BsWhatsapp size={20} /> 
+          </Button>
+
+              <Button
+            onClick={() => {}}
+            type="button"
+            variant="contained"
+            sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
+            color="error"
+            size="small"
+          >
+            <HiMail size={20} /> 
           </Button>
 
           {selectedRows.length === 1 && (
