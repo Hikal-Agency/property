@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Select from "@mui/material/Select";
 import { Box } from "@mui/system";
-
+import moment from "moment";
 
 import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
@@ -20,6 +20,9 @@ import { useStateContext } from "../../context/ContextProvider";
 const RenderManagers = ({ cellValues, lead_origin }) => {
   const [manager2, setmanager2] = useState(cellValues?.row?.assignedToManager);
   const [newManager, setnewManager] = useState("");
+
+  const [salesperson2, setsalesperson2] = useState(cellValues?.row?.assignedToSales);
+
   const [Dialogue, setDialogue] = useState(false);
   const {
     currentMode,
@@ -46,7 +49,11 @@ const RenderManagers = ({ cellValues, lead_origin }) => {
   };
   useEffect(() => {
     setmanager2(cellValues?.row?.assignedToManager);
-  }, [cellValues?.row?.assignedToManager]);
+    setsalesperson2(cellValues?.row?.assignedToSales);
+  }, 
+  [cellValues?.row?.assignedToManager],
+  [cellValues?.row?.assignedToSales]
+  );
 
   // const ChangeManager = (e) => {
   //   setnewManager(e.target.value);
@@ -55,9 +62,15 @@ const RenderManagers = ({ cellValues, lead_origin }) => {
   const ChangeManager = (e) => {
     console.log(manager2);
     console.log("New Manager", e.target);
+
     let selectedItem;
     selectedItem = Managers.find((item) => item.id === Number(e.target.value));
     setnewManager(selectedItem);
+
+    let oldsales;
+    oldsales = salesperson2;
+    setsalesperson2(oldsales);
+    console.log("setsalesperson2:   ", salesperson2);
 
     let old_selectedItem;
 
@@ -76,9 +89,29 @@ const RenderManagers = ({ cellValues, lead_origin }) => {
     // UpdateLeadData.append("lid", cellValues?.row?.leadId);
     UpdateLeadData.append("id", cellValues?.row?.leadId);
     if (newManager === undefined) {
-      UpdateLeadData.append("assignedToManager", 1);
+      if (salesperson2 === null) {
+        UpdateLeadData.append("assignedToManager", 1);
+        UpdateLeadData.append("feedback", "New");
+      }
+      else {
+        UpdateLeadData.append("assignedToManager", 1);
+        UpdateLeadData.append("feedback", "New");
+        UpdateLeadData.append("transferredFrom", salesperson2);
+        UpdateLeadData.append("transferredFromName", salesperson2);
+        UpdateLeadData.append("transferredDate", moment().format('YYYY-MM-DD HH:mm:ss'));
+      }
     } else {
-      UpdateLeadData.append("assignedToManager", newManager?.id);
+      if (salesperson2 === null) {
+        UpdateLeadData.append("assignedToManager", newManager?.id);
+        UpdateLeadData.append("feedback", "New");
+      }
+      else {
+        UpdateLeadData.append("assignedToManager", newManager?.id);
+        UpdateLeadData.append("feedback", "New");
+        UpdateLeadData.append("transferredFrom", salesperson2);
+        UpdateLeadData.append("transferredFromName", salesperson2);
+        UpdateLeadData.append("transferredDate", moment().format('YYYY-MM-DD HH:mm:ss'));
+      }
     }
 
     await axios
@@ -183,7 +216,7 @@ const RenderManagers = ({ cellValues, lead_origin }) => {
            }}
         >
           <MenuItem value="select_manager" selected>
-            Select Manager
+            ---Manager---
           </MenuItem>
           {Managers?.length > 0 &&
             Managers?.map((manager, index) => (
