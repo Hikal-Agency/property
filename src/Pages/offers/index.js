@@ -88,19 +88,23 @@ const Offers = () => {
         ) : (
           <div
             className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
             }`}
           >
-            <div className={`w-full `}>
+
+            <div className="w-full">
               <div className="pl-3">
-                <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "bg-gray-900 text-white"
-                      : "bg-gray-200 text-black"
-                  } p-5 rounded-md my-5 mb-10`}
-                >
-                  <h4 className="font-semibold pb-5">Offers</h4>
+                <div className="mt-3">
+                  <h1
+                    className={`text-lg  ml-1 pl-1 font-bold mb-5 ${
+                      currentMode === "dark"
+                        ? "text-white border-white"
+                        : "text-red-600 font-bold border-red-600"
+                    }`}
+                  >
+                    ● Offers
+                  </h1>
+
                   <Box
                     sx={{
                       ...darkModeColors,
@@ -115,13 +119,13 @@ const Offers = () => {
                       },
                     }}
                     className={`w-full rounded-md overflow-hidden ${
-                      currentMode === "dark" ? "bg-black" : "bg-white"
+                      currentMode === "dark" ? "bg-gray-900" : "bg-gray-100"
                     } `}
                   >
                     <Tabs
                       value={value}
                       onChange={handleChange}
-                      variant="standard"
+                      variant="variant"
                       className="w-full px-1 m-1"
                     >
                       {hasPermission("offers_create") ? (
@@ -130,9 +134,9 @@ const Offers = () => {
                         ""
                       )}
                       {hasPermission("offers_manager_tab") && (
-                        <Tab label="FOR MANAGERS" />
+                        <Tab label="OFFERS FOR MANAGERS" />
                       )}
-                      <Tab label="FOR AGENTS" />
+                      <Tab label="OFFERS FOR AGENTS" />
                     </Tabs>
                   </Box>
                   <div className="mt-3 pb-3">

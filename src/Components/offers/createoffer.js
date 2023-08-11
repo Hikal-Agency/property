@@ -194,163 +194,113 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
   // }, []);
   return (
     <div>
-      
-      <div
-        className={`${
-          currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
-        } rounded-md p-5`}
-      >
-        <h3 className="text-main-red-color font-semibold mb-3 text-center">
-          Create New Offer
-        </h3>
-        <hr className="mb-5"></hr>
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
+        <Box sx={darkModeColors} className="p-2">
+          <TextField
+            type={"text"}
+            label="Offer Title"
+            className="w-full"
+            style={{ marginBottom: "10px" }}
+            variant="outlined"
+            name="offerTitle"
+            size="medium"
+            value={offerData.offerTitle}
+            onChange={(e) =>
+              setOfferData({ ...offerData, offerTitle: e.target.value })
+            }
+            required
+          />
+          <Textarea
+            type="text"
+            placeholder="Offer Description"
+            rows={4} 
+            className="w-full"
+            name="offerDescription"
+            style={{ marginBottom: "10px" }}
+            variant="outlined"
+            size="lg"
+            value={offerData.offerDescription}
+            required
+            onChange={(e) =>
+              setOfferData({ ...offerData, offerDescription: e.target.value })
+            }
+          />
 
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
-          <Box sx={darkModeColors}>
-            <TextField
-              type={"text"}
-              label="Offer Title "
-              className="w-full mb-3"
-              style={{ marginBottom: "20px" }}
-              variant="outlined"
-              name="offerTitle"
-              size="medium"
-              value={offerData.offerTitle}
-              onChange={(e) =>
-                setOfferData({ ...offerData, offerTitle: e.target.value })
-              }
-              required
-            />
-            {/* <TextField
-              type="text"
-              label="Offer Description"
-              className="w-full mb-3"
-              name="offerDescription"
-              style={{ marginBottom: "20px" }}
-              variant="outlined"
-              size="medium"
-              value={offerData.offerDescription}
-              required
-              onChange={(e) =>
-                setOfferData({ ...offerData, offerDescription: e.target.value })
-              }
-            /> */}
-            <Textarea
-              type="text"
-              placeholder="Offer Description"
-              // label="Offer Description"
-              className="w-full mb-3"
-              name="offerDescription"
-              style={{ marginBottom: "20px" }}
-              // variant="outlined"
-              size="lg"
-              value={offerData.offerDescription}
-              required
-              onChange={(e) =>
-                setOfferData({ ...offerData, offerDescription: e.target.value })
-              }
-            />
-            <div className="grid grid-cols-2 gap-3 mb-1">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Valid From"
-                  className="w-full"
-                  style={{ marginBottom: "20px" }}
-                  value={validFromDateValue}
-                  views={["year", "month", "day"]}
-                  minDate={currentDate.toDate()}
-                  onChange={(newValue) => {
-                    setValidFromDateValue(newValue);
-                    setValidFromDate(
-                      formatNum(newValue?.$d?.getUTCFullYear()) +
-                        "-" +
-                        formatNum(newValue?.$d?.getUTCMonth() + 1) +
-                        "-" +
-                        formatNum(newValue?.$d?.getUTCDate() + 1)
-                    );
-                  }}
-                  format="yyyy-MM-dd"
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      onKeyDown={(e) => e.preventDefault()}
-                      readOnly={true}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Valid To"
-                  className="w-full"
-                  style={{ marginBottom: "20px" }}
-                  value={validToDateValue}
-                  views={["year", "month", "day"]}
-                  minDate={currentDate.toDate()}
-                  onChange={(newValue) => {
-                    setValidToDateValue(newValue);
-                    setValidToDate(
-                      formatNum(newValue?.$d?.getUTCFullYear()) +
-                        "-" +
-                        formatNum(newValue?.$d?.getUTCMonth() + 1) +
-                        "-" +
-                        formatNum(newValue?.$d?.getUTCDate() + 1)
-                    );
-                  }}
-                  format="yyyy-MM-dd"
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      onKeyDown={(e) => e.preventDefault()}
-                      readOnly={true}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-            </div>
-            <div className="grid grid-cols-2 gap-3 mt-3">
-              <input
-                accept="image/*"
-                style={{ display: "none" }}
-                id="contained-button-file"
-                type="file"
-                onChange={handleImgUpload}
+          <div className="grid grid-cols-2 gap-3 mb-1">
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Offer valid from"
+                className="w-full"
+                style={{ marginBottom: "20px" }}
+                value={validFromDateValue}
+                views={["year", "month", "day"]}
+                minDate={currentDate.toDate()}
+                onChange={(newValue) => {
+                  setValidFromDateValue(newValue);
+                  setValidFromDate(
+                    formatNum(newValue?.$d?.getUTCFullYear()) +
+                      "-" +
+                      formatNum(newValue?.$d?.getUTCMonth() + 1) +
+                      "-" +
+                      formatNum(newValue?.$d?.getUTCDate() + 1)
+                  );
+                }}
+                format="yyyy-MM-dd"
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    onKeyDown={(e) => e.preventDefault()}
+                    readOnly={true}
+                  />
+                )}
               />
-              <label htmlFor="contained-button-file">
-                <Button
-                  variant="contained"
-                  size="medium"
-                  className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-                  style={{
-                    backgroundColor: "#111827",
-                    color: "#ffffff",
-                    border: "1px solid #DA1F26",
-                  }}
-                  component="span" // Required so the button doesn't automatically submit form
-                  disabled={loading ? true : false}
-                  startIcon={loading ? null : <MdFileUpload />}
-                >
-                  <span>Upload Image</span>
-                </Button>
-              </label>
-            </div>
-          </Box>
-
+            </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Offer valid till"
+                className="w-full"
+                style={{ marginBottom: "20px" }}
+                value={validToDateValue}
+                views={["year", "month", "day"]}
+                minDate={currentDate.toDate()}
+                onChange={(newValue) => {
+                  setValidToDateValue(newValue);
+                  setValidToDate(
+                    formatNum(newValue?.$d?.getUTCFullYear()) +
+                      "-" +
+                      formatNum(newValue?.$d?.getUTCMonth() + 1) +
+                      "-" +
+                      formatNum(newValue?.$d?.getUTCDate() + 1)
+                  );
+                }}
+                format="yyyy-MM-dd"
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    onKeyDown={(e) => e.preventDefault()}
+                    readOnly={true}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          </div>
+        </Box>
+        <Box sx={darkModeColors} className="p-2">
           {User?.role !== 3 && (
             <div
               className={`${
-                currentMode === "dark" ? "bg-gray-900" : "bg-gray-200"
-              } rounded-md px-5 pt-5 mx-5 mb-1`}
+                currentMode === "dark" ? "bg-gray-900" : "bg-gray-100"
+              } rounded-md p-5`}
             >
               <Box sx={darkModeColors}>
-                <label className="font-semibold text-sm">
-                  <span className="text-main-red-color">Valid for:</span>
+                <label className="font-semibold mb-1">
+                  <span className="text-main-red-color">Offer Validity</span>
                 </label>
                 <br></br>
                 <FormControl>
                   <RadioGroup defaultValue="Both" name="radio-buttons-group">
                     <FormControlLabel
-                      className="m-1"
+                      className="mt-1"
                       value="manager"
                       name="validToManager"
                       control={<Radio />}
@@ -364,7 +314,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                       }
                     />
                     <FormControlLabel
-                      className="m-1"
+                      className="mt-1"
                       value="agent"
                       name="validToSales"
                       control={<Radio />}
@@ -388,34 +338,61 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                         })
                       }
                       control={<Radio />}
-                      label="Both"
+                      label="Sales Managers and Sales Agents (Both)"
                     />
                   </RadioGroup>
                 </FormControl>
               </Box>
             </div>
           )}
-        </div>
 
-        <Button
-          type="submit"
-          size="medium"
-          className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-          style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
-          onClick={handleClick}
-          disabled={loading ? true : false}
-        >
-          {loading ? (
-            <CircularProgress
-              size={23}
-              sx={{ color: "white" }}
-              className="text-white"
+          {/* <div className="grid grid-cols-2 gap-3 mt-3"> */}
+            <input
+              accept="image/*"
+              style={{ display: "none" }}
+              id="contained-button-file"
+              type="file"
+              onChange={handleImgUpload}
             />
-          ) : (
-            <span> Create</span>
-          )}
-        </Button>
+            <label htmlFor="contained-button-file">
+              <Button
+                variant="contained"
+                size="medium"
+                className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold my-3"
+                style={{
+                  backgroundColor: "#111827",
+                  color: "#ffffff",
+                  border: "1px solid #DA1F26",
+                }}
+                component="span" // Required so the button doesn't automatically submit form
+                disabled={loading ? true : false}
+                startIcon={loading ? null : <MdFileUpload />}
+              >
+                <span>Upload Image</span>
+              </Button>
+            </label>
+          {/* </div> */}
+        </Box>
       </div>
+
+      <Button
+        type="submit"
+        size="medium"
+        className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
+        style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+        onClick={handleClick}
+        disabled={loading ? true : false}
+      >
+        {loading ? (
+          <CircularProgress
+            size={23}
+            sx={{ color: "white" }}
+            className="text-white"
+          />
+        ) : (
+          <span> Create</span>
+        )}
+      </Button>
     </div>
   );
 };
