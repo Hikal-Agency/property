@@ -22,7 +22,7 @@ import PhoneInput, {
 import classNames from "classnames";
 import Loader from "../Loader";
 
-const AddLeadComponent = () => {
+const AddLeadComponent = ({FetchLeads}) => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
   const { hasPermission } = usePermission();
@@ -169,7 +169,6 @@ const AddLeadComponent = () => {
       return;
     }
     const token = localStorage.getItem("auth-token");
-    const creationDate = new Date();
     const LeadData = new FormData();
     let coldCall = "0";
     if (LeadSource.toLowerCase() === "property finder") {
@@ -177,20 +176,6 @@ const AddLeadComponent = () => {
     } else if (LeadSource.toLowerCase() === "personal") {
       coldCall = 2;
     }
-
-    // LeadData.append("leadName", LeadName);
-    // LeadData.append("leadContact", LeadContact);
-    // LeadData.append("leadEmail", LeadEmail);
-    // LeadData.append("enquiryType", EnquiryType);
-    // LeadData.append("leadType", PropertyType);
-    // LeadData.append("project", LeadProject);
-    // LeadData.append("leadFor", ForType);
-    // LeadData.append("language", LanguagePrefered);
-    // LeadData.append("leadStatus", LeadStatus);
-    // LeadData.append("leadSource", LeadSource);
-    // LeadData.append("feedback", "New");
-    // LeadData.append("coldCall", coldCall);
-    // LeadData.append("notes", LeadNotes);
     if (LeadName) LeadData.append("leadName", LeadName);
     if (LeadContact) LeadData.append("leadContact", LeadContact);
     if (LeadEmail) LeadData.append("leadEmail", LeadEmail);
@@ -248,6 +233,9 @@ const AddLeadComponent = () => {
       .then((result) => {
         console.log(result);
         setloading(false);
+        if(FetchLeads) {
+          FetchLeads();
+        }
         toast.success("Lead Added Successfully", {
           position: "top-right",
           autoClose: 3000,

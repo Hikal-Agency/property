@@ -1,4 +1,5 @@
-import { Button, Box, Select, MenuItem, Alert } from "@mui/material";
+import { useRef } from "react";
+import { Button, Box, Select, MenuItem, Alert, Tooltip } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -13,8 +14,10 @@ import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { MdSms } from "react-icons/md";
 import { IoMdChatboxes } from "react-icons/io";
+import { GrFormAdd } from "react-icons/gr";
+import { FaTrash } from "react-icons/fa";
 import { BsWhatsapp } from "react-icons/bs";
-import {HiMail} from "react-icons/hi";
+import { HiMail } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { langs } from "../../langCodes";
@@ -35,6 +38,8 @@ import { FaWhatsapp } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
+import AddLeadModal from "../../Components/whatsapp-marketing/AddLeadModal";
+import ConfirmBulkDelete from "../../Components/whatsapp-marketing/ConfirmBulkDelete";
 
 const AllLeads = () => {
   const {
@@ -58,6 +63,7 @@ const AllLeads = () => {
   const [phoneNumberFilter, setPhoneNumberFilter] = useState("");
   const [emailFilter, setEmailFilter] = useState("");
   const [startDate, setStartDate] = useState("");
+  const [bulkDeleteModalOpen, setBulkDeleteModalOpen] = useState();
   const [endDate, setEndDate] = useState("");
   const [languageFilter, setLanguageFilter] = useState("");
   const [leadOriginSelected, setLeadOriginSelected] = useState({
@@ -68,6 +74,7 @@ const AllLeads = () => {
     id: "all",
     formattedValue: "All",
   });
+  const selectionModelRef = useRef([]);
   const [enquiryTypeSelected, setEnquiryTypeSelected] = useState({ id: 0 });
   const [managerSelected, setManagerSelected] = useState("");
   const [agentSelected, setAgentSelected] = useState("");
@@ -77,6 +84,7 @@ const AllLeads = () => {
   const [pageRange, setPageRange] = useState();
   const [error, setError] = useState(false);
   const { hasPermission } = usePermission();
+  const [addLeadModalOpen, setAddLeadModalOpen] = useState(false);
 
   const [openMessageModal, setOpenMessageModal] = useState({
     open: false,
@@ -744,6 +752,7 @@ const AllLeads = () => {
           leadName: row?.leadName || "-",
           leadContact: row?.leadContact || "-",
           project: row?.project || "-",
+          leadId: row?.id,
           email: row?.leadEmail || "-",
           otp: row?.otp || "-",
           leadType: row?.leadType || "-",
@@ -807,7 +816,7 @@ const AllLeads = () => {
             language: getLangCode(row?.language) || "-",
             leadType: row?.leadType || "-",
             leadSource: row?.leadSource || "-",
-            lid: row?.id,
+            leadId: row?.id,
           }));
           setpageState((old) => ({
             ...old,
@@ -874,10 +883,9 @@ const AllLeads = () => {
     otpSelected,
     emailFilter,
     languageFilter,
-    startDate, 
-    endDate
+    startDate,
+    endDate,
   ]);
-
 
   const handleRowClick = async (params, event) => {
     if (!event.target.closest(".whatsapp-web-link")) {
@@ -984,55 +992,6 @@ const AllLeads = () => {
         setProjectNameTyped={setProjectNameTyped}
       />
 
-      {/* <Box sx={{ width: "100%" }} className="mb-5">
-        <div className="grid grid-cols-2 gap-4">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Date of Birth"
-              // value={Datevalue}
-              // onChange={(newValue) => {
-              //   console.log(newValue);
-              //   setDatevalue(newValue);
-              //   setPersonalInfo({
-              //     ...PersonalInfo,
-              //     dob:
-              //       format(newValue?.$d.getUTCFullYear()) +
-              //       "-" +
-              //       format(newValue?.$d.getUTCMonth() + 1) +
-              //       "-" +
-              //       format(newValue?.$d.getUTCDate() + 1),
-              //   });
-              //   console.log(Datevalue);
-              // }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  onKeyDown={(e) => e.preventDefault()}
-                  readOnly={true}
-                />
-              )}
-              className="w-full"
-              required
-              maxDate={currentDate}
-              // minDate={minDate}
-              // inputFormat="MM/dd/yyyy"
-              disableFuture
-              invalidDateMessage="Invalid date"
-              mask="__/__/____"
-              sx={{ width: "full" }}
-            />
-          </LocalizationProvider>
-          <TextField
-            label="Search"
-            // value={searchText}
-            // onChange={(event) => setSearchText(event.target.value)}
-            variant="outlined"
-            className="w-full"
-            sx={{ marginLeft: "1rem" }}
-          />
-        </div>
-      </Box> */}
-
       <h1
         className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
           currentMode === "dark"
@@ -1050,64 +1009,111 @@ const AllLeads = () => {
       <Alert color="success" sx={{ mb: 2 }}>
         {selectedRows.length} rows selected
       </Alert>
-      {selectedRows.length > 0 && (
-        <Box className="flex items-center">
-          <Button
-            onClick={() =>
-              setOpenMessageModal({ open: true, isWhatsapp: false })
-            }
-            type="button"
-            variant="contained"
-            sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
-            color="error"
-            size="small"
-          >
-            <MdSms size={20} /> 
-          </Button>
-          <Button
-            onClick={() =>
-              setOpenMessageModal({ open: true, isWhatsapp: true })
-            }
-            type="button"
-            variant="contained"
-            sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
-            color="error"
-            size="small"
-          >
-            <BsWhatsapp size={20} /> 
-          </Button>
 
-              <Button
-            onClick={() => {}}
+      <Box className="flex items-center">
+        <Tooltip title="Add Contact">
+          <Button
+            onClick={() => {
+              setAddLeadModalOpen(true);
+            }}
+            type="button"
+            variant="contained"
+            sx={{
+              padding: "7px 0",
+              mb: 2,
+              mr: 1,
+              "& svg path": {
+                stroke: "white !important",
+              },
+            }}
+            color="error"
+            size="small"
+          >
+            <GrFormAdd size={20} />
+          </Button>
+        </Tooltip>
+
+        <Tooltip title="Delete">
+          <Button
+            onClick={() => setBulkDeleteModalOpen(true)}
             type="button"
             variant="contained"
             sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
             color="error"
             size="small"
+            disabled={selectedRows?.length === 0}
           >
-            <HiMail size={20} /> 
+            <FaTrash size={18} />
           </Button>
-
-          {selectedRows.length === 1 && (
-            <Link
-              to={`/marketing/chat?phoneNumber=${selectedRows[0]
-                ?.slice(1)
-                ?.replaceAll(" ", "")}`}
-            >
+        </Tooltip>
+                <Tooltip title="Whatsapp">
+          <Button
+            onClick={() => setOpenMessageModal({ open: true, isWhatsapp: true })}
+            type="button"
+            variant="contained"
+            sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
+            color="error"
+            size="small"
+            disabled={selectedRows?.length === 0}
+          >
+            <BsWhatsapp size={20} />
+          </Button>
+        </Tooltip>
+          <Tooltip title="SMS">
+            <div className="relative">
               <Button
+                onClick={() => setOpenMessageModal({ open: true, isWhatsapp: false })}
                 type="button"
                 variant="contained"
-                sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
+                sx={{ padding: "7px 0", mb: 2, mr: 1 }}
                 color="error"
                 size="small"
+                disabled={true}
               >
-                <IoMdChatboxes style={{ marginRight: 8 }} size={20} />
-                Open Chat
+                <MdSms size={20} />
               </Button>
-            </Link>
-          )}
-        </Box>
-      )}
+              <div className="text-white bg-black absolute w-[89%] rounded-sm text-xs -top-[18px] left-0 right-0 p-1">Coming soon</div>
+            </div>
+          </Tooltip>
+
+
+        <Tooltip title="E-Mail">
+          <div className="relative">
+            <Button
+              onClick={() => {}}
+              type="button"
+              variant="contained"
+              sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
+              color="error"
+              size="small"
+              disabled={true}
+            >
+              <HiMail size={20} />
+            </Button>
+                <div className="text-white bg-black absolute w-[89%] rounded-sm text-xs -top-[18px] left-0 right-0 p-1">Coming soon</div>
+          </div>
+        </Tooltip>
+
+
+        {selectedRows.length === 1 && (
+          <Link
+            to={`/marketing/chat?phoneNumber=${selectedRows[0]?.contact
+              ?.slice(1)
+              ?.replaceAll(" ", "")}`}
+          >
+            <Button
+              type="button"
+              variant="contained"
+              sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
+              color="error"
+              size="small"
+            >
+              <IoMdChatboxes style={{ marginRight: 8 }} size={20} />
+              Open Chat
+            </Button>
+          </Link>
+        )}
+      </Box>
 
       <Box
         width={"100%"}
@@ -1127,14 +1133,20 @@ const AllLeads = () => {
           paginationMode="server"
           page={pageState.page - 1}
           checkboxSelection
+          selectionModel={selectionModelRef.current}
           onSelectionModelChange={(ids) => {
+            selectionModelRef.current = ids;
             setSelectedRows(
               ids.map((id) => {
                 const contact = pageState?.data[id - 1]?.leadContact;
+                const lid = pageState?.data[id - 1]?.leadId;
                 if (contact[0] === "+") {
-                  return contact?.slice(1)?.replaceAll(" ", "");
+                  return {
+                    lid,
+                    contact: contact?.slice(1)?.replaceAll(" ", ""),
+                  };
                 } else {
-                  return contact?.replaceAll(" ", "");
+                  return { lid, contact: contact?.replaceAll(" ", "") };
                 }
               })
             );
@@ -1188,11 +1200,38 @@ const AllLeads = () => {
           }
         />
       </Box>
+
+      {addLeadModalOpen && (
+        <AddLeadModal
+          FetchLeads={() => {
+            const token = localStorage.getItem("auth-token");
+            FetchLeads(
+              token,
+              leadOriginSelected?.id || "hotleads",
+              leadTypeSelected?.id || "all",
+              projectNameTyped,
+              enquiryTypeSelected?.id,
+              managerSelected,
+              agentSelected,
+              otpSelected?.id,
+              phoneNumberFilter,
+              emailFilter,
+              languageFilter,
+              startDate && endDate
+                ? `${formatDate(startDate)},${formatDate(endDate)}`
+                : ""
+            );
+            setColumnsArr([...columnsArr]);
+          }}
+          addLeadModalOpen={addLeadModalOpen}
+          handleCloseAddLeadModal={() => setAddLeadModalOpen(false)}
+        />
+      )}
       {openMessageModal.open && (
         <SendMessageModal
           sendMessageModal={openMessageModal}
           setSendMessageModal={setOpenMessageModal}
-          selectedContacts={selectedRows}
+          selectedContacts={selectedRows?.map((row) => row?.contact)}
           whatsappSenderNo={whatsappSenderNo}
         />
       )}
@@ -1201,6 +1240,37 @@ const AllLeads = () => {
           messageLogsModal={messageLogsModal}
           setMessageLogsModal={setMessageLogsModal}
           whatsappSenderNo={whatsappSenderNo}
+        />
+      )}
+
+      {console.log("selectd::", selectedRows)}
+
+      {bulkDeleteModalOpen && (
+        <ConfirmBulkDelete
+          lids={selectedRows?.map((row) => row?.lid)}
+          FetchLeads={() => {
+            const token = localStorage.getItem("auth-token");
+            FetchLeads(
+              token,
+              leadOriginSelected?.id || "hotleads",
+              leadTypeSelected?.id || "all",
+              projectNameTyped,
+              enquiryTypeSelected?.id,
+              managerSelected,
+              agentSelected,
+              otpSelected?.id,
+              phoneNumberFilter,
+              emailFilter,
+              languageFilter,
+              startDate && endDate
+                ? `${formatDate(startDate)},${formatDate(endDate)}`
+                : ""
+            );
+            setColumnsArr([...columnsArr]);
+          }}
+          selectionModelRef={selectionModelRef}
+          bulkDeleteModalOpen={bulkDeleteModalOpen}
+          handleCloseDeleteModal={() => setBulkDeleteModalOpen(false)}
         />
       )}
     </div>

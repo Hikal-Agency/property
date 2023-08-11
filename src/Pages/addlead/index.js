@@ -13,7 +13,7 @@ const AddLead = (props) => {
         <div className={` ${currentMode === "dark" ? "bg-black" : "bg-white"}`}>
           <div className={`w-full`}>
             <div className="px-5 ">
-              <AddLeadComponent BACKEND_URL={BACKEND_URL} User={User} />
+              <AddLeadComponent />
             </div>
           </div>
         </div>
