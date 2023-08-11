@@ -1066,7 +1066,7 @@ const Sidebarmui = () => {
         setTimeout(() => {
           setBlink(false);
         }, 500);
-        setNewMessageReceived(data?.to?.loginId);
+        setNewMessageReceived(data?.to);
       } else {
         setMessagesCount(0);
         setNewMessageReceived(false);
