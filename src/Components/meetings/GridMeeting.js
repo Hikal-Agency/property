@@ -7,17 +7,31 @@ import {
 } from "@mui/material";
 import React, { useEffect } from "react";
 import Loader from "../Loader";
-import { MdEdit } from "react-icons/md";
-import { MdLocationOn } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import ShowLocation from "./ShowLocation";
 import axios from "../../axoisConfig";
 import UpdateMeeting from "./UpdateMeeting";
+
+import { 
+  MdEdit,
+  MdLocationOn 
+} from "react-icons/md";
+import { 
+  BsBuildings,
+  BsClock,
+  BsFillBookmarkXFill,
+  BsFillBookmarkStarFill,
+  BsFillBookmarkCheckFill
+} from "react-icons/bs";
+import { 
+  BiUser
+} from "react-icons/bi";
+
 const GridMeeting = ({ pageState, setpageState }) => {
   console.log("meetings state: ", pageState);
   const [loading, setLoading] = useState(false);
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, isArabic } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [meetingLocation, setMeetingLocation] = useState(null);
   const [locationModalOpen, setLocationModalOpen] = useState(false);
@@ -66,6 +80,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
           project: row?.project || "-",
           enquiryType: row?.enquiryType || "-",
           leadType: row?.leadType || "-",
+          leadFor: row?.leadFor || "-",
           meetingDate: row?.meetingDate || "-",
           meetingBy: row?.userName || "-",
           meetingTime: row?.meetingTime || "-",
@@ -162,23 +177,28 @@ const GridMeeting = ({ pageState, setpageState }) => {
                             currentMode === "dark"
                               ? "bg-gray-900 text-white"
                               : "bg-gray-200 text-black"
-                          } p-3 rounded-md `}
+                          } p-4 rounded-md `}
                         >
-                          <div className="mt-2 space-y-1 overflow-hidden">
+                          <div className="space-y-1 overflow-hidden">
                             <div className="flex items-center justify-between">
-                              <h1 className="font-bold capitalize">
-                                <b>Lead Name: </b>{" "}
-                                <span className="text-red-600">
-                                  {item?.leadName}
-                                </span>
+                              <h1 
+                                className="font-bold text-[#DA1F26]" 
+                                style={{
+                                  fontFamily: isArabic(item?.leadName)
+                                    ? "Noto Kufi Arabic"
+                                    : "inherit",
+                                }}
+                              >
+                                {item?.leadName}
                               </h1>
+
                               <div className="flex items-center">
                                 <Avatar
                                   sx={{ marginRight: "3px" }}
                                   style={{
-                                    background: "white",
-                                    width: "30px",
-                                    height: "30px",
+                                    background: `${currentMode === "dark" ? "black" : "white"}`,
+                                    width: "25px",
+                                    height: "25px",
                                   }}
                                 >
                                   <IconButton
@@ -186,15 +206,15 @@ const GridMeeting = ({ pageState, setpageState }) => {
                                   >
                                     <MdEdit
                                       style={{ color: "#da1f26" }}
-                                      size={16}
+                                      size={14}
                                     />
                                   </IconButton>
                                 </Avatar>
                                 <Avatar
                                   style={{
-                                    background: "white",
-                                    width: "30px",
-                                    height: "30px",
+                                    background: `${currentMode === "dark" ? "black" : "white"}`,
+                                    width: "25px",
+                                    height: "25px",
                                   }}
                                 >
                                   <IconButton
@@ -202,54 +222,54 @@ const GridMeeting = ({ pageState, setpageState }) => {
                                   >
                                     <MdLocationOn
                                       style={{ color: "#da1f26" }}
-                                      size={16}
+                                      size={14}
                                     />
                                   </IconButton>
                                 </Avatar>
                               </div>
                             </div>
 
-                            <p className="text-sm">
-                              <b>Project: </b> {item?.project}
+                            
+                            <p className="flex items-center text-sm py-1">
+                              <BsBuildings size={16} className="mr-2" /> 
+                              <span className="mx-1">{item?.project}</span>
+                              <span className="mx-1">{item?.enquiryType}</span>
+                              <span className="mx-1">{item?.leadType}</span>
+                              <span className="mx-1">{item?.leadFor}</span>
                             </p>
-
-                            <p className="text-sm">
-                              <b>Enquiry: </b> {item?.enquiryType}
+                            <p className="flex items-center text-sm py-1">
+                              <BsClock size={16} className="mr-2" /> 
+                              <span className="mx-1">{item?.meetingDate}</span>
+                              <span className="mx-1">{item?.meetingTime}</span>
                             </p>
-                            <p className="text-sm">
-                              <b>Property: </b> {item?.leadType}
+                            <p className="flex items-center text-sm py-1">
+                              <BiUser size={16} className="mr-2" /> 
+                              <span className="mx-1">{item?.meetingBy}</span>
                             </p>
-                            <hr />
-                            <p className="text-sm">
-                              <b>Meeting By: </b> {item?.meetingBy}
-                            </p>
-                            <p className="text-sm">
-                              <b>Meeting Date: </b> {item?.meetingDate}
-                            </p>
-                            <p className="text-sm">
-                              <b>Meeting Time: </b> {item?.meetingTime}
-                            </p>
-                            <p className="text-sm font-semibold ">
-                              <b>Status: </b>
+                            <p className="flex items-center text-sm py-1">
                               {item?.meetingStatus === "Cancelled" && (
-                                <span className="text-sm font-semibold text-[#ff0000]">
-                                  Cancelled
-                                </span>
-                              )}
-                              {item?.meetingStatus === "Pending" && (
-                                <span className="text-sm font-semibold text-[#f27f25]">
-                                  Pending
-                                </span>
-                              )}
-                              {item?.meetingStatus === "Postponed" && (
-                                <span className="text-sm font-semibold text-[#f27f25]">
-                                  Pending
-                                </span>
+                                <>
+                                  <BsFillBookmarkXFill size={16} className="mr-2" color="#DA1F26" /> 
+                                  <span className="mx-1">{item?.meetingStatus}</span>
+                                </>
                               )}
                               {item?.meetingStatus === "Attended" && (
-                                <span className="text-sm font-semibold text-[#0f9d58]">
-                                  Attended
-                                </span>
+                                <>
+                                  <BsFillBookmarkCheckFill size={16} className="mr-2" color="#238e41" /> 
+                                  <span className="mx-1">{item?.meetingStatus}</span>
+                                </>
+                              )}
+                              {item?.meetingStatus === "Postponed" && (
+                                <>
+                                  <BsFillBookmarkStarFill size={16} className="mr-2" color="#f27f25" /> 
+                                  <span className="mx-1">{item?.meetingStatus}</span>
+                                </>
+                              )}
+                              {item?.meetingStatus === "Pending" && (
+                                <>
+                                  <BsFillBookmarkStarFill size={16} className="mr-2" color="#ebc24d" /> 
+                                  <span className="mx-1">{item?.meetingStatus}</span>
+                                </>
                               )}
                             </p>
                           </div>
