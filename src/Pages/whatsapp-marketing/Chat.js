@@ -306,11 +306,11 @@ const Chat = () => {
       });
 
       socket.on("whatsapp_user_ready", (info) => {
+        console.log("Ready");
         socket.emit("whatsapp_get_profile_picture", { id: info.sessionId });
         socket.on("whatsapp_profile_picture", (url) => {
           localStorage.setItem("authenticated-wa-device", info.sessionId);
           console.log("url: ", url);
-          if (url !== null) {
             setData({
               userInfo: info,
               userProfilePic: url,
@@ -328,7 +328,6 @@ const Chat = () => {
             setWALoadingScreen(false);
             setReady(true);
             // setSelectedDevice(null);
-          }
         });
       });
 

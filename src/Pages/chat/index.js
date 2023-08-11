@@ -54,25 +54,10 @@ const ChatPage = () => {
   }, [chatMessages]);
 
   const fetchRecentChats = async (loginId) => {
-    try {
-      const chats = await axios.get(
-        `${process.env.REACT_APP_SOCKET_URL}/chat/recent/${loginId}`
-      );
-      setRecentChats(chats.data);
-    } catch (err) {
-      console.log(err);
-
-      toast.error("Something went Wrong! Please Try Again", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
+    socket.emit("chat_get-recent-chats", loginId);
+    socket.on("chat_recent-chats", (data) => {
+      setRecentChats(data);
+    })
   };
 
   useEffect(() => {
@@ -97,32 +82,18 @@ const ChatPage = () => {
   }, [User]);
 
   const fetchChatMessages = async () => {
-    try{
-      setChatLoading(true);
-      const response = await axios.get(`${process.env.REACT_APP_SOCKET_URL}/chat/messages/${User?.loginId}`)
-      setChatMessages(response.data);
+    socket.emit("chat_get-user-messages", User?.loginId);
+    setChatLoading(true);
+    socket.on("chat_user-messages", (data) => {
+      setChatMessages(data);
       setChatLoading(false);
-    }
-    catch(err){
-      console.log(err);
-      toast.error("Something went Wrong! Please Try Again", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
- 
-    }
+    })
   }
 
   useEffect(() => {
     if(activeChat) {
       console.log("active:", activeChat);
-      fetchChatMessages(activeChat);
+      fetchChatMessages();
     }
   }, [activeChat]);
   return (
