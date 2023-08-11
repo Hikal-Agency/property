@@ -9,6 +9,7 @@ import {
   // Select,
 } from "@mui/material";
 import Select from "@mui/material/Select";
+import moment from 'moment';
 
 
 import axios from "../../axoisConfig";
@@ -21,6 +22,8 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
   const [SalesPerson2, setSalesPerson2] = useState(
     cellValues?.row?.assignedToSales
   );
+
+  // const [transferfrom, settransferfrom] = useState(cellValues?.row?.transferredFrom);
 
   const [SalesPersonsList, setSalesPersonsList] = useState([]);
   const [SalesPerson3, setSalesPerson3] = useState();
@@ -65,7 +68,20 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
     old_selectedItem = SalesPersonsList.find(
       (item) => item.id === Number(SalesPerson2)
     );
+    // settransferfrom(transferfrom);
+    // console.log("transfer from::::::::::::::::: ", transferfrom);
+    console.log("old selected ===================> ", old_selectedItem);
     console.log(selectedItem);
+
+    // if (transferfrom === null) {}
+    // else {
+    //   let tfromname;
+    //   tfromname = SalesPersonsList.find(
+    //     (item) => item.id === Number(transferfrom)
+    //   );
+    //   console.log("transfer name::::::::::::::", tfromname);
+    //   console.log("transfer name::::::::::::::", tfromname);
+    // }
 
     setnewSalesPerson(selectedItem);
     setSalesPerson3(old_selectedItem);
@@ -79,9 +95,28 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
     const UpdateLeadData = new FormData();
     UpdateLeadData.append("id", cellValues?.row?.leadId);
     if (newSalesPerson === undefined) {
-      UpdateLeadData.append("assignedToSales", 1);
+      if (SalesPerson3 === undefined) {
+        UpdateLeadData.append("assignedToSales", 1);
+        UpdateLeadData.append("feedback", "New");
+      }
+      else {
+        UpdateLeadData.append("assignedToSales", 1);
+        UpdateLeadData.append("transferredFrom", SalesPerson3.id);
+        UpdateLeadData.append("transferredFromName", SalesPerson3.userName);
+        UpdateLeadData.append("transferredDate", moment().format('YYYY-MM-DD HH:mm:ss'));
+        UpdateLeadData.append("feedback", "New");
+      }
     } else {
-      UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
+      if (SalesPerson3 === undefined) {
+        UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
+      }
+      else {
+        UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
+        UpdateLeadData.append("transferredFrom", SalesPerson3.id);
+        UpdateLeadData.append("transferredFromName", SalesPerson3.userName);
+        UpdateLeadData.append("transferredDate", moment().format('YYYY-MM-DD HH:mm:ss'));
+        UpdateLeadData.append("feedback", "New");
+      }
     }
 
     await axios
@@ -230,7 +265,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
           >
             <MenuItem value={"selected_agent"} selected>
               {" "}
-              Select Agent
+              ---Agent---
             </MenuItem>
 
             {SalesPersonsList?.length > 0 &&

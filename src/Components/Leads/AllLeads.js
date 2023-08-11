@@ -1112,6 +1112,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadId: row?.id,
           creationDate: row?.creationDate,
           transferredDate: row?.transferredDate,
+          transferredFrom: row?.transferredFrom,
           transferredFromName: row?.transferredFromName,
           leadName: row?.leadName || "-",
           leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
