@@ -188,7 +188,9 @@ const ChatConversation = ({
                             return (
                               <ChatConversationItem
                                 key={chat?.id}
-                                onClick={() => setActiveChat(chat)}
+                                onClick={() => {
+                                  setActiveChat(chat);
+                                }}
                                 chat={chat}
                                 isActive={activeChat?.loginId === chat?.loginId}
                               />
@@ -334,7 +336,11 @@ const ChatConversation = ({
                       message.to === User?.loginId
                     ) {
                       return (
-                        <ChatMessageFromOther key={index} message={message} />
+                        <ChatMessageFromOther
+                          key={index}
+                          data={activeChat}
+                          message={message}
+                        />
                       );
                     }
                   })}

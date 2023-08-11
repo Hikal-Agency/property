@@ -1,7 +1,7 @@
 import { Box, Avatar } from "@mui/material";
 import { BiUser } from "react-icons/bi";
 
-const ChatMessageFromOther = ({ message }) => {
+const ChatMessageFromOther = ({ message,data }) => {
   return (
     <>
       <div className="flex items-start self-start">
@@ -12,7 +12,7 @@ const ChatMessageFromOther = ({ message }) => {
           
           <img
             className="object-cover w-full h-full"
-            src={message?.fromProfilePic}
+            src={data?.profile_picture}
             alt=""
           />
         </Avatar>

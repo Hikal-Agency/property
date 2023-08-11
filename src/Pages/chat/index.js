@@ -121,6 +121,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     if(activeChat) {
+      console.log("active:", activeChat);
       fetchChatMessages(activeChat);
     }
   }, [activeChat]);
