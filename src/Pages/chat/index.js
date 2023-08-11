@@ -24,26 +24,10 @@ const ChatPage = () => {
     e.preventDefault();
     if (content) {
       if (type === "text") {
-        const keysToCopy = [
-          "id",
-          "isParent",
-          "loginId",
-          "position",
-          "profile_picture",
-          "userEmail",
-          "userAltEmail",
-          "userContact",
-          "userName",
-        ];
         const message = {
-          from: Object.assign(
-            {},
-            ...keysToCopy.map((key) => ({ [key]: User[key] }))
-          ),
-          to: Object.assign(
-            {},
-            ...keysToCopy.map((key) => ({ [key]: activeChat[key] }))
-          ),
+          from: User?.loginId, 
+          to: activeChat?.loginId,
+          toProfilePic: activeChat?.profile_picture,
           content: content,
           type,
         };
@@ -106,9 +90,40 @@ const ChatPage = () => {
           )
         );
       });
+      socket.on("chat_recent-chats", (data) => {
+        setRecentChats(data);
+      })
     }
   }, [User]);
 
+  const fetchChatMessages = async () => {
+    try{
+      setChatLoading(true);
+      const response = await axios.get(`${process.env.REACT_APP_SOCKET_URL}/chat/messages/${User?.loginId}`)
+      setChatMessages(response.data);
+      setChatLoading(false);
+    }
+    catch(err){
+      console.log(err);
+      toast.error("Something went Wrong! Please Try Again", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+ 
+    }
+  }
+
+  useEffect(() => {
+    if(activeChat) {
+      fetchChatMessages(activeChat);
+    }
+  }, [activeChat]);
   return (
     <div
       style={{

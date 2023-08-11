@@ -319,8 +319,8 @@ const ChatConversation = ({
                 >
                   {chatMessages?.map((message, index) => {
                     if (
-                      message?.from?.loginId === User?.loginId &&
-                      message.to?.loginId === activeChat?.loginId
+                      message?.from === User?.loginId &&
+                      message.to === activeChat?.loginId
                     ) {
                       return (
                         <ChatMessageFromMe
@@ -330,8 +330,8 @@ const ChatConversation = ({
                         />
                       );
                     } else if (
-                      message.from?.loginId === activeChat?.loginId &&
-                      message.to?.loginId === User?.loginId
+                      message.from === activeChat?.loginId &&
+                      message.to === User?.loginId
                     ) {
                       return (
                         <ChatMessageFromOther key={index} message={message} />

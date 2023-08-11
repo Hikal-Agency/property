@@ -12,7 +12,7 @@ const ChatMessageFromOther = ({ message }) => {
           
           <img
             className="object-cover w-full h-full"
-            src={message?.from?.profile_picture || message?.from?.displayImg}
+            src={message?.fromProfilePic}
             alt=""
           />
         </Avatar>
