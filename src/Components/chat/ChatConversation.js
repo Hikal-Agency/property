@@ -43,7 +43,7 @@ const ChatConversation = ({
   const [userDetailsSidebarOpened, setUserDetailsSidebarOpened] =
     useState(false);
   const [messageInputVal, setMessageInputVal] = useState("");
-  const [activeTab, setActiveTab] = useState("recent");
+  const [activeTab, setActiveTab] = useState("online");
   const [isTyping, setIsTyping] = useState(false);
   const [createMessageModal, setCreateMessageModal] = useState({
     isOpened: false,
@@ -141,7 +141,7 @@ const ChatConversation = ({
             </div>
 
             <div className="flex my-6 px-5 items-center">
-              <Button
+              {/* <Button
                 onClick={() => setActiveTab("recent")}
                 className={`flex-1`}
                 variant="contained"
@@ -153,7 +153,7 @@ const ChatConversation = ({
                 }}
               >
                 Recent Chats
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => setActiveTab("online")}
                 className={`flex-1`}

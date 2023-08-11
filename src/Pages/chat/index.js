@@ -65,7 +65,7 @@ const ChatPage = () => {
       socket.emit("chat_addUser", User);
       console.log("User added in chat::");
 
-      fetchRecentChats(User?.loginId);
+      // fetchRecentChats(User?.loginId);
 
       socket.on("chat_getOnlineUsers", (data) => {
         console.log("online users::", data);
