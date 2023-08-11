@@ -57,9 +57,9 @@ const OffersList = ({
   currentPage,
   btnloading,
   setCurrentPage,
-  setPageBeingScrolled,
+  setPageBeingScrolled
 }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, isArabic } = useStateContext();
 
   const imagePaths = ["../assets/offers_static_img.png"];
 
@@ -107,12 +107,12 @@ const OffersList = ({
           {offersArr?.map((offer, index) => {
             return (
               <div
-                className={`relative overflow-hidden offers-page-${
+                className={`relative overflow-hidden rounded-md shadow-sm offers-page-${
                   offer?.page
                 } ${
                   currentMode === "dark"
-                    ? "bg-black text-white"
-                    : "bg-white text-black"
+                    ? "bg-gray-900 text-white"
+                    : "bg-gray-100 text-black"
                 } `}
               >
                 {offer?.status?.toLowerCase() === "expired" && (
@@ -126,17 +126,17 @@ const OffersList = ({
                   style={{
                     filter:
                       offer?.status?.toLowerCase() === "expired"
-                        ? "grayscale(1)"
-                        : "",
-                  }}
-                  className="p-5 rounded-md h-[500px] flex flex-col justify-between"
+                      ? "grayscale(1)"
+                      : "",
+                    }}
+                  className="p-5 h-full flex flex-col"
                 >
-                  <div className=" top-0 left-0 z-10 flex gap-1">
-                    <div className="h-1 w-7 bg-red-500"></div>
-                    <div className="h-1 w-7 bg-red-500"></div>
-                    <div className="h-1 w-7 bg-red-500"></div>
+                  <div className="mb-2 top-0 left-0 z-10 flex gap-1">
+                    <div className="h-1 w-7 bg-red-600 rounded-md"></div>
+                    <div className="h-1 w-7 bg-red-600 rounded-md"></div>
+                    <div className="h-1 w-7 bg-red-600 rounded-md"></div>
                   </div>
-                  <div>
+                  <div className="my-1">
                     {offer?.offer_image ? (
                       <img
                         src={offer?.offer_image}
@@ -151,44 +151,47 @@ const OffersList = ({
                       />
                     )}
                   </div>
-                  <p
-                    className={`${
-                      currentMode === "dark" ? "text-white" : "text-[#000000]"
-                    }  text-xs text-start`}
-                    style={{ textTransform: "capitalize" }}
-                  >
-                    Offer from:{" "}
-                    <span className="text-[#DA1F26] font-bold">
-                      {offer?.offerFromName}
-                    </span>
-                  </p>
-                  <h1
-                    className={`${
-                      currentMode === "dark" ? "text-white" : "text-[#000000]"
-                    } text-white font-bold rounded-md mb-3 text-start text-lg`}
+                  {/* OFFER INFO  */}
+                  <p className={`${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    } text-center font-bold rounded-md my-3`}
                     style={{
-                      textTransform: "capitalize",
-                      color: currentMode === "dark" ? "#ffffff" : "#000000",
-                    }}
-                  >
+                      fontFamily: isArabic(offer?.offerTitle)
+                        ? "Noto Kufi Arabic"
+                        : "inherit",
+                    }} >
                     {offer?.offerTitle}
-                  </h1>
-                  <p className="mb-3 text-start">{offer?.offerDescription}</p>
-                  <hr className="mb-1"></hr>
-                  <h1 className="font-semibold mb-1">
+                  </p>
+                  <p className="mb-4 text-center" style={{
+                      fontFamily: isArabic(offer?.offerDescription)
+                        ? "Noto Kufi Arabic"
+                        : "inherit",
+                    }}>
+                    {offer?.offerDescription}
+                  </p>
+
+                  <hr className="mb-4"></hr>
+
+                  {/* VALIDITY  */}
+                  <p className="font-semibold text-base mb-3">
                     Valid from{" "}
                     <span className="text-[#DA1F26]">{offer?.validFrom}</span>{" "}
                     to{" "}
                     <span className="text-[#DA1F26]">{offer?.validTill}</span>
-                  </h1>
-                  <hr className="mb-1"></hr>
+                  </p>
+                  
+                  {/* OFFER FROM  */}
+                  <p className={`${
+                      currentMode === "dark" ? "text-white" : "text-[#000000]"
+                    }  text-sm text-center mb-2`}
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    Offer from {" "}
+                    <span className="text-[#DA1F26] font-semibold">
+                      {offer?.offerFromName}
+                    </span>
+                  </p>
                 </div>
-                {/* <h6
-                  className="mb-3 bg-main-red-color text-white p-2 rounded-md"
-                  style={{ textTransform: "capitalize" }}
-                >
-                  Offer from Mr. {offer?.offerFrom}
-                </h6> */}
               </div>
             );
           })}

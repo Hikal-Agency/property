@@ -204,8 +204,8 @@ const Meetings = () => {
             )}
 
             {cellValues.formattedValue === "Pending" && (
-              <div className={`${ currentMode === "dark" ? "bg-yellow-900" : "bg-yellow-100"} p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
-                <span className="text-[#ebc24d] p-1 rounded-md w-24 text-center">
+              <div className={`${ currentMode === "dark" ? "bg-[#424242]" : "bg-gray-200"} p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
+                <span className="text-[#AAAAAA] p-1 rounded-md w-24 text-center">
                   PENDING
                 </span>
               </div>
