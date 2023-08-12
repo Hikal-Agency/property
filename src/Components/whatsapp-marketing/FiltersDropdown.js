@@ -239,11 +239,11 @@ const FiltersDropdown = ({
               style={{
                 position: "relative",
                 width: "100%",
-                marginTop: agentSelected ? "25px" : "0",
+                marginBottom: agentSelected ? "25px" : "0",
               }}
             >
               <label
-                style={{ position: "absolute", top: "-20px", right: 0 }}
+                style={{ position: "absolute", bottom: "-20px", right: 0 }}
                 htmlFor="Agent"
                 className={`flex justify-end items-center ${
                   currentMode === "dark" ? "text-white" : "text-dark"

@@ -75,9 +75,9 @@ const ChatPage = () => {
           )
         );
       });
-      socket.on("chat_recent-chats", (data) => {
-        setRecentChats(data);
-      })
+      // socket.on("chat_recent-chats", (data) => {
+      //   setRecentChats(data);
+      // })
     }
   }, [User]);
 
