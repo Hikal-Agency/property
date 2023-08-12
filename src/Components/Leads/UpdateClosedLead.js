@@ -154,11 +154,19 @@ const UpdateLead = ({
   console.log("leadDate:: ", leadDate);
 
   const UpdateLeadFunc = async () => {
+    console.log("leadDate:: ", leadDate);
+
+    let date = leadDate;
+    if (!leadDate) {
+      date = LeadData?.dealDate;
+    }
+
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     // UpdateLeadData.append("id", User.id);
-    const updateLeadDate = dayjs(leadDate).format("YYYY-MM-DD");
+    // const updateLeadDate = dayjs(leadDate).format("YYYY-MM-DD");
+    const updateLeadDate = dayjs(date).format("YYYY-MM-DD");
     UpdateLeadData.append("amount", leadAmount);
     UpdateLeadData.append("dealDate", updateLeadDate);
 
