@@ -63,6 +63,7 @@ const SingleLeadNote = (props) => {
       leadId: location.pathname.split("/")[2],
       leadNote: AddNoteTxt,
       addedBy: User?.id,
+      addedByName: User?.userName,
     };
     console.log(data);
     axios

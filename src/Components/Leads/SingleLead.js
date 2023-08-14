@@ -38,6 +38,7 @@ const SingleLead = ({
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [lastNote, setLastNote] = useState("");
   const [lastNoteDate, setLastNoteDate] = useState("");
+  const [lastNoteAddedBy, setLastNoteAddedBy] = useState("");
   const [loading, setLoading] = useState(false);
   const [blockIPModalOpened, setBlockIPModalOpened] = useState({
     lead: null,
@@ -78,6 +79,7 @@ const SingleLead = ({
       leadId: LeadData.leadId || LeadData.id,
       leadNote: note || AddNoteTxt,
       addedBy: User?.id,
+      addedByName: User?.userName,
     };
     axios
       .post(`${BACKEND_URL}/leadNotes`, data, {
@@ -134,8 +136,10 @@ const SingleLead = ({
       );
       const lastNoteText = result.data?.notes?.data[0]?.leadNote;
       const lastNoteDate = result.data?.notes?.data[0]?.creationDate;
+      const lastNoteAddedBy = result.data?.notes?.data[0]?.addedByName;
       setLastNote(lastNoteText);
       setLastNoteDate(lastNoteDate);
+      setLastNoteAddedBy(lastNoteAddedBy);
     } catch (error) {
       console.log(error);
     }
@@ -410,15 +414,21 @@ const SingleLead = ({
                       {lastNoteDate}
                     </p>
                     <div className="bg-main-red-color h-10 w-0.5"></div>
-                    <p
-                      style={{
-                        fontFamily: isArabic(lastNote)
-                          ? "Noto Kufi Arabic"
-                          : "inherit",
-                      }}
-                      className="px-2 py-2 mx-1"
-                    >
-                      {lastNote}
+                    <div className="flex-grow">
+                      <p
+                        style={{
+                          fontFamily: isArabic(lastNote)
+                            ? "Noto Kufi Arabic"
+                            : "inherit",
+                        }}
+                        className="px-2 py-2 mx-1"
+                      >
+                        {lastNote}
+                      </p>
+                    </div>
+                    <div className="bg-main-red-color h-10 w-0.5"></div>
+                    <p className="px-2 py-2 mx-1 text-center text-sm">
+                      {lastNoteAddedBy}
                     </p>
                   </div>
                 )}
