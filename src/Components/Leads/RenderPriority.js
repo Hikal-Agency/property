@@ -26,7 +26,7 @@ const RenderPriority = ({ cellValues }) => {
   const [PriorityDialogue, setPriorityDialogue] = useState(false);
   // eslint-disable-next-line
   const [confirmbtnloading, setconfirmbtnloading] = useState(false);
-  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL } =
+  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL, darkModeColors } =
     useStateContext();
 
   const [selectedPriority, setSelectedPriority] = useState(Priority);
@@ -159,7 +159,7 @@ const RenderPriority = ({ cellValues }) => {
           {getFlagIcon()}
         </IconButton>
         {isDropdownOpen && (
-          <FormControl >
+          <FormControl className={`${currentMode === "dark" ? "text-white" : "text-black"}`}>
             <Select
               id="priority"
               value={selectedPriority}

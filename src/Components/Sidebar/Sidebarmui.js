@@ -1120,9 +1120,9 @@ const Sidebarmui = () => {
                   {isCollapsed ? (
                     <div className="flex items-center space-x-2">
                       <img
-                        height={50}
-                        width={50}
-                        className="h-[50px] w-auto"
+                        height={40}
+                        width={40}
+                        className="h-[40px] w-auto p-1"
                         src="/favicon.png"
                         alt=""
                       />
@@ -1142,9 +1142,9 @@ const Sidebarmui = () => {
                   ) : (
                     <div className="flex justify-center">
                       <img
-                        height={50}
-                        width={50}
-                        className="h-[50px] w-auto"
+                        height={40}
+                        width={40}
+                        className="h-[40px] w-auto p-1"
                         src="/favicon.png"
                         alt=""
                       />
