@@ -154,12 +154,15 @@ const RenderPriority = ({ cellValues }) => {
     <div className="w-full h-full">
       <Box 
       sx={SelectStyles}
-      className={`w-full h-full flex items-center justify-center`}>
+      className={`w-full h-full flex items-center justify-center`} >
         <IconButton onClick={handleFlagClick} style={{ zIndex: 1001 }}>
           {getFlagIcon()}
         </IconButton>
         {isDropdownOpen && (
-          <FormControl className={`${currentMode === "dark" ? "text-white" : "text-black"}`}>
+          <FormControl className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
+          sx={{".MuiSelect-select": {
+            fontSize: 11,
+          }}}>
             <Select
               id="priority"
               value={selectedPriority}
