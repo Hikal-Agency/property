@@ -1092,7 +1092,7 @@ const Sidebarmui = () => {
           }}
           className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
         >
-          <div className="mt-3">
+          <div className="">
             <div
               className="sidebar-top"
               style={{
@@ -1120,9 +1120,9 @@ const Sidebarmui = () => {
                   {isCollapsed ? (
                     <div className="flex items-center space-x-2">
                       <img
-                        height={100}
-                        width={100}
-                        className="h-[40px] w-auto"
+                        height={50}
+                        width={50}
+                        className="h-[50px] w-auto"
                         src="/favicon.png"
                         alt=""
                       />
@@ -1132,7 +1132,7 @@ const Sidebarmui = () => {
                           className={`overflow-hidden ${
                             currentMode === "dark"
                               ? "text-white"
-                              : "text-gray-900"
+                              : "text-black"
                           }`}
                         >
                           HIKAL CRM
@@ -1140,17 +1140,19 @@ const Sidebarmui = () => {
                       </div>
                     </div>
                   ) : (
-                    <img
-                      height={100}
-                      width={100}
-                      className="h-[40px] w-auto"
-                      src="/favicon.png"
-                      alt=""
-                    />
+                    <div className="flex justify-center">
+                      <img
+                        height={50}
+                        width={50}
+                        className="h-[50px] w-auto"
+                        src="/favicon.png"
+                        alt=""
+                      />
+                    </div>
                   )}
                 </Link>
               </div>
-              <div className="profile-section border-t border-b mt-2 px-1 py-2">
+              <div className="profile-section border-b mt-1 px-2 pb-5 mb-2">
                 {isCollapsed ? (
                   <>
                     <Link
@@ -1166,39 +1168,39 @@ const Sidebarmui = () => {
                         }
                         height={60}
                         width={60}
-                        className="rounded-full object-cover"
+                        className="rounded-md object-cover"
                         alt=""
                       />
                       <h1
-                        className={`my-2 font-bold text-lg ${
+                        className={`my-2 font-bold text-lg text-center ${
                           currentMode === "dark"
                             ? "text-white"
                             : "text-main-dark-bg"
                         }`}
-                      >
+                        >
                         {User?.userName ? User?.userName : "No username"}
                       </h1>
                       <span
-                        className={`block rounded-md px-2 py-1 text-sm  bg-main-red-color text-white`}
+                        className={`block rounded-md px-2 py-1 text-sm bg-main-red-color text-white`}
                       >
                         {User?.position || ""}
                       </span>
                     </Link>
                   </>
                 ) : (
-                  <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
+                  <Link to={"/profile"} onClick={() => setopenBackDrop(true)} className="flex justify-center">
                     <img
                       src={User?.displayImg}
-                      height={60}
-                      width={60}
-                      className="rounded-full cursor-pointer"
+                      height={50}
+                      width={50}
+                      className="rounded-md cursor-pointer"
                       alt=""
                     />
                   </Link>
                 )}
               </div>
             </div>
-            <div className="sidebar-root mt-4 mb-4">
+            <div className="sidebar-root mt-4 mb-4 text-base">
               <Menu
                 menuItemStyles={{
                   button: ({ level, active, disabled }) => {
@@ -1326,7 +1328,7 @@ const Sidebarmui = () => {
                               <div
                                 className={`flex items-center ${
                                   isCollapsed ? "gap-4" : ""
-                                } rounded-lg text-md ${
+                                } rounded-lg text-base ${
                                   !isCollapsed ? "justify-center" : ""
                                 }`}
                               >
@@ -1399,7 +1401,7 @@ const Sidebarmui = () => {
                                       )
                                     }
                                   >
-                                    <div className="flex my-1 h-[38px] items-center justify-center text-2xl">
+                                    <div className="flex my-1 h-[38px] items-center justify-center text-xl">
                                       {link?.icon}
                                     </div>
                                   </MenuItem>
@@ -1625,7 +1627,7 @@ const Sidebarmui = () => {
                                               )
                                             }
                                           >
-                                            <div className="flex items-center gap-4  rounded-lg text-md  ">
+                                            <div className="flex items-center gap-4  rounded-lg text-base  ">
                                               <span
                                                 className={`${
                                                   !isCollapsed && "text-xl"

@@ -28,7 +28,7 @@ import { MdCampaign } from "react-icons/md";
 import { 
   FaSnapchatGhost, 
   FaFacebookF,
-  FaUser,
+  FaRegUser,
   FaWhatsapp,
   FaTwitter,
   FaYoutube,
@@ -158,7 +158,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           personal: () => 
             <BsPersonCircle 
             size={16} 
-            color={"#6C7A89"}
+            color={"#0ec7ff"}
             className="p-1" />,
 
           whatsapp: () => 
@@ -186,10 +186,10 @@ const Closedeals = ({ pageState, setpageState }) => {
             className="p-0.5" />,
           
           self: () =>
-            <FaUser 
+            <FaRegUser 
             size={16} 
             color={"#6C7A89"}
-            className="p-0.5" />,
+            className="p-1" />,
         };
         return (
           <>
