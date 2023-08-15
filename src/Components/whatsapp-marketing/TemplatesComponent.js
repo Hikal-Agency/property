@@ -16,11 +16,11 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import axios from "../../axoisConfig";
 import DeleteTemplateModal from "./DeleteTemplateModal";
-import { BiPen, BiPlus } from "react-icons/bi";
+import { BiPen, BiPlus, } from "react-icons/bi";
 import { MdEmail, MdSms, MdTitle } from "react-icons/md";
 import { HiTemplate } from "react-icons/hi";
 import { AiFillEdit, AiOutlineEdit } from "react-icons/ai";
-import { BsTrash } from "react-icons/bs";
+import { BsTrash, BsWhatsapp} from "react-icons/bs";
 import { toast } from "react-toastify";
 import UpdateTemplateModal from "./UpdateTemplateModal";
 import Loader from "../Loader";
@@ -135,12 +135,12 @@ const TemplatesComponent = () => {
                 ml: 1,
                 mr: 2,
                 padding: "5px 10px",
-                fontSize: 13,
+                fontSize: 11,
               }}
               onClick={() => setCreateTemplateModal({ isOpen: true })}
               variant="contained"
             >
-              <BiPlus size={18} style={{ marginRight: 5 }} />
+              <BiPlus size={16} style={{ marginRight: 5 }} />
               Add Template
             </Button>
           </Box>
@@ -149,19 +149,24 @@ const TemplatesComponent = () => {
             sx={{ color: currentMode === "dark" ? "white" : "black" }}
           >
             <TemplatesCountCard
-              icon={<HiTemplate size={28} />}
+              icon={<HiTemplate size={18} />}
               type="All Templates"
               count={templates?.length}
             />
             <TemplatesCountCard
-              icon={<MdEmail size={28} />}
+              icon={<MdEmail size={18} />}
               type="Email Templates"
               count={0}
             />
             <TemplatesCountCard
-              icon={<MdSms size={28} />}
-              type="Message Templates"
+              icon={<BsWhatsapp size={18} />}
+              type="Whatsapp Templates"
               count={templates?.length}
+            />
+            <TemplatesCountCard
+              icon={<MdSms size={18} />}
+              type="SMS Templates"
+              count={0}
             />
           </Box>
           <Box className="flex flex-wrap mt-3">
