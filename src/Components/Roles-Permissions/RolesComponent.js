@@ -92,16 +92,19 @@ const RolesComponent = ({
       .then((result) => {
         console.log("result", result);
         if (result.data.status === true) {
-          toast.success("Registration Completed Successfully", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          toast.success(
+            `${value === 0 ? "Role" : "Permission"} Created Successfully`,
+            {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
         }
         setloading(false);
         addUserModelClose();
