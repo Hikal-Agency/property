@@ -118,7 +118,7 @@ const AllLeads = () => {
     setError(false);
     const value = e.target.value;
 
-    if (value === "" || (value >= 10 && value <= 100)) {
+    if (value === "" || (value >= 10 && value <= 1000)) {
       setPageRange(value);
 
       setError(false);
@@ -1046,9 +1046,11 @@ const AllLeads = () => {
             <FaTrash size={18} />
           </Button>
         </Tooltip>
-                <Tooltip title="Whatsapp">
+        <Tooltip title="Whatsapp">
           <Button
-            onClick={() => setOpenMessageModal({ open: true, isWhatsapp: true })}
+            onClick={() =>
+              setOpenMessageModal({ open: true, isWhatsapp: true })
+            }
             type="button"
             variant="contained"
             sx={{ padding: "7px 6px", mb: 2, mr: 1 }}
@@ -1059,23 +1061,26 @@ const AllLeads = () => {
             <BsWhatsapp size={20} />
           </Button>
         </Tooltip>
-          <Tooltip title="SMS">
-            <div className="relative">
-              <Button
-                onClick={() => setOpenMessageModal({ open: true, isWhatsapp: false })}
-                type="button"
-                variant="contained"
-                sx={{ padding: "7px 0", mb: 2, mr: 1 }}
-                color="error"
-                size="small"
-                disabled={true}
-              >
-                <MdSms size={20} />
-              </Button>
-              <div className="text-white bg-black absolute w-[89%] rounded-sm text-xs -top-[18px] left-0 right-0 p-1">Coming soon</div>
+        <Tooltip title="SMS">
+          <div className="relative">
+            <Button
+              onClick={() =>
+                setOpenMessageModal({ open: true, isWhatsapp: false })
+              }
+              type="button"
+              variant="contained"
+              sx={{ padding: "7px 0", mb: 2, mr: 1 }}
+              color="error"
+              size="small"
+              disabled={true}
+            >
+              <MdSms size={20} />
+            </Button>
+            <div className="text-white bg-black absolute w-[89%] rounded-sm text-xs -top-[18px] left-0 right-0 p-1">
+              Coming soon
             </div>
-          </Tooltip>
-
+          </div>
+        </Tooltip>
 
         <Tooltip title="E-Mail">
           <div className="relative">
@@ -1090,10 +1095,11 @@ const AllLeads = () => {
             >
               <HiMail size={20} />
             </Button>
-                <div className="text-white bg-black absolute w-[89%] rounded-sm text-xs -top-[18px] left-0 right-0 p-1">Coming soon</div>
+            <div className="text-white bg-black absolute w-[89%] rounded-sm text-xs -top-[18px] left-0 right-0 p-1">
+              Coming soon
+            </div>
           </div>
         </Tooltip>
-
 
         {selectedRows.length === 1 && (
           <Link
@@ -1129,6 +1135,7 @@ const AllLeads = () => {
           rowCount={pageState.total}
           loading={pageState.isLoading}
           rowsPerPageOptions={[30, 50, 75, 100]}
+          virtualization
           pagination
           width="auto"
           paginationMode="server"

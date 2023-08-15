@@ -217,7 +217,7 @@ const RenderFeedback = ({ cellValues }) => {
         <MenuItem value={"Not Interested"}>Not Interested</MenuItem>
         <MenuItem value={"Unreachable"}>Unreachable</MenuItem>
       </Select> */}
-      <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
+      <FormControl className={`${currentMode === "dark" ? "text-white" : "text-black"}`} sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
         <Select
           id="feedback"
           value={Feedback ?? "selected"}
@@ -247,7 +247,7 @@ const RenderFeedback = ({ cellValues }) => {
         >
           {!Feedback ? (
             <MenuItem value={"selected"} selected>
-              Select Feedback
+              ---Feedback---
             </MenuItem>
           ) : null}
 
