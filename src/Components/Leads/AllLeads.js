@@ -1671,7 +1671,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: "476px",
+                left: User?.role === 1  ? "340px" : "250px",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -1686,7 +1686,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: "600px",
+                left: "455px",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -1702,7 +1702,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: User?.role === 1 ? "355px" : "266px",
+                left: User?.role === 1 ? "230px" : "150px",
               }}
               variant="text"
             >
@@ -1718,62 +1718,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             id="bulkImport"
           />
 
-          {/* <div
-            style={{ zIndex: "5 !important" }}
-            className="absolute top-[7px] right-[20px] z-[5]"
-          >
-            <TextField
-              placeholder="Search.."
-              ref={searchRef}
-              sx={{
-                "& input": {
-                  borderBottom: "2px solid #ffffff6e",
-                },
-              }}
-              variant="standard"
-              onKeyUp={handleKeyUp}
-              onInput={handleSearch}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <IconButton sx={{ padding: 0 }}>
-                      <BiSearch size={17} />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div> */}
           <div
             style={{ zIndex: "5 !important" }}
             className="absolute top-[7px] right-[20px] z-[5]"
           >
-            {/* <TextField
-              type="number"
-              placeholder="From"
-              value={fromLead}
-              sx={{
-                "& input": {
-                  border: "2px solid #ffffff6e",
-                },
-              }}
-              variant="standard"
-              onChange={(e) => setFromLead(e.target.value)}
-            />
-            <TextField
-              type="number"
-              placeholder="To"
-              value={toLead}
-              sx={{
-                "& input": {
-                  border: "2px solid #ffffff6e",
-                },
-              }}
-              variant="standard"
-              onKeyUp={handleChangeNumber}
-              onChange={(e) => setToLead(e.target.value)}
-            /> */}
-
             <TextField
               placeholder="Search.."
               ref={searchRef}
@@ -1799,6 +1747,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
           <div style={{ position: "relative" }}>
             <DataGrid
+            disableDensitySelector
               initialState={{
                 columns: {
                   columnVisibilityModel: {

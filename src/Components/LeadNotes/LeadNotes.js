@@ -346,6 +346,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
             sx={DataGridStyles}
           >
             <DataGrid
+            disableDensitySelector
               initialState={{
                 columns: {
                   columnVisibilityModel: {

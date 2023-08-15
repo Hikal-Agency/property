@@ -690,6 +690,7 @@ const Closedeals = ({ pageState, setpageState }) => {
         sx={{ ...DataGridStyles, position: "relative", marginBottom: "50px" }}
       >
         <DataGrid
+        disableDensitySelector
           initialState={{
                 columns: {
                   columnVisibilityModel: {

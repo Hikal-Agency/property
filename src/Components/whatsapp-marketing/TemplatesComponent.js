@@ -16,7 +16,7 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import axios from "../../axoisConfig";
 import DeleteTemplateModal from "./DeleteTemplateModal";
-import { BiPen } from "react-icons/bi";
+import { BiPen, BiPlus } from "react-icons/bi";
 import { MdEmail, MdSms, MdTitle } from "react-icons/md";
 import { HiTemplate } from "react-icons/hi";
 import { AiFillEdit, AiOutlineEdit } from "react-icons/ai";
@@ -125,26 +125,23 @@ const TemplatesComponent = () => {
                   : "text-red-600 font-bold border-red-600"
               }`}
             >
-              ● Templates
+              ● Message Templates
             </h1>
             <Button
+            style={{
+                  background: "#da1f26",
+            }}
               sx={{
                 ml: 1,
                 mr: 2,
-                background: currentMode === "dark" ? "white" : "#8e8e8e14",
                 padding: "5px 10px",
-                color: "#da1f26",
                 fontSize: 13,
-                "&:hover": {
-                  background: "#da1f26",
-                  color: "white",
-                },
               }}
               onClick={() => setCreateTemplateModal({ isOpen: true })}
               variant="contained"
             >
-              <BiPen size={18} style={{ marginRight: 5 }} />
-              Create New
+              <BiPlus size={18} style={{ marginRight: 5 }} />
+              Add Template
             </Button>
           </Box>
           <Box
@@ -219,19 +216,17 @@ const TemplatesComponent = () => {
                       <TableRow>
                         <TableCell>
                           <Box className="flex items-center">
-                            <MdTitle />
-                            <span style={{ marginLeft: 5 }}> Title</span>
+                            <strong className="text-xl">Name</strong>
                           </Box>
                         </TableCell>
                         <TableCell>
                           <Box className="flex items-center">
-                            <span>Type</span>
+                              <strong className="text-xl">Type</strong>
                           </Box>
                         </TableCell>
                         <TableCell>
                           <Box className="flex items-center">
-                            <AiFillEdit />{" "}
-                            <span style={{ marginLeft: 5 }}>Edit</span>
+                              <strong className="text-xl">Edit</strong>
                           </Box>
                         </TableCell>
                       </TableRow>
@@ -241,37 +236,36 @@ const TemplatesComponent = () => {
                         <TableRow
                           key={template?.id}
                           sx={{
+                            background: currentMode === "dark" ? "black" : "white",
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
                         >
-                          <TableCell component="th" scope="row">
+                          <TableCell sx={{color: currentMode === "dark" ? "white" : "black"}} component="th"  scope="row">
                             {template?.name}
                           </TableCell>
-                          <TableCell>plain-text</TableCell>
-                          <TableCell>
+                          <TableCell sx={{color: currentMode === "dark" ? "white" : "black"}}>plain-text</TableCell>
+                          <TableCell sx={{color: currentMode === "dark" ? "white" : "black"}}>
                             <Box className="flex items-center">
                               <IconButton
                               onClick={(e) => handleUpdateTemplate(e, template)}
                                 sx={{ padding: 0, mr: 1 }}
-                                color={
-                                  currentMode === "dark" ? "black" : "white"
-                                }
                               >
                                 <AiOutlineEdit
                                   size={20}
-                                  style={{ color: "inherit" }}
+                                  style={{ color: currentMode === "dark" ? "white" : "black" }}
                                 />
                               </IconButton>
                               <IconButton
                                 onClick={() => setDeleteTemplateModal({isOpen: true, templateId: template?.id})}
                                 sx={{ padding: 0 }}
                                 color={
-                                  currentMode === "dark" ? "black" : "white"
+                                  "red"
                                 }
                               >
                                 <BsTrash
                                   size={18}
-                                  style={{ color: "inherit" }}
+                                  style={{ color: "red" }}
+
                                 />
                               </IconButton>
                             </Box>

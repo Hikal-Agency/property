@@ -1974,7 +1974,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: "476px",
+                left: User?.role === 1 ? "431px" : "476px",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -1989,7 +1989,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: "600px",
+                left: User?.role === 1 ? "325px" : "260px",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -2005,7 +2005,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: User?.role === 1 ? "355px" : "266px",
+                left: User?.role === 1 ? "230px" : "155px",
               }}
               variant="text"
             >
@@ -2053,6 +2053,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             sx={{ ...DataGridStyles, position: "relative" }}
           >
             <DataGrid
+            disableDensitySelector
               initialState={{
                 columns: {
                   columnVisibilityModel: {

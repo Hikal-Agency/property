@@ -725,6 +725,7 @@ const Clients = () => {
                 </div>
                 <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
                   <DataGrid
+                  disableDensitySelector
                     initialState={{
                 columns: {
                   columnVisibilityModel: {

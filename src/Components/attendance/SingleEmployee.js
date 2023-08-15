@@ -1792,6 +1792,7 @@ const SingleEmployee = ({ user }) => {
                         sx={DataGridStyles}
                       >
                         <DataGrid
+                        disableDensitySelector
                           autoHeight
                           disableSelectionOnClick
                           rows={pageState.data}

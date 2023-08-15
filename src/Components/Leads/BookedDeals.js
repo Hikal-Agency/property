@@ -1217,6 +1217,7 @@ const BookedDeals = ({
           style={{ position: "relative" }}
         >
           <DataGrid
+          disableDensitySelector
             initialState={{
               columns: {
                 columnVisibilityModel: {

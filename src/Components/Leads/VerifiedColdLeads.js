@@ -15,6 +15,7 @@ import { ToastContainer } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import RenderFeedback from "./RenderFeedback";
 import { langs } from "../../langCodes";
+import hasPermission from "../../utils/usePermission";
 import RenderPriority from "./RenderPriority";
 
 const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
@@ -301,6 +302,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
         sx={DataGridStyles}
       >
         <DataGrid
+        disableDensitySelector
           initialState={{
             columns: {
               columnVisibilityModel: {

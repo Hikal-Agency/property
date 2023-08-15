@@ -112,6 +112,7 @@ const Transactions = () => {
         sx={DataGridStyles}
       >
         <DataGrid
+        disableDensitySelector
           autoHeight
           disableSelectionOnClick
           rowsPerPageOptions={[30, 50, 75, 100]}

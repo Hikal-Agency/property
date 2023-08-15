@@ -677,6 +677,7 @@ const Users = () => {
                       sx={{ ...DataGridStyles, marginBottom: "5%" }}
                     >
                       <DataGrid
+                      disableDensitySelector
                         autoHeight
                         disableSelectionOnClick
                         rows={pageState.data}

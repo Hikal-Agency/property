@@ -244,6 +244,7 @@ const AllTickets = () => {
 
       <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
         <DataGrid
+        disableDensitySelector
           autoHeight
           onRowClick={handleRowClick}
           disableSelectionOnClick

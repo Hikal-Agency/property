@@ -330,6 +330,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
     <div className="pb-10">
       <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>
         <DataGrid
+        disableDensitySelector
           initialState={{
                 columns: {
                   columnVisibilityModel: {
