@@ -43,6 +43,8 @@ const CreateTemplateModal = ({
         JSON.stringify({
           name: templateTitle,
           body: templateBody,
+          type: templateType,
+          image_url: imageURL,
           status: "active",
         }),
         {
@@ -174,6 +176,7 @@ const CreateTemplateModal = ({
                     type={"text"}
                     label="Image URL"
                     variant="outlined"
+                    sx={{width: "400px"}}
                     size="small"
                     value={imageURL}
                     onChange={(e) => setImageURL(e.target.value)}
