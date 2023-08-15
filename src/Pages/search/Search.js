@@ -1443,7 +1443,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
 
   let allAgents = [];
-  
+
   if (User?.role === 1 || User?.role === 2 || User?.role === 8) {
     allAgents = agents[`manager-${managerSelected}`];
   } else {
@@ -1816,6 +1816,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="medium"
               sx={{
                 minWidth: "90px",
+                "& label" : {
+                  top: "-6px"
+                }
               }}
               onChange={(e) => {
                 searchRef.current.querySelector("input").value = "";
@@ -1848,7 +1851,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  <InputLabel>Manager</InputLabel>
+                  <InputLabel style={{top: "-6px"}}>Manager</InputLabel>
                   <Select
                     label="Manager"
                     id="Manager"
@@ -1920,7 +1923,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  <InputLabel>Agent</InputLabel>
+                  <InputLabel style={{top: "-6px"}}>Agent</InputLabel>
                   <Select
                     label="Agent"
                     id="Agent"
