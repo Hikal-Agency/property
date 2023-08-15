@@ -20,9 +20,9 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 
-import { 
-  FaComment, 
-  FaSnapchatGhost, 
+import {
+  FaComment,
+  FaSnapchatGhost,
   FaTiktok,
   FaFacebookF,
   FaGlobe,
@@ -31,17 +31,15 @@ import {
   FaYoutube,
   FaTwitter,
   FaUser,
-  FaRegComments
+  FaRegComments,
 } from "react-icons/fa";
+import { MdCampaign } from "react-icons/md";
 import {
-  MdCampaign
-} from "react-icons/md";
-import { 
   BiSearch,
   BiImport,
   BiMessageRoundedDots,
   BiCommentDetail,
-  BiArchive
+  BiArchive,
 } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
@@ -417,7 +415,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           return (
             <div className="p-1 rounded-md">
               {cellValues.formattedValue === "Verified" && (
-                <div className={`${ currentMode === "dark" ? "bg-green-900" : "bg-green-100"} mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
+                <div
+                  className={`${
+                    currentMode === "dark" ? "bg-green-900" : "bg-green-100"
+                  } mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
+                  style={{ fontSize: 9 }}
+                >
                   <span className="text-[#238e41] p-1 rounded-md w-24 text-center">
                     VERIFIED
                   </span>
@@ -425,21 +428,32 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               )}
 
               {cellValues.formattedValue === "Not Verified" && (
-                <div className={`${ currentMode === "dark" ? "bg-red-900" : "bg-red-100"} p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
+                <div
+                  className={`${
+                    currentMode === "dark" ? "bg-red-900" : "bg-red-100"
+                  } p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
+                  style={{ fontSize: 9 }}
+                >
                   <span className="text-[#DA1F26] p-1 rounded-md w-24 text-center">
                     UNVERIFIED
                   </span>
                   {/* </div> */}
                 </div>
               )}
-              
-              {cellValues.formattedValue !== "Not Verified" && cellValues.formattedValue !== "Verified" && (
-                <div className={`${ currentMode === "dark" ? "bg-[#424242]" : "bg-gray-200"} p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>                    
-                  <span className="text-[#AAAAAA] p-1 rounded-md w-24text-center">
-                    NO OTP
-                  </span>
-                </div>
-              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div
+                    className={`${
+                      currentMode === "dark" ? "bg-[#424242]" : "bg-gray-200"
+                    } p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
+                    style={{ fontSize: 9 }}
+                  >
+                    <span className="text-[#AAAAAA] p-1 rounded-md w-24text-center">
+                      NO OTP
+                    </span>
+                  </div>
+                )}
             </div>
           );
         }
@@ -454,100 +468,71 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       renderCell: (cellValues) => {
         console.log("Start::", cellValues.row.leadSource);
         const sourceIcons = {
-          "campaign snapchat": () => 
-            <FaSnapchatGhost 
-            size={16} 
-            color={"#f6d80a"} 
-            className="p-1"  />,
+          "campaign snapchat": () => (
+            <FaSnapchatGhost size={16} color={"#f6d80a"} className="p-1" />
+          ),
 
-          "campaign facebook": () => 
-            <FaFacebookF
-            size={16} 
-            color={"#0e82e1"} 
-            className="p-1"  />,
+          "campaign facebook": () => (
+            <FaFacebookF size={16} color={"#0e82e1"} className="p-1" />
+          ),
 
-          "campaign tiktok": () => 
-            <FaTiktok 
-            size={16} 
-            color={`${ currentMode === "dark" ? "#ffffff" : "#000000" }`} 
-            className="p-1"  />,
+          "campaign tiktok": () => (
+            <FaTiktok
+              size={16}
+              color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+              className="p-1"
+            />
+          ),
 
-          "campaign googleads": () => 
-            <FcGoogle 
-            size={16}
-            className="p-1" />,
-            
-          "campaign youtube": () => 
-            <FaYoutube 
-            size={16} 
-            color={"#FF0000"}
-            className="p-1" />,
+          "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
 
-          "campaign twitter": () => 
-            <FaTwitter 
-            size={16} 
-            color={"#00acee"}
-            className="p-1" />,
+          "campaign youtube": () => (
+            <FaYoutube size={16} color={"#FF0000"} className="p-1" />
+          ),
 
-          "bulk import": () => 
-            <BiImport 
-            size={16} 
-            color={"#da1f26"} 
-            className="p-1"  />,
+          "campaign twitter": () => (
+            <FaTwitter size={16} color={"#00acee"} className="p-1" />
+          ),
 
-            "property finder": () =>
-              <GiMagnifyingGlass 
-              size={16} 
-              color={"#ef5e4e"}
-              className="p-1" />,
+          "bulk import": () => (
+            <BiImport size={16} color={"#da1f26"} className="p-1" />
+          ),
 
-          campaign: () => 
-            <MdCampaign 
-            size={16} 
-            color={"#696969"}
-            className="p-0.5" />,
+          "property finder": () => (
+            <GiMagnifyingGlass size={16} color={"#ef5e4e"} className="p-1" />
+          ),
 
-          cold: () => 
-            <BsSnow2 
-            size={16} 
-            color={"#0ec7ff"}
-            className="p-1" />,
+          campaign: () => (
+            <MdCampaign size={16} color={"#696969"} className="p-0.5" />
+          ),
 
-          personal: () => 
-            <BsPersonCircle 
-            size={16} 
-            color={"#6C7A89"}
-            className="p-1" />,
+          cold: () => <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />,
 
-          whatsapp: () => 
-            <FaWhatsapp 
-            size={16} 
-            color={"#53cc60"}
-            className="p-1" />,
+          personal: () => (
+            <BsPersonCircle size={16} color={"#6C7A89"} className="p-1" />
+          ),
 
-          message: () => 
-            <BiMessageRoundedDots 
-            size={16} 
-            color={"#6A5ACD"}
-            className="p-0.5" />,
+          whatsapp: () => (
+            <FaWhatsapp size={16} color={"#53cc60"} className="p-1" />
+          ),
 
-          comment: () => 
-            <FaRegComments 
-            size={16} 
-            color={"#a9b3c6"}
-            className="p-0.5" />,
+          message: () => (
+            <BiMessageRoundedDots
+              size={16}
+              color={"#6A5ACD"}
+              className="p-0.5"
+            />
+          ),
 
-          website: () => 
-            <TbWorldWww 
-            size={16} 
-            color={"#AED6F1"}
-            className="p-0.5" />,
-          
-          self: () =>
-            <FaUser 
-            size={16} 
-            color={"#6C7A89"}
-            className="p-0.5" />,
+          comment: () => (
+            <FaRegComments size={16} color={"#a9b3c6"} className="p-0.5" />
+          ),
+
+          website: () => (
+            <TbWorldWww size={16} color={"#AED6F1"} className="p-0.5" />
+          ),
+
+          self: () => <FaUser size={16} color={"#6C7A89"} className="p-0.5" />,
         };
         return (
           <>
@@ -680,32 +665,34 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               </p>
             )}
 
-            <p
-              onClick={() => {
-                setLeadToDelete(cellValues?.row.leadId);
-                setDeleteModelOpen(true);
-                setBulkDeleteClicked(false);
-              }}
-              disabled={deleteloading ? true : false}
-              className={`deleteLeadBtn cursor-pointer ${
-                currentMode === "dark"
-                  ? " bg-transparent rounded-md shadow-none"
-                  : "bg-transparent rounded-md shadow-none"
-              }`}
-            >
-              <Tooltip title="Delete Lead" arrow>
-                <IconButton
-                  sx={{ padding: 0 }}
-                  color={currentMode === "dark" ? "black" : "white"}
-                >
-                  <BsTrash
-                    className="deleteLeadBtn"
-                    size={18}
-                    style={{ color: "inherit" }}
-                  />
-                </IconButton>
-              </Tooltip>
-            </p>
+            {hasPermission("lead_delete") && (
+              <p
+                onClick={() => {
+                  setLeadToDelete(cellValues?.row.leadId);
+                  setDeleteModelOpen(true);
+                  setBulkDeleteClicked(false);
+                }}
+                disabled={deleteloading ? true : false}
+                className={`deleteLeadBtn cursor-pointer ${
+                  currentMode === "dark"
+                    ? " bg-transparent rounded-md shadow-none"
+                    : "bg-transparent rounded-md shadow-none"
+                }`}
+              >
+                <Tooltip title="Delete Lead" arrow>
+                  <IconButton
+                    sx={{ padding: 0 }}
+                    color={currentMode === "dark" ? "black" : "white"}
+                  >
+                    <BsTrash
+                      className="deleteLeadBtn"
+                      size={18}
+                      style={{ color: "inherit" }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              </p>
+            )}
           </div>
         );
       },
@@ -1671,7 +1658,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: User?.role === 1  ? "340px" : "250px",
+                left: User?.role === 1 ? "340px" : "250px",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -1747,7 +1734,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
           <div style={{ position: "relative" }}>
             <DataGrid
-            disableDensitySelector
+              disableDensitySelector
               initialState={{
                 columns: {
                   columnVisibilityModel: {
