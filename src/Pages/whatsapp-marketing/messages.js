@@ -1127,6 +1127,7 @@ const AllLeads = () => {
         sx={{ ...DataGridStyles, position: "relative" }}
       >
         <DataGrid
+        disableDensitySelector
           autoHeight
           disableSelectionOnClick
           rows={pageState.data}

@@ -1066,6 +1066,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
               </h1>
 
               <DataGrid
+              disableDensitySelector
                 autoHeight
                 rows={row}
                 columns={columns}

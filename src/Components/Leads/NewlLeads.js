@@ -729,6 +729,7 @@ const Newleads = ({
           />
         </div>
         <DataGrid
+        disableDensitySelector
           initialState={{
             columns: {
               columnVisibilityModel: {

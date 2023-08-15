@@ -1,4 +1,4 @@
-import { Button, Pagination, Stack } from "@mui/material";
+import { Button, Pagination, Stack, Tooltip } from "@mui/material";
 import React, { useEffect } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
@@ -11,6 +11,14 @@ import { Link } from "react-router-dom";
 import SingleUser from "./SingleUser";
 import usePermission from "../../utils/usePermission";
 import DeleteUser from "./DeleteUser";
+
+import { 
+  MdOutlineCall,
+  MdOutlinePermContactCalendar
+} from "react-icons/md";
+import { TfiEmail } from "react-icons/tfi";
+import { AiOutlineEdit } from "react-icons/ai";
+import { SlBan } from "react-icons/sl";
 
 // const UserTable = ({ user }) => {
 //   const [loading, setloading] = useState(false);
@@ -332,7 +340,7 @@ const UserTable = ({  }) => {
 
             <div className="px-5">
               <div className="mt-5 md:mt-2">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-3 pb-3">
                   {userData?.map((item, index) => {
                     return (
                       <div
@@ -341,91 +349,122 @@ const UserTable = ({  }) => {
                           currentMode === "dark"
                             ? "bg-gray-900 text-white"
                             : "bg-gray-200 text-black"
-                        } p-3 rounded-md relative`}
+                        } rounded-md relative hover:shadow-lg text-sm`}
                       >
-                        {item?.profile_picture ? (
-                          <img
-                            src={item?.profile_picture}
-                            className="rounded-md cursor-pointer h-[50px] w-[50px] object-cover"
-                            alt=""
-                          />
-                        ) : (
-                          <Avatar
-                            alt="User"
-                            variant="circular"
-                            style={{ width: "50px", height: "50px" }}
-                          />
-                        )}
-                        <div className="mt-2 space-y-1 overflow-hidden">
-                          <h1 className="font-bold capitalize">
-                            {item?.userName}
-                          </h1>
-                          <p className="text-sm font-semibold text-red-600 capitalize">
-                            {item?.position}
-                          </p>
-                          {/* <hr /> */}
-                          <p className="text-sm">{item?.userContact}</p>
-                          <p className="text-sm">{item?.userEmail}</p>
-                          {item?.status !== 1 ? (
-                            <p className="text-sm text-red-600">Deactive</p>
-                          ) : (
-                            <p className="text-sm text-green-600">Active</p>
-                          )}
-                        </div>
-
-                        <div className="absolute top-2 items-center right-2 flex flex-col space-y-10">
-                          <Button
-                            className="text-green-500 mt-5"
-                            onClick={() => handleModel(item?.id)}
-                          >
-                            <FaEye style={{ color: "green" }} />
-                          </Button>
-
-                          <Link
-                            to={`/updateuser/${item?.id}`}
-                            className="text-blue-500"
-                          >
-                            <FaEdit
-                              style={{
-                                color:
-                                  currentMode == "dark" ? "white" : "black",
-                              }}
-                            />
-                          </Link>
-
-                            <>
+                        <div className="grid grid-cols-12">
+                          <div className="col-span-10 p-2">
+                            <div className="flex items-center m-1">
+                              {/* IMAGE  */}
+                              {item?.profile_picture ? (
+                                <img
+                                  src={item?.profile_picture}
+                                  className="rounded-full cursor-pointer h-[50px] w-[50px] object-cover"
+                                  alt=""
+                                />
+                              ) : (
+                                <Avatar
+                                  alt="User"
+                                  variant="circular"
+                                  style={{ width: "50px", height: "50px" }}
+                                />
+                              )}
+                              {/* NAME & POSITION  */}
+                              <div className="mx-3 space-y-1 overflow-hidden">
+                                <h1 className="font-bold text-base">
+                                  {item?.userName}
+                                </h1>
+                                <p className="text-red-600 capitalize">
+                                  {item?.position}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="h-0.5 w-full bg-[#DA1F26] my-3"></div>
+                            <div className="space-y-3 m-1">
+                              <div className="flex">
+                                <MdOutlineCall size={16} className="mr-3" />
+                                <p>{item?.userContact}</p>
+                              </div>
+                              <div className="flex">
+                                <TfiEmail size={16} className="mr-3" />
+                                <p>{item?.userEmail}</p>
+                              </div>
+                              
+                              {item?.status !== 1 ? (
+                                <p className="text-red-600">Deactive</p>
+                              ) : (
+                                <p className="text-green-600">Active</p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="col-span-2 bg-[#DA1F26] text-white p-2 flex flex-col space-y-3 justify-center rounded-md">
+                            {/* VIEW  */}
+                            <div className="w-full flex justify-center my-1">
+                              <Tooltip title="View User Details" arrow>
+                                <Button
+                                  onClick={() => handleModel(item?.id)}
+                                >
+                                  <MdOutlinePermContactCalendar size={18} className="text-white hover:text-black" />
+                                </Button>
+                              </Tooltip>
+                            </div>
+                            
+                            {/* EDIT  */}
+                            <div className="w-full flex justify-center items-center my-1 mb-5">
+                              <Tooltip title="Edit User Details" arrow>
+                                <Link
+                                  to={`/updateuser/${item?.id}`}
+                                >
+                                  <AiOutlineEdit size={18} className="text-white hover:text-black" />
+                                </Link>
+                              </Tooltip>
+                            </div>
+                            
+                            {/* DEACTIVATE & REACTIVATE */}
+                            <div className="w-full flex justify-center my-1">
                               {hasPermission("users_delete") ? (
                                 <>
                                   {item?.status === 1 ? (
-                                    <Button
-                                      className="text-red-500"
-                                      onClick={() =>
-                                        handleDelete(
-                                          item?.id,
-                                          item?.status,
-                                          item?.userName
-                                        )
-                                      }
-                                    >
-                                      <FaBan style={{ color: "red" }} />
-                                    </Button>
+                                    <Tooltip title="Deactivate User" arrow>
+                                      <Button
+                                        onClick={() =>
+                                          handleDelete(
+                                            item?.id,
+                                            item?.status,
+                                            item?.userName
+                                          )
+                                        }
+                                      >
+                                        <FaBan size={14} className="text-white hover:text-black" />
+                                      </Button>
+                                    </Tooltip>
                                   ) : (
-                                    <Button
-                                      className="text-green-500"
-                                      onClick={() =>
-                                        handleDelete(
-                                          item?.id,
-                                          item?.status,
-                                          item?.userName
-                                        )
-                                      }
-                                    >
-                                      <FaUnlock style={{ color: "green" }} />
-                                    </Button>
+                                    <Tooltip title="Reactivate User" arrow>
+                                        <Button
+                                        onClick={() =>
+                                          handleDelete(
+                                            item?.id,
+                                            item?.status,
+                                            item?.userName
+                                          )
+                                        }
+                                      >
+                                        <FaUnlock size={14} className="text-white hover:text-black" />
+                                      </Button>
+                                    </Tooltip>
                                   )}
                                 </>
                               ) : null}
-                            </>
+                            </div>
+                          </div>
+                        </div>
+                        
+
+                        <div className="absolute items-center right-2 flex flex-col space-y-10">
+                          
+
+                          
+
+                            
                         </div>
                       </div>
                     );

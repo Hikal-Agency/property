@@ -1228,6 +1228,7 @@ const ClientLeads = ({
                     id="bulkImport"
                   />
                   <DataGrid
+                  disableDensitySelector
                     initialState={{
                       columns: {
                         columnVisibilityModel: {

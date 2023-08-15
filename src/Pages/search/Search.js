@@ -24,24 +24,35 @@ import {
 } from "@mui/x-data-grid";
 
 import axios from "../../axoisConfig";
-import { FaComment, FaArchive, FaUser, FaBell } from "react-icons/fa";
+import { 
+  FaSnapchatGhost, 
+  FaFacebookF,
+  FaTiktok, 
+  FaRegComments,
+  FaYoutube,
+  FaWhatsapp,
+  FaTwitter,
+  FaUser
+} from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
-import { FaGlobe } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { BsAlarm } from "react-icons/bs";
-import { BiSearch } from "react-icons/bi";
-import { FaSnapchat } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
-import { RiMessage2Line } from "react-icons/ri";
-import { FaWhatsapp } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
+import { 
+  BiSearch, 
+  BiMessageRoundedDots,
+  BiArchive 
+} from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
-
+import {
+  MdCampaign
+} from "react-icons/md";
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
-import { TbFileImport } from "react-icons/tb";
+import { 
+  TbFileImport,
+  TbWorldWww 
+} from "react-icons/tb";
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "../../Components/Leads/SingleLead";
 import UpdateLead from "../../Components/Leads/UpdateLead";
@@ -431,7 +442,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "priority",
       headerName: "Priority",
-      minWidth: 100,
+      minWidth: 80,
       headerAlign: "center",
       flex: 1,
       hideable: false,
@@ -453,31 +464,31 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           );
         } else {
           return (
-            <div style={{ fontSize: 9 }}>
+            <div className="p-1 rounded-md">
               {cellValues.formattedValue === "Verified" && (
-                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <span className="bg-[#238e41] p-1 rounded-md w-24 text-center">
+                <div className={`${ currentMode === "dark" ? "bg-green-900" : "bg-green-100"} mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
+                  <span className="text-[#238e41] p-1 rounded-md w-24 text-center">
                     VERIFIED
                   </span>
                 </div>
               )}
 
               {cellValues.formattedValue === "Not Verified" && (
-                <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                  <span className="bg-[#DA1F26] p-1 rounded-md w-24 text-center">
+                <div className={`${ currentMode === "dark" ? "bg-red-900" : "bg-red-100"} p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
+                  <span className="text-[#DA1F26] p-1 rounded-md w-24 text-center">
                     UNVERIFIED
+                  </span>
+                  {/* </div> */}
+                </div>
+              )}
+              
+              {cellValues.formattedValue !== "Not Verified" && cellValues.formattedValue !== "Verified" && (
+                <div className={`${ currentMode === "dark" ? "bg-[#424242]" : "bg-gray-200"} p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>                    
+                  <span className="text-[#AAAAAA] p-1 rounded-md w-24text-center">
+                    NO OTP
                   </span>
                 </div>
               )}
-
-              {cellValues.formattedValue !== "Not Verified" &&
-                cellValues.formattedValue !== "Verified" && (
-                  <div className="w-full h-full flex justify-center items-center text-white text-center font-semibold">
-                    <span className="bg-[#000000] p-1 rounded-md w-24 text-center">
-                      {cellValues.formattedValue}
-                    </span>
-                  </div>
-                )}
             </div>
           );
         }
@@ -490,64 +501,122 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       minWidth: 30,
       headerAlign: "center",
       renderCell: (cellValues) => {
-        console.log("Start::", cellValues.row.leadSource);
         const sourceIcons = {
-          "campaign snapchat": () => <FaSnapchat size={22} color={"#f6d80a"} />,
-          "bulk import": () => <FaSnapchat size={22} color={"#f6d80a"} />,
-          "campaign facebook": () => <FaFacebook size={22} color={"#0e82e1"} />,
-          "campaign tiktok": () => (
-            <img
-              src={"/assets/tiktok-app.svg"}
-              alt=""
-              style={{ margin: "0 auto" }}
-              height={18}
-              width={18}
-              className="object-cover"
-            />
-          ),
-          "campaign googleads": () => <FcGoogle size={22} />,
-          campaign: () => <FcGoogle size={22} />,
-          cold: () => <BsSnow2 size={22} color={"#0ec7ff"} />,
-          personal: () => <BsPersonCircle size={22} color={"#14539a"} />,
-          whatsapp: () => <FaWhatsapp size={22} color={"#29EC62"} />,
-          message: () => <RiMessage2Line size={22} color={"#14539a"} />,
-          comment: () => <FaComment size={22} color={"#14539a"} />,
-          website: () => <FaGlobe size={22} color={"#14539a"} />,
-          "property finder": () => (
-            <GiMagnifyingGlass size={22} color={"#14539a"} />
-          ),
-          "propety finder": () => (
-            <GiMagnifyingGlass size={22} color={"#14539a"} />
-          ),
-          self: () => <FaUser size={22} color={"#14539a"} />,
-          "campaign youtube": () => <FaYoutube size={22} color={"#FF0000"} />,
-          "campaign twitter": () => <FaTwitter size={22} color={"#14539a"} />,
+          "campaign snapchat": () => 
+            <FaSnapchatGhost 
+            size={16} 
+            color={"#f6d80a"} 
+            className="p-1"  />,
+
+          "campaign facebook": () => 
+            <FaFacebookF
+            size={16} 
+            color={"#0e82e1"} 
+            className="p-1"  />,
+
+          "campaign tiktok": () => 
+            <FaTiktok 
+            size={16} 
+            color={`${ currentMode === "dark" ? "#ffffff" : "#000000" }`} 
+            className="p-1"  />,
+
+          "campaign googleads": () => 
+            <FcGoogle 
+            size={16}
+            className="p-1" />,
+            
+          "campaign youtube": () => 
+            <FaYoutube 
+            size={16} 
+            color={"#FF0000"}
+            className="p-1" />,
+
+          "campaign twitter": () => 
+            <FaTwitter 
+            size={16} 
+            color={"#00acee"}
+            className="p-1" />,
+
+          "bulk import": () => 
+            <BiImport 
+            size={16} 
+            color={"#da1f26"} 
+            className="p-1"  />,
+
+            "property finder": () =>
+              <GiMagnifyingGlass 
+              size={16} 
+              color={"#ef5e4e"}
+              className="p-1" />,
+
+          campaign: () => 
+            <MdCampaign 
+            size={16} 
+            color={"#696969"}
+            className="p-0.5" />,
+
+          cold: () => 
+            <BsSnow2 
+            size={16} 
+            color={"#0ec7ff"}
+            className="p-1" />,
+
+          personal: () => 
+            <BsPersonCircle 
+            size={16} 
+            color={"#6C7A89"}
+            className="p-1" />,
+
+          whatsapp: () => 
+            <FaWhatsapp 
+            size={16} 
+            color={"#53cc60"}
+            className="p-1" />,
+
+          message: () => 
+            <BiMessageRoundedDots 
+            size={16} 
+            color={"#6A5ACD"}
+            className="p-0.5" />,
+
+          comment: () => 
+            <FaRegComments 
+            size={16} 
+            color={"#a9b3c6"}
+            className="p-0.5" />,
+
+          website: () => 
+            <TbWorldWww 
+            size={16} 
+            color={"#AED6F1"}
+            className="p-0.5" />,
+          
+          self: () =>
+            <FaUser 
+            size={16} 
+            color={"#6C7A89"}
+            className="p-0.5" />,
         };
         return (
           <>
             <div className="flex items-center justify-center">
               {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
-                <FaArchive
+                <BiArchive
                   style={{
-                    background: "white",
-                    padding: "5px",
-                    borderRadius: "50%",
-                    width: "70%",
-                    height: "100%",
+                    width: "50%",
+                    height: "50%",
                     margin: "0 auto",
                   }}
-                  size={22}
-                  color={"#14539a"}
+                  size={16}
+                  color={"#AEC6CF"}
+                  className="p-0.5"
                 />
               ) : (
                 <Box
                   sx={{
                     "& svg": {
-                      background: "white",
-                      padding: "5px",
-                      borderRadius: "50%",
-                      width: "70%",
-                      height: "100%",
+                      width: "50%",
+                      height: "50%",
                       margin: "0 auto",
                     },
                   }}
@@ -1443,6 +1512,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
 
   let allAgents = [];
+
   if (User?.role === 1 || User?.role === 2 || User?.role === 8) {
     allAgents = agents[`manager-${managerSelected}`];
   } else {
@@ -1815,6 +1885,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="medium"
               sx={{
                 minWidth: "90px",
+                "& label" : {
+                  top: "-6px"
+                }
               }}
               onChange={(e) => {
                 searchRef.current.querySelector("input").value = "";
@@ -1847,7 +1920,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  <InputLabel>Manager</InputLabel>
+                  <InputLabel style={{top: "-6px"}}>Manager</InputLabel>
                   <Select
                     label="Manager"
                     id="Manager"
@@ -1919,7 +1992,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  <InputLabel>Agent</InputLabel>
+                  <InputLabel style={{top: "-6px"}}>Agent</InputLabel>
                   <Select
                     label="Agent"
                     id="Agent"
@@ -1974,7 +2047,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: "476px",
+                left: User?.role === 1 ? "431px" : "476px",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -1989,7 +2062,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: "600px",
+                left: User?.role === 1 ? "325px" : "260px",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -2005,7 +2078,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: User?.role === 1 ? "355px" : "266px",
+                left: User?.role === 1 ? "230px" : "155px",
               }}
               variant="text"
             >
@@ -2053,6 +2126,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             sx={{ ...DataGridStyles, position: "relative" }}
           >
             <DataGrid
+            disableDensitySelector
               initialState={{
                 columns: {
                   columnVisibilityModel: {

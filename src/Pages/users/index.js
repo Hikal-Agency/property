@@ -254,13 +254,14 @@ const Users = () => {
   }, [pageState.page]);
 
   const columns = [
+    // NAME + PICTURE 
     {
       field: "profile_picture",
-      headerName: "User",
+      headerName: "User Name",
       headerAlign: "center",
       align: "center",
       editable: false,
-      minWidth: 180,
+      minWidth: 150,
       flex: 1,
       renderCell: (cellValues) => {
         console.log("Image: ", cellValues);
@@ -268,59 +269,45 @@ const Users = () => {
         if (imgSrc) {
           return (
             <>
-              <div className="flex flex-col items-center my-2">
+              <div className="flex my-2 mx-3 items-center justify-start text-left w-full">
                 <img
                   src={imgSrc}
                   alt="User"
+                  className="mr-3"
                   style={{
-                    width: "40px",
-                    height: "40px",
+                    width: "30px",
+                    height: "30px",
                     borderRadius: "50%",
                   }}
                 />
-                <h2 className="mt-2">{cellValues.row.userName}</h2>
+                <h2 className="font-semibold">{cellValues.row.userName}</h2>
               </div>
             </>
           );
         } else {
           return (
             <>
-              <div className="flex flex-col items-center my-2">
+              <div className="flex my-2 mx-3 items-center justify-start text-left w-full">
                 <Avatar
                   alt="User"
+                  className="mr-3"
                   variant="circular"
                   style={{ width: "30px", height: "30px" }}
                 />
-                <h2 className="mt-2">{cellValues.row.userName}</h2>
+                <h2 className="font-semibold">{cellValues.row.userName}</h2>
               </div>
             </>
           );
         }
       },
     },
-
-    // {
-    //   field: "userName",
-    //   headerName: "User Name",
-    //   headerAlign: "center",
-    //   editable: false,
-    //   minWidth: 180,
-    //   flex: 1,
-    // },
-    {
-      field: "userContact",
-      headerName: "Contact Number",
-      headerAlign: "center",
-      editable: false,
-      minwidth: 130,
-      flex: 1,
-    },
+    // POSITION 
     {
       field: "position",
-      headerName: "Position",
+      headerName: "Profession",
       headerAlign: "center",
       editable: false,
-      minwidth: 150,
+      minwidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -332,12 +319,13 @@ const Users = () => {
         );
       },
     },
+    // CONTACT 
     {
-      field: "userEmail",
-      headerName: "Email Address",
+      field: "userContact",
+      headerName: "Contact Number",
       headerAlign: "center",
       editable: false,
-      minwidth: 250,
+      minwidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -347,12 +335,29 @@ const Users = () => {
         );
       },
     },
+    // EMAIL ADDRESS 
+    {
+      field: "userEmail",
+      headerName: "Email Address",
+      headerAlign: "center",
+      editable: false,
+      minwidth: 200,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+    // SALARY 
     {
       field: "salary",
       headerName: "Salary",
       headerAlign: "center",
       editable: false,
-      minwidth: 80,
+      minwidth: 70,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -362,18 +367,19 @@ const Users = () => {
         );
       },
     },
+    // TRAINER 
     {
       field: "is_trainer",
       headerName: "Trainer",
       headerAlign: "center",
       editable: false,
-      minwidth: 60,
+      minwidth: 40,
       flex: 1,
       renderCell: (cellValues) => {
         console.log("Trainer: ", cellValues);
 
         return (
-          <div className="w-full flex items-center justify-center capitalize">
+          <div className="w-full flex items-center justify-center">
             {/* <Switch
               defaultChecked={cellValues?.formattedValue === 1}
               onChange={() => handleTrainerSwitchChange(cellValues)}
@@ -385,6 +391,7 @@ const Users = () => {
               }}
             /> */}
             <Switch
+              size="small"
               defaultChecked={cellValues?.formattedValue === 1}
               onChange={() => handleTrainerSwitchChange(cellValues)}
               sx={{
@@ -419,13 +426,13 @@ const Users = () => {
         );
       },
     },
-
+    // STATUS 
     {
       field: "status",
       headerName: "Status",
       headerAlign: "center",
       editable: false,
-      minwidth: 100,
+      minwidth: 50,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -452,7 +459,7 @@ const Users = () => {
     {
       field: "",
       headerName: "Action",
-      minwidth: 90,
+      minwidth: 100,
       flex: 1,
       headerAlign: "center",
       sortable: false,
@@ -478,9 +485,9 @@ const Users = () => {
                     }`}
                   >
                     {currentMode === "dark" ? (
-                      <FaBan style={{ color: "white" }} size={18} />
+                      <FaBan style={{ color: "white" }} size={16} />
                     ) : (
-                      <FaBan style={{ color: "black" }} size={18} />
+                      <FaBan style={{ color: "black" }} size={16} />
                     )}
                   </Button>
                 ) : (
@@ -499,9 +506,9 @@ const Users = () => {
                     }`}
                   >
                     {currentMode === "dark" ? (
-                      <FaUnlock style={{ color: "white" }} size={18} />
+                      <FaUnlock style={{ color: "white" }} size={16} />
                     ) : (
-                      <FaUnlock style={{ color: "black" }} size={18} />
+                      <FaUnlock style={{ color: "black" }} size={16} />
                     )}
                   </Button>
                 )}
@@ -517,7 +524,7 @@ const Users = () => {
             >
               <Link to={`/updateuser/${cellValues?.id}`}>
                 {" "}
-                <AiOutlineEdit size={20} />
+                <AiOutlineEdit size={16} />
               </Link>
             </Button>
 
@@ -539,7 +546,7 @@ const Users = () => {
               >
                 <BsPersonFillLock
                   style={{ color: currentMode === "dark" ? "white" : "black" }}
-                  size={20}
+                  size={16}
                 />
               </Button>
             ) : null}
@@ -594,57 +601,8 @@ const Users = () => {
                   )}
                 </div>
                 <div className="flex items-center justify-between">
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiTabs-indicator": {
-                        // height: "100%",
-                        borderRadius: "5px",
-                        backgroundColor: "#da1f26",
-                      },
-                      "& .Mui-selected": {
-                        color: "white !important",
-                        zIndex: "1",
-                      },
-                    }}
-                    className={` rounded-md overflow-hidden ${
-                      currentMode === "dark" ? "bg-black" : "bg-white"
-                    } `}
-                  >
-                    <Tabs
-                      value={value}
-                      onClick={handleChange}
-                      variant="standard"
-                    >
-                      <Tab
-                        icon={
-                          value === 0 ? (
-                            <AiOutlineAppstore
-                              size={22}
-                              style={{
-                                color:
-                                  currentMode === "dark"
-                                    ? "#ffffff"
-                                    : "#000000",
-                              }}
-                            />
-                          ) : (
-                            <AiOutlineTable
-                              size={22}
-                              style={{
-                                color:
-                                  currentMode === "dark"
-                                    ? "#ffffff"
-                                    : "#000000",
-                              }}
-                            />
-                          )
-                        }
-                      />
-                    </Tabs>
-                  </Box>
                   {value === 0 && (
-                    <div>
+                    <div className="mx-5 mt-6">
                       <TextField
                         placeholder="Search.."
                         ref={searchRef}
@@ -659,8 +617,8 @@ const Users = () => {
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
-                              <IconButton sx={{ padding: 0 }}>
-                                <BiSearch size={17} />
+                              <IconButton sx={{ padding: 1 }}>
+                                <BiSearch size={18} />
                               </IconButton>
                             </InputAdornment>
                           ),
@@ -668,6 +626,59 @@ const Users = () => {
                       />
                     </div>
                   )}
+                  {value === 1 && (
+                    <div className="mx-5"></div>
+                  )}
+                  <Box
+                    sx={{
+                      ...darkModeColors,
+                      "& .MuiTabs-indicator": {
+                        // height: "100%",
+                        borderRadius: "5px",
+                        backgroundColor: "#da1f26",
+                      },
+                      "& .Mui-selected": {
+                        color: "white !important",
+                        zIndex: "1",
+                      },
+                    }}
+                    className={`mx-5 rounded-md overflow-hidden ${
+                      currentMode === "dark" ? "bg-black" : "bg-white"
+                    } `}
+                  >
+                    <Tabs
+                      value={value}
+                      onClick={handleChange}
+                      variant="standard"
+                    >
+                      <Tab
+                        icon={
+                          <AiOutlineTable
+                            size={20}
+                            style={{
+                              color:
+                                currentMode === "dark"
+                                  ? "#ffffff"
+                                  : "#000000",
+                            }}
+                          />
+                        }
+                      />
+                      <Tab
+                        icon={
+                          <AiOutlineAppstore
+                            size={20}
+                            style={{
+                              color:
+                                currentMode === "dark"
+                                  ? "#ffffff"
+                                  : "#000000",
+                            }}
+                          />
+                        }
+                      />
+                    </Tabs>
+                  </Box>
                 </div>
                 <div className="mt-3 pb-3">
                   <TabPanel value={value} index={0}>
@@ -677,6 +688,7 @@ const Users = () => {
                       sx={{ ...DataGridStyles, marginBottom: "5%" }}
                     >
                       <DataGrid
+                      disableDensitySelector
                         autoHeight
                         disableSelectionOnClick
                         rows={pageState.data}

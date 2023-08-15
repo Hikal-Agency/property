@@ -409,6 +409,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
         <DataGrid
           autoHeight
           rows={row}
+          disableDensitySelector
           // onRowClick={handleRowClick}
           // rowCount={pageState.total}
           // loading={pageState.isLoading}

@@ -6,6 +6,7 @@ import {
   IconButton,
   TextField,
   CircularProgress,
+  MenuItem,
 } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
 
@@ -13,6 +14,7 @@ import axios from "../../axoisConfig";
 import { toast, ToastContainer } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import RichEditor from "./richEditorComp/RichEditor";
+import { ImAttachment } from "react-icons/im";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -27,7 +29,9 @@ const CreateTemplateModal = ({
   const { currentMode, BACKEND_URL } = useStateContext();
   const [templateTitle, setTemplateTitle] = useState("");
   const [templateBody, setTemplateBody] = useState("");
+  const [imageURL, setImageURL] = useState("");
   const [btnloading, setbtnloading] = useState(false);
+  const [templateType, setTemplateType] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,7 +82,6 @@ const CreateTemplateModal = ({
   };
   return (
     <>
-      
       <Modal
         keepMounted
         open={createTemplateModal.isOpen}
@@ -93,9 +96,9 @@ const CreateTemplateModal = ({
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] md:w-[50%]  ${
+          className={`w-[calc(100%-20px)] md:w-[70%] h-[90%]  ${
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
-          } absolute top-1/2 left-1/2 p-5 rounded-md`}
+          } absolute top-1/2 left-1/2 p-5 rounded-md overflow-y-scroll`}
         >
           <IconButton
             sx={{
@@ -108,12 +111,39 @@ const CreateTemplateModal = ({
           >
             <IoMdClose size={18} />
           </IconButton>
-          <h1>Create template</h1>
+          <strong className="text-lg">Compose Template</strong>
           <form onSubmit={handleSubmit} className="mt-8">
+            <TextField
+              id="template-type"
+              select
+              sx={{
+                "&": {
+                  marginBottom: "1.25rem !important",
+                },
+              }}
+              value={templateType}
+              label="Template Type"
+              required
+              onChange={(e) => setTemplateType(e.target.value)}
+              size="medium"
+              className="w-full mb-5"
+              displayEmpty
+            >
+              <MenuItem value="">
+                Select Template Type
+                <span className="ml-1" style={{ color: "red" }}>
+                  *
+                </span>
+              </MenuItem>
+
+              <MenuItem value="whatsapp">Whatsapp Message</MenuItem>
+              <MenuItem value="sms">SMS</MenuItem>
+              <MenuItem value="mail">Email</MenuItem>
+            </TextField>
             <TextField
               id="templateTitle"
               type={"text"}
-              label="Template Title"
+              label="Template Name"
               className="w-full mb-5"
               style={{ marginBottom: "10px" }}
               variant="outlined"
@@ -122,41 +152,46 @@ const CreateTemplateModal = ({
               value={templateTitle}
               onChange={(e) => setTemplateTitle(e.target.value)}
             />
-            {/* <TextareaAutosize
-                id="template-body"
-                placeholder="Template Body"
-                type={"text"}
-                required
-                minRows={8}
-                label="Template Body"
-                className="w-full"
-                style={{
-                  border: "1px solid",
-                  padding: 10,
-                  borderRadius: "4px",
-                  marginTop: "10px",
-                  marginBottom: "20px"
-                }}
-                variant="outlined"
-                size="medium"
-                value={templateBody}
-                onInput={(e) => setTemplateBody(e.target.value)}
-              /> */}
-            <div style={{ height: 200, overflowY: "scroll" }}>
-              <RichEditor setMessageValue={setTemplateBody} />
-            </div>
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              style={{ padding: "10px 0" }}
+            <div
+              style={{
+                height: "320px",
+                marginBottom: "20px",
+                overflowY: "scroll",
+              }}
             >
-              {btnloading ? (
-                <CircularProgress size={18} sx={{ color: "white" }} />
-              ) : (
-                <span>Create Template</span>
-              )}
-            </Button>
+              <RichEditor setMessageValue={setTemplateBody}/>
+            </div>
+            <div className="flex justify-between items-center border-t-[#ededed] pt-2">
+              <div className="flex items-center text-center">
+                <Button>
+                  <ImAttachment />
+                  <span class="ml-1">Attach File</span>
+                </Button>
+                <span className="ml-3 mr-5">OR</span>
+                <div className="flex items-center">
+                  <TextField
+                    id="imageURL"
+                    type={"text"}
+                    label="Image URL"
+                    variant="outlined"
+                    size="small"
+                    value={imageURL}
+                    onChange={(e) => setImageURL(e.target.value)}
+                  />
+                </div>
+              </div>
+              <Button
+                type="submit"
+                variant="contained"
+                style={{ padding: "10px 12px", backgroundColor: "#da1f26" }}
+              >
+                {btnloading ? (
+                  <CircularProgress size={18} sx={{ color: "white" }} />
+                ) : (
+                  <span>Create Template</span>
+                )}
+              </Button>
+            </div>
           </form>
         </div>
       </Modal>

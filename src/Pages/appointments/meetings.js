@@ -547,6 +547,7 @@ const Meetings = () => {
                       sx={DataGridStyles}
                     >
                       <DataGrid
+                      disableDensitySelector
                         initialState={{
                           columns: {
                             columnVisibilityModel: {

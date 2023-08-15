@@ -286,6 +286,7 @@ const SendMessageModal = ({
       },
     });
     const messageText = turndownService.turndown(messageValue);
+    console.log("message text: ", messageText);
     if (sendMessageModal.isWhatsapp) {
       sendWhatsappMessage(messageText, selectedContacts);
     } else {

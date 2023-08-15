@@ -419,6 +419,7 @@ const Role = () => {
                     >
                       <DataGrid
                         autoHeight
+                        disableDensitySelector
                         disableSelectionOnClick
                         rowHeight={45}
                         rows={pageState.data}
@@ -482,6 +483,7 @@ const Role = () => {
                       sx={DataGridStyles}
                     >
                       <DataGrid
+                      disableDensitySelector
                         autoHeight
                         disableSelectionOnClick
                         rows={pageState.data}

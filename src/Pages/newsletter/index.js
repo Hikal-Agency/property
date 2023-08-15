@@ -348,6 +348,7 @@ const Newsletter = () => {
                       sx={DataGridStyles}
                     >
                       <DataGrid
+                      disableDensitySelector
                         autoHeight
                         rows={pageState.data}
                         //   onRowClick={handleRowClick}
