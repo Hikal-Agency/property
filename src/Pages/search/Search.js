@@ -1443,6 +1443,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   };
 
   let allAgents = [];
+  
   if (User?.role === 1 || User?.role === 2 || User?.role === 8) {
     allAgents = agents[`manager-${managerSelected}`];
   } else {
