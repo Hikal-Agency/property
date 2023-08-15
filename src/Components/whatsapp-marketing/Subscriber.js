@@ -8,7 +8,7 @@ const Subscriber = ({ data }) => {
           className="mr-3 rounded shadow-md"
           width={70}
           height={70}
-          src={data.displayImg}
+          src={data?.profile_picture}
           alt=""
         />
         <Box className="flex flex-col justify-between w-[100%]">
