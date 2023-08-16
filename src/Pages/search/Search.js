@@ -24,35 +24,26 @@ import {
 } from "@mui/x-data-grid";
 
 import axios from "../../axoisConfig";
-import { 
-  FaSnapchatGhost, 
+import {
+  FaSnapchatGhost,
   FaFacebookF,
-  FaTiktok, 
+  FaTiktok,
   FaRegComments,
   FaYoutube,
   FaWhatsapp,
   FaTwitter,
-  FaUser
+  FaUser,
 } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { BsAlarm } from "react-icons/bs";
-import { 
-  BiSearch, 
-  BiMessageRoundedDots,
-  BiArchive 
-} from "react-icons/bi";
+import { BiSearch, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
-import {
-  MdCampaign
-} from "react-icons/md";
+import { MdCampaign } from "react-icons/md";
 import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
-import { 
-  TbFileImport,
-  TbWorldWww 
-} from "react-icons/tb";
+import { TbFileImport, TbWorldWww } from "react-icons/tb";
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "../../Components/Leads/SingleLead";
 import UpdateLead from "../../Components/Leads/UpdateLead";
@@ -466,7 +457,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           return (
             <div className="p-1 rounded-md">
               {cellValues.formattedValue === "Verified" && (
-                <div className={`${ currentMode === "dark" ? "bg-green-900" : "bg-green-100"} mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
+                <div
+                  className={`${
+                    currentMode === "dark" ? "bg-green-900" : "bg-green-100"
+                  } mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
+                  style={{ fontSize: 9 }}
+                >
                   <span className="text-[#238e41] p-1 rounded-md w-24 text-center">
                     VERIFIED
                   </span>
@@ -474,21 +470,32 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               )}
 
               {cellValues.formattedValue === "Not Verified" && (
-                <div className={`${ currentMode === "dark" ? "bg-red-900" : "bg-red-100"} p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>
+                <div
+                  className={`${
+                    currentMode === "dark" ? "bg-red-900" : "bg-red-100"
+                  } p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
+                  style={{ fontSize: 9 }}
+                >
                   <span className="text-[#DA1F26] p-1 rounded-md w-24 text-center">
                     UNVERIFIED
                   </span>
                   {/* </div> */}
                 </div>
               )}
-              
-              {cellValues.formattedValue !== "Not Verified" && cellValues.formattedValue !== "Verified" && (
-                <div className={`${ currentMode === "dark" ? "bg-[#424242]" : "bg-gray-200"} p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`} style={{ fontSize: 9 }}>                    
-                  <span className="text-[#AAAAAA] p-1 rounded-md w-24text-center">
-                    NO OTP
-                  </span>
-                </div>
-              )}
+
+              {cellValues.formattedValue !== "Not Verified" &&
+                cellValues.formattedValue !== "Verified" && (
+                  <div
+                    className={`${
+                      currentMode === "dark" ? "bg-[#424242]" : "bg-gray-200"
+                    } p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
+                    style={{ fontSize: 9 }}
+                  >
+                    <span className="text-[#AAAAAA] p-1 rounded-md w-24text-center">
+                      NO OTP
+                    </span>
+                  </div>
+                )}
             </div>
           );
         }
@@ -502,100 +509,71 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerAlign: "center",
       renderCell: (cellValues) => {
         const sourceIcons = {
-          "campaign snapchat": () => 
-            <FaSnapchatGhost 
-            size={16} 
-            color={"#f6d80a"} 
-            className="p-1"  />,
+          "campaign snapchat": () => (
+            <FaSnapchatGhost size={16} color={"#f6d80a"} className="p-1" />
+          ),
 
-          "campaign facebook": () => 
-            <FaFacebookF
-            size={16} 
-            color={"#0e82e1"} 
-            className="p-1"  />,
+          "campaign facebook": () => (
+            <FaFacebookF size={16} color={"#0e82e1"} className="p-1" />
+          ),
 
-          "campaign tiktok": () => 
-            <FaTiktok 
-            size={16} 
-            color={`${ currentMode === "dark" ? "#ffffff" : "#000000" }`} 
-            className="p-1"  />,
+          "campaign tiktok": () => (
+            <FaTiktok
+              size={16}
+              color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+              className="p-1"
+            />
+          ),
 
-          "campaign googleads": () => 
-            <FcGoogle 
-            size={16}
-            className="p-1" />,
-            
-          "campaign youtube": () => 
-            <FaYoutube 
-            size={16} 
-            color={"#FF0000"}
-            className="p-1" />,
+          "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
 
-          "campaign twitter": () => 
-            <FaTwitter 
-            size={16} 
-            color={"#00acee"}
-            className="p-1" />,
+          "campaign youtube": () => (
+            <FaYoutube size={16} color={"#FF0000"} className="p-1" />
+          ),
 
-          "bulk import": () => 
-            <BiImport 
-            size={16} 
-            color={"#da1f26"} 
-            className="p-1"  />,
+          "campaign twitter": () => (
+            <FaTwitter size={16} color={"#00acee"} className="p-1" />
+          ),
 
-            "property finder": () =>
-              <GiMagnifyingGlass 
-              size={16} 
-              color={"#ef5e4e"}
-              className="p-1" />,
+          "bulk import": () => (
+            <BiImport size={16} color={"#da1f26"} className="p-1" />
+          ),
 
-          campaign: () => 
-            <MdCampaign 
-            size={16} 
-            color={"#696969"}
-            className="p-0.5" />,
+          "property finder": () => (
+            <GiMagnifyingGlass size={16} color={"#ef5e4e"} className="p-1" />
+          ),
 
-          cold: () => 
-            <BsSnow2 
-            size={16} 
-            color={"#0ec7ff"}
-            className="p-1" />,
+          campaign: () => (
+            <MdCampaign size={16} color={"#696969"} className="p-0.5" />
+          ),
 
-          personal: () => 
-            <BsPersonCircle 
-            size={16} 
-            color={"#6C7A89"}
-            className="p-1" />,
+          cold: () => <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />,
 
-          whatsapp: () => 
-            <FaWhatsapp 
-            size={16} 
-            color={"#53cc60"}
-            className="p-1" />,
+          personal: () => (
+            <BsPersonCircle size={16} color={"#6C7A89"} className="p-1" />
+          ),
 
-          message: () => 
-            <BiMessageRoundedDots 
-            size={16} 
-            color={"#6A5ACD"}
-            className="p-0.5" />,
+          whatsapp: () => (
+            <FaWhatsapp size={16} color={"#53cc60"} className="p-1" />
+          ),
 
-          comment: () => 
-            <FaRegComments 
-            size={16} 
-            color={"#a9b3c6"}
-            className="p-0.5" />,
+          message: () => (
+            <BiMessageRoundedDots
+              size={16}
+              color={"#6A5ACD"}
+              className="p-0.5"
+            />
+          ),
 
-          website: () => 
-            <TbWorldWww 
-            size={16} 
-            color={"#AED6F1"}
-            className="p-0.5" />,
-          
-          self: () =>
-            <FaUser 
-            size={16} 
-            color={"#6C7A89"}
-            className="p-0.5" />,
+          comment: () => (
+            <FaRegComments size={16} color={"#a9b3c6"} className="p-0.5" />
+          ),
+
+          website: () => (
+            <TbWorldWww size={16} color={"#AED6F1"} className="p-0.5" />
+          ),
+
+          self: () => <FaUser size={16} color={"#6C7A89"} className="p-0.5" />,
         };
         return (
           <>
@@ -1101,10 +1079,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           ...old,
           isLoading: false,
           data: rowsdata,
-          pageSize: result.data.coldLeads.per_page,
-          total: result.data.coldLeads.total,
-          from: result.data.coldLeads.from,
-          to: result.data.coldLeads.to,
+          pageSize: result?.data?.coldLeads?.per_page,
+          total: result?.data?.coldLeads?.total,
+          from: result?.data?.coldLeads?.from,
+          to: result?.data?.coldLeads?.to,
         }));
         setCEOColumns([...CEOColumns]);
       })
@@ -1230,10 +1208,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         setpageState((old) => ({
           ...old,
           data: rowsdata,
-          pageSize: result.data.result.per_page,
-          total: result.data.result.total,
-          from: result.data.coldLeads.from,
-          to: result.data.coldLeads.to,
+          pageSize: result?.data?.result?.per_page,
+          total: result?.data?.result?.total,
+          from: result?.data?.result?.from,
+          to: result?.data?.result?.to,
         }));
         setpageState((old) => ({
           ...old,
@@ -1885,9 +1863,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               size="medium"
               sx={{
                 minWidth: "90px",
-                "& label" : {
-                  top: "-6px"
-                }
+                "& label": {
+                  top: "-6px",
+                },
               }}
               onChange={(e) => {
                 searchRef.current.querySelector("input").value = "";
@@ -1920,7 +1898,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  <InputLabel style={{top: "-6px"}}>Manager</InputLabel>
+                  <InputLabel style={{ top: "-6px" }}>Manager</InputLabel>
                   <Select
                     label="Manager"
                     id="Manager"
@@ -1992,7 +1970,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  <InputLabel style={{top: "-6px"}}>Agent</InputLabel>
+                  <InputLabel style={{ top: "-6px" }}>Agent</InputLabel>
                   <Select
                     label="Agent"
                     id="Agent"
@@ -2126,7 +2104,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             sx={{ ...DataGridStyles, position: "relative" }}
           >
             <DataGrid
-            disableDensitySelector
+              disableDensitySelector
               initialState={{
                 columns: {
                   columnVisibilityModel: {

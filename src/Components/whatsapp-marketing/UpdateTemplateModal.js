@@ -97,9 +97,9 @@ const UpdateTemplateModal = ({
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] md:w-[50%]  ${
+          className={`w-[calc(100%-20px)] md:w-[70%] h-[90%]  ${
             currentMode === "dark" ? "bg-gray-900" : "bg-white"
-          } absolute top-1/2 left-1/2 p-5 rounded-md`}
+          } absolute top-1/2 left-1/2 p-5 rounded-md overflow-y-scroll`}
         >
           <IconButton
             sx={{
@@ -112,12 +112,12 @@ const UpdateTemplateModal = ({
           >
             <IoMdClose size={18} />
           </IconButton>
-          <h1>Update Template</h1>
+          <strong className="text-lg">Update Template</strong>
           <form onSubmit={handleSubmit} className="mt-8">
             <TextField
               id="templateTitle"
               type={"text"}
-              label="Template Title"
+              label="Template Name"
               className="w-full mb-5"
               style={{ marginBottom: "10px" }}
               variant="outlined"
@@ -146,7 +146,11 @@ const UpdateTemplateModal = ({
                 value={templateBody}
                 onInput={(e) => setTemplateBody(e.target.value)}
               /> */}
-            <div style={{ height: 200, overflowY: "scroll" }}>
+            <div style={{ 
+                height: "320px",
+                marginBottom: "20px",
+                overflowY: "scroll",
+            }}>
               <RichEditor
                 messageValue={updateTemplateModal?.template?.body}
                 setMessageValue={setTemplateBody}
@@ -156,10 +160,10 @@ const UpdateTemplateModal = ({
               type="submit"
               variant="contained"
               fullWidth
-              style={{ padding: "10px 0" }}
+              style={{ padding: "10px 0", backgroundColor: "#da1f26"  }}
             >
               {btnloading ? (
-                <CircularProgress size={18} sx={{ color: "white" }} />
+                <CircularProgress size={18} sx={{ color: "white"}} />
               ) : (
                 <span>Update Template</span>
               )}
