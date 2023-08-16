@@ -239,62 +239,42 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                       <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md">
                         <div className="col-span-6">
                           <TextField
-                            id="login-id"
+                            id="username"
                             type={"text"}
-                            label="Login ID"
-                            className="w-full"
+                            label="Username"
+                            className="w-full mt-3"
                             variant="outlined"
                             size="medium"
                             required
-                            value={formdata?.loginId}
+                            value={formdata?.userName}
                             onChange={(e) => {
                               setformdata({
                                 ...formdata,
-                                loginId: e.target.value,
+                                userName: e.target.value,
                               });
                             }}
                           />
                         </div>
-                        <div className="col-span-3">
+                        <div className="col-span-6">
                           <TextField
-                            id="password"
-                            type={"password"}
-                            label="Password"
+                            id="email"
+                            type={"email"}
+                            label="User Email Address"
                             className="w-full"
                             variant="outlined"
                             size="medium"
+                            // error={!!emailError}
                             required
-                            value={formdata?.password}
-                            onChange={handlePassword}
-                            helperText={"Example: Abc123@#"}
+                            value={formdata?.userEmail}
+                            onChange={handleEmail}
                           />
                         </div>
-                        <div className="col-span-3">
-                          <TextField
-                            id="confirm-password"
-                            type={"password"}
-                            label="Confirm Password"
-                            className="w-full"
-                            variant="outlined"
-                            size="medium"
-                            required
-                            value={formdata?.c_password}
-                            onChange={(e) => {
-                              setPasswordError(false);
-                              setformdata({
-                                ...formdata,
-                                c_password: e.target.value,
-                              });
-                            }}
-                          />
-                        </div>
-                        {passwordError && (
+                        {emailError && (
                           <div className="col-span-6">
-                            <p className="italic text-red-900">
-                              {passwordError}
-                            </p>
+                            <p className="italic text-red-900">{emailError}</p>
                           </div>
                         )}
+
                         <div className="col-span-3">
                           <TextField
                             select
@@ -352,19 +332,20 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                               })}
                             </TextField>
                           )}
+
                           <TextField
-                            id="username"
+                            id="login-id"
                             type={"text"}
-                            label="Username"
-                            className="w-full mt-3"
+                            label="Login ID"
+                            className="w-full"
                             variant="outlined"
                             size="medium"
                             required
-                            value={formdata?.userName}
+                            value={formdata?.loginId}
                             onChange={(e) => {
                               setformdata({
                                 ...formdata,
-                                userName: e.target.value,
+                                loginId: e.target.value,
                               });
                             }}
                           />
@@ -389,23 +370,45 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                             />
                           </div>
                         )}
-                        <div className="col-span-6">
+
+                        <div className="col-span-3">
                           <TextField
-                            id="email"
-                            type={"email"}
-                            label="User Email Address"
+                            id="password"
+                            type={"password"}
+                            label="Password"
                             className="w-full"
                             variant="outlined"
                             size="medium"
-                            // error={!!emailError}
                             required
-                            value={formdata?.userEmail}
-                            onChange={handleEmail}
+                            value={formdata?.password}
+                            onChange={handlePassword}
+                            helperText={"Example: Abc123@#"}
                           />
                         </div>
-                        {emailError && (
+                        <div className="col-span-3">
+                          <TextField
+                            id="confirm-password"
+                            type={"password"}
+                            label="Confirm Password"
+                            className="w-full"
+                            variant="outlined"
+                            size="medium"
+                            required
+                            value={formdata?.c_password}
+                            onChange={(e) => {
+                              setPasswordError(false);
+                              setformdata({
+                                ...formdata,
+                                c_password: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                        {passwordError && (
                           <div className="col-span-6">
-                            <p className="italic text-red-900">{emailError}</p>
+                            <p className="italic text-red-900">
+                              {passwordError}
+                            </p>
                           </div>
                         )}
                       </div>

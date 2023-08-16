@@ -147,7 +147,7 @@ const Home = () => {
     dotsanimation();
     if (location?.state?.error) {
       console.log("location data: ", location?.state);
-      setErrorMsg("😀  The system has been update! Please login again!");
+      setErrorMsg("😀  The system has been updated, Please login again!");
       setTimeout(() => {
         setErrorMsg(false);
       }, 6000);
