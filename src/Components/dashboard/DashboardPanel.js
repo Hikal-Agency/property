@@ -23,6 +23,7 @@ import { CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
 import { ToastContainer } from "react-toastify";
 import Reminder from "../reminder/Reminder";
+import usePermission from "../../utils/usePermission";
 
 const DashboardPanel = ({ setloading }) => {
   const {
@@ -39,6 +40,7 @@ const DashboardPanel = ({ setloading }) => {
   const [reminder, setReminder] = useState([]);
   const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
+  const { hasPermission } = usePermission();
 
   const fetchData = async () => {
     try {
@@ -211,7 +213,7 @@ const DashboardPanel = ({ setloading }) => {
             onClick={() => setopenBackDrop(true)}
           >
             <div>
-                   {User?.role === 3 && (
+              {User?.role === 3 && (
                 <p className="text-2xl font-bold pb-3 text-red-600">
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
@@ -239,7 +241,7 @@ const DashboardPanel = ({ setloading }) => {
           </Link>
           {/* )} */}
 
-          {(User?.role === 1 || User?.role === 2 || User?.role === 8) ? (
+          {User?.role === 1 || User?.role === 2 || User?.role === 8 ? (
             HeadData.map((item, index) => {
               return (
                 <Link
@@ -335,7 +337,7 @@ const DashboardPanel = ({ setloading }) => {
 
         {/* CHART  */}
         <>
-          {(User?.role === 1 || User?.role === 2 || User?.role === 8) ? (
+          {User?.role === 1 || User?.role === 2 || User?.role === 8 ? (
             <>
               <motion.div
                 initial={{ x: 120 }}
@@ -407,7 +409,7 @@ const DashboardPanel = ({ setloading }) => {
       </div>
 
       {/* 2ND ROW [CHARTS FOR ADMIN ONLY] */}
-      {(User?.role === 1 || User?.role === 2 || User?.role === 8) ? (
+      {User?.role === 1 || User?.role === 2 || User?.role === 8 ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
             <div
@@ -535,27 +537,29 @@ const DashboardPanel = ({ setloading }) => {
           </div>
         </motion.div>
       </div>
-      
-      <div className="grid grid-cols-1 pb-3">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ margin: "-70px" }}
-          className={`${
-            currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
-          } col-span-1 h-fit rounded-md p-5 cursor-pointer hover:shadow-sm`}
-        >
-          <h4
-            className="font-semibold pb-5"
-            style={{ textTransform: "capitalize" }}
+
+      {hasPermission("upcoming_meetings") && (
+        <div className="grid grid-cols-1 pb-3">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ margin: "-70px" }}
+            className={`${
+              currentMode === "dark" ? "bg-gray-900 text-white " : "bg-gray-200"
+            } col-span-1 h-fit rounded-md p-5 cursor-pointer hover:shadow-sm`}
           >
-            Upcoming meetings
-          </h4>
+            <h4
+              className="font-semibold pb-5"
+              style={{ textTransform: "capitalize" }}
+            >
+              Upcoming meetings
+            </h4>
             <UpcomingMeeting
               upcoming_meetings={DashboardData?.upcoming_meetings}
             />
-        </motion.div>
-      </div>
+          </motion.div>
+        </div>
+      )}
 
       {visible === true && (
         <div className="grid grid-cols-1 pb-3">
