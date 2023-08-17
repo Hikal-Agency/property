@@ -108,14 +108,19 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     if (formdata.password === formdata.c_password) {
       setloading(true);
       const form = { ...formdata };
-      if (UserRole === "Sales Manager") {
+      let isParent;
+      if (
+        UserRole !== "Admin" ||
+        UserRole !== "Administrator" ||
+        UserRole !== "Head of Sales"
+      ) {
         const isParent = Managers?.find((m) => m?.role === 2)?.id;
-        if (isParent) {
-          form["isParent"] = isParent;
-        }
+
+        form["isParent"] = isParent;
       }
 
       console.log("formdata::: ", form);
+      setloading(false);
 
       return;
       await axios
@@ -169,6 +174,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     const filterRole = data?.filter(
       (role) =>
         role?.role.toLowerCase() === "admin" ||
+        role?.role.toLowerCase() === "administrator" ||
         role?.role.toLowerCase() === "head of sales"
     );
 
