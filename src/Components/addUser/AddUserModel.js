@@ -105,17 +105,20 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
       });
       return;
     }
+
     if (formdata.password === formdata.c_password) {
       setloading(true);
       const form = { ...formdata };
+      form["addedBy"] = User?.id;
+
       let isParent;
       if (
         UserRole !== "Admin" ||
         UserRole !== "Administrator" ||
-        UserRole !== "Head of Sales"
+        UserRole !== "Sales Manager" ||
+        UserRole !== "Sales Agent"
       ) {
-        const isParent = Managers?.find((m) => m?.role === 2)?.id;
-
+        const isParent = Managers?.find((m) => m?.role === 1)?.id;
         form["isParent"] = isParent;
       }
 
