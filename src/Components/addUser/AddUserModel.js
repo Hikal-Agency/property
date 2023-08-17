@@ -118,14 +118,12 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
         UserRole !== "Sales Manager" ||
         UserRole !== "Sales Agent"
       ) {
-        const isParent = Managers?.find((m) => m?.role === 1)?.id;
+        isParent = 102;
         form["isParent"] = isParent;
       }
 
       console.log("formdata::: ", form);
-      setloading(false);
 
-      return;
       await axios
         .post(`${BACKEND_URL}/register`, form)
         .then((result) => {
@@ -318,7 +316,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
 
                             {allRoles?.map((role, index) => {
                               return (
-                                <MenuItem key={index} value={role?.role}>
+                                <MenuItem key={index} value={role?.id}>
                                   {role?.role}
                                 </MenuItem>
                               );
