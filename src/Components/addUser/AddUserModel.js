@@ -23,13 +23,14 @@ const style = {
 
 const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
   const { Managers, User } = useStateContext();
+  const { BACKEND_URL, currentMode } = useStateContext();
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
   const [fetchingRoles, setFetchingRoles] = useState(true);
   const [UserRole, setUserRole] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const { BACKEND_URL, currentMode } = useStateContext();
+  const [filterRole, setFilterRole] = useState([]);
   const [allRoles, setAllRoles] = useState([]);
 
   const handlePassword = (e) => {
@@ -104,15 +105,25 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
       });
       return;
     }
+
     if (formdata.password === formdata.c_password) {
       setloading(true);
       const form = { ...formdata };
-      if (UserRole === "Sales Manager") {
-        const isParent = Managers?.find((m) => m?.role === 2)?.id;
-        if (isParent) {
-          form["isParent"] = isParent;
-        }
+      form["addedBy"] = User?.id;
+
+      let isParent;
+      if (
+        UserRole !== "Admin" ||
+        UserRole !== "Administrator" ||
+        UserRole !== "Sales Manager" ||
+        UserRole !== "Sales Agent"
+      ) {
+        isParent = 102;
+        form["isParent"] = isParent;
       }
+
+      console.log("formdata::: ", form);
+
       await axios
         .post(`${BACKEND_URL}/register`, form)
         .then((result) => {
@@ -133,6 +144,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
           addUserModelClose();
         })
         .catch((err) => {
+          console.log("error : ", err);
           toast.error("Something went Wrong! Please Try Again", {
             position: "top-right",
             autoClose: 3000,
@@ -159,6 +171,17 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
       },
     });
     const data = rolesResult.data?.role?.data;
+
+    const filterRole = data?.filter(
+      (role) =>
+        role?.role.toLowerCase() === "admin" ||
+        role?.role.toLowerCase() === "administrator" ||
+        role?.role.toLowerCase() === "head of sales"
+    );
+
+    setFilterRole(filterRole);
+
+    console.log("filtered Roles: ", filterRole);
     setAllRoles(data);
     setFetchingRoles(false);
   };
@@ -293,7 +316,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
 
                             {allRoles?.map((role, index) => {
                               return (
-                                <MenuItem key={index} value={role?.role}>
+                                <MenuItem key={index} value={role?.id}>
                                   {role?.role}
                                 </MenuItem>
                               );
@@ -327,6 +350,38 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                                 return (
                                   <MenuItem value={manager?.id} key={key}>
                                     {manager?.userName}
+                                  </MenuItem>
+                                );
+                              })}
+                            </TextField>
+                          )}
+
+                          {UserRole === "Sales Manager" && (
+                            <TextField
+                              select
+                              id="managerId"
+                              type={"text"}
+                              label="Select Manager"
+                              className="w-full mb-3"
+                              variant="outlined"
+                              size="medium"
+                              sx={{ marginBottom: "7px" }}
+                              required
+                              value={formdata?.isParent}
+                              onChange={(e) => {
+                                setformdata({
+                                  ...formdata,
+                                  isParent: e.target.value,
+                                });
+                              }}
+                            >
+                              <MenuItem value="" disabled>
+                                Manager
+                              </MenuItem>
+                              {filterRole?.map((parent, key) => {
+                                return (
+                                  <MenuItem value={parent?.id} key={key}>
+                                    {parent?.role}
                                   </MenuItem>
                                 );
                               })}
