@@ -36,7 +36,10 @@ const ChatPage = () => {
         socket.emit("chat_send-message", message);
         console.log("chat message sent ", message);
 
-        setChatMessages((prevChatMessages) => [...prevChatMessages, message]);
+        setChatMessages((prevChatMessages) => [...prevChatMessages, {
+          ...message,
+          createdAt: "now"
+        }]);
       }
     }
   };

@@ -182,6 +182,21 @@ export const ContextProvider = ({ children }) => {
   //   localStorage.setItem("colorMode", color);
   // };
 
+  function formatTime(dateStr) {
+    let date;
+    if(dateStr === "now") {
+      date = new Date();
+    } else {
+     date = new Date(dateStr);
+    }
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const amOrPm = hours >= 12 ? 'pm' : 'am';
+  const formattedHours = ((hours % 12) || 12).toString().padStart(2, '0'); // Convert 0 to 12
+  const formattedMinutes = minutes.toString().padStart(2, '0');
+  return `${formattedHours}:${formattedMinutes} ${amOrPm}`;
+}
+
   const handleClick = (clicked) =>
     setIsClicked({ ...initialState, [clicked]: true });
 
@@ -259,6 +274,7 @@ export const ContextProvider = ({ children }) => {
         currentMode,
         selected,
         isArabic,
+        formatTime,
         setSelected,
         darkModeColors,
         activeMenu,
