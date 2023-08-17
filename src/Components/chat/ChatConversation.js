@@ -320,7 +320,19 @@ const ChatConversation = ({
                   className="bg-[#fafafa] scroll-smooth overflow-y-scroll p-3 flex-1 flex flex-col items-end"
                 >
                   {chatMessages?.map((message, index) => {
-                    if (
+                    if (message.type === "date-separator") {
+                      return (
+                        <div className="flex items-center w-full mt-4">
+                          <div className="h-[1px] bg-[#da1f26] flex-1"></div>
+                          <strong className="text-[#da1f26] px-2">
+                            {message?.date === new Date()?.toLocaleDateString()
+                              ? "TODAY"
+                              : message?.date}
+                          </strong>
+                          <div className="h-[1px] bg-[#da1f26] flex-1"></div>
+                        </div>
+                      );
+                    } else if (
                       message?.from === User?.loginId &&
                       message.to === activeChat?.loginId
                     ) {
@@ -342,6 +354,8 @@ const ChatConversation = ({
                           message={message}
                         />
                       );
+                    } else {
+                      return <></>;
                     }
                   })}
                 </div>

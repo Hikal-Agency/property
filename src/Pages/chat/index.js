@@ -25,10 +25,10 @@ const ChatPage = () => {
     if (content) {
       if (type === "text") {
         const message = {
-          from: User?.loginId, 
+          from: User?.loginId,
           to: activeChat?.loginId,
           toProfilePic: activeChat?.profile_picture,
-          fromData: User, 
+          fromData: User,
           toData: activeChat,
           content: content,
           type,
@@ -36,10 +36,13 @@ const ChatPage = () => {
         socket.emit("chat_send-message", message);
         console.log("chat message sent ", message);
 
-        setChatMessages((prevChatMessages) => [...prevChatMessages, {
-          ...message,
-          createdAt: "now"
-        }]);
+        setChatMessages((prevChatMessages) => [
+          ...prevChatMessages,
+          {
+            ...message,
+            createdAt: "now",
+          },
+        ]);
       }
     }
   };
@@ -62,7 +65,7 @@ const ChatPage = () => {
     socket.emit("chat_get-recent-chats", loginId);
     socket.on("chat_recent-chats", (data) => {
       setRecentChats(data);
-    })
+    });
   };
 
   useEffect(() => {
@@ -82,7 +85,7 @@ const ChatPage = () => {
       });
       socket.on("chat_recent-chats", (data) => {
         setRecentChats(data);
-      })
+      });
     }
   }, [User]);
 
@@ -92,15 +95,48 @@ const ChatPage = () => {
     socket.on("chat_user-messages", (data) => {
       setChatMessages(data);
       setChatLoading(false);
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    if(activeChat) {
+    if (activeChat) {
       console.log("active:", activeChat);
       fetchChatMessages();
     }
   }, [activeChat]);
+
+  const groupedMessages = {};
+  let data = [];
+  chatMessages?.forEach((msg) => {
+    let date;
+    if (msg?.createdAt !== "now") {
+      date = new Date(msg.createdAt).toLocaleDateString();
+    } else {
+      date = new Date().toLocaleDateString();
+    }
+
+    const message = { ...msg, date };
+
+    groupedMessages[date] = [];
+    data.push(message);
+
+    if (!groupedMessages[date]) {
+      data = [];
+      data.push(message);
+    } else {
+      groupedMessages[date] = [...data];
+    }
+  });
+
+  const messagesWithDateSeparators = [];
+  for (let i in groupedMessages) {
+    messagesWithDateSeparators.push({
+      type: "date-separator",
+      date: groupedMessages[i][0]?.date,
+    });
+    messagesWithDateSeparators.push(...groupedMessages[i]);
+  }
+
   return (
     <div
       style={{
@@ -112,7 +148,7 @@ const ChatPage = () => {
         setActiveChat={setActiveChat}
         recentChats={recentChats}
         onlineChats={onlineChats}
-        chatMessages={activeChat?.loginId ? chatMessages : []}
+        chatMessages={activeChat?.loginId ? messagesWithDateSeparators : []}
         loadingConversations={loadingConversations}
         handleSendMessage={handleSendMessage}
         chatLoading={chatLoading}
