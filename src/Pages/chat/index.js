@@ -28,6 +28,8 @@ const ChatPage = () => {
           from: User?.loginId, 
           to: activeChat?.loginId,
           toProfilePic: activeChat?.profile_picture,
+          fromData: User, 
+          toData: activeChat,
           content: content,
           type,
         };
@@ -65,7 +67,7 @@ const ChatPage = () => {
       socket.emit("chat_addUser", User);
       console.log("User added in chat::");
 
-      // fetchRecentChats(User?.loginId);
+      fetchRecentChats(User?.loginId);
 
       socket.on("chat_getOnlineUsers", (data) => {
         console.log("online users::", data);
@@ -75,9 +77,9 @@ const ChatPage = () => {
           )
         );
       });
-      // socket.on("chat_recent-chats", (data) => {
-      //   setRecentChats(data);
-      // })
+      socket.on("chat_recent-chats", (data) => {
+        setRecentChats(data);
+      })
     }
   }, [User]);
 
