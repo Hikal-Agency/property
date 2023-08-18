@@ -20,7 +20,7 @@ const Home = () => {
   let canvas = useRef();
   const navigate = useNavigate();
   const location = useLocation();
-  const { BACKEND_URL } = useStateContext();
+  const { BACKEND_URL, User } = useStateContext();
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
   const [openBackDrop, setOpenBackDrop] = useState(false);
@@ -179,6 +179,8 @@ const Home = () => {
     }
     // eslint-disable-next-line
   }, []);
+
+
   return (
     <>
       {/* <Head>

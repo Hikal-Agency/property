@@ -176,6 +176,7 @@ const Sidebarmui = () => {
 
   const FetchProfile = async (token) => {
     const storedUser = localStorage.getItem("user");
+    socket.emit("chat_addUser", JSON.parse(storedUser));
 
     if (storedUser) {
       // If user data is stored in local storage, parse and set it in state
@@ -309,6 +310,22 @@ const Sidebarmui = () => {
   }, []);
 
   useEffect(() => {
+    if (User?.id) {
+      socket.on("notification_lead_added", (data) => {
+        toast.success(data, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+    }
+  }, [User]);
+
+  useEffect(() => {
     const token = localStorage.getItem("auth-token");
     if (User?.id && User?.loginId) {
       FetchProfile(token);
@@ -355,7 +372,6 @@ const Sidebarmui = () => {
       if (token) {
         const user = localStorage.getItem("user");
         setUser(JSON.parse(user));
-        socket.emit("chat_addUser", JSON.parse(user));
         setIsUserSubscribed(checkUser(JSON.parse(user)));
       } else {
         if (document.location.pathname !== "/fresh-logs") {
@@ -1060,7 +1076,7 @@ const Sidebarmui = () => {
   useEffect(() => {
     socket.on("chat_message-received", (data) => {
       if (window.location.pathname !== "/chat") {
-          ringtoneElem.current.play();
+        ringtoneElem.current.play();
         setMessagesCount((prevCount) => prevCount + 1);
         setBlink(true);
         setTimeout(() => {
@@ -1130,9 +1146,7 @@ const Sidebarmui = () => {
                       <div className="relative">
                         <h1
                           className={`overflow-hidden ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-black"
+                            currentMode === "dark" ? "text-white" : "text-black"
                           }`}
                         >
                           HIKAL CRM
@@ -1177,7 +1191,7 @@ const Sidebarmui = () => {
                             ? "text-white"
                             : "text-main-dark-bg"
                         }`}
-                        >
+                      >
                         {User?.userName ? User?.userName : "No username"}
                       </h1>
                       <span
@@ -1188,7 +1202,11 @@ const Sidebarmui = () => {
                     </Link>
                   </>
                 ) : (
-                  <Link to={"/profile"} onClick={() => setopenBackDrop(true)} className="flex justify-center">
+                  <Link
+                    to={"/profile"}
+                    onClick={() => setopenBackDrop(true)}
+                    className="flex justify-center"
+                  >
                     <img
                       src={User?.displayImg}
                       height={50}
@@ -1678,9 +1696,9 @@ const Sidebarmui = () => {
 
       {newMessageReceived === User?.loginId &&
         location.pathname !== "/chat" && (
-          <div className={`message-received-float ${blink ? 'animate' : ''}`}>
+          <div className={`message-received-float ${blink ? "animate" : ""}`}>
             <Link
-            className="p-[12px]"
+              className="p-[12px]"
               onClick={() => {
                 setNewMessageReceived(false);
                 setMessagesCount(0);

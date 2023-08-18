@@ -137,6 +137,8 @@ const ChatPage = () => {
     }
   }, [activeChat]);
 
+  console.log("REcent::", recentChats);
+
   return (
     <div
       style={{
