@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 
 const ChatPage = () => {
-  const { currentMode, isCollapsed, setIsCollapsed, User } = useStateContext();
+  const { currentMode, isCollapsed, formatTime, setIsCollapsed, User } = useStateContext();
   const { collapseSidebar } = useProSidebar();
   const [activeChat, setActiveChat] = useState(null);
   const [loadingConversations, setLoadingConversation] = useState(false);
