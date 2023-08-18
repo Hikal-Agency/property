@@ -63,9 +63,6 @@ const ChatPage = () => {
 
   const fetchRecentChats = async (loginId) => {
     socket.emit("chat_get-recent-chats", loginId);
-    socket.on("chat_recent-chats", (data) => {
-      setRecentChats(data);
-    });
   };
 
   useEffect(() => {
@@ -74,6 +71,10 @@ const ChatPage = () => {
       console.log("User added in chat::");
 
       fetchRecentChats(User?.loginId);
+
+       socket.on("chat_recent-chats", (data) => {
+      setRecentChats(data);
+    });
 
       socket.on("chat_getOnlineUsers", (data) => {
         console.log("online users::", data);
