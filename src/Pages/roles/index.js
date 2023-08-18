@@ -115,9 +115,9 @@ const Role = () => {
           rowsDataArray = response?.data?.role?.data;
         }
 
-        rowsDataArray = rowsDataArray?.filter(
-          (role) => role?.role !== "Administrator"
-        );
+        // rowsDataArray = rowsDataArray?.filter(
+        //   (role) => role?.role !== "Administrator"
+        // );
 
         rowsdata = rowsDataArray?.map((row, index) => ({
           id:
@@ -483,7 +483,7 @@ const Role = () => {
                       sx={DataGridStyles}
                     >
                       <DataGrid
-                      disableDensitySelector
+                        disableDensitySelector
                         autoHeight
                         disableSelectionOnClick
                         rows={pageState.data}
