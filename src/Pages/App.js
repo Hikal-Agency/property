@@ -431,7 +431,7 @@ function App() {
   });
 
   useEffect(() => {
-    setAllRoutes(routes);
+    setAllRoutes(routes); 
   }, []);
 
   function hasSidebarOrNavbar() {

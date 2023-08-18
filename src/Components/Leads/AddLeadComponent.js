@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
+import { socket } from "../../Pages/App";
 import { Button } from "@material-tailwind/react";
 
 import usePermission from "../../utils/usePermission";
@@ -245,6 +246,10 @@ const AddLeadComponent = ({FetchLeads}) => {
           draggable: true,
           progress: undefined,
           theme: "light",
+        });
+        socket.emit("notification_lead_add", {
+          from: User?.loginId,
+          participants: [Manager]
         });
         fetchSidebarData();
         setLeadName("");

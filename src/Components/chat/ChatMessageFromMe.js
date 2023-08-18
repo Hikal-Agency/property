@@ -1,35 +1,45 @@
 import { Avatar } from "@mui/material";
+import {format} from "timeago.js";
+import { useStateContext } from "../../context/ContextProvider";
 
 const ChatMessageFromMe = ({ message, data }) => {
+  const {formatTime} = useStateContext();
+
   return (
-    <div className="flex items-start">
+    <div className="flex items-start mt-4">
       {message.type === "image" ? (
-        <div className="mb-3 mr-2">
-          {message?._data?.body ? (
-            <img
-              width="100%"
-              src={`data:image/png;base64,${message?._data?.body}`}
-              alt=""
-            />
-          ) : (
-            <div className="p-4 w-[130px] rounded bg-green-500 text-white flex justify-center items-center">
-              <h1>Image</h1>
-            </div>
-          )}
+        <div>
+          <p className="text-gray-400 text-sm pr-3 mb-1 text-right">{formatTime(message?.createdAt)}</p>
+          <div className="mr-2">
+            {message?._data?.body ? (
+              <img
+                width="100%"
+                src={`data:image/png;base64,${message?._data?.body}`}
+                alt=""
+              />
+            ) : (
+              <div className="p-4 w-[130px] rounded bg-green-500 text-white flex justify-center items-center">
+                <h1>Image</h1>
+              </div>
+            )}
+          </div>
         </div>
       ) : (
-        <div
-          style={{
-            position: "relative",
-            background: "#da1f26",
-          }}
-          className="max-w-[600px] mb-3 rounded-lg rounded-tr-none mr-2 p-4"
-        >
-          {message.type === "revoked" ? (
-            <i className="text-gray-200">This message was deleted</i>
-          ) : (
-            <span className="text-white">{message.content}</span>
-          )}
+        <div>
+          <p className="text-gray-400 text-sm pr-3 mb-1 text-right">{formatTime(message?.createdAt)}</p>
+          <div
+            style={{
+              position: "relative",
+              background: "#da1f26",
+            }}
+            className="max-w-[600px] rounded-lg rounded-tr-none mr-2 p-4"
+          >
+            {message.type === "revoked" ? (
+              <i className="text-gray-200">This message was deleted</i>
+            ) : (
+              <span className="text-white">{message.content}</span>
+            )}
+          </div>
         </div>
       )}
       <Avatar

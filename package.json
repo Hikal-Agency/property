@@ -69,6 +69,7 @@
     "react-whatsapp-widget": "^2.2.0",
     "slate-react": "^0.94.0",
     "socket.io-client": "^4.6.1",
+    "timeago.js": "^4.0.0-beta.3",
     "turndown": "^7.1.2",
     "use-places-autocomplete": "^4.0.0",
     "web-vitals": "^2.1.4"
