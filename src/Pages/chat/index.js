@@ -89,25 +89,9 @@ const ChatPage = () => {
     }
   }, [User]);
 
-  const fetchChatMessages = async () => {
-    socket.emit("chat_get-user-messages", User?.loginId);
-    setChatLoading(true);
-    socket.on("chat_user-messages", (data) => {
-      setChatMessages(data);
-      setChatLoading(false);
-    });
-  };
-
-  useEffect(() => {
-    if (activeChat) {
-      console.log("active:", activeChat);
-      fetchChatMessages();
-    }
-  }, [activeChat]);
-
-  const groupedMessages = {};
-  let data = [];
-  chatMessages?.forEach((msg) => {
+  const setChatMessagesGrouped = (data) => {
+ const groupedMessages = {};
+  data?.forEach((msg) => {
     let date;
     if (msg?.createdAt !== "now") {
       date = new Date(msg.createdAt).toLocaleDateString();
@@ -117,15 +101,11 @@ const ChatPage = () => {
 
     const message = { ...msg, date };
 
+  if (!groupedMessages[date]) {
     groupedMessages[date] = [];
-    data.push(message);
+  }
 
-    if (!groupedMessages[date]) {
-      data = [];
-      data.push(message);
-    } else {
-      groupedMessages[date] = [...data];
-    }
+  groupedMessages[date].push(message);
   });
 
   const messagesWithDateSeparators = [];
@@ -136,6 +116,25 @@ const ChatPage = () => {
     });
     messagesWithDateSeparators.push(...groupedMessages[i]);
   }
+
+  setChatMessages(messagesWithDateSeparators);
+  } 
+
+  const fetchChatMessages = async () => {
+    socket.emit("chat_get-user-messages", User?.loginId, activeChat?.loginId);
+    setChatLoading(true);
+    socket.on("chat_user-messages", (data) => {
+      setChatMessagesGrouped(data);
+      setChatLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    if (activeChat) {
+      console.log("active:", activeChat);
+      fetchChatMessages();
+    }
+  }, [activeChat]);
 
   return (
     <div
@@ -148,7 +147,7 @@ const ChatPage = () => {
         setActiveChat={setActiveChat}
         recentChats={recentChats}
         onlineChats={onlineChats}
-        chatMessages={activeChat?.loginId ? messagesWithDateSeparators : []}
+        chatMessages={activeChat?.loginId ? chatMessages : []}
         loadingConversations={loadingConversations}
         handleSendMessage={handleSendMessage}
         chatLoading={chatLoading}

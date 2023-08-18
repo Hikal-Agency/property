@@ -323,13 +323,13 @@ const ChatConversation = ({
                     if (message.type === "date-separator") {
                       return (
                         <div className="flex items-center w-full mt-4">
-                          <div className="h-[1px] bg-[#da1f26] flex-1"></div>
+                          <div className="h-[0.2px] bg-[#da1f26] flex-1"></div>
                           <strong className="text-[#da1f26] px-2">
                             {message?.date === new Date()?.toLocaleDateString()
                               ? "TODAY"
                               : message?.date}
                           </strong>
-                          <div className="h-[1px] bg-[#da1f26] flex-1"></div>
+                          <div className="h-[0.2px] bg-[#da1f26] flex-1"></div>
                         </div>
                       );
                     } else if (
