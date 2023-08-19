@@ -67,9 +67,6 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (User?.id) {
-      socket.emit("chat_addUser", User);
-      console.log("User added in chat::");
-
       fetchRecentChats(User?.loginId);
 
        socket.on("chat_recent-chats", (data) => {

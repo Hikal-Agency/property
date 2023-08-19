@@ -176,7 +176,6 @@ const Sidebarmui = () => {
 
   const FetchProfile = async (token) => {
     const storedUser = localStorage.getItem("user");
-    socket.emit("chat_addUser", JSON.parse(storedUser));
 
     if (storedUser) {
       // If user data is stored in local storage, parse and set it in state
@@ -184,7 +183,7 @@ const Sidebarmui = () => {
       setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
       FetchPermissions();
-      socket.emit("chat_addUser", JSON.parse(storedUser));
+      socket.emit("add_user", JSON.parse(storedUser));
     } else {
       axios
         .get(`${BACKEND_URL}/profile`, {
@@ -240,7 +239,7 @@ const Sidebarmui = () => {
           getAllLeadsMembers(user);
 
           FetchPermissions();
-          socket.emit("chat_addUser", user);
+          socket.emit("add_user", user);
 
           localStorage.setItem("user", JSON.stringify(user));
         })
