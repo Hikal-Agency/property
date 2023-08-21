@@ -9,7 +9,7 @@ import {
   // Select,
 } from "@mui/material";
 import Select from "@mui/material/Select";
-
+import { socket } from "../../Pages/App";
 
 import axios from "../../axoisConfig";
 import React, { useState, useRef, useEffect } from "react";
@@ -26,7 +26,7 @@ const RenderPriority = ({ cellValues }) => {
   const [PriorityDialogue, setPriorityDialogue] = useState(false);
   // eslint-disable-next-line
   const [confirmbtnloading, setconfirmbtnloading] = useState(false);
-  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL, darkModeColors } =
+  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL, User, Managers} =
     useStateContext();
 
   const [selectedPriority, setSelectedPriority] = useState(Priority);
@@ -102,6 +102,12 @@ const RenderPriority = ({ cellValues }) => {
       .then((result) => {
         console.log("Priority Updated successfull");
         console.log(result);
+        socket.emit("notification_priority_update", {
+          from: {id: User?.id, userName: User?.userName}, 
+          leadName: cellValues?.row?.leadName, 
+          newPriority,
+          participants: [cellValues?.row?.assignedToManager || 0, cellValues?.row?.assignedToSales || 0, Managers?.find((m) => m?.id === cellValues?.row?.assignedToManager)?.isParent]
+        })
         toast.success("Priority Updated Successfully", {
           position: "top-right",
           autoClose: 3000,

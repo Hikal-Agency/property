@@ -311,7 +311,31 @@ const Sidebarmui = () => {
   useEffect(() => {
     if (User?.id) {
       socket.on("notification_lead_added", (data) => {
-        toast.success(data, {
+        toast.success(`Lead added by ${data}`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+
+         socket.on("notification_feedback_updated", (data) => {
+        toast.success(`Feedback for ${data?.leadName} has been updated to ${data?.newFeedback} by ${data?.by}`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+
+         socket.on("notification_priority_updated", (data) => {
+        toast.success(`Priority for ${data?.leadName} has been updated to ${data?.newPriority} by ${data?.by}`, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,

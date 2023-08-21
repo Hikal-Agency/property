@@ -248,8 +248,8 @@ const AddLeadComponent = ({FetchLeads}) => {
           theme: "light",
         });
         socket.emit("notification_lead_add", {
-          from: User?.loginId,
-          participants: [Manager]
+          from: {id: User?.id, userName: User?.userName},
+          participants: [Manager, Managers?.find((m) => m?.id === Manager)?.isParent || 0, SalesPerson2]
         });
         fetchSidebarData();
         setLeadName("");

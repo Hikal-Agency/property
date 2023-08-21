@@ -13,7 +13,7 @@ import Select from "@mui/material/Select";
 import { Box } from "@mui/system";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import { MdAccessTime } from "react-icons/md";
-
+import {socket} from "../../Pages/App.js";
 
 import axios from "../../axoisConfig";
 import React, { useState, useEffect } from "react";
@@ -48,6 +48,8 @@ const RenderFeedback = ({ cellValues }) => {
     reloadDataGrid,
     fetchSidebarData,
     BACKEND_URL,
+    User, 
+    Managers
   } = useStateContext();
   const ChangeFeedback = (e) => {
     setnewFeedback(e.target.value);
@@ -136,6 +138,12 @@ const RenderFeedback = ({ cellValues }) => {
           progress: undefined,
           theme: "light",
         });
+        socket.emit("notification_feedback_update", {
+          from: {id: User?.id, userName: User?.userName}, 
+          leadName: cellValues?.row?.leadName, 
+          newFeedback: newFeedback,
+          participants: [cellValues?.row?.assignedToManager || 0, cellValues?.row?.assignedToSales || 0, Managers?.find((m) => m?.id === cellValues?.row?.assignedToManager)?.isParent]
+        })
         setbtnloading(false);
         setFeedback(newFeedback);
         setreloadDataGrid(!reloadDataGrid);
