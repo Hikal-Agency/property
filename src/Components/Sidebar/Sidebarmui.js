@@ -1505,6 +1505,17 @@ const Sidebarmui = () => {
                         <Box
                           key={linkIndex}
                           onClick={(e) => handleExpandHeading(e, linkIndex)}
+                          sx={{
+                            // icons css
+                            "& .css-wx7wi4": {
+                              opacity: "0.7",
+                            },
+                            "& .css-wx7wi4:hover": {
+                              transform: "rotate(20deg)",
+                              transition: "all 0.6s ease",
+                              opacity: "1",
+                            },
+                          }}
                         >
                           {!isCollapsed ? (
                             <Tooltip title={link?.title} placement="right">
