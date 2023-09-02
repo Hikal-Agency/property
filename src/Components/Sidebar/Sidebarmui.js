@@ -1803,6 +1803,18 @@ const Sidebarmui = () => {
                                                 className={`${
                                                   !isCollapsed && "text-xl"
                                                 }`}
+                                                style={{
+                                                  // icons css
+                                                  "& .css-wx7wi4": {
+                                                    display: "none !important",
+                                                    opacity: "0.7",
+                                                  },
+                                                  "& .css-wx7wi4:hover": {
+                                                    transform: "rotate(20deg)",
+                                                    transition: "all 0.6s ease",
+                                                    opacity: "1",
+                                                  },
+                                                }}
                                               >
                                                 {menu.icon}
                                               </span>
