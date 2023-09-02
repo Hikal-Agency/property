@@ -82,11 +82,9 @@ const Sidebarmui = () => {
     setIsCollapsed,
     sidebarData,
     setUnreadNotifsCount,
-    setNotifIconAnimating, 
-    getNotifCounts
+    setNotifIconAnimating,
+    getNotifCounts,
   } = useStateContext();
-
-  
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
   const [newMessageReceived, setNewMessageReceived] = useState(false);
@@ -322,20 +320,22 @@ const Sidebarmui = () => {
     const setUnreadCount = async (isNoToast = false) => {
       try {
         const token = localStorage.getItem("auth-token");
-        const response = await axios.get(`${BACKEND_URL}/unreadCount?user_id=${User?.id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        });
+        const response = await axios.get(
+          `${BACKEND_URL}/unreadCount?user_id=${User?.id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
         const notifsCount = response.data.count || 0;
         setUnreadNotifsCount(notifsCount);
-        if(isNoToast) {
-
-        setNotifIconAnimating(true);
-        setTimeout(() => {
-        setNotifIconAnimating(false);
-        }, 2000);
+        if (isNoToast) {
+          setNotifIconAnimating(true);
+          setTimeout(() => {
+            setNotifIconAnimating(false);
+          }, 2000);
         }
         notifRingtoneElem?.current.play();
       } catch (err) {
@@ -344,9 +344,8 @@ const Sidebarmui = () => {
     };
 
     if (User?.id) {
-
       getNotifCounts();
-      
+
       const notificationToastSettings = {
         position: "top-right",
         autoClose: 10000,
@@ -1592,6 +1591,15 @@ const Sidebarmui = () => {
                                           );
                                         }}
                                         sx={{
+                                          // icons css
+                                          "&  .css-wx7wi4": {
+                                            opacity: "0.7",
+                                          },
+                                          "&  .css-wx7wi4:hover": {
+                                            transform: "rotate(20deg)",
+                                            transition: "all 0.6s ease",
+                                            opacity: "1",
+                                          },
                                           // FOR DARK MODE MENU SETTINGS
                                           "& .css-1mfnem1": {
                                             borderRadius: "0px",
