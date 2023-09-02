@@ -52,7 +52,8 @@ import {
   GrFormAdd 
 } from "react-icons/gr";
 import { 
-  HiMail 
+  HiMail,
+  HiPhoneOutgoing
 } from "react-icons/hi";
 import { 
   IoMdChatboxes 
@@ -61,6 +62,9 @@ import {
   MdSms,
   MdCampaign
 } from "react-icons/md";
+import {
+  RiMailSendFill
+} from "react-icons/ri";
 import {
   TbWorldWww
 } from "react-icons/tb";
@@ -393,28 +397,99 @@ const AllLeads = () => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <Tooltip title="WhatsApp Chat" arrow>
-            <Link
-              to={`/marketing/chat?phoneNumber=${cellValues.row.leadContact
-                ?.slice(1)
-                ?.replaceAll(" ", "")}`}
-            >
-              <div
-                className="whatsapp-web-link bg-green-600 p-2 rounded-md"
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  width: "100%",
-                }}
-              >
-                <BsWhatsapp size={16} color="white" />
+          <div className="flex justify-start items-center w-full mx-2">
+            <div className="mx-1">
+              <Tooltip title="WhatsApp" arrow>
+                <Link
+                  to={`/marketing/chat?phoneNumber=${cellValues.row.leadContact
+                    ?.slice(1)
+                    ?.replaceAll(" ", "")}`}
+                    target="_blank"
+                >
+                  <div
+                    className="whatsapp-web-link p-1.5 rounded-sm hover:bg-green-500 hover:text-white bg-transparent text-green-500"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <BsWhatsapp size={18} />
+                  </div>
+                </Link>
+              </Tooltip>
+            </div>
+            {(
+              cellValues.row.email === "" || 
+              cellValues.row.email === "null" || 
+              cellValues.row.email === "undefined" || 
+              cellValues.row.email === "-" || 
+              cellValues.row.email === null ||
+              cellValues.row.email === undefined
+            ) ? (
+              <></>
+            ) : (
+              <div className="mx-1">
+                <Tooltip title="Email" arrow>
+                  <div
+                    className="email-link p-1.5 rounded-sm hover:bg-[#1771ba] hover:text-white bg-transparent text-[#1771ba]"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <EmailButton email={cellValues.row.email} />
+                  </div>
+                </Tooltip>
               </div>
-            </Link>
-          </Tooltip>
+            )}
+            <div className="mx-1">
+              <Tooltip title="Call" arrow>
+                <div
+                  className="call-link p-1.5 rounded-sm hover:bg-[#DA1F26] hover:text-white bg-transparent text-[#DA1F26]"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                >
+                  <CallButton phone={cellValues.row.leadContact} />
+                </div>
+              </Tooltip>
+            </div>
+          </div>
         );
       },
     },
   ];
+
+  const EmailButton = ({ email }) => {
+    // console.log("email:::::::::::::::::::: ", email);
+    const handleEmailClick = (event) => {
+      event.stopPropagation();
+      window.location.href = `mailto:${email}`;
+    };
+  
+    return (
+      <button className="email-button" onClick={handleEmailClick}>
+        <RiMailSendFill size={18} />
+      </button>
+    );
+  };
+
+  const CallButton = ({ phone }) => {
+    const handlePhoneClick = (event) => {
+      event.stopPropagation();
+      window.location.href = `tel:${phone}`;
+    };
+  
+    return (
+      <button className="call-button" onClick={handlePhoneClick}>
+        <HiPhoneOutgoing size={18} />
+      </button>
+    );
+  };
 
   const [columnsArr, setColumnsArr] = useState(columns);
 
