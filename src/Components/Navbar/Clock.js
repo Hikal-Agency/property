@@ -1,0 +1,122 @@
+import React, { useState, useEffect } from "react";
+import moment from "moment-timezone";
+import { MenuItem, Select, Box } from "@mui/material";
+import { useStateContext } from "../../context/ContextProvider";
+
+const Clock = () => {
+  const [currentTime, setCurrentTime] = useState(
+    moment().tz(moment.tz.guess()).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
+  );
+  const [timezones, setTimezones] = useState([]);
+  const [selectedTimezone, setSelectedTimezone] = useState(moment.tz.guess());
+  const { currentMode, darkModeColors } = useStateContext();
+
+  console.log("mode: ", currentMode);
+
+  useEffect(() => {
+    // Fetch all timezones
+    const fetchedTimezones = moment.tz.names();
+    setTimezones(fetchedTimezones);
+
+    // Set default timezone
+    // setSelectedTimezone(moment.tz.guess());
+
+    // Update current time every second
+    const interval = setInterval(() => {
+      console.log(selectedTimezone);
+      setCurrentTime(
+        moment().tz(selectedTimezone).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
+      );
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [selectedTimezone]);
+
+  const handleTimezoneChange = (e) => {
+    setSelectedTimezone(e.target.value);
+  };
+
+  const SelectStyles = {
+    "&": {
+      // color: currentMode === "dark" ? "white !important" : "black !important",
+      color: "#ffffff",
+      // fontSize: "0.9rem",
+      fontWeight: "500",
+    },
+    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline":
+      {
+        // color: currentMode === "dark" ? "white !important" : "black !important",
+        color: "#ffffff",
+        fontSize: "0.9rem",
+        fontWeight: "500",
+      },
+    "& .MuiOutlinedInput-notchedOutline": {
+      // borderColor:
+      //   currentMode === "dark" ? "white !important" : "black !important",
+      borderColor: "#ffffff",
+    },
+    "& .MuiFormLabel-root": {
+      color: currentMode === "dark" ? "white" : "black",
+    },
+  };
+
+  return (
+    <div
+      style={{
+        margin: 0,
+        padding: "0.5rem 0.75rem",
+        "& .MuiList-root": {
+          backgroundColor:
+            currentMode === "dark"
+              ? "#1C1C1C !important"
+              : "#ffffff !important",
+        },
+        "& .css-3kgbgy-MuiPaper-root-MuiPopover-paper-MuiMenu-paper .MuiList-root .clock-div": {
+          backgroundColor:
+            currentMode === "dark"
+              ? "#1C1C1C !important"
+              : "#ffffff !important",
+        }
+      }}
+      className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} clock-div`}
+    >
+      <div className="flex items-center">
+        <h2
+          style={{
+            marginRight: 8,
+            fontSize: 12,
+            color: currentMode === "dark" ? "white" : "black",
+          }}
+        >
+          {currentTime}
+        </h2>
+        <Box sx={darkModeColors} >
+          <Select
+            className="time-zone-select"
+            sx={{
+              padding: 0,
+              "& .MuiSelect-select": {
+                padding: "5px 25px 5px 5px !important",
+              },
+              color: "#000000 !important",
+            }}
+            size="small"
+            value={selectedTimezone}
+            onChange={handleTimezoneChange}
+          >
+            {timezones?.map((timezone) => (
+              <MenuItem key={timezone} value={timezone}>
+                {timezone}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
+        
+      </div>
+    </div>
+  );
+};
+
+export default Clock;

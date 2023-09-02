@@ -1,0 +1,8 @@
+.barChartDiv  canvas{
+    width: 100% !important;
+}
+
+#chartdiv > div > div > div > canvas:nth-child(2) {
+    display: none !important;
+  }
+  

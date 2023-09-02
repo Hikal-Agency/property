@@ -1,0 +1,801 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;800&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", system-ui, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  overflow-x: hidden;
+}
+
+/* subscribe btn styling */
+.MuiBox-root .css-tykrgw-MuiButtonBase-root-MuiButton-root > a:hover i::before {
+  left: 20%;
+  width: 20px;
+}
+
+/* mui date icon */
+.reminder > .MuiSvgIcon-root .MuiSvgIcon-fontSizeMedium {
+  padding-right: "10px !important";
+}
+
+html, body {
+  scroll-behavior: smooth;
+  font-size: 12px;
+}
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Example with a specific color (light blue) */
+.calendar-container .fc-toolbar {
+  background-color: #111827; /* Replace this with the color you want */
+  padding: 10px;
+  color:#ffffff;
+  margin-bottom: -1px !important;
+}
+
+
+.border-l-\[4px\] {
+  border-left: 0px !important;
+  margin-bottom: 0px !important;
+  margin: 1rem 0 !important;
+  padding: 0px !important;
+}
+
+.border-l-\[4px\] .bg-main-red-color {
+  margin-left: 0.5rem !important;
+}
+
+/* mui mobile time picker */
+.css-3dah0e-MuiModal-root-MuiDialog-root .MuiDialog-paper {
+  outline: 0;
+  min-width: 320px;
+  border: 4px solid #DA1F26;
+  border-radius: 2%;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.MuiDataGrid-panel .MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
+  color :"#DA1F26 !important"
+}
+
+.MuiDataGrid-panel .MuiButtonBase-root .MuiSwitch-switchBase{
+  color: "#DA1F26";
+}
+
+.MuiDataGrid-panel .MuiSwitch-root .MuiSwitch-track {
+background-color: "#DA1F26";
+}
+.MuiDataGrid-panel  .css-1ycxvqq-MuiSwitch-root .MuiSwitch-thumb .MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
+  color : "#DA1F26 !important"
+}
+
+/* SYNCFUSION COMPONENTS CSS */
+@import url("https://cdn.syncfusion.com/ej2/material.css");
+
+.sidebar {
+  box-shadow: rgb(113 122 131 / 11%) 0px 7px 30px 0px;
+}
+.ps-menu-button:hover {
+  color: black !important;
+}
+
+.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-label{
+  color: #DA1F26;
+  /* font-weight: bold; */
+}
+
+.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-icon{
+  color: #DA1F26;
+  /* font-weight: bold; */
+  font-size: 16px;
+}
+
+.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-submenu-expand-icon {
+  color: #777777;
+}
+
+.ps-submenu-content ul a:hover .leads_counter {
+  color: white !important;
+}
+
+.nav-item,
+.navbar {
+  z-index: 10000;
+}
+@media screen and (max-width: 800px) {
+  .sidebar {
+    z-index: 10000000;
+  }
+}
+
+
+.subscribe_btn:hover > .btn_i_right {
+  left: 20% !important;
+  width: 20px !important;
+}
+
+.subscribe_btn:hover > .btn_i_left {
+  left: 80% !important;
+  width: 20px !important;
+}
+
+
+.e-dlg-center-center,
+.e-quick-popup-wrapper.e-device {
+  z-index: 1000000 !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  /* background-color: rgb(216, 216, 216); */
+  background-color: #AAAAAA;
+  border-radius: 50px;
+  opacity: 0.5 !important;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+  /* background-color: rgb(216, 216, 216); */
+  background-color: #777777;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* color-picker style  */
+
+#preview {
+  background: transparent
+    url("https://ej2.syncfusion.com/react/demos/src/color-picker/images/pen.png")
+    no-repeat;
+  display: inline-block;
+  height: 80px;
+  margin: 10px 0;
+  min-width: 300px;
+  max-width: 600px;
+  background-color: #008000;
+}
+
+.e-input-group:not(.e-float-icon-left),
+.e-input-group.e-success:not(.e-float-icon-left),
+.e-input-group.e-warning:not(.e-float-icon-left),
+.e-input-group.e-error:not(.e-float-icon-left),
+.e-input-group.e-control-wrapper:not(.e-float-icon-left),
+.e-input-group.e-control-wrapper.e-success:not(.e-float-icon-left),
+.e-input-group.e-control-wrapper.e-warning:not(.e-float-icon-left),
+.e-input-group.e-control-wrapper.e-error:not(.e-float-icon-left) {
+  border: none;
+}
+
+.dark-mode .PhoneInputCountryIconImg {
+  color: #fff;
+}
+
+.PhoneInput {
+  padding: 7px !important;
+}
+
+.image-picker .progress-bar-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5000;
+  background-color: white;
+}
+
+.dark-mode-sidebar .ps-submenu-content > ul div:not(.sub) a span {
+  color: white;
+}
+ .dark-mode-sidebar .ps-submenu-content > ul > a span {
+  color: white;
+}
+/* 
+.dark-mode-sidebar .top-level-dropdown > .ps-submenu-content > ul > a .ps-menu-label span {
+  color: black;
+}  */
+
+.dark-mode-sidebar .ps-submenu-content {
+  background: #1C1C1C;
+}
+
+.dark-mode-sidebar .ps-submenu-content > ul .ps-menu-button:not(.ps-active):hover span {
+  color: black;
+}
+
+.image-picker .progress-bar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  z-index: 50000;
+  transition: all 1.2s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+aside.ps-sidebar-root {
+  width: 200px;
+  min-width: 200px;
+}
+
+.css-b3tsul.ps-collapsed {
+  width: 65px !important;
+  min-width: 65px !important;
+}
+
+/* Data tables stylings */
+.MuiDataGrid-columnHeadersInner {
+  width: 100% !important;
+}
+
+.MuiDataGrid-columnHeadersInner > div {
+  width: 100% !important;
+}
+
+.MuiDataGrid-cellCheckbox {
+  min-width: 25px !important;
+  width: 25px !important;
+}
+
+.MuiDataGrid-main .MuiDataGrid-cellCheckbox .MuiButtonBase-root {
+  padding: 0 3px !important;
+}
+
+.MuiDataGrid-virtualScroller {
+  scroll-behavior: smooth !important;
+  margin-top: 0 !important;
+}
+
+.MuiDataGrid-virtualScrollerRenderZone {
+  width: 100% !important;
+}
+
+.MuiDataGrid-row {
+  padding-left: 0px !important;
+  width: 100% !important;
+}
+.MuiDataGrid-columnHeaders {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10 !important;
+  min-height: 45px !important;
+  font-size: 12px !important;
+}
+
+.MuiDataGrid-columnHeaderCheckbox {
+  min-width: 22px !important;
+  width: 22px !important;
+}
+.MuiDataGrid-columnHeader .MuiButtonBase-root {
+  padding: 0 !important;
+}
+
+.MuiDataGrid-columnHeader[data-field="leadSource"] {
+  width: 45px !important;
+  min-width: 45px !important;
+}
+
+.MuiDataGrid-columnHeader[data-field="leadSource"]
+  .MuiDataGrid-columnHeaderDraggableContainer {
+  width: 70% !important;
+}
+
+.MuiDataGrid-columnHeader[data-field="leadSource"]
+  .MuiDataGrid-columnHeaderDraggableContainer
+  .MuiDataGrid-columnHeaderTitleContainer {
+  justify-content: center !important;
+}
+
+.MuiDataGrid-cell[data-field="language"] div {
+  padding-left: 4px !important;
+  width: 100% !important;
+}
+.MuiDataGrid-cell[data-field="leadSource"] {
+  width: 45px !important;
+  min-width: 45px !important;
+  justify-content: center !important;
+}
+.MuiDataGrid-cell[data-field="leadSource"] div {
+  width: 100% !important;
+  justify-content: center !important;
+}
+.MuiDataGrid-cell[data-field="edit"] {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.MuiDataGrid-cell[data-field="creationDate"] {
+  text-align: center !important;
+}
+.MuiDataGrid-cell {
+  padding: 0 !important;
+}
+
+.MuiDataGrid-cell[data-field="id"] div {
+  width: 100% !important;
+  text-align: center !important;
+}
+
+.MuiDataGrid-columnHeader {
+  padding: 0 !important;
+}
+.MuiDataGrid-cell .MuiFormControl-root {
+  margin: 8px 0 !important;
+  width: 100% !important;
+}
+.MuiDataGrid-main .MuiSelect-select {
+  padding: 3px 2px !important;
+  padding-right: 18px !important;
+  width: 78% !important;
+}
+
+.MuiDataGrid-cell[data-field="assignedToManager"] > .MuiBox-root,
+.MuiDataGrid-cell[data-field="assignedToSales"] > .MuiBox-root
+ {
+  width: 92%;
+}
+
+.MuiDataGrid-cell[data-field="feedback"] > .MuiBox-root,
+.MuiDataGrid-cell[data-field="priority"] > .MuiBox-root {
+  width: 90%;
+}
+
+.MuiDataGrid-columnHeader .MuiDataGrid-columnSeparator {
+  display: none !important;
+}
+.MuiDataGrid-columnHeader[data-field="edit"]
+  .MuiDataGrid-columnHeaderTitleContainerContent {
+  width: 100% !important;
+}
+
+.MuiDataGrid-columnHeader[data-field="edit"]
+  .MuiDataGrid-columnHeaderTitleContainerContent
+  .MuiDataGrid-columnHeaderTitle {
+  width: 100% !important;
+  text-align: center !important;
+}
+
+label[for="bulkImport"] .MuiButtonBase-root {
+  z-index: 5 !important;
+}
+
+.MuiDataGrid-main .MuiDataGrid-cell {
+  overflow-wrap: anywhere;
+}
+
+.phone-input-light .PhoneInputInput {
+  background-color: #fff;
+  color: "#000 !important";
+}
+
+.phone-input-dark .PhoneInputInput {
+  background-color: #000;
+  color: "white !important";
+}
+
+.MuiDataGrid-cell badge:not(badge.available) {
+  background: #000000c7 !important;
+  width: 100%;
+}
+
+.spinner-container {
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+  margin: 0 !important;
+}
+
+/* Loader */
+.spinner-container circle[fill="#8C37F7"],
+.spinner-container circle[fill="#8C37F6"],
+.spinner-container circle[fill="#DABDFF"] {
+  fill: #da1f26 !important;
+}
+
+.spinner-container g > circle:first-child {
+  stroke: #ff6a6f !important;
+}
+
+.MuiDataGrid-columnHeader[aria-label="Action"]
+  .MuiDataGrid-columnHeaderTitleContainerContent {
+  width: 100% !important;
+}
+
+.MuiDataGrid-columnHeader[aria-label="Action"] .MuiDataGrid-columnHeaderTitle {
+  width: 100% !important;
+  text-align: center;
+}
+
+.MuiDataGrid-columnHeader:first-child
+  .MuiDataGrid-columnHeaderDraggableContainer,
+.MuiDataGrid-main .MuiDataGrid-row > div:first-child .MuiDataGrid-cellContent {
+  padding-left: 10px;
+}
+
+.MuiDataGrid-main
+  .MuiDataGrid-columnHeaderCheckbox
+  .MuiDataGrid-columnHeaderDraggableContainer {
+  padding-left: 0 !important;
+}
+
+.light-mode-datatable .MuiDataGrid-cell[data-field="leadName"] {
+  color: #da1f26;
+  font-weight: 500;
+}
+
+.dark-mode-datatable .MuiDataGrid-cell[data-field="leadName"] {
+  color: white;
+  font-weight: 500;
+}
+
+.MuiDataGrid-columnHeaders {
+  max-height: 45px;
+  height: 45px;
+  line-height: 45px;
+}
+/* 
+.MuiDataGrid-cell {
+  border-right: 1px solid rgba(224, 224, 224, 1);
+} */
+
+.MuiDataGrid-columnHeader[data-field="edit"] {
+  max-width: 100% !important;
+  width: 100% !important;
+  text-align: center;
+}
+
+.ps-menuitem-root.ps-active a,
+.ps-menuitem-root.ps-active a:hover {
+  background: #da1f26;
+  border-top-right-radius: 0px;
+}
+
+.ps-menuitem-root.ps-active .ps-menu-label,
+.ps-menuitem-root.ps-active .ps-menu-label:hover,
+.ps-menuitem-root.ps-active + .leads_counter,
+.ps-menuitem-root.ps-active:hover + .leads_counter,
+.ps-menuitem-root.ps-active + .leads_counter:hover {
+  color: white !important;
+}
+
+.leads_counter {
+   color: white !important;
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
+  border-radius: 2px;
+  width: 42px;
+  right: 6px;
+  padding: 3px 0px;
+}
+
+.light-mode-sidebar .leads_counter {
+  background: #da1f26 !important;
+}
+
+.dark-mode-sidebar .leads_counter {
+  background: black !important;
+}
+
+.ps-menuitem-root .ps-menu-button {
+  height: 38px !important;
+}
+
+.light-mode-sidebar .ps-open .MuiBox-root {
+  background: #EEEEEE;
+  margin: 0 !important;
+}
+
+.light-mode-sidebar .sub .ps-open .MuiBox-root {
+  background: #DDDDDD;
+  margin: 0 !important;
+}
+
+.dark-mode-sidebar .sub .ps-open .MuiBox-root {
+  background: #262626;
+  margin: 0 !important;
+}
+
+.light-mode-sidebar .ps-open .ps-menu-button:not(.ps-active):hover {
+  background: #e4e4e4;
+}
+
+.light-mode-sidebar .ps-menu-button.ps-open {
+  margin-bottom: 4px;
+}
+
+.grid.gap-4 {
+  gap: 0.4rem !important;
+}
+
+.MuiDataGrid-columnsPanel .css-jsexje-MuiSwitch-thumb{
+    background-color: #da1f26 !important;
+}
+
+.MuiDataGrid-columnsPanel .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track{
+  background-color: #da1f26 !important;
+}
+
+.css-v4u5dn-MuiInputBase-root-MuiInput-root:after {
+  border-bottom: 0 !important;
+}
+
+ .css-otzuo3-MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: 1px solid #da1f26 !important;
+ }
+
+ .MuiDataGrid-cell {
+  text-align: center !important;
+  justify-content: center !important;
+ }
+
+ .MuiDataGrid-cell[data-field="otp"] > div {
+  width: 80%;
+ }
+
+.closed-datatable .MuiDataGrid-columnHeadersInner .MuiDataGrid-columnHeader:last-child {
+
+  min-width: revert !important;
+  max-width: revert !important;
+  width: 100% !important;
+ }
+
+ .closed-datatable .MuiDataGrid-row .MuiDataGrid-cell:last-child {
+  min-width: revert !important;
+  max-width: revert !important;
+  width: 100% !important;
+ }
+
+.single-emp .MuiDataGrid-columnHeadersInner .MuiDataGrid-columnHeader:last-child {
+
+  min-width: revert !important;
+  max-width: revert !important;
+  width: 100% !important;
+ }
+
+ .single-emp .MuiDataGrid-row .MuiDataGrid-cell:last-child {
+  min-width: revert !important;
+  max-width: revert !important;
+  width: 100% !important;
+ }
+
+  .section-container-light {
+    padding: 1rem;
+    width: 100%;
+    background: #f6f6f6;
+    border-radius: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-container-dark {
+    background: none;
+  }
+
+  .MuiDataGrid-cell[data-field="leadName"] {
+    white-space: pre-wrap !important;
+    text-wrap: wrap;
+  }
+
+@media all and (max-width: 1300px) {
+  .MuiDataGrid-cell[data-field="creationDate"] p {
+    font-size: 12px;
+  }
+}
+
+@media all and (max-width: 1500px) {
+  .time-zone-select {
+    width: 115px !important;
+  }
+}
+
+
+@keyframes whatsappAnimation {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.whatsapp-logo-animation {
+  animation: whatsappAnimation 2s infinite;
+}
+
+.message-received-float {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 52px;
+  height: 52px;
+  background: #da1f26;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 110px;
+  right: 36px;
+  z-index: 5000;
+}
+
+.message-received-float.animate {
+  animation: blink 1s;
+}
+
+.message-received-float svg {
+  color: white;
+}
+
+.active-tab {
+  display: block;
+  animation: fade 0.4s ease-in-out;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+@keyframes blink {
+  0%{
+    opacity: 0;
+  }
+
+  15%, 35%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+
+/* ATTENDANCE  */
+/* Customize dark mode calendar */
+.custom-dark-calendar {
+  background-color: #111827; /* Dark background color */
+  color: #ffffff; /* Text color for dark mode */
+}
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001 !important;
+}
+
+.popup {
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.popup h2 {
+  margin-top: 0;
+}
+
+/* .popup button {
+  background-color: #DA1F26;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.popup button:hover {
+  background-color: #000000;
+} */
+
+
+.animate-notif-icon {
+  position: relative;
+  animation: scale 1s ease-in-out forwards;
+}
+
+.animate-notif-icon::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: -7px;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  background-color: #da1f26;
+  opacity: 0.3;
+  border-radius: 100%;
+  animation: breathe2 1s infinite;
+}
+
+.animate-notif-icon::after {
+  content: "";
+  position: absolute;
+  top: -240%;
+  left: -250%;
+  z-index: 3;
+  width: 90px;
+  height: 90px;
+  transform: translateY(-50%);
+  background-color: #da1f26;
+  opacity: 0.2;
+  border-radius: 100%;
+  animation: breathe 1s infinite;
+}
+
+@keyframes scale {
+  0%{
+    transform: scale(0.8);
+  }
+
+  50% {
+    transform: scale(1.4);
+  }
+
+  70% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes breathe{
+  0%{transform:scale(1)}
+  50%{transform:scale(0.1)}
+  100%{transform:scale(1); opacity: 0}
+}
+@keyframes breathe2{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.3)}
+  100%{transform:scale(1); opacity: 0}
+}
+
+.notif-fade-out {
+  animation: notifFadeOut .4s ease-in-out forwards;
+}
+
+@keyframes notifFadeOut{
+    0% {
+      opacity: 1; 
+    }
+
+    20% {
+      transform: translateX(20px);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+}

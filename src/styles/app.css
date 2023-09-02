@@ -1,0 +1,10 @@
+.LoginWrapper{
+    background: url("../../public/assets/hikal.svg"); 
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+  .container {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter:saturate(100%) blur(5px);
+  }

@@ -1,0 +1,463 @@
+// import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Loader from "../../Components/Loader";
+import { useStateContext } from "../../context/ContextProvider";
+
+import NotificationsListComponent from "../../Components/notificationsUi/NotificationsListComponent";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  IconButton,
+  Radio,
+  RadioGroup,
+  Tab,
+  Tabs,
+  TextField,
+  Tooltip,
+} from "@mui/material";
+import axios from "../../axoisConfig";
+
+import { BsCheck2All, BsFilterLeft } from "react-icons/bs";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { toast } from "react-toastify";
+
+const NotificationsList = () => {
+  const [loading, setloading] = useState(false);
+  const [value, setValue] = useState(0);
+  const [showFilter, setShowFilter] = useState(false);
+  const [displayMarkBtn, setdisplayMarkBtn] = useState(false);
+  const [fetch, setFetch] = useState(true);
+  const [filter, setFilter] = useState();
+  const [filter_notifyAbout, setfilter_notifyType] = useState();
+  const [filter_notifyDate, setfilter_notifyDate] = useState();
+  const [filter_notifyDateValue, setfilter_notifyDateValue] = useState();
+  console.log("filte_date: ", filter_notifyDate);
+  const {
+    currentMode,
+    BACKEND_URL,
+    User,
+    darkModeColors,
+    formatNum,
+    setUnreadNotifsCount, 
+    getNotifCounts
+  } = useStateContext();
+  const token = localStorage.getItem("auth-token");
+
+  const handleChange = (event, newValue) => {
+    setValue(value === 0 ? 1 : 0);
+  };
+
+  const clearFilteration = () => {
+    setfilter_notifyType("");
+    setfilter_notifyDate("");
+    setFilter("");
+
+    setShowFilter(false);
+    setFetch(true);
+  };
+
+  const handleFilter = (e, value) => {
+    console.log("value: ", value);
+    if (value === 0) {
+      setFilter(e.target.value);
+    } else if (value === 1) {
+      setfilter_notifyType(e.target.value);
+    }
+
+    // setShowFilter(false);
+    setFetch(true);
+  };
+
+  const toggleFilter = () => {
+    setShowFilter(!showFilter);
+  };
+
+  const handleParentClick = (e) => {
+    // e.target.closest("parent_filter");
+    // console.log(e.target.closest("parent_filter") ? "something" : null);
+
+    if (!e.target.closest(".parent_filter")) {
+      setShowFilter(false);
+    }
+    // toggleFilter();
+  };
+
+  const UpdateReadStatus = async (e, id) => {
+    e.preventDefault();
+    const updated_data = new FormData();
+
+    updated_data.append("user_id", User?.id);
+    updated_data.append("isRead", 1);
+
+    try {
+      const UpdateReadStatus = await axios.post(
+        `${BACKEND_URL}/bulknotification`,
+        updated_data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("status updated::: ", UpdateReadStatus);
+        getNotifCounts();
+      toast.success("All notifications marked as read.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setUnreadNotifsCount(0);
+
+      setFetch(true);
+    } catch (error) {
+      console.log("Error: ", error);
+      toast.error("Unable to update notification read status.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  return (
+    <>
+      <div className=" flex min-h-screen" onClick={handleParentClick}>
+        {loading ? (
+          <Loader />
+        ) : (
+          <div
+            className={`w-full ${
+              currentMode === "dark" ? "bg-black" : "bg-white"
+            }`}
+          >
+            {showFilter && (
+              <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-40 "></div>
+            )}
+            <div className={`w-full`}>
+              <div className="pl-3">
+                <div className="mt-3 flex justify-between">
+                  <h1
+                    className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+                      currentMode === "dark"
+                        ? "text-white border-white"
+                        : "text-red-600 font-bold border-red-600"
+                    }`}
+                  >
+                    ● Notifications List{" "}
+                  </h1>
+                </div>
+                <div className="flex items-center justify-between">
+                  <Box
+                    sx={{
+                      ...darkModeColors,
+                      "& .MuiTabs-indicator": {
+                        // height: "100%",
+                        borderRadius: "5px",
+                        backgroundColor: "#da1f26",
+                      },
+                      "& .Mui-selected": {
+                        color:
+                          currentMode === "dark" ? "white !important" : "black",
+                        zIndex: "1",
+                      },
+                    }}
+                    className={` rounded-md overflow-hidden ${
+                      currentMode === "dark" ? "bg-black" : "bg-white"
+                    } `}
+                  >
+                    <Tabs
+                      value={value}
+                      onClick={handleChange}
+                      variant="standard"
+                    >
+                      {/* <Tab
+                        icon={
+                          value === 0 ? (
+                            <AiOutlineAppstore
+                              size={22}
+                              style={{
+                                color:
+                                  currentMode === "dark"
+                                    ? "#ffffff"
+                                    : "#000000",
+                              }}
+                            />
+                          ) : (
+                            <AiOutlineTable
+                              size={22}
+                              style={{
+                                color:
+                                  currentMode === "dark"
+                                    ? "#ffffff"
+                                    : "#000000",
+                              }}
+                            />
+                          )
+                        }
+                      /> */}
+                      <Tab
+                        style={{
+                          color: currentMode === "dark" ? "#ffffff" : "#000000",
+                        }}
+                        label="All"
+                      />
+                    </Tabs>
+                  </Box>
+
+                  <div className=" flex items-center space-x-5 mr-5">
+                    {displayMarkBtn && User?.role !== 1 && User?.role !== 2 ? (
+                      <Tooltip
+                        title="Mark All As Read"
+                        arrow
+                        placement="bottom"
+                      >
+                        <IconButton>
+                          <BsCheck2All
+                            size={20}
+                            color={
+                              currentMode === "dark" ? "#ffffff" : "#000000"
+                            }
+                            onClick={UpdateReadStatus}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    ) : null}
+                    {/* <TextField
+                      placeholder="Search.."
+                      sx={{
+                        "& input": {
+                          borderBottom: "2px solid #ffffff6e",
+                        },
+                      }}
+                      variant="standard"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <IconButton sx={{ padding: 0 }}>
+                              <BiSearch
+                                size={17}
+                                color={
+                                  currentMode === "dark" ? "#ffffff" : "#000000"
+                                }
+                              />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    /> */}
+                    <div className="parent_filter relative transform -translate-x-2/1">
+                      <BsFilterLeft
+                        className="mr-3 mt-2 cursor-pointer"
+                        size={20}
+                        color={currentMode === "dark" ? "#ffffff" : "#000000"}
+                        onClick={toggleFilter}
+                      />
+                      {showFilter && (
+                        <>
+                          <div
+                            className=" absolute  mt-2 "
+                            style={{
+                              zIndex: 5000,
+                              transform: "translateX(-90%)",
+                              border: "1px solid #ccc",
+                              padding: "15px",
+                              backgroundColor:
+                                currentMode === "dark" ? "#333333" : "#ffffff",
+                              width: "300px",
+                              color:
+                                currentMode === "dark" ? "#ffffff" : "#000000",
+                            }}
+                          >
+                            <h3 className="font-bold">Notification Type</h3>
+                            <div>
+                              <FormControl>
+                                <RadioGroup
+                                  row
+                                  aria-labelledby="demo-radio-buttons-group-label"
+                                  defaultValue="all"
+                                  name="radio-buttons-group"
+                                  value={filter}
+                                  onChange={(e) => handleFilter(e, 0)}
+                                >
+                                  <FormControlLabel
+                                    value="all"
+                                    control={<Radio />}
+                                    label="All"
+                                  />
+                                  <FormControlLabel
+                                    value="1"
+                                    control={<Radio />}
+                                    label="Read"
+                                  />
+                                  <FormControlLabel
+                                    value="0"
+                                    control={<Radio />}
+                                    label="Unread"
+                                  />
+                                </RadioGroup>
+                              </FormControl>
+                            </div>
+
+                            <h3 className="mt-5 font-bold">
+                              Notifications About
+                            </h3>
+                            <div className="">
+                              <FormControl>
+                                <RadioGroup
+                                  aria-labelledby="demo-radio-buttons-group-label"
+                                  // defaultValue="female"
+                                  name="radio-buttons-group"
+                                  value={filter_notifyAbout}
+                                  onChange={(e) => handleFilter(e, 1)}
+                                >
+                                  <FormControlLabel
+                                    value="Lead"
+                                    control={<Radio />}
+                                    label="Lead Assignment"
+                                  />
+                                  <FormControlLabel
+                                    value="Feedback"
+                                    control={<Radio />}
+                                    label="Feedback Updation"
+                                  />
+                                  <FormControlLabel
+                                    value="Priority"
+                                    control={<Radio />}
+                                    label="Priority Updation"
+                                  />
+                                  <FormControlLabel
+                                    value="Reminder"
+                                    control={<Radio />}
+                                    label="Follow-up Reminder"
+                                  />
+                                  <FormControlLabel
+                                    value="Meeting"
+                                    control={<Radio />}
+                                    label="Schedule Meetings"
+                                  />
+                                  <FormControlLabel
+                                    value="Billings"
+                                    control={<Radio />}
+                                    label="Billings And Payments"
+                                  />
+                                  <FormControlLabel
+                                    value="Support"
+                                    control={<Radio />}
+                                    label="Support"
+                                  />
+                                </RadioGroup>
+                              </FormControl>
+                            </div>
+
+                            <h3 className=" my-4 font-bold">
+                              Notification Date
+                            </h3>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DatePicker
+                                value={filter_notifyDateValue}
+                                views={["year", "month", "day"]}
+                                onChange={(newValue) => {
+                                  setfilter_notifyDateValue(newValue);
+                                  setfilter_notifyDate(
+                                    formatNum(newValue?.$d?.getUTCFullYear()) +
+                                      "-" +
+                                      formatNum(
+                                        newValue?.$d?.getUTCMonth() + 1
+                                      ) +
+                                      "-" +
+                                      formatNum(newValue?.$d?.getUTCDate())
+                                  );
+                                }}
+                                format="yyyy-MM-dd"
+                                renderInput={(params) => (
+                                  <TextField
+                                    sx={{
+                                      "& input": {
+                                        color:
+                                          currentMode === "dark"
+                                            ? "white"
+                                            : "black",
+                                      },
+                                      "&": {
+                                        borderRadius: "4px",
+                                        border:
+                                          currentMode === "dark"
+                                            ? "1px solid white"
+                                            : "1px solid black",
+                                      },
+                                      "& .MuiSvgIcon-root": {
+                                        color:
+                                          currentMode === "dark"
+                                            ? "white"
+                                            : "black",
+                                      },
+                                    }}
+                                    fullWidth
+                                    label="Filter By Date"
+                                    {...params}
+                                    onKeyDown={(e) => e.preventDefault()}
+                                    readOnly={true}
+                                  />
+                                )}
+                                // minDate={dayjs().startOf("day").toDate()}
+                              />
+                            </LocalizationProvider>
+
+                            <Button
+                              // disabled={loading ? true : false}
+                              type="submit"
+                              className="disabled:opacity-50 disabled:cursor-not-allowed group  flex w-max justify-center rounded-md border border-transparent  py-3 px-4 text-white text-md font-bold uppercase mt-3 bg-[#DA1F26]"
+                              style={{
+                                marginTop: "20px",
+                                background: "#DA1F26",
+                                color: "#ffffff",
+                              }}
+                              onClick={clearFilteration}
+                            >
+                              <span>Clear All</span>
+                            </Button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <NotificationsListComponent
+                  displayMarkBtn={displayMarkBtn}
+                  setdisplayMarkBtn={setdisplayMarkBtn}
+                  fetch={fetch}
+                  setFetch={setFetch}
+                  filter={filter}
+                  setFilter={setFilter}
+                  filter_notifyAbout={filter_notifyAbout}
+                  filter_notifyDate={filter_notifyDate}
+                />
+                {/* <NotificationsComponent /> */}
+              </div>
+            </div>
+            {/* <Footer /> */}
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default NotificationsList;
