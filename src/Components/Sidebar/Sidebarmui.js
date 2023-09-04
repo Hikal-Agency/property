@@ -331,6 +331,7 @@ const Sidebarmui = () => {
         );
         const notifsCount = response.data.count || 0;
         setUnreadNotifsCount(notifsCount);
+
         if (isNoToast) {
           setNotifIconAnimating(true);
           setTimeout(() => {

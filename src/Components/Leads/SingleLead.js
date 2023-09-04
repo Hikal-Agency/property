@@ -23,9 +23,11 @@ import { BsShuffle } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 import {
-  HiOutlineUserCircle,
-  HiOutlinePhone
+  HiPhoneOutgoing
 } from "react-icons/hi";
+import {
+  RiMailSendFill
+} from "react-icons/ri";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -186,6 +188,33 @@ const SingleLead = ({
     contact = LeadData?.leadContact;
   }
 
+  const EmailButton = ({ email }) => {
+    // console.log("email:::::::::::::::::::: ", email);
+    const handleEmailClick = (event) => {
+      event.stopPropagation();
+      window.location.href = `mailto:${email}`;
+    };
+  
+    return (
+      <button className="email-button" onClick={handleEmailClick}>
+        <RiMailSendFill size={18} />
+      </button>
+    );
+  };
+
+  const CallButton = ({ phone }) => {
+    const handlePhoneClick = (event) => {
+      event.stopPropagation();
+      window.location.href = `tel:${phone}`;
+    };
+  
+    return (
+      <button className="call-button" onClick={handlePhoneClick}>
+        <HiPhoneOutgoing size={18} />
+      </button>
+    );
+  };
+
   return (
     <>
       <Modal
@@ -297,8 +326,51 @@ const SingleLead = ({
 
               <div className="bg-main-red-color h-0.5 w-full mt-6 mb-4"></div>
               <div className="flex mb-6 justify-end items-center mt-0 w-full">
-                {/* RESHUFFLED REQUEST  */}
+                {/* CALL  */}
                 <div className="flex items-center mr-3 justify-end">
+                  <Tooltip title="Call" arrow>
+                    <div
+                      className="call-link p-1.5 rounded-sm hover:bg-[#DA1F26] hover:text-white bg-transparent text-[#DA1F26]"
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        width: "100%",
+                      }}
+                    >
+                      <CallButton phone={LeadData?.leadContact} />
+                    </div>
+                  </Tooltip>
+                </div>
+
+                {/* EMAIL  */}
+                {(
+                  LeadData?.leadEmail === "" || 
+                  LeadData?.leadEmail === "null" || 
+                  LeadData?.leadEmail === "undefined" || 
+                  LeadData?.leadEmail === "-" || 
+                  LeadData?.leadEmail === null ||
+                  LeadData?.leadEmail === undefined
+                ) ? (
+                  <></>
+                ) : (
+                  <div className="flex items-center mr-3 justify-end">
+                    <Tooltip title="Email" arrow>
+                      <div
+                        className="email-link p-1.5 rounded-sm hover:bg-[#1771ba] hover:text-white bg-transparent text-[#1771ba]"
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          width: "100%",
+                        }}
+                      >
+                        <EmailButton email={LeadData?.leadEmail} />
+                      </div>
+                    </Tooltip>
+                  </div>
+                )}
+
+                {/* RESHUFFLED REQUEST  */}
+                {/* <div className="flex items-center mr-3 justify-end">
                   <p
                     style={{ cursor: "pointer", display: "inline-block" }}
                     className={`${
@@ -321,7 +393,7 @@ const SingleLead = ({
                       </IconButton>
                     </Tooltip>
                   </p>
-                </div>
+                </div> */}
 
                 {/* IP BLOCKING */}
                 {

@@ -258,7 +258,6 @@ const Navbar = () => {
                 <RiNotification3Fill />
               ) : (
                 [
-                  unreadNotifsCount ? (
                     <Badge
                       className={notifIconAnimating ? "animate-notif-icon" : ""}
                       badgeContent={unreadNotifsCount}
@@ -266,9 +265,6 @@ const Navbar = () => {
                     >
                       <RiNotification3Line />
                     </Badge>
-                  ) : (
-                    <RiNotification3Line />
-                  ),
                 ]
               )
             }
