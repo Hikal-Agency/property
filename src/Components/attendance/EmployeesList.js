@@ -78,9 +78,9 @@ const EmployeesList = ({ user }) => {
         // Check if selectedDay is 'today' or 'yesterday'
         if (selectedDay === "today") {
           params.date_range = [
-            "2023-08-04","2023-08-05"
-            // moment().format("YYYY-MM-DD"),
-            // moment().add(1, "days").format("YYYY-MM-DD"),
+            // "2023-08-04","2023-08-05"
+            moment().format("YYYY-MM-DD"),
+            moment().add(1, "days").format("YYYY-MM-DD"),
           ].join(",");
         } else if (selectedDay === "yesterday") {
           params.date_range = [
@@ -216,9 +216,7 @@ const EmployeesList = ({ user }) => {
                             <h4 className="font-bold text-base capitalize">
                               {item?.userName}
                             </h4>
-                            <p className="text-sm">
-                              {item?.position}
-                            </p>
+                            <p className="text-sm">{item?.position}</p>
                             {/* <p className="text-sm">
                               {item?.department === 1
                                 ? "Admin"
