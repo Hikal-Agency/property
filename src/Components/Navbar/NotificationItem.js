@@ -4,7 +4,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { GrFormClose } from "react-icons/gr";
 import { BiRectangle } from "react-icons/bi";
 import axios from "../../axoisConfig";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 const NotificationItem = ({
   activity,
