@@ -7,6 +7,7 @@ import NotificationsListComponent from "../../Components/notificationsUi/Notific
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   IconButton,
@@ -55,7 +56,7 @@ const NotificationsList = () => {
       if (keyword) {
         url = `${BACKEND_URL}/users?page=${pageNo}&title=${keyword}`;
       } else {
-        url = `${BACKEND_URL}/users?page=${pageState.page}`;
+        url = `${BACKEND_URL}/users?page=${pageNo}`;
       }
       const response = await axios.get(url, {
         headers: {
@@ -322,154 +323,167 @@ const NotificationsList = () => {
                                 currentMode === "dark" ? "#ffffff" : "#000000",
                             }}
                           >
-                            <h3 className="font-bold">Notification Type</h3>
-                            <div>
-                              <FormControl>
-                                <RadioGroup
-                                  row
-                                  aria-labelledby="demo-radio-buttons-group-label"
-                                  defaultValue="all"
-                                  name="radio-buttons-group"
-                                  value={filter}
-                                  onChange={(e) => handleFilter(e, 0)}
-                                >
-                                  <FormControlLabel
-                                    value="all"
-                                    control={<Radio />}
-                                    label="All"
-                                  />
-                                  <FormControlLabel
-                                    value="1"
-                                    control={<Radio />}
-                                    label="Read"
-                                  />
-                                  <FormControlLabel
-                                    value="0"
-                                    control={<Radio />}
-                                    label="Unread"
-                                  />
-                                </RadioGroup>
-                              </FormControl>
-                            </div>
+                            {userLoading ? (
+                              <div className="flex justify-center">
+                                {" "}
+                                <CircularProgress />
+                              </div>
+                            ) : (
+                              <>
+                                <h3 className="font-bold">Notification Type</h3>
+                                <div>
+                                  <FormControl>
+                                    <RadioGroup
+                                      row
+                                      aria-labelledby="demo-radio-buttons-group-label"
+                                      defaultValue="all"
+                                      name="radio-buttons-group"
+                                      value={filter}
+                                      onChange={(e) => handleFilter(e, 0)}
+                                    >
+                                      <FormControlLabel
+                                        value="all"
+                                        control={<Radio />}
+                                        label="All"
+                                      />
+                                      <FormControlLabel
+                                        value="1"
+                                        control={<Radio />}
+                                        label="Read"
+                                      />
+                                      <FormControlLabel
+                                        value="0"
+                                        control={<Radio />}
+                                        label="Unread"
+                                      />
+                                    </RadioGroup>
+                                  </FormControl>
+                                </div>
 
-                            <h3 className="mt-5 font-bold">
-                              Notifications About
-                            </h3>
-                            <div className="">
-                              <FormControl>
-                                <RadioGroup
-                                  aria-labelledby="demo-radio-buttons-group-label"
-                                  // defaultValue="female"
-                                  name="radio-buttons-group"
-                                  value={filter_notifyAbout}
-                                  onChange={(e) => handleFilter(e, 1)}
-                                >
-                                  <FormControlLabel
-                                    value="Lead"
-                                    control={<Radio />}
-                                    label="Lead Assignment"
-                                  />
-                                  <FormControlLabel
-                                    value="Feedback"
-                                    control={<Radio />}
-                                    label="Feedback Updation"
-                                  />
-                                  <FormControlLabel
-                                    value="Priority"
-                                    control={<Radio />}
-                                    label="Priority Updation"
-                                  />
-                                  <FormControlLabel
-                                    value="Reminder"
-                                    control={<Radio />}
-                                    label="Follow-up Reminder"
-                                  />
-                                  <FormControlLabel
-                                    value="Meeting"
-                                    control={<Radio />}
-                                    label="Schedule Meetings"
-                                  />
-                                  <FormControlLabel
-                                    value="Billings"
-                                    control={<Radio />}
-                                    label="Billings And Payments"
-                                  />
-                                  <FormControlLabel
-                                    value="Support"
-                                    control={<Radio />}
-                                    label="Support"
-                                  />
-                                </RadioGroup>
-                              </FormControl>
-                            </div>
+                                <h3 className="mt-5 font-bold">
+                                  Notifications About
+                                </h3>
+                                <div className="">
+                                  <FormControl>
+                                    <RadioGroup
+                                      aria-labelledby="demo-radio-buttons-group-label"
+                                      // defaultValue="female"
+                                      name="radio-buttons-group"
+                                      value={filter_notifyAbout}
+                                      onChange={(e) => handleFilter(e, 1)}
+                                    >
+                                      <FormControlLabel
+                                        value="Lead"
+                                        control={<Radio />}
+                                        label="Lead Assignment"
+                                      />
+                                      <FormControlLabel
+                                        value="Feedback"
+                                        control={<Radio />}
+                                        label="Feedback Updation"
+                                      />
+                                      <FormControlLabel
+                                        value="Priority"
+                                        control={<Radio />}
+                                        label="Priority Updation"
+                                      />
+                                      <FormControlLabel
+                                        value="Reminder"
+                                        control={<Radio />}
+                                        label="Follow-up Reminder"
+                                      />
+                                      <FormControlLabel
+                                        value="Meeting"
+                                        control={<Radio />}
+                                        label="Schedule Meetings"
+                                      />
+                                      <FormControlLabel
+                                        value="Billings"
+                                        control={<Radio />}
+                                        label="Billings And Payments"
+                                      />
+                                      <FormControlLabel
+                                        value="Support"
+                                        control={<Radio />}
+                                        label="Support"
+                                      />
+                                    </RadioGroup>
+                                  </FormControl>
+                                </div>
 
-                            <h3 className=" my-4 font-bold">
-                              Notification Date
-                            </h3>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DatePicker
-                                value={filter_notifyDateValue}
-                                views={["year", "month", "day"]}
-                                onChange={(newValue) => {
-                                  setfilter_notifyDateValue(newValue);
-                                  setfilter_notifyDate(
-                                    formatNum(newValue?.$d?.getUTCFullYear()) +
-                                      "-" +
-                                      formatNum(
-                                        newValue?.$d?.getUTCMonth() + 1
-                                      ) +
-                                      "-" +
-                                      formatNum(newValue?.$d?.getUTCDate())
-                                  );
-                                }}
-                                format="yyyy-MM-dd"
-                                renderInput={(params) => (
-                                  <TextField
-                                    sx={{
-                                      "& input": {
-                                        color:
-                                          currentMode === "dark"
-                                            ? "white"
-                                            : "black",
-                                      },
-                                      "&": {
-                                        borderRadius: "4px",
-                                        border:
-                                          currentMode === "dark"
-                                            ? "1px solid white"
-                                            : "1px solid black",
-                                      },
-                                      "& .MuiSvgIcon-root": {
-                                        color:
-                                          currentMode === "dark"
-                                            ? "white"
-                                            : "black",
-                                      },
+                                <h3 className=" my-4 font-bold">
+                                  Notification Date
+                                </h3>
+                                <LocalizationProvider
+                                  dateAdapter={AdapterDayjs}
+                                >
+                                  <DatePicker
+                                    value={filter_notifyDateValue}
+                                    views={["year", "month", "day"]}
+                                    onChange={(newValue) => {
+                                      setfilter_notifyDateValue(newValue);
+                                      setfilter_notifyDate(
+                                        formatNum(
+                                          newValue?.$d?.getUTCFullYear()
+                                        ) +
+                                          "-" +
+                                          formatNum(
+                                            newValue?.$d?.getUTCMonth() + 1
+                                          ) +
+                                          "-" +
+                                          formatNum(newValue?.$d?.getUTCDate())
+                                      );
                                     }}
-                                    fullWidth
-                                    label="Filter By Date"
-                                    {...params}
-                                    onKeyDown={(e) => e.preventDefault()}
-                                    readOnly={true}
+                                    format="yyyy-MM-dd"
+                                    renderInput={(params) => (
+                                      <TextField
+                                        sx={{
+                                          "& input": {
+                                            color:
+                                              currentMode === "dark"
+                                                ? "white"
+                                                : "black",
+                                          },
+                                          "&": {
+                                            borderRadius: "4px",
+                                            border:
+                                              currentMode === "dark"
+                                                ? "1px solid white"
+                                                : "1px solid black",
+                                          },
+                                          "& .MuiSvgIcon-root": {
+                                            color:
+                                              currentMode === "dark"
+                                                ? "white"
+                                                : "black",
+                                          },
+                                        }}
+                                        fullWidth
+                                        label="Filter By Date"
+                                        {...params}
+                                        onKeyDown={(e) => e.preventDefault()}
+                                        readOnly={true}
+                                      />
+                                    )}
+                                    // minDate={dayjs().startOf("day").toDate()}
                                   />
-                                )}
-                                // minDate={dayjs().startOf("day").toDate()}
-                              />
-                            </LocalizationProvider>
+                                </LocalizationProvider>
 
-                            <Button
-                              // disabled={loading ? true : false}
-                              type="submit"
-                              className="disabled:opacity-50 disabled:cursor-not-allowed group  flex w-max justify-center rounded-md border border-transparent  py-3 px-4 text-white text-md font-bold uppercase mt-3 bg-[#DA1F26]"
-                              style={{
-                                marginTop: "20px",
-                                background: "#DA1F26",
-                                color: "#ffffff",
-                              }}
-                              onClick={clearFilteration}
-                            >
-                              <span>Clear All</span>
-                            </Button>
+                                <Button
+                                  // disabled={loading ? true : false}
+                                  type="submit"
+                                  className="disabled:opacity-50 disabled:cursor-not-allowed group  flex w-max justify-center rounded-md border border-transparent  py-3 px-4 text-white text-md font-bold uppercase mt-3 bg-[#DA1F26]"
+                                  style={{
+                                    marginTop: "20px",
+                                    background: "#DA1F26",
+                                    color: "#ffffff",
+                                  }}
+                                  onClick={clearFilteration}
+                                >
+                                  <span>Clear All</span>
+                                </Button>
+                              </>
+                            )}
                           </div>
                         </>
                       )}

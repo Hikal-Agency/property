@@ -47,55 +47,6 @@ const NotificationsListComponent = ({
     setpageState({ ...pageState, page: value });
   };
 
-  // const UpdateReadStatus = async (e, id) => {
-  //   e.preventDefault();
-
-  //   const updated_data = {
-  //     // ids: [id],
-  //     isRead: 1,
-  //   };
-
-  //   try {
-  //     const UpdateReadStatus = await axios.post(
-  //       `${BACKEND_URL}/bulknotification`,
-  //       JSON.stringify(updated_data),
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-
-  //     console.log("status updated::: ", UpdateReadStatus);
-
-  //     toast.success("Notification Marked Read.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-
-  //     fetchNotifications();
-  //   } catch (error) {
-  //     console.log("Error: ", error);
-  //     toast.error("Unable to update notification read status.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   }
-  // };
-
   const readColor = {
     bgColorRead: currentMode === "dark" ? "#1c1c1c" : "#DDDDDD",
     bgColor: currentMode === "dark" ? "#333333" : "#EEEEEE",
@@ -189,18 +140,6 @@ const NotificationsListComponent = ({
   };
 
   useEffect(() => {
-    // if (filter_notifyDate) {
-    //   const startDate = moment(filter_notifyDate)
-    //     .subtract(1, "days")
-    //     .format("YYYY-MM-DD");
-    //   const endDate = moment(filter_notifyDate)
-    //     .add(1, "days")
-    //     .format("YYYY-MM-DD");
-    //   const dateRange = [startDate, endDate].join(",");
-
-    //   console.log("dateRange: ", dateRange);
-    //   setDate_range(dateRange);
-    // }
     fetchNotifications();
     setFetch(false);
   }, [pageState.page, fetch, filter_notifyDate]);
