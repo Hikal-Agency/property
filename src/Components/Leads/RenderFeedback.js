@@ -129,6 +129,7 @@ const RenderFeedback = ({ cellValues }) => {
         fetchSidebarData();
         console.log("Feedback Updated successfull");
         console.log(result);
+        
         toast.success("Feedback Updated Successfully", {
           position: "top-right",
           autoClose: 3000,

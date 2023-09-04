@@ -26,7 +26,7 @@ const RenderPriority = ({ cellValues }) => {
   const [PriorityDialogue, setPriorityDialogue] = useState(false);
   // eslint-disable-next-line
   const [confirmbtnloading, setconfirmbtnloading] = useState(false);
-  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL, User, Managers} =
+  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL, fetchSidebarData, User, Managers} =
     useStateContext();
 
   const [selectedPriority, setSelectedPriority] = useState(Priority);
@@ -101,6 +101,7 @@ const RenderPriority = ({ cellValues }) => {
       })
       .then((result) => {
         console.log("Priority Updated successfull");
+fetchSidebarData();
         console.log(result);
         socket.emit("notification_priority_update", {
           from: {id: User?.id, userName: User?.userName}, 
