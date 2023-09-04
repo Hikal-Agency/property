@@ -56,6 +56,7 @@ const NotificationsList = () => {
   const [selectedUser, setSelectedUSer] = useState(null);
 
   const handleKeyUp = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     if (searchRef.current.querySelector("input").value) {
       if (e.key === "Enter" || e.keyCode === 13) {
@@ -64,6 +65,7 @@ const NotificationsList = () => {
     }
   };
   const handleSearch = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     if (e.target.value === "") {
       fetchUsers(token);
@@ -513,7 +515,6 @@ const NotificationsList = () => {
                                       label="Filter By User"
                                       // onChange={(e) => handleFilter(e, 2)}
                                       onChange={(e) => {
-                                        e.stopPropagation();
                                         setSelectedUSer(e.target.value);
                                         setFetch(true);
                                       }}
@@ -529,39 +530,38 @@ const NotificationsList = () => {
                                         },
                                       }}
                                     >
-                                      <MenuItem value={"selected"} selected>
-                                        <Box sx={darkModeColors}>
-                                          <TextField
-                                            placeholder="Search.."
-                                            ref={searchRef}
-                                            sx={{
-                                              "& input": {
-                                                borderBottom:
-                                                  "2px solid #ffffff6e",
-                                              },
-                                            }}
-                                            variant="standard"
-                                            onKeyUp={handleKeyUp}
-                                            onInput={handleSearch}
-                                            InputProps={{
-                                              startAdornment: (
-                                                <InputAdornment position="start">
-                                                  <IconButton
-                                                    sx={{ padding: 1 }}
-                                                  >
-                                                    <BsSearch
-                                                      className={`text-[#AAAAAA]`}
-                                                      size={18}
-                                                    />
-                                                  </IconButton>
-                                                </InputAdornment>
-                                              ),
-                                            }}
-                                            onMouseDown={(e) =>
-                                              e.stopPropagation()
-                                            }
-                                          />
-                                        </Box>
+                                      <MenuItem
+                                        value={"selected"}
+                                        selected
+                                        onMouseDown={(e) => e.stopPropagation()}
+                                      >
+                                        {/* <Box sx={darkModeColors}> */}
+                                        <TextField
+                                          placeholder="Search.."
+                                          ref={searchRef}
+                                          sx={{
+                                            "& input": {
+                                              borderBottom:
+                                                "2px solid #ffffff6e",
+                                            },
+                                          }}
+                                          variant="standard"
+                                          // onKeyUp={handleKeyUp}
+                                          // onInput={handleSearch}
+                                          InputProps={{
+                                            startAdornment: (
+                                              <InputAdornment position="start">
+                                                <IconButton sx={{ padding: 1 }}>
+                                                  <BsSearch
+                                                    className={`text-[#AAAAAA]`}
+                                                    size={18}
+                                                  />
+                                                </IconButton>
+                                              </InputAdornment>
+                                            ),
+                                          }}
+                                        />
+                                        {/* </Box> */}
                                       </MenuItem>
 
                                       {user?.length > 0 ? (
