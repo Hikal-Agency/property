@@ -45,6 +45,43 @@ const NotificationsList = () => {
     getNotifCounts,
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
+  const [userLoading, setUserLoading] = useState(false);
+  const [user, setUser] = useState([]);
+
+  const fetchUsers = async (keyword = "", pageNo = 1) => {
+    setUserLoading(true);
+    try {
+      let url = "";
+      if (keyword) {
+        url = `${BACKEND_URL}/users?page=${pageNo}&title=${keyword}`;
+      } else {
+        url = `${BACKEND_URL}/users?page=${pageState.page}`;
+      }
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("Users: ", response);
+
+      setUser(response?.data?.managers?.data);
+      setUserLoading(false);
+    } catch (error) {
+      setUserLoading(false);
+      console.log(error);
+      toast.error("Unable to fetch users.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const handleChange = (event, newValue) => {
     setValue(value === 0 ? 1 : 0);
@@ -73,6 +110,7 @@ const NotificationsList = () => {
 
   const toggleFilter = () => {
     setShowFilter(!showFilter);
+    fetchUsers();
   };
 
   const handleParentClick = (e) => {
