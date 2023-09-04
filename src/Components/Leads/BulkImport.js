@@ -41,7 +41,7 @@ const BulkImport = ({
   FetchLeads,
   lead_origin
 }) => {
-  const { currentMode, BACKEND_URL, User } = useStateContext();
+  const { currentMode, BACKEND_URL, User, fetchSidebarData } = useStateContext();
 
   const [values, setValues] = useState({});
   const [columns, setColumns] = useState(CSVData?.keys || []);
@@ -110,7 +110,7 @@ const BulkImport = ({
           Authorization: "Bearer " + token,
         },
       })
-      
+      fetchSidebarData();
       toast.success("Leads Added Successfully", {
         position: "top-right",
         autoClose: 3000,
