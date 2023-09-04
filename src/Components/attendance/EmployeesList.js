@@ -77,15 +77,22 @@ const EmployeesList = ({ user }) => {
       if (selectedDay) {
         // Check if selectedDay is 'today' or 'yesterday'
         if (selectedDay === "today") {
-          params.date_range = [
-            // "2023-08-04","2023-08-05"
-            moment().format("YYYY-MM-DD"),
-            moment().add(1, "days").format("YYYY-MM-DD"),
-          ].join(",");
+          const currentDate = moment();
+          const startDate = moment(currentDate)
+            .subtract(1, "days")
+            .format("YYYY-MM-DD");
+          const endDate = moment(currentDate)
+            .add(1, "days")
+            .format("YYYY-MM-DD");
+          const dateRange = [startDate, endDate].join(",");
+          console.log("date range: ", dateRange);
+
+          params.date_range = dateRange;
         } else if (selectedDay === "yesterday") {
           params.date_range = [
-            moment().subtract(1, "days").format("YYYY-MM-DD"),
+            moment().subtract(2, "days").format("YYYY-MM-DD"),
             moment().format("YYYY-MM-DD"),
+            // moment().add(1, "days").format("YYYY-MM-DD"),
           ].join(",");
         }
       }
