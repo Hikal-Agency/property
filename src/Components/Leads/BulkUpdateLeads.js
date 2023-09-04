@@ -159,7 +159,7 @@ const BulkUpdateLeads = ({
             <Select
               id="Manager"
               value={Manager}
-              disabled={User?.role !== 1 && User?.role !== 2 && true}
+              disabled={(User?.role === 3 || User?.role === 7) && true}
               label="Manager"
               onChange={ChangeManager}
               size="medium"
