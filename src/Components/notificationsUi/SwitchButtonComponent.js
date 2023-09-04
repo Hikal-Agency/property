@@ -32,6 +32,20 @@ const SwitchButtonComponent = ({
   const [loading, setLoading] = useState(false);
 
   const updateNotifications = async () => {
+    if (call?.type === "priority" || call?.type === "feedback") {
+      toast.error(`The feature has bee .`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      return;
+    }
     setLoading(true);
 
     const permitted = (permitObj && permitObj[call?.type]) || [];
@@ -93,20 +107,19 @@ const SwitchButtonComponent = ({
       {" "}
       <div className=" ">
         <Switch
-          // defaultChecked={
-          //   // call?.type === permitObj[call?.type] &&
-          //   // permitObj[call?.type]?.includes(value)
-          //   isValueIncluded
-          // }
           checked={isValueIncluded}
           onChange={() => updateNotifications(cellValues)}
+          disabled={call?.type === "priority" || call?.type === "feedback"}
           sx={{
             color: "green !important",
 
             "& .MuiSwitch-thumb": {
-              color: isValueIncluded
-                ? "green !important"
-                : "#B91C1C !important",
+              color:
+                call?.type === "priority" || call?.type === "feedback"
+                  ? "#EAEAEA"
+                  : isValueIncluded
+                  ? "green !important"
+                  : "#B91C1C !important",
             },
             "& .Mui-checked": {
               color: isValueIncluded
@@ -115,9 +128,12 @@ const SwitchButtonComponent = ({
             },
 
             "& .MuiSwitch-track": {
-              backgroundColor: isValueIncluded
-                ? "green !important"
-                : "#B91C1C !important",
+              backgroundColor:
+                call?.type === "priority" || call?.type === "feedback"
+                  ? "#B91C1C"
+                  : isValueIncluded
+                  ? "green !important"
+                  : "#B91C1C !important",
             },
             "& .css-1q0bjt2-MuiSwitch-root .MuiSwitch-thumb": {
               backgroundColor:
