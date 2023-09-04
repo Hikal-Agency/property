@@ -63,6 +63,11 @@ import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { MdCampaign } from "react-icons/md";
+import {
+  RxCheckCircled,
+  RxCrossCircled,
+  RxQuestionMarkCircled
+} from "react-icons/rx";
 import { TbWorldWww } from "react-icons/tb";
 import moment from "moment";
 
@@ -612,7 +617,7 @@ const BookedDeals = ({
       field: "otp",
       headerName:
         lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
-      minWidth: 80,
+      minWidth: 30,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
       headerClassName: "break-normal",
@@ -620,52 +625,48 @@ const BookedDeals = ({
       renderCell: (cellValues) => {
         if (lead_origin === "transfferedleads") {
           return (
-            <div style={{ fontSize: 10 }}>
-              <p>{cellValues.row.transferredFromName || "No Name"}</p>
+            <div style={{ fontSize: 11 }}>
+              <p>{cellValues.row.transferredFromName || "-"}</p>
             </div>
           );
         } else {
           return (
             <div className="p-1 rounded-md">
               {cellValues.formattedValue === "Verified" && (
-                <div
-                  className={`${
-                    currentMode === "dark" ? "bg-green-900" : "bg-green-100"
-                  } mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
-                  style={{ fontSize: 9 }}
-                >
-                  <span className="text-[#238e41] p-1 rounded-md w-24 text-center">
-                    VERIFIED
-                  </span>
-                </div>
+                <Tooltip title="Verified" arrow>
+                  <div
+                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
+                  >
+                    <span className="text-[#238e41] p-1 text-center">
+                      <RxCheckCircled size={16} />
+                    </span>
+                  </div>
+                </Tooltip>
               )}
 
               {cellValues.formattedValue === "Not Verified" && (
-                <div
-                  className={`${
-                    currentMode === "dark" ? "bg-red-900" : "bg-red-100"
-                  } p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
-                  style={{ fontSize: 9 }}
-                >
-                  <span className="text-[#DA1F26] p-1 rounded-md w-24 text-center">
-                    UNVERIFIED
-                  </span>
-                  {/* </div> */}
-                </div>
+                <Tooltip title="Not Verified" arrow>
+                  <div
+                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
+                    >
+                    <span className="text-[#DA1F26] p-1 text-center">
+                      <RxCrossCircled size={16} />
+                    </span>
+                  </div>
+                </Tooltip>
               )}
 
               {cellValues.formattedValue !== "Not Verified" &&
                 cellValues.formattedValue !== "Verified" && (
+                <Tooltip title="No OTP used" arrow>
                   <div
-                    className={`${
-                      currentMode === "dark" ? "bg-[#424242]" : "bg-gray-200"
-                    } p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
-                    style={{ fontSize: 9 }}
+                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
-                    <span className="text-[#AAAAAA] p-1 rounded-md w-24text-center">
-                      NO OTP
+                    <span className="text-[#AAAAAA] p-1 text-center">
+                      <RxQuestionMarkCircled size={16} />
                     </span>
                   </div>
+                </Tooltip>
                 )}
             </div>
           );

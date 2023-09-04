@@ -43,12 +43,19 @@ import {
   BiCommentDetail,
   BiArchive,
 } from "react-icons/bi";
+import {
+  RxCrossCircled,
+  RxCheckCircled,
+  RxQuestionMarkCircled
+} from "react-icons/rx";
+import { HiPhoneOutgoing } from "react-icons/hi";
 import { BsShuffle } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { TbFileImport, TbWorldWww } from "react-icons/tb";
-import { RiMessage2Line } from "react-icons/ri";
+import { RiMailSendLine } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
+import { VscCallOutgoing } from "react-icons/vsc";
 
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
@@ -117,6 +124,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     keys: [],
     rows: [],
   });
+
+  const [hoveredRow, setHoveredRow] = useState(null);
 
   const bulkImportRef = useRef();
   const dataTableRef = useRef();
@@ -311,7 +320,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           finalNumber = contactNumber;
         }
 
-        return <span>{finalNumber}</span>;
+        return (
+          <div>
+            <span>
+              {finalNumber}
+            </span>
+            
+          </div>
+        );
       },
     },
 
@@ -409,7 +425,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "otp",
       headerName: lead_origin === "transfferedleads" ? "Ex-Agent" : "OTP",
-      minWidth: 80,
+      minWidth: 30,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
       headerClassName: "break-normal",
@@ -425,44 +441,40 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           return (
             <div className="p-1 rounded-md">
               {cellValues.formattedValue === "Verified" && (
-                <div
-                  className={`${
-                    currentMode === "dark" ? "bg-green-900" : "bg-green-100"
-                  } mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
-                  style={{ fontSize: 9 }}
-                >
-                  <span className="text-[#238e41] p-1 rounded-md w-24 text-center">
-                    VERIFIED
-                  </span>
-                </div>
+                <Tooltip title="Verified" arrow>
+                  <div
+                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
+                  >
+                    <span className="text-[#238e41] p-1 text-center">
+                      <RxCheckCircled size={16} />
+                    </span>
+                  </div>
+                </Tooltip>
               )}
 
               {cellValues.formattedValue === "Not Verified" && (
-                <div
-                  className={`${
-                    currentMode === "dark" ? "bg-red-900" : "bg-red-100"
-                  } p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
-                  style={{ fontSize: 9 }}
-                >
-                  <span className="text-[#DA1F26] p-1 rounded-md w-24 text-center">
-                    UNVERIFIED
-                  </span>
-                  {/* </div> */}
-                </div>
+                <Tooltip title="Not Verified" arrow>
+                  <div
+                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
+                    >
+                    <span className="text-[#DA1F26] p-1 text-center">
+                      <RxCrossCircled size={16} />
+                    </span>
+                  </div>
+                </Tooltip>
               )}
 
               {cellValues.formattedValue !== "Not Verified" &&
                 cellValues.formattedValue !== "Verified" && (
+                <Tooltip title="No OTP used" arrow>
                   <div
-                    className={`${
-                      currentMode === "dark" ? "bg-[#424242]" : "bg-gray-200"
-                    } p-0 mx-1 w-full h-full flex justify-center items-center text-center font-semibold`}
-                    style={{ fontSize: 9 }}
+                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
-                    <span className="text-[#AAAAAA] p-1 rounded-md w-24text-center">
-                      NO OTP
+                    <span className="text-[#AAAAAA] p-1 text-center">
+                      <RxQuestionMarkCircled size={16} />
                     </span>
                   </div>
+                </Tooltip>
                 )}
             </div>
           );
@@ -473,7 +485,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
-      minWidth: 30,
+      minWidth: 40,
       headerAlign: "center",
       renderCell: (cellValues) => {
         console.log("Start::", cellValues.row.leadSource);
@@ -582,7 +594,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "language",
       headerName: "Lang",
       headerAlign: "center",
-      minWidth: 30,
+      minWidth: 40,
       flex: 1,
     },
 
@@ -616,98 +628,125 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "edit",
       headerName: "Action",
       flex: 1,
-      minWidth: 100,
+      minWidth: 150,
+      // maxWidth:200,
       sortable: false,
       filterable: false,
       headerAlign: "center",
 
       renderCell: (cellValues) => {
         return (
-          <div
-            className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
-          >
+          <div className={`w-full h-full px-1 flex items-center justify-start`}>
+            {/* CALL  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "bg-transparent text-white rounded-md shadow-none"
-                  : "bg-transparent text-black rounded-md shadow-none"
-              }`}
-              onClick={() => HandleReminderBtn(cellValues)}
+              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="Call" arrow>
+                <CallButton phone={cellValues.row.leadContact} />
+              </Tooltip>
+            </p>
+
+            {/* EMAIL  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="Send Mail" arrow>
+                <EmailButton email={cellValues.row.leadEmail} />
+              </Tooltip>
+            </p>
+            
+            {/* REMINDER  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Set Reminder" arrow>
-                <IconButton sx={{ padding: 0 }}>
-                  <BsAlarm size={16} />
-                </IconButton>
+                <button onClick={() => HandleReminderBtn(cellValues)}>
+                  <BsAlarm size={16} /> 
+                </button>
               </Tooltip>
             </p>
+
+            {/* EDIT  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "bg-transparent text-white rounded-md shadow-none"
-                  : "bg-transparent text-black rounded-md shadow-none"
-              }`}
-              onClick={() => HandleEditFunc(cellValues)}
+              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#019a9a] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <Tooltip title="Edit Lead Details" arrow>
-                <IconButton sx={{ padding: 0 }}>
+              <Tooltip title="Update Details" arrow>
+                <button onClick={() => HandleEditFunc(cellValues)}>
                   <AiOutlineEdit size={16} />
-                </IconButton>
+                </button>
               </Tooltip>
             </p>
 
-            {cellValues.row.leadId !== null && (
-              <p
-                style={{ cursor: "pointer" }}
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-transparent text-white rounded-md shadow-none"
-                    : "bg-transparent text-black rounded-md shadow-none"
-                }`}
-                onClick={() => HandleViewTimeline(cellValues)}
-              >
-                <Tooltip title="View Timeline" arrow>
-                  <IconButton sx={{ padding: 0 }}>
-                    <AiOutlineHistory size={16} />
-                  </IconButton>
-                </Tooltip>
-              </p>
-            )}
+            {/* TIMELINE  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="View Timeline" arrow>
+                <button onClick={() => HandleViewTimeline(cellValues)}>
+                  <AiOutlineHistory size={16} /> 
+                </button>
+              </Tooltip>
+            </p>
 
+            {/* DELETE  */}
             {hasPermission("lead_delete") && (
               <p
-                onClick={() => {
-                  setLeadToDelete(cellValues?.row.leadId);
-                  setDeleteModelOpen(true);
-                  setBulkDeleteClicked(false);
-                }}
+                style={{ cursor: "pointer" }}
                 disabled={deleteloading ? true : false}
-                className={`deleteLeadBtn cursor-pointer ${
-                  currentMode === "dark"
-                    ? " bg-transparent rounded-md shadow-none"
-                    : "bg-transparent rounded-md shadow-none"
-                }`}
+                className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="Delete Lead" arrow>
-                  <IconButton
-                    sx={{ padding: 0 }}
-                    color={currentMode === "dark" ? "black" : "white"}
-                  >
+                  <button onClick={() => {
+                    setLeadToDelete(cellValues?.row.leadId);
+                    setDeleteModelOpen(true);
+                    setBulkDeleteClicked(false);
+                  }}>
                     <BsTrash
                       className="deleteLeadBtn"
                       size={18}
                       style={{ color: "inherit" }}
-                    />
-                  </IconButton>
+                    /> 
+                  </button>
                 </Tooltip>
-              </p>
+              </p>      
             )}
           </div>
         );
       },
     },
   ];
+
+  const CallButton = ({ phone }) => {
+    const handlePhoneClick = (event) => {
+      event.stopPropagation();
+      window.location.href = `tel:${phone}`;
+    };
+  
+    return (
+      <button className="call-button" onClick={handlePhoneClick}>
+        <VscCallOutgoing size={16}  />
+      </button>
+    );
+  };
+
+  const EmailButton = ({ email }) => {
+    const handleEmailClick = (event) => {
+      event.stopPropagation();
+      window.location.href = `mailto:${email}`;
+    };
+  
+    return (
+      <button className="email-button" onClick={handleEmailClick}>
+        <RiMailSendLine size={16}  />
+      </button>
+    );
+  };
+
 
   const [CEOColumns, setCEOColumns] = useState(columns);
 
@@ -1606,6 +1645,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
     reader.readAsText(file);
   };
+
+  const handleRowHover = (params) => {
+    setHoveredRow(params.row);
+  };
+
+  const handleRowBlur = () => {
+    setHoveredRow(null);
+  };
+
+
   return (
     <>
       <div className="pb-10">
@@ -1618,11 +1667,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               justifyContent: "end",
               "& .MuiSelect-select": {
                 padding: "1px",
-                paddingLeft: "5px !important",
-                paddingRight: "20px",
+                paddingX: "5px !important",
+                // paddingRight: "5px",
               },
               "& .MuiInputBase-root": {
-                marginRight: "5px",
+                marginTop: "5px",
               },
               "& input": {
                 paddingTop: "0",
@@ -1637,44 +1686,253 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             }}
             className={"items-center mb-2 sm:-mt-0 md:-mt-0 lg:-mt-6"}
           >
-            <Box
-              sx={{
-                minWidth: "120px",
-              }}
-            >
-              <FormControl fullWidth>
-                <InputLabel>Feedback</InputLabel>
-                <Select
-                  label="Feedback"
-                  id="un-feedback"
-                  value={unassignedFeedback}
-                  className={`w-full py-2 px-3`}
-                  onChange={(event) => {
-                    setUnassignedFeedback(event.target.value);
-                  }}
-                  displayEmpty
-                  size="small"
-                  required
+            <div className="justify-end">
+              <Box>
+                <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
+                  {hasPermission("leadSource_counts") && (
+                    <div className="justify-self-end">
+                      <div className="px-4">
+                        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
+                          {/* FACEBOOK  */}
+                          <Box
+                            sx={{
+                              padding: "5px 7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              color: currentMode === "dark" ? "white" : "black",
+                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              height: "30px",
+                              minWidth: "60px",
+                              maxWidth: "100px",
+                            }}
+                            // md:flex md:justify-between
+                          >
+                            <FaFacebookF
+                              size={16}
+                              color={"#0e82e1"}
+                            />
+                            <span className="px-2">{pageState?.fbCounts}</span>
+                          </Box>
+
+                          {/* SNAPCHAT */}
+                          <Box
+                            sx={{
+                              padding: "5px 7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              color: currentMode === "dark" ? "white" : "black",
+                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              height: "30px",
+                              minWidth: "60px",
+                              maxWidth: "100px",
+                            }}
+                          >
+                            <FaSnapchatGhost
+                              size={16}
+                              color={"#f6d80a"}
+                            />
+                            <span className="px-2">{pageState?.spCount}</span>
+                          </Box>
+
+                          {/* TIKTOK  */}
+                          <Box
+                            sx={{
+                              padding: "5px 7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              color: currentMode === "dark" ? "white" : "black",
+                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              height: "30px",
+                              minWidth: "60px",
+                              maxWidth: "100px",
+                            }}
+                          >
+                            <FaTiktok
+                              size={16}
+                              color={ currentMode === "dark" ? "white" : "black"}
+                            />
+                            <span className="px-2">{pageState?.ttCount}</span>
+                          </Box>
+
+                          {/* YOUTUBE  */}
+                          <Box
+                            sx={{
+                              padding: "5px 7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              color: currentMode === "dark" ? "white" : "black",
+                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              height: "30px",
+                              minWidth: "60px",
+                              maxWidth: "100px",
+                            }}
+                          >
+                            <FaYoutube
+                              size={18}
+                              color={"#c4302b"}
+                            />
+                            <span className="px-2">{pageState?.yCount}</span>
+                          </Box>
+                          
+                          {/* GOOGLE ADS  */}
+                          <Box
+                            sx={{
+                              padding: "5px 7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              color: currentMode === "dark" ? "white" : "black",
+                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              height: "30px",
+                              minWidth: "60px",
+                              maxWidth: "100px",
+                            }}
+                          >
+                            <FcGoogle
+                              size={18}
+                            />
+                            <span className="px-2">{pageState?.gCount}</span>
+                          </Box>
+                          {/* CAMPAIGNS  */}
+                          <Box
+                            sx={{
+                              padding: "5px 7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              color: currentMode === "dark" ? "white" : "black",
+                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              height: "30px",
+                              minWidth: "60px",
+                              maxWidth: "100px",
+                            }}
+                          >
+                            <MdCampaign
+                              size={20}
+                              color={"#696969"}
+                            />
+                            <span className="px-2">{pageState?.cCount}</span>
+                          </Box>
+                          {/* WEBSITE  */}
+                          <Box
+                            sx={{
+                              padding: "5px 7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              color: currentMode === "dark" ? "white" : "black",
+                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              height: "30px",
+                              minWidth: "60px",
+                              maxWidth: "100px",
+                            }}
+                          >
+                            <TbWorldWww
+                              size={18}
+                              color={"#AED6F1"}
+                            />
+                            <span className="px-2">{pageState?.webCount}</span>
+                          </Box>
+                          {/* WHATSAPP  */}
+                          <Box
+                            sx={{
+                              padding: "5px 7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              color: currentMode === "dark" ? "white" : "black",
+                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              height: "30px",
+                              minWidth: "60px",
+                              maxWidth: "100px",
+                            }}
+                          >
+                            <FaWhatsapp
+                              size={18}
+                              color={"#46c254"}
+                            />
+                            <span className="px-2">{pageState?.wCount}</span>
+                          </Box>
+                          {/* MESSAGE  */}
+                          <Box
+                            sx={{
+                              padding: "5px 7px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              color: currentMode === "dark" ? "white" : "black",
+                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              height: "30px",
+                              minWidth: "60px",
+                              maxWidth: "100px",
+                            }}
+                          >
+                            <BiMessageRoundedDots
+                              size={18}
+                              color={"#6A5ACD"}
+                            />
+                            <span className="px-2">{pageState?.mCount}</span>
+                          </Box>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Box>
+              <div className="w-full flex justify-end mt-4">
+                <Box
                   sx={{
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: currentMode === "dark" ? "white" : "black",
-                    },
-                    "& .MuiSelect-select": {
-                      color: currentMode === "dark" ? "white" : "black",
-                    },
-                    "&:hover:not (.Mui-disabled):before": {
-                      borderColor: currentMode === "dark" ? "white" : "black",
-                    },
+                    width: "120px",
                   }}
                 >
-                  {feedbacks?.map((feedback, index) => (
-                    <MenuItem key={index} value={feedback || ""}>
-                      {feedback}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
+                  <FormControl fullWidth>
+                    <InputLabel>Feedback</InputLabel>
+                    <Select
+                      label="Feedback"
+                      id="un-feedback"
+                      value={unassignedFeedback}
+                      className={`w-full py-2 px-3`}
+                      onChange={(event) => {
+                        setUnassignedFeedback(event.target.value);
+                      }}
+                      displayEmpty
+                      size="small"
+                      required
+                      sx={{
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: currentMode === "dark" ? "white" : "black",
+                        },
+                        "& .MuiSelect-select": {
+                          color: currentMode === "dark" ? "white" : "black",
+                        },
+                        "&:hover:not (.Mui-disabled):before": {
+                          borderColor: currentMode === "dark" ? "white" : "black",
+                        },
+                      }}
+                    >
+                      {feedbacks?.map((feedback, index) => (
+                        <MenuItem key={index} value={feedback || ""}>
+                          {feedback}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </div>
+            </div>
           </Box>
         )}
 
@@ -1779,6 +2037,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               autoHeight
               disableSelectionOnClick
               rows={pageState.data}
+              onCellHover={handleRowHover}
               onRowClick={handleRowClick}
               rowCount={pageState.total}
               loading={pageState.isLoading}
@@ -1837,12 +2096,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 //   overflowY: "scroll",
                 //   height: "auto",
                 // },
-                "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                  color:
-                    currentMode === "dark"
-                      ? "white !important"
-                      : "black !important",
-                },
+
+                // "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                //   color:
+                //     currentMode === "dark"
+                //       ? "white !important"
+                //       : "black !important",
+                // },
 
                 "& .MuiButtonBase-root .MuiSwitch-switchBase": {
                   color: "red !important",
