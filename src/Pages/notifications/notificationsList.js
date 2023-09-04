@@ -41,8 +41,8 @@ const NotificationsList = () => {
     User,
     darkModeColors,
     formatNum,
-    setUnreadNotifsCount, 
-    getNotifCounts
+    setUnreadNotifsCount,
+    getNotifCounts,
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
@@ -105,7 +105,7 @@ const NotificationsList = () => {
       );
 
       console.log("status updated::: ", UpdateReadStatus);
-        getNotifCounts();
+      getNotifCounts();
       toast.success("All notifications marked as read.", {
         position: "top-right",
         autoClose: 3000,
@@ -159,7 +159,7 @@ const NotificationsList = () => {
                         : "text-red-600 font-bold border-red-600"
                     }`}
                   >
-                    ● Notifications List{" "}
+                    ● Notifications History{" "}
                   </h1>
                 </div>
                 <div className="flex items-center justify-between">
