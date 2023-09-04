@@ -3,14 +3,9 @@ import { Container } from "@mui/system";
 // import axios from "axios";
 import axios from "../../axoisConfig";
 import { useEffect, useState } from "react";
-import {
-  MdSupportAgent
-} from "react-icons/md";
-import {toast} from "react-toastify";
-import {
-  BsBookmark, BsFillPersonLinesFill,
-  BsFlag
-} from "react-icons/bs";
+import { MdSupportAgent } from "react-icons/md";
+import { toast } from "react-toastify";
+import { BsBookmark, BsFillPersonLinesFill, BsFlag } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
 import {
@@ -70,10 +65,9 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
       setLoading(false);
       console.log(response);
 
-      const filteredNotifications =
-        response?.data?.notification?.data?.filter(
-          (notification) => notification.isRead !== 1
-        );
+      const filteredNotifications = response?.data?.notification?.data?.filter(
+        (notification) => notification.isRead !== 1
+      );
 
       setNotifications(filteredNotifications);
     } catch (error) {
@@ -85,14 +79,18 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
     fetchNotifications();
   }, [BACKEND_URL, token]);
 
-  const openNotification =  (e, activity) => {
+  const openNotification = (e, activity) => {
     if (!e.target.closest(".close-icon")) {
       if (
         activity?.type === "Lead" ||
         activity?.type === "Feedback" ||
         activity?.type === "Priority"
       ) {
-        navigate(`/lead/${activity?.lead_id}`);
+        if (activity?.lead_id) {
+          navigate(`/lead/${activity.lead_id}`);
+        } else {
+          e.preventDefault();
+        }
       } else if (activity?.type === "Meeting") {
         navigate(`/meetings`);
       } else if (activity?.type === "subscribe") {
@@ -104,35 +102,36 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
       }
 
       const notifId = activity?.id;
-      axios.post(
-        `${BACKEND_URL}/allnotifications/${User?.id}`,
-        JSON.stringify({
-          notification_id: notifId, 
-          isRead: 1
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      ).then(() => {
-        getNotifCounts();
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Sorry, something went wrong!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+      axios
+        .post(
+          `${BACKEND_URL}/allnotifications/${User?.id}`,
+          JSON.stringify({
+            notification_id: notifId,
+            isRead: 1,
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
+        .then(() => {
+          getNotifCounts();
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("Sorry, something went wrong!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
-      });
-
 
       setOpen(false);
       setAnchorEl(null);
@@ -173,12 +172,36 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
           <CircularProgress size={30} />
         </div>
       )}
-      {!loading &&
+      {/* {!loading &&
         notifications?.map((activity, index) => {
           return (
-              <NotificationItem setNotifications={setNotifications} iconBGColor={iconBGColor} notificationIcons={notificationIcons} openNotification={openNotification} key={index} activity={activity}/>
+            <NotificationItem
+              setNotifications={setNotifications}
+              iconBGColor={iconBGColor}
+              notificationIcons={notificationIcons}
+              openNotification={openNotification}
+              key={index}
+              activity={activity}
+            />
           );
-        })}
+        })} */}
+      {!loading &&
+        (notifications?.length > 0 ? (
+          notifications?.map((activity, index) => {
+            return (
+              <NotificationItem
+                setNotifications={setNotifications}
+                iconBGColor={iconBGColor}
+                notificationIcons={notificationIcons}
+                openNotification={openNotification}
+                key={index}
+                activity={activity}
+              />
+            );
+          })
+        ) : (
+          <h1 className="text-center font-bold">No Unread Notifications</h1>
+        ))}
     </Container>
   );
 };

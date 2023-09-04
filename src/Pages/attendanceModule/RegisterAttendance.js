@@ -71,7 +71,7 @@ const RegisterAttendance = () => {
       // const month = ("0" + (date.getMonth() + 1)).slice(-2);
       // const year = date.getFullYear();
       const date = new Date().toLocaleString();
-      const currentDateTime = moment().format("YY-MM-DD HH:mm:ss");
+      const currentDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
       console.log("dateeeeeeeeeee: ", currentDateTime);
 
       const AddAttendance = new FormData();
@@ -82,7 +82,7 @@ const RegisterAttendance = () => {
       AddAttendance.append("check_datetime", currentDateTime);
       AddAttendance.append("attendance_type", attendanceType);
       AddAttendance.append("attendance_source", "QR");
-      AddAttendance.append("agency_id", User?.agency || "");
+      AddAttendance.append("agency_id", User?.agency || 1);
 
       const registerAttendance = await axios.post(
         `${BACKEND_URL}/attendance`,
@@ -245,8 +245,8 @@ const RegisterAttendance = () => {
       console.log("attendance res:: ", response);
 
       const sortedData = response.data.Record.data.sort((a, b) => {
-        const timeA = moment(a?.check_datetime, "YY-MM-DD HH:mm:ss").toDate();
-        const timeB = moment(b?.check_datetime, "YY-MM-DD HH:mm:ss").toDate();
+        const timeA = moment(a?.check_datetime, "YYYY-MM-DD HH:mm:ss").toDate();
+        const timeB = moment(b?.check_datetime, "YYYY-MM-DD HH:mm:ss").toDate();
 
         // Sort in descending order (latest time first)
         return timeB - timeA;
@@ -255,7 +255,7 @@ const RegisterAttendance = () => {
       console.log("sorted attendance:: ", sortedData);
 
       const currentDayAttendance = sortedData?.find((row) => {
-        const rowDate = moment(row?.check_datetime, "YY-MM-DD").format(
+        const rowDate = moment(row?.check_datetime, "YYYY-MM-DD").format(
           "YYYY-MM-DD"
         );
         return rowDate === currentDate;
@@ -448,26 +448,7 @@ const RegisterAttendance = () => {
               }`}
             ></hr> */}
 
-            {attendanceType === "Check-out" ? (
-              <button
-                onClick={() => MarkAttendance("in")}
-                className={`mb-3 bg-[#008000] text-white p-2 rounded-full w-full text-center ${
-                  loading ? "relative" : ""
-                }`}
-                style={{ textTransform: "capitalize", cursor: "pointer" }}
-                disabled={loading}
-              >
-                {loading ? (
-                  <CircularProgress
-                    // className="absolute inset-0 m-auto"
-                    size={24}
-                    color="inherit"
-                  />
-                ) : (
-                  "Check In"
-                )}
-              </button>
-            ) : attendanceType === "Check-in" ? (
+            {attendanceType === "Check-in" ? (
               <button
                 onClick={() => MarkAttendance("out")}
                 className={`mb-3 mt-2 bg-main-red-color text-white p-2 rounded-md w-full text-center ${
@@ -486,7 +467,26 @@ const RegisterAttendance = () => {
                   <span>Check Out</span>
                 )}
               </button>
-            ) : null}
+            ) : (
+              <button
+                onClick={() => MarkAttendance("in")}
+                className={`mb-3 bg-[#008000] text-white p-2 rounded-full w-full text-center ${
+                  loading ? "relative" : ""
+                }`}
+                style={{ textTransform: "capitalize", cursor: "pointer" }}
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularProgress
+                    // className="absolute inset-0 m-auto"
+                    size={24}
+                    color="inherit"
+                  />
+                ) : (
+                  "Check In"
+                )}
+              </button>
+            )}
           </div>
         </div>
       </div>

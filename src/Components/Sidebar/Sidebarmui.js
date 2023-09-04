@@ -1081,7 +1081,7 @@ const Sidebarmui = () => {
             //   link: "/integrations",
             // },
             {
-              name: "Notifications Panel",
+              name: "Notifications Settings",
               link: "/notifications",
             },
             {
