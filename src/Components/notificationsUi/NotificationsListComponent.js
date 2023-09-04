@@ -29,10 +29,12 @@ const NotificationsListComponent = ({
   filter,
   filter_notifyAbout,
   filter_notifyDate,
+  selectedUser,
 }) => {
   console.log("filter: ", filter);
   console.log("filter_about: ", filter_notifyAbout);
   console.log("filter_date: ", filter_notifyDate);
+  console.log("selectedUser: ", selectedUser);
   const { currentMode, BACKEND_URL, pageState, setpageState, User } =
     useStateContext();
   const [loading, setLoading] = useState(false);
@@ -99,6 +101,9 @@ const NotificationsListComponent = ({
 
         console.log("dateRange: ", dateRange);
         url += `&date_range=${dateRange}`;
+      }
+      if (selectedUser) {
+        url += `&user_id=${selectedUser}`;
       }
       const response = await axios.get(url, {
         headers: {

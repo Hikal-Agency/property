@@ -11,8 +11,10 @@ import {
   FormControl,
   FormControlLabel,
   IconButton,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   Tab,
   Tabs,
   TextField,
@@ -48,6 +50,7 @@ const NotificationsList = () => {
   const token = localStorage.getItem("auth-token");
   const [userLoading, setUserLoading] = useState(false);
   const [user, setUser] = useState([]);
+  const [selectedUser, setSelectedUSer] = useState(null);
 
   const fetchUsers = async (keyword = "", pageNo = 1) => {
     setUserLoading(true);
@@ -469,10 +472,69 @@ const NotificationsList = () => {
                                   />
                                 </LocalizationProvider>
 
+                                <div>
+                                  <h3 className=" my-4 font-bold">
+                                    Filter By User
+                                  </h3>
+                                  <FormControl
+                                    className={`${
+                                      currentMode === "dark"
+                                        ? "text-white"
+                                        : "text-black"
+                                    }`}
+                                    sx={{
+                                      minWidth: "100%",
+                                      border: 1,
+                                      borderRadius: 1,
+                                    }}
+                                  >
+                                    <Select
+                                      id="feedback"
+                                      value={selectedUser}
+                                      label="Filter By User"
+                                      // onChange={(e) => handleFilter(e, 2)}
+                                      onChange={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedUSer(e.target.value);
+                                        setFetch(true);
+                                      }}
+                                      size="medium"
+                                      className="w-full border border-gray-300 rounded "
+                                      displayEmpty
+                                      required
+                                      sx={{
+                                        border: "1px solid #000000",
+
+                                        "& .MuiSelect-select": {
+                                          fontSize: 11,
+                                        },
+                                      }}
+                                    >
+                                      {/* {!Feedback ? (
+            <MenuItem value={"selected"} selected>
+              ---Feedback---
+            </MenuItem>
+          ) : null} */}
+
+                                      {user?.length > 0 ? (
+                                        user?.map((user) => (
+                                          <MenuItem value={user?.id}>
+                                            {user?.userName}
+                                          </MenuItem>
+                                        ))
+                                      ) : (
+                                        <h2 className="text-center">
+                                          No Users
+                                        </h2>
+                                      )}
+                                    </Select>
+                                  </FormControl>
+                                </div>
+
                                 <Button
                                   // disabled={loading ? true : false}
                                   type="submit"
-                                  className="disabled:opacity-50 disabled:cursor-not-allowed group  flex w-max justify-center rounded-md border border-transparent  py-3 px-4 text-white text-md font-bold uppercase mt-3 bg-[#DA1F26]"
+                                  className="disabled:opacity-50 disabled:cursor-not-allowed group   w-max  rounded-md border border-transparent  py-3 px-4 text-white text-md font-bold uppercase mt-3 bg-[#DA1F26]"
                                   style={{
                                     marginTop: "20px",
                                     background: "#DA1F26",
@@ -500,6 +562,7 @@ const NotificationsList = () => {
                   setFilter={setFilter}
                   filter_notifyAbout={filter_notifyAbout}
                   filter_notifyDate={filter_notifyDate}
+                  selectedUser={selectedUser}
                 />
                 {/* <NotificationsComponent /> */}
               </div>
