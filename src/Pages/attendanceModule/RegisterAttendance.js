@@ -245,8 +245,8 @@ const RegisterAttendance = () => {
       console.log("attendance res:: ", response);
 
       const sortedData = response.data.Record.data.sort((a, b) => {
-        const timeA = moment(a?.check_datetime, "YY-MM-DD HH:mm:ss").toDate();
-        const timeB = moment(b?.check_datetime, "YY-MM-DD HH:mm:ss").toDate();
+        const timeA = moment(a?.check_datetime, "YYYY-MM-DD HH:mm:ss").toDate();
+        const timeB = moment(b?.check_datetime, "YYYY-MM-DD HH:mm:ss").toDate();
 
         // Sort in descending order (latest time first)
         return timeB - timeA;
@@ -255,7 +255,7 @@ const RegisterAttendance = () => {
       console.log("sorted attendance:: ", sortedData);
 
       const currentDayAttendance = sortedData?.find((row) => {
-        const rowDate = moment(row?.check_datetime, "YY-MM-DD").format(
+        const rowDate = moment(row?.check_datetime, "YYYY-MM-DD").format(
           "YYYY-MM-DD"
         );
         return rowDate === currentDate;
