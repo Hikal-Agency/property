@@ -172,7 +172,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
           <CircularProgress size={30} />
         </div>
       )}
-      {!loading &&
+      {/* {!loading &&
         notifications?.map((activity, index) => {
           return (
             <NotificationItem
@@ -184,7 +184,24 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
               activity={activity}
             />
           );
-        })}
+        })} */}
+      {!loading &&
+        (notifications?.length > 0 ? (
+          notifications?.map((activity, index) => {
+            return (
+              <NotificationItem
+                setNotifications={setNotifications}
+                iconBGColor={iconBGColor}
+                notificationIcons={notificationIcons}
+                openNotification={openNotification}
+                key={index}
+                activity={activity}
+              />
+            );
+          })
+        ) : (
+          <h1 className="text-center font-bold">No Unread Notifications</h1>
+        ))}
     </Container>
   );
 };
