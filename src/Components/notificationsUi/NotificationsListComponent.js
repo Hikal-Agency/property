@@ -210,7 +210,13 @@ const NotificationsListComponent = ({
               </div>
             ))
           ) : (
-            <h2>No Notifications</h2>
+            <h2
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              } text-center font-bold text-xl`}
+            >
+              No Notifications
+            </h2>
           )}
 
           <Stack spacing={2} marginTop={2}>

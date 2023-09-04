@@ -1,5 +1,5 @@
 // import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 
@@ -11,6 +11,7 @@ import {
   FormControl,
   FormControlLabel,
   IconButton,
+  InputAdornment,
   MenuItem,
   Radio,
   RadioGroup,
@@ -22,7 +23,7 @@ import {
 } from "@mui/material";
 import axios from "../../axoisConfig";
 
-import { BsCheck2All, BsFilterLeft } from "react-icons/bs";
+import { BsCheck2All, BsFilterLeft, BsSearch } from "react-icons/bs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { toast } from "react-toastify";
@@ -38,6 +39,8 @@ const NotificationsList = () => {
   const [filter_notifyDate, setfilter_notifyDate] = useState();
   const [filter_notifyDateValue, setfilter_notifyDateValue] = useState();
   console.log("filte_date: ", filter_notifyDate);
+  const searchRef = useRef("");
+
   const {
     currentMode,
     BACKEND_URL,
@@ -51,6 +54,21 @@ const NotificationsList = () => {
   const [userLoading, setUserLoading] = useState(false);
   const [user, setUser] = useState([]);
   const [selectedUser, setSelectedUSer] = useState(null);
+
+  const handleKeyUp = (e) => {
+    e.stopPropagation();
+    if (searchRef.current.querySelector("input").value) {
+      if (e.key === "Enter" || e.keyCode === 13) {
+        fetchUsers(token, e.target.value);
+      }
+    }
+  };
+  const handleSearch = (e) => {
+    e.stopPropagation();
+    if (e.target.value === "") {
+      fetchUsers(token);
+    }
+  };
 
   const fetchUsers = async (keyword = "", pageNo = 1) => {
     setUserLoading(true);
@@ -95,6 +113,7 @@ const NotificationsList = () => {
     setfilter_notifyType("");
     setfilter_notifyDate("");
     setFilter("");
+    setSelectedUSer("");
 
     setShowFilter(false);
     setFetch(true);
@@ -510,11 +529,40 @@ const NotificationsList = () => {
                                         },
                                       }}
                                     >
-                                      {/* {!Feedback ? (
-            <MenuItem value={"selected"} selected>
-              ---Feedback---
-            </MenuItem>
-          ) : null} */}
+                                      <MenuItem value={"selected"} selected>
+                                        <Box sx={darkModeColors}>
+                                          <TextField
+                                            placeholder="Search.."
+                                            ref={searchRef}
+                                            sx={{
+                                              "& input": {
+                                                borderBottom:
+                                                  "2px solid #ffffff6e",
+                                              },
+                                            }}
+                                            variant="standard"
+                                            onKeyUp={handleKeyUp}
+                                            onInput={handleSearch}
+                                            InputProps={{
+                                              startAdornment: (
+                                                <InputAdornment position="start">
+                                                  <IconButton
+                                                    sx={{ padding: 1 }}
+                                                  >
+                                                    <BsSearch
+                                                      className={`text-[#AAAAAA]`}
+                                                      size={18}
+                                                    />
+                                                  </IconButton>
+                                                </InputAdornment>
+                                              ),
+                                            }}
+                                            onMouseDown={(e) =>
+                                              e.stopPropagation()
+                                            }
+                                          />
+                                        </Box>
+                                      </MenuItem>
 
                                       {user?.length > 0 ? (
                                         user?.map((user) => (
