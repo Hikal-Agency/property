@@ -31,7 +31,7 @@ const RenderManagers = ({ cellValues }) => {
     reloadDataGrid,
     setreloadDataGrid,
     BACKEND_URL,
-    Managers,
+    Managers,fetchSidebarData,
     User
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
@@ -143,6 +143,7 @@ const RenderManagers = ({ cellValues }) => {
       })
       .then((result) => {
         console.log("Manager Updated successfull");
+fetchSidebarData();
         console.log(result);
 
         socket.emit("notification_lead_manager_assign", {
@@ -151,6 +152,7 @@ const RenderManagers = ({ cellValues }) => {
           newManager: newManager?.userName, 
           leadName: cellValues?.row?.leadName
         });
+fetchSidebarData();
 
         toast.success("Manager Updated Successfully", {
           position: "top-right",

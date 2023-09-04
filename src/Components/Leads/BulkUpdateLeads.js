@@ -26,7 +26,7 @@ const BulkUpdateLeads = ({
   FetchLeads,
   selectionModelRef,
 }) => {
-  const { currentMode, Managers, User, SalesPerson, BACKEND_URL } =
+  const { currentMode, Managers, User, SalesPerson, fetchSidebarData, BACKEND_URL } =
     useStateContext();
   const [Manager, setManager] = useState(0);
   const [SalesPerson2, setSalesPerson2] = useState(0);
@@ -79,6 +79,7 @@ const BulkUpdateLeads = ({
         );
 
         setbtnloading(true);
+        fetchSidebarData();
         toast.success("Leads Updated Successfully", {
           position: "top-right",
           autoClose: 3000,

@@ -36,7 +36,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
     setreloadDataGrid,
     SalesPerson,
     BACKEND_URL,
-    Managers,
+    Managers,fetchSidebarData,
     User,
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
@@ -145,6 +145,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
       })
       .then((result) => {
         console.log("Agent Updated successfull");
+fetchSidebarData();
         console.log(result);
 
           socket.emit("notification_lead_agent_assign", {
