@@ -24,6 +24,35 @@ import {
 } from "@mui/x-data-grid";
 
 import axios from "../../axoisConfig";
+import { useEffect, useState, useRef } from "react";
+import { useStateContext } from "../../context/ContextProvider";
+
+import { 
+  AiOutlineEdit, 
+  AiOutlineHistory, 
+  AiFillEdit 
+} from "react-icons/ai";
+import { 
+  BiSearch, 
+  BiMessageRoundedDots, 
+  BiArchive 
+} from "react-icons/bi";
+import { 
+  FcGoogle 
+} from "react-icons/fc";
+import { 
+  MdCampaign 
+} from "react-icons/md";
+import { 
+  BsPersonCircle, 
+  BsSnow2, 
+  BsTrash,
+  BsAlarm 
+} from "react-icons/bs";
+import { 
+  TbFileImport, 
+  TbWorldWww 
+} from "react-icons/tb";
 import {
   FaSnapchatGhost,
   FaFacebookF,
@@ -39,16 +68,16 @@ import {
   RxCrossCircled,
   RxQuestionMarkCircled
 } from "react-icons/rx";
-import { GiMagnifyingGlass } from "react-icons/gi";
-import { useEffect, useState, useRef } from "react";
-import { useStateContext } from "../../context/ContextProvider";
-import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
-import { BsAlarm } from "react-icons/bs";
-import { BiSearch, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
-import { FcGoogle } from "react-icons/fc";
-import { MdCampaign } from "react-icons/md";
-import { BsPersonCircle, BsSnow2, BsTrash } from "react-icons/bs";
-import { TbFileImport, TbWorldWww } from "react-icons/tb";
+import { 
+  GiMagnifyingGlass 
+} from "react-icons/gi";
+import {
+  RiMailSendLine
+} from "react-icons/ri";
+import {
+  VscCallOutgoing
+} from "react-icons/vsc";
+
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "../../Components/Leads/SingleLead";
 import UpdateLead from "../../Components/Leads/UpdateLead";
@@ -59,7 +88,6 @@ import BulkUpdateLeads from "../../Components/Leads/BulkUpdateLeads";
 import { toast, ToastContainer } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteLeadModel from "../../Components/Leads/DeleteLead";
-import BulkImport from "../../Components/Leads/BulkImport";
 import { langs } from "../../langCodes";
 import AddReminder from "../../Components/reminder/AddReminder";
 import RenderPriority from "../../Components/Leads/RenderPriority";
@@ -621,98 +649,209 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "edit",
       headerName: "Action",
       flex: 1,
-      minWidth: 100,
+      minWidth: 180,
       sortable: false,
       filterable: false,
       headerAlign: "center",
-
       renderCell: (cellValues) => {
         return (
-          <div
-            className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
-          >
+          <div className={`w-full h-full px-1 flex items-center justify-start`}>
+            {/* CALL  */}
             <p
-              onMouseEnter={() => setHovered("edit")}
-              onMouseLeave={() => setHovered("")}
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "bg-transparent text-white rounded-md shadow-none"
-                  : "bg-transparent text-black rounded-md shadow-none"
-              }`}
-              onClick={() => HandleReminderBtn(cellValues)}
+              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="Call" arrow>
+                <CallButton phone={cellValues.row.leadContact} />
+              </Tooltip>
+            </p>
+
+            {/* EMAIL  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="Send Mail" arrow>
+                <EmailButton email={cellValues.row.leadEmail} />
+              </Tooltip>
+            </p>
+            
+            {/* REMINDER  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Set Reminder" arrow>
-                <IconButton sx={{ padding: 0 }}>
-                  <BsAlarm size={16} />
-                </IconButton>
+                <button onClick={() => HandleReminderBtn(cellValues)}>
+                  <BsAlarm size={16} /> 
+                </button>
               </Tooltip>
             </p>
+
+            {/* EDIT  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "bg-transparent text-white rounded-md shadow-none"
-                  : "bg-transparent text-black rounded-md shadow-none"
-              }`}
-              onClick={() => HandleEditFunc(cellValues)}
+              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#019a9a] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <Tooltip title="Edit Lead Details" arrow>
-                <IconButton sx={{ padding: 0 }}>
+              <Tooltip title="Update Details" arrow>
+                <button onClick={() => HandleEditFunc(cellValues)}>
                   <AiOutlineEdit size={16} />
-                </IconButton>
+                </button>
               </Tooltip>
             </p>
 
-            {cellValues.row.leadId !== null && (
+            {/* TIMELINE  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="View Timeline" arrow>
+                <button onClick={() => HandleViewTimeline(cellValues)}>
+                  <AiOutlineHistory size={16} /> 
+                </button>
+              </Tooltip>
+            </p>
+
+            {/* DELETE  */}
+            {hasPermission("lead_delete") && (
               <p
                 style={{ cursor: "pointer" }}
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-transparent text-white rounded-md shadow-none"
-                    : "bg-transparent text-black rounded-md shadow-none"
-                }`}
-                onClick={() => HandleViewTimeline(cellValues)}
+                disabled={deleteloading ? true : false}
+                className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
-                <Tooltip title="View Timeline" arrow>
-                  <IconButton sx={{ padding: 0 }}>
-                    <AiOutlineHistory size={16} />
-                  </IconButton>
+                <Tooltip title="Delete Lead" arrow>
+                  <button onClick={() => {
+                    setLeadToDelete(cellValues?.row.leadId);
+                    setDeleteModelOpen(true);
+                    setBulkDeleteClicked(false);
+                  }}>
+                    <BsTrash
+                      className="deleteLeadBtn"
+                      size={18}
+                      style={{ color: "inherit" }}
+                    /> 
+                  </button>
                 </Tooltip>
-              </p>
+              </p>      
             )}
-
-            <p
-              onClick={() => {
-                setLeadToDelete(cellValues?.row.leadId);
-                setDeleteModelOpen(true);
-                setBulkDeleteClicked(false);
-              }}
-              disabled={deleteloading ? true : false}
-              className={`deleteLeadBtn cursor-pointer ${
-                currentMode === "dark"
-                  ? " bg-transparent rounded-md shadow-none"
-                  : "bg-transparent rounded-md shadow-none"
-              }`}
-            >
-              <Tooltip title="Delete Lead" arrow>
-                <IconButton
-                  sx={{ padding: 0 }}
-                  color={currentMode === "dark" ? "black" : "white"}
-                >
-                  <BsTrash
-                    className="deleteLeadBtn"
-                    size={16}
-                    style={{ color: "inherit" }}
-                  />
-                </IconButton>
-              </Tooltip>
-            </p>
           </div>
         );
       },
+
+
+      // renderCell: (cellValues) => {
+      //   return (
+      //     <div
+      //       className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
+      //     >
+      //       <p
+      //         onMouseEnter={() => setHovered("edit")}
+      //         onMouseLeave={() => setHovered("")}
+      //         style={{ cursor: "pointer" }}
+      //         className={`${
+      //           currentMode === "dark"
+      //             ? "bg-transparent text-white rounded-md shadow-none"
+      //             : "bg-transparent text-black rounded-md shadow-none"
+      //         }`}
+      //         onClick={() => HandleReminderBtn(cellValues)}
+      //       >
+      //         <Tooltip title="Set Reminder" arrow>
+      //           <IconButton sx={{ padding: 0 }}>
+      //             <BsAlarm size={16} />
+      //           </IconButton>
+      //         </Tooltip>
+      //       </p>
+      //       <p
+      //         style={{ cursor: "pointer" }}
+      //         className={`${
+      //           currentMode === "dark"
+      //             ? "bg-transparent text-white rounded-md shadow-none"
+      //             : "bg-transparent text-black rounded-md shadow-none"
+      //         }`}
+      //         onClick={() => HandleEditFunc(cellValues)}
+      //       >
+      //         <Tooltip title="Edit Lead Details" arrow>
+      //           <IconButton sx={{ padding: 0 }}>
+      //             <AiOutlineEdit size={16} />
+      //           </IconButton>
+      //         </Tooltip>
+      //       </p>
+
+      //       {cellValues.row.leadId !== null && (
+      //         <p
+      //           style={{ cursor: "pointer" }}
+      //           className={`${
+      //             currentMode === "dark"
+      //               ? "bg-transparent text-white rounded-md shadow-none"
+      //               : "bg-transparent text-black rounded-md shadow-none"
+      //           }`}
+      //           onClick={() => HandleViewTimeline(cellValues)}
+      //         >
+      //           <Tooltip title="View Timeline" arrow>
+      //             <IconButton sx={{ padding: 0 }}>
+      //               <AiOutlineHistory size={16} />
+      //             </IconButton>
+      //           </Tooltip>
+      //         </p>
+      //       )}
+
+      //       <p
+      //         onClick={() => {
+      //           setLeadToDelete(cellValues?.row.leadId);
+      //           setDeleteModelOpen(true);
+      //           setBulkDeleteClicked(false);
+      //         }}
+      //         disabled={deleteloading ? true : false}
+      //         className={`deleteLeadBtn cursor-pointer ${
+      //           currentMode === "dark"
+      //             ? " bg-transparent rounded-md shadow-none"
+      //             : "bg-transparent rounded-md shadow-none"
+      //         }`}
+      //       >
+      //         <Tooltip title="Delete Lead" arrow>
+      //           <IconButton
+      //             sx={{ padding: 0 }}
+      //             color={currentMode === "dark" ? "black" : "white"}
+      //           >
+      //             <BsTrash
+      //               className="deleteLeadBtn"
+      //               size={16}
+      //               style={{ color: "inherit" }}
+      //             />
+      //           </IconButton>
+      //         </Tooltip>
+      //       </p>
+      //     </div>
+      //   );
+      // },
     },
   ];
+
+  const CallButton = ({ phone }) => {
+    const handlePhoneClick = (event) => {
+      event.stopPropagation();
+      window.location.href = `tel:${phone}`;
+    };
+  
+    return (
+      <button className="call-button" onClick={handlePhoneClick}>
+        <VscCallOutgoing size={16}  />
+      </button>
+    );
+  };
+
+  const EmailButton = ({ email }) => {
+    const handleEmailClick = (event) => {
+      event.stopPropagation();
+      window.location.href = `mailto:${email}`;
+    };
+  
+    return (
+      <button className="email-button" onClick={handleEmailClick}>
+        <RiMailSendLine size={16}  />
+      </button>
+    );
+  };
 
   const [CEOColumns, setCEOColumns] = useState(columns);
 
