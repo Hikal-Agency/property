@@ -214,16 +214,30 @@ const NotificationsListComponent = ({
               </div>
             ))
           ) : (
-            <h2
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              } text-center font-bold text-xl mb-5 flex flex-col justify-center`}
+            <div
               style={{
                 height: "400px",
               }}
+              className="flex flex-col justify-center items-center"
             >
-              You're all caught up!
-            </h2>
+              <div class="relative">
+                <div class="h-24 w-24 rounded-full bg-[#DA1F26] my-6"></div>
+                <div class="absolute top-0 right-0">
+                  <span class="text-yellow-500 text-2xl">&#9733;</span>
+                </div>
+                <div class="absolute bottom-0 left-0">
+                  <span class="text-yellow-500 text-2xl">&#9733;</span>
+                </div>
+              </div>
+
+              <h2
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                } text-center font-bold text-xl mb-5 `}
+              >
+                You're all caught up!
+              </h2>
+            </div>
           )}
 
           <Stack spacing={2} marginTop={2}>
