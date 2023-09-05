@@ -49,7 +49,9 @@ const NotificationsList = () => {
     formatNum,
     setUnreadNotifsCount,
     getNotifCounts,
+    unreadNotifsCount,
   } = useStateContext();
+  console.log("unread count ::: ", unreadNotifsCount);
   const token = localStorage.getItem("auth-token");
   const [userLoading, setUserLoading] = useState(false);
   const [user, setUser] = useState([]);
@@ -290,7 +292,7 @@ const NotificationsList = () => {
                   </Box>
 
                   <div className=" flex items-center space-x-5 mr-5">
-                    {User?.role !== 1 && User?.role !== 2 ? (
+                    {displayMarkBtn && User?.role !== 1 && User?.role !== 2 ? (
                       <Tooltip
                         title="Mark All As Read"
                         arrow

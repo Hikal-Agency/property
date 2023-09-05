@@ -35,8 +35,14 @@ const NotificationsListComponent = ({
   console.log("filter_about: ", filter_notifyAbout);
   console.log("filter_date: ", filter_notifyDate);
   console.log("selectedUser: ", selectedUser);
-  const { currentMode, BACKEND_URL, pageState, setpageState, User } =
-    useStateContext();
+  const {
+    currentMode,
+    BACKEND_URL,
+    pageState,
+    setpageState,
+    User,
+    unreadNotifsCount,
+  } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
@@ -112,16 +118,14 @@ const NotificationsListComponent = ({
         },
       });
 
-      const isUnreadNotificationExists = response.data.notification.data.some(
-        (notification) =>
-          notification.isRead === 0 || notification.isRead === null
-      );
+      // const isUnreadNotificationExists = response.data.notification.data.some(
+      //   (notification) =>
+      //     notification.isRead === 0 || notification.isRead === null
+      // );
 
-      isUnreadNotificationExists
+      unreadNotifsCount > 0
         ? setdisplayMarkBtn(true)
         : setdisplayMarkBtn(false);
-
-      console.log("isUnreadNotificationExists:: ", isUnreadNotificationExists);
 
       console.log("notification list: ", response);
       setNotification_list(response.data.notification.data);
