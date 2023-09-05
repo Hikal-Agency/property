@@ -36,6 +36,12 @@ import DeleteLeadModel from "../../Components/Leads/DeleteLead";
 import BulkImport from "../../Components/Leads/BulkImport";
 import Loader from "../../Components/Loader";
 
+import {
+  RxCheckCircled,
+  RxCrossCircled,
+  RxQuestionMarkCircled
+} from "react-icons/rx";
+
 const bulkUpdateBtnStyles = {
   position: "absolute",
   top: "12.5px",
@@ -388,27 +394,48 @@ const ClientLeads = ({
       headerName: "OTP",
       headerAlign: "center",
       // width: "130",
-      minWidth: 110,
+      minWidth: 30,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <>
+          <div className="p-1 rounded-md">
             {cellValues.formattedValue === "Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#0f9d58] p-1 rounded-md">
-                  OTP VERIFIED
-                </badge>
-              </div>
+              <Tooltip title="Verified" arrow>
+                <div
+                  className={`mx-1 w-full h-full flex justify-center items-center text-center`}
+                >
+                  <span className="text-[#238e41] p-1 text-center">
+                    <RxCheckCircled size={16} />
+                  </span>
+                </div>
+              </Tooltip>
             )}
 
             {cellValues.formattedValue === "Not Verified" && (
-              <div className="w-full h-full flex justify-center items-center text-white px-5 text-xs font-semibold">
-                <badge className="bg-[#ff0000] p-1 rounded-md">
-                  NOT VERIFIED
-                </badge>
-              </div>
+              <Tooltip title="Not Verified" arrow>
+                <div
+                  className={`mx-1 w-full h-full flex justify-center items-center text-center`}
+                  >
+                  <span className="text-[#DA1F26] p-1 text-center">
+                    <RxCrossCircled size={16} />
+                  </span>
+                </div>
+              </Tooltip>
             )}
-          </>
+
+            {cellValues.formattedValue !== "Not Verified" &&
+              cellValues.formattedValue !== "Verified" && (
+              <Tooltip title="No OTP used" arrow>
+                <div
+                  className={`mx-1 w-full h-full flex justify-center items-center text-center`}
+                >
+                  <span className="text-[#AAAAAA] p-1 text-center">
+                    <RxQuestionMarkCircled size={16} />
+                  </span>
+                </div>
+              </Tooltip>
+              )}
+          </div>
         );
       },
     },

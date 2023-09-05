@@ -29,12 +29,20 @@ const NotificationsListComponent = ({
   filter,
   filter_notifyAbout,
   filter_notifyDate,
+  selectedUser,
 }) => {
   console.log("filter: ", filter);
   console.log("filter_about: ", filter_notifyAbout);
   console.log("filter_date: ", filter_notifyDate);
-  const { currentMode, BACKEND_URL, pageState, setpageState, User } =
-    useStateContext();
+  console.log("selectedUser: ", selectedUser);
+  const {
+    currentMode,
+    BACKEND_URL,
+    pageState,
+    setpageState,
+    User,
+    unreadNotifsCount,
+  } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
@@ -46,55 +54,6 @@ const NotificationsListComponent = ({
   const handlePageChange = (event, value) => {
     setpageState({ ...pageState, page: value });
   };
-
-  // const UpdateReadStatus = async (e, id) => {
-  //   e.preventDefault();
-
-  //   const updated_data = {
-  //     // ids: [id],
-  //     isRead: 1,
-  //   };
-
-  //   try {
-  //     const UpdateReadStatus = await axios.post(
-  //       `${BACKEND_URL}/bulknotification`,
-  //       JSON.stringify(updated_data),
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-
-  //     console.log("status updated::: ", UpdateReadStatus);
-
-  //     toast.success("Notification Marked Read.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-
-  //     fetchNotifications();
-  //   } catch (error) {
-  //     console.log("Error: ", error);
-  //     toast.error("Unable to update notification read status.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   }
-  // };
 
   const readColor = {
     bgColorRead: currentMode === "dark" ? "#1c1c1c" : "#DDDDDD",
@@ -131,7 +90,7 @@ const NotificationsListComponent = ({
       // if (filter !== "all" || filter !== undefined || filter !== null) {
       //   url += `&isRead=${filter}`;
       // }
-      if (filter === "1" || filter === "0") {
+      if (filter === "1" || filter === "0" || filter === null) {
         url += `&isRead=${filter}`;
       }
       if (filter_notifyAbout) {
@@ -149,6 +108,9 @@ const NotificationsListComponent = ({
         console.log("dateRange: ", dateRange);
         url += `&date_range=${dateRange}`;
       }
+      if (selectedUser) {
+        url += `&user_id=${selectedUser}`;
+      }
       const response = await axios.get(url, {
         headers: {
           "Content-Type": "application/json",
@@ -156,16 +118,14 @@ const NotificationsListComponent = ({
         },
       });
 
-      const isUnreadNotificationExists = response.data.notification.data.some(
-        (notification) =>
-          notification.isRead === 0 || notification.isRead === null
-      );
+      // const isUnreadNotificationExists = response.data.notification.data.some(
+      //   (notification) =>
+      //     notification.isRead === 0 || notification.isRead === null
+      // );
 
-      isUnreadNotificationExists
+      unreadNotifsCount > 0
         ? setdisplayMarkBtn(true)
         : setdisplayMarkBtn(false);
-
-      console.log("isUnreadNotificationExists:: ", isUnreadNotificationExists);
 
       console.log("notification list: ", response);
       setNotification_list(response.data.notification.data);
@@ -189,18 +149,6 @@ const NotificationsListComponent = ({
   };
 
   useEffect(() => {
-    // if (filter_notifyDate) {
-    //   const startDate = moment(filter_notifyDate)
-    //     .subtract(1, "days")
-    //     .format("YYYY-MM-DD");
-    //   const endDate = moment(filter_notifyDate)
-    //     .add(1, "days")
-    //     .format("YYYY-MM-DD");
-    //   const dateRange = [startDate, endDate].join(",");
-
-    //   console.log("dateRange: ", dateRange);
-    //   setDate_range(dateRange);
-    // }
     fetchNotifications();
     setFetch(false);
   }, [pageState.page, fetch, filter_notifyDate]);
@@ -266,7 +214,13 @@ const NotificationsListComponent = ({
               </div>
             ))
           ) : (
-            <h2>No Notifications</h2>
+            <h2
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              } text-center font-bold text-xl`}
+            >
+              No Notifications
+            </h2>
           )}
 
           <Stack spacing={2} marginTop={2}>
