@@ -1296,8 +1296,8 @@ const AllLeads = () => {
             selectionModelRef.current = ids;
             setSelectedRows(
               ids.map((id) => {
-                const contact = pageState?.data[id - 1]?.leadContact;
-                const lid = pageState?.data[id - 1]?.leadId;
+                const contact = pageState?.data[id - pageState?.from]?.leadContact;
+                const lid = pageState?.data[id - pageState?.from]?.leadId;
                 if (contact[0] === "+") {
                   return {
                     lid,
@@ -1361,7 +1361,7 @@ const AllLeads = () => {
 
       {addLeadModalOpen && (
         <AddLeadModal
-          FetchLeads={() => {
+         FetchLeads={() => {
             const token = localStorage.getItem("auth-token");
             FetchLeads(
               token,
