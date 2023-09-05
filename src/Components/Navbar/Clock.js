@@ -5,6 +5,7 @@ import { useStateContext } from "../../context/ContextProvider";
 
 const Clock = () => {
   const [currentTime, setCurrentTime] = useState(
+    localStorage.getItem("timezone") ? moment().tz(localStorage.getItem("timezone")).format("D/MM/YYYY, h:mm:ss a [GMT]Z") :
     moment().tz(moment.tz.guess()).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
   );
   const [timezones, setTimezones] = useState([]);
@@ -14,16 +15,18 @@ const Clock = () => {
   console.log("mode: ", currentMode);
 
   useEffect(() => {
+    if(localStorage.getItem("timezone")) {
+      setSelectedTimezone(localStorage.getItem("timezone"));
+    }
+  }, []);
+
+  useEffect(() => {
     // Fetch all timezones
     const fetchedTimezones = moment.tz.names();
     setTimezones(fetchedTimezones);
 
-    // Set default timezone
-    // setSelectedTimezone(moment.tz.guess());
-
     // Update current time every second
     const interval = setInterval(() => {
-      console.log(selectedTimezone);
       setCurrentTime(
         moment().tz(selectedTimezone).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
       );
@@ -36,6 +39,7 @@ const Clock = () => {
 
   const handleTimezoneChange = (e) => {
     setSelectedTimezone(e.target.value);
+    localStorage.setItem("timezone", e.target.value);
   };
 
   const SelectStyles = {
@@ -107,7 +111,7 @@ const Clock = () => {
             onChange={handleTimezoneChange}
           >
             {timezones?.map((timezone) => (
-              <MenuItem key={timezone} value={timezone}>
+              <MenuItem onClick={(e) => e.stopPropagation()} key={timezone} value={timezone}>
                 {timezone}
               </MenuItem>
             ))}
