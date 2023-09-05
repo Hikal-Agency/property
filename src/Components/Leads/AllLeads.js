@@ -633,7 +633,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "edit",
       headerName: "Action",
       flex: 1,
-      minWidth: 150,
+      minWidth: 100,
       // maxWidth:200,
       sortable: false,
       filterable: false,
@@ -641,7 +641,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
       renderCell: (cellValues) => {
         return (
-          <div className={`w-full h-full px-1 flex items-center justify-start`}>
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
             {/* CALL  */}
             <p
               style={{ cursor: "pointer" }}
