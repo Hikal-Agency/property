@@ -292,7 +292,7 @@ const NotificationsList = () => {
                   </Box>
 
                   <div className=" flex items-center space-x-5 mr-5">
-                    {displayMarkBtn && User?.role !== 1 && User?.role !== 2 ? (
+                    {displayMarkBtn ? (
                       <Tooltip
                         title="Mark All As Read"
                         arrow
