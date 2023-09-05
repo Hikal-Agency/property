@@ -16,8 +16,11 @@ const DeleteLeadModel = ({
   bulkDeleteClicked,
   selectedRows,
   handleBulkDelete,
+  handleLeadModelClose,
 }) => {
   const { currentMode } = useStateContext();
+
+  console.log("lead to delete:: ", LeadToDelete);
 
   return (
     <Modal
@@ -40,7 +43,11 @@ const DeleteLeadModel = ({
       >
         <div className="flex flex-col justify-center items-center">
           <IoIosAlert size={50} className="text-main-red-color text-2xl" />
-          <h1 className="font-semibold pt-3 text-lg">
+          <h1
+            className={`font-semibold pt-3 text-lg ${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            }`}
+          >
             {bulkDeleteClicked
               ? "Do You Really Want to delete these Leads?"
               : "Do You Really Want to delete this Lead?"}

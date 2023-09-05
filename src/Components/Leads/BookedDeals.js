@@ -51,8 +51,17 @@ import {
   FaYoutube,
   FaTwitter,
 } from "react-icons/fa";
-import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
-import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
+import { 
+  AiOutlineEdit, 
+  AiOutlineHistory 
+} from "react-icons/ai";
+import { 
+  BsPersonCircle, 
+  BsSnow2,
+  BsShieldX,
+  BsShieldCheck,
+  BsShieldMinus 
+} from "react-icons/bs";
 import {
   BiSearch,
   BiImport,
@@ -638,7 +647,7 @@ const BookedDeals = ({
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
                     <span className="text-[#238e41] p-1 text-center">
-                      <RxCheckCircled size={16} />
+                      <BsShieldCheck size={16} />
                     </span>
                   </div>
                 </Tooltip>
@@ -650,7 +659,7 @@ const BookedDeals = ({
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                     >
                     <span className="text-[#DA1F26] p-1 text-center">
-                      <RxCrossCircled size={16} />
+                      <BsShieldX size={16} />
                     </span>
                   </div>
                 </Tooltip>
@@ -663,7 +672,7 @@ const BookedDeals = ({
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
                     <span className="text-[#AAAAAA] p-1 text-center">
-                      <RxQuestionMarkCircled size={16} />
+                      <BsShieldMinus size={16} />
                     </span>
                   </div>
                 </Tooltip>

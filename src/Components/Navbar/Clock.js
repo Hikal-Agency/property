@@ -3,6 +3,8 @@ import moment from "moment-timezone";
 import { MenuItem, Select, Box } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 
+import AnalogClock from "./AnalogClock";
+
 const Clock = () => {
   const [currentTime, setCurrentTime] = useState(
     localStorage.getItem("timezone") ? moment().tz(localStorage.getItem("timezone")).format("D/MM/YYYY, h:mm:ss a [GMT]Z") :
@@ -42,47 +44,41 @@ const Clock = () => {
     localStorage.setItem("timezone", e.target.value);
   };
 
+  
+
   return (
     <div
       style={{
         margin: 0,
-        padding: "0.5rem 0.75rem",
+        padding: "0.5rem 0.5rem",
         "& .MuiList-root": {
           backgroundColor:
             currentMode === "dark"
               ? "#1C1C1C !important"
-              : "#ffffff !important",
+              : "#1C1C1C !important",
         },
         "& .css-3kgbgy-MuiPaper-root-MuiPopover-paper-MuiMenu-paper .MuiList-root .clock-div": {
           backgroundColor:
             currentMode === "dark"
               ? "#1C1C1C !important"
-              : "#ffffff !important",
+              : "#1C1C1C !important",
         }
       }}
-      className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} clock-div`}
+      className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#000000]"} clock-div`}
     >
-      <div className="flex items-center">
-        <h2
-          style={{
-            marginRight: 8,
-            fontSize: 12,
-            color: currentMode === "dark" ? "white" : "black",
-          }}
-        >
-          {currentTime}
-        </h2>
-        <Box sx={darkModeColors} >
+      <div className="flex justify-end mb-2">
+        <Box sx={darkModeColors} style={{ minWidth: "30px"}} >
           <Select
             className="time-zone-select"
             sx={{
               padding: 0,
               "& .MuiSelect-select": {
-                padding: "5px 25px 5px 5px !important",
+                padding: "5px 20px 5px 5px !important",
               },
               color: "#000000 !important",
             }}
             size="small"
+            variant="standard"
             value={selectedTimezone}
             onChange={handleTimezoneChange}
           >
@@ -93,7 +89,20 @@ const Clock = () => {
             ))}
           </Select>
         </Box>
-        
+      </div>
+      <div className="flex justify-center">
+        <AnalogClock timeString={currentTime} timezone={selectedTimezone} />
+      </div>
+      <div className="flex justify-center my-2">
+        <h2
+          style={{
+            marginRight: 8,
+            fontSize: 12,
+            color: currentMode === "dark" ? "white" : "black",
+          }}
+        >
+          {currentTime}
+        </h2>
       </div>
     </div>
   );

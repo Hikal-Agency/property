@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
+import { BsTrash } from "react-icons/bs";
+import { AiOutlineEdit } from "react-icons/ai";
 
 import usePermission from "../../utils/usePermission";
 
@@ -22,12 +24,9 @@ import { BiBlock } from "react-icons/bi";
 import { BsShuffle } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
-import {
-  HiPhoneOutgoing
-} from "react-icons/hi";
-import {
-  RiMailSendFill
-} from "react-icons/ri";
+import { HiPhoneOutgoing } from "react-icons/hi";
+import { RiMailSendFill } from "react-icons/ri";
+import UpdateLead from "./UpdateLead";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -37,11 +36,20 @@ const SingleLead = ({
   LeadData,
   lead_origin,
   setLeadData,
+  handleUpdateLeadModelOpen,
+  handleUpdateLeadModelClose,
+  setLeadModelOpen,
+  UpdateLeadModelOpen,
+  setDeleteModelOpen,
+  setBulkDeleteClicked,
+  setLeadToDelete,
 }) => {
   const { darkModeColors, currentMode, User, BACKEND_URL, isArabic } =
     useStateContext();
   const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
+  const [singleLeadData, setsingleLeadData] = useState({});
+
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [lastNote, setLastNote] = useState("");
   const [lastNoteDate, setLastNoteDate] = useState("");
@@ -51,6 +59,14 @@ const SingleLead = ({
     lead: null,
     isOpened: false,
   });
+  const [deleteloading, setdeleteloading] = useState(false);
+
+  // EDIT BTN CLICK FUNC
+  const HandleEditFunc = (params) => {
+    console.log("LEADID: ", params);
+    setsingleLeadData(params);
+    handleUpdateLeadModelOpen();
+  };
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -194,7 +210,7 @@ const SingleLead = ({
       event.stopPropagation();
       window.location.href = `mailto:${email}`;
     };
-  
+
     return (
       <button className="email-button" onClick={handleEmailClick}>
         <RiMailSendFill size={18} />
@@ -207,7 +223,7 @@ const SingleLead = ({
       event.stopPropagation();
       window.location.href = `tel:${phone}`;
     };
-  
+
     return (
       <button className="call-button" onClick={handlePhoneClick}>
         <HiPhoneOutgoing size={18} />
@@ -232,7 +248,9 @@ const SingleLead = ({
         <div
           style={style}
           className={`w-[calc(100%-20px)] md:w-[900px]  ${
-            currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-white text-black"
+            currentMode === "dark"
+              ? "bg-[#1c1c1c] text-white"
+              : "bg-white text-black"
           } absolute top-1/2 left-1/2 px-10 py-5 rounded-md border border-[#AAAAAA]`}
         >
           <IconButton
@@ -248,9 +266,7 @@ const SingleLead = ({
           </IconButton>
           {/* {console.log("lead data is")}
           {console.log(LeadData)} */}
-          <h1
-            className={` text-center font-semibold text-lg pb-5`}
-          >
+          <h1 className={` text-center font-semibold text-lg pb-5`}>
             Lead details
           </h1>
           {loading ? (
@@ -308,19 +324,29 @@ const SingleLead = ({
               >
                 <div className="grid justify-center space-y-3 text-center">
                   <h6 className="font-bold">Project</h6>
-                  <h6 className="font-semibold">{LeadData?.project === "null" ? "-" : LeadData?.project}</h6>
+                  <h6 className="font-semibold">
+                    {LeadData?.project === "null" ? "-" : LeadData?.project}
+                  </h6>
                 </div>
                 <div className="grid justify-center space-y-3 text-center">
                   <h6 className="font-bold">Enquiry about</h6>
-                  <h6 className="font-semibold">{LeadData?.enquiryType === "null" ? "-" : LeadData?.enquiryType}</h6>
+                  <h6 className="font-semibold">
+                    {LeadData?.enquiryType === "null"
+                      ? "-"
+                      : LeadData?.enquiryType}
+                  </h6>
                 </div>
                 <div className="grid justify-center space-y-3 text-center">
                   <h6 className="font-bold">Property type</h6>
-                  <h6 className="font-semibold">{LeadData?.leadType === "null" ? "-" : LeadData?.leadType}</h6>
+                  <h6 className="font-semibold">
+                    {LeadData?.leadType === "null" ? "-" : LeadData?.leadType}
+                  </h6>
                 </div>
                 <div className="grid justify-center space-y-3 text-center">
                   <h6 className="font-bold">Purpose</h6>
-                  <h6 className="font-semibold">{LeadData?.leadFor === "null" ? "-" : LeadData?.leadFor}</h6>
+                  <h6 className="font-semibold">
+                    {LeadData?.leadFor === "null" ? "-" : LeadData?.leadFor}
+                  </h6>
                 </div>
               </div>
 
@@ -329,31 +355,37 @@ const SingleLead = ({
                 {/* CALL  */}
                 <p
                   style={{ cursor: "pointer" }}
-                  className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-[#FFFFFF] bg-[#262626]"
+                      : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                 >
                   <Tooltip title="Call" arrow>
-                  <CallButton phone={LeadData?.leadContact} />
+                    <CallButton phone={LeadData?.leadContact} />
                   </Tooltip>
                 </p>
 
                 {/* EMAIL  */}
-                {(
-                  LeadData?.leadEmail === "" || 
-                  LeadData?.leadEmail === "null" || 
-                  LeadData?.leadEmail === "undefined" || 
-                  LeadData?.leadEmail === "-" || 
-                  LeadData?.leadEmail === null ||
-                  LeadData?.leadEmail === undefined
-                ) ? (
+                {LeadData?.leadEmail === "" ||
+                LeadData?.leadEmail === "null" ||
+                LeadData?.leadEmail === "undefined" ||
+                LeadData?.leadEmail === "-" ||
+                LeadData?.leadEmail === null ||
+                LeadData?.leadEmail === undefined ? (
                   <></>
                 ) : (
                   <p
-                  style={{ cursor: "pointer" }}
-                  className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                    style={{ cursor: "pointer" }}
+                    className={`${
+                      currentMode === "dark"
+                        ? "text-[#FFFFFF] bg-[#262626]"
+                        : "text-[#1C1C1C] bg-[#EEEEEE]"
+                    } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                   >
-                  <Tooltip title="Send Mail" arrow>
-                    <EmailButton email={LeadData?.leadEmail} />
-                  </Tooltip>
+                    <Tooltip title="Send Mail" arrow>
+                      <EmailButton email={LeadData?.leadEmail} />
+                    </Tooltip>
                   </p>
                 )}
 
@@ -383,35 +415,78 @@ const SingleLead = ({
                   </p>
                 </div> */}
 
-                {/* IP BLOCKING */}
-                {
-                  LeadData?.ip &&
-                  LeadData?.is_blocked !== 1 && (
-                    <div className="flex items-center mr-3 justify-end">
-                      <p
-                        style={{ cursor: "pointer", display: "inline-block" }}
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-transparent text-white rounded-md shadow-none"
-                            : "bg-transparent text-black rounded-md shadow-none"
-                        }`}
-                        onClick={() => HandleBlockIP(LeadData)}
+                {/* EDIT  */}
+                <p
+                  style={{ cursor: "pointer" }}
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-[#FFFFFF] bg-[#262626]"
+                      : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  } hover:bg-[#019a9a] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                >
+                  <Tooltip title="Update Details" arrow>
+                    <button onClick={() => HandleEditFunc(LeadData)}>
+                      <AiOutlineEdit size={16} />
+                    </button>
+                  </Tooltip>
+                </p>
+
+                {/* DELETE  */}
+                {hasPermission("lead_delete") && (
+                  <p
+                    style={{ cursor: "pointer" }}
+                    disabled={deleteloading ? true : false}
+                    className={`${
+                      currentMode === "dark"
+                        ? "text-[#FFFFFF] bg-[#262626]"
+                        : "text-[#1C1C1C] bg-[#EEEEEE]"
+                    } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                  >
+                    <Tooltip title="Delete Lead" arrow>
+                      <button
+                        onClick={() => {
+                          setLeadToDelete(LeadData?.leadId);
+                          setDeleteModelOpen(true);
+                          setBulkDeleteClicked(false);
+                        }}
                       >
-                        <Tooltip title="Block IP" arrow>
-                          <IconButton
-                            sx={{
-                              padding: 0,
-                              "& svg": {
-                                color: "red !important",
-                              },
-                            }}
-                          >
-                            <BiBlock size={19} />
-                          </IconButton>
-                        </Tooltip>
-                      </p>
-                    </div>
-                  )}
+                        <BsTrash
+                          className="deleteLeadBtn"
+                          size={18}
+                          style={{ color: "inherit" }}
+                        />
+                      </button>
+                    </Tooltip>
+                  </p>
+                )}
+
+                {/* IP BLOCKING */}
+                {LeadData?.ip && LeadData?.is_blocked !== 1 && (
+                  <div className="flex items-center mr-3 justify-end">
+                    <p
+                      style={{ cursor: "pointer", display: "inline-block" }}
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-transparent text-white rounded-md shadow-none"
+                          : "bg-transparent text-black rounded-md shadow-none"
+                      }`}
+                      onClick={() => HandleBlockIP(LeadData)}
+                    >
+                      <Tooltip title="Block IP" arrow>
+                        <IconButton
+                          sx={{
+                            padding: 0,
+                            "& svg": {
+                              color: "red !important",
+                            },
+                          }}
+                        >
+                          <BiBlock size={19} />
+                        </IconButton>
+                      </Tooltip>
+                    </p>
+                  </div>
+                )}
                 <Link
                   sx={{ my: 0, w: "100%" }}
                   to={`/lead/${LeadData?.leadId || LeadData?.id}`}
@@ -532,6 +607,19 @@ const SingleLead = ({
         }
         lead={LeadData}
       />
+
+      {/* {UpdateLeadModelOpen && (
+        <UpdateLead
+          lead_origin={lead_origin}
+          LeadModelOpen={UpdateLeadModelOpen}
+          setLeadModelOpen={setUpdateLeadModelOpen}
+          handleLeadModelOpen={handleUpdateLeadModelOpen}
+          handleLeadModelClose={handleUpdateLeadModelClose}
+          LeadData={singleLeadData}
+          BACKEND_URL={BACKEND_URL}
+          FetchLeads={FetchLeads}
+        />
+      )} */}
     </>
   );
 };

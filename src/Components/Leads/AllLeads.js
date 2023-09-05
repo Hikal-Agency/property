@@ -9,7 +9,7 @@ import {
   MenuItem,
   Tooltip,
   FormControl,
-  InputLabel
+  InputLabel,
 } from "@mui/material";
 import "../../styles/index.css";
 import usePermission from "../../utils/usePermission";
@@ -43,11 +43,7 @@ import {
   BiCommentDetail,
   BiArchive,
 } from "react-icons/bi";
-import {
-  RxCrossCircled,
-  RxCheckCircled,
-  RxQuestionMarkCircled
-} from "react-icons/rx";
+import { BsShieldX, BsShieldCheck, BsShieldMinus } from "react-icons/bs";
 import { HiPhoneOutgoing } from "react-icons/hi";
 import { BsShuffle } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
@@ -322,10 +318,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
         return (
           <div>
-            <span>
-              {finalNumber}
-            </span>
-            
+            <span>{finalNumber}</span>
           </div>
         );
       },
@@ -359,8 +352,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             }}
             className="flex flex-col"
           >
-            <p>{cellValues.row.project === "null" ? "-" : cellValues.row.project}</p>
-            <p>{cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}</p>
+            <p>
+              {cellValues.row.project === "null" ? "-" : cellValues.row.project}
+            </p>
+            <p>
+              {cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}
+            </p>
           </div>
         );
       },
@@ -374,8 +371,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
-            <p>{cellValues.row.enquiryType === "null" ? "-" : cellValues.row.enquiryType}</p>
-            <p>{cellValues.row.leadType === "null" ? "-" : cellValues.row.leadType}</p>
+            <p>
+              {cellValues.row.enquiryType === "null"
+                ? "-"
+                : cellValues.row.enquiryType}
+            </p>
+            <p>
+              {cellValues.row.leadType === "null"
+                ? "-"
+                : cellValues.row.leadType}
+            </p>
           </div>
         );
       },
@@ -446,7 +451,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
                     <span className="text-[#238e41] p-1 text-center">
-                      <RxCheckCircled size={16} />
+                      <BsShieldCheck size={16} />
                     </span>
                   </div>
                 </Tooltip>
@@ -456,9 +461,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 <Tooltip title="Not Verified" arrow>
                   <div
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                    >
+                  >
                     <span className="text-[#DA1F26] p-1 text-center">
-                      <RxCrossCircled size={16} />
+                      <BsShieldX size={16} />
                     </span>
                   </div>
                 </Tooltip>
@@ -466,15 +471,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
               {cellValues.formattedValue !== "Not Verified" &&
                 cellValues.formattedValue !== "Verified" && (
-                <Tooltip title="No OTP used" arrow>
-                  <div
-                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                    <span className="text-[#AAAAAA] p-1 text-center">
-                      <RxQuestionMarkCircled size={16} />
-                    </span>
-                  </div>
-                </Tooltip>
+                  <Tooltip title="No OTP used" arrow>
+                    <div
+                      className={`mx-1 w-full h-full flex justify-center items-center text-center`}
+                    >
+                      <span className="text-[#AAAAAA] p-1 text-center">
+                        <BsShieldMinus size={16} />
+                      </span>
+                    </div>
+                  </Tooltip>
                 )}
             </div>
           );
@@ -628,7 +633,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "edit",
       headerName: "Action",
       flex: 1,
-      minWidth: 150,
+      minWidth: 100,
       // maxWidth:200,
       sortable: false,
       filterable: false,
@@ -636,11 +641,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
       renderCell: (cellValues) => {
         return (
-          <div className={`w-full h-full px-1 flex items-center justify-start`}>
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
             {/* CALL  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Call" arrow>
                 <CallButton phone={cellValues.row.leadContact} />
@@ -650,27 +661,35 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             {/* EMAIL  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Send Mail" arrow>
                 <EmailButton email={cellValues.row.leadEmail} />
               </Tooltip>
             </p>
-            
+
             {/* REMINDER  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Set Reminder" arrow>
                 <button onClick={() => HandleReminderBtn(cellValues)}>
-                  <BsAlarm size={16} /> 
+                  <BsAlarm size={16} />
                 </button>
               </Tooltip>
             </p>
 
             {/* EDIT  */}
-            <p
+            {/* <p
               style={{ cursor: "pointer" }}
               className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#019a9a] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
@@ -679,22 +698,26 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   <AiOutlineEdit size={16} />
                 </button>
               </Tooltip>
-            </p>
+            </p> */}
 
             {/* TIMELINE  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
                 <button onClick={() => HandleViewTimeline(cellValues)}>
-                  <AiOutlineHistory size={16} /> 
+                  <AiOutlineHistory size={16} />
                 </button>
               </Tooltip>
             </p>
 
             {/* DELETE  */}
-            {hasPermission("lead_delete") && (
+            {/* {hasPermission("lead_delete") && (
               <p
                 style={{ cursor: "pointer" }}
                 disabled={deleteloading ? true : false}
@@ -714,7 +737,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   </button>
                 </Tooltip>
               </p>      
-            )}
+            )} */}
           </div>
         );
       },
@@ -726,10 +749,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       event.stopPropagation();
       window.location.href = `tel:${phone}`;
     };
-  
+
     return (
       <button className="call-button" onClick={handlePhoneClick}>
-        <VscCallOutgoing size={16}  />
+        <VscCallOutgoing size={16} />
       </button>
     );
   };
@@ -739,14 +762,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       event.stopPropagation();
       window.location.href = `mailto:${email}`;
     };
-  
+
     return (
       <button className="email-button" onClick={handleEmailClick}>
-        <RiMailSendLine size={16}  />
+        <RiMailSendLine size={16} />
       </button>
     );
   };
-
 
   const [CEOColumns, setCEOColumns] = useState(columns);
 
@@ -1164,7 +1186,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           language: getLangCode(row?.language) || "-",
           leadSource: row?.leadSource || "-",
           lid: row?.lid || "-",
-          firstAssigned : row?.firstAssigned || "",
+          firstAssigned: row?.firstAssigned || "",
           lastEdited: row?.lastEdited || "-",
           leadFor: row?.leadFor || "-",
           leadStatus: row?.leadStatus || "-",
@@ -1529,6 +1551,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           progress: undefined,
           theme: "light",
         });
+        handleLeadModelClose();
       })
       .catch((err) => {
         console.log(err);
@@ -1654,7 +1677,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     setHoveredRow(null);
   };
 
-
   return (
     <>
       <div className="pb-10">
@@ -1680,9 +1702,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 width: "max-content",
               },
               "& .MuiDataGrid-main .MuiDataGrid-overlay": {
-                backgroundColor: currentMode === "dark" ? "black !important" : "white !important",
+                backgroundColor:
+                  currentMode === "dark"
+                    ? "black !important"
+                    : "white !important",
                 color: "#AAAAAA !important",
-              }
+              },
             }}
             className={"items-center mb-2 sm:-mt-0 md:-mt-0 lg:-mt-6"}
           >
@@ -1700,19 +1725,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              background:
+                                currentMode === "dark" ? "#000000" : "#FFFFFF",
                               color: currentMode === "dark" ? "white" : "black",
-                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              boxShadow:
+                                currentMode === "dark"
+                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
                               height: "30px",
                               minWidth: "60px",
                               maxWidth: "100px",
                             }}
                             // md:flex md:justify-between
                           >
-                            <FaFacebookF
-                              size={16}
-                              color={"#0e82e1"}
-                            />
+                            <FaFacebookF size={16} color={"#0e82e1"} />
                             <span className="px-2">{pageState?.fbCounts}</span>
                           </Box>
 
@@ -1723,18 +1749,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              background:
+                                currentMode === "dark" ? "#000000" : "#FFFFFF",
                               color: currentMode === "dark" ? "white" : "black",
-                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              boxShadow:
+                                currentMode === "dark"
+                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
                               height: "30px",
                               minWidth: "60px",
                               maxWidth: "100px",
                             }}
                           >
-                            <FaSnapchatGhost
-                              size={16}
-                              color={"#f6d80a"}
-                            />
+                            <FaSnapchatGhost size={16} color={"#f6d80a"} />
                             <span className="px-2">{pageState?.spCount}</span>
                           </Box>
 
@@ -1745,9 +1772,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              background:
+                                currentMode === "dark" ? "#000000" : "#FFFFFF",
                               color: currentMode === "dark" ? "white" : "black",
-                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              boxShadow:
+                                currentMode === "dark"
+                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
                               height: "30px",
                               minWidth: "60px",
                               maxWidth: "100px",
@@ -1755,7 +1786,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                           >
                             <FaTiktok
                               size={16}
-                              color={ currentMode === "dark" ? "white" : "black"}
+                              color={currentMode === "dark" ? "white" : "black"}
                             />
                             <span className="px-2">{pageState?.ttCount}</span>
                           </Box>
@@ -1767,21 +1798,22 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              background:
+                                currentMode === "dark" ? "#000000" : "#FFFFFF",
                               color: currentMode === "dark" ? "white" : "black",
-                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              boxShadow:
+                                currentMode === "dark"
+                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
                               height: "30px",
                               minWidth: "60px",
                               maxWidth: "100px",
                             }}
                           >
-                            <FaYoutube
-                              size={18}
-                              color={"#c4302b"}
-                            />
+                            <FaYoutube size={18} color={"#c4302b"} />
                             <span className="px-2">{pageState?.yCount}</span>
                           </Box>
-                          
+
                           {/* GOOGLE ADS  */}
                           <Box
                             sx={{
@@ -1789,17 +1821,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              background:
+                                currentMode === "dark" ? "#000000" : "#FFFFFF",
                               color: currentMode === "dark" ? "white" : "black",
-                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              boxShadow:
+                                currentMode === "dark"
+                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
                               height: "30px",
                               minWidth: "60px",
                               maxWidth: "100px",
                             }}
                           >
-                            <FcGoogle
-                              size={18}
-                            />
+                            <FcGoogle size={18} />
                             <span className="px-2">{pageState?.gCount}</span>
                           </Box>
                           {/* CAMPAIGNS  */}
@@ -1809,18 +1843,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              background:
+                                currentMode === "dark" ? "#000000" : "#FFFFFF",
                               color: currentMode === "dark" ? "white" : "black",
-                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              boxShadow:
+                                currentMode === "dark"
+                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
                               height: "30px",
                               minWidth: "60px",
                               maxWidth: "100px",
                             }}
                           >
-                            <MdCampaign
-                              size={20}
-                              color={"#696969"}
-                            />
+                            <MdCampaign size={20} color={"#696969"} />
                             <span className="px-2">{pageState?.cCount}</span>
                           </Box>
                           {/* WEBSITE  */}
@@ -1830,18 +1865,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              background:
+                                currentMode === "dark" ? "#000000" : "#FFFFFF",
                               color: currentMode === "dark" ? "white" : "black",
-                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              boxShadow:
+                                currentMode === "dark"
+                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
                               height: "30px",
                               minWidth: "60px",
                               maxWidth: "100px",
                             }}
                           >
-                            <TbWorldWww
-                              size={18}
-                              color={"#AED6F1"}
-                            />
+                            <TbWorldWww size={18} color={"#AED6F1"} />
                             <span className="px-2">{pageState?.webCount}</span>
                           </Box>
                           {/* WHATSAPP  */}
@@ -1851,18 +1887,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              background:
+                                currentMode === "dark" ? "#000000" : "#FFFFFF",
                               color: currentMode === "dark" ? "white" : "black",
-                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              boxShadow:
+                                currentMode === "dark"
+                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
                               height: "30px",
                               minWidth: "60px",
                               maxWidth: "100px",
                             }}
                           >
-                            <FaWhatsapp
-                              size={18}
-                              color={"#46c254"}
-                            />
+                            <FaWhatsapp size={18} color={"#46c254"} />
                             <span className="px-2">{pageState?.wCount}</span>
                           </Box>
                           {/* MESSAGE  */}
@@ -1872,18 +1909,19 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                              background:
+                                currentMode === "dark" ? "#000000" : "#FFFFFF",
                               color: currentMode === "dark" ? "white" : "black",
-                              boxShadow: currentMode === "dark" ? "0px 1px 1px rgba(66, 66, 66, 1)" : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                              boxShadow:
+                                currentMode === "dark"
+                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
                               height: "30px",
                               minWidth: "60px",
                               maxWidth: "100px",
                             }}
                           >
-                            <BiMessageRoundedDots
-                              size={18}
-                              color={"#6A5ACD"}
-                            />
+                            <BiMessageRoundedDots size={18} color={"#6A5ACD"} />
                             <span className="px-2">{pageState?.mCount}</span>
                           </Box>
                         </div>
@@ -1913,13 +1951,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                       required
                       sx={{
                         "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor: currentMode === "dark" ? "white" : "black",
+                          borderColor:
+                            currentMode === "dark" ? "white" : "black",
                         },
                         "& .MuiSelect-select": {
                           color: currentMode === "dark" ? "white" : "black",
                         },
                         "&:hover:not (.Mui-disabled):before": {
-                          borderColor: currentMode === "dark" ? "white" : "black",
+                          borderColor:
+                            currentMode === "dark" ? "white" : "black",
                         },
                       }}
                     >
@@ -2130,7 +2170,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               handleLeadModelClose={handleLeadModelClose}
               LeadData={singleLeadData}
               BACKEND_URL={BACKEND_URL}
+              setDeleteModelOpen={setDeleteModelOpen}
+              deleteModelOpen={deleteModelOpen}
               lead_origin={lead_origin}
+              handleUpdateLeadModelOpen={handleUpdateLeadModelOpen}
+              handleUpdateLeadModelClose={handleUpdateLeadModelClose}
+              UpdateLeadModelOpen={UpdateLeadModelOpen}
+              setBulkDeleteClicked={setBulkDeleteClicked}
+              setLeadToDelete={setLeadToDelete}
             />
           )}
 
@@ -2188,6 +2235,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               bulkDeleteClicked={bulkDeleteClicked}
               selectedRows={selectedRows}
               handleBulkDelete={handleBulkDelete}
+              handleLeadModelClose={handleLeadModelClose}
             />
           )}
 

@@ -15,12 +15,13 @@ import { useStateContext } from "../../context/ContextProvider";
 import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { langs } from "../../langCodes";
-import { BsPersonCircle, BsSnow2 } from "react-icons/bs";
-import {
-  RxCheckCircled,
-  RxCrossCircled,
-  RxQuestionMarkCircled
-} from "react-icons/rx";
+import { 
+  BsPersonCircle, 
+  BsSnow2,
+  BsShieldX,
+  BsShieldCheck,
+  BsShieldMinus 
+} from "react-icons/bs";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
 import usePermission from "../../utils/usePermission";
@@ -244,7 +245,7 @@ const AllLeads = () => {
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
                     <span className="text-[#238e41] p-1 text-center">
-                      <RxCheckCircled size={16} />
+                      <BsShieldCheck size={16} />
                     </span>
                   </div>
                 </Tooltip>
@@ -256,7 +257,7 @@ const AllLeads = () => {
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                     >
                     <span className="text-[#DA1F26] p-1 text-center">
-                      <RxCrossCircled size={16} />
+                      <BsShieldX size={16} />
                     </span>
                   </div>
                 </Tooltip>
@@ -269,7 +270,7 @@ const AllLeads = () => {
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
                     <span className="text-[#AAAAAA] p-1 text-center">
-                      <RxQuestionMarkCircled size={16} />
+                      <BsShieldMinus size={16} />
                     </span>
                   </div>
                 </Tooltip>
