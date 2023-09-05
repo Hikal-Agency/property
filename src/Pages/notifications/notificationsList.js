@@ -290,7 +290,7 @@ const NotificationsList = () => {
                   </Box>
 
                   <div className=" flex items-center space-x-5 mr-5">
-                    {displayMarkBtn && User?.role !== 1 && User?.role !== 2 ? (
+                    {User?.role !== 1 && User?.role !== 2 ? (
                       <Tooltip
                         title="Mark All As Read"
                         arrow
@@ -488,6 +488,7 @@ const NotificationsList = () => {
                                                 : "black",
                                           },
                                         }}
+                                        size="small"
                                         fullWidth
                                         label="Filter By Date"
                                         {...params}
@@ -511,13 +512,13 @@ const NotificationsList = () => {
                                     }`}
                                     sx={{
                                       minWidth: "100%",
-                                      border: 1,
+                                      // border: 1,
                                       borderRadius: 1,
                                     }}
                                   >
                                     <Select
                                       id="feedback"
-                                      value={selectedUser}
+                                      value={selectedUser || "selected"}
                                       label="Filter By User"
                                       // onChange={(e) => handleFilter(e, 2)}
                                       onChange={(e) => {
@@ -530,12 +531,16 @@ const NotificationsList = () => {
                                       required
                                       sx={{
                                         border: "1px solid #000000",
+                                        height: "40px",
 
                                         "& .MuiSelect-select": {
                                           fontSize: 11,
                                         },
                                       }}
                                     >
+                                      <MenuItem selected value="selected">
+                                        ---Select User----
+                                      </MenuItem>
                                       <MenuItem
                                         onKeyDown={(e) => {
                                           e.stopPropagation();
@@ -548,8 +553,7 @@ const NotificationsList = () => {
                                           ref={searchRef}
                                           sx={{
                                             "& input": {
-                                              borderBottom:
-                                                "2px solid #ffffff6e",
+                                              border: "0",
                                             },
                                           }}
                                           variant="standard"

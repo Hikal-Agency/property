@@ -84,7 +84,7 @@ const NotificationsListComponent = ({
       // if (filter !== "all" || filter !== undefined || filter !== null) {
       //   url += `&isRead=${filter}`;
       // }
-      if (filter === "1" || filter === "0") {
+      if (filter === "1" || filter === "0" || filter === null) {
         url += `&isRead=${filter}`;
       }
       if (filter_notifyAbout) {
