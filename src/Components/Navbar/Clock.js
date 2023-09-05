@@ -42,30 +42,6 @@ const Clock = () => {
     localStorage.setItem("timezone", e.target.value);
   };
 
-  const SelectStyles = {
-    "&": {
-      // color: currentMode === "dark" ? "white !important" : "black !important",
-      color: "#ffffff",
-      // fontSize: "0.9rem",
-      fontWeight: "500",
-    },
-    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline":
-      {
-        // color: currentMode === "dark" ? "white !important" : "black !important",
-        color: "#ffffff",
-        fontSize: "0.9rem",
-        fontWeight: "500",
-      },
-    "& .MuiOutlinedInput-notchedOutline": {
-      // borderColor:
-      //   currentMode === "dark" ? "white !important" : "black !important",
-      borderColor: "#ffffff",
-    },
-    "& .MuiFormLabel-root": {
-      color: currentMode === "dark" ? "white" : "black",
-    },
-  };
-
   return (
     <div
       style={{
