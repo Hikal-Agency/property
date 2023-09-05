@@ -56,28 +56,34 @@ const NotificationsList = () => {
   const [selectedUser, setSelectedUSer] = useState(null);
 
   const handleKeyUp = (e) => {
+    console.log("handle key: ", e.target.value);
     e.preventDefault();
-    e.stopPropagation();
+    // e.stopPropagation();
     if (searchRef.current.querySelector("input").value) {
-      if (e.key === "Enter" || e.keyCode === 13) {
-        fetchUsers(token, e.target.value);
-      }
+      // if (e.key === "Enter" || e.keyCode === 13) {
+      fetchUsers(e.target.value);
+      // }
     }
   };
   const handleSearch = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    console.log("handle search: ", e.target.value);
+
+    // e.preventDefault();
+    // e.stopPropagation();
     if (e.target.value === "") {
-      fetchUsers(token);
+      fetchUsers();
     }
   };
 
   const fetchUsers = async (keyword = "", pageNo = 1) => {
-    setUserLoading(true);
+    console.log("keyword: ", keyword);
+    if (!keyword) {
+      setUserLoading(true);
+    }
     try {
       let url = "";
       if (keyword) {
-        url = `${BACKEND_URL}/users?page=${pageNo}&title=${keyword}`;
+        url = `${BACKEND_URL}/users?title=${keyword}`;
       } else {
         url = `${BACKEND_URL}/users?page=${pageNo}`;
       }
@@ -531,13 +537,14 @@ const NotificationsList = () => {
                                       }}
                                     >
                                       <MenuItem
-                                        value={"selected"}
-                                        selected
-                                        onMouseDown={(e) => e.stopPropagation()}
+                                        onKeyDown={(e) => {
+                                          e.stopPropagation();
+                                          // e.preventDefault();
+                                        }}
                                       >
                                         {/* <Box sx={darkModeColors}> */}
                                         <TextField
-                                          placeholder="Search.."
+                                          placeholder="Search users"
                                           ref={searchRef}
                                           sx={{
                                             "& input": {
@@ -548,10 +555,23 @@ const NotificationsList = () => {
                                           variant="standard"
                                           // onKeyUp={handleKeyUp}
                                           // onInput={handleSearch}
+                                          // onChange={handleSearch}
                                           InputProps={{
                                             startAdornment: (
                                               <InputAdornment position="start">
-                                                <IconButton sx={{ padding: 1 }}>
+                                                <IconButton
+                                                  sx={{ padding: 1 }}
+                                                  onClick={(e) => {
+                                                    e.preventDefault();
+                                                    const inputValue =
+                                                      searchRef.current.querySelector(
+                                                        "input"
+                                                      ).value;
+                                                    if (inputValue) {
+                                                      fetchUsers(inputValue);
+                                                    }
+                                                  }}
+                                                >
                                                   <BsSearch
                                                     className={`text-[#AAAAAA]`}
                                                     size={18}
@@ -559,6 +579,9 @@ const NotificationsList = () => {
                                                 </IconButton>
                                               </InputAdornment>
                                             ),
+                                          }}
+                                          onClick={(event) => {
+                                            event.stopPropagation();
                                           }}
                                         />
                                         {/* </Box> */}
