@@ -1,58 +1,72 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
+import moment from "moment-timezone";
 
-function AnalogClock({ timeString }) {
-  const [currentTime, setCurrentTime] = useState(new Date());
+import "../../styles/clock.css";
+
+const AnalogClock = ({ timeString, timezone }) => {
+  const [time, setTime] = useState(moment(timeString));
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTime(new Date());
+      setTime(moment(timeString));
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [timeString]);
 
-  // Parse the time from the provided timeString
-  const parsedTime = new Date(timeString);
+  const getSeconds = () => {
+    return time.seconds() * 6; // 360 degrees divided by 60 seconds
+  };
 
-  // Calculate rotation angles for clock hands
-  const secondDegrees = (currentTime.getSeconds() / 60) * 360;
-  const minuteDegrees = ((currentTime.getMinutes() + secondDegrees / 360) / 60) * 360;
-  const hourDegrees = ((currentTime.getHours() % 12 + minuteDegrees / 360) / 12) * 360;
+  const getMinutes = () => {
+    return (time.minutes() + time.seconds() / 60) * 6; // 360 degrees divided by 60 minutes
+  };
+
+  const getHours = () => {
+    return ((time.hours() % 12) + time.minutes() / 60) * 30; // 360 degrees divided by 12 hours
+  };
+
+  const getTimeInSelectedTimezone = () => {
+    return moment(time).tz(timezone).format("h:mm:ss A");
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Update the time state with the current time in the selected timezone
+      setTime(moment().tz(timezone));
+    }, 1000);
+  
+    return () => {
+      clearInterval(interval);
+    };
+  }, [timezone]);
+  
 
   return (
-    <div className="analog-clock">
-      {/* Clock face */}
-      <div className="clock-face">
-        {/* Hour hand */}
-        <div
-          className="clock-hand hour-hand"
-          style={{ transform: `rotate(${hourDegrees}deg)` }}
-        ></div>
-
-        {/* Minute hand */}
-        <div
-          className="clock-hand minute-hand"
-          style={{ transform: `rotate(${minuteDegrees}deg)` }}
-        ></div>
-
-        {/* Second hand */}
-        <div
-          className="clock-hand second-hand"
-          style={{ transform: `rotate(${secondDegrees}deg)` }}
-        ></div>
-
-        {/* Clock center */}
-        <div className="clock-center"></div>
-      </div>
-
-      {/* Time display */}
-      <div className="clock-time">
-        <span className="clock-hour">{parsedTime.getHours()}</span>:
-        <span className="clock-minute">{parsedTime.getMinutes()}</span>:
-        <span className="clock-second">{parsedTime.getSeconds()}</span>
-      </div>
+    <div className="w-full flex items-center justify-center">
+        <div className="analog-clock" >
+        <div className="clock-face">
+            <div class="clock-face-background"></div>
+            <div
+            className="hour-hand"
+            style={{ transform: `rotate(${getHours()}deg)` }}
+            ></div>
+            <div
+            className="minute-hand"
+            style={{ transform: `rotate(${getMinutes()}deg)` }}
+            ></div>
+            <div
+            className="second-hand"
+            style={{ transform: `rotate(${getSeconds()}deg)` }}
+            ></div>
+            <div className="center-pin"></div>
+        </div>
+        {/* <div className="clock-time">{getTimeInSelectedTimezone()}</div> */}
+        </div>
     </div>
   );
-}
+};
 
 export default AnalogClock;
