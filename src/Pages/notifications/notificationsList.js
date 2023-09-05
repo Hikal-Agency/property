@@ -27,9 +27,12 @@ import { BsCheck2All, BsFilterLeft, BsSearch } from "react-icons/bs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { toast } from "react-toastify";
+import usePermission from "../../utils/usePermission";
 
 const NotificationsList = () => {
   const [loading, setloading] = useState(false);
+  const { hasPermission } = usePermission();
+
   const [value, setValue] = useState(0);
   const [showFilter, setShowFilter] = useState(false);
   const [displayMarkBtn, setdisplayMarkBtn] = useState(false);
@@ -502,111 +505,113 @@ const NotificationsList = () => {
                                   />
                                 </LocalizationProvider>
 
-                                <div>
-                                  <h3 className=" my-4 font-bold">
-                                    Filter By User
-                                  </h3>
-                                  <FormControl
-                                    className={`${
-                                      currentMode === "dark"
-                                        ? "text-white"
-                                        : "text-black"
-                                    }`}
-                                    sx={{
-                                      minWidth: "100%",
-                                      // border: 1,
-                                      borderRadius: 1,
-                                    }}
-                                  >
-                                    <Select
-                                      id="feedback"
-                                      value={selectedUser || "selected"}
-                                      label="Filter By User"
-                                      // onChange={(e) => handleFilter(e, 2)}
-                                      onChange={(e) => {
-                                        setSelectedUSer(e.target.value);
-                                        setFetch(true);
-                                      }}
-                                      size="medium"
-                                      className="w-full border border-gray-300 rounded "
-                                      displayEmpty
-                                      required
+                                {hasPermission("filter_user_notifs") && (
+                                  <div>
+                                    <h3 className=" my-4 font-bold">
+                                      Filter By User
+                                    </h3>
+                                    <FormControl
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "text-white"
+                                          : "text-black"
+                                      }`}
                                       sx={{
-                                        border: "1px solid #000000",
-                                        height: "40px",
-
-                                        "& .MuiSelect-select": {
-                                          fontSize: 11,
-                                        },
+                                        minWidth: "100%",
+                                        // border: 1,
+                                        borderRadius: 1,
                                       }}
                                     >
-                                      <MenuItem selected value="selected">
-                                        ---Select User----
-                                      </MenuItem>
-                                      <MenuItem
-                                        onKeyDown={(e) => {
-                                          e.stopPropagation();
-                                          // e.preventDefault();
+                                      <Select
+                                        id="feedback"
+                                        value={selectedUser || "selected"}
+                                        label="Filter By User"
+                                        // onChange={(e) => handleFilter(e, 2)}
+                                        onChange={(e) => {
+                                          setSelectedUSer(e.target.value);
+                                          setFetch(true);
+                                        }}
+                                        size="medium"
+                                        className="w-full border border-gray-300 rounded "
+                                        displayEmpty
+                                        required
+                                        sx={{
+                                          border: "1px solid #000000",
+                                          height: "40px",
+
+                                          "& .MuiSelect-select": {
+                                            fontSize: 11,
+                                          },
                                         }}
                                       >
-                                        {/* <Box sx={darkModeColors}> */}
-                                        <TextField
-                                          placeholder="Search users"
-                                          ref={searchRef}
-                                          sx={{
-                                            "& input": {
-                                              border: "0",
-                                            },
+                                        <MenuItem selected value="selected">
+                                          ---Select User----
+                                        </MenuItem>
+                                        <MenuItem
+                                          onKeyDown={(e) => {
+                                            e.stopPropagation();
+                                            // e.preventDefault();
                                           }}
-                                          variant="standard"
-                                          // onKeyUp={handleKeyUp}
-                                          // onInput={handleSearch}
-                                          // onChange={handleSearch}
-                                          InputProps={{
-                                            startAdornment: (
-                                              <InputAdornment position="start">
-                                                <IconButton
-                                                  sx={{ padding: 1 }}
-                                                  onClick={(e) => {
-                                                    e.preventDefault();
-                                                    const inputValue =
-                                                      searchRef.current.querySelector(
-                                                        "input"
-                                                      ).value;
-                                                    if (inputValue) {
-                                                      fetchUsers(inputValue);
-                                                    }
-                                                  }}
-                                                >
-                                                  <BsSearch
-                                                    className={`text-[#AAAAAA]`}
-                                                    size={18}
-                                                  />
-                                                </IconButton>
-                                              </InputAdornment>
-                                            ),
-                                          }}
-                                          onClick={(event) => {
-                                            event.stopPropagation();
-                                          }}
-                                        />
-                                        {/* </Box> */}
-                                      </MenuItem>
+                                        >
+                                          {/* <Box sx={darkModeColors}> */}
+                                          <TextField
+                                            placeholder="Search users"
+                                            ref={searchRef}
+                                            sx={{
+                                              "& input": {
+                                                border: "0",
+                                              },
+                                            }}
+                                            variant="standard"
+                                            // onKeyUp={handleKeyUp}
+                                            // onInput={handleSearch}
+                                            // onChange={handleSearch}
+                                            InputProps={{
+                                              startAdornment: (
+                                                <InputAdornment position="start">
+                                                  <IconButton
+                                                    sx={{ padding: 1 }}
+                                                    onClick={(e) => {
+                                                      e.preventDefault();
+                                                      const inputValue =
+                                                        searchRef.current.querySelector(
+                                                          "input"
+                                                        ).value;
+                                                      if (inputValue) {
+                                                        fetchUsers(inputValue);
+                                                      }
+                                                    }}
+                                                  >
+                                                    <BsSearch
+                                                      className={`text-[#AAAAAA]`}
+                                                      size={18}
+                                                    />
+                                                  </IconButton>
+                                                </InputAdornment>
+                                              ),
+                                            }}
+                                            onClick={(event) => {
+                                              event.stopPropagation();
+                                            }}
+                                          />
+                                          {/* </Box> */}
+                                        </MenuItem>
 
-                                      {user?.length > 0 ? (
-                                        user?.map((user) => (
-                                          <MenuItem value={user?.id}>
-                                            {user?.userName}
-                                          </MenuItem>
-                                        ))
-                                      ) : (
-                                        <h2 className="text-center">
-                                          No Users
-                                        </h2>
-                                      )}
-                                    </Select>
-                                  </FormControl>
-                                </div>
+                                        {user?.length > 0 ? (
+                                          user?.map((user) => (
+                                            <MenuItem value={user?.id}>
+                                              {user?.userName}
+                                            </MenuItem>
+                                          ))
+                                        ) : (
+                                          <h2 className="text-center">
+                                            No Users
+                                          </h2>
+                                        )}
+                                      </Select>
+                                    </FormControl>
+                                  </div>
+                                )}
 
                                 <Button
                                   // disabled={loading ? true : false}
