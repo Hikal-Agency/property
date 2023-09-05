@@ -217,9 +217,12 @@ const NotificationsListComponent = ({
             <h2
               className={`${
                 currentMode === "dark" ? "text-white" : "text-black"
-              } text-center font-bold text-xl`}
+              } text-center font-bold text-xl mb-5 flex flex-col justify-center`}
+              style={{
+                height: "400px",
+              }}
             >
-              No Notifications
+              You're all caught up!
             </h2>
           )}
 
