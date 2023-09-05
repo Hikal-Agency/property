@@ -54,7 +54,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
   const fetchNotifications = async () => {
     try {
       setLoading(true);
-      const url = `${BACKEND_URL}/allnotifications?user_id=${User?.id}`;
+      const url = `${BACKEND_URL}/allnotifications`;
 
       const response = await axios.get(url, {
         headers: {
