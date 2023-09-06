@@ -52,7 +52,7 @@ const UpcomingMeetingsMenu = () => {
           onClick={() => {
             navigate("/meetings");
           }}
-          className="flex my-2 justify-center text-[#AAAAAA] hover:text-[#DA1F26] text-sm w-full"
+          className="flex -mt-2 mb-3 justify-center text-[#AAAAAA] hover:text-[#DA1F26] text-sm w-full"
           style={{
             textDecoration: "none",
             cursor: "pointer",
@@ -144,7 +144,7 @@ const UpcomingMeetingsMenu = () => {
                     </div>
                     
                   </div>
-                  <span className="block text-sm bg-main-red-color text-white rounded-b-xl text-center p-2 font-semibold">
+                  <span className={`${currentMode === "dark" ? "bg-[#333333]" : "bg-main-red-color"} block text-sm text-white rounded-b-xl text-center p-2 font-semibold`}>
                     {meeting?.createdBy}
                   </span>
                 </div>

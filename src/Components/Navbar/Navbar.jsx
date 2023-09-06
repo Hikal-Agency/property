@@ -18,6 +18,13 @@ import MenuItem from "@mui/material/MenuItem";
 import { AiFillCalendar } from "react-icons/ai";
 import { FaClock } from "react-icons/fa";
 import { RiNotification3Fill } from "react-icons/ri";
+import { 
+  VscHistory,
+  VscLock,
+  VscShield,
+  VscExclude,
+  VscSignOut
+} from "react-icons/vsc";
 
 import Avatar from "@mui/material/Avatar";
 import { CgLogOut } from "react-icons/cg";
@@ -397,9 +404,11 @@ const Navbar = () => {
                 sx: {
                   overflow: "visible",
                   overflowY: "scroll",
-                  filter: "drop-shadow(1px 2px 8px rgba(218,31,38,0.30))",
-                  mt: 0,
-                  background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+                  filter: currentMode === "dark" ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))" : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
+                  mt: 0.5,
+                  p: 1,
+                  // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+                  background: currentMode === "dark" ? "rgb(28 28 28 / 0.9)" : "rgb(238 238 238 / 0.9)",
                   color: currentMode === "dark" ? "#ffffff" : "black",
                   minWidth: 300,
                   borderRadius: "10px",
@@ -441,37 +450,105 @@ const Navbar = () => {
                   <MenuItem />
                 )
               ) : (
-                <div className="menu-wrapper">
-                  <MenuItem>
+                <div className="px-2 ">
+                  <div
+                    className={`cursor-pointer ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-2 p-4 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full`}
+                  >
                     <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center justify-start">
                         <Avatar
                           src={User?.displayImg}
                           className="inline-block"
                         />
-                        <span>Profile</span>
+                        <div className="flex justify-between items-center w-full h-full">
+                          <div className="mx-1 space-y-1">
+                            <p className="font-semibold">{User?.userName}</p>
+                            <p className="text-xs capitalize">{User?.position}</p>
+                          </div>
+                          <div className="text-sm rounded-full border border-[#DA1F26] px-2 py-1">
+                            Profile
+                          </div>
+                        </div>
                       </div>
                     </Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link
-                      to={"/changepassword"}
-                      onClick={() => setopenBackDrop(true)}
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RiLockPasswordFill className="inline-block" />
-                        <span>Change Password</span>
+                  </div>
+
+                  {/* LOGIN HISTORY  */}
+                  <div
+                    className={`cursor-pointer ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-2 p-3 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full`}
+                  >
+                    {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
+                      <div className="flex items-center justify-start">
+                        <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
+                          <VscHistory size={18} color={"#AAAAAA"} />
+                        </div>
+                        <div className="flex justify-between items-center w-full h-full">
+                          <div className="flex items-center">
+                            <p className="font-semibold mx-1 mr-2">Login history</p>
+                            <VscLock size={14} color={"#DA1F26"} className="mr-2" />
+                          </div>
+                          <div className="rounded-full bg-[#DA1F26] text-white px-2 py-1 font-bold" style={{ fontSize: "0.5rem" }}>
+                            SOON
+                          </div>
+                        </div>
+                      </div>
+                    {/* </Link> */}
+                  </div>
+
+                  {/* CHANGE PASSWORD  */}
+                  <div
+                    className={`cursor-pointer ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-2 p-3 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full`}
+                  >
+                    <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}>
+                      <div className="flex items-center justify-start">
+                        <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
+                          <VscShield size={18} color={"#AAAAAA"} />
+                        </div>
+                        <p className="mx-1 mr-2 font-semibold">Change password</p>
                       </div>
                     </Link>
-                  </MenuItem>
+                  </div>
+
+                  {/* IF SUBSCRIBED, UNSUBCRIBE  */}
                   {User?.role !== 1 && isUserSubscribed && (
-                    <MenuItem onClick={UnsubscribeUser}>
-                      <MdUnsubscribe className="mr-3 text-lg" /> Unsubscribe
-                    </MenuItem>
+                    <div
+                      className={`cursor-pointer ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-2 p-3 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full`}
+                      onClick={UnsubscribeUser}
+                    >
+                      {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
+                        <div className="flex items-center justify-start">
+                          <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`} >
+                            <VscExclude size={18} color={"#AAAAAA"} />
+                          </div>
+                          <p className="mx-1 mr-2 font-semibold">Unsubscribe package</p>
+                          <VscLock size={14} color={"#DA1F26"} className="mr-2" />
+                        </div>
+                      {/* </Link> */}
+                    </div>
                   )}
-                  <MenuItem onClick={LogoutUser}>
-                    <CgLogOut className="mr-3 text-lg" /> Logout
-                  </MenuItem>
+
+                  {/* LOGOUT  */}
+                  <div
+                    className={`cursor-pointer ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-2 p-3 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full`}
+                    onClick={LogoutUser}
+                  >
+                    <div className="flex items-center justify-start">
+                      <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
+                        <VscSignOut size={18} color={"#AAAAAA"} />
+                      </div>
+                      <p className="mx-1 mr-2 font-semibold">Log out</p>
+                    </div>
+                  </div>
                 </div>
               )}
             </Menu>

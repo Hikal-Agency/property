@@ -169,7 +169,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
           setAnchorEl(null);
           setOpen(false);
         }}
-        className="flex my-2 justify-center text-[#AAAAAA] hover:text-[#DA1F26] text-sm w-full"
+        className="flex -mt-2 mb-3 justify-center text-[#AAAAAA] hover:text-[#DA1F26] text-sm w-full"
         style={{
           textDecoration: "none",
           cursor: "pointer",
