@@ -51,70 +51,55 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
             } rounded-md mb-3 hover:shadow-lg`}
           >
             <div className="px-5 py-5 space-y-3">
-              <h2 className="text-main-red-color text-md font-bold">
+              <h2 className="text-main-red-color text-md font-semibold">
                 {meeting?.leadName}
               </h2>
-              <div className="w-full flex justify-between items-center">
-                <div className="flex items-center space-x-1">
-                  <BsBuildings
-                    size={14}
-                    className={`mr-3 ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  />
-                  {/* <p className="text-sm mr-3">
-                    {meeting?.project || "no project"}{" "}
-                    {meeting?.enquiryType ?? "no type"}{" "}
-                    {meeting?.leadType ?? "no type"}{" "}
-                    {meeting?.leadFor ?? "no name"}
-                  </p> */}
-                  <p className="text-sm mr-3">
-                    {(!meeting?.project || meeting?.project === "null") &&
-                    (!meeting?.enquiryType ||
-                      meeting?.enquiryType === "null") &&
-                    (!meeting?.leadType || meeting?.leadType === "null") &&
-                    (!meeting?.leadFor || meeting?.leadFor === "null")
-                      ? "-"
-                      : `${meeting?.project || ""} ${
-                          meeting?.enquiryType ?? ""
-                        } ${meeting?.leadType ?? ""} ${
-                          meeting?.leadFor ?? ""
-                        }`}
-                  </p>
-                </div>
+              <div className="grid grid-cols-11">
+                <BsBuildings
+                  size={16}
+                  className={`mr-3 ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
+                />
+                <p className="text-sm mr-3 col-span-10">
+                  {meeting?.project === "null" ? "-" : meeting?.project}
+                  {" "}
+                  {meeting?.enquiryType === "null" ? "-" : meeting?.enquiryType}
+                  {" "}
+                  {meeting?.leadType === "null" ? "-" : meeting?.leadType}
+                  {" "}
+                  {meeting?.leadFor === "null" ? "-" : meeting?.leadFor}
+                </p>
               </div>
-              <div className="w-full flex justify-between items-center">
-                <div className="flex items-center space-x-1">
-                  <BsClock
-                    size={14}
-                    className={`mr-3 ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  />
-                  <p className="text-sm mr-3">
-                    {meeting?.meetingTime === ""
-                      ? ""
-                      : `${meeting?.meetingTime}, `}{" "}
-                    {moment(meeting?.meetingDate).format("MMMM D, Y")}
-                  </p>
-                </div>
+
+              <div className="grid grid-cols-11">
+                <BsClock
+                  size={16}
+                  className={`mr-3 ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
+                />
+                <p className="text-sm mr-3 col-span-10">
+                  {meeting?.meetingTime === ""
+                    ? ""
+                    : `${meeting?.meetingTime}, `}{" "}
+                  {moment(meeting?.meetingDate).format("MMMM D, Y")}
+                </p>
               </div>
-              <div className="w-full flex justify-between items-center">
-                <div className="flex items-center space-x-1">
-                  <BsPinMap
-                    size={14}
-                    className={`mr-3 ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  />
-                  <p className="text-sm mr-3 w-full">
-                    {" "}
+
+              <div className="grid grid-cols-11">
+                <BsPinMap
+                  size={16}
+                  className={`mr-3 ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
+                />
+                <p className="text-sm mr-3 col-span-10">
                     {meeting?.meetingLocation || "Not Updated"}
-                  </p>
-                </div>
+                </p>
               </div>
             </div>
-            <span className="block text-sm bg-main-red-color text-white rounded-md text-center p-2 font-semibold">
+            <span className="block text-sm bg-main-red-color text-white rounded-b-md text-center p-2 font-semibold">
               {meeting?.createdBy}
             </span>
           </div>

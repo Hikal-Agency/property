@@ -9,7 +9,7 @@ import {
 import { RiStickyNoteLine } from "react-icons/ri";
 import axios from "../../axoisConfig";
 import { ToastContainer, toast } from "react-toastify";
-import { BsBuilding } from "react-icons/bs";
+import { BsClock, BsChatSquareText } from "react-icons/bs";
 import SingleLead from "../Leads/SingleLead";
 import moment from "moment";
 import { useState } from "react";
@@ -119,80 +119,77 @@ const ReminderComponent = ({
         } rounded-md mb-3 cursor-pointer hover:shadow:lg`}
         onClick={() => handleClick(reminder?.lead_id)}
       >
-        <div className="px-5 py-5 space-y-3">
-          <h2 className="text-main-red-color text-md font-bold">
-            {reminder?.leadName || "No Lead Name"}
-          </h2>
-          {/* <div className="flex items-center space-x-1">
-                  <BsBuilding
-                    className={`mr-2 ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  />
-                  <p className="text-sm mr-3">
-                    {reminder?.project} {reminder?.enquiryType}{" "}
-                    {reminder?.leadType} {reminder?.leadFor}
-                  </p>
-                </div> */}
-          <div className="w-full flex justify-between items-center">
-            <div className="flex items-center space-x-1">
-              <ImClock
-                className={`mr-2 ${
+        <div className="p-5 grid grid-cols-9">
+          <div className="col-span-8 space-y-3">
+            <h2 className="text-main-red-color text-md font-semibold">
+              {reminder?.leadName || "No Lead Name"}
+            </h2>
+            
+            <div className="grid grid-cols-11">
+              <BsClock
+                size={16}
+                className={`mr-3 ${
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               />
-              {reminder?.reminder_date && reminder?.reminder_time ? (
-                <p className="text-sm mr-3">{`${
-                  reminder?.reminder_time
-                }, ${moment(reminder?.reminder_date).format("MMMM D, Y")}`}</p>
-              ) : (
-                "No time and date."
-              )}
+              <p className="text-sm mr-3 col-span-10">
+                {reminder?.reminder_date && reminder?.reminder_time ? (
+                  <>
+                    {`${
+                      reminder?.reminder_time
+                    }, ${moment(reminder?.reminder_date).format("MMMM D, Y")}`}
+                  </>
+                ) : (
+                  "Unavailable"
+                )}
+              </p>
             </div>
-          </div>
-          <div className="w-full flex justify-between items-center">
-            <div className="flex items-center">
-              <RiStickyNoteLine size="18"
-                className={`mr-2 ${
+
+            <div className="grid grid-cols-11">
+              <BsChatSquareText
+                size={16}
+                className={`mr-3 ${
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               />
-              <p className="text-sm mr-3 w-[100%]" style={{fontFamily: isArabic(reminder?.reminder_note) ? "Noto Kufi Arabic" : "inherit"}}>
+              <p className="text-sm mr-3 col-span-10" style={{fontFamily: isArabic(reminder?.reminder_note) ? "Noto Kufi Arabic" : "inherit"}}>
                 {reminder?.reminder_note || "No Notes"}
               </p>
             </div>
           </div>
-        </div>
-        <div className="flex justify-between px-5 py-3">
-          <Tooltip title="Complete" arrow>
-            <IconButton
-              style={{ backgroundColor: "#4CAF50", color: "white" }}
-              className="rounded-full"
-              onClick={(event) => handleButtonClick(event, 1, reminder?.id)}
-              disabled={completeLoading}
-            >
-              {completeLoading ? (
-                <CircularProgress color="inherit" size={20} />
-              ) : (
-                <CheckIcon />
-              )}
-            </IconButton>
-          </Tooltip>
 
-          <Tooltip title="Cancel" arrow>
-            <IconButton
-              style={{ backgroundColor: "#DC2626", color: "white" }}
-              className="rounded-full"
-              onClick={(event) => handleButtonClick(event, 0, reminder?.id)}
-              disabled={cancleLoading}
-            >
-              {cancleLoading ? (
-                <CircularProgress color="inherit" size={20} />
-              ) : (
-                <CloseIcon />
-              )}
-            </IconButton>
-          </Tooltip>
+          <div className="col-span-1 space-y-2">
+            <Tooltip title="Mark as Complete" arrow>
+              <IconButton
+                style={{ backgroundColor: "#269144", color: "white" }}
+                className="rounded-full"
+                onClick={(event) => handleButtonClick(event, 1, reminder?.id)}
+                disabled={completeLoading}
+              >
+                {completeLoading ? (
+                  <CircularProgress color="inherit" size={16} />
+                ) : (
+                  <CheckIcon size={16} />
+                )}
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Cancel Reminder" arrow>
+              <IconButton
+                style={{ backgroundColor: "#DA1F26", color: "white" }}
+                className="rounded-full"
+                onClick={(event) => handleButtonClick(event, 0, reminder?.id)}
+                disabled={cancleLoading}
+              >
+                {cancleLoading ? (
+                  <CircularProgress color="inherit" size={16} />
+                ) : (
+                  <CloseIcon size={16} />
+                )}
+              </IconButton>
+            </Tooltip>
+          </div>
+          
         </div>
       </div>
     </>
