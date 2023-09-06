@@ -116,7 +116,7 @@ const ReminderComponent = ({
         key={reminder.id}
         className={`w-[350px] flex flex-col justify-between ${
           currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-        } rounded-md mb-3 cursor-pointer hover:shadow:lg`}
+        } rounded-xl hover:mt-1 hover:mb-3 hover:shadow-md my-2 cursor-pointer hover:shadow:lg`}
         onClick={() => handleClick(reminder?.lead_id)}
       >
         <div className="p-5 grid grid-cols-9">

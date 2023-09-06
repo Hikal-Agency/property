@@ -48,7 +48,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
             key={index}
             className={`w-[350px] flex flex-col justify-between ${
               currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-[#EEEEEE] text-black" // ${ currentMode === "dark" ? "bg- text-white " : "bg-" } 
-            } rounded-md mb-3 hover:shadow-lg`}
+            } rounded-xl hover:mt-1 hover:mb-3 my-2 hover:shadow-lg`}
           >
             <div className="px-5 py-5 space-y-3">
               <h2 className="text-main-red-color text-md font-semibold">
@@ -99,7 +99,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                 </p>
               </div>
             </div>
-            <span className="block text-sm bg-main-red-color text-white rounded-b-md text-center p-2 font-semibold">
+            <span className="block text-sm bg-main-red-color text-white rounded-b-xl text-center p-2 font-semibold">
               {meeting?.createdBy}
             </span>
           </div>

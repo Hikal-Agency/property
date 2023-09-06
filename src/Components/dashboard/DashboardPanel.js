@@ -213,7 +213,7 @@ const DashboardPanel = ({ setloading }) => {
               currentMode === "dark"
                 ? "bg-[#1c1c1c] text-white "
                 : "bg-[#EEEEEE] text-main-dark-bg"
-            }  h-auto w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
+            }  h-auto w-full p-5 rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md cursor-pointer grid content-center`}
             onClick={() => setopenBackDrop(true)}
           >
             <div>
@@ -255,7 +255,7 @@ const DashboardPanel = ({ setloading }) => {
                     currentMode === "dark"
                       ? "bg-[#1c1c1c] text-white "
                       : "bg-[#EEEEEE] text-main-dark-bg"
-                  } h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
+                  } h-auto w-full p-5 rounded-xl hover:-mt-1 hover:mb-1 cursor-pointer hover:shadow-md grid content-center`}
                 >
                   <p className="text-2xl font-bold pb-3 text-[#DA1F26]">
                     <CountUp end={item.amount} duration={3} />
@@ -283,7 +283,7 @@ const DashboardPanel = ({ setloading }) => {
                       currentMode === "dark"
                         ? "bg-[#1c1c1c] text-white "
                         : "bg-[#EEEEEE] text-main-dark-bg"
-                    } h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
+                    } h-auto w-full p-5 rounded-xl hover:-mt-1 hover:mb-1 cursor-pointer hover:shadow-md grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
@@ -315,7 +315,7 @@ const DashboardPanel = ({ setloading }) => {
                       currentMode === "dark"
                         ? "bg-[#1c1c1c] text-white "
                         : "bg-[#EEEEEE] text-main-dark-bg"
-                    }  h-auto dark:bg-secondary-dark-bg w-full p-5 rounded-md cursor-pointer hover:shadow-sm grid content-center`}
+                    }  h-auto w-full p-5 rounded-xl hover:-mt-1 hover:mb-1 cursor-pointer hover:shadow-md grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
@@ -351,7 +351,7 @@ const DashboardPanel = ({ setloading }) => {
                   currentMode === "dark"
                     ? "bg-[#1c1c1c] text-white "
                     : "bg-[#EEEEEE]"
-                } h-full rounded-md p-5 cursor-pointer w-full`}
+                } h-full rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md p-5 cursor-pointer w-full`}
               >
                 <div className="justify-between items-center w-full">
                   <h6 className="font-semibold">Performance</h6>
@@ -366,7 +366,7 @@ const DashboardPanel = ({ setloading }) => {
                   currentMode === "dark"
                     ? "bg-[#1c1c1c] text-white "
                     : "bg-[#EEEEEE]"
-                } h-full w-full rounded-md p-5 cursor-pointer`}
+                } h-full w-full rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md p-5 cursor-pointer`}
               >
                 <div className="justify-between items-center">
                   <h6 className="font-semibold">Performance</h6>
@@ -382,7 +382,7 @@ const DashboardPanel = ({ setloading }) => {
                     currentMode === "dark"
                       ? "bg-[#1c1c1c] text-white "
                       : "bg-[#EEEEEE]"
-                  } h-full w-full rounded-md p-5 cursor-pointer`}
+                  } h-full w-full rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
                     <h6 className="font-semibold">Target</h6>
@@ -397,7 +397,7 @@ const DashboardPanel = ({ setloading }) => {
                     currentMode === "dark"
                       ? "bg-[#1c1c1c] text-white "
                       : "bg-[#EEEEEE]"
-                  } h-full w-full rounded-md p-5 cursor-pointer`}
+                  } h-full w-full rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
                     <h6 className="font-semibold">Project</h6>
@@ -421,7 +421,7 @@ const DashboardPanel = ({ setloading }) => {
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
                   : "bg-[#EEEEEE]"
-              } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+              } col-span-1 h-full w-full rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md p-5 cursor-pointer hover:shadow-md`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Sales</h6>
@@ -434,7 +434,7 @@ const DashboardPanel = ({ setloading }) => {
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
                   : "bg-[#EEEEEE]"
-              } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+              } col-span-1 h-full w-full rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md p-5 cursor-pointer hover:shadow-md`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Closed Projects</h6>
@@ -455,7 +455,7 @@ const DashboardPanel = ({ setloading }) => {
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
                   : "bg-[#EEEEEE]"
-              } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+              } col-span-1 h-full w-full rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md p-5 cursor-pointer hover:shadow-md`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Sales</h6>
@@ -473,7 +473,7 @@ const DashboardPanel = ({ setloading }) => {
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
                   : "bg-[#EEEEEE]"
-              } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+              } col-span-1 h-full w-full rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md p-5 cursor-pointer hover:shadow-md`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Monthly Target</h6>
@@ -490,7 +490,7 @@ const DashboardPanel = ({ setloading }) => {
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
                   : "bg-[#EEEEEE]"
-              } col-span-1 h-full w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
+              } col-span-1 h-full w-full rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md p-5 cursor-pointer hover:shadow-md`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Project Chart</h6>
@@ -513,7 +513,7 @@ const DashboardPanel = ({ setloading }) => {
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
           className={`
-           bg-[#DA1F26] h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
+           bg-[#DA1F26] h-auto w-full justify-between items-center rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white `}>
@@ -529,7 +529,7 @@ const DashboardPanel = ({ setloading }) => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
-          className={`bg-[#DA1F26] h-auto w-full justify-between items-center rounded-md px-10 py-7 text-center`}
+          className={`bg-[#DA1F26] h-auto w-full justify-between items-center rounded-xl hover:-mt-1 hover:mb-1 hover:shadow-md px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white`}>
