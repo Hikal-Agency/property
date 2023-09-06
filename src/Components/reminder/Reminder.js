@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "../../axoisConfig";
-import { toast } from "react-toastify";
 import SingleLead from "../Leads/SingleLead";
 import ReminderComponent from "./ReminderComponent";
 

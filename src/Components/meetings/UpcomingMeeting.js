@@ -1,13 +1,13 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import ShowLocation from "./ShowLocation";
+import { useStateContext } from "../../context/ContextProvider";
 import { 
   BsBuildings,
   BsClock,
   BsPinMap 
 } from "react-icons/bs";
-import { ImLocation, ImClock } from "react-icons/im";
-import { useStateContext } from "../../context/ContextProvider";
-import ShowLocation from "./ShowLocation";
+import "../../styles/animation.css";
 
 const UpcomingMeeting = ({ upcoming_meetings }) => {
   const { currentMode } = useStateContext();
@@ -46,9 +46,9 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
           <div
             onClick={() => handleCardClick(meeting)}
             key={index}
-            className={`w-[350px] flex flex-col justify-between ${
+            className={`card-hover w-[350px] flex flex-col justify-between ${
               currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-[#EEEEEE] text-black" // ${ currentMode === "dark" ? "bg- text-white " : "bg-" } 
-            } rounded-xl hover:mt-1 hover:mb-3 my-2 hover:shadow-lg`}
+            } rounded-xl my-2 `}
           >
             <div className="px-5 py-5 space-y-3">
               <h2 className="text-main-red-color text-md font-semibold">

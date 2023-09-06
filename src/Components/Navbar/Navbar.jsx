@@ -1,23 +1,47 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AiOutlineCalendar, AiOutlineMenu } from "react-icons/ai";
-import { MdUnsubscribe } from "react-icons/md";
-import { RiLockPasswordFill, RiNotification3Line } from "react-icons/ri";
+import React, { 
+  useContext, 
+  useEffect, 
+  useState 
+} from "react";
+import { useProSidebar } from "react-pro-sidebar";
+import { toast } from "react-toastify";
+import { 
+  Link, 
+  useLocation 
+} from "react-router-dom";
+
+import { 
+  Tooltip, 
+  Link as MuiLink, 
+  Button, 
+  Badge 
+} from "@mui/material";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Avatar from "@mui/material/Avatar";
+
+import { useStateContext } from "../../context/ContextProvider";
+import { ColorModeContext } from "../../context/theme";
+import axios from "../../axoisConfig";
+import BreadCrumb from "./BreadCrumb";
+import UpcomingMeetingsMenu from "./UpcomingMeetingsMenu";
+import Clock from "./Clock";
+import NotificationsMenuUpdated from "./NotificationsMenuUpdated";
+
+import { AiOutlineMenu } from "react-icons/ai";
+import {
+  BsCalendarEvent,
+  BsCalendarEventFill,
+  BsBell,
+  BsBellFill,
+  BsClock,
+  BsClockFill
+} from "react-icons/bs";
 import {
   MdDarkMode,
   MdKeyboardArrowDown,
   MdOutlineLightMode,
 } from "react-icons/md";
-import { FaRegClock } from "react-icons/fa";
-
-import { useStateContext } from "../../context/ContextProvider";
-import { Tooltip, Link as MuiLink, Button, Badge } from "@mui/material";
-import { useProSidebar } from "react-pro-sidebar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-
-import { AiFillCalendar } from "react-icons/ai";
-import { FaClock } from "react-icons/fa";
-import { RiNotification3Fill } from "react-icons/ri";
 import { 
   VscHistory,
   VscLock,
@@ -25,19 +49,7 @@ import {
   VscExclude,
   VscSignOut
 } from "react-icons/vsc";
-
-import Avatar from "@mui/material/Avatar";
-import { CgLogOut } from "react-icons/cg";
-import { ColorModeContext } from "../../context/theme";
-import NotificationsMenu from "./NotificationsMenu";
-import UpcomingMeetingsMenu from "./UpcomingMeetingsMenu";
-import { Link, useLocation } from "react-router-dom";
-import BreadCrumb from "./BreadCrumb";
-
-import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
-import Clock from "./Clock";
-import NotificationsMenuUpdated from "./NotificationsMenuUpdated";
+import "../../styles/animation.css";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <Tooltip title={title} arrow placement="bottom">
@@ -226,7 +238,8 @@ const Navbar = () => {
           <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
         </div>
         <div>{/* <Clock/> */}</div>
-        <div className="flex">
+
+        <div className="flex items-center">
           {isUserSubscribed !== null && [
             isUserSubscribed === false && (
               <Button
@@ -247,9 +260,9 @@ const Navbar = () => {
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
             icon={
               open && currNavBtn === "Meetings" ? (
-                <AiFillCalendar />
+                <BsCalendarEventFill size={16} />
               ) : (
-                <AiOutlineCalendar />
+                <BsCalendarEvent size={16} />
               )
             }
           />
@@ -262,7 +275,7 @@ const Navbar = () => {
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
             icon={
               open && currNavBtn === "Notifications" ? (
-                <RiNotification3Fill />
+                <BsBellFill size={16} />
               ) : (
                 [
                     <Badge
@@ -270,7 +283,7 @@ const Navbar = () => {
                       badgeContent={unreadNotifsCount}
                       color="error"
                     >
-                      <RiNotification3Line />
+                      <BsBell size={16} />
                     </Badge>
                 ]
               )
@@ -283,7 +296,10 @@ const Navbar = () => {
             // color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
             customFunc={(event) => handleClick(event, "Clock")}
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
-            icon={open && currNavBtn === "Clock" ? <FaClock /> : <FaRegClock />}
+            icon={open && currNavBtn === "Clock" ? 
+              <BsClockFill size={16} /> 
+              : 
+              <BsClock size={16} />}
           />
 
           {/* THEME  */}
@@ -300,9 +316,9 @@ const Navbar = () => {
               }`}
             >
               {currentMode === "dark" ? (
-                <MdOutlineLightMode color="#dcb511" />
+                <MdOutlineLightMode size={16} color="#dcb511" />
               ) : (
-                <MdDarkMode color="#DA1F26" />
+                <MdDarkMode size={16} color="#DA1F26" />
               )}
             </button>
           </Tooltip>
@@ -452,9 +468,9 @@ const Navbar = () => {
               ) : (
                 <div className="px-2 ">
                   <div
-                    className={`cursor-pointer ${
+                    className={`cursor-pointer card-hover ${
                       currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-2 p-4 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full`}
+                    } mb-2 p-4 rounded-xl shadow-sm w-full`}
                   >
                     <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
                       <div className="flex items-center justify-start">
@@ -477,9 +493,9 @@ const Navbar = () => {
 
                   {/* LOGIN HISTORY  */}
                   <div
-                    className={`cursor-pointer ${
+                    className={`cursor-pointer card-hover ${
                       currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-2 p-3 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full`}
+                    } mb-2 p-3 rounded-xl shadow-sm w-full`}
                   >
                     {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
                       <div className="flex items-center justify-start">
@@ -501,9 +517,9 @@ const Navbar = () => {
 
                   {/* CHANGE PASSWORD  */}
                   <div
-                    className={`cursor-pointer ${
+                    className={`cursor-pointer card-hover ${
                       currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-2 p-3 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full`}
+                    } mb-2 p-3 rounded-xl shadow-sm w-full`}
                   >
                     <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}>
                       <div className="flex items-center justify-start">
@@ -518,9 +534,9 @@ const Navbar = () => {
                   {/* IF SUBSCRIBED, UNSUBCRIBE  */}
                   {User?.role !== 1 && isUserSubscribed && (
                     <div
-                      className={`cursor-pointer ${
+                      className={`cursor-pointer card-hover ${
                         currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } mb-2 p-3 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full`}
+                      } mb-2 p-3 rounded-xl shadow-sm w-full`}
                       onClick={UnsubscribeUser}
                     >
                       {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
@@ -537,9 +553,9 @@ const Navbar = () => {
 
                   {/* LOGOUT  */}
                   <div
-                    className={`cursor-pointer ${
+                    className={`cursor-pointer card-hover ${
                       currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-2 p-3 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full`}
+                    } mb-2 p-3 rounded-xl shadow-sm w-full`}
                     onClick={LogoutUser}
                   >
                     <div className="flex items-center justify-start">

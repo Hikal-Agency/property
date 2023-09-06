@@ -1,0 +1,10 @@
+/* CARD HOVER EFFECT  */
+.card-hover {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 4px 6px rgba(170,170,170,0.5);
+    transition-delay: 0.2s;
+}

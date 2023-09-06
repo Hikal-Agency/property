@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { IconButton, Tooltip } from "@mui/material";
-import { useStateContext } from "../../context/ContextProvider";
-import { GrFormClose } from "react-icons/gr";
-import { GiCheckMark } from "react-icons/gi";
-import { BiRectangle } from "react-icons/bi";
-import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
+import { IconButton, Tooltip } from "@mui/material";
+import axios from "../../axoisConfig";
+import { useStateContext } from "../../context/ContextProvider";
+
+import { BiRectangle } from "react-icons/bi";
+import { GiCheckMark } from "react-icons/gi";
+import "../../styles/animation.css";
 
 const NotificationItem = ({
   activity,
@@ -22,9 +23,9 @@ const NotificationItem = ({
         <div className="w-full h-fit">
           <div
             onClick={(e) => openNotification(e, activity)}
-            className={`cursor-pointer ${
+            className={`cursor-pointer card-hover ${
               currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-            } m-1 mb-2 p-2 pb-3 space-y-3 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full`}
+            } m-1 mb-2 p-2 pb-3 space-y-3 rounded-xl shadow-sm w-full`}
           >
             <div className="grid grid-cols-6">
               <div className="flex justify-center items-center w-full h-full">

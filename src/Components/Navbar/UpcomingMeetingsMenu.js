@@ -1,17 +1,22 @@
-import { useState, useEffect } from "react";
+import { 
+  useState, 
+  useEffect 
+} from "react";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { Container, CircularProgress, Button } from "@mui/material";
+import { 
+  Container, 
+  CircularProgress, 
+  Button 
+} from "@mui/material";
+import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 import { 
   BsBuilding, 
   BsClock,
   BsPin 
 } from "react-icons/bs";
-import { ImLocation, ImClock } from "react-icons/im";
-
-import axios from "../../axoisConfig";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import "../../styles/animation.css";
 
 const UpcomingMeetingsMenu = () => {
   const { currentMode, BACKEND_URL } = useStateContext();
@@ -91,9 +96,9 @@ const UpcomingMeetingsMenu = () => {
               return (
                 <div
                   key={index}
-                  className={`${
+                  className={`card-hover ${
                     currentMode === "dark" ? "bg-black" : "bg-white"
-                  } m-1 mb-2 space-y-3 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full ${
+                  } m-1 mb-2 space-y-3 rounded-xl shadow-sm w-full ${
                     index === upcomingMeetings.length - 1 && "mb-5"
                   }`}
                 >

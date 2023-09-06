@@ -1,20 +1,11 @@
-import { Container } from "@mui/system";
-
-// import axios from "axios";
-import axios from "../../axoisConfig";
 import { useEffect, useState } from "react";
-import { MdSupportAgent } from "react-icons/md";
 import { toast } from "react-toastify";
-import { BsBookmark, BsFillPersonLinesFill, BsFlag } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { useStateContext } from "../../context/ContextProvider";
-import {
-  FaCalendar,
-  FaClock,
-  FaHandshake,
-  FaMoneyBillWave,
-} from "react-icons/fa";
+import { Container } from "@mui/system";
 import { CircularProgress } from "@mui/material";
+
+import axios from "../../axoisConfig";
+import { useStateContext } from "../../context/ContextProvider";
 import NotificationItem from "./NotificationItem";
 
 import {
@@ -52,14 +43,6 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
   };
 
   const notificationIcons = {
-    // "closed deal": <FaHandshake size={16} color={"#ffffff"} />,
-    // subscribe: <FaMoneyBillWave size={16} color={"#ffffff"} />,
-    // meeting: <FaCalendar size={16} color={"#ffffff"} />,
-    // reminder: <FaClock size={16} color={"#ffffff"} />,
-    // priority: <BsFlag size={16} color={"#ffffff"} />,
-    // feedback: <BsBookmark size={16} color={"#ffffff"} />,
-    // lead: <BsFillPersonLinesFill size={16} color={"#ffffff"} />,
-    // support: <MdSupportAgent size={16} color={"#ffffff"} />,
     "closed deal": <MdOutlineHandshake size={16} color={"#ffffff"} />,
     subscribe: <MdOutlineWorkspacePremium size={16} color={"#ffffff"} />,
     meeting: <MdOutlineCalendarMonth size={16} color={"#ffffff"} />,
