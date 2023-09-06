@@ -2,16 +2,22 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 import { Container, CircularProgress, Button } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import { BsBuilding } from "react-icons/bs";
+import { 
+  BsBuilding, 
+  BsClock,
+  BsPin 
+} from "react-icons/bs";
 import { ImLocation, ImClock } from "react-icons/im";
 
 import axios from "../../axoisConfig";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const UpcomingMeetingsMenu = () => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [upcomingMeetings, setUpcomingMeetings] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const FetchUpcomingMeetings = async (token) => {
     setLoading(true);
@@ -39,21 +45,34 @@ const UpcomingMeetingsMenu = () => {
   }, []);
   return (
     <>
-      <Container sx={{ maxHeight: 500, width: 400 }}>
-        <Button
-          variant="contained"
+      <Container 
+        sx={{ maxHeight: 500, width: 350, position: "relative" }}
+        >
+        <div
+          onClick={() => {
+            navigate("/meetings");
+          }}
+          className="flex my-2 justify-center text-[#AAAAAA] hover:text-[#DA1F26] text-sm w-full"
           style={{
-            background: "#FF0000",
-            color: "white",
-            marginBottom: "15px",
-            marginTop: "10px",
+            textDecoration: "none",
+            cursor: "pointer",
+          }}
+        >
+          View All Meetings
+        </div>
+
+        {/* <Button
+          style={{
+            background: "transparent",
+            color: "#AAAAAA",
           }}
           component={Link}
           to="/meetings"
           // className="w-full"
         >
           View all meetings
-        </Button>
+        </Button> */}
+
         {loading && (
           <div
             style={{
@@ -74,60 +93,58 @@ const UpcomingMeetingsMenu = () => {
                   key={index}
                   className={`${
                     currentMode === "dark" ? "bg-black" : "bg-white"
-                  } rounded-md mb-3 ${
-                    index === upcomingMeetings.length - 1 && "pb-2"
+                  } m-1 mb-2 space-y-3 rounded-xl shadow-sm hover:shadow-md hover:-mt-1 hover:mb-3 w-full ${
+                    index === upcomingMeetings.length - 1 && "mb-5"
                   }`}
                 >
-                  <div className="px-5 py-5 space-y-3">
-                    <h2 className="text-main-red-color text-md font-bold">
+                  <div className="p-4 pb-1 space-y-3">
+                    <h2 className="text-main-red-color font-semibold">
                       {meeting?.leadName}
                     </h2>
-                    <div className="w-full flex justify-between items-center">
-                      <div className="flex items-center space-x-1">
-                        <BsBuilding
-                          size={"20px"}
-                          className={`mr-2 ${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
-                        />
-                        <p className="text-sm mr-3">
-                          {meeting?.project} {meeting?.enquiryType}{" "}
-                          {meeting?.leadType} {meeting?.leadFor}
-                        </p>
-                      </div>
+
+                    <div className="grid grid-cols-11 flex items-center">
+                      <BsBuilding
+                        size={16}
+                        className={`m-1 ${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                      />
+                      <p className="text-sm mr-3 col-span-10" style={{ lineHeight: "1.7rem" }}>
+                        {meeting?.project === "null" ? "-" : meeting?.project} {meeting?.enquiryType === "null" ? "-" : meeting?.enquiryType}{" "}
+                        {meeting?.leadType === "null" ? "-" : meeting?.leadType} {meeting?.leadFor === "null" ? "-" : meeting?.leadFor}
+                      </p>
                     </div>
-                    <div className="w-full flex justify-between items-center">
-                      <div className="flex items-center space-x-1">
-                        <ImClock
-                          size={"18px"}
-                          className={`mr-2 ${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
-                        />
-                        <p className="text-sm mr-3">
-                          {meeting?.meetingTime === ""
-                            ? ""
-                            : `${meeting?.meetingTime}, `}{" "}
-                          {moment(meeting?.meetingDate).format("MMMM D, Y")}
-                        </p>
-                      </div>
+
+                    <div className="grid grid-cols-11 flex items-center">
+                      <BsClock
+                        size={16}
+                        className={`m-1 ${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                      />
+                     <p className="text-sm mr-3 col-span-10">
+                        {meeting?.meetingTime === ""
+                          ? ""
+                          : `${meeting?.meetingTime}, `}{" "}
+                        {moment(meeting?.meetingDate).format("MMMM D, Y")}
+                      </p>
                     </div>
-                    <div className="w-full flex justify-between items-center">
-                      <div className="flex items-center space-x-1">
-                        <ImLocation
-                          size={"18px"}
-                          className={`mr-2 ${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
-                        />
-                        <p className="text-sm mr-3">
-                          {" "}
-                          {meeting?.meetingLocation || "Not Updated"}
-                        </p>
-                      </div>
+
+                    <div className="grid grid-cols-11 flex items-center">
+                      <BsPin
+                        size={16}
+                        className={`m-1 ${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                      />
+                      <p className="text-sm mr-3 col-span-10" style={{ lineHeight: "1.7rem" }}>
+                        {" "}
+                        {meeting?.meetingLocation || "Not Updated"}
+                      </p>
                     </div>
+                    
                   </div>
-                  <span className="block text-sm bg-main-red-color text-white rounded-md text-center p-2 font-semibold">
+                  <span className="block text-sm bg-main-red-color text-white rounded-b-xl text-center p-2 font-semibold">
                     {meeting?.createdBy}
                   </span>
                 </div>
