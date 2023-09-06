@@ -141,7 +141,8 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
   return (
     <Container
       onClick={handleAvoidClose}
-      sx={{ maxHeight: 500, width: 400, position: "relative" }}
+      sx={{ maxHeight: 500, width: 350, position: "relative" }}
+      className="pb-5"
     >
       <div
         onClick={() => {
@@ -149,16 +150,13 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
           setAnchorEl(null);
           setOpen(false);
         }}
+        className="flex my-2 justify-center text-[#AAAAAA] hover:text-[#DA1F26] text-sm w-full"
         style={{
           textDecoration: "none",
-          color: "#1877f2",
-          fontWeight: "bold",
-          marginBottom: "15px",
-          marginTop: "10px",
           cursor: "pointer",
         }}
       >
-        See All
+        See All Notifications
       </div>
       {loading && (
         <div
@@ -200,7 +198,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
             );
           })
         ) : (
-          <h1 className="text-center font-bold">No Unread Notifications</h1>
+          <h1 className="text-center">No Unread Notifications</h1>
         ))}
     </Container>
   );

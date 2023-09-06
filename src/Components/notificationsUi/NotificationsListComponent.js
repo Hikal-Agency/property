@@ -9,7 +9,7 @@ import {
   FaClock,
   FaHandshake,
   FaMoneyBillWave,
-  FaRegCommentDots,
+  FaFlag,
 } from "react-icons/fa";
 import { BsFlag } from "react-icons/bs";
 import { MdSupportAgent } from "react-icons/md";
@@ -76,7 +76,7 @@ const NotificationsListComponent = ({
     subscribe: <FaMoneyBillWave size={16} color={"#ffffff"} />,
     meeting: <FaCalendar size={16} color={"#ffffff"} />,
     reminder: <FaClock size={16} color={"#ffffff"} />,
-    priority: <BsFlag size={16} color={"#ffffff"} />,
+    priority: <FaFlag size={16} color={"#ffffff"} />,
     feedback: <BsBookmark size={16} color={"#ffffff"} />,
     lead: <BsFillPersonLinesFill size={16} color={"#ffffff"} />,
     support: <MdSupportAgent size={16} color={"#ffffff"} />,
