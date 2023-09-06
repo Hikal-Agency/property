@@ -21,6 +21,17 @@ import { CircularProgress, Pagination, Stack } from "@mui/material";
 import { toast } from "react-toastify";
 import moment from "moment";
 
+import {
+  MdOutlineWorkspacePremium,
+  MdOutlineAlarm,
+  MdOutlineFlag,
+  MdOutlineBookmarkAdded,
+  MdOutlinePerson,
+  MdOutlineHeadsetMic,
+  MdOutlineHandshake,
+  MdOutlineCalendarMonth
+} from "react-icons/md";
+
 const NotificationsListComponent = ({
   displayMarkBtn,
   setdisplayMarkBtn,
@@ -67,19 +78,27 @@ const NotificationsListComponent = ({
     reminder: "#edbf40",
     priority: "#868BD9",
     feedback: "#ff7936",
-    lead: "#5e89f8",
+    lead: "#5E89F8",
     support: "#f895d1",
   };
 
   const notificationIcons = {
-    "closed deal": <FaHandshake size={16} color={"#ffffff"} />,
-    subscribe: <FaMoneyBillWave size={16} color={"#ffffff"} />,
-    meeting: <FaCalendar size={16} color={"#ffffff"} />,
-    reminder: <FaClock size={16} color={"#ffffff"} />,
-    priority: <FaFlag size={16} color={"#ffffff"} />,
-    feedback: <BsBookmark size={16} color={"#ffffff"} />,
-    lead: <BsFillPersonLinesFill size={16} color={"#ffffff"} />,
-    support: <MdSupportAgent size={16} color={"#ffffff"} />,
+    // "closed deal": <FaHandshake size={16} color={"#ffffff"} />,
+    // subscribe: <FaMoneyBillWave size={16} color={"#ffffff"} />,
+    // meeting: <FaCalendar size={16} color={"#ffffff"} />,
+    // reminder: <FaClock size={16} color={"#ffffff"} />,
+    // priority: <FaFlag size={16} color={"#ffffff"} />,
+    // feedback: <BsBookmark size={16} color={"#ffffff"} />,
+    // lead: <BsFillPersonLinesFill size={16} color={"#ffffff"} />,
+    // support: <MdSupportAgent size={16} color={"#ffffff"} />,
+    "closed deal": <MdOutlineHandshake size={20} color={"#ffffff"} />,
+    subscribe: <MdOutlineWorkspacePremium size={20} color={"#ffffff"} />,
+    meeting: <MdOutlineCalendarMonth size={20} color={"#ffffff"} />,
+    reminder: <MdOutlineAlarm size={20} color={"#ffffff"} />,
+    priority: <MdOutlineFlag size={20} color={"#ffffff"} />,
+    feedback: <MdOutlineBookmarkAdded size={20} color={"#ffffff"} />,
+    lead: <MdOutlinePerson size={20} color={"#ffffff"} />,
+    support: <MdOutlineHeadsetMic size={20} color={"#ffffff"} />,
   };
 
   const fetchNotifications = async () => {
