@@ -16,6 +16,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import "react-phone-number-input/style.css";
 import dayjs from "dayjs";
 import { BsCalendarDate, BsClock, BsPen } from "react-icons/bs";
+import { AiOutlineMail } from "react-icons/ai";
 
 import {
   DatePicker,
@@ -49,6 +50,7 @@ const AddReminder = ({
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
   const [ReminderNotes, setReminderNotes] = useState("");
+  const [ReminderEmail, setReminderEmail] = useState(User?.userEmail);
   const [reminderDate, setReminderDate] = useState(null);
   const [reminderTime, setReminderTime] = useState(null);
   const [reminderTimeValue, setTimeValue] = useState({});
@@ -63,13 +65,26 @@ const AddReminder = ({
 
   const AddReminderFunction = async () => {
     setbtnloading(true);
+    if (!ReminderEmail) {
+      toast.error("Email is required.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
 
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setbtnloading(false);
+    }
     const token = localStorage.getItem("auth-token");
     const creationDate = new Date();
     const AddReminderData = new FormData();
     AddReminderData.append("reminder_note", ReminderNotes);
     AddReminderData.append("reminder_time", reminderTime);
     AddReminderData.append("reminder_date", reminderDate);
+    AddReminderData.append("email", ReminderEmail);
     AddReminderData.append("leadName", LeadData?.leadName);
     AddReminderData.append("lead_id", LeadData?.leadId);
     AddReminderData.append("user_id", User?.id);
@@ -180,6 +195,32 @@ const AddReminder = ({
                       endAdornment: (
                         <IconButton>
                           <BsPen size={16} color={"#AAAAAA"} />
+                        </IconButton>
+                      ),
+                    }}
+                  />
+                </Box>
+                <Box sx={darkModeColors}>
+                  <TextField
+                    id="LeadName"
+                    type={"text"}
+                    sx={{
+                      "& input": {
+                        fontFamily: "Noto Kufi Arabic",
+                        margintTop: "10px !important",
+                      },
+                    }}
+                    label="Email"
+                    className="w-full mt-3"
+                    variant="outlined"
+                    size="small"
+                    required
+                    value={ReminderEmail}
+                    onChange={(e) => setReminderEmail(e.target.value)}
+                    InputProps={{
+                      endAdornment: (
+                        <IconButton>
+                          <AiOutlineMail size={16} color={"#AAAAAA"} />
                         </IconButton>
                       ),
                     }}
