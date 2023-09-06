@@ -600,7 +600,7 @@ const DashboardPanel = ({ setloading }) => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ margin: "-70px" }}
-        className={`${currentMode === "dark" ? "border-[#1C1C1C]" : "border-[#EEEEEE]"} grid grid-cols-1 pb-3 my-3 border-4 rounded-md`}
+        className={`${currentMode === "dark" ? "border-[#1C1C1C]" : "border-[#EEEEEE]"} grid grid-cols-1 pb-3 my-3 border-4 rounded-xl`}
       >
         <Task />
       </motion.div>

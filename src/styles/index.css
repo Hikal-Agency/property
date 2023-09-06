@@ -115,9 +115,14 @@ background-color: "#DA1F26";
   color: #777777;
 }
 
-.ps-submenu-content ul a:hover .leads_counter {
-  color: white !important;
+.ps-submenu-content {
+  border-radius: 15px !important;
+  margin: 7px !important;
 }
+
+/* .ps-submenu-content ul a:hover .leads_counter {
+  color: #FFFFFF !important;
+} */
 
 .nav-item,
 .navbar {
@@ -160,7 +165,7 @@ background-color: "#DA1F26";
 
 .dark-mode ::-webkit-scrollbar-thumb {
   /* background-color: rgb(216, 216, 216); */
-  background-color: #777777;
+  background-color: #333333;
   border-radius: 50px;
 }
 
@@ -228,6 +233,11 @@ background-color: "#DA1F26";
 .dark-mode-sidebar .ps-submenu-content {
   background: #1C1C1C;
 }
+
+/* .css-edu7i6 {
+  border-radius: 20px !important;
+  margin: 10px !important;
+} */
 
 .dark-mode-sidebar .ps-submenu-content > ul .ps-menu-button:not(.ps-active):hover span {
   color: black;
@@ -489,22 +499,24 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .leads_counter {
-   color: white !important;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 9px;
   text-align: center;
-  border-radius: 2px;
-  width: 42px;
+  border-radius: 3px;
+  /* width: 42px; */
   right: 6px;
-  padding: 3px 0px;
+  padding: 1px 3px;
+  /* border: 1px solid #DA1F26; */
 }
 
 .light-mode-sidebar .leads_counter {
-  background: #da1f26 !important;
+  color: #FFFFFF !important;
+  background: #DA1F26 !important;
 }
 
 .dark-mode-sidebar .leads_counter {
-  background: black !important;
+  color: #FFFFFF !important;
+  background: #2F2F2F !important;
 }
 
 .ps-menuitem-root .ps-menu-button {
@@ -517,12 +529,12 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .light-mode-sidebar .sub .ps-open .MuiBox-root {
-  background: #DDDDDD;
+  background: rgb(255 255 255 / 30%);
   margin: 0 !important;
 }
 
 .dark-mode-sidebar .sub .ps-open .MuiBox-root {
-  background: #262626;
+  background: rgba(0, 0, 0, 60%);
   margin: 0 !important;
 }
 
