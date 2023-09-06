@@ -1,25 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import SwitchButtonComponent from "./SwitchButtonComponent";
-import { BsFillPersonLinesFill } from "react-icons/bs";
-import { BiCalendarEvent, BiMoney, BiSupport } from "react-icons/bi";
-import { AiOutlineClockCircle, AiOutlineFlag } from "react-icons/ai";
-import {
-  FaCalendar,
-  FaClock,
-  FaHandshake,
-  FaMoneyBillWave,
-  FaFlag,
-} from "react-icons/fa";
-import { BsFlag } from "react-icons/bs";
-import { MdSupportAgent } from "react-icons/md";
+
 import axios from "../../axoisConfig";
 import usePermission from "../../utils/usePermission";
 import Loader from "../Loader";
-import { BsBookmark } from "react-icons/bs";
 import { CircularProgress, Pagination, Stack } from "@mui/material";
 import { toast } from "react-toastify";
 import moment from "moment";
+
+import "../../styles/animation.css";
 
 import {
   MdOutlineWorkspacePremium,
@@ -182,7 +171,7 @@ const NotificationsListComponent = ({
             notification_list?.map((notification, index) => (
               <div
                 key={index}
-                className={`flex items-center space-x-8 py-3 px-3 my-2 hover:-mt-1 hover:mb-3 rounded-xl`}
+                className={`card-hover flex items-center space-x-8 py-3 px-3 my-2 rounded-xl`}
                 // onClick={(e) => UpdateReadStatus(e, notification?.id)}
                 style={{
                   background:
