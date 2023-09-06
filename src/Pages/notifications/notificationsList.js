@@ -134,8 +134,14 @@ const NotificationsList = () => {
 
   const handleFilter = (e, value) => {
     console.log("value: ", value);
+    console.log("e: ", e.target.value);
+
     if (value === 0) {
-      setFilter(e.target.value);
+      if (e.target.value === "0") {
+        setFilter(null);
+      } else {
+        setFilter(e.target.value);
+      }
     } else if (value === 1) {
       setfilter_notifyType(e.target.value);
     }

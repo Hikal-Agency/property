@@ -364,16 +364,23 @@ const Sidebarmui = () => {
       socket.on("notification_reminder", (data) => {
         console.log("Reminder: ", data);
 
-      toast(<ReminderToast type="reminder" reminderTime="2023-08-19 01:25:00 PM" leadName="Qasim"/>, {
-        position: "bottom-right",
-        autoClose: 15000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: true,
-        closeButton: false,
-        draggable: false,
-        theme: "light",
-      });
+        toast(
+          <ReminderToast
+            type="reminder"
+            reminderTime="2023-08-19 01:25:00 PM"
+            leadName="Qasim"
+          />,
+          {
+            position: "bottom-right",
+            autoClose: 15000,
+            hideProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: true,
+            closeButton: false,
+            draggable: false,
+            theme: "light",
+          }
+        );
       });
 
       socket.on("notification_lead_manager_assigned", (data) => {
@@ -1097,7 +1104,7 @@ const Sidebarmui = () => {
               link: "/notifications",
             },
             {
-              name: "Notifications List",
+              name: "Notifications History",
               link: "/notificationsList",
             },
           ],
