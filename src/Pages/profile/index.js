@@ -35,7 +35,7 @@ const ProfilePage = () => {
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
-  const {hasPermission} = usePermission();
+  const { hasPermission } = usePermission();
 
   // Btn loading
   const [btnloading, setbtnloading] = useState(false);
@@ -348,7 +348,7 @@ const ProfilePage = () => {
                             </div>
                           </div>
 
-                          {hasPermission("delete_account") ? (
+                          {/* {hasPermission("delete_account") ? (
                             <div className="mt-5 text-center text-gray-600">
                               <Button
                                 className="bg-main-red-color shadow-none hover:shadow-none p-3"
@@ -359,7 +359,7 @@ const ProfilePage = () => {
                             </div>
                           ) : (
                             <></>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     </div>
