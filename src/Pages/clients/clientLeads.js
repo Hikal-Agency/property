@@ -1284,7 +1284,7 @@ const ClientLeads = ({
                     checkboxSelection
                     onSelectionModelChange={(ids) => {
                       setSelectedRows(
-                        ids.map((id) => pageState?.data[id - 1]?.lid)
+                        ids.map((id) => pageState?.data[id - pageState?.from]?.lid)
                       );
                     }}
                     pageSize={pageState.pageSize}

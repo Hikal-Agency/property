@@ -2275,7 +2275,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               onSelectionModelChange={(ids) => {
                 selectionModelRef.current = ids;
                 setSelectedRows(
-                  ids.map((id) => pageState?.data[id - 1]?.leadId)
+                  ids.map((id) => pageState?.data[id - pageState?.from]?.leadId)
                 );
               }}
               pageSize={pageState.pageSize}

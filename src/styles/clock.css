@@ -1,0 +1,74 @@
+.analog-clock {
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+    position: relative;
+    /* background-color: #000000; */
+  }
+  
+  .clock-face {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .clock-face-background {
+    width: 100%;
+    height: 100%;
+    background-image: url('../../public/clock-anim.gif'); /* Replace with your clock background image path */
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+}
+  
+  .center-pin {
+    position: absolute;
+    transform-origin: center bottom;
+    width: 4%;
+    height: 4%;
+    background-color: white;
+    border: 2px solid #DA1F26;
+    border-radius: 50%;
+    left: 48%;
+    top: 48%;
+    z-index: 5;
+  }
+  
+  .hour-hand,
+  .minute-hand,
+  .second-hand {
+    position: absolute;
+    transform-origin: center bottom;
+  }
+  
+  .hour-hand {
+    width: 2%;
+    height: 30px;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    top: 33%;
+    left: 49%;
+    z-index: 4;
+  }
+  
+  .minute-hand {
+    width: 1%;
+    height: 48px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    top: 26%;
+    left: 49.5%;
+    z-index: 3;
+  }
+  
+  .second-hand {
+    width: 0.4%;
+    height: 60px;
+    background-color: #DA1F26;
+    border-radius: 5px;
+    top: 20%;
+    left: 49.9%;
+    z-index: 2;
+  }
+  
+  

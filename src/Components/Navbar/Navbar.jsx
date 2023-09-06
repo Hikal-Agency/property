@@ -329,7 +329,7 @@ const Navbar = () => {
 
           {currNavBtn === "Clock" ? (
             <div
-              className="bg-main-red-color"
+              className=""
               style={{ margin: 0, padding: 0, overflow: "hidden" }}
             >
               <Menu
@@ -345,9 +345,9 @@ const Navbar = () => {
                     overflow: "visible",
                     //  overflowY: "scroll",
                     filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                    mt: 1.5,
-                    background: "#DA1F26",
-                    color: currentMode === "dark" ? "#ffffff" : "black",
+                    mt: 0.5,
+                    background: "#AAAAAA",
+                    color: currentMode === "dark" ? "#FFFFFF" : "#FFFFFF",
                     minWidth: 300,
                     padding: 0,
                     "& .MuiAvatar-root": {
@@ -360,8 +360,9 @@ const Navbar = () => {
                       padding: "3px",
                     },
                     "& .MuiList-root .clock-div": {
-                      backgroundColor:
-                        currentMode === "dark" ? "#1C1C1C " : "#EEEEEE",
+                      background:
+                        // currentMode === "dark" ? "#000000 " : "radial-gradient(circle, #666666, #EEEEEE)",
+                        currentMode === "dark" ? "#000000 " : "#AAAAAA",
                       border: "none !important",
                     },
                     //  "&:before": {
