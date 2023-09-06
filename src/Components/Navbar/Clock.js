@@ -75,7 +75,7 @@ const Clock = () => {
               "& .MuiSelect-select": {
                 padding: "5px 20px 5px 5px !important",
               },
-              color: "#000000 !important",
+              color: currentMode === "dark" ? "#FFF !important" : "#000 !important",
             }}
             size="small"
             variant="standard"

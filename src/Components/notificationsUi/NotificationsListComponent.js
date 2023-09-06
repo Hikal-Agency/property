@@ -9,7 +9,7 @@ import {
   FaClock,
   FaHandshake,
   FaMoneyBillWave,
-  FaRegCommentDots,
+  FaFlag,
 } from "react-icons/fa";
 import { BsFlag } from "react-icons/bs";
 import { MdSupportAgent } from "react-icons/md";
@@ -56,8 +56,8 @@ const NotificationsListComponent = ({
   };
 
   const readColor = {
-    bgColorRead: currentMode === "dark" ? "#1c1c1c" : "#DDDDDD",
-    bgColor: currentMode === "dark" ? "#333333" : "#EEEEEE",
+    bgColorRead: currentMode === "dark" ? "#222222" : "#DDDDDD",
+    bgColor: currentMode === "dark" ? "#0C0C0C" : "#F4F4F4",
   };
 
   const iconBGColor = {
@@ -76,7 +76,7 @@ const NotificationsListComponent = ({
     subscribe: <FaMoneyBillWave size={16} color={"#ffffff"} />,
     meeting: <FaCalendar size={16} color={"#ffffff"} />,
     reminder: <FaClock size={16} color={"#ffffff"} />,
-    priority: <BsFlag size={16} color={"#ffffff"} />,
+    priority: <FaFlag size={16} color={"#ffffff"} />,
     feedback: <BsBookmark size={16} color={"#ffffff"} />,
     lead: <BsFillPersonLinesFill size={16} color={"#ffffff"} />,
     support: <MdSupportAgent size={16} color={"#ffffff"} />,
@@ -158,12 +158,12 @@ const NotificationsListComponent = ({
       {loading ? (
         <Loader />
       ) : (
-        <div className="w-full mt-5 px-3 pl-4">
+        <div className="w-full my-2 px-3">
           {notification_list.length > 0 ? (
             notification_list?.map((notification, index) => (
               <div
                 key={index}
-                className={`flex items-center space-x-8  py-3 px-4 mb-2 `}
+                className={`flex items-center space-x-8 py-3 px-3 my-2 hover:-mt-1 hover:mb-3 rounded-xl`}
                 // onClick={(e) => UpdateReadStatus(e, notification?.id)}
                 style={{
                   background:
@@ -176,15 +176,15 @@ const NotificationsListComponent = ({
                   style={{
                     background: iconBGColor[notification?.type?.toLowerCase()],
                   }}
-                  className={` p-5`}
+                  className={`rounded-full p-4`}
                 >
                   {notificationIcons[notification?.type?.toLowerCase()]}
                 </div>
                 <div>
-                  <h5
-                    className={`font-semibold ${
+                  <p
+                    className={` ${
                       currentMode === "dark" ? "text-white" : "text-dark"
-                    }`}
+                    } ${notification?.isRead === 0 || notification?.isRead === null ? "font-semibold" : ""}`}
                   >
                     {notification?.title}
 
@@ -203,12 +203,12 @@ const NotificationsListComponent = ({
                         <span className="font-bold mt-2">
                           {notification?.username}
                         </span> */}
-                  </h5>
+                  </p>
                   <p
-                    style={{ color: currentMode === "dark" && "#777777" }}
-                    className="mt-2"
+                    style={{ color: "#AAAAAA" }}
+                    className="mt-2 text-sm"
                   >
-                    {notification?.type}. {notification?.created_at}{" "}
+                    {notification?.type} <span className="text-[#AAAAAA] rounded-full mx-1">●</span> {notification?.created_at}{" "}
                   </p>
                 </div>
               </div>

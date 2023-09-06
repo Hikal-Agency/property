@@ -32,31 +32,23 @@ const Notifications = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full ${
+            className={`w-full pl-3 ${
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`w-full`}>
-              <div className="pl-3">
-                <div className="mt-3 flex justify-between">
-                  <h1
-                    className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-red-600 font-bold border-red-600"
-                    }`}
-                  >
-                    ● Notifications Settings{" "}
-                    {/* <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
-                      <span>{pageState?.total}</span>
-                    </span> */}
-                  </h1>
-                </div>
-                <NotificationsGridComponent />
-                {/* <NotificationsComponent /> */}
-              </div>
+            <div className="w-full flex items-center py-1">
+              <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+              <h1
+                className={`text-lg font-semibold ${
+                  currentMode === "dark"
+                    ? "text-white"
+                    : "text-black"
+                }`}
+              >
+                Notification Settings
+              </h1>
             </div>
-            {/* <Footer /> */}
+            <NotificationsGridComponent />
           </div>
         )}
       </div>

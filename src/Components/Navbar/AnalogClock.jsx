@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment-timezone";
+import { useStateContext } from "../../context/ContextProvider";
 
 import "../../styles/clock.css";
 
 const AnalogClock = ({ timeString, timezone }) => {
+  const { currentMode } = useStateContext();
   const [time, setTime] = useState(moment(timeString));
 
   useEffect(() => {
@@ -47,20 +49,35 @@ const AnalogClock = ({ timeString, timezone }) => {
     <div className="w-full flex items-center justify-center">
       <div className="analog-clock">
         <div className="clock-face">
-          <div class="clock-face-background"></div>
+          <div
+            class={`${
+              currentMode === "dark" ? "dark-mode" : "light-mode"
+            } clock-face-background`}
+          ></div>
           <div
             className="hour-hand"
-            style={{ transform: `rotate(${getHours()}deg)` }}
+            style={{
+              transform: `rotate(${getHours()}deg)`,
+              background: currentMode === "dark" ? "#FFFFFF" : "#000000",
+            }}
           ></div>
           <div
             className="minute-hand"
-            style={{ transform: `rotate(${getMinutes()}deg)` }}
+            style={{
+              transform: `rotate(${getMinutes()}deg)`,
+              background: currentMode === "dark" ? "#FFFFFF" : "#000000",
+            }}
           ></div>
           <div
             className="second-hand"
             style={{ transform: `rotate(${getSeconds()}deg)` }}
           ></div>
-          <div className="center-pin"></div>
+          <div
+            className="center-pin"
+            style={{
+              background: currentMode === "dark" ? "#FFFFFF" : "#000000",
+            }}
+          ></div>
         </div>
         {/* <div className="clock-time">{getTimeInSelectedTimezone()}</div> */}
       </div>
