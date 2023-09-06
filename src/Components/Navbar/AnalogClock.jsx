@@ -37,34 +37,33 @@ const AnalogClock = ({ timeString, timezone }) => {
       // Update the time state with the current time in the selected timezone
       setTime(moment().tz(timezone));
     }, 1000);
-  
+
     return () => {
       clearInterval(interval);
     };
   }, [timezone]);
-  
 
   return (
     <div className="w-full flex items-center justify-center">
-        <div className="analog-clock" >
+      <div className="analog-clock">
         <div className="clock-face">
-            <div class="clock-face-background"></div>
-            <div
+          <div class="clock-face-background"></div>
+          <div
             className="hour-hand"
             style={{ transform: `rotate(${getHours()}deg)` }}
-            ></div>
-            <div
+          ></div>
+          <div
             className="minute-hand"
             style={{ transform: `rotate(${getMinutes()}deg)` }}
-            ></div>
-            <div
+          ></div>
+          <div
             className="second-hand"
             style={{ transform: `rotate(${getSeconds()}deg)` }}
-            ></div>
-            <div className="center-pin"></div>
+          ></div>
+          <div className="center-pin"></div>
         </div>
         {/* <div className="clock-time">{getTimeInSelectedTimezone()}</div> */}
-        </div>
+      </div>
     </div>
   );
 };
