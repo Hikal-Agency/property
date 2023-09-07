@@ -8,16 +8,15 @@ body {
   overflow-x: hidden;
 }
 
+:root {
+  --primary-color: "";
+}
+
 /* subscribe btn styling */
 .MuiBox-root .css-tykrgw-MuiButtonBase-root-MuiButton-root > a:hover i::before {
   left: 20%;
   width: 20px;
 }
-
-/* sidebar icons */
-/* .css-wx7wi4{
-  display: "none !important";
-} */
 
 /* mui date icon */
 .reminder > .MuiSvgIcon-root .MuiSvgIcon-fontSizeMedium {

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "../axoisConfig";
 import {toast} from "react-toastify";
 const StateContext = createContext();
@@ -48,6 +48,7 @@ export const ContextProvider = ({ children }) => {
   const [sidebarData, setSidebarData] = useState({});
   const [fbToken, setFBToken] = useState();
   const [permits, setPermits] = useState("");
+  const [primaryColor, setPrimaryColor] = useState("default");
   const [session, setSession] = useState({
     expiresIn: localStorage.getItem("expires_in"),
     accessToken: localStorage.getItem("access_token"),
@@ -318,6 +319,16 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    if(localStorage.getItem("primary-color")) {
+      localStorage.setItem("primary-color", primaryColor);
+      document.documentElement.style.setProperty('--primary-color', primaryColor);
+    } else {
+      localStorage.setItem("primary-color", "red");
+      document.documentElement.style.setProperty('--primary-color', "red");
+    }
+  }, [primaryColor]);
+
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <StateContext.Provider
@@ -397,7 +408,9 @@ export const ContextProvider = ({ children }) => {
         notifIconAnimating, 
         setNotifIconAnimating, 
         setUnreadNotifsCount, 
-        getNotifCounts
+        getNotifCounts, 
+        primaryColor, 
+        setPrimaryColor
       }}
     >
       {children}

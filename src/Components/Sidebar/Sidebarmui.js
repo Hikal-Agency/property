@@ -85,6 +85,8 @@ const Sidebarmui = () => {
     setUnreadNotifsCount,
     setNotifIconAnimating,
     getNotifCounts,
+    primaryColor,
+    setPrimaryColor
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -189,6 +191,7 @@ const Sidebarmui = () => {
       setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
       FetchPermissions();
+      setPrimaryColor("#da1f26");
       socket.emit("add_user", { ...JSON.parse(storedUser) });
     } else {
       axios
@@ -507,7 +510,6 @@ const Sidebarmui = () => {
       }
     }
   };
-
   useEffect(() => {
     if (!(User?.uid && User?.loginId)) {
       const token = localStorage.getItem("auth-token");
@@ -528,6 +530,7 @@ const Sidebarmui = () => {
     }
     // eslint-disable-next-line
   }, []);
+
 
   let links = [
     {

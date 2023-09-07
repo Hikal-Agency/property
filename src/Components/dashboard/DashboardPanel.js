@@ -41,6 +41,7 @@ const DashboardPanel = ({ setloading }) => {
     Sales_chart_data,
     setSales_chart_data,
     BACKEND_URL,
+    primaryColor
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
@@ -193,11 +194,12 @@ const DashboardPanel = ({ setloading }) => {
       return number.toString();
     }
   }
+  
   return (
     <div className="mt-5 md:mt-2">
       <h1
         className={`font-semibold ${
-          currentMode === "dark" ? "text-white" : "text-[#DA1F26]"
+          currentMode === "dark" ? "text-white" : `text-[${primaryColor}]`
         } text-lg ml-2 mb-3`}
       >
         OVERVIEW
@@ -221,17 +223,17 @@ const DashboardPanel = ({ setloading }) => {
           >
             <div>
               {User?.role === 3 && (
-                <p className="text-2xl font-bold pb-3 text-[#DA1F26]">
+                <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {User?.role === 7 && (
-                <p className="text-2xl font-bold pb-3 text-[#DA1F26]">
+                <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {(User?.role === 1 || User?.role === 2 || User?.role === 8) && (
-                <p className="text-2xl font-bold pb-3 text-[#DA1F26]">
+                <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
@@ -260,7 +262,7 @@ const DashboardPanel = ({ setloading }) => {
                       : "bg-[#EEEEEE] text-main-dark-bg"
                   } h-auto w-full p-5 rounded-xl grid content-center`}
                 >
-                  <p className="text-2xl font-bold pb-3 text-[#DA1F26]">
+                  <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
                     <CountUp end={item.amount} duration={3} />
                   </p>
                   <p
@@ -290,7 +292,7 @@ const DashboardPanel = ({ setloading }) => {
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
-                      <p className="text-2xl font-bold pb-3 text-[#DA1F26]">
+                      <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
                         <CountUp end={item.amount} duration={3} />
                       </p>
                       <p
@@ -322,7 +324,7 @@ const DashboardPanel = ({ setloading }) => {
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
-                      <p className="text-2xl font-bold pb-3 text-[#DA1F26]">
+                      <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
                         <CountUp end={item.amount} duration={3} />
                       </p>
                       <p
@@ -516,7 +518,7 @@ const DashboardPanel = ({ setloading }) => {
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
           className={`
-          card-hover bg-[#DA1F26] h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
+          card-hover bg-[${primaryColor}] h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white `}>
@@ -532,7 +534,7 @@ const DashboardPanel = ({ setloading }) => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
-          className={`card-hover bg-[#DA1F26] h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
+          className={`card-hover bg-[${primaryColor}] h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white`}>
