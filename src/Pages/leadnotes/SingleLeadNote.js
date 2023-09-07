@@ -112,10 +112,6 @@ const SingleLeadNote = (props) => {
   }, []);
   return (
     <>
-      {/* <Head>
-        <title>HIKAL CRM - Lead Note</title>
-        <meta name="description" content="User Dashboard - HIKAL CRM" />
-      </Head> */}
 
       <div className="flex min-h-screen">
         {loading ? (

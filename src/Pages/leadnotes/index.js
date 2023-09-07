@@ -22,7 +22,7 @@ const LeadNotesPage = (props) => {
   }, []);
   return (
     <>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen pt-1">
         {loading ? (
           <Loader />
         ) : (
