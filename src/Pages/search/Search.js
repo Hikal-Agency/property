@@ -27,35 +27,20 @@ import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 
-import { 
-  AiOutlineEdit, 
-  AiOutlineHistory, 
-  AiFillEdit 
-} from "react-icons/ai";
-import { 
-  BiSearch, 
-  BiMessageRoundedDots, 
-  BiArchive 
-} from "react-icons/bi";
-import { 
-  FcGoogle 
-} from "react-icons/fc";
-import { 
-  MdCampaign 
-} from "react-icons/md";
-import { 
-  BsPersonCircle, 
-  BsSnow2, 
+import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
+import { BiSearch, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
+import { FcGoogle } from "react-icons/fc";
+import { MdCampaign } from "react-icons/md";
+import {
+  BsPersonCircle,
+  BsSnow2,
   BsTrash,
   BsAlarm,
   BsShieldX,
   BsShieldCheck,
-  BsShieldMinus 
+  BsShieldMinus,
 } from "react-icons/bs";
-import { 
-  TbFileImport, 
-  TbWorldWww 
-} from "react-icons/tb";
+import { TbFileImport, TbWorldWww } from "react-icons/tb";
 import {
   FaSnapchatGhost,
   FaFacebookF,
@@ -69,17 +54,11 @@ import {
 import {
   RxCheckCircled,
   RxCrossCircled,
-  RxQuestionMarkCircled
+  RxQuestionMarkCircled,
 } from "react-icons/rx";
-import { 
-  GiMagnifyingGlass 
-} from "react-icons/gi";
-import {
-  RiMailSendLine
-} from "react-icons/ri";
-import {
-  VscCallOutgoing
-} from "react-icons/vsc";
+import { GiMagnifyingGlass } from "react-icons/gi";
+import { RiMailSendLine } from "react-icons/ri";
+import { VscCallOutgoing } from "react-icons/vsc";
 
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "../../Components/Leads/SingleLead";
@@ -417,8 +396,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             }}
             className="flex flex-col"
           >
-            <p>{cellValues.row.project === "null" ? "-" : cellValues.row.project}</p>
-            <p>{cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}</p>
+            <p>
+              {cellValues.row.project === "null" ? "-" : cellValues.row.project}
+            </p>
+            <p>
+              {cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}
+            </p>
           </div>
         );
       },
@@ -432,8 +415,14 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
-            <p>{cellValues.row.enquiryType === "null" ? "-" : cellValues.row.enquiryType}</p>
-            <p>{cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}</p>
+            <p>
+              {cellValues.row.enquiryType === "null"
+                ? "-"
+                : cellValues.row.enquiryType}
+            </p>
+            <p>
+              {cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}
+            </p>
           </div>
         );
       },
@@ -508,7 +497,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 <Tooltip title="Not Verified" arrow>
                   <div
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                    >
+                  >
                     <span className="text-[#DA1F26] p-1 text-center">
                       <BsShieldX size={16} />
                     </span>
@@ -518,15 +507,15 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
               {cellValues.formattedValue !== "Not Verified" &&
                 cellValues.formattedValue !== "Verified" && (
-                <Tooltip title="No OTP used" arrow>
-                  <div
-                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                    <span className="text-[#AAAAAA] p-1 text-center">
-                      <BsShieldMinus size={16} />
-                    </span>
-                  </div>
-                </Tooltip>
+                  <Tooltip title="No OTP used" arrow>
+                    <div
+                      className={`mx-1 w-full h-full flex justify-center items-center text-center`}
+                    >
+                      <span className="text-[#AAAAAA] p-1 text-center">
+                        <BsShieldMinus size={16} />
+                      </span>
+                    </div>
+                  </Tooltip>
                 )}
             </div>
           );
@@ -652,17 +641,23 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "edit",
       headerName: "Action",
       flex: 1,
-      minWidth: 180,
+      minWidth: 100,
       sortable: false,
       filterable: false,
       headerAlign: "center",
       renderCell: (cellValues) => {
         return (
-          <div className={`w-full h-full px-1 flex items-center justify-start`}>
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
             {/* CALL  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Call" arrow>
                 <CallButton phone={cellValues.row.leadContact} />
@@ -672,75 +667,96 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             {/* EMAIL  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Send Mail" arrow>
                 <EmailButton email={cellValues.row.leadEmail} />
               </Tooltip>
             </p>
-            
+
             {/* REMINDER  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Set Reminder" arrow>
                 <button onClick={() => HandleReminderBtn(cellValues)}>
-                  <BsAlarm size={16} /> 
+                  <BsAlarm size={16} />
                 </button>
               </Tooltip>
             </p>
 
             {/* EDIT  */}
-            <p
+            {/* <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#019a9a] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#019a9a] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Update Details" arrow>
                 <button onClick={() => HandleEditFunc(cellValues)}>
                   <AiOutlineEdit size={16} />
                 </button>
               </Tooltip>
-            </p>
+            </p> */}
 
             {/* TIMELINE  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
                 <button onClick={() => HandleViewTimeline(cellValues)}>
-                  <AiOutlineHistory size={16} /> 
+                  <AiOutlineHistory size={16} />
                 </button>
               </Tooltip>
             </p>
 
             {/* DELETE  */}
-            {hasPermission("lead_delete") && (
+            {/* {hasPermission("lead_delete") && (
               <p
                 style={{ cursor: "pointer" }}
                 disabled={deleteloading ? true : false}
-                className={`${currentMode === "dark" ? "text-[#FFFFFF] bg-[#262626]" : "text-[#1C1C1C] bg-[#EEEEEE]"} hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="Delete Lead" arrow>
-                  <button onClick={() => {
-                    setLeadToDelete(cellValues?.row.leadId);
-                    setDeleteModelOpen(true);
-                    setBulkDeleteClicked(false);
-                  }}>
+                  <button
+                    onClick={() => {
+                      setLeadToDelete(cellValues?.row.leadId);
+                      setDeleteModelOpen(true);
+                      setBulkDeleteClicked(false);
+                    }}
+                  >
                     <BsTrash
                       className="deleteLeadBtn"
                       size={18}
                       style={{ color: "inherit" }}
-                    /> 
+                    />
                   </button>
                 </Tooltip>
-              </p>      
-            )}
+              </p>
+            )} */}
           </div>
         );
       },
-
 
       // renderCell: (cellValues) => {
       //   return (
@@ -835,10 +851,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       event.stopPropagation();
       window.location.href = `tel:${phone}`;
     };
-  
+
     return (
       <button className="call-button" onClick={handlePhoneClick}>
-        <VscCallOutgoing size={16}  />
+        <VscCallOutgoing size={16} />
       </button>
     );
   };
@@ -848,10 +864,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       event.stopPropagation();
       window.location.href = `mailto:${email}`;
     };
-  
+
     return (
       <button className="email-button" onClick={handleEmailClick}>
-        <RiMailSendLine size={16}  />
+        <RiMailSendLine size={16} />
       </button>
     );
   };
@@ -1702,12 +1718,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
             className={`text-lg font-semibold ${
-              currentMode === "dark"
-                ? "text-white"
-                : "text-black"
+              currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
-            Leads Search {" "}
+            Leads Search{" "}
             <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
               {pageState?.total}
             </span>
@@ -2345,6 +2359,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               handleLeadModelClose={handleLeadModelClose}
               LeadData={singleLeadData}
               BACKEND_URL={BACKEND_URL}
+              handleUpdateLeadModelOpen={handleUpdateLeadModelOpen}
+              handleUpdateLeadModelClose={handleUpdateLeadModelClose}
+              UpdateLeadModelOpen={UpdateLeadModelOpen}
+              setBulkDeleteClicked={setBulkDeleteClicked}
+              setLeadToDelete={setLeadToDelete}
+              setDeleteModelOpen={setDeleteModelOpen}
             />
           )}
 
