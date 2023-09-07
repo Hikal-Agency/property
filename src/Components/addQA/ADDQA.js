@@ -216,19 +216,21 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
               rows={6}
             />
 
-            <Button variant="outlined" size="small" onClick={handleAddAnswer}>
-              +
-            </Button>
-            <Button
-              variant="outlined"
-              size="small"
-              className="bg-main-red-color  text-white rounded-lg py-3 font-semibold mb-3"
-              style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
-              disabled={answers?.length === 1}
-              onClick={() => handleRemoveAnswer(answerIndex)}
-            >
-              -
-            </Button>
+            <div className="space-y-4 mx-2 my-2 text-right"> 
+              <Button variant="outlined" size="small" onClick={handleAddAnswer}>
+                +
+              </Button>
+              <Button
+                variant="outlined"
+                size="small"
+                className="bg-main-red-color text-white rounded-lg py-3 font-semibold mb-3"
+                style={{ backgroundColor: "#cf372b", color: "#ffffff" }}
+                disabled={answers?.length === 1}
+                onClick={() => handleRemoveAnswer(answerIndex)}
+              >
+                -
+              </Button>
+            </div>
           </Box>
         ))}
 
@@ -236,7 +238,7 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
           type="submit"
           size="medium"
           className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-          style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+          style={{ backgroundColor: "#DA1F26", color: "#ffffff" }}
           onClick={handleSubmit}
           disabled={loading ? true : false}
         >

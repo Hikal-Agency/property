@@ -128,7 +128,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           ),
 
           "bulk import": () => (
-            <BiImport size={16} color={"#da1f26"} className="p-1" />
+            <BiImport size={16} color={"#cf372b"} className="p-1" />
           ),
 
           "property finder": () => (
