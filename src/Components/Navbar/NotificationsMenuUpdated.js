@@ -167,6 +167,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
             justifyContent: "center",
             alignItems: "center",
             height: "100%",
+            width: "100%",
           }}
         >
           <CircularProgress size={30} />

@@ -25,7 +25,7 @@ const NotificationItem = ({
             onClick={(e) => openNotification(e, activity)}
             className={`cursor-pointer card-hover ${
               currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-            } m-1 mb-2 p-2 pb-3 space-y-3 rounded-xl shadow-sm w-full`}
+            } mt-3 p-2 pb-3 space-y-3 rounded-xl shadow-sm w-full`}
           >
             <div className="grid grid-cols-6">
               <div className="flex justify-center items-center w-full h-full">

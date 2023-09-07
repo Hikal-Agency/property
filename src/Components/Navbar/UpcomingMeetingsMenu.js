@@ -85,6 +85,7 @@ const UpcomingMeetingsMenu = () => {
               justifyContent: "center",
               alignItems: "center",
               height: "100%",
+              width: "100%",
             }}
           >
             <CircularProgress size={30} />
@@ -98,8 +99,8 @@ const UpcomingMeetingsMenu = () => {
                   key={index}
                   className={`card-hover ${
                     currentMode === "dark" ? "bg-black" : "bg-white"
-                  } m-1 mb-2 space-y-3 rounded-xl shadow-sm w-full ${
-                    index === upcomingMeetings.length - 1 && "mb-5"
+                  } mt-3 space-y-3 rounded-xl shadow-sm w-full ${
+                    index === upcomingMeetings.length - 1 && ""
                   }`}
                 >
                   <div className="p-4 pb-1 space-y-3">

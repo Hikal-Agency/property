@@ -367,9 +367,11 @@ const Navbar = () => {
                     //  height: "auto",
                     overflow: "visible",
                     //  overflowY: "scroll",
-                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                    mt: 0,
-                    background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+                    filter: currentMode === "dark" ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))" : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
+                    mt: 0.5,
+                    p: 1,
+                    // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+                    background: currentMode === "dark" ? "rgb(28 28 28 / 0.9)" : "rgb(238 238 238 / 0.9)",
                     color: currentMode === "dark" ? "#FFFFFF" : "#000000",
                     minWidth: 300,
                     padding: 0,
@@ -383,9 +385,9 @@ const Navbar = () => {
                       padding: "3px",
                     },
                     "& .MuiList-root .clock-div": {
-                      background:
+                      background: "transparent !important",
                         // currentMode === "dark" ? "#000000 " : "radial-gradient(circle, #666666, #EEEEEE)",
-                        currentMode === "dark" ? "#000000 " : "#FFFFFF",
+                        // currentMode === "dark" ? "#000000 " : "#FFFFFF",
                       border: "none !important",
                     },
                     //  "&:before": {
@@ -418,7 +420,7 @@ const Navbar = () => {
               PaperProps={{
                 elevation: 0,
                 sx: {
-                  overflow: "visible",
+                  // overflow: "visible",
                   overflowY: "scroll",
                   filter: currentMode === "dark" ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))" : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
                   mt: 0.5,
@@ -436,6 +438,7 @@ const Navbar = () => {
                   },
                   "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root": {
                     padding: "5px !important",
+                    paddingRight: "0px !important",
                   },
                   // "&:before": {
                   //   content: '""',
@@ -466,11 +469,11 @@ const Navbar = () => {
                   <MenuItem />
                 )
               ) : (
-                <div className="px-2 ">
+                <div className="pl-2">
                   <div
                     className={`cursor-pointer card-hover ${
                       currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-2 p-4 rounded-xl shadow-sm w-full`}
+                    } mb-3 p-4 rounded-xl shadow-sm w-full`}
                   >
                     <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
                       <div className="flex items-center justify-start">
@@ -495,7 +498,7 @@ const Navbar = () => {
                   <div
                     className={`cursor-pointer card-hover ${
                       currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-2 p-3 rounded-xl shadow-sm w-full`}
+                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
                   >
                     {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
                       <div className="flex items-center justify-start">
@@ -519,7 +522,7 @@ const Navbar = () => {
                   <div
                     className={`cursor-pointer card-hover ${
                       currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-2 p-3 rounded-xl shadow-sm w-full`}
+                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
                   >
                     <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}>
                       <div className="flex items-center justify-start">
@@ -536,7 +539,7 @@ const Navbar = () => {
                     <div
                       className={`cursor-pointer card-hover ${
                         currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } mb-2 p-3 rounded-xl shadow-sm w-full`}
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
                       onClick={UnsubscribeUser}
                     >
                       {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
@@ -555,7 +558,7 @@ const Navbar = () => {
                   <div
                     className={`cursor-pointer card-hover ${
                       currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-2 p-3 rounded-xl shadow-sm w-full`}
+                    } p-3 rounded-xl shadow-sm w-full`}
                     onClick={LogoutUser}
                   >
                     <div className="flex items-center justify-start">
