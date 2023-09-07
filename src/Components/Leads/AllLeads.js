@@ -665,7 +665,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center `}
             >
               <Tooltip title="Send Mail" arrow>
                 <EmailButton email={cellValues.row.leadEmail} />
@@ -679,7 +679,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              } hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
             >
               <Tooltip title="Set Reminder" arrow>
                 <button onClick={() => HandleReminderBtn(cellValues)}>
@@ -707,7 +707,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
             >
               <Tooltip title="View Timeline" arrow>
                 <button onClick={() => HandleViewTimeline(cellValues)}>
@@ -1450,13 +1450,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
     if (
-      !event.target.closest(".editLeadBtn") &&
-      !event.target.closest(".deleteLeadBtn")
+      !event.target.closest(".reminderBtn") &&
+      !event.target.closest(".timelineBtn")
     ) {
       console.log("Single lead clicked::::::: ", params.row);
       setsingleLeadData(params.row);
       handleLeadModelOpen();
     }
+    // console.log("Single lead clicked::::::: ", params.row);
+    // setsingleLeadData(params.row);
+    // handleLeadModelOpen();
   };
 
   // REMINDER BTN CLICK FUNC
