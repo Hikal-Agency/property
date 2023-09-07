@@ -15,12 +15,12 @@ import { useStateContext } from "../../context/ContextProvider";
 import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { langs } from "../../langCodes";
-import { 
-  BsPersonCircle, 
+import {
+  BsPersonCircle,
   BsSnow2,
   BsShieldX,
   BsShieldCheck,
-  BsShieldMinus 
+  BsShieldMinus,
 } from "react-icons/bs";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
@@ -29,51 +29,26 @@ import FiltersDropdown from "../../Components/whatsapp-marketing/FiltersDropdown
 import AddLeadModal from "../../Components/whatsapp-marketing/AddLeadModal";
 import ConfirmBulkDelete from "../../Components/whatsapp-marketing/ConfirmBulkDelete";
 
+import { BiImport, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
+import { BsWhatsapp, BsTrash } from "react-icons/bs";
 import {
-  BiImport,
-  BiMessageRoundedDots,
-  BiArchive
-} from "react-icons/bi";
-import { 
-  BsWhatsapp,
-  BsTrash
-} from "react-icons/bs";
-import { 
-  FaSnapchatGhost, 
-  FaFacebookF, 
+  FaSnapchatGhost,
+  FaFacebookF,
   FaTiktok,
   FaWhatsapp,
   FaYoutube,
   FaTwitter,
   FaUser,
-  FaRegComments
+  FaRegComments,
 } from "react-icons/fa";
-import { 
-  FcGoogle 
-} from "react-icons/fc";
-import { 
-  GiMagnifyingGlass 
-} from "react-icons/gi";
-import { 
-  GrFormAdd 
-} from "react-icons/gr";
-import { 
-  HiMail,
-  HiPhoneOutgoing
-} from "react-icons/hi";
-import { 
-  IoMdChatboxes 
-} from "react-icons/io";
-import { 
-  MdSms,
-  MdCampaign
-} from "react-icons/md";
-import {
-  RiMailSendFill
-} from "react-icons/ri";
-import {
-  TbWorldWww
-} from "react-icons/tb";
+import { FcGoogle } from "react-icons/fc";
+import { GiMagnifyingGlass } from "react-icons/gi";
+import { GrFormAdd } from "react-icons/gr";
+import { HiMail, HiPhoneOutgoing } from "react-icons/hi";
+import { IoMdChatboxes } from "react-icons/io";
+import { MdSms, MdCampaign } from "react-icons/md";
+import { RiMailSendFill } from "react-icons/ri";
+import { TbWorldWww } from "react-icons/tb";
 
 const AllLeads = () => {
   const {
@@ -177,9 +152,7 @@ const AllLeads = () => {
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
-        return (
-          <strong>{cellValues?.formattedValue}</strong>
-        );
+        return <strong>{cellValues?.formattedValue}</strong>;
       },
     },
 
@@ -255,7 +228,7 @@ const AllLeads = () => {
                 <Tooltip title="Not Verified" arrow>
                   <div
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                    >
+                  >
                     <span className="text-[#DA1F26] p-1 text-center">
                       <BsShieldX size={16} />
                     </span>
@@ -265,15 +238,15 @@ const AllLeads = () => {
 
               {cellValues.formattedValue !== "Not Verified" &&
                 cellValues.formattedValue !== "Verified" && (
-                <Tooltip title="No OTP used" arrow>
-                  <div
-                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                    <span className="text-[#AAAAAA] p-1 text-center">
-                      <BsShieldMinus size={16} />
-                    </span>
-                  </div>
-                </Tooltip>
+                  <Tooltip title="No OTP used" arrow>
+                    <div
+                      className={`mx-1 w-full h-full flex justify-center items-center text-center`}
+                    >
+                      <span className="text-[#AAAAAA] p-1 text-center">
+                        <BsShieldMinus size={16} />
+                      </span>
+                    </div>
+                  </Tooltip>
                 )}
             </div>
           );
@@ -395,18 +368,18 @@ const AllLeads = () => {
       field: "whatsapp-web",
       headerName: "Action",
       headerAlign: "center",
-      minWidth: 80,
+      minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="flex justify-start items-center w-full mx-2">
+          <div className="flex justify-center items-start w-full mx-2">
             <div className="mx-1">
               <Tooltip title="WhatsApp" arrow>
                 <Link
                   to={`/marketing/chat?phoneNumber=${cellValues.row.leadContact
                     ?.slice(1)
                     ?.replaceAll(" ", "")}`}
-                    target="_blank"
+                  target="_blank"
                 >
                   <div
                     className="whatsapp-web-link p-1.5 rounded-sm hover:bg-green-500 hover:text-white bg-transparent text-green-500"
@@ -421,14 +394,12 @@ const AllLeads = () => {
                 </Link>
               </Tooltip>
             </div>
-            {(
-              cellValues.row.email === "" || 
-              cellValues.row.email === "null" || 
-              cellValues.row.email === "undefined" || 
-              cellValues.row.email === "-" || 
-              cellValues.row.email === null ||
-              cellValues.row.email === undefined
-            ) ? (
+            {cellValues.row.email === "" ||
+            cellValues.row.email === "null" ||
+            cellValues.row.email === "undefined" ||
+            cellValues.row.email === "-" ||
+            cellValues.row.email === null ||
+            cellValues.row.email === undefined ? (
               <></>
             ) : (
               <div className="mx-1">
@@ -472,7 +443,7 @@ const AllLeads = () => {
       event.stopPropagation();
       window.location.href = `mailto:${email}`;
     };
-  
+
     return (
       <button className="email-button" onClick={handleEmailClick}>
         <RiMailSendFill size={18} />
@@ -485,7 +456,7 @@ const AllLeads = () => {
       event.stopPropagation();
       window.location.href = `tel:${phone}`;
     };
-  
+
     return (
       <button className="call-button" onClick={handlePhoneClick}>
         <HiPhoneOutgoing size={18} />
@@ -1145,14 +1116,13 @@ const AllLeads = () => {
             : "text-main-red-color font-bold border-main-red-color"
         }`}
       >
-        ● {leadOriginSelected.formattedValue}{" Leads | "}
+        ● {leadOriginSelected.formattedValue}
+        {" Leads | "}
         <span>{leadTypeSelected.formattedValue}</span>{" "}
         <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
           {pageState?.total}
         </span>
       </h1>
-
-      
 
       <Box className="flex items-center justify-between">
         <Box className="flex items-center">
@@ -1183,7 +1153,10 @@ const AllLeads = () => {
               }}
               color="error"
             >
-              <GrFormAdd color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`} size={20} />
+              <GrFormAdd
+                color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                size={20}
+              />
             </Button>
           </Tooltip>
 
@@ -1196,7 +1169,10 @@ const AllLeads = () => {
               color="error"
               disabled={selectedRows?.length === 0}
             >
-              <BsTrash color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`} size={20} />
+              <BsTrash
+                color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                size={20}
+              />
             </Button>
           </Tooltip>
           <Tooltip title="Send WhatsApp" arrow>
@@ -1210,7 +1186,10 @@ const AllLeads = () => {
               color="error"
               disabled={selectedRows?.length === 0}
             >
-              <BsWhatsapp color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`} size={20} />
+              <BsWhatsapp
+                color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                size={20}
+              />
             </Button>
           </Tooltip>
           <Tooltip title="Send SMS" arrow>
@@ -1225,7 +1204,10 @@ const AllLeads = () => {
                 disabled={true}
                 color="error"
               >
-                <MdSms color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`} size={20} />
+                <MdSms
+                  color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                  size={20}
+                />
               </Button>
               <div className="text-white bg-[#1c1c1c] absolute w-[89%] rounded-sm text-xs top-7 left-0 right-0 p-1">
                 Coming soon
@@ -1243,7 +1225,10 @@ const AllLeads = () => {
                 color="error"
                 disabled={true}
               >
-                <HiMail color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`} size={20} />
+                <HiMail
+                  color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                  size={20}
+                />
               </Button>
               <div className="text-white bg-[#1c1c1c] absolute w-[89%] rounded-sm text-xs top-7 left-0 right-0 p-1">
                 Coming soon
@@ -1253,7 +1238,7 @@ const AllLeads = () => {
 
           {selectedRows.length === 1 && (
             <Tooltip title="Open Chat" arrow>
-                <Link
+              <Link
                 to={`/marketing/chat?phoneNumber=${selectedRows[0]?.contact
                   ?.slice(1)
                   ?.replaceAll(" ", "")}`}
@@ -1264,7 +1249,10 @@ const AllLeads = () => {
                   sx={{ padding: "10px", mb: 2, mr: 1 }}
                   color="error"
                 >
-                  <IoMdChatboxes color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`} size={20} />
+                  <IoMdChatboxes
+                    color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                    size={20}
+                  />
                 </Button>
               </Link>
             </Tooltip>
@@ -1278,7 +1266,7 @@ const AllLeads = () => {
         sx={{ ...DataGridStyles, position: "relative" }}
       >
         <DataGrid
-        disableDensitySelector
+          disableDensitySelector
           autoHeight
           disableSelectionOnClick
           rows={pageState.data}
@@ -1297,7 +1285,8 @@ const AllLeads = () => {
             selectionModelRef.current = ids;
             setSelectedRows(
               ids.map((id) => {
-                const contact = pageState?.data[id - pageState?.from]?.leadContact;
+                const contact =
+                  pageState?.data[id - pageState?.from]?.leadContact;
                 const lid = pageState?.data[id - pageState?.from]?.leadId;
                 if (contact[0] === "+") {
                   return {
@@ -1362,7 +1351,7 @@ const AllLeads = () => {
 
       {addLeadModalOpen && (
         <AddLeadModal
-         FetchLeads={() => {
+          FetchLeads={() => {
             const token = localStorage.getItem("auth-token");
             FetchLeads(
               token,
