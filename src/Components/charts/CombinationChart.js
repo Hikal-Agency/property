@@ -30,7 +30,7 @@ ChartJS.register(
 );
 
 const CombinationChart = () => {
-  const { currentMode, BACKEND_URL, User } = useStateContext();
+  const { currentMode, BACKEND_URL, User, primaryColor, withOpacity } = useStateContext();
   const [performanceChartData, setPerformanceChartData] = useState([]);
 
   useEffect(() => {
@@ -73,8 +73,8 @@ const CombinationChart = () => {
                 label: "Closed deals",
                 data: performanceChartData.map((member) => member.total_sales),
                 fill: true,
-                backgroundColor: "rgba(225,0,0,0.4)",
-                borderColor: "#da1f26",
+                backgroundColor: withOpacity(primaryColor, 0.4),
+                borderColor: primaryColor,
               },
               {
                 type: "line",
@@ -91,7 +91,7 @@ const CombinationChart = () => {
           options={{
             color: "#AAAAAA",
             backgroundColor: ["rgba(225,0,0,0.3)", "rgba(0,0,0,0.2)"],
-            borderColor: ["#DA1F26", "#AAAAAA"],
+            borderColor: [primaryColor, "#AAAAAA"],
             scales: {
               y: { ticks: { color: "#AAAAAA" }, grid: { color: "#424242" } },
               x: { ticks: { color: "#AAAAAA" }, grid: { color: "#424242" } },
@@ -116,8 +116,8 @@ const CombinationChart = () => {
                 label: "Closed deals",
                 data: performanceChartData.map((member) => member.total_sales),
                 fill: true,
-                backgroundColor: "rgba(225,0,0,0.4)",
-                borderColor: "#da1f26",
+                backgroundColor: withOpacity(primaryColor, 0.4),
+                borderColor: primaryColor,
               },
               {
                 type: "line",
@@ -135,7 +135,7 @@ const CombinationChart = () => {
           options={{
             color: "#333333",
             backgroundColor: ["rgba(225,0,0,0.3)", "rgba(0,0,0,0.2)"],
-            borderColor: ["#da1f26", "#020202"],
+            borderColor: [primaryColor, "#020202"],
             scales: {
               y: { ticks: { color: "#333333" } },
               x: { ticks: { color: "#333333" } },

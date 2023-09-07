@@ -10,7 +10,7 @@ import {
 import "../../styles/animation.css";
 
 const UpcomingMeeting = ({ upcoming_meetings }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, primaryColor } = useStateContext();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [meetingNote, setMeetingNote] = useState(null);
   const [meetingLocation, setMeetingLocation] = useState({
@@ -51,7 +51,9 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
             } rounded-xl my-2 `}
           >
             <div className="px-5 py-5 space-y-3">
-              <h2 className="text-main-red-color text-md font-semibold">
+              <h2 style={{
+                color: primaryColor
+              }} className="text-md font-semibold">
                 {meeting?.leadName}
               </h2>
               <div className="grid grid-cols-11">
@@ -99,7 +101,9 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                 </p>
               </div>
             </div>
-            <span className="block text-sm bg-main-red-color text-white rounded-b-xl text-center p-2 font-semibold">
+            <span style={{
+              background: primaryColor
+            }} className="block text-sm text-white rounded-b-xl text-center p-2 font-semibold">
               {meeting?.createdBy}
             </span>
           </div>

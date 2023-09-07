@@ -41,6 +41,8 @@ import {
   MdDarkMode,
   MdKeyboardArrowDown,
   MdOutlineLightMode,
+  MdColorLens, 
+  MdOutlineColorLens
 } from "react-icons/md";
 import { 
   VscHistory,
@@ -50,6 +52,7 @@ import {
   VscSignOut
 } from "react-icons/vsc";
 import "../../styles/animation.css";
+import ColorsPopup from "./ColorsPopup";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <Tooltip title={title} arrow placement="bottom">
@@ -252,6 +255,18 @@ const Navbar = () => {
             ),
           ]}
 
+          <NavButton
+            title="Colors"
+            customFunc={(event) => handleClick(event, "Colors")}
+            color={currentMode === "dark" ? "#ffffff" : "#333333"}
+            icon={
+              open && currNavBtn === "Colors" ? (
+              <MdColorLens size={20} />
+              ) : (
+                <MdOutlineColorLens size={20} />
+              )
+            }
+          />
           {/* MEETINGS  */}
           <NavButton
             title="Meetings"
@@ -461,6 +476,10 @@ const Navbar = () => {
                 currNavBtn === "Notifications" ? (
                   // <NotificationsMenu />
                   <NotificationsMenuUpdated setAnchorEl={setAnchorEl} setOpen={setOpen}/>
+                ) : currNavBtn === "Colors" ? (
+                  <>
+                    <ColorsPopup/>
+                  </>
                 ) : currNavBtn === "Meetings" ? (
                   <>
                     <UpcomingMeetingsMenu />

@@ -12,7 +12,7 @@ import { useStateContext } from "../../context/ContextProvider";
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
 const BarChartProjectAdmin = ({ total_projects }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, primaryColor } = useStateContext();
   const [total_projects2] = useState(total_projects ? total_projects : []);
   const data = {
     labels: total_projects2?.map((data) => data.project), //["Riviera", "Crescent", "Tiger"],
@@ -20,7 +20,7 @@ const BarChartProjectAdmin = ({ total_projects }) => {
       {
         label: "Closed Projects",
         data: total_projects2?.map((data) => data.project_count), //[4, 3, 3],
-        backgroundColor: ["rgba(218, 31, 38, 1)"],
+        backgroundColor: [primaryColor],
       },
     ],
   };

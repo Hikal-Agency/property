@@ -191,7 +191,7 @@ const Sidebarmui = () => {
       setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
       FetchPermissions();
-      setPrimaryColor("#da1f26");
+      setPrimaryColor("rgb(218,31,38)");
       socket.emit("add_user", { ...JSON.parse(storedUser) });
     } else {
       axios

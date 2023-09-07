@@ -205,13 +205,13 @@ export const ContextProvider = ({ children }) => {
 
     // TABS HEADERS COLOR
     "& .Mui-selected": {
-      color: "#DA1F26 !important",
+      color: `${primaryColor} !important`,
     },
     "& .MuiTab-root,& .MuiTab-textColorPrimary": {
       color: currentMode === "dark" && "white",
     },
     "& .MuiTabs-indicator": {
-      backgroundColor: "#DA1F26 !important",
+      backgroundColor: `${primaryColor} !important`,
     },
   };
 
@@ -329,6 +329,10 @@ export const ContextProvider = ({ children }) => {
     }
   }, [primaryColor]);
 
+  const withOpacity = (rgb, opacity) => {
+    return rgb.replace('rgb', 'rgba').replace(')', `, ${opacity})`);
+  }
+
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <StateContext.Provider
@@ -397,6 +401,7 @@ export const ContextProvider = ({ children }) => {
         allRoutes,
         setAllRoutes,
         isUserSubscribed,
+        withOpacity,
         setIsUserSubscribed,
         permits,
         setPermits,

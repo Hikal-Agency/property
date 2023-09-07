@@ -10,7 +10,7 @@ const Calls = ({
   callLogsData,
   isLoading,
 }) => {
-  const { darkModeColors, currentMode } = useStateContext();
+  const { darkModeColors, currentMode, primaryColor } = useStateContext();
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -59,7 +59,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneOutgoing
                     size={20}
-                    className="text-main-red-color mr-3"
+                    style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Outgoing calls:</h2>
                 </div>
@@ -69,7 +70,7 @@ const Calls = ({
               </div>
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
-                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <FiPhoneCall                     style={{color: primaryColor}} size={20} className=" mr-3" />
                   <h2>Answered:</h2>
                 </div>
                 <p className="font-bold">
@@ -80,7 +81,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneMissed
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Not answered:</h2>
                 </div>
@@ -92,7 +94,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneIncoming
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Incoming calls:</h2>
                 </div>
@@ -102,7 +105,7 @@ const Calls = ({
               </div>
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
-                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <FiPhoneCall size={20}                     style={{color: primaryColor}} className=" mr-3" />
                   <h2>Recieved:</h2>
                 </div>
                 <p className="font-bold">
@@ -113,8 +116,9 @@ const Calls = ({
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
                   <FiPhoneMissed
+                                      style={{color: primaryColor}}
                     size={20}
-                    className="text-main-red-color mr-3"
+                    className=" mr-3"
                   />
                   <h2>Missed:</h2>
                 </div>
@@ -143,7 +147,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneOutgoing
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Outgoing calls:</h2>
                 </div>
@@ -153,7 +158,7 @@ const Calls = ({
               </div>
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
-                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <FiPhoneCall size={20}                     style={{color: primaryColor}} className=" mr-3" />
                   <h2>Answered:</h2>
                 </div>
                 <p className="font-bold">
@@ -164,7 +169,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneMissed
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Not answered:</h2>
                 </div>
@@ -176,7 +182,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneIncoming
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Incoming calls:</h2>
                 </div>
@@ -186,7 +193,7 @@ const Calls = ({
               </div>
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
-                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <FiPhoneCall size={20}                     style={{color: primaryColor}} className=" mr-3" />
                   <h2>Recieved:</h2>
                 </div>
                 <p className="font-bold">
@@ -198,7 +205,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneMissed
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Missed:</h2>
                 </div>
@@ -227,7 +235,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneOutgoing
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Outgoing calls:</h2>
                 </div>
@@ -237,7 +246,7 @@ const Calls = ({
               </div>
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
-                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <FiPhoneCall size={20}                     style={{color: primaryColor}} className=" mr-3" />
                   <h2>Answered:</h2>
                 </div>
                 <p className="font-bold">
@@ -248,7 +257,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneMissed
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Not answered:</h2>
                 </div>
@@ -260,7 +270,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneIncoming
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Incoming calls:</h2>
                 </div>
@@ -270,7 +281,7 @@ const Calls = ({
               </div>
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
-                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <FiPhoneCall size={20}                    style={{color: primaryColor}} className=" mr-3" />
                   <h2>Recieved:</h2>
                 </div>
                 <p className="font-bold">
@@ -282,7 +293,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneMissed
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Missed:</h2>
                 </div>
@@ -303,7 +315,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneOutgoing
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Outgoing calls:</h2>
                 </div>
@@ -313,7 +326,7 @@ const Calls = ({
               </div>
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
-                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <FiPhoneCall size={20}                     style={{color: primaryColor}} className=" mr-3" />
                   <h2>Answered:</h2>
                 </div>
                 <p className="font-bold">
@@ -324,7 +337,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneMissed
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Not answered:</h2>
                 </div>
@@ -335,8 +349,9 @@ const Calls = ({
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
                   <FiPhoneIncoming
+                                      style={{color: primaryColor}}
                     size={20}
-                    className="text-main-red-color mr-3"
+                    className=" mr-3"
                   />
                   <h2>Incoming calls:</h2>
                 </div>
@@ -346,7 +361,7 @@ const Calls = ({
               </div>
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
-                  <FiPhoneCall size={20} className="text-main-red-color mr-3" />
+                  <FiPhoneCall size={20}                     style={{color: primaryColor}} className=" mr-3" />
                   <h2>Recieved:</h2>
                 </div>
                 <p className="font-bold">
@@ -358,7 +373,8 @@ const Calls = ({
                 <div className="flex items-center space-x-1">
                   <FiPhoneMissed
                     size={20}
-                    className="text-main-red-color mr-3"
+                                        style={{color: primaryColor}}
+                    className=" mr-3"
                   />
                   <h2>Missed:</h2>
                 </div>

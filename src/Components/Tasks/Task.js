@@ -5,7 +5,7 @@ import Calls from "./Calls";
 // eslint-disable-next-line
 
 const Task = () => {
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, primaryColor } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -68,7 +68,7 @@ const Task = () => {
             "& .MuiTabs-indicator": {
               height: "100%",
               borderRadius: "5px",
-              backgroundColor: "#da1f26",
+              backgroundColor: primaryColor,
             },
             "& .Mui-selected": { 
               color: "white !important", 

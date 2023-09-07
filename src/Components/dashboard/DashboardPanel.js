@@ -198,9 +198,10 @@ const DashboardPanel = ({ setloading }) => {
   return (
     <div className="mt-5 md:mt-2">
       <h1
-        className={`font-semibold ${
-          currentMode === "dark" ? "text-white" : `text-[${primaryColor}]`
-        } text-lg ml-2 mb-3`}
+      style={{
+        color: currentMode === "dark" ? "white" : primaryColor
+      }}
+        className={`font-semibold text-lg ml-2 mb-3`}
       >
         OVERVIEW
       </h1>
@@ -223,17 +224,23 @@ const DashboardPanel = ({ setloading }) => {
           >
             <div>
               {User?.role === 3 && (
-                <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
+                <p className={`text-2xl font-bold pb-3`} style={{
+                  color: primaryColor
+                }}>
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {User?.role === 7 && (
-                <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
+                <p className={`text-2xl font-bold pb-3`} style={{
+                                    color: primaryColor
+                }}>
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {(User?.role === 1 || User?.role === 2 || User?.role === 8) && (
-                <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
+                <p className={`text-2xl font-bold pb-3`} style={{
+                                    color: primaryColor
+                }}>
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
@@ -262,7 +269,9 @@ const DashboardPanel = ({ setloading }) => {
                       : "bg-[#EEEEEE] text-main-dark-bg"
                   } h-auto w-full p-5 rounded-xl grid content-center`}
                 >
-                  <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
+                  <p className={`text-2xl font-bold pb-3`} style={{
+                                      color: primaryColor
+                  }}>
                     <CountUp end={item.amount} duration={3} />
                   </p>
                   <p
@@ -292,7 +301,9 @@ const DashboardPanel = ({ setloading }) => {
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
-                      <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
+                      <p className={`text-2xl font-bold pb-3`} style={{
+                                          color: primaryColor
+                      }}>
                         <CountUp end={item.amount} duration={3} />
                       </p>
                       <p
@@ -324,7 +335,9 @@ const DashboardPanel = ({ setloading }) => {
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
-                      <p className={`text-2xl font-bold pb-3 text-[${primaryColor}]`}>
+                      <p className={`text-2xl font-bold pb-3`} style={{
+                                          color: primaryColor
+                      }}>
                         <CountUp end={item.amount} duration={3} />
                       </p>
                       <p
@@ -517,8 +530,11 @@ const DashboardPanel = ({ setloading }) => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
+          style={{
+            background: primaryColor
+          }}
           className={`
-          card-hover bg-[${primaryColor}] h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
+          card-hover h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white `}>
@@ -534,7 +550,10 @@ const DashboardPanel = ({ setloading }) => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
-          className={`card-hover bg-[${primaryColor}] h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
+          style={{
+            background: primaryColor
+          }}
+          className={`card-hover h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white`}>

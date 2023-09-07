@@ -22,7 +22,7 @@ const ReminderComponent = ({
   fetchRminders,
 }) => {
   console.log("reminders component: ", reminder);
-  const { currentMode, BACKEND_URL, isArabic } = useStateContext();
+  const { currentMode, BACKEND_URL, isArabic, primaryColor } = useStateContext();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [completeLoading, setCompletebtnLoading] = useState(false);
   const [cancleLoading, setCanclebtnLoading] = useState(false);
@@ -122,7 +122,7 @@ const ReminderComponent = ({
       >
         <div className="p-5 grid grid-cols-9">
           <div className="col-span-8 space-y-3">
-            <h2 className="text-main-red-color text-md font-semibold">
+            <h2 style={{color: primaryColor}} className="text-md font-semibold">
               {reminder?.leadName || "No Lead Name"}
             </h2>
             
