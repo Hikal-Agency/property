@@ -9,6 +9,7 @@ import {
   BsFillCreditCard2FrontFill,
   BsCircleFill,
 } from "react-icons/bs";
+import { Menu as MuiMenu, MenuItem as MuiMenuItem } from "@mui/material";
 
 import { MdOutlinePayment } from "react-icons/md";
 import { AiTwotoneCalendar } from "react-icons/ai";
@@ -85,6 +86,7 @@ const Sidebarmui = () => {
     setUnreadNotifsCount,
     setNotifIconAnimating,
     getNotifCounts,
+    darkModeColors,
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -103,6 +105,21 @@ const Sidebarmui = () => {
     linkIndex: 0,
     sub: false,
   });
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [animateProfile, setAnimateProfile] = useState(false);
+
+  const handleClickProfile = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleAnimateProfilePic = () => {
+    setAnimateProfile(true);
+  };
 
   const setOpenedSubMenu = ({ menuIndex, linkIndex, sub = false }) => {
     if (sub) {
@@ -1322,10 +1339,16 @@ const Sidebarmui = () => {
               <div className="profile-section border-b mt-1 px-2 pb-5 mb-2">
                 {isCollapsed ? (
                   <>
-                    <Link
-                      to={"/profile"}
-                      onClick={() => setopenBackDrop(true)}
-                      className="flex flex-col items-center justify-center"
+                    <div
+                      // to={"/profile"}
+                      onClick={handleClickProfile}
+                      id="demo-positioned-button"
+                      aria-controls={
+                        anchorEl ? "demo-positioned-menu" : undefined
+                      }
+                      aria-haspopup="true"
+                      aria-expanded={anchorEl ? "true" : undefined}
+                      className="flex cursor-pointer flex-col items-center justify-center"
                     >
                       <img
                         src={
@@ -1335,9 +1358,10 @@ const Sidebarmui = () => {
                         }
                         height={60}
                         width={60}
-                        className="rounded-md object-cover"
+                        className={`rounded-md object-cover`}
                         alt=""
                       />
+
                       <h1
                         className={`my-2 font-bold text-lg text-center ${
                           currentMode === "dark"
@@ -1352,12 +1376,45 @@ const Sidebarmui = () => {
                       >
                         {User?.position || ""}
                       </span>
-                    </Link>
+                    </div>
+                    <MuiMenu
+                      sx={darkModeColors}
+                      id="demo-positioned-menu"
+                      aria-labelledby="demo-positioned-button"
+                      anchorEl={anchorEl}
+                      open={anchorEl ? true : false}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                    >
+                      <MuiMenuItem
+                        onClick={() => {
+                          setAnchorEl(null);
+                          navigate("/profile");
+                        }}
+                      >
+                        View Profile
+                      </MuiMenuItem>
+                      <MuiMenuItem
+                        onClick={() => {
+                          setAnchorEl(null);
+                          handleAnimateProfilePic();
+                        }}
+                      >
+                        View Profile Picture
+                      </MuiMenuItem>
+                    </MuiMenu>
                   </>
                 ) : (
-                  <Link
-                    to={"/profile"}
-                    onClick={() => setopenBackDrop(true)}
+                  <div
+                    // to={"/profile"}
+                    onClick={handleClickProfile}
                     className="flex justify-center"
                   >
                     <img
@@ -1367,7 +1424,7 @@ const Sidebarmui = () => {
                       className="rounded-md cursor-pointer"
                       alt=""
                     />
-                  </Link>
+                  </div>
                 )}
               </div>
             </div>
@@ -1876,6 +1933,24 @@ const Sidebarmui = () => {
               </Menu>
             </div>
           </div>
+
+          {animateProfile ? (
+            <div
+              className={`profile-pic-popout ${
+                animateProfile ? "animate-profile-pic" : ""
+              }`}
+            >
+              <img
+                src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
+                height={60}
+                width={60}
+                className={`rounded-md object-cover`}
+                alt=""
+              />
+            </div>
+          ) : (
+            <></>
+          )}
         </Sidebar>
       </div>
 

@@ -66,7 +66,7 @@ const CreateAppointment = () => {
                         <span>
                           <img
                             src={
-                              User?.gender.toLowerCase() === "female"
+                              User?.gender?.toLowerCase() === "female"
                                 ? "./assets/female_character.png"
                                 : "./assets/Characters1.png"
                             }
