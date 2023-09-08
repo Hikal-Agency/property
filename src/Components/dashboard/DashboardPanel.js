@@ -1,7 +1,4 @@
-import React, { 
-  useEffect, 
-  useState 
-} from "react";
+import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -23,10 +20,7 @@ import usePermission from "../../utils/usePermission";
 
 import { FaHandshake } from "react-icons/fa";
 import { ImUser } from "react-icons/im";
-import { 
-  MdLeaderboard, 
-  MdSupportAgent 
-} from "react-icons/md";
+import { MdLeaderboard, MdSupportAgent } from "react-icons/md";
 import { AiOutlineFire } from "react-icons/ai";
 import { GiThermometerCold } from "react-icons/gi";
 import { FiUsers } from "react-icons/fi";
@@ -44,6 +38,7 @@ const DashboardPanel = ({ setloading }) => {
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
+  const [countOfClosedDeals, setCountOfClosedDeals] = useState(null);
   const [reminder, setReminder] = useState([]);
   const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
@@ -63,7 +58,10 @@ const DashboardPanel = ({ setloading }) => {
           });
         })
       );
-      setSales_chart_data(responses[0].data?.members_deal);
+      const data = responses[0].data?.members_deal;
+      let totalSum = 0;
+
+      setSales_chart_data(data);
       setsaleschart_loading(false);
     } catch (error) {
       console.log(error);
@@ -552,13 +550,11 @@ const DashboardPanel = ({ setloading }) => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ margin: "-70px" }}
-            className={`${currentMode === "dark" ? "text-white" : "text-black"} col-span-1 h-fit py-2`}
+            className={`${
+              currentMode === "dark" ? "text-white" : "text-black"
+            } col-span-1 h-fit py-2`}
           >
-            <h4
-              className="font-semibold p-3"
-            >
-              UPCOMING MEETINGS
-            </h4>
+            <h4 className="font-semibold p-3">UPCOMING MEETINGS</h4>
             <UpcomingMeeting
               upcoming_meetings={DashboardData?.upcoming_meetings}
             />
@@ -577,10 +573,7 @@ const DashboardPanel = ({ setloading }) => {
               currentMode === "dark" ? "text-white " : "text-black"
             } col-span-1 h-fit`}
           >
-            <h4
-            id="reminders"
-              className="font-semibold p-3"
-            >
+            <h4 id="reminders" className="font-semibold p-3">
               REMINDERS
             </h4>
             <Reminder
@@ -600,7 +593,9 @@ const DashboardPanel = ({ setloading }) => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ margin: "-70px" }}
-        className={`${currentMode === "dark" ? "border-[#1C1C1C]" : "border-[#EEEEEE]"} grid grid-cols-1 pb-3 my-3 border-4 rounded-xl`}
+        className={`${
+          currentMode === "dark" ? "border-[#1C1C1C]" : "border-[#EEEEEE]"
+        } grid grid-cols-1 pb-3 my-3 border-4 rounded-xl`}
       >
         <Task />
       </motion.div>
