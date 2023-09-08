@@ -18,7 +18,7 @@ import {
   MdOutlinePerson,
   MdOutlineHeadsetMic,
   MdOutlineHandshake,
-  MdOutlineCalendarMonth
+  MdOutlineCalendarMonth,
 } from "react-icons/md";
 
 const NotificationsListComponent = ({
@@ -192,7 +192,12 @@ const NotificationsListComponent = ({
                   <p
                     className={` ${
                       currentMode === "dark" ? "text-white" : "text-dark"
-                    } ${notification?.isRead === 0 || notification?.isRead === null ? "font-semibold" : ""}`}
+                    } ${
+                      notification?.isRead === 0 ||
+                      notification?.isRead === null
+                        ? "font-semibold"
+                        : ""
+                    }`}
                   >
                     {notification?.title}
 
@@ -212,11 +217,10 @@ const NotificationsListComponent = ({
                           {notification?.username}
                         </span> */}
                   </p>
-                  <p
-                    style={{ color: "#AAAAAA" }}
-                    className="mt-2 text-sm"
-                  >
-                    {notification?.type} <span className="text-[#AAAAAA] rounded-full mx-1">●</span> {notification?.created_at}{" "}
+                  <p style={{ color: "#AAAAAA" }} className="mt-2 text-sm">
+                    {notification?.type}{" "}
+                    <span className="text-[#AAAAAA] rounded-full mx-1">●</span>{" "}
+                    {notification?.created_at}{" "}
                   </p>
                 </div>
               </div>
@@ -248,28 +252,31 @@ const NotificationsListComponent = ({
             </div>
           )}
 
-          <Stack spacing={2} marginTop={2}>
-            <Pagination
-              count={maxPage}
-              color={currentMode === "dark" ? "primary" : "secondary"}
-              onChange={handlePageChange}
-              style={{ margin: "auto" }}
-              // page={pageState.page}
-              page={currentPage}
-              sx={{
-                "& .Mui-selected": {
-                  color: "white !important",
-                  backgroundColor: "#DA1F26 !important",
-                  "&:hover": {
-                    backgroundColor: currentMode === "dark" ? "black" : "white",
+          {maxPage > 1 ? (
+            <Stack spacing={2} marginTop={2}>
+              <Pagination
+                count={maxPage}
+                color={currentMode === "dark" ? "primary" : "secondary"}
+                onChange={handlePageChange}
+                style={{ margin: "auto" }}
+                // page={pageState.page}
+                page={currentPage}
+                sx={{
+                  "& .Mui-selected": {
+                    color: "white !important",
+                    backgroundColor: "#DA1F26 !important",
+                    "&:hover": {
+                      backgroundColor:
+                        currentMode === "dark" ? "black" : "white",
+                    },
                   },
-                },
-                "& .MuiPaginationItem-root": {
-                  color: currentMode === "dark" ? "white" : "black",
-                },
-              }}
-            />
-          </Stack>
+                  "& .MuiPaginationItem-root": {
+                    color: currentMode === "dark" ? "white" : "black",
+                  },
+                }}
+              />
+            </Stack>
+          ) : null}
         </div>
       )}
     </>
