@@ -80,6 +80,7 @@ const Navbar = () => {
     BACKEND_URL,
     isCollapsed,
     allRoutes,
+    primaryColor,
     setIsCollapsed,
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
@@ -229,10 +230,11 @@ const Navbar = () => {
           >
             <button
               type="button"
+              style={{
+                color: currentMode === "dark" ? "white" : primaryColor
+              }}
               // style={{ color: currentColor }}
-              className={`relative text-xl rounded-full hover:bg-light-gray mr-4  ${
-                currentMode === "dark" ? "text-white" : "text-[#DA1F26]"
-              }`}
+              className={`relative text-xl rounded-full hover:bg-light-gray mr-4`}
             >
               <span className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2" />
               <AiOutlineMenu />
@@ -247,7 +249,7 @@ const Navbar = () => {
             isUserSubscribed === false && (
               <Button
                 variant="contained"
-                style={{ background: "#DA1F26" }}
+                style={{ background: primaryColor }}
                 sx={{ mr: 2 }}
               >
                 <Link to="/marketing/payments">Upgrade</Link>
@@ -270,7 +272,7 @@ const Navbar = () => {
           {/* MEETINGS  */}
           <NavButton
             title="Meetings"
-            dotColor={currentMode === "dark" ? "#ffffff" : "#DA1F26"}
+            dotColor={currentMode === "dark" ? "#ffffff" : primaryColor}
             customFunc={(event) => handleClick(event, "Meetings")}
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
             icon={
@@ -296,7 +298,12 @@ const Navbar = () => {
                     <Badge
                       className={notifIconAnimating ? "animate-notif-icon" : ""}
                       badgeContent={unreadNotifsCount}
-                      color="error"
+                      sx={{
+                        "& .MuiBadge-badge": {
+                          background: primaryColor, 
+                          color: "white"
+                        }
+                      }}
                     >
                       <BsBell size={16} />
                     </Badge>
@@ -333,7 +340,7 @@ const Navbar = () => {
               {currentMode === "dark" ? (
                 <MdOutlineLightMode size={16} color="#dcb511" />
               ) : (
-                <MdDarkMode size={16} color="#DA1F26" />
+                <MdDarkMode size={16} color={primaryColor} />
               )}
             </button>
           </Tooltip>
@@ -505,7 +512,9 @@ const Navbar = () => {
                             <p className="font-semibold">{User?.userName}</p>
                             <p className="text-xs capitalize">{User?.position}</p>
                           </div>
-                          <div className="text-sm rounded-full border border-[#DA1F26] px-2 py-1">
+                          <div style={{
+                            borderColor: primaryColor
+                          }} className={`text-sm rounded-full border px-2 py-1`}>
                             Profile
                           </div>
                         </div>
@@ -527,9 +536,12 @@ const Navbar = () => {
                         <div className="flex justify-between items-center w-full h-full">
                           <div className="flex items-center">
                             <p className="font-semibold mx-1 mr-2">Login history</p>
-                            <VscLock size={14} color={"#DA1F26"} className="mr-2" />
+                            <VscLock size={14} color={primaryColor} className="mr-2" />
                           </div>
-                          <div className="rounded-full bg-[#DA1F26] text-white px-2 py-1 font-bold" style={{ fontSize: "0.5rem" }}>
+                          <div style={{
+                            background: primaryColor, 
+                            fontSize: "0.5rem"
+                          }} className="rounded-full text-white px-2 py-1 font-bold">
                             SOON
                           </div>
                         </div>
@@ -567,7 +579,7 @@ const Navbar = () => {
                             <VscExclude size={18} color={"#AAAAAA"} />
                           </div>
                           <p className="mx-1 mr-2 font-semibold">Unsubscribe package</p>
-                          <VscLock size={14} color={"#DA1F26"} className="mr-2" />
+                          <VscLock size={14} color={primaryColor} className="mr-2" />
                         </div>
                       {/* </Link> */}
                     </div>

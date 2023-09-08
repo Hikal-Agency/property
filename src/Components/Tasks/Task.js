@@ -75,9 +75,7 @@ const Task = () => {
               zIndex: "1" 
             },
           }}
-          className={`w-full overflow-hidden ${
-            currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-          } `}
+          className={`w-full overflow-hidden `}
         >
           <div className="flex justify-between items-center">
             <h4 className="font-semibold p-5">SUMMARY</h4>

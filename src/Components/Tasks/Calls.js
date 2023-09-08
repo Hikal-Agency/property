@@ -41,8 +41,8 @@ const Calls = ({
           }
         >
           <TabPanel value={tabValue} index={0}>
-            <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} w-full  p-1 mb-5`}>
-              <h1 className="text-center">
+            <div className={` w-full  p-1 mb-5`}>
+              <h1 className="text-center font-bold mb-6">
                 {callLogsData?.all_calls < 2 ? (
                   <>
                     <span>{callLogsData?.all_calls}</span> CALL TODAY
@@ -129,8 +129,8 @@ const Calls = ({
             </div>
           </TabPanel>
           <TabPanel value={tabValue} index={1}>
-            <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} w-full  p-1 mb-5`}>
-              <h1 className="text-center">
+            <div className={` w-full  p-1 mb-5`}>
+              <h1 className="text-center  font-bold mb-6">
                 {callLogsData?.all_calls < 2 ? (
                   <>
                     <span>{callLogsData?.all_calls}</span> CALL YESTERDAY
@@ -217,8 +217,8 @@ const Calls = ({
             </div>
           </TabPanel>
           <TabPanel value={tabValue} index={2}>
-            <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} w-full  p-1 mb-5`}>
-              <h1 className="text-center">
+            <div className={` w-full  p-1 mb-5`}>
+              <h1 className="text-center  font-bold mb-6">
                 {callLogsData?.all_calls < 2 ? (
                   <>
                     <span>{callLogsData?.all_calls}</span> CALL THIS MONTH

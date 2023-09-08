@@ -1,7 +1,4 @@
-import React, { 
-  useEffect, 
-  useState 
-} from "react";
+import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -23,10 +20,7 @@ import usePermission from "../../utils/usePermission";
 
 import { FaHandshake } from "react-icons/fa";
 import { ImUser } from "react-icons/im";
-import { 
-  MdLeaderboard, 
-  MdSupportAgent 
-} from "react-icons/md";
+import { MdLeaderboard, MdSupportAgent } from "react-icons/md";
 import { AiOutlineFire } from "react-icons/ai";
 import { GiThermometerCold } from "react-icons/gi";
 import { FiUsers } from "react-icons/fi";
@@ -41,7 +35,8 @@ const DashboardPanel = ({ setloading }) => {
     Sales_chart_data,
     setSales_chart_data,
     BACKEND_URL,
-    primaryColor
+    primaryColor,
+    withOpacity
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
@@ -194,14 +189,14 @@ const DashboardPanel = ({ setloading }) => {
       return number.toString();
     }
   }
-  
+
   return (
     <div className="mt-5 md:mt-2">
       <h1
-      style={{
-        color: currentMode === "dark" ? "white" : primaryColor
-      }}
-        className={`font-semibold text-lg ml-2 mb-3`}
+        style={{
+          color: currentMode === "dark" ? "white" : primaryColor,
+        }}
+        className={`font-semibold text-lg ml-2 mb-5 mt-8`}
       >
         OVERVIEW
       </h1>
@@ -215,32 +210,41 @@ const DashboardPanel = ({ setloading }) => {
           {/* {DashboardData?.designation === "Head" && ( */}
           <Link
             to={"/freshleads/all"}
-            className={`card-hover ${
+            className={`card-hover backdrop-blur ${
               currentMode === "dark"
                 ? "bg-[#1c1c1c] text-white "
-                : "bg-[#EEEEEE] text-main-dark-bg"
+                : "bg-[#eeeeee45] text-main-dark-bg"
             }  h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
             onClick={() => setopenBackDrop(true)}
           >
             <div>
               {User?.role === 3 && (
-                <p className={`text-2xl font-bold pb-3`} style={{
-                  color: primaryColor
-                }}>
+                <p
+                  className={`text-2xl font-bold pb-3`}
+                  style={{
+                    color: primaryColor,
+                  }}
+                >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {User?.role === 7 && (
-                <p className={`text-2xl font-bold pb-3`} style={{
-                                    color: primaryColor
-                }}>
+                <p
+                  className={`text-2xl font-bold pb-3`}
+                  style={{
+                    color: primaryColor,
+                  }}
+                >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {(User?.role === 1 || User?.role === 2 || User?.role === 8) && (
-                <p className={`text-2xl font-bold pb-3`} style={{
-                                    color: primaryColor
-                }}>
+                <p
+                  className={`text-2xl font-bold pb-3`}
+                  style={{
+                    color: primaryColor,
+                  }}
+                >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
@@ -263,15 +267,18 @@ const DashboardPanel = ({ setloading }) => {
                 <Link
                   key={index}
                   to={item?.link}
-                  className={`card-hover ${
+                  className={`card-hover backdrop-blur ${
                     currentMode === "dark"
                       ? "bg-[#1c1c1c] text-white "
-                      : "bg-[#EEEEEE] text-main-dark-bg"
+                      : "bg-[#eeeeee45] text-main-dark-bg"
                   } h-auto w-full p-5 rounded-xl grid content-center`}
                 >
-                  <p className={`text-2xl font-bold pb-3`} style={{
-                                      color: primaryColor
-                  }}>
+                  <p
+                    className={`text-2xl font-bold pb-3`}
+                    style={{
+                      color: primaryColor,
+                    }}
+                  >
                     <CountUp end={item.amount} duration={3} />
                   </p>
                   <p
@@ -293,17 +300,20 @@ const DashboardPanel = ({ setloading }) => {
                   <Link
                     to={item?.link}
                     key={index}
-                    className={`card-hover ${
+                    className={`card-hover backdrop-blur ${
                       currentMode === "dark"
                         ? "bg-[#1c1c1c] text-white "
-                        : "bg-[#EEEEEE] text-main-dark-bg"
+                        : "bg-[#eeeeee45] text-main-dark-bg"
                     } h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
-                      <p className={`text-2xl font-bold pb-3`} style={{
-                                          color: primaryColor
-                      }}>
+                      <p
+                        className={`text-2xl font-bold pb-3`}
+                        style={{
+                          color: primaryColor,
+                        }}
+                      >
                         <CountUp end={item.amount} duration={3} />
                       </p>
                       <p
@@ -327,17 +337,20 @@ const DashboardPanel = ({ setloading }) => {
                   <Link
                     to={item.link}
                     key={index}
-                    className={`card-hover ${
+                    className={`card-hover backdrop-blur ${
                       currentMode === "dark"
                         ? "bg-[#1c1c1c] text-white "
-                        : "bg-[#EEEEEE] text-main-dark-bg"
+                        : "bg-[#eeeeee45] text-main-dark-bg"
                     }  h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
-                      <p className={`text-2xl font-bold pb-3`} style={{
-                                          color: primaryColor
-                      }}>
+                      <p
+                        className={`text-2xl font-bold pb-3`}
+                        style={{
+                          color: primaryColor,
+                        }}
+                      >
                         <CountUp end={item.amount} duration={3} />
                       </p>
                       <p
@@ -365,10 +378,10 @@ const DashboardPanel = ({ setloading }) => {
                 initial={{ x: 120 }}
                 transition={{ duration: 0.7 }}
                 animate={{ x: [-20, 30, 0] }}
-                className={`card-hover ${
+                className={`card-hover backdrop-blur ${
                   currentMode === "dark"
                     ? "bg-[#1c1c1c] text-white "
-                    : "bg-[#EEEEEE]"
+                    : "bg-[#eeeeee45]"
                 } h-full rounded-xl p-5 cursor-pointer w-full`}
               >
                 <div className="justify-between items-center w-full">
@@ -380,10 +393,10 @@ const DashboardPanel = ({ setloading }) => {
           ) : User?.role === 3 ? (
             <>
               <div
-                className={`card-hover ${
+                className={`card-hover backdrop-blur ${
                   currentMode === "dark"
                     ? "bg-[#1c1c1c] text-white "
-                    : "bg-[#EEEEEE]"
+                    : "bg-[#eeeeee45]"
                 } h-full w-full rounded-xl p-5 cursor-pointer`}
               >
                 <div className="justify-between items-center">
@@ -396,10 +409,10 @@ const DashboardPanel = ({ setloading }) => {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
                 <div
-                  className={`card-hover ${
+                  className={`card-hover backdrop-blur ${
                     currentMode === "dark"
                       ? "bg-[#1c1c1c] text-white "
-                      : "bg-[#EEEEEE]"
+                      : "bg-[#eeeeee45]"
                   } h-full w-full rounded-xl p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
@@ -411,10 +424,10 @@ const DashboardPanel = ({ setloading }) => {
                   </div>
                 </div>
                 <div
-                  className={`card-hover ${
+                  className={`card-hover backdrop-blur ${
                     currentMode === "dark"
                       ? "bg-[#1c1c1c] text-white "
-                      : "bg-[#EEEEEE]"
+                      : "bg-[#eeeeee45]"
                   } h-full w-full rounded-xl p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
@@ -435,10 +448,10 @@ const DashboardPanel = ({ setloading }) => {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-1">
             <div
-              className={`card-hover ${
+              className={`card-hover backdrop-blur ${
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#EEEEEE]"
+                  : "bg-[#eeeeee45]"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -448,10 +461,10 @@ const DashboardPanel = ({ setloading }) => {
             </div>
 
             <div
-              className={`card-hover ${
+              className={`card-hover backdrop-blur ${
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#EEEEEE]"
+                  : "bg-[#eeeeee45]"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer `}
             >
               <div className="justify-between items-center">
@@ -469,10 +482,10 @@ const DashboardPanel = ({ setloading }) => {
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-1">
             <div
-              className={`card-hover ${
+              className={`card-hover backdrop-blur ${
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#EEEEEE]"
+                  : "bg-[#eeeeee45]"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -487,10 +500,10 @@ const DashboardPanel = ({ setloading }) => {
               </div>
             </div>
             <div
-              className={`card-hover ${
+              className={`card-hover backdrop-blur ${
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#EEEEEE]"
+                  : "bg-[#eeeeee45]"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -504,10 +517,10 @@ const DashboardPanel = ({ setloading }) => {
             </div>
 
             <div
-              className={`card-hover ${
+              className={`card-hover backdrop-blur ${
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#EEEEEE]"
+                  : "bg-[#eeeeee45]"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -531,10 +544,10 @@ const DashboardPanel = ({ setloading }) => {
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
           style={{
-            background: primaryColor
+            background: withOpacity(primaryColor, 0.9),
           }}
           className={`
-          card-hover h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
+          card-hover backdrop-blur h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white `}>
@@ -551,9 +564,9 @@ const DashboardPanel = ({ setloading }) => {
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
           style={{
-            background: primaryColor
+            background: withOpacity(primaryColor, 0.9),
           }}
-          className={`card-hover h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
+          className={`card-hover backdrop-blur h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white`}>
@@ -573,13 +586,11 @@ const DashboardPanel = ({ setloading }) => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ margin: "-70px" }}
-            className={`${currentMode === "dark" ? "text-white" : "text-black"} col-span-1 h-fit py-2`}
+            className={`${
+              currentMode === "dark" ? "text-white" : "text-black"
+            } col-span-1 h-fit py-2`}
           >
-            <h4
-              className="font-semibold p-3"
-            >
-              UPCOMING MEETINGS
-            </h4>
+            <h4 className="font-semibold p-3">UPCOMING MEETINGS</h4>
             <UpcomingMeeting
               upcoming_meetings={DashboardData?.upcoming_meetings}
             />
@@ -598,10 +609,7 @@ const DashboardPanel = ({ setloading }) => {
               currentMode === "dark" ? "text-white " : "text-black"
             } col-span-1 h-fit`}
           >
-            <h4
-            id="reminders"
-              className="font-semibold p-3"
-            >
+            <h4 id="reminders" className="font-semibold p-3">
               REMINDERS
             </h4>
             <Reminder
@@ -621,7 +629,9 @@ const DashboardPanel = ({ setloading }) => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ margin: "-70px" }}
-        className={`${currentMode === "dark" ? "border-[#1C1C1C]" : "border-[#EEEEEE]"} grid grid-cols-1 pb-3 my-3 border-4 rounded-xl`}
+        className={`${
+          currentMode === "dark" ? "border-[#1C1C1C]" : "border-[#eeeeee45]"
+        } grid grid-cols-1 pb-3 my-3 border-4 rounded-xl`}
       >
         <Task />
       </motion.div>

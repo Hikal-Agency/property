@@ -5,7 +5,7 @@ const colors = [
   'rgb(255, 165, 0)', // Orange
   'rgb(165, 42, 42)', // Brown
   'rgb(0, 128, 0)',   // Green
-  'rgb(0, 0, 255)',   // Blue
+  'rgb(18, 69, 168)',   // Blue
   'rgb(255, 0, 0)',   // Red
   'rgb(255, 255, 0)', // Yellow
   'rgb(128, 128, 128)', // Grey
@@ -27,7 +27,7 @@ const ColorsPopup = () => {
         {colors.map((color) => (
             <div style={{
                 background: color
-            }} onClick={() => setPrimaryColor(color)} className={`w-[35px] h-[35px] cursor-pointer border-4 border-white rounded shadow`}>
+            }} onClick={() => setPrimaryColor(color)} className={`w-[35px] rounded-full h-[35px] cursor-pointer border-4 border-white shadow`}>
 
             </div>
         ))}
