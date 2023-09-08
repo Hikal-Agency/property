@@ -15,7 +15,6 @@ import {
 import { Chart } from "react-chartjs-2";
 
 import axios from "../../axoisConfig";
-// import faker from 'faker';
 
 ChartJS.register(
   LinearScale,
@@ -117,7 +116,7 @@ const CombinationChart = () => {
                 data: performanceChartData.map((member) => member.total_sales),
                 fill: true,
                 backgroundColor: "rgba(225,0,0,0.4)",
-                borderColor: "#da1f26",
+                borderColor: "#DA1F26",
               },
               {
                 type: "line",

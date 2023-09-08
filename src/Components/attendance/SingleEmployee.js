@@ -16,11 +16,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
-import {
-  MdModeEdit,
-  MdMoneyOff,
-  MdPendingActions,
-} from "react-icons/md";
+import { MdModeEdit, MdMoneyOff, MdPendingActions } from "react-icons/md";
 import { TfiCheck, TfiClose } from "react-icons/tfi";
 import { Select, MenuItem } from "@mui/material";
 import jsPDF from "jspdf";
@@ -1551,7 +1547,7 @@ const SingleEmployee = ({ user }) => {
         {loading ? (
           <Loader />
         ) : (
-          <div className="w-full">
+          <div className="w-full ">
             <Box
               sx={{
                 ...darkModeColors,
@@ -1560,20 +1556,23 @@ const SingleEmployee = ({ user }) => {
                 marginTop: "5px",
               }}
             >
-            <div className="flex mx-2">
-              <Tooltip title="Export Attendance Logs" arrow>
-                <IconButton
-                  className={`p-1 disabled:opacity-50 disabled:cursor-not-allowed`}
-                  ripple={true}
-                  size="small"
-                  type="submit"
-                  onClick={() => setPasswordConfirm(true)}
-                  // sx={{ border: "1px solid #DA1F26" }}
-                >
-                  <FaDownload size={14} className="text-[#AAAAAA] hover:text-[#DA1F26]" />
-                </IconButton>
-              </Tooltip>
-            </div>
+              <div className="flex mx-2">
+                <Tooltip title="Export Attendance Logs" arrow>
+                  <IconButton
+                    className={`p-1 disabled:opacity-50 disabled:cursor-not-allowed`}
+                    ripple={true}
+                    size="small"
+                    type="submit"
+                    onClick={() => setPasswordConfirm(true)}
+                    // sx={{ border: "1px solid #DA1F26" }}
+                  >
+                    <FaDownload
+                      size={14}
+                      className="text-[#AAAAAA] hover:text-[#DA1F26]"
+                    />
+                  </IconButton>
+                </Tooltip>
+              </div>
               <div className="flex">
                 <FormControl variant="outlined" sx={{ m: 1, minWidth: 30 }}>
                   <Select
@@ -1598,10 +1597,17 @@ const SingleEmployee = ({ user }) => {
 
             {/* SALARY CALC & TABLE  */}
             <div className="my-5 mb-10">
-              <div className={`grid grid-cols-12 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-black"}`} >
+              <div
+                className={`grid grid-cols-1 md:grid-cols-12 ${
+                  currentMode === "dark" ? "text-[#EEEEEE]" : "text-black"
+                }`}
+              >
                 <div className="col-span-2 px-2 pb-2 text-sm">
-                  
-                  <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} rounded-md p-3 mb-1`}>
+                  <div
+                    className={`${
+                      currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                    } rounded-md p-3 mb-1`}
+                  >
                     <label htmlFor="pick-image">
                       <div className="relative">
                         {empData[0]?.profile_picture ? (
@@ -1625,9 +1631,7 @@ const SingleEmployee = ({ user }) => {
                     <div className="m-3">
                       <h1
                         className={`${
-                          currentMode === "dark"
-                            ? "text-white"
-                            : "text-black"
+                          currentMode === "dark" ? "text-white" : "text-black"
                         }  text-center font-bold text-base`}
                       >
                         {empData[0]?.userName || User?.userName}
@@ -1644,8 +1648,12 @@ const SingleEmployee = ({ user }) => {
                     </div>
                   </div>
                   {/* MONTHLY SALARY AND SALARY PER DAY  */}
-                  
-                  <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} rounded-md p-3 my-1`}>
+
+                  <div
+                    className={`${
+                      currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                    } rounded-md p-3 my-1`}
+                  >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                       <div className="text-center">
                         <div className="flex items-center justify-center">
@@ -1666,8 +1674,12 @@ const SingleEmployee = ({ user }) => {
                     </div>
                   </div>
                   {/* ATTENDED AND LEAVE DAYS  */}
-                  
-                  <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} rounded-md p-3 my-1`}>
+
+                  <div
+                    className={`${
+                      currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                    } rounded-md p-3 my-1`}
+                  >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                       <div className="text-center">
                         <div className="flex items-center justify-center">
@@ -1716,14 +1728,15 @@ const SingleEmployee = ({ user }) => {
                   </div>
                   {/* DEDUCTED SALARY  */}
                   {empData[0]?.salary ? (
-                    
-                    <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} rounded-md p-3 my-1`}>
+                    <div
+                      className={`${
+                        currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                      } rounded-md p-3 my-1`}
+                    >
                       <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                         <div className="text-center">
                           <div className="flex items-center justify-center">
-                            <h1 className="font-semibold">
-                              Leave days salary
-                            </h1>
+                            <h1 className="font-semibold">Leave days salary</h1>
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LEAVE_DAYS) =========== TOTAL_LEAVE_DAYS = WORKING_DAYS - ATTENDED_DAYS */}
                           {empData[0]?.salary
@@ -1732,9 +1745,7 @@ const SingleEmployee = ({ user }) => {
                         </div>
                         <div className="text-center">
                           <div className="flex items-center justify-center">
-                            <h1 className="font-semibold">
-                              Late days salary
-                            </h1>
+                            <h1 className="font-semibold">Late days salary</h1>
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LATE_DAYS) / 2 ========== TOTAL_LATE_DAYS = COUNT(is_late) WHERE is_late = 1 */}
                           {empData[0]?.salary && empData[0]?.salary !== null
@@ -1747,8 +1758,12 @@ const SingleEmployee = ({ user }) => {
                     ""
                   )}
                   {/* TOTAL SALARY  */}
-                  
-                  <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} rounded-md p-3 my-1`}>
+
+                  <div
+                    className={`${
+                      currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                    } rounded-md p-3 my-1`}
+                  >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                       <div className="text-center">
                         <div className="flex items-center justify-center">
@@ -1768,11 +1783,11 @@ const SingleEmployee = ({ user }) => {
                   <Box
                     width={"100%"}
                     height={"100%"}
-                    className={`single-emp ${currentMode}-mode-datatable`}
-                    sx={DataGridStyles}
+                    className={`single-emp ${currentMode}-mode-datatable `}
+                    sx={{ ...DataGridStyles, marginLeft: "6px" }}
                   >
                     <DataGrid
-                    disableDensitySelector
+                      disableDensitySelector
                       autoHeight
                       disableSelectionOnClick
                       rows={pageState.data}
@@ -1832,7 +1847,6 @@ const SingleEmployee = ({ user }) => {
                 )}
               </div>
             </div>
-                
           </div>
         )}
       </div>
