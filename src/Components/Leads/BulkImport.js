@@ -39,28 +39,29 @@ const BulkImport = ({
   handleCloseBulkImportModel,
   CSVData,
   FetchLeads,
-  lead_origin
+  lead_origin,
 }) => {
-  const { currentMode, BACKEND_URL, User, fetchSidebarData } = useStateContext();
+  const { currentMode, BACKEND_URL, User, fetchSidebarData } =
+    useStateContext();
 
   const [values, setValues] = useState({});
   const [columns, setColumns] = useState(CSVData?.keys || []);
   const [btnloading, setbtnloading] = useState(false);
 
-    let coldCallCode = "";
-    if (lead_origin === "freshleads") {
-      coldCallCode = 0;
-    } else if (lead_origin === "coldleads") {
-      coldCallCode = 1;
-    } else if (lead_origin === "thirdpartyleads") {
-      coldCallCode = 3;
-    } else if (lead_origin === "personalleads") {
-      coldCallCode = 2;
-    } else if (lead_origin === "warmleads") {
-      coldCallCode = 4;
-    } else if (lead_origin === "transfferedleads") {
-      coldCallCode = 0;
-    }
+  let coldCallCode = "";
+  if (lead_origin === "freshleads") {
+    coldCallCode = 0;
+  } else if (lead_origin === "coldleads") {
+    coldCallCode = 1;
+  } else if (lead_origin === "thirdpartyleads") {
+    coldCallCode = 3;
+  } else if (lead_origin === "personalleads") {
+    coldCallCode = 2;
+  } else if (lead_origin === "warmleads") {
+    coldCallCode = 4;
+  } else if (lead_origin === "transfferedleads") {
+    coldCallCode = 0;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,35 +82,38 @@ const BulkImport = ({
         LeadData["feedback"] = "New";
         LeadData["addedBy"] = User?.id;
 
-        if(User?.role === 3 || User?.role === 2){
+        if (User?.role === 3 || User?.role === 2) {
           LeadData["assignedToManager"] = User?.id;
-        } else if(User?.role === 7) {
+        } else if (User?.role === 7) {
           LeadData["assignedToSales"] = User?.id;
           LeadData["assignedToManager"] = User?.isParent;
         }
 
-        for(let key in LeadData) {
-          if(!LeadData[key]) {
+        for (let key in LeadData) {
+          if (!LeadData[key]) {
             delete LeadData[key];
           }
         }
 
-        if(LeadData["leadName"] && LeadData["leadContact"]) {
+        if (LeadData["leadName"] && LeadData["leadContact"]) {
           AllLeads.push(LeadData);
         }
       });
 
       setbtnloading(true);
 
-    await axios
-      .post(`${BACKEND_URL}/bulkimport`, JSON.stringify({
-        leads: AllLeads
-      }), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
+      await axios.post(
+        `${BACKEND_URL}/bulkimport`,
+        JSON.stringify({
+          leads: AllLeads,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       fetchSidebarData();
       toast.success("Leads Added Successfully", {
         position: "top-right",
@@ -164,7 +168,6 @@ const BulkImport = ({
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
         >
-          
           <IconButton
             sx={{
               position: "absolute",
@@ -188,7 +191,9 @@ const BulkImport = ({
                     onChange={(event) => handleChange(event, key)}
                     size="medium"
                     className="w-full mb-5 mt-1"
-                    required={(key === "leadName" || key === "leadContact") ? true : false}
+                    required={
+                      key === "leadName" || key === "leadContact" ? true : false
+                    }
                   >
                     <MenuItem value="" disabled>
                       Select Column
