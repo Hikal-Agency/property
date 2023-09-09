@@ -595,7 +595,7 @@ const SingleLead = ({
                 {LeadData?.transferRequest === 1 ||
                 LeadData?.transferRequest === "1" ? (
                   <></>
-                ) : (
+                ) : hasPermission("reshuffle_button") ? (
                   <p
                     style={{ cursor: "pointer" }}
                     className={`${
@@ -610,7 +610,7 @@ const SingleLead = ({
                       </button>
                     </Tooltip>
                   </p>
-                )}
+                ) : null}
 
                 {/* IP BLOCKING */}
                 {LeadData?.ip && LeadData?.is_blocked !== 1 && (
