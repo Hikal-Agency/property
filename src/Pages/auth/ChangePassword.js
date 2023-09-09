@@ -52,7 +52,11 @@ const ChangePassword = () => {
                         <div className="flex justify-center flex-col items-center">
                           <div className="relative">
                             <Avatar
-                              src={User?.displayImg}
+                          src={
+                            User?.displayImg
+                              ? User?.displayImg
+                              : "/assets/user.png"
+                          }
                               width={200}
                               height={200}
                               alt=""

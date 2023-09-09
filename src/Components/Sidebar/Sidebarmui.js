@@ -108,7 +108,7 @@ const Sidebarmui = () => {
   const [animateProfile, setAnimateProfile] = useState(false);
 
   const handleClickProfile = (e) => {
-    if(!e.target.closest(".view-image")) {
+    if (!e.target.closest(".view-image")) {
       navigate("/profile");
     }
   };
@@ -1297,23 +1297,13 @@ const Sidebarmui = () => {
                 >
                   {isCollapsed ? (
                     <div className="flex items-center space-x-2">
-                      <Box className="relative" sx={{
-                        "&:hover .absolute": {
-                          display: "flex"
-                        }
-                      }}>
-                          <img
-                            height={40}
-                            width={40}
-                            className="h-[40px] w-auto p-1"
-                            src="/favicon.png"
-                            alt=""
-                          />
-
-                        <div className="absolute hidden top-0 left-0 w-full h-full bg-[rgba(255, 255, 255, 0.7)] flex justify-center items-center">
-                          <p>View image</p>
-                        </div>
-                      </Box>
+                      <img
+                        height={40}
+                        width={40}
+                        className="h-[40px] w-auto p-1"
+                        src="/favicon.png"
+                        alt=""
+                      />
 
                       <div className="relative">
                         <h1
@@ -1346,17 +1336,30 @@ const Sidebarmui = () => {
                       onClick={handleClickProfile}
                       className="flex cursor-pointer flex-col items-center justify-center"
                     >
-                      <Avatar
-                        src={
-                          User?.displayImg
-                            ? User?.displayImg
-                            : "/assets/user.png"
-                        }
-                        height={60}
-                        width={60}
-                        className={`rounded-md object-cover`}
-                        alt=""
-                      />
+                      <Box
+                        className="relative"
+                        sx={{
+                          "&:hover .absolute": {
+                            display: "flex",
+                          },
+                        }}
+                      >
+                        <Avatar
+                          src={
+                            User?.displayImg
+                              ? User?.displayImg
+                              : "/assets/user.png"
+                          }
+                          height={60}
+                          width={60}
+                          className={`rounded-md object-cover`}
+                          alt=""
+                        />
+
+                        <div className="absolute hidden top-0 left-0 w-full h-full bg-[rgba(255, 255, 255, 0.7)] flex justify-center items-center">
+                          <p>View image</p>
+                        </div>
+                      </Box>
 
                       <h1
                         className={`my-2 font-bold text-lg text-center ${
