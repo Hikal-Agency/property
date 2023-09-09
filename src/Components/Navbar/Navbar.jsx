@@ -43,7 +43,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <Tooltip title={title} arrow placement="bottom">
     <button
       type="button"
-      onClick={customFunc}
+      onMouseEnter={customFunc}
       style={{ color }}
       className="relative text-xl rounded-full p-3 hover:bg-light-gray"
     >

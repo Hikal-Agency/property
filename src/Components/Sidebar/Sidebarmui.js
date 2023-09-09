@@ -1341,10 +1341,11 @@ const Sidebarmui = () => {
                         sx={{
                           "&:hover .absolute": {
                             display: "flex",
+                            background: currentMode === "dark" ? "white" : "black"
                           },
                         }}
                       >
-                        <Avatar
+                        <img
                           src={
                             User?.displayImg
                               ? User?.displayImg
@@ -1356,8 +1357,9 @@ const Sidebarmui = () => {
                           alt=""
                         />
 
-                        <div className="absolute hidden top-0 left-0 w-full h-full bg-[rgba(255, 255, 255, 0.7)] flex justify-center items-center">
-                          <p>View image</p>
+                        <div className={`absolute rounded-md text-sm view-image hidden top-0 left-0 w-full font-bold h-full flex-col justify-center items-center`}>
+                          <p className={`${currentMode === "dark" ? 'text-black' : 'text-white'}`}>View</p>
+                          <p className={`${currentMode === "dark" ? 'text-black' : 'text-white'}`}>Image</p>
                         </div>
                       </Box>
 

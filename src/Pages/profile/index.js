@@ -275,7 +275,7 @@ const ProfilePage = () => {
                               }
                               className="relative"
                             >
-                              <Avatar
+                              <img
                                 src={User?.displayImg}
                                 width={200}
                                 height={200}
