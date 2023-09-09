@@ -148,7 +148,7 @@ const SingleLead = ({
 
   const handleRequest = async (e, data) => {
     e.preventDefault();
-    const currentDate = moment().format("YYYY-MM-DD");
+    const currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
 
     // notification
     const requestData = new FormData();
