@@ -1002,7 +1002,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .animate-profile-pic img {
-  animation: popout .25s ease-in forwards;
+  animation: popout .15s ease-in forwards;
   pointer-events: none;
 }
 
