@@ -1934,7 +1934,7 @@ const Sidebarmui = () => {
             </div>
           </div>
 
-          {animateProfile ? (
+          {/* {animateProfile ? (
             <div
               className={`profile-pic-popout ${
                 animateProfile ? "animate-profile-pic" : ""
@@ -1950,7 +1950,7 @@ const Sidebarmui = () => {
             </div>
           ) : (
             <></>
-          )}
+          )} */}
         </Sidebar>
       </div>
 
