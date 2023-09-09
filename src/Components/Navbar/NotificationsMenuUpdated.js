@@ -71,7 +71,12 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
         (notification) => notification.isRead !== 1
       );
 
-      setNotifications(filteredNotifications);
+      if(User?.role === 1) {
+        setNotifications(filteredNotifications?.filter((notif) => notif?.user_id === User?.id));
+      } else{
+        setNotifications(filteredNotifications);
+      }
+
     } catch (error) {
       console.log(error);
     }

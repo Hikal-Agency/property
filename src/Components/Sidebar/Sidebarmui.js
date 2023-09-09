@@ -1,4 +1,4 @@
-import { Box, IconButton, ListItemIcon, Tooltip } from "@mui/material";
+import { Avatar, Box, IconButton, ListItemIcon, Tooltip } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { AiFillGift } from "react-icons/ai";
 import { FaLink, FaSnowflake, FaMobile, FaInbox } from "react-icons/fa";
@@ -9,6 +9,7 @@ import {
   BsFillCreditCard2FrontFill,
   BsCircleFill,
 } from "react-icons/bs";
+import { Menu as MuiMenu, MenuItem as MuiMenuItem } from "@mui/material";
 
 import { MdOutlinePayment } from "react-icons/md";
 import { AiTwotoneCalendar } from "react-icons/ai";
@@ -103,6 +104,14 @@ const Sidebarmui = () => {
     linkIndex: 0,
     sub: false,
   });
+
+  const [animateProfile, setAnimateProfile] = useState(false);
+
+  const handleClickProfile = (e) => {
+    if (!e.target.closest(".view-image")) {
+      navigate("/profile");
+    }
+  };
 
   const setOpenedSubMenu = ({ menuIndex, linkIndex, sub = false }) => {
     if (sub) {
@@ -1322,22 +1331,38 @@ const Sidebarmui = () => {
               <div className="profile-section border-b mt-1 px-2 pb-5 mb-2">
                 {isCollapsed ? (
                   <>
-                    <Link
-                      to={"/profile"}
-                      onClick={() => setopenBackDrop(true)}
-                      className="flex flex-col items-center justify-center"
+                    <div
+                      // to={"/profile"}
+                      onClick={handleClickProfile}
+                      className="flex cursor-pointer flex-col items-center justify-center"
                     >
-                      <img
-                        src={
-                          User?.displayImg
-                            ? User?.displayImg
-                            : "/assets/user.png"
-                        }
-                        height={60}
-                        width={60}
-                        className="rounded-md object-cover"
-                        alt=""
-                      />
+                      <Box
+                        className="relative"
+                        sx={{
+                          "&:hover .absolute": {
+                            display: "flex",
+                            background: currentMode === "dark" ? "white" : "black"
+                          },
+                        }}
+                      >
+                        <img
+                          src={
+                            User?.displayImg
+                              ? User?.displayImg
+                              : "/assets/user.png"
+                          }
+                          height={60}
+                          width={60}
+                          className={`rounded-md object-cover`}
+                          alt=""
+                        />
+
+                        <div className={`absolute rounded-md text-sm view-image hidden top-0 left-0 w-full font-bold h-full flex-col justify-center items-center`}>
+                          <p className={`${currentMode === "dark" ? 'text-black' : 'text-white'}`}>View</p>
+                          <p className={`${currentMode === "dark" ? 'text-black' : 'text-white'}`}>Image</p>
+                        </div>
+                      </Box>
+
                       <h1
                         className={`my-2 font-bold text-lg text-center ${
                           currentMode === "dark"
@@ -1352,22 +1377,22 @@ const Sidebarmui = () => {
                       >
                         {User?.position || ""}
                       </span>
-                    </Link>
+                    </div>
                   </>
                 ) : (
-                  <Link
-                    to={"/profile"}
-                    onClick={() => setopenBackDrop(true)}
+                  <div
+                    // to={"/profile"}
+                    onClick={handleClickProfile}
                     className="flex justify-center"
                   >
-                    <img
+                    <Avatar
                       src={User?.displayImg}
                       height={50}
                       width={50}
                       className="rounded-md cursor-pointer"
                       alt=""
                     />
-                  </Link>
+                  </div>
                 )}
               </div>
             </div>
@@ -1876,6 +1901,24 @@ const Sidebarmui = () => {
               </Menu>
             </div>
           </div>
+
+          {/* {animateProfile ? (
+            <div
+              className={`profile-pic-popout ${
+                animateProfile ? "animate-profile-pic" : ""
+              }`}
+            >
+              <img
+                src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
+                height={60}
+                width={60}
+                className={`rounded-md object-cover`}
+                alt=""
+              />
+            </div>
+          ) : (
+            <></>
+          )} */}
         </Sidebar>
       </div>
 

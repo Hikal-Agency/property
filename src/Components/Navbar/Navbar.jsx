@@ -1,21 +1,9 @@
-import React, { 
-  useContext, 
-  useEffect, 
-  useState 
-} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useProSidebar } from "react-pro-sidebar";
 import { toast } from "react-toastify";
-import { 
-  Link, 
-  useLocation 
-} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-import { 
-  Tooltip, 
-  Link as MuiLink, 
-  Button, 
-  Badge 
-} from "@mui/material";
+import { Tooltip, Link as MuiLink, Button, Badge } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
@@ -35,19 +23,19 @@ import {
   BsBell,
   BsBellFill,
   BsClock,
-  BsClockFill
+  BsClockFill,
 } from "react-icons/bs";
 import {
   MdDarkMode,
   MdKeyboardArrowDown,
   MdOutlineLightMode,
 } from "react-icons/md";
-import { 
+import {
   VscHistory,
   VscLock,
   VscShield,
   VscExclude,
-  VscSignOut
+  VscSignOut,
 } from "react-icons/vsc";
 import "../../styles/animation.css";
 
@@ -55,7 +43,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <Tooltip title={title} arrow placement="bottom">
     <button
       type="button"
-      onClick={customFunc}
+      onMouseEnter={customFunc}
       style={{ color }}
       className="relative text-xl rounded-full p-3 hover:bg-light-gray"
     >
@@ -278,13 +266,13 @@ const Navbar = () => {
                 <BsBellFill size={16} />
               ) : (
                 [
-                    <Badge
-                      className={notifIconAnimating ? "animate-notif-icon" : ""}
-                      badgeContent={unreadNotifsCount}
-                      color="error"
-                    >
-                      <BsBell size={16} />
-                    </Badge>
+                  <Badge
+                    className={notifIconAnimating ? "animate-notif-icon" : ""}
+                    badgeContent={unreadNotifsCount}
+                    color="error"
+                  >
+                    <BsBell size={16} />
+                  </Badge>,
                 ]
               )
             }
@@ -296,10 +284,13 @@ const Navbar = () => {
             // color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
             customFunc={(event) => handleClick(event, "Clock")}
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
-            icon={open && currNavBtn === "Clock" ? 
-              <BsClockFill size={16} /> 
-              : 
-              <BsClock size={16} />}
+            icon={
+              open && currNavBtn === "Clock" ? (
+                <BsClockFill size={16} />
+              ) : (
+                <BsClock size={16} />
+              )
+            }
           />
 
           {/* THEME  */}
@@ -367,11 +358,17 @@ const Navbar = () => {
                     //  height: "auto",
                     overflow: "visible",
                     //  overflowY: "scroll",
-                    filter: currentMode === "dark" ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))" : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
+                    filter:
+                      currentMode === "dark"
+                        ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
+                        : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
                     mt: 0.5,
                     p: 1,
                     // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
-                    background: currentMode === "dark" ? "rgb(28 28 28 / 0.9)" : "rgb(238 238 238 / 0.9)",
+                    background:
+                      currentMode === "dark"
+                        ? "rgb(28 28 28 / 0.9)"
+                        : "rgb(238 238 238 / 0.9)",
                     color: currentMode === "dark" ? "#FFFFFF" : "#000000",
                     minWidth: 300,
                     padding: 0,
@@ -386,8 +383,8 @@ const Navbar = () => {
                     },
                     "& .MuiList-root .clock-div": {
                       background: "transparent !important",
-                        // currentMode === "dark" ? "#000000 " : "radial-gradient(circle, #666666, #EEEEEE)",
-                        // currentMode === "dark" ? "#000000 " : "#FFFFFF",
+                      // currentMode === "dark" ? "#000000 " : "radial-gradient(circle, #666666, #EEEEEE)",
+                      // currentMode === "dark" ? "#000000 " : "#FFFFFF",
                       border: "none !important",
                     },
                     //  "&:before": {
@@ -422,11 +419,17 @@ const Navbar = () => {
                 sx: {
                   // overflow: "visible",
                   overflowY: "scroll",
-                  filter: currentMode === "dark" ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))" : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
+                  filter:
+                    currentMode === "dark"
+                      ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
+                      : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
                   mt: 0.5,
                   p: 1,
                   // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
-                  background: currentMode === "dark" ? "rgb(28 28 28 / 0.9)" : "rgb(238 238 238 / 0.9)",
+                  background:
+                    currentMode === "dark"
+                      ? "rgb(28 28 28 / 0.9)"
+                      : "rgb(238 238 238 / 0.9)",
                   color: currentMode === "dark" ? "#ffffff" : "black",
                   minWidth: 300,
                   borderRadius: "10px",
@@ -436,10 +439,11 @@ const Navbar = () => {
                     ml: -0.5,
                     mr: 1,
                   },
-                  "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root": {
-                    padding: "5px !important",
-                    paddingRight: "0px !important",
-                  },
+                  "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root":
+                    {
+                      padding: "5px !important",
+                      paddingRight: "0px !important",
+                    },
                   // "&:before": {
                   //   content: '""',
                   //   display: "block",
@@ -460,7 +464,10 @@ const Navbar = () => {
               {currNavBtn ? (
                 currNavBtn === "Notifications" ? (
                   // <NotificationsMenu />
-                  <NotificationsMenuUpdated setAnchorEl={setAnchorEl} setOpen={setOpen}/>
+                  <NotificationsMenuUpdated
+                    setAnchorEl={setAnchorEl}
+                    setOpen={setOpen}
+                  />
                 ) : currNavBtn === "Meetings" ? (
                   <>
                     <UpcomingMeetingsMenu />
@@ -484,7 +491,9 @@ const Navbar = () => {
                         <div className="flex justify-between items-center w-full h-full">
                           <div className="mx-1 space-y-1">
                             <p className="font-semibold">{User?.userName}</p>
-                            <p className="text-xs capitalize">{User?.position}</p>
+                            <p className="text-xs capitalize">
+                              {User?.position}
+                            </p>
                           </div>
                           <div className="text-sm rounded-full border border-[#DA1F26] px-2 py-1">
                             Profile
@@ -501,20 +510,35 @@ const Navbar = () => {
                     } mb-3 p-3 rounded-xl shadow-sm w-full`}
                   >
                     {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
-                      <div className="flex items-center justify-start">
-                        <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
-                          <VscHistory size={18} color={"#AAAAAA"} />
+                    <div className="flex items-center justify-start">
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                        } p-2 rounded-full mr-2`}
+                      >
+                        <VscHistory size={18} color={"#AAAAAA"} />
+                      </div>
+                      <div className="flex justify-between items-center w-full h-full">
+                        <div className="flex items-center">
+                          <p className="font-semibold mx-1 mr-2">
+                            Login history
+                          </p>
+                          <VscLock
+                            size={14}
+                            color={"#DA1F26"}
+                            className="mr-2"
+                          />
                         </div>
-                        <div className="flex justify-between items-center w-full h-full">
-                          <div className="flex items-center">
-                            <p className="font-semibold mx-1 mr-2">Login history</p>
-                            <VscLock size={14} color={"#DA1F26"} className="mr-2" />
-                          </div>
-                          <div className="rounded-full bg-[#DA1F26] text-white px-2 py-1 font-bold" style={{ fontSize: "0.5rem" }}>
-                            SOON
-                          </div>
+                        <div
+                          className="rounded-full bg-[#DA1F26] text-white px-2 py-1 font-bold"
+                          style={{ fontSize: "0.5rem" }}
+                        >
+                          SOON
                         </div>
                       </div>
+                    </div>
                     {/* </Link> */}
                   </div>
 
@@ -524,12 +548,23 @@ const Navbar = () => {
                       currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
                     } mb-3 p-3 rounded-xl shadow-sm w-full`}
                   >
-                    <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}>
+                    <Link
+                      to={"/changepassword"}
+                      onClick={() => setopenBackDrop(true)}
+                    >
                       <div className="flex items-center justify-start">
-                        <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-[#1C1C1C]"
+                              : "bg-[#EEEEEE]"
+                          } p-2 rounded-full mr-2`}
+                        >
                           <VscShield size={18} color={"#AAAAAA"} />
                         </div>
-                        <p className="mx-1 mr-2 font-semibold">Change password</p>
+                        <p className="mx-1 mr-2 font-semibold">
+                          Change password
+                        </p>
                       </div>
                     </Link>
                   </div>
@@ -543,13 +578,21 @@ const Navbar = () => {
                       onClick={UnsubscribeUser}
                     >
                       {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
-                        <div className="flex items-center justify-start">
-                          <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`} >
-                            <VscExclude size={18} color={"#AAAAAA"} />
-                          </div>
-                          <p className="mx-1 mr-2 font-semibold">Unsubscribe package</p>
-                          <VscLock size={14} color={"#DA1F26"} className="mr-2" />
+                      <div className="flex items-center justify-start">
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-[#1C1C1C]"
+                              : "bg-[#EEEEEE]"
+                          } p-2 rounded-full mr-2`}
+                        >
+                          <VscExclude size={18} color={"#AAAAAA"} />
                         </div>
+                        <p className="mx-1 mr-2 font-semibold">
+                          Unsubscribe package
+                        </p>
+                        <VscLock size={14} color={"#DA1F26"} className="mr-2" />
+                      </div>
                       {/* </Link> */}
                     </div>
                   )}
@@ -562,7 +605,13 @@ const Navbar = () => {
                     onClick={LogoutUser}
                   >
                     <div className="flex items-center justify-start">
-                      <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                        } p-2 rounded-full mr-2`}
+                      >
                         <VscSignOut size={18} color={"#AAAAAA"} />
                       </div>
                       <p className="mx-1 mr-2 font-semibold">Log out</p>

@@ -5,6 +5,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { MdEmail } from "react-icons/md";
 import { Button } from "@material-tailwind/react";
 import usePermission from "../../utils/usePermission";
+import { Avatar } from "@mui/material";
 
 const ChangePassword = () => {
   const { User, currentMode } = useStateContext();
@@ -50,8 +51,12 @@ const ChangePassword = () => {
                       <div className="accountinfo px-5 pt-10 ">
                         <div className="flex justify-center flex-col items-center">
                           <div className="relative">
-                            <img
-                              src={User?.displayImg}
+                            <Avatar
+                          src={
+                            User?.displayImg
+                              ? User?.displayImg
+                              : "/assets/user.png"
+                          }
                               width={200}
                               height={200}
                               alt=""

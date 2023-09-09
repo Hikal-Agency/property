@@ -1,5 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import { Box } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 
 import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
