@@ -71,11 +71,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
         (notification) => notification.isRead !== 1
       );
 
-      if(User?.role === 1) {
-        setNotifications(filteredNotifications?.filter((notif) => notif?.user_id === User?.id));
-      } else{
         setNotifications(filteredNotifications);
-      }
 
     } catch (error) {
       console.log(error);
@@ -108,6 +104,8 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
         navigate("/dashboard#reminders");
       }
 
+      if(User?.role !== 1 && User?.role !== 2) {
+  
       const notifId = activity?.id;
       axios
         .post(
@@ -139,6 +137,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
             theme: "light",
           });
         });
+      }
 
       setOpen(false);
       setAnchorEl(null);

@@ -996,27 +996,27 @@ label[for="bulkImport"] .MuiButtonBase-root {
   }
 }
 
-.profile-pic-popout {
-  transition: all 3s ease-in;
-  width: 0; 
-  height: 0;
-}
 
 .animate-profile-pic {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%; /* Adjusted width when centered */
-  height: 100%; /* Adjusted height when centered */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
 }
 
-.profile-pic-popout img {
-  width: 80%;
-  object-fit: contain;
-  margin: 0 auto;
-  height: 80%;
+.animate-profile-pic img {
+  animation: popout .25s ease-in forwards;
+  pointer-events: none;
 }
+
+@keyframes popout {
+  0% {
+    transform: scale(0.8);
+    position: fixed; 
+    left: 76px;
+    top: 56px;
+  } 
+
+  100% {
+    transform: translate(45vw, 45vh) scale(7);
+    position: fixed; 
+  }
+}
+

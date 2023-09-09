@@ -9,7 +9,7 @@ import {
   BsFillCreditCard2FrontFill,
   BsCircleFill,
 } from "react-icons/bs";
-import { Menu as MuiMenu, MenuItem as MuiMenuItem } from "@mui/material";
+import { IoMdClose } from "react-icons/io";
 
 import { MdOutlinePayment } from "react-icons/md";
 import { AiTwotoneCalendar } from "react-icons/ai";
@@ -105,7 +105,7 @@ const Sidebarmui = () => {
     sub: false,
   });
 
-  const [animateProfile, setAnimateProfile] = useState(false);
+  const [animateProfilePic, setAnimateProfilePic] = useState(false);
 
   const handleClickProfile = (e) => {
     if (!e.target.closest(".view-image")) {
@@ -1341,7 +1341,8 @@ const Sidebarmui = () => {
                         sx={{
                           "&:hover .absolute": {
                             display: "flex",
-                            background: currentMode === "dark" ? "white" : "black"
+                            background:
+                              currentMode === "dark" ? "white" : "black",
                           },
                         }}
                       >
@@ -1353,13 +1354,25 @@ const Sidebarmui = () => {
                           }
                           height={60}
                           width={60}
-                          className={`rounded-md object-cover`}
+                          className={`rounded-md object-cover relative`}
                           alt=""
                         />
 
-                        <div className={`absolute rounded-md text-sm view-image hidden top-0 left-0 w-full font-bold h-full flex-col justify-center items-center`}>
-                          <p className={`${currentMode === "dark" ? 'text-black' : 'text-white'}`}>View</p>
-                          <p className={`${currentMode === "dark" ? 'text-black' : 'text-white'}`}>Image</p>
+                        <div
+                          onClick={() =>
+                            setAnimateProfilePic(!animateProfilePic)
+                          }
+                          className={`absolute rounded-md z-[999] view-image hidden top-0 left-0 w-full font-bold h-full flex-col justify-center items-center`}
+                        >
+                          <p
+                            className={`${
+                              currentMode === "dark"
+                                ? "text-black"
+                                : "text-white"
+                            }`}
+                          >
+                            View
+                          </p>
                         </div>
                       </Box>
 
@@ -1394,6 +1407,33 @@ const Sidebarmui = () => {
                     />
                   </div>
                 )}
+              </div>
+              <div
+                className={`${
+                  animateProfilePic ? "animate-profile-pic" : ""
+                } fixed hidden top-0 left-0 w-screen h-screen`}
+                style={{
+                  backgroundColor: "rgba(0, 0, 0, 0.85)",
+                }}
+              >
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    right: "8%",
+                    top: "8%",
+                    color: "white",
+                  }}
+                  onClick={() => setAnimateProfilePic(false)}
+                >
+                  <IoMdClose size={22} />
+                </IconButton>
+                <img
+                  src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
+                  height={60}
+                  width={60}
+                  className={`rounded-md pointer-events-none object-cover relative z-[500] `}
+                  alt=""
+                />
               </div>
             </div>
             <div className="sidebar-root mt-4 mb-4 text-base">
