@@ -329,7 +329,7 @@ const Navbar = () => {
               className="ml-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
               onClick={handleClick}
             >
-              <img
+              <Avatar
                 height={50}
                 width={50}
                 className="rounded-full w-8 h-8 object-cover"

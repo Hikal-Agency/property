@@ -1380,7 +1380,7 @@ const Sidebarmui = () => {
                     onClick={handleClickProfile}
                     className="flex justify-center"
                   >
-                    <img
+                    <Avatar
                       src={User?.displayImg}
                       height={50}
                       width={50}
