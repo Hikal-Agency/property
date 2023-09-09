@@ -272,7 +272,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full flex justify-between text-left">
+          <div className="w-full flex  text-left">
             <p
               style={{
                 fontFamily: isArabic(cellValues?.formattedValue)
@@ -284,7 +284,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             </p>
             {cellValues?.row?.transferRequest === 1 ? (
               <Tooltip title="Requested for Reshuffle" arrow>
-                <BsShuffle size={14} />
+                <BsShuffle size={14} className="ml-3" />
               </Tooltip>
             ) : (
               <></>

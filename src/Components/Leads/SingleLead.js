@@ -27,11 +27,8 @@ import UpdateLead from "./UpdateLead";
 
 import { HiPhoneOutgoing } from "react-icons/hi";
 import { RiMailSendFill } from "react-icons/ri";
-import {
-  VscCallOutgoing,
-  VscMail,
-  VscEdit
-} from "react-icons/vsc";
+import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
+import moment from "moment";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -71,6 +68,161 @@ const SingleLead = ({
     console.log("LEADID: ", params);
     setsingleLeadData(params);
     handleUpdateLeadModelOpen();
+  };
+
+  // RESHUFFLE LEAD HAND FUNCTION
+  // const handleRequest = async (e, data) => {
+  //   e.preventDefault();
+  //   const currentDate = moment().format("YYYY-MM-DD");
+
+  //   // notification
+  //   const requestData = new FormData();
+  //   const title = `${User?.userName} has requested to reshuffle the lead ${data?.leadName}`;
+  //   requestData?.append("title", title);
+  //   requestData?.append("lead_id", data?.leadId);
+  //   requestData?.append("user_id", User?.isParent);
+  //   requestData?.append("addedBy", User?.id);
+  //   requestData?.append("type", "Reshuffle");
+
+  //   // updatelead
+  //   const updateLead = new FormData();
+  //   updateLead.append("transferRequest", 1);
+  //   updateLead.append("transferredFrom", User?.id);
+  //   updateLead.append("transferredFromName", User?.userName);
+  //   updateLead.append("transferredDate", currentDate);
+
+  //   try {
+  //     const token = localStorage.getItem("auth-token");
+  //     const notification = await axios.post(
+  //       `${BACKEND_URL}/allnotifications`,
+  //       requestData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+
+  //     const updatelead = await axios.post(
+  //       `${BACKEND_URL}/leads/${data.leadId}`,
+  //       updateLead,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+
+  //     console.log("request: ", notification);
+  //     console.log("updatelead: ", updatelead);
+
+  //     toast.success("Reshuffle request sent.", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+
+  //     setLoading(false);
+  //   } catch (error) {
+  //     setLoading(false);
+  //     console.log("error", error);
+  //     toast.error("Unable to send the request.", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   }
+  // };
+
+  const handleRequest = async (e, data) => {
+    e.preventDefault();
+    const currentDate = moment().format("YYYY-MM-DD");
+
+    // notification
+    const requestData = new FormData();
+    const title = `${User?.userName} has requested to reshuffle the lead ${data?.leadName}`;
+    requestData?.append("title", title);
+    requestData?.append("lead_id", data?.leadId);
+    requestData?.append("user_id", User?.isParent);
+    requestData?.append("addedBy", User?.id);
+    requestData?.append("type", "Reshuffle");
+
+    // updatelead
+    const UpdateLeadData = new FormData();
+    UpdateLeadData.append("id", data?.leadId);
+    UpdateLeadData.append("transferRequest", 1);
+    UpdateLeadData.append("transferredFrom", User?.id);
+    UpdateLeadData.append("transferredFromName", User?.userName);
+    UpdateLeadData.append("transferredDate", currentDate);
+
+    // Wrap the code in a Promise to ensure both requests are successful
+    return new Promise(async (resolve, reject) => {
+      try {
+        const token = localStorage.getItem("auth-token");
+
+        const [notification, updatelead] = await Promise.all([
+          axios.post(`${BACKEND_URL}/allnotifications`, requestData, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }),
+          axios.post(`${BACKEND_URL}/leads/${data.leadId}`, UpdateLeadData, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }),
+        ]);
+
+        console.log("request: ", notification);
+        console.log("updatelead: ", updatelead);
+
+        toast.success("Reshuffle request sent.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setLoading(false);
+
+        // Resolve the Promise when both requests are successful
+        resolve("Both requests completed successfully.");
+      } catch (error) {
+        setLoading(false);
+        console.log("error", error);
+        toast.error("Unable to send the request.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        // Reject the Promise if there's an error
+        reject(error);
+      }
+    });
   };
 
   const style = {
@@ -453,9 +605,7 @@ const SingleLead = ({
                     } hover:bg-orange-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                   >
                     <Tooltip title="Request for Reshuffle" arrow>
-                      <button 
-                      // onClick={() => HandleEditFunc(LeadData)} //TODO
-                      >
+                      <button onClick={(e) => handleRequest(e, LeadData)}>
                         <BsShuffle size={16} />
                       </button>
                     </Tooltip>
@@ -473,9 +623,7 @@ const SingleLead = ({
                     } hover:bg-orange-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                   >
                     <Tooltip title="Block IP" arrow>
-                      <button 
-                      onClick={() => HandleBlockIP(LeadData)}
-                      >
+                      <button onClick={() => HandleBlockIP(LeadData)}>
                         <BiBlock size={16} />
                       </button>
                     </Tooltip>
