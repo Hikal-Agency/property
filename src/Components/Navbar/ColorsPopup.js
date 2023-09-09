@@ -10,7 +10,7 @@ const colors = [
   'rgb(255, 255, 0)', // Yellow
   'rgb(128, 128, 128)', // Grey
   'rgb(255, 165, 0)', // Orange (again)
-  'rgb(255, 192, 203)', // Pink
+  'rgb(255,105,180)', // Pink
   'rgb(128, 0, 128)',  // Purple
   'rgb(0, 128, 128)',  // Teal
   'rgb(0, 255, 255)'   // Cyan
