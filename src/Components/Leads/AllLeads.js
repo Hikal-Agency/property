@@ -282,8 +282,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             >
               {cellValues?.formattedValue}
             </p>
-            {cellValues?.formattedValue?.transferRequest === 1 ? (
-              <BsShuffle size={14} />
+            {cellValues?.row?.transferRequest === 1 ? (
+              <Tooltip title="Requested for Reshuffle" arrow>
+                <BsShuffle size={14} />
+              </Tooltip>
             ) : (
               <></>
             )}
@@ -1187,6 +1189,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadSource: row?.leadSource || "-",
           lid: row?.lid || "-",
           firstAssigned: row?.firstAssigned || "",
+          transferRequest: row?.transferRequest || "",
           lastEdited: row?.lastEdited || "-",
           leadFor: row?.leadFor || "-",
           leadStatus: row?.leadStatus || "-",
@@ -1396,6 +1399,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadSource: row?.leadSource || "-",
           lid: row?.lid || "-",
           firstAssigned: row?.firstAssigned || "",
+          transferRequest: row?.transferRequest || "",
           lastEdited: row?.lastEdited || "-",
           leadFor: row?.leadFor || "-",
           leadStatus: row?.leadStatus || "-",

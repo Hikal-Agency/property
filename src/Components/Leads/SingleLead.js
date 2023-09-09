@@ -23,10 +23,15 @@ import { toast } from "react-toastify";
 import { BiBlock } from "react-icons/bi";
 import { BsShuffle } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import UpdateLead from "./UpdateLead";
 
 import { HiPhoneOutgoing } from "react-icons/hi";
 import { RiMailSendFill } from "react-icons/ri";
-import UpdateLead from "./UpdateLead";
+import {
+  VscCallOutgoing,
+  VscMail,
+  VscEdit
+} from "react-icons/vsc";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -213,7 +218,7 @@ const SingleLead = ({
 
     return (
       <button className="email-button" onClick={handleEmailClick}>
-        <RiMailSendFill size={18} />
+        <VscMail size={16} />
       </button>
     );
   };
@@ -226,7 +231,7 @@ const SingleLead = ({
 
     return (
       <button className="call-button" onClick={handlePhoneClick}>
-        <HiPhoneOutgoing size={18} />
+        <VscCallOutgoing size={16} />
       </button>
     );
   };
@@ -389,32 +394,6 @@ const SingleLead = ({
                   </p>
                 )}
 
-                {/* RESHUFFLED REQUEST  */}
-                {/* <div className="flex items-center mr-3 justify-end">
-                  <p
-                    style={{ cursor: "pointer", display: "inline-block" }}
-                    className={`${
-                      currentMode === "dark"
-                        ? "bg-transparent text-white rounded-md shadow-none"
-                        : "bg-transparent text-black rounded-md shadow-none"
-                    }`}
-                    // onClick={() => HandleReshuffleRequest(LeadData)}
-                  >
-                    <Tooltip title="Reshuffle" arrow>
-                      <IconButton
-                        sx={{
-                          padding: 0,
-                          "& svg": {
-                            color: "red !important",
-                          },
-                        }}
-                      >
-                        <BsShuffle size={19} />
-                      </IconButton>
-                    </Tooltip>
-                  </p>
-                </div> */}
-
                 {/* EDIT  */}
                 <p
                   style={{ cursor: "pointer" }}
@@ -426,7 +405,7 @@ const SingleLead = ({
                 >
                   <Tooltip title="Update Details" arrow>
                     <button onClick={() => HandleEditFunc(LeadData)}>
-                      <AiOutlineEdit size={16} />
+                      <VscEdit size={16} />
                     </button>
                   </Tooltip>
                 </p>
@@ -460,32 +439,72 @@ const SingleLead = ({
                   </p>
                 )}
 
+                {/* RESHUFFLED REQUEST  */}
+                {LeadData?.transferRequest === 1 ||
+                LeadData?.transferRequest === "1" ? (
+                  <></>
+                ) : (
+                  <p
+                    style={{ cursor: "pointer" }}
+                    className={`${
+                      currentMode === "dark"
+                        ? "text-[#FFFFFF] bg-[#262626]"
+                        : "text-[#1C1C1C] bg-[#EEEEEE]"
+                    } hover:bg-orange-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                  >
+                    <Tooltip title="Request for Reshuffle" arrow>
+                      <button 
+                      // onClick={() => HandleEditFunc(LeadData)} //TODO
+                      >
+                        <BsShuffle size={16} />
+                      </button>
+                    </Tooltip>
+                  </p>
+                )}
+
                 {/* IP BLOCKING */}
                 {LeadData?.ip && LeadData?.is_blocked !== 1 && (
-                  <div className="flex items-center mr-3 justify-end">
-                    <p
-                      style={{ cursor: "pointer", display: "inline-block" }}
-                      className={`${
-                        currentMode === "dark"
-                          ? "bg-transparent text-white rounded-md shadow-none"
-                          : "bg-transparent text-black rounded-md shadow-none"
-                      }`}
+                  <p
+                    style={{ cursor: "pointer" }}
+                    className={`${
+                      currentMode === "dark"
+                        ? "text-[#FFFFFF] bg-[#262626]"
+                        : "text-[#1C1C1C] bg-[#EEEEEE]"
+                    } hover:bg-orange-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                  >
+                    <Tooltip title="Block IP" arrow>
+                      <button 
                       onClick={() => HandleBlockIP(LeadData)}
-                    >
-                      <Tooltip title="Block IP" arrow>
-                        <IconButton
-                          sx={{
-                            padding: 0,
-                            "& svg": {
-                              color: "red !important",
-                            },
-                          }}
-                        >
-                          <BiBlock size={19} />
-                        </IconButton>
-                      </Tooltip>
-                    </p>
-                  </div>
+                      >
+                        <BiBlock size={16} />
+                      </button>
+                    </Tooltip>
+                  </p>
+
+                  // <div className="flex items-center mr-3 justify-end">
+                  //   <p
+                  //     style={{ cursor: "pointer", display: "inline-block" }}
+                  //     className={`${
+                  //       currentMode === "dark"
+                  //         ? "bg-transparent text-white rounded-md shadow-none"
+                  //         : "bg-transparent text-black rounded-md shadow-none"
+                  //     }`}
+                  //     onClick={() => HandleBlockIP(LeadData)}
+                  //   >
+                  //     <Tooltip title="Block IP" arrow>
+                  //       <IconButton
+                  //         sx={{
+                  //           padding: 0,
+                  //           "& svg": {
+                  //             color: "red !important",
+                  //           },
+                  //         }}
+                  //       >
+                  //         <BiBlock size={19} />
+                  //       </IconButton>
+                  //     </Tooltip>
+                  //   </p>
+                  // </div>
                 )}
                 <Link
                   sx={{ my: 0, w: "100%" }}
