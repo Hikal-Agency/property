@@ -1,4 +1,4 @@
-import { Box, IconButton, ListItemIcon, Tooltip } from "@mui/material";
+import { Avatar, Box, IconButton, ListItemIcon, Tooltip } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { AiFillGift } from "react-icons/ai";
 import { FaLink, FaSnowflake, FaMobile, FaInbox } from "react-icons/fa";
@@ -86,7 +86,6 @@ const Sidebarmui = () => {
     setUnreadNotifsCount,
     setNotifIconAnimating,
     getNotifCounts,
-    darkModeColors,
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -106,19 +105,12 @@ const Sidebarmui = () => {
     sub: false,
   });
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [animateProfile, setAnimateProfile] = useState(false);
 
   const handleClickProfile = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleAnimateProfilePic = () => {
-    setAnimateProfile(true);
+    if(!e.target.closest(".view-image")) {
+      navigate("/profile");
+    }
   };
 
   const setOpenedSubMenu = ({ menuIndex, linkIndex, sub = false }) => {
@@ -1305,13 +1297,23 @@ const Sidebarmui = () => {
                 >
                   {isCollapsed ? (
                     <div className="flex items-center space-x-2">
-                      <img
-                        height={40}
-                        width={40}
-                        className="h-[40px] w-auto p-1"
-                        src="/favicon.png"
-                        alt=""
-                      />
+                      <Box className="relative" sx={{
+                        "&:hover .absolute": {
+                          display: "flex"
+                        }
+                      }}>
+                          <img
+                            height={40}
+                            width={40}
+                            className="h-[40px] w-auto p-1"
+                            src="/favicon.png"
+                            alt=""
+                          />
+
+                        <div className="absolute hidden top-0 left-0 w-full h-full bg-[rgba(255, 255, 255, 0.7)] flex justify-center items-center">
+                          <p>View image</p>
+                        </div>
+                      </Box>
 
                       <div className="relative">
                         <h1
@@ -1342,15 +1344,9 @@ const Sidebarmui = () => {
                     <div
                       // to={"/profile"}
                       onClick={handleClickProfile}
-                      id="demo-positioned-button"
-                      aria-controls={
-                        anchorEl ? "demo-positioned-menu" : undefined
-                      }
-                      aria-haspopup="true"
-                      aria-expanded={anchorEl ? "true" : undefined}
                       className="flex cursor-pointer flex-col items-center justify-center"
                     >
-                      <img
+                      <Avatar
                         src={
                           User?.displayImg
                             ? User?.displayImg
@@ -1377,39 +1373,6 @@ const Sidebarmui = () => {
                         {User?.position || ""}
                       </span>
                     </div>
-                    <MuiMenu
-                      sx={darkModeColors}
-                      id="demo-positioned-menu"
-                      aria-labelledby="demo-positioned-button"
-                      anchorEl={anchorEl}
-                      open={anchorEl ? true : false}
-                      onClose={handleClose}
-                      anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
-                      }}
-                    >
-                      <MuiMenuItem
-                        onClick={() => {
-                          setAnchorEl(null);
-                          navigate("/profile");
-                        }}
-                      >
-                        View Profile
-                      </MuiMenuItem>
-                      <MuiMenuItem
-                        onClick={() => {
-                          setAnchorEl(null);
-                          handleAnimateProfilePic();
-                        }}
-                      >
-                        View Profile Picture
-                      </MuiMenuItem>
-                    </MuiMenu>
                   </>
                 ) : (
                   <div
