@@ -54,7 +54,6 @@ const NotificationItem = ({
                 </div>
               </div>
                     
-                {(User?.role !== 1 && User?.role !== 2) &&
               <div className="flex justify-end items-center w-full h-full">
                 <div className="close-icon m-1">
                   <Tooltip title="Mark as Read" arrow>
@@ -112,7 +111,6 @@ const NotificationItem = ({
                   </Tooltip>
                 </div>
               </div>
-                }
 
             </div>
 

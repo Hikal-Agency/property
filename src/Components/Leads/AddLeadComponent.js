@@ -752,6 +752,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                     <MenuItem value={"French"}>French</MenuItem>
                     <MenuItem value={"Hindi"}>Hindi</MenuItem>
                     <MenuItem value={"Russian"}>Russian</MenuItem>
+                    <MenuItem value={"Hebrew"}>Hebrew</MenuItem>
                     <MenuItem value={"Spanish"}>Spanish</MenuItem>
                     <MenuItem value={"Urdu"}>Urdu</MenuItem>
                   </TextField>
