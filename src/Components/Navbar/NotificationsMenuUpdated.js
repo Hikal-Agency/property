@@ -106,7 +106,6 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
         navigate("/dashboard#reminders");
       }
 
-      if (User?.role !== 1 && User?.role !== 2) {
         const notifId = activity?.id;
         axios
           .post(
@@ -138,7 +137,6 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
               theme: "light",
             });
           });
-      }
 
       setOpen(false);
       setAnchorEl(null);
