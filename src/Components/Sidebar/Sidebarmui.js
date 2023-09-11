@@ -180,8 +180,10 @@ const Sidebarmui = () => {
           console.log(result.data);
 
           // Create a new object with only the specific fields you want to store
+          console.log("permisson: ", result.data.roles.permissions);
 
           const allPermissions = result.data.roles.permissions;
+
           setPermits(allPermissions);
         });
     } catch (error) {
