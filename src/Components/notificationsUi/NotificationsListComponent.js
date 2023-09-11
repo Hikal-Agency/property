@@ -7,6 +7,7 @@ import Loader from "../Loader";
 import { CircularProgress, Pagination, Stack } from "@mui/material";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { BsShuffle } from "react-icons/bs";
 
 import "../../styles/animation.css";
 
@@ -69,6 +70,7 @@ const NotificationsListComponent = ({
     feedback: "#ff7936",
     lead: "#5E89F8",
     support: "#f895d1",
+    reshuffle: "#87CEFA",
   };
 
   const notificationIcons = {
@@ -88,6 +90,7 @@ const NotificationsListComponent = ({
     feedback: <MdOutlineBookmarkAdded size={20} color={"#ffffff"} />,
     lead: <MdOutlinePerson size={20} color={"#ffffff"} />,
     support: <MdOutlineHeadsetMic size={20} color={"#ffffff"} />,
+    reshuffle: <BsShuffle size={20} color={"#ffffff"} />,
   };
 
   const fetchNotifications = async () => {

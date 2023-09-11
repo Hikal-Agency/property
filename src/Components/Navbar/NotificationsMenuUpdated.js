@@ -7,6 +7,7 @@ import { CircularProgress } from "@mui/material";
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 import NotificationItem from "./NotificationItem";
+import { BsShuffle } from "react-icons/bs";
 
 import {
   MdOutlineWorkspacePremium,
@@ -16,7 +17,7 @@ import {
   MdOutlinePerson,
   MdOutlineHeadsetMic,
   MdOutlineHandshake,
-  MdOutlineCalendarMonth
+  MdOutlineCalendarMonth,
 } from "react-icons/md";
 
 const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
@@ -40,6 +41,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
     feedback: "#ff7936",
     lead: "#5e89f8",
     support: "#f895d1",
+    reshuffle: "#87CEFA",
   };
 
   const notificationIcons = {
@@ -51,6 +53,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
     feedback: <MdOutlineBookmarkAdded size={16} color={"#ffffff"} />,
     lead: <MdOutlinePerson size={16} color={"#ffffff"} />,
     support: <MdOutlineHeadsetMic size={16} color={"#ffffff"} />,
+    reshuffle: <BsShuffle size={16} olor={"#ffffff"} />,
   };
 
   const fetchNotifications = async () => {
@@ -71,8 +74,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
         (notification) => notification.isRead !== 1
       );
 
-        setNotifications(filteredNotifications);
-
+      setNotifications(filteredNotifications);
     } catch (error) {
       console.log(error);
     }
@@ -104,39 +106,38 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
         navigate("/dashboard#reminders");
       }
 
-      if(User?.role !== 1 && User?.role !== 2) {
-  
-      const notifId = activity?.id;
-      axios
-        .post(
-          `${BACKEND_URL}/allnotifications/${User?.id}`,
-          JSON.stringify({
-            notification_id: notifId,
-            isRead: 1,
-          }),
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        )
-        .then(() => {
-          getNotifCounts();
-        })
-        .catch((error) => {
-          console.log(error);
-          toast.error("Sorry, something went wrong!", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
+      if (User?.role !== 1 && User?.role !== 2) {
+        const notifId = activity?.id;
+        axios
+          .post(
+            `${BACKEND_URL}/allnotifications/${User?.id}`,
+            JSON.stringify({
+              notification_id: notifId,
+              isRead: 1,
+            }),
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
+            }
+          )
+          .then(() => {
+            getNotifCounts();
+          })
+          .catch((error) => {
+            console.log(error);
+            toast.error("Sorry, something went wrong!", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
           });
-        });
       }
 
       setOpen(false);
