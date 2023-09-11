@@ -75,6 +75,11 @@ const libraries = ["places"];
 
 const routes = [
   {
+    path: "/dashboard",
+    element: <Dashboard />,
+    pageName: "Chat",
+  },
+  {
     path: "/chat",
     element: <ChatPage />,
     pageName: "Chat",
@@ -489,9 +494,9 @@ function App() {
               <Route path="/attendance" element={<RegisterAttendance />} />
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
-              {User?.role !== 5 && (
+              {/* {User?.role !== 5 && (
                 <Route path="/dashboard" element={<Dashboard />} />
-              )}
+              )} */}
               {routes.map((route, index) => {
                 return (
                   <Route
