@@ -9,8 +9,8 @@ import {
   // Select,
 } from "@mui/material";
 import Select from "@mui/material/Select";
-import moment from 'moment';
-import {socket} from "../../Pages/App";
+import moment from "moment";
+import { socket } from "../../Pages/App";
 
 import axios from "../../axoisConfig";
 import React, { useState, useEffect } from "react";
@@ -22,6 +22,8 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
   const [SalesPerson2, setSalesPerson2] = useState(
     cellValues?.row?.assignedToSales
   );
+
+  console.log("agent's cellvalues======> ", cellValues);
 
   // const [transferfrom, settransferfrom] = useState(cellValues?.row?.transferredFrom);
 
@@ -36,7 +38,8 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
     setreloadDataGrid,
     SalesPerson,
     BACKEND_URL,
-    Managers,fetchSidebarData,
+    Managers,
+    fetchSidebarData,
     User,
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
@@ -94,7 +97,10 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
     const token = localStorage.getItem("auth-token");
 
     var assigned = cellValues?.row?.firstAssigned;
-    console.log("assigned --------------------------------> ", cellValues?.row?.firstAssigned);
+    console.log(
+      "assigned --------------------------------> ",
+      cellValues?.row?.firstAssigned
+    );
     console.log("assigned --------------------------------> ", assigned);
     var newAssigned = "";
 
@@ -104,13 +110,15 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
       if (SalesPerson3 === undefined) {
         UpdateLeadData.append("assignedToSales", 1);
         UpdateLeadData.append("feedback", "New");
-      }
-      else {
+      } else {
         UpdateLeadData.append("assignedToSales", 1);
         UpdateLeadData.append("leadStatus", "Transferred");
         UpdateLeadData.append("transferredFrom", SalesPerson3.id);
         UpdateLeadData.append("transferredFromName", SalesPerson3.userName);
-        UpdateLeadData.append("transferredDate", moment().format('YYYY-MM-DD HH:mm:ss'));
+        UpdateLeadData.append(
+          "transferredDate",
+          moment().format("YYYY-MM-DD HH:mm:ss")
+        );
         UpdateLeadData.append("feedback", "New");
       }
     } else {
@@ -125,15 +133,22 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
 
       if (SalesPerson3 === undefined) {
         UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
-      }
-      else {
+      } else {
         UpdateLeadData.append("leadStatus", "Transferred");
         UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
         UpdateLeadData.append("transferredFrom", SalesPerson3.id);
         UpdateLeadData.append("transferredFromName", SalesPerson3.userName);
-        UpdateLeadData.append("transferredDate", moment().format('YYYY-MM-DD HH:mm:ss'));
+        UpdateLeadData.append(
+          "transferredDate",
+          moment().format("YYYY-MM-DD HH:mm:ss")
+        );
         UpdateLeadData.append("feedback", "New");
       }
+    }
+
+    // update transferred request
+    if (cellValues?.row?.transferRequest === 1) {
+      UpdateLeadData.append("transferRequest", 2);
     }
 
     await axios
@@ -145,14 +160,14 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
       })
       .then((result) => {
         console.log("Agent Updated successfull");
-fetchSidebarData();
+        fetchSidebarData();
         console.log(result);
 
-          socket.emit("notification_lead_agent_assign", {
-          from: {id: User?.id, userName: User?.userName}, 
+        socket.emit("notification_lead_agent_assign", {
+          from: { id: User?.id, userName: User?.userName },
           participants: [newSalesPerson?.id],
-          newAgent: newSalesPerson?.userName, 
-          leadName: cellValues?.row?.leadName
+          newAgent: newSalesPerson?.userName,
+          leadName: cellValues?.row?.leadName,
         });
         toast.success("Agent Updated Successfully", {
           position: "top-right",
@@ -271,9 +286,9 @@ fetchSidebarData();
             size="medium"
             className="w-[100%] h-[75%]"
             sx={{
-          "& .MuiSelect-select": {
-            fontSize: 11,
-          },
+              "& .MuiSelect-select": {
+                fontSize: 11,
+              },
               color:
                 currentMode === "dark"
                   ? "#ffffff !important"

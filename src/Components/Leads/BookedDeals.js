@@ -51,16 +51,13 @@ import {
   FaYoutube,
   FaTwitter,
 } from "react-icons/fa";
-import { 
-  AiOutlineEdit, 
-  AiOutlineHistory 
-} from "react-icons/ai";
-import { 
-  BsPersonCircle, 
+import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
+import {
+  BsPersonCircle,
   BsSnow2,
   BsShieldX,
   BsShieldCheck,
-  BsShieldMinus 
+  BsShieldMinus,
 } from "react-icons/bs";
 import {
   BiSearch,
@@ -75,7 +72,7 @@ import { MdCampaign } from "react-icons/md";
 import {
   RxCheckCircled,
   RxCrossCircled,
-  RxQuestionMarkCircled
+  RxQuestionMarkCircled,
 } from "react-icons/rx";
 import { TbWorldWww } from "react-icons/tb";
 import moment from "moment";
@@ -390,6 +387,7 @@ const BookedDeals = ({
                               value={leadDateValue}
                               views={["year", "month", "day"]}
                               required
+                              maxDate={new Date()}
                               onChange={(newValue) => {
                                 setLeadDateValue(newValue);
                                 // setLeadDate(
@@ -657,7 +655,7 @@ const BookedDeals = ({
                 <Tooltip title="Not Verified" arrow>
                   <div
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                    >
+                  >
                     <span className="text-[#DA1F26] p-1 text-center">
                       <BsShieldX size={16} />
                     </span>
@@ -667,15 +665,15 @@ const BookedDeals = ({
 
               {cellValues.formattedValue !== "Not Verified" &&
                 cellValues.formattedValue !== "Verified" && (
-                <Tooltip title="No OTP used" arrow>
-                  <div
-                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                    <span className="text-[#AAAAAA] p-1 text-center">
-                      <BsShieldMinus size={16} />
-                    </span>
-                  </div>
-                </Tooltip>
+                  <Tooltip title="No OTP used" arrow>
+                    <div
+                      className={`mx-1 w-full h-full flex justify-center items-center text-center`}
+                    >
+                      <span className="text-[#AAAAAA] p-1 text-center">
+                        <BsShieldMinus size={16} />
+                      </span>
+                    </div>
+                  </Tooltip>
                 )}
             </div>
           );

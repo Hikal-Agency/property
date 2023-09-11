@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Select from "@mui/material/Select";
 import { Box } from "@mui/system";
-import {socket} from "../../Pages/App";
+import { socket } from "../../Pages/App";
 import moment from "moment";
 
 import axios from "../../axoisConfig";
@@ -23,7 +23,9 @@ const RenderManagers = ({ cellValues }) => {
   const [manager2, setmanager2] = useState(cellValues?.row?.assignedToManager);
   const [newManager, setnewManager] = useState("");
 
-  const [salesperson2, setsalesperson2] = useState(cellValues?.row?.assignedToSales);
+  const [salesperson2, setsalesperson2] = useState(
+    cellValues?.row?.assignedToSales
+  );
 
   const [Dialogue, setDialogue] = useState(false);
   const {
@@ -31,8 +33,9 @@ const RenderManagers = ({ cellValues }) => {
     reloadDataGrid,
     setreloadDataGrid,
     BACKEND_URL,
-    Managers,fetchSidebarData,
-    User
+    Managers,
+    fetchSidebarData,
+    User,
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -50,12 +53,13 @@ const RenderManagers = ({ cellValues }) => {
       border: "none",
     },
   };
-  useEffect(() => {
-    setmanager2(cellValues?.row?.assignedToManager);
-    setsalesperson2(cellValues?.row?.assignedToSales);
-  }, 
-  [cellValues?.row?.assignedToManager],
-  [cellValues?.row?.assignedToSales]
+  useEffect(
+    () => {
+      setmanager2(cellValues?.row?.assignedToManager);
+      setsalesperson2(cellValues?.row?.assignedToSales);
+    },
+    [cellValues?.row?.assignedToManager],
+    [cellValues?.row?.assignedToSales]
   );
 
   // const ChangeManager = (e) => {
@@ -90,7 +94,10 @@ const RenderManagers = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
 
     var assigned = cellValues?.row?.firstAssigned;
-    console.log("assigned --------------------------------> ", cellValues?.row?.firstAssigned);
+    console.log(
+      "assigned --------------------------------> ",
+      cellValues?.row?.firstAssigned
+    );
     console.log("assigned --------------------------------> ", assigned);
     var newAssigned = "";
 
@@ -101,14 +108,16 @@ const RenderManagers = ({ cellValues }) => {
       if (salesperson2 === null) {
         UpdateLeadData.append("assignedToManager", 1);
         UpdateLeadData.append("feedback", "New");
-      }
-      else {
+      } else {
         UpdateLeadData.append("assignedToManager", 1);
         UpdateLeadData.append("feedback", "New");
         UpdateLeadData.append("leadStatus", "Transferred");
         UpdateLeadData.append("transferredFrom", salesperson2);
         UpdateLeadData.append("transferredFromName", salesperson2);
-        UpdateLeadData.append("transferredDate", moment().format('YYYY-MM-DD HH:mm:ss'));
+        UpdateLeadData.append(
+          "transferredDate",
+          moment().format("YYYY-MM-DD HH:mm:ss")
+        );
       }
     } else {
       newAssigned = newManager?.id;
@@ -123,15 +132,22 @@ const RenderManagers = ({ cellValues }) => {
       if (salesperson2 === null) {
         UpdateLeadData.append("assignedToManager", newManager?.id);
         UpdateLeadData.append("feedback", "New");
-      }
-      else {
+      } else {
         UpdateLeadData.append("assignedToManager", newManager?.id);
         UpdateLeadData.append("feedback", "New");
         UpdateLeadData.append("leadStatus", "Transferred");
         UpdateLeadData.append("transferredFrom", salesperson2);
         UpdateLeadData.append("transferredFromName", salesperson2);
-        UpdateLeadData.append("transferredDate", moment().format('YYYY-MM-DD HH:mm:ss'));
+        UpdateLeadData.append(
+          "transferredDate",
+          moment().format("YYYY-MM-DD HH:mm:ss")
+        );
       }
+    }
+
+    // update transferred request
+    if (cellValues?.row?.transferRequest === 1) {
+      UpdateLeadData.append("transferRequest", 2);
     }
 
     await axios
@@ -143,16 +159,16 @@ const RenderManagers = ({ cellValues }) => {
       })
       .then((result) => {
         console.log("Manager Updated successfull");
-fetchSidebarData();
+        fetchSidebarData();
         console.log(result);
 
         socket.emit("notification_lead_manager_assign", {
-          from: {id: User?.id, userName: User?.userName}, 
+          from: { id: User?.id, userName: User?.userName },
           participants: [newManager?.id],
-          newManager: newManager?.userName, 
-          leadName: cellValues?.row?.leadName
+          newManager: newManager?.userName,
+          leadName: cellValues?.row?.leadName,
         });
-fetchSidebarData();
+        fetchSidebarData();
 
         toast.success("Manager Updated Successfully", {
           position: "top-right",
@@ -238,12 +254,13 @@ fetchSidebarData();
           className="w-full border border-gray-300 rounded "
           displayEmpty
           required
-          sx={{ border: "1px solid #000000",
-          
-          "& .MuiSelect-select": {
-            fontSize: 11,
-          },
-           }}
+          sx={{
+            border: "1px solid #000000",
+
+            "& .MuiSelect-select": {
+              fontSize: 11,
+            },
+          }}
         >
           <MenuItem value="select_manager" selected>
             ---Manager---
