@@ -1154,6 +1154,29 @@ const SingleEmployee = ({ user }) => {
           margin: { top: 130, right: 15, bottom: 20, left: 15 }, // Adjust margins
         });
 
+        // Add a signature line and text in the bottom right corner
+        const signatureLineX = doc.internal.pageSize.getWidth() - 60;
+        const signatureLineY = doc.internal.pageSize.getHeight() - 40;
+        const signatureLineLength = 60;
+        const gapFromRight = 5;
+
+        // Draw the signature line using underscores
+        doc.setFontSize(12);
+        doc.text(
+          "_".repeat(signatureLineLength - gapFromRight),
+          signatureLineX,
+          signatureLineY
+        );
+
+        // Calculate the position to center the "Signature" text
+        const textWidth = doc.getTextWidth("Signature");
+        const textX = signatureLineX + (signatureLineLength - textWidth) / 2;
+        const gapFromLine = 5;
+
+        // Add "Signature" text centered and with a gap from the right of the line
+        doc.setFontSize(10);
+        doc.text("Signature", textX, signatureLineY + gapFromLine);
+
         // Save the PDF with the specified file name
         doc.save(`${empData[0]?.userName}-attendance.pdf`);
       };
