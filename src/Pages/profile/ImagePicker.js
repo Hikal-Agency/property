@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
+import imageCompression from "browser-image-compression";
 
 import axios from "../../axoisConfig";
 import {
@@ -65,10 +66,15 @@ const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
     );
   };
 
-  const UpdateProfileImage = async (img) => {
+  const UpdateProfileImage = async (imageFile) => {
     try {
       const token = localStorage.getItem("auth-token");
       const imageData = new FormData();
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+      };
+      const img = await imageCompression(imageFile, options);
       imageData.append("image", img);
       setbtnloading(true);
       const result = await axios.post(
