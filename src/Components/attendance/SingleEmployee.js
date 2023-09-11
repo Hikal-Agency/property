@@ -1109,50 +1109,45 @@ const SingleEmployee = ({ user }) => {
         65
       );
 
-      // Create a watermark canvas and apply opacity
-      const watermarkCanvas = document.createElement("canvas");
-      const ctx = watermarkCanvas.getContext("2d");
-      const watermarkImg = new Image();
+      // Load the logo image
+      const logoImg = new Image();
+      logoImg.src = "/assets/hikal_watermark.png";
+      logoImg.onload = () => {
+        const originalWidth = logoImg.width; // Get the original width of the logo
+        const originalHeight = logoImg.height; // Get the original height of the logo
 
-      watermarkImg.src = "/assets/hikal_watermark.png"; // Correct URL to the watermark image
+        const desiredWidth = 20; // Set the desired width of the logo
+        const scaleFactor = desiredWidth / originalWidth; // Calculate the scale factor
 
-      watermarkImg.onload = () => {
-        const imgWidth = 100; // Adjust the image width as needed
-        const imgHeight = 100; // Adjust the image height as needed
+        // Calculate the height to maintain the original aspect ratio
+        const desiredHeight = originalHeight * scaleFactor;
 
-        // Set the canvas size to match the image size
-        watermarkCanvas.width = imgWidth;
-        watermarkCanvas.height = imgHeight;
+        // Calculate the position to place the logo in the top right corner
+        const logoX = doc.internal.pageSize.getWidth() - desiredWidth - 15;
+        const logoY = 10;
 
-        // Apply opacity to the watermark image
-        ctx.globalAlpha = 0.3; // Adjust the opacity level (0 to 1, where 0 is fully transparent and 1 is fully opaque)
-
-        // Calculate the position to center the logo on the page
-        const centerX = (doc.internal.pageSize.getWidth() - imgWidth) / 2;
-        const centerY = (doc.internal.pageSize.getHeight() - imgHeight) / 2;
-
-        // Draw the watermark image with opacity and centered on the page
-        ctx.drawImage(watermarkImg, 0, 0, imgWidth, imgHeight);
-
-        // Add the watermark as an image to the PDF in the background
+        // Add the logo to the PDF with the adjusted dimensions
         doc.addImage(
-          watermarkCanvas.toDataURL("image/png"),
+          logoImg.src,
           "PNG",
-          centerX,
-          centerY,
-          imgWidth,
-          imgHeight
+          logoX,
+          logoY,
+          desiredWidth,
+          desiredHeight // Use the adjusted height here
         );
-
         // Add the table to the PDF
         doc.autoTable({
           head: [headers],
           body: tableData,
           tableWidth: totalWidth,
           startY: 110, // Adjust the starting y-coordinate for the table to avoid overlapping with the salary text
+          headStyles: {
+            fillColor: "#DA1F26",
+          },
           styles: {
             fontSize: fontSize,
             cellPadding: 2,
+            head: { fillColor: "#DA1F26" },
           },
           autoSize: true,
           minCellWidth: 40,
@@ -1164,14 +1159,15 @@ const SingleEmployee = ({ user }) => {
       };
 
       // Handle image load error
-      watermarkImg.onerror = () => {
-        console.error("Error loading the watermark image.");
+      logoImg.onerror = () => {
+        console.error("Error loading the logo image.");
       };
     } else {
       // Handle the case when there are no valid rows to export
       alert("No valid data to export!");
     }
   };
+
   // const exportDataGridAsPDF = () => {
   //   const doc = new jsPDF({
   //     format: [300, 300], // Set the custom page size (width, height) in user units
