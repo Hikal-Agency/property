@@ -20,7 +20,7 @@ import {
   MdOutlineCalendarMonth,
 } from "react-icons/md";
 
-const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
+const NotificationsMenuUpdated = ({ setCurrNavBtn }) => {
   const token = localStorage.getItem("auth-token");
   const { BACKEND_URL, User, getNotifCounts } = useStateContext();
   const [notifications, setNotifications] = useState();
@@ -138,8 +138,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
           // });
         });
 
-      setOpen(false);
-      setAnchorEl(null);
+      setCurrNavBtn(null);
     }
   };
 
@@ -152,8 +151,7 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
       <div
         onClick={() => {
           navigate("/notificationsList");
-          setAnchorEl(null);
-          setOpen(false);
+          setCurrNavBtn(null);
         }}
         className="flex -mt-2 mb-3 justify-center text-[#AAAAAA] hover:text-[#DA1F26] text-sm w-full"
         style={{

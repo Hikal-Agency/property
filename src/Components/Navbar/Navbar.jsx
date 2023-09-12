@@ -3,7 +3,7 @@ import { useProSidebar } from "react-pro-sidebar";
 import { toast } from "react-toastify";
 import { Link, useLocation } from "react-router-dom";
 
-import { Tooltip, Link as MuiLink, Button, Badge } from "@mui/material";
+import { Tooltip, Link as MuiLink, Button, Badge, Box } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
@@ -80,20 +80,11 @@ const Navbar = () => {
     notifIconAnimating,
   } = useStateContext();
   const [currNavBtn, setCurrNavBtn] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [open, setOpen] = useState(false);
-  const location = useLocation();
-  const pathnames = location.pathname.split("/").filter((x) => x);
+  const [anchorElem, setAnchorElem] = useState("");
   const [loading, setloading] = useState(true);
   const handleClick = (event, navBtn) => {
-    setAnchorEl(event.currentTarget);
-    setOpen(true);
     setCurrNavBtn(navBtn);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-    setOpen(false);
+    setAnchorElem(event.currentTarget);
   };
 
   const LogoutUser = () => {
@@ -247,7 +238,7 @@ const Navbar = () => {
             customFunc={(event) => handleClick(event, "Meetings")}
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
             icon={
-              open && currNavBtn === "Meetings" ? (
+              currNavBtn === "Meetings" ? (
                 <BsCalendarEventFill size={16} />
               ) : (
                 <BsCalendarEvent size={16} />
@@ -262,7 +253,7 @@ const Navbar = () => {
             customFunc={(event) => handleClick(event, "Notifications")}
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
             icon={
-              open && currNavBtn === "Notifications" ? (
+              currNavBtn === "Notifications" ? (
                 <BsBellFill size={16} />
               ) : (
                 [
@@ -285,7 +276,7 @@ const Navbar = () => {
             customFunc={(event) => handleClick(event, "Clock")}
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
             icon={
-              open && currNavBtn === "Clock" ? (
+              currNavBtn === "Clock" ? (
                 <BsClockFill size={16} />
               ) : (
                 <BsClock size={16} />
@@ -318,7 +309,7 @@ const Navbar = () => {
           <Tooltip title="Profile" arrow placement="bottom">
             <div
               className="ml-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-              onClick={handleClick}
+              onClick={(event) =>  handleClick(event, "Profile")}
             >
               <img
                 height={50}
@@ -339,19 +330,15 @@ const Navbar = () => {
               <MdKeyboardArrowDown className="text-gray-400 text-14" />
             </div>
           </Tooltip>
-          {/* Submenu */}
 
-          {currNavBtn === "Clock" ? (
+          {currNavBtn &&
+
+          [currNavBtn === "Clock" ? (
             <div
               className=""
               style={{ margin: 0, padding: 0, overflow: "hidden" }}
             >
-              <Menu
-                anchorEl={anchorEl}
-                id="account-menu"
-                open={open}
-                onClose={handleClose}
-                onClick={handleClose}
+              <Box
                 PaperProps={{
                   elevation: 0,
                   sx: {
@@ -383,40 +370,24 @@ const Navbar = () => {
                     },
                     "& .MuiList-root .clock-div": {
                       background: "transparent !important",
-                      // currentMode === "dark" ? "#000000 " : "radial-gradient(circle, #666666, #EEEEEE)",
-                      // currentMode === "dark" ? "#000000 " : "#FFFFFF",
                       border: "none !important",
                     },
-                    //  "&:before": {
-                    //    content: '""',
-                    //    display: "block",
-                    //    position: "absolute",
-                    //    top: 0,
-                    //    right: 66,
-                    //    width: 10,
-                    //    height: 10,
-                    //    background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
-                    //    transform: "translateY(-50%) rotate(45deg)",
-                    //    zIndex: 0,
-                    //  },
                   },
                 }}
                 transformOrigin={{ horizontal: "center", vertical: "top" }}
                 anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
               >
                 <Clock />
-              </Menu>
+              </Box>
             </div>
           ) : (
             <Menu
-              anchorEl={anchorEl}
-              id="account-menu"
-              open={open}
-              onClose={handleClose}
-              onClick={handleClose}
+            anchorEl={anchorElem}
               PaperProps={{
                 elevation: 0,
                 sx: {
+                  position: "absolute", 
+                  bottom: 0,
                   // overflow: "visible",
                   overflowY: "scroll",
                   filter:
@@ -444,38 +415,21 @@ const Navbar = () => {
                       padding: "5px !important",
                       paddingRight: "0px !important",
                     },
-                  // "&:before": {
-                  //   content: '""',
-                  //   display: "block",
-                  //   position: "absolute",
-                  //   top: 0,
-                  //   right: 66,
-                  //   width: 10,
-                  //   height: 10,
-                  //   background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
-                  //   transform: "translateY(-50%) rotate(45deg)",
-                  //   zIndex: 0,
-                  // },
                 },
               }}
               transformOrigin={{ horizontal: "center", vertical: "top" }}
               anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
             >
-              {currNavBtn ? (
+              {
                 currNavBtn === "Notifications" ? (
-                  // <NotificationsMenu />
                   <NotificationsMenuUpdated
-                    setAnchorEl={setAnchorEl}
-                    setOpen={setOpen}
+                    setCurrNavBtn={setCurrNavBtn}
                   />
                 ) : currNavBtn === "Meetings" ? (
                   <>
                     <UpcomingMeetingsMenu />
                   </>
-                ) : (
-                  <MenuItem />
-                )
-              ) : (
+                ) : currNavBtn === "Profile" ? (
                 <div className="pl-2">
                   <div
                     className={`cursor-pointer card-hover ${
@@ -618,9 +572,10 @@ const Navbar = () => {
                     </div>
                   </div>
                 </div>
-              )}
+                ) : <></>
+              }
             </Menu>
-          )}
+          )]}
           {/* {isClicked.cart && <Cart />} */}
           {/* {isClicked.chat && <Chat />} */}
           {/* {isClicked.notification && <Notification />} */}
