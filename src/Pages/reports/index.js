@@ -230,7 +230,7 @@ const Reports = () => {
             <div className={`w-full `}>
               <div className="pl-3">
                 <div className="my-5 mb-10">
-                  <div className="flex justify-center bg-[#da1f26] py-4 mb-4 rounded-md ">
+                  <div className="flex justify-center bg-[#da1f26] py-4 mb-4  rounded-full  ">
                     <h1
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-dark"
@@ -313,7 +313,7 @@ const Reports = () => {
                         </h6>
                       </div>
                     </div>
-                    <div className="flex justify-center bg-[#da1f26] py-4 mt-4 rounded-md col-span-2">
+                    <div className="flex justify-center bg-[#da1f26] py-4 mt-5  rounded-full  col-span-2">
                       <h1
                         className={`${
                           currentMode === "dark" ? "text-white" : "text-dark"
@@ -394,13 +394,13 @@ const Reports = () => {
                         )}
                       </div>
                     </div>
-                    <div className="flex justify-center bg-[#da1f26] py-4 mt-4 rounded-md col-span-2">
+                    <div className="flex justify-center bg-[#da1f26] py-4 mt-5  rounded-full col-span-2">
                       <h1
                         className={`${
                           currentMode === "dark" ? "text-white" : "text-dark"
                         } text-lg font-semibold`}
                       >
-                        Achievement
+                        Projects
                       </h1>
                     </div>
                     <div
