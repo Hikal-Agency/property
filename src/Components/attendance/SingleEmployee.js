@@ -1058,17 +1058,23 @@ const SingleEmployee = ({ user }) => {
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.text(reportText, 20, 15); // Adjust coordinates as needed
+      const month = `${monthName} ${year}:  `;
+      const totalSalaryValue = `${currency} ${pageState?.totalSalary || "-"}`;
 
-      const month = ` ${monthName} ${year}: ${currency} ${
-        pageState?.totalSalary || "-"
-      }`;
-      doc.setFontSize(12);
+      doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
       doc.text(month, 18, 33); // Adjust coordinates as needed
 
+      // Set the color to red and make the total salary text bold
+      doc.setTextColor("#DA1F26");
+      doc.setFont("helvetica", "bold");
+      doc.text(totalSalaryValue, 18 + doc.getTextWidth(month), 33);
+
       const DateinNum = moment().format("YYYY-MM-DD");
       const date = `Date: ${DateinNum}`;
-      doc.setFontSize(12);
+      doc.setTextColor("#000");
+      doc.setFontSize(9);
+
       doc.setFont("helvetica", "normal");
       doc.text(date, doc.internal.pageSize.getWidth() - 45, 33); // Adjust coordinates as needed
 
@@ -1076,6 +1082,7 @@ const SingleEmployee = ({ user }) => {
       const usernameWidth = doc.getTextWidth(empData[0]?.userName || "No Name");
       const usernameX = (doc.internal.pageSize.getWidth() - usernameWidth) / 2;
       doc.setFont("helvetica", "bold"); // Set font to bold
+      doc.setTextColor("#000");
       doc.setFontSize(14); // Set font to bold
       doc.text(`${empData[0]?.userName || "No Name"}`, usernameX, 45);
       // Adjust the vertical position and font properties for the text
@@ -1087,79 +1094,155 @@ const SingleEmployee = ({ user }) => {
 
       doc.setLineWidth(1); // Line width
 
-      // Calculate the height of the table
-      const tableHeight = doc.autoTable.previous.finalY + 10; // Adjust the offset as needed
+      // // Calculate the height of the table
+      // const tableHeight = doc.autoTable.previous.finalY + 10; // Adjust the offset as needed
 
-      // Calculate the total height of the content above and below
-      const contentHeight = textVerticalPosition + tableHeight + 40; // Adjust this value based on the total height of the content above and below
+      // // Calculate the total height of the content above and below
+      // const contentHeight = textVerticalPosition + tableHeight + 40; // Adjust this value based on the total height of the content above and below
 
-      doc.rect(
-        10, // X-coordinate of the top-left corner of the rectangle
-        6, // Y-coordinate of the top-left corner of the rectangle
-        doc.internal.pageSize.getWidth() - 20, // Width of the rectangle
-        contentHeight, // Height of the rectangle
-        "S" // 'S' indicates to stroke (draw) the rectangle
-      );
+      // doc.rect(
+      //   10, // X-coordinate of the top-left corner of the rectangle
+      //   6, // Y-coordinate of the top-left corner of the rectangle
+      //   doc.internal.pageSize.getWidth() - 20, // Width of the rectangle
+      //   contentHeight, // Height of the rectangle
+      //   "S" // 'S' indicates to stroke (draw) the rectangle
+      // );
 
       // Text above the line
-      doc.text(
-        formatText(`Monthly Salary: ${currency} ${empData[0]?.salary || "0"}`),
-        15,
-        textVerticalPosition
-      );
-      doc.text(
-        formatText(`Salary Per Day: ${pageState?.perDaySalary || "0"}`),
-        15,
-        textVerticalPosition + 10
-      );
+      // Define the text elements and their labels
+      const textElements = [
+        {
+          label: "Monthly salary:",
+          value: `${currency} ${empData[0]?.salary || "0"}`,
+        },
+        {
+          label: "Salary per day:",
+          value: `${pageState?.perDaySalary || "0"}`,
+        },
+        {
+          label: "Leave day salary:",
+          value: `${currency} ${pageState?.leaveDaySalary || "0"}`,
+        },
+        {
+          label: "Late day salary:",
+          value: `${currency} ${pageState?.lateDaySalary || "0"}`,
+        },
+        // {
+        //   label: "Total Salary:",
+        //   value: `${currency} ${pageState?.totalSalary || "0"}`,
+        // },
+      ];
 
-      doc.setTextColor("#000"); // Set text color to black
+      // Define the right side fields and their labels
+      const rightSideFields = [
+        {
+          label: "Working days",
+          value: `${pageState?.workingDays || "0"}`,
+        },
+        {
+          label: "Attended days",
+          value: `${pageState?.attended_count || "0"}`,
+        },
+        {
+          label: "Leave days",
+          value: `${pageState?.leave_count || "0"}`,
+        },
+        {
+          label: "Late attended days",
+          value: `${pageState?.late_count || "0"}`,
+        },
+      ];
 
-      doc.text(
-        formatText(
-          `Leave Day Salary: ${currency} ${pageState?.leaveDaySalary || "0"}`
-        ),
-        15,
-        textVerticalPosition + 20
-      );
-      doc.text(
-        formatText(
-          `Late Day Salary: ${currency} ${pageState?.lateDaySalary || "0"}`
-        ),
-        15,
-        textVerticalPosition + 30
-      );
+      // Define the number of columns
+      const numColumns = 2;
 
-      doc.text(
-        formatText(
-          `Total Salary:  ${currency} ${pageState?.totalSalary || "0"}`
-        ),
-        15,
-        textVerticalPosition + 40
-      );
+      // Calculate the width of each column
+      const columnWidth = (doc.internal.pageSize.getWidth() - 30) / numColumns;
 
-      // Right side fields
-      doc.text(
-        formatText(`Working Days: ${pageState?.workingDays || "0"}`),
-        doc.internal.pageSize.getWidth() / 2 + 15,
-        textVerticalPosition
-      );
-      doc.text(
-        formatText(`Attended Days: ${pageState?.attended_count || "0"}`),
-        doc.internal.pageSize.getWidth() / 2 + 15,
-        textVerticalPosition + 10
-      );
-      doc.text(
-        formatText(`Leave Days: ${pageState?.leave_count || "0"}`),
-        doc.internal.pageSize.getWidth() / 2 + 15,
-        textVerticalPosition + 20
-      );
+      // Position variables
+      let x = 15;
+      let y = textVerticalPosition;
+      let columnIndex = 0;
 
-      doc.text(
-        formatText(`Late Attended Days: ${pageState?.late_count || "0"}`),
-        doc.internal.pageSize.getWidth() / 2 + 15,
-        textVerticalPosition + 30
-      );
+      // Loop through the text elements
+      textElements.forEach((element) => {
+        // Set the text color to black
+        doc.setTextColor("#000");
+
+        // Bold and color the text after ":"
+        const labelText = `${element.label} `;
+        const valueText = element.value;
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+
+        // Measure the width of the label and value separately
+        const labelWidth = doc.getTextWidth(labelText);
+        const valueWidth = doc.getTextWidth(valueText);
+
+        // Calculate the remaining space in the current column
+        const remainingWidth = columnWidth - (x - 15);
+
+        // Check if the label and value can fit in the current column
+        if (labelWidth + valueWidth <= remainingWidth) {
+          doc.text(labelText, x, y);
+          doc.setTextColor("#DA1F26");
+          doc.setFont("helvetica", "bold");
+          doc.text(valueText, x + labelWidth, y);
+          y += 10;
+        } else {
+          // Move to the next column
+          columnIndex++;
+          x = 15 + columnIndex * columnWidth;
+          y = textVerticalPosition;
+          doc.text(labelText, x, y);
+          doc.setTextColor("#DA1F26");
+          doc.setFont("helvetica", "bold");
+          doc.text(valueText, x + labelWidth, y);
+          y += 10;
+        }
+      });
+      // Reset the position variables for the right side fields
+      const xRight = doc.internal.pageSize.getWidth() - 15;
+      let yRight = textVerticalPosition;
+
+      // Loop through the right side fields
+      rightSideFields.forEach((field) => {
+        // Set the text color to black
+        doc.setTextColor("#000");
+
+        // Bold and color the text after ":"
+        const labelText = `${field.label}`;
+        const valueText = field.value;
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+
+        // Measure the width of the label and value separately
+        const labelWidth = doc.getTextWidth(labelText);
+        const valueWidth = doc.getTextWidth(valueText);
+
+        // Calculate the remaining space in the current column
+        const remainingWidth = xRight - 15;
+
+        // Check if the label and value can fit in the current column
+        if (labelWidth + valueWidth <= remainingWidth) {
+          doc.text(labelText, xRight - labelWidth, yRight);
+          doc.setTextColor("#DA1F26");
+          doc.setFont("helvetica", "bold");
+          doc.text(valueText, xRight - labelWidth - 5, yRight);
+          yRight += 10;
+        } else {
+          // Move to the next column
+          xRight -= columnWidth;
+          yRight = textVerticalPosition;
+          doc.text(labelText, xRight - labelWidth, yRight);
+          doc.setTextColor("#DA1F26");
+          doc.setFont("helvetica", "bold");
+          doc.text(valueText, xRight - labelWidth - 5, yRight);
+          yRight += 10;
+        }
+      });
 
       // Load the logo image
       const logoImg = new Image();
@@ -1214,6 +1297,7 @@ const SingleEmployee = ({ user }) => {
 
         // Draw the signature line using underscores
         doc.setFontSize(12);
+        doc.setTextColor("#000");
         doc.text(
           "_".repeat(signatureLineLength - gapFromRight),
           signatureLineX,
@@ -1227,6 +1311,7 @@ const SingleEmployee = ({ user }) => {
 
         // Add "Signature" text centered and with a gap from the right of the line
         doc.setFontSize(10);
+        doc.setTextColor("#000");
         doc.text("Signature", textX, signatureLineY + gapFromLine);
 
         // Save the PDF with the specified file name
@@ -1272,8 +1357,8 @@ const SingleEmployee = ({ user }) => {
                     ripple={true}
                     size="small"
                     type="submit"
-                    onClick={() => setPasswordConfirm(true)}
-                    // onClick={() => exportDataGridAsPDF()}
+                    // onClick={() => setPasswordConfirm(true)}
+                    onClick={() => exportDataGridAsPDF()}
                     // sx={{ border: "1px solid #DA1F26" }}
                   >
                     <FaDownload

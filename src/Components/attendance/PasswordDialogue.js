@@ -60,7 +60,7 @@ const PasswordDialogue = ({
 
       const AuthUser = await axios.post(`${BACKEND_URL}/login`, UserData);
 
-      toast.success("password updated successfully.", {
+      toast.success("Pdf will be downloaded in a while.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
