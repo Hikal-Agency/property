@@ -20,7 +20,7 @@ import {
   MdOutlineCalendarMonth,
 } from "react-icons/md";
 
-const NotificationsMenuUpdated = ({ setCurrNavBtn }) => {
+const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   const token = localStorage.getItem("auth-token");
   const { BACKEND_URL, User, getNotifCounts } = useStateContext();
   const [notifications, setNotifications] = useState();
@@ -145,7 +145,8 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn }) => {
   return (
     <Container
       onClick={handleAvoidClose}
-      sx={{ maxHeight: 500, width: 350, position: "relative" }}
+      onMouseLeave={handleClose}
+      sx={{ maxHeight: 500, p:1, width: 350, position: "relative" }}
       className="pb-5"
     >
       <div

@@ -18,7 +18,7 @@ import {
 } from "react-icons/bs";
 import "../../styles/animation.css";
 
-const UpcomingMeetingsMenu = () => {
+const UpcomingMeetingsMenu = ({handleClose}) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const [upcomingMeetings, setUpcomingMeetings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -50,8 +50,8 @@ const UpcomingMeetingsMenu = () => {
   }, []);
   return (
     <>
-      <Container 
-        sx={{ maxHeight: 500, width: 350, position: "relative" }}
+      <Container onMouseLeave={handleClose}
+        sx={{ maxHeight: 500, width: 350, p:1, position: "relative" }}
         >
         <div
           onClick={() => {
