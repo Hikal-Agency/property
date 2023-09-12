@@ -1272,8 +1272,8 @@ const SingleEmployee = ({ user }) => {
                     ripple={true}
                     size="small"
                     type="submit"
-                    // onClick={() => setPasswordConfirm(true)}
-                    onClick={() => exportDataGridAsPDF()}
+                    onClick={() => setPasswordConfirm(true)}
+                    // onClick={() => exportDataGridAsPDF()}
                     // sx={{ border: "1px solid #DA1F26" }}
                   >
                     <FaDownload
