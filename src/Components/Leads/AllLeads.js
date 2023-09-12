@@ -603,6 +603,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       minWidth: 40,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <>
+            {cellValues.formattedValue === "null" ? "-" : cellValues.formattedValue}
+          </>
+        )
+      }
     },
 
     {

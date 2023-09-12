@@ -106,37 +106,37 @@ const NotificationsMenuUpdated = ({ setAnchorEl, setOpen }) => {
         navigate("/dashboard#reminders");
       }
 
-        const notifId = activity?.id;
-        axios
-          .post(
-            `${BACKEND_URL}/allnotifications/${User?.id}`,
-            JSON.stringify({
-              notification_id: notifId,
-              isRead: 1,
-            }),
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-              },
-            }
-          )
-          .then(() => {
-            getNotifCounts();
-          })
-          .catch((error) => {
-            console.log(error);
-            toast.error("Sorry, something went wrong!", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          });
+      const notifId = activity?.id;
+      axios
+        .post(
+          `${BACKEND_URL}/allnotifications/${User?.id}`,
+          JSON.stringify({
+            notification_id: notifId,
+            isRead: 1,
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
+        .then(() => {
+          getNotifCounts();
+        })
+        .catch((error) => {
+          console.log(error);
+          // toast.error("Sorry, something went wrong!", {
+          //   position: "top-right",
+          //   autoClose: 3000,
+          //   hideProgressBar: false,
+          //   closeOnClick: true,
+          //   pauseOnHover: true,
+          //   draggable: true,
+          //   progress: undefined,
+          //   theme: "light",
+          // });
+        });
 
       setOpen(false);
       setAnchorEl(null);

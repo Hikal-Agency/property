@@ -8,6 +8,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { useStateContext } from "../../context/ContextProvider";
+import ReactApexChart from "react-apexcharts";
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
@@ -128,6 +129,69 @@ const SalesAmountChartAdmin = ({ selectedMonthSales }) => {
       )}
     </span>
   );
+
+  // const chartData = [
+  //   {
+  //     data: Sales_chart_data?.map((data, index) => ({
+  //       x: data?.userName, // Use the sales data as the x-coordinate
+  //       y: Math.random() * 100, // Generate a random y-coordinate for demonstration
+  //       z: Math.random() * 100, // Generate a random z-coordinate for demonstration
+  //     })),
+  //   },
+  // ];
+
+  // const chartOptions = {
+  //   chart: {
+  //     height: 400,
+  //     type: "bubble",
+  //     background: "transparent",
+  //   },
+
+  //   fill: {
+  //     type: "gradient",
+  //   },
+  //   xaxis: {
+  //     // title: {
+  //     //   text: "Sales in AED",
+  //     // },
+  //     labels: {
+  //       style: {
+  //         colors: currentMode === "dark" ? "#ffffff" : "#000000",
+  //       },
+  //       rotateAlways: true, // Tilt the X-axis labels
+  //       className: "x-axis-labels",
+  //     },
+  //   },
+  //   yaxis: {
+  //     // title: {
+  //     //   text: "Y-Axis",
+  //     // },
+  //     labels: {
+  //       style: {
+  //         colors: currentMode === "dark" ? "#ffffff" : "#000000",
+  //       },
+  //     },
+  //   },
+  //   markers: {
+  //     size: 6,
+  //   },
+  //   dataLabels: {
+  //     enabled: false,
+  //   },
+  //   title: {
+  //     // text: "3D Bubble Chart",
+  //   },
+  //   theme: {
+  //     // mode: currentMode,
+  //     palette: "palette2",
+  //   },
+  // };
+
+  // return (
+  //   <div>
+  //     <ReactApexChart options={chartOptions} series={chartData} type="bubble" />
+  //   </div>
+  // );
 };
 
 export default SalesAmountChartAdmin;

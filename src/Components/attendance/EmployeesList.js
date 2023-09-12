@@ -78,8 +78,10 @@ const EmployeesList = ({ user }) => {
         // Check if selectedDay is 'today' or 'yesterday'
         if (selectedDay === "today") {
           const currentDate = moment();
+          // const startDate = moment(currentDate)
+          //   .subtract(1, "days")
+          //   .format("YYYY-MM-DD");
           const startDate = moment(currentDate)
-            .subtract(1, "days")
             .format("YYYY-MM-DD");
           const endDate = moment(currentDate)
             .add(1, "days")
@@ -90,7 +92,7 @@ const EmployeesList = ({ user }) => {
           params.date_range = dateRange;
         } else if (selectedDay === "yesterday") {
           params.date_range = [
-            moment().subtract(2, "days").format("YYYY-MM-DD"),
+            moment().subtract(1, "days").format("YYYY-MM-DD"),
             moment().format("YYYY-MM-DD"),
             // moment().add(1, "days").format("YYYY-MM-DD"),
           ].join(",");

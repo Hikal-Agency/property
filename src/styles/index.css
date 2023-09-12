@@ -21,6 +21,11 @@ body {
   display: "none !important";
 } */
 
+.x-axis-labels text {
+  transform: rotate(-45deg); /* Adjust the degree of rotation as needed */
+  transform-origin: center;
+}
+
 /* mui date icon */
 .reminder > .MuiSvgIcon-root .MuiSvgIcon-fontSizeMedium {
   padding-right: "10px !important";

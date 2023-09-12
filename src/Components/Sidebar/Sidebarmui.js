@@ -179,10 +179,24 @@ const Sidebarmui = () => {
           console.log("User data is");
           console.log(result.data);
 
-          // Create a new object with only the specific fields you want to store
           console.log("permisson: ", result.data.roles.permissions);
 
           const allPermissions = result.data.roles.permissions;
+
+          const permissionsArray = allPermissions.split(", ");
+          console.log("permisssions array:: ", permissionsArray);
+          const wordToExtract = String("dashboard");
+          const wordIndex = permissionsArray.indexOf(wordToExtract);
+
+          if (wordIndex !== -1) {
+            const specificWord = permissionsArray[wordIndex];
+            console.log("specificWord: ", specificWord); // Output: "cherry"
+          } else {
+            console.log("Word not found in the string.");
+            if (result?.data?.user[0]?.role !== 1) {
+              navigate("/attendance_self");
+            }
+          }
 
           setPermits(allPermissions);
         });
@@ -1520,7 +1534,8 @@ const Sidebarmui = () => {
 
                     if (
                       link?.links[0]?.link === "/dashboard" &&
-                      User?.role !== 5
+                      User?.role !== 5 &&
+                      hasPermission(link?.links[0]?.link, true)?.isPermitted
                     ) {
                       return (
                         <Link
