@@ -230,6 +230,15 @@ const Reports = () => {
             <div className={`w-full `}>
               <div className="pl-3">
                 <div className="my-5 mb-10">
+                  <div className="flex justify-center bg-[#da1f26] py-4 mb-4 rounded-md ">
+                    <h1
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-dark"
+                      } text-lg font-semibold`}
+                    >
+                      Turnover
+                    </h1>
+                  </div>
                   <div className="grid grid-cols-4 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
                     <div
                       className={`${
@@ -304,6 +313,16 @@ const Reports = () => {
                         </h6>
                       </div>
                     </div>
+                    <div className="flex justify-center bg-[#da1f26] py-4 mt-4 rounded-md col-span-2">
+                      <h1
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-dark"
+                        } text-lg font-semibold`}
+                      >
+                        Achievement
+                      </h1>
+                    </div>
+
                     <div
                       className={`${
                         currentMode === "dark"
@@ -335,7 +354,6 @@ const Reports = () => {
                         <ReportMeetingsClosed selectedMonth={selectedMonth} />
                       </div>
                     </div>
-
                     <div
                       className={`${
                         currentMode === "dark"
@@ -376,7 +394,15 @@ const Reports = () => {
                         )}
                       </div>
                     </div>
-
+                    <div className="flex justify-center bg-[#da1f26] py-4 mt-4 rounded-md col-span-2">
+                      <h1
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-dark"
+                        } text-lg font-semibold`}
+                      >
+                        Achievement
+                      </h1>
+                    </div>
                     <div
                       className={`${
                         currentMode === "dark"
