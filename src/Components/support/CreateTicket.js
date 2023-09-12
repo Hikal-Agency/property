@@ -312,20 +312,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                   )}
                 </Select>
               </FormControl>
-              <TextField
-                id="ticket"
-                type={"text"}
-                label="Ticket Description"
-                className="w-full mb-5"
-                style={{ marginBottom: "20px" }}
-                variant="outlined"
-                size="medium"
-                required
-                onChange={(e) =>
-                  setValues({ ...values, ticketDescription: e.target.value })
-                }
-                value={values.ticketDescription}
-              />
+              
               <TextField
                 id="issue"
                 type={"text"}
@@ -339,6 +326,20 @@ const CreateTicket = ({ categories, setCategories }) => {
                   setValues({ ...values, ticketIssue: e.target.value })
                 }
                 value={values.ticketIssue}
+              />
+              <TextField
+                id="ticket"
+                type={"text"}
+                label="Ticket Description"
+                className="w-full mb-5"
+                style={{ marginBottom: "20px" }}
+                variant="outlined"
+                size="medium"
+                required
+                onChange={(e) =>
+                  setValues({ ...values, ticketDescription: e.target.value })
+                }
+                value={values.ticketDescription}
               />
               {/* SUPORT VIA  */}
               <FormControl fullWidth>
