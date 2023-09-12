@@ -779,23 +779,26 @@ const AddLeadComponent = ({ FetchLeads }) => {
                         *
                       </span>
                     </MenuItem>
-                    <MenuItem value={"Website"}>Website</MenuItem>
-                    <MenuItem value={"Campaign"}>Campaign</MenuItem>
-                    <MenuItem value={"Whatsapp"}>Whatsapp</MenuItem>
-                    <MenuItem value={"Comment"}>Comment</MenuItem>
-                    <MenuItem value={"Message"}>Message</MenuItem>
-                    <MenuItem value={"Campaign Tiktok"}>
-                      Campaign Tiktok
-                    </MenuItem>
                     <MenuItem value={"Campaign Facebook"}>
-                      Campaign Facebook
-                    </MenuItem>
-                    <MenuItem value={"Campaign GoogleAds"}>
-                      Campaign GoogleAds
+                      Facebook Campaign
                     </MenuItem>
                     <MenuItem value={"Campaign Snapchat"}>
-                      Campaign Snapchat
+                      Snapchat Campaign
                     </MenuItem>
+                    <MenuItem value={"Campaign TikTok"}>
+                      TikTok Campaign
+                    </MenuItem>
+                    <MenuItem value={"Campaign GoogleAds"}>
+                      GoogleAds Campaign
+                    </MenuItem>
+                    <MenuItem value={"Campaign YouTube"}>
+                      YouTube Campaign
+                    </MenuItem>
+                    <MenuItem value={"Campaign"}>Campaign</MenuItem>
+                    <MenuItem value={"WhatsApp"}>WhatsApp</MenuItem>
+                    <MenuItem value={"Comment"}>Comment</MenuItem>
+                    <MenuItem value={"Message"}>Message</MenuItem>
+                    <MenuItem value={"Website"}>Website</MenuItem>
 
                     <MenuItem value={"Property Finder"}>
                       Property Finder

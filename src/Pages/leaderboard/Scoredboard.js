@@ -183,7 +183,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                       <div className="block gap-3 mt-2">
                         <div>
                           <h1 className="text-sm text-center">
-                            Recieved&nbsp;
+                            Received&nbsp;
                             {/* <span className="font-semibold text-main-red-color">
                     0
                   </span> */}
@@ -319,7 +319,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                       <div className="block gap-3 mt-2">
                         <div>
                           <h1 className="text-sm text-center">
-                            Recieved&nbsp;
+                            Received&nbsp;
                             {/* <span className="font-semibold text-main-red-color">
                     0
                   </span> */}

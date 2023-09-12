@@ -148,7 +148,7 @@ const AllLeads = () => {
     {
       field: "id",
       headerName: "#",
-      minWidth: 30,
+      minWidth: 50,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -160,7 +160,7 @@ const AllLeads = () => {
       field: "leadName",
       headerAlign: "center",
       headerName: "Name",
-      minWidth: 100,
+      minWidth: 150,
       flex: 1,
       renderCell: (cellValues) => {
         return (
@@ -175,7 +175,7 @@ const AllLeads = () => {
     {
       field: "leadContact",
       headerName: "Phone",
-      minWidth: 100,
+      minWidth: 150,
       headerAlign: "center",
       flex: 1,
     },
@@ -190,14 +190,14 @@ const AllLeads = () => {
       field: "language",
       headerName: "Lang",
       headerAlign: "center",
-      minWidth: 30,
+      minWidth: 50,
       flex: 1,
     },
     {
       field: "otp",
       headerName:
         leadOriginSelected?.id === "transfferedleads" ? "Ex-Agent" : "OTP",
-      minWidth: 80,
+      minWidth: 50,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
       headerClassName: "break-normal",
@@ -258,7 +258,7 @@ const AllLeads = () => {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
-      minWidth: 30,
+      minWidth: 50,
       headerAlign: "center",
       renderCell: (cellValues) => {
         console.log("Start::", cellValues.row.leadSource);
@@ -368,11 +368,11 @@ const AllLeads = () => {
       field: "whatsapp-web",
       headerName: "Action",
       headerAlign: "center",
-      minWidth: 100,
+      minWidth: 130,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="flex justify-center items-start w-full mx-2">
+          <div className="flex items-center w-full mx-7">
             <div className="mx-1">
               <Tooltip title="WhatsApp" arrow>
                 <Link
@@ -394,6 +394,22 @@ const AllLeads = () => {
                 </Link>
               </Tooltip>
             </div>
+            
+            <div className="mx-1">
+              <Tooltip title="Call" arrow>
+                <div
+                  className="call-link p-1.5 rounded-sm hover:bg-[#DA1F26] hover:text-white bg-transparent text-[#DA1F26]"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                >
+                  <CallButton phone={cellValues.row.leadContact} />
+                </div>
+              </Tooltip>
+            </div>
+
             {cellValues.row.email === "" ||
             cellValues.row.email === "null" ||
             cellValues.row.email === "undefined" ||
@@ -417,20 +433,6 @@ const AllLeads = () => {
                 </Tooltip>
               </div>
             )}
-            <div className="mx-1">
-              <Tooltip title="Call" arrow>
-                <div
-                  className="call-link p-1.5 rounded-sm hover:bg-[#DA1F26] hover:text-white bg-transparent text-[#DA1F26]"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                  }}
-                >
-                  <CallButton phone={cellValues.row.leadContact} />
-                </div>
-              </Tooltip>
-            </div>
           </div>
         );
       },
@@ -1117,7 +1119,7 @@ const AllLeads = () => {
         }`}
       >
         ● {leadOriginSelected.formattedValue}
-        {" Leads | "}
+        {" | "}
         <span>{leadTypeSelected.formattedValue}</span>{" "}
         <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
           {pageState?.total}

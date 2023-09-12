@@ -8,7 +8,7 @@ const GroupChart = () => {
       "Answered",
       "Not answered",
       "Incoming calls",
-      "Recieved",
+      "Received",
       "Missed",
     ],
     datasets: [
