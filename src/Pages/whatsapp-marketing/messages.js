@@ -1192,6 +1192,8 @@ const AllLeads = () => {
               />
             </Button>
           </Tooltip>
+
+
           <Tooltip title="Send SMS" arrow>
             <div className="relative">
               <Button
@@ -1201,17 +1203,14 @@ const AllLeads = () => {
                 type="button"
                 variant="contained"
                 sx={{ padding: "10px", mb: 2, mr: 1 }}
-                disabled={true}
                 color="error"
+              disabled={selectedRows?.length === 0}
               >
                 <MdSms
                   color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
                   size={20}
                 />
               </Button>
-              <div className="text-white bg-[#1c1c1c] absolute w-[89%] rounded-sm text-xs top-7 left-0 right-0 p-1">
-                Coming soon
-              </div>
             </div>
           </Tooltip>
 
