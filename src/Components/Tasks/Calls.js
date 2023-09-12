@@ -103,7 +103,7 @@ const Calls = ({
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
                   <FiPhoneCall size={20} className="text-main-red-color mr-3" />
-                  <h2>Recieved:</h2>
+                  <h2>Received:</h2>
                 </div>
                 <p className="font-bold">
                   {/* {call_logs?.recieved - call_logs?.missed} */}
@@ -187,7 +187,7 @@ const Calls = ({
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
                   <FiPhoneCall size={20} className="text-main-red-color mr-3" />
-                  <h2>Recieved:</h2>
+                  <h2>Received:</h2>
                 </div>
                 <p className="font-bold">
                   {/* {call_logs?.recieved - call_logs?.missed} */}
@@ -271,7 +271,7 @@ const Calls = ({
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
                   <FiPhoneCall size={20} className="text-main-red-color mr-3" />
-                  <h2>Recieved:</h2>
+                  <h2>Received:</h2>
                 </div>
                 <p className="font-bold">
                   {/* {call_logs?.recieved - call_logs?.missed} */}
@@ -347,7 +347,7 @@ const Calls = ({
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-1">
                   <FiPhoneCall size={20} className="text-main-red-color mr-3" />
-                  <h2>Recieved:</h2>
+                  <h2>Received:</h2>
                 </div>
                 <p className="font-bold">
                   {/* {call_logs?.recieved - call_logs?.missed} */}
@@ -373,7 +373,7 @@ const Calls = ({
         <Tabs value={value} onChange={handleChange} variant="standard">
           <Tab label="ANSWERED CALLS " />
           <Tab label="MISSED CALLS" />
-          <Tab label="RECIEVED CALLS" />
+          <Tab label="RECEIVED CALLS" />
         </Tabs>
       </Box>
       <div className="mt-1 p-5">
