@@ -1157,7 +1157,7 @@ const SingleEmployee = ({ user }) => {
         // Add a signature line and text in the bottom right corner
         const signatureLineX = doc.internal.pageSize.getWidth() - 60;
         const signatureLineY = doc.internal.pageSize.getHeight() - 40;
-        const signatureLineLength = 60;
+        const signatureLineLength = 25;
         const gapFromRight = 5;
 
         // Draw the signature line using underscores
