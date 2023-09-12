@@ -43,17 +43,13 @@ const NotificationItem = ({
               </div>
               <div className="col-span-4">
                 <div className="space-y-2 h-full m-1">
-                  <p className="text-sm tracking-wide">
-                    {activity?.title}
-                  </p>
-                  <p
-                    className={`text-xs text-left w-full text-[#AAAAAA]`}
-                  >
+                  <p className="text-sm tracking-wide">{activity?.title}</p>
+                  <p className={`text-xs text-left w-full text-[#AAAAAA]`}>
                     {activity?.created_at}
                   </p>
                 </div>
               </div>
-                    
+
               <div className="flex justify-end items-center w-full h-full">
                 <div className="close-icon m-1">
                   <Tooltip title="Mark as Read" arrow>
@@ -86,16 +82,16 @@ const NotificationItem = ({
                             .catch((error) => {
                               console.log(error);
 
-                              toast.error("Sorry, something went wrong.", {
-                                position: "top-right",
-                                autoClose: 3000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "light",
-                              });
+                              // toast.error("Sorry, something went wrong.", {
+                              //   position: "top-right",
+                              //   autoClose: 3000,
+                              //   hideProgressBar: false,
+                              //   closeOnClick: true,
+                              //   pauseOnHover: true,
+                              //   draggable: true,
+                              //   progress: undefined,
+                              //   theme: "light",
+                              // });
                             });
                           // Fetch the notifications again
                           setNotifications((notifications) => {
@@ -111,7 +107,6 @@ const NotificationItem = ({
                   </Tooltip>
                 </div>
               </div>
-
             </div>
 
             {/* OLD UI  */}
@@ -201,9 +196,7 @@ const NotificationItem = ({
                 </IconButton>
               </div>
             </div> */}
-
           </div>
-          
         </div>
       </div>
     </>
