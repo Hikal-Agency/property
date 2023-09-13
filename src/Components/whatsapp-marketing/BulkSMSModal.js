@@ -36,12 +36,15 @@ const BulkSMSModal = ({
 }) => {
   const [loading, setloading] = useState(false);
   const [btnloading, setBtnLoading] = useState(false);
+  const [msgLoading, setMsgLoading] = useState(false);
+  const [senderAddress, setSenderAddress] = useState("");
+
   const [pageloading, setpageloading] = useState(true);
-  const [msg, sendMsg] = useState();
+  const [msg, setMsg] = useState();
   const token = localStorage.getItem("auth-token");
 
   const handleMsg = (e) => {
-    sendMsg(e.target.value);
+    setMsg(e.target.value);
   };
 
   const { hasPermission } = usePermission();
@@ -57,6 +60,7 @@ const BulkSMSModal = ({
   console.log("Salesperson: ", SalesPerson);
   console.log("MAnagers: ", Managers);
   console.log("Range Data : ", rangeData);
+  const senderAddresses = ["AD-HIKAL"];
 
   const [contactsList, setContactsList] = useState(
     rangeData?.map((contact) => contact?.leadContact)
@@ -107,6 +111,98 @@ const BulkSMSModal = ({
         theme: "light",
       });
       console.log("error: ", error);
+    }
+  };
+
+  const sendMsg = async (e, messageText, contactList) => {
+    e.preventDefault();
+    setMsgLoading(true);
+    if (msg && senderAddress) {
+      console.log("sender,msg: ", msg, senderAddress);
+      try {
+        const croppedContacts = contactsList?.map((contact) => {
+          if (contact) {
+            // Remove plus sign and replace empty spaces with no spaces
+            return contact.replace("+", "").replace(/\s/g, "");
+          } else {
+            return contact;
+          }
+        });
+
+        console.log("cropped: ", croppedContacts);
+
+        const etisalatToken = process.env.REACT_APP_ETISALAT_TOKEN;
+
+        const sendMsg = await axios.post(
+          `${BACKEND_URL}/sendsms`,
+          JSON.stringify({
+            msgCategory: "4.6",
+            contentType: "3.1",
+            senderAddr: senderAddress,
+            dndCategory: "campaign",
+            priority: 1,
+            clientTxnId: "",
+            desc: "Hikal CRM Single Message to Multiple Recipients",
+            campaignName: "test",
+            recipients: croppedContacts,
+            msg: { en: msg },
+            defLang: "en",
+            dr: "1",
+            wapUrl: "",
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+
+        console.log("msg sent : ", sendMsg);
+
+        // const allSentMessages = [];
+        // responses.forEach((response, index) => {
+        //   if (!response?.error) {
+        //     const messageInfo = {
+        //       msg_to: contactList[index],
+        //       msg_from: "+15855013080",
+        //       message: messageText,
+        //       type: "sent",
+        //       userID: User?.id,
+        //       source: "sms",
+        //       status: 1,
+        //     };
+        //     allSentMessages.push(messageInfo);
+        //   }
+        // });
+
+        // saveMessages(allSentMessages);
+
+        setSendSMSModal(false);
+        toast.success("Messages Sent", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setMsgLoading(false);
+      } catch (error) {
+        console.error(error);
+        toast.error("Messages Couldn't be sent", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setMsgLoading(false);
+      }
     }
   };
 
@@ -534,7 +630,7 @@ const BulkSMSModal = ({
                   >
                     SMS Message
                   </h4>
-
+                  {/* 
                   <TextField
                     id="enquiry"
                     label="SMS Templates"
@@ -557,7 +653,7 @@ const BulkSMSModal = ({
                       </span>
                     </MenuItem>
                     <MenuItem value={"Studio"}>Email</MenuItem>
-                  </TextField>
+                  </TextField> */}
 
                   <Textarea
                     id="Manager"
@@ -600,8 +696,10 @@ const BulkSMSModal = ({
 
                   <TextField
                     id="LanguagePrefered"
-                    value={LanguagePrefered}
-                    onChange={ChangeLanguagePrefered}
+                    value={senderAddress}
+                    onChange={(e) => {
+                      setSenderAddress(e.target.value);
+                    }}
                     size="small"
                     className="w-full"
                     label="Send From"
@@ -613,21 +711,9 @@ const BulkSMSModal = ({
                     displayEmpty
                     select
                   >
-                    <MenuItem value="" disabled>
-                      Preferred language
-                      <span className="ml-1" style={{ color: "red" }}>
-                        *
-                      </span>
-                    </MenuItem>
-                    <MenuItem value={"Arabic"}>Arabic</MenuItem>
-                    <MenuItem value={"English"}>English</MenuItem>
-                    <MenuItem value={"Farsi"}>Farsi</MenuItem>
-                    <MenuItem value={"French"}>French</MenuItem>
-                    <MenuItem value={"Hindi"}>Hindi</MenuItem>
-                    <MenuItem value={"Russian"}>Russian</MenuItem>
-                    <MenuItem value={"Hebrew"}>Hebrew</MenuItem>
-                    <MenuItem value={"Spanish"}>Spanish</MenuItem>
-                    <MenuItem value={"Urdu"}>Urdu</MenuItem>
+                    {senderAddresses?.map((address) => {
+                      return <MenuItem value={address}>{address}</MenuItem>;
+                    })}
                   </TextField>
                   {/* 
                   <TextField
@@ -694,8 +780,9 @@ const BulkSMSModal = ({
                 size="lg"
                 type="submit"
                 disabled={loading ? true : false}
+                onClick={(e) => sendMsg(e)}
               >
-                {loading ? (
+                {msgLoading ? (
                   <CircularProgress
                     size={20}
                     sx={{ color: "white" }}

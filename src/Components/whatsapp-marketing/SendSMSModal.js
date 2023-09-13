@@ -64,7 +64,7 @@ const SendSMSModal = ({
             toRange={toRange}
             rangeData={rangeData}
             setRangeData={setRangeData}
-            setSendSMSModal
+            setSendSMSModal={setSendSMSModal}
             sendSMSModal={sendSMSModal}
             setFromRange={setFromRange}
             setToRange={setToRange}
