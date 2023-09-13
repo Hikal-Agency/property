@@ -17,6 +17,8 @@ const SendSMSModal = ({
   toRange,
   rangeData,
   setRangeData,
+  setFromRange,
+  setToRange,
   setSendSMSModal,
 }) => {
   console.log("sms range dat: ", rangeData);
@@ -64,6 +66,8 @@ const SendSMSModal = ({
             setRangeData={setRangeData}
             setSendSMSModal
             sendSMSModal={sendSMSModal}
+            setFromRange={setFromRange}
+            setToRange={setToRange}
           />
         </div>
       </Modal>

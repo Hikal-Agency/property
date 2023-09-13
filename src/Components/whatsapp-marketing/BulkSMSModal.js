@@ -28,17 +28,22 @@ const BulkSMSModal = ({
   fromRange,
   toRange,
   rangeData,
+  setToRange,
+  setFromRange,
   setRangeData,
   sendSMSModal,
   setSendSMSModal,
 }) => {
   const [loading, setloading] = useState(false);
+  const [btnloading, setBtnLoading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
   const [msg, sendMsg] = useState();
+  const token = localStorage.getItem("auth-token");
 
   const handleMsg = (e) => {
     sendMsg(e.target.value);
   };
+
   const { hasPermission } = usePermission();
   const {
     currentMode,
@@ -56,6 +61,7 @@ const BulkSMSModal = ({
   const [contactsList, setContactsList] = useState(
     rangeData?.map((contact) => contact?.leadContact)
   );
+  const [displaRange, setDispalyRange] = useState(false);
 
   console.log("contact list : ", contactsList);
 
@@ -64,6 +70,44 @@ const BulkSMSModal = ({
     const newContactsList = event.target.value.split(",");
     // Update the contactsList state
     setContactsList(newContactsList);
+  };
+
+  const getNumbers = async () => {
+    setBtnLoading(true);
+    try {
+      const range = await axios.get(
+        `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("range: ", range);
+      const newContacts = range?.data?.result?.map(
+        (contact) => contact?.leadContact
+      );
+      const updatedContactsList = [...contactsList, ...newContacts];
+      setContactsList(updatedContactsList);
+      setDispalyRange(false);
+
+      setBtnLoading(false);
+    } catch (error) {
+      setBtnLoading(false);
+      toast.error("Unable to fetch data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      console.log("error: ", error);
+    }
   };
 
   const [Manager2, setManager2] = useState([]);
@@ -290,10 +334,10 @@ const BulkSMSModal = ({
       ) : (
         <div className="mx-auto">
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              AddLead();
-            }}
+            // onSubmit={(e) => {
+            //   e.preventDefault();
+            //   AddLead();
+            // }}
             disabled={loading ? true : false}
           >
             <div className="w-full flex items-center py-1 mb-7">
@@ -335,6 +379,151 @@ const BulkSMSModal = ({
                   />
                 </Box>
               </div>
+
+              {displaRange && (
+                <>
+                  <div className="flex flex-row justify-between mb-4 mt-4">
+                    {/* From */}
+                    <div
+                      className=""
+                      style={{ width: "50%", position: "relative" }}
+                    >
+                      <label
+                        style={{
+                          position: "absolute",
+                          bottom: "-16px",
+                          right: 0,
+                        }}
+                        className={`flex justify-end items-center ${
+                          currentMode === "dark" ? "text-white" : "text-dark"
+                        } `}
+                      >
+                        {fromRange ? (
+                          <strong
+                            className="ml-4 text-red-600 cursor-pointer"
+                            onClick={() => setFromRange("")}
+                          >
+                            Clear
+                          </strong>
+                        ) : (
+                          ""
+                        )}
+                      </label>
+                      <Box sx={darkModeColors}>
+                        <TextField
+                          label="From"
+                          type="number"
+                          value={fromRange}
+                          onChange={(e) => {
+                            setFromRange(e.target.value);
+                          }}
+                          InputProps={{ required: true }}
+                        />
+                      </Box>
+                    </div>
+
+                    {/* To */}
+                    <div
+                      className="ml-2"
+                      style={{ width: "100%", position: "relative" }}
+                    >
+                      <label
+                        style={{
+                          position: "absolute",
+                          bottom: "-16px",
+                          right: 0,
+                        }}
+                        className={`flex justify-end items-center ${
+                          currentMode === "dark" ? "text-white" : "text-dark"
+                        } `}
+                      >
+                        {toRange ? (
+                          <strong
+                            className="ml-4 text-red-600 cursor-pointer"
+                            onClick={() => setToRange("")}
+                          >
+                            Clear
+                          </strong>
+                        ) : (
+                          ""
+                        )}
+                      </label>
+                      <Box sx={darkModeColors}>
+                        <TextField
+                          label="To"
+                          value={toRange}
+                          type="number"
+                          onChange={(e) => {
+                            setToRange(e.target.value);
+                          }}
+                          className="w-full"
+                          InputProps={{ required: true }}
+                        />
+                      </Box>
+                    </div>
+                  </div>
+                </>
+              )}
+              {!displaRange ? (
+                <div
+                  className={`${
+                    currentMode === "dark" ? "bg-black" : "bg-white"
+                  } px-5 mx-5 py-2 text-center sm:px-6`}
+                >
+                  <Button
+                    className={`min-w-fit mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                    ripple={true}
+                    size="lg"
+                    type="submit"
+                    disabled={loading ? true : false}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setDispalyRange(true);
+                    }}
+                  >
+                    {loading ? (
+                      <CircularProgress
+                        size={20}
+                        sx={{ color: "white" }}
+                        className="text-white"
+                      />
+                    ) : (
+                      <span>Add More</span>
+                    )}
+                  </Button>
+                </div>
+              ) : (
+                fromRange &&
+                toRange && (
+                  <div
+                    className={`${
+                      currentMode === "dark" ? "bg-black" : "bg-white"
+                    } px-5 mx-5 py-2 text-center sm:px-6`}
+                  >
+                    <Button
+                      className={`min-w-fit mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                      ripple={true}
+                      size="lg"
+                      type="submit"
+                      disabled={loading ? true : false}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        getNumbers();
+                      }}
+                    >
+                      {btnloading ? (
+                        <CircularProgress
+                          size={20}
+                          sx={{ color: "white" }}
+                          className="text-white"
+                        />
+                      ) : (
+                        <span>Select</span>
+                      )}
+                    </Button>
+                  </div>
+                )
+              )}
 
               <div className="px-4 mt-3">
                 <Box sx={darkModeColors}>

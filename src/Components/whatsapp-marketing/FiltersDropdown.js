@@ -829,12 +829,12 @@ const FiltersDropdown = ({
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
           >
-            <strong className=" ">Range</strong>
+            <strong className=" ">Lead Range</strong>
           </label>
 
           <div className="flex flex-row justify-between mb-4">
             {/* From */}
-            <div className="" style={{ width: "50%", position: "relative" }}>
+            <div className="" style={{ width: "100%", position: "relative" }}>
               <label
                 style={{ position: "absolute", bottom: "-16px", right: 0 }}
                 className={`flex justify-end items-center ${
@@ -902,7 +902,10 @@ const FiltersDropdown = ({
             </div>
           </div>
           {fromRange && toRange && (
-            <Button onClick={getNumbers}>
+            <Button
+              onClick={getNumbers}
+              className="text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-[#DA1F26]"
+            >
               {btnLoading ? <CircularProgress /> : <span>Select</span>}
             </Button>
           )}
@@ -918,6 +921,8 @@ const FiltersDropdown = ({
           toRange={toRange}
           rangeData={rangeData}
           setRangeData={setRangeData}
+          setFromRange={setFromRange}
+          setToRange={setToRange}
         />
       )}
     </div>
