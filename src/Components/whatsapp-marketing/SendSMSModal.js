@@ -17,7 +17,9 @@ const SendSMSModal = ({
   toRange,
   rangeData,
   setRangeData,
+  setSendSMSModal,
 }) => {
+  console.log("sms range dat: ", rangeData);
   const { currentMode } = useStateContext();
 
   return (
@@ -36,7 +38,7 @@ const SendSMSModal = ({
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] h-[70%] overflow-y-scroll md:w-[60%] border-2 border-solid shadow-lg  ${
+          className={`w-[calc(100%-20px)] h-[66%] overflow-y-scroll md:w-[50%] border-2 border-solid shadow-lg  ${
             currentMode === "dark"
               ? "bg-black border-gray-800"
               : "bg-white border-gray-200"
@@ -60,6 +62,8 @@ const SendSMSModal = ({
             toRange={toRange}
             rangeData={rangeData}
             setRangeData={setRangeData}
+            setSendSMSModal
+            sendSMSModal={sendSMSModal}
           />
         </div>
       </Modal>

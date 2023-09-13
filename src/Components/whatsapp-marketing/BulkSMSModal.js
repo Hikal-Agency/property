@@ -23,7 +23,15 @@ import PhoneInput, {
 import classNames from "classnames";
 import Loader from "../Loader";
 
-const BulkSMSModal = ({ FetchLeads, fromRange, toRange }) => {
+const BulkSMSModal = ({
+  FetchLeads,
+  fromRange,
+  toRange,
+  rangeData,
+  setRangeData,
+  sendSMSModal,
+  setSendSMSModal,
+}) => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
   const { hasPermission } = usePermission();
@@ -35,11 +43,11 @@ const BulkSMSModal = ({ FetchLeads, fromRange, toRange }) => {
     fetchSidebarData,
     SalesPerson,
     Managers,
-    rangeData,
-    setRangeData,
   } = useStateContext();
   console.log("Salesperson: ", SalesPerson);
   console.log("MAnagers: ", Managers);
+  console.log("Range Data : ", rangeData);
+
   const [Manager2, setManager2] = useState([]);
   // const [SalesPerson, setSalesPerson] = useState([]);
 
@@ -294,14 +302,15 @@ const BulkSMSModal = ({ FetchLeads, fromRange, toRange }) => {
 
                   <Textarea
                     id="Manager"
-                    select
                     sx={{
                       "&": {
                         marginBottom: "1.25rem !important",
                       },
                     }}
                     rows={4}
-                    value={Manager}
+                    value={rangeData
+                      ?.map((contact) => contact?.leadContact)
+                      ?.join(",")}
                     label="All Recipients"
                     onChange={ChangeManager}
                     size="small"

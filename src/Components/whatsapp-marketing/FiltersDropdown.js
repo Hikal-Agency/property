@@ -18,6 +18,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import SendSMSModal from "./SendSMSModal";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh" },
@@ -145,13 +146,12 @@ const FiltersDropdown = ({
           },
         }
       );
+      setRangeData(range?.data?.result);
       setFiltersDropdown(false);
-      setSendSMSModal(true);
 
       setBtnLoading(false);
 
       console.log("range: ", range);
-      setRangeData(range?.data);
     } catch (error) {
       setBtnLoading(false);
       toast.error("Unable to fetch data.", {
@@ -167,6 +167,14 @@ const FiltersDropdown = ({
       console.log("error: ", error);
     }
   };
+
+  useEffect(() => {
+    console.log("useeffect rangedata: ", rangeData);
+    if (rangeData.length > 0) {
+      setSendSMSModal(true);
+    }
+  }, [rangeData]);
+
   return (
     <div
       className={`fixed w-[350px] z-[1000] top-[40px] right-[8px] ${darkModeColors}`}
@@ -836,7 +844,7 @@ const FiltersDropdown = ({
                 {fromRange ? (
                   <strong
                     className="ml-4 text-red-600 cursor-pointer"
-                    // onClick={() => setFromDate("")}
+                    onClick={() => setFromRange("")}
                   >
                     Clear
                   </strong>
@@ -871,7 +879,7 @@ const FiltersDropdown = ({
                 {toRange ? (
                   <strong
                     className="ml-4 text-red-600 cursor-pointer"
-                    // onClick={() => setToDate("")}
+                    onClick={() => setToRange("")}
                   >
                     Clear
                   </strong>
@@ -893,9 +901,11 @@ const FiltersDropdown = ({
               </Box>
             </div>
           </div>
-          <Button onClick={getNumbers}>
-            {btnLoading ? <CircularProgress /> : <span>Select</span>}
-          </Button>
+          {fromRange && toRange && (
+            <Button onClick={getNumbers}>
+              {btnLoading ? <CircularProgress /> : <span>Select</span>}
+            </Button>
+          )}
         </div>
       )}
 
@@ -903,6 +913,7 @@ const FiltersDropdown = ({
         <SendSMSModal
           sendSMSModal={sendSMSModal}
           handleSMSModelClose={() => setSendSMSModal(false)}
+          setSendSMSModal={setSendSMSModal}
           fromRange={fromRange}
           toRange={toRange}
           rangeData={rangeData}
