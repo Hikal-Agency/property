@@ -773,11 +773,19 @@ const FiltersDropdown = ({
             </div>
           </div>
 
+          <label
+            className={`flex mt-2  ${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            } `}
+          >
+            <strong className=" ">Range</strong>
+          </label>
+
           <div className="flex flex-row justify-between">
             {/* From */}
             <div
               className="mt-5"
-              style={{ width: "45%", position: "relative" }}
+              style={{ width: "50%", position: "relative" }}
             >
               <label
                 style={{ position: "absolute", bottom: "-10px", right: 0 }}
@@ -811,7 +819,7 @@ const FiltersDropdown = ({
             {/* To */}
             <div
               className="mt-5"
-              style={{ width: "45%", position: "relative" }}
+              style={{ width: "50%", position: "relative" }}
             >
               <label
                 style={{ position: "absolute", bottom: "-10px", right: 0 }}
@@ -837,6 +845,7 @@ const FiltersDropdown = ({
                   // onChange={(e) => {
                   //   setToDate(e.target.value);
                   // }}
+                  className="w-full"
                   InputProps={{ required: true }}
                 />
               </Box>
