@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Button, MenuItem, Select, TextField, Box, FormControl, InputLabel } from "@mui/material";
+import {
+  Button,
+  MenuItem,
+  Select,
+  TextField,
+  Box,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import { GrFormClose } from "react-icons/gr";
 import { BiFilter } from "react-icons/bi";
 import { useStateContext } from "../../context/ContextProvider";
@@ -109,6 +117,10 @@ const FiltersDropdown = ({
   setEnquiryTypeSelected,
   projectNameTyped,
   setAgents,
+  toRange,
+  setToRange,
+  fromRange,
+  setFromRange,
 }) => {
   const [filtersDropdown, setFiltersDropdown] = useState(false);
   const { currentMode, darkModeColors } = useStateContext();
@@ -116,7 +128,7 @@ const FiltersDropdown = ({
     <div
       className={`fixed w-[350px] z-[1000] top-[40px] right-[8px] ${darkModeColors}`}
     >
-      <div className={ `flex justify-end mt-5 relative z-[1000]`}>
+      <div className={`flex justify-end mt-5 relative z-[1000]`}>
         {!filtersDropdown &&
           (enquiryTypeSelected?.i ||
             phoneNumberFilter ||
@@ -124,7 +136,9 @@ const FiltersDropdown = ({
             otpSelected?.id ||
             languageFilter ||
             projectNameTyped ||
-            managerSelected || startDate || endDate ||
+            managerSelected ||
+            startDate ||
+            endDate ||
             agentSelected) && (
             <Button
               onClick={() => {
@@ -179,7 +193,13 @@ const FiltersDropdown = ({
       </div>
 
       {filtersDropdown && (
-        <div className={`${currentMode === "dark" ? "border-gray-800 bg-black" : "bg-white border-gray-200" } mt-2 border border-2 p-4 rounded-md`}>
+        <div
+          className={`${
+            currentMode === "dark"
+              ? "border-gray-800 bg-black"
+              : "bg-white border-gray-200"
+          } mt-2 border border-2 p-4 rounded-md`}
+        >
           <div className="grid grid-cols-2 gap-x-2">
             <div
               style={{
@@ -223,10 +243,12 @@ const FiltersDropdown = ({
                     required
                     sx={{
                       "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                        borderColor:
+                          currentMode === "dark" ? "#ffffff" : "#000000",
                       },
                       "&:hover:not (.Mui-disabled):before": {
-                        borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                        borderColor:
+                          currentMode === "dark" ? "#ffffff" : "#000000",
                       },
                     }}
                   >
@@ -280,10 +302,12 @@ const FiltersDropdown = ({
                   required
                   sx={{
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      borderColor:
+                        currentMode === "dark" ? "#ffffff" : "#000000",
                     },
                     "&:hover:not (.Mui-disabled):before": {
-                      borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      borderColor:
+                        currentMode === "dark" ? "#ffffff" : "#000000",
                     },
                   }}
                 >
@@ -307,7 +331,9 @@ const FiltersDropdown = ({
                 value={leadOriginSelected?.id || "hotleads"}
                 onChange={(event) =>
                   setLeadOriginSelected(
-                    leadOrigins.find((origin) => origin.id === event.target.value)
+                    leadOrigins.find(
+                      (origin) => origin.id === event.target.value
+                    )
                   )
                 }
                 size="small"
@@ -356,12 +382,9 @@ const FiltersDropdown = ({
                   },
                 }}
               >
-                <MenuItem
-                    value="0"
-                    disabled
-                  >
-                    --- Feedback ---
-                  </MenuItem>
+                <MenuItem value="0" disabled>
+                  --- Feedback ---
+                </MenuItem>
                 {leadTypes?.map((type, index) => (
                   <MenuItem key={index} value={type?.id || ""}>
                     {type?.formattedValue}
@@ -404,7 +427,9 @@ const FiltersDropdown = ({
                   className={`w-full mt-1 mb-3`}
                   onChange={(event) =>
                     setEnquiryTypeSelected(
-                      enquiryTypes.find((type) => type.id === event.target.value)
+                      enquiryTypes.find(
+                        (type) => type.id === event.target.value
+                      )
                     )
                   }
                   displayEmpty
@@ -412,17 +437,16 @@ const FiltersDropdown = ({
                   required
                   sx={{
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      borderColor:
+                        currentMode === "dark" ? "#ffffff" : "#000000",
                     },
                     "&:hover:not (.Mui-disabled):before": {
-                      borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      borderColor:
+                        currentMode === "dark" ? "#ffffff" : "#000000",
                     },
                   }}
                 >
-                  <MenuItem
-                    value="0"
-                    disabled
-                  >
+                  <MenuItem value="0" disabled>
                     Enquiry
                   </MenuItem>
                   {enquiryTypes?.map((type, index) => (
@@ -491,17 +515,16 @@ const FiltersDropdown = ({
                   required
                   sx={{
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      borderColor:
+                        currentMode === "dark" ? "#ffffff" : "#000000",
                     },
                     "&:hover:not (.Mui-disabled):before": {
-                      borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
+                      borderColor:
+                        currentMode === "dark" ? "#ffffff" : "#000000",
                     },
                   }}
                 >
-                  <MenuItem
-                    value="0"
-                    disabled
-                  >
+                  <MenuItem value="0" disabled>
                     OTP
                   </MenuItem>
                   {otpTypes?.map((type, index) => (
@@ -555,7 +578,11 @@ const FiltersDropdown = ({
               )}
             </label>
 
-            <div className={`${currentMode === "dark" ? "text-white" : "text-black"} flex items-center`}>
+            <div
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              } flex items-center`}
+            >
               <p className={`w-[25%]`}>Phone</p>
               <div className="flex flex-1 pr-6 justify-between items-center">
                 <label className="mr-4">
@@ -607,7 +634,11 @@ const FiltersDropdown = ({
               )}
             </label>
 
-            <div className={`${currentMode === "dark" ? "text-white" : "text-black"} flex items-center`}>
+            <div
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              } flex items-center`}
+            >
               <p className="w-[25%]">Email</p>
               <div className="flex flex-1 pr-6 justify-between items-center">
                 <label className="mr-4">
@@ -634,103 +665,182 @@ const FiltersDropdown = ({
             </div>
           </div>
 
-          <div
-            className="mt-5"
-            style={{
-              position: "relative",
-              width: "100%",
-              marginBottom: startDate ? "35px" : "0",
-            }}
+          <label
+            className={`flex my-3  ${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            } `}
           >
-            <label
-              style={{ position: "absolute", bottom: "-10px", right: 0 }}
-              className={`flex justify-end items-center ${
-                currentMode === "dark" ? "text-white" : "text-dark"
-              } `}
-            >
-              {startDate ? (
-                <strong
-                  className="ml-4 text-red-600 cursor-pointer"
-                  onClick={() => setStartDate("")}
+            <strong className=" ">Date Range</strong>
+          </label>
+          <div className="flex flex-row justify-between mt-3">
+            <div className="flex flex-col" style={{ marginRight: "15px" }}>
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  marginBottom: startDate ? "35px" : "0",
+                }}
+              >
+                <label
+                  style={{ position: "absolute", bottom: "-16px", right: 0 }}
+                  className={`flex justify-end items-center ${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  } `}
                 >
-                  Clear
-                </strong>
-              ) : (
-                ""
-              )}
-            </label>
-
-            <Box sx={darkModeColors} >
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Start Date"
-                  value={startDate}
-                  views={["year", "month", "day"]}
-                  onChange={(newValue) => {
-                    setStartDate(newValue);
-                  }}
-                  format="yyyy-MM-dd"
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      onKeyDown={(e) => e.preventDefault()}
-                      fullWidth
-                    />
+                  {startDate ? (
+                    <strong
+                      className="ml-4  text-red-600 cursor-pointer"
+                      onClick={() => setStartDate("")}
+                    >
+                      Clear
+                    </strong>
+                  ) : (
+                    ""
                   )}
-                  InputProps={{ required: true }}
-                />
-              </LocalizationProvider>
-            </Box>
-            
+                </label>
+
+                <Box sx={darkModeColors}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="Start Date"
+                      value={startDate}
+                      views={["year", "month", "day"]}
+                      onChange={(newValue) => {
+                        setStartDate(newValue);
+                      }}
+                      format="yyyy-MM-dd"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          onKeyDown={(e) => e.preventDefault()}
+                          fullWidth
+                        />
+                      )}
+                      InputProps={{ required: true }}
+                    />
+                  </LocalizationProvider>
+                </Box>
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  marginBottom: endDate ? "35px" : "0",
+                }}
+              >
+                <label
+                  style={{ position: "absolute", bottom: "-16px", right: 0 }}
+                  className={`flex justify-end items-center ${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  } `}
+                >
+                  {endDate ? (
+                    <strong
+                      className="ml-4 text-red-600 cursor-pointer"
+                      onClick={() => setEndDate("")}
+                    >
+                      Clear
+                    </strong>
+                  ) : (
+                    ""
+                  )}
+                </label>
+                <Box sx={darkModeColors}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="End Date"
+                      value={endDate}
+                      views={["year", "month", "day"]}
+                      onChange={(newValue) => {
+                        setEndDate(newValue);
+                      }}
+                      format="yyyy-MM-dd"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          onKeyDown={(e) => e.preventDefault()}
+                          fullWidth
+                        />
+                      )}
+                      InputProps={{ required: true }}
+                    />
+                  </LocalizationProvider>
+                </Box>
+              </div>
+            </div>
           </div>
 
-          <div
-            className="mt-5"
-            style={{
-              position: "relative",
-              width: "100%",
-              marginBottom: endDate ? "35px" : "0",
-            }}
-          >
-            <label
-              style={{ position: "absolute", bottom: "-10px", right: 0 }}
-              className={`flex justify-end items-center ${
-                currentMode === "dark" ? "text-white" : "text-dark"
-              } `}
+          <div className="flex flex-row justify-between">
+            {/* From */}
+            <div
+              className="mt-5"
+              style={{ width: "45%", position: "relative" }}
             >
-              {endDate ? (
-                <strong
-                  className="ml-4 text-red-600 cursor-pointer"
-                  onClick={() => setEndDate("")}
-                >
-                  Clear
-                </strong>
-              ) : (
-                ""
-              )}
-            </label>
-            <Box sx={darkModeColors} >
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="End Date"
-                  value={endDate}
-                  views={["year", "month", "day"]}
-                  onChange={(newValue) => {
-                    setEndDate(newValue);
-                  }}
-                  format="yyyy-MM-dd"
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      onKeyDown={(e) => e.preventDefault()}
-                      fullWidth
-                    />
-                  )}
+              <label
+                style={{ position: "absolute", bottom: "-10px", right: 0 }}
+                className={`flex justify-end items-center ${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                } `}
+              >
+                {fromRange ? (
+                  <strong
+                    className="ml-4 text-red-600 cursor-pointer"
+                    // onClick={() => setFromDate("")}
+                  >
+                    Clear
+                  </strong>
+                ) : (
+                  ""
+                )}
+              </label>
+              <Box sx={darkModeColors}>
+                <TextField
+                  label="From"
+                  value={fromRange}
+                  // onChange={(e) => {
+                  //   setFromDate(e.target.value);
+                  // }}
                   InputProps={{ required: true }}
                 />
-              </LocalizationProvider>
-            </Box>
-            
+              </Box>
+            </div>
+
+            {/* To */}
+            <div
+              className="mt-5"
+              style={{ width: "45%", position: "relative" }}
+            >
+              <label
+                style={{ position: "absolute", bottom: "-10px", right: 0 }}
+                className={`flex justify-end items-center ${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                } `}
+              >
+                {toRange ? (
+                  <strong
+                    className="ml-4 text-red-600 cursor-pointer"
+                    // onClick={() => setToDate("")}
+                  >
+                    Clear
+                  </strong>
+                ) : (
+                  ""
+                )}
+              </label>
+              <Box sx={darkModeColors}>
+                <TextField
+                  label="To"
+                  value={toRange}
+                  // onChange={(e) => {
+                  //   setToDate(e.target.value);
+                  // }}
+                  InputProps={{ required: true }}
+                />
+              </Box>
+            </div>
           </div>
         </div>
       )}
