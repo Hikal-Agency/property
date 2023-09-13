@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Tooltip, Link as MuiLink, Button, Badge } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import {RiCoinsLine} from "react-icons/ri";
 import Avatar from "@mui/material/Avatar";
 
 import { useStateContext } from "../../context/ContextProvider";
@@ -66,6 +67,7 @@ const Navbar = () => {
     isCollapsed,
     allRoutes,
     setIsCollapsed,
+    userCredits
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -229,7 +231,7 @@ const Navbar = () => {
 
         <div className="flex items-center">
           {isUserSubscribed !== null && [
-            isUserSubscribed === false && (
+            isUserSubscribed === false ? (
               <Button
                 variant="contained"
                 style={{ background: "#DA1F26" }}
@@ -237,6 +239,10 @@ const Navbar = () => {
               >
                 <Link to="/marketing/payments">Upgrade</Link>
               </Button>
+            ) : (
+              <div className="mr-4 flex items-center">
+                <RiCoinsLine size={15} /> <div className="w-[2px]"></div> <span className="text-[#DA1F26] font-bold text-2xl">{userCredits}</span>
+              </div>
             ),
           ]}
 

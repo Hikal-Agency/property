@@ -31,6 +31,7 @@ export const ContextProvider = ({ children }) => {
   const [openBackDrop, setopenBackDrop] = useState(false);
   const [DashboardData, setDashboardData] = useState();
   const [LocationData, setLocationData] = useState();
+  const [userCredits, setUserCredits] = useState("");
   const [UserLocationData, setUserLocationData] = useState();
   const [LastLocationData, setLastLocationData] = useState();
   const [DevProData, setDevProData] = useState();
@@ -397,7 +398,9 @@ export const ContextProvider = ({ children }) => {
         notifIconAnimating, 
         setNotifIconAnimating, 
         setUnreadNotifsCount, 
-        getNotifCounts
+        getNotifCounts, 
+        userCredits,
+        setUserCredits
       }}
     >
       {children}

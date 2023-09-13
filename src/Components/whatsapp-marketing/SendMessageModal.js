@@ -37,7 +37,7 @@ const SendMessageModal = ({
   selectedContacts,
   whatsappSenderNo,
 }) => {
-  const { currentMode, BACKEND_URL, User } = useStateContext();
+  const { currentMode, BACKEND_URL, User, setUserCredits } = useStateContext();
 
   const [messageValue, setMessageValue] = useState("");
   const [btnloading, setbtnloading] = useState(false);
@@ -131,26 +131,9 @@ const SendMessageModal = ({
             }
           );
 
-
-        // const allSentMessages = [];
-        // responses.forEach((response, index) => {
-        //   if (!response?.error) {
-        //     const messageInfo = {
-        //       msg_to: contactList[index],
-        //       msg_from: "+15855013080",
-        //       message: messageText,
-        //       type: "sent",
-        //       userID: User?.id,
-        //       source: "sms",
-        //       status: 1,
-        //     };
-        //     allSentMessages.push(messageInfo);
-        //   }
-        // });
-
-        // saveMessages(allSentMessages);
-
         setSendMessageModal({ open: false });
+
+        setUserCredits((credits) => credits - contactList?.lengt);
         toast.success("Messages Sent", {
           position: "top-right",
           autoClose: 3000,
@@ -163,7 +146,7 @@ const SendMessageModal = ({
         setbtnloading(false);
       } catch (error) {
         console.error(error);
-        toast.error("Messages Couldn't be sent", {
+        toast.error(error?.response?.data?.error, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,

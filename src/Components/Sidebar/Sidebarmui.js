@@ -86,6 +86,8 @@ const Sidebarmui = () => {
     setUnreadNotifsCount,
     setNotifIconAnimating,
     getNotifCounts,
+    userCredits, 
+    setUserCredits
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -165,7 +167,7 @@ const Sidebarmui = () => {
     }
   };
 
-  const FetchPermissions = async () => {
+  const FetchProfileData = async () => {
     try {
       const token = localStorage.getItem("auth-token");
       axios
@@ -198,6 +200,7 @@ const Sidebarmui = () => {
             }
           }
 
+          setUserCredits(result.data?.user[0]?.credits);
           setPermits(allPermissions);
         });
     } catch (error) {
@@ -213,7 +216,7 @@ const Sidebarmui = () => {
       setUser(JSON.parse(storedUser));
       setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
-      FetchPermissions();
+      FetchProfileData();
       socket.emit("add_user", { ...JSON.parse(storedUser) });
     } else {
       axios
@@ -237,6 +240,7 @@ const Sidebarmui = () => {
             creationDate: result.data.user[0].creationDate,
             displayImg: result.data.user[0].profile_picture,
             expiry_date: result.data.user[0].expiry_date,
+            credits: result.data.user[0].credits,
             gender: result.data.user[0].gender,
             id: result.data.user[0].id,
             idExpiryDate: result.data.user[0].idExpiryDate,
@@ -270,7 +274,7 @@ const Sidebarmui = () => {
           setIsUserSubscribed(checkUser(user));
           getAllLeadsMembers(user);
 
-          FetchPermissions();
+          FetchProfileData();
           socket.emit("add_user", {
             ...user,
           });

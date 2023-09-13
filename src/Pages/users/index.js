@@ -13,6 +13,7 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
+import {GiTwoCoins} from "react-icons/gi";
 
 import {
   AiOutlineEdit,
@@ -33,6 +34,7 @@ import DeleteUser from "../../Components/Users/DeleteUser";
 import { BsPersonFillLock, BsSearch } from "react-icons/bs";
 import UpdateUserPermissions from "../../Components/addUser/UpdateUserPermissions";
 import { BiSearch } from "react-icons/bi";
+import ShareCreditsModal from "../../Components/addUser/ShareCreditsModal";
 
 const Users = () => {
   const {
@@ -53,6 +55,10 @@ const Users = () => {
   const [userID, setUserId] = useState();
   const [userStatus, setUserStatus] = useState();
   const [username, setUserName] = useState();
+  const [shareCreditsModal, setShareCreditsModal] = useState({
+    open: false, 
+    data: {}
+  });
   const [role, setUserRole] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [openPermissionModel, setOpenPermissionModel] = useState(false);
@@ -553,6 +559,21 @@ const Users = () => {
                 />
               </Button>
             ) : null}
+
+            <Button
+            onClick={() => setShareCreditsModal({
+              open: true, 
+              data: cellValues?.row
+            })}
+              title="Share Credits"
+              className={`editUserBtn ${
+                currentMode === "dark"
+                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                  : "text-black bg-transparent rounded-md p-1 shadow-none "
+              }`}
+            >
+                <GiTwoCoins size={16} />
+            </Button>
           </div>
         );
       },
@@ -770,6 +791,13 @@ const Users = () => {
                     UserName={username}
                     userRole={role}
                     fetchUser={fetchUsers}
+                  />
+                )}
+
+                    {shareCreditsModal && (
+                  <ShareCreditsModal
+                    shareCreditsModal={shareCreditsModal}
+                    handleClose={() => setShareCreditsModal({open: false, data: {}})}
                   />
                 )}
               </div>
