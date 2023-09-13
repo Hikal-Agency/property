@@ -14,6 +14,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import SendSMSModal from "./SendSMSModal";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh" },
@@ -123,6 +124,7 @@ const FiltersDropdown = ({
   setFromRange,
 }) => {
   const [filtersDropdown, setFiltersDropdown] = useState(false);
+  const [sendSMSModal, setSendSMSModal] = useState(false);
   const { currentMode, darkModeColors } = useStateContext();
   return (
     <div
@@ -781,7 +783,7 @@ const FiltersDropdown = ({
             <strong className=" ">Range</strong>
           </label>
 
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between mb-4">
             {/* From */}
             <div className="" style={{ width: "50%", position: "relative" }}>
               <label
@@ -848,7 +850,24 @@ const FiltersDropdown = ({
               </Box>
             </div>
           </div>
+          <Button
+            onClick={() => {
+              setFiltersDropdown(false);
+              setSendSMSModal(true);
+            }}
+          >
+            Select
+          </Button>
         </div>
+      )}
+
+      {sendSMSModal && (
+        <SendSMSModal
+          sendSMSModal={sendSMSModal}
+          handleSMSModelClose={() => setSendSMSModal(false)}
+          fromRange={fromRange}
+          toRange={toRange}
+        />
       )}
     </div>
   );
