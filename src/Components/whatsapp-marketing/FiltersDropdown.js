@@ -17,6 +17,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import SendSMSModal from "./SendSMSModal";
 import axios from "../../axoisConfig";
+import { toast } from "react-toastify";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh" },
@@ -153,6 +154,16 @@ const FiltersDropdown = ({
       setRangeData(range?.data);
     } catch (error) {
       setBtnLoading(false);
+      toast.error("Unable to fetch data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       console.log("error: ", error);
     }
   };
