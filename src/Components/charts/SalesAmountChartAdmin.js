@@ -187,11 +187,30 @@ const SalesAmountChartAdmin = ({ selectedMonthSales }) => {
       // mode: currentMode,
       palette: "palette2",
     },
+    tooltip: {
+      custom: function ({ seriesIndex, dataPointIndex, w }) {
+        // Customize the tooltip text here
+        const data = w.config.series[seriesIndex].data[dataPointIndex];
+        return `
+        <div class="custom-tooltip">
+            <h1>Name: ${data.x}</h1><hr/>
+            <span class="custom-data">
+            <span>Sales in AED: ${data.y}</span><br>
+            </span>
+          </div>
+        `;
+      },
+    },
   };
 
   return (
     <div>
-      <ReactApexChart options={chartOptions} series={chartData} type="bubble" />
+      <ReactApexChart
+        options={chartOptions}
+        series={chartData}
+        type="bubble"
+        height={350}
+      />
     </div>
   );
 };

@@ -16,6 +16,25 @@ body {
   width: 20px;
 }
 
+/* bubble chart tooltip */
+.custom-tooltip {
+  background-color: white;
+  color: black;
+  /* padding: 10px; */
+}
+
+.custom-tooltip h1{
+  background: #E5E7EB;
+  color: black;
+  font-weight: bold;
+  padding: 4px;
+}
+
+.custom-tooltip .custom-data {
+  padding: 10px;
+  margin-bottom: 3px;
+}
+
 /* sidebar icons */
 /* .css-wx7wi4{
   display: "none !important";

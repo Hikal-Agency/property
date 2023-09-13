@@ -241,7 +241,7 @@ const Reports = () => {
                         currentMode === "dark"
                           ? "bg-[#1c1c1c] text-white"
                           : "bg-gray-200 text-black"
-                      } rounded-md p-2`}
+                      } rounded-md p-2 h-auto`}
                     >
                       <h6 className="mb-2 p-2">
                         <span className="font-semibold">Sales</span>
@@ -275,7 +275,7 @@ const Reports = () => {
                         )}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-3 h-48 mb-3">
                       <div
                         className={`${
                           currentMode === "dark" ? " text-white" : "text-black"
@@ -309,83 +309,87 @@ const Reports = () => {
                         </h6>
                       </div>
                     </div>
-                    <div className="flex justify-center bg-[#da1f26] py-4 mt-5  rounded-full  col-span-2">
+                    <div className="flex justify-center bg-[#da1f26] py-4 mt-6  rounded-full  col-span-2">
                       <h1 className={`text-white text-lg font-semibold`}>
                         Achievement
                       </h1>
                     </div>
 
-                    <div
-                      className={`${
-                        currentMode === "dark"
-                          ? "bg-[#1c1c1c] text-white"
-                          : "bg-gray-200 text-black"
-                      } col-span-2 rounded-md p-2`}
-                    >
-                      <h6 className="mb-2 p-2">
-                        <span className="font-semibold">Performance</span>
-                        <span className="float-right">
-                          <select
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
-                            } text-xs rounded-md p-1`}
-                            value={selectedMonth}
-                            onChange={(e) => {
-                              setSelectedMonth(e.target.value);
-                            }}
-                          >
-                            <option value="alltime">All-Time</option>
-                            <option value="lastmonth">Last Month</option>
-                            <option value="thismonth">This Month</option>
-                          </select>
-                        </span>
-                      </h6>
-                      <div className="justify-between items-center">
-                        <ReportMeetingsClosed selectedMonth={selectedMonth} />
+                    <div className="grid grid-cols-2 col-span-2 gap-3">
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-[#1c1c1c] text-white"
+                            : "bg-gray-200 text-black"
+                        } rounded-md p-2`}
+                      >
+                        <h6 className="mb-2 p-2">
+                          <span className="font-semibold">Performance</span>
+                          <span className="float-right">
+                            <select
+                              className={`${
+                                currentMode === "dark"
+                                  ? "bg-black text-white"
+                                  : "bg-white text-black"
+                              } text-xs rounded-md p-1`}
+                              value={selectedMonth}
+                              onChange={(e) => {
+                                setSelectedMonth(e.target.value);
+                              }}
+                            >
+                              <option value="alltime">All-Time</option>
+                              <option value="lastmonth">Last Month</option>
+                              <option value="thismonth">This Month</option>
+                            </select>
+                          </span>
+                        </h6>
+                        <div className="justify-between items-center">
+                          <ReportMeetingsClosed selectedMonth={selectedMonth} />
+                        </div>
+                      </div>
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-[#1c1c1c] text-white"
+                            : "bg-gray-200 text-black"
+                        } rounded-md  p-2`}
+                      >
+                        <h6 className="mb-2 p-2">
+                          <span className="font-semibold">Social Chart</span>
+                          <span className="float-right">
+                            <select
+                              className={`${
+                                currentMode === "dark"
+                                  ? "bg-black text-white"
+                                  : "bg-white text-black"
+                              } text-xs rounded-md p-1`}
+                              value={selectedMonthSocial}
+                              onChange={(e) => {
+                                setSelectedMonthSocial(e.target.value);
+                              }}
+                            >
+                              <option value="alltime">All-Time</option>
+                              <option value="lastmonth">Last Month</option>
+                              <option value="thismonth">This Month</option>
+                            </select>
+                          </span>
+                        </h6>
+                        <div className="justify-between items-center">
+                          {saleschart_loading ? (
+                            <div className="flex items-center space-x-2">
+                              <CircularProgress size={20} />{" "}
+                              <span>Loading</span>
+                            </div>
+                          ) : (
+                            <SocialChart
+                              data={socialChartData}
+                              selectedMonthSocial={selectedMonthSocial}
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div
-                      className={`${
-                        currentMode === "dark"
-                          ? "bg-[#1c1c1c] text-white"
-                          : "bg-gray-200 text-black"
-                      } rounded-md col-span-2 p-2`}
-                    >
-                      <h6 className="mb-2 p-2">
-                        <span className="font-semibold">Social Chart</span>
-                        <span className="float-right">
-                          <select
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
-                            } text-xs rounded-md p-1`}
-                            value={selectedMonthSocial}
-                            onChange={(e) => {
-                              setSelectedMonthSocial(e.target.value);
-                            }}
-                          >
-                            <option value="alltime">All-Time</option>
-                            <option value="lastmonth">Last Month</option>
-                            <option value="thismonth">This Month</option>
-                          </select>
-                        </span>
-                      </h6>
-                      <div className="justify-between items-center">
-                        {saleschart_loading ? (
-                          <div className="flex items-center space-x-2">
-                            <CircularProgress size={20} /> <span>Loading</span>
-                          </div>
-                        ) : (
-                          <SocialChart
-                            data={socialChartData}
-                            selectedMonthSocial={selectedMonthSocial}
-                          />
-                        )}
-                      </div>
-                    </div>
+
                     <div className="flex justify-center bg-[#da1f26] py-4 mt-5  rounded-full col-span-2">
                       <h1 className={`text-white text-lg font-semibold`}>
                         Projects
