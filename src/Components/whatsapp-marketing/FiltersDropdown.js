@@ -131,7 +131,8 @@ const FiltersDropdown = ({
   const [sendSMSModal, setSendSMSModal] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [rangeData, setRangeData] = useState([]);
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, pageState } =
+    useStateContext();
   const token = localStorage.getItem("auth-token");
 
   const getNumbers = async () => {
@@ -879,7 +880,9 @@ const FiltersDropdown = ({
                 {toRange ? (
                   <strong
                     className="ml-4 text-red-600 cursor-pointer"
-                    onClick={() => setToRange("")}
+                    onClick={() => {
+                      setToRange("");
+                    }}
                   >
                     Clear
                   </strong>
@@ -893,6 +896,9 @@ const FiltersDropdown = ({
                   value={toRange}
                   type="number"
                   onChange={(e) => {
+                    if (e.target.value > pageState.total) {
+                      return;
+                    }
                     setToRange(e.target.value);
                   }}
                   className="w-full"
