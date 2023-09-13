@@ -671,7 +671,7 @@ const BulkSMSModal = ({
                     displayEmpty
                   />
 
-                  <label
+                  {/* <label
                     className={`flex my-3 mt-4  ${
                       currentMode === "dark" ? "text-white" : "text-dark"
                     } `}
@@ -680,7 +680,7 @@ const BulkSMSModal = ({
                       Number of Characters:{" "}
                       <span className="text-red">{msg?.length || 0}</span>
                     </strong>
-                  </label>
+                  </label> */}
                 </Box>
               </div>
 
