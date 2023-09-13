@@ -40,7 +40,7 @@ import {
 import "../../styles/animation.css";
 
 const NavButton = ({ title, customFunc, icon, color, handleClose, dotColor }) => (
-  <Tooltip onMouseLeave={handleClose} title={title} arrow placement="bottom">
+  <Tooltip title={title} arrow placement="bottom">
     <button
       type="button"
       onMouseEnter={customFunc}
@@ -351,7 +351,7 @@ const Navbar = () => {
                   style={{ margin: 0, padding: 0, overflow: "hidden" }}
                 >
                   <Menu
-                    hideBackdrop
+                    hideBackdrop={true}
                     disableScrollLock
                     open={open}
                     anchorEl={anchorElem}
@@ -396,9 +396,11 @@ const Navbar = () => {
                   </Menu>
                 </div>
               ) : (
+
                 <Menu
+                className="navbar-menu-backdrop"
                   hideBackdrop={true}
-                  disableScrollLock={true}
+                  disableScrollLock
                   anchorEl={anchorElem}
                   open={open}
                   PaperProps={{

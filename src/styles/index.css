@@ -1025,3 +1025,10 @@ label[for="bulkImport"] .MuiButtonBase-root {
   }
 }
 
+.navbar-menu-backdrop{
+  position: unset !important;
+}
+
+.navbar-menu-backdrop > div[data-testid="sentinelStart"] {
+  display: block;
+}
