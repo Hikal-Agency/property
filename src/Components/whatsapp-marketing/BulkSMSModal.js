@@ -34,6 +34,11 @@ const BulkSMSModal = ({
 }) => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
+  const [msg, sendMsg] = useState();
+
+  const handleMsg = (e) => {
+    sendMsg(e.target.value);
+  };
   const { hasPermission } = usePermission();
   const {
     currentMode,
@@ -356,28 +361,28 @@ const BulkSMSModal = ({
 
                   <Textarea
                     id="Manager"
-                    select
                     sx={{
                       "&": {
                         marginBottom: "1.25rem !important",
                       },
                     }}
                     rows={4}
-                    value={Manager}
+                    value={msg}
                     label="All Recipients"
-                    onChange={ChangeManager}
+                    onChange={handleMsg}
                     size="small"
                     className="w-full"
                     displayEmpty
                   />
 
                   <label
-                    className={`flex my-3  ${
+                    className={`flex my-3 mt-4  ${
                       currentMode === "dark" ? "text-white" : "text-dark"
                     } `}
                   >
                     <strong className=" ">
-                      Number of Characters: <span className="text-red">48</span>
+                      Number of Characters:{" "}
+                      <span className="text-red">{msg?.length}</span>
                     </strong>
                   </label>
                 </Box>
