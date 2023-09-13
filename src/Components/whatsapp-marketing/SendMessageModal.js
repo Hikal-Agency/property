@@ -106,30 +106,31 @@ const SendMessageModal = ({
         const token = localStorage.getItem("auth-token");
         setbtnloading(true);
 
-        const etisalatToken = process.env.REACT_APP_ETISALAT_TOKEN;
-
-        if (contactList?.length === 1) {
           await axios.post(
-            "https://smartmessaging.etisalat.ae:5676/campaigns/submissions/sms/nb",
+            `${BACKEND_URL}/sendsms`,
             JSON.stringify({
               msgCategory: "4.6",
               contentType: "3.1",
               senderAddr: senderAddress,
-              dndCategory: "Campaign",
+              dndCategory: "campaign",
               priority: 1,
               clientTxnId: "",
-              recipient: contactList[0],
-              msg: messageText,
+              desc: "Hikal CRM Single Message to Multiple Recipients",
+              campaignName: "test",
+              recipients: contactList,
+              msg: { en: messageText },
+              defLang: "en",
               dr: "1",
+              wapUrl: "",
             }),
             {
               headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + etisalatToken,
+                Authorization: "Bearer " + token,
               },
             }
           );
-        }
+
 
         // const allSentMessages = [];
         // responses.forEach((response, index) => {
