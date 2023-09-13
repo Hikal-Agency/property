@@ -21,12 +21,12 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 
 const leadOrigins = [
-  { id: "hotleads", formattedValue: "Fresh" },
-  { id: "thirdpartyleads", formattedValue: "Third Party" },
-  { id: "transfferedleads", formattedValue: "Reshuffled" },
-  { id: "coldleads", formattedValue: "Cold" },
-  { id: "archive", formattedValue: "Archived" },
-  { id: "personalleads", formattedValue: "Personal" },
+  { id: "hotleads", formattedValue: "Fresh", originID: 0 },
+  { id: "thirdpartyleads", formattedValue: "Third Party", originID: 3 },
+  { id: "transfferedleads", formattedValue: "Reshuffled", originID: 0 },
+  { id: "coldleads", formattedValue: "Cold", originID: 1 },
+  { id: "archive", formattedValue: "Archived", originID: 4 },
+  { id: "personalleads", formattedValue: "Personal", originID: 2 },
 ];
 const leadTypes = [
   { id: "all", formattedValue: "All" },
@@ -139,7 +139,9 @@ const FiltersDropdown = ({
     setBtnLoading(true);
     try {
       const range = await axios.get(
-        `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}`,
+        `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}&coldcall=${
+          leadOriginSelected?.originID || 0
+        }`,
         {
           headers: {
             "Content-Type": "application/json",
