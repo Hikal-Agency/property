@@ -53,6 +53,19 @@ const BulkSMSModal = ({
   console.log("MAnagers: ", Managers);
   console.log("Range Data : ", rangeData);
 
+  const [contactsList, setContactsList] = useState(
+    rangeData?.map((contact) => contact?.leadContact)
+  );
+
+  console.log("contact list : ", contactsList);
+
+  const handleContacts = (event) => {
+    // Split the textarea value into an array by comma
+    const newContactsList = event.target.value.split(",");
+    // Update the contactsList state
+    setContactsList(newContactsList);
+  };
+
   const [Manager2, setManager2] = useState([]);
   // const [SalesPerson, setSalesPerson] = useState([]);
 
@@ -312,12 +325,10 @@ const BulkSMSModal = ({
                         marginBottom: "1.25rem !important",
                       },
                     }}
+                    placeholder="Contacts List"
                     rows={4}
-                    value={rangeData
-                      ?.map((contact) => contact?.leadContact)
-                      ?.join(",")}
-                    label="All Recipients"
-                    onChange={ChangeManager}
+                    value={contactsList?.join(",")}
+                    onChange={handleContacts}
                     size="small"
                     className="w-full"
                     displayEmpty
@@ -366,9 +377,9 @@ const BulkSMSModal = ({
                         marginBottom: "1.25rem !important",
                       },
                     }}
+                    placeholder="Enter message here ....."
                     rows={4}
                     value={msg}
-                    label="All Recipients"
                     onChange={handleMsg}
                     size="small"
                     className="w-full"
@@ -382,7 +393,7 @@ const BulkSMSModal = ({
                   >
                     <strong className=" ">
                       Number of Characters:{" "}
-                      <span className="text-red">{msg?.length}</span>
+                      <span className="text-red">{msg?.length || 0}</span>
                     </strong>
                   </label>
                 </Box>
@@ -429,7 +440,7 @@ const BulkSMSModal = ({
                     <MenuItem value={"Spanish"}>Spanish</MenuItem>
                     <MenuItem value={"Urdu"}>Urdu</MenuItem>
                   </TextField>
-
+                  {/* 
                   <TextField
                     id="LeadSource"
                     value={LeadSource}
@@ -478,7 +489,7 @@ const BulkSMSModal = ({
                     </MenuItem>
 
                     <MenuItem value={"Personal"}>Personal</MenuItem>
-                  </TextField>
+                  </TextField> */}
                 </Box>
               </div>
             </div>
