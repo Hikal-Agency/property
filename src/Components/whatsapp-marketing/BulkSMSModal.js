@@ -35,6 +35,8 @@ const BulkSMSModal = ({ FetchLeads, fromRange, toRange }) => {
     fetchSidebarData,
     SalesPerson,
     Managers,
+    rangeData,
+    setRangeData,
   } = useStateContext();
   console.log("Salesperson: ", SalesPerson);
   console.log("MAnagers: ", Managers);

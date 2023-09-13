@@ -7,6 +7,7 @@ import {
   Box,
   FormControl,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import { GrFormClose } from "react-icons/gr";
 import { BiFilter } from "react-icons/bi";
@@ -15,6 +16,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import SendSMSModal from "./SendSMSModal";
+import axios from "../../axoisConfig";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh" },
@@ -125,7 +127,35 @@ const FiltersDropdown = ({
 }) => {
   const [filtersDropdown, setFiltersDropdown] = useState(false);
   const [sendSMSModal, setSendSMSModal] = useState(false);
-  const { currentMode, darkModeColors } = useStateContext();
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [rangeData, setRangeData] = useState([]);
+  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const token = localStorage.getItem("auth-token");
+
+  const getNumbers = async () => {
+    setBtnLoading(true);
+    try {
+      const range = await axios.get(
+        `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      setFiltersDropdown(false);
+      setSendSMSModal(true);
+
+      setBtnLoading(false);
+
+      console.log("range: ", range);
+      setRangeData(range?.data);
+    } catch (error) {
+      setBtnLoading(false);
+      console.log("error: ", error);
+    }
+  };
   return (
     <div
       className={`fixed w-[350px] z-[1000] top-[40px] right-[8px] ${darkModeColors}`}
@@ -787,7 +817,7 @@ const FiltersDropdown = ({
             {/* From */}
             <div className="" style={{ width: "50%", position: "relative" }}>
               <label
-                style={{ position: "absolute", bottom: "-10px", right: 0 }}
+                style={{ position: "absolute", bottom: "-16px", right: 0 }}
                 className={`flex justify-end items-center ${
                   currentMode === "dark" ? "text-white" : "text-dark"
                 } `}
@@ -806,10 +836,11 @@ const FiltersDropdown = ({
               <Box sx={darkModeColors}>
                 <TextField
                   label="From"
+                  type="number"
                   value={fromRange}
-                  // onChange={(e) => {
-                  //   setFromDate(e.target.value);
-                  // }}
+                  onChange={(e) => {
+                    setFromRange(e.target.value);
+                  }}
                   InputProps={{ required: true }}
                 />
               </Box>
@@ -821,7 +852,7 @@ const FiltersDropdown = ({
               style={{ width: "50%", position: "relative" }}
             >
               <label
-                style={{ position: "absolute", bottom: "-10px", right: 0 }}
+                style={{ position: "absolute", bottom: "-16px", right: 0 }}
                 className={`flex justify-end items-center ${
                   currentMode === "dark" ? "text-white" : "text-dark"
                 } `}
@@ -841,22 +872,18 @@ const FiltersDropdown = ({
                 <TextField
                   label="To"
                   value={toRange}
-                  // onChange={(e) => {
-                  //   setToDate(e.target.value);
-                  // }}
+                  type="number"
+                  onChange={(e) => {
+                    setToRange(e.target.value);
+                  }}
                   className="w-full"
                   InputProps={{ required: true }}
                 />
               </Box>
             </div>
           </div>
-          <Button
-            onClick={() => {
-              setFiltersDropdown(false);
-              setSendSMSModal(true);
-            }}
-          >
-            Select
+          <Button onClick={getNumbers}>
+            {btnLoading ? <CircularProgress /> : <span>Select</span>}
           </Button>
         </div>
       )}
@@ -867,6 +894,8 @@ const FiltersDropdown = ({
           handleSMSModelClose={() => setSendSMSModal(false)}
           fromRange={fromRange}
           toRange={toRange}
+          rangeData={rangeData}
+          setRangeData={setRangeData}
         />
       )}
     </div>

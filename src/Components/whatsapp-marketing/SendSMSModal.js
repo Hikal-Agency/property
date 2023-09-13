@@ -15,6 +15,8 @@ const SendSMSModal = ({
   FetchLeads,
   fromRange,
   toRange,
+  rangeData,
+  setRangeData,
 }) => {
   const { currentMode } = useStateContext();
 
@@ -56,6 +58,8 @@ const SendSMSModal = ({
             FetchLeads={FetchLeads}
             fromRange={fromRange}
             toRange={toRange}
+            rangeData={rangeData}
+            setRangeData={setRangeData}
           />
         </div>
       </Modal>
