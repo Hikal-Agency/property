@@ -191,7 +191,7 @@ const BulkSMSModal = ({
         setMsgLoading(false);
       } catch (error) {
         console.error(error);
-        toast.error("Messages Couldn't be sent", {
+        toast.error(error?.response?.data?.error, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
