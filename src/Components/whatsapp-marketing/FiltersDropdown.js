@@ -7,6 +7,7 @@ import {
   Box,
   FormControl,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import { GrFormClose } from "react-icons/gr";
 import { BiFilter } from "react-icons/bi";
@@ -14,14 +15,18 @@ import { useStateContext } from "../../context/ContextProvider";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import SendSMSModal from "./SendSMSModal";
+import axios from "../../axoisConfig";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const leadOrigins = [
-  { id: "hotleads", formattedValue: "Fresh" },
-  { id: "thirdpartyleads", formattedValue: "Third Party" },
-  { id: "transfferedleads", formattedValue: "Reshuffled" },
-  { id: "coldleads", formattedValue: "Cold" },
-  { id: "archive", formattedValue: "Archived" },
-  { id: "personalleads", formattedValue: "Personal" },
+  { id: "hotleads", formattedValue: "Fresh", originID: 0 },
+  { id: "thirdpartyleads", formattedValue: "Third Party", originID: 3 },
+  { id: "transfferedleads", formattedValue: "Reshuffled", originID: 0 },
+  { id: "coldleads", formattedValue: "Cold", originID: 1 },
+  { id: "archive", formattedValue: "Archived", originID: 4 },
+  { id: "personalleads", formattedValue: "Personal", originID: 2 },
 ];
 const leadTypes = [
   { id: "all", formattedValue: "All" },
@@ -123,7 +128,56 @@ const FiltersDropdown = ({
   setFromRange,
 }) => {
   const [filtersDropdown, setFiltersDropdown] = useState(false);
-  const { currentMode, darkModeColors } = useStateContext();
+  const [sendSMSModal, setSendSMSModal] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [rangeData, setRangeData] = useState([]);
+  const { currentMode, darkModeColors, BACKEND_URL, pageState } =
+    useStateContext();
+  const token = localStorage.getItem("auth-token");
+
+  const getNumbers = async () => {
+    setBtnLoading(true);
+    try {
+      const range = await axios.get(
+        `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}&coldcall=${
+          leadOriginSelected?.originID || 0
+        }`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      setRangeData(range?.data?.result);
+      setFiltersDropdown(false);
+
+      setBtnLoading(false);
+
+      console.log("range: ", range);
+    } catch (error) {
+      setBtnLoading(false);
+      toast.error("Unable to fetch data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      console.log("error: ", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("useeffect rangedata: ", rangeData);
+    if (rangeData.length > 0) {
+      setSendSMSModal(true);
+    }
+  }, [rangeData]);
+
   return (
     <div
       className={`fixed w-[350px] z-[1000] top-[40px] right-[8px] ${darkModeColors}`}
@@ -778,14 +832,14 @@ const FiltersDropdown = ({
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
           >
-            <strong className=" ">Range</strong>
+            <strong className=" ">Lead Range</strong>
           </label>
 
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between mb-4">
             {/* From */}
-            <div className="" style={{ width: "50%", position: "relative" }}>
+            <div className="" style={{ width: "100%", position: "relative" }}>
               <label
-                style={{ position: "absolute", bottom: "-10px", right: 0 }}
+                style={{ position: "absolute", bottom: "-16px", right: 0 }}
                 className={`flex justify-end items-center ${
                   currentMode === "dark" ? "text-white" : "text-dark"
                 } `}
@@ -793,7 +847,7 @@ const FiltersDropdown = ({
                 {fromRange ? (
                   <strong
                     className="ml-4 text-red-600 cursor-pointer"
-                    // onClick={() => setFromDate("")}
+                    onClick={() => setFromRange("")}
                   >
                     Clear
                   </strong>
@@ -804,10 +858,11 @@ const FiltersDropdown = ({
               <Box sx={darkModeColors}>
                 <TextField
                   label="From"
+                  type="number"
                   value={fromRange}
-                  // onChange={(e) => {
-                  //   setFromDate(e.target.value);
-                  // }}
+                  onChange={(e) => {
+                    setFromRange(e.target.value);
+                  }}
                   InputProps={{ required: true }}
                 />
               </Box>
@@ -819,7 +874,7 @@ const FiltersDropdown = ({
               style={{ width: "50%", position: "relative" }}
             >
               <label
-                style={{ position: "absolute", bottom: "-10px", right: 0 }}
+                style={{ position: "absolute", bottom: "-16px", right: 0 }}
                 className={`flex justify-end items-center ${
                   currentMode === "dark" ? "text-white" : "text-dark"
                 } `}
@@ -827,7 +882,9 @@ const FiltersDropdown = ({
                 {toRange ? (
                   <strong
                     className="ml-4 text-red-600 cursor-pointer"
-                    // onClick={() => setToDate("")}
+                    onClick={() => {
+                      setToRange("");
+                    }}
                   >
                     Clear
                   </strong>
@@ -839,16 +896,42 @@ const FiltersDropdown = ({
                 <TextField
                   label="To"
                   value={toRange}
-                  // onChange={(e) => {
-                  //   setToDate(e.target.value);
-                  // }}
+                  type="number"
+                  onChange={(e) => {
+                    if (e.target.value > pageState.total) {
+                      return;
+                    }
+                    setToRange(e.target.value);
+                  }}
                   className="w-full"
                   InputProps={{ required: true }}
                 />
               </Box>
             </div>
           </div>
+          {fromRange && toRange && (
+            <Button
+              onClick={getNumbers}
+              className="text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-[#DA1F26]"
+            >
+              {btnLoading ? <CircularProgress /> : <span>Select</span>}
+            </Button>
+          )}
         </div>
+      )}
+
+      {sendSMSModal && (
+        <SendSMSModal
+          sendSMSModal={sendSMSModal}
+          handleSMSModelClose={() => setSendSMSModal(false)}
+          setSendSMSModal={setSendSMSModal}
+          fromRange={fromRange}
+          toRange={toRange}
+          rangeData={rangeData}
+          setRangeData={setRangeData}
+          setFromRange={setFromRange}
+          setToRange={setToRange}
+        />
       )}
     </div>
   );

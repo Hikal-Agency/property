@@ -71,6 +71,8 @@ const AllLeads = () => {
   const [otpSelected, setOtpSelected] = useState({ id: 0 });
   const [phoneNumberFilter, setPhoneNumberFilter] = useState("");
   const [emailFilter, setEmailFilter] = useState("");
+  const [toRange, setToRange] = useState("");
+  const [fromRange, setFromRange] = useState("");
   const [startDate, setStartDate] = useState("");
   const [bulkDeleteModalOpen, setBulkDeleteModalOpen] = useState();
   const [endDate, setEndDate] = useState("");
@@ -394,7 +396,7 @@ const AllLeads = () => {
                 </Link>
               </Tooltip>
             </div>
-            
+
             <div className="mx-1">
               <Tooltip title="Call" arrow>
                 <div
@@ -1090,6 +1092,10 @@ const AllLeads = () => {
         leadTypeSelected={leadTypeSelected}
         emailFilter={emailFilter}
         setEmailFilter={setEmailFilter}
+        toRange={toRange}
+        setToRange={setToRange}
+        fromRange={fromRange}
+        setFromRange={setFromRange}
         managerSelected={managerSelected}
         languageFilter={languageFilter}
         startDate={startDate}
@@ -1195,7 +1201,6 @@ const AllLeads = () => {
             </Button>
           </Tooltip>
 
-
           <Tooltip title="Send SMS" arrow>
             <div className="relative">
               <Button
@@ -1206,7 +1211,7 @@ const AllLeads = () => {
                 variant="contained"
                 sx={{ padding: "10px", mb: 2, mr: 1 }}
                 color="error"
-              disabled={selectedRows?.length === 0}
+                disabled={selectedRows?.length === 0}
               >
                 <MdSms
                   color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
