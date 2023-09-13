@@ -774,7 +774,7 @@ const FiltersDropdown = ({
           </div>
 
           <label
-            className={`flex mt-2  ${
+            className={`flex mt-4 mb-2  ${
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
           >
@@ -783,10 +783,7 @@ const FiltersDropdown = ({
 
           <div className="flex flex-row justify-between">
             {/* From */}
-            <div
-              className="mt-5"
-              style={{ width: "50%", position: "relative" }}
-            >
+            <div className="" style={{ width: "50%", position: "relative" }}>
               <label
                 style={{ position: "absolute", bottom: "-10px", right: 0 }}
                 className={`flex justify-end items-center ${
@@ -818,7 +815,7 @@ const FiltersDropdown = ({
 
             {/* To */}
             <div
-              className="mt-5"
+              className="ml-2"
               style={{ width: "50%", position: "relative" }}
             >
               <label
