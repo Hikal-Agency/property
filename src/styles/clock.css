@@ -24,13 +24,13 @@
     }
 
     .dark-mode {
-        /* background-image: url('../../public/clock-dark.png'); */
-        background-image: url('../../public/clock-black.png');
+        background-image: url('../../public/clock_white.svg');
+        /* background-image: url('../../public/clock-black.png'); */
     }
 
     .light-mode {
-        /* background-image: url('../../public/clock-light.png'); */
-        background-image: url('../../public/clock-white.png');
+        background-image: url('../../public/clock_black.svg');
+        /* background-image: url('../../public/clock-white.png'); */
     }
   
   .center-pin {
