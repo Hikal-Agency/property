@@ -5,7 +5,7 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import AnalogClock from "./AnalogClock";
 
-const Clock = () => {
+const Clock = ({handleClose}) => {
   const [currentTime, setCurrentTime] = useState(
     localStorage.getItem("timezone") ? moment().tz(localStorage.getItem("timezone")).format("D/MM/YYYY, h:mm:ss a [GMT]Z") :
     moment().tz(moment.tz.guess()).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
@@ -48,6 +48,7 @@ const Clock = () => {
 
   return (
     <div
+    onMouseLeave={handleClose}
       style={{
         margin: 0,
         padding: "0.5rem 0.5rem",
