@@ -29,7 +29,7 @@ const style = {
   boxShadow: 24,
 };
 
-const senderAddresses = ["AD-HIKAL"];
+const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM"];
 
 const SendMessageModal = ({
   sendMessageModal,
@@ -438,6 +438,7 @@ const SendMessageModal = ({
                         src={imgBinary}
                       />
                     )}
+
                     <RichEditor
                       messageValue={defaultMessageValue}
                       setMessageValue={setMessageValue}

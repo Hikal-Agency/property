@@ -3,7 +3,7 @@ import { useProSidebar } from "react-pro-sidebar";
 import { toast } from "react-toastify";
 import { Link, useLocation } from "react-router-dom";
 
-import { Tooltip, Link as MuiLink, Button, Badge } from "@mui/material";
+import { Tooltip, Link as MuiLink, Button, Badge, Box } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import {RiCoinsLine} from "react-icons/ri";
@@ -240,9 +240,13 @@ const Navbar = () => {
                 <Link to="/marketing/payments">Upgrade</Link>
               </Button>
             ) : (
-              <div className="mr-4 flex items-center">
+              <Box sx={{
+                "& svg": {
+                  color: "gold"
+                }
+              }} className="mr-4 flex items-center">
                 <RiCoinsLine size={15} /> <div className="w-[2px]"></div> <span className="text-[#DA1F26] font-bold text-2xl">{userCredits}</span>
-              </div>
+              </Box>
             ),
           ]}
 
