@@ -19,6 +19,7 @@ import SendSMSModal from "./SendSMSModal";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import moment from "moment";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh", originID: 0 },
@@ -131,17 +132,34 @@ const FiltersDropdown = ({
   const [sendSMSModal, setSendSMSModal] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [rangeData, setRangeData] = useState([]);
-  const { currentMode, darkModeColors, BACKEND_URL, pageState } =
+  const { currentMode, darkModeColors, BACKEND_URL, pageState, formatNum } =
     useStateContext();
   const token = localStorage.getItem("auth-token");
+  const formatDate = (dateObj) => {
+    return (
+      formatNum(dateObj?.$d?.getUTCFullYear()) +
+      "-" +
+      formatNum(dateObj?.$d?.getUTCMonth() + 1) +
+      "-" +
+      formatNum(dateObj?.$d?.getUTCDate() + 1)
+    );
+  };
 
   const getNumbers = async () => {
     setBtnLoading(true);
+    let dateRange;
+    if (startDate && endDate) {
+      console.log("start ,end: ", startDate, endDate);
+      // const formattedStartDate = moment(startDate).format("YYYY-MM-DD");
+      // const formattedEndDate = moment(endDate).format("YYYY-MM-DD");
+      // dateRange = [formattedStartDate, formattedEndDate].join(",");
+      dateRange = [formatDate(startDate), formatDate(endDate)].join(",");
+    }
     try {
       const range = await axios.get(
         `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}&coldcall=${
           leadOriginSelected?.originID || 0
-        }`,
+        }&date_range=${dateRange}`,
         {
           headers: {
             "Content-Type": "application/json",
