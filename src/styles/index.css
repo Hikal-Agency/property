@@ -1026,7 +1026,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .navbar-menu-backdrop{
-  z-index: 0 !important;
+  z-index: 15 !important;
 }
 
 .navbar-menu-backdrop > div[data-testid="sentinelStart"] {

@@ -51,7 +51,11 @@ const NavButton = ({
     <button
       type="button"
       onMouseEnter={customFunc}
-      // onMouseLeave={handleClose}
+      // onMouseLeave={() => {
+      //   setTimeout(() => {
+      //     handleClose();
+      //   }, 300);
+      // }}
       style={{ color }}
       className="relative text-xl rounded-full p-3 hover:bg-light-gray"
     >
@@ -409,6 +413,8 @@ const Navbar = () => {
                   className="navbar-menu-backdrop"
                   hideBackdrop={true}
                   disableScrollLock
+                  onClick={handleClose}
+                  onMouseLeave={handleClose}
                   anchorEl={anchorElem}
                   open={open}
                   PaperProps={{
@@ -454,7 +460,7 @@ const Navbar = () => {
                       <UpcomingMeetingsMenu handleClose={handleClose} />
                     </>
                   ) : currNavBtn === "Profile" ? (
-                    <div className="pl-2" onMouseLeave={handleClose}>
+                    <div className="pl-2">
                       <div
                         className={`cursor-pointer card-hover ${
                           currentMode === "dark"
