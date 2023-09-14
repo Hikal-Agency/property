@@ -765,6 +765,7 @@ const FiltersDropdown = ({
                       format="yyyy-MM-dd"
                       renderInput={(params) => (
                         <TextField
+                          size="small"
                           {...params}
                           onKeyDown={(e) => e.preventDefault()}
                           fullWidth
@@ -814,6 +815,7 @@ const FiltersDropdown = ({
                       format="yyyy-MM-dd"
                       renderInput={(params) => (
                         <TextField
+                          size="small"
                           {...params}
                           onKeyDown={(e) => e.preventDefault()}
                           fullWidth
@@ -858,6 +860,7 @@ const FiltersDropdown = ({
               <Box sx={darkModeColors}>
                 <TextField
                   label="From"
+                  size="small"
                   type="number"
                   value={fromRange}
                   onChange={(e) => {
@@ -895,6 +898,7 @@ const FiltersDropdown = ({
               <Box sx={darkModeColors}>
                 <TextField
                   label="To"
+                  size="small"
                   value={toRange}
                   type="number"
                   onChange={(e) => {
