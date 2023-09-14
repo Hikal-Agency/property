@@ -141,7 +141,7 @@
 
 /* GOLD GRADIENT TEXT  */
 .gold-grad {
-    background: linear-gradient(to bottom right, #a2682a 0%, #b17b32 5%, #be8c3c 10%, #d3b15f 20%, #faf0a0 30%, #d3b15f 40%, #fdfd8e 50%, #be8c3c 60%, #bb8332 70%, #d4a245 80%, #e1b453 90%, #faf0a0 95%, #a4692a 100%); 
+    background: linear-gradient(to bottom right, #a2682a 0%, #b17b32 5%, #be8c3c 10%, #d3b15f 20%, #faf0a0 30%, #d3b15f 40%, #ffcd0a 50%, #be8c3c 60%, #bb8332 70%, #d4a245 80%, #e1b453 90%, #faf0a0 95%, #a4692a 100%); 
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     color: #fff;

@@ -15,7 +15,24 @@ import { useStateContext } from "../../context/ContextProvider";
 import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { langs } from "../../langCodes";
-import {
+import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
+import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
+import usePermission from "../../utils/usePermission";
+import FiltersDropdown from "../../Components/whatsapp-marketing/FiltersDropdown";
+import AddLeadModal from "../../Components/whatsapp-marketing/AddLeadModal";
+import ConfirmBulkDelete from "../../Components/whatsapp-marketing/ConfirmBulkDelete";
+
+import { 
+  BiImport, 
+  BiMessageRoundedDots, 
+  BiArchive,
+  BiMailSend,
+  BiPhoneCall,
+  BiLogoWhatsapp
+} from "react-icons/bi";
+import { 
+  BsWhatsapp, 
+  BsTrash,
   BsPersonCircle,
   BsSnow2,
   BsShieldX,
@@ -24,15 +41,6 @@ import {
   BsCoin,
   BsPersonAdd
 } from "react-icons/bs";
-import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
-import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
-import usePermission from "../../utils/usePermission";
-import FiltersDropdown from "../../Components/whatsapp-marketing/FiltersDropdown";
-import AddLeadModal from "../../Components/whatsapp-marketing/AddLeadModal";
-import ConfirmBulkDelete from "../../Components/whatsapp-marketing/ConfirmBulkDelete";
-
-import { BiImport, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
-import { BsWhatsapp, BsTrash } from "react-icons/bs";
 import {
   FaSnapchatGhost,
   FaFacebookF,
@@ -68,7 +76,8 @@ const AllLeads = () => {
     SalesPerson,
     formatNum,
     User,
-    userCredits
+    userCredits,
+    isArabic
   } = useStateContext();
   console.log("Managers: ", Managers);
   const token = localStorage.getItem("auth-token");
@@ -155,7 +164,7 @@ const AllLeads = () => {
     {
       field: "id",
       headerName: "#",
-      minWidth: 50,
+      minWidth: 40,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -167,12 +176,14 @@ const AllLeads = () => {
       field: "leadName",
       headerAlign: "center",
       headerName: "Name",
-      minWidth: 150,
+      minWidth: 130,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
-            <p className="text-center capitalize">
+          <div className="w-full text-start px-2">
+            <p style={{ fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit", }}>
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -182,7 +193,7 @@ const AllLeads = () => {
     {
       field: "leadContact",
       headerName: "Phone",
-      minWidth: 150,
+      minWidth: 130,
       headerAlign: "center",
       flex: 1,
     },
@@ -195,10 +206,17 @@ const AllLeads = () => {
     },
     {
       field: "language",
-      headerName: "Lang",
+      headerName: "Language",
       headerAlign: "center",
-      minWidth: 50,
+      minWidth: 30,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <>
+            {cellValues.formattedValue === "null" ? "-" : cellValues.formattedValue}
+          </>
+        )
+      }
     },
     {
       field: "otp",
@@ -265,7 +283,7 @@ const AllLeads = () => {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
-      minWidth: 50,
+      minWidth: 70,
       headerAlign: "center",
       renderCell: (cellValues) => {
         console.log("Start::", cellValues.row.leadSource);
@@ -338,7 +356,7 @@ const AllLeads = () => {
         };
         return (
           <>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center w-full">
               {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
                 <BiArchive
                   style={{
@@ -375,71 +393,76 @@ const AllLeads = () => {
       field: "whatsapp-web",
       headerName: "Action",
       headerAlign: "center",
-      minWidth: 130,
+      minWidth: 150,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="flex items-center w-full mx-7">
-            <div className="mx-1">
+          <div className="flex items-center justify-center w-full mx-7">
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-green-500 hover:text-white rounded-full shadow-none p-2 mx-1 flex items-center`}
+            >
               <Tooltip title="WhatsApp" arrow>
-                <Link
+              <Link
                   to={`/marketing/chat?phoneNumber=${cellValues.row.leadContact
                     ?.slice(1)
                     ?.replaceAll(" ", "")}`}
                   target="_blank"
                 >
-                  <div
-                    className="whatsapp-web-link p-1.5 rounded-sm hover:bg-green-500 hover:text-white bg-transparent text-green-500"
+                  {/* <div
+                    className="whatsapp-web-link p-1.5 rounded-sm hover:bg-green-500 hover:text-white hover:rounded-md bg-transparent text-green-500"
                     style={{
                       display: "flex",
                       justifyContent: "center",
                       width: "100%",
                     }}
-                  >
-                    <BsWhatsapp size={18} />
-                  </div>
+                  > */}
+                    <BsWhatsapp size={16} />
+                  {/* </div> */}
                 </Link>
               </Tooltip>
-            </div>
+            </p>
 
-            <div className="mx-1">
+            {/* CALL  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-green-600 hover:text-white rounded-full shadow-none p-2 mx-1 flex items-center`}
+            >
               <Tooltip title="Call" arrow>
-                <div
-                  className="call-link p-1.5 rounded-sm hover:bg-[#DA1F26] hover:text-white bg-transparent text-[#DA1F26]"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                  }}
-                >
-                  <CallButton phone={cellValues.row.leadContact} />
-                </div>
+                <CallButton phone={cellValues.row.leadContact} />
               </Tooltip>
-            </div>
+            </p>
 
-            {cellValues.row.email === "" ||
+            {/* EMAIL  */}
+            {/* {cellValues.row.email === "" ||
             cellValues.row.email === "null" ||
             cellValues.row.email === "undefined" ||
             cellValues.row.email === "-" ||
             cellValues.row.email === null ||
             cellValues.row.email === undefined ? (
               <></>
-            ) : (
-              <div className="mx-1">
-                <Tooltip title="Email" arrow>
-                  <div
-                    className="email-link p-1.5 rounded-sm hover:bg-[#1771ba] hover:text-white bg-transparent text-[#1771ba]"
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      width: "100%",
-                    }}
-                  >
-                    <EmailButton email={cellValues.row.email} />
-                  </div>
-                </Tooltip>
-              </div>
-            )}
+            ) : ( */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-2 mx-1 flex items-center `}
+            >
+              <Tooltip title="Send Mail" arrow>
+                <EmailButton email={cellValues.row.leadEmail} />
+              </Tooltip>
+            </p>
+            {/* )} */}
           </div>
         );
       },
@@ -455,7 +478,7 @@ const AllLeads = () => {
 
     return (
       <button className="email-button" onClick={handleEmailClick}>
-        <RiMailSendFill size={18} />
+        <BiMailSend size={16} />
       </button>
     );
   };
@@ -468,7 +491,7 @@ const AllLeads = () => {
 
     return (
       <button className="call-button" onClick={handlePhoneClick}>
-        <HiPhoneOutgoing size={18} />
+        <BiPhoneCall size={16} />
       </button>
     );
   };
@@ -1354,6 +1377,14 @@ const AllLeads = () => {
           }}
           sx={{
             boxShadow: 2,
+            // "& .css-yrdy0g-MuiDataGrid-columnHeaderRow": {
+            //   display: "flex",
+            //   justifyContent: "space-around",
+            // },
+            // "& .MuiDataGrid-row": {
+            //   display: "flex",
+            //   justifyContent: "space-between",
+            // },
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
             },
