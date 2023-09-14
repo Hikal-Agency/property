@@ -39,11 +39,19 @@ import {
 } from "react-icons/vsc";
 import "../../styles/animation.css";
 
-const NavButton = ({ title, customFunc, icon, color, handleClose, dotColor }) => (
+const NavButton = ({
+  title,
+  customFunc,
+  icon,
+  color,
+  handleClose,
+  dotColor,
+}) => (
   <Tooltip title={title} arrow placement="bottom">
     <button
       type="button"
       onMouseEnter={customFunc}
+      onMouseLeave={handleClose}
       style={{ color }}
       className="relative text-xl rounded-full p-3 hover:bg-light-gray"
     >
@@ -258,7 +266,7 @@ const Navbar = () => {
 
           {/* NOTIFICATIONS  */}
           <NavButton
-          handleClose={handleClose}
+            handleClose={handleClose}
             title="Notification"
             // dotColor={currentMode === "dark" ? "#ffffff" : "#DA1F26"}
             customFunc={(event) => handleClick(event, "Notifications")}
@@ -282,7 +290,7 @@ const Navbar = () => {
 
           {/* CLOCK  */}
           <NavButton
-          handleClose={handleClose}
+            handleClose={handleClose}
             title="Clock"
             // color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
             customFunc={(event) => handleClick(event, "Clock")}
@@ -351,6 +359,7 @@ const Navbar = () => {
                   style={{ margin: 0, padding: 0, overflow: "hidden" }}
                 >
                   <Menu
+                    className="navbar-menu-backdrop"
                     hideBackdrop={true}
                     disableScrollLock
                     open={open}
@@ -365,7 +374,6 @@ const Navbar = () => {
                           currentMode === "dark"
                             ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
                             : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
-                        mt: 0.5,
                         // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
                         background:
                           currentMode === "dark"
@@ -392,13 +400,12 @@ const Navbar = () => {
                     transformOrigin={{ horizontal: "center", vertical: "top" }}
                     anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
                   >
-                    <Clock handleClose={handleClose}/>
+                    <Clock handleClose={handleClose} />
                   </Menu>
                 </div>
               ) : (
-
                 <Menu
-                className="navbar-menu-backdrop"
+                  className="navbar-menu-backdrop"
                   hideBackdrop={true}
                   disableScrollLock
                   anchorEl={anchorElem}
@@ -411,7 +418,6 @@ const Navbar = () => {
                         currentMode === "dark"
                           ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
                           : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
-                      mt: 2,
                       // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
                       background:
                         currentMode === "dark"
@@ -443,7 +449,7 @@ const Navbar = () => {
                     />
                   ) : currNavBtn === "Meetings" ? (
                     <>
-                      <UpcomingMeetingsMenu handleClose={handleClose}/>
+                      <UpcomingMeetingsMenu handleClose={handleClose} />
                     </>
                   ) : currNavBtn === "Profile" ? (
                     <div className="pl-2" onMouseLeave={handleClose}>
