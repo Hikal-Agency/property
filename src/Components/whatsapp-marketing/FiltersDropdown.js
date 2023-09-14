@@ -615,7 +615,7 @@ const FiltersDropdown = ({
             }}
           >
             <label
-              style={{ position: "absolute", bottom: "-10px", right: 0 }}
+              style={{ position: "absolute", bottom: "-16px", right: 0 }}
               className={`flex justify-end items-center ${
                 currentMode === "dark" ? "text-white" : "text-dark"
               } `}
@@ -671,7 +671,7 @@ const FiltersDropdown = ({
             }}
           >
             <label
-              style={{ position: "absolute", bottom: "-10px", right: 0 }}
+              style={{ position: "absolute", bottom: "-16px", right: 0 }}
               className={`flex justify-end items-center ${
                 currentMode === "dark" ? "text-white" : "text-dark"
               } `}
