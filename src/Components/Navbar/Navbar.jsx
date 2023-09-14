@@ -51,7 +51,7 @@ const NavButton = ({
     <button
       type="button"
       onMouseEnter={customFunc}
-      onMouseLeave={handleClose}
+      // onMouseLeave={handleClose}
       style={{ color }}
       className="relative text-xl rounded-full p-3 hover:bg-light-gray"
     >
@@ -370,6 +370,7 @@ const Navbar = () => {
                         //  height: "auto",
                         overflow: "visible",
                         //  overflowY: "scroll",
+                        mt: 0.5,
                         filter:
                           currentMode === "dark"
                             ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
@@ -413,6 +414,7 @@ const Navbar = () => {
                   PaperProps={{
                     elevation: 0,
                     sx: {
+                      mt: 2,
                       overflowY: "scroll",
                       filter:
                         currentMode === "dark"
