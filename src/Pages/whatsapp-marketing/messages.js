@@ -15,13 +15,6 @@ import { useStateContext } from "../../context/ContextProvider";
 import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { langs } from "../../langCodes";
-import {
-  BsPersonCircle,
-  BsSnow2,
-  BsShieldX,
-  BsShieldCheck,
-  BsShieldMinus,
-} from "react-icons/bs";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
 import usePermission from "../../utils/usePermission";
@@ -29,8 +22,25 @@ import FiltersDropdown from "../../Components/whatsapp-marketing/FiltersDropdown
 import AddLeadModal from "../../Components/whatsapp-marketing/AddLeadModal";
 import ConfirmBulkDelete from "../../Components/whatsapp-marketing/ConfirmBulkDelete";
 
-import { BiImport, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
-import { BsWhatsapp, BsTrash } from "react-icons/bs";
+import { 
+  BiImport, 
+  BiMessageRoundedDots, 
+  BiArchive,
+  BiMailSend,
+  BiPhoneCall,
+  BiLogoWhatsapp
+} from "react-icons/bi";
+import { 
+  BsWhatsapp, 
+  BsTrash,
+  BsPersonCircle,
+  BsSnow2,
+  BsShieldX,
+  BsShieldCheck,
+  BsShieldMinus,
+  BsCoin,
+  BsPersonAdd
+} from "react-icons/bs";
 import {
   FaSnapchatGhost,
   FaFacebookF,
@@ -50,6 +60,8 @@ import { MdSms, MdCampaign } from "react-icons/md";
 import { RiMailSendFill } from "react-icons/ri";
 import { TbWorldWww } from "react-icons/tb";
 
+// import "../../styles/animation.css";
+
 const AllLeads = () => {
   const {
     currentMode,
@@ -64,6 +76,8 @@ const AllLeads = () => {
     SalesPerson,
     formatNum,
     User,
+    userCredits,
+    isArabic
   } = useStateContext();
   console.log("Managers: ", Managers);
   const token = localStorage.getItem("auth-token");
@@ -150,7 +164,7 @@ const AllLeads = () => {
     {
       field: "id",
       headerName: "#",
-      minWidth: 50,
+      minWidth: 40,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -162,12 +176,14 @@ const AllLeads = () => {
       field: "leadName",
       headerAlign: "center",
       headerName: "Name",
-      minWidth: 150,
+      minWidth: 130,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
-            <p className="text-center capitalize">
+          <div className="w-full text-start px-2">
+            <p style={{ fontFamily: isArabic(cellValues?.formattedValue)
+                  ? "Noto Kufi Arabic"
+                  : "inherit", }}>
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -177,7 +193,7 @@ const AllLeads = () => {
     {
       field: "leadContact",
       headerName: "Phone",
-      minWidth: 150,
+      minWidth: 130,
       headerAlign: "center",
       flex: 1,
     },
@@ -190,10 +206,17 @@ const AllLeads = () => {
     },
     {
       field: "language",
-      headerName: "Lang",
+      headerName: "Language",
       headerAlign: "center",
-      minWidth: 50,
+      minWidth: 30,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <>
+            {cellValues.formattedValue === "null" ? "-" : cellValues.formattedValue}
+          </>
+        )
+      }
     },
     {
       field: "otp",
@@ -260,7 +283,7 @@ const AllLeads = () => {
       field: "leadSource",
       headerName: "Src",
       flex: 1,
-      minWidth: 50,
+      minWidth: 70,
       headerAlign: "center",
       renderCell: (cellValues) => {
         console.log("Start::", cellValues.row.leadSource);
@@ -333,7 +356,7 @@ const AllLeads = () => {
         };
         return (
           <>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center w-full">
               {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
                 <BiArchive
                   style={{
@@ -370,71 +393,76 @@ const AllLeads = () => {
       field: "whatsapp-web",
       headerName: "Action",
       headerAlign: "center",
-      minWidth: 130,
+      minWidth: 150,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="flex items-center w-full mx-7">
-            <div className="mx-1">
+          <div className="flex items-center justify-center w-full mx-7">
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-green-500 hover:text-white rounded-full shadow-none p-2 mx-1 flex items-center`}
+            >
               <Tooltip title="WhatsApp" arrow>
-                <Link
+              <Link
                   to={`/marketing/chat?phoneNumber=${cellValues.row.leadContact
                     ?.slice(1)
                     ?.replaceAll(" ", "")}`}
                   target="_blank"
                 >
-                  <div
-                    className="whatsapp-web-link p-1.5 rounded-sm hover:bg-green-500 hover:text-white bg-transparent text-green-500"
+                  {/* <div
+                    className="whatsapp-web-link p-1.5 rounded-sm hover:bg-green-500 hover:text-white hover:rounded-md bg-transparent text-green-500"
                     style={{
                       display: "flex",
                       justifyContent: "center",
                       width: "100%",
                     }}
-                  >
-                    <BsWhatsapp size={18} />
-                  </div>
+                  > */}
+                    <BsWhatsapp size={16} />
+                  {/* </div> */}
                 </Link>
               </Tooltip>
-            </div>
+            </p>
 
-            <div className="mx-1">
+            {/* CALL  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-green-600 hover:text-white rounded-full shadow-none p-2 mx-1 flex items-center`}
+            >
               <Tooltip title="Call" arrow>
-                <div
-                  className="call-link p-1.5 rounded-sm hover:bg-[#DA1F26] hover:text-white bg-transparent text-[#DA1F26]"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                  }}
-                >
-                  <CallButton phone={cellValues.row.leadContact} />
-                </div>
+                <CallButton phone={cellValues.row.leadContact} />
               </Tooltip>
-            </div>
+            </p>
 
-            {cellValues.row.email === "" ||
+            {/* EMAIL  */}
+            {/* {cellValues.row.email === "" ||
             cellValues.row.email === "null" ||
             cellValues.row.email === "undefined" ||
             cellValues.row.email === "-" ||
             cellValues.row.email === null ||
             cellValues.row.email === undefined ? (
               <></>
-            ) : (
-              <div className="mx-1">
-                <Tooltip title="Email" arrow>
-                  <div
-                    className="email-link p-1.5 rounded-sm hover:bg-[#1771ba] hover:text-white bg-transparent text-[#1771ba]"
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      width: "100%",
-                    }}
-                  >
-                    <EmailButton email={cellValues.row.email} />
-                  </div>
-                </Tooltip>
-              </div>
-            )}
+            ) : ( */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-2 mx-1 flex items-center `}
+            >
+              <Tooltip title="Send Mail" arrow>
+                <EmailButton email={cellValues.row.leadEmail} />
+              </Tooltip>
+            </p>
+            {/* )} */}
           </div>
         );
       },
@@ -450,7 +478,7 @@ const AllLeads = () => {
 
     return (
       <button className="email-button" onClick={handleEmailClick}>
-        <RiMailSendFill size={18} />
+        <BiMailSend size={16} />
       </button>
     );
   };
@@ -463,7 +491,7 @@ const AllLeads = () => {
 
     return (
       <button className="call-button" onClick={handlePhoneClick}>
-        <HiPhoneOutgoing size={18} />
+        <BiPhoneCall size={16} />
       </button>
     );
   };
@@ -1117,30 +1145,48 @@ const AllLeads = () => {
         setProjectNameTyped={setProjectNameTyped}
       />
 
-      <h1
-        className={`text-lg border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
-          currentMode === "dark"
-            ? "text-white border-white"
-            : "text-main-red-color font-bold border-main-red-color"
-        }`}
-      >
-        ● {leadOriginSelected.formattedValue}
-        {" | "}
-        <span>{leadTypeSelected.formattedValue}</span>{" "}
-        <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
-          {pageState?.total}
-        </span>
-      </h1>
+      <div className="w-full flex items-center py-1">
+        <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+        <h1
+          className={`text-lg font-semibold ${
+            currentMode === "dark"
+              ? "text-white"
+              : "text-black"
+          }`}
+        >
+          Search for{" "} {leadOriginSelected.formattedValue}
+          {" | "}
+          <span>{leadTypeSelected.formattedValue}</span>{" "}
+          <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+            {pageState?.total}
+          </span>
+        </h1>
+      </div>
 
       <Box className="flex items-center justify-between">
         <Box className="flex items-center">
           {selectedRows.length === 0 ? (
             <></>
           ) : (
-            <Alert color="success" sx={{ mb: 1 }}>
+            <Alert color="success" sx={{ mb: 1, mr: 2 }}>
               {selectedRows.length} rows selected
             </Alert>
           )}
+
+          <div className="px-2 mb-4 flex items-center h-full">
+            <div className="coin">
+              <div className="front jump">
+                <div className="star"></div>
+                <span className="currency">hi</span>
+                <div className="shapes">
+                </div>
+              </div>
+              <div className={`shadow ${currentMode === "dark" ? "shadow-dark-mode" : "shadow-light-mode" }`}></div>
+            </div>
+            <span className="mx-3 gold-grad" style={{ fontSize: "24px" }}>
+              {userCredits}
+            </span>
+          </div>
         </Box>
 
         <Box className="flex items-center justify-end">
@@ -1152,6 +1198,7 @@ const AllLeads = () => {
               type="button"
               variant="contained"
               sx={{
+                color: "#DA1F26",
                 padding: "10px",
                 mb: 2,
                 mr: 1,
@@ -1161,8 +1208,8 @@ const AllLeads = () => {
               }}
               color="error"
             >
-              <GrFormAdd
-                color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+              <BsPersonAdd
+                color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
                 size={20}
               />
             </Button>
@@ -1178,7 +1225,7 @@ const AllLeads = () => {
               disabled={selectedRows?.length === 0}
             >
               <BsTrash
-                color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
                 size={20}
               />
             </Button>
@@ -1195,7 +1242,7 @@ const AllLeads = () => {
               disabled={selectedRows?.length === 0}
             >
               <BsWhatsapp
-                color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
                 size={20}
               />
             </Button>
@@ -1214,7 +1261,7 @@ const AllLeads = () => {
                 disabled={selectedRows?.length === 0}
               >
                 <MdSms
-                  color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                  color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
                   size={20}
                 />
               </Button>
@@ -1232,7 +1279,7 @@ const AllLeads = () => {
                 disabled={true}
               >
                 <HiMail
-                  color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                  color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
                   size={20}
                 />
               </Button>
@@ -1330,6 +1377,14 @@ const AllLeads = () => {
           }}
           sx={{
             boxShadow: 2,
+            // "& .css-yrdy0g-MuiDataGrid-columnHeaderRow": {
+            //   display: "flex",
+            //   justifyContent: "space-around",
+            // },
+            // "& .MuiDataGrid-row": {
+            //   display: "flex",
+            //   justifyContent: "space-between",
+            // },
             "& .MuiDataGrid-cell:hover": {
               cursor: "pointer",
             },

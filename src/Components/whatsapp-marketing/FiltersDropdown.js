@@ -19,6 +19,7 @@ import SendSMSModal from "./SendSMSModal";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import moment from "moment";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh", originID: 0 },
@@ -131,25 +132,73 @@ const FiltersDropdown = ({
   const [sendSMSModal, setSendSMSModal] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [rangeData, setRangeData] = useState([]);
-  const { currentMode, darkModeColors, BACKEND_URL, pageState } =
+  const { currentMode, darkModeColors, BACKEND_URL, pageState, formatNum } =
     useStateContext();
   const token = localStorage.getItem("auth-token");
+  const formatDate = (dateObj) => {
+    return (
+      formatNum(dateObj?.$d?.getUTCFullYear()) +
+      "-" +
+      formatNum(dateObj?.$d?.getUTCMonth() + 1) +
+      "-" +
+      formatNum(dateObj?.$d?.getUTCDate() + 1)
+    );
+  };
 
   const getNumbers = async () => {
     setBtnLoading(true);
+    let url = `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}&coldcall=${
+      leadOriginSelected?.originID || 0
+    }`;
+    let dateRange;
+    if (startDate && endDate) {
+      console.log("start ,end: ", startDate, endDate);
+      // const formattedStartDate = moment(startDate).format("YYYY-MM-DD");
+      // const formattedEndDate = moment(endDate).format("YYYY-MM-DD");
+      // dateRange = [formattedStartDate, formattedEndDate].join(",");
+      dateRange = [formatDate(startDate), formatDate(endDate)].join(",");
+      url += `&date_range=${dateRange}`;
+    }
+
+    if (projectNameTyped) {
+      url += `&project=${projectNameTyped}`;
+    }
+
+    if (enquiryTypeSelected?.i) {
+      url += `&enquiryType=${enquiryTypeSelected?.i}`;
+    }
+
+    if (managerSelected) {
+      url += `&managerAssigned=${managerSelected}`;
+    }
+
+    if (agentSelected) {
+      url += `&agentAssigned=${agentSelected}`;
+    }
+
+    if (otpSelected?.id) {
+      url += `&otp=${otpSelected?.id}`;
+    }
+
+    if (phoneNumberFilter) {
+      url += `&hasphone=${phoneNumberFilter === "with" ? 1 : 0}`;
+    }
+
+    if (emailFilter) {
+      url += `&hasmail=${emailFilter === "with" ? 1 : 0}`;
+    }
+    if (languageFilter) {
+      url += `&language=${languageFilter}`;
+    }
+
     try {
-      const range = await axios.get(
-        `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}&coldcall=${
-          leadOriginSelected?.originID || 0
-        }`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      setRangeData(range?.data?.result);
+      const range = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      setRangeData(range?.data?.result?.data);
       setFiltersDropdown(false);
 
       setBtnLoading(false);
@@ -193,7 +242,9 @@ const FiltersDropdown = ({
             managerSelected ||
             startDate ||
             endDate ||
-            agentSelected) && (
+            agentSelected ||
+            toRange ||
+            fromRange) && (
             <Button
               onClick={() => {
                 setEnquiryTypeSelected({ id: 0 });
@@ -206,6 +257,8 @@ const FiltersDropdown = ({
                 setStartDate("");
                 setEndDate("");
                 setLanguageFilter("");
+                setFromRange("");
+                setToRange("");
               }}
               sx={{
                 color: "white",
@@ -615,7 +668,7 @@ const FiltersDropdown = ({
             }}
           >
             <label
-              style={{ position: "absolute", bottom: "-10px", right: 0 }}
+              style={{ position: "absolute", bottom: "-16px", right: 0 }}
               className={`flex justify-end items-center ${
                 currentMode === "dark" ? "text-white" : "text-dark"
               } `}
@@ -671,7 +724,7 @@ const FiltersDropdown = ({
             }}
           >
             <label
-              style={{ position: "absolute", bottom: "-10px", right: 0 }}
+              style={{ position: "absolute", bottom: "-16px", right: 0 }}
               className={`flex justify-end items-center ${
                 currentMode === "dark" ? "text-white" : "text-dark"
               } `}
@@ -765,6 +818,7 @@ const FiltersDropdown = ({
                       format="yyyy-MM-dd"
                       renderInput={(params) => (
                         <TextField
+                          size="small"
                           {...params}
                           onKeyDown={(e) => e.preventDefault()}
                           fullWidth
@@ -814,6 +868,7 @@ const FiltersDropdown = ({
                       format="yyyy-MM-dd"
                       renderInput={(params) => (
                         <TextField
+                          size="small"
                           {...params}
                           onKeyDown={(e) => e.preventDefault()}
                           fullWidth
@@ -858,6 +913,7 @@ const FiltersDropdown = ({
               <Box sx={darkModeColors}>
                 <TextField
                   label="From"
+                  size="small"
                   type="number"
                   value={fromRange}
                   onChange={(e) => {
@@ -871,7 +927,7 @@ const FiltersDropdown = ({
             {/* To */}
             <div
               className="ml-2"
-              style={{ width: "50%", position: "relative" }}
+              style={{ width: "100%", position: "relative" }}
             >
               <label
                 style={{ position: "absolute", bottom: "-16px", right: 0 }}
@@ -895,6 +951,7 @@ const FiltersDropdown = ({
               <Box sx={darkModeColors}>
                 <TextField
                   label="To"
+                  size="small"
                   value={toRange}
                   type="number"
                   onChange={(e) => {

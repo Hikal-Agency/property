@@ -90,7 +90,7 @@ const BulkSMSModal = ({
       );
 
       console.log("range: ", range);
-      const newContacts = range?.data?.result?.map(
+      const newContacts = range?.data?.result?.data?.map(
         (contact) => contact?.leadContact
       );
       const updatedContactsList = [...contactsList, ...newContacts];
@@ -119,6 +119,7 @@ const BulkSMSModal = ({
     setMsgLoading(true);
     if (msg && senderAddress) {
       console.log("sender,msg: ", msg, senderAddress);
+
       try {
         const croppedContacts = contactsList?.map((contact) => {
           if (contact) {
@@ -203,6 +204,18 @@ const BulkSMSModal = ({
 
         setMsgLoading(false);
       }
+    } else {
+      setMsgLoading(false);
+
+      toast.error("All fields are required", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
