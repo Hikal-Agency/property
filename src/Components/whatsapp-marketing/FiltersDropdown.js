@@ -147,6 +147,9 @@ const FiltersDropdown = ({
 
   const getNumbers = async () => {
     setBtnLoading(true);
+    let url = `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}&coldcall=${
+      leadOriginSelected?.originID || 0
+    }`;
     let dateRange;
     if (startDate && endDate) {
       console.log("start ,end: ", startDate, endDate);
@@ -154,20 +157,17 @@ const FiltersDropdown = ({
       // const formattedEndDate = moment(endDate).format("YYYY-MM-DD");
       // dateRange = [formattedStartDate, formattedEndDate].join(",");
       dateRange = [formatDate(startDate), formatDate(endDate)].join(",");
+      url += `&date_range=${dateRange}`;
     }
+
     try {
-      const range = await axios.get(
-        `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}&coldcall=${
-          leadOriginSelected?.originID || 0
-        }&date_range=${dateRange}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      setRangeData(range?.data?.result);
+      const range = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      setRangeData(range?.data?.result?.data);
       setFiltersDropdown(false);
 
       setBtnLoading(false);
@@ -892,7 +892,7 @@ const FiltersDropdown = ({
             {/* To */}
             <div
               className="ml-2"
-              style={{ width: "50%", position: "relative" }}
+              style={{ width: "100%", position: "relative" }}
             >
               <label
                 style={{ position: "absolute", bottom: "-16px", right: 0 }}
