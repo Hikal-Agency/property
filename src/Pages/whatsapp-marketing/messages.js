@@ -21,6 +21,8 @@ import {
   BsShieldX,
   BsShieldCheck,
   BsShieldMinus,
+  BsCoin,
+  BsPersonAdd
 } from "react-icons/bs";
 import SendMessageModal from "../../Components/whatsapp-marketing/SendMessageModal";
 import MessageLogs from "../../Components/whatsapp-marketing/MessageLogs";
@@ -50,6 +52,8 @@ import { MdSms, MdCampaign } from "react-icons/md";
 import { RiMailSendFill } from "react-icons/ri";
 import { TbWorldWww } from "react-icons/tb";
 
+// import "../../styles/animation.css";
+
 const AllLeads = () => {
   const {
     currentMode,
@@ -64,6 +68,7 @@ const AllLeads = () => {
     SalesPerson,
     formatNum,
     User,
+    userCredits
   } = useStateContext();
   console.log("Managers: ", Managers);
   const token = localStorage.getItem("auth-token");
@@ -1117,30 +1122,48 @@ const AllLeads = () => {
         setProjectNameTyped={setProjectNameTyped}
       />
 
-      <h1
-        className={`text-lg border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
-          currentMode === "dark"
-            ? "text-white border-white"
-            : "text-main-red-color font-bold border-main-red-color"
-        }`}
-      >
-        ● {leadOriginSelected.formattedValue}
-        {" | "}
-        <span>{leadTypeSelected.formattedValue}</span>{" "}
-        <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
-          {pageState?.total}
-        </span>
-      </h1>
+      <div className="w-full flex items-center py-1">
+        <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+        <h1
+          className={`text-lg font-semibold ${
+            currentMode === "dark"
+              ? "text-white"
+              : "text-black"
+          }`}
+        >
+          Search for{" "} {leadOriginSelected.formattedValue}
+          {" | "}
+          <span>{leadTypeSelected.formattedValue}</span>{" "}
+          <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+            {pageState?.total}
+          </span>
+        </h1>
+      </div>
 
       <Box className="flex items-center justify-between">
         <Box className="flex items-center">
           {selectedRows.length === 0 ? (
             <></>
           ) : (
-            <Alert color="success" sx={{ mb: 1 }}>
+            <Alert color="success" sx={{ mb: 1, mr: 2 }}>
               {selectedRows.length} rows selected
             </Alert>
           )}
+
+          <div className="px-2 mb-4 flex items-center h-full">
+            <div className="coin">
+              <div className="front jump">
+                <div className="star"></div>
+                <span className="currency">hi</span>
+                <div className="shapes">
+                </div>
+              </div>
+              <div className={`shadow ${currentMode === "dark" ? "shadow-dark-mode" : "shadow-light-mode" }`}></div>
+            </div>
+            <span className="mx-3 gold-grad" style={{ fontSize: "24px" }}>
+              {userCredits}
+            </span>
+          </div>
         </Box>
 
         <Box className="flex items-center justify-end">
@@ -1152,6 +1175,7 @@ const AllLeads = () => {
               type="button"
               variant="contained"
               sx={{
+                color: "#DA1F26",
                 padding: "10px",
                 mb: 2,
                 mr: 1,
@@ -1161,8 +1185,8 @@ const AllLeads = () => {
               }}
               color="error"
             >
-              <GrFormAdd
-                color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+              <BsPersonAdd
+                color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
                 size={20}
               />
             </Button>
@@ -1178,7 +1202,7 @@ const AllLeads = () => {
               disabled={selectedRows?.length === 0}
             >
               <BsTrash
-                color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
                 size={20}
               />
             </Button>
@@ -1195,7 +1219,7 @@ const AllLeads = () => {
               disabled={selectedRows?.length === 0}
             >
               <BsWhatsapp
-                color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
                 size={20}
               />
             </Button>
@@ -1214,7 +1238,7 @@ const AllLeads = () => {
                 disabled={selectedRows?.length === 0}
               >
                 <MdSms
-                  color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                  color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
                   size={20}
                 />
               </Button>
@@ -1232,7 +1256,7 @@ const AllLeads = () => {
                 disabled={true}
               >
                 <HiMail
-                  color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
+                  color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
                   size={20}
                 />
               </Button>

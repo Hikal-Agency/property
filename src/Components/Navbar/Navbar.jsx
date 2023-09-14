@@ -66,8 +66,7 @@ const Navbar = () => {
     BACKEND_URL,
     isCollapsed,
     allRoutes,
-    setIsCollapsed,
-    userCredits
+    setIsCollapsed
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -240,9 +239,7 @@ const Navbar = () => {
                 <Link to="/marketing/payments">Upgrade</Link>
               </Button>
             ) : (
-              <div className="mr-4 flex items-center">
-                <RiCoinsLine size={15} /> <div className="w-[2px]"></div> <span className="text-[#DA1F26] font-bold text-2xl">{userCredits}</span>
-              </div>
+              <></>
             ),
           ]}
 
