@@ -160,6 +160,37 @@ const FiltersDropdown = ({
       url += `&date_range=${dateRange}`;
     }
 
+    if (projectNameTyped) {
+      url += `&project=${projectNameTyped}`;
+    }
+
+    if (enquiryTypeSelected?.i) {
+      url += `&enquiryType=${enquiryTypeSelected?.i}`;
+    }
+
+    if (managerSelected) {
+      url += `&managerAssigned=${managerSelected}`;
+    }
+
+    if (agentSelected) {
+      url += `&agentAssigned=${agentSelected}`;
+    }
+
+    if (otpSelected?.id) {
+      url += `&otp=${otpSelected?.id}`;
+    }
+
+    if (phoneNumberFilter) {
+      url += `&hasphone=${phoneNumberFilter === "with" ? 1 : 0}`;
+    }
+
+    if (emailFilter) {
+      url += `&hasmail=${emailFilter === "with" ? 1 : 0}`;
+    }
+    if (languageFilter) {
+      url += `&language=${languageFilter}`;
+    }
+
     try {
       const range = await axios.get(url, {
         headers: {
