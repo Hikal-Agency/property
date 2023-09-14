@@ -242,7 +242,9 @@ const FiltersDropdown = ({
             managerSelected ||
             startDate ||
             endDate ||
-            agentSelected) && (
+            agentSelected ||
+            toRange ||
+            fromRange) && (
             <Button
               onClick={() => {
                 setEnquiryTypeSelected({ id: 0 });
@@ -255,6 +257,8 @@ const FiltersDropdown = ({
                 setStartDate("");
                 setEndDate("");
                 setLanguageFilter("");
+                setFromRange("");
+                setToRange("");
               }}
               sx={{
                 color: "white",
