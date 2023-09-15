@@ -89,30 +89,27 @@ const BulkSMSModal = ({
         }
       );
 
+      // console.log("range: ", range);
+      // const newContacts = range?.data?.result?.map(
+      //   (contact) => contact?.leadContact
+      // );
+      // const updatedContactsList = [...contactsList, ...newContacts];
+      // setContactsList(updatedContactsList);
+      // setDispalyRange(false);
+
       console.log("range: ", range);
+
       const newContacts = range?.data?.result?.map(
         (contact) => contact?.leadContact
       );
 
-      // Use reduce to update the contactsList
-      const updatedContactsList = newContacts.reduce(
-        (acc, newContact) => {
-          const existingIndex = acc.findIndex(
-            (contact) => contact === newContact
-          );
+      // Filter out existing contacts from contactsList based on whether they exist in newContacts
+      const filteredContactsList = contactsList?.filter((existingContact) => {
+        // Check if the existing contact is included in the newContacts array
+        return !newContacts.includes(existingContact);
+      });
 
-          if (existingIndex !== -1) {
-            // If the value already exists, override it
-            acc[existingIndex] = newContact;
-          } else {
-            // If the value doesn't exist, append it
-            acc.push(newContact);
-          }
-
-          return acc;
-        },
-        [...contactsList]
-      );
+      const updatedContactsList = [...filteredContactsList, ...newContacts];
 
       setContactsList(updatedContactsList);
       setDispalyRange(false);
