@@ -9,6 +9,7 @@ import {
   InputLabel,
   CircularProgress,
   Menu,
+  IconButton
 } from "@mui/material";
 import { GrFormClose } from "react-icons/gr";
 import { BiFilter } from "react-icons/bi";
@@ -21,6 +22,10 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import moment from "moment";
+
+import {
+  MdClear
+} from "react-icons/md";
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh", originID: 0 },
@@ -964,7 +969,7 @@ const FiltersDropdown = ({
           <div className="flex flex-row justify-between mb-4">
             {/* From */}
             <div className="" style={{ width: "100%", position: "relative" }}>
-              <label
+              {/* <label
                 style={{ position: "absolute", bottom: "-16px", right: 0 }}
                 className={`flex justify-end items-center ${
                   currentMode === "dark" ? "text-white" : "text-dark"
@@ -980,7 +985,7 @@ const FiltersDropdown = ({
                 ) : (
                   ""
                 )}
-              </label>
+              </label> */}
               <Box sx={darkModeColors}>
                 <TextField
                   onClick={(e) => e.stopPropagation()}
@@ -991,7 +996,14 @@ const FiltersDropdown = ({
                   onChange={(e) => {
                     setFromRange(e.target.value);
                   }}
-                  InputProps={{ required: true }}
+                  // InputProps={{ required: true }}
+                  InputProps={{
+                    endAdornment: fromRange ? (
+                      <IconButton onClick={() => setFromRange("")} edge="end">
+                        <MdClear size={16} color={"#AAAAAA"} />
+                      </IconButton>
+                    ) : null,
+                  }}
                 />
               </Box>
             </div>
@@ -1001,7 +1013,7 @@ const FiltersDropdown = ({
               className="ml-2"
               style={{ width: "100%", position: "relative" }}
             >
-              <label
+              {/* <label
                 style={{ position: "absolute", bottom: "-16px", right: 0 }}
                 className={`flex justify-end items-center ${
                   currentMode === "dark" ? "text-white" : "text-dark"
@@ -1019,7 +1031,7 @@ const FiltersDropdown = ({
                 ) : (
                   ""
                 )}
-              </label>
+              </label> */}
               <Box sx={darkModeColors}>
                 <TextField
                   label="To"
@@ -1034,7 +1046,14 @@ const FiltersDropdown = ({
                     setToRange(e.target.value);
                   }}
                   className="w-full"
-                  InputProps={{ required: true }}
+                  // InputProps={{ required: true }}
+                  InputProps={{
+                    endAdornment: toRange ? (
+                      <IconButton onClick={() => setToRange("")} edge="end">
+                        <MdClear size={16} color={"#AAAAAA"} />
+                      </IconButton>
+                    ) : null,
+                  }}
                 />
               </Box>
             </div>

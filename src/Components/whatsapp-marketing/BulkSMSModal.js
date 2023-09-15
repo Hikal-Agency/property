@@ -666,14 +666,11 @@ const BulkSMSModal = ({
                           className="w-full"
                           // InputProps={{ required: true }}
                           InputProps={{
-                            endAdornment: (
-                              <IconButton
-                                onClick={() => setToRange("")}
-                                edge="end"
-                              >
+                            endAdornment: toRange ? (
+                              <IconButton onClick={() => setToRange("")} edge="end">
                                 <MdClear size={16} color={"#AAAAAA"} />
                               </IconButton>
-                            ),
+                            ) : null,
                           }}
                         />
                       </Box>

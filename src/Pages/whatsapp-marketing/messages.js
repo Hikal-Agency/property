@@ -30,6 +30,7 @@ import FiltersDropdown from "../../Components/whatsapp-marketing/FiltersDropdown
 import AddLeadModal from "../../Components/whatsapp-marketing/AddLeadModal";
 import ConfirmBulkDelete from "../../Components/whatsapp-marketing/ConfirmBulkDelete";
 import Coin from "../../Components/_elements/Coin";
+import PurchaseCreditsModal from "../../Components/whatsapp-marketing/purchaseCredits";
 
 import {
   BiImport,
@@ -62,14 +63,13 @@ import {
 } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
-import { GrFormAdd } from "react-icons/gr";
 import { HiMail, HiPhoneOutgoing } from "react-icons/hi";
 import { IoMdChatboxes } from "react-icons/io";
 import { MdSms, MdCampaign } from "react-icons/md";
-import { RiMailSendFill } from "react-icons/ri";
+import { RiMailSendLine } from "react-icons/ri";
 import { TbWorldWww } from "react-icons/tb";
-import PurchaseCreditsModal from "../../Components/whatsapp-marketing/purchaseCredits";
 import { useFilterContext } from "../../context/FilterContextProvider";
+import { VscCallOutgoing } from "react-icons/vsc";
 
 // import "../../styles/animation.css";
 
@@ -527,7 +527,7 @@ const AllLeads = () => {
 
     return (
       <button className="email-button" onClick={handleEmailClick}>
-        <BiMailSend size={16} />
+        <RiMailSendLine size={16} />
       </button>
     );
   };
@@ -540,7 +540,7 @@ const AllLeads = () => {
 
     return (
       <button className="call-button" onClick={handlePhoneClick}>
-        <BiPhoneCall size={16} />
+        <VscCallOutgoing size={16} />
       </button>
     );
   };
