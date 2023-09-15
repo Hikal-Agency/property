@@ -1199,7 +1199,7 @@ const AllLeads = () => {
             <Typography
               onClick={() => setPurchaseCreditsModal(true)}
               sx={{
-                color: "#0168fe",
+                color: "#0051c7a3",
                 cursor: "pointer",
                 ml: "2px",
                 fontWeight: "600",
@@ -1208,7 +1208,7 @@ const AllLeads = () => {
                 },
               }}
             >
-              <small>Purchase</small>
+              <small>PURCHASE</small>
             </Typography>
           </div>
         </Box>
