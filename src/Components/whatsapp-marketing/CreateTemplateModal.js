@@ -104,7 +104,7 @@ const CreateTemplateModal = ({
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] md:w-[70%] h-[90%]  ${
+          className={`w-[calc(100%-20px)] md:w-[70%]  ${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md overflow-y-scroll`}
         >
@@ -161,16 +161,25 @@ const CreateTemplateModal = ({
                 onChange={(e) => setTemplateTitle(e.target.value)}
               />
             )}
-            <div
-              style={{
-                height: "280px",
-                marginBottom: "20px",
-                overflowY: "scroll",
-              }}
-            >
-              {templateType === "whatsapp" ? (
+
+            {templateType === "whatsapp" ? (
+              <div
+                style={{
+                  height: "280px",
+                  marginBottom: "20px",
+                  overflowY: "scroll",
+                }}
+              >
                 <RichEditor setMessageValue={setTemplateBody} />
-              ) : templateType === "sms" ? (
+              </div>
+            ) : templateType === "sms" ? (
+              <div
+                style={{
+                  height: "280px",
+                  marginBottom: "20px",
+                  overflowY: "scroll",
+                }}
+              >
                 <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
                   <div className="flex items-center justify-between px-3 py-2 border-b">
                     <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
@@ -210,12 +219,12 @@ const CreateTemplateModal = ({
                     ></textarea>
                   </div>
                 </div>
-              ) : templateType === "email" ? (
-                <h1>Email</h1>
-              ) : (
-                <></>
-              )}
-            </div>
+              </div>
+            ) : templateType === "email" ? (
+              <h1>Email</h1>
+            ) : (
+              <></>
+            )}
             <div className="flex justify-between items-center border-t-[#ededed] pt-2">
               {templateType === "whatsapp" && (
                 <div className="flex items-center text-center">
