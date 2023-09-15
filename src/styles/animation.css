@@ -141,14 +141,17 @@
 
 /* GOLD GRADIENT TEXT  */
 .gold-grad {
-    background: linear-gradient(to bottom right, #a2682a 0%, #b17b32 5%, #be8c3c 10%, #d3b15f 20%, #faf0a0 30%, #d3b15f 40%, #ffcd0a 50%, #be8c3c 60%, #bb8332 70%, #d4a245 80%, #e1b453 90%, #faf0a0 95%, #a4692a 100%); 
+    background: repeating-linear-gradient(to bottom left, #d57e08 0%, #b17b32 5%, #be8c3c 10%, #d3b15f 20%, #faf0a0 30%, #d3b15f 40%, #ffcd0a 50%, #be8c3c 60%, #bb8332 70%, #d4a245 80%, #e1b453 90%, #faf0a0 95%, #a4692a 100%); 
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: #fff;
+    color: #f0a608;
     font-family: 'Raleway', sans-serif;
     position: relative;
 	font-weight: 900;
-    margin: 0
+    margin: 0;
+    background-size: 150%;
+    filter: drop-shadow(0 0 1px rgba(255, 200, 0, .4));
+    animation: MoveBackgroundPosition 4s ease-in-out infinite;
 }
 
 .gold-grad:after {
@@ -162,4 +165,18 @@
 		0 1px 1px #c6bb9f, 
 		5px 5px 10px rgba(0, 0, 0, 0.4),
 		-5px -5px 10px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes MoveBackgroundPosition { 
+    0% {
+        background-position: 0% 50%
+    }
+
+    50% {
+        background-position: 100% 50%
+    }
+
+    100% {
+        background-position: 0% 50%
+    }
 }
