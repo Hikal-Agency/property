@@ -288,7 +288,7 @@ const SendMessageModal = ({
     if (sendMessageModal.isWhatsapp) {
       sendWhatsappMessage(messageText, selectedContacts);
     } else {
-      if(smsTextValue?.trim()?.length) {
+      if (smsTextValue?.trim()?.length) {
         sendSMS(smsTextValue?.trim(), selectedContacts);
       }
     }
@@ -304,7 +304,7 @@ const SendMessageModal = ({
 
   const handleSelectTemplate = (template) => {
     setSelectedTemplate(true);
-    if(sendMessageModal?.isWhatsapp) {
+    if (sendMessageModal?.isWhatsapp) {
       setDefaultMessageValue(templates.find((tmp) => tmp === template).body);
     } else {
       setSmsTextValue(templates.find((tmp) => tmp === template).body);
@@ -451,6 +451,74 @@ const SendMessageModal = ({
                       />
                     ) : (
                       <>
+                        <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
+                          <div className="flex items-center justify-between px-3 py-2 border-b">
+                            <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
+                              <div
+                                className={`flex flex-wrap items-center ${
+                                  smsTextValue?.trim()?.length > 160
+                                    ? "text-red-600"
+                                    : ""
+                                }`}
+                              >
+                                {smsTextValue?.trim()?.length} characters{" "}
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              className="p-2 text-gray-500 rounded cursor-pointer sm:ml-auto hover:text-gray-900 hover:bg-gray-100"
+                            >
+                              <svg
+                                className="w-4 h-4"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 19 19"
+                              >
+                                <path
+                                  stroke="currentColor"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
+                                />
+                              </svg>
+                              <span className="sr-only">Full screen</span>
+                            </button>
+                          </div>
+                          <div className="px-4 h-full py-2 bg-white rounded-b-lg">
+                            <textarea
+                              value={smsTextValue}
+                              onInput={(e) => setSmsTextValue(e.target.value)}
+                              className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
+                              placeholder="Type the message..."
+                              required
+                            ></textarea>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {tabValue === 1 && [
+                  selectedTemplate ? (
+                    <>
+                      <div style={{ height: 250, overflowY: "scroll" }}>
+                        {imgBinary && (
+                          <img
+                            className="w-[200px] p-3 rounded"
+                            alt=""
+                            src={imgBinary}
+                          />
+                        )}
+
+                        {sendMessageModal?.isWhatsapp ? (
+                          <RichEditor
+                            messageValue={defaultMessageValue}
+                            setMessageValue={setMessageValue}
+                          />
+                        ) : (
                           <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
                             <div className="flex items-center justify-between px-3 py-2 border-b">
                               <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
@@ -482,92 +550,34 @@ const SendMessageModal = ({
                             </div>
                             <div className="px-4 h-full py-2 bg-white rounded-b-lg">
                               <textarea
-                              value={smsTextValue}
-                              onInput={(e) => setSmsTextValue(e.target.value)}
+                                value={smsTextValue}
+                                onInput={(e) => setSmsTextValue(e.target.value)}
                                 className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
                                 placeholder="Type the message..."
                                 required
                               ></textarea>
                             </div>
                           </div>
-                      </>
-                    )}
-                  </div>
-                )}
-
-                {tabValue === 1 && [
-                  selectedTemplate ? (
-                    <>
-                      <div style={{ height: 250, overflowY: "scroll" }}>
-                        {imgBinary && (
-                          <img
-                            className="w-[200px] p-3 rounded"
-                            alt=""
-                            src={imgBinary}
-                          />
                         )}
-
-                        {sendMessageModal?.isWhatsapp ? 
-                        <RichEditor
-                          messageValue={defaultMessageValue}
-                          setMessageValue={setMessageValue}
-                        />
-                        : 
-                        <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
-                            <div className="flex items-center justify-between px-3 py-2 border-b">
-                              <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
-                                <div className="flex flex-wrap items-center">
-                                  {smsTextValue?.trim()?.length} characters
-                                </div>
-                              </div>
-                              <button
-                                type="button"
-                                className="p-2 text-gray-500 rounded cursor-pointer sm:ml-auto hover:text-gray-900 hover:bg-gray-100"
-                              >
-                                <svg
-                                  className="w-4 h-4"
-                                  aria-hidden="true"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 19 19"
-                                >
-                                  <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
-                                  />
-                                </svg>
-                                <span className="sr-only">Full screen</span>
-                              </button>
-                            </div>
-                            <div className="px-4 h-full py-2 bg-white rounded-b-lg">
-                              <textarea
-                              value={smsTextValue}
-                              onInput={(e) => setSmsTextValue(e.target.value)}
-                                className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
-                                placeholder="Type the message..."
-                                required
-                              ></textarea>
-                            </div>
-                          </div>
-                        }
                       </div>
                     </>
                   ) : (
                     <Box className="flex items-start flex-wrap border rounded p-4 min-h-[250px]">
-                      {templates?.length ? templates.map((template, index) => {
-                        return (
-                          <Box
-                            key={index}
-                            onClick={() => handleSelectTemplate(template)}
-                            className=" bg-slate-600 mr-2 text-white w-max cursor-pointer text-center p-4 mb-1 rounded"
-                          >
-                            <h3>{template.name}</h3>
-                          </Box>
-                        );
-                      }) : <p>No templates found!</p>}
+                      {templates?.length ? (
+                        templates.map((template, index) => {
+                          return (
+                            <Box
+                              key={index}
+                              onClick={() => handleSelectTemplate(template)}
+                              className=" bg-slate-600 mr-2 text-white w-max cursor-pointer text-center p-4 mb-1 rounded"
+                            >
+                              <h3>{template.name}</h3>
+                            </Box>
+                          );
+                        })
+                      ) : (
+                        <p>No templates found!</p>
+                      )}
                     </Box>
                   ),
                 ]}
@@ -578,29 +588,38 @@ const SendMessageModal = ({
                   hidden
                 />
                 <hr className="mt-[6px] border-t border-[lightgrey]" />
-                <Button
-                  ripple="true"
-                  variant="contained"
-                  sx={{ py: "6px", mt: 2 }}
-                  size="small"
-                  style={{ backgroundColor: "#da1f26" }}
-                  type="submit"
-                >
-                  {btnloading ? (
-                    <CircularProgress size={18} sx={{ color: "white" }} />
-                  ) : (
-                    <>
-                      <RiSendPlane2Fill
-                        style={{ marginRight: 8 }}
-                        size={20}
-                        color="white"
-                      />{" "}
-                      {selectedContacts?.length === 1
-                        ? "Send Message"
-                        : `Send Message to ${selectedContacts.length} contacts`}
-                    </>
+                <div className="flex items-center mt-2">
+                  <Button
+                    ripple="true"
+                    variant="contained"
+                    sx={{ py: "6px", mr: 2}}
+                    
+                    size="small"
+                    style={{ backgroundColor: "#da1f26" }}
+                    type="submit"
+                  >
+                    {btnloading ? (
+                      <CircularProgress size={18} sx={{ color: "white" }} />
+                    ) : (
+                      <>
+                        <RiSendPlane2Fill
+                          style={{ marginRight: 8 }}
+                          size={20}
+                          color="white"
+                        />{" "}
+                        {selectedContacts?.length === 1
+                          ? "Send Message"
+                          : `Send Message to ${selectedContacts.length} contacts`}
+                      </>
+                    )}
+                  </Button>
+
+                  {smsTextValue?.trim()?.length > 160 && (
+                    <strong className="text-red-600">
+                      * You will be charged extra for 160+ characters!
+                    </strong>
                   )}
-                </Button>
+                </div>
               </form>
             </>
           )}
