@@ -3,7 +3,7 @@ import {
   TextField,
   CircularProgress,
   Box,
-  Typography,
+  IconButton,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -22,6 +22,10 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import classNames from "classnames";
 import Loader from "../Loader";
+
+import {
+  MdClear
+} from "react-icons/md";
 
 const BulkSMSModal = ({
   FetchLeads,
@@ -89,30 +93,27 @@ const BulkSMSModal = ({
         }
       );
 
+      // console.log("range: ", range);
+      // const newContacts = range?.data?.result?.map(
+      //   (contact) => contact?.leadContact
+      // );
+      // const updatedContactsList = [...contactsList, ...newContacts];
+      // setContactsList(updatedContactsList);
+      // setDispalyRange(false);
+
       console.log("range: ", range);
+
       const newContacts = range?.data?.result?.map(
         (contact) => contact?.leadContact
       );
 
-      // Use reduce to update the contactsList
-      const updatedContactsList = newContacts.reduce(
-        (acc, newContact) => {
-          const existingIndex = acc.findIndex(
-            (contact) => contact === newContact
-          );
+      // Filter out existing contacts from contactsList based on whether they exist in newContacts
+      const filteredContactsList = contactsList?.filter((existingContact) => {
+        // Check if the existing contact is included in the newContacts array
+        return !newContacts.includes(existingContact);
+      });
 
-          if (existingIndex !== -1) {
-            // If the value already exists, override it
-            acc[existingIndex] = newContact;
-          } else {
-            // If the value doesn't exist, append it
-            acc.push(newContact);
-          }
-
-          return acc;
-        },
-        [...contactsList]
-      );
+      const updatedContactsList = [...filteredContactsList, ...newContacts];
 
       setContactsList(updatedContactsList);
       setDispalyRange(false);
@@ -517,7 +518,7 @@ const BulkSMSModal = ({
                       className="pr-2"
                       style={{ width: "100%", position: "relative" }}
                     >
-                      <label
+                      {/* <label
                         style={{
                           position: "absolute",
                           bottom: "-16px",
@@ -537,7 +538,7 @@ const BulkSMSModal = ({
                         ) : (
                           ""
                         )}
-                      </label>
+                      </label> */}
                       <Box sx={darkModeColors}>
                         <TextField
                           label="From"
@@ -548,7 +549,14 @@ const BulkSMSModal = ({
                           onChange={(e) => {
                             setFromRange(e.target.value);
                           }}
-                          InputProps={{ required: true }}
+                          // InputProps={{ required: true }}
+                          InputProps={{
+                            endAdornment: fromRange ? (
+                              <IconButton onClick={() => setFromRange("")} edge="end">
+                                <MdClear size={16} color={"#AAAAAA"} />
+                              </IconButton>
+                            ) : null,
+                          }}
                         />
                       </Box>
                     </div>
@@ -558,7 +566,7 @@ const BulkSMSModal = ({
                       className="pl-2"
                       style={{ width: "100%", position: "relative" }}
                     >
-                      <label
+                      {/* <label
                         style={{
                           position: "absolute",
                           bottom: "-16px",
@@ -578,7 +586,7 @@ const BulkSMSModal = ({
                         ) : (
                           ""
                         )}
-                      </label>
+                      </label> */}
                       <Box sx={darkModeColors}>
                         <TextField
                           label="To"
@@ -589,7 +597,15 @@ const BulkSMSModal = ({
                             setToRange(e.target.value);
                           }}
                           className="w-full"
-                          InputProps={{ required: true }}
+                          // InputProps={{ required: true }}
+                          InputProps={{
+                            endAdornment: (
+                              <IconButton onClick={() => setToRange("")} edge="end">
+                                <MdClear size={16} color={"#AAAAAA"} />
+                              </IconButton>
+                            
+                            ),
+                          }}
                         />
                       </Box>
                     </div>
