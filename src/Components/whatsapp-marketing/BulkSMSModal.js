@@ -3,7 +3,7 @@ import {
   TextField,
   CircularProgress,
   Box,
-  Typography,
+  IconButton,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -22,6 +22,10 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import classNames from "classnames";
 import Loader from "../Loader";
+
+import {
+  MdClear
+} from "react-icons/md";
 
 const BulkSMSModal = ({
   FetchLeads,
@@ -514,7 +518,7 @@ const BulkSMSModal = ({
                       className="pr-2"
                       style={{ width: "100%", position: "relative" }}
                     >
-                      <label
+                      {/* <label
                         style={{
                           position: "absolute",
                           bottom: "-16px",
@@ -534,7 +538,7 @@ const BulkSMSModal = ({
                         ) : (
                           ""
                         )}
-                      </label>
+                      </label> */}
                       <Box sx={darkModeColors}>
                         <TextField
                           label="From"
@@ -545,7 +549,14 @@ const BulkSMSModal = ({
                           onChange={(e) => {
                             setFromRange(e.target.value);
                           }}
-                          InputProps={{ required: true }}
+                          // InputProps={{ required: true }}
+                          InputProps={{
+                            endAdornment: fromRange ? (
+                              <IconButton onClick={() => setFromRange("")} edge="end">
+                                <MdClear size={16} color={"#AAAAAA"} />
+                              </IconButton>
+                            ) : null,
+                          }}
                         />
                       </Box>
                     </div>
@@ -555,7 +566,7 @@ const BulkSMSModal = ({
                       className="pl-2"
                       style={{ width: "100%", position: "relative" }}
                     >
-                      <label
+                      {/* <label
                         style={{
                           position: "absolute",
                           bottom: "-16px",
@@ -575,7 +586,7 @@ const BulkSMSModal = ({
                         ) : (
                           ""
                         )}
-                      </label>
+                      </label> */}
                       <Box sx={darkModeColors}>
                         <TextField
                           label="To"
@@ -586,7 +597,15 @@ const BulkSMSModal = ({
                             setToRange(e.target.value);
                           }}
                           className="w-full"
-                          InputProps={{ required: true }}
+                          // InputProps={{ required: true }}
+                          InputProps={{
+                            endAdornment: (
+                              <IconButton onClick={() => setToRange("")} edge="end">
+                                <MdClear size={16} color={"#AAAAAA"} />
+                              </IconButton>
+                            
+                            ),
+                          }}
                         />
                       </Box>
                     </div>
