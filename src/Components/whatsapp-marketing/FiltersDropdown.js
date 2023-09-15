@@ -309,9 +309,9 @@ const FiltersDropdown = ({
       <Menu
         open={open}
         anchorEl={anchorEl}
-        onClick={(e) => {
-          handleClose();
-        }}
+        // onClick={(e) => {
+        //   handleClose();
+        // }}
         PaperProps={{
           elevation: 0,
           sx: {

@@ -1029,10 +1029,9 @@ const AllLeads = () => {
       phoneNumberFilter,
       emailFilter,
       languageFilter,
-      // startDate && endDate
+      startDate && endDate ? `${startDate},${endDate}` : ""
       //   ? `${formatDate(startDate)},${formatDate(endDate)}`
       //   : ""
-      `${startDate},${endDate}`
     );
     setColumnsArr([...columnsArr]);
     // eslint-disable-next-line
