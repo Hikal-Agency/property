@@ -90,7 +90,7 @@ const BulkSMSModal = ({
       );
 
       console.log("range: ", range);
-      const newContacts = range?.data?.result?.data?.map(
+      const newContacts = range?.data?.result?.map(
         (contact) => contact?.leadContact
       );
       const updatedContactsList = [...contactsList, ...newContacts];

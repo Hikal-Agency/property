@@ -198,7 +198,7 @@ const FiltersDropdown = ({
           Authorization: "Bearer " + token,
         },
       });
-      setRangeData(range?.data?.result?.data);
+      setRangeData(range?.data?.result);
       setFiltersDropdown(false);
 
       setBtnLoading(false);
