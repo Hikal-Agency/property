@@ -11,7 +11,7 @@ const productIds = {
   "Pro": "prod_NhMP8zMuo2V7FB"
 };
 
-const Checkout = ({ allPlans, plan, isPurchaseCredits }) => {
+const Checkout = ({ allPlans, plan }) => {
 
   const navigate = useNavigate();
   const selectedPlan = allPlans.find((p) => p.name === plan);
@@ -110,9 +110,9 @@ const Checkout = ({ allPlans, plan, isPurchaseCredits }) => {
               type={"number"}
               label="Card Number"
               className="w-full mb-5"
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: "14px" }}
               variant="outlined"
-              size="medium"
+              size="small"
               required
               value={formValues.cardNumber}
               onChange={(e) =>
@@ -124,9 +124,9 @@ const Checkout = ({ allPlans, plan, isPurchaseCredits }) => {
               type={"number"}
               label="Expiry Month"
               className="w-full mb-5"
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: "14px" }}
               variant="outlined"
-              size="medium"
+              size="small"
               required
               value={formValues.expMonth}
               onChange={(e) =>
@@ -138,9 +138,9 @@ const Checkout = ({ allPlans, plan, isPurchaseCredits }) => {
               type={"number"}
               label="Expiry Year"
               className="w-full mb-5"
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: "14px" }}
               variant="outlined"
-              size="medium"
+              size="small"
               required
               value={formValues.expYear}
               onChange={(e) =>
@@ -152,16 +152,16 @@ const Checkout = ({ allPlans, plan, isPurchaseCredits }) => {
               type={"number"}
               label="CVC"
               className="w-full mb-5"
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: "14px" }}
               variant="outlined"
-              size="medium"
+              size="small"
               required
               value={formValues.cvc}
               onChange={(e) =>
                 setFormValues({ ...formValues, cvc: e.target.value })
               }
             />
-            <Button fullWidth style={{background: "#da1f26"}} sx={{ py: 2 }} type="submit" variant="contained">
+            <Button fullWidth style={{background: "#da1f26"}} type="submit" variant="contained">
               {btnloading ? <CircularProgress size={18} sx={{ color: "white" }} /> : <span>Submit</span>}
             </Button>
           </form>

@@ -125,7 +125,7 @@ const Payments = () => {
           className={`${
             currentMode === "dark"
               ? "bg-[#1c1c1c] text-white"
-              : "bg-gray-200 text-black"
+              : "bg-[#eeeeeebd] text-black"
           } flex min-h-screen mt-8 p-5 rounded-md mb-10`}
         >
           <Card
@@ -260,7 +260,7 @@ const Payments = () => {
           className={`${
             currentMode === "dark"
               ? "bg-[#1c1c1c] text-white"
-              : "bg-gray-200 text-black"
+              : "bg-[#eeeeeebd] text-black"
           } p-5 rounded-md my-5 mb-10`}
         >
           <Box
