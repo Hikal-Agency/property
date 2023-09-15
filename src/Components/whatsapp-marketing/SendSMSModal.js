@@ -42,9 +42,9 @@ const SendSMSModal = ({
           style={style}
           className={`w-[calc(100%-20px)] h-[66%] overflow-y-scroll md:w-[50%] border-2 border-solid shadow-lg  ${
             currentMode === "dark"
-              ? "bg-black border-gray-800"
-              : "bg-white border-gray-200"
-          } absolute top-1/2 left-1/2 p-5 rounded-md`}
+              ? "bg-black border-[#1C1C1C]"
+              : "bg-white border-[#EEEEEE]"
+          } absolute top-1/2 left-1/2 p-4 rounded-md`}
         >
           <IconButton
             sx={{
