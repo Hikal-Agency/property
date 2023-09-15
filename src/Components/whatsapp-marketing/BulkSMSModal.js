@@ -60,7 +60,7 @@ const BulkSMSModal = ({
   console.log("Salesperson: ", SalesPerson);
   console.log("MAnagers: ", Managers);
   console.log("Range Data : ", rangeData);
-  const senderAddresses = ["AD-HIKAL","AD-HIKALCRM"];
+  const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM"];
 
   const [contactsList, setContactsList] = useState(
     rangeData?.map((contact) => contact?.leadContact)
@@ -93,7 +93,27 @@ const BulkSMSModal = ({
       const newContacts = range?.data?.result?.map(
         (contact) => contact?.leadContact
       );
-      const updatedContactsList = [...contactsList, ...newContacts];
+
+      // Use reduce to update the contactsList
+      const updatedContactsList = newContacts.reduce(
+        (acc, newContact) => {
+          const existingIndex = acc.findIndex(
+            (contact) => contact === newContact
+          );
+
+          if (existingIndex !== -1) {
+            // If the value already exists, override it
+            acc[existingIndex] = newContact;
+          } else {
+            // If the value doesn't exist, append it
+            acc.push(newContact);
+          }
+
+          return acc;
+        },
+        [...contactsList]
+      );
+
       setContactsList(updatedContactsList);
       setDispalyRange(false);
 
@@ -642,7 +662,9 @@ const BulkSMSModal = ({
                 <Box sx={darkModeColors}>
                   <h4
                     className={`${
-                      currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#1C1C1C]"
+                      currentMode === "dark"
+                        ? "text-[#EEEEEE]"
+                        : "text-[#1C1C1C]"
                     } text-center font-semibold pb-4`}
                   >
                     SMS Message
@@ -683,7 +705,9 @@ const BulkSMSModal = ({
                 <Box sx={darkModeColors}>
                   <h4
                     className={`${
-                      currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#1C1C1C]"
+                      currentMode === "dark"
+                        ? "text-[#EEEEEE]"
+                        : "text-[#1C1C1C]"
                     } text-center font-semibold pb-4`}
                   >
                     SMS Send Configurations
@@ -713,9 +737,7 @@ const BulkSMSModal = ({
                 </Box>
               </div>
 
-              <div
-                className={`py-2 text-center`}
-              >
+              <div className={`py-2 text-center`}>
                 <Button
                   className={`w-full mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
                   ripple={true}
@@ -735,10 +757,7 @@ const BulkSMSModal = ({
                   )}
                 </Button>
               </div>
-
             </div>
-
-            
           </form>
         </div>
       )}

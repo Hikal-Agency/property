@@ -157,6 +157,20 @@ const FiltersDropdown = ({
 
   const getNumbers = async () => {
     setBtnLoading(true);
+    if (toRange < fromRange) {
+      setBtnLoading(false);
+      toast.error("End Value should not be less than start Value.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
     let url = `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}&coldcall=${
       leadOriginSelected?.originID || 0
     }`;
@@ -310,7 +324,7 @@ const FiltersDropdown = ({
       <Menu
         open={open}
         // disableScrollLock={true}
-       hideBackdrop={true}
+        hideBackdrop={true}
         anchorEl={anchorEl}
         className="filters-menu"
         PaperProps={{
@@ -353,7 +367,7 @@ const FiltersDropdown = ({
         transformOrigin={{ horizontal: "center", vertical: "top" }}
         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
       >
-        <div className={` mt-2 border-2 rounded-md px-4`}>
+        <div className={` mt-2  rounded-md px-4`}>
           <div className="grid grid-cols-2 gap-x-2">
             <div
               style={{
