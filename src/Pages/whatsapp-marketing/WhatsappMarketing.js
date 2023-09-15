@@ -8,17 +8,22 @@ import AllMessages from "./AllMessages";
 import Payments from "./payments";
 import Chat from "./Chat";
 import Instances from "./Instances";
+import { FilterContextProvider } from "../../context/FilterContextProvider";
 
 const pagesComponents = {
-  contacts: <MessagesComponent />,
+  contacts: (
+    <FilterContextProvider>
+      <MessagesComponent />
+    </FilterContextProvider>
+  ),
   templates: <TemplatesComponent />,
-  instances: <Instances/>,
+  instances: <Instances />,
   payments: <Payments />,
   chat: <Chat />,
   all: <AllMessages />,
 };
 
-const WhatsappMarketing = ({pageName}) => {
+const WhatsappMarketing = ({ pageName }) => {
   const { currentMode, User, setopenBackDrop, isUserSubscribed } =
     useStateContext();
   const navigate = useNavigate();
