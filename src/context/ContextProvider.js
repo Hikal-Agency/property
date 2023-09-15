@@ -319,6 +319,18 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
+  const isEnglish = (text) => {
+    const regex = new RegExp(
+      "^[\u0000-\u007F]+$", "g"
+    );
+
+    if (text) {
+      return text.match(regex);
+    } else {
+      return false;
+    }
+  };
+
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <StateContext.Provider
@@ -346,6 +358,7 @@ export const ContextProvider = ({ children }) => {
         currentMode,
         selected,
         isArabic,
+        isEnglish,
         formatTime,
         setSelected,
         darkModeColors,
@@ -400,7 +413,7 @@ export const ContextProvider = ({ children }) => {
         setUnreadNotifsCount, 
         getNotifCounts, 
         userCredits,
-        setUserCredits
+        setUserCredits, 
       }}
     >
       {children}

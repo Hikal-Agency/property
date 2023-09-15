@@ -37,7 +37,7 @@ const SendMessageModal = ({
   selectedContacts,
   whatsappSenderNo,
 }) => {
-  const { currentMode, BACKEND_URL, User, setUserCredits } = useStateContext();
+  const { currentMode, BACKEND_URL, User, setUserCredits, isArabic, isEnglish } = useStateContext();
 
   const [messageValue, setMessageValue] = useState("");
   const [btnloading, setbtnloading] = useState(false);
@@ -45,7 +45,7 @@ const SendMessageModal = ({
   const [selectedTemplate, setSelectedTemplate] = useState(false);
   const [templates, setTemplates] = useState([]);
   const [imgBinary, setImgBinary] = useState("");
-  const [smsTextValue, setSmsTextValue] = useState("");
+  const [smsTextValue, setsmsTextValue] = useState("");
   const [messagesSent, setMessagesSent] = useState(false);
   const [defaultMessageValue, setDefaultMessageValue] = useState("");
   const [senderAddress, setSenderAddress] = useState("");
@@ -307,7 +307,7 @@ const SendMessageModal = ({
     if (sendMessageModal?.isWhatsapp) {
       setDefaultMessageValue(templates.find((tmp) => tmp === template).body);
     } else {
-      setSmsTextValue(templates.find((tmp) => tmp === template).body);
+      setsmsTextValue(templates.find((tmp) => tmp === template).body);
     }
   };
 
@@ -329,6 +329,10 @@ const SendMessageModal = ({
   useEffect(() => {
     fetchTemplates();
   }, []);
+
+
+  let lang = "";
+  lang = isArabic(smsTextValue?.trim()) ? 'Arabic' : (isEnglish(smsTextValue?.trim()) ? 'English' : '');
 
   return (
     <>
@@ -463,6 +467,11 @@ const SendMessageModal = ({
                               >
                                 {smsTextValue?.trim()?.length} characters{" "}
                               </div>
+                              {lang &&
+                              <div className="w-[2px] h-[12px] mx-3 bg-gray-400">
+                              </div>
+                              }
+                              <div>{lang}</div>
                             </div>
                             <button
                               type="button"
@@ -489,7 +498,7 @@ const SendMessageModal = ({
                           <div className="px-4 h-full py-2 bg-white rounded-b-lg">
                             <textarea
                               value={smsTextValue}
-                              onInput={(e) => setSmsTextValue(e.target.value)}
+                              onInput={(e) => setsmsTextValue(e.target.value?.toString())}
                               className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
                               placeholder="Type the message..."
                               required
@@ -551,7 +560,7 @@ const SendMessageModal = ({
                             <div className="px-4 h-full py-2 bg-white rounded-b-lg">
                               <textarea
                                 value={smsTextValue}
-                                onInput={(e) => setSmsTextValue(e.target.value)}
+                                onInput={(e) => setsmsTextValue(e.target.value)}
                                 className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
                                 placeholder="Type the message..."
                                 required
