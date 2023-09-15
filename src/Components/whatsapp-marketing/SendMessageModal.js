@@ -30,6 +30,7 @@ const style = {
 };
 
 const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM"];
+const charLimit = 70;
 
 const SendMessageModal = ({
   sendMessageModal,
@@ -37,7 +38,15 @@ const SendMessageModal = ({
   selectedContacts,
   whatsappSenderNo,
 }) => {
-  const { currentMode, BACKEND_URL, User, setUserCredits, isArabic, isEnglish } = useStateContext();
+  const {
+    currentMode,
+    BACKEND_URL,
+    User,
+    setUserCredits,
+    isArabic,
+    isEnglish,
+    formatNum,
+  } = useStateContext();
 
   const [messageValue, setMessageValue] = useState("");
   const [btnloading, setbtnloading] = useState(false);
@@ -53,6 +62,9 @@ const SendMessageModal = ({
   var turndownService = new TurndownService();
 
   const imagePickerRef = useRef();
+  const noOfMessages = Math.ceil(
+    Number(smsTextValue?.trim()?.length) / charLimit
+  );
 
   const uploadImage = () => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
@@ -330,9 +342,12 @@ const SendMessageModal = ({
     fetchTemplates();
   }, []);
 
-
   let lang = "";
-  lang = isArabic(smsTextValue?.trim()) ? 'Arabic' : (isEnglish(smsTextValue?.trim()) ? 'English' : '');
+  lang = isArabic(smsTextValue?.trim())
+    ? "Arabic"
+    : isEnglish(smsTextValue?.trim())
+    ? "English"
+    : "";
 
   return (
     <>
@@ -458,20 +473,30 @@ const SendMessageModal = ({
                         <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
                           <div className="flex items-center justify-between px-3 py-2 border-b">
                             <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
+                              <div>{lang}</div>
+                              {lang && (
+                                <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
+                              )}
                               <div
                                 className={`flex flex-wrap items-center ${
-                                  smsTextValue?.trim()?.length > 160
+                                  smsTextValue?.trim()?.length > charLimit
                                     ? "text-red-600"
                                     : ""
                                 }`}
                               >
-                                {smsTextValue?.trim()?.length} characters{" "}
+                                {formatNum(smsTextValue?.trim()?.length)}/
+                                {charLimit}
                               </div>
-                              {lang &&
-                              <div className="w-[2px] h-[12px] mx-3 bg-gray-400">
-                              </div>
-                              }
-                              <div>{lang}</div>
+                              {smsTextValue?.trim()?.length ? (
+                                <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
+                              ) : (
+                                <></>
+                              )}
+                              {smsTextValue?.trim()?.length ? (
+                                <div>{noOfMessages} messages</div>
+                              ) : (
+                                <></>
+                              )}
                             </div>
                             <button
                               type="button"
@@ -498,7 +523,9 @@ const SendMessageModal = ({
                           <div className="px-4 h-full py-2 bg-white rounded-b-lg">
                             <textarea
                               value={smsTextValue}
-                              onInput={(e) => setsmsTextValue(e.target.value?.toString())}
+                              onInput={(e) =>
+                                setsmsTextValue(e.target.value?.toString())
+                              }
                               className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
                               placeholder="Type the message..."
                               required
@@ -601,8 +628,7 @@ const SendMessageModal = ({
                   <Button
                     ripple="true"
                     variant="contained"
-                    sx={{ py: "6px", mr: 2}}
-                    
+                    sx={{ py: "6px", mr: 2 }}
                     size="small"
                     style={{ backgroundColor: "#da1f26" }}
                     type="submit"
@@ -622,12 +648,6 @@ const SendMessageModal = ({
                       </>
                     )}
                   </Button>
-
-                  {smsTextValue?.trim()?.length > 160 && (
-                    <strong className="text-red-600">
-                      * You will be charged extra for 160+ characters!
-                    </strong>
-                  )}
                 </div>
               </form>
             </>

@@ -244,7 +244,9 @@ export const ContextProvider = ({ children }) => {
     setIsClicked({ ...initialState, [clicked]: true });
 
   function formatNum(value) {
-    if (value < 10) {
+    if(value === 0) {
+      return 0;
+    }else if (value < 10) {
       return "0" + value;
     } else {
       return value;
