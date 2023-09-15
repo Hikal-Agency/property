@@ -279,19 +279,13 @@ const Navbar = () => {
             customFunc={(event) => handleClick(event, "Notifications")}
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
             icon={
-              currNavBtn === "Notifications" ? (
-                <BsBellFill size={16} />
-              ) : (
-                [
-                  <Badge
+                <Badge
                     className={notifIconAnimating ? "animate-notif-icon" : ""}
                     badgeContent={unreadNotifsCount}
                     color="error"
                   >
                     <BsBell size={16} />
-                  </Badge>,
-                ]
-              )
+                  </Badge>
             }
           />
 

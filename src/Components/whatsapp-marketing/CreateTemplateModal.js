@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Modal,
   Button,
@@ -82,6 +82,12 @@ const CreateTemplateModal = ({
       setbtnloading(false);
     }
   };
+
+  useEffect(() => {
+    setTemplateTitle("");
+    setTemplateBody("");
+    setImageURL("");
+  }, [templateType]);
   return (
     <>
       <Modal
@@ -98,7 +104,7 @@ const CreateTemplateModal = ({
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] md:w-[70%] h-[90%]  ${
+          className={`w-[calc(100%-20px)] md:w-[70%]  ${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md overflow-y-scroll`}
         >
@@ -131,7 +137,7 @@ const CreateTemplateModal = ({
               className="w-full mb-5"
               displayEmpty
             >
-              <MenuItem value="">
+              <MenuItem disabled selected value="">
                 Select Template Type
                 <span className="ml-1" style={{ color: "red" }}>
                   *
@@ -140,60 +146,120 @@ const CreateTemplateModal = ({
 
               <MenuItem value="whatsapp">Whatsapp Message</MenuItem>
               <MenuItem value="sms">SMS</MenuItem>
-              <MenuItem value="mail">Email</MenuItem>
+              <MenuItem value="email">Email</MenuItem>
             </TextField>
-            <TextField
-              id="templateTitle"
-              type={"text"}
-              label="Template Name"
-              className="w-full mb-5"
-              style={{ marginBottom: "10px" }}
-              variant="outlined"
-              size="medium"
-              required
-              value={templateTitle}
-              onChange={(e) => setTemplateTitle(e.target.value)}
-            />
-            <div
-              style={{
-                height: "320px",
-                marginBottom: "20px",
-                overflowY: "scroll",
-              }}
-            >
-              <RichEditor setMessageValue={setTemplateBody}/>
-            </div>
-            <div className="flex justify-between items-center border-t-[#ededed] pt-2">
-              <div className="flex items-center text-center">
-                <Button>
-                  <ImAttachment />
-                  <span class="ml-1">Attach File</span>
-                </Button>
-                <span className="ml-3 mr-5">OR</span>
-                <div className="flex items-center">
-                  <TextField
-                    id="imageURL"
-                    type={"text"}
-                    label="Image URL"
-                    variant="outlined"
-                    sx={{width: "400px"}}
-                    size="small"
-                    value={imageURL}
-                    onChange={(e) => setImageURL(e.target.value)}
-                  />
+            {templateType && (
+              <TextField
+                type={"text"}
+                label="Template Name"
+                className="w-full mb-5"
+                style={{ marginBottom: "10px" }}
+                variant="outlined"
+                size="medium"
+                required
+                value={templateTitle}
+                onChange={(e) => setTemplateTitle(e.target.value)}
+              />
+            )}
+
+            {templateType === "whatsapp" ? (
+              <div
+                style={{
+                  height: "280px",
+                  marginBottom: "20px",
+                  overflowY: "scroll",
+                }}
+              >
+                <RichEditor setMessageValue={setTemplateBody} />
+              </div>
+            ) : templateType === "sms" ? (
+              <div
+                style={{
+                  height: "280px",
+                  marginBottom: "20px",
+                  overflowY: "scroll",
+                }}
+              >
+                <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
+                  <div className="flex items-center justify-between px-3 py-2 border-b">
+                    <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
+                      <div className="flex flex-wrap items-center">
+                        {templateBody?.trim()?.length} characters
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="p-2 text-gray-500 rounded cursor-pointer sm:ml-auto hover:text-gray-900 hover:bg-gray-100"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 19 19"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
+                        />
+                      </svg>
+                      <span className="sr-only">Full screen</span>
+                    </button>
+                  </div>
+                  <div className="px-4 h-full py-2 bg-white rounded-b-lg">
+                    <textarea
+                      value={templateBody}
+                      onInput={(e) => setTemplateBody(e.target.value)}
+                      className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
+                      placeholder="Type the message..."
+                      required
+                    ></textarea>
+                  </div>
                 </div>
               </div>
-              <Button
-                type="submit"
-                variant="contained"
-                style={{ padding: "10px 12px", backgroundColor: "#da1f26" }}
-              >
-                {btnloading ? (
-                  <CircularProgress size={18} sx={{ color: "white" }} />
-                ) : (
-                  <span>Create Template</span>
-                )}
-              </Button>
+            ) : templateType === "email" ? (
+              <h1>Email</h1>
+            ) : (
+              <></>
+            )}
+            <div className="flex justify-between items-center border-t-[#ededed] pt-2">
+              {templateType === "whatsapp" && (
+                <div className="flex items-center text-center">
+                  <Button>
+                    <ImAttachment />
+                    <span class="ml-1">Attach File</span>
+                  </Button>
+                  <span className="ml-3 mr-5">OR</span>
+                  <div className="flex items-center">
+                    <TextField
+                      id="imageURL"
+                      type={"text"}
+                      label="Image URL"
+                      variant="outlined"
+                      sx={{ width: "400px" }}
+                      size="small"
+                      value={imageURL}
+                      onChange={(e) => setImageURL(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
+              {templateType && (
+                <Button
+                  type="submit"
+                  variant="contained"
+                  style={{ padding: "10px 12px", backgroundColor: "#da1f26" }}
+                >
+                  {btnloading ? (
+                    <CircularProgress size={18} sx={{ color: "white" }} />
+                  ) : (
+                    <span>Create Template</span>
+                  )}
+                </Button>
+              )}
             </div>
           </form>
         </div>

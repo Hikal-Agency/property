@@ -156,17 +156,17 @@ const TemplatesComponent = () => {
             <TemplatesCountCard
               icon={<MdEmail size={18} />}
               type="Email Templates"
-              count={0}
+              count={templates?.map((temp) => temp?.type === "email")?.length}
             />
             <TemplatesCountCard
               icon={<BsWhatsapp size={18} />}
               type="Whatsapp Templates"
-              count={templates?.length}
+              count={templates?.map((temp) => temp?.type === "whatsapp")?.length}
             />
             <TemplatesCountCard
               icon={<MdSms size={18} />}
               type="SMS Templates"
-              count={0}
+              count={templates?.map((temp) => temp?.type === "sms")?.length}
             />
           </Box>
           <Box className="flex flex-wrap mt-3">

@@ -20,14 +20,15 @@ const style = {
 };
 
 const PurchaseCreditsModal = ({ purchaseCreditsModal, handleClose }) => {
-  const { currentMode, BACKEND_URL, darkModeColors, setUserCredits } = useStateContext();
+  const { currentMode, BACKEND_URL, darkModeColors, setUserCredits } =
+    useStateContext();
   const [creditsToPurchase, setCreditsToPurchase] = useState("");
   const [formValues, setFormValues] = useState({
     cardNumber: "",
     expMonth: "",
     expYear: "",
     cvc: "",
-    credits: ""
+    credits: "",
   });
   const [btnloading, setbtnloading] = useState(false);
 
@@ -46,15 +47,19 @@ const PurchaseCreditsModal = ({ purchaseCreditsModal, handleClose }) => {
         }
       );
       const stripeToken = response.data;
-      const resp = await axios.post(`${BACKEND_URL}/purchase-credits`, JSON.stringify({
-        credits: formValues?.credits, 
-        stripe_token: stripeToken
-      }), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const resp = await axios.post(
+        `${BACKEND_URL}/purchase-credits`,
+        JSON.stringify({
+          credits: formValues?.credits,
+          stripe_token: stripeToken,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       setbtnloading(false);
       toast.success("Credits purchased!", {
         position: "top-right",
@@ -70,16 +75,19 @@ const PurchaseCreditsModal = ({ purchaseCreditsModal, handleClose }) => {
       handleClose();
     } catch (error) {
       console.log(error);
-      toast.error(error?.response?.data?.message || "Purchase credits failed!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error(
+        error?.response?.data?.message || "Purchase credits failed!",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
       setbtnloading(false);
     }
   };
@@ -120,8 +128,6 @@ const PurchaseCreditsModal = ({ purchaseCreditsModal, handleClose }) => {
           <GridCloseIcon size={18} />
         </IconButton>
 
-
-
         <div className="flex flex-col justify-center items-center mb-10">
           <HiCreditCard size={50} className="text-main-red-color text-2xl" />
           <h1 className="font-semibold pt-2 text-lg">Purchase Credits</h1>
@@ -129,15 +135,15 @@ const PurchaseCreditsModal = ({ purchaseCreditsModal, handleClose }) => {
 
         <Box sx={darkModeColors}>
           <form onSubmit={handleSubmit}>
-
-  <TextField
+            <TextField
               id="credits"
               type={"number"}
               label="No. of Credits"
               className="w-full mb-5"
               style={{ marginBottom: "14px" }}
               variant="outlined"
-              size="small"
+              size="medium"
+              sx={{ "& input": { color: "#da1f26" } }}
               required
               value={formValues.credits}
               onChange={(e) =>

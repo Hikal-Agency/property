@@ -1028,9 +1028,9 @@ const FiltersDropdown = ({
           {fromRange && toRange && (
             <Button
               onClick={getNumbers}
-              className="text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-[#DA1F26]"
+              className="text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-[#DA1F26]"
             >
-              {btnLoading ? <CircularProgress /> : <span>Select</span>}
+              {btnLoading ? <CircularProgress /> : <span>SEND</span>}
             </Button>
           )}
         </div>
