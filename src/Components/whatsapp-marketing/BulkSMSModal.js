@@ -60,7 +60,7 @@ const BulkSMSModal = ({
   console.log("Salesperson: ", SalesPerson);
   console.log("MAnagers: ", Managers);
   console.log("Range Data : ", rangeData);
-  const senderAddresses = ["AD-HIKAL"];
+  const senderAddresses = ["AD-HIKAL","AD-HIKALCRM"];
 
   const [contactsList, setContactsList] = useState(
     rangeData?.map((contact) => contact?.leadContact)
@@ -449,7 +449,7 @@ const BulkSMSModal = ({
             // }}
             disabled={loading ? true : false}
           >
-            <div className="w-full flex items-center py-1 mb-7">
+            <div className="w-full flex items-center py-1 mb-2">
               <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
               <h1
                 className={`text-lg font-semibold ${
@@ -460,42 +460,42 @@ const BulkSMSModal = ({
               </h1>
             </div>
 
-            <div className="grid grid-cols-1 px-4 md:px-10 ">
-              <div className="px-4">
-                <Box sx={darkModeColors}>
-                  <h4
-                    className={`${
-                      currentMode === "dark" ? "text-red-600" : "text-black"
-                    } text-center font-semibold pb-5`}
-                  >
-                    SMS Recipients
-                  </h4>
+            <div className="px-5">
+              <Box sx={darkModeColors}>
+                <h4
+                  className={`${
+                    currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#1C1C1C]"
+                  } text-center font-semibold pb-4`}
+                >
+                  SMS Recipients
+                </h4>
 
-                  <Textarea
-                    id="Manager"
-                    sx={{
-                      "&": {
-                        marginBottom: "1.25rem !important",
-                      },
-                    }}
-                    placeholder="Contacts List"
-                    rows={4}
-                    value={contactsList?.join(",")}
-                    onChange={handleContacts}
-                    size="small"
-                    className="w-full"
-                    displayEmpty
-                  />
-                </Box>
-              </div>
+                <TextField
+                  id="Manager"
+                  // sx={{
+                  //   "&": {
+                  //     marginBottom: "1.25rem !important",
+                  //   },
+                  // }}
+                  placeholder="Recipients"
+                  multiline
+                  minRows={2}
+                  label="Recipients"
+                  value={contactsList?.join(",")}
+                  onChange={handleContacts}
+                  size="small"
+                  className="w-full p-2"
+                  displayEmpty
+                />
+              </Box>
 
               {displaRange && (
                 <>
-                  <div className="flex flex-row justify-between mb-4 mt-4">
+                  <div className="grid grid-cols-2 my-5">
                     {/* From */}
                     <div
-                      className=""
-                      style={{ width: "50%", position: "relative" }}
+                      className="pr-2"
+                      style={{ width: "100%", position: "relative" }}
                     >
                       <label
                         style={{
@@ -509,7 +509,7 @@ const BulkSMSModal = ({
                       >
                         {fromRange ? (
                           <strong
-                            className="ml-4 text-red-600 cursor-pointer"
+                            className="mr-4 text-red-600 cursor-pointer"
                             onClick={() => setFromRange("")}
                           >
                             Clear
@@ -522,7 +522,9 @@ const BulkSMSModal = ({
                         <TextField
                           label="From"
                           type="number"
+                          size="small"
                           value={fromRange}
+                          className="w-full"
                           onChange={(e) => {
                             setFromRange(e.target.value);
                           }}
@@ -533,7 +535,7 @@ const BulkSMSModal = ({
 
                     {/* To */}
                     <div
-                      className="ml-2"
+                      className="pl-2"
                       style={{ width: "100%", position: "relative" }}
                     >
                       <label
@@ -562,6 +564,7 @@ const BulkSMSModal = ({
                           label="To"
                           value={toRange}
                           type="number"
+                          size="small"
                           onChange={(e) => {
                             setToRange(e.target.value);
                           }}
@@ -573,14 +576,15 @@ const BulkSMSModal = ({
                   </div>
                 </>
               )}
+
               {!displaRange ? (
                 <div
                   className={`${
                     currentMode === "dark" ? "bg-black" : "bg-white"
-                  } px-5 mx-5 py-2 text-center sm:px-6`}
+                  } py-2 text-center`}
                 >
                   <Button
-                    className={`min-w-fit mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                    className={`w-full mt-1 mb-3 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color`}
                     ripple={true}
                     size="lg"
                     type="submit"
@@ -607,10 +611,10 @@ const BulkSMSModal = ({
                   <div
                     className={`${
                       currentMode === "dark" ? "bg-black" : "bg-white"
-                    } px-5 mx-5 py-2 text-center sm:px-6`}
+                    } py-2 text-center`}
                   >
                     <Button
-                      className={`min-w-fit mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                      className={`w-full mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
                       ripple={true}
                       size="lg"
                       type="submit"
@@ -634,54 +638,32 @@ const BulkSMSModal = ({
                 )
               )}
 
-              <div className="px-4 mt-3">
+              <div className="my-3">
                 <Box sx={darkModeColors}>
                   <h4
                     className={`${
-                      currentMode === "dark" ? "text-red-600" : "text-black"
-                    } text-center font-semibold pb-5`}
+                      currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#1C1C1C]"
+                    } text-center font-semibold pb-4`}
                   >
                     SMS Message
                   </h4>
-                  {/* 
-                  <TextField
-                    id="enquiry"
-                    label="SMS Templates"
-                    value={EnquiryType}
-                    onChange={ChangeEnquiryType}
-                    size="small"
-                    className="w-full"
-                    sx={{
-                      "&": {
-                        marginBottom: "1.25rem !important",
-                      },
-                    }}
-                    displayEmpty
-                    select
-                  >
-                    <MenuItem value="" disabled>
-                      SMS Templates
-                      <span className="ml-1" style={{ color: "red" }}>
-                        *
-                      </span>
-                    </MenuItem>
-                    <MenuItem value={"Studio"}>Email</MenuItem>
-                  </TextField> */}
 
-                  <Textarea
+                  <TextField
                     id="Manager"
-                    sx={{
-                      "&": {
-                        marginBottom: "1.25rem !important",
-                      },
-                    }}
+                    label="Message"
+                    size="small"
+                    // sx={{
+                    //   "&": {
+                    //     marginBottom: "1.25rem !important",
+                    //   },
+                    // }}
                     placeholder="Enter message here ....."
-                    rows={4}
+                    minRows={3}
                     value={msg}
                     onChange={handleMsg}
-                    size="small"
-                    className="w-full"
+                    className="w-full p-2"
                     displayEmpty
+                    multiline
                   />
 
                   {/* <label
@@ -697,12 +679,12 @@ const BulkSMSModal = ({
                 </Box>
               </div>
 
-              <div className="px-4">
+              <div className="mt-6 mb-3">
                 <Box sx={darkModeColors}>
                   <h4
                     className={`${
-                      currentMode === "dark" ? "text-red-600" : "text-black"
-                    } text-center font-semibold pb-5`}
+                      currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#1C1C1C]"
+                    } text-center font-semibold pb-4`}
                   >
                     SMS Send Configurations
                   </h4>
@@ -714,13 +696,13 @@ const BulkSMSModal = ({
                       setSenderAddress(e.target.value);
                     }}
                     size="small"
-                    className="w-full"
+                    className="w-full p-2"
                     label="Send From"
-                    sx={{
-                      "&": {
-                        marginBottom: "1.25rem !important",
-                      },
-                    }}
+                    // sx={{
+                    //   "&": {
+                    //     marginBottom: "1.25rem !important",
+                    //   },
+                    // }}
                     displayEmpty
                     select
                   >
@@ -728,84 +710,35 @@ const BulkSMSModal = ({
                       return <MenuItem value={address}>{address}</MenuItem>;
                     })}
                   </TextField>
-                  {/* 
-                  <TextField
-                    id="LeadSource"
-                    value={LeadSource}
-                    label="Source"
-                    onChange={ChangeLeadSource}
-                    size="small"
-                    className="w-full"
-                    sx={{
-                      "&": {
-                        marginBottom: "1.25rem !important",
-                      },
-                    }}
-                    displayEmpty
-                    select
-                    required
-                  >
-                    <MenuItem value="" disabled>
-                      Source
-                      <span className="ml-1" style={{ color: "red" }}>
-                        *
-                      </span>
-                    </MenuItem>
-                    <MenuItem value={"Campaign Facebook"}>
-                      Facebook Campaign
-                    </MenuItem>
-                    <MenuItem value={"Campaign Snapchat"}>
-                      Snapchat Campaign
-                    </MenuItem>
-                    <MenuItem value={"Campaign TikTok"}>
-                      TikTok Campaign
-                    </MenuItem>
-                    <MenuItem value={"Campaign GoogleAds"}>
-                      GoogleAds Campaign
-                    </MenuItem>
-                    <MenuItem value={"Campaign YouTube"}>
-                      YouTube Campaign
-                    </MenuItem>
-                    <MenuItem value={"Campaign"}>Campaign</MenuItem>
-                    <MenuItem value={"WhatsApp"}>WhatsApp</MenuItem>
-                    <MenuItem value={"Comment"}>Comment</MenuItem>
-                    <MenuItem value={"Message"}>Message</MenuItem>
-                    <MenuItem value={"Website"}>Website</MenuItem>
-
-                    <MenuItem value={"Property Finder"}>
-                      Property Finder
-                    </MenuItem>
-
-                    <MenuItem value={"Personal"}>Personal</MenuItem>
-                  </TextField> */}
                 </Box>
               </div>
+
+              <div
+                className={`py-2 text-center`}
+              >
+                <Button
+                  className={`w-full mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                  ripple={true}
+                  size="lg"
+                  type="submit"
+                  disabled={loading ? true : false}
+                  onClick={(e) => sendMsg(e)}
+                >
+                  {msgLoading ? (
+                    <CircularProgress
+                      size={20}
+                      sx={{ color: "white" }}
+                      className="text-white"
+                    />
+                  ) : (
+                    <span>Send</span>
+                  )}
+                </Button>
+              </div>
+
             </div>
 
-            <div
-              className={`${
-                currentMode === "dark" ? "bg-black" : "bg-white"
-              } px-5 mx-5 py-2 text-center sm:px-6`}
-            >
-              <Button
-                className={`min-w-fit mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
-                ripple={true}
-                size="lg"
-                type="submit"
-                disabled={loading ? true : false}
-                onClick={(e) => sendMsg(e)}
-              >
-                {msgLoading ? (
-                  <CircularProgress
-                    size={20}
-                    sx={{ color: "white" }}
-                    className="text-white"
-                  />
-                ) : (
-                  <span>Send</span>
-                )}
-              </Button>
-            </div>
+            
           </form>
         </div>
       )}
