@@ -22,6 +22,7 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import classNames from "classnames";
 import Loader from "../Loader";
+import { useFilterContext } from "../../context/FilterContextProvider";
 
 import {
   MdClear
@@ -46,6 +47,32 @@ const BulkSMSModal = ({
   const [pageloading, setpageloading] = useState(true);
   const [msg, setMsg] = useState();
   const token = localStorage.getItem("auth-token");
+  const {
+    emailFilter,
+    setEmailFilter,
+    phoneNumberFilter,
+    setPhoneNumberFilter,
+    otpSelected,
+    setOtpSelected,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    languageFilter,
+    setLanguageFilter,
+    leadOriginSelected,
+    setLeadOriginSelected,
+    leadTypeSelected,
+    setLeadTypeSelected,
+    enquiryTypeSelected,
+    setEnquiryTypeSelected,
+    managerSelected,
+    setManagerSelected,
+    agentSelected,
+    setAgentSelected,
+    projectNameTyped,
+    setProjectNameTyped,
+  } = useFilterContext();
 
   const handleMsg = (e) => {
     setMsg(e.target.value);
@@ -82,16 +109,53 @@ const BulkSMSModal = ({
 
   const getNumbers = async () => {
     setBtnLoading(true);
+
+    let url = `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}`;
+    let dateRange;
+    if (startDate && endDate) {
+      console.log("start ,end: ", startDate, endDate);
+
+      dateRange = [startDate, endDate].join(",");
+      url += `&date_range=${dateRange}`;
+    }
+
+    if (projectNameTyped) {
+      url += `&project=${projectNameTyped}`;
+    }
+
+    if (enquiryTypeSelected?.i) {
+      url += `&enquiryType=${enquiryTypeSelected?.i}`;
+    }
+
+    if (managerSelected) {
+      url += `&managerAssigned=${managerSelected}`;
+    }
+
+    if (agentSelected) {
+      url += `&agentAssigned=${agentSelected}`;
+    }
+
+    if (otpSelected?.id) {
+      url += `&otp=${otpSelected?.id}`;
+    }
+
+    if (phoneNumberFilter) {
+      url += `&hasphone=${phoneNumberFilter === "with" ? 1 : 0}`;
+    }
+
+    if (emailFilter) {
+      url += `&hasmail=${emailFilter === "with" ? 1 : 0}`;
+    }
+    if (languageFilter) {
+      url += `&language=${languageFilter}`;
+    }
     try {
-      const range = await axios.get(
-        `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const range = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
       // console.log("range: ", range);
       // const newContacts = range?.data?.result?.map(
