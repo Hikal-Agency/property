@@ -1,5 +1,13 @@
 import { useRef } from "react";
-import { Button, Box, Select, MenuItem, Alert, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  Box,
+  Select,
+  MenuItem,
+  Alert,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -23,16 +31,16 @@ import AddLeadModal from "../../Components/whatsapp-marketing/AddLeadModal";
 import ConfirmBulkDelete from "../../Components/whatsapp-marketing/ConfirmBulkDelete";
 import Coin from "../../Components/_elements/Coin";
 
-import { 
-  BiImport, 
-  BiMessageRoundedDots, 
+import {
+  BiImport,
+  BiMessageRoundedDots,
   BiArchive,
   BiMailSend,
   BiPhoneCall,
-  BiLogoWhatsapp
+  BiLogoWhatsapp,
 } from "react-icons/bi";
-import { 
-  BsWhatsapp, 
+import {
+  BsWhatsapp,
   BsTrash,
   BsPersonCircle,
   BsSnow2,
@@ -40,7 +48,7 @@ import {
   BsShieldCheck,
   BsShieldMinus,
   BsCoin,
-  BsPersonAdd
+  BsPersonAdd,
 } from "react-icons/bs";
 import {
   FaSnapchatGhost,
@@ -79,7 +87,7 @@ const AllLeads = () => {
     formatNum,
     User,
     userCredits,
-    isArabic
+    isArabic,
   } = useStateContext();
   console.log("Managers: ", Managers);
   const token = localStorage.getItem("auth-token");
@@ -185,9 +193,13 @@ const AllLeads = () => {
       renderCell: (cellValues) => {
         return (
           <div className="w-full text-start px-2">
-            <p style={{ fontFamily: isArabic(cellValues?.formattedValue)
+            <p
+              style={{
+                fontFamily: isArabic(cellValues?.formattedValue)
                   ? "Noto Kufi Arabic"
-                  : "inherit", }}>
+                  : "inherit",
+              }}
+            >
               {cellValues?.formattedValue}
             </p>
           </div>
@@ -217,10 +229,12 @@ const AllLeads = () => {
       renderCell: (cellValues) => {
         return (
           <>
-            {cellValues.formattedValue === "null" ? "-" : cellValues.formattedValue}
+            {cellValues.formattedValue === "null"
+              ? "-"
+              : cellValues.formattedValue}
           </>
-        )
-      }
+        );
+      },
     },
     {
       field: "otp",
@@ -411,7 +425,7 @@ const AllLeads = () => {
               } hover:bg-green-500 hover:text-white rounded-full shadow-none p-2 mx-1 flex items-center`}
             >
               <Tooltip title="WhatsApp" arrow>
-              <Link
+                <Link
                   to={`/marketing/chat?phoneNumber=${cellValues.row.leadContact
                     ?.slice(1)
                     ?.replaceAll(" ", "")}`}
@@ -425,7 +439,7 @@ const AllLeads = () => {
                       width: "100%",
                     }}
                   > */}
-                    <BsWhatsapp size={16} />
+                  <BsWhatsapp size={16} />
                   {/* </div> */}
                 </Link>
               </Tooltip>
@@ -1016,9 +1030,9 @@ const AllLeads = () => {
       phoneNumberFilter,
       emailFilter,
       languageFilter,
-      startDate && endDate
-        ? `${formatDate(startDate)},${formatDate(endDate)}`
-        : ""
+      startDate && endDate ? `${startDate},${endDate}` : ""
+      //   ? `${formatDate(startDate)},${formatDate(endDate)}`
+      //   : ""
     );
     setColumnsArr([...columnsArr]);
     // eslint-disable-next-line
@@ -1120,12 +1134,10 @@ const AllLeads = () => {
           <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
             className={`text-lg font-semibold ${
-              currentMode === "dark"
-                ? "text-white"
-                : "text-black"
+              currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
-            Search for{" "} {leadOriginSelected.formattedValue}
+            Search for {leadOriginSelected.formattedValue}
             {" | "}
             <span>{leadTypeSelected.formattedValue}</span>{" "}
             <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
@@ -1184,15 +1196,18 @@ const AllLeads = () => {
               {userCredits}
             </span>
 
-            <Typography onClick={() => setPurchaseCreditsModal(true)} sx={{
-              color: "#0168fe",
-              cursor: "pointer",
-              ml: "2px",
-              fontWeight: "600",
-              "&:hover": {
-                textDecoration: "underline"
-              }
-            }}>
+            <Typography
+              onClick={() => setPurchaseCreditsModal(true)}
+              sx={{
+                color: "#0168fe",
+                cursor: "pointer",
+                ml: "2px",
+                fontWeight: "600",
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+            >
               <small>Purchase</small>
             </Typography>
           </div>

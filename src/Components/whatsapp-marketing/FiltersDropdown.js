@@ -163,10 +163,9 @@ const FiltersDropdown = ({
     let dateRange;
     if (startDate && endDate) {
       console.log("start ,end: ", startDate, endDate);
-      // const formattedStartDate = moment(startDate).format("YYYY-MM-DD");
-      // const formattedEndDate = moment(endDate).format("YYYY-MM-DD");
+
       // dateRange = [formattedStartDate, formattedEndDate].join(",");
-      dateRange = [formatDate(startDate), formatDate(endDate)].join(",");
+      dateRange = [startDate, endDate].join(",");
       url += `&date_range=${dateRange}`;
     }
 
@@ -310,9 +309,9 @@ const FiltersDropdown = ({
       <Menu
         open={open}
         anchorEl={anchorEl}
-        onClick={(e) => {
-          handleClose();
-        }}
+        // onClick={(e) => {
+        //   handleClose();
+        // }}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -860,11 +859,17 @@ const FiltersDropdown = ({
                       value={startDate}
                       views={["year", "month", "day"]}
                       onChange={(newValue) => {
-                        setStartDate(newValue);
+                        const formattedDate = moment(newValue?.$d).format(
+                          "YYYY-MM-DD"
+                        );
+                        console.log("start date: ", formattedDate);
+                        setStartDate(formattedDate);
                       }}
+                      onClick={(e) => e.stopPropagation()}
                       format="yyyy-MM-dd"
                       renderInput={(params) => (
                         <TextField
+                          onClick={(e) => e.stopPropagation()}
                           size="small"
                           {...params}
                           onKeyDown={(e) => e.preventDefault()}
@@ -910,11 +915,15 @@ const FiltersDropdown = ({
                       value={endDate}
                       views={["year", "month", "day"]}
                       onChange={(newValue) => {
-                        setEndDate(newValue);
+                        const formattedDate = moment(newValue?.$d).format(
+                          "YYYY-MM-DD"
+                        );
+                        setEndDate(formattedDate);
                       }}
                       format="yyyy-MM-dd"
                       renderInput={(params) => (
                         <TextField
+                          onClick={(e) => e.stopPropagation()}
                           size="small"
                           {...params}
                           onKeyDown={(e) => e.preventDefault()}
