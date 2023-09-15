@@ -24,9 +24,7 @@ import classNames from "classnames";
 import Loader from "../Loader";
 import { useFilterContext } from "../../context/FilterContextProvider";
 
-import {
-  MdClear
-} from "react-icons/md";
+import { MdClear } from "react-icons/md";
 
 const BulkSMSModal = ({
   FetchLeads,
@@ -110,7 +108,9 @@ const BulkSMSModal = ({
   const getNumbers = async () => {
     setBtnLoading(true);
 
-    let url = `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}`;
+    let url = `${BACKEND_URL}/campaign-contact?from=${fromRange}&to=${toRange}&coldcall=${
+      leadOriginSelected?.originID || 0
+    }`;
     let dateRange;
     if (startDate && endDate) {
       console.log("start ,end: ", startDate, endDate);
@@ -616,7 +616,10 @@ const BulkSMSModal = ({
                           // InputProps={{ required: true }}
                           InputProps={{
                             endAdornment: fromRange ? (
-                              <IconButton onClick={() => setFromRange("")} edge="end">
+                              <IconButton
+                                onClick={() => setFromRange("")}
+                                edge="end"
+                              >
                                 <MdClear size={16} color={"#AAAAAA"} />
                               </IconButton>
                             ) : null,
@@ -664,10 +667,12 @@ const BulkSMSModal = ({
                           // InputProps={{ required: true }}
                           InputProps={{
                             endAdornment: (
-                              <IconButton onClick={() => setToRange("")} edge="end">
+                              <IconButton
+                                onClick={() => setToRange("")}
+                                edge="end"
+                              >
                                 <MdClear size={16} color={"#AAAAAA"} />
                               </IconButton>
-                            
                             ),
                           }}
                         />
