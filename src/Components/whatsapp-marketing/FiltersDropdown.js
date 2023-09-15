@@ -228,10 +228,11 @@ const FiltersDropdown = ({
   }, [rangeData]);
 
   return (
-    <div
-      className={`fixed w-[350px] z-[1000] top-[40px] right-[8px] ${darkModeColors}`}
+    <Box
+      sx={darkModeColors}    
+      className={`w-[350px] z-[1000]`}
     >
-      <div className={`flex justify-end mt-5 relative z-[1000]`}>
+      <div className={`flex justify-end relative z-[1000]`}>
         {!filtersDropdown &&
           (enquiryTypeSelected?.i ||
             phoneNumberFilter ||
@@ -305,7 +306,7 @@ const FiltersDropdown = ({
             currentMode === "dark"
               ? "border-gray-800 bg-black"
               : "bg-white border-gray-200"
-          } mt-2 border border-2 p-4 rounded-md`}
+          } mt-2 border-2 p-4 rounded-md`}
         >
           <div className="grid grid-cols-2 gap-x-2">
             <div
@@ -990,7 +991,7 @@ const FiltersDropdown = ({
           setToRange={setToRange}
         />
       )}
-    </div>
+    </Box>
   );
 };
 
