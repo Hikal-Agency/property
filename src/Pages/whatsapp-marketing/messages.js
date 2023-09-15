@@ -1185,8 +1185,8 @@ const AllLeads = () => {
           {selectedRows.length === 0 ? (
             <></>
           ) : (
-            <Alert color="success" sx={{ mr: 2, mt: "3px" }}>
-              {selectedRows.length} rows selected
+            <Alert color="success" sx={{ mr: 2, padding: "0px 10px" }}>
+              <p className="mt-1">{selectedRows.length} rows selected</p>
             </Alert>
           )}
 
