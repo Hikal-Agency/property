@@ -97,7 +97,6 @@ const BulkSMSModal = ({
       // Use reduce to update the contactsList
       const updatedContactsList = newContacts.reduce(
         (acc, newContact) => {
-          // Find the index of the existing contact with the same value (assuming the values are unique)
           const existingIndex = acc.findIndex(
             (contact) => contact === newContact
           );
