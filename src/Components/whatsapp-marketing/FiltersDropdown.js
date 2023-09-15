@@ -285,6 +285,7 @@ const FiltersDropdown = ({
             handleClick(e);
           }}
           sx={{
+            zIndex: "40",
             "& svg path": {
               stroke: "#da1f26 !important",
             },
@@ -308,10 +309,10 @@ const FiltersDropdown = ({
 
       <Menu
         open={open}
+        // disableScrollLock={true}
+       hideBackdrop={true}
         anchorEl={anchorEl}
-        // onClick={(e) => {
-        //   handleClose();
-        // }}
+        className="filters-menu"
         PaperProps={{
           elevation: 0,
           sx: {
@@ -352,7 +353,7 @@ const FiltersDropdown = ({
         transformOrigin={{ horizontal: "center", vertical: "top" }}
         anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
       >
-        <div className={` mt-2 border-2 rounded-md`}>
+        <div className={` mt-2 border-2 rounded-md px-4`}>
           <div className="grid grid-cols-2 gap-x-2">
             <div
               style={{
