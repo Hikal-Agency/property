@@ -84,7 +84,6 @@ const Livelocation = () => {
               />
             </div>
           </div>
-          {/* <Footer /> */}
         </div>
       )}
     </>

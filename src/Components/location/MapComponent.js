@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 import { useStateContext } from "../../context/ContextProvider";
 
-const MapContainer = ({ location }) => {
+const MapContainer = ({ location, selectedMeeting, clearSelectedMeeting }) => {
   const { currentMode } = useStateContext();
   useEffect(() => {
     console.log("meetings and locations are", location);
@@ -25,7 +25,7 @@ const MapContainer = ({ location }) => {
     mapTypeControl: true,
   };
 
-  const [selectedMeeting, setSelectedMeeting] = useState(null);
+  // const [selectedMeeting, setSelectedMeeting] = useState(null);
 
   return (
     <>
@@ -52,9 +52,9 @@ const MapContainer = ({ location }) => {
                     url: "/meetingpinattended.svg",
                     scaledSize: new window.google.maps.Size(50, 50),
                   }}
-                  onClick={() => {
-                    setSelectedMeeting(meeting);
-                  }}
+                  // onClick={() => {
+                  //   setSelectedMeeting(meeting);
+                  // }}
                 >
                   {selectedMeeting && selectedMeeting.id === meeting.id && (
                     <InfoWindow
@@ -63,7 +63,9 @@ const MapContainer = ({ location }) => {
                         lng: Number(meeting?.mLong),
                       }}
                       onCloseClick={() => {
-                        setSelectedMeeting(null);
+                        // setSelectedMeeting(null);
+                        console.log("Close clicked!");
+                        clearSelectedMeeting();
                       }}
                     >
                       <div>
