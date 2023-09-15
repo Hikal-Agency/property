@@ -8,6 +8,7 @@ import {
   FormControl,
   InputLabel,
   CircularProgress,
+  Menu,
 } from "@mui/material";
 import { GrFormClose } from "react-icons/gr";
 import { BiFilter } from "react-icons/bi";
@@ -128,9 +129,10 @@ const FiltersDropdown = ({
   fromRange,
   setFromRange,
 }) => {
-  const [filtersDropdown, setFiltersDropdown] = useState(false);
   const [sendSMSModal, setSendSMSModal] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [rangeData, setRangeData] = useState([]);
   const { currentMode, darkModeColors, BACKEND_URL, pageState, formatNum } =
     useStateContext();
@@ -143,6 +145,14 @@ const FiltersDropdown = ({
       "-" +
       formatNum(dateObj?.$d?.getUTCDate() + 1)
     );
+  };
+  const handleClick = (event) => {
+    setOpen(!open);
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setAnchorEl(null);
   };
 
   const getNumbers = async () => {
@@ -199,7 +209,7 @@ const FiltersDropdown = ({
         },
       });
       setRangeData(range?.data?.result);
-      setFiltersDropdown(false);
+      handleClose();
 
       setBtnLoading(false);
 
@@ -228,11 +238,9 @@ const FiltersDropdown = ({
   }, [rangeData]);
 
   return (
-    <div
-      className={`fixed w-[350px] z-[1000] top-[40px] right-[8px] ${darkModeColors}`}
-    >
-      <div className={`flex justify-end mt-5 relative z-[1000]`}>
-        {!filtersDropdown &&
+    <Box sx={darkModeColors} className={`w-[350px]`}>
+      <div className={`flex justify-end relative`}>
+        {!open &&
           (enquiryTypeSelected?.i ||
             phoneNumberFilter ||
             emailFilter ||
@@ -274,8 +282,8 @@ const FiltersDropdown = ({
             </Button>
           )}
         <Button
-          onClick={() => {
-            setFiltersDropdown(!filtersDropdown);
+          onClick={(e) => {
+            handleClick(e);
           }}
           sx={{
             "& svg path": {
@@ -287,7 +295,7 @@ const FiltersDropdown = ({
             background: "rgb(218 31 38 / 16%)",
           }}
         >
-          {filtersDropdown ? (
+          {open ? (
             <div className="flex items-center">
               <span>Close</span> <GrFormClose size={19} />
             </div>
@@ -299,14 +307,53 @@ const FiltersDropdown = ({
         </Button>
       </div>
 
-      {filtersDropdown && (
-        <div
-          className={`${
-            currentMode === "dark"
-              ? "border-gray-800 bg-black"
-              : "bg-white border-gray-200"
-          } mt-2 border border-2 p-4 rounded-md`}
-        >
+      <Menu
+        open={open}
+        anchorEl={anchorEl}
+        onClick={(e) => {
+          handleClose();
+        }}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            "& .MuiMenu-paper": {
+              padding: "10px",
+            },
+            //  height: "auto",
+            overflow: "visible",
+            //  overflowY: "scroll",
+            mt: 0.5,
+            filter:
+              currentMode === "dark"
+                ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
+                : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
+            // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+            background:
+              currentMode === "dark"
+                ? "rgb(28 28 28 / 0.9)"
+                : "rgb(238 238 238 / 0.9)",
+            color: currentMode === "dark" ? "#FFFFFF" : "#000000",
+            minWidth: 300,
+            padding: 0,
+            "& .MuiAvatar-root": {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            "& .MuiList-root": {
+              padding: "3px",
+            },
+            "& .MuiList-root .clock-div": {
+              background: "transparent !important",
+              border: "none !important",
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: "center", vertical: "top" }}
+        anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+      >
+        <div className={` mt-2 border-2 rounded-md`}>
           <div className="grid grid-cols-2 gap-x-2">
             <div
               style={{
@@ -912,6 +959,7 @@ const FiltersDropdown = ({
               </label>
               <Box sx={darkModeColors}>
                 <TextField
+                  onClick={(e) => e.stopPropagation()}
                   label="From"
                   size="small"
                   type="number"
@@ -951,6 +999,7 @@ const FiltersDropdown = ({
               <Box sx={darkModeColors}>
                 <TextField
                   label="To"
+                  onClick={(e) => e.stopPropagation()}
                   size="small"
                   value={toRange}
                   type="number"
@@ -975,7 +1024,7 @@ const FiltersDropdown = ({
             </Button>
           )}
         </div>
-      )}
+      </Menu>
 
       {sendSMSModal && (
         <SendSMSModal
@@ -990,7 +1039,7 @@ const FiltersDropdown = ({
           setToRange={setToRange}
         />
       )}
-    </div>
+    </Box>
   );
 };
 

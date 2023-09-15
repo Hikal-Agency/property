@@ -34,7 +34,7 @@
   
 .coin .front, .coin .back {
     position: relative;
-    z-index: 1000;
+    /* z-index: 1000; */
     height: 30px;
     width: 30px;
     background: #ffbd0b;

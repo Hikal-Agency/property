@@ -1111,69 +1111,70 @@ const AllLeads = () => {
 
   return (
     <div className="pb-10 filters-dropdown">
-      <FiltersDropdown
-        agentSelected={agentSelected}
-        agents={agents}
-        enquiryTypeSelected={enquiryTypeSelected}
-        leadOriginSelected={leadOriginSelected}
-        projectNameTyped={projectNameTyped}
-        leadTypeSelected={leadTypeSelected}
-        emailFilter={emailFilter}
-        setEmailFilter={setEmailFilter}
-        toRange={toRange}
-        setToRange={setToRange}
-        fromRange={fromRange}
-        setFromRange={setFromRange}
-        managerSelected={managerSelected}
-        languageFilter={languageFilter}
-        startDate={startDate}
-        setStartDate={setStartDate}
-        endDate={endDate}
-        setEndDate={setEndDate}
-        setLanguageFilter={setLanguageFilter}
-        managers={managers}
-        otpSelected={otpSelected}
-        setOtpSelected={setOtpSelected}
-        setAgentSelected={setAgentSelected}
-        phoneNumberFilter={phoneNumberFilter}
-        setPhoneNumberFilter={setPhoneNumberFilter}
-        setAgents={setAgents}
-        setEnquiryTypeSelected={setEnquiryTypeSelected}
-        setLeadOriginSelected={setLeadOriginSelected}
-        setLeadTypeSelected={setLeadTypeSelected}
-        setManagerSelected={setManagerSelected}
-        setProjectNameTyped={setProjectNameTyped}
-      />
-
-      <div className="w-full flex items-center py-1">
-        <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
-        <h1
-          className={`text-lg font-semibold ${
-            currentMode === "dark"
-              ? "text-white"
-              : "text-black"
-          }`}
-        >
-          Search for{" "} {leadOriginSelected.formattedValue}
-          {" | "}
-          <span>{leadTypeSelected.formattedValue}</span>{" "}
-          <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
-            {pageState?.total}
-          </span>
-        </h1>
+      <div className="flex items-center justify-between">
+        <div className="w-full flex items-center py-4">
+          <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+          <h1
+            className={`text-lg font-semibold ${
+              currentMode === "dark"
+                ? "text-white"
+                : "text-black"
+            }`}
+          >
+            Search for{" "} {leadOriginSelected.formattedValue}
+            {" | "}
+            <span>{leadTypeSelected.formattedValue}</span>{" "}
+            <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+              {pageState?.total}
+            </span>
+          </h1>
+        </div>
+        <FiltersDropdown
+          agentSelected={agentSelected}
+          agents={agents}
+          enquiryTypeSelected={enquiryTypeSelected}
+          leadOriginSelected={leadOriginSelected}
+          projectNameTyped={projectNameTyped}
+          leadTypeSelected={leadTypeSelected}
+          emailFilter={emailFilter}
+          setEmailFilter={setEmailFilter}
+          toRange={toRange}
+          setToRange={setToRange}
+          fromRange={fromRange}
+          setFromRange={setFromRange}
+          managerSelected={managerSelected}
+          languageFilter={languageFilter}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          setLanguageFilter={setLanguageFilter}
+          managers={managers}
+          otpSelected={otpSelected}
+          setOtpSelected={setOtpSelected}
+          setAgentSelected={setAgentSelected}
+          phoneNumberFilter={phoneNumberFilter}
+          setPhoneNumberFilter={setPhoneNumberFilter}
+          setAgents={setAgents}
+          setEnquiryTypeSelected={setEnquiryTypeSelected}
+          setLeadOriginSelected={setLeadOriginSelected}
+          setLeadTypeSelected={setLeadTypeSelected}
+          setManagerSelected={setManagerSelected}
+          setProjectNameTyped={setProjectNameTyped}
+        />
       </div>
 
-      <Box className="flex items-center justify-between">
+      <Box className="flex items-center justify-between mb-2">
         <Box className="flex items-center">
           {selectedRows.length === 0 ? (
             <></>
           ) : (
-            <Alert color="success" sx={{ mb: 1, mr: 2 }}>
+            <Alert color="success" sx={{ mr: 2, mt: "3px" }}>
               {selectedRows.length} rows selected
             </Alert>
           )}
 
-          <div className="px-2 mb-4 flex items-center h-full">
+          <div className="px-2 flex items-center h-full">
             <div className="coin">
               <div className="front jump">
                 <div className="star"></div>
@@ -1185,6 +1186,10 @@ const AllLeads = () => {
             </div>
             <span className="mx-3 gold-grad" style={{ fontSize: "24px" }}>
               {userCredits}
+            </span>
+
+            <span>
+
             </span>
           </div>
         </Box>

@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Tooltip, Link as MuiLink, Button, Badge, Box } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import {RiCoinsLine} from "react-icons/ri";
+import { RiCoinsLine } from "react-icons/ri";
 import Avatar from "@mui/material/Avatar";
 
 import { useStateContext } from "../../context/ContextProvider";
@@ -78,7 +78,7 @@ const Navbar = () => {
     BACKEND_URL,
     isCollapsed,
     allRoutes,
-    setIsCollapsed
+    setIsCollapsed,
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -358,278 +358,193 @@ const Navbar = () => {
             </div>
           </Tooltip>
 
-          {currNavBtn &&
-            open && [
-              currNavBtn === "Clock" ? (
+          <Menu
+            className="navbar-menu-backdrop"
+            hideBackdrop={true}
+            disableScrollLock
+            onClick={handleClose}
+            onMouseLeave={handleClose}
+            anchorEl={anchorElem}
+            open={open}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                "& .MuiList-root .clock-div": {
+                  border: "none !important",
+                  background: "transparent !important",
+                },
+                mt: 2,
+                overflowY: "scroll",
+                filter:
+                  currentMode === "dark"
+                    ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
+                    : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
+                // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+                background:
+                  currentMode === "dark"
+                    ? "rgb(28 28 28 / 0.9)"
+                    : "rgb(238 238 238 / 0.9)",
+                color: currentMode === "dark" ? "#ffffff" : "black",
+                minWidth: 300,
+                borderRadius: "10px",
+                "& .MuiAvatar-root": {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root":
+                  {
+                    padding: "5px !important",
+                    paddingRight: "0px !important",
+                  },
+              },
+            }}
+            transformOrigin={{ horizontal: "center", vertical: "top" }}
+            anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+          >
+            {currNavBtn === "Notifications" ? (
+              <NotificationsMenuUpdated
+                handleClose={handleClose}
+                setCurrNavBtn={setCurrNavBtn}
+              />
+            ) : currNavBtn === "Meetings" ? (
+              <>
+                <UpcomingMeetingsMenu handleClose={handleClose} />
+              </>
+            ) : currNavBtn === "Clock" ? (
+              <Clock handleClose={handleClose} />
+            ) : currNavBtn === "Profile" ? (
+              <div className="pl-2">
                 <div
-                  className=""
-                  style={{ margin: 0, padding: 0, overflow: "hidden" }}
+                  className={`cursor-pointer card-hover ${
+                    currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                  } mb-3 p-4 rounded-xl shadow-sm w-full`}
                 >
-                  <Menu
-                    className="navbar-menu-backdrop"
-                    hideBackdrop={true}
-                    disableScrollLock
-                    open={open}
-                    anchorEl={anchorElem}
-                    PaperProps={{
-                      elevation: 0,
-                      sx: {
-                        //  height: "auto",
-                        overflow: "visible",
-                        //  overflowY: "scroll",
-                        mt: 0.5,
-                        filter:
-                          currentMode === "dark"
-                            ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
-                            : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
-                        // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
-                        background:
-                          currentMode === "dark"
-                            ? "rgb(28 28 28 / 0.9)"
-                            : "rgb(238 238 238 / 0.9)",
-                        color: currentMode === "dark" ? "#FFFFFF" : "#000000",
-                        minWidth: 300,
-                        padding: 0,
-                        "& .MuiAvatar-root": {
-                          width: 32,
-                          height: 32,
-                          ml: -0.5,
-                          mr: 1,
-                        },
-                        "& .MuiList-root": {
-                          padding: "3px",
-                        },
-                        "& .MuiList-root .clock-div": {
-                          background: "transparent !important",
-                          border: "none !important",
-                        },
-                      },
-                    }}
-                    transformOrigin={{ horizontal: "center", vertical: "top" }}
-                    anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-                  >
-                    <Clock handleClose={handleClose} />
-                  </Menu>
-                </div>
-              ) : (
-                <Menu
-                  className="navbar-menu-backdrop"
-                  hideBackdrop={true}
-                  disableScrollLock
-                  onClick={handleClose}
-                  onMouseLeave={handleClose}
-                  anchorEl={anchorElem}
-                  open={open}
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      mt: 2,
-                      overflowY: "scroll",
-                      filter:
-                        currentMode === "dark"
-                          ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
-                          : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
-                      // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
-                      background:
-                        currentMode === "dark"
-                          ? "rgb(28 28 28 / 0.9)"
-                          : "rgb(238 238 238 / 0.9)",
-                      color: currentMode === "dark" ? "#ffffff" : "black",
-                      minWidth: 300,
-                      borderRadius: "10px",
-                      "& .MuiAvatar-root": {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
-                      },
-                      "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root":
-                        {
-                          padding: "5px !important",
-                          paddingRight: "0px !important",
-                        },
-                    },
-                  }}
-                  transformOrigin={{ horizontal: "center", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-                >
-                  {currNavBtn === "Notifications" ? (
-                    <NotificationsMenuUpdated
-                      handleClose={handleClose}
-                      setCurrNavBtn={setCurrNavBtn}
-                    />
-                  ) : currNavBtn === "Meetings" ? (
-                    <>
-                      <UpcomingMeetingsMenu handleClose={handleClose} />
-                    </>
-                  ) : currNavBtn === "Profile" ? (
-                    <div className="pl-2">
-                      <div
-                        className={`cursor-pointer card-hover ${
-                          currentMode === "dark"
-                            ? "bg-[#000000]"
-                            : "bg-[#FFFFFF]"
-                        } mb-3 p-4 rounded-xl shadow-sm w-full`}
-                      >
-                        <Link
-                          to={"/profile"}
-                          onClick={() => setopenBackDrop(true)}
-                        >
-                          <div className="flex items-center justify-start">
-                            <Avatar
-                              src={User?.displayImg}
-                              className="inline-block"
-                            />
-                            <div className="flex justify-between items-center w-full h-full">
-                              <div className="mx-1 space-y-1">
-                                <p className="font-semibold">
-                                  {User?.userName}
-                                </p>
-                                <p className="text-xs capitalize">
-                                  {User?.position}
-                                </p>
-                              </div>
-                              <div className="text-sm rounded-full border border-[#DA1F26] px-2 py-1">
-                                Profile
-                              </div>
-                            </div>
-                          </div>
-                        </Link>
-                      </div>
-
-                      {/* LOGIN HISTORY  */}
-                      <div
-                        className={`cursor-pointer card-hover ${
-                          currentMode === "dark"
-                            ? "bg-[#000000]"
-                            : "bg-[#FFFFFF]"
-                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                      >
-                        {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
-                        <div className="flex items-center justify-start">
-                          <div
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-[#1C1C1C]"
-                                : "bg-[#EEEEEE]"
-                            } p-2 rounded-full mr-2`}
-                          >
-                            <VscHistory size={18} color={"#AAAAAA"} />
-                          </div>
-                          <div className="flex justify-between items-center w-full h-full">
-                            <div className="flex items-center">
-                              <p className="font-semibold mx-1 mr-2">
-                                Login history
-                              </p>
-                              <VscLock
-                                size={14}
-                                color={"#DA1F26"}
-                                className="mr-2"
-                              />
-                            </div>
-                            <div
-                              className="rounded-full bg-[#DA1F26] text-white px-2 py-1 font-bold"
-                              style={{ fontSize: "0.5rem" }}
-                            >
-                              SOON
-                            </div>
-                          </div>
+                  <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
+                    <div className="flex items-center justify-start">
+                      <Avatar src={User?.displayImg} className="inline-block" />
+                      <div className="flex justify-between items-center w-full h-full">
+                        <div className="mx-1 space-y-1">
+                          <p className="font-semibold">{User?.userName}</p>
+                          <p className="text-xs capitalize">{User?.position}</p>
                         </div>
-                        {/* </Link> */}
-                      </div>
-
-                      {/* CHANGE PASSWORD  */}
-                      <div
-                        className={`cursor-pointer card-hover ${
-                          currentMode === "dark"
-                            ? "bg-[#000000]"
-                            : "bg-[#FFFFFF]"
-                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                      >
-                        <Link
-                          to={"/changepassword"}
-                          onClick={() => setopenBackDrop(true)}
-                        >
-                          <div className="flex items-center justify-start">
-                            <div
-                              className={`${
-                                currentMode === "dark"
-                                  ? "bg-[#1C1C1C]"
-                                  : "bg-[#EEEEEE]"
-                              } p-2 rounded-full mr-2`}
-                            >
-                              <VscShield size={18} color={"#AAAAAA"} />
-                            </div>
-                            <p className="mx-1 mr-2 font-semibold">
-                              Change password
-                            </p>
-                          </div>
-                        </Link>
-                      </div>
-
-                      {/* IF SUBSCRIBED, UNSUBCRIBE  */}
-                      {User?.role !== 1 && isUserSubscribed && (
-                        <div
-                          className={`cursor-pointer card-hover ${
-                            currentMode === "dark"
-                              ? "bg-[#000000]"
-                              : "bg-[#FFFFFF]"
-                          } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                          onClick={UnsubscribeUser}
-                        >
-                          {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
-                          <div className="flex items-center justify-start">
-                            <div
-                              className={`${
-                                currentMode === "dark"
-                                  ? "bg-[#1C1C1C]"
-                                  : "bg-[#EEEEEE]"
-                              } p-2 rounded-full mr-2`}
-                            >
-                              <VscExclude size={18} color={"#AAAAAA"} />
-                            </div>
-                            <p className="mx-1 mr-2 font-semibold">
-                              Unsubscribe package
-                            </p>
-                            <VscLock
-                              size={14}
-                              color={"#DA1F26"}
-                              className="mr-2"
-                            />
-                          </div>
-                          {/* </Link> */}
-                        </div>
-                      )}
-
-                      {/* LOGOUT  */}
-                      <div
-                        className={`cursor-pointer card-hover ${
-                          currentMode === "dark"
-                            ? "bg-[#000000]"
-                            : "bg-[#FFFFFF]"
-                        } p-3 rounded-xl shadow-sm w-full`}
-                        onClick={LogoutUser}
-                      >
-                        <div className="flex items-center justify-start">
-                          <div
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-[#1C1C1C]"
-                                : "bg-[#EEEEEE]"
-                            } p-2 rounded-full mr-2`}
-                          >
-                            <VscSignOut size={18} color={"#AAAAAA"} />
-                          </div>
-                          <p className="mx-1 mr-2 font-semibold">Log out</p>
+                        <div className="text-sm rounded-full border border-[#DA1F26] px-2 py-1">
+                          Profile
                         </div>
                       </div>
                     </div>
-                  ) : (
-                    <></>
-                  )}
-                </Menu>
-              ),
-            ]}
+                  </Link>
+                </div>
+
+                {/* LOGIN HISTORY  */}
+                <div
+                  className={`cursor-pointer card-hover ${
+                    currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                  } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                >
+                  {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
+                  <div className="flex items-center justify-start">
+                    <div
+                      className={`${
+                        currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                      } p-2 rounded-full mr-2`}
+                    >
+                      <VscHistory size={18} color={"#AAAAAA"} />
+                    </div>
+                    <div className="flex justify-between items-center w-full h-full">
+                      <div className="flex items-center">
+                        <p className="font-semibold mx-1 mr-2">Login history</p>
+                        <VscLock size={14} color={"#DA1F26"} className="mr-2" />
+                      </div>
+                      <div
+                        className="rounded-full bg-[#DA1F26] text-white px-2 py-1 font-bold"
+                        style={{ fontSize: "0.5rem" }}
+                      >
+                        SOON
+                      </div>
+                    </div>
+                  </div>
+                  {/* </Link> */}
+                </div>
+
+                {/* CHANGE PASSWORD  */}
+                <div
+                  className={`cursor-pointer card-hover ${
+                    currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                  } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                >
+                  <Link
+                    to={"/changepassword"}
+                    onClick={() => setopenBackDrop(true)}
+                  >
+                    <div className="flex items-center justify-start">
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                        } p-2 rounded-full mr-2`}
+                      >
+                        <VscShield size={18} color={"#AAAAAA"} />
+                      </div>
+                      <p className="mx-1 mr-2 font-semibold">Change password</p>
+                    </div>
+                  </Link>
+                </div>
+
+                {/* IF SUBSCRIBED, UNSUBCRIBE  */}
+                {User?.role !== 1 && isUserSubscribed && (
+                  <div
+                    className={`cursor-pointer card-hover ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                    onClick={UnsubscribeUser}
+                  >
+                    {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
+                    <div className="flex items-center justify-start">
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                        } p-2 rounded-full mr-2`}
+                      >
+                        <VscExclude size={18} color={"#AAAAAA"} />
+                      </div>
+                      <p className="mx-1 mr-2 font-semibold">
+                        Unsubscribe package
+                      </p>
+                      <VscLock size={14} color={"#DA1F26"} className="mr-2" />
+                    </div>
+                    {/* </Link> */}
+                  </div>
+                )}
+
+                {/* LOGOUT  */}
+                <div
+                  className={`cursor-pointer card-hover ${
+                    currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                  } p-3 rounded-xl shadow-sm w-full`}
+                  onClick={LogoutUser}
+                >
+                  <div className="flex items-center justify-start">
+                    <div
+                      className={`${
+                        currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                      } p-2 rounded-full mr-2`}
+                    >
+                      <VscSignOut size={18} color={"#AAAAAA"} />
+                    </div>
+                    <p className="mx-1 mr-2 font-semibold">Log out</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
+          </Menu>
+
           {/* {isClicked.cart && <Cart />} */}
           {/* {isClicked.chat && <Chat />} */}
           {/* {isClicked.notification && <Notification />} */}
