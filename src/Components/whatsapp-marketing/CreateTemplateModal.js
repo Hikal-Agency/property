@@ -104,7 +104,7 @@ const CreateTemplateModal = ({
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] md:w-[70%]  ${
+          className={`w-[calc(100%-20px)] md:w-[60%]  ${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md overflow-y-scroll`}
         >
