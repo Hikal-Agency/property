@@ -11,7 +11,7 @@ const productIds = {
   "Pro": "prod_NhMP8zMuo2V7FB"
 };
 
-const Checkout = ({ allPlans, plan }) => {
+const Checkout = ({ allPlans, plan, isPurchaseCredits }) => {
 
   const navigate = useNavigate();
   const selectedPlan = allPlans.find((p) => p.name === plan);
@@ -36,7 +36,7 @@ const Checkout = ({ allPlans, plan }) => {
       });
       const stripeToken = response.data;
        await axios.post(`${BACKEND_URL}/subscribe`, JSON.stringify({
-        package_name: productIds[selectedPlan.name],
+        package_name: selectedPlan.name,
         package_id: productIds[selectedPlan.name],
         stripe_token: stripeToken,
         email: User?.userEmail,

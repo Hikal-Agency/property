@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Button, Box, Select, MenuItem, Alert, Tooltip } from "@mui/material";
+import { Button, Box, Select, MenuItem, Alert, Tooltip, Typography } from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -59,6 +59,7 @@ import { IoMdChatboxes } from "react-icons/io";
 import { MdSms, MdCampaign } from "react-icons/md";
 import { RiMailSendFill } from "react-icons/ri";
 import { TbWorldWww } from "react-icons/tb";
+import PurchaseCreditsModal from "../../Components/whatsapp-marketing/purchaseCredits";
 
 // import "../../styles/animation.css";
 
@@ -108,7 +109,9 @@ const AllLeads = () => {
   const [agents, setAgents] = useState(SalesPerson || {});
   const [pageRange, setPageRange] = useState();
   const [error, setError] = useState(false);
+  const [purchaseCreditsModal, setPurchaseCreditsModal] = useState(false);
   const { hasPermission } = usePermission();
+
   const [addLeadModalOpen, setAddLeadModalOpen] = useState(false);
 
   const [openMessageModal, setOpenMessageModal] = useState({
@@ -1188,9 +1191,17 @@ const AllLeads = () => {
               {userCredits}
             </span>
 
-            <span>
-
-            </span>
+            <Typography onClick={() => setPurchaseCreditsModal(true)} sx={{
+              color: "#0168fe",
+              cursor: "pointer",
+              ml: "2px",
+              fontWeight: "600",
+              "&:hover": {
+                textDecoration: "underline"
+              }
+            }}>
+              <small>Purchase</small>
+            </Typography>
           </div>
         </Box>
 
@@ -1485,6 +1496,13 @@ const AllLeads = () => {
           selectionModelRef={selectionModelRef}
           bulkDeleteModalOpen={bulkDeleteModalOpen}
           handleCloseDeleteModal={() => setBulkDeleteModalOpen(false)}
+        />
+      )}
+
+      {purchaseCreditsModal && (
+        <PurchaseCreditsModal
+          purchaseCreditsModal={purchaseCreditsModal}
+          handleClose={() => setPurchaseCreditsModal(false)}
         />
       )}
     </div>
