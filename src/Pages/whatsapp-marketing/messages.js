@@ -1187,6 +1187,10 @@ const AllLeads = () => {
             <span className="mx-3 gold-grad" style={{ fontSize: "24px" }}>
               {userCredits}
             </span>
+
+            <span>
+
+            </span>
           </div>
         </Box>
 
