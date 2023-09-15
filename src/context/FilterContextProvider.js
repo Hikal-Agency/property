@@ -11,6 +11,8 @@ const initialState = {
 };
 
 export const FilterContextProvider = ({ children }) => {
+  const [managerSelected, setManagerSelected] = useState("");
+  const [agentSelected, setAgentSelected] = useState("");
   const [emailFilter, setEmailError] = useState("");
   const [toRange, setToRange] = useState("");
   const [fromRange, setFromRange] = useState("");
@@ -19,9 +21,19 @@ export const FilterContextProvider = ({ children }) => {
   const [languageFilter, setLanguageFilter] = useState("");
   const [otpSelected, setOtpSelected] = useState({ id: 0 });
   const [phoneNumberFilter, setPhoneNumberFilter] = useState("");
+  const [projectNameTyped, setProjectNameTyped] = useState("");
+
+  const [leadOriginSelected, setLeadOriginSelected] = useState({
+    id: "hotleads",
+    formattedValue: "Fresh Leads",
+  });
+  const [leadTypeSelected, setLeadTypeSelected] = useState({
+    id: "all",
+    formattedValue: "All",
+  });
+  const [enquiryTypeSelected, setEnquiryTypeSelected] = useState({ id: 0 });
 
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <FilterContext.Provider
       value={{
         emailFilter,
@@ -40,6 +52,18 @@ export const FilterContextProvider = ({ children }) => {
         setOtpSelected,
         phoneNumberFilter,
         setPhoneNumberFilter,
+        leadOriginSelected,
+        setLeadOriginSelected,
+        leadTypeSelected,
+        setLeadTypeSelected,
+        enquiryTypeSelected,
+        setEnquiryTypeSelected,
+        projectNameTyped,
+        setProjectNameTyped,
+        managerSelected,
+        setManagerSelected,
+        agentSelected,
+        setAgentSelected,
       }}
     >
       {children}
