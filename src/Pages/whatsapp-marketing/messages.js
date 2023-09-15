@@ -29,6 +29,7 @@ import usePermission from "../../utils/usePermission";
 import FiltersDropdown from "../../Components/whatsapp-marketing/FiltersDropdown";
 import AddLeadModal from "../../Components/whatsapp-marketing/AddLeadModal";
 import ConfirmBulkDelete from "../../Components/whatsapp-marketing/ConfirmBulkDelete";
+import Coin from "../../Components/_elements/Coin";
 
 import {
   BiImport,
@@ -1190,20 +1191,7 @@ const AllLeads = () => {
           )}
 
           <div className="px-2 flex items-center h-full">
-            <div className="coin">
-              <div className="front jump">
-                <div className="star"></div>
-                <span className="currency">hi</span>
-                <div className="shapes"></div>
-              </div>
-              <div
-                className={`shadow ${
-                  currentMode === "dark"
-                    ? "shadow-dark-mode"
-                    : "shadow-light-mode"
-                }`}
-              ></div>
-            </div>
+            <Coin />
             <span className="mx-3 gold-grad" style={{ fontSize: "24px" }}>
               {userCredits}
             </span>
