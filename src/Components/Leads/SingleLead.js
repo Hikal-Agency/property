@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
+import { IoIosAlert } from "react-icons/io";
 
 import usePermission from "../../utils/usePermission";
 
@@ -51,6 +52,8 @@ const SingleLead = ({
   const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [singleLeadData, setsingleLeadData] = useState({});
+  const [open, setOpen] = useState(false);
+  const [requestBtnLoading, setRequestBtnLoading] = useState(false);
 
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [lastNote, setLastNote] = useState("");
@@ -62,6 +65,10 @@ const SingleLead = ({
     isOpened: false,
   });
   const [deleteloading, setdeleteloading] = useState(false);
+
+  const handleCloseRequestModel = () => {
+    setOpen(false);
+  };
 
   // EDIT BTN CLICK FUNC
   const HandleEditFunc = (params) => {
@@ -147,6 +154,8 @@ const SingleLead = ({
   // };
 
   const handleRequest = async (e, data) => {
+    console.log("open: ", open);
+    setRequestBtnLoading(true);
     e.preventDefault();
     const currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
 
@@ -189,6 +198,7 @@ const SingleLead = ({
 
         console.log("request: ", notification);
         console.log("updatelead: ", updatelead);
+        setOpen(false);
 
         toast.success("Reshuffle request sent.", {
           position: "top-right",
@@ -202,10 +212,13 @@ const SingleLead = ({
         });
 
         setLoading(false);
+        setRequestBtnLoading(false);
 
         // Resolve the Promise when both requests are successful
         resolve("Both requests completed successfully.");
       } catch (error) {
+        setRequestBtnLoading(false);
+
         setLoading(false);
         console.log("error", error);
         toast.error("Unable to send the request.", {
@@ -606,7 +619,8 @@ const SingleLead = ({
                     } hover:bg-orange-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                   >
                     <Tooltip title="Request for Reshuffle" arrow>
-                      <button onClick={(e) => handleRequest(e, LeadData)}>
+                      {/* <button onClick={(e) => handleRequest(e, LeadData)}> */}
+                      <button onClick={(e) => setOpen([true, e, LeadData])}>
                         <BsShuffle size={16} />
                       </button>
                     </Tooltip>
@@ -775,6 +789,67 @@ const SingleLead = ({
         }
         lead={LeadData}
       />
+
+      {open[0] && (
+        <Modal
+          keepMounted
+          open={open[0]}
+          onClose={handleCloseRequestModel}
+          aria-labelledby="keep-mounted-modal-title"
+          aria-describedby="keep-mounted-modal-description"
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <div
+            style={style}
+            className={`w-[calc(100%-20px)] md:w-[40%]  ${
+              currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
+            } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
+          >
+            <div className="flex flex-col justify-center items-center">
+              <IoIosAlert size={50} className="text-main-red-color text-2xl" />
+              <h1
+                className={`font-semibold pt-3 text-lg ${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                Do you really want to send reshuffle request?
+              </h1>
+            </div>
+
+            <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+              <Button
+                className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                ripple="true"
+                size="lg"
+                onClick={(e) => handleRequest(e, open[2])}
+              >
+                {requestBtnLoading ? (
+                  <CircularProgress size={18} sx={{ color: "blue" }} />
+                ) : (
+                  <span>Confirm</span>
+                )}
+              </Button>
+
+              <Button
+                onClick={handleCloseRequestModel}
+                ripple="true"
+                variant="outlined"
+                className={`shadow-none  rounded-md text-sm  ${
+                  currentMode === "dark"
+                    ? "text-white border-white"
+                    : "text-main-red-color border-main-red-color"
+                }`}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
 
       {/* {UpdateLeadModelOpen && (
         <UpdateLead
