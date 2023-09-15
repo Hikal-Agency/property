@@ -13,7 +13,7 @@ const initialState = {
 export const FilterContextProvider = ({ children }) => {
   const [managerSelected, setManagerSelected] = useState("");
   const [agentSelected, setAgentSelected] = useState("");
-  const [emailFilter, setEmailError] = useState("");
+  const [emailFilter, setEmailFilter] = useState("");
   const [toRange, setToRange] = useState("");
   const [fromRange, setFromRange] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -37,7 +37,7 @@ export const FilterContextProvider = ({ children }) => {
     <FilterContext.Provider
       value={{
         emailFilter,
-        setEmailError,
+        setEmailFilter,
         toRange,
         setToRange,
         fromRange,
@@ -71,4 +71,4 @@ export const FilterContextProvider = ({ children }) => {
   );
 };
 
-export const useStateContext = () => useContext(FilterContext);
+export const useFilterContext = () => useContext(FilterContext);

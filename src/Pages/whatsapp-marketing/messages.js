@@ -69,6 +69,7 @@ import { MdSms, MdCampaign } from "react-icons/md";
 import { RiMailSendFill } from "react-icons/ri";
 import { TbWorldWww } from "react-icons/tb";
 import PurchaseCreditsModal from "../../Components/whatsapp-marketing/purchaseCredits";
+import { useFilterContext } from "../../context/FilterContextProvider";
 
 // import "../../styles/animation.css";
 
@@ -89,31 +90,61 @@ const AllLeads = () => {
     userCredits,
     isArabic,
   } = useStateContext();
+  const {
+    toRange,
+    setToRange,
+    fromRange,
+    setFromRange,
+    emailFilter,
+    setEmailFilter,
+    phoneNumberFilter,
+    setPhoneNumberFilter,
+    otpSelected,
+    setOtpSelected,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    languageFilter,
+    setLanguageFilter,
+    leadOriginSelected,
+    setLeadOriginSelected,
+    leadTypeSelected,
+    setLeadTypeSelected,
+    enquiryTypeSelected,
+    setEnquiryTypeSelected,
+    managerSelected,
+    setManagerSelected,
+    agentSelected,
+    setAgentSelected,
+    projectNameTyped,
+    setProjectNameTyped,
+  } = useFilterContext();
   console.log("Managers: ", Managers);
   const token = localStorage.getItem("auth-token");
   const [selectedRows, setSelectedRows] = useState([]);
-  const [otpSelected, setOtpSelected] = useState({ id: 0 });
-  const [phoneNumberFilter, setPhoneNumberFilter] = useState("");
-  const [emailFilter, setEmailFilter] = useState("");
-  const [toRange, setToRange] = useState("");
-  const [fromRange, setFromRange] = useState("");
-  const [startDate, setStartDate] = useState("");
+  // const [otpSelected, setOtpSelected] = useState({ id: 0 });
+  // const [phoneNumberFilter, setPhoneNumberFilter] = useState("");
+  // const [emailFilter, setEmailFilter] = useState("");
+  // const [toRange, setToRange] = useState("");
+  // const [fromRange, setFromRange] = useState("");
+  // const [startDate, setStartDate] = useState("");
   const [bulkDeleteModalOpen, setBulkDeleteModalOpen] = useState();
-  const [endDate, setEndDate] = useState("");
-  const [languageFilter, setLanguageFilter] = useState("");
-  const [leadOriginSelected, setLeadOriginSelected] = useState({
-    id: "hotleads",
-    formattedValue: "Fresh Leads",
-  });
-  const [leadTypeSelected, setLeadTypeSelected] = useState({
-    id: "all",
-    formattedValue: "All",
-  });
+  // const [endDate, setEndDate] = useState("");
+  // const [languageFilter, setLanguageFilter] = useState("");
+  // const [leadOriginSelected, setLeadOriginSelected] = useState({
+  //   id: "hotleads",
+  //   formattedValue: "Fresh Leads",
+  // });
+  // const [leadTypeSelected, setLeadTypeSelected] = useState({
+  //   id: "all",
+  //   formattedValue: "All",
+  // });
   const selectionModelRef = useRef([]);
-  const [enquiryTypeSelected, setEnquiryTypeSelected] = useState({ id: 0 });
-  const [managerSelected, setManagerSelected] = useState("");
-  const [agentSelected, setAgentSelected] = useState("");
-  const [projectNameTyped, setProjectNameTyped] = useState("");
+  // const [enquiryTypeSelected, setEnquiryTypeSelected] = useState({ id: 0 });
+  // const [managerSelected, setManagerSelected] = useState("");
+  // const [agentSelected, setAgentSelected] = useState("");
+  // const [projectNameTyped, setProjectNameTyped] = useState("");
   const [managers, setManagers] = useState(Managers || []);
   const [agents, setAgents] = useState(SalesPerson || {});
   const [pageRange, setPageRange] = useState();
