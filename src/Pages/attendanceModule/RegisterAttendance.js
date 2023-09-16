@@ -44,6 +44,7 @@ const RegisterAttendance = () => {
 
   console.log("USer: ", User);
   const [loading, setLoading] = useState(false);
+  const [dataLoading, setDataLoading] = useState(true);
   const [attendanceTime, setAttendanceTime] = useState(null);
   const [attendanceType, setAttendanceType] = useState(null);
 
@@ -267,7 +268,9 @@ const RegisterAttendance = () => {
         currentDayAttendance?.attendance_type || "Not Available";
       console.log("Attendance Type for Current Date:", attendanceType);
       setAttendanceType(attendanceType);
+      setDataLoading(false);
     } catch (error) {
+      setDataLoading(false);
       console.error("Error fetching attendance:", error);
       toast.error(`Unable to fetch attendance`, {
         position: "top-right",
@@ -448,45 +451,38 @@ const RegisterAttendance = () => {
               }`}
             ></hr> */}
 
-            {attendanceType === "Check-in" ? (
-              <button
-                onClick={() => MarkAttendance("out")}
-                className={`mb-3 mt-2 bg-main-red-color text-white p-2 rounded-md w-full text-center ${
-                  loading ? "relative" : ""
-                } `}
-                style={{ textTransform: "capitalize", cursor: "pointer" }}
-                disabled={loading}
-              >
-                {loading ? (
-                  <CircularProgress
-                    // className="absolute inset-0 m-auto"
-                    size={24}
-                    color="inherit"
-                  />
-                ) : (
-                  <span>Check Out</span>
-                )}
-              </button>
-            ) : (
-              <button
-                onClick={() => MarkAttendance("in")}
-                className={`mb-3 bg-[#008000] text-white p-2 rounded-full w-full text-center ${
-                  loading ? "relative" : ""
-                }`}
-                style={{ textTransform: "capitalize", cursor: "pointer" }}
-                disabled={loading}
-              >
-                {loading ? (
-                  <CircularProgress
-                    // className="absolute inset-0 m-auto"
-                    size={24}
-                    color="inherit"
-                  />
-                ) : (
-                  "Check In"
-                )}
-              </button>
-            )}
+            {!dataLoading &&
+              (attendanceType === "Check-in" ? (
+                <button
+                  onClick={() => MarkAttendance("out")}
+                  className={`mb-3 mt-2 bg-main-red-color text-white p-2 rounded-md w-full text-center ${
+                    loading ? "relative" : ""
+                  } `}
+                  style={{ textTransform: "capitalize", cursor: "pointer" }}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    <span>Check Out</span>
+                  )}
+                </button>
+              ) : (
+                <button
+                  onClick={() => MarkAttendance("in")}
+                  className={`mb-3 bg-[#008000] text-white p-2 rounded-full w-full text-center ${
+                    loading ? "relative" : ""
+                  }`}
+                  style={{ textTransform: "capitalize", cursor: "pointer" }}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    "Check In"
+                  )}
+                </button>
+              ))}
           </div>
         </div>
       </div>
