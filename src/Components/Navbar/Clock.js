@@ -58,7 +58,7 @@ const Clock = ({handleClose}) => {
               ? "#1C1C1C !important"
               : "#1C1C1C !important",
         },
-        "& .css-3kgbgy-MuiPaper-root-MuiPopover-paper-MuiMenu-paper .MuiList-root .clock-div": {
+        "& .MuiPaper-root-MuiPopover-paper-MuiMenu-paper, .MuiList-root .clock-div": {
           backgroundColor:
             currentMode === "dark"
               ? "#1C1C1C !important"
