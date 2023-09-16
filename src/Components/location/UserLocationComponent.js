@@ -5,14 +5,16 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 
-
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 
 import { BsPinMap, BsCircleFill } from "react-icons/bs";
 import { BiCurrentLocation } from "react-icons/bi";
 import { AiOutlineFieldTime } from "react-icons/ai";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const UserLocationComponent = () => {
   const {
@@ -25,8 +27,10 @@ const UserLocationComponent = () => {
   } = useStateContext();
 
   const [loading, setloading] = useState(true);
+  const [filterDate, setFilterDate] = useState();
   const navigate = useNavigate();
   const location = useLocation();
+  const token = localStorage.getItem("auth-token");
 
   const [selectedUser, setSelectedUser] = React.useState(null);
 
@@ -41,9 +45,17 @@ const UserLocationComponent = () => {
     mapTypeControl: true,
   };
 
-  const FetchLocation = async (token) => {
+  const FetchLocation = async (date) => {
+    let url = `${BACKEND_URL}/locations`;
+    if (date) {
+      const startDate = moment(date).format("YYYY-MM-DD");
+      const endDate = moment(date).add(1, "days").format("YYYY-MM-DD");
+      const dateRange = [startDate, endDate].join(",");
+
+      url += `?data_range=${dateRange}`;
+    }
     await axios
-      .get(`${BACKEND_URL}/locations`, {
+      .get(url, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -65,9 +77,17 @@ const UserLocationComponent = () => {
       });
   };
 
-  const FetchLastLocation = async (token) => {
+  const FetchLastLocation = async (date) => {
+    let url = `${BACKEND_URL}/locations?last_by_all`;
+    if (date) {
+      const startDate = moment(date).format("YYYY-MM-DD");
+      const endDate = moment(date).add(1, "days").format("YYYY-MM-DD");
+      const dateRange = [startDate, endDate].join(",");
+
+      url += `&data_range=${dateRange}`;
+    }
     await axios
-      .get(`${BACKEND_URL}/locations?last_by_all`, {
+      .get(url, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -95,10 +115,9 @@ const UserLocationComponent = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
     if (token) {
-      FetchLocation(token);
-      FetchLastLocation(token);
+      FetchLocation();
+      FetchLastLocation();
     } else {
       navigate("/", {
         state: {
@@ -110,11 +129,64 @@ const UserLocationComponent = () => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    // FetchLocation(filterDate);
+    FetchLastLocation(filterDate);
+    // eslint-disable-next-line
+  }, [filterDate]);
+
   return (
     <>
-      <h4 className="text-red-600 font-bold text-xl mb-2 text-center">
-        User Locations
-      </h4>
+      <div className="flex justify-center items-center my-5">
+        <div className="">
+          <h4 className="text-red-600 font-bold text-xl mb-2 text-center">
+            User Locations
+          </h4>
+        </div>
+        <div className="ml-3">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              value={filterDate}
+              views={["year", "month", "day"]}
+              format="yyyy-MM-dd"
+              onChange={(newValue) => {
+                // setMeetingDateValue(newValue);
+
+                const formattedDate = moment(newValue?.$d).format("YYYY-MM-DD");
+                setFilterDate(formattedDate);
+
+                // FetchLastLocation(token, formattedDate);
+                // FetchLocation(token, formattedDate);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  size="small"
+                  sx={{
+                    "& input": {
+                      color: currentMode === "dark" ? "white" : "black",
+                    },
+                    "&": {
+                      borderRadius: "4px",
+                      border:
+                        currentMode === "dark"
+                          ? "1px solid white"
+                          : "1px solid black",
+                    },
+                    "& .MuiSvgIcon-root": {
+                      color: currentMode === "dark" ? "white" : "black",
+                    },
+                  }}
+                  label="Meeting Date"
+                  {...params}
+                  onKeyDown={(e) => e.preventDefault()}
+                  readOnly={true}
+                />
+              )}
+            />
+          </LocalizationProvider>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-3">
         <div
           className={`${
