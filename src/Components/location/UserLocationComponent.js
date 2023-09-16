@@ -138,11 +138,24 @@ const UserLocationComponent = () => {
   return (
     <>
       <div className="flex justify-center items-center my-5">
-        <div className="">
-          <h4 className="text-red-600 font-bold text-xl mb-2 text-center">
+        {/* <div className=""> */}
+        <div className="w-full flex flex-row items-center justify-center py-1">
+          {/* <div> */}
+          <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+          <h1
+            className={`text-lg font-semibold ${
+              currentMode === "dark" ? "text-white" : "text-black"
+            }`}
+          >
             User Locations
-          </h4>
+          </h1>
+          {/* </div> */}
+          {/* <div>
+              DATE FIELD (default is today's date) / (If "2023-09-15" is
+              selected, date_range = "2023-09-15,2023-09-16")
+            </div> */}
         </div>
+        {/* </div> */}
         <div className="ml-3">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
