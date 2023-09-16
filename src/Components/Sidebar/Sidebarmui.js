@@ -30,6 +30,8 @@ import { useLocation } from "react-router-dom";
 import { GoBrowser } from "react-icons/go";
 import ringtone from "../../assets/new-message-ringtone.mp3";
 import notifRingtone from "../../assets/notification-ringtone.mp3";
+import useWindowSize from "react-use/lib/useWindowSize";
+
 import {
   MdLeaderboard,
   MdPersonAdd,
@@ -62,6 +64,8 @@ import { toast } from "react-toastify";
 import usePermission from "../../utils/usePermission";
 import { FaArchive } from "react-icons/fa";
 import ReminderToast from "./ReminderToast";
+import DealClosedAlert from "./DealClosedAlert";
+import ReactConfetti from "react-confetti";
 
 // import { Link as NextLink } from "next/link";
 
@@ -86,8 +90,8 @@ const Sidebarmui = () => {
     setUnreadNotifsCount,
     setNotifIconAnimating,
     getNotifCounts,
-    userCredits, 
-    setUserCredits
+    userCredits,
+    setUserCredits,
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -99,7 +103,16 @@ const Sidebarmui = () => {
   const ringtoneElem = useRef();
   const notifRingtoneElem = useRef();
   const { hasPermission } = usePermission();
+  const [dealClosedAnimation, setDealClosedAnimation] = useState({
+    isOpen: false,
+    data: {},
+  });
+  const [confetti, setConfetti] = useState(false);
   const { collapseSidebar } = useProSidebar();
+  const [fadeOutConfetti, setFadeOutConfetti] = useState(false);
+  const [closeDealPopupFade, setCloseDealPopupFade] = useState(false);
+
+  const { screenWidth, screenHeight } = useWindowSize();
 
   const [openedSubMenu, setOpenSubMenu] = useState({
     menuIndex: 0,
@@ -108,6 +121,37 @@ const Sidebarmui = () => {
   });
 
   const [animateProfilePic, setAnimateProfilePic] = useState(false);
+
+  const startDealCloseAnimation = (data) => {
+    setConfetti(true);
+    setTimeout(() => {
+      setFadeOutConfetti(true);
+      setTimeout(() => {
+        setConfetti(false);
+        setFadeOutConfetti(false);
+      }, 500);
+    }, 8000);
+
+    setTimeout(() => {
+      setDealClosedAnimation({
+        ...dealClosedAnimation,
+        isOpen: true,
+        data,
+      });
+
+      setTimeout(() => {
+        setCloseDealPopupFade(true);
+        setTimeout(() => {
+          setDealClosedAnimation({
+            ...dealClosedAnimation,
+            isOpen: false,
+            data,
+          });
+          setCloseDealPopupFade(false);
+        }, 500);
+      }, 15000);
+    }, 3000);
+  };
 
   const handleClickProfile = (e) => {
     if (!e.target.closest(".view-image")) {
@@ -412,6 +456,10 @@ const Sidebarmui = () => {
         );
       });
 
+      socket.on("deal_closed", (data) => {
+        startDealCloseAnimation(data);
+      });
+
       socket.on("notification_lead_manager_assigned", (data) => {
         // toast.success(
         //   `Lead ${data?.leadName} has been assigned to ${data?.newManager} by ${data?.by}`,
@@ -447,16 +495,6 @@ const Sidebarmui = () => {
       socket.on("notification_meeting_scheduled", (data) => {
         toast.success(
           `Countdown to victory! Your meeting with ${data?.leadName} is scheduled for ${data?.meetingDate} at ${data?.meetingTime}`,
-          notificationToastSettings
-        );
-        setUnreadCount();
-      });
-
-      socket.on("notification_deal_closed", (data) => {
-        toast.success(
-          `${data?.closedByName} closed a unit of ${data?.project} at AED ${
-            data?.amount || 0
-          }`,
           notificationToastSettings
         );
         setUnreadCount();
@@ -1278,9 +1316,19 @@ const Sidebarmui = () => {
         <source src={notifRingtone} type="audio/ogg" />
         <source src={notifRingtone} type="audio/mpeg" />
       </audio>
+
+      {confetti && (
+        <ReactConfetti
+          className={fadeOutConfetti ? "fade-out-confetti" : ""}
+          tweenDuration={8000}
+          width={screenWidth}
+          height={screenHeight}
+        />
+      )}
+
       <div
         style={{ display: "flex", height: "100%" }}
-        className={`max-w-[200px] z-[1000] sticky top-0 left-0 `}
+        className={`max-w-[200px] sticky top-0 left-0 `}
       >
         <Sidebar
           rootStyles={{
@@ -1982,6 +2030,13 @@ const Sidebarmui = () => {
           )} */}
         </Sidebar>
       </div>
+
+      {dealClosedAnimation?.isOpen && (
+        <DealClosedAlert
+          className={closeDealPopupFade ? "fade-out-popup" : ""}
+          data={dealClosedAnimation?.data}
+        />
+      )}
 
       {newMessageReceived === User?.loginId &&
         location.pathname !== "/chat" && (

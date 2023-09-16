@@ -1002,6 +1002,9 @@ label[for="bulkImport"] .MuiButtonBase-root {
   }
 }
 
+.Banner4 {
+  animation: float 1.5s linear alternate infinite;
+}
 
 .animate-profile-pic {
   display: block;
@@ -1026,6 +1029,16 @@ label[for="bulkImport"] .MuiButtonBase-root {
   }
 }
 
+@keyframes float {
+    0% {
+      transform: translateY(-20px);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+}
+
 .navbar-menu-backdrop{
   z-index: 15 !important;
 }
@@ -1036,4 +1049,105 @@ label[for="bulkImport"] .MuiButtonBase-root {
 
 .filters-menu {
   z-index: 35 !important;
+}
+
+.deal-closed-animation {
+  position: fixed; 
+  bottom: 0; 
+  left: 0;
+  right: 0;
+  z-index: 999;
+  width: 100%;
+  animation: slideIn 1s ease-in-out forwards;
+}
+
+@keyframes slideIn {
+    0% {
+      transform: translateY(130%);
+    }
+    
+    20% {
+      transform: scale(1.5) translateY(-18%);
+    }
+    
+    100% {
+      transform: scale(1) translateY(0);
+    }
+}
+
+.fade-out-confetti, .fade-out-popup{
+  animation: fadeoutclosedanimation .4s ease-in-out forwards;
+}
+
+@keyframes fadeoutclosedanimation {
+    100%{
+      opacity: 0;
+    }
+}
+
+
+.OffEx4 {/* ex 4 texts  */
+  -webkit-animation: fadeinout 1s linear forwards;
+ animation: fadeinout 1s linear alternate infinite;
+ animation-delay: 0s;
+}
+
+.triangle1Ex4{
+ -webkit-animation: fadeinout 4s linear forwards;
+ animation: fadeinout 3s linear alternate infinite;
+ animation-delay: 2s;
+}
+
+.triangle2Ex4{
+ -webkit-animation: fadeinout 4s linear forwards;
+ animation: fadeinout 2s linear alternate infinite;
+ animation-delay: 3s;
+}
+
+.triangle3Ex4{
+ -webkit-animation: fadeinout 4s linear forwards;
+ animation: fadeinout 1s linear alternate infinite;
+ animation-delay: 4s;
+}
+
+.BorderAnimationEx4 {
+ stroke-dasharray: 2000;
+ stroke-dashoffset: 2000;
+ animation: BannerBorder 3s linear forwards;
+ animation-delay: 0s;
+}
+
+/* Global Border Animation   */ 
+@keyframes BannerBorder {
+ from {
+   stroke-dashoffset: 2000;
+ }
+ to {
+   stroke-dashoffset: 1;
+ }
+}
+
+@-webkit-keyframes fadeinout {
+ 0%,100% { opacity: 0; }
+ 50% { opacity: 1; }
+}
+
+@keyframes fadeinout {
+ 0%,100% { opacity: 0; }
+ 50% { opacity: 1; }
+}
+
+
+.amount-animation {
+ animation:  amountFade 1s linear alternate infinite;
+}
+
+@keyframes amountFade {
+    0% {
+      opacity: 0.6;
+    }
+
+    100% {
+      opacity: 1;
+    }
 }
