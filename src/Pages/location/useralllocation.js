@@ -82,7 +82,7 @@ const UserAllLocation = (props) => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <div className="px-5 ">
+          <div className="px-5">
             <h4 className="text-red-600 font-bold text-lg mb-2 text-center">
               {UserLocationData?.location?.data?.length > 0 ? (
                 <>{UserLocationData?.locations?.data[0].userName}</>
