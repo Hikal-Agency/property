@@ -1,9 +1,9 @@
 // import Image from "next/image";
 import moment from "moment";
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
@@ -32,7 +32,15 @@ const UserLocationComponent = () => {
   const location = useLocation();
   const token = localStorage.getItem("auth-token");
 
-  const [selectedUser, setSelectedUser] = React.useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  
+  const handleCardclick = (location) => {
+    setSelectedLocation(location);
+  };
+
+  const handlePinClick = (location) => {
+    setSelectedLocation(location);
+  };
 
   console.log("Last location data: ", LastLocationData);
   const mapContainerStyle = {
@@ -137,26 +145,21 @@ const UserLocationComponent = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center my-5">
-        {/* <div className=""> */}
-        <div className="w-full flex flex-row items-center justify-center py-1">
-          {/* <div> */}
+      <div className="w-full flex items-center justify-between py-1">
+        <div className="flex items-center mb-2">
           <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
             className={`text-lg font-semibold ${
-              currentMode === "dark" ? "text-white" : "text-black"
+              currentMode === "dark"
+                ? "text-white"
+                : "text-black"
             }`}
           >
             User Locations
           </h1>
-          {/* </div> */}
-          {/* <div>
-              DATE FIELD (default is today's date) / (If "2023-09-15" is
-              selected, date_range = "2023-09-15,2023-09-16")
-            </div> */}
         </div>
-        {/* </div> */}
-        <div className="ml-3">
+
+        <div className="m-2">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               value={filterDate}
@@ -176,20 +179,17 @@ const UserLocationComponent = () => {
                   size="small"
                   sx={{
                     "& input": {
-                      color: currentMode === "dark" ? "white" : "black",
+                      color: currentMode === "dark" ? "#EEEEEE" : "#424242",
                     },
                     "&": {
                       borderRadius: "4px",
-                      border:
-                        currentMode === "dark"
-                          ? "1px solid white"
-                          : "1px solid black",
+                      border: "1px solid #AAAAAA",
                     },
                     "& .MuiSvgIcon-root": {
-                      color: currentMode === "dark" ? "white" : "black",
+                      color: "#AAAAAA",
                     },
                   }}
-                  label="Meeting Date"
+                  label="Date"
                   {...params}
                   onKeyDown={(e) => e.preventDefault()}
                   readOnly={true}
@@ -211,52 +211,61 @@ const UserLocationComponent = () => {
             <div>Your map is loading...</div>
           ) : (
             <GoogleMap
-              zoom={10}
-              center={{ lat: 25.22527310000002, lng: 55.280889615218406 }}
+              zoom={ selectedLocation ? 16 : 10}
+              center={{ lat: selectedLocation ? selectedLocation.latitude : 25.22527310000002, lng: selectedLocation ? selectedLocation.longitude : 55.280889615218406 }}
               mapContainerStyle={mapContainerStyle}
               options={options}
             >
               {LastLocationData?.locations?.data?.map((user) => (
                 <>
-                  <MarkerF
+                  <Marker
                     key={user?.user_id}
                     position={{
                       lat: parseFloat(user.latitude),
                       lng: parseFloat(user.longitude),
                     }}
                     icon={{
-                      url: "/userpin.svg",
+                      url: selectedLocation && selectedLocation.user_id === user.user_id
+                      ? "/userpin.svg" //CHANGE FOR SELECTED
+                      : "/userpin.svg",
                       scaledSize: window.google
-                        ? new window.google.maps.Size(50, 50)
+                        ? new window.google.maps.Size(
+                            selectedLocation && selectedLocation.user_id === user.user_id ? 70 : 50, 
+                            selectedLocation && selectedLocation.user_id === user.user_id ? 70 : 50
+                          )
                         : null,
+                      zIndex: selectedLocation && selectedLocation.user_id === user.user_id
+                        ? 1000  // Set a high zIndex value for the selected pin
+                        : 1, 
                     }}
                     onClick={() => {
-                      setSelectedUser(user);
+                      // setselectedLocation(user);
+                      handlePinClick(user);
                     }}
                   />
 
-                  {selectedUser ? (
+                  {selectedLocation && (
                     <InfoWindow
                       position={{
-                        lat: parseFloat(selectedUser.latitude),
-                        lng: parseFloat(selectedUser.longitude),
+                        lat: parseFloat(selectedLocation.latitude) +0.0001,
+                        lng: parseFloat(selectedLocation.longitude),
                       }}
                       onCloseClick={() => {
-                        setSelectedUser(null);
+                        setSelectedLocation(null);
                       }}
                     >
                       <div>
                         <h1 className="font-semibold">
-                          {selectedUser.userName}
+                          {selectedLocation.userName}
                         </h1>
                         <h1>
-                          LatLong: {selectedUser.latitude},{" "}
-                          {selectedUser.longitude}
+                          LatLong: {selectedLocation.latitude},{" "}
+                          {selectedLocation.longitude}
                         </h1>
-                        <h1>Last updated: {selectedUser.latest_recorded_at}</h1>
+                        <h1>Last updated: {selectedLocation.latest_recorded_at}</h1>
                       </div>
                     </InfoWindow>
-                  ) : null}
+                  )}
                 </>
               ))}
             </GoogleMap>
@@ -270,9 +279,10 @@ const UserLocationComponent = () => {
                   <div
                     className={`${
                       currentMode === "dark"
-                        ? "bg-[#1c1c1c] text-white"
-                        : "bg-gray-200 text-black"
+                        ? "bg-[#424242] text-white"
+                        : "bg-[#EEEEEE] text-black"
                     } rounded-md space-y-2 p-3`}
+                    onClick={() => handleCardclick(location)}
                   >
                     <h1 className="font-semibold capitalize">
                       {location?.userName}
