@@ -158,15 +158,6 @@ const MessagesComponent = ({
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
-  const handleUpdateLeadModelClose = () => {
-    setLeadModelOpen(false);
-    setUpdateLeadModelOpen(false);
-  };
-
-  const HandleViewTimeline = (params) => {
-    setsingleLeadData(params.row);
-    setTimelineModelOpen(true);
-  };
 
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
@@ -186,8 +177,8 @@ const MessagesComponent = ({
   };
 
   const typeIcon = {
-    sms: <FaSms />,
-    whatsapp: <RiWhatsappFill />,
+    sms: <FaSms color="#aaaaaa" size={22} />,
+    whatsapp: <RiWhatsappFill color="#aaaaaa" size={22} />,
   };
 
   const columns = [
@@ -207,7 +198,7 @@ const MessagesComponent = ({
     },
 
     {
-      field: "leadName",
+      field: "type",
       headerAlign: "center",
       headerName: "Type",
       maxWidth: 40,
@@ -221,78 +212,39 @@ const MessagesComponent = ({
       },
     },
     {
-      field: "leadContact",
+      field: "message",
       headerName: "Message",
-      minWidth: 200,
+      minWidth: 250,
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
-        const contactNumber = params.getValue(params.id, "leadContact");
-        // const countryCode = `(+${contactNumber.slice(0, 1)} ${contactNumber.slice(1, 3)})`;
-
-        // Replace last 4 digits with "*"
-        const stearics =
-          contactNumber?.slice(0, contactNumber?.length - 4) + "****";
-        let finalNumber;
-
-        if (hasPermission("number_masking")) {
-          if (User?.role === 1) {
-            finalNumber = contactNumber;
-          } else {
-            finalNumber = `${stearics}`;
-          }
-        } else {
-          finalNumber = contactNumber;
-        }
-
-        return <span>{finalNumber}</span>;
-      },
-    },
-    {
-      field: "project",
-      headerName: "User",
-      headerAlign: "center",
-      minWidth: 80,
-      flex: 1,
-      renderCell: (cellValues) => {
         return (
-          <div
-            style={{
-              fontFamily: isArabic(cellValues?.formattedValue)
-                ? "Noto Kufi Arabic"
-                : "inherit",
-            }}
-            className="flex flex-col"
-          >
-            <p>
-              {cellValues.row.project === "null" ? "-" : cellValues.row.project}
-            </p>
-            <p>
-              {cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}
-            </p>
+          <div className="flex justify-center items-center">
+            <span className="text-center">{params?.formattedValue}</span>
           </div>
         );
       },
     },
     {
+      field: "user",
+      headerName: "User",
       headerAlign: "center",
-      field: "Date",
+      minWidth: 60,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return <div>{cellValues?.formattedValue}</div>;
+      },
+    },
+    {
+      headerAlign: "center",
+      field: "date",
       headerName: "Date",
-      minWidth: 80,
+      minWidth: 50,
       flex: 1,
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
-            <p>
-              {cellValues.row.enquiryType === "null"
-                ? "-"
-                : cellValues.row.enquiryType}
-            </p>
-            <p>
-              {cellValues.row.leadType === "null"
-                ? "-"
-                : cellValues.row.leadType}
-            </p>
+            <p>{moment(cellValues?.formattedValue).format("YYYY-MM-DD")}</p>
           </div>
         );
       },
@@ -307,7 +259,7 @@ const MessagesComponent = ({
       headerClassName: "break-normal",
       flex: 1,
       renderCell: (cellValues) => {
-        let status = "success";
+        let status = cellValues?.formattedValue;
         if (status === "success") {
           <div className="bg-[#4ade80]">
             <p>Success</p>
@@ -321,128 +273,35 @@ const MessagesComponent = ({
     },
 
     {
-      field: "leadSource",
+      field: "recipientCount",
       headerName: "Recipients",
       flex: 1,
-      minWidth: 100,
+      minWidth: 50,
       headerAlign: "center",
       renderCell: (cellValues) => {
-        console.log("Start::", cellValues.row.leadSource);
-        const sourceIcons = {
-          "campaign snapchat": () => (
-            <FaSnapchatGhost size={16} color={"#f6d80a"} className="p-1" />
-          ),
-
-          "campaign facebook": () => (
-            <FaFacebookF size={16} color={"#0e82e1"} className="p-1" />
-          ),
-
-          "campaign tiktok": () => (
-            <FaTiktok
-              size={16}
-              color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-              className="p-1"
-            />
-          ),
-
-          "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
-
-          "campaign youtube": () => (
-            <FaYoutube size={16} color={"#FF0000"} className="p-1" />
-          ),
-
-          "campaign twitter": () => (
-            <FaTwitter size={16} color={"#00acee"} className="p-1" />
-          ),
-
-          "bulk import": () => (
-            <BiImport size={16} color={"#da1f26"} className="p-1" />
-          ),
-
-          "property finder": () => (
-            <GiMagnifyingGlass size={16} color={"#ef5e4e"} className="p-1" />
-          ),
-
-          campaign: () => (
-            <MdCampaign size={16} color={"#696969"} className="p-0.5" />
-          ),
-
-          cold: () => <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />,
-
-          personal: () => (
-            <BsPersonCircle size={16} color={"#6C7A89"} className="p-1" />
-          ),
-
-          whatsapp: () => (
-            <FaWhatsapp size={16} color={"#53cc60"} className="p-1" />
-          ),
-
-          message: () => (
-            <BiMessageRoundedDots
-              size={16}
-              color={"#6A5ACD"}
-              className="p-0.5"
-            />
-          ),
-
-          comment: () => (
-            <FaRegComments size={16} color={"#a9b3c6"} className="p-0.5" />
-          ),
-
-          website: () => (
-            <TbWorldWww size={16} color={"#AED6F1"} className="p-0.5" />
-          ),
-
-          self: () => <FaUser size={16} color={"#6C7A89"} className="p-0.5" />,
-        };
         return (
           <>
             <div className="flex items-center justify-center">
-              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
-                <BiArchive
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  color={"#AEC6CF"}
-                  className="p-0.5"
-                />
-              ) : (
-                <Box
-                  sx={{
-                    "& svg": {
-                      width: "50%",
-                      height: "50%",
-                      margin: "0 auto",
-                    },
-                  }}
-                >
-                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()]
-                    ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]()
-                    : "-"}
-                </Box>
-              )}
+              {cellValues?.formattedValue}
             </div>
           </>
         );
       },
     },
     {
-      field: "language",
+      field: "credits",
       headerName: "Credits",
       headerAlign: "center",
       minWidth: 70,
       flex: 1,
     },
-    {
-      field: "edit",
-      headerName: "Edit",
-      headerAlign: "center",
-      maxWidth: 10,
-      flex: 1,
-    },
+    // {
+    //   field: "edit",
+    //   headerName: "Edit",
+    //   headerAlign: "center",
+    //   maxWidth: 10,
+    //   flex: 1,
+    // },
   ];
 
   const FetchLeads = async (token) => {
@@ -454,7 +313,7 @@ const MessagesComponent = ({
       isLoading: true,
     }));
 
-    FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${pageState.page}&perpage=${pageState.perpage}&feedback=Booked`;
+    FetchLeads_url = `${BACKEND_URL}/messages?page=${pageState.page}`;
 
     axios
       .get(FetchLeads_url, {
@@ -464,127 +323,105 @@ const MessagesComponent = ({
         },
       })
       .then(async (result) => {
-        console.log("Booked deals list: ", result);
+        console.log("Messages: ", result);
         let rowsDataArray = "";
-        if (result.data.coldLeads.current_page > 1) {
-          const theme_values = Object.values(result.data.coldLeads.data);
+        if (result.data.messages.current_page > 1) {
+          const theme_values = Object.values(result.data.messages.data);
           rowsDataArray = theme_values;
         } else {
-          rowsDataArray = result.data.coldLeads.data;
+          rowsDataArray = result.data.messages.data;
         }
 
-        let rowsdata = rowsDataArray.map((row, index) => ({
-          id:
-            pageState.page > 1
-              ? pageState.page * pageState.pageSize -
-                (pageState.pageSize - 1) +
-                index
-              : index + 1,
-          creationDate: row?.creationDate,
-          leadName: row?.leadName || "-",
-          leadContact: row?.leadContact || "-",
-          project: row?.project || "-",
-          enquiryType: row?.enquiryType || "-",
-          leadType: row?.leadType || "-",
-          assignedToManager: row.assignedToManager,
-          assignedToSales: row.assignedToSales,
-          feedback: row?.feedback,
-          priority: row?.priority,
-          language: getLangCode(row?.language) || "-",
-          leadSource: row?.leadSource || "-",
-          lid: row?.lid,
-          firstAssigned: row?.firstAssigned || "",
-          leadId: row?.id,
-          lastEdited: row?.lastEdited,
-          //eslint-disable-next-line
-          project: row?.project || "-",
-          leadFor: row?.leadFor,
-          coldCall: row?.coldcall,
-          leadStatus: row?.leadStatus || "-",
-          leadCategory: leadCategory || "-",
-          notes: row?.notes || "-",
-          otp:
-            row?.otp === "No OTP" || row?.otp === "No OTP Used"
-              ? "No OTP Used"
-              : row?.otp || "No OTP Used",
-          edit: "edit",
-        }));
+        let rowsdata = rowsDataArray?.map((row, index) => {
+          // Split the recipients string by commas and count the number of elements
+          const recipientCount = row?.recipients
+            ? row.recipients.split(",").length
+            : 0;
 
-        // count of leads per source
-        const facebook = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign facebook"
-        );
-        const fbCounts = facebook.length;
+          console.log("recipeint count : ", recipientCount);
 
-        const snapchat = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign snapchat"
-        );
-        const spCount = snapchat.length;
+          return {
+            id:
+              pageState.page > 1
+                ? pageState.page * pageState.pageSize -
+                  (pageState.pageSize - 1) +
+                  index
+                : index + 1,
+            date: row?.created_at || "-",
+            type: row?.message_type || "-",
+            message: row?.message || "-",
+            user: row?.user_id || "-",
+            status: row?.status || "-",
+            recipients: row?.recipients || "-",
+            recipientCount: recipientCount || "-",
+            credits: row?.credit_used || 0,
+            edit: "edit",
+          };
+        });
 
-        const tiktok = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign tiktok"
+        // count of campaings per source
+        const sms = rowsdata?.filter(
+          (row) => row?.type?.toLowerCase() === "sms"
         );
-        const ttCount = tiktok.length;
+        const smsCount = sms.length;
 
-        const googleads = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign googleads"
+        const whatsapp = rowsdata?.filter(
+          (row) => row?.type?.toLowerCase() === "whatsapp"
         );
-        const gCount = googleads.length;
+        const whatsappCount = whatsapp.length;
 
-        const youtube = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign youtube"
-        );
-        const yCount = youtube.length;
+        // sms recipients
+        const totalRecipientsForSMS = rowsdata.reduce((acc, row) => {
+          if (
+            row.type &&
+            row.type.toLowerCase() === "sms" &&
+            typeof row.recipientCount === "number" &&
+            row.recipientCount !== "-"
+          ) {
+            return acc + row.recipientCount;
+          } else {
+            return acc;
+          }
+        }, 0);
 
-        const campaign = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign"
-        );
-        const cCount = campaign.length;
+        console.log("sms recep: ", totalRecipientsForSMS);
 
-        const cold = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "cold"
-        );
-        const coCount = cold.length;
+        // whatsapp recipients
+        const totalRecipientsForWahtsapp = rowsdata.reduce((acc, row) => {
+          if (
+            row.type &&
+            row.type.toLowerCase() === "whastapp" &&
+            typeof row.recipientCount === "number" &&
+            row.recipientCount !== "-"
+          ) {
+            return acc + row.recipientCount;
+          } else {
+            return acc;
+          }
+        }, 0);
 
-        const personal = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "personal"
-        );
-        const pCount = personal.length;
+        console.log("whatsapp: ", totalRecipientsForWahtsapp);
 
-        const message = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "Message"
-        );
-        const mCount = message.length;
+        // Calculate the total count of credit_used
+        const credit_used_count = rowsdata.reduce((total, row) => {
+          return total + row.credits;
+        }, 0);
 
-        const whatsapp = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "Whatsapp"
-        );
-        const wCount = whatsapp.length;
-
-        const comment = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "Comment"
-        );
-        const comCount = comment.length;
+        console.log("total credit used : ", credit_used_count);
 
         setpageState((old) => ({
           ...old,
-          fbCounts: fbCounts,
-          spCount: spCount,
-          ttCount: ttCount,
-          gCount: gCount,
-          yCount: yCount,
-          cCount: cCount,
-          pCount: pCount,
-          coCount: coCount,
-          mCount: mCount,
-          wCount: wCount,
-          comment: wCount,
+          smsCount: smsCount,
+          whatsappCount: whatsappCount,
+          sentSMS: totalRecipientsForSMS,
+          sentWhatsapp: totalRecipientsForWahtsapp,
+          credit_used: credit_used_count,
           isLoading: false,
           data: rowsdata,
-          from: result.data.coldLeads.from,
-          to: result.data.coldLeads.to,
-          pageSize: result.data.coldLeads.per_page,
-          total: result.data.coldLeads.total,
+          from: result.data.messages.from,
+          to: result.data.messages.to,
+          pageSize: result.data.messages.per_page,
+          total: result.data.messages.total,
         }));
 
         console.log("Page state: ", pageState.total);
@@ -889,7 +726,7 @@ const MessagesComponent = ({
               items: filt,
             }}
             components={{
-              Toolbar: GridToolbar,
+              //   Toolbar: GridToolbar,
               Pagination: CustomPagination,
             }}
             componentsProps={{

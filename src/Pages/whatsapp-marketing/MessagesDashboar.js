@@ -67,23 +67,23 @@ const MessagesDashboar = () => {
   const campaignCount = [
     {
       text: "Sent SMS",
-      count: "1234",
+      count: pageState?.sentSMS,
     },
     {
       text: "SMS Campaign",
-      count: "1234",
+      count: pageState?.smsCount,
     },
     {
       text: "Sent Whatsapp",
-      count: "1",
+      count: pageState?.sentWhatsapp,
     },
     {
       text: "Whatsapp Campaign",
-      count: "1",
+      count: pageState?.whatsappCount,
     },
     {
       text: "Credits Used",
-      count: "100",
+      count: pageState?.credit_used,
     },
   ];
 
