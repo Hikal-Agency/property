@@ -1,11 +1,8 @@
 import React from "react";
-import { Box, Button, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
-import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import CallLogBoard from "./calllogboard";
-import ClosedDealsBoard from "./closeddealsboard";
 import TargetBoard from "./targetboard";
 import Scoreboard from "./Scoredboard";
 import ClosedealsboardUpdated from "./closeddealsboardUpdated";
@@ -22,18 +19,6 @@ const Leaderboard = () => {
   const [tabValue, setTabValue] = useState(0);
   const [loading] = useState(false);
 
-  //   const ref = useRef(null);
-  //   const [width, setWidth] = useState(0);
-  //   const [height, setHeight] = useState(0);
-
-  //   useLayoutEffect(() => {
-  //     setWidth(ref.current.offsetWidth);
-  //     setHeight(ref.current.offsetHeight);
-  //   }, []);
-
-  //   const progress = (150000 / 3000000) * 100;
-  //   const absoluteprogress = progress.toFixed(0);
-
   return (
     <>
       <div className="min-h-screen">
@@ -47,7 +32,7 @@ const Leaderboard = () => {
               <h1
                 className={`font-semibold ${
                   currentMode === "dark" ? "text-white" : "text-black"
-                } text-lg ml-2 mb-3 auto-cols-max gap-x-3`}
+                } text-lg ml-2 mb-3 mt-5 auto-cols-max gap-x-3`}
               >
                 Leaderboard
               </h1>
@@ -61,7 +46,6 @@ const Leaderboard = () => {
                       "& .MuiTabs-indicator": {
                         height: "100%",
                         borderRadius: "5px",
-                        backgroundColor: "#da1f26",
                       },
                       "& .Mui-selected": {
                         color: "white !important",
@@ -84,8 +68,8 @@ const Leaderboard = () => {
                         <Tab label="Target" />
                       </Tabs>
                       <Link
-                        className="bg-main-red-color w-[250px] text-white rounded-lg pl-2 py-3 font-semibold  flex items-center justify-center space-x-2"
-                        style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+                        className="bg-primary w-[250px] text-white rounded-lg pl-2 py-3 font-semibold  flex items-center justify-center space-x-2"
+                        style={{ color: "#ffffff" }}
                         to="/fresh-logs"
                         target="_blank"
                         rel="noopener noreferrer"

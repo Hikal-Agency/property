@@ -3,7 +3,7 @@ import { Box, Tab, Tabs } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useEffect } from "react";
 import Loader from "../../Components/Loader";
 
@@ -163,7 +163,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         } p-3 rounded-md`}
                       >
                         <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                          <h5 className="font-bold text-main-red-color col-span-5">
+                          <h5 className="font-bold text-primary col-span-5">
                             {call?.userName}
                           </h5>
                         </div>
@@ -183,7 +183,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   DIALED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.dialed || 0}
                                   </span>
                                 </h1>
@@ -191,7 +191,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   ANSWERED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
                                 </h1>
@@ -199,7 +199,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   NOT ANSWERED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.notanswered || 0}
                                   </span>
                                 </h1>
@@ -221,7 +221,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   RECEIVED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call.received || 0}
                                   </span>
                                 </h1>
@@ -229,7 +229,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   MISSED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call.missed || 0}
                                   </span>
                                 </h1>
@@ -241,99 +241,11 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     );
                   })}
 
-                {/* <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-[#1c1c1c] text-white"
-                    : "bg-gray-200 text-black"
-                } p-3 rounded-md`}
-              >
-                <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                  <h5 className="font-bold text-main-red-color col-span-5">
-                    {calldata.userName}
-                  </h5>
-                </div>
-                <div className="grid gap-3">
-                  <div
-                    className={`${
-                      currentMode === "dark"
-                        ? "bg-black text-white"
-                        : "bg-white text-black"
-                    } rounded-md p-2`}
-                  >
-                    <h6 className="text-center text-xs font-semibold">
-                      Outgoing
-                    </h6>
-                    <hr></hr>
-                    <div className="block gap-3 mt-2">
-                      <div>
-                        <h1 className="text-sm">
-                          DIALED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.dialed}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          NOT ANSWERED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.notanswered}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          ANSWERED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.answered}
-                          </span>
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className={`${
-                      currentMode === "dark"
-                        ? "bg-black text-white"
-                        : "bg-white text-black"
-                    } rounded-md p-2`}
-                  >
-                    <h6 className="text-center text-xs font-semibold">
-                      Incoming
-                    </h6>
-                    <hr></hr>
-                    <div className="block gap-3 mt-2">
-                      <div>
-                        <h1 className="text-sm">
-                          RECEIVED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.recieved}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          MISSED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.missed}
-                          </span>
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
+               
               </div>
               {noData && (
                 <div className="flex flex-col items-center justify-center h-screen ">
-                  {/* <h1
-                    className={
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }
-                  >
-                    No data available.
-                  </h1> */}
+           
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
@@ -364,7 +276,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         } p-3 rounded-md`}
                       >
                         <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                          <h5 className="font-bold text-main-red-color col-span-5">
+                          <h5 className="font-bold text-primary col-span-5">
                             {call?.userName}
                           </h5>
                         </div>
@@ -384,7 +296,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   DIALED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.dialed || 0}
                                   </span>
                                 </h1>
@@ -392,7 +304,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   ANSWERED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
                                 </h1>
@@ -400,7 +312,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   NOT ANSWERED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.notanswered || 0}
                                   </span>
                                 </h1>
@@ -422,7 +334,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   RECEIVED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call.received || 0}
                                   </span>
                                 </h1>
@@ -430,7 +342,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   MISSED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call.missed || 0}
                                   </span>
                                 </h1>
@@ -441,99 +353,11 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                       </div>
                     );
                   })}
-                {/* <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-[#1c1c1c] text-white"
-                    : "bg-gray-200 text-black"
-                } p-3 rounded-md`}
-              >
-                <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                  <h5 className="font-bold text-main-red-color col-span-5">
-                    {calldata.userName}
-                  </h5>
-                </div>
-                <div className="grid gap-3">
-                  <div
-                    className={`${
-                      currentMode === "dark"
-                        ? "bg-black text-white"
-                        : "bg-white text-black"
-                    } rounded-md p-2`}
-                  >
-                    <h6 className="text-center text-xs font-semibold">
-                      Outgoing
-                    </h6>
-                    <hr></hr>
-                    <div className="block gap-3 mt-2">
-                      <div>
-                        <h1 className="text-sm">
-                          DIALED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.dialed}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          NOT ANSWERED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.notanswered}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          ANSWERED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.answered}
-                          </span>
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className={`${
-                      currentMode === "dark"
-                        ? "bg-black text-white"
-                        : "bg-white text-black"
-                    } rounded-md p-2`}
-                  >
-                    <h6 className="text-center text-xs font-semibold">
-                      Incoming
-                    </h6>
-                    <hr></hr>
-                    <div className="block gap-3 mt-2">
-                      <div>
-                        <h1 className="text-sm">
-                          RECEIVED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.recieved}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          MISSED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.missed}
-                          </span>
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
+                
               </div>
               {noData && (
                 <div className="flex flex-col items-center justify-center h-screen ">
-                  {/* <h1
-                    className={
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }
-                  >
-                    No data available.
-                  </h1> */}
+                 
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
@@ -564,7 +388,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         } p-3 rounded-md`}
                       >
                         <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                          <h5 className="font-bold text-main-red-color col-span-5">
+                          <h5 className="font-bold text-primary col-span-5">
                             {call?.userName}
                           </h5>
                         </div>
@@ -584,7 +408,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   DIALED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.dialed || 0}
                                   </span>
                                 </h1>
@@ -592,7 +416,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   ANSWERED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
                                 </h1>
@@ -600,7 +424,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   NOT ANSWERED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.notanswered || 0}
                                   </span>
                                 </h1>
@@ -622,7 +446,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   RECEIVED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call.received || 0}
                                   </span>
                                 </h1>
@@ -630,7 +454,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   MISSED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call.missed || 0}
                                   </span>
                                 </h1>
@@ -641,99 +465,11 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                       </div>
                     );
                   })}
-                {/* <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-[#1c1c1c] text-white"
-                    : "bg-gray-200 text-black"
-                } p-3 rounded-md`}
-              >
-                <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                  <h5 className="font-bold text-main-red-color col-span-5">
-                    {calldata.userName}
-                  </h5>
-                </div>
-                <div className="grid gap-3">
-                  <div
-                    className={`${
-                      currentMode === "dark"
-                        ? "bg-black text-white"
-                        : "bg-white text-black"
-                    } rounded-md p-2`}
-                  >
-                    <h6 className="text-center text-xs font-semibold">
-                      Outgoing
-                    </h6>
-                    <hr></hr>
-                    <div className="block gap-3 mt-2">
-                      <div>
-                        <h1 className="text-sm">
-                          DIALED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.dialed}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          NOT ANSWERED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.notanswered}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          ANSWERED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.answered}
-                          </span>
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className={`${
-                      currentMode === "dark"
-                        ? "bg-black text-white"
-                        : "bg-white text-black"
-                    } rounded-md p-2`}
-                  >
-                    <h6 className="text-center text-xs font-semibold">
-                      Incoming
-                    </h6>
-                    <hr></hr>
-                    <div className="block gap-3 mt-2">
-                      <div>
-                        <h1 className="text-sm">
-                          RECEIVED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.recieved}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          MISSED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.missed}
-                          </span>
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
+            
               </div>
               {noData && (
                 <div className="flex flex-col items-center justify-center h-screen ">
-                  {/* <h1
-                    className={
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }
-                  >
-                    No data available.
-                  </h1> */}
+
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
@@ -763,7 +499,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         } p-3 rounded-md`}
                       >
                         <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                          <h5 className="font-bold text-main-red-color col-span-5">
+                          <h5 className="font-bold text-primary col-span-5">
                             {call?.userName}
                           </h5>
                         </div>
@@ -783,7 +519,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   DIALED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.dialed || 0}
                                   </span>
                                 </h1>
@@ -791,7 +527,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   ANSWERED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
                                 </h1>
@@ -799,7 +535,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   NOT ANSWERED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call?.notanswered || 0}
                                   </span>
                                 </h1>
@@ -821,7 +557,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   RECEIVED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call.received || 0}
                                   </span>
                                 </h1>
@@ -829,7 +565,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   MISSED&nbsp;
-                                  <span className="font-semibold text-main-red-color float-right">
+                                  <span className="font-semibold text-primary float-right">
                                     {call.missed || 0}
                                   </span>
                                 </h1>
@@ -840,99 +576,11 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                       </div>
                     );
                   })}
-                {/* <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-[#1c1c1c] text-white"
-                    : "bg-gray-200 text-black"
-                } p-3 rounded-md`}
-              >
-                <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                  <h5 className="font-bold text-main-red-color col-span-5">
-                    {calldata.userName}
-                  </h5>
-                </div>
-                <div className="grid gap-3">
-                  <div
-                    className={`${
-                      currentMode === "dark"
-                        ? "bg-black text-white"
-                        : "bg-white text-black"
-                    } rounded-md p-2`}
-                  >
-                    <h6 className="text-center text-xs font-semibold">
-                      Outgoing
-                    </h6>
-                    <hr></hr>
-                    <div className="block gap-3 mt-2">
-                      <div>
-                        <h1 className="text-sm">
-                          DIALED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.dialed}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          NOT ANSWERED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.notanswered}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          ANSWERED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.answered}
-                          </span>
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className={`${
-                      currentMode === "dark"
-                        ? "bg-black text-white"
-                        : "bg-white text-black"
-                    } rounded-md p-2`}
-                  >
-                    <h6 className="text-center text-xs font-semibold">
-                      Incoming
-                    </h6>
-                    <hr></hr>
-                    <div className="block gap-3 mt-2">
-                      <div>
-                        <h1 className="text-sm">
-                          RECEIVED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.recieved}
-                          </span>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className="text-sm">
-                          MISSED&nbsp;
-                          <span className="font-semibold text-main-red-color float-right">
-                            {callLogs?.missed}
-                          </span>
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
+              
               </div>
               {noData && (
                 <div className="flex flex-col items-center justify-center h-screen ">
-                  {/* <h1
-                    className={
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }
-                  >
-                    No data available.
-                  </h1> */}
+
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"

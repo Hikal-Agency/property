@@ -1,7 +1,7 @@
 import React from "react";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -10,72 +10,9 @@ import Loader from "../../Components/Loader";
 import CallsGraph from "../../Components/charts/CallsGraph";
 
 const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [callLogs, setCallLogs] = useState();
-
-  const handleChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
-
-  console.log("log:::: ", callLogs);
-
-  const Manager = [
-    {
-      name: "Belal Hikal",
-      target: "5000000",
-      achieved: "5000000",
-      teamDeals: "3",
-      directDeals: "2",
-    },
-    {
-      name: "Hossam Hassan",
-      target: "5000000",
-      achieved: "3000000",
-      teamDeals: "0",
-      directDeals: "1",
-    },
-    {
-      name: "Nada Amin",
-      target: "5000000",
-      achieved: "2900000",
-      teamDeals: "1",
-      directDeals: "2",
-    },
-  ];
-
-  const Agent = [
-    {
-      name: "Hassan Lodhi",
-      target: "3000000",
-      achieved: "3000000",
-      totalClosed: "2",
-    },
-    {
-      name: "Abdulrhman Makkawi",
-      target: "3000000",
-      achieved: "2567000",
-      totalClosed: "5",
-    },
-    {
-      name: "Ameer Ali",
-      target: "3000000",
-      achieved: "2500000",
-      totalClosed: "2",
-    },
-    {
-      name: "Hala Hikal",
-      target: "3000000",
-      achieved: "2000000",
-      totalClosed: "2",
-    },
-    {
-      name: "Zainab Ezzaldien",
-      target: "3000000",
-      achieved: "1900000",
-      totalClosed: "1",
-    },
-  ];
 
   const FetchCallLogs = async (token, periods) => {
     setLoading(true);
@@ -160,8 +97,8 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
               <div
                 className={`${
                   currentMode === "dark"
-                    ? "text-red-600"
-                    : "text-main-red-color"
+                    ? "text-primary"
+                    : "text-primary"
                 } text-lg font-bold my-2 text-center`}
               >
                 Daily Calls
@@ -184,7 +121,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                         <div>
                           <h1 className="text-sm text-center">
                             Recieved&nbsp;
-                            {/* <span className="font-semibold text-main-red-color">
+                            {/* <span className="font-semibold text-primary">
                     0
                   </span> */}
                           </h1>
@@ -206,7 +143,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                         <div>
                           <h1 className="text-sm text-center">
                             Not answered&nbsp;
-                            {/* <span className="font-semibold text-main-red-color">
+                            {/* <span className="font-semibold text-primary">
                     0
                   </span> */}
                           </h1>
@@ -228,7 +165,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                         <div>
                           <h1 className="text-sm text-center">
                             Missed&nbsp;
-                            {/* <span className="font-semibold text-main-red-color">
+                            {/* <span className="font-semibold text-primary">
                     0
                   </span> */}
                           </h1>
@@ -250,7 +187,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                         <div>
                           <h1 className="text-sm text-center">
                             Dialed&nbsp;
-                            {/* <span className="font-semibold text-main-red-color">
+                            {/* <span className="font-semibold text-primary">
                     0
                   </span> */}
                           </h1>
@@ -272,7 +209,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                         <div>
                           <h1 className="text-sm text-center">
                             Answered&nbsp;
-                            {/* <span className="font-semibold text-main-red-color">
+                            {/* <span className="font-semibold text-primary">
                     0
                   </span> */}
                           </h1>
@@ -296,8 +233,8 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
               <div
                 className={`${
                   currentMode === "dark"
-                    ? "text-red-600"
-                    : "text-main-red-color"
+                    ? "text-primary"
+                    : "text-primary"
                 } text-lg font-bold my-2 text-center`}
               >
                 Total Calls
@@ -320,7 +257,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                         <div>
                           <h1 className="text-sm text-center">
                             Recieved&nbsp;
-                            {/* <span className="font-semibold text-main-red-color">
+                            {/* <span className="font-semibold text-primary">
                     0
                   </span> */}
                           </h1>
@@ -342,7 +279,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                         <div>
                           <h1 className="text-sm text-center">
                             Not answered&nbsp;
-                            {/* <span className="font-semibold text-main-red-color">
+                            {/* <span className="font-semibold text-primary">
                     0
                   </span> */}
                           </h1>
@@ -364,7 +301,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                         <div>
                           <h1 className="text-sm text-center">
                             Missed&nbsp;
-                            {/* <span className="font-semibold text-main-red-color">
+                            {/* <span className="font-semibold text-primary">
                     0
                   </span> */}
                           </h1>
@@ -386,7 +323,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                         <div>
                           <h1 className="text-sm text-center">
                             Dialed&nbsp;
-                            {/* <span className="font-semibold text-main-red-color">
+                            {/* <span className="font-semibold text-primary">
                     0
                   </span> */}
                           </h1>
@@ -408,7 +345,7 @@ const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
                         <div>
                           <h1 className="text-sm text-center">
                             Answered&nbsp;
-                            {/* <span className="font-semibold text-main-red-color">
+                            {/* <span className="font-semibold text-primary">
                     0
                   </span> */}
                           </h1>

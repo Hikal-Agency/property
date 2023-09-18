@@ -1,50 +1,26 @@
 import React from "react";
 import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Tab,
-  Tabs,
-  TextField,
+  Box, Tab,
+  Tabs
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 import { useState } from "react";
 import { useEffect } from "react";
 import Loader from "../../Components/Loader";
 
-import CallsGraph from "../../Components/charts/CallsGraph";
 
 const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
   const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [callLogs, setCallLogs] = useState();
-  const [noData, setNoData] = useState(false);
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
-  const SelectStyles = {
-    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline":
-      {
-        color: currentMode === "dark" ? "white !important" : "black !important",
-        fontSize: "0.9rem",
-        fontWeight: "500",
-      },
-    "& .MuiOutlinedInput-notchedOutline": {
-      borderColor:
-        currentMode === "dark" ? "white !important" : "black !important",
-    },
-    "& .MuiFormLabel-root": {
-      color: currentMode === "dark" ? "white" : "black",
-    },
-  };
 
-  console.log("log:::: ", callLogs);
 
   const [leaderboard, setLeaderboard] = useState();
   const [manager, setManagers] = useState();
@@ -58,77 +34,11 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
   console.log("Manager here: ", manager);
   console.log("Agents here: ", agents);
 
-  const handlePeriod = (e) => {
-    console.log(e.target.value);
-    setPeriod(e.target.value);
-    // FetchLeaderboard();
-  };
-  // const FetchLeaderboard = async (token) => {
-  //   setLoading(true);
-  //   let apiUrl = period ? `leaderboard?${period}` : "leaderboard";
 
-  //   try {
-  //     const all_leaderboard = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     });
 
-  //     const leaderboard = all_leaderboard?.data?.user;
-
-  //     const sortedLeaderboard = leaderboard.sort((a, b) => {
-  //       return b.total_sales - a.total_sales;
-  //     });
-
-  //     setLeaderboard(sortedLeaderboard);
-
-  //     const leadCount = sortedLeaderboard.reduce(
-  //       (acc, cur) => {
-  //         if (cur.total_sales) {
-  //           acc.total_sales += Number(cur.total_sales);
-  //         }
-  //         if (cur.total_closed_deals) {
-  //           acc.total_closed_deals += cur.total_closed_deals;
-  //         }
-  //         return acc;
-  //       },
-  //       { total_sales: 0, total_closed_deals: 0 }
-  //     );
-
-  //     setCount(leadCount);
-
-  //     const { agents = [], managers = [] } = sortedLeaderboard.reduce(
-  //       (acc, cur) => ({
-  //         agents: [...acc.agents, ...(cur.role === 7 ? [cur] : [])],
-  //         managers: [...acc.managers, ...(cur.role === 3 ? [cur] : [])],
-  //       }),
-  //       { agents: [], managers: [] }
-  //     );
-
-  //     setAgents(agents);
-  //     setManagers(managers);
-
-  //     setLoading(false);
-  //   } catch (error) {
-  //     setLoading(false);
-  //     console.log("Leaderboard not fetched. ", error);
-  //     toast.error("Unable to fetch leaderboard data.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   }
-  // };
 
   const FetchLeaderboard = async (token) => {
     setLoading(true);
-    let apiUrl = period ? `leaderboard?${period}` : "leaderboard";
 
     try {
       let apiUrl =
@@ -274,8 +184,8 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
               <div
                 className={`${
                   currentMode === "dark"
-                    ? "text-red-600"
-                    : "text-main-red-color"
+                    ? "text-primary"
+                    : "text-primary"
                 } text-lg font-bold my-2 text-center`}
               >
                 Manager
@@ -321,7 +231,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                               {item?.total_closed_deals > 0 && (
                                 <p className="text-gray-500">
                                   Deals Closed:{" "}
-                                  <span className="text-red-600">
+                                  <span className="text-primary">
                                     {item?.total_closed_deals}
                                   </span>
                                 </p>
@@ -330,7 +240,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                                 item?.total_closed_deals !== null && (
                                   <p className="text-gray-500">
                                     Total Sales:{" "}
-                                    <span className="text-red-600">
+                                    <span className="text-primary">
                                       {item?.total_sales}
                                     </span>
                                   </p>
@@ -370,8 +280,8 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
               <div
                 className={`${
                   currentMode === "dark"
-                    ? "text-red-600"
-                    : "text-main-red-color"
+                    ? "text-primary"
+                    : "text-primary"
                 } text-lg font-bold my-2 text-center`}
               >
                 Agent
@@ -414,13 +324,13 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                                 </h2>
                                 <p className="text-gray-500">
                                   Deals Closed:{" "}
-                                  <span className="text-red-600">
+                                  <span className="text-primary">
                                     {item?.total_closed_deals}
                                   </span>
                                 </p>
                                 <p className="text-gray-500">
                                   Total Sales:{" "}
-                                  <span className="text-red-600">
+                                  <span className="text-primary">
                                     {item?.total_sales || 0} AED
                                   </span>
                                 </p>
@@ -472,13 +382,13 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                               </h2>
                               <p className="text-gray-500">
                                 Deals Closed:{" "}
-                                <span className="text-red-600">
+                                <span className="text-primary">
                                   {item?.total_closed_deals}
                                 </span>
                               </p>
                               <p className="text-gray-500">
                                 Total Sales:{" "}
-                                <span className="text-red-600">
+                                <span className="text-primary">
                                   {item?.total_sales || 0} AED
                                 </span>
                               </p>
