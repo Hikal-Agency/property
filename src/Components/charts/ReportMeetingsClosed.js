@@ -31,7 +31,7 @@ ChartJS.register(
 );
 
 const ReportMeetingsClosed = ({ selectedMonth }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, primaryColor, withOpacity } = useStateContext();
   const [performanceChartData, setPerformanceChartData] = useState([]);
   const token = localStorage.getItem("auth-token");
 
@@ -99,7 +99,7 @@ const ReportMeetingsClosed = ({ selectedMonth }) => {
                 data: performanceChartData.map((member) => member.total_sales),
                 fill: true,
                 backgroundColor: "rgba(225,0,0,0.4)",
-                borderColor: "#da1f26",
+                borderColor: primaryColor,
               },
               {
                 type: "line",
@@ -116,7 +116,7 @@ const ReportMeetingsClosed = ({ selectedMonth }) => {
           options={{
             color: "#ffffff",
             backgroundColor: ["rgba(225,0,0,0.3)", "rgba(0,0,0,0.2)"],
-            borderColor: ["#da1f26", "#ffffff"],
+            borderColor: [primaryColor, "#ffffff"],
             scales: {
               y: { ticks: { color: "#ffffff" }, grid: { color: "#424242" } },
               x: { ticks: { color: "#ffffff" }, grid: { color: "#424242" } },
@@ -136,8 +136,8 @@ const ReportMeetingsClosed = ({ selectedMonth }) => {
                 label: "Closed deals",
                 data: performanceChartData.map((member) => member.total_sales),
                 fill: true,
-                backgroundColor: "rgba(225,0,0,0.4)",
-                borderColor: "#da1f26",
+                backgroundColor: withOpacity(primaryColor, 0.4),
+                borderColor: primaryColor,
               },
               {
                 type: "line",
@@ -155,7 +155,7 @@ const ReportMeetingsClosed = ({ selectedMonth }) => {
           options={{
             color: "#000000",
             backgroundColor: ["rgba(225,0,0,0.3)", "rgba(0,0,0,0.2)"],
-            borderColor: ["#da1f26", "#020202"],
+            borderColor: [primaryColor, "#020202"],
             scales: {
               y: { ticks: { color: "#000000" } },
               x: { ticks: { color: "#000000" } },
