@@ -541,7 +541,7 @@ const BulkSMSModal = ({
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                Send Bullk SMS
+                Send Bulk SMS
               </h1>
             </div>
 
@@ -667,7 +667,10 @@ const BulkSMSModal = ({
                           // InputProps={{ required: true }}
                           InputProps={{
                             endAdornment: toRange ? (
-                              <IconButton onClick={() => setToRange("")} edge="end">
+                              <IconButton
+                                onClick={() => setToRange("")}
+                                edge="end"
+                              >
                                 <MdClear size={16} color={"#AAAAAA"} />
                               </IconButton>
                             ) : null,

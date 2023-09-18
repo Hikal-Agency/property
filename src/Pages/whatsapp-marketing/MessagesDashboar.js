@@ -339,7 +339,7 @@ const MessagesDashboar = () => {
                                 {senderID?.length > 0 ? (
                                   senderID?.map((senderID) => (
                                     <MenuItem value={senderID}>
-                                      {senderID?.senderID}
+                                      {senderID}
                                     </MenuItem>
                                   ))
                                 ) : (

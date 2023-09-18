@@ -73,6 +73,7 @@ import {
 import { TbWorldWww } from "react-icons/tb";
 import moment from "moment";
 import { RiWhatsappFill } from "react-icons/ri";
+import SingleSMSModal from "./SingleSMSModal";
 const MessagesComponent = ({
   BACKEND_URL,
   lead_type,
@@ -148,11 +149,12 @@ const MessagesComponent = ({
     }));
   };
 
+  const [singleMsg, setSingleMsg] = useState(null);
+
   //View LEAD MODAL VARIABLES
-  const [LeadModelOpen, setLeadModelOpen] = useState(false);
-  const handleLeadModelOpen = () => setLeadModelOpen(true);
-  const handleLeadModelClose = () => setLeadModelOpen(false);
-  const [timelineModelOpen, setTimelineModelOpen] = useState(false);
+  const [smsModalOpen, setSMSModalOpen] = useState(false);
+  const handleLeadModelOpen = () => setSMSModalOpen(true);
+  const handleLeadModelClose = () => setSMSModalOpen(false);
   const [isClosed, setIsClosed] = useState(false);
 
   //Update LEAD MODAL VARIABLES
@@ -354,6 +356,7 @@ const MessagesComponent = ({
             status: row?.status || "-",
             recipients: row?.recipients || "-",
             recipientCount: recipientCount || "-",
+            sender: row?.sender || "-",
             credits: row?.credit_used || 0,
             edit: "edit",
           };
@@ -432,114 +435,6 @@ const MessagesComponent = ({
       });
   };
 
-  const FetchSearchedLeads = async (token, term) => {
-    setpageState((old) => ({
-      ...old,
-      isLoading: true,
-    }));
-
-    let coldCallCode = "";
-    if (lead_origin === "freshleads") {
-      coldCallCode = 0;
-    } else if (lead_origin === "coldleads") {
-      coldCallCode = 1;
-    } else if (lead_origin === "thirdpartyleads") {
-      coldCallCode = 3;
-    } else if (lead_origin === "personalleads") {
-      coldCallCode = 2;
-    } else if (lead_origin === "warmleads") {
-      coldCallCode = 4;
-    } else if (lead_origin === "transfferedleads") {
-      coldCallCode = 0;
-    }
-
-    let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`;
-
-    if (lead_type) {
-      if (
-        lead_type !== "all" &&
-        lead_type !== "coldLeadsVerified" &&
-        lead_type !== "coldLeadsInvalid" &&
-        lead_type !== "coldLeadsNotChecked"
-      ) {
-        url += `&feedback=${lead_type}`;
-      }
-    }
-
-    if (lead_type === "coldLeadsVerified") {
-      url += `&is_whatsapp=1`;
-    } else if (lead_type === "coldLeadsInvalid") {
-      url += `&is_whatsapp=2`;
-    } else if (lead_type === "coldLeadsNotChecked") {
-      url += `&is_whatsapp=0`;
-    }
-
-    if (coldCallCode !== "") {
-      url += `&coldCall=${coldCallCode}`;
-    }
-
-    if (lead_origin === "transfferedleads") {
-      url += `&status=Transferred`;
-    }
-
-    await axios
-      .get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("search result is");
-        console.log(result.data);
-        let rowsdata = result.data.result.data.map((row, index) => ({
-          id:
-            pageState.page > 1
-              ? pageState.page * pageState.pageSize -
-                (pageState.pageSize - 1) +
-                index
-              : index + 1,
-          leadId: row?.id,
-          creationDate: row?.creationDate,
-          leadName: row?.leadName || "-",
-          leadContact: row?.leadContact?.slice(1)?.replaceAll(" ", "") || "-",
-          project: row?.project || "-",
-          enquiryType: row?.enquiryType || "-",
-          leadType: row?.leadType || "-",
-          assignedToManager: row?.assignedToManager || null,
-          assignedToSales: row?.assignedToSales || null,
-          feedback: row?.feedback || null,
-          priority: row?.priority || null,
-          language: getLangCode(row?.language) || "-",
-          leadSource: row?.leadSource || "-",
-          lid: row?.lid || "-",
-          firstAssigned: row?.firstAssigned || "",
-          lastEdited: row?.lastEdited || "-",
-          leadFor: row?.leadFor || "-",
-          leadStatus: row?.leadStatus || "-",
-          coldCall: row?.coldcall,
-          leadCategory: leadCategory || "-",
-          notes: row?.notes || "-",
-          otp:
-            row?.otp === "No OTP" || row?.otp === "No OTP Used"
-              ? "No OTP Used"
-              : row?.otp || "No OTP Used",
-          edit: "edit",
-        }));
-        setpageState((old) => ({
-          ...old,
-          data: rowsdata,
-          pageSize: result.data.result.per_page,
-          total: result.data.result.total,
-        }));
-        setpageState((old) => ({
-          ...old,
-          isLoading: false,
-        }));
-      })
-      .catch((err) => console.log(err));
-  };
-
   const handleSearch = (e) => {
     if (e.target.value === "") {
       setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
@@ -548,14 +443,14 @@ const MessagesComponent = ({
     // setSearchTerm(e.target.value);
   };
 
-  const handleKeyUp = (e) => {
-    if (searchRef.current.querySelector("input").value) {
-      if (e.key === "Enter" || e.keyCode === 13) {
-        setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
-        FetchSearchedLeads(token, e.target.value);
-      }
-    }
-  };
+  //   const handleKeyUp = (e) => {
+  //     if (searchRef.current.querySelector("input").value) {
+  //       if (e.key === "Enter" || e.keyCode === 13) {
+  //         setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
+  //         FetchSearchedLeads(token, e.target.value);
+  //       }
+  //     }
+  //   };
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = async (e) => {
@@ -569,7 +464,7 @@ const MessagesComponent = ({
 
   useEffect(() => {
     if (searchTerm) {
-      FetchSearchedLeads(token, searchTerm);
+      //   FetchSearchedLeads(token, searchTerm);
     } else {
       FetchLeads(token);
     }
@@ -579,24 +474,16 @@ const MessagesComponent = ({
 
   useEffect(() => {
     setpageState((oldPageState) => ({ ...oldPageState, page: 0 }));
-    searchRef.current.querySelector("input").value = "";
+    // searchRef.current.querySelector("input").value = "";
   }, [lead_type, lead_origin]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = (params, event) => {
     if (!event.target.closest(".deleteLeadBtn")) {
-      setsingleLeadData(params.row);
+      setSingleMsg(params.row);
       handleLeadModelOpen();
     }
   };
-  // EDIT BTN CLICK FUNC
-  const HandleEditFunc = async (params) => {
-    console.log(params.row);
-    setsingleLeadData(params.row);
-    handleUpdateLeadModelOpen();
-    setUpdateLeadModelOpen(true);
-  };
-  // Delete Lead
 
   // Custom Pagination
   function CustomPagination() {
@@ -663,7 +550,7 @@ const MessagesComponent = ({
         <></>
       )}
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
-        <div className="absolute top-[7px] right-[20px] z-[5]">
+        {/* <div className="absolute top-[7px] right-[20px] z-[5]">
           <TextField
             placeholder="Search.."
             ref={searchRef}
@@ -685,7 +572,7 @@ const MessagesComponent = ({
               ),
             }}
           />
-        </div>
+        </div> */}
         <div
           className={`${currentMode}-mode-datatable`}
           style={{ position: "relative" }}
@@ -700,10 +587,10 @@ const MessagesComponent = ({
               },
             }}
             ref={dataTableRef}
+            onRowClick={handleRowClick}
             autoHeight
             disableSelectionOnClick
             rows={pageState.data}
-            onRowClick={handleRowClick}
             rowCount={pageState.total}
             loading={pageState.isLoading}
             rowsPerPageOptions={[30, 50, 75, 100]}
@@ -755,6 +642,13 @@ const MessagesComponent = ({
           />
         </div>
       </Box>
+      {smsModalOpen && (
+        <SingleSMSModal
+          smsModalOpen={smsModalOpen}
+          handleLeadModelClose={handleLeadModelClose}
+          singleMsg={singleMsg}
+        />
+      )}
     </div>
   );
 };
