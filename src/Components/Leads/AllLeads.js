@@ -23,28 +23,20 @@ import {
 } from "@mui/x-data-grid";
 
 import {
-  FaComment,
   FaSnapchatGhost,
   FaTiktok,
-  FaFacebookF,
-  FaGlobe,
-  FaArchive,
-  FaWhatsapp,
+  FaFacebookF, FaWhatsapp,
   FaYoutube,
   FaTwitter,
   FaUser,
-  FaRegComments,
+  FaRegComments
 } from "react-icons/fa";
 import { MdCampaign } from "react-icons/md";
 import {
-  BiSearch,
   BiImport,
-  BiMessageRoundedDots,
-  BiCommentDetail,
-  BiArchive,
+  BiMessageRoundedDots, BiArchive
 } from "react-icons/bi";
 import { BsShieldX, BsShieldCheck, BsShieldMinus } from "react-icons/bs";
-import { HiPhoneOutgoing } from "react-icons/hi";
 import { BsShuffle } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
@@ -56,7 +48,7 @@ import { VscCallOutgoing } from "react-icons/vsc";
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
+import { AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { useLocation } from "react-router-dom";
 
 import { BsPersonCircle, BsSnow2, BsTrash, BsAlarm } from "react-icons/bs";
@@ -115,7 +107,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   // const [searchTerm, setSearchTerm] = useState("");
   const searchRef = useRef();
   const selectionModelRef = useRef([]);
-  const [hovered, setHovered] = useState("");
   const [CSVData, setCSVData] = useState({
     keys: [],
     rows: [],
@@ -154,6 +145,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     BACKEND_URL,
     isArabic,
     darkModeColors,
+    primaryColor
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -462,7 +454,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   <div
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
-                    <span className="text-[#DA1F26] p-1 text-center">
+                    <span className="text-primary p-1 text-center">
                       <BsShieldX size={16} />
                     </span>
                   </div>
@@ -522,7 +514,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           ),
 
           "bulk import": () => (
-            <BiImport size={16} color={"#da1f26"} className="p-1" />
+            <BiImport size={16} color={primaryColor} className="p-1" />
           ),
 
           "property finder": () => (
@@ -1614,7 +1606,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           <Pagination
             sx={{
               "& .Mui-selected": {
-                backgroundColor: "#DA1F26 !important",
+                backgroundColor: `${primaryColor} !important`,
                 color: "white !important",
                 borderRadius: "50px !important",
               },
@@ -1716,7 +1708,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           >
             <div className="justify-end">
               <Box>
-                <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
+                <div className="grid-cols-1 mb-7 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
                   {hasPermission("leadSource_counts") && (
                     <div className="justify-self-end">
                       <div className="px-4">
@@ -1933,7 +1925,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   )}
                 </div>
               </Box>
-              <div className="w-full flex justify-end mt-4">
+              <div className="w-full flex justify-end">
                 <Box
                   sx={{
                     width: "120px",
@@ -2135,24 +2127,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 "& .MuiDataGrid-virtualScrollerContent .MuiSvgIcon-root": {
                   color: currentMode === "dark" ? "#ffffff" : "#000000",
                 },
-                // "& .MuiDataGrid-main": {
-                //   overflowY: "scroll",
-                //   height: "auto",
-                // },
-
-                // "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                //   color:
-                //     currentMode === "dark"
-                //       ? "white !important"
-                //       : "black !important",
-                // },
 
                 "& .MuiButtonBase-root .MuiSwitch-switchBase": {
-                  color: "red !important",
+                  color: `${primaryColor} !important`,
                 },
 
                 "& .MuiSwitch-root .MuiSwitch-track": {
-                  backgroundColor: "red !important",
+                  backgroundColor: `${primaryColor} !important`,
                 },
               }}
               getRowClassName={(params) =>

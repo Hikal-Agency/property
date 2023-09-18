@@ -318,7 +318,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
             }}
             disabled={loading ? true : false}
           >
-            <div className="w-full flex items-center py-1 mb-7">
+            <div className="w-full flex items-center py-3 mb-7">
               <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
               <h1
                 className={`text-lg font-semibold ${

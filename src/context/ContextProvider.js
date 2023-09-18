@@ -14,10 +14,6 @@ export const ContextProvider = ({ children }) => {
   const BACKEND_URL = process.env.REACT_APP_API_URL;
   const graph_api_token = process.env.REACT_APP_FB_TOKEN;
   const [screenSize, setScreenSize] = useState(undefined);
-  // eslint-disable-next-line
-  const [DarkIconsColor, setDarkIconsColor] = useState("#15CDCA");
-  // eslint-disable-next-line
-  const [LightIconsColor, setLightIconsColor] = useState("#DA1F26");
   const [currentMode, setCurrentMode] = useState(
     localStorage.getItem("currentMode") || "light"
   );
@@ -92,7 +88,7 @@ export const ContextProvider = ({ children }) => {
     // Background color of header of data grid
     "& .MuiDataGrid-columnHeaders": { // css-s3ulew-
       border: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: currentMode === "dark" ? "white" : "white",
       borderRadius: "0",
       width: "100%",
@@ -145,8 +141,7 @@ export const ContextProvider = ({ children }) => {
     // BACKGROUND COLOR OF FOOTER
     "& .MuiDataGrid-footerContainer": {
       // border: "none",
-      borderTop: "2px solid #DA1F26",
-      // backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      borderTop: `2px solid ${primaryColor}`,
       backgroundColor: currentMode === "dark" ? "black" : "white",
       color: currentMode === "dark" ? "white" : "black",
     },
@@ -355,8 +350,6 @@ export const ContextProvider = ({ children }) => {
         setProjectData,
         isCollapsed,
         setIsCollapsed,
-        DarkIconsColor,
-        LightIconsColor,
         currentMode,
         selected,
         isArabic,
