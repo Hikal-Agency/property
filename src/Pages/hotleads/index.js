@@ -77,7 +77,7 @@ const AllHotLeads = () => {
             <div className="w-full pl-3">
               <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
                 <div className="flex items-center py-1">
-                  <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+                  <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                   <h1
                     className={`text-lg font-semibold ${
                       currentMode === "dark"
@@ -87,7 +87,7 @@ const AllHotLeads = () => {
                   >
                     Fresh Leads{" "}
                     <span className="capitalize">({lead_type})</span>{" "}
-                    <span className="bg-main-red-color text-white px-3 py-1 ml-2 rounded-sm my-auto">
+                    <span className="bg-primary text-white px-3 py-1 ml-2 rounded-sm my-auto">
                       {pageState?.total}
                     </span>
                   </h1>

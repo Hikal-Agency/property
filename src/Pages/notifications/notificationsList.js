@@ -230,7 +230,7 @@ const NotificationsList = () => {
               <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-40 "></div>
             )}
               <div className="w-full flex items-center py-1">
-                <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
                   className={`text-lg font-semibold ${
                     currentMode === "dark"

@@ -302,7 +302,7 @@ const SingleLeadPage = () => {
               <div>
                 <div className="w-full flex items-center mt-5">
                   {/* <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div> */}
-                  <span className="text-sm font-bold tracking-wide bg-main-red-color text-white px-2 py-1 mr-2 rounded-sm my-auto">
+                  <span className="text-sm font-bold tracking-wide bg-primary text-white px-2 py-1 mr-2 rounded-sm my-auto">
                     <span>{LeadData?.id}</span>
                   </span>
                   <h1
