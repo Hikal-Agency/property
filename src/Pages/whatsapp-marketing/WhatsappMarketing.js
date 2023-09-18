@@ -9,6 +9,7 @@ import Payments from "./payments";
 import Chat from "./Chat";
 import Instances from "./Instances";
 import { FilterContextProvider } from "../../context/FilterContextProvider";
+import MessagesDashboar from "./MessagesDashboar";
 
 const pagesComponents = {
   contacts: (
@@ -21,6 +22,7 @@ const pagesComponents = {
   payments: <Payments />,
   chat: <Chat />,
   all: <AllMessages />,
+  messages: <MessagesDashboar />,
 };
 
 const WhatsappMarketing = ({ pageName }) => {

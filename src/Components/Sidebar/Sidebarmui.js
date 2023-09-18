@@ -13,6 +13,7 @@ import { IoMdClose } from "react-icons/io";
 
 import { MdOutlinePayment } from "react-icons/md";
 import { AiTwotoneCalendar } from "react-icons/ai";
+import { MdOutlineCampaign } from "react-icons/md";
 
 import { HiTicket, HiDocumentReport, HiUsers, HiSearch } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
@@ -1205,6 +1206,11 @@ const Sidebarmui = () => {
             name: "Templates",
             icon: <FaMobile />,
             link: "/marketing/templates",
+          },
+          {
+            name: "Campaigns",
+            icon: <MdOutlineCampaign />,
+            link: "/marketing/messages",
           },
         ],
       });
