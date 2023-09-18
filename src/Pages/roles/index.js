@@ -1,27 +1,18 @@
 import { Button } from "@material-tailwind/react";
-import Switch from "@mui/material/Switch";
-import Avatar from "@mui/material/Avatar";
 
-import { Box, Tab, Tabs, TextField } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
 
 import {
   AiOutlineEdit,
-  AiOutlinePlus,
-  AiOutlineTable,
-  AiOutlineAppstore,
+  AiOutlinePlus
 } from "react-icons/ai";
-import SingleUser from "../../Components/Users/SingleUser";
 import { useEffect, useState } from "react";
 
 import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
-import { Link } from "react-router-dom";
-import UserTable from "../../Components/Users/UserTable";
-import AddUserModel from "../../Components/addUser/AddUserModel";
-import { FaBan, FaEdit, FaTrash, FaUnlock } from "react-icons/fa";
-import DeleteUser from "../../Components/Users/DeleteUser";
+import { toast } from "react-toastify";
+import { FaBan } from "react-icons/fa";
 import RolesComponent from "../../Components/Roles-Permissions/RolesComponent";
 import DeleteComponent from "../../Components/Roles-Permissions/DeleteComponent";
 import UpdateComponent from "../../Components/Roles-Permissions/UpdateComponent";
@@ -35,14 +26,13 @@ const Role = () => {
     setpageState,
     User,
     darkModeColors,
+    primaryColor
   } = useStateContext();
 
   const [user, setUser] = useState([]);
-  const [tabValue, setTabValue] = useState(0);
   const [value, setValue] = useState(0);
   const [model, setModel] = useState(false);
   const [userID, setDataId] = useState();
-  const [userStatus, setUserStatus] = useState();
   const [DataName, setDataName] = useState();
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [openUpdateModel, setOpenUpdateModel] = useState(false);
@@ -361,7 +351,7 @@ const Role = () => {
                     className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
                       currentMode === "dark"
                         ? "text-white border-white"
-                        : "text-red-600 font-bold border-red-600"
+                        : "text-primary font-bold border-primary"
                     }`}
                   >
                     ● Roles & Permissions{" "}
@@ -377,7 +367,7 @@ const Role = () => {
                       "& .MuiTabs-indicator": {
                         height: "100%",
                         borderRadius: "5px",
-                        backgroundColor: "#da1f26",
+                        backgroundColor: primaryColor,
                       },
                       "& .Mui-selected": {
                         color: "white !important",
@@ -400,7 +390,7 @@ const Role = () => {
                   </Box>
                   <div className="w-max">
                     <Button
-                      className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
+                      className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
                       onClick={HandleOpenModel}
                     >
                       <span className="flex justify-between items-center ">

@@ -32,7 +32,7 @@ const UpdateComponent = ({
   DataName,
   UserData,
 }) => {
-  const { BACKEND_URL, currentMode, User } = useStateContext();
+  const { BACKEND_URL, User } = useStateContext();
 
   const [data, setRole] = useState(DataName);
   const [loading, setloading] = useState(false);
@@ -317,7 +317,7 @@ const UpdateComponent = ({
                     <button
                       disabled={loading ? true : false}
                       type="submit"
-                      className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-3 px-4 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                      className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary py-3 px-4 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
                     >
                       {loading ? (
                         <div className="w-full flex justify-center items-center">
