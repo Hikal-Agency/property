@@ -271,6 +271,11 @@ const routes = [
     pageName: "Marketing",
   },
   {
+    path: "/marketing/messages",
+    element: <WhatsappMarketing pageName={"messages"} />,
+    pageName: "Messages",
+  },
+  {
     path: "/marketing/chat",
     element: <WhatsappMarketing pageName={"chat"} />,
     pageName: "Marketing",
