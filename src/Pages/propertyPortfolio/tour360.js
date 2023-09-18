@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
-import Footer from "../../Components/Footer/Footer";
 
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
@@ -57,7 +55,7 @@ const Tour360 = (props) => {
             <div className="mt-5 md:mt-2">
               <h1
                 className={`font-semibold ${
-                  currentMode === "dark" ? "text-white" : "text-red-600"
+                  currentMode === "dark" ? "text-white" : "text-primary"
                 } text-lg ml-2 mb-3 auto-cols-max gap-x-3`}
               >
                 {ProjectData?.data?.projectName}
