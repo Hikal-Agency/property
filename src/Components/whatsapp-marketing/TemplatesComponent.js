@@ -16,11 +16,11 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import axios from "../../axoisConfig";
 import DeleteTemplateModal from "./DeleteTemplateModal";
-import { BiPen, BiPlus, } from "react-icons/bi";
-import { MdEmail, MdSms, MdTitle } from "react-icons/md";
+import { BiPlus } from "react-icons/bi";
+import { MdEmail, MdSms } from "react-icons/md";
 import { HiTemplate } from "react-icons/hi";
-import { AiFillEdit, AiOutlineEdit } from "react-icons/ai";
-import { BsTrash, BsWhatsapp} from "react-icons/bs";
+import { AiOutlineEdit } from "react-icons/ai";
+import { BsTrash, BsWhatsapp } from "react-icons/bs";
 import { toast } from "react-toastify";
 import UpdateTemplateModal from "./UpdateTemplateModal";
 import Loader from "../Loader";
@@ -122,15 +122,16 @@ const TemplatesComponent = () => {
               className={`text-xl border-l-[4px] ml-1 pl-1 font-bold ${
                 currentMode === "dark"
                   ? "text-white border-white"
-                  : "text-red-600 font-bold border-red-600"
+                  : "text-primary font-bold border-primary"
               }`}
             >
               ● Message Templates
             </h1>
             <Button
-            style={{
-                  background: "#da1f26",
-            }}
+              className="bg-btn-primary"
+              style={{
+                color: "white"
+              }}
               sx={{
                 ml: 1,
                 mr: 2,

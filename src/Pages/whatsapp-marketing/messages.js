@@ -229,7 +229,7 @@ const AllLeads = () => {
                   <div
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
-                    <span className="text-[#DA1F26] p-1 text-center">
+                    <span className="text-primary p-1 text-center">
                       <BsShieldX size={16} />
                     </span>
                   </div>
@@ -290,7 +290,7 @@ const AllLeads = () => {
           ),
 
           "bulk import": () => (
-            <BiImport size={16} color={"#da1f26"} className="p-1" />
+            <BiImport size={16}  className="p-1 text-primary" />
           ),
 
           "property finder": () => (
@@ -420,7 +420,7 @@ const AllLeads = () => {
             <div className="mx-1">
               <Tooltip title="Call" arrow>
                 <div
-                  className="call-link p-1.5 rounded-sm hover:bg-[#DA1F26] hover:text-white bg-transparent text-[#DA1F26]"
+                  className="call-link p-1.5 rounded-sm hover:bg-primary hover:text-white bg-transparent text-primary"
                   style={{
                     display: "flex",
                     justifyContent: "center",
@@ -1110,16 +1110,16 @@ const AllLeads = () => {
       />
 
       <h1
-        className={`text-lg border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
+        className={`text-lg border-l-[4px] ml-1 pl-1 mt-12 font-bold ${
           currentMode === "dark"
             ? "text-white border-white"
-            : "text-main-red-color font-bold border-main-red-color"
+            : "text-primary font-bold border-primary"
         }`}
       >
         ● {leadOriginSelected.formattedValue}
         {" Leads | "}
         <span>{leadTypeSelected.formattedValue}</span>{" "}
-        <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+        <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
           {pageState?.total}
         </span>
       </h1>
@@ -1151,7 +1151,7 @@ const AllLeads = () => {
                   stroke: "white !important",
                 },
               }}
-              color="error"
+              className="bg-btn-primary"
             >
               <GrFormAdd
                 color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
@@ -1166,7 +1166,7 @@ const AllLeads = () => {
               type="button"
               variant="contained"
               sx={{ padding: "10px", mb: 2, mr: 1 }}
-              color="error"
+              className="bg-btn-primary"
               disabled={selectedRows?.length === 0}
             >
               <BsTrash
@@ -1183,7 +1183,7 @@ const AllLeads = () => {
               type="button"
               variant="contained"
               sx={{ padding: "10px", mb: 2, mr: 1 }}
-              color="error"
+              className="bg-btn-primary"
               disabled={selectedRows?.length === 0}
             >
               <BsWhatsapp
@@ -1201,8 +1201,8 @@ const AllLeads = () => {
                 type="button"
                 variant="contained"
                 sx={{ padding: "10px", mb: 2, mr: 1 }}
-                disabled={true}
-                color="error"
+                className="bg-btn-primary"
+
               >
                 <MdSms
                   color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
@@ -1222,7 +1222,7 @@ const AllLeads = () => {
                 type="button"
                 variant="contained"
                 sx={{ padding: "10px", mb: 2, mr: 1 }}
-                color="error"
+                className="bg-btn-primary"
                 disabled={true}
               >
                 <HiMail
@@ -1247,7 +1247,7 @@ const AllLeads = () => {
                   type="button"
                   variant="contained"
                   sx={{ padding: "10px", mb: 2, mr: 1 }}
-                  color="error"
+                  className="bg-btn-primary"
                 >
                   <IoMdChatboxes
                     color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}

@@ -7,10 +7,8 @@ const TemplatesCountCard = ({ count, type, icon }) => {
   return (
     <>
       <Box
-        style={{ background: currentMode === "dark" ? "#111827" : "#da1f26" }}
-        className={`relative text-white p-3 w-[24%] rounded shadow-lg border ${
-          currentMode === "dark" ? "border-red-600" : "border-none"
-        } flex flex-col justify-between`}
+        
+        className={`relative text-white bg-primary p-3 w-[24%] rounded shadow-lg border flex flex-col justify-between`}
       >
         <h4 className="mb-4 font-bold" style={{ fontSize: 22 }}>
           {count}
