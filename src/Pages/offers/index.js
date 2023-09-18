@@ -9,7 +9,7 @@ import OffersList from "../../Components/offers/OffersList";
 import usePermission from "../../utils/usePermission";
 
 const Offers = () => {
-  const { currentMode, darkModeColors, setopenBackDrop, User, BACKEND_URL } =
+  const { currentMode, darkModeColors, setopenBackDrop, primaryColor, BACKEND_URL } =
     useStateContext();
   const [value, setValue] = useState(0);
   const { hasPermission } = usePermission();
@@ -110,7 +110,7 @@ const Offers = () => {
                 "& .MuiTabs-indicator": {
                   height: "100%",
                   borderRadius: "5px",
-                  backgroundColor: "#da1f26",
+                  backgroundColor: primaryColor,
                 },
                 "& .Mui-selected": {
                   color: "white !important",
