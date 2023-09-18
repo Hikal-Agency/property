@@ -1,11 +1,9 @@
 import {
-  Box,
-  CircularProgress,
-  FormControl,
+  Box, FormControl,
   TextField,
   InputLabel,
   MenuItem,
-  Select,
+  Select
 } from "@mui/material";
 
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
@@ -20,10 +18,9 @@ import CombineChart from "../charts/statisticsCharts/CombineChart";
 import CombinationChartTable from "../charts/statisticsCharts/CombinationTableChart";
 import MapChartStatistics from "../charts/statisticsCharts/MapChartStatistics";
 import TopCampaignsTable from "../charts/statisticsCharts/TopCampaignsTable";
-import CountUp from "react-countup";
 
 const AllStatistics = ({ pageState, setpageState }) => {
-  const { currentMode, User, darkModeColors, graph_api_token } =
+  const { currentMode, User, darkModeColors, graph_api_token, primaryColor } =
     useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -560,7 +557,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
 
     // Background color of header of data grid
     "& .MuiDataGrid-columnHeaders": {
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: currentMode === "dark" ? "white" : "white",
     },
     "& .MuiIconButton-sizeSmall": {
@@ -587,7 +584,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
     // BACKGROUND COLOR OF FOOTER
     "& .MuiDataGrid-footerContainer": {
       borderTop: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: "white",
     },
     "& .MuiTablePagination-selectLabel": {
@@ -612,7 +609,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
           <div>
             <div className="pl-3 mt-4 flex items-center justify-center mb-6">
               <h4
-                className={`inline-block py-1 px-3 rounded bg-red-600 font-semibold mb-3 text-center text-2xl text-white`}
+                className={`inline-block py-1 px-3 rounded bg-primary font-semibold mb-3 text-center text-2xl text-white`}
               >
                 Facebook Statistics
               </h4>
@@ -858,7 +855,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     }`}
                   >
                     Campaign:{" "}
-                    <span className="text-red-600 font-bold">
+                    <span className="text-primary font-bold">
                       {selectedCampaign.CampaignName}
                     </span>
                   </h2>
@@ -868,7 +865,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 className={`text-xl border-l-[4px] ml-1 pl-1 mb-4 mt-5 font-bold ${
                   currentMode === "dark"
                     ? "text-white border-white"
-                    : "text-red-600 font-bold border-red-600"
+                    : "text-primary font-bold border-red-600"
                 }`}
               >
                 ● Overview
@@ -883,7 +880,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       className={`${
                         currentMode === "dark"
                           ? "bg-[#1c1c1c] text-white "
-                          : "bg-red-600 text-black"
+                          : "bg-primary text-black"
                       } rounded-lg h-20 p-2 shadow cursor-pointer hover:shadow-sm grid content-center`}
                     >
                       <p className="text-xl font-bold pb-2 text-white">
@@ -905,7 +902,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 className={`text-xl border-l-[4px] ml-1 pl-1 mb-4 mt-7 font-bold ${
                   currentMode === "dark"
                     ? "text-white border-white"
-                    : "text-red-600 font-bold border-red-600"
+                    : "text-primary font-bold border-red-600"
                 }`}
               >
                 ● Performance & Interactions
@@ -921,7 +918,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   // style={{ height: "300px" }}
                 >
                   <div className="justify-between items-center ">
-                    <h6 className="font-semibold pb-3 text-red-600">
+                    <h6 className="font-semibold pb-3 text-primary">
                       Performance
                     </h6>
                     {/* <AreaChart /> */}
@@ -937,7 +934,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   } col-span-1 h-96 shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                 >
                   <div className="justify-between items-center">
-                    <h6 className="font-semibold pb-3 text-red-600">
+                    <h6 className="font-semibold pb-3 text-primary">
                       Top Campaigns
                     </h6>
                     <TopCampaignsTable tablData={campaigns} />
@@ -957,7 +954,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   }}
                 >
                   <div className="justify-between items-center">
-                    <h6 className="font-semibold pb-3 text-red-600">Devices</h6>
+                    <h6 className="font-semibold pb-3 text-primary">Devices</h6>
                     <DoughnutChart doughnutChart={devices} />
                     {/* <DoughnutChart doughnutChart={doughnutChart} /> */}
                   </div>
@@ -971,7 +968,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   } col-span-1 h-96 shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                 >
                   <div className="justify-between items-center">
-                    <h6 className="font-semibold pb-3  text-red-600">
+                    <h6 className="font-semibold pb-3  text-primary">
                       Ads Data
                     </h6>
                     <CombinationChartTable tablData={row} />
@@ -987,7 +984,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       : "bg-white"
                   } col-span-1 h-[450px] shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm flex flex-col justify-start`}
                 >
-                  <h6 className="font-semibold pb-3 text-red-600">
+                  <h6 className="font-semibold pb-3 text-primary">
                     Frequency And Reach
                   </h6>
                   <div className="flex-grow flex items-center justify-center">
@@ -1007,7 +1004,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 className={`text-xl border-l-[4px] ml-1 pl-1 mb-4 mt-2 font-bold ${
                   currentMode === "dark"
                     ? "text-white border-white"
-                    : "text-red-600 font-bold border-red-600"
+                    : "text-primary font-bold border-red-600"
                 }`}
               >
                 ● Audience
@@ -1024,7 +1021,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     } col-span-1 h-full shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                   >
                     <div className="flex w-full flex-col justify-between items-center h-full">
-                      <h6 className="font-semibold pb-3 text-red-600">
+                      <h6 className="font-semibold pb-3 text-primary">
                         Audience
                       </h6>
                       <div className="flex-grow">
@@ -1041,7 +1038,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                     } col-span-1 h-min shadow w-full rounded-md p-5 cursor-pointer hover:shadow-sm`}
                   >
                     <div className="justify-between items-center h-80">
-                      <h6 className="font-semibold pb-3 text-red-600">
+                      <h6 className="font-semibold pb-3 text-primary">
                         Locations
                       </h6>
                       <MapChartStatistics locationData={locations} />
@@ -1059,7 +1056,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 className={`text-xl border-l-[4px] ml-1 pl-1 mb-4 mt-5 font-bold ${
                   currentMode === "dark"
                     ? "text-white border-white"
-                    : "text-red-600 font-bold border-red-600"
+                    : "text-primary font-bold border-primary"
                 }`}
               >
                 ● Ads Details
@@ -1085,6 +1082,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                   },
                 }}
                 sx={{
+                  ...DataGridStyles,
                   boxShadow: 2,
                   "& .MuiDataGrid-cell:hover": {
                     cursor: "pointer",
