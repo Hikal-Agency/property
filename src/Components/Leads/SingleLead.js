@@ -6,7 +6,6 @@ import {
   TextField,
   IconButton,
   Button,
-  Box,
   Tooltip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -21,12 +20,10 @@ import BlockIPModal from "./BlockIPModal";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { BiBlock } from "react-icons/bi";
-import { BsShuffle } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 import { HiPhoneOutgoing } from "react-icons/hi";
 import { RiMailSendFill } from "react-icons/ri";
-import UpdateLead from "./UpdateLead";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -44,7 +41,7 @@ const SingleLead = ({
   setBulkDeleteClicked,
   setLeadToDelete,
 }) => {
-  const { darkModeColors, currentMode, User, BACKEND_URL, isArabic } =
+  const { darkModeColors, currentMode, User, BACKEND_URL, isArabic, primaryColor } =
     useStateContext();
   const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
@@ -294,7 +291,7 @@ const SingleLead = ({
                 {/* FEEDBACK  */}
                 <div className="col-span-2 space-y-2 text-right">
                   <div className="mb-5 space-x-3">
-                    <span className="py-2 px-3 bg-main-red-color text-white rounded-md">
+                    <span className="py-2 px-3 bg-primary text-white rounded-md">
                       {LeadData?.feedback ?? "No Feedback"}
                     </span>
                   </div>
@@ -315,7 +312,7 @@ const SingleLead = ({
                   </p>
                 </div>
               </div>
-              <div className="bg-main-red-color h-0.5 w-full my-7"></div>
+              <div className="bg-primary h-0.5 w-full my-7"></div>
 
               <div
                 className={`${
@@ -350,7 +347,7 @@ const SingleLead = ({
                 </div>
               </div>
 
-              <div className="bg-main-red-color h-0.5 w-full mt-6 mb-4"></div>
+              <div className="bg-primary h-0.5 w-full mt-6 mb-4"></div>
               <div className="flex mb-6 justify-end items-center mt-0 w-full">
                 {/* CALL  */}
                 <p
@@ -440,7 +437,7 @@ const SingleLead = ({
                       currentMode === "dark"
                         ? "text-[#FFFFFF] bg-[#262626]"
                         : "text-[#1C1C1C] bg-[#EEEEEE]"
-                    } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                    } hover:bg-primary hover:text-red-600 rounded-full shadow-none p-1.5 mr-1 flex items-center`}
                   >
                     <Tooltip title="Delete Lead" arrow>
                       <button
@@ -477,7 +474,7 @@ const SingleLead = ({
                           sx={{
                             padding: 0,
                             "& svg": {
-                              color: "red !important",
+                              color: `${primaryColor} !important`,
                             },
                           }}
                         >
@@ -496,7 +493,9 @@ const SingleLead = ({
                     fullWidth
                     sx={{ my: 0 }}
                     variant="contained"
-                    color="error"
+                    style={{
+                      backgroundColor: primaryColor
+                    }}
                     size="medium"
                   >
                     View Lead Details
@@ -531,7 +530,7 @@ const SingleLead = ({
                     <p className="px-2 py-2 mx-1 text-center text-sm">
                       {lastNoteDate}
                     </p>
-                    <div className="bg-main-red-color h-10 w-0.5"></div>
+                    <div className="bg-primary h-10 w-0.5"></div>
                     <div className="flex-grow">
                       <p
                         style={{
@@ -544,7 +543,7 @@ const SingleLead = ({
                         {lastNote}
                       </p>
                     </div>
-                    <div className="bg-main-red-color h-10 w-0.5"></div>
+                    <div className="bg-primary h-10 w-0.5"></div>
                     <p className="px-2 py-2 mx-1 text-center text-sm">
                       {lastNoteAddedBy}
                     </p>
@@ -578,7 +577,7 @@ const SingleLead = ({
                   <button
                     disabled={addNoteloading ? true : false}
                     type="submit"
-                    className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color p-1 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                    className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-primary p-1 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
                   >
                     {addNoteloading ? (
                       <CircularProgress
