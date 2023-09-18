@@ -65,15 +65,15 @@ const UpdateUser = () => {
         >
           <div className={`w-full `}>
             <div className="pl-3">
-              <div className="my-5 mb-10">
-                <div className="my-3">
+              <div className="mb-5 mt-8">
+                <div>
                   <h2
                     className={` ${
                       currentMode === "dark" ? "text-white" : "text-black"
-                    } font-semibold text-lg`}
+                    } font-semibold text-lg ml-8`}
                   >
                     Edit User:{" "}
-                    <span className="text-main-red-color font-bold">
+                    <span className="text-primary font-bold">
                       {user?.userName &&
                         user?.userName.charAt(0).toUpperCase() +
                           user?.userName.slice(1)}

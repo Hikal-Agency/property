@@ -20,7 +20,6 @@ import {
   AiOutlineTable,
   AiOutlineAppstore,
 } from "react-icons/ai";
-import SingleUser from "../../Components/Users/SingleUser";
 import { useEffect, useState, useRef } from "react";
 
 import axios from "../../axoisConfig";
@@ -32,7 +31,6 @@ import { FaBan, FaUnlock } from "react-icons/fa";
 import DeleteUser from "../../Components/Users/DeleteUser";
 import { BsPersonFillLock, BsSearch } from "react-icons/bs";
 import UpdateUserPermissions from "../../Components/addUser/UpdateUserPermissions";
-import { BiSearch } from "react-icons/bi";
 
 const Users = () => {
   const {
@@ -581,17 +579,17 @@ const Users = () => {
                     className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
                       currentMode === "dark"
                         ? "text-white border-white"
-                        : "text-red-600 font-bold border-red-600"
+                        : "text-primary font-bold border-primary"
                     }`}
                   >
                     ● Users{" "}
-                    <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
+                    <span className="bg-primary text-white px-2 py-1 rounded-sm my-auto">
                       <span>{pageState?.total}</span>
                     </span>
                   </h1>
                   {hasPermission("users_create") ? (
                     <Button
-                      className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-md mr-2 "
+                      className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
                       onClick={HandleOpenModel}
                     >
                       <span className="flex justify-between items-center ">
@@ -638,7 +636,6 @@ const Users = () => {
                       "& .MuiTabs-indicator": {
                         // height: "100%",
                         borderRadius: "5px",
-                        backgroundColor: "#da1f26",
                       },
                       "& .Mui-selected": {
                         color: "white !important",
