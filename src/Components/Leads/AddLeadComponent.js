@@ -35,6 +35,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
     fetchSidebarData,
     SalesPerson,
     Managers,
+    primaryColor
   } = useStateContext();
   console.log("Salesperson: ", SalesPerson);
   console.log("MAnagers: ", Managers);
@@ -318,7 +319,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
             disabled={loading ? true : false}
           >
             <div className="w-full flex items-center py-1 mb-7">
-              <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
               <h1
                 className={`text-lg font-semibold ${
                   currentMode === "dark"
@@ -336,7 +337,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   <h4
                     className={`${
                       currentMode === "dark"
-                        ? "text-red-600"
+                        ? `text-primary`
                         : "text-black"
                     } text-center font-semibold pb-5`}
                   >
@@ -363,8 +364,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                         <MenuItem value="">
                           Select Manager
                           <span
-                            className="ml-1"
-                            style={{ color: "red" }}
+                            className="ml-1 text-primary"
                           >
                             *
                           </span>
@@ -519,7 +519,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   <h4
                     className={`${
                       currentMode === "dark"
-                        ? "text-red-600"
+                        ? `text-primary`
                         : "text-black"
                     } text-center font-semibold pb-5`}
                   >
@@ -558,7 +558,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   >
                     <MenuItem value="" disabled>
                       Enquiry about
-                      <span className="ml-1" style={{ color: "red" }}>
+                      <span className="ml-1 text-primary">
                         *
                       </span>
                     </MenuItem>
@@ -600,7 +600,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   >
                     <MenuItem value="" disabled>
                       Property type
-                      <span className="ml-1" style={{ color: "red" }}>
+                      <span className="ml-1 text-primary">
                         *
                       </span>
                     </MenuItem>
@@ -631,7 +631,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   >
                     <MenuItem value="" disabled>
                       Purpose of enquiry
-                      <span className="ml-1" style={{ color: "red" }}>
+                      <span className="ml-1 text-primary">
                         *
                       </span>
                     </MenuItem>
@@ -648,7 +648,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   <h4
                     className={`${
                       currentMode === "dark"
-                        ? "text-red-600"
+                        ? `text-primary`
                         : "text-black"
                     } text-center font-semibold pb-5`}
                   >
@@ -742,7 +742,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   >
                     <MenuItem value="" disabled>
                       Preferred language
-                      <span className="ml-1" style={{ color: "red" }}>
+                      <span className="ml-1 text-primary">
                         *
                       </span>
                     </MenuItem>
@@ -774,7 +774,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   >
                     <MenuItem value="" disabled>
                       Source
-                      <span className="ml-1" style={{ color: "red" }}>
+                      <span className="ml-1 text-primary" >
                         *
                       </span>
                     </MenuItem>
@@ -812,8 +812,11 @@ const AddLeadComponent = ({ FetchLeads }) => {
               } px-5 mx-5 py-2 text-center sm:px-6`}
             >
               <Button
-                className={`min-w-fit mb-5 w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                className={`min-w-fit mb-5 w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
                 ripple={true}
+                style={{
+                  background: `${primaryColor}`
+                }}
                 size="lg"
                 type="submit"
                 disabled={loading ? true : false}
