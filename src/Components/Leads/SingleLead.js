@@ -577,10 +577,8 @@ const SingleLead = ({
                   <button
                     disabled={addNoteloading ? true : false}
                     type="submit"
-                    style={{
-                      background: primaryColor
-                    }}
-                    className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent p-1 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
+
+                    className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary group relative flex w-full justify-center rounded-md border border-transparent p-1 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
                   >
                     {addNoteloading ? (
                       <CircularProgress

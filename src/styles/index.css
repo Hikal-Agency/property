@@ -20,6 +20,14 @@ body {
   color: var(--primary-color);
 }
 
+.border-primary {
+  border-color: var(--primary-color);
+}
+
+.bg-btn-primary {
+  background: var(--primary-color) !important;
+}
+
 /* subscribe btn styling */
 .MuiBox-root .css-tykrgw-MuiButtonBase-root-MuiButton-root > a:hover i::before {
   left: 20%;

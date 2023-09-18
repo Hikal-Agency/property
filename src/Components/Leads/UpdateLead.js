@@ -43,7 +43,6 @@ const UpdateLead = ({
     BACKEND_URL,
     setSalesPerson: setAllSalesPersons,
     SalesPerson: AllSalesPersons,
-    primaryColor
   } = useStateContext();
   const [value, setValue] = useState();
   const [loading, setloading] = useState(true);
@@ -809,13 +808,10 @@ const UpdateLead = ({
                   </div>
                 </div>
                 <Button
-                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none `}
+                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary hover:shadow-none `}
                   ripple={true}
                   size="lg"
                   type="submit"
-                  style={{
-                    background: primaryColor
-                  }}
                   disabled={btnloading ? true : false}
                 >
                   {btnloading ? (
