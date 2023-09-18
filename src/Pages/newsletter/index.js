@@ -13,7 +13,7 @@ import { AiOutlineTable, AiOutlineAppstore } from "react-icons/ai";
 import { Tab, Tabs } from "@mui/material";
 import { useEffect } from "react";
 import Loader from "../../Components/Loader";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import GridNewsletter from "../../Components/newsletter/GridNewsletter";
 
 import axios from "../../axoisConfig";
@@ -21,14 +21,12 @@ import axios from "../../axoisConfig";
 const Newsletter = () => {
   const {
     User,
-    setUser,
     currentMode,
     setopenBackDrop,
     BACKEND_URL,
     darkModeColors,
+    primaryColor
   } = useStateContext();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [loading, setloading] = useState(true);
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
@@ -164,7 +162,7 @@ const Newsletter = () => {
 
     // Background color of header of data grid
     "& .MuiDataGrid-columnHeaders": {
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: currentMode === "dark" ? "white" : "white",
     },
     "& .MuiIconButton-sizeSmall": {
@@ -191,7 +189,7 @@ const Newsletter = () => {
     // BACKGROUND COLOR OF FOOTER
     "& .MuiDataGrid-footerContainer": {
       borderTop: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: "white",
     },
     "& .MuiTablePagination-selectLabel": {
@@ -247,17 +245,17 @@ const Newsletter = () => {
                     className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
                       currentMode === "dark"
                         ? "text-white border-white"
-                        : "text-red-600 font-bold border-red-600"
+                        : "text-primary font-bold border-primary"
                     }`}
                   >
                     ● Newsletter{" "}
-                    <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
+                    <span className="bg-primary text-white px-2 py-1 rounded-sm my-auto">
                       <span>{pageState?.total}</span>
                     </span>
                   </h1>
                   <Link
                     to="/newsletter/addnewsletter"
-                    className="bg-main-red-color hover:bg-red-700 text-white px-4 py-2 rounded-sm"
+                    className="bg-primary text-white px-4 py-2 rounded-sm"
                   >
                     Add Newsletter
                   </Link>
@@ -268,7 +266,6 @@ const Newsletter = () => {
                     "& .MuiTabs-indicator": {
                       // height: "100%",
                       borderRadius: "5px",
-                      backgroundColor: "#da1f26",
                     },
                     "& .Mui-selected": {
                       color: "white !important",
@@ -388,7 +385,7 @@ const Newsletter = () => {
                             value: searchText,
                             onChange: HandleQuicSearch,
                           },
-                        }}
+                        }} 
                         sx={{
                           "& .MuiDataGrid-row": {
                             justifyContent: "center",
@@ -410,19 +407,9 @@ const Newsletter = () => {
                         }
                       />
                     </Box>
-                    {/* <AllNewsletters
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                      pageState={pageState}
-                      setpageState={setpageState}
-                    /> */}
+ 
                   </TabPanel>
                 </div>
-                {/* <AllNewsletters
-                  pageState={pageState}
-                  setpageState={setpageState}
-                /> */}
               </div>
             </div>
             {/* <Footer /> */}

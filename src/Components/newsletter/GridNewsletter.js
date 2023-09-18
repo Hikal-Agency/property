@@ -1,4 +1,4 @@
-import { Pagination, PaginationItem, Stack } from "@mui/material";
+import { Pagination, Stack } from "@mui/material";
 import React, { useEffect } from "react";
 import Loader from "../Loader";
 import { useStateContext } from "../../context/ContextProvider";
@@ -6,7 +6,7 @@ import { useState } from "react";
 const GridNewsletter = ({ pageState, setpageState }) => {
   console.log("Newsletter state: ", pageState);
   const [loading, setLoading] = useState(false);
-  const { currentMode } = useStateContext();
+  const { currentMode, primaryColor } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [notesData, setUserData] = useState([]);
 
@@ -59,7 +59,7 @@ const GridNewsletter = ({ pageState, setpageState }) => {
                               <b>Added At: </b> {item?.creationDate}
                             </p>
                             <hr />
-                            <p className="text-sm font-semibold text-red-600 ">
+                            <p className="text-sm font-semibold text-primary ">
                               <b>Status: </b>{" "}
                               {item?.status === "Subscribed" ? (
                                 <span className="text-green-600">
@@ -87,7 +87,7 @@ const GridNewsletter = ({ pageState, setpageState }) => {
                 sx={{
                   "& .Mui-selected": {
                     color: "white",
-                    backgroundColor: "#DA1F26 !important",
+                    backgroundColor: `${primaryColor} !important`,
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",
@@ -97,33 +97,7 @@ const GridNewsletter = ({ pageState, setpageState }) => {
                     color: "white",
                   },
                 }}
-                // renderItem={(item) => {
-                //   const isEllipsis =
-                //     item.type === "start-ellipsis" ||
-                //     item.type === "end-ellipsis";
-
-                //   return (
-                //     <PaginationItem
-                //       {...item}
-                //       sx={{
-                //         color: isEllipsis
-                //           ? currentMode === "dark"
-                //             ? "white"
-                //             : "gray"
-                //           : undefined,
-                //         backgroundColor: isEllipsis
-                //           ? undefined
-                //           : currentMode === "dark"
-                //           ? "black"
-                //           : "white",
-                //         "&:hover": {
-                //           backgroundColor:
-                //             currentMode === "dark" ? "black" : "white",
-                //         },
-                //       }}
-                //     />
-                //   );
-                // }}
+                
               />
             </Stack>
           </div>

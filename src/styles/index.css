@@ -26,6 +26,11 @@ body {
 
 .bg-btn-primary {
   background: var(--primary-color) !important;
+  border: 1px solid
+}
+
+.MuiTabs-indicator{
+  background: var(--primary-color) !important;
 }
 
 /* subscribe btn styling */

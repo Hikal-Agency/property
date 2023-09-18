@@ -26,7 +26,6 @@ const Role = () => {
     setpageState,
     User,
     darkModeColors,
-    primaryColor
   } = useStateContext();
 
   const [user, setUser] = useState([]);
@@ -367,7 +366,6 @@ const Role = () => {
                       "& .MuiTabs-indicator": {
                         height: "100%",
                         borderRadius: "5px",
-                        backgroundColor: primaryColor,
                       },
                       "& .Mui-selected": {
                         color: "white !important",

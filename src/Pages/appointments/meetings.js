@@ -508,7 +508,6 @@ const Meetings = () => {
                   ...darkModeColors,
                   "& .MuiTabs-indicator": {
                     borderRadius: "5px",
-                    backgroundColor: primaryColor,
                   },
                   "& .Mui-selected": {
                     color: "white",

@@ -246,10 +246,6 @@ const NotificationsList = () => {
                 <Box
                   sx={{
                     ...darkModeColors,
-                    "& .MuiTabs-indicator": {
-                      // height: "100%",
-                      backgroundColor: "#da1f26",
-                    },
                     "& .Mui-selected": {
                       color:
                         currentMode === "dark" ? "white !important" : "black",
