@@ -7,7 +7,6 @@ import {
 } from "react-icons/ai";
 import { MdLocationOn } from "react-icons/md";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
@@ -26,7 +25,7 @@ import ShowLocation from "../../Components/meetings/ShowLocation";
 
 const Meetings = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, BACKEND_URL, User, darkModeColors, DataGridStyles } =
+  const { currentMode, setopenBackDrop, BACKEND_URL, User, darkModeColors, DataGridStyles, primaryColor } =
     useStateContext();
   const [locationModalOpen, setLocationModalOpen] = useState(false);
   const [meetingNote, setMeetingNote] = useState(null);
@@ -463,7 +462,7 @@ const Meetings = () => {
         <Pagination
           sx={{
             "& .Mui-selected": {
-              backgroundColor: "#DA1F26 !important",
+              backgroundColor: `${primaryColor} !important`,
               color: "white !important",
               borderRadius: "50px !important",
             },
@@ -509,7 +508,7 @@ const Meetings = () => {
                   ...darkModeColors,
                   "& .MuiTabs-indicator": {
                     borderRadius: "5px",
-                    backgroundColor: "#da1f26",
+                    backgroundColor: primaryColor,
                   },
                   "& .Mui-selected": {
                     color: "white",
@@ -517,7 +516,7 @@ const Meetings = () => {
                   },
                   "& .MuiSvgIcon-root": {
                     // Customize icon styles here
-                    color: "red",
+                    color: primaryColor,
                   },
                 }}
                 className={`rounded-md overflow-hidden ${
@@ -651,7 +650,7 @@ const Meetings = () => {
             </div>
                 
           </div>
-        )}
+        )} 
         {meetingLocation !== null && locationModalOpen ? (
           <ShowLocation
             isModalOpened={locationModalOpen}

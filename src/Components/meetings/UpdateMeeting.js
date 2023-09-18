@@ -4,22 +4,18 @@ import {
   CircularProgress,
   Modal,
   TextField,
-  FormControl,
-  Select,
-  InputLabel,
-  IconButton,
+  FormControl, IconButton,
   MenuItem,
-  Box,
+  Box
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useStateContext } from "../../context/ContextProvider";
 import LocationPicker from "./LocationPicker";
 import { IoMdClose } from "react-icons/io";
@@ -42,7 +38,6 @@ const UpdateMeeting = ({
   const [meetingStatus, setMeetingStatus] = useState(
     meetingData?.meetingStatus
   );
-  const [loading, setLoading] = useState(true);
   const [meetingTime, setMeetingTime] = useState("");
   const [meetingTimeValue, setMeetingTimeValue] = useState(
     dayjs("2023-01-01 " + meetingData?.meetingTime)
@@ -65,108 +60,7 @@ const UpdateMeeting = ({
   };
 
   useEffect(() => {
-    //   const getMeeting = async () => {
-    //     try {
-    //       const token = localStorage.getItem("auth-token");
-    //       const { id } = meetingModalOpen;
-
-    //       const meetingData = new FormData();
-    //       meetingData.append("id", id);
-    //       const response = await axios.post(
-    //         `${BACKEND_URL}/updateMeeting`,
-    //         meetingData,
-    //         {
-    //           headers: {
-    //             "Content-Type": "application/json",
-    //             Authorization: `Bearer ${token}`,
-    //           },
-    //         }
-    //       );
-    //       const geocoder = new window.google.maps.Geocoder();
-
-    //       if (!response.data.meeting) {
-    //         console.log("Hello");
-    //         toast.error("Error in Fetching the Meeting", {
-    //           position: "top-right",
-    //           autoClose: 3000,
-    //           hideProgressBar: false,
-    //           closeOnClick: true,
-    //           pauseOnHover: true,
-    //           draggable: true,
-    //           progress: undefined,
-    //           theme: "light",
-    //         });
-    //       } else {
-    //         const {
-    //           meetingStatus,
-    //           meetingDate,
-    //           mLat,
-    //           mLong,
-    //           meetingTime,
-    //           meetingNote,
-    //         } = response.data.meeting;
-    //         console.log(response.data.meeting);
-    //         setMeetingStatus(meetingStatus);
-    //         setMeetingNotes(meetingNote);
-    //         setMeetingDateValue(dayjs(meetingDate));
-    //         setMeetingTimeValue(dayjs("2023-01-01 " + meetingTime));
-    //         if (!mLat || !mLong) {
-    //           navigator.geolocation.getCurrentPosition((position) => {
-    //             geocoder.geocode(
-    //               {
-    //                 location: {
-    //                   lat: Number(position.coords.latitude),
-    //                   lng: Number(position.coords.longitude),
-    //                 },
-    //               },
-    //               (results, status) => {
-    //                 if (status === "OK") {
-    //                   setMeetingLocation({
-    //                     lat: Number(position.coords.latitude),
-    //                     lng: Number(position.coords.longitude),
-    //                     addressText: results[0].formatted_address,
-    //                   });
-    //                 } else {
-    //                   console.log("Getting address failed due to: " + status);
-    //                 }
-    //               }
-    //             );
-    //           });
-    //         } else {
-    //           geocoder.geocode(
-    //             { location: { lat: Number(mLat), lng: Number(mLong) } },
-    //             (results, status) => {
-    //               if (status === "OK") {
-    //                 setMeetingLocation({
-    //                   lat: Number(mLat),
-    //                   lng: Number(mLong),
-    //                   addressText: results[0].formatted_address,
-    //                 });
-    //               } else {
-    //                 console.log("Getting address failed due to: " + status);
-    //               }
-    //             }
-    //           );
-    //         }
-    //       }
-    //     } catch (error) {
-    //       console.log("Error in fetching single meeting: ", error);
-    //       toast.error("Error in Fetching the Meeting", {
-    //         position: "top-right",
-    //         autoClose: 3000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: "light",
-    //       });
-    //     }
-    //     setLoading(false);
-    //   };
-
-    //   getMeeting();
-    //   //eslint-disable-next-line
+    
 
     const geocoder = new window.google.maps.Geocoder();
 
@@ -530,7 +424,7 @@ const UpdateMeeting = ({
               </div>
 
               <Button
-                className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
                 ripple={true}
                 size="lg"
                 type="submit"
