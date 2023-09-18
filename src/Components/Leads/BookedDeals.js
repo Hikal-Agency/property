@@ -34,7 +34,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import RenderManagers from "./RenderManagers";
 import UpdateBookedDeal from "./UpdateBookedDeal";
-import { useNavigate, Link } from "react-router-dom";
 import RenderSalesperson from "./RenderSalesperson";
 import RenderPriority from "./RenderPriority";
 import Confetti from "react-confetti";
@@ -51,16 +50,16 @@ import {
   FaYoutube,
   FaTwitter,
 } from "react-icons/fa";
-import { 
-  AiOutlineEdit, 
-  AiOutlineHistory 
+import {
+  AiOutlineEdit,
+  AiOutlineHistory
 } from "react-icons/ai";
-import { 
-  BsPersonCircle, 
+import {
+  BsPersonCircle,
   BsSnow2,
   BsShieldX,
   BsShieldCheck,
-  BsShieldMinus 
+  BsShieldMinus
 } from "react-icons/bs";
 import {
   BiSearch,
@@ -72,11 +71,6 @@ import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { MdCampaign } from "react-icons/md";
-import {
-  RxCheckCircled,
-  RxCrossCircled,
-  RxQuestionMarkCircled
-} from "react-icons/rx";
 import { TbWorldWww } from "react-icons/tb";
 import moment from "moment";
 
@@ -131,6 +125,7 @@ const BookedDeals = ({
     isArabic,
     User,
     Managers,
+    primaryColor
   } = useStateContext();
   //eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -139,10 +134,6 @@ const BookedDeals = ({
   //eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
   const [pageRange, setPageRange] = useState();
-
-  const handleCloseDialog = () => {
-    setopenDialog(false);
-  };
 
   const handleRangeChange = (e) => {
     const value = e.target.value;
@@ -201,13 +192,6 @@ const BookedDeals = ({
     const [leadDate, setLeadDate] = useState("");
     const [leadAmount, setLeadAmount] = useState("");
 
-    function format(value) {
-      if (value < 10) {
-        return "0" + value;
-      } else {
-        return value;
-      }
-    }
 
     const ChangeFeedback = (e) => {
       setnewFeedback(e.target.value);
@@ -368,7 +352,7 @@ const BookedDeals = ({
                   <div className="flex flex-col justify-center items-center">
                     <IoIosAlert
                       size={50}
-                      className="text-main-red-color text-2xl"
+                      className="text-primary text-2xl"
                     />
                     <h1 className="font-semibold pt-3 text-lg text-center">
                       Do You Really Want Change the Feedback from{" "}
@@ -435,7 +419,7 @@ const BookedDeals = ({
                   </div>
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                     <Button
-                      className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                      className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                       ripple={true}
                       size="lg"
                       type="submit"
@@ -453,7 +437,7 @@ const BookedDeals = ({
                       className={`shadow-none px-3 rounded-md text-sm  ${
                         currentMode === "dark"
                           ? "text-white border-white"
-                          : "text-main-red-color border-main-red-color"
+                          : "text-primary border-primary"
                       }`}
                     >
                       Cancel
@@ -658,7 +642,7 @@ const BookedDeals = ({
                   <div
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                     >
-                    <span className="text-[#DA1F26] p-1 text-center">
+                    <span className="text-primary p-1 text-center">
                       <BsShieldX size={16} />
                     </span>
                   </div>
@@ -719,7 +703,7 @@ const BookedDeals = ({
           ),
 
           "bulk import": () => (
-            <BiImport size={16} color={"#da1f26"} className="p-1" />
+            <BiImport size={16} className="p-1 text-primary" />
           ),
 
           "property finder": () => (
@@ -1210,7 +1194,7 @@ const BookedDeals = ({
           <Pagination
             sx={{
               "& .Mui-selected": {
-                backgroundColor: "#DA1F26 !important",
+                backgroundColor: `${primaryColor} !important`,
                 color: "white !important",
                 borderRadius: "50px !important",
               },
@@ -1334,11 +1318,14 @@ const BookedDeals = ({
 
         {!UpdateLeadModelOpen && (
           <SingleLead
+          setLeadToDelete={setLeadToDelete}
             LeadModelOpen={LeadModelOpen}
             setLeadModelOpen={setLeadModelOpen}
             handleLeadModelOpen={handleLeadModelOpen}
             handleLeadModelClose={handleLeadModelClose}
             LeadData={singleLeadData}
+            handleUpdateLeadModelOpen={handleUpdateLeadModelOpen}
+            handleUpdateLeadModelClose={handleUpdateLeadModelClose}
             BACKEND_URL={BACKEND_URL}
           />
         )}

@@ -27,16 +27,10 @@ import { RiMailSendFill } from "react-icons/ri";
 
 const SingleLead = ({
   LeadModelOpen,
-  setLeadModelOpe,
-  handleLeadModelOpen,
   handleLeadModelClose,
   LeadData,
-  lead_origin,
   setLeadData,
   handleUpdateLeadModelOpen,
-  handleUpdateLeadModelClose,
-  setLeadModelOpen,
-  UpdateLeadModelOpen,
   setDeleteModelOpen,
   setBulkDeleteClicked,
   setLeadToDelete,

@@ -488,7 +488,7 @@ const Meetings = () => {
             }`}
           >
             <div className="flex justify-between">
-              <div className="flex items-center py-1">
+              <div className="flex items-center py-3">
                 <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
                   className={`text-lg font-semibold ${
