@@ -116,7 +116,7 @@ const ReminderComponent = ({
       <div
         key={reminder.id}
         className={`backdrop-blur card-hover w-[350px] flex flex-col justify-between ${
-          currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#eeeeee45]"
+          currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#d8d8d845]"
         } rounded-xl my-2 cursor-pointer `}
         onClick={() => handleClick(reminder?.lead_id)}
       >

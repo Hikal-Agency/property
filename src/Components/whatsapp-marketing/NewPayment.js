@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Box, Button, IconButton } from "@mui/material";
+import { Box } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import PricingTable from "./PricingTable";
 import Checkout from "./Checkout";

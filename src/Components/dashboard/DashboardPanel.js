@@ -213,7 +213,7 @@ const DashboardPanel = ({ setloading }) => {
             className={`card-hover backdrop-blur ${
               currentMode === "dark"
                 ? "bg-[#1c1c1c] text-white "
-                : "bg-[#eeeeee45] text-main-dark-bg"
+                : "bg-[#d8d8d845] text-main-dark-bg"
             }  h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
             onClick={() => setopenBackDrop(true)}
           >
@@ -270,7 +270,7 @@ const DashboardPanel = ({ setloading }) => {
                   className={`card-hover backdrop-blur ${
                     currentMode === "dark"
                       ? "bg-[#1c1c1c] text-white "
-                      : "bg-[#eeeeee45] text-main-dark-bg"
+                      : "bg-[#d8d8d845] text-main-dark-bg"
                   } h-auto w-full p-5 rounded-xl grid content-center`}
                 >
                   <p
@@ -303,7 +303,7 @@ const DashboardPanel = ({ setloading }) => {
                     className={`card-hover backdrop-blur ${
                       currentMode === "dark"
                         ? "bg-[#1c1c1c] text-white "
-                        : "bg-[#eeeeee45] text-main-dark-bg"
+                        : "bg-[#d8d8d845] text-main-dark-bg"
                     } h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
@@ -340,7 +340,7 @@ const DashboardPanel = ({ setloading }) => {
                     className={`card-hover backdrop-blur ${
                       currentMode === "dark"
                         ? "bg-[#1c1c1c] text-white "
-                        : "bg-[#eeeeee45] text-main-dark-bg"
+                        : "bg-[#d8d8d845] text-main-dark-bg"
                     }  h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
@@ -381,7 +381,7 @@ const DashboardPanel = ({ setloading }) => {
                 className={`card-hover backdrop-blur ${
                   currentMode === "dark"
                     ? "bg-[#1c1c1c] text-white "
-                    : "bg-[#eeeeee45]"
+                    : "bg-[#d8d8d845]"
                 } h-full rounded-xl p-5 cursor-pointer w-full`}
               >
                 <div className="justify-between items-center w-full">
@@ -396,7 +396,7 @@ const DashboardPanel = ({ setloading }) => {
                 className={`card-hover backdrop-blur ${
                   currentMode === "dark"
                     ? "bg-[#1c1c1c] text-white "
-                    : "bg-[#eeeeee45]"
+                    : "bg-[#d8d8d845]"
                 } h-full w-full rounded-xl p-5 cursor-pointer`}
               >
                 <div className="justify-between items-center">
@@ -412,7 +412,7 @@ const DashboardPanel = ({ setloading }) => {
                   className={`card-hover backdrop-blur ${
                     currentMode === "dark"
                       ? "bg-[#1c1c1c] text-white "
-                      : "bg-[#eeeeee45]"
+                      : "bg-[#d8d8d845]"
                   } h-full w-full rounded-xl p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
@@ -427,7 +427,7 @@ const DashboardPanel = ({ setloading }) => {
                   className={`card-hover backdrop-blur ${
                     currentMode === "dark"
                       ? "bg-[#1c1c1c] text-white "
-                      : "bg-[#eeeeee45]"
+                      : "bg-[#d8d8d845]"
                   } h-full w-full rounded-xl p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
@@ -451,7 +451,7 @@ const DashboardPanel = ({ setloading }) => {
               className={`card-hover backdrop-blur ${
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#eeeeee45]"
+                  : "bg-[#d8d8d845]"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -464,7 +464,7 @@ const DashboardPanel = ({ setloading }) => {
               className={`card-hover backdrop-blur ${
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#eeeeee45]"
+                  : "bg-[#d8d8d845]"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer `}
             >
               <div className="justify-between items-center">
@@ -485,7 +485,7 @@ const DashboardPanel = ({ setloading }) => {
               className={`card-hover backdrop-blur ${
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#eeeeee45]"
+                  : "bg-[#d8d8d845]"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -503,7 +503,7 @@ const DashboardPanel = ({ setloading }) => {
               className={`card-hover backdrop-blur ${
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#eeeeee45]"
+                  : "bg-[#d8d8d845]"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -520,7 +520,7 @@ const DashboardPanel = ({ setloading }) => {
               className={`card-hover backdrop-blur ${
                 currentMode === "dark"
                   ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#eeeeee45]"
+                  : "bg-[#d8d8d845]"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -630,7 +630,7 @@ const DashboardPanel = ({ setloading }) => {
         whileInView={{ opacity: 1 }}
         viewport={{ margin: "-70px" }}
         className={`${
-          currentMode === "dark" ? "border-[#1C1C1C]" : "border-[#eeeeee45]"
+          currentMode === "dark" ? "border-[#1C1C1C]" : "border-[#d8d8d845]"
         } grid grid-cols-1 pb-3 my-3 border-4 rounded-xl`}
       >
         <Task />

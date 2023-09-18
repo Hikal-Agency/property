@@ -9,6 +9,7 @@ import {
   Link, 
   useLocation 
 } from "react-router-dom";
+import {MdStars} from "react-icons/md";
 
 import { 
   Tooltip, 
@@ -249,10 +250,12 @@ const Navbar = () => {
             isUserSubscribed === false && (
               <Button
                 variant="contained"
-                style={{ background: primaryColor }}
-                sx={{ mr: 2 }}
+                className="bg-btn-primary"
+                sx={{ mr: 2, "& svg": {
+                  color: "white"
+                } }}
               >
-                <Link to="/marketing/payments">Upgrade</Link>
+                <Link to="/marketing/payments" className="flex items-center"><MdStars className="mr-2" size={18}/><span className="mt-[2px]">Upgrade</span></Link>
               </Button>
             ),
           ]}

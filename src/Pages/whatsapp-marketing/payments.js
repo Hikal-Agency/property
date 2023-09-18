@@ -5,7 +5,6 @@ import { Tab, Tabs } from "@mui/material";
 import NewPayment from "../../Components/whatsapp-marketing/NewPayment";
 
 import axios from "../../axoisConfig";
-import Transactions from "../../Components/whatsapp-marketing/Transactions";
 import { toast } from "react-toastify";
 import Subscriber from "../../Components/whatsapp-marketing/Subscriber";
 
@@ -95,7 +94,7 @@ const Payments = () => {
           className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
             currentMode === "dark"
               ? "text-white border-white"
-              : "text-red-600 font-bold border-red-600"
+              : "text-primary font-bold border-primary"
           }`}
         >
           ● All Subscribers
@@ -116,7 +115,7 @@ const Payments = () => {
           className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
             currentMode === "dark"
               ? "text-white border-white"
-              : "text-red-600 font-bold border-red-600"
+              : "text-primary font-bold border-primary"
           }`}
         >
           ● Upgrade
@@ -251,7 +250,7 @@ const Payments = () => {
           className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
             currentMode === "dark"
               ? "text-white border-white"
-              : "text-red-600 font-bold border-red-600"
+              : "text-primary font-bold border-primary"
           }`}
         >
           ● Payments

@@ -4,7 +4,7 @@ import { useStateContext } from "../../context/ContextProvider";
 
 const PricingTable = ({ allPlans }) => {
   const navigate = useNavigate();
-  const { currentMode } = useStateContext();
+  const { currentMode, primaryColor } = useStateContext();
   const setPlan = (plan) => {
     navigate("?plan=" + plan);
   };
@@ -27,7 +27,7 @@ const PricingTable = ({ allPlans }) => {
                 background: currentMode === "dark" && "#2C2A2C",
                 backdropFilter: "blur(15px)",
                 "&:hover": {
-                  boxShadow: "0 0 30px 5px #DA1F26",
+                  boxShadow: `0 0 30px 5px ${primaryColor}`,
                 },
               }}
             >
@@ -59,7 +59,7 @@ const PricingTable = ({ allPlans }) => {
                 </h2>
                 <Box className="flex items-center mt-2">
                   <h1
-                    className="font-black text-[#da1f26]"
+                    className="font-black text-primary"
                     style={{ fontSize: 40 }}
                   >
                     US${plan.price}
@@ -109,7 +109,7 @@ const PricingTable = ({ allPlans }) => {
                           position: "absolute",
                           content: '""',
                           inset: 0,
-                          background: "#0B0A0B",
+                          background: primaryColor,
                           zIndex: 0,
                           transition: "0.5s",
                         }}
@@ -123,8 +123,8 @@ const PricingTable = ({ allPlans }) => {
                           left: "80%",
                           width: "10px",
                           height: "5px",
-                          border: "2px solid #B10044",
-                          background: "#27282c",
+                          border: "2px solid black",
+                          background: primaryColor,
                           transform: "translateX(-50%)",
                           zIndex: 0,
                           transition: "0.5s",
@@ -139,8 +139,8 @@ const PricingTable = ({ allPlans }) => {
                           left: "20%",
                           width: "10px",
                           height: "5px",
-                          border: "2px solid #B10044",
-                          background: "#27282c",
+                          border: "2px solid black",
+                          background: primaryColor,
                           transform: "translateX(-50%)",
                           zIndex: 0,
                           transition: "0.5s",
@@ -198,12 +198,11 @@ const PricingTable = ({ allPlans }) => {
                         Subscribe
                       </span>
                       <i
-                        className="btn_i"
+                        className="btn_i bg-primary"
                         style={{
                           position: "absolute",
                           content: '""',
                           inset: 0,
-                          background: "#DA1F26",
                           zIndex: 0,
                           transition: "0.5s",
                         }}
