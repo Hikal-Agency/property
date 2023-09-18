@@ -1,5 +1,4 @@
 // import Image from "next/image";
-import moment from "moment";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -9,7 +8,7 @@ import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 
-import { BsPinMap, BsCircleFill } from "react-icons/bs";
+import { BsPinMap } from "react-icons/bs";
 import { BiCurrentLocation } from "react-icons/bi";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { Button } from "@mui/material";
@@ -17,7 +16,6 @@ import { Button } from "@mui/material";
 const UserLocationComponent = () => {
   const {
     currentMode,
-    LocationData,
     setLocationData,
     LastLocationData,
     setLastLocationData,
@@ -89,10 +87,6 @@ const UserLocationComponent = () => {
       });
   };
 
-  //CLICK FUNCTION
-  const handleRowClick = async (params) => {
-    window.open(`/location/useralllocation/${params}`);
-  };
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
@@ -112,7 +106,7 @@ const UserLocationComponent = () => {
 
   return (
     <>
-      <h4 className="text-red-600 font-bold text-xl mb-2 text-center">
+      <h4 className="text-primary font-bold mt-8 text-xl mb-4 text-center">
         User Locations
       </h4>
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-3">
@@ -194,11 +188,11 @@ const UserLocationComponent = () => {
                     </h1>
                     <hr></hr>
                     <div className="flex gap-3">
-                      <BsPinMap size={20} color="#da1f26" />
+                      <BsPinMap size={20} className="text-primary" />
                       {location?.location}
                     </div>
                     <div className="flex gap-3">
-                      <AiOutlineFieldTime size={20} color="#da1f26" />
+                      <AiOutlineFieldTime size={20} className="text-primary" />
                       {location?.latest_recorded_at}
                     </div>
                     <div className="flex justify-end">
@@ -210,8 +204,8 @@ const UserLocationComponent = () => {
                           )
                         }
                         // onClick={() => handleRowClick(location.user_id)}
-                        sx={{ backgroundColor: "#da1f26", color: "#ffffff" }}
-                        className="rounded-md p-1 flex items-center w-fit h-fit text-sm btn-sm"
+                        sx={{color: "#ffffff" }}
+                        className="rounded-md p-1 flex items-center bg-btn-primary w-fit h-fit text-sm btn-sm"
                       >
                         <BiCurrentLocation size={20} />
                       </Button>

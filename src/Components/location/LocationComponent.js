@@ -25,7 +25,7 @@ const LocationComponent = ({ upcoming_meetings }) => {
 
   return (
     <>
-      <h4 className="text-red-600 font-bold text-xl mb-2 text-center">
+      <h4 className="text-primary mt-8 font-bold text-xl mb-4 text-center">
         Meeting Locations
       </h4>
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-5 pb-3">
@@ -40,7 +40,7 @@ const LocationComponent = ({ upcoming_meetings }) => {
           {/* )} */}
         </div>
         <div className="h-full w-full mt-5">
-          <h4 className="text-red-600 font-bold text-xl mb-2">Meetings</h4>
+          <h4 className="text-primary font-bold text-xl mb-2">Meetings</h4>
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
             {/* LIST OF UPCOMING MEETINGS */}
             {upcoming_meetings?.map((meeting, index) => {
@@ -54,7 +54,7 @@ const LocationComponent = ({ upcoming_meetings }) => {
                 >
                   <div className="p-5 space-y-2">
                     <div className="flex justify-between w-[100%]">
-                      <h4 className="font-bold my-1 text-main-red-color capitalize">
+                      <h4 className="font-bold my-1 text-primary capitalize">
                         {meeting?.leadName}
                       </h4>
                       {meeting?.meetingStatus === "Attended" ? (
@@ -107,7 +107,7 @@ const LocationComponent = ({ upcoming_meetings }) => {
                       </div>
                     </div>
                   </div>
-                  <span className="block text-sm bg-main-red-color text-white rounded-md text-center p-2 font-semibold">
+                  <span className="block text-sm bg-primary text-white rounded-md text-center p-2 font-semibold">
                     {meeting?.createdBy}
                   </span>
                 </div>
