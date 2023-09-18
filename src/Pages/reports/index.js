@@ -11,6 +11,7 @@ import { CircularProgress } from "@mui/material";
 import SocialChart from "../../Components/charts/SocialChart";
 import { toast } from "react-toastify";
 import moment from "moment";
+import SaleBubbleChart from "../../Components/charts/SaleBubbleChart";
 
 const Reports = () => {
   const {
@@ -269,7 +270,10 @@ const Reports = () => {
                             <CircularProgress size={20} /> <span>Loading</span>
                           </div>
                         ) : (
-                          <SalesAmountChartAdmin
+                          // <SalesAmountChartAdmin
+                          //   selectedMonthSales={selectedMonthSales}
+                          // />
+                          <SaleBubbleChart
                             selectedMonthSales={selectedMonthSales}
                           />
                         )}
