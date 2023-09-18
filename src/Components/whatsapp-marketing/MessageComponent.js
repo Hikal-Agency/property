@@ -75,11 +75,13 @@ import moment from "moment";
 import { RiWhatsappFill } from "react-icons/ri";
 import SingleSMSModal from "./SingleSMSModal";
 const MessagesComponent = ({
-  BACKEND_URL,
   lead_type,
   lead_origin,
-  leadCategory,
-  DashboardData,
+  filter,
+  date_filter,
+  fetch,
+  sender_id_filter,
+  selectedUser,
 }) => {
   const { screenWidth, screenHeight } = useWindowSize();
 
@@ -97,23 +99,6 @@ const MessagesComponent = ({
   const dataTableRef = useRef();
   const searchRef = useRef();
 
-  const getLangCode = (language) => {
-    if (language) {
-      const l = langs.find(
-        (lang) =>
-          lang["name"].toLowerCase() === String(language).toLowerCase() ||
-          lang["nativeName"].toLowerCase() === String(language).toLowerCase()
-      );
-      if (l) {
-        return l.code.toUpperCase();
-      } else {
-        return "Invalid";
-      }
-    } else {
-      return null;
-    }
-  };
-
   const {
     currentMode,
     pageState,
@@ -122,16 +107,12 @@ const MessagesComponent = ({
     setreloadDataGrid,
     DataGridStyles,
     setopenBackDrop,
-    isArabic,
     User,
-    Managers,
+    BACKEND_URL,
   } = useStateContext();
   //eslint-disable-next-line
-  const [searchText, setSearchText] = useState("");
   //eslint-disable-next-line
   const [openDialog, setopenDialog] = useState(false);
-  //eslint-disable-next-line
-  const [LeadToDelete, setLeadToDelete] = useState();
   const [pageRange, setPageRange] = useState();
 
   const handleCloseDialog = () => {
@@ -306,19 +287,24 @@ const MessagesComponent = ({
     // },
   ];
 
-  const FetchLeads = async (token) => {
+  const FetchMessages = async (token) => {
     console.log("lead type is");
     console.log(lead_type);
-    let FetchLeads_url = "";
+    let FetchMessages = "";
     setpageState((old) => ({
       ...old,
       isLoading: true,
     }));
 
-    FetchLeads_url = `${BACKEND_URL}/messages?page=${pageState.page}`;
+    FetchMessages = `${BACKEND_URL}/messages?page=${pageState.page}`;
+
+    if (filter) FetchMessages += `&message_type=${filter}`;
+    if (date_filter) FetchMessages += `&date_range=${date_filter}`;
+    if (sender_id_filter) FetchMessages += `&sender=${sender_id_filter}`;
+    if (selectedUser) FetchMessages += `&user_id=${selectedUser}`;
 
     axios
-      .get(FetchLeads_url, {
+      .get(FetchMessages, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -435,42 +421,22 @@ const MessagesComponent = ({
       });
   };
 
-  const handleSearch = (e) => {
-    if (e.target.value === "") {
-      setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
-      FetchLeads(token);
-    }
-    // setSearchTerm(e.target.value);
-  };
-
-  //   const handleKeyUp = (e) => {
-  //     if (searchRef.current.querySelector("input").value) {
-  //       if (e.key === "Enter" || e.keyCode === 13) {
-  //         setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
-  //         FetchSearchedLeads(token, e.target.value);
-  //       }
-  //     }
-  //   };
-
-  // TOOLBAR SEARCH FUNC
-  const HandleQuicSearch = async (e) => {
-    setSearchTerm(e.target.value);
-  };
-
   useEffect(() => {
     setopenBackDrop(false);
     //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    if (searchTerm) {
-      //   FetchSearchedLeads(token, searchTerm);
-    } else {
-      FetchLeads(token);
-    }
-    // setCEOColumns([...CEOColumns]);
-    // eslint-disable-next-line
-  }, [pageState.page, pageState.perpage, lead_type, reloadDataGrid]);
+    FetchMessages(token);
+  }, [
+    pageState.page,
+    pageState.perpage,
+    filter,
+    date_filter,
+    fetch,
+    sender_id_filter,
+    selectedUser,
+  ]);
 
   useEffect(() => {
     setpageState((oldPageState) => ({ ...oldPageState, page: 0 }));

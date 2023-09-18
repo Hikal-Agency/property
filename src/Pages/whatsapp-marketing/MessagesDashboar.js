@@ -23,6 +23,7 @@ import { BsFilterLeft, BsSearch } from "react-icons/bs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 const MessagesDashboar = () => {
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ const MessagesDashboar = () => {
   const [userLoading, setUserLoading] = useState(true);
   const [showFilter, setShowFilter] = useState(false);
   const [filter, setFilter] = useState();
+  const [date_filter, setDateFilter] = useState();
+  const [sender_id_filter, setSenderIDFitler] = useState();
   const { currentMode, setopenBackDrop, BACKEND_URL, pageState, formatNum } =
     useStateContext();
   const { hasPermission } = usePermission();
@@ -38,29 +41,29 @@ const MessagesDashboar = () => {
   const searchRef = useRef("");
   const [user, setUser] = useState([]);
   const [selectedUser, setSelectedUSer] = useState(null);
+  const [fetch, setFetch] = useState(false);
 
   const clearFilteration = () => {
-    // setfilter_notifyType("");
-    // setfilter_notifyDate("");
-    // setFilter("");
-    // setSelectedUSer("");
-    // setShowFilter(false);
-    // setFetch(true);
+    setDateFilter("");
+    setFilter("");
+    setSelectedUSer("");
+    setShowFilter(false);
+    setFetch(true);
   };
 
   const handleFilter = (e, value) => {
     // console.log("value: ", value);
     // console.log("e: ", e.target.value);
-    // if (value === 0) {
-    //   if (e.target.value === "0") {
-    //     setFilter(null);
-    //   } else {
-    //     setFilter(e.target.value);
-    //   }
-    // } else if (value === 1) {
-    //   setfilter_notifyType(e.target.value);
-    // }
-    // // setShowFilter(false);
+    if (value === 0) {
+      if (e.target.value === "0") {
+        setFilter(null);
+      } else {
+        setFilter(e.target.value);
+      }
+    } else if (value === 1) {
+      //   setfilter_notifyType(e.target.value);
+    }
+    // setShowFilter(false);
     // setFetch(true);
   };
 
@@ -248,18 +251,16 @@ const MessagesDashboar = () => {
                           <h3 className=" my-4 font-bold">Message Date</h3>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                              //   value={filter_notifyDateValue}
+                              value={date_filter}
                               views={["year", "month", "day"]}
-                              //   onChange={(newValue) => {
-                              //     setfilter_notifyDateValue(newValue);
-                              //     setfilter_notifyDate(
-                              //       formatNum(newValue?.$d?.getUTCFullYear()) +
-                              //         "-" +
-                              //         formatNum(newValue?.$d?.getUTCMonth() + 1) +
-                              //         "-" +
-                              //         formatNum(newValue?.$d?.getUTCDate())
-                              //     );
-                              //   }}
+                              onChange={(newValue) => {
+                                // setMeetingDateValue(newValue);
+
+                                const formattedDate = moment(
+                                  newValue?.$d
+                                ).format("YYYY-MM-DD");
+                                setDateFilter(formattedDate);
+                              }}
                               format="yyyy-MM-dd"
                               renderInput={(params) => (
                                 <TextField
@@ -312,12 +313,10 @@ const MessagesDashboar = () => {
                             >
                               <Select
                                 id="feedback"
-                                value={selectedUser || "selected"}
+                                value={sender_id_filter || "selected"}
                                 label="Filter By User"
-                                // onChange={(e) => handleFilter(e, 2)}
                                 onChange={(e) => {
-                                  setSelectedUSer(e.target.value);
-                                  //   setFetch(true);
+                                  setSenderIDFitler(e.target.value);
                                 }}
                                 size="medium"
                                 className="w-full border border-gray-300 rounded "
@@ -373,7 +372,7 @@ const MessagesDashboar = () => {
                                   // onChange={(e) => handleFilter(e, 2)}
                                   onChange={(e) => {
                                     setSelectedUSer(e.target.value);
-                                    // setFetch(true);
+                                    setFetch(true);
                                   }}
                                   size="medium"
                                   className="w-full border border-gray-300 rounded "
@@ -504,7 +503,13 @@ const MessagesDashboar = () => {
               <div>1</div> */}
             </div>
 
-            <MessagesComponent BACKEND_URL={BACKEND_URL} lead_type={"booked"} />
+            <MessagesComponent
+              filter={filter}
+              date_filter={date_filter}
+              sender_id_filter={sender_id_filter}
+              fetch={fetch}
+              setFetch={setFetch}
+            />
           </div>
         )}
       </div>
