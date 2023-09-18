@@ -6,7 +6,7 @@ import { useStateContext } from "../../context/ContextProvider";
 const BarChart = ({ Sales_chart_data }) => {
   const { currentMode, primaryColor } = useStateContext();
   // eslint-disable-next-line
-  const [UserData2, setUserData2] = useState({
+  const UserData2 = {
     labels: Sales_chart_data.map((data) => data?.userName),
     datasets: [
       {
@@ -16,9 +16,9 @@ const BarChart = ({ Sales_chart_data }) => {
         indexAxis: "x",
       },
     ],
-  });
+  };
   // eslint-disable-next-line
-  const [UserData3, setUserData3] = useState({
+  const UserData3={
     labels: Sales_chart_data.map((data) => data?.userName),
     datasets: [
       {
@@ -28,7 +28,7 @@ const BarChart = ({ Sales_chart_data }) => {
         indexAxis: "x",
       },
     ],
-  });
+  };
 
   // eslint-disable-next-line
 

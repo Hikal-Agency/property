@@ -10,8 +10,6 @@ import usePermission from "../../utils/usePermission";
 import {
   Avatar,
   Box,
-  Button,
-  CircularProgress,
   IconButton,
   Tooltip,
 } from "@mui/material";
@@ -275,7 +273,7 @@ const SingleEmployee = ({ user }) => {
                           notifyApproval(event, params?.row.id)
                         }
                         size={16}
-                        className="text-red-600"
+                        className="text-primary"
                       />
                     </IconButton>
                   </Tooltip>
@@ -285,7 +283,7 @@ const SingleEmployee = ({ user }) => {
           {/* DO NOTHING */}
           {/* <Tooltip title="Pending Approval" arrow>
                     <IconButton>
-                      <MdPendingActions size={16} className="text-red-600" />
+                      <MdPendingActions size={16} className="text-primary" />
                     </IconButton>
                   </Tooltip>
                 </> */}
@@ -310,12 +308,12 @@ const SingleEmployee = ({ user }) => {
                             notifyApproval(event, params?.row.id)
                           }
                           size={16}
-                          className="text-red-600"
+                          className="text-primary"
                         />
                       </IconButton>
                     ) : (
                       <IconButton>
-                        <MdPendingActions size={16} className="text-red-600" />
+                        <MdPendingActions size={16} className="text-primary" />
                       </IconButton>
                     )}
                   </Tooltip>
@@ -330,7 +328,7 @@ const SingleEmployee = ({ user }) => {
                   <TfiClose
                     size={20}
                     className={`${
-                      currentMode === "dark" ? "text-red-600" : "text-red-600"
+                      currentMode === "dark" ? "text-primary" : "text-primary"
                     }`}
                   />
                 </IconButton>
@@ -1570,7 +1568,7 @@ const SingleEmployee = ({ user }) => {
                   onClick={() => setPasswordConfirm(true)}
                   // sx={{ border: "1px solid #DA1F26" }}
                 >
-                  <FaDownload size={14} className="text-[#AAAAAA] hover:text-[#DA1F26]" />
+                  <FaDownload size={14} className="text-[#AAAAAA] hover:text-primary" />
                 </IconButton>
               </Tooltip>
             </div>
@@ -1671,7 +1669,7 @@ const SingleEmployee = ({ user }) => {
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <p className="font-bold text-red-600 pr-2">
+                          <p className="font-bold text-primary pr-2">
                             {"  "} {pageState?.workingDays || "0"}{" "}
                             {/*CHANGE WORKING DAYS*/}
                           </p>
@@ -1683,7 +1681,7 @@ const SingleEmployee = ({ user }) => {
                       </div>
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <p className="font-bold text-red-600 pr-2">
+                          <p className="font-bold text-primary pr-2">
                             {"  "} {pageState?.attended_count || "0"}
                           </p>
                           {"  "}
@@ -1694,7 +1692,7 @@ const SingleEmployee = ({ user }) => {
                       </div>
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <p className="font-bold text-red-600 pr-2">
+                          <p className="font-bold text-primary pr-2">
                             {"  "} {pageState?.leave_count || "0"}
                           </p>
                           {"  "}
@@ -1703,7 +1701,7 @@ const SingleEmployee = ({ user }) => {
                       </div>
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <p className="font-bold text-red-600 pr-2">
+                          <p className="font-bold text-primary pr-2">
                             {"  "} {pageState?.late_count || "0"}
                           </p>
                           {"  "}

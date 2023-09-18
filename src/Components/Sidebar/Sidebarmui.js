@@ -248,6 +248,9 @@ const Sidebarmui = () => {
           setIsUserSubscribed(checkUser(user));
           getAllLeadsMembers(user);
 
+      setPrimaryColor("rgb(218,31,38)");
+
+
           FetchPermissions();
           socket.emit("add_user", {
             ...user,

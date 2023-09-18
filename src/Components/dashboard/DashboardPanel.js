@@ -220,30 +220,23 @@ const DashboardPanel = ({ setloading }) => {
             <div>
               {User?.role === 3 && (
                 <p
-                  className={`text-2xl font-bold pb-3`}
-                  style={{
-                    color: primaryColor,
-                  }}
+                  className={`text-2xl font-bold pb-3 text-primary`}
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {User?.role === 7 && (
                 <p
-                  className={`text-2xl font-bold pb-3`}
-                  style={{
-                    color: primaryColor,
-                  }}
+                  className={`text-2xl font-bold pb-3 text-primary`}
+                 
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {(User?.role === 1 || User?.role === 2 || User?.role === 8) && (
                 <p
-                  className={`text-2xl font-bold pb-3`}
-                  style={{
-                    color: primaryColor,
-                  }}
+                  className={`text-2xl font-bold pb-3 text-primary`}
+               
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
@@ -274,10 +267,8 @@ const DashboardPanel = ({ setloading }) => {
                   } h-auto w-full p-5 rounded-xl grid content-center`}
                 >
                   <p
-                    className={`text-2xl font-bold pb-3`}
-                    style={{
-                      color: primaryColor,
-                    }}
+                    className={`text-2xl font-bold pb-3 text-primary`}
+               
                   >
                     <CountUp end={item.amount} duration={3} />
                   </p>
@@ -309,10 +300,8 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p
-                        className={`text-2xl font-bold pb-3`}
-                        style={{
-                          color: primaryColor,
-                        }}
+                        className={`text-2xl font-bold pb-3 text-primary`}
+                    
                       >
                         <CountUp end={item.amount} duration={3} />
                       </p>
@@ -346,10 +335,8 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p
-                        className={`text-2xl font-bold pb-3`}
-                        style={{
-                          color: primaryColor,
-                        }}
+                        className={`text-2xl font-bold pb-3 text-primary`}
+                     
                       >
                         <CountUp end={item.amount} duration={3} />
                       </p>
