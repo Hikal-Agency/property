@@ -7,7 +7,6 @@ import moment from "moment";
 import { 
   Container, 
   CircularProgress, 
-  Button 
 } from "@mui/material";
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
@@ -57,7 +56,7 @@ const UpcomingMeetingsMenu = () => {
           onClick={() => {
             navigate("/meetings");
           }}
-          className="flex -mt-2 mb-3 justify-center text-[#AAAAAA] hover:text-[#DA1F26] text-sm w-full"
+          className="flex -mt-2 mb-3 justify-center text-[#AAAAAA] hover:text-primary text-sm w-full"
           style={{
             textDecoration: "none",
             cursor: "pointer",
@@ -104,7 +103,7 @@ const UpcomingMeetingsMenu = () => {
                   }`}
                 >
                   <div className="p-4 pb-1 space-y-3">
-                    <h2 className="text-main-red-color font-semibold">
+                    <h2 className="text-primary font-semibold">
                       {meeting?.leadName}
                     </h2>
 
@@ -150,7 +149,7 @@ const UpcomingMeetingsMenu = () => {
                     </div>
                     
                   </div>
-                  <span className={`${currentMode === "dark" ? "bg-[#333333]" : "bg-main-red-color"} block text-sm text-white rounded-b-xl text-center p-2 font-semibold`}>
+                  <span className={`${currentMode === "dark" ? "bg-[#333333]" : "bg-primary"} block text-sm text-white rounded-b-xl text-center p-2 font-semibold`}>
                     {meeting?.createdBy}
                   </span>
                 </div>

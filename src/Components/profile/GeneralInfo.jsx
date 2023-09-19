@@ -2,7 +2,7 @@ import { Button } from "@material-tailwind/react";
 import { Box, TextField, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 export const GeneralInfo = ({
   GeneralInfoData,
@@ -104,12 +104,6 @@ export const GeneralInfo = ({
                 size="medium"
                 required
                 value={GeneralInfo?.userContact}
-                // onInput={(e) =>
-                //   setGeneralInfo({
-                //     ...GeneralInfo,
-                //     userContact: e.target.value,
-                //   })
-                // }
                 onInput={handleContact}
               />
             </div>
@@ -184,8 +178,11 @@ export const GeneralInfo = ({
             <div className="col-span-3 w-full">
               <Button
                 onClick={UpdateProfileFunc}
-                className={`min-w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                className={`min-w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                 ripple={true}
+                style={{
+                  color: "white"
+                }}
                 size="lg"
               >
                 {btnloading ? (
@@ -208,7 +205,7 @@ export const GeneralInfo = ({
                 className={`shadow-none w-full rounded-md text-sm  ${
                   currentMode === "dark"
                     ? "text-white border-white"
-                    : "text-main-red-color border-main-red-color"
+                    : "text-primary border-primary"
                 }`}
               >
                 Reset

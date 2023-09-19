@@ -3,7 +3,6 @@ import {
   Modal,
   Backdrop,
   IconButton,
-  Box,
   CircularProgress,
   TextField,
   InputAdornment,

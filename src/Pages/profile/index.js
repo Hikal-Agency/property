@@ -1,4 +1,3 @@
-import { Button } from "@material-tailwind/react";
 import { Box } from "@mui/material";
 
 import axios from "../../axoisConfig";
@@ -284,7 +283,7 @@ const ProfilePage = () => {
                               />
                               <div className="absolute -top-1 right-1 ">
                                 <BsFillPlusCircleFill
-                                  className="text-main-red-color bg-white border-white border-[3px] rounded-full w-full h-full"
+                                  className="text-primary bg-white border-white border-[3px] rounded-full w-full h-full"
                                   size={30}
                                 />
                               </div>
