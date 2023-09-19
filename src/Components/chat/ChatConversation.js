@@ -15,7 +15,6 @@ import { socket } from "../../Pages/App";
 import {
   BsPersonFill,
   BsImage,
-  BsFillChatLeftTextFill,
   BsPhone,
 } from "react-icons/bs";
 import { AiOutlineInfoCircle, AiOutlineCloseCircle } from "react-icons/ai";
@@ -48,7 +47,7 @@ const ChatConversation = ({
   const [createMessageModal, setCreateMessageModal] = useState({
     isOpened: false,
   });
-  const { User } = useStateContext();
+  const { User, primaryColor } = useStateContext();
 
   const handleChangeImage = (e) => {
     e.preventDefault();
@@ -112,7 +111,7 @@ const ChatConversation = ({
                 onClick={() => setCreateMessageModal({ isOpened: true })}
                 sx={{ padding: "0 !important" }}
               >
-                <HiOutlinePencilAlt style={{ color: "#da1f26" }} size={22} />
+                <HiOutlinePencilAlt className="text-primary" size={22} />
               </IconButton>
             </div>
 
@@ -147,7 +146,7 @@ const ChatConversation = ({
                 variant="contained"
                 style={{
                   boxShadow: "none",
-                  background: activeTab === "recent" ? "#da1f26" : "#f7f7f7",
+                  background: activeTab === "recent" ? primaryColor : "#f7f7f7",
                   color: activeTab === "recent" ? "white" : "black",
                   padding: "10px 0",
                 }}
@@ -159,7 +158,7 @@ const ChatConversation = ({
                 className={`flex-1`}
                 variant="contained"
                 style={{
-                  background: activeTab === "online" ? "#da1f26" : "#f7f7f7",
+                  background: activeTab === "online" ? primaryColor : "#f7f7f7",
                   boxShadow: "none",
                   color: activeTab === "online" ? "white" : "black",
                   padding: "10px 0",
@@ -171,7 +170,7 @@ const ChatConversation = ({
             <div className="h-[70%]">
               {loadingConversations ? (
                 <div className="flex h-full flex-col items-center justify-center">
-                  <CircularProgress color="error" size={18} />
+                  <CircularProgress className="text-primary" size={18} />
                   <p className="mt-3">Loading Conversations..</p>
                 </div>
               ) : (
@@ -265,7 +264,7 @@ const ChatConversation = ({
                     sx={{
                       width: 45,
                       height: 45,
-                      background: "#da1f26",
+                      background: primaryColor,
                       fontSize: 15,
                     }}
                     className="mr-4"
@@ -323,13 +322,13 @@ const ChatConversation = ({
                     if (message.type === "date-separator") {
                       return (
                         <div className="flex items-center w-full mt-4">
-                          <div className="h-[0.2px] bg-[#d7222973] flex-1"></div>
-                          <strong className="text-[#da1f26] px-2">
+                          <div className="h-[0.2px] bg-primary flex-1"></div>
+                          <strong className="text-primary px-2">
                             {message?.date === new Date()?.toLocaleDateString()
                               ? "TODAY"
                               : message?.date}
                           </strong>
-                          <div className="h-[0.2px] bg-[#d7222973] flex-1"></div>
+                          <div className="h-[0.2px] bg-primary flex-1"></div>
                         </div>
                       );
                     } else if (

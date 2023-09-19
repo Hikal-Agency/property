@@ -60,26 +60,6 @@ const NotificationsList = () => {
   const [user, setUser] = useState([]);
   const [selectedUser, setSelectedUSer] = useState(null);
 
-  const handleKeyUp = (e) => {
-    console.log("handle key: ", e.target.value);
-    e.preventDefault();
-    // e.stopPropagation();
-    if (searchRef.current.querySelector("input").value) {
-      // if (e.key === "Enter" || e.keyCode === 13) {
-      fetchUsers(e.target.value);
-      // }
-    }
-  };
-  const handleSearch = (e) => {
-    console.log("handle search: ", e.target.value);
-
-    // e.preventDefault();
-    // e.stopPropagation();
-    if (e.target.value === "") {
-      fetchUsers();
-    }
-  };
-
   const fetchUsers = async (keyword = "", pageNo = 1) => {
     console.log("keyword: ", keyword);
     if (!keyword) {
@@ -156,8 +136,6 @@ const NotificationsList = () => {
   };
 
   const handleParentClick = (e) => {
-    // e.target.closest("parent_filter");
-    // console.log(e.target.closest("parent_filter") ? "something" : null);
 
     if (!e.target.closest(".parent_filter")) {
       setShowFilter(false);
@@ -230,7 +208,7 @@ const NotificationsList = () => {
               <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-40 "></div>
             )}
               <div className="w-full flex items-center py-3">
-                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                <div className="bg-primary h-10 w-1 rounded-full mr-2"></div>
                 <h1
                   className={`text-lg font-semibold ${
                     currentMode === "dark"
@@ -261,31 +239,7 @@ const NotificationsList = () => {
                     onClick={handleChange}
                     variant="standard"
                   >
-                    {/* <Tab
-                      icon={
-                        value === 0 ? (
-                          <AiOutlineAppstore
-                            size={22}
-                            style={{
-                              color:
-                                currentMode === "dark"
-                                  ? "#ffffff"
-                                  : "#000000",
-                            }}
-                          />
-                        ) : (
-                          <AiOutlineTable
-                            size={22}
-                            style={{
-                              color:
-                                currentMode === "dark"
-                                  ? "#ffffff"
-                                  : "#000000",
-                            }}
-                          />
-                        )
-                      }
-                    /> */}
+                  
                     <Tab
                       style={{
                         color: currentMode === "dark" ? "#ffffff" : "#000000",
@@ -313,29 +267,7 @@ const NotificationsList = () => {
                       </IconButton>
                     </Tooltip>
                   ) : null}
-                  {/* <TextField
-                    placeholder="Search.."
-                    sx={{
-                      "& input": {
-                        borderBottom: "2px solid #ffffff6e",
-                      },
-                    }}
-                    variant="standard"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <IconButton sx={{ padding: 0 }}>
-                            <BiSearch
-                              size={17}
-                              color={
-                                currentMode === "dark" ? "#ffffff" : "#000000"
-                              }
-                            />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  /> */}
+                 
                   <div className="parent_filter relative transform -translate-x-2/1">
                     <BsFilterLeft
                       className="mr-3 mt-2 cursor-pointer"
@@ -617,10 +549,9 @@ const NotificationsList = () => {
                               <Button
                                 // disabled={loading ? true : false}
                                 type="submit"
-                                className="disabled:opacity-50 disabled:cursor-not-allowed group   w-max  rounded-md border border-transparent  py-3 px-4 text-white text-md font-bold uppercase mt-3 bg-[#DA1F26]"
+                                className="disabled:opacity-50 disabled:cursor-not-allowed group   w-max  rounded-md border border-transparent  py-3 px-4 text-white text-md font-bold uppercase mt-3 bg-btn-primary"
                                 style={{
                                   marginTop: "20px",
-                                  background: "#DA1F26",
                                   color: "#ffffff",
                                 }}
                                 onClick={clearFilteration}

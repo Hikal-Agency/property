@@ -4,7 +4,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import axios from "../../axoisConfig";
 import usePermission from "../../utils/usePermission";
 import Loader from "../Loader";
-import { CircularProgress, Pagination, Stack } from "@mui/material";
+import {  Pagination, Stack } from "@mui/material";
 import { toast } from "react-toastify";
 import moment from "moment";
 
@@ -40,16 +40,14 @@ const NotificationsListComponent = ({
     BACKEND_URL,
     pageState,
     setpageState,
-    User,
+    primaryColor,
     unreadNotifsCount,
   } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [date_range, setDate_range] = useState(0);
   const [notification_list, setNotification_list] = useState([]);
   const token = localStorage.getItem("auth-token");
-  const { hasPermission } = usePermission();
 
   const handlePageChange = (event, value) => {
     setpageState({ ...pageState, page: value });
@@ -229,7 +227,7 @@ const NotificationsListComponent = ({
               className="flex flex-col justify-center items-center"
             >
               <div class="relative">
-                <div class="h-24 w-24 rounded-full bg-[#DA1F26] my-6"></div>
+                <div class="h-24 w-24 rounded-full bg-primary my-6"></div>
                 <div class="absolute top-0 right-0">
                   <span class="text-yellow-500 text-2xl">&#9733;</span>
                 </div>
@@ -259,7 +257,7 @@ const NotificationsListComponent = ({
               sx={{
                 "& .Mui-selected": {
                   color: "white !important",
-                  backgroundColor: "#DA1F26 !important",
+                  backgroundColor: `${primaryColor} !important`,
                   "&:hover": {
                     backgroundColor: currentMode === "dark" ? "black" : "white",
                   },
