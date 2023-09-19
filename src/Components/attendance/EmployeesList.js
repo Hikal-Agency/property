@@ -19,6 +19,7 @@ const EmployeesList = ({ user }) => {
     setpageState,
     darkModeColors,
     User,
+    primaryColor
   } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
@@ -270,7 +271,7 @@ const EmployeesList = ({ user }) => {
                   sx={{
                     "& .Mui-selected": {
                       color: "white !important",
-                      backgroundColor: "red !important",
+                      backgroundColor: `${primaryColor} !important`,
                       "&:hover": {
                         backgroundColor:
                           currentMode === "dark" ? "black" : "white",
