@@ -46,6 +46,7 @@ const SingleLead = ({
   setDeleteModelOpen,
   setBulkDeleteClicked,
   setLeadToDelete,
+  isBookedDeal,
 }) => {
   const { darkModeColors, currentMode, User, BACKEND_URL, isArabic } =
     useStateContext();
@@ -576,7 +577,7 @@ const SingleLead = ({
                 </p>
 
                 {/* DELETE  */}
-                {hasPermission("lead_delete") && (
+                {hasPermission("lead_delete") && !isBookedDeal && (
                   <p
                     style={{ cursor: "pointer" }}
                     disabled={deleteloading ? true : false}
@@ -591,7 +592,7 @@ const SingleLead = ({
                         onClick={() => {
                           setLeadToDelete(LeadData?.leadId);
                           setDeleteModelOpen(true);
-                          setBulkDeleteClicked(false);
+                          if (setBulkDeleteClicked) setBulkDeleteClicked(false);
                         }}
                       >
                         <BsTrash

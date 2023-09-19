@@ -76,6 +76,7 @@ import {
 } from "react-icons/rx";
 import { TbWorldWww } from "react-icons/tb";
 import moment from "moment";
+import DeleteLeadModel from "./DeleteLead";
 
 const BookedDeals = ({
   BACKEND_URL,
@@ -90,6 +91,7 @@ const BookedDeals = ({
   const [singleLeadData, setsingleLeadData] = useState();
   const [filt, setFilt] = useState([]);
   const { hasPermission } = usePermission();
+  const isBookedDeal = true;
 
   //eslint-disable-next-line
   const [deleteloading, setdeleteloading] = useState(false);
@@ -129,13 +131,15 @@ const BookedDeals = ({
     User,
     Managers,
   } = useStateContext();
-  //eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
-  //eslint-disable-next-line
   const [openDialog, setopenDialog] = useState(false);
-  //eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
   const [pageRange, setPageRange] = useState();
+  const [deleteModelOpen, setDeleteModelOpen] = useState(false);
+
+  const handleCloseDeleteModel = () => {
+    setDeleteModelOpen(false);
+  };
 
   const handleCloseDialog = () => {
     setopenDialog(false);
@@ -296,6 +300,7 @@ const BookedDeals = ({
           setbtnloading(false);
         });
     };
+
     return (
       <Box
         className={`w-full h-full flex items-center justify-center`}
@@ -464,6 +469,51 @@ const BookedDeals = ({
         )}
       </Box>
     );
+  };
+
+  const deleteLead = async (lid) => {
+    setdeleteloading(true);
+    setdeletebtnloading(true);
+    axios
+      .delete(`${BACKEND_URL}/leads/${lid}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log(result);
+        setdeleteloading(false);
+        setdeletebtnloading(false);
+        setreloadDataGrid(!reloadDataGrid);
+        FetchLeads(token);
+        setDeleteModelOpen(false);
+        fetchSidebarData();
+        toast.success("Lead Deleted Successfull", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        handleLeadModelClose();
+      })
+      .catch((err) => {
+        console.log(err);
+        setdeleteloading(false);
+        setdeletebtnloading(false);
+        toast.error("Something Went Wrong! Please Try Again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
   };
 
   const columns = [
@@ -1336,8 +1386,15 @@ const BookedDeals = ({
             setLeadModelOpen={setLeadModelOpen}
             handleLeadModelOpen={handleLeadModelOpen}
             handleLeadModelClose={handleLeadModelClose}
+            handleUpdateLeadModelOpen={handleUpdateLeadModelOpen}
+            handleUpdateLeadModelClose={handleUpdateLeadModelClose}
             LeadData={singleLeadData}
             BACKEND_URL={BACKEND_URL}
+            LeadToDelete={LeadToDelete}
+            setLeadToDelete={setLeadToDelete}
+            deleteModelOpen={deleteModelOpen}
+            setDeleteModelOpen={setDeleteModelOpen}
+            isBookedDeal={isBookedDeal}
           />
         )}
 
