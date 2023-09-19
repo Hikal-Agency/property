@@ -33,6 +33,7 @@ const MessagesDashboar = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [filter, setFilter] = useState();
   const [date_filter, setDateFilter] = useState();
+  const [date, setDate] = useState();
   const [sender_id_filter, setSenderIDFitler] = useState();
   const { currentMode, setopenBackDrop, BACKEND_URL, pageState, formatNum } =
     useStateContext();
@@ -45,26 +46,24 @@ const MessagesDashboar = () => {
 
   const clearFilteration = () => {
     setDateFilter("");
+    setDate("");
     setFilter("");
     setSelectedUSer("");
     setShowFilter(false);
+    setSenderIDFitler("");
     setFetch(true);
   };
 
-  const handleFilter = (e, value) => {
-    // console.log("value: ", value);
-    // console.log("e: ", e.target.value);
-    if (value === 0) {
-      if (e.target.value === "0") {
-        setFilter(null);
-      } else {
-        setFilter(e.target.value);
-      }
-    } else if (value === 1) {
-      //   setfilter_notifyType(e.target.value);
+  const handleParentClick = (e) => {
+    if (!e.target.closest(".parent_filter")) {
+      setShowFilter(false);
     }
-    // setShowFilter(false);
-    // setFetch(true);
+  };
+
+  const handleFilter = (e, value) => {
+    if (value === 0) {
+      setFilter(e.target.value);
+    }
   };
 
   const campaignCount = [
@@ -163,7 +162,7 @@ const MessagesDashboar = () => {
 
   return (
     <>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen" onClick={handleParentClick}>
         {loading ? (
           <Loader />
         ) : (
@@ -187,7 +186,7 @@ const MessagesDashboar = () => {
                 </h1>
               </div>
               <div
-                className="parent_filter relative transform -translate-x-2/1 "
+                className="parent_filter relative transform -translate-x-2/1"
                 style={{ zIndex: 100 }}
               >
                 <BsFilterLeft
@@ -199,7 +198,7 @@ const MessagesDashboar = () => {
                 {showFilter && (
                   <>
                     <div
-                      className=" absolute  mt-2 "
+                      className=" absolute  mt-2  rounded-md "
                       style={{
                         zIndex: 500,
                         transform: "translateX(-95%)",
@@ -251,15 +250,26 @@ const MessagesDashboar = () => {
                           <h3 className=" my-4 font-bold">Message Date</h3>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                              value={date_filter}
+                              value={date}
                               views={["year", "month", "day"]}
                               onChange={(newValue) => {
-                                // setMeetingDateValue(newValue);
-
                                 const formattedDate = moment(
                                   newValue?.$d
                                 ).format("YYYY-MM-DD");
-                                setDateFilter(formattedDate);
+                                setDate(formattedDate);
+
+                                // date range
+                                const startDate = moment(newValue?.$d).format(
+                                  "YYYY-MM-DD"
+                                );
+                                const endDate = moment(newValue?.$d)
+                                  .add(1, "days")
+                                  .format("YYYY-MM-DD");
+
+                                const dateRange = [startDate, endDate].join(
+                                  ","
+                                );
+                                setDateFilter(dateRange);
                               }}
                               format="yyyy-MM-dd"
                               renderInput={(params) => (
