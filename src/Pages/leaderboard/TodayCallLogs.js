@@ -10,7 +10,8 @@ import {
   BsArrowLeftCircleFill,
   BsArrowRightCircleFill,
   BsFillBookmarkStarFill,
-  BsFillLockFill
+  BsFillLockFill,
+  BsFillStarFill
 } from "react-icons/bs";
 import {
   HiOutlineLockClosed
@@ -29,7 +30,7 @@ const TodayCallLogs = () => {
   useEffect(()=>{
     setTimeout(() => {
       setSlide(slide === 0 ? slides.length - 1 : slide - 1);
-    }, 60 * 60 * 3600);
+    }, 60 * 1000 * 60);
   });
 
   const nextSlide = () => {
@@ -45,55 +46,160 @@ const TodayCallLogs = () => {
       "heading": "CALL LOGS",
     },
     {
-      "heading": "TARGET",
+      "heading": "MONTHLY TARGET",
     },
   ];
 
   const target = [
     {
-      userName: "Hala Hikal",
-      profile_picture: "",
-      target: 3000000,
-      total_closed: 7,
-      month_closed: 2,
-      booked: 2,
-      total_closed_amount: 4000000,
-      month_closed_amount: 2000000,
+      "id": 339,
+      "userName": "Hanan Nassouh Alzaeem",
+      "profile_picture": "https://staging.hikalcrm.com/storage/profile-pictures/339.jpg",
+      "target": 3000000,
+      "booked": 1,
+      "total_closed": 5,
+      "month_closed": 2,
+      "total_closed_amount": 6646500,
+      "month_closed_amount": 3182500
     },
     {
-      userName: "Mohamed Hany Mohamed Ezzat",
-      profile_picture: "",
-      target: 3000000,
-      total_closed: 7,
-      month_closed: 2,
-      booked: 2,
-      total_closed_amount: 4000000,
-      month_closed_amount: 2000000,
+      "id": 357,
+      "userName": "Abdullah Zaki",
+      "profile_picture": null,
+      "target": 3000000,
+      "booked": 3,
+      "total_closed": 1,
+      "month_closed": 1,
+      "total_closed_amount": 2370000,
+      "month_closed_amount": 2370000
     },
     {
-      userName: "Hanan Nassouh Alzaeem",
-      profile_picture: "",
-      target: 3000000,
-      total_closed: 7,
-      month_closed: 2,
-      booked: 2,
-      total_closed_amount: 4000000,
-      month_closed_amount: 2000000,
+      "id": 395,
+      "userName": "Mohamed Hany Mohamed Ezzat",
+      "profile_picture": null,
+      "target": 3000000,
+      "booked": 1,
+      "total_closed": 1,
+      "month_closed": 1,
+      "total_closed_amount": 1700000,
+      "month_closed_amount": 1700000
     },
     {
-      userName: "Hassan Adel Sobhy Mahmoud",
-      profile_picture: "",
-      target: 3000000,
-      total_closed: 7,
-      month_closed: 2,
-      booked: 2,
-      total_closed_amount: 4000000,
-      month_closed_amount: 2000000,
+      "id": 120,
+      "userName": "Hala Hikal",
+      "profile_picture": "https://staging.hikalcrm.com/storage/profile-pictures/120.jpeg",
+      "target": 3000000,
+      "booked": 4,
+      "total_closed": 5,
+      "month_closed": 0,
+      "total_closed_amount": 15102408,
+      "month_closed_amount": 0
     },
+    {
+      "id": 133,
+      "userName": "Hossam Hassan",
+      "profile_picture": "https://staging.hikalcrm.com/storage/profile-pictures/133.jpeg",
+      "target": 3000000,
+      "booked": 0,
+      "total_closed": 8,
+      "month_closed": 0,
+      "total_closed_amount": 6667000,
+      "month_closed_amount": 0
+    },
+    {
+      "id": 180,
+      "userName": "Hams Hossam",
+      "profile_picture": null,
+      "target": 3000000,
+      "booked": 0,
+      "total_closed": 0,
+      "month_closed": 0,
+      "total_closed_amount": null,
+      "month_closed_amount": 0
+    },
+    {
+      "id": 187,
+      "userName": "Islam Essam",
+      "profile_picture": null,
+      "target": 3000000,
+      "booked": 0,
+      "total_closed": 1,
+      "month_closed": 0,
+      "total_closed_amount": 700000,
+      "month_closed_amount": 0
+    },
+    {
+      "id": 231,
+      "userName": "Mohamed Eid Elnabarawi",
+      "profile_picture": null,
+      "target": 3000000,
+      "booked": 0,
+      "total_closed": 0,
+      "month_closed": 0,
+      "total_closed_amount": null,
+      "month_closed_amount": 0
+    },
+    {
+      "id": 341,
+      "userName": "Borhane Zerdoumi",
+      "profile_picture": null,
+      "target": 3000000,
+      "booked": 1,
+      "total_closed": 0,
+      "month_closed": 0,
+      "total_closed_amount": null,
+      "month_closed_amount": 0
+    },
+    {
+      "id": 342,
+      "userName": "Hassan Adel Sobhy Mahmoud",
+      "profile_picture": null,
+      "target": 3000000,
+      "booked": 2,
+      "total_closed": 0,
+      "month_closed": 0,
+      "total_closed_amount": null,
+      "month_closed_amount": 0
+    },
+    {
+      "id": 396,
+      "userName": "Ruba Al Kaeed",
+      "profile_picture": null,
+      "target": 3000000,
+      "booked": 1,
+      "total_closed": 0,
+      "month_closed": 0,
+      "total_closed_amount": null,
+      "month_closed_amount": 0
+    },
+    {
+      "id": 397,
+      "userName": "Cheimaa Merabet",
+      "profile_picture": null,
+      "target": 3000000,
+      "booked": 0,
+      "total_closed": 1,
+      "month_closed": 0,
+      "total_closed_amount": 1835000,
+      "month_closed_amount": 0
+    }
   ];
+  
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const d = new Date();
+
+  function formatNumber(number) {
+    if (number >= 1000000) {
+      const formattedNumber = (number / 1000000).toFixed(2);
+      return formattedNumber.replace(".00", "") + "M";
+    } else if (number >= 1000) {
+      const formattedNumber = (number / 1000).toFixed(2);
+      return formattedNumber.replace(".00", "") + "K";
+    } else {
+      return number.toString();
+    }
+  }
 
   useEffect(() => {
     if (User && socket) {
@@ -329,14 +435,14 @@ const TodayCallLogs = () => {
                       </>
                     )}
                   </>
-                ) : item.heading === "TARGET" ? (
+                ) : item.heading === "MONTHLY TARGET" ? (
                   <>
                     {/* {loading ? (
                       <Loader />
                     ) : (
                       <> */}
                         <div
-                          className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-x-3 gap-y-3 pb-3 "
+                          className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6"
                         >
                           {target.map(index => {
                             return (
@@ -351,14 +457,13 @@ const TodayCallLogs = () => {
                                   <div>
                                     <img
                                       src={
-                                        // User?.displayImg
-                                        //   ? User?.displayImg
-                                          // : 
-                                          "/assets/user.png"
+                                        index?.profile_picture
+                                          ? index?.profile_picture
+                                          : "/assets/user.png"
                                       }
                                       height={80}
                                       width={80}
-                                      className={`rounded-lg object-cover relative mr-3`}
+                                      className={`rounded-sm object-cover relative mr-3`}
                                       alt=""
                                     />
                                   </div>
@@ -369,7 +474,15 @@ const TodayCallLogs = () => {
                                         <BsFillBookmarkStarFill size={20} color={"#777777"} className="p-1" />
                                       </div>
                                       <div className="col-span-7">
-                                        <span className="font-bold">{index.booked}</span>{" "}booked
+                                        {index.booked <= 1 ? (
+                                          <>
+                                            <span className="font-bold">{index.booked}</span>{" "}booked unit
+                                          </>
+                                        ) : (
+                                          <>
+                                            <span className="font-bold">{index.booked}</span>{" "}booked units
+                                          </>
+                                        )}
                                       </div>
                                     </div>
                                     <div className="grid grid-cols-8 flex items-center">
@@ -377,15 +490,38 @@ const TodayCallLogs = () => {
                                         <BsFillLockFill size={20} color={"#777777"} className="p-1" />
                                       </div>
                                       <div className="col-span-7">
-                                        <span className="font-bold">{index.month_closed}</span>{" "}deals in {monthNames[d.getMonth()]}{" "}
-                                        /{" "}
-                                        <span className="font-bold">{index.total_closed}</span>{" "}deals{" "}
+                                        {index.month_closed <= 1 ? (
+                                          <>
+                                            <span className="font-bold">{index.month_closed}</span>{" "}deal in {monthNames[d.getMonth()]}{" "}
+                                          </>
+                                        ) : (
+                                          <>
+                                            <span className="font-bold">{index.month_closed}</span>{" "}deals in {monthNames[d.getMonth()]}{" "}
+                                          </>
+                                        )}
                                       </div>
                                     </div>
-                                    <div></div>
+                                    <div className="grid grid-cols-8 flex items-center">
+                                      <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
+                                        <BsFillStarFill size={20} color={"#777777"} className="p-1" />
+                                      </div>
+                                      <div className="col-span-7">
+                                        {/* <span className="font-bold text-green-700">AED {index.month_closed_amount}</span>{" "}of{" "} */}
+                                        <span className="font-bold">AED {formatNumber(Number(index.target))}</span>{" "}target
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
-                                <ProgressBar bgcolor="#DA1F26" progress={(index.month_closed_amount / index.target * 100).toFixed(1)} height="30" />
+                                <ProgressBar 
+                                  bgcolor="#DA1F26" 
+                                  height="25px" 
+                                  progress={(index.month_closed_amount / index.target * 100).toFixed(1)} 
+                                  progresswidth={(index.month_closed_amount >= index.target ? (
+                                      100.00
+                                    ) : (
+                                      index.month_closed_amount / index.target * 100)
+                                    )} 
+                                />
                               </div>
                             )
                           })}
