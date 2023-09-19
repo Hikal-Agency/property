@@ -11,10 +11,6 @@ import {
   BsPinMap,
   BsFillBookmarkFill 
 } from "react-icons/bs";
-import { ImLocation, ImClock } from "react-icons/im";
-
-// import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-// import "./App.css";
 
 const LocationComponent = ({ upcoming_meetings }) => {
   const { currentMode } = useStateContext();
@@ -26,8 +22,6 @@ const LocationComponent = ({ upcoming_meetings }) => {
   }
 
   console.log("upcommings meetins locations : ", upcoming_meetings);
-
-  //   const position = [51.505, -0.09];
 
   useEffect(() => {
     console.log("upcoming meetings are");

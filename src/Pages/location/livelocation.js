@@ -1,11 +1,10 @@
-// import Image from "next/image";
 
 import React, { useState } from "react";
 import { useEffect } from "react";
 import LocationComponent from "../../Components/location/LocationComponent";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "../../axoisConfig";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import Loader from "../../Components/Loader";
 
 const Livelocation = () => {
@@ -48,12 +47,6 @@ const Livelocation = () => {
           progress: undefined,
           theme: "light",
         });
-        // navigate("/", {
-        //   state: {
-        //     error: "Something Went Wrong! Please Try Again",
-        //     continueURL: location.pathname,
-        //   },
-        // });
       });
   };
 
