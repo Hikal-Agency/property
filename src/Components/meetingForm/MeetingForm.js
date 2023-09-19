@@ -21,7 +21,7 @@ const MeetingForm = ({
   LeadData,
   BACKEND_URL,
 }) => {
-  const { darkModeColors, currentMode, User } = useStateContext();
+  const { darkModeColors, currentMode, User, primaryColor } = useStateContext();
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
   const style = {
@@ -107,7 +107,7 @@ const MeetingForm = ({
                       InputProps={{
                         disableUnderline: true,
                       }}
-                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      sx={{ borderBottom: `1px solid ${primaryColor}` }}
                       id="meetingDate"
                       type={"date"}
                       label="Meeting date"
@@ -119,7 +119,7 @@ const MeetingForm = ({
                       InputProps={{
                         disableUnderline: true,
                       }}
-                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      sx={{ borderBottom: `1px solid ${primaryColor}` }}
                       id="meetingTime"
                       type={"time"}
                       label="Meeting time"
@@ -131,7 +131,7 @@ const MeetingForm = ({
                       InputProps={{
                         disableUnderline: true,
                       }}
-                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      sx={{ borderBottom: `1px solid ${primaryColor}` }}
                       id="meetingLocation"
                       type={"text"}
                       label="Meeting location"
@@ -143,7 +143,7 @@ const MeetingForm = ({
                       InputProps={{
                         disableUnderline: true,
                       }}
-                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      sx={{ borderBottom: `1px solid ${primaryColor}` }}
                       id="meetingNote"
                       type={"text"}
                       label="Meeting Note"

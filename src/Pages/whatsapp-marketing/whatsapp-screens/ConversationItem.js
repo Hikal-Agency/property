@@ -68,8 +68,8 @@ const ConversationItem = ({ chat, setActiveChat, isActive }) => {
     >
       <Box className="flex items-center w-full">
         <Avatar
-          sx={{ width: 36, height: 36, background: "#da1f26", fontSize: 15 }}
-          className="mr-3"
+          sx={{ width: 36, height: 36, fontSize: 15 }}
+          className="mr-3 bg-btn-primary"
         >
           {chat?.name[0] !== "+" ? (
             <strong>{chat?.name[0].toUpperCase()}</strong>

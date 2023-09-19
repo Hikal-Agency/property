@@ -11,10 +11,10 @@ import {
 import axios from "../../axoisConfig";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AllNewsletters = ({ pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL, User } = useStateContext();
+  const { currentMode, BACKEND_URL, User, primaryColor } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
   // eslint-disable-next-line
@@ -140,7 +140,7 @@ const AllNewsletters = ({ pageState, setpageState }) => {
 
     // Background color of header of data grid
     "& .MuiDataGrid-columnHeaders": {
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: currentMode === "dark" ? "white" : "white",
     },
     "& .MuiIconButton-sizeSmall": {
@@ -167,7 +167,7 @@ const AllNewsletters = ({ pageState, setpageState }) => {
     // BACKGROUND COLOR OF FOOTER
     "& .MuiDataGrid-footerContainer": {
       borderTop: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: "white",
     },
     "& .MuiTablePagination-selectLabel": {

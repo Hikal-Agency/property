@@ -186,7 +186,9 @@ const CreateTemplateModal = ({
               <Button
                 type="submit"
                 variant="contained"
-                style={{ padding: "10px 12px", backgroundColor: "#da1f26" }}
+                className="bg-btn-primary"
+                
+                style={{ padding: "10px 12px", color: "white"}}
               >
                 {btnloading ? (
                   <CircularProgress size={18} sx={{ color: "white" }} />

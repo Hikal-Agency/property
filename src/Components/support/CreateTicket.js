@@ -274,7 +274,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                       <Button
                         size="medium"
                         className="bg-btn-primary text-white rounded-lg py-3 font-semibold mb-3 ml-5"
-                        style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+                        style={{ color: "#ffffff" }}
                         sx={{ marginLeft: "20px" }}
                         onClick={handleSubmitCategory}
                         disabled={btnloading ? true : false}
@@ -409,7 +409,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                 type="submit"
                 size="medium"
                 className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold mb-3"
-                style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+                style={{ color: "#ffffff" }}
               >
                 {btnloading ? (
                   <CircularProgress size={18} sx={{ color: "white" }} />

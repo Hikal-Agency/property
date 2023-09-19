@@ -72,7 +72,7 @@ const TodayCallLogs = () => {
             <h1
               style={{ fontSize: 24 }}
               className={`${
-                currentMode === "dark" ? "text-white" : "text-[#da1f26]"
+                currentMode === "dark" ? "text-white" : "text-primary"
               } font-bold`}
             >
               Calls Count Today

@@ -91,8 +91,6 @@ const PricingTable = ({ allPlans }) => {
                         "&:hover": {
                           letterSpacing: "0.25rem",
                           backgroundColor: "#B10044",
-                          // color: "#B10044",
-                          // boxShadow: "0 0 50px 10px #DA1F26",
                         },
                       }}
                     >
@@ -150,20 +148,7 @@ const PricingTable = ({ allPlans }) => {
                   </Box>
                 ) : (
                   <Box className="h-[45%] flex flex-col justify-end">
-                    {/* <Button
-                      onClick={() => setPlan(plan.name)}
-                      variant="contained"
-                      // style={{ backgroundColor: "#da1f26" }}
-                      fullWidth
-                      sx={{
-                        padding: "12px 0",
-                        borderRadius: "5%",
-                        // backgroundColor: "#da1f26",
-                        backgroundColor: "#0B0A0B",
-                      }}
-                    >
-                      Subscribe
-                    </Button> */}
+                  
                     <Button
                       component="a"
                       href="#"

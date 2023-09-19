@@ -401,13 +401,6 @@ const AddReminder = ({
                       );
                       setTimeValue(newValue);
                     }}
-                    sx={{
-                      "& .css-3dah0e-MuiModal-root-MuiDialog-root .MuiDialog-paper":
-                        {
-                          // border: "4px solid #DA1F26",
-                          // borderRadius: "2%",
-                        },
-                    }}
                     InputProps={{ required: true }}
                     renderInput={(params) => (
                       <TextField

@@ -21,9 +21,8 @@ const MessageFromMe = ({ message, data }) => {
         <div
           style={{
             position: "relative",
-            background: "#da1f26",
           }}
-          className="max-w-[600px] mb-3 rounded-md mr-2 p-2"
+          className="max-w-[600px] mb-3 rounded-md mr-2 p-2 bg-primary"
         >
           {message.type === "revoked" ? (
             <i className="text-gray-200">This message was deleted</i>
@@ -33,8 +32,8 @@ const MessageFromMe = ({ message, data }) => {
         </div>
       )}
       <Avatar
-        sx={{ width: 20, height: 20, background: "#da1f26" }}
-        className="mr-2"
+        sx={{ width: 20, height: 20 }}
+        className="mr-2 bg-btn-primary"
       >
         <p style={{ fontSize: 11 }}>
           {data?.userInfo?.pushname[0]?.toUpperCase()}

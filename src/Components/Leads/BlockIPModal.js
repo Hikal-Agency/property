@@ -98,7 +98,7 @@ const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead })
             >
               Are you sure that you want to block the leads from IP{" "}
             </span>
-            <span style={{ color: "#da1f26" }}>{lead?.ip}</span>?
+            <span className="text-primary">{lead?.ip}</span>?
           </h1>
         </div>
 

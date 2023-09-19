@@ -338,7 +338,7 @@ const ClientLeads = ({
             )}
             {cellValues.row.leadSource?.toLowerCase() === "bulk import" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <BiImport size={22} color={"#da1f26"} />
+                <BiImport size={22} className="text-primary" />
               </div>
             )}
             {cellValues.row.leadSource.toLowerCase() ===
@@ -419,7 +419,7 @@ const ClientLeads = ({
                 <div
                   className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
-                  <span className="text-[#DA1F26] p-1 text-center">
+                  <span className="text-primary p-1 text-center">
                     <BsShieldX size={16} />
                   </span>
                 </div>

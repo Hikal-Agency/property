@@ -246,7 +246,7 @@ const SingleLeadPage = () => {
     ),
 
     "bulk import": () => (
-      <BiImport size={16} color={"#da1f26"} />
+      <BiImport size={16} className="text-primary"/>
     ),
 
     "property finder": () => (
@@ -327,18 +327,18 @@ const SingleLeadPage = () => {
                     <div className="sm:col-span-1 md:col-span-3 space-y-3 font-semibold">
                       {/* LEAD CONTACT  */}
                       <div className="flex space-x-3">
-                        <TbPhone size={17} className="mr-2 text-[#DA1F26]" />
+                        <TbPhone size={17} className="mr-2 text-primary" />
                         <h6>{contact}</h6>
                         <h6>{LeadData?.leadEmail === "null" ? "" : LeadData?.leadEmail}</h6>
                       </div>
                       {/* LANGUAGE  */}
                       <div className="flex space-x-3">
-                        <TbLanguage size={17} className="mr-2 text-[#DA1F26]" />
+                        <TbLanguage size={17} className="mr-2 text-primary" />
                         <h6>{LeadData?.language}</h6>
                       </div>
                       {/* PROJECT  */}
                       <div className="flex space-x-3">
-                        <TbBuildingCommunity size={17} className="mr-2 text-[#DA1F26]" />
+                        <TbBuildingCommunity size={17} className="mr-2 text-primary" />
                         <h6>{LeadData?.project === "null" ? "-" : LeadData?.project}</h6>
                         <h6>{LeadData?.enquiryType === "null" ? "-" : LeadData?.enquiryType}</h6>
                         <h6>{LeadData?.leadType === "null" ? "-" : LeadData?.leadType}</h6>
@@ -348,7 +348,7 @@ const SingleLeadPage = () => {
 
                     <div className="sm:col-span-1 md:col-span-2 space-y-2 text-right">
                       <div className="flex items-center justify-end space-x-3 mb-4">
-                        <span className="border border-[#DA1F26] px-3 py-1 rounded-md font-semibold text-base">
+                        <span className="border border-primary px-3 py-1 rounded-md font-semibold text-base">
                           {LeadData?.feedback ?? "?"}
                         </span>
                         <Box
@@ -430,7 +430,7 @@ const SingleLeadPage = () => {
                                 // background: "#DA1F26"
                               },
                             }}
-                            className={`${ currentMode === "dark" ? "bg-[#DA1F26]" : "bg-[#000000]" }`}
+                            className={`${ currentMode === "dark" ? "bg-primary" : "bg-[#000000]" }`}
                           >
                             <TableRow>
                               <TableCell align="center" className="w-[5%]">#</TableCell>

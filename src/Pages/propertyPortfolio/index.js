@@ -114,7 +114,7 @@ const PropertyPortfolio = () => {
                                     ) : (
                                       <BiCheckboxMinus
                                         size={"30px"}
-                                        className="text-[#da1f26]"
+                                        className="text-primary"
                                       />
                                     )}
                                     <p>Studio</p>
@@ -128,7 +128,7 @@ const PropertyPortfolio = () => {
                                     ) : (
                                       <BiCheckboxMinus
                                         size={"30px"}
-                                        className="text-[#da1f26]"
+                                        className="text-primary"
                                       />
                                     )}
                                     <p>1 Bedroom</p>
@@ -142,7 +142,7 @@ const PropertyPortfolio = () => {
                                     ) : (
                                       <BiCheckboxMinus
                                         size={"30px"}
-                                        className="text-[#da1f26]"
+                                        className="text-primary"
                                       />
                                     )}
                                     <p>2 Bedrooms</p>
@@ -156,7 +156,7 @@ const PropertyPortfolio = () => {
                                     ) : (
                                       <BiCheckboxMinus
                                         size={"30px"}
-                                        className="text-[#da1f26]"
+                                        className="text-primary"
                                       />
                                     )}
                                     <p>3 Bedrooms</p>
@@ -170,7 +170,7 @@ const PropertyPortfolio = () => {
                                     ) : (
                                       <BiCheckboxMinus
                                         size={"30px"}
-                                        className="text-[#da1f26]"
+                                        className="text-primary"
                                       />
                                     )}
                                     <p>4 Bedrooms</p>
@@ -184,7 +184,7 @@ const PropertyPortfolio = () => {
                                     ) : (
                                       <BiCheckboxMinus
                                         size={"30px"}
-                                        className="text-[#da1f26]"
+                                        className="text-primary"
                                       />
                                     )}
                                     <p>5 Bedrooms</p>
@@ -198,7 +198,7 @@ const PropertyPortfolio = () => {
                                     ) : (
                                       <BiCheckboxMinus
                                         size={"30px"}
-                                        className="text-[#da1f26]"
+                                        className="text-primary"
                                       />
                                     )}
                                     <p>6 Bedrooms</p>
@@ -212,7 +212,7 @@ const PropertyPortfolio = () => {
                                     ) : (
                                       <BiCheckboxMinus
                                         size={"30px"}
-                                        className="text-[#da1f26]"
+                                        className="text-primary"
                                       />
                                     )}
                                     <p>Retail</p>

@@ -198,7 +198,7 @@ const AddNewsletter = ({ tabValue, setTabValue, isLoading }) => {
           type="submit"
           size="medium"
           className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold mb-3"
-          style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+          style={{color: "#ffffff" }}
           onClick={handleClick}
           disabled={loading ? true : false}
         >

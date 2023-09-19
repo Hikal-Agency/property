@@ -40,7 +40,7 @@ const style = {
 };
 
 const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
-  const { currentMode, BACKEND_URL, isArabic } = useStateContext();
+  const { currentMode, BACKEND_URL, isArabic, primaryColor} = useStateContext();
   const [leadsCycle, setLeadsCycle] = useState(null);
   const [leadDetails, setLeadDetails] = useState(null);
   const [error404, setError404] = useState(false);
@@ -199,7 +199,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                             >
                               {leadDetails.leadName}
                             </h3>
-                            <div className="w-[80%] bg-[#DA1F26] h-0.5 mb-5"></div>
+                            <div className="w-[80%] bg-primary h-0.5 mb-5"></div>
                             <div className="text-center sm:text-left my-3 sm:before:mx-0">
                               {/* CONTACT NUMBER  */}
                               <div className="flex mb-5">
@@ -236,7 +236,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                 </div>
                               </div>
 
-                              <div className="w-[80%] bg-[#DA1F26] h-0.5 mb-5"></div>
+                              <div className="w-[80%] bg-primary h-0.5 mb-5"></div>
 
                               {/* CREATION DATE  */}
                               <div className="text-sm mb-5">
@@ -266,7 +266,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                     <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                       <div className="h-full w-6 flex items-center justify-center">
                                         <div
-                                          className="h-full border-b-[#DA1F26] rounded-md px-2 py-1 text-sm"
+                                          className={`h-full border-b-[${primaryColor}] rounded-md px-2 py-1 text-sm`}
                                           style={{
                                             width: "min-content",
                                             whiteSpace: "nowrap",
@@ -289,7 +289,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 <div className="h-full w-6 flex items-center justify-center">
                                                   <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
                                                 </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-[#DA1F26] rounded-full p-2">
+                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
                                                   <MdOutlineEditNote
                                                     className="text-white"
                                                     size={16}
@@ -344,7 +344,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 <div className="h-full w-6 flex items-center justify-center">
                                                   <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                 </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-[#DA1F26] rounded-full p-2">
+                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
                                                   <FaUserCheck
                                                     className="text-white"
                                                     size={16}
@@ -392,7 +392,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 <div className="h-full w-6 flex items-center justify-center">
                                                   <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                 </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-[#DA1F26] rounded-full p-2">
+                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
                                                   <FaUserCheck
                                                     className="text-white"
                                                     size={16}
@@ -440,7 +440,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 <div className="h-full w-6 flex items-center justify-center">
                                                   <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                 </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-[#DA1F26] rounded-full p-2">
+                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
                                                   <BsBookmarkCheckFill
                                                     className="text-white"
                                                     size={16}
@@ -488,7 +488,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 <div className="h-full w-6 flex items-center justify-center">
                                                   <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                 </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-[#DA1F26] rounded-full p-2">
+                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
                                                   <BiCalendarExclamation
                                                     className="text-white"
                                                     size={16}
@@ -536,7 +536,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 <div className="h-full w-6 flex items-center justify-center">
                                                   <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                 </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-[#DA1F26] rounded-full p-2">
+                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
                                                   <BsClockFill
                                                     className="text-white"
                                                     size={16}

@@ -124,13 +124,13 @@ const Conversation = ({
               <Box className="pl-6 py-3 border-[rgb(246,246,246)] border-b w-full">
                 <Box className="flex items-center w-full">
                   <Avatar
+                  
                     sx={{
                       width: 35,
                       height: 35,
-                      background: "#da1f26",
                       fontSize: 15,
                     }}
-                    className="mr-4"
+                    className="mr-4 bg-btn-primary"
                   >
                     <BiUser size={18} />
                   </Avatar>

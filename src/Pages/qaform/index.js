@@ -102,7 +102,6 @@ const QAForm = () => {
                     "& .MuiTabs-indicator": {
                       height: "100%",
                       borderRadius: "5px",
-                      backgroundColor: "#da1f26",
                     },
                     "& .Mui-selected": {
                       color: "white !important",

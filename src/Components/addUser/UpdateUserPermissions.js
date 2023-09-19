@@ -152,7 +152,7 @@ const UpdateUserPermissions = ({
                   </IconButton>
                   <h2 className="text-center mt-3 text-xl font-bold text-[#1c1c1c] py-4">
                     Update Role of{" "}
-                    <span style={{ color: "#DA1F26", fontWeight: "700" }}>
+                    <span className="text-primary" style={{fontWeight: "700" }}>
                       {UserName}
                     </span>
                   </h2>

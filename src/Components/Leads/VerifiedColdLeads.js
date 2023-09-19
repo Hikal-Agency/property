@@ -9,9 +9,7 @@ import {
 } from "@mui/x-data-grid";
 
 import axios from "../../axoisConfig";
-import moment from "moment";
 import React, { useEffect } from "react";
-import { ToastContainer } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import RenderFeedback from "./RenderFeedback";
 import { langs } from "../../langCodes";
@@ -19,7 +17,7 @@ import hasPermission from "../../utils/usePermission";
 import RenderPriority from "./RenderPriority";
 
 const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
-  const { currentMode, User } = useStateContext();
+  const { currentMode, User, primaryColor } = useStateContext();
   const DataGridStyles = {
     "& .MuiButtonBase-root": {
       color: "white",
@@ -49,7 +47,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
     // Background color of header of data grid
     "& .MuiDataGrid-columnHeaders": {
       border: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: currentMode === "dark" ? "white" : "white",
     },
     "& .MuiIconButton-sizeSmall": {
@@ -76,7 +74,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
     // BACKGROUND COLOR OF FOOTER
     "& .MuiDataGrid-footerContainer": {
       border: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: "white",
     },
     "& .MuiTablePagination-selectLabel": {

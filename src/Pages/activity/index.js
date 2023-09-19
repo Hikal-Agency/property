@@ -133,8 +133,8 @@ const ActivityLog = () => {
                                         <div className="flex">
                                           <BiUserCircle
                                             size={"22px"}
-                                            color={"#da1f26"}
-                                            className="mr-2"
+                                            
+                                            className="mr-2 text-primary"
                                           />
                                           <div>{activity.leadName}</div>
                                         </div>
@@ -190,8 +190,7 @@ const ActivityLog = () => {
                                         <div className="flex">
                                           <BiUserCircle
                                             size={"22px"}
-                                            color={"#da1f26"}
-                                            className="mr-2"
+                                            className="mr-2 text-primary"
                                           />
                                           <div>{activity.leadName}</div>
                                         </div>
@@ -255,8 +254,7 @@ const ActivityLog = () => {
                                       <div className="flex">
                                         <BiUserCircle
                                           size={"22px"}
-                                          color={"#da1f26"}
-                                          className="mr-2"
+                                          className="mr-2 text-primary"
                                         />
                                         <div>{activity.leadName}</div>
                                       </div>

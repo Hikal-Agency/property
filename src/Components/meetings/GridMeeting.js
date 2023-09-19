@@ -249,7 +249,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                             <p className="flex items-center text-sm py-1">
                               {item?.meetingStatus === "Cancelled" && (
                                 <>
-                                  <BsFillBookmarkXFill size={16} className="mr-2" color="#DA1F26" /> 
+                                  <BsFillBookmarkXFill size={16} className="mr-2 text-primary" /> 
                                   <span className="mx-1">{item?.meetingStatus}</span>
                                 </>
                               )}

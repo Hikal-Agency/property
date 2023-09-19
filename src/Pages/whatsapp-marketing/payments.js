@@ -128,12 +128,12 @@ const Payments = () => {
           } flex min-h-screen mt-8 p-5 rounded-md mb-10`}
         >
           <Card
-            className="shadow-md"
+            className="shadow-md bg-btn-primary"
+
             sx={{
               p: 5,
               mr: 3,
               height: "300px",
-              background: "#da1f26",
               width: "30%",
               borderRadius: 4,
             }}
@@ -229,9 +229,10 @@ const Payments = () => {
               </Box>
               <Box className="h-[45%] flex flex-col justify-end">
                 <Button
+                className="bg-btn-primary"
                   onClick={() => {}}
                   variant="contained"
-                  style={{ backgroundColor: "#da1f26", color: "white" }}
+                  style={{ color: "white" }}
                   fullWidth
                   sx={{ padding: "12px 0" }}
                 >
@@ -268,7 +269,6 @@ const Payments = () => {
               "& .MuiTabs-indicator": {
                 height: "100%",
                 borderRadius: "5px",
-                backgroundColor: "#da1f26",
               },
               "& .Mui-selected": { color: "white !important", zIndex: "1" },
             }}

@@ -177,8 +177,8 @@ const ReminderComponent = ({
 
             <Tooltip title="Cancel Reminder" arrow>
               <IconButton
-                style={{ backgroundColor: "#DA1F26", color: "white" }}
-                className="rounded-full"
+                style={{ color: "white" }}
+                className="rounded-full bg-btn-primary"
                 onClick={(event) => handleButtonClick(event, 0, reminder?.id)}
                 disabled={cancleLoading}
               >

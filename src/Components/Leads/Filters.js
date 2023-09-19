@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import {Select, MenuItem, TextField} from "@mui/material";
+import {Select, MenuItem} from "@mui/material";
 import { Box } from "@mui/material";
 
 const sources = [
@@ -47,7 +47,7 @@ const enquiryTypes = [
 ];
 
 const Filters = ({ FetchLeads, pageState }) => {
-  const { darkModeColors, currentMode, Managers, SalesPerson } = useStateContext();
+  const { darkModeColors, currentMode, Managers, SalesPerson, primaryColor } = useStateContext();
   const [enquiryTypeSelected, setEnquiryTypeSelected] = useState({ id: 0 });
   const [managerSelected, setManagerSelected] = useState("");
   const [agentSelected, setAgentSelected] = useState("");
@@ -98,7 +98,7 @@ const Filters = ({ FetchLeads, pageState }) => {
             marginRight: "5px"
           },
           "& .applied-filter": {
-            background: "#da1f26",
+            background: primaryColor,
             borderRadius: 4,
             width: "max-content",
             padding: "3px 8px",
