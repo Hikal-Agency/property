@@ -24,15 +24,13 @@ import { FaFileDownload } from "react-icons/fa";
 
 const FitlerQA = ({ pageState, setpageState, user }) => {
   console.log("User id : ", user);
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, primaryColor } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
 
   // eslint-disable-next-line
   const navigate = useNavigate();
-  const location = useLocation();
   const [row, setRow] = useState([]);
-  const [column, setColumns] = useState([]);
   const [exportData, setExportData] = useState([]);
   const [data, setData] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,10 +57,6 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
     }
   };
 
-  // TOOLBAR SEARCH FUNC
-  const HandleQuicSearch = (e) => {
-    console.log(e.target.value);
-  };
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -87,82 +81,6 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
     { label: "Answers", key: "answers" },
   ];
 
-  const columns = [
-    {
-      field: "id",
-      headerName: "#",
-      minWidth: "10",
-      flex: 1,
-      headerAlign: "center",
-    },
-
-    {
-      field: "question",
-      headerName: "Question",
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-    },
-
-    {
-      field: "answers",
-      headerName: "Answers",
-      minWidth: 100,
-      flex: 1,
-      headerAlign: "center",
-    },
-  ];
-
-  //   const FetchQA = async (token) => {
-  //     axios
-  //       .get(`${BACKEND_URL}/trainingdata`, {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       })
-  //       .then((result) => {
-  //         console.log("QAs ");
-  //         console.log(result.data);
-  //         console.log(result?.data?.QAs);
-
-  //         let data = result?.data?.QAs;
-  //         let rowData = data?.map((qa) => ({
-  //           id: qa?.id,
-  //           creationDate: qa?.created_at,
-  //           question: qa?.question,
-  //           answer:
-  //             qa?.answers.length > 0
-  //               ? qa?.map((ans) => ({
-  //                   answer: ans?.question,
-  //                 }))
-  //               : "No answers",
-  //         }));
-
-  //         console.log("Row Data: ", rowData);
-
-  //         setRow(rowData);
-
-  //         // let rowsdata = rowsDataArray.map((row, index) => ({
-  //         //   id:
-  //         //     pageState.page > 1
-  //         //       ? pageState.page * pageState.pageSize -
-  //         //         (pageState.pageSize - 1) +
-  //         //         index
-  //         //       : index + 1,
-  //         //   creationDate: row?.created_at,
-  //         //   email: row?.email || "No Email",
-  //         //   status:
-  //         //     row?.status === "Subscribed" || row?.status === "Subscribed"
-  //         //       ? "Subscribed"
-  //         //       : "Not Subscribed",
-  //         // }));
-  //       })
-  //       .catch((err) => {
-  //         console.log("error occured");
-  //         console.log(err);
-  //       });
-  //   };
 
   const FetchQA = async (token, page) => {
     setLoading(true);
@@ -239,7 +157,7 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
 
     // Background color of header of data grid
     "& .MuiDataGrid-columnHeaders": {
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: currentMode === "dark" ? "white" : "white",
     },
     "& .MuiIconButton-sizeSmall": {
@@ -266,7 +184,7 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
     // BACKGROUND COLOR OF FOOTER
     "& .MuiDataGrid-footerContainer": {
       borderTop: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: "white",
     },
     "& .MuiTablePagination-selectLabel": {
@@ -280,29 +198,6 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
       // backgroundColor: "red",
     },
   };
-  // Custom Pagination
-  function CustomPagination() {
-    const apiRef = useGridApiContext();
-    const page = useGridSelector(apiRef, gridPageSelector);
-    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
-
-    return (
-      <>
-        {/* <Pagination
-            sx={{
-              "& .Mui-selected": {
-                backgroundColor: "white !important",
-                color: "black !important",
-                borderRadius: "5px !important",
-              },
-            }}
-            count={pageCount}
-            page={page + 1}
-            onChange={(event, value) => apiRef.current.setPage(value - 1)}
-          /> */}
-      </>
-    );
-  }
   return (
     <div className="pb-10 h-[500px] overflow-y-scroll">
       {loading && (
@@ -346,8 +241,8 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
         <>
           <CSVLink data={exportData} headers={headers}>
             <Button
-              className="bg-main-red-color text-white rounded-lg py-3 font-semibold mb-5"
-              style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+              className="bg-btn-primary text-white rounded-lg py-3 font-semibold mb-5"
+              style={{ color: "#ffffff" }}
               onClick={getExportData}
               sx={{ marginBottom: "10px" }}
             >

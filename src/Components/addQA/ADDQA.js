@@ -4,11 +4,11 @@ import { useState } from "react";
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 
 import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Textarea } from "@material-tailwind/react";
 
 const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, formatNum, BACKEND_URL } =
+  const { darkModeColors, BACKEND_URL } =
     useStateContext();
   const [loading, setloading] = useState(false);
 
@@ -222,8 +222,8 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
             <Button
               variant="outlined"
               size="small"
-              className="bg-main-red-color  text-white rounded-lg py-3 font-semibold mb-3"
-              style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+              className="bg-btn-primary  text-white rounded-lg py-3 font-semibold mb-3"
+              style={{color: "#ffffff" }}
               disabled={answers?.length === 1}
               onClick={() => handleRemoveAnswer(answerIndex)}
             >
@@ -235,8 +235,8 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
         <Button
           type="submit"
           size="medium"
-          className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-          style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+          className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold mb-3"
+          style={{  color: "#ffffff" }}
           onClick={handleSubmit}
           disabled={loading ? true : false}
         >

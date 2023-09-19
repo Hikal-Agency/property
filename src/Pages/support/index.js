@@ -69,7 +69,7 @@ const Tickets = () => {
                   }`}
                 >
                   Welcome to{" "}
-                  <span className="text-main-red-color font-bold">
+                  <span className="text-primary font-bold">
                     HIKAL CRM
                   </span>
                   ! We are here to assist you.
@@ -87,7 +87,6 @@ const Tickets = () => {
                       "& .MuiTabs-indicator": {
                         height: "100%",
                         borderRadius: "5px",
-                        backgroundColor: "#da1f26",
                       },
                       "& .Mui-selected": {
                         color: "white !important",
