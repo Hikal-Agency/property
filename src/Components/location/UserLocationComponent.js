@@ -234,6 +234,18 @@ const UserLocationComponent = () => {
                             selectedLocation.user_id === user.user_id
                               ? "/userpin.svg" //CHANGE FOR SELECTED
                               : user?.profile_picture || "/userpin.svg",
+                          // scaledSize: window.google
+                          //   ? new window.google.maps.Size(
+                          //       selectedLocation &&
+                          //       selectedLocation.user_id === user.user_id
+                          //         ? 70
+                          //         : 50,
+                          //       selectedLocation &&
+                          //       selectedLocation.user_id === user.user_id
+                          //         ? 70
+                          //         : 50
+                          //     )
+                          //   : null,
                           scaledSize: window.google
                             ? new window.google.maps.Size(
                                 selectedLocation &&
@@ -245,7 +257,8 @@ const UserLocationComponent = () => {
                                   ? 70
                                   : 50
                               )
-                            : null,
+                            : new window.google.maps.Size(50, 50),
+
                           zIndex:
                             selectedLocation &&
                             selectedLocation.user_id === user.user_id
