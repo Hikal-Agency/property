@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useProSidebar } from "react-pro-sidebar";
 import { toast } from "react-toastify";
-import { Link, useLocation } from "react-router-dom";
+import { 
+  Link, 
+} from "react-router-dom";
+import {MdStars} from "react-icons/md";
 
-import { Tooltip, Link as MuiLink, Button, Badge, Box } from "@mui/material";
+import { Tooltip, Button, Badge } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { RiCoinsLine } from "react-icons/ri";
 import Avatar from "@mui/material/Avatar";
 
 import { useStateContext } from "../../context/ContextProvider";
@@ -22,7 +24,6 @@ import {
   BsCalendarEvent,
   BsCalendarEventFill,
   BsBell,
-  BsBellFill,
   BsClock,
   BsClockFill,
 } from "react-icons/bs";
@@ -30,6 +31,8 @@ import {
   MdDarkMode,
   MdKeyboardArrowDown,
   MdOutlineLightMode,
+  MdColorLens, 
+  MdOutlineColorLens
 } from "react-icons/md";
 import {
   VscHistory,
@@ -39,6 +42,7 @@ import {
   VscSignOut,
 } from "react-icons/vsc";
 import "../../styles/animation.css";
+import ColorsPopup from "./ColorsPopup";
 
 const NavButton = ({
   title,
@@ -52,11 +56,6 @@ const NavButton = ({
     <button
       type="button"
       onMouseEnter={customFunc}
-      // onMouseLeave={() => {
-      //   setTimeout(() => {
-      //     handleClose();
-      //   }, 300);
-      // }}
       style={{ color }}
       className="relative text-xl rounded-full p-3 hover:bg-light-gray"
     >
@@ -73,11 +72,11 @@ const Navbar = () => {
   const {
     currentMode,
     setCurrentMode,
-    LightIconsColor,
     User,
     BACKEND_URL,
     isCollapsed,
     allRoutes,
+    primaryColor,
     setIsCollapsed,
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
@@ -227,10 +226,11 @@ const Navbar = () => {
           >
             <button
               type="button"
+              style={{
+                color: currentMode === "dark" ? "white" : primaryColor
+              }}
               // style={{ color: currentColor }}
-              className={`relative text-xl rounded-full hover:bg-light-gray mr-4  ${
-                currentMode === "dark" ? "text-white" : "text-[#DA1F26]"
-              }`}
+              className={`relative text-xl rounded-full hover:bg-light-gray mr-4`}
             >
               <span className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2" />
               <AiOutlineMenu />
@@ -245,21 +245,35 @@ const Navbar = () => {
             isUserSubscribed === false ? (
               <Button
                 variant="contained"
-                style={{ background: "#DA1F26" }}
-                sx={{ mr: 2 }}
+                className="bg-btn-primary"
+                sx={{ mr: 2, "& svg": {
+                  color: "white"
+                } }}
               >
-                <Link to="/marketing/payments">Upgrade</Link>
+                <Link to="/marketing/payments" className="flex items-center"><MdStars className="mr-2" size={18}/><span className="mt-[2px]">Upgrade</span></Link>
               </Button>
             ) : (
               <></>
             ),
           ]}
 
+          <NavButton
+            title="Colors"
+            customFunc={(event) => handleClick(event, "Colors")}
+            color={currentMode === "dark" ? "#ffffff" : "#333333"}
+            icon={
+              open && currNavBtn === "Colors" ? (
+              <MdColorLens size={20} />
+              ) : (
+                <MdOutlineColorLens size={20} />
+              )
+            }
+          />
           {/* MEETINGS  */}
           <NavButton
             title="Meetings"
             handleClose={handleClose}
-            dotColor={currentMode === "dark" ? "#ffffff" : "#DA1F26"}
+            dotColor={currentMode === "dark" ? "#ffffff" : primaryColor}
             customFunc={(event) => handleClick(event, "Meetings")}
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
             icon={
@@ -278,14 +292,18 @@ const Navbar = () => {
             // dotColor={currentMode === "dark" ? "#ffffff" : "#DA1F26"}
             customFunc={(event) => handleClick(event, "Notifications")}
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
-            icon={
-                <Badge
-                    className={notifIconAnimating ? "animate-notif-icon" : ""}
-                    badgeContent={unreadNotifsCount}
-                    color="error"
-                  >
-                    <BsBell size={16} />
-                  </Badge>
+            icon={ <Badge
+                      className={notifIconAnimating ? "animate-notif-icon" : ""}
+                      badgeContent={unreadNotifsCount}
+                      sx={{
+                        "& .MuiBadge-badge": {
+                          background: primaryColor, 
+                          color: "white"
+                        }
+                      }}
+                    >
+                      <BsBell size={16} />
+                    </Badge>
             }
           />
 
@@ -315,13 +333,13 @@ const Navbar = () => {
               type="button"
               onClick={changeMode}
               className={`relative text-xl rounded-full p-3 hover:bg-light-gray ${
-                currentMode === "dark" ? "text-white" : " text-main-red-color"
+                currentMode === "dark" ? "text-white" : " text-primary"
               }`}
             >
               {currentMode === "dark" ? (
                 <MdOutlineLightMode size={16} color="#dcb511" />
               ) : (
-                <MdDarkMode size={16} color="#DA1F26" />
+                <MdDarkMode size={16} color={primaryColor} />
               )}
             </button>
           </Tooltip>
@@ -351,8 +369,6 @@ const Navbar = () => {
               <MdKeyboardArrowDown className="text-gray-400 text-14" />
             </div>
           </Tooltip>
-
-          
 
           <Menu
             className="navbar-menu-backdrop"
@@ -394,100 +410,127 @@ const Navbar = () => {
                     padding: "5px !important",
                     paddingRight: "0px !important",
                   },
-              },
-            }}
-            transformOrigin={{ horizontal: "center", vertical: "top" }}
-            anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-          >
-            {currNavBtn === "Notifications" ? (
-              <NotificationsMenuUpdated
-                handleClose={handleClose}
-                setCurrNavBtn={setCurrNavBtn}
-              />
-            ) : currNavBtn === "Meetings" ? (
-              <>
-                <UpcomingMeetingsMenu handleClose={handleClose} />
-              </>
-            ) : currNavBtn === "Clock" ? (
-              <Clock handleClose={handleClose} />
-            ) : currNavBtn === "Profile" ? (
-              <div className="pl-2">
-                <div
-                  className={`cursor-pointer card-hover ${
-                    currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                  } mb-3 p-4 rounded-xl shadow-sm w-full`}
-                >
-                  <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-                    <div className="flex items-center justify-start">
-                      <Avatar src={User?.displayImg} className="inline-block" />
-                      <div className="flex justify-between items-center w-full h-full">
-                        <div className="mx-1 space-y-1">
-                          <p className="font-semibold">{User?.userName}</p>
-                          <p className="text-xs capitalize">{User?.position}</p>
-                        </div>
-                        <div className="text-sm rounded-full border border-[#DA1F26] px-2 py-1">
-                          Profile
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-
-                {/* LOGIN HISTORY  */}
-                <div
-                  className={`cursor-pointer card-hover ${
-                    currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                  } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                >
-                  {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
-                  <div className="flex items-center justify-start">
-                    <div
-                      className={`${
-                        currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-                      } p-2 rounded-full mr-2`}
-                    >
-                      <VscHistory size={18} color={"#AAAAAA"} />
-                    </div>
-                    <div className="flex justify-between items-center w-full h-full">
-                      <div className="flex items-center">
-                        <p className="font-semibold mx-1 mr-2">Login history</p>
-                        <VscLock size={14} color={"#DA1F26"} className="mr-2" />
-                      </div>
-                      <div
-                        className="rounded-full bg-[#DA1F26] text-white px-2 py-1 font-bold"
-                        style={{ fontSize: "0.5rem" }}
-                      >
-                        SOON
-                      </div>
-                    </div>
-                  </div>
-                  {/* </Link> */}
-                </div>
-
-                {/* CHANGE PASSWORD  */}
-                <div
-                  className={`cursor-pointer card-hover ${
-                    currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                  } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                >
-                  <Link
-                    to={"/changepassword"}
-                    onClick={() => setopenBackDrop(true)}
+                  // "&:before": {
+                  //   content: '""',
+                  //   display: "block",
+                  //   position: "absolute",
+                  //   top: 0,
+                  //   right: 66,
+                  //   width: 10,
+                  //   height: 10,
+                  //   background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
+                  //   transform: "translateY(-50%) rotate(45deg)",
+                  //   zIndex: 0,
+                  // },
+                },
+              }}
+              transformOrigin={{ horizontal: "center", vertical: "top" }}
+              anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+            >
+              {currNavBtn ? (
+                currNavBtn === "Notifications" ? (
+                  // <NotificationsMenu />
+                  <NotificationsMenuUpdated handleClose={handleClose} setCurrNavBtn={setCurrNavBtn}/>
+                ) : currNavBtn === "Colors" ? (
+                  <>
+                    <ColorsPopup handleClose={handleClose}/>
+                  </>
+                ) :  (currNavBtn === "Clock") ? (
+                    <Clock handleClose={handleClose} /> 
+                )
+                    : (currNavBtn === "Meetings") ? (
+                    <UpcomingMeetingsMenu />
+                ) : (currNavBtn === "Profile") ? (
+                  <div className="pl-2">
+                  <div
+                    className={`cursor-pointer card-hover ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-3 p-4 rounded-xl shadow-sm w-full`}
                   >
-                    <div className="flex items-center justify-start">
-                      <div
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-[#1C1C1C]"
-                            : "bg-[#EEEEEE]"
-                        } p-2 rounded-full mr-2`}
-                      >
-                        <VscShield size={18} color={"#AAAAAA"} />
+                    <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
+                      <div className="flex items-center justify-start">
+                        <Avatar
+                          src={User?.displayImg}
+                          className="inline-block"
+                        />
+                        <div className="flex justify-between items-center w-full h-full">
+                          <div className="mx-1 space-y-1">
+                            <p className="font-semibold">{User?.userName}</p>
+                            <p className="text-xs capitalize">{User?.position}</p>
+                          </div>
+                          <div style={{
+                            borderColor: primaryColor
+                          }} className={`text-sm rounded-full border px-2 py-1`}>
+                            Profile
+                          </div>
+                        </div>
                       </div>
-                      <p className="mx-1 mr-2 font-semibold">Change password</p>
+                    </Link>
+                  </div>
+
+                  {/* LOGIN HISTORY  */}
+                  <div
+                    className={`cursor-pointer card-hover ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                  >
+                    {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
+                      <div className="flex items-center justify-start">
+                        <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
+                          <VscHistory size={18} color={"#AAAAAA"} />
+                        </div>
+                        <div className="flex justify-between items-center w-full h-full">
+                          <div className="flex items-center">
+                            <p className="font-semibold mx-1 mr-2">Login history</p>
+                            <VscLock size={14} color={primaryColor} className="mr-2" />
+                          </div>
+                          <div style={{
+                            background: primaryColor, 
+                            fontSize: "0.5rem"
+                          }} className="rounded-full text-white px-2 py-1 font-bold">
+                            SOON
+                          </div>
+                        </div>
+                      </div>
+                    {/* </Link> */}
+                  </div>
+
+                  {/* CHANGE PASSWORD  */}
+                  <div
+                    className={`cursor-pointer card-hover ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                  >
+                    <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}>
+                      <div className="flex items-center justify-start">
+                        <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
+                          <VscShield size={18} color={"#AAAAAA"} />
+                        </div>
+                        <p className="mx-1 mr-2 font-semibold">Change password</p>
+                      </div>
+                    </Link>
+                  </div>
+
+                  {/* IF SUBSCRIBED, UNSUBCRIBE  */}
+                  {User?.role !== 1 && isUserSubscribed && (
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                      onClick={UnsubscribeUser}
+                    >
+                      {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
+                        <div className="flex items-center justify-start">
+                          <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`} >
+                            <VscExclude size={18} color={"#AAAAAA"} />
+                          </div>
+                          <p className="mx-1 mr-2 font-semibold">Unsubscribe package</p>
+                          <VscLock size={14} color={primaryColor} className="mr-2" />
+                        </div>
+                      {/* </Link> */}
                     </div>
-                  </Link>
-                </div>
+                  )}
+
 
                 {/* IF SUBSCRIBED, UNSUBCRIBE  */}
                 {User?.role !== 1 && isUserSubscribed && (
@@ -536,38 +579,15 @@ const Navbar = () => {
                   </div>
                 </div>
               </div>
-            ) : (
-              <></>
-            )}
+                ) : <></>
+              ) : (<></>)
+            }
           </Menu>
 
-          {/* {isClicked.cart && <Cart />} */}
-          {/* {isClicked.chat && <Chat />} */}
-          {/* {isClicked.notification && <Notification />} */}
-          {/* {isClicked.userProfile && <UserProfile />} */}
+         
         </div>
       </div>
 
-      {/* <Breadcrumbs sx={{margin: "10px 0 20px 0", color: currentMode === "dark" && "white"}} aria-label="breadcrumb">
-      <LinkRouter underline="hover" color="inherit" to="/">
-        Home
-      </LinkRouter>
-      {pathnames.map((value, index) => {
-        const last = index === pathnames.length - 1;
-        const to = `/${pathnames.slice(0, index + 1).join('/')}`;
-        const formattedLastURL = `${pathnames[index][0].toUpperCase()}${pathnames[index].slice(1, pathnames[index].length)}`.replace('%20', " ");
-        const isClientsURL = pathnames[0] === "clientLeads" || pathnames[0] === "agencyUsers";
-        return last ? (
-          <Typography color="primary" key={to}>
-            {formattedLastURL}
-          </Typography>
-        ) : (
-          <LinkRouter underline="hover" color="inherit" to={isClientsURL ? "/clients" : `/${pathnames.slice(index, pathnames.length).join("/")}`} key={to}>
-            {allRoutes.find((route) => route?.path?.includes(to))?.pageName}
-          </LinkRouter>
-        );
-      })}
-    </Breadcrumbs> */}
     </>
   );
 };

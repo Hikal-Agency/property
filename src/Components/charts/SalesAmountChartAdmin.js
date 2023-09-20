@@ -13,7 +13,7 @@ import ReactApexChart from "react-apexcharts";
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
 const SalesAmountChartAdmin = ({ selectedMonthSales }) => {
-  const { currentMode, Sales_chart_data } = useStateContext();
+  const { currentMode, Sales_chart_data, primaryColor } = useStateContext();
   console.log("sales chart: ", Sales_chart_data);
   const [salesData, setSalesData] = useState({
     labels: [],
@@ -29,11 +29,11 @@ const SalesAmountChartAdmin = ({ selectedMonthSales }) => {
         {
           label: "Sales in AED",
           data: Sales_chart_data.map((data) => data.total_ammount_sum_amount), //[4, 3, 3],
-          backgroundColor: ["rgba(218, 31, 38, 1)"],
+          backgroundColor: [primaryColor],
         },
       ],
     });
-  }, [Sales_chart_data]);
+  }, [Sales_chart_data, primaryColor]);
 
   return (
     <span>

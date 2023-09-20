@@ -434,8 +434,8 @@ const UpdateLead = ({
                       <h4
                         className={`${
                           currentMode === "dark"
-                            ? "text-red-600"
-                            : "text-red-600"
+                            ? "text-primary"
+                            : "text-primary"
                         } text-center font-semibold pb-5`}
                       >
                         Agent details
@@ -586,8 +586,8 @@ const UpdateLead = ({
                       <h4
                         className={`${
                           currentMode === "dark"
-                            ? "text-red-600"
-                            : "text-red-600"
+                            ? "text-primary"
+                            : "text-primary"
                         } text-center font-semibold pb-5`}
                       >
                         Project details
@@ -685,8 +685,8 @@ const UpdateLead = ({
                       <h4
                         className={`${
                           currentMode === "dark"
-                            ? "text-red-600"
-                            : "text-red-600"
+                            ? "text-primary"
+                            : "text-primary"
                         } text-center font-semibold pb-5`}
                       >
                         Lead details
@@ -808,7 +808,7 @@ const UpdateLead = ({
                   </div>
                 </div>
                 <Button
-                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary hover:shadow-none `}
                   ripple={true}
                   size="lg"
                   type="submit"

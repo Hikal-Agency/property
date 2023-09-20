@@ -166,7 +166,7 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
           <div>
             <div className="flex flex-col">
               <strong className="mb-2">{ip?.byIP}</strong>
-              <div className="h-0.5 w-full bg-[#DA1F26] my-2"></div>
+              <div className="h-0.5 w-full bg-primary my-2"></div>
               <div className="font-semibold my-1 flex">
                 <BiNotepad size={16} className="mr-3" />
                 {ip?.reason}

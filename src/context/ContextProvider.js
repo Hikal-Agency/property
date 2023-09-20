@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "../axoisConfig";
 import {toast} from "react-toastify";
 const StateContext = createContext();
@@ -14,10 +14,6 @@ export const ContextProvider = ({ children }) => {
   const BACKEND_URL = process.env.REACT_APP_API_URL;
   const graph_api_token = process.env.REACT_APP_FB_TOKEN;
   const [screenSize, setScreenSize] = useState(undefined);
-  // eslint-disable-next-line
-  const [DarkIconsColor, setDarkIconsColor] = useState("#15CDCA");
-  // eslint-disable-next-line
-  const [LightIconsColor, setLightIconsColor] = useState("#DA1F26");
   const [currentMode, setCurrentMode] = useState(
     localStorage.getItem("currentMode") || "light"
   );
@@ -49,6 +45,7 @@ export const ContextProvider = ({ children }) => {
   const [sidebarData, setSidebarData] = useState({});
   const [fbToken, setFBToken] = useState();
   const [permits, setPermits] = useState("");
+  const [primaryColor, setPrimaryColor] = useState("default");
   const [session, setSession] = useState({
     expiresIn: localStorage.getItem("expires_in"),
     accessToken: localStorage.getItem("access_token"),
@@ -92,7 +89,7 @@ export const ContextProvider = ({ children }) => {
     // Background color of header of data grid
     "& .MuiDataGrid-columnHeaders": { // css-s3ulew-
       border: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: currentMode === "dark" ? "white" : "white",
       borderRadius: "0",
       width: "100%",
@@ -145,8 +142,7 @@ export const ContextProvider = ({ children }) => {
     // BACKGROUND COLOR OF FOOTER
     "& .MuiDataGrid-footerContainer": {
       // border: "none",
-      borderTop: "2px solid #DA1F26",
-      // backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      borderTop: `2px solid ${primaryColor}`,
       backgroundColor: currentMode === "dark" ? "black" : "white",
       color: currentMode === "dark" ? "white" : "black",
     },
@@ -205,13 +201,13 @@ export const ContextProvider = ({ children }) => {
 
     // TABS HEADERS COLOR
     "& .Mui-selected": {
-      color: "#DA1F26 !important",
+      color: `${primaryColor} !important`,
     },
     "& .MuiTab-root,& .MuiTab-textColorPrimary": {
       color: currentMode === "dark" && "white",
     },
     "& .MuiTabs-indicator": {
-      backgroundColor: "#DA1F26 !important",
+      backgroundColor: `${primaryColor} !important`,
     },
   };
 
@@ -332,6 +328,20 @@ export const ContextProvider = ({ children }) => {
       return false;
     }
   };
+  useEffect(() => {
+    // if(localStorage.getItem("primary-color")) {
+    //   localStorage.setItem("primary-color", primaryColor);
+    //   document.documentElement.style.setProperty('--primary-color', primaryColor);
+    // } else {
+    //   localStorage.setItem("primary-color", "red");
+    //   document.documentElement.style.setProperty('--primary-color', "red");
+    // }
+         document.documentElement.style.setProperty('--primary-color', primaryColor);
+  }, [primaryColor]);
+
+  const withOpacity = (rgb, opacity) => {
+    return rgb.replace('rgb', 'rgba').replace(')', `, ${opacity})`);
+  }
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
@@ -355,8 +365,6 @@ export const ContextProvider = ({ children }) => {
         setProjectData,
         isCollapsed,
         setIsCollapsed,
-        DarkIconsColor,
-        LightIconsColor,
         currentMode,
         selected,
         isArabic,
@@ -402,6 +410,7 @@ export const ContextProvider = ({ children }) => {
         allRoutes,
         setAllRoutes,
         isUserSubscribed,
+        withOpacity,
         setIsUserSubscribed,
         permits,
         setPermits,
@@ -416,6 +425,8 @@ export const ContextProvider = ({ children }) => {
         getNotifCounts, 
         userCredits,
         setUserCredits, 
+        primaryColor, 
+        setPrimaryColor
       }}
     >
       {children}

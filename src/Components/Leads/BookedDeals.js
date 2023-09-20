@@ -34,7 +34,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import RenderManagers from "./RenderManagers";
 import UpdateBookedDeal from "./UpdateBookedDeal";
-import { useNavigate, Link } from "react-router-dom";
 import RenderSalesperson from "./RenderSalesperson";
 import RenderPriority from "./RenderPriority";
 import Confetti from "react-confetti";
@@ -130,6 +129,7 @@ const BookedDeals = ({
     isArabic,
     User,
     Managers,
+    primaryColor
   } = useStateContext();
   const [searchText, setSearchText] = useState("");
   const [openDialog, setopenDialog] = useState(false);
@@ -139,10 +139,6 @@ const BookedDeals = ({
 
   const handleCloseDeleteModel = () => {
     setDeleteModelOpen(false);
-  };
-
-  const handleCloseDialog = () => {
-    setopenDialog(false);
   };
 
   const handleRangeChange = (e) => {
@@ -202,13 +198,6 @@ const BookedDeals = ({
     const [leadDate, setLeadDate] = useState("");
     const [leadAmount, setLeadAmount] = useState("");
 
-    function format(value) {
-      if (value < 10) {
-        return "0" + value;
-      } else {
-        return value;
-      }
-    }
 
     const ChangeFeedback = (e) => {
       setnewFeedback(e.target.value);
@@ -370,7 +359,7 @@ const BookedDeals = ({
                   <div className="flex flex-col justify-center items-center">
                     <IoIosAlert
                       size={50}
-                      className="text-main-red-color text-2xl"
+                      className="text-primary text-2xl"
                     />
                     <h1 className="font-semibold pt-3 text-lg text-center">
                       Do You Really Want Change the Feedback from{" "}
@@ -438,7 +427,7 @@ const BookedDeals = ({
                   </div>
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                     <Button
-                      className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                      className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                       ripple={true}
                       size="lg"
                       type="submit"
@@ -456,7 +445,7 @@ const BookedDeals = ({
                       className={`shadow-none px-3 rounded-md text-sm  ${
                         currentMode === "dark"
                           ? "text-white border-white"
-                          : "text-main-red-color border-main-red-color"
+                          : "text-primary border-primary"
                       }`}
                     >
                       Cancel
@@ -705,8 +694,8 @@ const BookedDeals = ({
                 <Tooltip title="Not Verified" arrow>
                   <div
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                    <span className="text-[#DA1F26] p-1 text-center">
+                    >
+                    <span className="text-primary p-1 text-center">
                       <BsShieldX size={16} />
                     </span>
                   </div>
@@ -767,7 +756,7 @@ const BookedDeals = ({
           ),
 
           "bulk import": () => (
-            <BiImport size={16} color={"#da1f26"} className="p-1" />
+            <BiImport size={16} className="p-1 text-primary" />
           ),
 
           "property finder": () => (
@@ -1258,7 +1247,7 @@ const BookedDeals = ({
           <Pagination
             sx={{
               "& .Mui-selected": {
-                backgroundColor: "#DA1F26 !important",
+                backgroundColor: `${primaryColor} !important`,
                 color: "white !important",
                 borderRadius: "50px !important",
               },
@@ -1382,6 +1371,7 @@ const BookedDeals = ({
 
         {!UpdateLeadModelOpen && (
           <SingleLead
+          setLeadToDelete={setLeadToDelete}
             LeadModelOpen={LeadModelOpen}
             setLeadModelOpen={setLeadModelOpen}
             handleLeadModelOpen={handleLeadModelOpen}
@@ -1389,11 +1379,6 @@ const BookedDeals = ({
             handleUpdateLeadModelOpen={handleUpdateLeadModelOpen}
             handleUpdateLeadModelClose={handleUpdateLeadModelClose}
             LeadData={singleLeadData}
-            BACKEND_URL={BACKEND_URL}
-            LeadToDelete={LeadToDelete}
-            setLeadToDelete={setLeadToDelete}
-            deleteModelOpen={deleteModelOpen}
-            setDeleteModelOpen={setDeleteModelOpen}
             isBookedDeal={isBookedDeal}
           />
         )}

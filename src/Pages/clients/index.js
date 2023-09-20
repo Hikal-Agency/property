@@ -676,7 +676,7 @@ const Clients = () => {
                   : "text-black bg-transparent rounded-md p-1 shadow-none "
               }`}
             >
-              <FaBan size={20} color={"#DA1F26"} />
+              <FaBan size={20} className="text-primary" />
             </Button>
           </div>
         );

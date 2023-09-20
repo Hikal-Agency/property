@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IconButton, Box, TextField, Button, CircularProgress } from "@mui/material";
 import { BiArrowBack } from "react-icons/bi";
 import axios from "../../axoisConfig";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -89,7 +89,7 @@ const Checkout = ({ allPlans, plan }) => {
 
       <Box className="flex justify-center items-start mt-4">
         <Box className="flex flex-col items-center h-[100%] mr-12">
-          <Box className="p-5 text-white bg-[#da1f26] rounded-md h-[100%]">
+          <Box className="p-5 text-white bg-primary rounded-md h-[100%]">
             <h1>Subscribe to {selectedPlan.name}</h1>
             <Box className="flex items-center mt-2">
               <h1 className="font-black text-white" style={{ fontSize: 40 }}>
@@ -161,7 +161,7 @@ const Checkout = ({ allPlans, plan }) => {
                 setFormValues({ ...formValues, cvc: e.target.value })
               }
             />
-            <Button fullWidth style={{background: "#da1f26"}} type="submit" variant="contained">
+            <Button fullWidth className="bg-btn-primary" sx={{ py: 2 }} type="submit" variant="contained">
               {btnloading ? <CircularProgress size={18} sx={{ color: "white" }} /> : <span>Submit</span>}
             </Button>
           </form>

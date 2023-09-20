@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Loader from "../../Components/Loader";
 
 const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
@@ -14,7 +14,6 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
   const [leaderboard, setLeaderboard] = useState();
   const [manager, setManagers] = useState();
   const [agents, setAgents] = useState();
-  const [count, setCount] = useState();
 
   console.log("Leaderboard here: ", leaderboard);
   console.log("Manager here: ", manager);
@@ -44,29 +43,6 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
       }
 
       const leaderboard = all_leaderboard?.data?.user;
-
-      //   const get_managers = leaderboard?.filter(
-      //     (manager) => manager?.role === 3
-      //   );
-      //   setManagers(get_managers);
-
-      //   const get_agents = leaderboard?.filter((agent) => agent?.role === 7);
-      //   setAgents(get_agents);
-
-      // const leadCount = leaderboard.reduce(
-      //   (acc, cur) => {
-      //     if (cur.total_sales) {
-      //       acc.total_sales += Number(cur.total_sales);
-      //     }
-      //     if (cur.total_closed_deals) {
-      //       acc.total_closed_deals += cur.total_closed_deals;
-      //     }
-      //     return acc;
-      //   },
-      //   { total_sales: 0, total_closed_deals: 0 }
-      // );
-
-      // setCount(leadCount);
 
       const { agents = [], managers = [] } = leaderboard.reduce(
         (acc, cur) => ({
@@ -139,38 +115,6 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
     },
   ];
 
-  const Agent = [
-    {
-      name: "Hassan Lodhi",
-      target: "3000000",
-      achieved: "3000000",
-      totalClosed: "2",
-    },
-    {
-      name: "Abdulrhman Makkawi",
-      target: "3000000",
-      achieved: "2567000",
-      totalClosed: "5",
-    },
-    {
-      name: "Ameer Ali",
-      target: "3000000",
-      achieved: "2500000",
-      totalClosed: "2",
-    },
-    {
-      name: "Hala Hikal",
-      target: "3000000",
-      achieved: "2000000",
-      totalClosed: "2",
-    },
-    {
-      name: "Zainab Ezzaldien",
-      target: "3000000",
-      achieved: "1900000",
-      totalClosed: "1",
-    },
-  ];
 
   return (
     <div>
@@ -216,7 +160,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
             >
               <div
                 className={`${
-                  currentMode === "dark" ? "text-red-600" : "text-red-500"
+                  currentMode === "dark" ? "text-primary" : "text-primary"
                 } text-lg font-bold`}
               >
                 Sales Manager
@@ -232,7 +176,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                       percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
                       const barWidth = `${percentageSales}%`;
                       const barColor =
-                        percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+                        percentageSales >= 50 ? "bg-primary" : "bg-gray-800";
 
                       return (
                         <div
@@ -245,7 +189,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                           <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
                             <div className="relative flex-1">
                               <div
-                                className={`absolute left-0 top-0 h-5 ${barColor}`}
+                                className={`absolute left-0 top-0 h-5 text-white ${barColor}`}
                                 style={{ width: barWidth }}
                               ></div>
                               <div
@@ -328,8 +272,8 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
               <div
                 className={`${
                   currentMode === "dark"
-                    ? "text-red-600"
-                    : "text-main-red-color"
+                    ? "text-primary"
+                    : "text-primary"
                 } text-lg font-bold`}
               >
                 Sales Agent
@@ -345,7 +289,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                       percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
                       const barWidth = `${percentageSales}%`;
                       const barColor =
-                        percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+                        percentageSales >= 50 ? "bg-primary" : "bg-gray-800";
 
                       return (
                         <div
@@ -434,7 +378,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
             >
               <div
                 className={`${
-                  currentMode === "dark" ? "text-red-600" : "text-red-500"
+                  currentMode === "dark" ? "text-primary" : "text-primary"
                 } text-lg font-bold`}
               >
                 Sales Manager
@@ -450,7 +394,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                       percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
                       const barWidth = `${percentageSales}%`;
                       const barColor =
-                        percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+                        percentageSales >= 50 ? "bg-primary" : "bg-gray-800";
 
                       return (
                         <div
@@ -522,8 +466,8 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
               <div
                 className={`${
                   currentMode === "dark"
-                    ? "text-red-600"
-                    : "text-main-red-color"
+                    ? "text-primary"
+                    : "text-primary"
                 } text-lg font-bold`}
               >
                 Sales Agent
@@ -539,7 +483,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                       percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
                       const barWidth = `${percentageSales}%`;
                       const barColor =
-                        percentageSales >= 50 ? "bg-red-500" : "bg-gray-800";
+                        percentageSales >= 50 ? "bg-primary" : "bg-gray-800";
 
                       return (
                         <div

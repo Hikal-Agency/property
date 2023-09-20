@@ -20,7 +20,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const AllCampaigns = ({ pageState, setpageState }) => {
-  const { currentMode, User, darkModeColors, graph_api_token } =
+  const { currentMode, User, darkModeColors, graph_api_token, primaryColor } =
     useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -285,7 +285,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
 
     // Background color of header of data grid
     "& .MuiDataGrid-columnHeaders": {
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: currentMode === "dark" ? "white" : "white",
     },
     "& .MuiIconButton-sizeSmall": {
@@ -312,7 +312,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
     // BACKGROUND COLOR OF FOOTER
     "& .MuiDataGrid-footerContainer": {
       borderTop: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: "white",
     },
     "& .MuiTablePagination-selectLabel": {

@@ -454,7 +454,7 @@ const CreateEvent = ({
                         <div
                           className={`${
                             selectedOption === "Email"
-                              ? "bg-[#da1f26]"
+                              ? "bg-primary"
                               : "bg-gray-700"
                           } p-4 m-2 rounded-md w-full cursor-pointer`}
                           onClick={() => handleOptionClick("Email")}
@@ -469,7 +469,7 @@ const CreateEvent = ({
                           // }}
                           className={`${
                             selectedOption === "Call"
-                              ? "bg-[#da1f26]"
+                              ? "bg-primary"
                               : // : "bg-gray-700"
                                 "bg-gray-700"
                           } p-4 m-2 rounded-md w-full cursor-pointer`}
@@ -482,7 +482,7 @@ const CreateEvent = ({
                         <div
                           className={`${
                             selectedOption === "Text"
-                              ? "bg-[#da1f26]"
+                              ? "bg-primary"
                               : "bg-gray-700"
                           } p-4 m-2 rounded-md w-full cursor-pointer`}
                           onClick={() => handleOptionClick("Text")}
@@ -494,7 +494,7 @@ const CreateEvent = ({
                         <div
                           className={`${
                             selectedOption === "Other"
-                              ? "bg-[#da1f26]"
+                              ? "bg-primary"
                               : "bg-gray-700"
                           } p-4 m-2 rounded-md w-full cursor-pointer`}
                           onClick={() => handleOptionClick("Other")}
@@ -520,7 +520,7 @@ const CreateEvent = ({
                         <div
                           className={`${
                             selectedOption === "Email"
-                              ? "bg-[#da1f26]"
+                              ? "bg-primary"
                               : "bg-gray-700"
                           } p-4 m-2 rounded-md w-full cursor-pointer`}
                           onClick={() => handleOptionClick("Email")}
@@ -532,7 +532,7 @@ const CreateEvent = ({
                         <div
                           className={`${
                             selectedOption === "Call"
-                              ? "bg-[#da1f26]"
+                              ? "bg-primary"
                               : "bg-gray-700"
                           } p-4 m-2 rounded-md w-full cursor-pointer`}
                           onClick={() => handleOptionClick("Call")}
@@ -544,7 +544,7 @@ const CreateEvent = ({
                         <div
                           className={`${
                             selectedOption === "Text"
-                              ? "bg-[#da1f26]"
+                              ? "bg-primary"
                               : "bg-gray-700"
                           } p-4 m-2 rounded-md w-full cursor-pointer`}
                           onClick={() => handleOptionClick("Text")}
@@ -560,7 +560,7 @@ const CreateEvent = ({
                         <div
                           className={`${
                             selectedOption === "Email"
-                              ? "bg-[#da1f26]"
+                              ? "bg-primary"
                               : "bg-gray-700"
                           } p-4 m-2 rounded-md w-full cursor-pointer`}
                           onClick={() => handleOptionClick("Email")}
@@ -572,7 +572,7 @@ const CreateEvent = ({
                         <div
                           className={`${
                             selectedOption === "Call"
-                              ? "bg-[#da1f26]"
+                              ? "bg-primary"
                               : "bg-gray-700"
                           } p-4 m-2 rounded-md w-full cursor-pointer`}
                           onClick={() => handleOptionClick("Call")}
@@ -586,7 +586,7 @@ const CreateEvent = ({
                         <div
                           className={`${
                             selectedOption === "Text"
-                              ? "bg-[#da1f26]"
+                              ? "bg-primary"
                               : "bg-gray-700"
                           } p-4 m-2 rounded-md w-full cursor-pointer`}
                           onClick={() => handleOptionClick("Text")}
@@ -922,7 +922,8 @@ const CreateEvent = ({
                 type="submit"
                 variant="contained"
                 fullWidth
-                style={{ padding: "10px 0", background: "#da1f26" }}
+                className="bg-btn-primary"
+                style={{ padding: "10px 0", color: "white"}}
                 onClick={handleSubmit}
               >
                 {btnloading ? (
@@ -936,7 +937,8 @@ const CreateEvent = ({
                 type="submit"
                 variant="contained"
                 fullWidth
-                style={{ padding: "10px 0", background: "#da1f26" }}
+                className="bg-btn-primary"
+                style={{ padding: "10px 0", color: "white" }}
                 onClick={createTask}
               >
                 {btnloading ? (

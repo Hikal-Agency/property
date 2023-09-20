@@ -34,21 +34,11 @@ const LocationComponent = ({ upcoming_meetings }) => {
 
   return (
     <>
-      <div className="w-full flex items-center py-1">
-        <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
-        <h1
-          className={`text-lg font-semibold ${
-            currentMode === "dark"
-              ? "text-white"
-              : "text-black"
-          }`}
-        >
-          Meeting Locations
-        </h1>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-3">
-        
-      <div
+      <h4 className="text-primary mt-8 font-bold text-xl mb-4 text-center">
+        Meeting Locations
+      </h4>
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-5 pb-3">
+        <div
           className={`${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]"
           } w-full h-[100vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
@@ -62,10 +52,9 @@ const LocationComponent = ({ upcoming_meetings }) => {
           />
           {/* )} */}
         </div>
-        
-        <div className="col-span-1 h-full w-full sm:mt-5 md:mt-5 lg:mt-0">
-          <h4 className="text-red-600 font-semibold text-center text-lg mb-2">Meetings</h4>
-          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-5">
+        <div className="h-full w-full mt-5">
+          <h4 className="text-primary font-bold text-xl mb-2">Meetings</h4>
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
             {/* LIST OF UPCOMING MEETINGS */}
             {upcoming_meetings?.map((meeting, index) => {
               return (
@@ -78,11 +67,11 @@ const LocationComponent = ({ upcoming_meetings }) => {
                       : "bg-[#EEEEEE] text-black"
                   } rounded-md`}
                 >
-                  <div className="px-5 py-5 space-y-3">
-                    <div className="grid grid-cols-8 gap-5">
-                      <h2 className="col-span-7 text-main-red-color text-md font-semibold">
+                  <div className="p-5 space-y-2">
+                    <div className="flex justify-between w-[100%]">
+                      <h4 className="font-bold my-1 text-primary capitalize">
                         {meeting?.leadName}
-                      </h2>
+                      </h4>
                       {meeting?.meetingStatus === "Attended" ? (
                         <BsFillBookmarkFill size={16} color="#279244" />
                       ) : meeting?.meetingStatus === "Pending" ? (
@@ -140,7 +129,7 @@ const LocationComponent = ({ upcoming_meetings }) => {
                       </p>
                     </div>
                   </div>
-                  <span className="block text-sm bg-main-red-color text-white rounded-md text-center p-2 font-semibold">
+                  <span className="block text-sm bg-primary text-white rounded-md text-center p-2 font-semibold">
                     {meeting?.createdBy}
                   </span>
                 </div>

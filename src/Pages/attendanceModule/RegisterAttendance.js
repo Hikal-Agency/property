@@ -424,13 +424,13 @@ const RegisterAttendance = () => {
               {User?.userName}
             </h1>
             <h6
-              className={`text-[#DA1F26] font-semibold rounded-md p-2 text-sm `}
+              className={`text-primary font-semibold rounded-md p-2 text-sm `}
               style={{ textTransform: "capitalize" }}
             >
               {User?.position}
             </h6>
             <h6
-              className={` text-[#DA1F26] font-semibold  p-2 text-sm `}
+              className={` text-primary font-semibold  p-2 text-sm `}
               style={{ textTransform: "capitalize" }}
             >
               {User?.deprtment}

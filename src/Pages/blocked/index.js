@@ -6,13 +6,11 @@ import Loader from "../../Components/Loader";
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
 import {RxCaretDown} from "react-icons/rx";
 import IPsList from "../../Components/blocked/IPsList";
-import { Box } from "@mui/material";
 
 const BlockedIps = () => {
-  const { currentMode, BACKEND_URL, User } = useStateContext();
+  const { currentMode, BACKEND_URL } = useStateContext();
   const [loading, setLoading] = useState(true);
   const [IPs, setIPs] = useState([]);
 
@@ -65,8 +63,8 @@ const BlockedIps = () => {
           currentMode === "dark" ? "bg-black" : "bg-white"
         }`}
       >
-        <div className="w-full flex items-center py-1 mb-3">
-          <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+        <div className="w-full flex items-center py-3 mb-3">
+          <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
             className={`text-lg font-semibold ${
               currentMode === "dark"

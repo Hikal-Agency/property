@@ -93,6 +93,8 @@ const Sidebarmui = () => {
     getNotifCounts,
     userCredits,
     setUserCredits,
+    primaryColor,
+    setPrimaryColor
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -262,6 +264,7 @@ const Sidebarmui = () => {
       setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
       FetchProfileData();
+      setPrimaryColor("rgb(218,31,38)");
       socket.emit("add_user", { ...JSON.parse(storedUser) });
     } else {
       axios
@@ -320,6 +323,9 @@ const Sidebarmui = () => {
           getAllLeadsMembers(user);
 
           FetchProfileData();
+      setPrimaryColor("rgb(218,31,38)");
+
+
           socket.emit("add_user", {
             ...user,
           });
@@ -575,7 +581,6 @@ const Sidebarmui = () => {
       }
     }
   };
-
   useEffect(() => {
     if (!(User?.uid && User?.loginId)) {
       const token = localStorage.getItem("auth-token");
@@ -596,6 +601,7 @@ const Sidebarmui = () => {
     }
     // eslint-disable-next-line
   }, []);
+
 
   let links = [
     {
@@ -762,7 +768,7 @@ const Sidebarmui = () => {
               name: "Invalid",
               count: sidebarData?.ColdLeadsCount?.unverified, //TODO
               link: "/coldleads/coldLeadsInvalid",
-              icon: <RiRadioButtonLine style={{ color: "#DA1F26" }} />,
+              icon: <RiRadioButtonLine style={{ color: primaryColor }} />,
               countColor: "#FF0000",
             },
             {
@@ -1460,7 +1466,10 @@ const Sidebarmui = () => {
                         {User?.userName ? User?.userName : "No username"}
                       </h1>
                       <span
-                        className={`block rounded-md px-2 py-1 text-sm bg-main-red-color text-white`}
+                      style={{
+                        background: primaryColor
+                      }}
+                        className={`block rounded-md px-2 py-1 text-sm text-white`}
                       >
                         {User?.position || ""}
                       </span>
@@ -1530,7 +1539,7 @@ const Sidebarmui = () => {
                       borderRadius: "0px",
                     },
                     "& .css-1mfnem1:hover": {
-                      backgroundColor: "#DA1F26",
+                      backgroundColor: primaryColor,
                     },
                     // submenu containerr color
                     "& .css-z5rm24": {
@@ -1543,7 +1552,7 @@ const Sidebarmui = () => {
                     },
                     // LIGHT MODE SETTINGS
                     "& .css-1ohfb25:hover": {
-                      backgroundColor: "#DA1F26",
+                      backgroundColor: primaryColor,
                       color: "white",
                       borderRadius: "0px",
                     },
@@ -1612,17 +1621,17 @@ const Sidebarmui = () => {
                                 borderRadius: "0px",
                               },
                               "& .css-1mfnem1:hover": {
-                                backgroundColor: "#DA1F26",
+                                backgroundColor: primaryColor,
                               },
                               "& .css-1ogoo8i": {
-                                backgroundColor: "#DA1F26",
+                                backgroundColor: primaryColor,
                               },
                               // STYLING FOR DARK MODE
                               "& .css-yktbuo": {
-                                backgroundColor: "#DA1F26",
+                                backgroundColor: primaryColor,
                               },
                               "& .css-yktbuo:hover": {
-                                backgroundColor: "#DA1F26",
+                                backgroundColor: primaryColor,
                               },
                               "& .css-1v6ithu": {
                                 color: "white",
@@ -1696,17 +1705,17 @@ const Sidebarmui = () => {
                                       borderRadius: "0px",
                                     },
                                     "& .css-1mfnem1:hover": {
-                                      backgroundColor: "#DA1F26",
+                                      backgroundColor: primaryColor,
                                     },
                                     "& .css-1ogoo8i": {
-                                      backgroundColor: "#DA1F26",
+                                      backgroundColor: primaryColor,
                                     },
                                     // STYLING FOR DARK MODE
                                     "& .css-yktbuo": {
-                                      backgroundColor: "#DA1F26",
+                                      backgroundColor: primaryColor,
                                     },
                                     "& .css-yktbuo:hover": {
-                                      backgroundColor: "#DA1F26",
+                                      backgroundColor: primaryColor,
                                     },
                                     "& .css-1v6ithu": {
                                       color: "white",
@@ -1776,7 +1785,7 @@ const Sidebarmui = () => {
                                             borderRadius: "0px",
                                           },
                                           "& .css-1mfnem1:hover": {
-                                            backgroundColor: "#DA1F26",
+                                            backgroundColor: primaryColor,
                                           },
                                           // submenu containerr color
                                           "& .css-z5rm24": {
@@ -1792,7 +1801,7 @@ const Sidebarmui = () => {
                                           },
                                           // LIGHT MODE SETTINGS
                                           "& .css-1ohfb25:hover": {
-                                            backgroundColor: "#DA1F26",
+                                            backgroundColor: primaryColor,
                                             color: "white",
                                             borderRadius: "0px",
                                           },
@@ -1827,16 +1836,16 @@ const Sidebarmui = () => {
                                                     },
                                                     "& .css-1mfnem1:hover": {
                                                       backgroundColor:
-                                                        "#DA1F26",
+                                                        primaryColor,
                                                     },
                                                     "& .css-1ogoo8i": {
                                                       backgroundColor:
-                                                        "#DA1F26",
+                                                        primaryColor,
                                                     },
                                                     // STYLING FOR DARK MODE
                                                     "& .css-yktbuo": {
                                                       backgroundColor:
-                                                        "#DA1F26",
+                                                        primaryColor,
                                                     },
                                                     "& .css-1f8bwsm": {
                                                       minWidth:
@@ -1844,7 +1853,7 @@ const Sidebarmui = () => {
                                                     },
                                                     "& .css-yktbuo:hover": {
                                                       backgroundColor:
-                                                        "#DA1F26",
+                                                        primaryColor,
                                                     },
                                                     "& .css-1v6ithu": {
                                                       color: "white",
@@ -1925,17 +1934,17 @@ const Sidebarmui = () => {
                                               borderRadius: "0px",
                                             },
                                             "& .css-1mfnem1:hover": {
-                                              backgroundColor: "#DA1F26",
+                                              backgroundColor: primaryColor,
                                             },
                                             "& .css-1ogoo8i": {
-                                              backgroundColor: "#DA1F26",
+                                              backgroundColor: primaryColor,
                                             },
                                             // STYLING FOR DARK MODE
                                             "& .css-yktbuo": {
-                                              backgroundColor: "#DA1F26",
+                                              backgroundColor: primaryColor,
                                             },
                                             "& .css-yktbuo:hover": {
-                                              backgroundColor: "#DA1F26",
+                                              backgroundColor: primaryColor,
                                             },
                                             "& .css-1v6ithu": {
                                               color: "white",

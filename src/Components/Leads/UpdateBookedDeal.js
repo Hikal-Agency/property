@@ -284,82 +284,6 @@ const UpdateBookedDeal = ({
                 }}
               >
                 <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-1">
-                  {/* <div>
-                    <Box sx={darkModeColors}>
-                      <h4
-                        className={`${
-                          currentMode === "dark"
-                            ? "text-red-600"
-                            : "text-red-600"
-                        } text-center font-bold pb-5`}
-                      >
-                        Lead details
-                      </h4>
-                      <TextField
-                        id="LeadName"
-                        type={"text"}
-                        label="Lead name"
-                        className="w-full mb-5"
-                        style={{ marginBottom: "20px" }}
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={LeadName || ""}
-                        onChange={(e) => setLeadName(e.target.value)}
-                      />
-                      <TextField
-                        id="LeadContactNumber"
-                        type={"number"}
-                        label="Contact number"
-                        className="w-full mb-5"
-                        style={{ marginBottom: "20px" }}
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={LeadContact || ""}
-                        onChange={(e) => setLeadContact(e.target.value)}
-                      />
-
-                      <TextField
-                        id="LeadEmail"
-                        type={"email"}
-                        label="Email address"
-                        className="w-full mb-5"
-                        style={{ marginBottom: "20px" }}
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={LeadEmail || ""}
-                        onChange={(e) => setLeadEmail(e.target.value)}
-                      />
-
-                      <FormControl fullWidth variant="outlined" size="medium">
-                        <InputLabel id="">Preferred language</InputLabel>
-                        <Select
-                          id="LanguagePrefered"
-                          value={LanguagePrefered}
-                          label="Prefered language"
-                          onChange={ChangeLanguagePrefered}
-                          className="w-full mb-5"
-                          displayEmpty
-                          required
-                        >
-                          <MenuItem value="" disabled>
-                            ---NONE---
-                          </MenuItem>
-                          <MenuItem value={"Arabic"}>Arabic</MenuItem>
-                          <MenuItem value={"English"}>English</MenuItem>
-                          <MenuItem value={"Farsi"}>Farsi</MenuItem>
-                          <MenuItem value={"French"}>French</MenuItem>
-                          <MenuItem value={"Hindi"}>Hindi</MenuItem>
-                          <MenuItem value={"Russian"}>Russian</MenuItem>
-                          <MenuItem value={"Spanish"}>Spanish</MenuItem>
-                          <MenuItem value={"Urdu"}>Urdu</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </div> */}
-
                   <div>
                     <Box sx={darkModeColors}>
 
@@ -367,8 +291,7 @@ const UpdateBookedDeal = ({
                         id="Project"
                         type={"text"}
                         label="Project name"
-                        className="w-full"
-                        style={{ marginBottom: "1.25rem !important" }}
+                        className="w-full mb-5"
                         variant="outlined"
                         size="small"
                         value={LeadProject}
@@ -484,7 +407,7 @@ const UpdateBookedDeal = ({
                 </div>
 
                 <Button
-                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
                   ripple={true}
                   size="lg"
                   type="submit"

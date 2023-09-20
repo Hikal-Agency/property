@@ -32,7 +32,7 @@ ChartJS.register(
 );
 
 const ReportMeetingsClosed = ({ selectedMonth }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, primaryColor, withOpacity } = useStateContext();
   const [performanceChartData, setPerformanceChartData] = useState([]);
   const token = localStorage.getItem("auth-token");
 

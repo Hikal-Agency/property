@@ -175,11 +175,7 @@ const ClientLeads = ({
       renderCell: (cellValues) => {
         return (
           <div
-            className={`${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#000000] text-white"
-            } w-full h-full flex justify-center items-center px-5 font-semibold`}
+            className={` w-full h-full flex justify-center items-center px-5 font-semibold`}
           >
             {cellValues.formattedValue}
           </div>
@@ -342,7 +338,7 @@ const ClientLeads = ({
             )}
             {cellValues.row.leadSource?.toLowerCase() === "bulk import" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <BiImport size={22} color={"#da1f26"} />
+                <BiImport size={22} className="text-primary" />
               </div>
             )}
             {cellValues.row.leadSource.toLowerCase() ===
@@ -423,7 +419,7 @@ const ClientLeads = ({
                 <div
                   className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
-                  <span className="text-[#DA1F26] p-1 text-center">
+                  <span className="text-primary p-1 text-center">
                     <BsShieldX size={16} />
                   </span>
                 </div>
@@ -1035,25 +1031,25 @@ const ClientLeads = ({
             }`}
           >
             <div className="w-full pl-3">
-              <div className="mt-5">
+              <div className="mt-10">
                 <h1
-                  className={`text-lg border-l-[4px] ml-1 pl-1 mb-5  font-bold ${
+                  className={`text-lg border-l-[4px] ml-1 pl-1 font-bold ${
                     currentMode === "dark"
                       ? "text-white border-white"
-                      : "text-red-600 font-bold border-red-600"
+                      : "text-primary font-bold border-primary"
                   }`}
                 >
                   ● {client?.name}{" "}
                   <span className="capitalize mt-5">
                     {client?.businessName}
                   </span>{" "}
-                  <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {pageState?.total}
                   </span>
                 </h1>
 
                 <div className=" mb-5">
-                  <div className=" mx-auto px-4 py-8">
+                  <div className=" mx-auto px-4 pb-8 pt-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 ">
                       <Box
                         sx={{

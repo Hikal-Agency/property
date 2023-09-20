@@ -189,7 +189,7 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
         </IconButton>
         <div className="px-10 py-5">
           <div className="flex flex-col justify-center items-center">
-            <IoIosAlert size={50} className="text-main-red-color text-2xl" />
+            <IoIosAlert size={50} className="text-primary text-2xl" />
             <h1 className="font-semibold pt-3 text-lg text-center mb-5">
               {showDailogue[1] === 0
                 ? "Enter Late Reason"
@@ -283,15 +283,18 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
             <div className="action buttons mt-5 flex items-center justify-center space-x-2">
               {showDailogue[1] === 0 ? (
                 <Button
-                  className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                  className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                   ripple={true}
                   size="lg"
                   type="submit"
                   onClick={handleClick}
+                  syle={{
+                    color: "white", 
+                  }}
                 >
                   {/* <span>Confirm</span> */}
                   {btnloading ? (
-                    <CircularProgress size={18} sx={{ color: "red" }} />
+                    <CircularProgress size={18} className="text-primary"/>
                   ) : (
                     <span>Confirm</span>
                   )}

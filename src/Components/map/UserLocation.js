@@ -19,7 +19,7 @@ const UserLocation = () => {
 
 
 
-  const { currentMode } = useStateContext();
+  const { currentMode, primaryColor } = useStateContext();
   const data = [
     {
       name: "Ameer Ali Faesal",
@@ -97,7 +97,7 @@ const UserLocation = () => {
           data={UserData3}
           options={{
             color: "#ffffff",
-            backgroundColor: ["#da1f26", "#ffffff"],
+            backgroundColor: [primaryColor, "#ffffff"],
             scales: {
               y: { ticks: { color: "#ffffff" } },
               x: { ticks: { color: "#ffffff" } },
@@ -112,7 +112,7 @@ const UserLocation = () => {
           data={UserData2}
           options={{
             color: "#000000",
-            backgroundColor: ["#da1f26", "#000000"],
+            backgroundColor: [primaryColor, "#000000"],
             scales: {
               y: { ticks: { color: "#000000" } },
               x: { ticks: { color: "#000000" } },

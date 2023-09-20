@@ -10,7 +10,7 @@ import {
 import "../../styles/animation.css";
 
 const UpcomingMeeting = ({ upcoming_meetings }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, primaryColor } = useStateContext();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [meetingNote, setMeetingNote] = useState(null);
   const [meetingLocation, setMeetingLocation] = useState({
@@ -46,12 +46,14 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
           <div
             onClick={() => handleCardClick(meeting)}
             key={index}
-            className={`card-hover w-[350px] flex flex-col justify-between ${
-              currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-[#EEEEEE] text-black" // ${ currentMode === "dark" ? "bg- text-white " : "bg-" } 
+            className={`card-hover backdrop-blur w-[350px] flex flex-col justify-between ${
+              currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-[#d8d8d845] text-black" // ${ currentMode === "dark" ? "bg- text-white " : "bg-" } 
             } rounded-xl my-2 `}
           >
             <div className="px-5 py-5 space-y-3">
-              <h2 className="text-main-red-color text-md font-semibold">
+              <h2 style={{
+                color: primaryColor
+              }} className="text-md font-semibold">
                 {meeting?.leadName}
               </h2>
               <div className="grid grid-cols-11">
@@ -99,7 +101,9 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                 </p>
               </div>
             </div>
-            <span className="block text-sm bg-main-red-color text-white rounded-b-xl text-center p-2 font-semibold">
+            <span style={{
+              background: primaryColor
+            }} className="block text-sm text-white rounded-b-xl text-center p-2 font-semibold">
               {meeting?.createdBy}
             </span>
           </div>

@@ -5,7 +5,6 @@ import { Tab, Tabs } from "@mui/material";
 import NewPayment from "../../Components/whatsapp-marketing/NewPayment";
 
 import axios from "../../axoisConfig";
-import Transactions from "../../Components/whatsapp-marketing/Transactions";
 import { toast } from "react-toastify";
 import Subscriber from "../../Components/whatsapp-marketing/Subscriber";
 
@@ -95,7 +94,7 @@ const Payments = () => {
           className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
             currentMode === "dark"
               ? "text-white border-white"
-              : "text-red-600 font-bold border-red-600"
+              : "text-primary font-bold border-primary"
           }`}
         >
           ● All Subscribers
@@ -116,7 +115,7 @@ const Payments = () => {
           className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
             currentMode === "dark"
               ? "text-white border-white"
-              : "text-red-600 font-bold border-red-600"
+              : "text-primary font-bold border-primary"
           }`}
         >
           ● Upgrade
@@ -129,12 +128,12 @@ const Payments = () => {
           } flex min-h-screen mt-8 p-5 rounded-md mb-10`}
         >
           <Card
-            className="shadow-md"
+            className="shadow-md bg-btn-primary"
+
             sx={{
               p: 5,
               mr: 3,
               height: "300px",
-              background: "#da1f26",
               width: "30%",
               borderRadius: 4,
             }}
@@ -230,9 +229,10 @@ const Payments = () => {
               </Box>
               <Box className="h-[45%] flex flex-col justify-end">
                 <Button
+                className="bg-btn-primary"
                   onClick={() => {}}
                   variant="contained"
-                  style={{ backgroundColor: "#da1f26", color: "white" }}
+                  style={{ color: "white" }}
                   fullWidth
                   sx={{ padding: "12px 0" }}
                 >
@@ -251,7 +251,7 @@ const Payments = () => {
           className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
             currentMode === "dark"
               ? "text-white border-white"
-              : "text-red-600 font-bold border-red-600"
+              : "text-primary font-bold border-primary"
           }`}
         >
           ● Payments
@@ -269,7 +269,6 @@ const Payments = () => {
               "& .MuiTabs-indicator": {
                 height: "100%",
                 borderRadius: "5px",
-                backgroundColor: "#da1f26",
               },
               "& .Mui-selected": { color: "white !important", zIndex: "1" },
             }}

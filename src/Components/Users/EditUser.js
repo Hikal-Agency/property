@@ -3,16 +3,11 @@ import {
   Box,
   CircularProgress,
   InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
+  MenuItem, TextField
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
@@ -23,7 +18,6 @@ const EditUser = ({ user }) => {
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const { hasPermission } = usePermission();
 
-  const [error, setError] = useState(false);
   const [userData, setUserData] = useState({
     position: "",
     target: "",
@@ -31,41 +25,11 @@ const EditUser = ({ user }) => {
     currency: "",
   });
 
-  console.log("UserData: ", userData);
-
-  const currentDate = new Date();
-
-  function format(value) {
-    if (value < 10) {
-      return "0" + value;
-    } else {
-      return value;
-    }
-  }
-
   const UpdateUser = async (e) => {
     setloading(true);
     const token = localStorage.getItem("auth-token");
 
     const updated_data = new FormData();
-
-    // if (!userData?.expiry_date) {
-    //   setloading(false);
-
-    //   toast.error("Kindly enter a valid date..", {
-    //     position: "top-right",
-    //     autoClose: 3000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "light",
-    //   });
-
-    //   return;
-    // }
-
     updated_data.append("position", userData?.position);
     updated_data.append("target", userData?.target);
     updated_data.append("salary", userData?.salary);
@@ -133,9 +97,9 @@ const EditUser = ({ user }) => {
         }}
         disabled={loading ? true : false}
       >
-        <div className="mt-5 sm:mt-0 rounded-lg shadow-lg">
-          <div className="md:grid md:grid-cols-3 md:gap-6 mt-4">
-            <div className="mt-10 md:col-span-3 md:mt-0">
+        <div className="sm:mt-0 rounded-lg shadow-lg">
+          <div className="md:grid md:grid-cols-3 md:gap-6">
+            <div className="md:col-span-3 md:mt-0">
               <div className="sm:rounded-md">
                 <div
                   className={`${
@@ -201,37 +165,9 @@ const EditUser = ({ user }) => {
                         />
 
                         <div
-                          className="mt-4 h-0.5 w-full bg-[#DA1F26]"
+                          className="mt-4 h-0.5 w-full bg-primary"
                           style={{ marginBottom: "40px" }}
                         ></div>
-
-                        {/* <InputLabel id="currency">Currency</InputLabel>
-                        <TextField
-                          id="currency"
-                          value={userData?.currency}
-                          InputLabel="currency"
-                          size="medium"
-                          className="w-full mb-2"
-                          type="number"
-                          displayEmpty
-                          required
-                          onInput={(e) =>
-                            setUserData({
-                              ...userData,
-                              currency: e.target.value,
-                            })
-                          }
-                          sx={{
-                            "& input": {
-                              color: currentMode === "light" && "#000000",
-                            },
-                            marginBottom: "20px",
-                            "& .Mui-selected": {
-                              color: currentMode === "light" && "#000000",
-                            },
-                          }}
-                        >
-                        </TextField> */}
 
                         {hasPermission("edit_user") && (
                           <>
@@ -264,7 +200,7 @@ const EditUser = ({ user }) => {
                             >
                               <MenuItem value="" disabled>
                                 Currency
-                                <span className="ml-1" style={{ color: "red" }}>
+                                <span className="ml-1 text-primary">
                                   *
                                 </span>
                               </MenuItem>
@@ -318,7 +254,7 @@ const EditUser = ({ user }) => {
                 } px-4 py-3 text-right sm:px-6`}
               >
                 <Button
-                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
                   ripple={true}
                   size="lg"
                   type="submit"

@@ -1,16 +1,13 @@
 import React from "react";
-import { ImClock } from "react-icons/im";
 import { useStateContext } from "../../context/ContextProvider";
 import { CircularProgress, IconButton, Tooltip } from "@mui/material";
 import {
   RiCheckLine as CheckIcon,
   RiCloseLine as CloseIcon,
 } from "react-icons/ri";
-import { RiStickyNoteLine } from "react-icons/ri";
 import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { BsClock, BsChatSquareText } from "react-icons/bs";
-import SingleLead from "../Leads/SingleLead";
 import moment from "moment";
 import { useState } from "react";
 import "../../styles/animation.css";
@@ -23,15 +20,10 @@ const ReminderComponent = ({
 }) => {
   console.log("reminders component: ", reminder);
   const { currentMode, BACKEND_URL, isArabic } = useStateContext();
-  const [isModalOpened, setIsModalOpened] = useState(false);
   const [completeLoading, setCompletebtnLoading] = useState(false);
   const [cancleLoading, setCanclebtnLoading] = useState(false);
-  const [openleadModel, setOpenLeadModel] = useState(false);
-  const [leadData, setLeadData] = useState(null);
   // const [reminder, setReminder] = useState([]);
   const token = localStorage.getItem("auth-token");
-  const handleLeadModelOpen = () => setOpenLeadModel(true);
-  const handleLeadModelClose = () => setOpenLeadModel(false);
   const [loadingStates, setLoadingStates] = useState({});
 
   const UpdateReminder = async (value, id) => {
@@ -115,14 +107,14 @@ const ReminderComponent = ({
     <>
       <div
         key={reminder.id}
-        className={`card-hover w-[350px] flex flex-col justify-between ${
-          currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+        className={`backdrop-blur card-hover w-[350px] flex flex-col justify-between ${
+          currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#d8d8d845]"
         } rounded-xl my-2 cursor-pointer `}
         onClick={() => handleClick(reminder?.lead_id)}
       >
         <div className="p-5 grid grid-cols-9">
           <div className="col-span-8 space-y-3">
-            <h2 className="text-main-red-color text-md font-semibold">
+            <h2 className=" text-primary text-md font-semibold">
               {reminder?.leadName || "No Lead Name"}
             </h2>
             
@@ -177,8 +169,8 @@ const ReminderComponent = ({
 
             <Tooltip title="Cancel Reminder" arrow>
               <IconButton
-                style={{ backgroundColor: "#DA1F26", color: "white" }}
-                className="rounded-full"
+                style={{ color: "white" }}
+                className="rounded-full bg-btn-primary"
                 onClick={(event) => handleButtonClick(event, 0, reminder?.id)}
                 disabled={cancleLoading}
               >

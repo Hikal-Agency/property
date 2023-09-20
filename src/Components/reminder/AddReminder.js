@@ -401,13 +401,6 @@ const AddReminder = ({
                       );
                       setTimeValue(newValue);
                     }}
-                    sx={{
-                      "& .css-3dah0e-MuiModal-root-MuiDialog-root .MuiDialog-paper":
-                        {
-                          // border: "4px solid #DA1F26",
-                          // borderRadius: "2%",
-                        },
-                    }}
                     InputProps={{ required: true }}
                     renderInput={(params) => (
                       <TextField
@@ -454,9 +447,10 @@ const AddReminder = ({
             </div>
 
             <Button
-              className={`min-w-fit w-full mt-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+              className={`min-w-fit w-full mt-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
               ripple={true}
               size="lg"
+              style={{color: "white"}}
               type="submit"
               disabled={btnloading ? true : false}
             >

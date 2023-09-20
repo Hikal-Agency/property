@@ -134,7 +134,7 @@ const UserAllLocation = (props) => {
             </LocalizationProvider>
           </div>
           <div className="px-5">
-            <h4 className="text-red-600 font-bold text-lg mb-2 text-center">
+            <h4 className="text-primary font-bold text-lg mb-2 text-center">
               {UserLocationData?.location?.data?.length > 0 ? (
                 <>{UserLocationData?.locations?.data[0].userName}</>
               ) : (
@@ -172,9 +172,6 @@ const UserAllLocation = (props) => {
                               }}
                               icon={{
                                 url: "/oldpin.svg",
-                                // scaledSize: window.google
-                                //   ? new window.google.maps.Size(30, 30)
-                                //   : null,
                                 scaledSize: window.google
                                   ? new window.google.maps.Size(30, 30)
                                   : new window.google.maps.Size(50, 50),

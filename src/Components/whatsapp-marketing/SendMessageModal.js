@@ -389,7 +389,7 @@ const SendMessageModal = ({
                   return (
                     <li
                       style={{ listStyleType: "number" }}
-                      className="font-bold text-red-600 mb-1"
+                      className="font-bold text-primary mb-1"
                     >
                       +{contact}
                     </li>
@@ -480,7 +480,7 @@ const SendMessageModal = ({
                               <div
                                 className={`flex flex-wrap items-center ${
                                   smsTextValue?.trim()?.length > charLimit
-                                    ? "text-red-600"
+                                    ? "text-primary"
                                     : ""
                                 }`}
                               >
@@ -628,9 +628,10 @@ const SendMessageModal = ({
                   <Button
                     ripple="true"
                     variant="contained"
-                    sx={{ py: "6px", mr: 2 }}
+                    style={{color: "white"}}
+                    sx={{ py: "6px", mr: 2}}
+                    className="bg-btn-primary"
                     size="small"
-                    style={{ backgroundColor: "#da1f26" }}
                     type="submit"
                   >
                     {btnloading ? (

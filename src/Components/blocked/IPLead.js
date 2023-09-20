@@ -3,7 +3,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
 
 const IPLead = ({ lead }) => {
-  const { currentMode, Managers, SalesPerson, User } = useStateContext();
+  const { currentMode, Managers, SalesPerson, User, primaryColor } = useStateContext();
 
   const { hasPermission } = usePermission();
 
@@ -39,7 +39,7 @@ const IPLead = ({ lead }) => {
             color: currentMode === "dark" ? "white" : "black",
           },
           "& span": {
-            color: "#da1f26",
+            color: primaryColor,
           },
         }}
         className="flex px-24 justify-between items-center"
@@ -72,7 +72,7 @@ const IPLead = ({ lead }) => {
         </div>
       </Box>
 
-      <hr className="bg-[#da1f26] my-10 w-[90%] mx-auto" />
+      <hr className="bg-primary my-10 w-[90%] mx-auto" />
     </>
   );
 };

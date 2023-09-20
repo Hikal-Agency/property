@@ -98,7 +98,7 @@ const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead })
             >
               Are you sure that you want to block the leads from IP{" "}
             </span>
-            <span style={{ color: "#da1f26" }}>{lead?.ip}</span>?
+            <span className="text-primary">{lead?.ip}</span>?
           </h1>
         </div>
 
@@ -125,9 +125,12 @@ const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead })
 
           <div className="action buttons flex items-center justify-center space-x-2">
             <Button
-              className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+              className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
               ripple="true"
               size="lg"
+              style={{
+                color: "white"
+              }}
               type="submit"
             >
               {btnloading ? (
@@ -143,7 +146,7 @@ const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead })
               className={`shadow-none  rounded-md text-sm  ${
                 currentMode === "dark"
                   ? "text-white border-white"
-                  : "text-main-red-color border-main-red-color"
+                  : "text-primary border-primary"
               }`}
             >
               Cancel

@@ -110,7 +110,7 @@ const CreateDeviceModal = ({
                 value={deviceName}
                 onInput={(e) => setDeviceName(e.target.value)}
               />
-              <Button onClick={createSession} fullWidth variant="contained" color="error">Done</Button>
+              <Button onClick={createSession} fullWidth variant="contained" className="bg-btn-primary">Done</Button>
         </div>
       </Modal>
     </>

@@ -4,9 +4,8 @@ import {
   Dialog,
   IconButton,
   TextField,
-  Tooltip,
 } from "@mui/material";
-import { IoIosAlert, IoMdClose } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 import {
   RiCheckLine as CheckIcon,
   RiCloseLine as CloseIcon,
@@ -150,7 +149,7 @@ const PasswordDialogue = ({
 
             <div className="action buttons mt-5 flex items-center justify-center space-x-2">
               <Button
-                className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                 ripple={true}
                 size="lg"
                 type="submit"
@@ -158,7 +157,7 @@ const PasswordDialogue = ({
               >
                 {/* <span>Confirm</span> */}
                 {btnloading ? (
-                  <CircularProgress size={18} sx={{ color: "red" }} />
+                  <CircularProgress size={18} className="text-primary"/>
                 ) : (
                   <span>Confirm</span>
                 )}

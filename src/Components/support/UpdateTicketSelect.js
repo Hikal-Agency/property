@@ -272,7 +272,7 @@ const UpdateTicketSelect = ({ cellValues }) => {
                 <div className="flex flex-col justify-center items-center">
                   <IoIosAlert
                     size={50}
-                    className="text-main-red-color text-2xl"
+                    className="text-primary text-2xl"
                   />
                   <h1 className="font-semibold pt-3 text-lg text-center">
                     Do You Really Want Change the Priority from{" "}
@@ -307,7 +307,7 @@ const UpdateTicketSelect = ({ cellValues }) => {
                     className={`shadow-none  rounded-md text-sm  ${
                       currentMode === "dark"
                         ? "text-white border-white"
-                        : "text-main-red-color border-main-red-color"
+                        : "text-primary border-primary"
                     }`}
                   >
                     Cancel

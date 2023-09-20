@@ -34,9 +34,8 @@ const ChatMessageFromMe = ({ message, data }) => {
           <div
             style={{
               position: "relative",
-              background: "#da1f26",
             }}
-            className="max-w-[600px] rounded-lg rounded-tr-none mr-2 p-4"
+            className="max-w-[600px] bg-primary rounded-lg rounded-tr-none mr-2 p-4"
           >
             {message.type === "revoked" ? (
               <i className="text-gray-200">This message was deleted</i>
@@ -47,8 +46,8 @@ const ChatMessageFromMe = ({ message, data }) => {
         </div>
       )}
       <Avatar
-        sx={{ width: 20, height: 20, background: "#da1f26" }}
-        className="mr-2"
+        sx={{ width: 20, height: 20 }}
+        className="mr-2 bg-btn-primary"
       >
         <img
           className="object-cover w-full h-full"

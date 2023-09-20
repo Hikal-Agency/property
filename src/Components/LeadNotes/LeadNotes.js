@@ -11,19 +11,15 @@ import {
 import axios from "../../axoisConfig";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate } from "react-router-dom";
 import NotesGrid from "./NotesGrid";
 import {
-  AiOutlineEdit,
-  AiOutlinePlus,
   AiOutlineTable,
   AiOutlineAppstore,
 } from "react-icons/ai";
 
 const LeadNotes = ({ pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL, User, darkModeColors, isArabic } = useStateContext();
+  const { currentMode, BACKEND_URL, User, darkModeColors, isArabic, primaryColor } = useStateContext();
   const [searchText, setSearchText] = useState("");
-  const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
   const [value, setValue] = useState(0);
 
@@ -224,7 +220,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
     // Background color of header of data grid
     "& .MuiDataGrid-columnHeaders": { // css-s3ulew-
       border: "none",
-      backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      backgroundColor: primaryColor,
       color: currentMode === "dark" ? "white" : "white",
       borderRadius: "0",
       width: "100%",
@@ -277,8 +273,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
     // BACKGROUND COLOR OF FOOTER
     "& .MuiDataGrid-footerContainer": {
       // border: "none",
-      borderTop: "2px solid #DA1F26",
-      // backgroundColor: currentMode === "dark" ? "#DA1F26" : "#DA1F26",
+      borderTop: `2px solid ${primaryColor}`,
       backgroundColor: currentMode === "dark" ? "black" : "white",
       color: currentMode === "dark" ? "white" : "black",
     },
@@ -307,7 +302,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
         <Pagination
           sx={{
             "& .Mui-selected": {
-              backgroundColor: "#DA1F26 !important",
+              backgroundColor: `${primaryColor} !important`,
                 color: "white !important",
                 borderRadius: "50px !important",
             },
@@ -326,7 +321,6 @@ const LeadNotes = ({ pageState, setpageState }) => {
           ...darkModeColors,
           "& .MuiTabs-indicator": {
             borderRadius: "5px",
-            backgroundColor: "#da1f26",
           },
           "& .Mui-selected": {
             color: "white",
@@ -334,7 +328,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
           },
           "& .MuiSvgIcon-root": {
             // Customize icon styles here
-            color: "red",
+            color: primaryColor,
           },
         }}
         className={`rounded-md overflow-hidden flex ${

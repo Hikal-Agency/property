@@ -31,32 +31,26 @@ import {
   FaTiktok,
   FaRegComments,
 } from "react-icons/fa";
-import { 
-  BiImport, 
-  BiMessageRoundedDots, 
-  BiArchive 
+import {
+  BiImport,
+  BiMessageRoundedDots,
+  BiArchive
 } from "react-icons/bi";
-import { 
-  BsPersonCircle, 
+import {
+  BsPersonCircle,
   BsSnow2,
   BsShieldX,
   BsShieldCheck,
-  BsShieldMinus 
+  BsShieldMinus
 } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
-import {
-  RxCheckCircled,
-  RxCrossCircled,
-  RxQuestionMarkCircled
-} from "react-icons/rx";
 import { TbWorldWww } from "react-icons/tb";
 
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
-  const navigate = useNavigate();
-  const { currentMode, DataGridStyles, BACKEND_URL, User, isArabic } =
+  const { currentMode, DataGridStyles, BACKEND_URL, User, isArabic, primaryColor } =
     useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -128,7 +122,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           ),
 
           "bulk import": () => (
-            <BiImport size={16} color={"#cf372b"} className="p-1" />
+            <BiImport size={16} className="text-primary p-1" />
           ),
 
           "property finder": () => (
@@ -327,7 +321,7 @@ const Closedeals = ({ pageState, setpageState }) => {
                 <div
                   className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
-                  <span className="text-[#DA1F26] p-1 text-center">
+                  <span className="text-primary p-1 text-center">
                     <BsShieldX size={16} />
                   </span>
                 </div>
@@ -664,7 +658,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           <Pagination
             sx={{
               "& .Mui-selected": {
-                backgroundColor: "#DA1F26 !important",
+                backgroundColor: `${primaryColor} !important`,
                 color: "white !important",
                 borderRadius: "50px !important",
               },

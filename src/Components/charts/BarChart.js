@@ -4,31 +4,31 @@ import { Bar } from "react-chartjs-2";
 import { useStateContext } from "../../context/ContextProvider";
 
 const BarChart = ({ Sales_chart_data }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, primaryColor } = useStateContext();
   // eslint-disable-next-line
-  const [UserData2, setUserData2] = useState({
+  const UserData2 = {
     labels: Sales_chart_data.map((data) => data?.userName),
     datasets: [
       {
         label: "Revenue",
         data: Sales_chart_data.map((data) => data?.total_ammount_sum_amount),
-        backgroundColor: ["#da1f26", "#000000"],
+        backgroundColor: [primaryColor, "#000000"],
         indexAxis: "x",
       },
     ],
-  });
+  };
   // eslint-disable-next-line
-  const [UserData3, setUserData3] = useState({
+  const UserData3={
     labels: Sales_chart_data.map((data) => data?.userName),
     datasets: [
       {
         label: "Revenue",
         data: Sales_chart_data.map((data) => data?.total_ammount_sum_amount),
-        backgroundColor: ["#da1f26", "#CCCCCC"],
+        backgroundColor: [primaryColor, "#CCCCCC"],
         indexAxis: "x",
       },
     ],
-  });
+  };
 
   // eslint-disable-next-line
 
@@ -39,7 +39,7 @@ const BarChart = ({ Sales_chart_data }) => {
           data={UserData3}
           options={{
             color: "#AAAAAA",
-            backgroundColor: ["#da1f26", "#CCCCCC"],
+            backgroundColor: [primaryColor, "#CCCCCC"],
             scales: {
               y: { ticks: { color: "#AAAAAA" } },
               x: { ticks: { color: "#AAAAAA" } },
@@ -54,7 +54,7 @@ const BarChart = ({ Sales_chart_data }) => {
           data={UserData2}
           options={{
             color: "#333333",
-            backgroundColor: ["#da1f26", "#000000"],
+            backgroundColor: [primaryColor, "#000000"],
             scales: {
               y: { ticks: { color: "#333333" } },
               x: { ticks: { color: "#333333" } },

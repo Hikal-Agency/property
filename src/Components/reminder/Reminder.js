@@ -6,11 +6,10 @@ import SingleLead from "../Leads/SingleLead";
 import ReminderComponent from "./ReminderComponent";
 
 const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
-  const { currentMode, BACKEND_URL, User } = useStateContext();
+  const { BACKEND_URL, User } = useStateContext();
   const [btnLoading, setbtnLoading] = useState(false);
   const [openleadModel, setOpenLeadModel] = useState(false);
   const [leadData, setLeadData] = useState(null);
-  // const [reminder, setReminder] = useState([]);
   const token = localStorage.getItem("auth-token");
   const handleLeadModelOpen = () => setOpenLeadModel(true);
   const handleLeadModelClose = () => setOpenLeadModel(false);

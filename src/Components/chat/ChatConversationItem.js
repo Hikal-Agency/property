@@ -1,14 +1,9 @@
 import { Avatar, Box } from "@mui/material";
-import { useState, useEffect } from "react";
-import { BiUser } from "react-icons/bi";
-import moment from "moment";
+import { useState } from "react";
 
 const ChatConversationItem = ({ chat, onClick, isActive }) => {
-  const [lastMessageText, setLastMessageText] = useState("");
   const [lastMessageTime, setLastMessageTime] = useState("");
 
-  // useEffect(() => {
-  //   if (chat?.lastMessage) {
   //     if (chat?.lastMessage.id.fromMe && chat?.lastMessage.to === chat?.id?.user + "@c.us") {
   //       if (chat?.lastMessage.type === "chat") {
   //         const lastMsgFormattedBody =
@@ -68,8 +63,8 @@ const ChatConversationItem = ({ chat, onClick, isActive }) => {
     >
       <Box className="flex items-center w-full">
         <Avatar
-          sx={{ width: 40, height: 40, background: "#da1f26", fontSize: 15 }}
-          className="mr-3 relative"
+          sx={{ width: 40, height: 40, fontSize: 15 }}
+          className="mr-3 relative bg-btn-primary"
         >
           <img
             className="object-cover w-full h-full"
@@ -83,9 +78,6 @@ const ChatConversationItem = ({ chat, onClick, isActive }) => {
             <p className="text-[#838383]">@{chat?.loginId}</p>
           </p>
           <Box className="flex items-center justify-between">
-            {/* <p className="text-[#c6c6c6]" style={{ lineHeight: 1 }}>
-              <p>{lastMessageText}</p>
-            </p> */}
             <p className="text-[#838383]">
               <small>{lastMessageTime}</small>
             </p>

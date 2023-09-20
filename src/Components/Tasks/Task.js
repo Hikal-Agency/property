@@ -5,7 +5,7 @@ import Calls from "./Calls";
 // eslint-disable-next-line
 
 const Task = () => {
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, primaryColor } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -68,16 +68,14 @@ const Task = () => {
             "& .MuiTabs-indicator": {
               height: "100%",
               borderRadius: "5px",
-              backgroundColor: "#da1f26",
+              backgroundColor: primaryColor,
             },
             "& .Mui-selected": { 
               color: "white !important", 
               zIndex: "1" 
             },
           }}
-          className={`w-full overflow-hidden ${
-            currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-          } `}
+          className={`w-full overflow-hidden `}
         >
           <div className="flex justify-between items-center">
             <h4 className="font-semibold p-5">SUMMARY</h4>
