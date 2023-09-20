@@ -192,11 +192,11 @@ const DashboardPanel = ({ setloading }) => {
     }
   }
   return (
-    <div className="mt-5 md:mt-2">
+    <div className="">
       <h1
-        className={`font-semibold ${
-          currentMode === "dark" ? "text-white" : "text-main-red-color"
-        } text-lg ml-2 mb-3`}
+        className={`font-bold ${
+          currentMode === "dark" ? "text-gray-200" : "text-main-red-color"
+        } text-lg  mb-2`}
       >
         OVERVIEW
       </h1>

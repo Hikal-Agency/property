@@ -77,16 +77,11 @@ const Dashboard = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full ${
+            className={`w-full p-4 overflow-x-hidden ${
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="w-full overflow-x-hidden">
-              <div className="pl-3">
-                <DashboardPanel />
-              </div>
-            </div>
-            {/* <Footer /> */}
+            <DashboardPanel />
           </div>
         )}
       </div>
