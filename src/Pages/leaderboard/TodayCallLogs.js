@@ -30,7 +30,7 @@ const TodayCallLogs = () => {
   useEffect(()=>{
     setTimeout(() => {
       setSlide(slide === 0 ? slides.length - 1 : slide - 1);
-    }, 60 * 1000 * 60);
+    }, 60 * 1000);
   });
 
   const nextSlide = () => {
