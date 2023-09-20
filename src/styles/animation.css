@@ -180,3 +180,47 @@
         background-position: 0% 50%
     }
 }
+
+/* CAROUSEL  */
+.carousel {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    /* background-color: #aaa; */
+    width: 100%;
+    height: 100%;
+}
+
+.slide-hidden {
+    display: none;
+}
+
+.arrow {
+    position: absolute;
+    color: #DA1F26;
+    background-color: #000000;
+    border-radius: 50%;
+    opacity: 0.2;
+    width: 2rem;
+    height: 2rem;
+    z-index: 1000;
+}
+
+.arrow:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.arrow-left {
+    left: 1rem;
+}
+
+.arrow-right {
+    right: 1rem;
+}
