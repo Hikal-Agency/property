@@ -201,7 +201,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                               ? "bg-black text-white"
                               : "bg-white text-black"
                           } ${
-                            active === item?.id ? "border border-red-500" : ""
+                            active === item?.id ? "border border-primary" : ""
                           } rounded-md p-2 w-full`}
                           onClick={(e) => handleClick(item?.id, e)}
                           key={index}

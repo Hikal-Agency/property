@@ -447,9 +447,10 @@ const AddReminder = ({
             </div>
 
             <Button
-              className={`min-w-fit w-full mt-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+              className={`min-w-fit w-full mt-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
               ripple={true}
               size="lg"
+              style={{color: "white"}}
               type="submit"
               disabled={btnloading ? true : false}
             >

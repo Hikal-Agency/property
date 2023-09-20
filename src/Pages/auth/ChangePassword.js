@@ -32,7 +32,7 @@ const ChangePassword = () => {
                     className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
                       currentMode === "dark"
                         ? "text-white border-white"
-                        : "text-red-600 font-bold border-red-600"
+                        : "text-primary font-bold border-primary"
                     }`}
                   >
                     ● Change Password
@@ -105,7 +105,8 @@ const ChangePassword = () => {
                           {hasPermission("delete_account") ? (
                             <div className="mt-5 text-center text-gray-600">
                               <Button
-                                className="px-2 bg-main-red-color shadow-none hover:shadow-none"
+                              style={{color: "white"}}
+                                className="px-2 bg-btn-primary shadow-none hover:shadow-none"
                                 ripple={true}
                               >
                                 Delete Acount

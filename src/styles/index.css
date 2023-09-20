@@ -78,7 +78,7 @@ input::-webkit-inner-spin-button {
   padding: 0px !important;
 }
 
-.border-l-\[4px\] .bg-main-red-color {
+.border-l-\[4px\] .bg-primary {
   margin-left: 0.5rem !important;
 }
 
@@ -896,7 +896,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
         .reminder-line {
             width: 2px;
             height: 0;
-            background-color: red;
+            background-color: var(--primary-color);
             position: absolute;
             animation: reminderAnimation 2s infinite;
         }

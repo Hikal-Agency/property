@@ -451,7 +451,7 @@ const RegisterAttendance = () => {
             {attendanceType === "Check-in" ? (
               <button
                 onClick={() => MarkAttendance("out")}
-                className={`mb-3 mt-2 bg-main-red-color text-white p-2 rounded-md w-full text-center ${
+                className={`mb-3 mt-2 bg-btn-primary text-white p-2 rounded-md w-full text-center ${
                   loading ? "relative" : ""
                 } `}
                 style={{ textTransform: "capitalize", cursor: "pointer" }}

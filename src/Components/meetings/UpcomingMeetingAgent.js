@@ -22,7 +22,7 @@ const UpcomingMeetingAgent = () => {
               } rounded-md mb-3`}
             >
               <div className="px-5 py-5 space-y-3">
-                <h2 className="text-main-red-color text-md font-bold">
+                <h2 className="text-primary text-md font-bold">
                   {meeting?.leadName}
                 </h2>
                 <div className="w-full flex justify-between items-center">
@@ -65,7 +65,7 @@ const UpcomingMeetingAgent = () => {
                 </div>
               </div>
               {DashboardData?.designation === "Head" ? (
-                <span className="block text-sm bg-main-red-color text-white rounded-md text-center p-2 font-semibold">
+                <span className="block text-sm bg-primary text-white rounded-md text-center p-2 font-semibold">
                   Agent Name
                 </span>
               ) : (
@@ -75,7 +75,7 @@ const UpcomingMeetingAgent = () => {
           );
         })
       ) : (
-        <h1 className="italic text-main-red-color">No meetings to show</h1>
+        <h1 className="italic text-primary">No meetings to show</h1>
       )}
     </div>
   );

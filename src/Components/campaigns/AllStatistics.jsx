@@ -865,7 +865,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 className={`text-xl border-l-[4px] ml-1 pl-1 mb-4 mt-5 font-bold ${
                   currentMode === "dark"
                     ? "text-white border-white"
-                    : "text-primary font-bold border-red-600"
+                    : "text-primary font-bold border-primary"
                 }`}
               >
                 ● Overview
@@ -902,7 +902,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 className={`text-xl border-l-[4px] ml-1 pl-1 mb-4 mt-7 font-bold ${
                   currentMode === "dark"
                     ? "text-white border-white"
-                    : "text-primary font-bold border-red-600"
+                    : "text-primary font-bold border-primary"
                 }`}
               >
                 ● Performance & Interactions
@@ -1004,7 +1004,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                 className={`text-xl border-l-[4px] ml-1 pl-1 mb-4 mt-2 font-bold ${
                   currentMode === "dark"
                     ? "text-white border-white"
-                    : "text-primary font-bold border-red-600"
+                    : "text-primary font-bold border-primary"
                 }`}
               >
                 ● Audience

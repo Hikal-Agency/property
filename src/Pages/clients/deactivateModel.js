@@ -74,7 +74,7 @@ const DeactivateModel = ({
             className={`shadow-none  rounded-md text-sm  ${
               currentMode === "dark"
                 ? "text-white border-white"
-                : "text-main-red-color border-main-red-color"
+                : "text-primary border-primary"
             }`}
           >
             Cancel

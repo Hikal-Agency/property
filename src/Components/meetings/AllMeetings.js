@@ -22,7 +22,7 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
     open: false,
     id: null,
   });
-  const { currentMode, User, DataGridStyles } = useStateContext();
+  const { currentMode, User, DataGridStyles, primaryColor } = useStateContext();
   //eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
 
@@ -405,11 +405,11 @@ const AllMeetings = ({ BACKEND_URL, pageState, setpageState }) => {
             },
 
             "& .MuiButtonBase-root .MuiSwitch-switchBase": {
-              color: "red !important",
+              color: `${primaryColor} !important`,
             },
 
             "& .MuiSwitch-root .MuiSwitch-track": {
-              backgroundColor: "red !important",
+              backgroundColor: `${primaryColor} !important`,
             },
 
           }}

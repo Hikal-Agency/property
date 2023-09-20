@@ -65,7 +65,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
                           onClick={(e) => handleNavigate(e, item?.leadId)}
                         >
                           <div className="my-1 space-y-1 overflow-hidden">
-                            <h1 className="font-semibold capitalize text-red-600 py-1">
+                            <h1 className="font-semibold capitalize text-primary py-1">
                               <span style={{fontFamily: isArabic(item?.leadNote) ? "Noto Kufi Arabic" : "inherit"}}>{item?.leadNote}</span>
                             </h1>
                             <div className="my-3 h-[1px] w-full bg-primary" ></div>

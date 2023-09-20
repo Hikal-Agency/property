@@ -207,11 +207,14 @@ const BulkImport = ({
               );
             })}
             <Button
-              className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+              className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
               ripple={"true"}
               color="error"
               size="lg"
               variant="contained"
+              style={{
+                color: "white"
+              }}
               type="submit"
               disabled={btnloading ? true : false}
             >

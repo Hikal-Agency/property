@@ -536,7 +536,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           ),
 
           "bulk import": () => (
-            <BiImport size={16} className="text-primary" className="p-1" />
+            <BiImport size={16} className="text-primary p-1"/>
           ),
 
           "property finder": () => (
@@ -2318,11 +2318,11 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 //   height: "auto",
                 // },
                 "& .MuiButtonBase-root .MuiSwitch-switchBase": {
-                  color: "red !important",
+                  color: `${primaryColor} !important`,
                 },
 
                 "& .MuiSwitch-root .MuiSwitch-track": {
-                  backgroundColor: "red !important",
+                  backgroundColor: `${primaryColor} !important`,
                 },
               }}
               getRowClassName={(params) =>

@@ -125,9 +125,12 @@ const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead })
 
           <div className="action buttons flex items-center justify-center space-x-2">
             <Button
-              className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+              className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
               ripple="true"
               size="lg"
+              style={{
+                color: "white"
+              }}
               type="submit"
             >
               {btnloading ? (
@@ -143,7 +146,7 @@ const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead })
               className={`shadow-none  rounded-md text-sm  ${
                 currentMode === "dark"
                   ? "text-white border-white"
-                  : "text-main-red-color border-main-red-color"
+                  : "text-primary border-primary"
               }`}
             >
               Cancel

@@ -361,7 +361,7 @@ const SendMessageModal = ({
             <p className="text-2xl mb-4">Messages are being sent to these contacts:</p>
             <ul className="ml-5">
             {selectedContacts?.map((contact) => {
-              return <li style={{listStyleType: "number"}} className="font-bold text-red-600 mb-1">+{contact}</li>;
+              return <li style={{listStyleType: "number"}} className="font-bold text-primary mb-1">+{contact}</li>;
             })}
             </ul>
           </div> :

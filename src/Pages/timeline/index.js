@@ -323,7 +323,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 timeline.feedback !== "0" && (
                                                   <p className="font-semibold tracking-wide">
                                                     Feedback updated to{" "}
-                                                    <span className="font-bold text-main-red-color">
+                                                    <span className="font-bold text-primary">
                                                       {timeline.feedback}
                                                     </span>.
                                                   </p>
@@ -372,7 +372,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 {/* AGENT  */}
                                                 <p className="font-semibold tracking-wide">
                                                   Sales manager has been updated to{" "}
-                                                  <span className="font-bold text-main-red-color">
+                                                  <span className="font-bold text-primary">
                                                     {timeline.manager}
                                                   </span>.
                                                 </p>
@@ -420,7 +420,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 {/* AGENT  */}
                                                 <p className="font-semibold tracking-wide">
                                                   Sales agent has been updated to{" "}
-                                                  <span className="font-bold text-main-red-color">
+                                                  <span className="font-bold text-primary">
                                                     {timeline.agent}
                                                   </span>.
                                                 </p>
@@ -468,7 +468,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 {/* FEEDBACK  */}
                                                 <p className="font-semibold tracking-wide">
                                                   Feedback has been updated to{" "}
-                                                  <span className="font-bold text-main-red-color">
+                                                  <span className="font-bold text-primary">
                                                     {timeline.feedback}
                                                   </span>.
                                                 </p>
@@ -516,7 +516,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 {/* FEEDBACK  */}
                                                 <p className="font-semibold tracking-wide">
                                                   Meeting status has been updated to{" "}
-                                                  <span className="font-bold text-main-red-color">
+                                                  <span className="font-bold text-primary">
                                                     {timeline.meetingStatus}
                                                   </span>.
                                                 </p>
@@ -564,7 +564,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 {/* FEEDBACK  */}
                                                 <p className="font-semibold tracking-wide">
                                                   Meeting has been set for{" "}
-                                                  <span className="font-bold text-main-red-color">
+                                                  <span className="font-bold text-primary">
                                                     {!timeline.meetingTime ||
                                                     timeline.meetingTime === ""
                                                       ? ""

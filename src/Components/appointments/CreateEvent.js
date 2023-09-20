@@ -923,8 +923,7 @@ const CreateEvent = ({
                 variant="contained"
                 fullWidth
                 className="bg-btn-primary"
-                style={{ padding: "10px 0"}}
-                style={{color: "white"}}
+                style={{ padding: "10px 0", color: "white"}}
                 onClick={handleSubmit}
               >
                 {btnloading ? (

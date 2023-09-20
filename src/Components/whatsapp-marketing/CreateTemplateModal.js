@@ -133,7 +133,7 @@ const CreateTemplateModal = ({
             >
               <MenuItem value="">
                 Select Template Type
-                <span className="ml-1" style={{ color: "red" }}>
+                <span className="ml-1 text-primary">
                   *
                 </span>
               </MenuItem>

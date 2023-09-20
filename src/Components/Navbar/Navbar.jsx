@@ -337,7 +337,7 @@ const Navbar = () => {
               type="button"
               onClick={changeMode}
               className={`relative text-xl rounded-full p-3 hover:bg-light-gray ${
-                currentMode === "dark" ? "text-white" : " text-main-red-color"
+                currentMode === "dark" ? "text-white" : " text-primary"
               }`}
             >
               {currentMode === "dark" ? (

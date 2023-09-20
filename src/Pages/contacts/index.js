@@ -120,7 +120,7 @@ const Contacts = () => {
                   className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
                     currentMode === "dark"
                       ? "text-white border-white"
-                      : "text-main-red-color font-bold border-main-red-color"
+                      : "text-primary font-bold border-primary"
                   }`}
                 >
                 ● Contacts

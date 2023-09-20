@@ -393,7 +393,7 @@ const SingleLeadPage = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="bg-main-red-color h-0.5 w-full my-7"></div>
+                  <div className="bg-primary h-0.5 w-full my-7"></div>
                   
                   <div className={`rounded-md mb-5`}>
                     <h1 className="font-semibold text-lg text-center mb-2">
@@ -520,8 +520,9 @@ const SingleLeadPage = () => {
                       />
                       <button
                         disabled={addNoteloading ? true : false}
+                        style={{color: "white"}}
                         type="submit"
-                        className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color p-1 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                        className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary p-1 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
                       >
                         {addNoteloading ? (
                           <CircularProgress

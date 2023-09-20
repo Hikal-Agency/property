@@ -873,9 +873,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                 } p-3 rounded-md`}
               >
                 <div
-                  className={`${
-                    currentMode === "dark" ? "text-red-600" : "text-red-500"
-                  } text-lg font-bold`}
+                  className={`text-primary text-lg font-bold`}
                 >
                   Sales Manager
                 </div>
@@ -886,7 +884,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
 
                       const barColor =
                         item.total_closed_deals >= 5
-                          ? "bg-red-500"
+                          ? "bg-primary"
                           : "bg-gray-800";
 
                       return (
@@ -947,11 +945,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                 } p-3 rounded-md`}
               >
                 <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "text-red-600"
-                      : "text-main-red-color"
-                  } text-lg font-bold`}
+                  className={`text-primary text-lg font-bold`}
                 >
                   Sales Agent
                 </div>
@@ -961,7 +955,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
 
                     const barColor =
                       item.total_closed_deals >= 5
-                        ? "bg-red-500"
+                        ? "bg-primary"
                         : "bg-gray-800";
 
                     return (
@@ -1019,11 +1013,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                 } p-3 rounded-md`}
               >
                 <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "text-red-600"
-                      : "text-main-red-color"
-                  } text-lg font-bold`}
+                  className={`text-primary text-lg font-bold`}
                 >
                   Sales Manager
                 </div>
@@ -1094,11 +1084,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                 } p-3 rounded-md`}
               >
                 <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "text-red-600"
-                      : "text-main-red-color"
-                  } text-lg font-bold`}
+                  className={`text-primary text-lg font-bold`}
                 >
                   Sales Agent
                 </div>
@@ -1133,7 +1119,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <></>
                       )} */}
                             <span
-                              className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
+                              className={`bg-primary p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
                             >
                               Closed deals: {item?.total_closed_deals || 0}
                             </span>
@@ -1180,11 +1166,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                 } p-3 rounded-md`}
               >
                 <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "text-red-600"
-                      : "text-main-red-color"
-                  } text-lg font-bold`}
+                  className={`text-primary text-lg font-bold`}
                 >
                   Sales Manager
                 </div>
@@ -1221,7 +1203,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <></>
                       )} */}
                             <span
-                              className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
+                              className={`bg-primary p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
                             >
                               Total Closed Deals: {item?.total_closed_deals} /
                               Direct deals: {item?.total_sales || 0}
@@ -1255,11 +1237,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                 } p-3 rounded-md`}
               >
                 <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "text-red-600"
-                      : "text-main-red-color"
-                  } text-lg font-bold`}
+                  className={`text-primary text-lg font-bold`}
                 >
                   Sales Agent
                 </div>
@@ -1294,7 +1272,7 @@ const ClosedDealsBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <></>
                       )} */}
                             <span
-                              className={`bg-main-red-color p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
+                              className={`bg-primary p-x-2 h-5 text-white font-semibold text-xs flex justify-center items-center px-5 w-full`}
                             >
                               Closed deals: {item?.total_closed_deals || 0}
                             </span>

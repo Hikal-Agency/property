@@ -117,7 +117,7 @@ const TodayCallLogs = () => {
                       } p-3 rounded-md`}
                     >
                       <div className="grid gap-3 rounded-md px-2 mb-2">
-                        <h5 className="font-bold text-lg text-main-red-color col-span-5">
+                        <h5 className="font-bold text-lg text-primary col-span-5">
                           {call?.userName}
                         </h5>
                       </div>

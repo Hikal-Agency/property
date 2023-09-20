@@ -328,7 +328,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
           },
           "& .MuiSvgIcon-root": {
             // Customize icon styles here
-            color: "red",
+            color: primaryColor,
           },
         }}
         className={`rounded-md overflow-hidden flex ${

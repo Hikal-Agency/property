@@ -88,7 +88,7 @@ const ActivityLog = () => {
             <div className="mt-5 md:mt-2">
               <h1
                 className={`font-semibold ${
-                  currentMode === "dark" ? "text-white" : "text-red-600"
+                  currentMode === "dark" ? "text-white" : "text-primary"
                 } text-lg ml-2 mb-3 auto-cols-max gap-x-3`}
               >
                 Activity Log
@@ -109,11 +109,11 @@ const ActivityLog = () => {
                                 <>
                                   <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                     <div className="h-full w-6 flex items-center justify-center">
-                                      <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                      <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                     </div>
                                     <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
                                       <MdStickyNote2
-                                        className="bg-main-red-color text-white p-2 rounded-md"
+                                        className="bg-primary text-white p-2 rounded-md"
                                         size={33}
                                       />
                                     </div>
@@ -146,7 +146,7 @@ const ActivityLog = () => {
                                       <div className="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 2xl:col-span-3 space-3">
                                         <div className="flex h-full items-center">
                                           <div className="h-full w-5 flex items-center">
-                                            <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                            <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                           </div>
                                           <div>
                                             <p className="font-semibold tracking-wide">
@@ -166,11 +166,11 @@ const ActivityLog = () => {
                                 <>
                                   <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                     <div className="h-full w-6 flex items-center justify-center">
-                                      <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                      <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                     </div>
                                     <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
                                       <BsCalendar2EventFill
-                                        className="bg-main-red-color text-white p-2 rounded-md"
+                                        className="bg-primary text-white p-2 rounded-md"
                                         size={33}
                                       />
                                     </div>
@@ -202,7 +202,7 @@ const ActivityLog = () => {
                                       <div className="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 2xl:col-span-3 space-3">
                                         <div className="flex h-full items-center">
                                           <div className="h-full w-5 flex items-center">
-                                            <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                            <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                           </div>
                                           <div>
                                             <p className="font-semibold tracking-wide">
@@ -210,7 +210,7 @@ const ActivityLog = () => {
                                             </p>
                                             <p className="font-semibold tracking-wide">
                                               Meeting Scheduled for{" "}
-                                              <span class="text-main-red-color">
+                                              <span class="text-primary">
                                                 {activity.meetingDate}{" "}
                                                 {activity.meetingTime}
                                               </span>
@@ -230,11 +230,11 @@ const ActivityLog = () => {
                               <>
                                 <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                   <div className="h-full w-6 flex items-center justify-center">
-                                    <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                    <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                   </div>
                                   <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
                                     <ImUserCheck
-                                      className="bg-main-red-color text-white p-2 rounded-md"
+                                      className="bg-primary text-white p-2 rounded-md"
                                       size={33}
                                     />
                                   </div>
@@ -266,7 +266,7 @@ const ActivityLog = () => {
                                     <div className="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 2xl:col-span-3 space-3">
                                       <div className="flex h-full items-center">
                                         <div className="h-full w-5 flex items-center">
-                                          <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                          <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                         </div>
                                         <div>
                                           <p className="font-semibold tracking-wide">
