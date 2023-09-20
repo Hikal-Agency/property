@@ -193,7 +193,7 @@ const DashboardPanel = ({ setloading }) => {
     <div className="">
       <h1
 
-        className={`font-semibold text-primary text-lg ml-2 my-5`}
+        className={`font-semibold text-primary text-lg ml-2 mb-5 mt-2`}
       >
         OVERVIEW
       </h1>

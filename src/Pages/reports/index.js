@@ -232,7 +232,7 @@ const Reports = () => {
             <div className={`w-full `}>
               <div className="pl-3">
                 <div className="my-5 mb-10">
-                  <div className="flex justify-center bg-[#da1f26] py-4 mb-4  rounded-full  ">
+                  <div className="flex justify-center bg-primary py-4 mb-4  rounded-full  ">
                     <h1 className={`text-white text-lg font-semibold`}>
                       Turnover
                     </h1>
@@ -314,7 +314,7 @@ const Reports = () => {
                         </h6>
                       </div>
                     </div>
-                    <div className="flex justify-center bg-[#da1f26] py-4 mt-6  rounded-full  col-span-2">
+                    <div className="flex justify-center bg-primary py-4 mt-6  rounded-full  col-span-2">
                       <h1 className={`text-white text-lg font-semibold`}>
                         Achievement
                       </h1>
@@ -395,7 +395,7 @@ const Reports = () => {
                       </div>
                     </div>
 
-                    <div className="flex justify-center bg-[#da1f26] py-4 mt-5  rounded-full col-span-2">
+                    <div className="flex justify-center bg-primary py-4 mt-5  rounded-full col-span-2">
                       <h1 className={`text-white text-lg font-semibold`}>
                         Projects
                       </h1>

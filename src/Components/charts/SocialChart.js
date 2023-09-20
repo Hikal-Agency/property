@@ -26,28 +26,6 @@ function SocialChart({ data, selectedMonthSocial }) {
   console.log("social chart : ", data);
   const { currentMode } = useStateContext();
 
-  const options = {
-    plugins: {
-      title: {
-        display: true,
-        text: "Social Campaigns",
-      },
-    },
-    responsive: true,
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-    scales: {
-      x: {
-        stacked: true,
-      },
-      y: {
-        stacked: true,
-      },
-    },
-  };
-
   // const graphData = {
   //   labels,
   //   datasets: [
@@ -72,7 +50,7 @@ function SocialChart({ data, selectedMonthSocial }) {
         offsetY: -20,
         style: {
           fontSize: "12px",
-          colors: currentMode === "dark" ? ["#ffffff"] : ["#304758"], // Set text color based on the current mode
+          colors: currentMode === "dark" ? ["#ffffff"] : [primaryColor], // Set text color based on the current mode
         },
       },
       xaxis: {
