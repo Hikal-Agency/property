@@ -879,7 +879,7 @@ const AllStatistics = ({ pageState, setpageState }) => {
                       key={index}
                       className={`${
                         currentMode === "dark"
-                          ? "bg-[#1c1c1c] text-white "
+                          ? "bg-primary text-white "
                           : "bg-primary text-black"
                       } rounded-lg h-20 p-2 shadow cursor-pointer hover:shadow-sm grid content-center`}
                     >

@@ -521,7 +521,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .dark-mode-datatable .MuiDataGrid-cell[data-field="leadName"] {
-  color: white;
+  color: var(--primary-color);
   font-weight: 500;
 }
 
