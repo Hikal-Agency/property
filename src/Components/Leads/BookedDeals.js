@@ -471,50 +471,50 @@ const BookedDeals = ({
     );
   };
 
-  const deleteLead = async (lid) => {
-    setdeleteloading(true);
-    setdeletebtnloading(true);
-    axios
-      .delete(`${BACKEND_URL}/leads/${lid}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log(result);
-        setdeleteloading(false);
-        setdeletebtnloading(false);
-        setreloadDataGrid(!reloadDataGrid);
-        FetchLeads(token);
-        setDeleteModelOpen(false);
-        fetchSidebarData();
-        toast.success("Lead Deleted Successfull", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        handleLeadModelClose();
-      })
-      .catch((err) => {
-        console.log(err);
-        setdeleteloading(false);
-        setdeletebtnloading(false);
-        toast.error("Something Went Wrong! Please Try Again", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
-  };
+  // const deleteLead = async (lid) => {
+  //   setdeleteloading(true);
+  //   setdeletebtnloading(true);
+  //   axios
+  //     .delete(`${BACKEND_URL}/leads/${lid}`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log(result);
+  //       setdeleteloading(false);
+  //       setdeletebtnloading(false);
+  //       setreloadDataGrid(!reloadDataGrid);
+  //       FetchLeads(token);
+  //       setDeleteModelOpen(false);
+  //       fetchSidebarData();
+  //       toast.success("Lead Deleted Successfull", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //       handleLeadModelClose();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setdeleteloading(false);
+  //       setdeletebtnloading(false);
+  //       toast.error("Something Went Wrong! Please Try Again", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //     });
+  // };
 
   const columns = [
     {

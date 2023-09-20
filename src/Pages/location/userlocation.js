@@ -26,67 +26,9 @@ const Userlocation = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const FetchLocation = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/locations`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("user location data is");
-        console.log(result.data);
-        setLocationData(result.data);
-        setloading(false);
-      })
-      .catch((err) => {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      });
-  };
-
-  const FetchProfile = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/dashboard?page=1`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("User data is");
-        console.log(result.data);
-        setUser(result.data.user);
-        // setloading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Sorry something went wrong. Kindly refresh the page.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        // navigate("/", {
-        //   state: {
-        //     error: "Something Went Wrong! Please Try Again",
-        //     continueURL: location.pathname,
-        //   },
-        // });
-      });
-  };
-
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    FetchLocation(token);
+    // FetchLocation(token);
     setopenBackDrop(false);
     setloading(false);
     // eslint-disable-next-line

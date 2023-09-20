@@ -10,6 +10,9 @@ import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate, useLocation } from "react-router-dom";
 import moment from "moment";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { TextField } from "@mui/material";
 
 const UserAllLocation = (props) => {
   const {
@@ -38,19 +41,26 @@ const UserAllLocation = (props) => {
     mapTypeControl: true,
   };
   const [selectedUser, setSelectedUser] = React.useState(null);
+  const [filterDate, setFilterDate] = useState(null);
 
-  const FetchUserLocation = async (token) => {
+  const FetchUserLocation = async (token, date) => {
+    let url = `${BACKEND_URL}/locations?userID=${userid}`;
+
+    if (date) {
+      const startDate = moment(date).format("YYYY-MM-DD");
+      const endDate = moment(date).add(1, "days").format("YYYY-MM-DD");
+      const dateRange = [startDate, endDate].join(",");
+
+      url += `&data_range=${dateRange}`;
+    }
+
     await axios
-      // .get(`${BACKEND_URL}/locations?userID=${userid}`, {
-      .get(
-        `${BACKEND_URL}/locations?userID=${userid}&date_range=${yesterday},${tomorrow}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
       .then((result) => {
         console.log("user all location data is");
         console.log(result.data);
@@ -71,8 +81,13 @@ const UserAllLocation = (props) => {
     const token = localStorage.getItem("auth-token");
 
     FetchUserLocation(token);
-    // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+
+    FetchUserLocation(token, filterDate);
+  }, [filterDate]);
 
   return (
     <>
@@ -82,6 +97,42 @@ const UserAllLocation = (props) => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
+          <div className="m-4 flex justify-end">
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                value={filterDate}
+                views={["year", "month", "day"]}
+                format="yyyy-MM-dd"
+                onChange={(newValue) => {
+                  const formattedDate = moment(newValue?.$d).format(
+                    "YYYY-MM-DD"
+                  );
+                  setFilterDate(formattedDate);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    size="small"
+                    sx={{
+                      "& input": {
+                        color: currentMode === "dark" ? "#EEEEEE" : "#424242",
+                      },
+                      "&": {
+                        borderRadius: "4px",
+                        border: "1px solid #AAAAAA",
+                      },
+                      "& .MuiSvgIcon-root": {
+                        color: "#AAAAAA",
+                      },
+                    }}
+                    label="Date"
+                    {...params}
+                    onKeyDown={(e) => e.preventDefault()}
+                    readOnly={true}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          </div>
           <div className="px-5">
             <h4 className="text-red-600 font-bold text-lg mb-2 text-center">
               {UserLocationData?.location?.data?.length > 0 ? (

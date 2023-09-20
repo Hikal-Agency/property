@@ -33,7 +33,7 @@ const UserLocationComponent = () => {
   const token = localStorage.getItem("auth-token");
 
   const [selectedLocation, setSelectedLocation] = useState(null);
-  
+
   const handleCardclick = (location) => {
     setSelectedLocation(location);
   };
@@ -124,7 +124,7 @@ const UserLocationComponent = () => {
 
   useEffect(() => {
     if (token) {
-      FetchLocation();
+      // FetchLocation();
       FetchLastLocation();
     } else {
       navigate("/", {
@@ -150,9 +150,7 @@ const UserLocationComponent = () => {
           <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
             className={`text-lg font-semibold ${
-              currentMode === "dark"
-                ? "text-white"
-                : "text-black"
+              currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
             User Locations
@@ -201,122 +199,149 @@ const UserLocationComponent = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-3">
-        <div
-          className={`${
-            currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
-          } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
-        >
-          {/* MAP */}
-          {typeof window.google !== "object" ? (
-            <div>Your map is loading...</div>
-          ) : (
-            <GoogleMap
-              zoom={ selectedLocation ? 16 : 10}
-              center={{ lat: selectedLocation ? selectedLocation.latitude : 25.22527310000002, lng: selectedLocation ? selectedLocation.longitude : 55.280889615218406 }}
-              mapContainerStyle={mapContainerStyle}
-              options={options}
+        {LastLocationData && (
+          <>
+            <div
+              className={`${
+                currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
+              } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
             >
-              {LastLocationData?.locations?.data?.map((user) => (
-                <>
-                  <Marker
-                    key={user?.user_id}
-                    position={{
-                      lat: parseFloat(user.latitude),
-                      lng: parseFloat(user.longitude),
-                    }}
-                    icon={{
-                      url: selectedLocation && selectedLocation.user_id === user.user_id
-                      ? "/userpin.svg" //CHANGE FOR SELECTED
-                      : "/userpin.svg",
-                      scaledSize: window.google
-                        ? new window.google.maps.Size(
-                            selectedLocation && selectedLocation.user_id === user.user_id ? 70 : 50, 
-                            selectedLocation && selectedLocation.user_id === user.user_id ? 70 : 50
-                          )
-                        : null,
-                      zIndex: selectedLocation && selectedLocation.user_id === user.user_id
-                        ? 1000  // Set a high zIndex value for the selected pin
-                        : 1, 
-                    }}
-                    onClick={() => {
-                      // setselectedLocation(user);
-                      handlePinClick(user);
-                    }}
-                  />
+              {/* MAP */}
+              {typeof window.google !== "object" ? (
+                <div>Your map is loading...</div>
+              ) : (
+                <GoogleMap
+                  zoom={selectedLocation ? 16 : 10}
+                  center={{
+                    lat: selectedLocation
+                      ? selectedLocation.latitude
+                      : 25.22527310000002,
+                    lng: selectedLocation
+                      ? selectedLocation.longitude
+                      : 55.280889615218406,
+                  }}
+                  mapContainerStyle={mapContainerStyle}
+                  options={options}
+                >
+                  {LastLocationData?.locations?.data?.map((user) => (
+                    <>
+                      <Marker
+                        key={user?.user_id}
+                        position={{
+                          lat: parseFloat(user.latitude),
+                          lng: parseFloat(user.longitude),
+                        }}
+                        icon={{
+                          url:
+                            selectedLocation &&
+                            selectedLocation.user_id === user.user_id
+                              ? "/userpin.svg" //CHANGE FOR SELECTED
+                              : user?.profile_picture || "/userpin.svg",
+                          scaledSize: window.google
+                            ? new window.google.maps.Size(
+                                selectedLocation &&
+                                selectedLocation.user_id === user.user_id
+                                  ? 70
+                                  : 50,
+                                selectedLocation &&
+                                selectedLocation.user_id === user.user_id
+                                  ? 70
+                                  : 50
+                              )
+                            : null,
+                          zIndex:
+                            selectedLocation &&
+                            selectedLocation.user_id === user.user_id
+                              ? 1000 // Set a high zIndex value for the selected pin
+                              : 1,
+                        }}
+                        onClick={() => {
+                          // setselectedLocation(user);
+                          handlePinClick(user);
+                        }}
+                      />
 
-                  {selectedLocation && (
-                    <InfoWindow
-                      position={{
-                        lat: parseFloat(selectedLocation.latitude) +0.0001,
-                        lng: parseFloat(selectedLocation.longitude),
-                      }}
-                      onCloseClick={() => {
-                        setSelectedLocation(null);
-                      }}
-                    >
-                      <div>
-                        <h1 className="font-semibold">
-                          {selectedLocation.userName}
-                        </h1>
-                        <h1>
-                          LatLong: {selectedLocation.latitude},{" "}
-                          {selectedLocation.longitude}
-                        </h1>
-                        <h1>Last updated: {selectedLocation.latest_recorded_at}</h1>
-                      </div>
-                    </InfoWindow>
-                  )}
-                </>
-              ))}
-            </GoogleMap>
-          )}
-        </div>
-        <div className="h-full w-full">
-          <div className="grid grid-cols-1 gap-5">
-            {LastLocationData?.locations?.data?.map((location) => {
-              return (
-                <>
-                  <div
-                    className={`${
-                      currentMode === "dark"
-                        ? "bg-[#424242] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    } rounded-md space-y-2 p-3`}
-                    onClick={() => handleCardclick(location)}
-                  >
-                    <h1 className="font-semibold capitalize">
-                      {location?.userName}
-                    </h1>
-                    <hr></hr>
-                    <div className="flex gap-3">
-                      <BsPinMap size={20} color="#da1f26" />
-                      {location?.location}
-                    </div>
-                    <div className="flex gap-3">
-                      <AiOutlineFieldTime size={20} color="#da1f26" />
-                      {location?.latest_recorded_at}
-                    </div>
-                    <div className="flex justify-end">
-                      <Button
-                        type="button"
-                        onClick={() =>
-                          navigate(
-                            `/location/useralllocation/${location?.user_id}`
-                          )
-                        }
-                        // onClick={() => handleRowClick(location.user_id)}
-                        sx={{ backgroundColor: "#da1f26", color: "#ffffff" }}
-                        className="rounded-md p-1 flex items-center w-fit h-fit text-sm btn-sm"
+                      {selectedLocation && (
+                        <InfoWindow
+                          position={{
+                            lat: parseFloat(selectedLocation.latitude) + 0.0001,
+                            lng: parseFloat(selectedLocation.longitude),
+                          }}
+                          onCloseClick={() => {
+                            setSelectedLocation(null);
+                          }}
+                        >
+                          <div>
+                            <h1 className="font-semibold">
+                              {selectedLocation.userName}
+                            </h1>
+                            <h1>
+                              LatLong: {selectedLocation.latitude},{" "}
+                              {selectedLocation.longitude}
+                            </h1>
+                            <h1>
+                              Last updated:{" "}
+                              {selectedLocation.latest_recorded_at}
+                            </h1>
+                          </div>
+                        </InfoWindow>
+                      )}
+                    </>
+                  ))}
+                </GoogleMap>
+              )}
+            </div>
+            <div className="h-full w-full">
+              <div className="grid grid-cols-1 gap-5">
+                {LastLocationData?.locations?.data?.map((location) => {
+                  return (
+                    <>
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-[#424242] text-white"
+                            : "bg-[#EEEEEE] text-black"
+                        } rounded-md space-y-2 p-3`}
+                        onClick={() => handleCardclick(location)}
                       >
-                        <BiCurrentLocation size={20} />
-                      </Button>
-                    </div>
-                  </div>
-                </>
-              );
-            })}
-          </div>
-        </div>
+                        <h1 className="font-semibold capitalize">
+                          {location?.userName}
+                        </h1>
+                        <hr></hr>
+                        <div className="flex gap-3">
+                          <BsPinMap size={20} color="#da1f26" />
+                          {location?.location}
+                        </div>
+                        <div className="flex gap-3">
+                          <AiOutlineFieldTime size={20} color="#da1f26" />
+                          {location?.latest_recorded_at}
+                        </div>
+                        <div className="flex justify-end">
+                          <Button
+                            type="button"
+                            onClick={() =>
+                              navigate(
+                                `/location/useralllocation/${location?.user_id}`
+                              )
+                            }
+                            // onClick={() => handleRowClick(location.user_id)}
+                            sx={{
+                              backgroundColor: "#da1f26",
+                              color: "#ffffff",
+                            }}
+                            className="rounded-md p-1 flex items-center w-fit h-fit text-sm btn-sm"
+                          >
+                            <BiCurrentLocation size={20} />
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );
