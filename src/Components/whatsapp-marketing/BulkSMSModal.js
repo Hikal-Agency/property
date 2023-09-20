@@ -235,6 +235,7 @@ const BulkSMSModal = ({
             defLang: "en",
             dr: "1",
             wapUrl: "",
+            added_by: User?.id,
           }),
           {
             headers: {
