@@ -109,6 +109,7 @@ const Reports = () => {
     try {
       const token = localStorage.getItem("auth-token");
       const urls = [`${BACKEND_URL}/memberdeals`];
+
       const responses = await Promise.all(
         urls.map((url) => {
           return axios.get(url, {

@@ -482,10 +482,10 @@ function App() {
           background: currentMode === "dark" ? "#000000" : "#ffffff",
         }}
       >
-        <div className="flex" style={{ width: "99vw" }}>
+        <div className="flex" style={{ width: "100vw" }}>
           {hasSidebarOrNavbar() && <Sidebarmui />}
           <div
-            className={`w-[99%] overflow-x-hidden ${
+            className={`w-[100%] overflow-x-hidden ${
               hasSidebarOrNavbar() ? "pt-16" : "pt-0"
             } ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
           >

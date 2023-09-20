@@ -13,6 +13,7 @@
 
       .cls-2 {
         fill: #da2027;
+        width:200px;
       }
     </style>
   </defs>

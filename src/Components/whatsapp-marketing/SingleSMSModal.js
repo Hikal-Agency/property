@@ -81,7 +81,7 @@ const SingleSMSModal = ({
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  {singleMsg?.user}
+                  {singleMsg?.user_name}
                 </h2>
               </div>
               <div

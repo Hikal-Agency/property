@@ -186,12 +186,11 @@ input[type="number"] {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  /* background-color: rgb(216, 216, 216); */
   background-color: #aaaaaa;
   border-radius: 50px;
   opacity: 0.5 !important;

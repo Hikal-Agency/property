@@ -189,7 +189,11 @@ const MessagesComponent = ({
       renderCell: (cellValues) => {
         return (
           <div className="w-full flex items-center justify-center">
-            <p className=" text-center ">{typeIcon["whatsapp"]}</p>
+            <p className=" text-center ">
+              {cellValues?.formattedValue
+                ? typeIcon[cellValues?.formattedValue]
+                : "-"}
+            </p>
           </div>
         );
       },
@@ -209,7 +213,7 @@ const MessagesComponent = ({
       },
     },
     {
-      field: "user",
+      field: "user_name",
       headerName: "User",
       headerAlign: "center",
       minWidth: 60,
@@ -336,13 +340,14 @@ const MessagesComponent = ({
                   index
                 : index + 1,
             date: row?.created_at || "-",
-            type: row?.message_type || "-",
+            type: row?.message_type,
             message: row?.message || "-",
             user: row?.user_id || "-",
             status: row?.status || "-",
             recipients: row?.recipients || "-",
             recipientCount: recipientCount || "-",
             sender: row?.sender || "-",
+            user_name: row?.user_name || "-",
             credits: row?.credit_used || 0,
             edit: "edit",
           };

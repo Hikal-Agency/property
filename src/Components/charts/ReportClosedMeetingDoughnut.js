@@ -27,7 +27,7 @@ const ReportClosedMeetingDoughnut = ({ target_reached, target_remaining }) => {
                 // data: [`${DashboardData?.lead_status?.target_reached}`, `${DashboardData?.lead_status?.target_remaining}`],
                 data: [25, 81],
                 borderWidth: 1,
-                backgroundColor: ["#da1f26", "#ffffff"],
+                backgroundColor: ["#da1f26", "#777777"],
               },
             ],
           }}
