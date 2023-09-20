@@ -2,6 +2,7 @@ import { Box, Container } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 
 const colors = [
+  'rgb(218,31,38)', // Main color
   'rgb(20, 77, 186)', // Dark blue
   'rgb(101, 176, 207)', // Light blue
   'rgb(128, 61, 191)',   // Purple
