@@ -13,7 +13,6 @@ import { BiCurrentLocation } from "react-icons/bi";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { Button, TextField } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const UserLocationComponent = () => {
@@ -138,9 +137,7 @@ const UserLocationComponent = () => {
   }, []);
 
   useEffect(() => {
-    // FetchLocation(filterDate);
     FetchLastLocation(filterDate);
-    // eslint-disable-next-line
   }, [filterDate]);
 
   return (
