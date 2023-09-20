@@ -242,7 +242,7 @@ const TodayCallLogs = () => {
         ? "text-white"
         : "text-black"
       }`} 
-      style={{ minHeight: "95vh", maxHeight: "100vh", width: "100%", backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE" }}>
+      style={{ minHeight: "95vh", width: "100%", backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE" }}>
       <div>
         <div
           className="flex justify-between items-center px-3 py-1 relative w-full"
