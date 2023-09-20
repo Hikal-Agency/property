@@ -157,7 +157,6 @@ const MessagesDashboar = () => {
   useEffect(() => {
     setopenBackDrop(false);
     setloading(false);
-    // eslint-disable-next-line
   }, []);
 
   return (
@@ -518,6 +517,7 @@ const MessagesDashboar = () => {
               date_filter={date_filter}
               sender_id_filter={sender_id_filter}
               fetch={fetch}
+              selectedUser={selectedUser}
               setFetch={setFetch}
             />
           </div>
