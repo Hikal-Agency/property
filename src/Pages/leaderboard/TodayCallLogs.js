@@ -99,7 +99,7 @@ const TodayCallLogs = () => {
       "id": 133,
       "userName": "Hossam Hassan",
       "profile_picture": "https://staging.hikalcrm.com/storage/profile-pictures/133.jpeg",
-      "target": 3000000,
+      "target": 5000000,
       "booked": 0,
       "total_closed": 8,
       "month_closed": 0,

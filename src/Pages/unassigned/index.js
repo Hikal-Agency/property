@@ -57,16 +57,14 @@ const AllUnassignedLeads = () => {
 
   return (
     <>
-      <div className="flex min-h-screen">
+      <div className={`w-full p-4 flex min-h-screen ${
+        currentMode === "dark" ? "bg-black" : "bg-white"
+        }`}
+      >
         {loading ? (
           <Loader />
         ) : (
-          <div
-            className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
-          >
-            <div className="w-full px-3">
+            <div className="w-full">
               <div className="w-full flex items-center py-1">
                 <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
@@ -92,7 +90,6 @@ const AllUnassignedLeads = () => {
                 leadCategory="hot"
               />
             </div>
-          </div>
         )}
       </div>
     </>
