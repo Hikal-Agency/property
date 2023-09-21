@@ -66,7 +66,7 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
             {/* <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div> */}
             <h1
               className={`text-lg bg-primary font-semibold  py-2 px-6 ${
-                currentMode === "dark" ? "text-white" : "text-black"
+                currentMode === "dark" ? "text-white" : "text-white"
               }`}
             >
               Secondary
