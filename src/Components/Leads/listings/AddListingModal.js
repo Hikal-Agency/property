@@ -65,7 +65,7 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
           <div className="w-full flex items-center py-1 mb-2">
             {/* <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div> */}
             <h1
-              className={`text-lg font-semibold bg-[#DA1F26] py-2 px-6 ${
+              className={`text-lg bg-primary font-semibold  py-2 px-6 ${
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
@@ -93,7 +93,7 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                   <Box sx={darkModeColors}>
                     <h4
                       className={`${
-                        currentMode === "dark" ? "text-red-600" : "text-black"
+                        currentMode === "dark" ? "text-primary" : "text-black"
                       } text-center font-semibold pb-5`}
                     >
                       Seller Details
@@ -170,7 +170,7 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                   <Box sx={darkModeColors}>
                     <h4
                       className={`${
-                        currentMode === "dark" ? "text-red-600" : "text-black"
+                        currentMode === "dark" ? "text-primary" : "text-black"
                       } text-center font-semibold pb-5`}
                     >
                       Project details
@@ -283,7 +283,7 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                   <Box sx={darkModeColors}>
                     <h4
                       className={`${
-                        currentMode === "dark" ? "text-red-600" : "text-black"
+                        currentMode === "dark" ? "text-primary" : "text-black"
                       } text-center font-semibold pb-5`}
                     >
                       Other Details
@@ -338,11 +338,11 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                   <Button
                     variant="contained"
                     size="medium"
-                    className="bg-main-red-color w-full  text-white rounded-lg py-3 font-semibold my-3"
+                    className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
                     style={{
-                      backgroundColor: "#111827",
+                      // backgroundColor: "#111827",
                       color: "#ffffff",
-                      border: "1px solid #DA1F26",
+                      // border: "1px solid #DA1F26",
                     }}
                     component="span"
                     disabled={loading ? true : false}
@@ -355,11 +355,11 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                   <Button
                     variant="contained"
                     size="medium"
-                    className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold my-3"
+                    className="bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
                     style={{
-                      backgroundColor: "#111827",
+                      // backgroundColor: "#111827",
                       color: "#ffffff",
-                      border: "1px solid #DA1F26",
+                      // border: "1px solid ",
                     }}
                     component="span"
                     disabled={loading ? true : false}
@@ -379,9 +379,10 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                   ripple={true}
                   size="lg"
                   type="submit"
+                  className="bg-btn-primary"
                   disabled={loading ? true : false}
                   style={{
-                    background: "#da1f26",
+                    // background: "#da1f26",
                     color: "#ffffff",
                     marginTop: "10px",
                     width: "100%",
