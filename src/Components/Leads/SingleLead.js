@@ -38,9 +38,16 @@ const SingleLead = ({
   setBulkDeleteClicked,
   setLeadToDelete,
   isBookedDeal,
+  lead_origin,
 }) => {
-  const { darkModeColors, currentMode, User, BACKEND_URL, isArabic, primaryColor } =
-    useStateContext();
+  const {
+    darkModeColors,
+    currentMode,
+    User,
+    BACKEND_URL,
+    isArabic,
+    primaryColor,
+  } = useStateContext();
   const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [singleLeadData, setsingleLeadData] = useState({});
@@ -685,7 +692,7 @@ const SingleLead = ({
                     sx={{ my: 0 }}
                     variant="contained"
                     style={{
-                      backgroundColor: primaryColor
+                      backgroundColor: primaryColor,
                     }}
                     size="medium"
                   >
@@ -768,7 +775,6 @@ const SingleLead = ({
                   <button
                     disabled={addNoteloading ? true : false}
                     type="submit"
-
                     className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary group relative flex w-full justify-center rounded-md border border-transparent p-1 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
                   >
                     {addNoteloading ? (
