@@ -70,6 +70,7 @@ import Role from "./roles";
 import usePermission from "../utils/usePermission";
 import Notifications from "./notifications";
 import NotificationsList from "./notifications/notificationsList";
+import Listings from "./listings";
 
 const libraries = ["places"];
 
@@ -433,6 +434,11 @@ const routes = [
     path: "/search",
     pageName: "Search",
     element: <Search />,
+  },
+  {
+    path: "/secondaryListings",
+    pageName: "Secondary Listings",
+    element: <Listings />,
   },
   {
     path: "*",
