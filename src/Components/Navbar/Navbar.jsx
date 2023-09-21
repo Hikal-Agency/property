@@ -40,6 +40,7 @@ import {
   VscShield,
   VscExclude,
   VscSignOut,
+  VscSymbolColor
 } from "react-icons/vsc";
 import "../../styles/animation.css";
 import ColorsPopup from "./ColorsPopup";
@@ -442,145 +443,173 @@ const Navbar = () => {
                     <UpcomingMeetingsMenu />
                 ) : (currNavBtn === "Profile") ? (
                   <div className="pl-2">
-                  <div
-                    className={`cursor-pointer card-hover ${
-                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-3 p-4 rounded-xl shadow-sm w-full`}
-                  >
-                    <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-                      <div className="flex items-center justify-start">
-                        <Avatar
-                          src={User?.displayImg}
-                          className="inline-block"
-                        />
-                        <div className="flex justify-between items-center w-full h-full">
-                          <div className="mx-1 space-y-1">
-                            <p className="font-semibold">{User?.userName}</p>
-                            <p className="text-xs capitalize">{User?.position}</p>
-                          </div>
-                          <div style={{
-                            borderColor: primaryColor
-                          }} className={`text-sm rounded-full border px-2 py-1`}>
-                            Profile
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-4 rounded-xl shadow-sm w-full`}
+                    >
+                      <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
+                        <div className="flex items-center justify-start">
+                          <Avatar
+                            src={User?.displayImg}
+                            className="inline-block"
+                          />
+                          <div className="flex justify-between items-center w-full h-full">
+                            <div className="mx-1 space-y-1">
+                              <p className="font-semibold">{User?.userName}</p>
+                              <p className="text-xs capitalize">{User?.position}</p>
+                            </div>
+                            <div style={{
+                              borderColor: primaryColor
+                            }} className={`text-sm rounded-full border px-2 py-1`}>
+                              Profile
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  </div>
+                      </Link>
+                    </div>
 
-                  {/* LOGIN HISTORY  */}
-                  <div
-                    className={`cursor-pointer card-hover ${
-                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                  >
-                    {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-4 rounded-xl shadow-sm w-full`}
+                    >
                       <div className="flex items-center justify-start">
                         <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
-                          <VscHistory size={18} color={"#AAAAAA"} />
+                          <VscSymbolColor size={18} color={"#AAAAAA"} />
                         </div>
                         <div className="flex justify-between items-center w-full h-full">
                           <div className="flex items-center">
-                            <p className="font-semibold mx-1 mr-2">Login history</p>
+                            <p className="font-semibold mx-1 mr-2">Theme</p>
                             <VscLock size={14} color={primaryColor} className="mr-2" />
                           </div>
-                          <div style={{
-                            background: primaryColor, 
-                            fontSize: "0.5rem"
-                          }} className="rounded-full text-white px-2 py-1 font-bold">
-                            SOON
+                          <div 
+                            style={{
+                              background: primaryColor, 
+                              fontSize: "0.5rem"
+                            }} 
+                            className="rounded-full text-white px-2 py-1 font-bold"
+                          >
+                            BETA
                           </div>
                         </div>
                       </div>
-                    {/* </Link> */}
-                  </div>
+                    </div>
 
-                  {/* CHANGE PASSWORD  */}
-                  <div
-                    className={`cursor-pointer card-hover ${
-                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                  >
-                    <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}>
-                      <div className="flex items-center justify-start">
-                        <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
-                          <VscShield size={18} color={"#AAAAAA"} />
-                        </div>
-                        <p className="mx-1 mr-2 font-semibold">Change password</p>
-                      </div>
-                    </Link>
-                  </div>
-
-                  {/* IF SUBSCRIBED, UNSUBCRIBE  */}
-                  {User?.role !== 1 && isUserSubscribed && (
+                    {/* LOGIN HISTORY  */}
                     <div
                       className={`cursor-pointer card-hover ${
                         currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
                       } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                      onClick={UnsubscribeUser}
                     >
-                      {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
+                      {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
                         <div className="flex items-center justify-start">
-                          <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`} >
-                            <VscExclude size={18} color={"#AAAAAA"} />
+                          <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
+                            <VscHistory size={18} color={"#AAAAAA"} />
                           </div>
-                          <p className="mx-1 mr-2 font-semibold">Unsubscribe package</p>
-                          <VscLock size={14} color={primaryColor} className="mr-2" />
+                          <div className="flex justify-between items-center w-full h-full">
+                            <div className="flex items-center">
+                              <p className="font-semibold mx-1 mr-2">Login history</p>
+                              <VscLock size={14} color={primaryColor} className="mr-2" />
+                            </div>
+                            <div style={{
+                              background: primaryColor, 
+                              fontSize: "0.5rem"
+                            }} className="rounded-full text-white px-2 py-1 font-bold">
+                              SOON
+                            </div>
+                          </div>
                         </div>
                       {/* </Link> */}
                     </div>
-                  )}
 
-
-                {/* IF SUBSCRIBED, UNSUBCRIBE  */}
-                {User?.role !== 1 && isUserSubscribed && (
-                  <div
-                    className={`cursor-pointer card-hover ${
-                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                    onClick={UnsubscribeUser}
-                  >
-                    {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
-                    <div className="flex items-center justify-start">
-                      <div
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-[#1C1C1C]"
-                            : "bg-[#EEEEEE]"
-                        } p-2 rounded-full mr-2`}
-                      >
-                        <VscExclude size={18} color={"#AAAAAA"} />
-                      </div>
-                      <p className="mx-1 mr-2 font-semibold">
-                        Unsubscribe package
-                      </p>
-                      <VscLock size={14} color={"#DA1F26"} className="mr-2" />
-                    </div>
-                    {/* </Link> */}
-                  </div>
-                )}
-
-                {/* LOGOUT  */}
-                <div
-                  className={`cursor-pointer card-hover ${
-                    currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                  } p-3 rounded-xl shadow-sm w-full`}
-                  onClick={LogoutUser}
-                >
-                  <div className="flex items-center justify-start">
+                    {/* CHANGE PASSWORD  */}
                     <div
-                      className={`${
-                        currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-                      } p-2 rounded-full mr-2`}
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
                     >
-                      <VscSignOut size={18} color={"#AAAAAA"} />
+                      <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}>
+                        <div className="flex items-center justify-start">
+                          <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
+                            <VscShield size={18} color={"#AAAAAA"} />
+                          </div>
+                          <p className="mx-1 mr-2 font-semibold">Change password</p>
+                        </div>
+                      </Link>
                     </div>
-                    <p className="mx-1 mr-2 font-semibold">Log out</p>
+
+                    {/* IF SUBSCRIBED, UNSUBCRIBE  */}
+                    {User?.role !== 1 && isUserSubscribed && (
+                      <div
+                        className={`cursor-pointer card-hover ${
+                          currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                        onClick={UnsubscribeUser}
+                      >
+                        {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
+                          <div className="flex items-center justify-start">
+                            <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`} >
+                              <VscExclude size={18} color={"#AAAAAA"} />
+                            </div>
+                            <p className="mx-1 mr-2 font-semibold">Unsubscribe package</p>
+                            <VscLock size={14} color={primaryColor} className="mr-2" />
+                          </div>
+                        {/* </Link> */}
+                      </div>
+                    )}
+
+                    {/* IF SUBSCRIBED, UNSUBCRIBE  */}
+                    {User?.role !== 1 && isUserSubscribed && (
+                      <div
+                        className={`cursor-pointer card-hover ${
+                          currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                        onClick={UnsubscribeUser}
+                      >
+                        {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
+                        <div className="flex items-center justify-start">
+                          <div
+                            className={`${
+                              currentMode === "dark"
+                                ? "bg-[#1C1C1C]"
+                                : "bg-[#EEEEEE]"
+                            } p-2 rounded-full mr-2`}
+                          >
+                            <VscExclude size={18} color={"#AAAAAA"} />
+                          </div>
+                          <p className="mx-1 mr-2 font-semibold">
+                            Unsubscribe package
+                          </p>
+                          <VscLock size={14} color={"#DA1F26"} className="mr-2" />
+                        </div>
+                        {/* </Link> */}
+                      </div>
+                    )}
+
+                    {/* LOGOUT  */}
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } p-3 rounded-xl shadow-sm w-full`}
+                      onClick={LogoutUser}
+                    >
+                      <div className="flex items-center justify-start">
+                        <div
+                          className={`${
+                            currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                          } p-2 rounded-full mr-2`}
+                        >
+                          <VscSignOut size={18} color={"#AAAAAA"} />
+                        </div>
+                        <p className="mx-1 mr-2 font-semibold">Log out</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
                 ) : <></>
-              ) : (<></>)
+              ) : (
+                <></>
+              )
             }
           </Menu>
 
