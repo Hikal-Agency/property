@@ -14,6 +14,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { BsTrash } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
 import { IoIosAlert } from "react-icons/io";
+import { BsBuildingGear } from "react-icons/bs";
 
 import usePermission from "../../utils/usePermission";
 
@@ -30,6 +31,7 @@ import { HiPhoneOutgoing } from "react-icons/hi";
 import { RiMailSendFill } from "react-icons/ri";
 import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
 import moment from "moment";
+import AddListingModal from "./listings/AddListingModal";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -61,11 +63,13 @@ const SingleLead = ({
   const [lastNoteDate, setLastNoteDate] = useState("");
   const [lastNoteAddedBy, setLastNoteAddedBy] = useState("");
   const [loading, setLoading] = useState(false);
+  const [listingModalOpen, setListingModalOpen] = useState(false);
   const [blockIPModalOpened, setBlockIPModalOpened] = useState({
     lead: null,
     isOpened: false,
   });
   const [deleteloading, setdeleteloading] = useState(false);
+  const handleCloseListingModal = () => setListingModalOpen(false);
 
   const handleCloseRequestModel = () => {
     setOpen(false);
@@ -76,6 +80,12 @@ const SingleLead = ({
     console.log("LEADID: ", params);
     setsingleLeadData(params);
     handleUpdateLeadModelOpen();
+  };
+
+  // open listing modal
+  const handleOpenListingModal = () => {
+    setListingModalOpen(true);
+    handleLeadModelClose();
   };
 
   // RESHUFFLE LEAD HAND FUNCTION
@@ -605,6 +615,27 @@ const SingleLead = ({
                   </p>
                 )}
 
+                {/* listing */}
+                <p
+                  style={{ cursor: "pointer" }}
+                  disabled={deleteloading ? true : false}
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-[#FFFFFF] bg-[#262626]"
+                      : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                >
+                  <Tooltip title="Add Listing" arrow>
+                    <button onClick={handleOpenListingModal}>
+                      <BsBuildingGear
+                        className="listingbtn"
+                        size={18}
+                        style={{ color: "inherit" }}
+                      />
+                    </button>
+                  </Tooltip>
+                </p>
+
                 {/* RESHUFFLED REQUEST  */}
                 {User?.role !== "1" &&
                 (LeadData?.transferRequest === 1 ||
@@ -852,18 +883,14 @@ const SingleLead = ({
         </Modal>
       )}
 
-      {/* {UpdateLeadModelOpen && (
-        <UpdateLead
+      {listingModalOpen && (
+        <AddListingModal
           lead_origin={lead_origin}
-          LeadModelOpen={UpdateLeadModelOpen}
-          setLeadModelOpen={setUpdateLeadModelOpen}
-          handleLeadModelOpen={handleUpdateLeadModelOpen}
-          handleLeadModelClose={handleUpdateLeadModelClose}
-          LeadData={singleLeadData}
+          handleCloseListingModal={handleCloseListingModal}
+          setListingModalOpen={setListingModalOpen}
           BACKEND_URL={BACKEND_URL}
-          FetchLeads={FetchLeads}
         />
-      )} */}
+      )}
     </>
   );
 };
