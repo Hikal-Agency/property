@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 import IPLead from "./IPLead";
-import Loader from "../Loader";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -82,7 +81,7 @@ const IPLeadsModal = ({ blockIPModalOpened, handleCloseIPModal, ip }) => {
         </div> :
 
         <div className="mt-12 h-[80%] overflow-y-scroll">
-          <p className="text-2xl mb-16 text-center">Leads for IP: <span className="text-[#da1f26]">{ip}</span></p>
+          <p className="text-2xl mb-16 text-center">Leads for IP: <span className="text-primary font-bold">{ip}</span></p>
           {leads?.map((lead) => {
             return <IPLead lead={lead}/>;
           })}

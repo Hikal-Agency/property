@@ -135,9 +135,7 @@ const SingleLeadNote = (props) => {
                     }  px-10 py-10 mt-5 mb-10`}
                   >
                     <h1
-                      className={`${
-                        currentMode === "dark" ? "text-red-600" : "text-red-600"
-                      } text-center font-bold text-2xl pb-5`}
+                      className={`text-primary text-center font-bold text-2xl pb-5`}
                     >
                       Lead details and notes
                     </h1>
@@ -221,7 +219,7 @@ const SingleLeadNote = (props) => {
                       </div>
                       <div className="col-span-2 space-y-2 text-right">
                         <div className="mb-5 space-x-3">
-                          <span className="p-2 bg-main-red-color text-white rounded-md">
+                          <span className="p-2 bg-primary text-white rounded-md">
                             {LeadData?.info?.feedback}
                           </span>
                         </div>
@@ -244,7 +242,7 @@ const SingleLeadNote = (props) => {
                         </p>
                       </div>
                     </div>
-                    <div className="bg-main-red-color h-0.5 w-full my-7"></div>
+                    <div className="bg-primary h-0.5 w-full my-7"></div>
                     <div
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-black"
@@ -276,7 +274,7 @@ const SingleLeadNote = (props) => {
                       </div>
                     </div>
 
-                    <div className="bg-main-red-color h-0.5 w-full my-7"></div>
+                    <div className="bg-primary h-0.5 w-full my-7"></div>
 
                     <div className={`rounded-md mt-5`}>
                       <h1 className="font-bold text-lg text-center">
@@ -307,7 +305,8 @@ const SingleLeadNote = (props) => {
                           <button
                             disabled={addNoteloading ? true : false}
                             type="submit"
-                            className="my-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-1 px-5 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                            style={{color: "white"}}
+                            className="my-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary py-1 px-5 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
                           >
                             {addNoteloading ? (
                               <CircularProgress

@@ -1,15 +1,12 @@
 // import { Button } from "@material-tailwind/react";
 import {
   Backdrop,
-  Modal,
-  IconButton,
-  CircularProgress,
+  Modal, CircularProgress,
   Button,
-  TextField,
+  TextField
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import { ToastContainer, toast } from "react-toastify";
-import { IoMdClose } from "react-icons/io";
+import { toast } from "react-toastify";
 import { IoIosAlert } from "react-icons/io";
 import { useEffect, useState } from "react";
 import axios from "../../axoisConfig";
@@ -191,7 +188,7 @@ const DeleteUser = ({
           } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
         >
           <div className="flex flex-col justify-center items-center">
-            <IoIosAlert size={50} className="text-main-red-color text-2xl" />
+            <IoIosAlert size={50} className="text-primary text-2xl" />
             <h1
               className={`font-semibold pt-3 text-lg ${
                 currentMode === "dark" ? "text-white" : "text-black"
@@ -206,7 +203,7 @@ const DeleteUser = ({
               automatically and can be found in Reshuffled leads.
             </small>
 
-            <div className="bg-red-600 text-center rounded p-3 mb-2 mt-4 w-full text-white">
+            <div className="bg-primary text-center rounded p-3 mb-3 mt-4 w-full text-white">
               <strong style={{ fontSize: 20 }}>
                 {randNumbers?.firstNumber} + {randNumbers?.secondNumber} = ?
               </strong>
@@ -222,16 +219,19 @@ const DeleteUser = ({
 
           <div className="action buttons mt-5 flex items-center justify-center space-x-2">
             <Button
-              className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+              className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
               ripple="true"
               size="lg"
+              style={{
+                color: "white"
+              }}
               disabled={!isCaptchaVerified}
               onClick={handleDeleteUser}
             >
               {deletebtnloading ? (
                 <CircularProgress size={18} sx={{ color: "blue" }} />
               ) : (
-                <span>{UserStatus === 1 ? "deactivate" : "reactive"}</span>
+                <span>{UserStatus === 1 ? "deactivate" : "reactivate"}</span>
               )}
             </Button>
 
@@ -242,7 +242,7 @@ const DeleteUser = ({
               className={`shadow-none  rounded-md text-sm  ${
                 currentMode === "dark"
                   ? "text-white border-white"
-                  : "text-main-red-color border-main-red-color"
+                  : "text-primary border-primary"
               }`}
             >
               Cancel

@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import Navbar from "../../../Components/Navbar/Navbar";
-import Sidebarmui from "../../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../../context/ContextProvider";
-import Footer from "../../../Components/Footer/Footer";
 import { useEffect } from "react";
 import Loader from "../../../Components/Loader";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AllStatistics from "../../../Components/campaigns/AllStatistics";
 
 const Statistics = () => {
-  const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
+  const { User, setUser, currentMode, setopenBackDrop, } =
     useStateContext();
   const navigate = useNavigate();
   const location = useLocation();

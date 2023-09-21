@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import {
   Chart as ChartJS,
@@ -14,9 +14,6 @@ import {
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
 
-import axios from "../../axoisConfig";
-// import faker from 'faker';
-
 ChartJS.register(
   LinearScale,
   CategoryScale,
@@ -30,36 +27,14 @@ ChartJS.register(
 );
 
 const CallsGraph = ({ outgoing }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
-  //   const [performanceChartData, setPerformanceChartData] = useState([]);
-
-  //   useEffect(() => {
-  //     const token = localStorage.getItem("auth-token");
-  //     axios
-  //       .get(`${BACKEND_URL}/performance`, {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       })
-  //       .then((result) => {
-  //         const {
-  //           data: { members_deal },
-  //         } = result;
-  //         setPerformanceChartData(members_deal);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }, []);
-
+  const { currentMode, primaryColor } = useStateContext();
+  
   return (
     <span>
       {currentMode === "dark" ? (
         <Chart
           type="bar"
           data={{
-            // labels: performanceChartData.map((member) => member.userName),
             datasets: [
               {
                 type: "line",
@@ -67,7 +42,7 @@ const CallsGraph = ({ outgoing }) => {
                 data: outgoing,
                 fill: true,
                 backgroundColor: "rgba(225,0,0,0.4)",
-                borderColor: "#da1f26",
+                borderColor: primaryColor,
               },
               //   {
               //     type: "line",
@@ -84,7 +59,7 @@ const CallsGraph = ({ outgoing }) => {
           options={{
             color: "#ffffff",
             backgroundColor: ["rgba(225,0,0,0.3)", "rgba(0,0,0,0.2)"],
-            borderColor: ["#da1f26", "#ffffff"],
+            borderColor: [primaryColor, "#ffffff"],
             scales: {
               y: { ticks: { color: "#ffffff" }, grid: { color: "#424242" } },
               x: { ticks: { color: "#ffffff" }, grid: { color: "#424242" } },
@@ -109,7 +84,7 @@ const CallsGraph = ({ outgoing }) => {
                 data: outgoing,
                 fill: true,
                 backgroundColor: "rgba(225,0,0,0.4)",
-                borderColor: "#da1f26",
+                borderColor: primaryColor,
               },
               //   {
               //     type: "line",
@@ -127,7 +102,7 @@ const CallsGraph = ({ outgoing }) => {
           options={{
             color: "#000000",
             backgroundColor: ["rgba(225,0,0,0.3)", "rgba(0,0,0,0.2)"],
-            borderColor: ["#da1f26", "#020202"],
+            borderColor: [primaryColor, "#020202"],
             scales: {
               y: { ticks: { color: "#000000" } },
               x: { ticks: { color: "#000000" } },

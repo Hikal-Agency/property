@@ -1,37 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
-  TextField,
-  FormControl,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Button,
+  TextField, Button,
   CircularProgress,
   Select,
-  MenuItem,
+  MenuItem
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import moment from "moment";
 
 import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const AddNewsletter = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, formatNum, BACKEND_URL } =
+  const { currentMode, darkModeColors, BACKEND_URL } =
     useStateContext();
-  const [validFromDate, setValidFromDate] = useState("");
-  const [validFromDateValue, setValidFromDateValue] = useState({});
-  const [validToDate, setValidToDate] = useState("");
-  const [validToDateValue, setValidToDateValue] = useState({});
   const [loading, setloading] = useState(false);
-  const [error, setError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [email, setEmail] = useState("");
 
   const [newsletterData, setNewsletterData] = useState({
     email: "",
@@ -101,7 +85,6 @@ const AddNewsletter = ({ tabValue, setTabValue, isLoading }) => {
     const user = JSON.parse(localStorage.getItem("user"));
 
     console.log("User", user);
-    const creationDate = new Date();
     const NewsLetter = new FormData();
 
     NewsLetter.append("email", newsletterData?.email);
@@ -138,8 +121,6 @@ const AddNewsletter = ({ tabValue, setTabValue, isLoading }) => {
         email: "",
         status: "",
       });
-      setValidFromDate("");
-      setValidToDate("");
 
       setloading(false);
     } catch (error) {
@@ -158,10 +139,6 @@ const AddNewsletter = ({ tabValue, setTabValue, isLoading }) => {
     }
   };
 
-  useEffect(() => {
-    setValidFromDateValue(dayjs("2023-01-01"));
-    setValidToDateValue(dayjs("2023-01-01"));
-  }, []);
   return (
     <div>
       
@@ -170,7 +147,7 @@ const AddNewsletter = ({ tabValue, setTabValue, isLoading }) => {
           currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
         } rounded-md p-5`}
       >
-        <h3 className="text-main-red-color font-semibold mb-3 text-center">
+        <h3 className="text-primary font-semibold mb-3 text-center">
           Add New Subscriber
         </h3>
         <hr className="mb-5"></hr>
@@ -220,8 +197,8 @@ const AddNewsletter = ({ tabValue, setTabValue, isLoading }) => {
         <Button
           type="submit"
           size="medium"
-          className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-          style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+          className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold mb-3"
+          style={{color: "#ffffff" }}
           onClick={handleClick}
           disabled={loading ? true : false}
         >

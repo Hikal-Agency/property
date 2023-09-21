@@ -246,7 +246,7 @@ const SingleLeadPage = () => {
     ),
 
     "bulk import": () => (
-      <BiImport size={16} color={"#da1f26"} />
+      <BiImport size={16} className="text-primary"/>
     ),
 
     "property finder": () => (
@@ -302,7 +302,7 @@ const SingleLeadPage = () => {
               <div>
                 <div className="w-full flex items-center mt-5">
                   {/* <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div> */}
-                  <span className="text-sm font-bold tracking-wide bg-main-red-color text-white px-2 py-1 mr-2 rounded-sm my-auto">
+                  <span className="text-sm font-bold tracking-wide bg-primary text-white px-2 py-1 mr-2 rounded-sm my-auto">
                     <span>{LeadData?.id}</span>
                   </span>
                   <h1
@@ -327,18 +327,18 @@ const SingleLeadPage = () => {
                     <div className="sm:col-span-1 md:col-span-3 space-y-3 font-semibold">
                       {/* LEAD CONTACT  */}
                       <div className="flex space-x-3">
-                        <TbPhone size={17} className="mr-2 text-[#DA1F26]" />
+                        <TbPhone size={17} className="mr-2 text-primary" />
                         <h6>{contact}</h6>
                         <h6>{LeadData?.leadEmail === "null" ? "" : LeadData?.leadEmail}</h6>
                       </div>
                       {/* LANGUAGE  */}
                       <div className="flex space-x-3">
-                        <TbLanguage size={17} className="mr-2 text-[#DA1F26]" />
+                        <TbLanguage size={17} className="mr-2 text-primary" />
                         <h6>{LeadData?.language}</h6>
                       </div>
                       {/* PROJECT  */}
                       <div className="flex space-x-3">
-                        <TbBuildingCommunity size={17} className="mr-2 text-[#DA1F26]" />
+                        <TbBuildingCommunity size={17} className="mr-2 text-primary" />
                         <h6>{LeadData?.project === "null" ? "-" : LeadData?.project}</h6>
                         <h6>{LeadData?.enquiryType === "null" ? "-" : LeadData?.enquiryType}</h6>
                         <h6>{LeadData?.leadType === "null" ? "-" : LeadData?.leadType}</h6>
@@ -348,7 +348,7 @@ const SingleLeadPage = () => {
 
                     <div className="sm:col-span-1 md:col-span-2 space-y-2 text-right">
                       <div className="flex items-center justify-end space-x-3 mb-4">
-                        <span className="border border-[#DA1F26] px-3 py-1 rounded-md font-semibold text-base">
+                        <span className="border border-primary px-3 py-1 rounded-md font-semibold text-base">
                           {LeadData?.feedback ?? "?"}
                         </span>
                         <Box
@@ -393,7 +393,7 @@ const SingleLeadPage = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="bg-main-red-color h-0.5 w-full my-7"></div>
+                  <div className="bg-primary h-0.5 w-full my-7"></div>
                   
                   <div className={`rounded-md mb-5`}>
                     <h1 className="font-semibold text-lg text-center mb-2">
@@ -430,7 +430,7 @@ const SingleLeadPage = () => {
                                 // background: "#DA1F26"
                               },
                             }}
-                            className={`${ currentMode === "dark" ? "bg-[#DA1F26]" : "bg-[#000000]" }`}
+                            className={`${ currentMode === "dark" ? "bg-primary" : "bg-[#000000]" }`}
                           >
                             <TableRow>
                               <TableCell align="center" className="w-[5%]">#</TableCell>
@@ -520,8 +520,9 @@ const SingleLeadPage = () => {
                       />
                       <button
                         disabled={addNoteloading ? true : false}
+                        style={{color: "white"}}
                         type="submit"
-                        className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color p-1 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                        className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary p-1 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
                       >
                         {addNoteloading ? (
                           <CircularProgress

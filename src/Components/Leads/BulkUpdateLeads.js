@@ -212,9 +212,10 @@ const BulkUpdateLeads = ({
           )}
 
           <Button
-            className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-main-red-color`}
+            className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
             ripple={"true"}
             size="lg"
+            style={{color: "white"}}
             onClick={handleSubmit}
             type="submit"
             disabled={btnloading ? true : false}

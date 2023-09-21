@@ -306,13 +306,11 @@ const FiltersDropdown = ({
           sx={{
             zIndex: "40",
             "& svg path": {
-              stroke: "#da1f26 !important",
+              stroke: "white !important",
             },
-            color: "#da1f26",
+            color: "white",
           }}
-          style={{
-            background: "rgb(218 31 38 / 16%)",
-          }}
+          className="bg-btn-primary"
         >
           {open ? (
             <div className="flex items-center">
@@ -390,7 +388,7 @@ const FiltersDropdown = ({
               >
                 {managerSelected ? (
                   <strong
-                    className="ml-4 text-red-600 cursor-pointer"
+                    className="ml-4 text-primary cursor-pointer"
                     onClick={() => {
                       setManagerSelected("");
                       setAgentSelected("");
@@ -451,7 +449,7 @@ const FiltersDropdown = ({
               >
                 {agentSelected ? (
                   <strong
-                    className="ml-4 text-red-600 cursor-pointer"
+                    className="ml-4 text-primary cursor-pointer"
                     onClick={() => {
                       setAgentSelected("");
                       setAgents([]);
@@ -583,7 +581,7 @@ const FiltersDropdown = ({
               >
                 {enquiryTypeSelected?.id ? (
                   <strong
-                    className="ml-4 text-red-600 cursor-pointer"
+                    className="ml-4 text-primary cursor-pointer"
                     onClick={() => setEnquiryTypeSelected({ id: 0 })}
                   >
                     Clear
@@ -663,7 +661,7 @@ const FiltersDropdown = ({
               >
                 {otpSelected?.id ? (
                   <strong
-                    className="ml-4 text-red-600 cursor-pointer"
+                    className="ml-4 text-primary cursor-pointer"
                     onClick={() => setOtpSelected({ id: 0 })}
                   >
                     Clear
@@ -741,7 +739,7 @@ const FiltersDropdown = ({
             >
               {phoneNumberFilter ? (
                 <strong
-                  className="ml-4 text-red-600 cursor-pointer"
+                  className="ml-4 text-primary cursor-pointer"
                   onClick={() => setPhoneNumberFilter("")}
                 >
                   Clear
@@ -797,7 +795,7 @@ const FiltersDropdown = ({
             >
               {emailFilter ? (
                 <strong
-                  className="ml-4 text-red-600 cursor-pointer"
+                  className="ml-4 text-primary cursor-pointer"
                   onClick={() => setEmailFilter("")}
                 >
                   Clear
@@ -1060,8 +1058,9 @@ const FiltersDropdown = ({
           </div>
           {fromRange && toRange && (
             <Button
+            style={{color: "white"}}
               onClick={getNumbers}
-              className="text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-[#DA1F26]"
+              className="text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary"
             >
               {btnLoading ? <CircularProgress /> : <span>SEND</span>}
             </Button>

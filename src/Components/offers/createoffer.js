@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   TextField,
@@ -18,7 +18,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 
 import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
+import {toast } from "react-toastify";
 import { Textarea } from "@material-tailwind/react";
 
 const currentDate = dayjs();
@@ -294,7 +294,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
             >
               <Box sx={darkModeColors}>
                 <label className="font-semibold mb-1">
-                  <span className="text-main-red-color">Offer Validity</span>
+                  <span className="text-primary">Offer Validity</span>
                 </label>
                 <br></br>
                 <FormControl>
@@ -358,11 +358,10 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
               <Button
                 variant="contained"
                 size="medium"
-                className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold my-3"
+                className="bg-primary w-full text-white rounded-lg py-3 font-semibold my-3"
                 style={{
-                  backgroundColor: "#111827",
                   color: "#ffffff",
-                  border: "1px solid #DA1F26",
+                  border: "1px solid white",
                 }}
                 component="span" // Required so the button doesn't automatically submit form
                 disabled={loading ? true : false}
@@ -378,8 +377,10 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
       <Button
         type="submit"
         size="medium"
-        className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-        style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+        style={{
+          color: "white"
+        }}
+        className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3"
         onClick={handleClick}
         disabled={loading ? true : false}
       >

@@ -7,20 +7,14 @@ import {
     CircularProgress,
     Button
 } from "@mui/material";
-import { useStateContext } from "../../context/ContextProvider";
-import { toast } from "react-toastify";
-import axios from "../../axoisConfig";
-import moment from "moment";
+import { useStateContext } from "../../context/ContextProvider";;
 
 const AlterTimingPopup = ({ date, isOffDay, onClose }) => {
     const {
         darkModeColors,
         currentMode,
-        BACKEND_URL
     } = useStateContext();
     
-    const token = localStorage.getItem("auth-token");
-
     const [btnLoading, setBtnLoading] = useState(false);
 
     // SETTINGS 
@@ -35,82 +29,6 @@ const AlterTimingPopup = ({ date, isOffDay, onClose }) => {
     const offDayText = isOffDay(date.start) ? "OFF" : "";
 
     // UPDATE TIMING 
-    const handleUpdate = async () => {
-        setBtnLoading(true);
-
-        if (!settings) {
-            toast.error("kindly enter data.", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
-        }
-
-        const formData = new FormData();
-    
-        formData.append("change_type", settings?.change_type);
-        formData.append(
-            "change_in_time",
-            settings?.change_in_time
-              ? moment(settings.change_in_time, "HH:mm").format("hh:mm A")
-              : ""
-        );
-        formData.append(
-          "change_out_time",
-          settings?.change_out_time
-            ? moment(settings.change_out_time, "HH:mm").format("hh:mm A")
-            : ""
-        );    
-        formData.append("change_reason", settings?.change_reason);
-
-        try {
-          const update_timings = await axios.post(
-            `${BACKEND_URL}/agencies/1`,
-            formData,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-              },
-            }
-          );
-    
-          setBtnLoading(false);
-    
-          toast.success("Settings updated successfully.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-    
-        //   fetchSettings();
-    
-          console.log("Response: ", update_timings);
-        } catch (error) {
-          setBtnLoading(false);
-          toast.error("Unable to update timings.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-    };
-
     return (
         <div className="popup-container">
             <div className={`popup p-2 ${currentMode === "dark" ? "bg-gray-800 text-white" : "bg-white text-black" }`} style={{ minWidth: "300px"}}>
@@ -121,12 +39,12 @@ const AlterTimingPopup = ({ date, isOffDay, onClose }) => {
                     {offDayText === "OFF" ? (
                         <>
                             <p className="font-semibold text-lg">{date.startStr} is Off Day!</p>
-                            <div className="h-0.5 w-full bg-[#DA1F26] mt-3 mb-5"></div>
+                            <div className="h-0.5 w-full bg-primary mt-3 mb-5"></div>
                         </>
                     ) : (
                         <>
                             <p className="font-semibold text-lg">Modify Office Settings for {date.startStr}</p>
-                            <div className="h-0.5 w-full bg-[#DA1F26] mt-3 mb-5"></div>
+                            <div className="h-0.5 w-full bg-primary mt-3 mb-5"></div>
                             
                             {/* ADD FIELDS */}
                             <Box sx={darkModeColors} className="mt-2">
@@ -205,8 +123,8 @@ const AlterTimingPopup = ({ date, isOffDay, onClose }) => {
                             <Button
                                 type="submit"
                                 size="medium"
-                                className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-                                style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+                                className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold mb-3"
+                                style={{ color: "#ffffff" }}
                                 // onClick={handleUpdate}
                                 >
                                 {btnLoading ? (

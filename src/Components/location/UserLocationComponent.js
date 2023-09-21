@@ -1,14 +1,13 @@
 // import Image from "next/image";
-import moment from "moment";
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
-
+import moment from "moment";
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 
-import { BsPinMap, BsCircleFill } from "react-icons/bs";
+import { BsPinMap } from "react-icons/bs";
 import { BiCurrentLocation } from "react-icons/bi";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { Button, TextField } from "@mui/material";
@@ -18,7 +17,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 const UserLocationComponent = () => {
   const {
     currentMode,
-    LocationData,
     setLocationData,
     LastLocationData,
     setLastLocationData,
@@ -122,10 +120,6 @@ const UserLocationComponent = () => {
       });
   };
 
-  //CLICK FUNCTION
-  const handleRowClick = async (params) => {
-    window.open(`/location/useralllocation/${params}`);
-  };
 
   useEffect(() => {
     if (token) {
@@ -150,7 +144,7 @@ const UserLocationComponent = () => {
     <>
       <div className="w-full flex items-center justify-between py-1">
         <div className="flex items-center mb-2">
-          <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+          <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
             className={`text-lg font-semibold ${
               currentMode === "dark" ? "text-white" : "text-black"
@@ -325,11 +319,11 @@ const UserLocationComponent = () => {
                         </h1>
                         <hr></hr>
                         <div className="flex gap-3">
-                          <BsPinMap size={20} color="#da1f26" />
+                          <BsPinMap size={20} className="text-primary" />
                           {location?.location}
                         </div>
                         <div className="flex gap-3">
-                          <AiOutlineFieldTime size={20} color="#da1f26" />
+                          <AiOutlineFieldTime size={20} className="text-primary" />
                           {location?.latest_recorded_at}
                         </div>
                         <div className="flex justify-end">

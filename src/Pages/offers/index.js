@@ -9,7 +9,7 @@ import OffersList from "../../Components/offers/OffersList";
 import usePermission from "../../utils/usePermission";
 
 const Offers = () => {
-  const { currentMode, darkModeColors, setopenBackDrop, User, BACKEND_URL } =
+  const { currentMode, darkModeColors, setopenBackDrop, BACKEND_URL } =
     useStateContext();
   const [value, setValue] = useState(0);
   const { hasPermission } = usePermission();
@@ -91,8 +91,8 @@ const Offers = () => {
               currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
             }`}
           >
-            <div className="w-full flex items-center py-1">
-              <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+            <div className="w-full flex items-center py-3">
+              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
               <h1
                 className={`text-lg font-semibold ${
                   currentMode === "dark"
@@ -110,7 +110,6 @@ const Offers = () => {
                 "& .MuiTabs-indicator": {
                   height: "100%",
                   borderRadius: "5px",
-                  backgroundColor: "#da1f26",
                 },
                 "& .Mui-selected": {
                   color: "white !important",

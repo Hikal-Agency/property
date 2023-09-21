@@ -1,22 +1,14 @@
 import {
   CircularProgress,
   Modal,
-  Backdrop,
-  Button,
-  FormControlLabel,
-  Checkbox,
-  IconButton,
+  Backdrop, IconButton
 } from "@mui/material";
-import { IoIosAlert } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
-import { Select, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import MenuItem from "@mui/material/MenuItem";
 import "../../styles/app.css";
 
 import axios from "../../axoisConfig";
-import { toast, ToastContainer } from "react-toastify";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import RolesCheckbox from "./RolesCheckbox";
 import { GridCloseIcon } from "@mui/x-data-grid";
 
@@ -36,9 +28,7 @@ const UpdateUserPermissions = ({
   const [loading, setloading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
   const [UserRole, setUserRole] = useState([]);
-  const { BACKEND_URL, currentMode } = useStateContext();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { BACKEND_URL } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
   console.log("user role list:  ", UserRole);
@@ -162,7 +152,7 @@ const UpdateUserPermissions = ({
                   </IconButton>
                   <h2 className="text-center mt-3 text-xl font-bold text-[#1c1c1c] py-4">
                     Update Role of{" "}
-                    <span style={{ color: "#DA1F26", fontWeight: "700" }}>
+                    <span className="text-primary" style={{fontWeight: "700" }}>
                       {UserName}
                     </span>
                   </h2>
@@ -206,7 +196,7 @@ const UpdateUserPermissions = ({
                     <button
                       disabled={loading ? true : false}
                       type="submit"
-                      className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-3 px-4 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                      className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
                     >
                       {loading ? (
                         <CircularProgress

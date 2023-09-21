@@ -6,6 +6,7 @@ import {
   TextField,
   IconButton,
   InputAdornment,
+  Tooltip,
 } from "@mui/material";
 import {
   DataGrid,
@@ -251,7 +252,7 @@ const Newleads = ({
             )}
             {cellValues.row.leadSource?.toLowerCase() === "bulk import" && (
               <div className="bg-white w-max rounded-full flex items-center justify-center">
-                <BiImport size={22} color={"#da1f26"} />
+                <BiImport size={22} className="text-primary" />
               </div>
             )}
             {cellValues.row.leadSource.toLowerCase() ===
@@ -326,7 +327,7 @@ const Newleads = ({
                 <div
                   className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
-                  <span className="text-[#DA1F26] p-1 text-center">
+                  <span className="text-primary p-1 text-center">
                     <BsShieldX size={16} />
                   </span>
                 </div>
@@ -418,8 +419,9 @@ const Newleads = ({
 
                       <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                         <Button
-                          className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                          className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                           ripple={true}
+                          style={{color: "white"}}
                           size="lg"
                           onClick={() => deleteLead(LeadToDelete)}
                         >
@@ -440,7 +442,7 @@ const Newleads = ({
                           className={`shadow-none  rounded-md text-sm  ${
                             currentMode === "dark"
                               ? "text-white border-white"
-                              : "text-main-red-color border-main-red-color"
+                              : "text-primary border-primary"
                           }`}
                         >
                           Cancel

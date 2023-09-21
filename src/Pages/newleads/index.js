@@ -54,11 +54,11 @@ const NewLeads = (props) => {
                     className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
                       currentMode === "dark"
                         ? "text-white border-white"
-                        : "text-red-600 font-bold border-red-600"
+                        : "text-primary font-bold border-primary"
                     }`}
                   >
                    ● New leads{" "}
-                    <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
+                    <span className="bg-primary text-white px-2 py-1 rounded-sm my-auto">
                       <span>{pageState?.total}</span>
                     </span>
                   </h1>

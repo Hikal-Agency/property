@@ -14,7 +14,6 @@ import Loader from "../../Components/Loader";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "./ImagePicker";
-import usePermission from "../../utils/usePermission";
 
 const ProfilePage = () => {
   const [loading, setloading] = useState(true);
@@ -35,7 +34,6 @@ const ProfilePage = () => {
   const [PersonalInfo, setPersonalInfo] = useState({});
   const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
-  const { hasPermission } = usePermission();
 
   // Btn loading
   const [btnloading, setbtnloading] = useState(false);
@@ -284,7 +282,7 @@ const ProfilePage = () => {
                               />
                               <div className="absolute -top-1 right-1 ">
                                 <BsFillPlusCircleFill
-                                  className="text-main-red-color bg-white border-white border-[3px] rounded-full w-full h-full"
+                                  className="text-primary bg-white border-white border-[3px] rounded-full w-full h-full"
                                   size={30}
                                 />
                               </div>
@@ -347,19 +345,6 @@ const ProfilePage = () => {
                               <p className="font-bold">{User?.creationDate}</p>
                             </div>
                           </div>
-
-                          {/* {hasPermission("delete_account") ? (
-                            <div className="mt-5 text-center text-gray-600">
-                              <Button
-                                className="bg-main-red-color shadow-none hover:shadow-none p-3"
-                                ripple={true}
-                              >
-                                DELETE
-                              </Button>
-                            </div>
-                          ) : (
-                            <></>
-                          )} */}
                         </div>
                       </div>
                     </div>

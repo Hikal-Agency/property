@@ -172,20 +172,20 @@ const NotificationsMenu = () => {
                       </div>
                       <div className="col-span-6 flex h-full w-full items-center">
                         <div className="h-full w-5 flex items-center">
-                          <div className="h-full w-0.5 bg-main-red-color pointer-events-none"></div>
+                          <div className="h-full w-0.5 bg-primary pointer-events-none"></div>
                         </div>
                         <div className="space-y-1 w-full">
                           <p className="font-semibold text-sm tracking-wide">
                             {activity.note}
                           </p>
                           <p className="text-xs tracking-wide flex items-center">
-                            <HiUser className="mr-2 text-main-red-color" />
+                            <HiUser className="mr-2 text-primary" />
                             <span>{activity.leadName}</span>
                           </p>
                           {activity.enquiryType !== "null" ||
                           activity.project !== "null" ? (
                             <p className="text-xs tracking-wide flex items-center">
-                              <BsFillBuildingFill className="mr-2 text-main-red-color" />
+                              <BsFillBuildingFill className="mr-2 text-primary" />
                               <span>
                                 {activity.project !== "null"
                                   ? activity.project + " "
@@ -225,16 +225,16 @@ const NotificationsMenu = () => {
                         <div className="space-y-1 w-full">
                           <p className="font-semibold text-sm tracking-wide">
                             {activity.note} Meeting Scheduled for{" "}
-                            <span class="text-main-red-color">
+                            <span class="text-primary">
                               {activity.meetingDate} {activity.meetingTime}.
                             </span>
                           </p>
                           <p className="text-xs tracking-wide flex items-center">
-                            <HiUser className="mr-2 text-main-red-color" />
+                            <HiUser className="mr-2 text-primary" />
                             <span>{activity.leadName}</span>
                           </p>
                           <p className="text-xs tracking-wide flex items-center">
-                            <BsFillBuildingFill className="mr-2 text-main-red-color" />
+                            <BsFillBuildingFill className="mr-2 text-primary" />
                             <span>
                               {activity.project} {activity.enquiryType}
                             </span>
@@ -266,11 +266,11 @@ const NotificationsMenu = () => {
                           {activity.note}
                         </p>
                         <p className="text-xs tracking-wide flex items-center">
-                          <HiUser className="mr-2 text-main-red-color" />
+                          <HiUser className="mr-2 text-primary" />
                           <span>{activity.leadName}</span>
                         </p>
                         <p className="text-xs tracking-wide flex items-center">
-                          <BsFillBuildingFill className="mr-2 text-main-red-color" />
+                          <BsFillBuildingFill className="mr-2 text-primary" />
                           <span>
                             {activity.project}&nbsp;{activity.enquiryType}
                           </span>

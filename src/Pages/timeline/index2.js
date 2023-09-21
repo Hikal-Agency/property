@@ -131,7 +131,7 @@ const Timeline = () => {
             <div className="mt-5 md:mt-2">
               <h1
                 className={`font-semibold ${
-                  currentMode === "dark" ? "text-white" : "text-red-600"
+                  currentMode === "dark" ? "text-white" : "text-primary"
                 } text-lg ml-2 mb-3 auto-cols-max gap-x-3`}
               >
                 Timeline
@@ -151,7 +151,7 @@ const Timeline = () => {
                           <h3 className="text-lg font-bold uppercase mb-5">
                             {item.leadName}
                           </h3>
-                          <div className="text-center sm:text-left mb-5 before:block before:w-24 before:h-1 before:mb-5 before:rounded-md before:mx-auto sm:before:mx-0 before:bg-main-red-color">
+                          <div className="text-center sm:text-left mb-5 before:block before:w-24 before:h-1 before:mb-5 before:rounded-md before:mx-auto sm:before:mx-0 before:bg-primary">
                             <div className="space-y-2">
                               {item.leadContact != "" ? (
                                 <p>{item.leadContact}</p>
@@ -204,11 +204,11 @@ const Timeline = () => {
                               <>
                                 <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                   <div className="h-full w-6 flex items-center justify-center">
-                                    <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                    <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                   </div>
                                   <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
                                     <MdStickyNote2
-                                      className="bg-main-red-color text-white p-2 rounded-full"
+                                      className="bg-primary text-white p-2 rounded-full"
                                       size={33}
                                     />
                                   </div>
@@ -235,11 +235,11 @@ const Timeline = () => {
                               <>
                                 <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                   <div className="h-full w-6 flex items-center justify-center">
-                                    <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                    <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                   </div>
                                   <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
                                     <ImUserCheck
-                                      className="bg-main-red-color text-white p-2 rounded-full"
+                                      className="bg-primary text-white p-2 rounded-full"
                                       size={33}
                                     />
                                   </div>
@@ -256,7 +256,7 @@ const Timeline = () => {
                                   </p>
                                   <p className="font-semibold tracking-wide">
                                     Assigned to manager:{" "}
-                                    <span className="font-bold text-main-red-color">
+                                    <span className="font-bold text-primary">
                                       {timeline.manager}
                                     </span>
                                   </p>
@@ -269,11 +269,11 @@ const Timeline = () => {
                               <>
                                 <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                   <div className="h-full w-6 flex items-center justify-center">
-                                    <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                    <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                   </div>
                                   <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
                                     <ImUserCheck
-                                      className="bg-main-red-color text-white p-2 rounded-full"
+                                      className="bg-primary text-white p-2 rounded-full"
                                       size={33}
                                     />
                                   </div>
@@ -290,7 +290,7 @@ const Timeline = () => {
                                   </p>
                                   <p className="font-semibold tracking-wide">
                                     Assigned to agent:{" "}
-                                    <span className="font-bold text-main-red-color">
+                                    <span className="font-bold text-primary">
                                       {timeline.sales}
                                     </span>
                                   </p>
@@ -303,11 +303,11 @@ const Timeline = () => {
                               <>
                                 <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                   <div className="h-full w-6 flex items-center justify-center">
-                                    <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                    <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                   </div>
                                   <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
                                     <TiFlash
-                                      className="bg-main-red-color text-white p-2 rounded-full"
+                                      className="bg-primary text-white p-2 rounded-full"
                                       size={33}
                                     />
                                   </div>
@@ -324,7 +324,7 @@ const Timeline = () => {
                                   </p>
                                   <p className="font-semibold tracking-wide">
                                     Feedback updated to:{" "}
-                                    <span className="font-bold text-main-red-color">
+                                    <span className="font-bold text-primary">
                                       {timeline.feedback}
                                     </span>
                                   </p>
@@ -337,11 +337,11 @@ const Timeline = () => {
                               <>
                                 <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                   <div className="h-full w-6 flex items-center justify-center">
-                                    <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                    <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                   </div>
                                   <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
                                     <FaCalendarDay
-                                      className="bg-main-red-color text-white p-2 rounded-full"
+                                      className="bg-primary text-white p-2 rounded-full"
                                       size={33}
                                     />
                                   </div>
@@ -358,7 +358,7 @@ const Timeline = () => {
                                   </p>
                                   <p className="font-semibold tracking-wide">
                                     Meeting status updated to:{" "}
-                                    <span className="font-bold text-main-red-color">
+                                    <span className="font-bold text-primary">
                                       {timeline.meetingStatus}
                                     </span>
                                   </p>
@@ -371,11 +371,11 @@ const Timeline = () => {
                               <>
                                 <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
                                   <div className="h-full w-6 flex items-center justify-center">
-                                    <div className="h-full w-1 bg-main-red-color pointer-events-none"></div>
+                                    <div className="h-full w-1 bg-primary pointer-events-none"></div>
                                   </div>
                                   <div className="absolute top-1/2 -mt-4 -ml-1 text-center">
                                     <HiClock
-                                      className="bg-main-red-color text-white p-2 rounded-full"
+                                      className="bg-primary text-white p-2 rounded-full"
                                       size={33}
                                     />
                                   </div>
@@ -392,7 +392,7 @@ const Timeline = () => {
                                   </p>
                                   <p className="font-semibold tracking-wide">
                                     Meeting set on:{" "}
-                                    <span className="font-bold text-main-red-color">
+                                    <span className="font-bold text-primary">
                                       {timeline?.meetingTime === ""
                                         ? ""
                                         : `${timeline?.meetingTime}, `}{" "}

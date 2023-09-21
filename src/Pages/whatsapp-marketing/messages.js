@@ -303,7 +303,7 @@ const AllLeads = () => {
                   <div
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
-                    <span className="text-[#DA1F26] p-1 text-center">
+                    <span className="text-primary p-1 text-center">
                       <BsShieldX size={16} />
                     </span>
                   </div>
@@ -364,7 +364,7 @@ const AllLeads = () => {
           ),
 
           "bulk import": () => (
-            <BiImport size={16} color={"#da1f26"} className="p-1" />
+            <BiImport size={16}  className="p-1 text-primary" />
           ),
 
           "property finder": () => (
@@ -1171,7 +1171,7 @@ const AllLeads = () => {
             Search for {leadOriginSelected.formattedValue}
             {" | "}
             <span>{leadTypeSelected.formattedValue}</span>{" "}
-            <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+            <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
               {pageState?.total}
             </span>
           </h1>
@@ -1211,7 +1211,8 @@ const AllLeads = () => {
         />
       </div>
 
-      <Box className="flex items-center justify-between mb-2">
+
+      <Box className="flex items-center justify-between">
         <Box className="flex items-center">
           {selectedRows.length === 0 ? (
             <></>
@@ -1243,6 +1244,7 @@ const AllLeads = () => {
             </Typography>
           </div>
         </Box>
+        </Box>
 
         <Box className="flex items-center justify-end">
           <Tooltip title="Add New Contact" arrow>
@@ -1253,7 +1255,7 @@ const AllLeads = () => {
               type="button"
               variant="contained"
               sx={{
-                color: "#DA1F26",
+                color: "white",
                 padding: "10px",
                 mb: 2,
                 mr: 1,
@@ -1261,7 +1263,7 @@ const AllLeads = () => {
                   stroke: "white !important",
                 },
               }}
-              color="error"
+              className="bg-btn-primary"
             >
               <BsPersonAdd
                 color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
@@ -1276,7 +1278,7 @@ const AllLeads = () => {
               type="button"
               variant="contained"
               sx={{ padding: "10px", mb: 2, mr: 1 }}
-              color="error"
+              className="bg-btn-primary"
               disabled={selectedRows?.length === 0}
             >
               <BsTrash
@@ -1293,7 +1295,7 @@ const AllLeads = () => {
               type="button"
               variant="contained"
               sx={{ padding: "10px", mb: 2, mr: 1 }}
-              color="error"
+              className="bg-btn-primary"
               disabled={selectedRows?.length === 0}
             >
               <BsWhatsapp
@@ -1312,8 +1314,8 @@ const AllLeads = () => {
                 type="button"
                 variant="contained"
                 sx={{ padding: "10px", mb: 2, mr: 1 }}
-                color="error"
-                disabled={selectedRows?.length === 0}
+                className="bg-btn-primary"
+
               >
                 <MdSms
                   color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
@@ -1330,7 +1332,7 @@ const AllLeads = () => {
                 type="button"
                 variant="contained"
                 sx={{ padding: "10px", mb: 2, mr: 1 }}
-                color="error"
+                className="bg-btn-primary"
                 disabled={true}
               >
                 <HiMail
@@ -1355,7 +1357,7 @@ const AllLeads = () => {
                   type="button"
                   variant="contained"
                   sx={{ padding: "10px", mb: 2, mr: 1 }}
-                  color="error"
+                  className="bg-btn-primary"
                 >
                   <IoMdChatboxes
                     color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
@@ -1366,7 +1368,7 @@ const AllLeads = () => {
             </Tooltip>
           )}
         </Box>
-      </Box>
+   
 
       <Box
         width={"100%"}

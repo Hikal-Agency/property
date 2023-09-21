@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import Footer from "../../Components/Footer/Footer";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 import axios from "../../axoisConfig";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const AgencyUsers = () => {
   const { currentMode, BACKEND_URL, User, setUser, setopenBackDrop } =
@@ -22,7 +19,6 @@ const AgencyUsers = () => {
   const [page, setPage] = useState("1");
   const [maxPage, setMaxPage] = useState(0);
   const { client_id } = useParams();
-  //   const client_id = location.pathname.split("/")[2];
 
   console.log("id from URL:", client_id);
   //eslint-disable-next-line
@@ -59,36 +55,11 @@ const AgencyUsers = () => {
     },
   ];
 
-  const FetchClient = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/clients?id=1`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("client data is");
-        console.log(result.data);
-        setUser(result.data.user);
-        setloading(false);
-      })
-      .catch((err) => {
-        // console.log(err);
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      });
-  };
-
   const handlePageChange = (event, value) => {
     setPage(value);
     FetchContacts(token);
   };
-  // const FetchContacts = async (token) => {
+ 
   //   await axios
   //     .get(`${BACKEND_URL}/agencyusers/${client_id}`, {
   //       headers: {
@@ -258,7 +229,7 @@ const AgencyUsers = () => {
                         <div className="mt-2 space-y-1 overflow-hidden">
                           <h1 className="font-bold">{item.userName}</h1>
                           <p className="text-sm">{item.position}</p>
-                          <p className="text-sm font-semibold text-red-600">
+                          <p className="text-md font-bold text-primary">
                             {item?.userName}
                           </p>
                           <p className="text-sm">{item?.userPhone}</p>

@@ -27,7 +27,7 @@ import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 
-import { AiOutlineEdit, AiOutlineHistory, AiFillEdit } from "react-icons/ai";
+import { AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { BiSearch, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import { MdCampaign } from "react-icons/md";
@@ -51,11 +51,6 @@ import {
   FaTwitter,
   FaUser,
 } from "react-icons/fa";
-import {
-  RxCheckCircled,
-  RxCrossCircled,
-  RxQuestionMarkCircled,
-} from "react-icons/rx";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { RiMailSendLine } from "react-icons/ri";
 import { VscCallOutgoing } from "react-icons/vsc";
@@ -67,8 +62,8 @@ import RenderManagers from "../../Components/Leads/RenderManagers";
 import RenderSalesperson from "../../Components/Leads/RenderSalesperson";
 import RenderFeedback from "../../Components/Leads/RenderFeedback";
 import BulkUpdateLeads from "../../Components/Leads/BulkUpdateLeads";
-import { toast, ToastContainer } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import DeleteLeadModel from "../../Components/Leads/DeleteLead";
 import { langs } from "../../langCodes";
 import AddReminder from "../../Components/reminder/AddReminder";
@@ -83,16 +78,6 @@ const bulkUpdateBtnStyles = {
   fontWeight: "500",
 };
 
-const feedbacks = [
-  "All",
-  "New",
-  "Follow Up",
-  "Meeting",
-  "Low Budget",
-  "Not Interested",
-  "No Answer",
-  "Unreachable",
-];
 
 const leadOrigins = [
   { id: "hotleads", formattedValue: "Fresh Leads" },
@@ -171,12 +156,11 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     SalesPerson,
     isArabic,
     darkModeColors,
+    primaryColor
   } = useStateContext();
-  const navigate = useNavigate();
   const [singleLeadData, setsingleLeadData] = useState({});
   const [deleteloading, setdeleteloading] = useState(false);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
-  const [filt, setFilt] = useState([]);
   const [error, setError] = useState(false);
   const { hasPermission } = usePermission();
 
@@ -195,18 +179,15 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
   const [managers, setManagers] = useState(Managers || []);
   const [agents, setAgents] = useState(SalesPerson || {});
-  const [searchText, setSearchText] = useState("");
   const [timelineModelOpen, setTimelineModelOpen] = useState(false);
   const searchRef = useRef();
   const selectionModelRef = useRef([]);
-  const [hovered, setHovered] = useState("");
   const [CSVData, setCSVData] = useState({
     keys: [],
     rows: [],
   });
 
   const bulkImportRef = useRef();
-  const dataTableRef = useRef();
 
   console.log("Path in alleads component: ", lead_origin);
   console.log("Sales:", SalesPerson);
@@ -214,8 +195,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   // eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
   const [pageRange, setPageRange] = useState();
-  const [fromLead, setFromLead] = useState();
-  const [toLead, setToLead] = useState();
 
   //View LEAD MODAL VARIABLES
   const [LeadModelOpen, setLeadModelOpen] = useState(false);
@@ -499,7 +478,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   <div
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
                   >
-                    <span className="text-[#DA1F26] p-1 text-center">
+                    <span className="text-primary p-1 text-center">
                       <BsShieldX size={16} />
                     </span>
                   </div>
@@ -558,7 +537,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           ),
 
           "bulk import": () => (
-            <BiImport size={16} color={"#da1f26"} className="p-1" />
+            <BiImport size={16} className="text-primary p-1"/>
           ),
 
           "property finder": () => (
@@ -1624,7 +1603,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           <Pagination
             sx={{
               "& .Mui-selected": {
-                backgroundColor: "#DA1F26 !important",
+                backgroundColor: `${primaryColor} !important`,
                 color: "white !important",
                 borderRadius: "50px !important",
               },
@@ -1748,15 +1727,15 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           )}
         <Box></Box> */}
 
-        <div className="w-full flex items-center py-1">
-          <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+        <div className="w-full flex items-center py-3">
+          <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
             className={`text-lg font-semibold ${
               currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
             Leads Search{" "}
-            <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+            <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
               {pageState?.total}
             </span>
           </h1>
@@ -1784,7 +1763,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               paddingTop: "0",
             },
             "& .applied-filter": {
-              background: "#da1f26",
+              background: primaryColor,
               borderRadius: 4,
               width: "max-content",
               padding: "3px 8px",
@@ -2373,11 +2352,11 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 //   height: "auto",
                 // },
                 "& .MuiButtonBase-root .MuiSwitch-switchBase": {
-                  color: "red !important",
+                  color: `${primaryColor} !important`,
                 },
 
                 "& .MuiSwitch-root .MuiSwitch-track": {
-                  backgroundColor: "red !important",
+                  backgroundColor: `${primaryColor} !important`,
                 },
               }}
               getRowClassName={(params) =>

@@ -231,7 +231,7 @@ const GoogleCalendarIntegration = () => {
             } p-5 rounded-md h-fit`}
           >
             <h1
-              className="bg-main-red-color text-white font-semibold rounded-md p-2 mb-3"
+              className="bg-primary text-white font-semibold rounded-md p-2 mb-3"
               style={{ textTransform: "capitalize" }}
             >
               Google Calendar Integration
@@ -255,13 +255,16 @@ const GoogleCalendarIntegration = () => {
                 {btnVisible && (
                   <>
                     <div
-                      className={`bg-main-red-color text-white px-4 text-center sm:px-6 mb-3`}
+                      className={`bg-primary text-white px-4 text-center sm:px-6 mb-3`}
                     >
                       <Button
-                        className={`min-w-fit mb-5 w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none text-white  bg-main-red-color`}
+                        className={`min-w-fit mb-5 w-full rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none text-white  bg-btn-primary`}
                         ripple={true}
                         size="lg"
                         type="submit"
+                        style={{
+                          color: "white"
+                        }}
                         disabled={loading ? true : false}
                         onClick={handleAuthClick}
                       >
@@ -274,24 +277,19 @@ const GoogleCalendarIntegration = () => {
 
                 {!btnVisible && (
                   <>
-                    {/* <div
-                      className={`bg-main-red-color text-white px-4 text-center sm:px-6 mb-3 py-2`}
-                    >
-                      <h1 className="text-white font-bold">
-                        {session?.userName}
-                      </h1>
-                    </div> 
-                    <hr className="mb-3" style={{ color: "red" }}></hr>
-                */}
+  
                     <hr />
                     <>
                       <div
-                        className={`mt-2 bg-main-red-color text-white px-4 text-center sm:px-6 mb-3`}
+                        className={`mt-2 bg-primary text-white px-4 text-center sm:px-6 mb-3`}
                       >
                         <Button
-                          className={`min-w-fit mb-5 w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none text-white  bg-main-red-color`}
+                          className={`min-w-fit mb-5 w-full rounded-md py-3 font-semibold disabled:opacity-50  disabled:cursor-not-allowed hover:shadow-none text-white  bg-btn-primary`}
                           ripple={true}
                           size="lg"
+                          style={{
+                            color: "white"
+                          }}
                           type="submit"
                           disabled={loading ? true : false}
                           onClick={handleSignOut}

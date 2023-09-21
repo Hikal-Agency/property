@@ -2,11 +2,9 @@ import { Button } from "@material-tailwind/react";
 import {
   Box,
   MenuItem,
-  Select,
   TextField,
   CircularProgress,
   FormControl,
-  InputLabel,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import React, { useState } from "react";
@@ -195,8 +193,11 @@ export const PersonalInfo = ({
           </div>
           <div className="col-span-3 w-full">
             <Button
-              className={`min-w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+              className={`min-w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
               ripple={true}
+              style={{
+                color: "white"
+              }}
               onClick={UpdateProfileFunc}
               size="lg"
             >

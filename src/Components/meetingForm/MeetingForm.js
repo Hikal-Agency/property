@@ -21,7 +21,7 @@ const MeetingForm = ({
   LeadData,
   BACKEND_URL,
 }) => {
-  const { darkModeColors, currentMode, User } = useStateContext();
+  const { darkModeColors, currentMode, User, primaryColor } = useStateContext();
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
   const style = {
@@ -107,7 +107,7 @@ const MeetingForm = ({
                       InputProps={{
                         disableUnderline: true,
                       }}
-                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      sx={{ borderBottom: `1px solid ${primaryColor}` }}
                       id="meetingDate"
                       type={"date"}
                       label="Meeting date"
@@ -119,7 +119,7 @@ const MeetingForm = ({
                       InputProps={{
                         disableUnderline: true,
                       }}
-                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      sx={{ borderBottom: `1px solid ${primaryColor}` }}
                       id="meetingTime"
                       type={"time"}
                       label="Meeting time"
@@ -131,7 +131,7 @@ const MeetingForm = ({
                       InputProps={{
                         disableUnderline: true,
                       }}
-                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      sx={{ borderBottom: `1px solid ${primaryColor}` }}
                       id="meetingLocation"
                       type={"text"}
                       label="Meeting location"
@@ -143,7 +143,7 @@ const MeetingForm = ({
                       InputProps={{
                         disableUnderline: true,
                       }}
-                      sx={{ borderBottom: "1px solid #DA1F26" }}
+                      sx={{ borderBottom: `1px solid ${primaryColor}` }}
                       id="meetingNote"
                       type={"text"}
                       label="Meeting Note"
@@ -155,9 +155,10 @@ const MeetingForm = ({
                 </div>
 
                 <Button
-                  className={`min-w-fit w-full text-white rounded-md py-3 mt-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color`}
+                  className={`min-w-fit w-full text-white rounded-md py-3 mt-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary`}
                   ripple={true}
                   size="lg"
+                  style={{color: "white"}}
                   type="submit"
                   disabled={btnloading ? true : false}
                 >

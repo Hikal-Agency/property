@@ -8,7 +8,7 @@ import AlterTimingPopup from "./AlterTimingPopup";
 
 
 const MyCalendar = ({ isOffDay }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, primaryColor } = useStateContext();
   const calendarRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -41,7 +41,7 @@ const MyCalendar = ({ isOffDay }) => {
           dayDate.getMonth() === today.getMonth() &&
           dayDate.getFullYear() === today.getFullYear()
         ) {
-          dayElement.style.backgroundColor = "#DA1F26"; // Red color for today's date
+          dayElement.style.backgroundColor = primaryColor; // Red color for today's date
           dayElement.style.color = "white";
         }
       },
@@ -52,15 +52,6 @@ const MyCalendar = ({ isOffDay }) => {
       calendar.destroy();
     };
   }, [isOffDay]);
-
-  const handleEventClick = (info) => {
-    alert("Event: " + info.event.title);
-    alert("Coordinates: " + info.jsEvent.pageX + "," + info.jsEvent.pageY);
-    alert("View: " + info.view.type);
-
-    // change the border color just for fun
-    info.el.style.borderColor = "red";
-  };
 
   return (
     <div ref={calendarRef} className={`${currentMode === "dark" ? "custom-dark-calendar" : ""}`}>

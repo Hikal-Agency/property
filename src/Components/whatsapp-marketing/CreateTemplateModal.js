@@ -139,7 +139,7 @@ const CreateTemplateModal = ({
             >
               <MenuItem disabled selected value="">
                 Select Template Type
-                <span className="ml-1" style={{ color: "red" }}>
+                <span className="ml-1 text-primary">
                   *
                 </span>
               </MenuItem>
@@ -248,17 +248,19 @@ const CreateTemplateModal = ({
                 </div>
               )}
               {templateType && (
-                <Button
-                  type="submit"
-                  variant="contained"
-                  style={{ padding: "10px 12px", backgroundColor: "#da1f26" }}
-                >
-                  {btnloading ? (
-                    <CircularProgress size={18} sx={{ color: "white" }} />
-                  ) : (
-                    <span>Create Template</span>
-                  )}
-                </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                className="bg-btn-primary"
+                
+                style={{ padding: "10px 12px", color: "white"}}
+              >
+                {btnloading ? (
+                  <CircularProgress size={18} sx={{ color: "white" }} />
+                ) : (
+                  <span>Create Template</span>
+                )}
+              </Button>
               )}
             </div>
           </form>

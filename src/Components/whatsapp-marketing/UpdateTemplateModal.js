@@ -159,8 +159,9 @@ const UpdateTemplateModal = ({
             <Button
               type="submit"
               variant="contained"
+              className="bg-btn-primary"
               fullWidth
-              style={{ padding: "10px 0", backgroundColor: "#da1f26"  }}
+              style={{ padding: "10px 0", color: "white" }}
             >
               {btnloading ? (
                 <CircularProgress size={18} sx={{ color: "white"}} />

@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 
 import axios from "../../axoisConfig";
-import usePermission from "../../utils/usePermission";
 import Loader from "../Loader";
-import { CircularProgress, Pagination, Stack } from "@mui/material";
+import {  Pagination, Stack } from "@mui/material";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { BsShuffle } from "react-icons/bs";
@@ -41,16 +40,14 @@ const NotificationsListComponent = ({
     BACKEND_URL,
     pageState,
     setpageState,
-    User,
+    primaryColor,
     unreadNotifsCount,
   } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [date_range, setDate_range] = useState(0);
   const [notification_list, setNotification_list] = useState([]);
   const token = localStorage.getItem("auth-token");
-  const { hasPermission } = usePermission();
 
   const handlePageChange = (event, value) => {
     setpageState({ ...pageState, page: value });
@@ -74,14 +71,6 @@ const NotificationsListComponent = ({
   };
 
   const notificationIcons = {
-    // "closed deal": <FaHandshake size={16} color={"#ffffff"} />,
-    // subscribe: <FaMoneyBillWave size={16} color={"#ffffff"} />,
-    // meeting: <FaCalendar size={16} color={"#ffffff"} />,
-    // reminder: <FaClock size={16} color={"#ffffff"} />,
-    // priority: <FaFlag size={16} color={"#ffffff"} />,
-    // feedback: <BsBookmark size={16} color={"#ffffff"} />,
-    // lead: <BsFillPersonLinesFill size={16} color={"#ffffff"} />,
-    // support: <MdSupportAgent size={16} color={"#ffffff"} />,
     "closed deal": <MdOutlineHandshake size={20} color={"#ffffff"} />,
     subscribe: <MdOutlineWorkspacePremium size={20} color={"#ffffff"} />,
     meeting: <MdOutlineCalendarMonth size={20} color={"#ffffff"} />,
@@ -98,9 +87,6 @@ const NotificationsListComponent = ({
     try {
       let url = `${BACKEND_URL}/allnotifications?page=${pageState.page}`;
 
-      // if (filter !== "all" || filter !== undefined || filter !== null) {
-      //   url += `&isRead=${filter}`;
-      // }
       if (filter === "1" || filter === "0" || filter === null) {
         url += `&isRead=${filter}`;
       }
@@ -129,11 +115,7 @@ const NotificationsListComponent = ({
         },
       });
 
-      // const isUnreadNotificationExists = response.data.notification.data.some(
-      //   (notification) =>
-      //     notification.isRead === 0 || notification.isRead === null
-      // );
-
+  
       unreadNotifsCount > 0
         ? setdisplayMarkBtn(true)
         : setdisplayMarkBtn(false);
@@ -204,21 +186,6 @@ const NotificationsListComponent = ({
                   >
                     {notification?.title}
 
-                    {/* <span
-                          className={`font-bold ${
-                            currentMode === "dark" ? "text-white" : "text-dark"
-                          }`}
-                        >
-                          {notification?.leadName}
-                        </span>{" "}
-                        has been assigned to Sales Manager{" "}
-                        <span className="font-bold">
-                          {notification?.manager_name}
-                        </span>{" "}
-                        by{" "}
-                        <span className="font-bold mt-2">
-                          {notification?.username}
-                        </span> */}
                   </p>
                   <p style={{ color: "#AAAAAA" }} className="mt-2 text-sm">
                     {notification?.type}{" "}
@@ -236,7 +203,7 @@ const NotificationsListComponent = ({
               className="flex flex-col justify-center items-center"
             >
               <div class="relative">
-                <div class="h-24 w-24 rounded-full bg-[#DA1F26] my-6"></div>
+                <div class="h-24 w-24 rounded-full bg-primary my-6"></div>
                 <div class="absolute top-0 right-0">
                   <span class="text-yellow-500 text-2xl">&#9733;</span>
                 </div>
@@ -259,15 +226,13 @@ const NotificationsListComponent = ({
             <Stack spacing={2} marginTop={2}>
               <Pagination
                 count={maxPage}
-                color={currentMode === "dark" ? "primary" : "secondary"}
                 onChange={handlePageChange}
                 style={{ margin: "auto" }}
-                // page={pageState.page}
                 page={currentPage}
                 sx={{
                   "& .Mui-selected": {
                     color: "white !important",
-                    backgroundColor: "#DA1F26 !important",
+                    backgroundColor: `${primaryColor} !important`,
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",

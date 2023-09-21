@@ -1,9 +1,7 @@
-import { Box, InputLabel, styled } from "@mui/material";
+import { Box, InputLabel } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
-import Footer from "../../Components/Footer/Footer";
 
 import ADDQA from "../../Components/addQA/ADDQA";
 import ListQa from "../../Components/addQA/ListQa";
@@ -11,7 +9,7 @@ import FilterQA from "../../Components/addQA/FilterQA";
 import { Select, MenuItem } from "@mui/material";
 
 import axios from "../../axoisConfig";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const QAForm = () => {
   const { darkModeColors, currentMode, setopenBackDrop, BACKEND_URL } =
@@ -104,7 +102,6 @@ const QAForm = () => {
                     "& .MuiTabs-indicator": {
                       height: "100%",
                       borderRadius: "5px",
-                      backgroundColor: "#da1f26",
                     },
                     "& .Mui-selected": {
                       color: "white !important",
@@ -178,7 +175,7 @@ const QAForm = () => {
                       } mb-5`}
                     >
                       Data of :{" "}
-                      <span className="text-main-red-color">
+                      <span className="text-primary">
                         {" "}
                         {selectUserId?.userName || "No User"}
                       </span>

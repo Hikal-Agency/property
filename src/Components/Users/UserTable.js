@@ -6,7 +6,7 @@ import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 
 import axios from "../../axoisConfig";
-import { FaBan, FaEdit, FaEye, FaTrash, FaUnlock } from "react-icons/fa";
+import { FaBan, FaUnlock } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import SingleUser from "./SingleUser";
 import usePermission from "../../utils/usePermission";
@@ -15,7 +15,6 @@ import DeleteUser from "./DeleteUser";
 import { MdOutlineCall, MdOutlinePermContactCalendar } from "react-icons/md";
 import { TfiEmail } from "react-icons/tfi";
 import { AiOutlineEdit } from "react-icons/ai";
-import { SlBan } from "react-icons/sl";
 
 // const UserTable = ({ user }) => {
 //   const [loading, setloading] = useState(false);
@@ -115,7 +114,7 @@ import { SlBan } from "react-icons/sl";
 
 const UserTable = ({}) => {
   const [loading, setLoading] = useState(false);
-  const { currentMode, BACKEND_URL, pageState, setpageState, User } =
+  const { currentMode, BACKEND_URL, pageState, setpageState, primaryColor } =
     useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
@@ -349,7 +348,7 @@ const UserTable = ({}) => {
                             : "bg-gray-200 text-black"
                         } rounded-md relative hover:shadow-lg text-sm`}
                       >
-                        <div className={`${currentMode === "dark" ? "border-[#333333]" : "border-[#DA1F26]"} grid grid-cols-12 border-t-2 rounded-md`}>
+                        <div className={`${currentMode === "dark" ? "border-[#333333]" : "border-primary"} grid grid-cols-12 border-t-2 rounded-md`}>
                           <div className="col-span-10 p-2">
                             <div className="flex items-center m-1 mb-4">
                               {/* IMAGE  */}
@@ -371,7 +370,7 @@ const UserTable = ({}) => {
                                 <h1 className="font-bold text-base">
                                   {item?.userName}
                                 </h1>
-                                <p className="text-[#DA1F26]">
+                                <p className="text-primary">
                                   {item?.position}
                                 </p>
                               </div>
@@ -396,7 +395,7 @@ const UserTable = ({}) => {
                           </div>
 
                           <div className={`col-span-2 px-2 rounded-md`}>
-                            <div className={`${currentMode === "dark" ? "bg-[#333333]" : "bg-[#DA1F26]"} flex flex-col space-y-3 justify-center p-1 rounded-b-full`}>
+                            <div className={`${currentMode === "dark" ? "bg-[#333333]" : "bg-primary"} flex flex-col space-y-3 justify-center p-1 rounded-b-full`}>
                               {/* VIEW  */}
                               <div className="w-full flex justify-center my-1">
                                 <Tooltip title="View User Details" arrow>
@@ -479,7 +478,7 @@ const UserTable = ({}) => {
                 sx={{
                   "& .Mui-selected": {
                     color: "white !important",
-                    backgroundColor: "#DA1F26 !important",
+                    backgroundColor: `${primaryColor} !important`,
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",

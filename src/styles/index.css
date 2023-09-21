@@ -11,6 +11,31 @@ body {
   overflow-x: hidden;
 }
 
+:root {
+  --primary-color: "";
+}
+
+.bg-primary {
+  background-color: var(--primary-color);
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.border-primary {
+  border-color: var(--primary-color);
+}
+
+.bg-btn-primary {
+  background: var(--primary-color) !important;
+  border: 1px solid
+}
+
+.MuiTabs-indicator{
+  background: var(--primary-color) !important;
+}
+
 /* subscribe btn styling */
 .MuiBox-root .css-tykrgw-MuiButtonBase-root-MuiButton-root > a:hover i::before {
   left: 20%;
@@ -83,7 +108,7 @@ input::-webkit-inner-spin-button {
   padding: 0px !important;
 }
 
-.border-l-\[4px\] .bg-main-red-color {
+.border-l-\[4px\] .bg-primary {
   margin-left: 0.5rem !important;
 }
 
@@ -91,7 +116,7 @@ input::-webkit-inner-spin-button {
 .css-3dah0e-MuiModal-root-MuiDialog-root .MuiDialog-paper {
   outline: 0;
   min-width: 320px;
-  border: 4px solid #da1f26;
+  border: 4px solid var(--primary-color);
   border-radius: 2%;
 }
 
@@ -101,22 +126,18 @@ input[type="number"] {
 }
 
 .MuiDataGrid-panel .MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
-  color: "#DA1F26 !important";
+  color : var(--primary-color) !important;
 }
 
-.MuiDataGrid-panel .MuiButtonBase-root .MuiSwitch-switchBase {
-  color: "#DA1F26";
+.MuiDataGrid-panel .MuiButtonBase-root .MuiSwitch-switchBase{
+  color: var(--primary-color);
 }
 
 .MuiDataGrid-panel .MuiSwitch-root .MuiSwitch-track {
-  background-color: "#DA1F26";
+background-color: var(--primary-color);
 }
-.MuiDataGrid-panel
-  .css-1ycxvqq-MuiSwitch-root
-  .MuiSwitch-thumb
-  .MuiSwitch-thumb
-  .css-jsexje-MuiSwitch-thumb {
-  color: "#DA1F26 !important";
+.MuiDataGrid-panel  .css-1ycxvqq-MuiSwitch-root .MuiSwitch-thumb .MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
+  color : var(--primary-color) !important
 }
 
 /* SYNCFUSION COMPONENTS CSS */
@@ -129,13 +150,13 @@ input[type="number"] {
   color: black !important;
 }
 
-.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-label {
-  color: #da1f26;
+.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-label{
+  color: var(--primary-color);
   /* font-weight: bold; */
 }
 
-.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-icon {
-  color: #da1f26;
+.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-icon{
+  color: var(--primary-color);
   /* font-weight: bold; */
   font-size: 16px;
 }
@@ -465,7 +486,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
 .spinner-container circle[fill="#8C37F7"],
 .spinner-container circle[fill="#8C37F6"],
 .spinner-container circle[fill="#DABDFF"] {
-  fill: #da1f26 !important;
+  fill: var(--primary-color) !important;
 }
 
 .spinner-container g > circle:first-child {
@@ -495,12 +516,12 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .light-mode-datatable .MuiDataGrid-cell[data-field="leadName"] {
-  color: #da1f26;
+  color: var(--primary-color);
   font-weight: 500;
 }
 
 .dark-mode-datatable .MuiDataGrid-cell[data-field="leadName"] {
-  color: white;
+  color: var(--primary-color);
   font-weight: 500;
 }
 
@@ -522,7 +543,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
 
 .ps-menuitem-root.ps-active a,
 .ps-menuitem-root.ps-active a:hover {
-  background: #da1f26;
+  background: var(--primary-color);
   border-top-right-radius: 0px;
 }
 
@@ -542,12 +563,12 @@ label[for="bulkImport"] .MuiButtonBase-root {
   /* width: 42px; */
   right: 6px;
   padding: 1px 3px;
-  /* border: 1px solid #DA1F26; */
+  /* border: 1px solid var(--primary-color); */
 }
 
 .light-mode-sidebar .leads_counter {
-  color: #ffffff !important;
-  background: #da1f26 !important;
+  color: #FFFFFF !important;
+  background: var(--primary-color) !important;
 }
 
 .dark-mode-sidebar .leads_counter {
@@ -586,23 +607,21 @@ label[for="bulkImport"] .MuiButtonBase-root {
   gap: 0.4rem !important;
 }
 
-.MuiDataGrid-columnsPanel .css-jsexje-MuiSwitch-thumb {
-  background-color: #da1f26 !important;
+.MuiDataGrid-columnsPanel .css-jsexje-MuiSwitch-thumb{
+    background-color: var(--primary-color) !important;
 }
 
-.MuiDataGrid-columnsPanel
-  .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked
-  + .MuiSwitch-track {
-  background-color: #da1f26 !important;
+.MuiDataGrid-columnsPanel .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track{
+  background-color: var(--primary-color) !important;
 }
 
 .css-v4u5dn-MuiInputBase-root-MuiInput-root:after {
   border-bottom: 0 !important;
 }
 
-.css-otzuo3-MuiDataGrid-root .MuiDataGrid-cell:focus {
-  outline: 1px solid #da1f26 !important;
-}
+ .css-otzuo3-MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: 1px solid var(--primary-color) !important;
+ }
 
 .MuiDataGrid-cell {
   text-align: center !important;
@@ -695,7 +714,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
   align-items: center;
   width: 52px;
   height: 52px;
-  background: #da1f26;
+  background: var(--primary-color);
   border-radius: 50%;
   position: fixed;
   bottom: 110px;
@@ -771,7 +790,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 /* .popup button {
-  background-color: #DA1F26;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   padding: 5px 10px;
@@ -796,7 +815,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
   z-index: 2;
   width: 30px;
   height: 30px;
-  background-color: #da1f26;
+  background-color: var(--primary-color);
   opacity: 0.3;
   border-radius: 100%;
   animation: breathe2 1s infinite;
@@ -811,7 +830,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
   width: 90px;
   height: 90px;
   transform: translateY(-50%);
-  background-color: #da1f26;
+  background-color: var(--primary-color);
   opacity: 0.2;
   border-radius: 100%;
   animation: breathe 1s infinite;
@@ -1115,6 +1134,13 @@ label[for="bulkImport"] .MuiButtonBase-root {
  animation: fadeinout 3s linear alternate infinite;
  animation-delay: 2s;
 }
+        .reminder-line {
+            width: 2px;
+            height: 0;
+            background-color: var(--primary-color);
+            position: absolute;
+            animation: reminderAnimation 2s infinite;
+        }
 
 .triangle2Ex4{
  -webkit-animation: fadeinout 4s linear forwards;

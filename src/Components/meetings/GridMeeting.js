@@ -31,7 +31,7 @@ import {
 const GridMeeting = ({ pageState, setpageState }) => {
   console.log("meetings state: ", pageState);
   const [loading, setLoading] = useState(false);
-  const { currentMode, BACKEND_URL, isArabic } = useStateContext();
+  const { currentMode, BACKEND_URL, isArabic, primaryColor } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [meetingLocation, setMeetingLocation] = useState(null);
   const [locationModalOpen, setLocationModalOpen] = useState(false);
@@ -182,7 +182,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                           <div className="space-y-1 overflow-hidden">
                             <div className="flex items-center justify-between">
                               <h1 
-                                className="font-bold text-[#DA1F26]" 
+                                className="font-bold text-primary" 
                                 style={{
                                   fontFamily: isArabic(item?.leadName)
                                     ? "Noto Kufi Arabic"
@@ -205,7 +205,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                                     onClick={() => handleEditMeeting(item)}
                                   >
                                     <MdEdit
-                                      style={{ color: "#da1f26" }}
+                                      className="text-primary"
                                       size={14}
                                     />
                                   </IconButton>
@@ -221,7 +221,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                                     onClick={() => showLocation(mLat, mLong)}
                                   >
                                     <MdLocationOn
-                                      style={{ color: "#da1f26" }}
+                                      className="text-primary"
                                       size={14}
                                     />
                                   </IconButton>
@@ -249,7 +249,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                             <p className="flex items-center text-sm py-1">
                               {item?.meetingStatus === "Cancelled" && (
                                 <>
-                                  <BsFillBookmarkXFill size={16} className="mr-2" color="#DA1F26" /> 
+                                  <BsFillBookmarkXFill size={16} className="mr-2 text-primary" /> 
                                   <span className="mx-1">{item?.meetingStatus}</span>
                                 </>
                               )}
@@ -289,7 +289,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                 sx={{
                   "& .Mui-selected": {
                     color: currentMode === "dark" ? "white" : "gray",
-                    backgroundColor: "#DA1F26 !important",
+                    backgroundColor: `${primaryColor} !important`,
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",

@@ -1,13 +1,10 @@
 import {
   CircularProgress,
   Modal,
-  Backdrop,
-  Button,
-  IconButton,
+  Backdrop, IconButton
 } from "@mui/material";
-import { IoIosAlert } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
-import { Select, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import "../../styles/app.css";
@@ -292,7 +289,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                         </div>
                         {emailError && (
                           <div className="col-span-6">
-                            <p className="italic text-red-900">{emailError}</p>
+                            <p className="italic text-primary">{emailError}</p>
                           </div>
                         )}
 
@@ -459,7 +456,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                         </div>
                         {passwordError && (
                           <div className="col-span-6">
-                            <p className="italic text-red-900">
+                            <p className="italic text-primary">
                               {passwordError}
                             </p>
                           </div>
@@ -469,7 +466,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                         <button
                           disabled={loading ? true : false}
                           type="submit"
-                          className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-3 px-4 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
+                          className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary py-3 px-4 text-white  focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
                         >
                           {loading ? (
                             <CircularProgress

@@ -108,7 +108,8 @@ const SendImageModal = ({ sendImageModal, handleCloseImageModal }) => {
               type="submit"
               variant="contained"
               fullWidth
-              style={{ padding: "10px 0", backgroundColor: "#da1f26"}}
+              className="bg-btn-primary"
+              style={{ padding: "10px 0", color: "white"}}
             >
               {btnloading ? (
                 <CircularProgress size={18} sx={{ color: "white" }} />

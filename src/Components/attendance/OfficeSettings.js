@@ -5,13 +5,12 @@ import { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { Button, CircularProgress } from "@mui/material";
 import MyCalendar from "./MyCalendar";
-import { Box } from "@mui/system";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 import moment from "moment";
 
 const OfficeSettings = () => {
-  const { currentMode, formatNum, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
   const [settings, setSettings] = useState({
@@ -190,12 +189,10 @@ const OfficeSettings = () => {
 
   return (
     <>
-      <h4 className="text-red-600 font-bold text-xl mb-2 text-center">
+      <h4 className="text-primary py-5 font-bold text-xl text-center">
         Office Time Settings
       </h4>
-      {/* <Box className="h-[60vh] flex items-center justify-center">
-        <img src="/coming-soon.png" width={"200px"} alt="" />
-      </Box> */}
+  
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-5 pb-3">
         <div
@@ -384,8 +381,8 @@ const OfficeSettings = () => {
                 <Button
                   type="submit"
                   size="medium"
-                  className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-                  style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+                  className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold mb-3"
+                  style={{color: "#ffffff" }}
                   onClick={handleEditClick}
                 >
                   Modify Settings
@@ -394,8 +391,8 @@ const OfficeSettings = () => {
                 <Button
                   type="submit"
                   size="medium"
-                  className="bg-main-red-color w-full text-white rounded-lg py-3 font-semibold mb-3"
-                  style={{ backgroundColor: "#da1f26", color: "#ffffff" }}
+                  className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold mb-3"
+                  style={{color: "#ffffff" }}
                   onClick={handleUpdateClick}
                 >
                   {btnLoading ? (

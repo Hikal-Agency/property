@@ -49,9 +49,7 @@ const SingleUser = ({ UserModelOpen, handleUserModelClose, UserData }) => {
             <IoMdClose size={18} />
           </IconButton>
           <h1
-            className={`${
-              currentMode === "dark" ? "text-red-600" : "text-red-600"
-            } text-center font-bold text-xl pb-5`}
+            className={`text-primary text-center font-bold text-xl pb-5`}
           >
             User details
           </h1>
@@ -74,7 +72,7 @@ const SingleUser = ({ UserModelOpen, handleUserModelClose, UserData }) => {
                   <img src="/favicon.png" alt="" width={"60%"} />
                 )}
               </div>
-              <h1 className="text-main-red-color text-center text-xl font-bold py-3">
+              <h1 className="text-primary text-center text-xl font-bold py-3">
                 {UserData?.userName}
               </h1>
               <h3
@@ -123,7 +121,7 @@ const SingleUser = ({ UserModelOpen, handleUserModelClose, UserData }) => {
                   </div>
                 </div>
               </div>
-              <div className="bg-main-red-color h-0.5 w-full my-7"></div>
+              <div className="bg-primary h-0.5 w-full my-7"></div>
               <div
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-black"
@@ -150,7 +148,7 @@ const SingleUser = ({ UserModelOpen, handleUserModelClose, UserData }) => {
                   </div>
                 </div>
               </div>
-              <div className="bg-main-red-color h-0.5 w-full my-7"></div>
+              <div className="bg-primary h-0.5 w-full my-7"></div>
             </div>
           </div>
         </div>

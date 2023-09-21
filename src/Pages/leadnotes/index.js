@@ -32,7 +32,7 @@ const LeadNotesPage = (props) => {
             }`}
           >
             <div className="flex items-center">
-              <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
               <h1
                 className={`text-lg font-semibold ${
                   currentMode === "dark"
@@ -41,7 +41,7 @@ const LeadNotesPage = (props) => {
                 }`}
               >
                 Lead Notes {" "}
-                <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+                <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>
               </h1>

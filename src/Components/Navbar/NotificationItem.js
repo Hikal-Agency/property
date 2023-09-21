@@ -15,7 +15,7 @@ const NotificationItem = ({
   iconBGColor,
   notificationIcons,
 }) => {
-  const { currentMode, BACKEND_URL, User, getNotifCounts } = useStateContext();
+  const { currentMode, BACKEND_URL, User, getNotifCounts, primaryColor } = useStateContext();
   const [fadeOutAnimating, setFadeOutAnimating] = useState(false);
   return (
     <>
@@ -33,7 +33,7 @@ const NotificationItem = ({
                   className="flex justify-center items-center h-[35px] w-[35px] rounded-full m-2"
                   style={{
                     background:
-                      iconBGColor[activity?.type?.toLowerCase()] || "#da1f26",
+                      iconBGColor[activity?.type?.toLowerCase()] || primaryColor,
                   }}
                 >
                   {notificationIcons[activity?.type?.toLowerCase()] || (

@@ -6,7 +6,7 @@ const Footer = () => {
   const { currentMode } = useStateContext();
   return (
     <div
-      className={`border-t border-t-1 text-sm border-[#DA1F26] flex justify-between items-center px-5 py-3 ${
+      className={`border-t border-t-1 text-sm border-primary flex justify-between items-center px-5 py-3 ${
         currentMode === "dark" ? "bg-black" : "bg-white"
       }`}
       style={{

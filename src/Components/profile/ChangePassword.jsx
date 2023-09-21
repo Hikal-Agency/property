@@ -4,7 +4,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { Button } from "@material-tailwind/react";
 
 import axios from "../../axoisConfig";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 export const ChangePassword = () => {
   const { darkModeColors, BACKEND_URL, User } = useStateContext();
@@ -147,10 +147,13 @@ export const ChangePassword = () => {
               )}
             </div>
             <Button
-              className={`col-span-6 min-w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+              className={`col-span-6 min-w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
               ripple={true}
               size="lg"
               type="submit"
+              style={{
+                color: "white"
+              }}
               disabled={btnloading ? true : false}
             >
               {btnloading ? (

@@ -306,7 +306,7 @@ const RenderManagers = ({ cellValues }) => {
               <div className="flex flex-col justify-center items-center">
                 <IoIosAlert
                   size={50}
-                  className="text-main-red-color text-2xl"
+                  className="text-primary text-2xl"
                 />
                 <h1 className="font-semibold pt-3 text-lg text-center">
                   Do You Really Want Change the Manager from{" "}
@@ -337,7 +337,7 @@ const RenderManagers = ({ cellValues }) => {
               </div>
               <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                 <Button
-                  className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                  className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                   ripple={true}
                   size="lg"
                   onClick={() => UpdateManager(cellValues)}
@@ -356,7 +356,7 @@ const RenderManagers = ({ cellValues }) => {
                   className={`shadow-none  rounded-md text-sm  ${
                     currentMode === "dark"
                       ? "text-white border-white"
-                      : "text-main-red-color border-main-red-color"
+                      : "text-primary border-primary"
                   }`}
                 >
                   Cancel

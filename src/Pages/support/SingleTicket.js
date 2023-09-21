@@ -64,7 +64,7 @@ const SingleTicket = () => {
                 }`}
               >
                 Issue :{" "}
-                <span className="text-main-red-color font-bold">
+                <span className="text-primary font-bold">
                   {tickeData?.issue &&
                     tickeData.issue.charAt(0).toUpperCase() +
                       tickeData.issue.slice(1)}

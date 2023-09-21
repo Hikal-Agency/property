@@ -4,51 +4,6 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import { useEffect } from "react";
 
-const ribbonStyles = {
-  width: "200px",
-  height: "40px",
-  filter: "grayscale(0) !important",
-  lineHeight: "52px",
-  position: "absolute",
-  top: "30px",
-  right: "-50px",
-  color: "white",
-  zIndex: 2,
-  overflow: "hidden",
-  transform: "rotate(45deg)",
-  border: "1px dashed",
-  boxShadow: "0 0 0 3px #da1f26, 0px 21px 5px -18px rgba(0,0,0,0.6)",
-  background: "#da1f26",
-  textAlign: "center",
-
-  "& .wrap": {
-    width: "100%",
-    height: "188px",
-    position: "absolute",
-    top: "-8px",
-    left: "8px",
-    overflow: "hidden",
-  },
-  "& .wrap:before, .wrap:after": {
-    content: "''",
-    position: "absolute",
-  },
-  "& .wrap:before": {
-    width: "40px",
-    height: "8px",
-    right: "100px",
-    background: "#4D6530",
-    borderRadius: "8px 8px 0px 0px",
-  },
-  "& .wrap:after": {
-    width: "8px",
-    height: "40px",
-    right: "0px",
-    top: "100px",
-    background: "#4D6530",
-    borderRadius: "0px 8px 8px 0px",
-  },
-};
 
 const OffersList = ({
   user,
@@ -59,7 +14,7 @@ const OffersList = ({
   setCurrentPage,
   setPageBeingScrolled
 }) => {
-  const { currentMode, isArabic } = useStateContext();
+  const { currentMode, isArabic, primaryColor } = useStateContext();
 
   const imagePaths = ["../assets/offers_static_img.png"];
 
@@ -100,6 +55,53 @@ const OffersList = ({
       ? offers?.filter((off) => off?.validToManager === 1)
       : offers?.filter((off) => off?.validToSales === 1);
 
+      const ribbonStyles = {
+  width: "200px",
+  height: "40px",
+  filter: "grayscale(0) !important",
+  lineHeight: "52px",
+  position: "absolute",
+  top: "30px",
+  right: "-50px",
+  color: "white",
+  zIndex: 2,
+  overflow: "hidden",
+  transform: "rotate(45deg)",
+  border: "1px dashed",
+  boxShadow: `0 0 0 3px ${primaryColor}, 0px 21px 5px -18px rgba(0,0,0,0.6)`,
+  background: primaryColor,
+  textAlign: "center",
+
+  "& .wrap": {
+    width: "100%",
+    height: "188px",
+    position: "absolute",
+    top: "-8px",
+    left: "8px",
+    overflow: "hidden",
+  },
+  "& .wrap:before, .wrap:after": {
+    content: "''",
+    position: "absolute",
+  },
+  "& .wrap:before": {
+    width: "40px",
+    height: "8px",
+    right: "100px",
+    background: "#4D6530",
+    borderRadius: "8px 8px 0px 0px",
+  },
+  "& .wrap:after": {
+    width: "8px",
+    height: "40px",
+    right: "0px",
+    top: "100px",
+    background: "#4D6530",
+    borderRadius: "0px 8px 8px 0px",
+  },
+};
+
+
   return (
     <div className="relative">
       <Box className="mt-1 p-5">
@@ -132,9 +134,9 @@ const OffersList = ({
                   className="p-5 h-full flex flex-col"
                 >
                   <div className="mb-2 top-0 left-0 z-10 flex gap-1">
-                    <div className="h-1 w-7 bg-red-600 rounded-md"></div>
-                    <div className="h-1 w-7 bg-red-600 rounded-md"></div>
-                    <div className="h-1 w-7 bg-red-600 rounded-md"></div>
+                    <div className="h-1 w-7 bg-primary rounded-md"></div>
+                    <div className="h-1 w-7 bg-primary rounded-md"></div>
+                    <div className="h-1 w-7 bg-primary rounded-md"></div>
                   </div>
                   <div className="my-1">
                     {offer?.offer_image ? (
@@ -175,9 +177,9 @@ const OffersList = ({
                   {/* VALIDITY  */}
                   <p className="font-semibold text-base mb-3">
                     Valid from{" "}
-                    <span className="text-[#DA1F26]">{offer?.validFrom}</span>{" "}
+                    <span className="text-primary">{offer?.validFrom}</span>{" "}
                     to{" "}
-                    <span className="text-[#DA1F26]">{offer?.validTill}</span>
+                    <span className="text-primary">{offer?.validTill}</span>
                   </p>
                   
                   {/* OFFER FROM  */}
@@ -187,7 +189,7 @@ const OffersList = ({
                     style={{ textTransform: "capitalize" }}
                   >
                     Offer from {" "}
-                    <span className="text-[#DA1F26] font-semibold">
+                    <span className="text-primary font-semibold">
                       {offer?.offerFromName}
                     </span>
                   </p>
@@ -202,7 +204,7 @@ const OffersList = ({
               disabled={btnloading}
               onClick={() => setCurrentPage((page) => page + 1)}
               variant="contained"
-              color="error"
+              className="bg-btn-primary" 
             >
               {btnloading ? (
                 <div className="flex items-center justify-center space-x-1">
