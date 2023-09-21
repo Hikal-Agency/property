@@ -8,7 +8,6 @@ import {MdStars} from "react-icons/md";
 
 import { Tooltip, Button, Badge } from "@mui/material";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
 
 import { useStateContext } from "../../context/ContextProvider";
@@ -40,10 +39,10 @@ import {
   VscShield,
   VscExclude,
   VscSignOut,
-  VscSymbolColor
 } from "react-icons/vsc";
 import "../../styles/animation.css";
 import ColorsPopup from "./ColorsPopup";
+import ColorSchemeMenuItem from "./ColorSchemeMenuItem";
 
 const NavButton = ({
   title,
@@ -190,6 +189,7 @@ const Navbar = () => {
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
   const changeMode = () => {
+    handleClose();
     colorMode.toggleColorMode();
     if (currentMode === "dark") {
       setCurrentMode("light");
@@ -258,18 +258,6 @@ const Navbar = () => {
             ),
           ]}
 
-          <NavButton
-            title="Colors"
-            customFunc={(event) => handleClick(event, "Colors")}
-            color={currentMode === "dark" ? "#ffffff" : "#333333"}
-            icon={
-              open && currNavBtn === "Colors" ? (
-              <MdColorLens size={20} />
-              ) : (
-                <MdOutlineColorLens size={20} />
-              )
-            }
-          />
           {/* MEETINGS  */}
           <NavButton
             title="Meetings"
@@ -349,7 +337,13 @@ const Navbar = () => {
           <Tooltip title="Profile" arrow placement="bottom">
             <div
               className="ml-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-              onClick={(event) => handleClick(event, "Profile")}
+              onClick={(event) => {
+                if(currNavBtn === "Profile"){
+                  handleClose();
+                } else {
+                  handleClick(event, "Profile");
+                }
+              }}
             >
               <img
                 height={50}
@@ -432,11 +426,7 @@ const Navbar = () => {
                 currNavBtn === "Notifications" ? (
                   // <NotificationsMenu />
                   <NotificationsMenuUpdated handleClose={handleClose} setCurrNavBtn={setCurrNavBtn}/>
-                ) : currNavBtn === "Colors" ? (
-                  <>
-                    <ColorsPopup handleClose={handleClose}/>
-                  </>
-                ) :  (currNavBtn === "Clock") ? (
+                ) : (currNavBtn === "Clock") ? (
                     <Clock handleClose={handleClose} /> 
                 )
                     : (currNavBtn === "Meetings") ? (
@@ -469,32 +459,7 @@ const Navbar = () => {
                       </Link>
                     </div>
 
-                    <div
-                      className={`cursor-pointer card-hover ${
-                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } mb-3 p-4 rounded-xl shadow-sm w-full`}
-                    >
-                      <div className="flex items-center justify-start">
-                        <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
-                          <VscSymbolColor size={18} color={"#AAAAAA"} />
-                        </div>
-                        <div className="flex justify-between items-center w-full h-full">
-                          <div className="flex items-center">
-                            <p className="font-semibold mx-1 mr-2">Theme</p>
-                            <VscLock size={14} color={primaryColor} className="mr-2" />
-                          </div>
-                          <div 
-                            style={{
-                              background: primaryColor, 
-                              fontSize: "0.5rem"
-                            }} 
-                            className="rounded-full text-white px-2 py-1 font-bold"
-                          >
-                            BETA
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <ColorSchemeMenuItem/>
 
                     {/* LOGIN HISTORY  */}
                     <div
