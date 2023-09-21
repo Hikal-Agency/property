@@ -161,7 +161,7 @@ const SecondaryListings = ({
   return (
     <div className="relative ">
       <Box className="mt-1 p-5">
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-x-3 gap-y-3 pb-4 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-x-3 gap-y-3  text-center">
           {offers?.map((offer, index) => {
             return (
               <div
@@ -180,7 +180,7 @@ const SecondaryListings = ({
                         ? "grayscale(1)"
                         : "",
                   }}
-                  className="p-5 rounded-md h-[430px] flex flex-col justify-between"
+                  className="p-5 rounded-md h-[390px] flex flex-col justify-between"
                 >
                   <div className=" top-0 left-0 z-10 flex gap-1 b-4">
                     <div className="h-1 w-7 bg-red-500"></div>
@@ -203,7 +203,7 @@ const SecondaryListings = ({
                     )}
                   </div>
                   {/* icons  */}
-                  <div className=" flex justify-between my-3 pb-5 ">
+                  {/* <div className=" flex justify-between my-3 pb-5 ">
                     <div className="h-1 w-7 flex space-x-1 ">
                       <span className="mt-1">
                         <AiOutlineEye />
@@ -228,12 +228,12 @@ const SecondaryListings = ({
                       </span>{" "}
                       <span>4</span>
                     </div>
-                  </div>
+                  </div> */}
                   <hr />
                   <h1
                     className={`${
                       currentMode === "dark" ? "text-white" : "text-[#000000]"
-                    }   flex justify-between my-4`}
+                    }   flex justify-between `}
                     style={{ textTransform: "capitalize" }}
                   >
                     <span className="text-2xl font-bold">
@@ -252,7 +252,7 @@ const SecondaryListings = ({
                   <p
                     className={`${
                       currentMode === "dark" ? "text-white" : "text-[#000000]"
-                    } text-white  rounded-md mb-4 text-start text-base`}
+                    } text-white  rounded-md text-start text-base`}
                     style={{
                       textTransform: "capitalize",
                       color: currentMode === "dark" ? "#ffffff" : "#000000",
@@ -262,7 +262,7 @@ const SecondaryListings = ({
                   </p>
                   <p className="mb-1 text-start">{offer?.offerDescription}</p>
                   {/* icons  */}
-                  <div className=" flex justify-between mb-5 ">
+                  {/* <div className=" flex justify-between mb-5 ">
                     <div className="h-1 w-7 flex space-x-1 ">
                       <span className="mt-1">
                         <BiSlideshow />
@@ -283,15 +283,15 @@ const SecondaryListings = ({
                         <AiOutlineShareAlt />
                       </span>{" "}
                     </div>
-                  </div>
-                  <hr className="mb-1" style={{ marginBottom: "10px" }}></hr>
+                  </div> */}
+
                   <Button
                     disabled={btnloading}
                     onClick={() => setCurrentPage((page) => page + 1)}
                     variant="contained"
                     // color="error"
                     className="bg-btn-primary"
-                    sx={{ marginBottom: "10px" }}
+                    // sx={{ marginBottom: "10px" }}
                   >
                     {btnloading ? (
                       <div className="flex items-center justify-center space-x-1">
@@ -301,7 +301,6 @@ const SecondaryListings = ({
                       <span>Manage Listing</span>
                     )}
                   </Button>
-                  <hr className="mb-5" style={{ marginBottom: "10px" }}></hr>
                 </div>
               </div>
             );
