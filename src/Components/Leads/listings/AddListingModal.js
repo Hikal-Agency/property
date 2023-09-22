@@ -568,7 +568,7 @@ const AddListingModal = ({
                 </div>
               </div>
 
-              <div className="w-full flex justify-center mr-4 items-center my-4 space-x-5">
+              {/* <div className="w-full flex justify-center mr-4 items-center my-4 space-x-5">
                 <input
                   accept="image/*"
                   style={{ display: "none" }}
@@ -621,7 +621,7 @@ const AddListingModal = ({
                     <span>Upload Document</span>
                   </Button>
                 </label>
-              </div>
+              </div> */}
 
               <div
                 className={`${

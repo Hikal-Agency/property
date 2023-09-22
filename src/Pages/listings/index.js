@@ -53,38 +53,62 @@ const Listings = () => {
   } = useStateContext();
   const { hasPermission } = usePermission();
 
-  const [user, setUser] = useState([]);
-  const [tabValue, setTabValue] = useState(0);
   const [value, setValue] = useState(0);
+  const [listing, setListings] = useState([]);
+  const [lastPage, setLastPage] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [model, setModel] = useState(false);
-  const [userID, setUserId] = useState();
-  const [userStatus, setUserStatus] = useState();
-  const [username, setUserName] = useState();
-  const [role, setUserRole] = useState();
-  const [openDeleteModel, setOpenDeleteModel] = useState(false);
-  const [openPermissionModel, setOpenPermissionModel] = useState(false);
-  const token = localStorage.getItem("auth-token");
+  const [btnloading, setbtnloading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [pageBeingScrolled, setPageBeingScrolled] = useState(1);
 
   const searchRef = useRef("");
 
-  console.log("User: ", user);
-  const handleChange = (event, newValue) => {
-    setValue(value === 0 ? 1 : 0);
-  };
-
-  const handleKeyUp = (e) => {
-    if (searchRef.current.querySelector("input").value) {
-      if (e.key === "Enter" || e.keyCode === 13) {
-        const token = localStorage.getItem("auth-token");
-        // fetchUsers(token, e.target.value);
-      }
+  const FetchListings = async (token, page = 1) => {
+    if (page > 1) {
+      setbtnloading(true);
     }
-  };
-  const handleSearch = (e) => {
-    if (e.target.value === "") {
-      setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
-      const token = localStorage.getItem("auth-token");
-      //   fetchUsers(token);
+    try {
+      const all_listings = await axios.get(
+        `${BACKEND_URL}/listings?page=${page}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("all listings: ", all_listings);
+
+      if (page > 1) {
+        setListings((prevOffers) => {
+          return [
+            ...prevOffers,
+            ...all_listings?.data?.data?.data?.map((listing) => ({
+              ...listing,
+              page: page,
+            })),
+          ];
+        });
+      } else {
+        setListings(() => {
+          return [
+            ...all_listings?.data?.data?.data?.map((listing) => ({
+              ...listing,
+              page: page,
+            })),
+          ];
+        });
+      }
+      setLoading(false);
+      setLastPage(all_listings?.data?.last_page);
+      setTotal(all_listings?.data?.data?.total);
+      setbtnloading(false);
+      //   console.log("All Offers: ",all_listings)
+    } catch (error) {
+      console.log("Offers not fetched. ", error);
     }
   };
 
@@ -99,32 +123,10 @@ const Listings = () => {
     setModel(false);
   };
 
-  const handleDelete = (id, status, name) => {
-    console.log("Delete id: ", id);
-    setUserId(id);
-    setUserStatus(status);
-    setUserName(name);
-    setOpenDeleteModel(true);
-  };
-  const handleDeleteModelClose = () => {
-    setOpenDeleteModel(false);
-  };
-
-  //   useEffect(() => {
-  //     setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
-  //   }, []);
-
-  //   useEffect(() => {
-  //     if (searchRef.current.querySelector("input").value) {
-  //       fetchUsers(
-  //         token,
-  //         searchRef.current.querySelector("input").value,
-  //         pageState.page
-  //       );
-  //     } else {
-  //       fetchUsers(token);
-  //     }
-  //   }, [pageState.page]);
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    FetchListings(token, currentPage);
+  }, [currentPage, value]);
 
   return (
     <>
@@ -155,7 +157,7 @@ const Listings = () => {
                     >
                       Secondary Listings{" "}
                       <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
-                        <span>{pageState?.total}</span>
+                        <span>{total}</span>
                       </span>
                     </h1>
                   </div>
@@ -231,33 +233,6 @@ const Listings = () => {
                         <TextField
                           id="property-type"
                           // value={PropertyType}
-                          label="Baths"
-                          // onChange={ChangePropertyType}
-                          size="small"
-                          className="w-full mb-5"
-                          displayEmpty
-                          sx={{
-                            "&": {
-                              marginBottom: "1.25rem !important",
-                            },
-                          }}
-                          select
-                        >
-                          <MenuItem value="today" selected>
-                            Exclude location
-                          </MenuItem>
-                          <MenuItem value="yesterday">
-                            Exclude location
-                          </MenuItem>
-                        </TextField>
-                      </FormControl>
-                      <FormControl
-                        variant="standard"
-                        sx={{ m: 1, minWidth: 150 }}
-                      >
-                        <TextField
-                          id="property-type"
-                          // value={PropertyType}
                           label="Beds"
                           // onChange={ChangePropertyType}
                           size="small"
@@ -270,12 +245,52 @@ const Listings = () => {
                           }}
                           select
                         >
-                          <MenuItem value="today" selected>
-                            Exclude location
+                          <MenuItem value={"Studio"}>Studio</MenuItem>
+                          <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
+                          <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
+                          <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
+                          <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
+                          <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
+                          <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
+                          <MenuItem value={"7 Bedrooms"}>7 Bedrooms</MenuItem>
+                          <MenuItem value={"8 Bedrooms"}>8 Bedrooms</MenuItem>
+                          <MenuItem value={"9 Bedrooms"}>9 Bedrooms</MenuItem>
+                          <MenuItem value={"10 Bedrooms"}>10 Bedrooms</MenuItem>
+                          <MenuItem value={"Retail"}>Retail</MenuItem>
+                        </TextField>
+                      </FormControl>
+                      <FormControl
+                        variant="standard"
+                        sx={{ m: 1, minWidth: 150 }}
+                      >
+                        <TextField
+                          id="property-type"
+                          // value={PropertyType}
+                          label="Baths"
+                          // onChange={ChangePropertyType}
+                          size="small"
+                          className="w-full mb-5"
+                          displayEmpty
+                          sx={{
+                            "&": {
+                              marginBottom: "1.25rem !important",
+                            },
+                          }}
+                          select
+                        >
+                          <MenuItem value={"1 Bathroom"}>1 Bathroom</MenuItem>
+                          <MenuItem value={"2 Bathrooms"}>2 Bathrooms</MenuItem>
+                          <MenuItem value={"3 Bathrooms"}>3 Bathrooms</MenuItem>
+                          <MenuItem value={"4 Bathrooms"}>4 Bathrooms</MenuItem>
+                          <MenuItem value={"5 Bathrooms"}>5 Bathrooms</MenuItem>
+                          <MenuItem value={"6 Bathrooms"}>6 Bathrooms</MenuItem>
+                          <MenuItem value={"7 Bathrooms"}>7 Bathrooms</MenuItem>
+                          <MenuItem value={"8 Bathrooms"}>8 Bathrooms</MenuItem>
+                          <MenuItem value={"9 Bathrooms"}>9 Bathrooms</MenuItem>
+                          <MenuItem value={"10 Bathrooms"}>
+                            10 Bathrooms
                           </MenuItem>
-                          <MenuItem value="yesterday">
-                            Exclude location
-                          </MenuItem>
+                          <MenuItem value={"Unavailabe"}>Unavailabe</MenuItem>
                         </TextField>
                       </FormControl>
                       <FormControl
@@ -321,28 +336,13 @@ const Listings = () => {
                     </h2>
                   </div> */}
                 </div>
-                <SecondaryListings />
-
-                {/* {openDeleteModel && (
-                  <DeleteUser
-                    UserModelOpen={handleDelete}
-                    handleUserModelClose={handleDeleteModelClose}
-                    UserData={userID}
-                    UserStatus={userStatus}
-                    UserName={username}
-                    fetchUser={fetchUsers}
-                  />
-                )}
-                {openPermissionModel && (
-                  <UpdateUserPermissions
-                    UserModelOpen={HandlePermissionModel}
-                    handleUserModelClose={HandlePermissionClose}
-                    UserData={userID}
-                    UserName={username}
-                    userRole={role}
-                    fetchUser={fetchUsers}
-                  />
-                )} */}
+                <SecondaryListings
+                  listing={listing}
+                  setCurrentPage={setCurrentPage}
+                  setPageBeingScrolled={setPageBeingScrolled}
+                  currentPage={currentPage}
+                  lastPage={lastPage}
+                />
               </div>
             </div>
           </div>

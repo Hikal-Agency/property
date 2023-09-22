@@ -1,16 +1,8 @@
 import React from "react";
 import { Box, Button, CircularProgress } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import {
-  AiOutlineEye,
-  AiOutlineHeart,
-  AiOutlineCalendar,
-  AiOutlineFolder,
-  AiOutlineShareAlt,
-} from "react-icons/ai";
-import { IoExtensionPuzzleOutline } from "react-icons/io5";
-import { BsCodeSlash } from "react-icons/bs";
-import { BiSlideshow } from "react-icons/bi";
+
+import { BiBed, BiBath } from "react-icons/bi";
 
 import { useEffect } from "react";
 
@@ -61,9 +53,8 @@ const ribbonStyles = {
 };
 
 const SecondaryListings = ({
-  user,
   lastPage,
-  //   offers,
+  listing,
   currentPage,
   btnloading,
   setCurrentPage,
@@ -162,149 +153,146 @@ const SecondaryListings = ({
     <div className="relative ">
       <Box className="mt-1 p-5">
         <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-x-3 gap-y-3  text-center">
-          {offers?.map((offer, index) => {
-            return (
-              <div
-                className={`relative overflow-hidden offers-page-${
-                  offer?.page
-                } ${
-                  currentMode === "dark"
-                    ? "bg-[#1C1C1C] text-white"
-                    : "bg-gray-200 text-black"
-                } rounded-lg`}
-              >
+          {listing?.length > 0 ? (
+            listing?.map((listing, index) => {
+              return (
                 <div
-                  style={{
-                    filter:
-                      offer?.status?.toLowerCase() === "expired"
-                        ? "grayscale(1)"
-                        : "",
-                  }}
-                  className="p-5 rounded-md h-[390px] flex flex-col justify-between"
+                  className={`relative overflow-hidden offers-page-${
+                    listing?.page
+                  } ${
+                    currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-gray-200 text-black"
+                  } rounded-lg`}
                 >
-                  <div className=" top-0 left-0 z-10 flex gap-1 b-4">
-                    <div className="h-1 w-7 bg-red-500"></div>
-                    <div className="h-1 w-7 bg-red-500"></div>
-                    <div className="h-1 w-7 bg-red-500"></div>
-                  </div>
-                  <div className="mt-4">
-                    {offer?.offer_image ? (
+                  <div
+                    // style={{
+                    //   filter:
+                    //     offer?.status?.toLowerCase() === "expired"
+                    //       ? "grayscale(1)"
+                    //       : "",
+                    // }}
+                    className="p-5 rounded-md h-[390px] flex flex-col justify-between"
+                  >
+                    <div className=" top-0 left-0 z-10 flex gap-1 b-4">
+                      <div className="h-1 w-7 bg-red-500"></div>
+                      <div className="h-1 w-7 bg-red-500"></div>
+                      <div className="h-1 w-7 bg-red-500"></div>
+                    </div>
+                    <div className="mt-4">
+                      {/* {listing?.pictures[0] ? (
+                        <img
+                          src={listing?.pictures[0]}
+                          alt="offer"
+                          className="w-full object-cover h-[200px]"
+                        />
+                      ) : (
+                        <img
+                          src={imagePaths[0]}
+                          alt="offer"
+                          className="w-full h-[200px] object-cover"
+                        />
+                      )} */}
                       <img
-                        src={offer?.offer_image}
-                        alt="offer"
-                        className="w-full object-cover h-[200px]"
-                      />
-                    ) : (
-                      <img
-                        src={imagePaths[0]}
+                        src={static_img}
                         alt="offer"
                         className="w-full h-[200px] object-cover"
                       />
-                    )}
-                  </div>
-                  {/* icons  */}
-                  {/* <div className=" flex justify-between my-3 pb-5 ">
-                    <div className="h-1 w-7 flex space-x-1 ">
-                      <span className="mt-1">
-                        <AiOutlineEye />
-                      </span>{" "}
-                      <span>1</span>
                     </div>
-                    <div className="h-1 w-7 flex space-x-1 ">
-                      <span className="mt-1">
-                        <AiOutlineHeart />
-                      </span>{" "}
-                      <span>2</span>
-                    </div>
-                    <div className="h-1 w-7 flex space-x-1 ">
-                      <span className="mt-1">
-                        <AiOutlineCalendar />
-                      </span>{" "}
-                      <span>3</span>
-                    </div>
-                    <div className="h-1 w-7 flex space-x-1 ">
-                      <span className="mt-1">
-                        <IoExtensionPuzzleOutline />
-                      </span>{" "}
-                      <span>4</span>
-                    </div>
-                  </div> */}
-                  <hr />
-                  <h1
-                    className={`${
-                      currentMode === "dark" ? "text-white" : "text-[#000000]"
-                    }   flex justify-between `}
-                    style={{ textTransform: "capitalize" }}
-                  >
-                    <span className="text-2xl font-bold">
-                      {offer?.offerPrice}
-                    </span>
-                    <span
-                      className={`${
-                        offer?.status.toLowerCase() === "active"
-                          ? "text-[#14ae5c]"
-                          : "text-[#b91c1c]"
-                      } text-xs font-bold`}
-                    >
-                      {offer?.status}
-                    </span>
-                  </h1>
-                  <p
-                    className={`${
-                      currentMode === "dark" ? "text-white" : "text-[#000000]"
-                    } text-white  rounded-md text-start text-base`}
-                    style={{
-                      textTransform: "capitalize",
-                      color: currentMode === "dark" ? "#ffffff" : "#000000",
-                    }}
-                  >
-                    {offer?.offerSmallDesc}
-                  </p>
-                  <p className="mb-1 text-start">{offer?.offerDescription}</p>
-                  {/* icons  */}
-                  {/* <div className=" flex justify-between mb-5 ">
-                    <div className="h-1 w-7 flex space-x-1 ">
-                      <span className="mt-1">
-                        <BiSlideshow />
-                      </span>{" "}
-                    </div>
-                    <div className="h-1 w-7 flex space-x-1 ">
-                      <span className="mt-1">
-                        <BsCodeSlash />
-                      </span>{" "}
-                    </div>
-                    <div className="h-1 w-7 flex space-x-1 ">
-                      <span className="mt-1">
-                        <AiOutlineFolder />
-                      </span>{" "}
-                    </div>
-                    <div className="h-1 w-7 flex space-x-1 ">
-                      <span className="mt-1">
-                        <AiOutlineShareAlt />
-                      </span>{" "}
-                    </div>
-                  </div> */}
 
-                  <Button
-                    disabled={btnloading}
-                    onClick={() => setCurrentPage((page) => page + 1)}
-                    variant="contained"
-                    // color="error"
-                    className="bg-btn-primary"
-                    // sx={{ marginBottom: "10px" }}
-                  >
-                    {btnloading ? (
-                      <div className="flex items-center justify-center space-x-1">
-                        <CircularProgress size={18} sx={{ color: "blue" }} />
+                    <hr />
+                    <h1
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-[#000000]"
+                      }   flex justify-between `}
+                      style={{ textTransform: "capitalize" }}
+                    >
+                      <span className="text-2xl font-bold text-primary">
+                        AED {listing?.price || "Price Unavailable"}
+                      </span>
+                      <span className={`text-sm font-bold text-primary`}>
+                        {listing?.seller_name || "-"}
+                      </span>
+                    </h1>
+
+                    <div className="flex justify-between items-center mt-4 mb-3">
+                      <div className="flex space-x-3 items-center">
+                        <p
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-[#000000]"
+                          } text-white  rounded-md text-start text-lg font-semibold`}
+                          style={{
+                            textTransform: "capitalize",
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          }}
+                        >
+                          Property Type :
+                        </p>
+                        <p className=" text-start text-primary">
+                          {listing?.property_type || "-"}
+                        </p>
                       </div>
-                    ) : (
-                      <span>Manage Listing</span>
-                    )}
-                  </Button>
+                      <div className="flex space-x-3 items-center">
+                        <p
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-[#000000]"
+                          } text-white  rounded-md text-start text-lg font-semibold`}
+                          style={{
+                            textTransform: "capitalize",
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          }}
+                        >
+                          Project :
+                        </p>
+                        <p className=" text-start text-primary">
+                          {listing?.project || "-"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center mb-3">
+                      <div className="flex space-x-3 items-center">
+                        <BiBed className="text-primary mr-2" size={20} /> :
+                        <p className="text-start text-primary">
+                          {listing?.bedrooms || "-"}
+                        </p>
+                      </div>
+                      <div className="flex space-x-3 items-center">
+                        <BiBath className="text-primary mr-2" size={20} /> :
+                        <p className="text-start text-primary">
+                          {listing?.bathrooms || "-"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <Button
+                      disabled={btnloading}
+                      onClick={() => setCurrentPage((page) => page + 1)}
+                      variant="contained"
+                      // color="error"
+                      className="bg-btn-primary"
+                      // sx={{ marginBottom: "10px" }}
+                    >
+                      {btnloading ? (
+                        <div className="flex items-center justify-center space-x-1">
+                          <CircularProgress size={18} sx={{ color: "blue" }} />
+                        </div>
+                      ) : (
+                        <span>Manage Listing</span>
+                      )}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          ) : (
+            <h2>No listings available</h2>
+          )}
         </div>
         {currentPage < lastPage && (
           <div className="flex justify-center mt-5">
