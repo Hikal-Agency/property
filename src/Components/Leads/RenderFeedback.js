@@ -294,6 +294,8 @@ const RenderFeedback = ({ cellValues }) => {
           <MenuItem value={"Unreachable"}>Unreachable</MenuItem>
           <MenuItem value={"Duplicate"}>Duplicate</MenuItem>
           <MenuItem value={"Dead"}>Dead</MenuItem>
+          <MenuItem value={"Wrong Number"}>Wrong Number</MenuItem>
+
         </Select>
       </FormControl>
 

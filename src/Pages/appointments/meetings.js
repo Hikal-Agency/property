@@ -4,12 +4,13 @@ import {
   AiOutlineAppstore,
   AiOutlineEdit,
   AiOutlineTable,
+  AiOutlineHistory
 } from "react-icons/ai";
 import { MdLocationOn } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
-import { Tab, Tabs } from "@mui/material";
+import { Tab, Tabs, Tooltip } from "@mui/material";
 import { Box, Pagination } from "@mui/material";
 import {
   DataGrid,
@@ -22,6 +23,7 @@ import {
 import GridMeeting from "../../Components/meetings/GridMeeting";
 import UpdateMeeting from "../../Components/meetings/UpdateMeeting";
 import ShowLocation from "../../Components/meetings/ShowLocation";
+import Timeline from "../timeline";
 
 const Meetings = () => {
   const [loading, setloading] = useState(true);
@@ -30,10 +32,20 @@ const Meetings = () => {
   const [locationModalOpen, setLocationModalOpen] = useState(false);
   const [meetingNote, setMeetingNote] = useState(null);
   const [meetingLocation, setMeetingLocation] = useState(null);
+  const [singleLeadData, setsingleLeadData] = useState({});
+  const [timelineModelOpen, setTimelineModelOpen] = useState(false);
+
   const [openEditModal, setOpenEditModal] = useState({
     open: false,
     id: null,
   });
+
+  
+  const HandleViewTimeline = (params) => {
+    setsingleLeadData(params.row);
+    setTimelineModelOpen(true);
+  };
+
 
   console.log("meeting notessss: ", meetingNote);
   const [value, setValue] = useState(0);
@@ -263,6 +275,21 @@ const Meetings = () => {
               <AiOutlineEdit size={16} />
             </Button>
 
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
+            >
+              <Tooltip title="View Timeline" arrow>
+                <button onClick={() => HandleViewTimeline(cellValues)}>
+                  <AiOutlineHistory size={16} />
+                </button>
+              </Tooltip>
+            </p>
+
             {cellValues.row.mLat === "" ? (
               <></>
             ) : (
@@ -346,6 +373,7 @@ const Meetings = () => {
           enquiryType: row?.enquiryType || "-",
           leadType: row?.leadType || "-",
           leadFor: row?.leadFor || "-",
+          leadId: row?.lead_id,
           meetingDate: row?.meetingDate || "-",
           meetingBy: row?.userName || "-",
           meetingTime: row?.meetingTime || "-",
@@ -663,6 +691,15 @@ const Meetings = () => {
         ) : (
           <></>
         )}
+
+        {timelineModelOpen && (
+            <Timeline
+              timelineModelOpen={timelineModelOpen}
+              handleCloseTimelineModel={() => setTimelineModelOpen(false)}
+              LeadData={singleLeadData}
+            />
+          )}
+
       </div>
     </>
   );

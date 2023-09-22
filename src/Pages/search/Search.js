@@ -97,6 +97,8 @@ const leadTypes = [
   { id: "not interested", formattedValue: "Not Interested" },
   { id: "unreachable", formattedValue: "Unreachable" },
   { id: "dead", formattedValue: "Dead" },
+  { id: "wrong number", formattedValue: "Wrong Number" },
+
 ];
 
 const enquiryTypes = [

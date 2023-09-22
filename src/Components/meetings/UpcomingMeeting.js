@@ -8,6 +8,9 @@ import {
   BsPinMap 
 } from "react-icons/bs";
 import "../../styles/animation.css";
+import { Tooltip } from "@mui/material";
+import {AiOutlineHistory} from "react-icons/ai";
+import Timeline from "../../Pages/timeline";
 
 const UpcomingMeeting = ({ upcoming_meetings }) => {
   const { currentMode, primaryColor } = useStateContext();
@@ -17,6 +20,10 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
     lat: 0,
     lng: 0,
     addressText: "",
+  });
+  const [timelinePopup, setTimelinePopup] = useState({
+    isOpen: false, 
+    leadId: null
   });
 
   useEffect(() => {
@@ -44,18 +51,42 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
       {upcoming_meetings?.map((meeting, index) => {
         return (
           <div
-            onClick={() => handleCardClick(meeting)}
+            onClick={(e) => {
+                if(!e.target.closest(".timelineBtn")) {
+              handleCardClick(meeting);
+                }
+              
+              }}
             key={index}
             className={`card-hover backdrop-blur w-[350px] flex flex-col justify-between ${
               currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-[#d8d8d845] text-black" // ${ currentMode === "dark" ? "bg- text-white " : "bg-" } 
             } rounded-xl my-2 `}
           >
             <div className="px-5 py-5 space-y-3">
-              <h2 style={{
+            
+            <div className="flex items-center justify-between">
+            <h2 style={{
                 color: primaryColor
               }} className="text-md font-semibold">
                 {meeting?.leadName}
               </h2>
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-primary rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
+            >
+              <Tooltip title="View Timeline" arrow>
+                <button onClick={() => setTimelinePopup({isOpen: true, leadId: meeting?.leadId})}>
+                  <AiOutlineHistory size={16} />
+                </button>
+              </Tooltip>
+            </p>
+
+              
+            </div>
               <div className="grid grid-cols-11">
                 <BsBuildings
                   size={16}
@@ -119,6 +150,14 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
       ) : (
         <></>
       )}
+
+      {timelinePopup?.isOpen && (
+            <Timeline
+              timelineModelOpen={timelinePopup?.isOpen}
+              handleCloseTimelineModel={() => setTimelinePopup({isOpen: false})}
+              LeadData={{...timelinePopup}}
+            />
+          )}
     </div>
   );
 };

@@ -1311,6 +1311,7 @@ const AllLeads = () => {
                 onClick={() =>
                   setOpenMessageModal({ open: true, isWhatsapp: false })
                 }
+                disabled={selectedRows?.length === 0}
                 type="button"
                 variant="contained"
                 sx={{ padding: "10px", mb: 2, mr: 1 }}

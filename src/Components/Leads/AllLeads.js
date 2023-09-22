@@ -86,6 +86,7 @@ const feedbacks = [
   "No Answer",
   "Unreachable",
   "Dead",
+  "Wrong Number"
 ];
 
 const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
