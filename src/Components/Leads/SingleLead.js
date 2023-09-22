@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { BsTrash } from "react-icons/bs";
 import { IoIosAlert } from "react-icons/io";
+import { BsBuildingGear } from "react-icons/bs";
 
 import usePermission from "../../utils/usePermission";
 
@@ -25,6 +26,7 @@ import { Link } from "react-router-dom";
 import { BsShuffle } from "react-icons/bs";
 import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
 import moment from "moment";
+import AddListingModal from "./listings/AddListingModal";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -36,9 +38,16 @@ const SingleLead = ({
   setBulkDeleteClicked,
   setLeadToDelete,
   isBookedDeal,
+  lead_origin,
 }) => {
-  const { darkModeColors, currentMode, User, BACKEND_URL, isArabic, primaryColor } =
-    useStateContext();
+  const {
+    darkModeColors,
+    currentMode,
+    User,
+    BACKEND_URL,
+    isArabic,
+    primaryColor,
+  } = useStateContext();
   const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [singleLeadData, setsingleLeadData] = useState({});
@@ -50,11 +59,13 @@ const SingleLead = ({
   const [lastNoteDate, setLastNoteDate] = useState("");
   const [lastNoteAddedBy, setLastNoteAddedBy] = useState("");
   const [loading, setLoading] = useState(false);
+  const [listingModalOpen, setListingModalOpen] = useState(false);
   const [blockIPModalOpened, setBlockIPModalOpened] = useState({
     lead: null,
     isOpened: false,
   });
   const [deleteloading, setdeleteloading] = useState(false);
+  const handleCloseListingModal = () => setListingModalOpen(false);
 
   const handleCloseRequestModel = () => {
     setOpen(false);
@@ -65,6 +76,12 @@ const SingleLead = ({
     console.log("LEADID: ", params);
     setsingleLeadData(params);
     handleUpdateLeadModelOpen();
+  };
+
+  // open listing modal
+  const handleOpenListingModal = () => {
+    setListingModalOpen(true);
+    handleLeadModelClose();
   };
 
   // RESHUFFLE LEAD HAND FUNCTION
@@ -594,6 +611,27 @@ const SingleLead = ({
                   </p>
                 )}
 
+                {/* listing */}
+                <p
+                  style={{ cursor: "pointer" }}
+                  disabled={deleteloading ? true : false}
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-[#FFFFFF] bg-[#262626]"
+                      : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                >
+                  <Tooltip title="Add Listing" arrow>
+                    <button onClick={handleOpenListingModal}>
+                      <BsBuildingGear
+                        className="listingbtn"
+                        size={18}
+                        style={{ color: "inherit" }}
+                      />
+                    </button>
+                  </Tooltip>
+                </p>
+
                 {/* RESHUFFLED REQUEST  */}
                 {User?.role !== "1" &&
                 (LeadData?.transferRequest === 1 ||
@@ -654,7 +692,7 @@ const SingleLead = ({
                     sx={{ my: 0 }}
                     variant="contained"
                     style={{
-                      backgroundColor: primaryColor
+                      backgroundColor: primaryColor,
                     }}
                     size="medium"
                   >
@@ -737,7 +775,6 @@ const SingleLead = ({
                   <button
                     disabled={addNoteloading ? true : false}
                     type="submit"
-
                     className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary group relative flex w-full justify-center rounded-md border border-transparent p-1 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
                   >
                     {addNoteloading ? (
@@ -829,18 +866,14 @@ const SingleLead = ({
         </Modal>
       )}
 
-      {/* {UpdateLeadModelOpen && (
-        <UpdateLead
+      {listingModalOpen && (
+        <AddListingModal
           lead_origin={lead_origin}
-          LeadModelOpen={UpdateLeadModelOpen}
-          setLeadModelOpen={setUpdateLeadModelOpen}
-          handleLeadModelOpen={handleUpdateLeadModelOpen}
-          handleLeadModelClose={handleUpdateLeadModelClose}
-          LeadData={singleLeadData}
+          handleCloseListingModal={handleCloseListingModal}
+          setListingModalOpen={setListingModalOpen}
           BACKEND_URL={BACKEND_URL}
-          FetchLeads={FetchLeads}
         />
-      )} */}
+      )}
     </>
   );
 };

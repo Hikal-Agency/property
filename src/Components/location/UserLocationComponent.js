@@ -57,7 +57,7 @@ const UserLocationComponent = () => {
       const endDate = moment(date).add(1, "days").format("YYYY-MM-DD");
       const dateRange = [startDate, endDate].join(",");
 
-      url += `?data_range=${dateRange}`;
+      url += `?date_range=${dateRange}`;
     }
     await axios
       .get(url, {
@@ -84,13 +84,19 @@ const UserLocationComponent = () => {
 
   const FetchLastLocation = async (date) => {
     let url = `${BACKEND_URL}/locations?last_by_all`;
-    if (date) {
-      const startDate = moment(date).format("YYYY-MM-DD");
-      const endDate = moment(date).add(1, "days").format("YYYY-MM-DD");
-      const dateRange = [startDate, endDate].join(",");
 
-      url += `&data_range=${dateRange}`;
+    let dateFilter = date;
+    const currentDate = moment().format("YYYY-MM-DD");
+    if (!dateFilter) {
+      dateFilter = currentDate;
     }
+
+    const startDate = moment(dateFilter).format("YYYY-MM-DD");
+    const endDate = moment(dateFilter).add(1, "days").format("YYYY-MM-DD");
+    const dateRange = [startDate, endDate].join(",");
+
+    url += `&date_range=${dateRange}`;
+
     await axios
       .get(url, {
         headers: {

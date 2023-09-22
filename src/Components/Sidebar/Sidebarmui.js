@@ -10,6 +10,7 @@ import {
   BsCircleFill,
 } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
+import { BsBuildingGear } from "react-icons/bs";
 
 import { MdOutlinePayment } from "react-icons/md";
 import { AiTwotoneCalendar } from "react-icons/ai";
@@ -94,7 +95,7 @@ const Sidebarmui = () => {
     userCredits,
     setUserCredits,
     primaryColor,
-    setPrimaryColor
+    setPrimaryColor,
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -323,8 +324,7 @@ const Sidebarmui = () => {
           getAllLeadsMembers(user);
 
           FetchProfileData();
-      setPrimaryColor("rgb(218,31,38)");
-
+          setPrimaryColor("rgb(218,31,38)");
 
           socket.emit("add_user", {
             ...user,
@@ -601,7 +601,6 @@ const Sidebarmui = () => {
     }
     // eslint-disable-next-line
   }, []);
-
 
   let links = [
     {
@@ -986,6 +985,17 @@ const Sidebarmui = () => {
       ],
     },
     {
+      title: "Listings",
+      icon: <BsBuildingGear />,
+      links: [
+        {
+          name: "Listings",
+          link: "/secondaryListings",
+        },
+      ],
+    },
+
+    {
       title: "Apps",
       icon: <MdApps />,
       links: [
@@ -1009,6 +1019,7 @@ const Sidebarmui = () => {
         //   icon: <FaUser />,
         //   link: "/adminAuth/signup",
         // },
+
         {
           name: "Reports",
           icon: <HiDocumentReport />,
@@ -1466,9 +1477,9 @@ const Sidebarmui = () => {
                         {User?.userName ? User?.userName : "No username"}
                       </h1>
                       <span
-                      style={{
-                        background: primaryColor
-                      }}
+                        style={{
+                          background: primaryColor,
+                        }}
                         className={`block rounded-md px-2 py-1 text-sm text-white`}
                       >
                         {User?.position || ""}
