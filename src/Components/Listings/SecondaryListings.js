@@ -5,6 +5,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { BiBed, BiBath } from "react-icons/bi";
 
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const ribbonStyles = {
   width: "200px",
@@ -172,7 +173,7 @@ const SecondaryListings = ({
                     //       ? "grayscale(1)"
                     //       : "",
                     // }}
-                    className="p-5 rounded-md h-[390px] flex flex-col justify-between"
+                    className="p-5 rounded-md  flex flex-col justify-between"
                   >
                     <div className=" top-0 left-0 z-10 flex gap-1 b-4">
                       <div className="h-1 w-7 bg-red-500"></div>
@@ -204,7 +205,7 @@ const SecondaryListings = ({
                     <h1
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-[#000000]"
-                      }   flex justify-between `}
+                      }   flex justify-between mt-3 `}
                       style={{ textTransform: "capitalize" }}
                     >
                       <span className="text-2xl font-bold text-primary">
@@ -215,27 +216,8 @@ const SecondaryListings = ({
                       </span>
                     </h1>
 
-                    <div className="flex justify-between items-center mt-4 mb-3">
-                      <div className="flex space-x-3 items-center">
-                        <p
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-[#000000]"
-                          } text-white  rounded-md text-start text-lg font-semibold`}
-                          style={{
-                            textTransform: "capitalize",
-                            color:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          }}
-                        >
-                          Property Type :
-                        </p>
-                        <p className=" text-start text-primary">
-                          {listing?.property_type || "-"}
-                        </p>
-                      </div>
-                      <div className="flex space-x-3 items-center">
+                    <div className=" mt-4 mb-3">
+                      <div className="flex space-x-3 items-center mb-3">
                         <p
                           className={`${
                             currentMode === "dark"
@@ -254,12 +236,32 @@ const SecondaryListings = ({
                           {listing?.project || "-"}
                         </p>
                       </div>
+                      <div className="flex space-x-3 items-center ">
+                        <p
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-[#000000]"
+                          } text-white  rounded-md text-start text-lg font-semibold`}
+                          style={{
+                            textTransform: "capitalize",
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          }}
+                        >
+                          Address :
+                        </p>
+                        <p className=" text-start text-primary">
+                          {listing?.address || "-"}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center mb-3">
-                      <div className="flex space-x-3 items-center">
+                    <div className=" mb-3">
+                      <div className="flex space-x-3 items-center mb-3">
                         <BiBed className="text-primary mr-2" size={20} /> :
                         <p className="text-start text-primary">
-                          {listing?.bedrooms || "-"}
+                          {listing?.bedrooms + " " + listing?.property_type ||
+                            "-"}
                         </p>
                       </div>
                       <div className="flex space-x-3 items-center">
@@ -270,7 +272,26 @@ const SecondaryListings = ({
                       </div>
                     </div>
 
-                    <Button
+                    <Link
+                      sx={{ my: 0, w: "100%" }}
+                      to={`/secondaryListings/${listing?.id}`}
+                      target="_blank"
+                    >
+                      <Button
+                        fullWidth
+                        sx={{ my: 0 }}
+                        variant="contained"
+                        className="bg-btn-primary"
+                        // style={{
+                        //   backgroundColor: primaryColor,
+                        // }}
+                        size="medium"
+                      >
+                        Manager Listing
+                      </Button>
+                    </Link>
+
+                    {/* <Button
                       disabled={btnloading}
                       onClick={() => setCurrentPage((page) => page + 1)}
                       variant="contained"
@@ -285,7 +306,7 @@ const SecondaryListings = ({
                       ) : (
                         <span>Manage Listing</span>
                       )}
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               );

@@ -71,6 +71,7 @@ import usePermission from "../utils/usePermission";
 import Notifications from "./notifications";
 import NotificationsList from "./notifications/notificationsList";
 import Listings from "./listings";
+import SingleListingsPage from "./listings/SingleListingsPage";
 
 const libraries = ["places"];
 
@@ -439,6 +440,11 @@ const routes = [
     path: "/secondaryListings",
     pageName: "Secondary Listings",
     element: <Listings />,
+  },
+  {
+    path: "/secondaryListings/:lid",
+    element: <SingleListingsPage />,
+    page: "Single Listing",
   },
   {
     path: "*",
