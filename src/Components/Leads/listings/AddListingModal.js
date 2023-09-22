@@ -334,6 +334,13 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
               </div>
 
               <div className="w-full flex justify-center mr-4 items-center my-4 space-x-5">
+                <input
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  id="contained-button-file"
+                  type="file"
+                  // onChange={handleImgUpload}
+                />
                 <label htmlFor="contained-button-file">
                   <Button
                     variant="contained"
@@ -351,7 +358,14 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                     <span>Upload Image</span>
                   </Button>
                 </label>
-                <label htmlFor="contained-button-file">
+                <input
+                  accept=".pdf,.doc,.docx,.txt"
+                  style={{ display: "none" }}
+                  id="contained-button-document"
+                  type="file"
+                  // onChange={handleImgUpload}
+                />
+                <label htmlFor="contained-button-document">
                   <Button
                     variant="contained"
                     size="medium"
