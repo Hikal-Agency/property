@@ -25,6 +25,10 @@ const ListingLocation = ({
   setLisitingLocation,
   showOnly = false,
   currLocByDefault,
+  city,
+  setCity,
+  country,
+  setCountry,
 }) => {
   const { currentMode } = useStateContext();
   const geocoder = new window.google.maps.Geocoder();
@@ -109,6 +113,10 @@ const ListingLocation = ({
             defaultLocation={listingLocation.addressText}
             setLisitingLocation={setLisitingLocation}
             isDisabled={showOnly}
+            setCity={setCity}
+            country={country}
+            setCountry={setCountry}
+            city={city}
             className={`${
               currentMode === "dark" ? "text-white" : "text-black"
             }`}

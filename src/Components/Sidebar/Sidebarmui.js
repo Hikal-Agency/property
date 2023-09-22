@@ -15,6 +15,7 @@ import { BsBuildingGear } from "react-icons/bs";
 import { MdOutlinePayment } from "react-icons/md";
 import { AiTwotoneCalendar } from "react-icons/ai";
 import { MdOutlineCampaign } from "react-icons/md";
+import { MdDiscount } from "react-icons/md";
 
 import { HiTicket, HiDocumentReport, HiUsers, HiSearch } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
@@ -985,11 +986,12 @@ const Sidebarmui = () => {
       ],
     },
     {
-      title: "Listings",
+      title: "Secondary",
       icon: <BsBuildingGear />,
       links: [
         {
           name: "Listings",
+          icon: <MdDiscount />,
           link: "/secondaryListings",
         },
       ],
