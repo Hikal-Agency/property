@@ -174,7 +174,7 @@ background-color: var(--primary-color);
 
 .ps-submenu-content {
   border-radius: 15px !important;
-  margin: 7px !important;
+  /* margin: 7px !important; */
 }
 
 /* .ps-submenu-content ul a:hover .leads_counter {
@@ -495,6 +495,16 @@ label[for="bulkImport"] .MuiButtonBase-root {
 
 .MuiDataGrid-columnHeader[aria-label="Action"]
   .MuiDataGrid-columnHeaderTitleContainerContent {
+  width: 100% !important;
+}
+
+.MuiDataGrid-columnHeader[data-field="whatsapp-web"] {
+  width: 100% !important;
+  max-width: unset !important;
+}
+
+.MuiDataGrid-cell[data-field="whatsapp-web"] {
+  max-width: unset !important;
   width: 100% !important;
 }
 
