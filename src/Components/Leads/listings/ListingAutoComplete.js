@@ -21,6 +21,7 @@ const ListingAutoComplete = ({
   } = usePlacesAutocomplete({
     debounce: 300,
   });
+
   const { currentMode } = useStateContext();
   const ref = useOnclickOutside(() => {
     clearSuggestions();
@@ -37,6 +38,7 @@ const ListingAutoComplete = ({
       clearSuggestions();
 
       getGeocode({ address: description }).then((results) => {
+        console.log("autocomplete", results);
         const { lat, lng } = getLatLng(results[0]);
         setMeetingLocation((meetingLocation) => {
           return { ...meetingLocation, lat, lng };
