@@ -14,6 +14,7 @@ import { useState } from "react";
 import LocationPicker from "../../meetings/LocationPicker";
 import ListingLocation from "./ListingLocation";
 import { MdFileUpload } from "react-icons/md";
+import { CiMapPin } from "react-icons/ci";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -23,6 +24,7 @@ const style = {
 const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [loading, setloading] = useState(false);
+  const [displayMap, setDisplayMap] = useState(false);
   const [listingLocation, setLisitingLocation] = useState({
     lat: 0,
     lng: 0,
@@ -324,11 +326,32 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       // onChange={handleEmail}
                     />
 
-                    <ListingLocation
-                      listingLocation={listingLocation}
-                      currLocByDefault={true}
-                      setLisitingLocation={setLisitingLocation}
-                    />
+                    {!displayMap && (
+                      <Button
+                        variant="contained"
+                        size="medium"
+                        className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                        style={{
+                          // backgroundColor: "#111827",
+                          color: "#ffffff",
+                          // border: "1px solid #DA1F26",
+                        }}
+                        onClick={() => setDisplayMap(true)}
+                        component="span"
+                        disabled={loading ? true : false}
+                        startIcon={loading ? null : <CiMapPin />}
+                      >
+                        <span>Location In Map</span>
+                      </Button>
+                    )}
+
+                    {displayMap && (
+                      <ListingLocation
+                        listingLocation={listingLocation}
+                        currLocByDefault={true}
+                        setLisitingLocation={setLisitingLocation}
+                      />
+                    )}
                   </Box>
                 </div>
               </div>
