@@ -1472,12 +1472,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     handleAdReminderModalOpen();
     // setUpdateLeadModelOpen(true);
   };
-  // EDIT BTN CLICK FUNC
-  const HandleEditFunc = (params) => {
-    console.log("LEADID: ", params);
-    setsingleLeadData(params.row);
-    handleUpdateLeadModelOpen();
-  };
+
 
   const HandleViewTimeline = (params) => {
     setsingleLeadData(params.row);
@@ -1668,6 +1663,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       setCSVData({
         rows: formatted,
         keys,
+        fileName: file?.name
       });
       setBulkImportModelOpen(true);
     };
@@ -1679,9 +1675,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     setHoveredRow(params.row);
   };
 
-  const handleRowBlur = () => {
-    setHoveredRow(null);
-  };
 
   return (
     <>

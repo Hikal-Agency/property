@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import moment from "moment";
+import { useState } from "react";
 import {
   Modal,
   Backdrop,
@@ -11,9 +10,10 @@ import {
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { IoMdClose } from "react-icons/io";
+import countries from "country-list";
 
 import axios from "../../axoisConfig";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const allKeys = {
   leadName: "Lead Name",
@@ -25,6 +25,7 @@ const allKeys = {
   leadFor: "Lead For",
   language: "Language",
   notes: "Notes",
+  country: "Country"
 };
 
 const style = {
@@ -46,6 +47,7 @@ const BulkImport = ({
 
   const [values, setValues] = useState({});
   const [columns, setColumns] = useState(CSVData?.keys || []);
+  const [countryInputVal, setCountryInputVal] = useState("");
   const [btnloading, setbtnloading] = useState(false);
 
   let coldCallCode = "";
@@ -81,6 +83,11 @@ const BulkImport = ({
         LeadData["coldCall"] = coldCallCode;
         LeadData["feedback"] = "New";
         LeadData["addedBy"] = User?.id;
+        LeadData["notes"] = CSVData?.fileName; 
+
+        if(countryInputVal?.trim()) {
+          LeadData["country"] = countryInputVal?.trim();
+        }
 
         if (User?.role === 3 || User?.role === 2) {
           LeadData["assignedToManager"] = User?.id;
@@ -181,6 +188,26 @@ const BulkImport = ({
           </IconButton>
 
           <form onSubmit={handleSubmit}>
+          <label htmlFor={"countries"}>Select country for leads (if required)</label>
+                  <Select
+                    id={"countries"}
+                    value={countryInputVal || ""}
+                    onChange={(event) => setCountryInputVal(event.target.value)}
+                    size="medium"
+                    className="w-full mb-5 mt-1"
+                  >
+                    <MenuItem value="" disabled>
+                      Select country
+                    </MenuItem>
+                    {countries.getNames()?.map((country, index) => (
+                      <MenuItem
+                        key={index}
+                        value={country}
+                      >
+                        {country}
+                      </MenuItem>
+                    ))}
+                  </Select>
             {Object.keys(allKeys).map((key) => {
               return (
                 <>
