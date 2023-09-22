@@ -22,12 +22,12 @@ const LeadNotesPage = (props) => {
   }, []);
   return (
     <>
-      <div className="flex min-h-screen pt-1">
+      <div className="flex min-h-screen">
         {loading ? (
           <Loader />
         ) : (
           <div
-            className={`w-full pl-3 ${
+            className={`w-full p-4 ${
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
