@@ -14,20 +14,62 @@ import { useState } from "react";
 import LocationPicker from "../../meetings/LocationPicker";
 import ListingLocation from "./ListingLocation";
 import { MdFileUpload } from "react-icons/md";
+import { CiMapPin } from "react-icons/ci";
 
 const style = {
   transform: "translate(-50%, -50%)",
   boxShadow: 24,
 };
 
-const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
+const AddListingModal = ({
+  setListingModalOpen,
+  handleCloseListingModal,
+  LeadData,
+}) => {
+  console.log("lead data in listing: ", LeadData);
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [loading, setloading] = useState(false);
+  const [displayMap, setDisplayMap] = useState(false);
   const [listingLocation, setLisitingLocation] = useState({
     lat: 0,
     lng: 0,
     addressText: "",
   });
+  const [sellerDetails, setSellerDetails] = useState({
+    leadName: LeadData?.leadName,
+    leadContact: LeadData?.leadContact,
+    leadEmail: LeadData?.leadEmail || "",
+    propertyPrice: null,
+  });
+  const [projectDetails, setProjectDetails] = useState({
+    property_type: "",
+    project: "",
+    bedrooms: "",
+    bathrooms: "",
+  });
+
+  const [otherDetails, setOtherDetails] = useState({
+    address: "",
+    picture: null,
+    document: null,
+    city: null,
+    country: null,
+  });
+
+  const handleChange = (e) => {};
+
+  const handleProjectDetails = (e) => {};
+
+  const handleOtherDetails = (e) => {};
+
+  function removeNull(value) {
+    if (value === "null" || value === null) {
+      value = "";
+    }
+
+    return value;
+  }
+
   return (
     <>
       <Modal
@@ -44,7 +86,9 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] h-[80%] overflow-y-scroll md:w-[50%] border-2 border-solid shadow-lg  ${
+          className={`w-[calc(100%-20px)] ${
+            displayMap ? "h-[80%]" : "h-[60%]"
+          } overflow-y-scroll md:w-[50%] border-2 border-solid shadow-lg  ${
             currentMode === "dark"
               ? "bg-black border-gray-800"
               : "bg-white border-gray-200"
@@ -100,7 +144,7 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                     </h4>
 
                     <TextField
-                      id="notes"
+                      id="legalName"
                       type={"text"}
                       label="Legal Name"
                       className="w-full"
@@ -112,8 +156,8 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       variant="outlined"
                       size="small"
                       required
-                      // value={LeadNotes}
-                      // onChange={(e) => setLeadNotes(e.target.value)}
+                      value={removeNull(sellerDetails?.leadName)}
+                      onChange={handleChange}
                     />
                     <TextField
                       id="notes"
@@ -128,8 +172,8 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       variant="outlined"
                       size="small"
                       required
-                      // value={LeadNotes}
-                      // onChange={(e) => setLeadNotes(e.target.value)}
+                      value={removeNull(sellerDetails?.leadContact)}
+                      onChange={handleChange}
                     />
                     <TextField
                       id="notes"
@@ -144,8 +188,8 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       variant="outlined"
                       size="small"
                       required
-                      // value={LeadNotes}
-                      // onChange={(e) => setLeadNotes(e.target.value)}
+                      value={removeNull(sellerDetails?.leadEmail)}
+                      onChange={handleChange}
                     />
                     <TextField
                       id="notes"
@@ -160,8 +204,8 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       variant="outlined"
                       size="small"
                       required
-                      // value={LeadNotes}
-                      // onChange={(e) => setLeadNotes(e.target.value)}
+                      value={sellerDetails?.propertyPrice}
+                      onChange={handleChange}
                     />
                   </Box>
                 </div>
@@ -178,9 +222,9 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
 
                     <TextField
                       id="property-type"
-                      // value={PropertyType}
+                      value={projectDetails?.property_type}
                       label="Property type"
-                      // onChange={ChangePropertyType}
+                      onChange={handleProjectDetails}
                       size="small"
                       className="w-full mb-5"
                       displayEmpty
@@ -199,10 +243,7 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       </MenuItem>
                       <MenuItem value={"Apartment"}>Apartment</MenuItem>
                       <MenuItem value={"Villa"}>Villa</MenuItem>
-                      <MenuItem value={"penthouse"}>Penthouse</MenuItem>
-                      <MenuItem value={"mansion"}>Mansion</MenuItem>
-                      <MenuItem value={"Commercial"}>Commercial</MenuItem>
-                      <MenuItem value={"Townhouse"}>TownHouse</MenuItem>
+                      <MenuItem value={"Rental"}>Rental</MenuItem>
                     </TextField>
 
                     <TextField
@@ -218,15 +259,15 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       variant="outlined"
                       size="small"
                       required
-                      // value={LeadNotes}
-                      // onChange={(e) => setLeadNotes(e.target.value)}
+                      value={projectDetails?.project}
+                      onChange={handleProjectDetails}
                     />
 
                     <TextField
                       id="enquiry"
                       label="Number Of Bedrooms"
-                      // value={EnquiryType}
-                      // onChange={ChangeEnquiryType}
+                      value={projectDetails?.bedrooms}
+                      onChange={handleProjectDetails}
                       size="small"
                       className="w-full"
                       sx={{
@@ -238,7 +279,7 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       select
                     >
                       <MenuItem value="" disabled>
-                        Enquiry about
+                        Number of Bedrooms
                         <span className="ml-1" style={{ color: "red" }}>
                           *
                         </span>
@@ -250,13 +291,18 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
                       <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
                       <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
+                      <MenuItem value={"7 Bedrooms"}>7 Bedrooms</MenuItem>
+                      <MenuItem value={"8 Bedrooms"}>8 Bedrooms</MenuItem>
+                      <MenuItem value={"9 Bedrooms"}>9 Bedrooms</MenuItem>
+                      <MenuItem value={"10 Bedrooms"}>10 Bedrooms</MenuItem>
+                      <MenuItem value={"Retail"}>Retail</MenuItem>
                     </TextField>
 
                     <TextField
                       id="for"
-                      // value={ForType}
-                      label="Purpose of enquiry"
-                      // onChange={ChangeForType}
+                      value={projectDetails?.bathrooms}
+                      label="Number of Bathrooms"
+                      onChange={handleProjectDetails}
                       size="small"
                       className="w-full"
                       sx={{
@@ -268,13 +314,22 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       select
                     >
                       <MenuItem value="" disabled>
-                        Purpose of enquiry
+                        Number of Bathrooms
                         <span className="ml-1" style={{ color: "red" }}>
                           *
                         </span>
                       </MenuItem>
-                      <MenuItem value={"Investment"}>Investment</MenuItem>
-                      <MenuItem value={"End-user"}>End-User</MenuItem>
+                      <MenuItem value={"1 Bathroom"}>1 Bathroom</MenuItem>
+                      <MenuItem value={"2 Bathrooms"}>2 Bathrooms</MenuItem>
+                      <MenuItem value={"3 Bathrooms"}>3 Bathrooms</MenuItem>
+                      <MenuItem value={"4 Bathrooms"}>4 Bathrooms</MenuItem>
+                      <MenuItem value={"5 Bathrooms"}>5 Bathrooms</MenuItem>
+                      <MenuItem value={"6 Bathrooms"}>6 Bathrooms</MenuItem>
+                      <MenuItem value={"7 Bathrooms"}>7 Bathrooms</MenuItem>
+                      <MenuItem value={"8 Bathrooms"}>8 Bathrooms</MenuItem>
+                      <MenuItem value={"9 Bathrooms"}>9 Bathrooms</MenuItem>
+                      <MenuItem value={"10 Bathrooms"}>10 Bathrooms</MenuItem>
+                      <MenuItem value={"Unavailabe"}>Unavailabe</MenuItem>
                     </TextField>
                   </Box>
                 </div>
@@ -301,10 +356,8 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       }}
                       variant="outlined"
                       size="small"
-                      // error={emailError && emailError}
-                      // helperText={emailError && emailError}
-                      // value={LeadEmail}
-                      // onChange={handleEmail}
+                      value={otherDetails?.address}
+                      onChange={handleOtherDetails}
                     />
                     <TextField
                       id="LeadEmailAddress"
@@ -318,17 +371,36 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       }}
                       variant="outlined"
                       size="small"
-                      // error={emailError && emailError}
-                      // helperText={emailError && emailError}
-                      // value={LeadEmail}
-                      // onChange={handleEmail}
+                      value={otherDetails?.area}
+                      onChange={handleOtherDetails}
                     />
 
-                    <ListingLocation
-                      listingLocation={listingLocation}
-                      currLocByDefault={true}
-                      setLisitingLocation={setLisitingLocation}
-                    />
+                    {!displayMap && (
+                      <Button
+                        variant="contained"
+                        size="medium"
+                        className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                        style={{
+                          // backgroundColor: "#111827",
+                          color: "#ffffff",
+                          // border: "1px solid #DA1F26",
+                        }}
+                        onClick={() => setDisplayMap(true)}
+                        component="span"
+                        disabled={loading ? true : false}
+                        startIcon={loading ? null : <CiMapPin />}
+                      >
+                        <span>Location In Map</span>
+                      </Button>
+                    )}
+
+                    {displayMap && (
+                      <ListingLocation
+                        listingLocation={listingLocation}
+                        currLocByDefault={true}
+                        setLisitingLocation={setLisitingLocation}
+                      />
+                    )}
                   </Box>
                 </div>
               </div>

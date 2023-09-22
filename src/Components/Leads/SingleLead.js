@@ -868,10 +868,9 @@ const SingleLead = ({
 
       {listingModalOpen && (
         <AddListingModal
-          lead_origin={lead_origin}
+          LeadData={LeadData}
           handleCloseListingModal={handleCloseListingModal}
           setListingModalOpen={setListingModalOpen}
-          BACKEND_URL={BACKEND_URL}
         />
       )}
     </>
