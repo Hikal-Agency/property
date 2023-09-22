@@ -4,6 +4,7 @@ import React, {
 } from "react";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import {AiOutlineHistory} from "react-icons/ai";
 import {
   Box,
   TextField,
@@ -15,6 +16,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
@@ -24,48 +26,33 @@ import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
 
 import { 
-  BiImport,
-  BiMessageRoundedDots,
   BiArchive
 } from "react-icons/bi";
 import { 
   BsSnow2, 
   BsPatchQuestion, 
   BsFire, 
-  BsSun,
   BsPersonCircle
 } from "react-icons/bs";
-import {
-  FaSnapchatGhost,
-  FaFacebookF,
-  FaTiktok,
-  FaYoutube,
-  FaWhatsapp,
-  FaTwitter,
-  FaRegComments,
-  FaUser
-} from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { FiLink } from "react-icons/fi";
+
 import { GiMagnifyingGlass } from "react-icons/gi";
-import { HiOutlineUserCircle } from "react-icons/hi";
-import { MdCampaign } from "react-icons/md";
 import {
   TbLanguage,
   TbPhone,
   TbBuildingCommunity,
-  TbWorldWww
 } from "react-icons/tb";
+import Timeline from "../timeline";
 
 
 const SingleLeadPage = () => {
   const [loading, setloading] = useState(true);
   const [LeadData, setLeadData] = useState({});
-  const [lastNote, setLastNote] = useState("");
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [LeadNotesData, setLeadNotesData] = useState(null);
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [addNoteloading, setaddNoteloading] = useState(false);
+  const [timelinePopup, setTimelinePopup] = useState({isOpen: false});
+
   const {
     currentMode,
     setopenBackDrop,
@@ -80,10 +67,6 @@ const SingleLeadPage = () => {
   const { lid } = useParams();
 
   console.log("LID: ", lid);
-
-  const handleRowClick = async (params) => {
-    window.open(`/leadnotes/${params}`);
-  };
 
   const fetchLeadNotes = async () => {
     const token = localStorage.getItem("auth-token");
@@ -219,71 +202,6 @@ const SingleLeadPage = () => {
     // eslint-disable-next-line
   }, []);
 
-  const sourceIcons = {
-    "campaign snapchat": () => (
-      <FaSnapchatGhost size={16} color={"#f6d80a"} />
-    ),
-
-    "campaign facebook": () => (
-      <FaFacebookF size={16} color={"#0e82e1"} />
-    ),
-
-    "campaign tiktok": () => (
-      <FaTiktok
-        size={16}
-        color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-      />
-    ),
-
-    "campaign googleads": () => <FcGoogle size={16} />,
-
-    "campaign youtube": () => (
-      <FaYoutube size={16} color={"#FF0000"} />
-    ),
-
-    "campaign twitter": () => (
-      <FaTwitter size={16} color={"#00acee"} />
-    ),
-
-    "bulk import": () => (
-      <BiImport size={16} className="text-primary"/>
-    ),
-
-    "property finder": () => (
-      <GiMagnifyingGlass size={16} color={"#ef5e4e"} />
-    ),
-
-    campaign: () => (
-      <MdCampaign size={16} color={"#696969"} />
-    ),
-
-    cold: () => <BsSnow2 size={16} color={"#0ec7ff"} />,
-
-    personal: () => (
-      <BsPersonCircle size={16} color={"#6C7A89"} />
-    ),
-
-    whatsapp: () => (
-      <FaWhatsapp size={16} color={"#53cc60"} />
-    ),
-
-    message: () => (
-      <BiMessageRoundedDots
-        size={16}
-        color={"#6A5ACD"}
-      />
-    ),
-
-    comment: () => (
-      <FaRegComments size={16} color={"#a9b3c6"} />
-    ),
-
-    website: () => (
-      <TbWorldWww size={16} color={"#AED6F1"} />
-    ),
-
-    self: () => <FaUser size={16} color={"#6C7A89"} />,
-  };
 
   return (
     <>
@@ -300,6 +218,7 @@ const SingleLeadPage = () => {
               <Error404 />
             ) : (
               <div>
+              <div className="flex justify-between items-center pr-6">
                 <div className="w-full flex items-center mt-5">
                   {/* <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div> */}
                   <span className="text-sm font-bold tracking-wide bg-primary text-white px-2 py-1 mr-2 rounded-sm my-auto">
@@ -320,6 +239,23 @@ const SingleLeadPage = () => {
                     {LeadData?.leadName}
                   </h1>
                 </div>
+
+                <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-primary rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
+            >
+              <Tooltip title="View Timeline" arrow>
+                <button onClick={() => setTimelinePopup({isOpen: true})}>
+                  <AiOutlineHistory size={16} />
+                </button>
+              </Tooltip>
+            </p>
+
+              </div>
                 
                 {/* Lead Info */}
                 <div className={`${currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#1C1C1C]"} px-3 text-base`}>
@@ -354,18 +290,6 @@ const SingleLeadPage = () => {
                         <Box
                           className="float-right"
                         >
-                          {/* {LeadData?.leadSource?.toLowerCase().startsWith("warm") ? (
-                            <BiArchive
-                              size={16}
-                              color={"#AEC6CF"}
-                            />
-                          ) : (
-                            <>
-                              {sourceIcons[LeadData?.leadSource?.toLowerCase()]
-                                ? sourceIcons[LeadData?.leadSource?.toLowerCase()]()
-                                : "-"}
-                            </>
-                          )} */}
 
                           {LeadData?.coldcall === 0 ? (
                             <BsFire size={18} color={"#DA1F26"} />
@@ -541,7 +465,15 @@ const SingleLeadPage = () => {
             )}
             {/* <Footer /> */}
           </div>
+
         )}
+          {timelinePopup?.isOpen && (
+            <Timeline
+              timelineModelOpen={timelinePopup?.isOpen}
+              handleCloseTimelineModel={() => setTimelinePopup({isOpen: false})}
+              LeadData={{leadId: LeadData?.id}}
+            />
+          )}
       </div>
     </>
   );
