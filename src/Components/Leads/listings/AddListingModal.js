@@ -257,7 +257,7 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                     <TextField
                       id="for"
                       // value={ForType}
-                      label="Purpose of enquiry"
+                      label="Number of Bathrooms"
                       // onChange={ChangeForType}
                       size="small"
                       className="w-full"
@@ -270,13 +270,17 @@ const AddListingModal = ({ setListingModalOpen, handleCloseListingModal }) => {
                       select
                     >
                       <MenuItem value="" disabled>
-                        Purpose of enquiry
+                        Number of Bathrooms
                         <span className="ml-1" style={{ color: "red" }}>
                           *
                         </span>
                       </MenuItem>
-                      <MenuItem value={"Investment"}>Investment</MenuItem>
-                      <MenuItem value={"End-user"}>End-User</MenuItem>
+                      <MenuItem value={"1 Bathroom"}>1 Bathroom</MenuItem>
+                      <MenuItem value={"2 Bathrooms"}>2 Bathrooms</MenuItem>
+                      <MenuItem value={"3 Bathrooms"}>3 Bathrooms</MenuItem>
+                      <MenuItem value={"4 Bathrooms"}>4 Bathrooms</MenuItem>
+                      <MenuItem value={"5 Bathrooms"}>5 Bathrooms</MenuItem>
+                      <MenuItem value={"6 Bathrooms"}>6 Bathrooms</MenuItem>
                     </TextField>
                   </Box>
                 </div>
