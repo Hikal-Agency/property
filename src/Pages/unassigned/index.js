@@ -37,41 +37,35 @@ const AllUnassignedLeads = () => {
         {loading ? (
           <Loader />
         ) : (
-          <div
-            className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
-          >
-            <div className="w-full px-3">
-              <div className="w-full flex items-center py-3">
-                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-                <h1
-                  className={`text-lg font-semibold ${
-                    currentMode === "dark"
-                      ? "text-white"
-                      : "text-black"
-                  }`}
-                >
-                  {/* ●  */}
-                  Unassigned Leads {" "}
-                  <span className="capitalize">({lead_type})</span>{" "}
-                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
-                    {pageState?.total}
-                  </span>
-                </h1>
-              </div>
-
-              <AllLeads
-                BACKEND_URL={BACKEND_URL}
-                lead_type={lead_type}
-                lead_origin={pathname2}
-                leadCategory="hot"
-              />
+          <div className="w-full">
+            <div className="w-full flex items-center pb-3">
+              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+              <h1
+                className={`text-lg font-semibold ${
+                  currentMode === "dark"
+                    ? "text-white"
+                    : "text-black"
+                }`}
+              >
+                {/* ●  */}
+                Unassigned Leads {" "}
+                <span className="capitalize">({lead_type})</span>{" "}
+                <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
+                  {pageState?.total}
+                </span>
+              </h1>
             </div>
+
+            <AllLeads
+              BACKEND_URL={BACKEND_URL}
+              lead_type={lead_type}
+              lead_origin={pathname2}
+              leadCategory="hot"
+            />
+          </div>
+        )}
       </div>
-      )}
-      </div>
-      </div>
+    </div>
   );
 };
 
