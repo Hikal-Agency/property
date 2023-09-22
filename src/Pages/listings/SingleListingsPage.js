@@ -75,83 +75,6 @@ const SingleListingsPage = () => {
 
   console.log("LID: ", lid);
 
-  const handleRowClick = async (params) => {
-    window.open(`/leadnotes/${params}`);
-  };
-
-  const fetchLeadNotes = async () => {
-    const token = localStorage.getItem("auth-token");
-    await axios
-      .get(`${BACKEND_URL}/leadNotes/${lid}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("lead notes are given below");
-        console.log(result);
-        setLeadNotesData(result.data);
-        setloading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const AddNote = () => {
-    setaddNoteloading(true);
-    const token = localStorage.getItem("auth-token");
-    const data = {
-      leadId: listData.id,
-      leadNote: AddNoteTxt,
-      addedBy: User?.id,
-      // creationDate: moment(new Date()).format("YYYY/MM/DD"),
-      // creationDate: datetimeString,
-    };
-    console.log("Data: ");
-    console.log("Data: ", data);
-    axios
-      .post(`${BACKEND_URL}/leadNotes`, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("Result: ");
-        console.log("Result: ", result);
-        setaddNoteloading(false);
-        setAddNoteTxt("");
-        fetchLeadNotes();
-        toast.success("Note added Successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        // console.log(result);
-      })
-      .catch((err) => {
-        setaddNoteloading(false);
-        console.log(err);
-        toast.error("Soemthing Went Wrong! Please Try Again", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
-  };
-
   console.log("list data: ", listData);
 
   const fetchSingleLead = async () => {
@@ -187,32 +110,10 @@ const SingleListingsPage = () => {
       }
     }
   };
-  useEffect(() => {
-    console.log("Lead::", listData);
-    if (listData?.id) {
-      fetchLeadNotes();
-      console.log("LEAD DATA::::::::::::::::::::", listData);
-    }
-  }, [listData]);
-  // Replace last 4 digits with "*"
-  const stearics =
-    listData?.leadContact?.slice(0, listData?.leadContact?.length - 4) + "****";
-  let contact;
-
-  if (hasPermission("number_masking")) {
-    if (User?.role === 1) {
-      contact = listData?.leadContact;
-    } else {
-      contact = `${stearics}`;
-    }
-  } else {
-    contact = listData?.leadContact;
-  }
 
   useEffect(() => {
     setopenBackDrop(false);
     fetchSingleLead(lid);
-    // eslint-disable-next-line
   }, []);
 
   const sourceIcons = {
@@ -308,8 +209,8 @@ const SingleListingsPage = () => {
                       </div>
                       {/* Bedrooms  */}
                       <div className="flex space-x-3">
-                        <BiBed className="text-primary mr-2" size={17} /> :
-                        <h6>{listData?.bedrooms}</h6>
+                        <BiBed className="text-primary mr-2" size={17} />
+                        <h6>{listData?.bedrooms + " Bedrooms"}</h6>
                       </div>
                       {/* baths  */}
                       <div className="flex space-x-3">
@@ -373,158 +274,6 @@ const SingleListingsPage = () => {
                     </div>
                   </div>
                   <div className="bg-primary h-0.5 w-full my-7"></div>
-
-                  <div className={`rounded-md mb-5`}>
-                    <h1 className="font-semibold text-lg text-center mb-2">
-                      LEAD NOTES
-                    </h1>
-
-                    {LeadNotesData?.notes?.data?.length === 0 ? (
-                      <p
-                        className={`mt-3 italic ${
-                          currentMode === "dark"
-                            ? "text-white"
-                            : "text-main-red-color"
-                        }`}
-                      >
-                        No notes to show
-                      </p>
-                    ) : (
-                      <TableContainer component={Paper}>
-                        <Table
-                          sx={{
-                            minWidth: 650,
-                            "& .MuiTableCell-root": {
-                              color: currentMode === "dark" && "white",
-                            },
-                          }}
-                          size="small"
-                          aria-label="simple table"
-                        >
-                          <TableHead
-                            sx={{
-                              "& .MuiTableCell-head": {
-                                color: "white",
-                                fontWeight: "400",
-                                // background: "#DA1F26"
-                              },
-                            }}
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-primary"
-                                : "bg-[#000000]"
-                            }`}
-                          >
-                            <TableRow>
-                              <TableCell align="center" className="w-[5%]">
-                                #
-                              </TableCell>
-                              <TableCell align="center" className="w-[15%]">
-                                Added On
-                              </TableCell>
-                              <TableCell align="center" className="w-[15%]">
-                                Added By
-                              </TableCell>
-                              <TableCell align="center" className="w-[65%]">
-                                Note
-                              </TableCell>
-                            </TableRow>
-                          </TableHead>
-
-                          <TableBody
-                            sx={{
-                              "& .MuiTableRow-root:nth-of-type(odd)": {
-                                backgroundColor:
-                                  currentMode === "dark" && "#212121",
-                              },
-                              "& .MuiTableRow-root:nth-of-type(even)": {
-                                backgroundColor:
-                                  currentMode === "dark" && "#3b3d44",
-                              },
-                            }}
-                          >
-                            {LeadNotesData?.notes?.data?.map((row, index) => (
-                              <TableRow
-                                key={index}
-                                sx={{
-                                  "&:last-child td, &:last-child th": {
-                                    border: 0,
-                                  },
-                                }}
-                              >
-                                <TableCell
-                                  component="th"
-                                  scope="row"
-                                  align="center"
-                                >
-                                  {index + 1}
-                                </TableCell>
-                                <TableCell align="center">
-                                  {row?.creationDate}
-                                </TableCell>
-                                <TableCell align="center">
-                                  {row?.userName}
-                                </TableCell>
-                                <TableCell align="left">
-                                  <p
-                                    style={{
-                                      fontFamily: isArabic(row?.leadNote)
-                                        ? "Noto Kufi Arabic"
-                                        : "inherit",
-                                    }}
-                                  >
-                                    {row?.leadNote}
-                                  </p>
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                    )}
-
-                    <form
-                      className="mt-5"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        AddNote();
-                      }}
-                    >
-                      <TextField
-                        sx={{
-                          ...darkModeColors,
-                          "& input": {
-                            fontFamily: "Noto Kufi Arabic",
-                          },
-                        }}
-                        id="note"
-                        type={"text"}
-                        label="Your Note"
-                        className="w-full"
-                        variant="outlined"
-                        size="small"
-                        required
-                        value={AddNoteTxt}
-                        onChange={(e) => setAddNoteTxt(e.target.value)}
-                      />
-                      <button
-                        disabled={addNoteloading ? true : false}
-                        style={{ color: "white" }}
-                        type="submit"
-                        className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary p-1 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
-                      >
-                        {addNoteloading ? (
-                          <CircularProgress
-                            sx={{ color: "white" }}
-                            size={25}
-                            className="text-white"
-                          />
-                        ) : (
-                          <span>Add Note</span>
-                        )}
-                      </button>
-                    </form>
-                  </div>
                 </div>
               </div>
             )}
