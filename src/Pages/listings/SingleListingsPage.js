@@ -43,6 +43,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FiLink } from "react-icons/fi";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { HiOutlineUserCircle } from "react-icons/hi";
+import { BiMoney } from "react-icons/bi";
 import { MdCampaign } from "react-icons/md";
 import {
   TbLanguage,
@@ -68,6 +69,8 @@ const SingleListingsPage = () => {
     darkModeColors,
     isArabic,
   } = useStateContext();
+
+  const static_img = "/assets/list-static-img.jpg";
 
   const { hasPermission } = usePermission();
 
@@ -211,6 +214,11 @@ const SingleListingsPage = () => {
                       <div className="flex space-x-3">
                         <BiBed className="text-primary mr-2" size={17} />
                         <h6>{listData?.bedrooms + " Bedrooms"}</h6>
+                        <h6>
+                          {listData?.property_type === "null"
+                            ? "-"
+                            : listData?.property_type}
+                        </h6>
                       </div>
                       {/* baths  */}
                       <div className="flex space-x-3">
@@ -220,16 +228,7 @@ const SingleListingsPage = () => {
                             ? "-"
                             : listData?.bathrooms + "  Bathrooms"}
                         </h6>
-                        <h6>
-                          {listData?.enquiryType === "null"
-                            ? "-"
-                            : listData?.enquiryType}
-                        </h6>
-                        <h6>
-                          {listData?.property_type === "null"
-                            ? "-"
-                            : listData?.property_type}
-                        </h6>
+
                         <h6>
                           {listData?.leadFor === "null"
                             ? "-"
@@ -241,23 +240,12 @@ const SingleListingsPage = () => {
                     <div className="sm:col-span-1 md:col-span-2 space-y-2 text-right">
                       <div className="flex items-center justify-end space-x-3 mb-4">
                         <span className="border border-primary px-3 py-1 rounded-md font-semibold text-base">
-                          {listData?.property_type ?? "?"}
+                          {listData?.project ?? "?"}
                         </span>
-                        <Box className="float-right">
-                          {listData?.coldcall === 0 ? (
-                            <BsFire size={18} color={"#DA1F26"} />
-                          ) : listData?.coldcall === 1 ? (
-                            <BsSnow2 size={18} color={"#0ec7ff"} />
-                          ) : listData?.coldcall === 2 ? (
-                            <BsPersonCircle size={18} color={"#6C7A89"} />
-                          ) : listData?.coldcall === 3 ? (
-                            <GiMagnifyingGlass size={18} color={"#ef5e4e"} />
-                          ) : listData?.coldcall === 4 ? (
-                            <BiArchive size={18} color={"#AEC6CF"} />
-                          ) : (
-                            <BsPatchQuestion size={18} color={"#AAAAAA"} />
-                          )}
-                        </Box>
+                      </div>
+                      <div className="flex justify-end items-center space-x-3 mr-3">
+                        <BiMoney size={17} className="text-primary" />
+                        <p className="text-sm">{listData?.price} AED</p>
                       </div>
                       <p className="text-sm">
                         List added on{" "}
@@ -265,15 +253,16 @@ const SingleListingsPage = () => {
                           "YYYY-MM-DD HH:MM"
                         )}
                       </p>
-                      <p className="text-sm">
-                        List edited on{" "}
-                        {moment(listData?.updated_at).format(
-                          "YYYY-MM-DD HH:MM"
-                        )}
-                      </p>
                     </div>
                   </div>
                   <div className="bg-primary h-0.5 w-full my-7"></div>
+                  {/* <div>
+                    <img
+                      src={static_img}
+                      alt="offer"
+                      className="w-full h-[300px] object-cover"
+                    />
+                  </div> */}
                 </div>
               </div>
             )}
