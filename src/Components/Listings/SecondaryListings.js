@@ -1,11 +1,17 @@
 import React from "react";
-import { Box, Button, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress, IconButton, Tooltip } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-
-import { BiBed, BiBath } from "react-icons/bi";
-
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+
+import { 
+  BiBed, 
+  BiBath 
+} from "react-icons/bi";
+import {
+  BsListStars
+} from "react-icons/bs";
+
 
 const ribbonStyles = {
   width: "200px",
@@ -66,58 +72,6 @@ const SecondaryListings = ({
 
   const imagePaths = ["../assets/offers_static_img.png"];
 
-  const offers = [
-    {
-      id: 1,
-      offer_image: static_img,
-      offerPrice: "999,999 AED",
-      offerSmallDesc: "605, Donald St",
-      status: "Active",
-    },
-    {
-      id: 1,
-      offer_image: static_img,
-      offerPrice: "999,999 AED",
-      offerSmallDesc: "605, Donald St",
-      status: "Active",
-    },
-    {
-      id: 1,
-      offer_image: static_img,
-      offerPrice: "999,999 AED",
-      offerSmallDesc: "605, Donald St",
-      status: "Active",
-    },
-    {
-      id: 1,
-      offer_image: static_img,
-      offerPrice: "999,999 AED",
-      offerSmallDesc: "605, Donald St",
-      status: "Active",
-    },
-    {
-      id: 1,
-      offer_image: static_img,
-      offerPrice: "999,999 AED",
-      offerSmallDesc: "605, Donald St",
-      status: "Active",
-    },
-    {
-      id: 1,
-      offer_image: static_img,
-      offerPrice: "999,999 AED",
-      offerSmallDesc: "605, Donald St",
-      status: "Active",
-    },
-    {
-      id: 1,
-      offer_image: static_img,
-      offerPrice: "999,999 AED",
-      offerSmallDesc: "605, Donald St",
-      status: "Active",
-    },
-  ];
-
   const isElementVisible = (element) => {
     const elementRect = element.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
@@ -125,35 +79,35 @@ const SecondaryListings = ({
     return elementRect.bottom >= 0 && elementRect.bottom <= viewportHeight;
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      let updatedPage = 1;
-      for (let i = 0; i < offers?.length; i++) {
-        const element = document.querySelector(
-          `.offers-page-${offers[i].page}`
-        );
-        if (element && isElementVisible(element)) {
-          updatedPage = offers[i]?.page;
-          break;
-        }
-      }
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     let updatedPage = 1;
+  //     for (let i = 0; i < offers?.length; i++) {
+  //       const element = document.querySelector(
+  //         `.offers-page-${offers[i].page}`
+  //       );
+  //       if (element && isElementVisible(element)) {
+  //         updatedPage = offers[i]?.page;
+  //         break;
+  //       }
+  //     }
 
-      if (updatedPage) {
-        setPageBeingScrolled(updatedPage);
-      }
-    };
+  //     if (updatedPage) {
+  //       setPageBeingScrolled(updatedPage);
+  //     }
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
+  //   window.addEventListener("scroll", handleScroll);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   return (
-    <div className="relative ">
-      <Box className="mt-1 p-5">
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-x-3 gap-y-3  text-center">
+    <div className="relative">
+      <Box className="p-0">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
           {listing?.length > 0 ? (
             listing?.map((listing, index) => {
               return (
@@ -163,7 +117,7 @@ const SecondaryListings = ({
                   } ${
                     currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
-                      : "bg-gray-200 text-black"
+                      : "bg-[#EEEEEE] text-black"
                   } rounded-lg`}
                 >
                   <div
@@ -173,14 +127,9 @@ const SecondaryListings = ({
                     //       ? "grayscale(1)"
                     //       : "",
                     // }}
-                    className="p-5 rounded-md  flex flex-col justify-between"
+                    className="rounded-md flex flex-col justify-between"
                   >
-                    <div className=" top-0 left-0 z-10 flex gap-1 b-4">
-                      <div className="h-1 w-7 bg-red-500"></div>
-                      <div className="h-1 w-7 bg-red-500"></div>
-                      <div className="h-1 w-7 bg-red-500"></div>
-                    </div>
-                    <div className="mt-4">
+                    <div className="">
                       {/* {listing?.pictures[0] ? (
                         <img
                           src={listing?.pictures[0]}
@@ -199,114 +148,91 @@ const SecondaryListings = ({
                         alt="offer"
                         className="w-full h-[200px] object-cover"
                       />
-                    </div>
-
-                    <hr />
-                    <h1
-                      className={`${
-                        currentMode === "dark" ? "text-white" : "text-[#000000]"
-                      }   flex justify-between mt-3 `}
-                      style={{ textTransform: "capitalize" }}
-                    >
-                      <span className="text-2xl font-bold text-primary">
-                        AED {listing?.price || "Price Unavailable"}
-                      </span>
-                      <span className={`text-sm font-bold text-primary`}>
-                        {listing?.seller_name || "-"}
-                      </span>
-                    </h1>
-
-                    <div className=" mt-4 mb-3">
-                      <div className="flex space-x-3 items-center mb-3">
-                        <p
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-[#000000]"
-                          } text-white  rounded-md text-start text-lg font-semibold`}
-                          style={{
-                            textTransform: "capitalize",
-                            color:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          }}
-                        >
-                          Project :
-                        </p>
-                        <p className=" text-start text-primary">
-                          {listing?.project || "-"}
-                        </p>
-                      </div>
-                      <div className="flex space-x-3 items-center ">
-                        <p
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-[#000000]"
-                          } text-white  rounded-md text-start text-lg font-semibold`}
-                          style={{
-                            textTransform: "capitalize",
-                            color:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          }}
-                        >
-                          Address :
-                        </p>
-                        <p className=" text-start text-primary">
-                          {listing?.address || "-"}
-                        </p>
+                      <div className={`absolute top-0 right-2 p-2 pb-5 rounded-b-full bg-primary`}>
+                        <Tooltip title="View Property">
+                          <IconButton className="my-1">
+                            <BsListStars size={20} color={"#FFFFFF"} />
+                          </IconButton>
+                        </Tooltip>
                       </div>
                     </div>
-                    <div className=" mb-3">
-                      <div className="flex space-x-3 items-center mb-3">
-                        <BiBed className="text-primary mr-2" size={20} /> :
-                        <p className="text-start text-primary">
-                          {listing?.bedrooms + " " + listing?.property_type ||
-                            "-"}
-                        </p>
-                      </div>
-                      <div className="flex space-x-3 items-center">
-                        <BiBath className="text-primary mr-2" size={20} /> :
-                        <p className="text-start text-primary">
-                          {listing?.bathrooms || "-"}
-                        </p>
-                      </div>
-                    </div>
-
-                    <Link
-                      sx={{ my: 0, w: "100%" }}
-                      to={`/secondaryListings/${listing?.id}`}
-                      target="_blank"
-                    >
-                      <Button
-                        fullWidth
-                        sx={{ my: 0 }}
-                        variant="contained"
-                        className="bg-btn-primary"
-                        // style={{
-                        //   backgroundColor: primaryColor,
-                        // }}
-                        size="medium"
+                    
+                    <div className="p-5">
+                      <h1
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-[#000000]"
+                        } my-1 flex justify-between `}
+                        style={{ textTransform: "capitalize" }}
                       >
-                        Manager Listing
-                      </Button>
-                    </Link>
-
-                    {/* <Button
-                      disabled={btnloading}
-                      onClick={() => setCurrentPage((page) => page + 1)}
-                      variant="contained"
-                      // color="error"
-                      className="bg-btn-primary"
-                      // sx={{ marginBottom: "10px" }}
-                    >
-                      {btnloading ? (
-                        <div className="flex items-center justify-center space-x-1">
-                          <CircularProgress size={18} sx={{ color: "blue" }} />
+                        <span className="text-xl font-bold text-primary">
+                          {listing?.price || "Unavailable"}
+                        </span>
+                      </h1>
+                      <div className={`${
+                          currentMode === "dark" ? "text-white" : "text-[#000000]"
+                        }  my-1 font-semibold`}>
+                        {listing?.project || "Project unknown"}
+                      </div>
+                      <div className={`${
+                          currentMode === "dark" ? "text-white" : "text-[#000000]"
+                        }  my-1`}>
+                        {listing?.address || "Address unknown"}
+                      </div>
+                      
+                      <div className="my-1">
+                        <div className="flex space-x-3 items-center">
+                          <BiBed className="text-primary mr-2" size={20} />
+                          <p className="text-start">
+                            <span>{listing?.bedrooms === "null" ? "-" : listing?.bedrooms}</span>{" "} 
+                            <span>{listing?.property_type === "null" ? "-" : listing?.property_type}</span>
+                          </p>
                         </div>
-                      ) : (
-                        <span>Manage Listing</span>
-                      )}
-                    </Button> */}
+                      </div>
+                      <div className="my-1">
+                        <div className="flex space-x-3 items-center">
+                          <BiBath className="text-primary mr-2" size={20} />
+                          <p className="text-start">
+                            <span>{listing?.bathrooms === "null" ? "-" : listing?.bedrooms}</span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <Link
+                        sx={{w: "100%" }}
+                        to={`/secondaryListings/${listing?.id}`}
+                        target="_blank"
+                      >
+                        <Button
+                          fullWidth
+                          sx={{ mt: 1 }}
+                          variant="contained"
+                          className="bg-btn-primary"
+                          // style={{
+                          //   backgroundColor: primaryColor,
+                          // }}
+                          size="medium"
+                        >
+                          Manager Listing
+                        </Button>
+                      </Link>
+
+                      {/* <Button
+                        disabled={btnloading}
+                        onClick={() => setCurrentPage((page) => page + 1)}
+                        variant="contained"
+                        // color="error"
+                        className="bg-btn-primary"
+                        // sx={{ marginBottom: "10px" }}
+                      >
+                        {btnloading ? (
+                          <div className="flex items-center justify-center space-x-1">
+                            <CircularProgress size={18} sx={{ color: "blue" }} />
+                          </div>
+                        ) : (
+                          <span>Manage Listing</span>
+                        )}
+                      </Button> */}
+                    </div>
                   </div>
                 </div>
               );
