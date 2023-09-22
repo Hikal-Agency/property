@@ -172,8 +172,8 @@ const AddListingModal = ({
       listing_status: "New",
       lead_id: LeadData?.leadId,
       latlong: location,
-      pictures: otherDetails?.picture,
-      documents: otherDetails?.document,
+      // pictures: otherDetails?.picture,
+      // documents: otherDetails?.document,
     };
 
     try {
@@ -191,7 +191,7 @@ const AddListingModal = ({
       console.log("post listing:: ", postListing);
       setloading(false);
 
-      toast.success("List Added Successfully.", {
+      toast.success("Listing Added Successfully.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -237,7 +237,7 @@ const AddListingModal = ({
           style={style}
           className={`w-[calc(100%-20px)] ${
             displayMap ? "h-[80%]" : "h-[60%]"
-          } overflow-y-scroll md:w-[50%] border-2 border-solid shadow-lg  ${
+          } overflow-y-scroll md:w-[70%] border-2 border-solid shadow-lg  ${
             currentMode === "dark"
               ? "bg-black border-gray-800"
               : "bg-white border-gray-200"
@@ -258,11 +258,11 @@ const AddListingModal = ({
           <div className="w-full flex items-center py-1 mb-2">
             {/* <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div> */}
             <h1
-              className={`text-lg bg-primary font-semibold  py-2 px-6 ${
+              className={`text-lg bg-primary font-semibold rounded-md py-1 px-3 ${
                 currentMode === "dark" ? "text-white" : "text-white"
               }`}
             >
-              Secondary
+              SECONDARY
             </h1>
             <h1
               className={`text-lg font-semibold ml-3 ${
@@ -549,7 +549,7 @@ const AddListingModal = ({
                         disabled={loading ? true : false}
                         startIcon={loading ? null : <CiMapPin />}
                       >
-                        <span>Location In Map</span>
+                        <span>Select location in map *</span>
                       </Button>
                     )}
 
