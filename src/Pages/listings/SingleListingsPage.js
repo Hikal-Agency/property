@@ -7,6 +7,10 @@ import {
   Tooltip,
   IconButton,
 } from "@mui/material";
+import { 
+  GoogleMap, 
+  Marker
+} from "@react-google-maps/api";
 
 import axios from "../../axoisConfig";
 import Error404 from "../Error";
@@ -28,6 +32,9 @@ import {
   FaUserPlus
 } from "react-icons/fa";
 import {
+  MdLocationPin
+} from "react-icons/md";
+import {
   TbCurrentLocation,
   TbPhone,
   TbMail,
@@ -37,11 +44,7 @@ import {
 const SingleListingsPage = () => {
   const [loading, setloading] = useState(true);
   const [listData, setListingData] = useState({});
-  const [lastNote, setLastNote] = useState("");
-  const [AddNoteTxt, setAddNoteTxt] = useState("");
-  const [LeadNotesData, setLeadNotesData] = useState(null);
   const [leadNotFound, setLeadNotFound] = useState(false);
-  const [addNoteloading, setaddNoteloading] = useState(false);
   const {
     currentMode,
     setopenBackDrop,
@@ -50,10 +53,10 @@ const SingleListingsPage = () => {
     darkModeColors,
     isArabic,
   } = useStateContext();
+  // const [lat, setLat] = useState(null);
+  // const [long, setLong] = useState(null);
 
   const static_img = "../assets/no-image.png";
-
-  const { hasPermission } = usePermission();
 
   const { lid } = useParams();
 
@@ -61,7 +64,10 @@ const SingleListingsPage = () => {
 
   console.log("list data: ", listData);
 
-  const fetchSingleLead = async () => {
+  let lat = "";
+  let long = "";
+
+  const fetchSingleListing = async () => {
     try {
       setloading(true);
       const token = localStorage.getItem("auth-token");
@@ -97,8 +103,32 @@ const SingleListingsPage = () => {
 
   useEffect(() => {
     setopenBackDrop(false);
-    fetchSingleLead(lid);
+    fetchSingleListing(lid);
   }, []);
+
+  const mapContainerStyle = {
+    width: "100%",
+    height: "100%",
+  };
+
+  const options = {
+    disableDefaultUI: true,
+    zoomControl: true,
+    mapTypeControl: true,
+  };
+
+  const latLongString = listData?.latlong;
+  if (latLongString) {
+    const [latValue, longValue] = latLongString.split(',');
+    lat = latValue;
+    long = longValue;
+    // setLat(latValue);
+    // setLong(longValue);
+  }
+  // const lat = "22.22222";
+  // const long = "55.55555";
+  // console.log("Latitude:", lat); 
+  // console.log("Longitude:", long);
 
   return (
     <>
@@ -250,6 +280,31 @@ const SingleListingsPage = () => {
                   </div>
 
                   {/* IN MAP  */}
+                  <div className="w-full my-5 h-[50vh] border border-primary">
+                    {typeof window.google !== "object" ? (
+                      <div>Your map is loading...</div>
+                    ) : (
+                      <GoogleMap
+                        zoom={12}
+                        center={{ lat: parseFloat(lat), lng: parseFloat(long) }}
+                        mapContainerStyle={mapContainerStyle}
+                        options={options}
+                      >
+                        <Marker
+                          key={listData?.id}
+                          position={{
+                            lat: Number(parseFloat(lat)),
+                            lng: Number(parseFloat(long)),
+                          }}
+                          icon={{
+                            url: <MdLocationPin size={30} color={"#DA1F26"} />,
+                            scaledSize: new window.google.maps.Size(50, 50),
+                          }}
+                        >
+                        </Marker>
+                      </GoogleMap>
+                    )}
+                  </div>
 
                   <div className="bg-primary h-0.5 w-full my-5"></div>
 
