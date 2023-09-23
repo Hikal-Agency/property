@@ -38,7 +38,7 @@ const AddNewListingModal = ({
   const [displayMap, setDisplayMap] = useState(false);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
-  const [listingLocation, setLisitingLocation] = useState({
+  const [listingLocation, setListingLocation] = useState({
     lat: 0,
     lng: 0,
     addressText: "",
@@ -61,7 +61,7 @@ const AddNewListingModal = ({
     area: "",
     listingType: "",
     // picture: [],
-    // document: [],
+    document: "",
   });
   const [value, setValue] = useState();
   const [error, setError] = useState(false);
@@ -95,6 +95,25 @@ const AddNewListingModal = ({
     }));
   };
 
+  // const handleContact = () => {
+  //   setError(false);
+  //   const inputValue = value;
+  //   console.log("Phone: ", inputValue);
+  //   if (inputValue && isPossiblePhoneNumber(inputValue)) {
+  //     console.log("Possible: ", inputValue);
+  //     if (isValidPhoneNumber(inputValue)) {
+  //       setSellerDetails?.leadContact(formatPhoneNumberIntl(inputValue));
+  //       console.log("Valid lead contact: ", sellerDetails?.leadContact);
+  //       console.log("Valid input: ", inputValue);
+  //       setError(false);
+  //     } else {
+  //       setError("Not a valid number.");
+  //     }
+  //   } else {
+  //     setError("Not a valid number.");
+  //   }
+  // };
+
   const handleContact = () => {
     setError(false);
     const inputValue = value;
@@ -113,6 +132,7 @@ const AddNewListingModal = ({
       setError("Not a valid number.");
     }
   };
+  
 
   function removeNull(value) {
     if (value === "null" || value === null) {
@@ -138,21 +158,21 @@ const AddNewListingModal = ({
   //   console.log("Updated otherDetails.picture:", otherDetails.picture);
   // };
 
-  // const handleDocumentUpload = (e) => {
-  //   const documentFiles = e.target.files;
+  const handleDocumentUpload = (e) => {
+    const documentFiles = e.target.files;
 
-  //   const documentFilesArray = Array.from(documentFiles);
+    const documentFilesArray = Array.from(documentFiles);
 
-  //   setOtherDetails((prev) => ({
-  //     ...prev,
-  //     document: [...prev.document, ...documentFilesArray],
-  //   }));
+    setOtherDetails((prev) => ({
+      ...prev,
+      document: [...prev.document, ...documentFilesArray],
+    }));
 
-  //   // Clear the file input to allow selecting more files if needed
-  //   e.target.value = null;
+    // Clear the file input to allow selecting more files if needed
+    e.target.value = null;
 
-  //   console.log("Updated otherDetails.document:", otherDetails.document);
-  // };
+    console.log("Updated otherDetails.document:", otherDetails.document);
+  };
 
   const submitListing = async (e) => {
     setloading(true);
@@ -190,13 +210,20 @@ const AddNewListingModal = ({
     if (projectDetails?.bathrooms) LeadData.append("bathrooms", projectDetails?.bathrooms);
     if (otherDetails?.address) LeadData.append("address", otherDetails?.address);
     if (otherDetails?.area) LeadData.append("area", otherDetails?.area);
+    if (otherDetails?.listingType) LeadData.append("listing_type", otherDetails?.listingType);
+    if (otherDetails?.document) LeadData.append("documents", otherDetails?.document);
     if (LeadData?.leadId) LeadData.append("lead_id", LeadData?.leadId);
-    if (LeadData?.listingType) LeadData.append("listing_type", LeadData?.listingType);
     if (location) LeadData.append("latlong", location);
     // LeadData.append("listing_type", "Secondary"); //Always appended
     LeadData.append("listing_status", "New"); //Always appended
     LeadData.append("addedBy", User?.id);
     
+    LeadData.append("addedBy_name", User?.userName);
+
+    for (var pair of LeadData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+
     await axios
       .post(`${BACKEND_URL}/listings`, LeadData, {
         headers: {
@@ -236,96 +263,15 @@ const AddNewListingModal = ({
       });
   };
 
-  // const submitListingUbaid = async (e) => {
-  //   setloading(true);
-  //   e.preventDefault();
-
-  //   const token = localStorage.getItem("auth-token");
-
-  //   const lat = listingLocation?.lat;
-  //   const lng = listingLocation?.lng;
-  //   const location = [lat, lng].join(",");
-
-  //   // const formData = new FormData();
-  //   // formData.append("seller_name", sellerDetails?.leadName);
-  //   // formData.append("seller_contact", sellerDetails?.leadContact);
-  //   // formData.append("seller_email", sellerDetails?.leadEmail);
-  //   // formData.append("price", sellerDetails?.propertyPrice);
-  //   // formData.append("property_type", projectDetails?.property_type);
-  //   // formData.append("project", projectDetails?.project);
-  //   // formData.append("bedrooms", projectDetails?.bedrooms);
-  //   // formData.append("bathrooms", projectDetails?.bathrooms);
-  //   // formData.append("address", otherDetails?.address);
-  //   // formData.append("area", otherDetails?.area);
-  //   // formData.append("listing_type", "Secondary");
-  //   // formData.append("listing_status", "New");
-  //   // formData.append("lead_id", LeadData?.leadId);
-  //   // formData.append("latlong", location);
-  //   // formData.append("latlong", location);
-  //   // formData.append("pictures", otherDetails?.picture);
-  //   // formData.append("documents", otherDetails?.document);
-
-  //   const formData = {
-  //     seller_name: sellerDetails?.leadName,
-  //     seller_contact: sellerDetails?.leadContact,
-  //     seller_email: sellerDetails?.leadEmail,
-  //     price: sellerDetails?.propertyPrice,
-  //     property_type: projectDetails?.property_type,
-  //     project: projectDetails?.project,
-  //     bedrooms: projectDetails?.bedrooms,
-  //     bathrooms: projectDetails?.bathrooms,
-  //     address: otherDetails?.address,
-  //     area: otherDetails?.area,
-  //     listing_type: "Secondary",
-  //     listing_status: "New",
-  //     lead_id: LeadData?.leadId,
-  //     latlong: location,
-  //     // pictures: otherDetails?.picture,
-  //     // documents: otherDetails?.document,
-  //   };
-
-  //   try {
-  //     const postListing = await axios.post(
-  //       `${BACKEND_URL}/listings`,
-  //       JSON.stringify(formData),
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-
-  //     console.log("post listing:: ", postListing);
-  //     setloading(false);
-
-  //     toast.success("Listing Added Successfully.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //     handleCloseListingModal();
-  //   } catch (error) {
-  //     setloading(false);
-  //     console.log("error: ", error);
-
-  //     toast.error("Unable to add list.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   }
-  // };
+  const handleCurrentLocationClick = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setListingLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+        addressText: "", // You may want to update this if you have an address
+      });
+    });
+  };
 
   return (
     <>
@@ -695,38 +641,70 @@ const AddNewListingModal = ({
                       onChange={handleOtherDetails}
                     />
 
-                    {!displayMap && (
+                    {/* <input
+                      accept=".pdf"
+                      style={{ display: "none" }}
+                      id="contained-button-document"
+                      type="file"
+                      name="document"
+                      onChange={handleDocumentUpload}
+                      multiple
+                    />
+                    <label htmlFor="contained-button-document">
                       <Button
                         variant="contained"
-                        size="medium"
-                        className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                        size="small"
+                        className="bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
                         style={{
                           // backgroundColor: "#111827",
                           color: "#ffffff",
-                          // border: "1px solid #DA1F26",
+                          // border: "1px solid ",
                         }}
-                        onClick={() => setDisplayMap(true)}
                         component="span"
                         disabled={loading ? true : false}
-                        startIcon={loading ? null : <CiMapPin />}
+                        startIcon={loading ? null : <MdFileUpload />}
                       >
-                        <span>Select location in map *</span>
+                        <span>Upload Document</span>
                       </Button>
-                    )}
-
-                    {displayMap && (
-                      <ListingLocation
-                        listingLocation={listingLocation}
-                        currLocByDefault={true}
-                        setLisitingLocation={setLisitingLocation}
-                        city={city}
-                        setCity={setCity}
-                        country={country}
-                        setCountry={setCountry}
-                      />
-                    )}
+                    </label> */}
                   </Box>
                 </div>
+              </div>
+
+              <div className="w-full grid grid-cols-1 gap-5 pt-5 px-4 md:px-10">
+                <Box sx={darkModeColors}>
+                  {/* {!displayMap && (
+                    <Button
+                      variant="contained"
+                      size="medium"
+                      className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                      style={{
+                        // backgroundColor: "#111827",
+                        color: "#ffffff",
+                        // border: "1px solid #DA1F26",
+                      }}
+                      onClick={() => setDisplayMap(true)}
+                      component="span"
+                      disabled={loading ? true : false}
+                      startIcon={loading ? null : <CiMapPin />}
+                    >
+                      <span>Select location in map *</span>
+                    </Button>
+                  )}
+
+                  {displayMap && ( */}
+                    <ListingLocation
+                      listingLocation={listingLocation}
+                      currLocByDefault={true}
+                      setListingLocation={setListingLocation}
+                      city={city}
+                      setCity={setCity}
+                      country={country}
+                      setCountry={setCountry}
+                      required
+                    />
+                  {/* )} */}
+                </Box>
               </div>
 
               {/* <div className="w-full flex justify-center mr-4 items-center my-4 space-x-5">

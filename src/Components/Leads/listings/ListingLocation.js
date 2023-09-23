@@ -22,7 +22,7 @@ const currentLocBtnStyle = {
 
 const ListingLocation = ({
   listingLocation,
-  setLisitingLocation,
+  setListingLocation,
   showOnly = false,
   currLocByDefault,
   city,
@@ -51,7 +51,7 @@ const ListingLocation = ({
             if (showOnly) {
               map.panTo({ lat: listingLocation.lat, lng: listingLocation.lng });
             } else {
-              setLisitingLocation({
+              setListingLocation({
                 lat: Number(position.coords.latitude),
                 lng: Number(position.coords.longitude),
                 addressText: results[0].formatted_address,
@@ -70,7 +70,7 @@ const ListingLocation = ({
       { location: { lat: Number(latLng.lat()), lng: Number(latLng.lng()) } },
       (results, status) => {
         if (status === "OK") {
-          setLisitingLocation({
+          setListingLocation({
             lat: Number(latLng.lat()),
             lng: Number(latLng.lng()),
             addressText: results[0].formatted_address,
@@ -111,12 +111,13 @@ const ListingLocation = ({
         >
           <ListingAutoComplete
             defaultLocation={listingLocation.addressText}
-            setLisitingLocation={setLisitingLocation}
+            setListingLocation={setListingLocation}
             isDisabled={showOnly}
             setCity={setCity}
             country={country}
             setCountry={setCountry}
             city={city}
+            size="small"
             className={`${
               currentMode === "dark" ? "text-white" : "text-black"
             }`}
