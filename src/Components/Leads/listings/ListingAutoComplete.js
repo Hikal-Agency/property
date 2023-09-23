@@ -10,7 +10,7 @@ import { useStateContext } from "../../../context/ContextProvider";
 const ListingAutoComplete = ({
   isDisabled,
   defaultLocation,
-  setMeetingLocation,
+  setListingLocation,
 }) => {
   const {
     ready,
@@ -40,8 +40,8 @@ const ListingAutoComplete = ({
       getGeocode({ address: description }).then((results) => {
         console.log("autocomplete", results);
         const { lat, lng } = getLatLng(results[0]);
-        setMeetingLocation((meetingLocation) => {
-          return { ...meetingLocation, lat, lng };
+        setListingLocation((listingLocation) => {
+          return { ...listingLocation, lat, lng };
         });
       });
     };

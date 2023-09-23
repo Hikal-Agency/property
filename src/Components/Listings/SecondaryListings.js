@@ -152,9 +152,15 @@ const SecondaryListings = ({
                       />
                       <div className={`absolute top-0 right-2 p-2 pb-5 rounded-b-full bg-primary`}>
                         <Tooltip title="View Property">
-                          <IconButton className="my-1">
-                            <BsListStars size={20} color={"#FFFFFF"} />
-                          </IconButton>
+                          <Link
+                            sx={{w: "100%" }}
+                            to={`/secondaryListings/${listing?.id}`}
+                            target="_blank"
+                          >
+                            <IconButton className="my-1">
+                              <BsListStars size={20} color={"#FFFFFF"} />
+                            </IconButton>
+                          </Link>
                         </Tooltip>
                       </div>
                       <div className={`absolute top-[200px] right-0 p-2 rounded-b-full`}>
@@ -206,7 +212,7 @@ const SecondaryListings = ({
                         </div>
                       </div>
 
-                      <Link
+                      {/* <Link
                         sx={{w: "100%" }}
                         to={`/secondaryListings/${listing?.id}`}
                         target="_blank"
@@ -223,7 +229,7 @@ const SecondaryListings = ({
                         >
                           Manage Listing
                         </Button>
-                      </Link>
+                      </Link> */}
 
                       {/* <Button
                         disabled={btnloading}

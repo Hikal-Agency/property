@@ -41,7 +41,7 @@ const AddListingModal = ({
   const [displayMap, setDisplayMap] = useState(false);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
-  const [listingLocation, setLisitingLocation] = useState({
+  const [listingLocation, setListingLocation] = useState({
     lat: 0,
     lng: 0,
     addressText: "",
@@ -242,96 +242,15 @@ const AddListingModal = ({
       });
   };
 
-  // const submitListingUbaid = async (e) => {
-  //   setloading(true);
-  //   e.preventDefault();
-
-  //   const token = localStorage.getItem("auth-token");
-
-  //   const lat = listingLocation?.lat;
-  //   const lng = listingLocation?.lng;
-  //   const location = [lat, lng].join(",");
-
-  //   // const formData = new FormData();
-  //   // formData.append("seller_name", sellerDetails?.leadName);
-  //   // formData.append("seller_contact", sellerDetails?.leadContact);
-  //   // formData.append("seller_email", sellerDetails?.leadEmail);
-  //   // formData.append("price", sellerDetails?.propertyPrice);
-  //   // formData.append("property_type", projectDetails?.property_type);
-  //   // formData.append("project", projectDetails?.project);
-  //   // formData.append("bedrooms", projectDetails?.bedrooms);
-  //   // formData.append("bathrooms", projectDetails?.bathrooms);
-  //   // formData.append("address", otherDetails?.address);
-  //   // formData.append("area", otherDetails?.area);
-  //   // formData.append("listing_type", "Secondary");
-  //   // formData.append("listing_status", "New");
-  //   // formData.append("lead_id", LeadData?.leadId);
-  //   // formData.append("latlong", location);
-  //   // formData.append("latlong", location);
-  //   // formData.append("pictures", otherDetails?.picture);
-  //   // formData.append("documents", otherDetails?.document);
-
-  //   const formData = {
-  //     seller_name: sellerDetails?.leadName,
-  //     seller_contact: sellerDetails?.leadContact,
-  //     seller_email: sellerDetails?.leadEmail,
-  //     price: sellerDetails?.propertyPrice,
-  //     property_type: projectDetails?.property_type,
-  //     project: projectDetails?.project,
-  //     bedrooms: projectDetails?.bedrooms,
-  //     bathrooms: projectDetails?.bathrooms,
-  //     address: otherDetails?.address,
-  //     area: otherDetails?.area,
-  //     listing_type: "Secondary",
-  //     listing_status: "New",
-  //     lead_id: LeadData?.leadId,
-  //     latlong: location,
-  //     // pictures: otherDetails?.picture,
-  //     // documents: otherDetails?.document,
-  //   };
-
-  //   try {
-  //     const postListing = await axios.post(
-  //       `${BACKEND_URL}/listings`,
-  //       JSON.stringify(formData),
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-
-  //     console.log("post listing:: ", postListing);
-  //     setloading(false);
-
-  //     toast.success("Listing Added Successfully.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //     handleCloseListingModal();
-  //   } catch (error) {
-  //     setloading(false);
-  //     console.log("error: ", error);
-
-  //     toast.error("Unable to add list.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   }
-  // };
+  const handleCurrentLocationClick = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setListingLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+        addressText: "", // You may want to update this if you have an address
+      });
+    });
+  };
 
   return (
     <>
@@ -687,39 +606,44 @@ const AddListingModal = ({
                       value={otherDetails?.area}
                       onChange={handleOtherDetails}
                     />
-
-                    {!displayMap && (
-                      <Button
-                        variant="contained"
-                        size="medium"
-                        className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-                        style={{
-                          // backgroundColor: "#111827",
-                          color: "#ffffff",
-                          // border: "1px solid #DA1F26",
-                        }}
-                        onClick={() => setDisplayMap(true)}
-                        component="span"
-                        disabled={loading ? true : false}
-                        startIcon={loading ? null : <CiMapPin />}
-                      >
-                        <span>Select location in map *</span>
-                      </Button>
-                    )}
-
-                    {displayMap && (
-                      <ListingLocation
-                        listingLocation={listingLocation}
-                        currLocByDefault={true}
-                        setLisitingLocation={setLisitingLocation}
-                        city={city}
-                        setCity={setCity}
-                        country={country}
-                        setCountry={setCountry}
-                      />
-                    )}
                   </Box>
                 </div>
+              </div>
+
+              <div className="w-full grid grid-cols-1 gap-5 pt-5 px-4 md:px-10">
+                <Box sx={darkModeColors}>
+                  {/* {!displayMap && (
+                    <Button
+                      variant="contained"
+                      size="medium"
+                      className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                      style={{
+                        // backgroundColor: "#111827",
+                        color: "#ffffff",
+                        // border: "1px solid #DA1F26",
+                      }}
+                      onClick={() => setDisplayMap(true)}
+                      component="span"
+                      disabled={loading ? true : false}
+                      startIcon={loading ? null : <CiMapPin />}
+                    >
+                      <span>Select location in map *</span>
+                    </Button>
+                  )}
+
+                  {displayMap && ( */}
+                    <ListingLocation
+                      listingLocation={listingLocation}
+                      currLocByDefault={true}
+                      setListingLocation={setListingLocation}
+                      city={city}
+                      setCity={setCity}
+                      country={country}
+                      setCountry={setCountry}
+                      required
+                    />
+                  {/* )} */}
+                </Box>
               </div>
 
               {/* <div className="w-full flex justify-center mr-4 items-center my-4 space-x-5">

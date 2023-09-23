@@ -591,7 +591,7 @@ const SingleLead = ({
                       currentMode === "dark"
                         ? "text-[#FFFFFF] bg-[#262626]"
                         : "text-[#1C1C1C] bg-[#EEEEEE]"
-                    } hover:bg-primary hover:text-primary marker:rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                    } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
                   >
                     <Tooltip title="Delete Lead" arrow>
                       <button
@@ -619,7 +619,7 @@ const SingleLead = ({
                     currentMode === "dark"
                       ? "text-[#FFFFFF] bg-[#262626]"
                       : "text-[#1C1C1C] bg-[#EEEEEE]"
-                  } hover:bg-primary hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                  } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
                 >
                   <Tooltip title="Add Listing" arrow>
                     <button onClick={handleOpenListingModal}>
@@ -644,7 +644,7 @@ const SingleLead = ({
                       currentMode === "dark"
                         ? "text-[#FFFFFF] bg-[#262626]"
                         : "text-[#1C1C1C] bg-[#EEEEEE]"
-                    } hover:bg-orange-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                    } hover:bg-purple-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                   >
                     <Tooltip title="Request for Reshuffle" arrow>
                       {/* <button onClick={(e) => handleRequest(e, LeadData)}> */}
