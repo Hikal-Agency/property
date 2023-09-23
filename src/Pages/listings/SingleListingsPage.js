@@ -26,11 +26,21 @@ import {
   TbCurrentLocation,
   TbPhone,
 } from "react-icons/tb";
+import SelectImagesModal from "./SelectImagesModal";
+import SelectDocumentModal from "./SelectDocumentModal";
 
 const SingleListingsPage = () => {
   const [loading, setloading] = useState(true);
   const [listData, setListingData] = useState({});
   const [leadNotFound, setLeadNotFound] = useState(false);
+  const [selectImagesModal, setSelectImagesModal] = useState({
+    isOpen: false, 
+    listingId: null
+  });
+    const [selectDocumentModal, setSelectDocumentModal] = useState({
+    isOpen: false, 
+    listingId: null
+  });
   const {
     currentMode,
     setopenBackDrop,
@@ -150,14 +160,14 @@ const SingleListingsPage = () => {
 
                     {/* UPLOAD PICTURES  */}
                     <Tooltip title="Upload Pictures" arrow>
-                      <IconButton className={`rounded-full`}>
+                      <IconButton onClick={() => setSelectImagesModal({isOpen: true, listingId: lid})} className={`rounded-full`}>
                         <BsImages size={20} color={"#AAAAAA"}  />
                       </IconButton>
                     </Tooltip>
 
                     {/* UPLOAD DOCUMENTS  */}
                     <Tooltip title="Upload Documents" arrow>
-                      <IconButton className={`rounded-full`}>
+                      <IconButton onClick={() => setSelectDocumentModal({isOpen: true, listingId: lid})} className={`rounded-full`}>
                         <BsFiles size={20} color={"#AAAAAA"}  />
                       </IconButton>
                     </Tooltip>
@@ -259,17 +269,13 @@ const SingleListingsPage = () => {
                       </h1>
                     </div>
                   </div>
-                  {/* <div>
-                    <img
-                      src={static_img}
-                      alt="offer"
-                      className="w-full h-[300px] object-cover"
-                    />
-                  </div> */}
                 </div>
               </div>
             )}
             {/* <Footer /> */}
+
+            {selectImagesModal?.isOpen && <SelectImagesModal selectImagesModal={selectImagesModal} handleClose={() => setSelectImagesModal({isOpen: false})}/>}
+            {selectDocumentModal?.isOpen && <SelectDocumentModal selectDocumentModal={selectDocumentModal} handleClose={() => setSelectDocumentModal({isOpen: false})}/>}
           </>
         )}
       </div>

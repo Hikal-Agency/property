@@ -139,7 +139,7 @@ const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
       const src = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
       const file = await srcToFile(src, selectedFile.name, selectedFile.type);
-      console.log(file);
+      console.log("Cropped: ", file);
       UpdateProfileImage(file);
     }
   };
