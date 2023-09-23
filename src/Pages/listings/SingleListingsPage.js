@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import {
@@ -12,6 +13,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
@@ -19,39 +22,24 @@ import Error404 from "../Error";
 import usePermission from "../../utils/usePermission";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
-import { BiBed, BiBath } from "react-icons/bi";
 
-import { BiImport, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
+import { 
+  BiMoney,
+  BiBed, 
+  BiBath,
+  BiEdit
+} from "react-icons/bi";
 import {
-  BsSnow2,
-  BsPatchQuestion,
-  BsFire,
-  BsSun,
-  BsPersonCircle,
+  BsImages,
+  BsFiles,
+  BsPen
 } from "react-icons/bs";
 import {
-  FaSnapchatGhost,
-  FaFacebookF,
-  FaTiktok,
-  FaYoutube,
-  FaWhatsapp,
-  FaTwitter,
-  FaRegComments,
-  FaUser,
-} from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { FiLink } from "react-icons/fi";
-import { GiMagnifyingGlass } from "react-icons/gi";
-import { HiOutlineUserCircle } from "react-icons/hi";
-import { BiMoney } from "react-icons/bi";
-import { MdCampaign } from "react-icons/md";
-import {
-  TbLanguage,
+  TbCurrentLocation,
   TbPhone,
   TbBuildingCommunity,
   TbWorldWww,
 } from "react-icons/tb";
-import moment from "moment";
 
 const SingleListingsPage = () => {
   const [loading, setloading] = useState(true);
@@ -70,7 +58,7 @@ const SingleListingsPage = () => {
     isArabic,
   } = useStateContext();
 
-  const static_img = "/assets/list-static-img.jpg";
+  const static_img = "../assets/no-image.png";
 
   const { hasPermission } = usePermission();
 
@@ -119,100 +107,108 @@ const SingleListingsPage = () => {
     fetchSingleLead(lid);
   }, []);
 
-  const sourceIcons = {
-    "campaign snapchat": () => <FaSnapchatGhost size={16} color={"#f6d80a"} />,
-
-    "campaign facebook": () => <FaFacebookF size={16} color={"#0e82e1"} />,
-
-    "campaign tiktok": () => (
-      <FaTiktok
-        size={16}
-        color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-      />
-    ),
-
-    "campaign googleads": () => <FcGoogle size={16} />,
-
-    "campaign youtube": () => <FaYoutube size={16} color={"#FF0000"} />,
-
-    "campaign twitter": () => <FaTwitter size={16} color={"#00acee"} />,
-
-    "bulk import": () => <BiImport size={16} className="text-primary" />,
-
-    "property finder": () => <GiMagnifyingGlass size={16} color={"#ef5e4e"} />,
-
-    campaign: () => <MdCampaign size={16} color={"#696969"} />,
-
-    cold: () => <BsSnow2 size={16} color={"#0ec7ff"} />,
-
-    personal: () => <BsPersonCircle size={16} color={"#6C7A89"} />,
-
-    whatsapp: () => <FaWhatsapp size={16} color={"#53cc60"} />,
-
-    message: () => <BiMessageRoundedDots size={16} color={"#6A5ACD"} />,
-
-    comment: () => <FaRegComments size={16} color={"#a9b3c6"} />,
-
-    website: () => <TbWorldWww size={16} color={"#AED6F1"} />,
-
-    self: () => <FaUser size={16} color={"#6C7A89"} />,
-  };
-
   return (
     <>
-      <div className="flex min-h-screen mt-3">
+      <div className={`flex min-h-screen w-full p-4 ${
+              currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
+            }`}>
         {loading ? (
           <Loader />
         ) : (
-          <div
-            className={`w-full pl-3 pb-5 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
-          >
+          <>
             {leadNotFound ? (
               <Error404 />
             ) : (
-              <div>
-                <div className="w-full flex items-center mt-5">
-                  {/* <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div> */}
-                  <span className="text-sm font-bold tracking-wide bg-primary text-white px-2 py-1 mr-2 rounded-sm my-auto">
-                    <span>{listData?.id}</span>
-                  </span>
-                  <h1
-                    className={`text-lg font-bold mr-2 ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                    style={{
-                      fontFamily: isArabic(listData?.seller_name)
-                        ? "Noto Kufi Arabic"
-                        : "inherit",
-                    }}
-                  >
-                    {listData?.seller_name}
-                  </h1>
+              <div className="w-full">
+                {/* IMAGES  */}
+                <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
+                  <img
+                    src={static_img}
+                    alt="secondary"
+                    className="w-auto h-[200px] object-cover m-1 rounded-md"
+                  />
+                  <img
+                    src={static_img}
+                    alt="secondary"
+                    className="w-auto h-[200px] object-cover m-1 rounded-md"
+                  />
+                  <img
+                    src={static_img}
+                    alt="secondary"
+                    className="w-auto h-[200px] object-cover m-1 rounded-md"
+                  />
+                  <img
+                    src={static_img}
+                    alt="secondary"
+                    className="w-auto h-[200px] object-cover m-1 rounded-md"
+                  />
                 </div>
 
-                {/* Lead Info */}
+                <div className="w-full flex items-center justify-between p-2">
+                  <div className="flex items-center">
+                    <div className="bg-primary rounded-md text-white p-2 mr-2 font-semibold">
+                      {listData?.price}
+                    </div>
+                    <h1
+                      className={`text-lg font-bold mr-2 ${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
+                      style={{
+                        fontFamily: isArabic(listData?.project)
+                          ? "Noto Kufi Arabic"
+                          : "inherit",
+                      }}
+                    >
+                      {listData?.project}
+                    </h1>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {/* EDIT DETAILS  */}
+                    <Tooltip title="Edit Listing Details" arrow>
+                      <IconButton className={`rounded-full`}>
+                        <BsPen size={20} color={"#AAAAAA"}  />
+                      </IconButton>
+                    </Tooltip>
+
+                    {/* UPLOAD PICTURES  */}
+                    <Tooltip title="Upload Pictures" arrow>
+                      <IconButton className={`rounded-full`}>
+                        <BsImages size={20} color={"#AAAAAA"}  />
+                      </IconButton>
+                    </Tooltip>
+
+                    {/* UPLOAD DOCUMENTS  */}
+                    <Tooltip title="Upload Documents" arrow>
+                      <IconButton className={`rounded-full`}>
+                        <BsFiles size={20} color={"#AAAAAA"}  />
+                      </IconButton>
+                    </Tooltip>
+
+                    <div className="mx-1"></div>
+
+                    <div className="border border-primary p-2 font-semibold rounded-md shadow-sm">
+                      {listData?.listing_type}
+                    </div>
+                  </div>
+                </div>
+
                 <div
                   className={`${
                     currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#1C1C1C]"
-                  } px-3 text-base`}
+                  } p-2 text-base`}
                 >
-                  <div className="grid sm:grid-cols-1 md:grid-cols-5 mt-5 gap-5">
-                    <div className="sm:col-span-1 md:col-span-3 space-y-3 font-semibold">
-                      {/* LEAD CONTACT  */}
+                  <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5">
+                    <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3">
+                      {/* ADDRESS  */}
                       <div className="flex space-x-3">
-                        <TbPhone size={17} className="mr-2 text-primary" />
-                        <h6>{listData?.seller_contact}</h6>
+                        <TbCurrentLocation size={18} className="mr-2 text-[#AAAAAA]" />
                         <h6>
-                          {listData?.seller_email === "null"
-                            ? ""
-                            : listData?.seller_email}
+                          {listData?.address}{" "}
                         </h6>
                       </div>
                       {/* Bedrooms  */}
                       <div className="flex space-x-3">
-                        <BiBed className="text-primary mr-2" size={17} />
+                        <BiBed size={18} className="mr-2 text-[#AAAAAA]" />
                         <h6>{listData?.bedrooms + " Bedrooms"}</h6>
                         <h6>
                           {listData?.property_type === "null"
@@ -222,7 +218,7 @@ const SingleListingsPage = () => {
                       </div>
                       {/* baths  */}
                       <div className="flex space-x-3">
-                        <BiBath size={17} className="mr-2 text-primary" />
+                        <BiBath size={18} className="mr-2 text-[#AAAAAA]" />
                         <h6>
                           {listData?.bathrooms === "null"
                             ? "-"
@@ -235,9 +231,22 @@ const SingleListingsPage = () => {
                             : listData?.leadFor}
                         </h6>
                       </div>
+
+                      
+                      {/* LEAD CONTACT  */}
+                      <div className="flex space-x-3">
+                        <TbPhone size={18} className="mr-2 text-[#AAAAAA]" />
+                        <h6>{listData?.seller_contact}</h6>
+                        <h6>
+                          {listData?.seller_email === "null"
+                            ? ""
+                            : listData?.seller_email}
+                        </h6>
+                      </div>
+
                     </div>
 
-                    <div className="sm:col-span-1 md:col-span-2 space-y-2 text-right">
+                    <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
                       <div className="flex items-center justify-end space-x-3 mb-4">
                         <span className="border border-primary px-3 py-1 rounded-md font-semibold text-base">
                           {listData?.project ?? "?"}
@@ -255,7 +264,23 @@ const SingleListingsPage = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="bg-primary h-0.5 w-full my-7"></div>
+
+                  <div className="bg-primary h-0.5 w-full my-5"></div>
+
+                  <div className="w-full p-2">
+                    <div className="w-full flex items-center pb-3">
+                      <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                      <h1
+                        className={`text-lg font-semibold ${
+                          currentMode === "dark"
+                            ? "text-white"
+                            : "text-black"
+                        }`}
+                      >
+                        Seller details
+                      </h1>
+                    </div>
+                  </div>
                   {/* <div>
                     <img
                       src={static_img}
@@ -267,7 +292,7 @@ const SingleListingsPage = () => {
               </div>
             )}
             {/* <Footer /> */}
-          </div>
+          </>
         )}
       </div>
     </>

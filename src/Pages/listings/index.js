@@ -15,31 +15,18 @@ import {
   Tabs,
   TextField,
 } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
-
-import {
-  AiOutlineEdit,
-  AiOutlinePlus,
-  AiOutlineTable,
-  AiOutlineAppstore,
-  AiOutlineFilter,
-} from "react-icons/ai";
-import SingleUser from "../../Components/Users/SingleUser";
 import { useEffect, useState, useRef } from "react";
-
 import axios from "../../axoisConfig";
-import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
-import UserTable from "../../Components/Users/UserTable";
 import AddUserModel from "../../Components/addUser/AddUserModel";
-import { FaBan, FaUnlock } from "react-icons/fa";
-import DeleteUser from "../../Components/Users/DeleteUser";
-import { BsPersonFillLock, BsSearch } from "react-icons/bs";
-import UpdateUserPermissions from "../../Components/addUser/UpdateUserPermissions";
-import { BiSearch } from "react-icons/bi";
 import SecondaryListings from "../../Components/Listings/SecondaryListings";
+import AddNewListingModal from "../../Components/Listings/AddNewListingModal";
+import { Link } from "react-router-dom";
+import {
+  BsBuildingAdd,
+  BsSearch
+} from "react-icons/bs";
 
 const Listings = () => {
   const {
@@ -62,6 +49,10 @@ const Listings = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [pageBeingScrolled, setPageBeingScrolled] = useState(1);
+  const [listingModalOpen, setListingModalOpen] = useState(false);
+  const handleCloseListingModal = () => setListingModalOpen(false);
+  const [open, setOpen] = useState(false);
+
 
   const searchRef = useRef("");
 
@@ -112,6 +103,11 @@ const Listings = () => {
     }
   };
 
+  // open listing modal
+  const handleOpenListingModal = () => {
+    setListingModalOpen(true);
+  };
+
   const HandleOpenModel = () => {
     console.log("Model Open:");
     setModel(true);
@@ -160,7 +156,7 @@ const Listings = () => {
                 </h1>
               </div>
 
-              <div className="flex space-x-3 mr-4 items-center">
+              {/* <div className="flex space-x-3 mr-4 items-center">
                 <AiOutlineFilter size={16}
                   color={currentMode == "dark" ? "#ffffff" : "#000000"}
                 />
@@ -171,7 +167,30 @@ const Listings = () => {
                 >
                   All Filters (0)
                 </h2>
+              </div> */}
+
+              <div className="mr-4">
+                <Button
+                  fullWidth
+                  sx={{ mt: 1 }}
+                  variant="contained"
+                  className="bg-btn-primary flex items-center gap-x-3"
+                  size="small"
+                  onClick={handleOpenListingModal}
+                >
+                  <BsBuildingAdd size={16} />
+                  Add New Listing
+                </Button>
               </div>
+
+              {listingModalOpen && (
+                <AddNewListingModal
+                  // LeadData={LeadData}
+                  handleCloseListingModal={handleCloseListingModal}
+                  setListingModalOpen={setListingModalOpen}
+                />
+              )}
+ 
             </div>
             <div className={`flex items-center justify-between`}>
               <Box

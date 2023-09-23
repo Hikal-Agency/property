@@ -16,13 +16,12 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import classNames from "classnames";
 import { IoMdClose } from "react-icons/io";
-import { useStateContext } from "../../../context/ContextProvider";
+import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
-import LocationPicker from "../../meetings/LocationPicker";
-import ListingLocation from "./ListingLocation";
+import ListingLocation from "../Leads/listings/ListingLocation";
 import { MdFileUpload } from "react-icons/md";
 import { CiMapPin } from "react-icons/ci";
-import axios from "../../../axoisConfig";
+import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 
 const style = {
@@ -30,12 +29,10 @@ const style = {
   boxShadow: 24,
 };
 
-const AddListingModal = ({
+const AddNewListingModal = ({
   setListingModalOpen,
-  handleCloseListingModal,
-  LeadData
+  handleCloseListingModal
 }) => {
-  console.log("lead data in listing: ", LeadData);
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [loading, setloading] = useState(false);
   const [displayMap, setDisplayMap] = useState(false);
@@ -47,10 +44,10 @@ const AddListingModal = ({
     addressText: "",
   });
   const [sellerDetails, setSellerDetails] = useState({
-    leadName: LeadData?.leadName,
-    leadContact: LeadData?.leadContact,
-    leadEmail: LeadData?.leadEmail || "",
-    propertyPrice: null,
+    leadName: "",
+    leadContact: "",
+    leadEmail: "",
+    propertyPrice: "",
   });
   const [projectDetails, setProjectDetails] = useState({
     property_type: "",
@@ -62,6 +59,7 @@ const AddListingModal = ({
   const [otherDetails, setOtherDetails] = useState({
     address: "",
     area: "",
+    listingType: "",
     // picture: [],
     // document: [],
   });
@@ -193,8 +191,9 @@ const AddListingModal = ({
     if (otherDetails?.address) LeadData.append("address", otherDetails?.address);
     if (otherDetails?.area) LeadData.append("area", otherDetails?.area);
     if (LeadData?.leadId) LeadData.append("lead_id", LeadData?.leadId);
+    if (LeadData?.listingType) LeadData.append("listing_type", LeadData?.listingType);
     if (location) LeadData.append("latlong", location);
-    LeadData.append("listing_type", "Secondary"); //Always appended
+    // LeadData.append("listing_type", "Secondary"); //Always appended
     LeadData.append("listing_status", "New"); //Always appended
     LeadData.append("addedBy", User?.id);
 
@@ -354,7 +353,7 @@ const AddListingModal = ({
             currentMode === "dark"
               ? "bg-black border-gray-800"
               : "bg-white border-gray-200"
-          } absolute top-1/2 left-1/2 p-5 rounded-md`}
+          } absolute top-1/2 left-1/2 p-3 rounded-md`}
         >
           <IconButton
             sx={{
@@ -369,20 +368,13 @@ const AddListingModal = ({
           </IconButton>
 
           <div className="w-full flex items-center py-1 mb-2">
-            {/* <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div> */}
-            <h1
-              className={`text-lg bg-primary font-semibold rounded-md py-1 px-3 ${
-                currentMode === "dark" ? "text-white" : "text-white"
-              }`}
-            >
-              SECONDARY
-            </h1>
+            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
             <h1
               className={`text-lg font-semibold ml-3 ${
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              Add Property
+              Add New Listing
             </h1>
           </div>
 
@@ -394,8 +386,8 @@ const AddListingModal = ({
               }}
               disabled={loading ? true : false}
             >
-              <div className="grid grid-cols-1 mt-9 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 px-4 md:px-10 ">
-                <div className="px-4">
+              <div className="grid grid-cols-1 mt-5 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 px-4 md:px-10 ">
+                <div className="px-1">
                   <Box sx={darkModeColors}>
                     <h4
                       className={`${
@@ -492,7 +484,6 @@ const AddListingModal = ({
                       }}
                       variant="outlined"
                       size="small"
-                      required
                       value={removeNull(sellerDetails?.leadEmail)}
                       onChange={handleChange}
                     />
@@ -655,6 +646,27 @@ const AddListingModal = ({
                     </h4>
 
                     <TextField
+                      id="type"
+                      value={otherDetails?.listingType}
+                      label="Listing Type"
+                      onChange={handleOtherDetails}
+                      size="small"
+                      className="w-full"
+                      name="listingType"
+                      sx={{
+                        "&": {
+                          marginBottom: "1.25rem !important",
+                        },
+                      }}
+                      displayEmpty
+                      select
+                      required
+                    >
+                      <MenuItem value={"Secondary"} selected>Secondary</MenuItem>
+                      <MenuItem value={"Off-plan"}>Off-plan</MenuItem>
+                    </TextField>
+
+                    <TextField
                       id="LeadEmailAddress"
                       type={"text"}
                       label="Address"
@@ -815,4 +827,4 @@ const AddListingModal = ({
   );
 };
 
-export default AddListingModal;
+export default AddNewListingModal;

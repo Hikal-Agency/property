@@ -68,7 +68,9 @@ const SecondaryListings = ({
   setPageBeingScrolled,
 }) => {
   const { currentMode } = useStateContext();
-  const static_img = "assets/list-static-img.jpg";
+  const static_img = "assets/no-image.png";
+  const hikalre = "fullLogoRE.png";
+  const hikalrewhite = "fullLogoREWhite.png";
 
   const imagePaths = ["../assets/offers_static_img.png"];
 
@@ -145,7 +147,7 @@ const SecondaryListings = ({
                       )} */}
                       <img
                         src={static_img}
-                        alt="offer"
+                        alt="secondary"
                         className="w-full h-[200px] object-cover"
                       />
                       <div className={`absolute top-0 right-2 p-2 pb-5 rounded-b-full bg-primary`}>
@@ -155,13 +157,20 @@ const SecondaryListings = ({
                           </IconButton>
                         </Tooltip>
                       </div>
+                      <div className={`absolute top-[200px] right-0 p-2 rounded-b-full`}>
+                        <img
+                          src={currentMode === "dark" ? hikalrewhite : hikalre}
+                          alt="secondary"
+                          className="h-[30px]"
+                        />
+                      </div>
                     </div>
                     
-                    <div className="p-5">
+                    <div className="px-5 py-3">
                       <h1
                         className={`${
                           currentMode === "dark" ? "text-white" : "text-[#000000]"
-                        } my-1 flex justify-between `}
+                        } my-2 flex justify-between `}
                         style={{ textTransform: "capitalize" }}
                       >
                         <span className="text-xl font-bold text-primary">
@@ -170,29 +179,29 @@ const SecondaryListings = ({
                       </h1>
                       <div className={`${
                           currentMode === "dark" ? "text-white" : "text-[#000000]"
-                        }  my-1 font-semibold`}>
+                        }  my-2 font-semibold`}>
                         {listing?.project || "Project unknown"}
                       </div>
                       <div className={`${
                           currentMode === "dark" ? "text-white" : "text-[#000000]"
-                        }  my-1`}>
+                        }  my-2`}>
                         {listing?.address || "Address unknown"}
                       </div>
                       
-                      <div className="my-1">
+                      <div className="my-2">
                         <div className="flex space-x-3 items-center">
-                          <BiBed className="text-primary mr-2" size={20} />
+                          <BiBed className="text-[#AAAAAA]" size={20} />
                           <p className="text-start">
                             <span>{listing?.bedrooms === "null" ? "-" : listing?.bedrooms}</span>{" "} 
                             <span>{listing?.property_type === "null" ? "-" : listing?.property_type}</span>
                           </p>
                         </div>
                       </div>
-                      <div className="my-1">
+                      <div className="my-2">
                         <div className="flex space-x-3 items-center">
-                          <BiBath className="text-primary mr-2" size={20} />
+                          <BiBath className="text-[#AAAAAA]" size={20} />
                           <p className="text-start">
-                            <span>{listing?.bathrooms === "null" ? "-" : listing?.bedrooms}</span>
+                            <span>{listing?.bathrooms === "null" ? "-" : listing?.bathrooms}</span>
                           </p>
                         </div>
                       </div>
@@ -212,7 +221,7 @@ const SecondaryListings = ({
                           // }}
                           size="medium"
                         >
-                          Manager Listing
+                          Manage Listing
                         </Button>
                       </Link>
 
