@@ -174,7 +174,7 @@ const Listings = () => {
                   fullWidth
                   sx={{ mt: 1 }}
                   variant="contained"
-                  className="bg-btn-primary flex items-center gap-x-3"
+                  className="bg-btn-primary flex items-center gap-x-3 px-3"
                   size="small"
                   onClick={handleOpenListingModal}
                 >

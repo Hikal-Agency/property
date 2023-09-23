@@ -196,6 +196,7 @@ const AddNewListingModal = ({
     // LeadData.append("listing_type", "Secondary"); //Always appended
     LeadData.append("listing_status", "New"); //Always appended
     LeadData.append("addedBy", User?.id);
+    LeadData.append("addedBy_name", User?.userName);
 
     for (var pair of LeadData.entries()) {
       console.log(pair[0] + ", " + pair[1]);
