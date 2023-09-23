@@ -3,23 +3,12 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import {
-  Box,
-  TextField,
-  CircularProgress,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Tooltip,
   IconButton,
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
 import Error404 from "../Error";
-import usePermission from "../../utils/usePermission";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
 
@@ -27,7 +16,6 @@ import {
   BiMoney,
   BiBed, 
   BiBath,
-  BiEdit
 } from "react-icons/bi";
 import {
   BsImages,
@@ -37,30 +25,20 @@ import {
 import {
   TbCurrentLocation,
   TbPhone,
-  TbBuildingCommunity,
-  TbWorldWww,
 } from "react-icons/tb";
 
 const SingleListingsPage = () => {
   const [loading, setloading] = useState(true);
   const [listData, setListingData] = useState({});
-  const [lastNote, setLastNote] = useState("");
-  const [AddNoteTxt, setAddNoteTxt] = useState("");
-  const [LeadNotesData, setLeadNotesData] = useState(null);
   const [leadNotFound, setLeadNotFound] = useState(false);
-  const [addNoteloading, setaddNoteloading] = useState(false);
   const {
     currentMode,
     setopenBackDrop,
-    User,
     BACKEND_URL,
-    darkModeColors,
     isArabic,
   } = useStateContext();
 
   const static_img = "../assets/no-image.png";
-
-  const { hasPermission } = usePermission();
 
   const { lid } = useParams();
 

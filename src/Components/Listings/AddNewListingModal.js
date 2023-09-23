@@ -102,7 +102,7 @@ const AddNewListingModal = ({
     if (inputValue && isPossiblePhoneNumber(inputValue)) {
       console.log("Possible: ", inputValue);
       if (isValidPhoneNumber(inputValue)) {
-        setSellerDetails?.leadContact(formatPhoneNumberIntl(inputValue));
+        setSellerDetails({...sellerDetails, leadContact: formatPhoneNumberIntl(inputValue)})
         console.log("Valid lead contact: ", sellerDetails?.leadContact);
         console.log("Valid input: ", inputValue);
         setError(false);
@@ -196,11 +196,7 @@ const AddNewListingModal = ({
     // LeadData.append("listing_type", "Secondary"); //Always appended
     LeadData.append("listing_status", "New"); //Always appended
     LeadData.append("addedBy", User?.id);
-
-    for (var pair of LeadData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
-
+    
     await axios
       .post(`${BACKEND_URL}/listings`, LeadData, {
         headers: {
