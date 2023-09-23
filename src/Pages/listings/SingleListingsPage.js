@@ -361,11 +361,11 @@ const SingleListingsPage = () => {
                             </h1>
                           </div>
 
-                          {listData?.documents === null ? (
+                          {/* {listData?.documents === null ? (
                             <div className="text-primary italic">
                               No documents to show
                             </div>
-                          ) : (
+                          ) : ( */}
                             <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
                               
                               <div className="p-2 flex items-center justify-center">
@@ -396,7 +396,7 @@ const SingleListingsPage = () => {
                                 </div>
                               </div>
                             </div>
-                          )}
+                          {/* )} */}
                           
 
                         </div>

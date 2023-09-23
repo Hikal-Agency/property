@@ -61,7 +61,7 @@ const AddNewListingModal = ({
     area: "",
     listingType: "",
     // picture: [],
-    // document: [],
+    document: "",
   });
   const [value, setValue] = useState();
   const [error, setError] = useState(false);
@@ -161,21 +161,21 @@ const AddNewListingModal = ({
   //   console.log("Updated otherDetails.picture:", otherDetails.picture);
   // };
 
-  // const handleDocumentUpload = (e) => {
-  //   const documentFiles = e.target.files;
+  const handleDocumentUpload = (e) => {
+    const documentFiles = e.target.files;
 
-  //   const documentFilesArray = Array.from(documentFiles);
+    const documentFilesArray = Array.from(documentFiles);
 
-  //   setOtherDetails((prev) => ({
-  //     ...prev,
-  //     document: [...prev.document, ...documentFilesArray],
-  //   }));
+    setOtherDetails((prev) => ({
+      ...prev,
+      document: [...prev.document, ...documentFilesArray],
+    }));
 
-  //   // Clear the file input to allow selecting more files if needed
-  //   e.target.value = null;
+    // Clear the file input to allow selecting more files if needed
+    e.target.value = null;
 
-  //   console.log("Updated otherDetails.document:", otherDetails.document);
-  // };
+    console.log("Updated otherDetails.document:", otherDetails.document);
+  };
 
   const submitListing = async (e) => {
     setloading(true);
@@ -214,6 +214,7 @@ const AddNewListingModal = ({
     if (otherDetails?.address) LeadData.append("address", otherDetails?.address);
     if (otherDetails?.area) LeadData.append("area", otherDetails?.area);
     if (otherDetails?.listingType) LeadData.append("listing_type", otherDetails?.listingType);
+    if (otherDetails?.document) LeadData.append("documents", otherDetails?.document);
     if (LeadData?.leadId) LeadData.append("lead_id", LeadData?.leadId);
     if (location) LeadData.append("latlong", location);
     // LeadData.append("listing_type", "Secondary"); //Always appended
@@ -641,6 +642,33 @@ const AddNewListingModal = ({
                       value={otherDetails?.area}
                       onChange={handleOtherDetails}
                     />
+
+                    {/* <input
+                      accept=".pdf"
+                      style={{ display: "none" }}
+                      id="contained-button-document"
+                      type="file"
+                      name="document"
+                      onChange={handleDocumentUpload}
+                      multiple
+                    />
+                    <label htmlFor="contained-button-document">
+                      <Button
+                        variant="contained"
+                        size="small"
+                        className="bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
+                        style={{
+                          // backgroundColor: "#111827",
+                          color: "#ffffff",
+                          // border: "1px solid ",
+                        }}
+                        component="span"
+                        disabled={loading ? true : false}
+                        startIcon={loading ? null : <MdFileUpload />}
+                      >
+                        <span>Upload Document</span>
+                      </Button>
+                    </label> */}
                   </Box>
                 </div>
               </div>
