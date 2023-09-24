@@ -18,8 +18,8 @@ const style = {
   boxShadow: 24,
 };
 
-const SelectDocumentModal = ({ selectDocumentModal, handleClose }) => {
-  const { currentMode } = useStateContext();
+const SelectDocumentModal = ({ fetchSingleListing, selectDocumentModal, handleClose }) => {
+  const { currentMode, BACKEND_URL } = useStateContext();
   const documentsInputRef = useRef(null);
   const [allDocs, setAllDocs] = useState([]);
   const [btnloading, setbtnloading] = useState(false);
@@ -39,6 +39,15 @@ const SelectDocumentModal = ({ selectDocumentModal, handleClose }) => {
       docData.append("id", selectDocumentModal?.listingId);
       docData.append("listingID", selectDocumentModal?.listingId);
 
+      const token = localStorage.getItem("auth-token");
+      const listing = await axios.get(`${BACKEND_URL}/listings/${selectDocumentModal?.listingId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      
       allDocs.forEach((doc) => {
         docData.append("files", doc);
       });
@@ -53,17 +62,63 @@ const SelectDocumentModal = ({ selectDocumentModal, handleClose }) => {
         }
       );
       setbtnloading(false);
-      toast.success("Document is uploaded successfuly", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+
+      const listingData = await axios.get(`${BACKEND_URL}/listings/${selectDocumentModal?.listingId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
       });
-      handleClose();
+
+      const prevDocs  = listingData?.data?.data[0]?.documents || "";
+
+      const links = response?.data?.file_links;
+
+      const data = new FormData();
+
+      data.append("documents", links?.join(",") + ", " + prevDocs);
+
+      await axios
+        .post(
+          `${BACKEND_URL}/listings/${selectDocumentModal?.listingId}`,
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
+        .then((result) => {
+          setbtnloading(false);
+          toast.success("Document is uploaded successfuly", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          fetchSingleListing();
+          handleClose();
+        })
+        .catch((err) => {
+          console.log(err);
+          setbtnloading(false);
+          toast.error("Something went wrong! Please Try Again", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        });
+
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong!", {

@@ -2,37 +2,18 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import {
-  Button,
-  Tooltip,
-  IconButton,
-} from "@mui/material";
-import { 
-  GoogleMap, 
-  Marker
-} from "@react-google-maps/api";
+import { Button, Tooltip, IconButton } from "@mui/material";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 
 import axios from "../../axoisConfig";
 import Error404 from "../Error";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
 
-import { 
-  BiBed, 
-  BiBath
-} from "react-icons/bi";
-import {
-  BsImages,
-  BsFiles,
-  BsPen,
-  BsFileEarmarkText
-} from "react-icons/bs";
-import {
-  FaUserPlus
-} from "react-icons/fa";
-import {
-  MdLocationPin
-} from "react-icons/md";
+import { BiBed, BiBath } from "react-icons/bi";
+import { BsImages, BsFiles, BsPen, BsFileEarmarkText } from "react-icons/bs";
+import { FaUserPlus } from "react-icons/fa";
+import { MdLocationPin } from "react-icons/md";
 import {
   TbCurrentLocation,
   TbPhone,
@@ -47,19 +28,15 @@ const SingleListingsPage = () => {
   const [listData, setListingData] = useState({});
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [selectImagesModal, setSelectImagesModal] = useState({
-    isOpen: false, 
-    listingId: null
+    isOpen: false,
+    listingId: null,
   });
-    const [selectDocumentModal, setSelectDocumentModal] = useState({
-    isOpen: false, 
-    listingId: null
+  const [selectDocumentModal, setSelectDocumentModal] = useState({
+    isOpen: false,
+    listingId: null,
   });
-  const {
-    currentMode,
-    setopenBackDrop,
-    BACKEND_URL,
-    isArabic,
-  } = useStateContext();
+  const { currentMode, setopenBackDrop, BACKEND_URL, isArabic } =
+    useStateContext();
   // const [lat, setLat] = useState(null);
   // const [long, setLong] = useState(null);
 
@@ -126,7 +103,7 @@ const SingleListingsPage = () => {
 
   const latLongString = listData?.latlong;
   if (latLongString) {
-    const [latValue, longValue] = latLongString.split(',');
+    const [latValue, longValue] = latLongString.split(",");
     lat = latValue;
     long = longValue;
     // setLat(latValue);
@@ -134,14 +111,16 @@ const SingleListingsPage = () => {
   }
   // const lat = "22.22222";
   // const long = "55.55555";
-  // console.log("Latitude:", lat); 
+  // console.log("Latitude:", lat);
   // console.log("Longitude:", long);
 
   return (
     <>
-      <div className={`flex min-h-screen w-full p-4 ${
-              currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
-            }`}>
+      <div
+        className={`flex min-h-screen w-full p-4 ${
+          currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
+        }`}
+      >
         {loading ? (
           <Loader />
         ) : (
@@ -152,26 +131,19 @@ const SingleListingsPage = () => {
               <div className="w-full">
                 {/* IMAGES  */}
                 <div className="w-full flex items-center gap-x-1 mb-3overflow-x-scroll">
-                  <img
-                    src={static_img}
-                    alt="secondary"
-                    className="w-auto h-[200px] object-cover m-1 rounded-md"
-                  />
-                  <img
-                    src={static_img}
-                    alt="secondary"
-                    className="w-auto h-[200px] object-cover m-1 rounded-md"
-                  />
-                  <img
-                    src={static_img}
-                    alt="secondary"
-                    className="w-auto h-[200px] object-cover m-1 rounded-md"
-                  />
-                  <img
-                    src={static_img}
-                    alt="secondary"
-                    className="w-auto h-[200px] object-cover m-1 rounded-md"
-                  />
+                  {listData?.pictures
+                    ?.split(",")
+                    ?.map((pic) =>
+                      pic ? (
+                        <img
+                          src={pic}
+                          alt="secondary"
+                          className="w-auto h-[200px] object-cover m-1 rounded-md"
+                        />
+                      ) : (
+                        <></>
+                      )
+                    )}
                 </div>
 
                 <div className="grid sm:grid-cols-1 md:grid-cols-2">
@@ -199,23 +171,39 @@ const SingleListingsPage = () => {
                       {/* EDIT DETAILS  */}
                       <Tooltip title="Edit Listing Details" arrow>
                         <IconButton className={`rounded-full`}>
-                          <BsPen size={20} color={"#AAAAAA"}  />
+                          <BsPen size={20} color={"#AAAAAA"} />
                         </IconButton>
                       </Tooltip>
 
-                    {/* UPLOAD PICTURES  */}
-                    <Tooltip title="Upload Pictures" arrow>
-                      <IconButton onClick={() => setSelectImagesModal({isOpen: true, listingId: lid})} className={`rounded-full`}>
-                        <BsImages size={20} color={"#AAAAAA"}  />
-                      </IconButton>
-                    </Tooltip>
+                      {/* UPLOAD PICTURES  */}
+                      <Tooltip title="Upload Pictures" arrow>
+                        <IconButton
+                          onClick={() =>
+                            setSelectImagesModal({
+                              isOpen: true,
+                              listingId: lid,
+                            })
+                          }
+                          className={`rounded-full`}
+                        >
+                          <BsImages size={20} color={"#AAAAAA"} />
+                        </IconButton>
+                      </Tooltip>
 
-                    {/* UPLOAD DOCUMENTS  */}
-                    <Tooltip title="Upload Documents" arrow>
-                      <IconButton onClick={() => setSelectDocumentModal({isOpen: true, listingId: lid})} className={`rounded-full`}>
-                        <BsFiles size={20} color={"#AAAAAA"}  />
-                      </IconButton>
-                    </Tooltip>
+                      {/* UPLOAD DOCUMENTS  */}
+                      <Tooltip title="Upload Documents" arrow>
+                        <IconButton
+                          onClick={() =>
+                            setSelectDocumentModal({
+                              isOpen: true,
+                              listingId: lid,
+                            })
+                          }
+                          className={`rounded-full`}
+                        >
+                          <BsFiles size={20} color={"#AAAAAA"} />
+                        </IconButton>
+                      </Tooltip>
 
                       <div className="mx-1"></div>
 
@@ -235,10 +223,11 @@ const SingleListingsPage = () => {
                     <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3">
                       {/* ADDRESS  */}
                       <div className="flex space-x-3">
-                        <TbCurrentLocation size={18} className="mr-2 text-[#AAAAAA]" />
-                        <h6>
-                          {listData?.address}{" "}
-                        </h6>
+                        <TbCurrentLocation
+                          size={18}
+                          className="mr-2 text-[#AAAAAA]"
+                        />
+                        <h6>{listData?.address} </h6>
                       </div>
                       {/* Bedrooms  */}
                       <div className="flex space-x-3">
@@ -265,7 +254,6 @@ const SingleListingsPage = () => {
                             : listData?.leadFor}
                         </h6>
                       </div>
-
                     </div>
 
                     <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
@@ -278,7 +266,11 @@ const SingleListingsPage = () => {
                             )}
                           </p>
                           <p className="text-sm my-2 flex items-center">
-                            <FaUserPlus size={16} color={"#AAAAAA"} className="mr-2" />
+                            <FaUserPlus
+                              size={16}
+                              color={"#AAAAAA"}
+                              className="mr-2"
+                            />
                             {listData?.addedBy_name}
                           </p>
                         </div>
@@ -305,10 +297,11 @@ const SingleListingsPage = () => {
                           }}
                           icon={{
                             url: <MdLocationPin size={30} color={"#DA1F26"} />,
-                            scaledSize: new window.google.maps.Size(50, 50),
+                            scaledSize: window["google"]["maps"]["Size"]
+                              ? new window.google.maps.Size(50, 50)
+                              : 0,
                           }}
-                        >
-                        </Marker>
+                        ></Marker>
                       </GoogleMap>
                     )}
                   </div>
@@ -334,12 +327,18 @@ const SingleListingsPage = () => {
                         <div className="space-y-3">
                           {/* SELLER NAME  */}
                           <div className="flex space-x-3">
-                            <TbUserCircle size={18} className="mr-2 text-[#AAAAAA]" />
+                            <TbUserCircle
+                              size={18}
+                              className="mr-2 text-[#AAAAAA]"
+                            />
                             <h6>{listData?.seller_name}</h6>
                           </div>
                           {/* SELLER CONTACT  */}
                           <div className="flex space-x-3">
-                            <TbPhone size={18} className="mr-2 text-[#AAAAAA]" />
+                            <TbPhone
+                              size={18}
+                              className="mr-2 text-[#AAAAAA]"
+                            />
                             <h6>{listData?.seller_contact}</h6>
                           </div>
                           {/* SELLER EMAIL  */}
@@ -354,7 +353,13 @@ const SingleListingsPage = () => {
                         </div>
                       </div>
                       <div className="sm:col-span-1 md:col-span-3 lg:col-span-4">
-                        <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} rounded-md shadow-md p-5`}>
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-[#1C1C1C]"
+                              : "bg-[#EEEEEE]"
+                          } rounded-md shadow-md p-5`}
+                        >
                           <div className="w-full flex items-center pb-3">
                             <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                             <h1
@@ -368,57 +373,47 @@ const SingleListingsPage = () => {
                             </h1>
                           </div>
 
-                          {/* {listData?.documents === null ? (
-                            <div className="text-primary italic">
-                              No documents to show
-                            </div>
-                          ) : ( */}
-                            <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
-                              
-                              <div className="p-2 flex items-center justify-center">
-                                <div className="text-center">
-                                  <BsFileEarmarkText size={70} color={"#AAAAAA"} />
-                                  <div className="mt-3">Filename</div>
+                          <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
+                            {listData?.documents?.split(",")?.map((l) => {
+                              return l ? (
+                                <div className="p-2 flex items-center justify-center">
+                                  <div className="text-center">
+                                    <BsFileEarmarkText
+                                      size={70}
+                                      color={"#AAAAAA"}
+                                    />
+                                    <div className="mt-3">{l}</div>
+                                  </div>
                                 </div>
-                              </div>
-
-                              <div className="p-2 flex items-center justify-center">
-                                <div className="text-center">
-                                  <BsFileEarmarkText size={70} color={"#AAAAAA"} />
-                                  <div className="mt-3">Filename</div>
-                                </div>
-                              </div>
-
-                              <div className="p-2 flex items-center justify-center">
-                                <div className="text-center">
-                                  <BsFileEarmarkText size={70} color={"#AAAAAA"} />
-                                  <div className="mt-3">Filename</div>
-                                </div>
-                              </div>
-
-                              <div className="p-2 flex items-center justify-center">
-                                <div className="text-center">
-                                  <BsFileEarmarkText size={70} color={"#AAAAAA"} />
-                                  <div className="mt-3">Filename</div>
-                                </div>
-                              </div>
-                            </div>
+                              ) : (
+                                <></>
+                              );
+                            })}
+                          </div>
                           {/* )} */}
-                          
-
                         </div>
                       </div>
                     </div>
-
-                    
                   </div>
                 </div>
               </div>
             )}
             {/* <Footer /> */}
 
-            {selectImagesModal?.isOpen && <SelectImagesModal selectImagesModal={selectImagesModal} handleClose={() => setSelectImagesModal({isOpen: false})}/>}
-            {selectDocumentModal?.isOpen && <SelectDocumentModal selectDocumentModal={selectDocumentModal} handleClose={() => setSelectDocumentModal({isOpen: false})}/>}
+            {selectImagesModal?.isOpen && (
+              <SelectImagesModal
+                fetchSingleListing={fetchSingleListing}
+                selectImagesModal={selectImagesModal}
+                handleClose={() => setSelectImagesModal({ isOpen: false })}
+              />
+            )}
+            {selectDocumentModal?.isOpen && (
+              <SelectDocumentModal
+                fetchSingleListing={fetchSingleListing}
+                selectDocumentModal={selectDocumentModal}
+                handleClose={() => setSelectDocumentModal({ isOpen: false })}
+              />
+            )}
           </>
         )}
       </div>

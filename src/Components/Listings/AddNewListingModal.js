@@ -774,7 +774,6 @@ const AddNewListingModal = ({
                   className="bg-btn-primary"
                   disabled={loading ? true : false}
                   style={{
-                    // background: "#da1f26",
                     color: "#ffffff",
                     marginTop: "10px",
                     width: "100%",

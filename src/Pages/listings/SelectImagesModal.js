@@ -18,7 +18,7 @@ const style = {
   boxShadow: 24,
 };
 
-const SelectImagesModal = ({ selectImagesModal, handleClose }) => {
+const SelectImagesModal = ({ fetchSingleListing, selectImagesModal, handleClose }) => {
   const { currentMode, BACKEND_URL, User } = useStateContext();
   const imagesInputRef = useRef(null);
   const [btnloading, setbtnloading] = useState(false);
@@ -44,19 +44,19 @@ const SelectImagesModal = ({ selectImagesModal, handleClose }) => {
 
       imageData.append("id", selectImagesModal?.listingId);
       imageData.append("listingID", selectImagesModal?.listingId);
-      const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1920,
-      };
+      // const options = {
+      //   maxSizeMB: 1,
+      //   maxWidthOrHeight: 1920,
+      // };
 
-      const promises = allImages.map((img) => {
-        return imageCompression(img, options);
-      })
+      // const promises = allImages.map((img) => {
+      //   return imageCompression(img, options);
+      // })
 
-      const responses = await Promise.all(promises);
+      // const responses = await Promise.all(promises);
 
-      responses.forEach((resp) => {
-        imageData.append("files", resp);
+      allImages.forEach((file) => {
+        imageData.append("files", file);
       })
 
       const response = await axios.post(
@@ -71,12 +71,19 @@ const SelectImagesModal = ({ selectImagesModal, handleClose }) => {
       const links = response?.data?.file_links;
 
       const LeadData = new FormData();
-
-    //   LeadData.append("id", selectImagesModal?.listingId);
-      LeadData.append("pictures", links.join(","));
-      LeadData.append("addedBy", User?.id);
-
+      
       const token = localStorage.getItem("auth-token");
+      const listing = await axios.get(`${BACKEND_URL}/listings/${selectImagesModal?.listingId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      const prevImages  = listing?.data?.data[0]?.pictures || "";
+
+      LeadData.append("pictures", links.join(",") + ", " + prevImages);
+
       await axios
         .post(
           `${BACKEND_URL}/listings/${selectImagesModal?.listingId}`,
@@ -100,6 +107,7 @@ const SelectImagesModal = ({ selectImagesModal, handleClose }) => {
             progress: undefined,
             theme: "light",
           });
+          fetchSingleListing();
           handleClose();
         })
         .catch((err) => {
