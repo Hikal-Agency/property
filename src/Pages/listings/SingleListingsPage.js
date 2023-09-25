@@ -124,16 +124,16 @@ const SingleListingsPage = () => {
                 {/* IMAGES  */}
                 <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
                   {listData?.images?.map((pic) =>
-                      pic?.img_url ? (
-                        <img
-                          src={pic?.img_url}
-                          alt={pic?.img_alt}
-                          className="w-auto h-[200px] object-cover m-1 rounded-md"
-                        />
-                      ) : (
-                        <></>
-                      )
-                    )}
+                    pic?.img_url ? (
+                      <img
+                        src={pic?.img_url}
+                        alt={pic?.img_alt}
+                        className="w-auto h-[200px] object-cover m-1 rounded-md"
+                      />
+                    ) : (
+                      <></>
+                    )
+                  )}
                 </div>
 
                 <div className="grid sm:grid-cols-1 md:grid-cols-2">
