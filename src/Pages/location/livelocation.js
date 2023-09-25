@@ -67,11 +67,11 @@ const Livelocation = () => {
       ) : (
         <div className="min-h-screen">
           <div
-            className={`w-full  ${
+            className={`w-full ${
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="px-5 ">
+            <div className="p-4 ">
               <LocationComponent
                 upcoming_meetings={DashboardData?.upcoming_meetings}
               />
