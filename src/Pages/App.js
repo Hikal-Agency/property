@@ -301,7 +301,7 @@ const routes = [
     restrictedRoles: [3, 7],
   },
   {
-    path: "/location/useralllocation/:user_id",
+    path: "/location/useralllocation/:user_id/:date",
     pageName: "User All Location",
     element: <UserAllLocation />,
     restrictedRoles: [3, 7],

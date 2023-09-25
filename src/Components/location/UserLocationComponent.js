@@ -120,7 +120,6 @@ const UserLocationComponent = () => {
       });
   };
 
-
   useEffect(() => {
     if (token) {
       // FetchLocation();
@@ -323,7 +322,10 @@ const UserLocationComponent = () => {
                           {location?.location}
                         </div>
                         <div className="flex gap-3">
-                          <AiOutlineFieldTime size={20} className="text-primary" />
+                          <AiOutlineFieldTime
+                            size={20}
+                            className="text-primary"
+                          />
                           {location?.latest_recorded_at}
                         </div>
                         <div className="flex justify-end">
@@ -331,7 +333,7 @@ const UserLocationComponent = () => {
                             type="button"
                             onClick={() =>
                               navigate(
-                                `/location/useralllocation/${location?.user_id}`
+                                `/location/useralllocation/${location?.user_id}/${filterDate}`
                               )
                             }
                             // onClick={() => handleRowClick(location.user_id)}

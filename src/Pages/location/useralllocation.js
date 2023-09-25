@@ -27,6 +27,7 @@ const UserAllLocation = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const userid = location.pathname.split("/")[3];
+  const parentDate = location.pathname.split("/")[4];
   const today = moment().format("YYYY-MM-DD");
   const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
   const tomorrow = moment().add(1, "days").format("YYYY-MM-DD");
@@ -49,7 +50,7 @@ const UserAllLocation = (props) => {
     let dateFilter = date;
     const currentDate = moment().format("YYYY-MM-DD");
     if (!dateFilter) {
-      dateFilter = currentDate;
+      dateFilter = parentDate;
     }
 
     const startDate = moment(dateFilter).format("YYYY-MM-DD");
@@ -103,7 +104,7 @@ const UserAllLocation = (props) => {
           <div className="m-4 flex justify-end">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                value={filterDate}
+                value={filterDate || parentDate}
                 views={["year", "month", "day"]}
                 format="yyyy-MM-dd"
                 onChange={(newValue) => {
