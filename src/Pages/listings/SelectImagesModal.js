@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 import { IoMdClose } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
 import axios from "../../axoisConfig";
-import imageCompression from "browser-image-compression";
 
 import { useStateContext } from "../../context/ContextProvider";
 

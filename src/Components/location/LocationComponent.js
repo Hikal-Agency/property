@@ -34,14 +34,23 @@ const LocationComponent = ({ upcoming_meetings }) => {
 
   return (
     <>
-      <h4 className="text-primary mt-8 font-bold text-xl mb-4 text-center">
-        Meeting Locations
-      </h4>
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-5 pb-3">
+      <div className="w-full flex items-center pb-3">
+        <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+        <h1
+          className={`text-lg font-semibold ${
+            currentMode === "dark"
+              ? "text-white"
+              : "text-black"
+          }`}
+        >
+          Upcoming Meeting Locations
+        </h1>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 h-[85vh]">
         <div
           className={`${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]"
-          } w-full h-[100vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
+          } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
         >
           {/* MAP */}
           {/* {upcoming_meetings?.length > 0 && ( */}
@@ -52,16 +61,15 @@ const LocationComponent = ({ upcoming_meetings }) => {
           />
           {/* )} */}
         </div>
-        <div className="h-full w-full mt-5">
-          <h4 className="text-primary font-bold text-xl mb-2">Meetings</h4>
-          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+        <div className="col-span-1 md:col-span-1 h-full w-full overflow-y-scroll hide-scrollbar" >
+          <div className="grid grid-cols-1 gap-3">
             {/* LIST OF UPCOMING MEETINGS */}
             {upcoming_meetings?.map((meeting, index) => {
               return (
                 <div
                   key={index}
                   onClick={() => handleMeetingClick(meeting)} 
-                  className={`flex flex-col justify-between ${
+                  className={`card-hover flex flex-col justify-between ${
                     currentMode === "dark"
                       ? "bg-[#1c1c1c] text-white"
                       : "bg-[#EEEEEE] text-black"
