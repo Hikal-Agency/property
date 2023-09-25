@@ -10,7 +10,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { BsPinMap } from "react-icons/bs";
 import { BiCurrentLocation } from "react-icons/bi";
 import { AiOutlineFieldTime } from "react-icons/ai";
-import { Button, TextField } from "@mui/material";
+import { IconButton, TextField, Tooltip } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
@@ -300,69 +300,66 @@ const UserLocationComponent = () => {
                 </GoogleMap>
               )}
             </div>
-            <div className="h-full w-full">
-              <div className="grid grid-cols-1 gap-5">
-                {LastLocationData?.locations?.data?.length > 0 ? (
-                  LastLocationData?.locations?.data?.map((location) => {
-                    return (
-                      <>
-                        <div
-                          className={`${
-                            currentMode === "dark"
-                              ? "bg-[#424242] text-white"
-                              : "bg-[#EEEEEE] text-black"
-                          } rounded-md space-y-2 p-3`}
-                          onClick={() => handleCardclick(location)}
-                        >
-                          <h1 className="font-semibold capitalize">
-                            {location?.userName}
-                          </h1>
-                          <hr></hr>
-                          <div className="flex gap-3">
-                            <BsPinMap size={20} className="text-primary" />
-                            {location?.location}
-                          </div>
-                          <div className="flex gap-3">
-                            <AiOutlineFieldTime
-                              size={20}
-                              className="text-primary"
-                            />
-                            {location?.latest_recorded_at}
-                          </div>
-                          <div className="flex justify-end">
-                            <Button
-                              type="button"
+            <div className="grid grid-cols-1 gap-3 overflow-y-scroll hide-scrollbar">
+              {LastLocationData?.locations?.data?.length > 0 ? (
+                LastLocationData?.locations?.data?.map((location) => {
+                  return (
+                    <>
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-[#424242] text-white"
+                            : "bg-[#EEEEEE] text-black"
+                        } rounded-md space-y-2 p-3`}
+                        onClick={() => handleCardclick(location)}
+                      >
+                        <h1 className="font-semibold capitalize">
+                          {location?.userName}
+                        </h1>
+                        <hr></hr>
+                        <div className="flex gap-3">
+                          <BsPinMap size={20} className="text-primary" />
+                          {location?.location}
+                        </div>
+                        <div className="flex gap-3">
+                          <AiOutlineFieldTime
+                            size={20}
+                            className="text-primary"
+                          />
+                          {location?.latest_recorded_at}
+                        </div>
+                        <div className="flex justify-end">
+                          <Tooltip title="View All Location">
+                            <IconButton
                               onClick={() =>
                                 navigate(
                                   `/location/useralllocation/${location?.user_id}/${filterDate}`
                                 )
                               }
-                              // onClick={() => handleRowClick(location.user_id)}
-                              sx={{
-                                backgroundColor: "#da1f26",
-                                color: "#ffffff",
-                              }}
-                              className="rounded-md p-1 flex items-center w-fit h-fit text-sm btn-sm"
+                              // // onClick={() => handleRowClick(location.user_id)}
+                              // sx={{
+                              //   backgroundColor: "transparent",
+                              //   color: "#ffffff",
+                              // }}
+                              className="rounded-full p-1 flex items-center w-fit h-fit text-sm btn-sm"
                             >
-                              <BiCurrentLocation size={20} />
-                            </Button>
-                          </div>
+                              <BiCurrentLocation size={20} className="text-primary" />
+                            </IconButton>
+                          </Tooltip>
                         </div>
-                      </>
-                    );
-                  })
-                ) : (
-                  <div className="mt-10">
-                    <h2
-                      className={`${
-                        currentMode === "dark" ? "text-white" : "text-dark"
-                      } text-center font-bold text-lg`}
-                    >
-                      No locations for current Date.
-                    </h2>
-                  </div>
-                )}
-              </div>
+                      </div>
+                    </>
+                  );
+                })
+              ) : (
+                <div className="my-5">
+                  <h2
+                    className={`text-primary text-center italic text-lg`}
+                  >
+                    No location for selected date.
+                  </h2>
+                </div>
+              )}
             </div>
           </>
         )}
