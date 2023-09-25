@@ -55,7 +55,7 @@ const SingleListingsPage = () => {
     try {
       setloading(true);
       const token = localStorage.getItem("auth-token");
-      const listing = await axios.get(`${BACKEND_URL}/listings/${lid}`, {
+      const listing = await axios.get(`${BACKEND_URL}/listings?id=${lid}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -63,7 +63,7 @@ const SingleListingsPage = () => {
       });
 
       console.log("SINGLE Listings: ", listing);
-      setListingData(listing?.data?.data[0]);
+      setListingData(listing?.data?.data?.data[0]);
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -106,13 +106,8 @@ const SingleListingsPage = () => {
     const [latValue, longValue] = latLongString.split(",");
     lat = latValue;
     long = longValue;
-    // setLat(latValue);
-    // setLong(longValue);
+
   }
-  // const lat = "22.22222";
-  // const long = "55.55555";
-  // console.log("Latitude:", lat);
-  // console.log("Longitude:", long);
 
   return (
     <>
@@ -131,13 +126,11 @@ const SingleListingsPage = () => {
               <div className="w-full">
                 {/* IMAGES  */}
                 <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
-                  {listData?.pictures
-                    ?.split(",")
-                    ?.map((pic) =>
-                      pic ? (
+                  {listData?.images?.map((pic) =>
+                      pic?.img_url ? (
                         <img
-                          src={pic}
-                          alt="secondary"
+                          src={pic?.img_url}
+                          alt={pic?.img_alt}
                           className="w-auto h-[200px] object-cover m-1 rounded-md"
                         />
                       ) : (
@@ -374,15 +367,15 @@ const SingleListingsPage = () => {
                           </div>
 
                           <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
-                            {listData?.documents?.split(",")?.map((l) => {
-                              return l ? (
+                            {listData?.documents?.map((l) => {
+                              return l?.doc_url ? (
                                 <div className="p-2 flex items-center justify-center">
                                   <div className="text-center">
                                     <BsFileEarmarkText
                                       size={70}
                                       color={"#AAAAAA"}
                                     />
-                                    <div className="mt-3">{l}</div>
+                                    <div className="mt-3">{l?.doc_name}</div>
                                   </div>
                                 </div>
                               ) : (

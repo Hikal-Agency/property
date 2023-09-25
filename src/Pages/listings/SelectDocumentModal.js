@@ -34,57 +34,24 @@ const SelectDocumentModal = ({ fetchSingleListing, selectDocumentModal, handleCl
   const handleUploadDocs = async () => {
     try {
       setbtnloading(true);
-      const docData = new FormData();
 
-      docData.append("id", selectDocumentModal?.listingId);
-      docData.append("listingID", selectDocumentModal?.listingId);
+      // Simulate image uploading delay (remove this in production)
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const token = localStorage.getItem("auth-token");
-      const listing = await axios.get(`${BACKEND_URL}/listings/${selectDocumentModal?.listingId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const DocData = new FormData();
 
-      
-      allDocs.forEach((doc) => {
-        docData.append("files", doc);
-      });
+        allDocs?.forEach((doc) => {
+          DocData.append("doc_name", doc);
+        })
 
-      const response = await axios.post(
-        "http://idxdubai.com:8000/api/uploadfile",
-        docData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      setbtnloading(false);
-
-      const listingData = await axios.get(`${BACKEND_URL}/listings/${selectDocumentModal?.listingId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      const prevDocs  = listingData?.data?.data[0]?.documents || "";
-
-      const links = response?.data?.file_links;
-
-      const data = new FormData();
-
-      data.append("documents", links?.join(",") + ", " + prevDocs);
-
+        const token = localStorage.getItem("auth-token");
       await axios
         .post(
           `${BACKEND_URL}/listings/${selectDocumentModal?.listingId}`,
-          data,
+          DocData,
           {
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
               Authorization: "Bearer " + token,
             },
           }
