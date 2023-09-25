@@ -290,7 +290,7 @@ const SingleListingsPage = () => {
                           }}
                           icon={{
                             url: <MdLocationPin size={30} color={"#DA1F26"} />,
-                            scaledSize: window["google"]["maps"]["Size"]
+                            scaledSize: window["google"]["maps"]
                               ? new window.google.maps.Size(50, 50)
                               : 0,
                           }}
