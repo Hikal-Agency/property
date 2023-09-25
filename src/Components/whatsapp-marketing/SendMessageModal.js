@@ -285,6 +285,13 @@ const SendMessageModal = ({
     }
   }
 
+  let lang = "";
+  lang = isArabic(smsTextValue?.trim())
+    ? "Arabic"
+    : isEnglish(smsTextValue?.trim())
+    ? "English"
+    : "";
+
   const handleSendMessage = (event) => {
     event.preventDefault();
     turndownService.addRule("strikethrough", {
@@ -297,7 +304,7 @@ const SendMessageModal = ({
     if (sendMessageModal.isWhatsapp) {
       sendWhatsappMessage(messageText, selectedContacts);
     } else {
-      if (smsTextValue?.trim()?.length) {
+      if (smsTextValue?.trim()?.length && ((lang === "English" && smsTextValue?.trim()?.length <= charLimitForEnglish) || (lang === "Arabic" && smsTextValue?.trim()?.length <= charLimitForArabic))) {
         sendSMS(smsTextValue?.trim(), selectedContacts);
       }
     }
@@ -338,13 +345,6 @@ const SendMessageModal = ({
   useEffect(() => {
     fetchTemplates();
   }, []);
-
-  let lang = "";
-  lang = isArabic(smsTextValue?.trim())
-    ? "Arabic"
-    : isEnglish(smsTextValue?.trim())
-    ? "English"
-    : "";
 
   return (
     <>
