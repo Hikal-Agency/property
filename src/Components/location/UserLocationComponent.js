@@ -141,7 +141,7 @@ const UserLocationComponent = () => {
 
   return (
     <>
-      <div className="w-full flex items-center justify-between py-1">
+      <div className="w-full flex items-center justify-between pb-3">
         <div className="flex items-center mb-2">
           <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
@@ -149,7 +149,7 @@ const UserLocationComponent = () => {
               currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
-            User Locations
+            Last Location
           </h1>
         </div>
 
@@ -194,7 +194,7 @@ const UserLocationComponent = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-3">
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 h-[85vh]">
         {LastLocationData && (
           <>
             <div

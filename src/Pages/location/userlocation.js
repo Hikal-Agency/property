@@ -42,7 +42,7 @@ const Userlocation = () => {
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <div className="px-5 ">
+          <div className="p-4">
             <UserLocationComponent />
           </div>
         </div>
