@@ -460,7 +460,10 @@ const SelectImagesModal = ({
                     className="absolute top-0 right-0"
                     onClick={() => handleRemoveImage(index)}
                   >
-                    <IoMdClose size={18} />
+                    <IoMdClose
+                      size={18}
+                      color={currentMode === "dark" ? "#ffffff" : "#000000"}
+                    />
                   </IconButton>
                 </div>
               </>
@@ -474,7 +477,10 @@ const SelectImagesModal = ({
                 disabled={btnloading}
                 onClick={handleAddMoreImages}
               >
-                <AiOutlinePlus size={18} />
+                <AiOutlinePlus
+                  size={18}
+                  color={currentMode === "dark" ? "#ffffff" : "#000000"}
+                />
               </IconButton>
             </div>
           ) : // <div className="flex">
