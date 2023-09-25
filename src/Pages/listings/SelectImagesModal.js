@@ -13,7 +13,7 @@ import axios from "../../axoisConfig";
 import imageCompression from "browser-image-compression";
 
 import { useStateContext } from "../../context/ContextProvider";
-import Uploader from "uploader";
+// import Uploader from "uploader";
 
 // const uploader = Uploader({
 //   apiKey: "free",
