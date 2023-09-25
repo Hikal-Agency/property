@@ -7,7 +7,7 @@ import {
   Button,
   MenuItem,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import PhoneInput, {
   formatPhoneNumberIntl,
@@ -33,9 +33,12 @@ const style = {
 const AddListingModal = ({
   setListingModalOpen,
   handleCloseListingModal,
-  LeadData
+  LeadData,
 }) => {
   console.log("lead data in listing: ", LeadData);
+  const { leadId } = LeadData;
+  const token = localStorage.getItem("auth-token");
+
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [loading, setloading] = useState(false);
   const [displayMap, setDisplayMap] = useState(false);
@@ -175,22 +178,30 @@ const AddListingModal = ({
       setloading(false);
       return;
     }
-    const token = localStorage.getItem("auth-token");
     const lat = listingLocation?.lat;
     const lng = listingLocation?.lng;
     const location = [lat, lng].join(",");
 
     const LeadData = new FormData();
-    
-    if (sellerDetails?.leadName) LeadData.append("seller_name", sellerDetails?.leadName);
-    if (sellerDetails?.leadContact) LeadData.append("seller_contact", sellerDetails?.leadContact);
-    if (sellerDetails?.leadEmail) LeadData.append("seller_email", sellerDetails?.leadEmail);
-    if (sellerDetails?.propertyPrice) LeadData.append("price", sellerDetails?.propertyPrice);
-    if (projectDetails?.property_type) LeadData.append("property_type", projectDetails?.property_type);
-    if (projectDetails?.project) LeadData.append("project", projectDetails?.project);
-    if (projectDetails?.bedrooms) LeadData.append("bedrooms", projectDetails?.bedrooms);
-    if (projectDetails?.bathrooms) LeadData.append("bathrooms", projectDetails?.bathrooms);
-    if (otherDetails?.address) LeadData.append("address", otherDetails?.address);
+
+    if (sellerDetails?.leadName)
+      LeadData.append("seller_name", sellerDetails?.leadName);
+    if (sellerDetails?.leadContact)
+      LeadData.append("seller_contact", sellerDetails?.leadContact);
+    if (sellerDetails?.leadEmail)
+      LeadData.append("seller_email", sellerDetails?.leadEmail);
+    if (sellerDetails?.propertyPrice)
+      LeadData.append("price", sellerDetails?.propertyPrice);
+    if (projectDetails?.property_type)
+      LeadData.append("property_type", projectDetails?.property_type);
+    if (projectDetails?.project)
+      LeadData.append("project", projectDetails?.project);
+    if (projectDetails?.bedrooms)
+      LeadData.append("bedrooms", projectDetails?.bedrooms);
+    if (projectDetails?.bathrooms)
+      LeadData.append("bathrooms", projectDetails?.bathrooms);
+    if (otherDetails?.address)
+      LeadData.append("address", otherDetails?.address);
     if (otherDetails?.area) LeadData.append("area", otherDetails?.area);
     if (LeadData?.leadId) LeadData.append("lead_id", LeadData?.leadId);
     if (location) LeadData.append("latlong", location);
@@ -203,43 +214,97 @@ const AddListingModal = ({
       console.log(pair[0] + ", " + pair[1]);
     }
 
-    await axios
-      .post(`${BACKEND_URL}/listings`, LeadData, {
+    // await axios
+    //   .post(`${BACKEND_URL}/listings`, LeadData, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: "Bearer " + token,
+    //     },
+    //   })
+    //   .then((result) => {
+    //     console.log(result);
+    //     setloading(false);
+
+    //     toast.success("Listing Added Successfully", {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //     handleCloseListingModal();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     setloading(false);
+    //     toast.error("Something went wrong! Please Try Again", {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //   });
+
+    try {
+      const result = await axios.post(`${BACKEND_URL}/listings`, LeadData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
-      })
-      .then((result) => {
-        console.log(result);
-        setloading(false);
-        
-        toast.success("Listing Added Successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        handleCloseListingModal();
-      })
-      .catch((err) => {
-        console.log(err);
-        setloading(false);
-        toast.error("Something went wrong! Please Try Again", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
       });
+      console.log(result);
+      setloading(false);
+
+      toast.success("Listing Added Successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      // Make an additional API call to update 'is_seller' value
+      console.log("lead data after listingcall: ", LeadData);
+
+      await axios.post(
+        `${BACKEND_URL}/leads/${leadId}`,
+        {
+          id: leadId,
+          is_seller: 1,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      console.log("is_seller updated successfully");
+      handleCloseListingModal();
+    } catch (error) {
+      console.error("Error:", error);
+      setloading(false);
+      toast.error("Something went wrong! Please Try Again", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const handleCurrentLocationClick = () => {
@@ -398,7 +463,7 @@ const AddListingModal = ({
                       value={removeNull(sellerDetails?.leadContact)}
                       onChange={handleChange}
                     /> */}
-                    
+
                     <TextField
                       id="notes"
                       type={"text"}
@@ -632,16 +697,16 @@ const AddListingModal = ({
                   )}
 
                   {displayMap && ( */}
-                    <ListingLocation
-                      listingLocation={listingLocation}
-                      currLocByDefault={true}
-                      setListingLocation={setListingLocation}
-                      city={city}
-                      setCity={setCity}
-                      country={country}
-                      setCountry={setCountry}
-                      required
-                    />
+                  <ListingLocation
+                    listingLocation={listingLocation}
+                    currLocByDefault={true}
+                    setListingLocation={setListingLocation}
+                    city={city}
+                    setCity={setCity}
+                    country={country}
+                    setCountry={setCountry}
+                    required
+                  />
                   {/* )} */}
                 </Box>
               </div>
