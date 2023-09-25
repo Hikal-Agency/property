@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, CircularProgress, IconButton, Tooltip } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { 
@@ -11,6 +10,9 @@ import {
 import {
   BsListStars
 } from "react-icons/bs";
+import {
+  MdClose
+} from "react-icons/md";
 
 
 const ribbonStyles = {
@@ -81,6 +83,18 @@ const SecondaryListings = ({
     return elementRect.bottom >= 0 && elementRect.bottom <= viewportHeight;
   };
 
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [activeImage, setActiveImage] = useState(null);
+
+  const handleImageClick = (imageUrl) => {
+    setActiveImage(imageUrl);
+    setShowOverlay(true);
+  };
+
+  const handleCloseOverlay = () => {
+    setShowOverlay(false);
+  };
+
   // useEffect(() => {
   //   const handleScroll = () => {
   //     let updatedPage = 1;
@@ -114,7 +128,8 @@ const SecondaryListings = ({
             listing?.map((listing, index) => {
               return (
                 <div
-                  className={`relative overflow-hidden offers-page-${
+                  key={index}
+                  className={`card-hover relative overflow-hidden offers-page-${
                     listing?.page
                   } ${
                     currentMode === "dark"
@@ -123,33 +138,24 @@ const SecondaryListings = ({
                   } rounded-lg`}
                 >
                   <div
-                    // style={{
-                    //   filter:
-                    //     offer?.status?.toLowerCase() === "expired"
-                    //       ? "grayscale(1)"
-                    //       : "",
-                    // }}
                     className="rounded-md flex flex-col justify-between"
                   >
                     <div className="">
-                      {/* {listing?.pictures[0] ? (
+                      {listing?.pictures === "null" || listing?.pictures === "" || listing?.pictures === null ? (
                         <img
-                          src={listing?.pictures[0]}
-                          alt="offer"
-                          className="w-full object-cover h-[200px]"
+                          src={static_img}
+                          alt="secondary"
+                          className="w-full h-[200px] object-cover"
                         />
                       ) : (
                         <img
-                          src={imagePaths[0]}
-                          alt="offer"
+                          src={listing?.pictures?.split(",")[0]}
+                          alt="secondary"
                           className="w-full h-[200px] object-cover"
+                          onClick={() => handleImageClick(listing?.pictures?.split(",")[0])}
                         />
-                      )} */}
-                      <img
-                        src={static_img}
-                        alt="secondary"
-                        className="w-full h-[200px] object-cover"
-                      />
+                      )}
+                      
                       <div className={`absolute top-0 right-2 p-2 pb-5 rounded-b-full bg-primary`}>
                         <Tooltip title="View Property">
                           <Link
@@ -171,83 +177,52 @@ const SecondaryListings = ({
                         />
                       </div>
                     </div>
-                    
-                    <div className="px-5 py-3">
-                      <h1
-                        className={`${
-                          currentMode === "dark" ? "text-white" : "text-[#000000]"
-                        } my-2 flex justify-between `}
-                        style={{ textTransform: "capitalize" }}
-                      >
-                        <span className="text-xl font-bold text-primary">
-                          {listing?.price || "Unavailable"}
-                        </span>
-                      </h1>
-                      <div className={`${
-                          currentMode === "dark" ? "text-white" : "text-[#000000]"
-                        }  my-2 font-semibold`}>
-                        {listing?.project || "Project unknown"}
-                      </div>
-                      <div className={`${
-                          currentMode === "dark" ? "text-white" : "text-[#000000]"
-                        }  my-2`}>
-                        {listing?.address || "Address unknown"}
-                      </div>
-                      
-                      <div className="my-2">
-                        <div className="flex space-x-3 items-center">
-                          <BiBed className="text-[#AAAAAA]" size={20} />
-                          <p className="text-start">
-                            <span>{listing?.bedrooms === "null" ? "-" : listing?.bedrooms}</span>{" "} 
-                            <span>{listing?.property_type === "null" ? "-" : listing?.property_type}</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div className="my-2">
-                        <div className="flex space-x-3 items-center">
-                          <BiBath className="text-[#AAAAAA]" size={20} />
-                          <p className="text-start">
-                            <span>{listing?.bathrooms === "null" ? "-" : listing?.bathrooms}</span>
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* <Link
-                        sx={{w: "100%" }}
-                        to={`/secondaryListings/${listing?.id}`}
-                        target="_blank"
-                      >
-                        <Button
-                          fullWidth
-                          sx={{ mt: 1 }}
-                          variant="contained"
-                          className="bg-btn-primary"
-                          // style={{
-                          //   backgroundColor: primaryColor,
-                          // }}
-                          size="medium"
+                    <Link
+                      sx={{w: "100%" }}
+                      to={`/secondaryListings/${listing?.id}`}
+                      target="_blank"
+                    >                      
+                      <div className="px-5 py-3">
+                        <h1
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-[#000000]"
+                          } my-2 flex justify-between `}
+                          style={{ textTransform: "capitalize" }}
                         >
-                          Manage Listing
-                        </Button>
-                      </Link> */}
-
-                      {/* <Button
-                        disabled={btnloading}
-                        onClick={() => setCurrentPage((page) => page + 1)}
-                        variant="contained"
-                        // color="error"
-                        className="bg-btn-primary"
-                        // sx={{ marginBottom: "10px" }}
-                      >
-                        {btnloading ? (
-                          <div className="flex items-center justify-center space-x-1">
-                            <CircularProgress size={18} sx={{ color: "blue" }} />
+                          <span className="text-xl font-bold text-primary">
+                            {listing?.price || "Unavailable"}
+                          </span>
+                        </h1>
+                        <div className={`${
+                            currentMode === "dark" ? "text-white" : "text-[#000000]"
+                          }  my-2 font-semibold`}>
+                          {listing?.project || "Project unknown"}
+                        </div>
+                        <div className={`${
+                            currentMode === "dark" ? "text-white" : "text-[#000000]"
+                          }  my-2`}>
+                          {listing?.address || "Address unknown"}
+                        </div>
+                        
+                        <div className="my-2">
+                          <div className="flex space-x-3 items-center">
+                            <BiBed className="text-[#AAAAAA]" size={20} />
+                            <p className="text-start">
+                              <span>{listing?.bedrooms === "null" ? "-" : listing?.bedrooms}</span>{" "} 
+                              <span>{listing?.property_type === "null" ? "-" : listing?.property_type}</span>
+                            </p>
                           </div>
-                        ) : (
-                          <span>Manage Listing</span>
-                        )}
-                      </Button> */}
-                    </div>
+                        </div>
+                        <div className="my-2">
+                          <div className="flex space-x-3 items-center">
+                            <BiBath className="text-[#AAAAAA]" size={20} />
+                            <p className="text-start">
+                              <span>{listing?.bathrooms === "null" ? "-" : listing?.bathrooms}</span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
                   </div>
                 </div>
               );
@@ -274,6 +249,24 @@ const SecondaryListings = ({
             </Button>
           </div>
         )}
+
+        {/* PICTURE OVERLAY  */}
+        {showOverlay && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-black opacity-75"></div>
+            <div className="relative z-10 bg-white">
+              <img src={activeImage} alt="overlay" className="h-[90vh]" />
+              <button 
+                onClick={handleCloseOverlay} 
+                className="absolute top-4 right-4 text-2xl text-white bg-primary p-2 rounded-full m-0"
+              >
+                <MdClose />
+              </button>
+              <img src={hikalrewhite} alt="hikal real estate" className="absolute right-4 bottom-4 w-[100px] p-2 bg-[#000000] bg-opacity-70" />
+            </div>
+          </div>
+        )}
+
       </Box>
     </div>
   );
