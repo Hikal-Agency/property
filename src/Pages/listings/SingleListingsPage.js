@@ -130,7 +130,7 @@ const SingleListingsPage = () => {
             ) : (
               <div className="w-full">
                 {/* IMAGES  */}
-                <div className="w-full flex items-center gap-x-1 mb-3overflow-x-scroll">
+                <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
                   {listData?.pictures
                     ?.split(",")
                     ?.map((pic) =>

@@ -120,7 +120,6 @@ const UserLocationComponent = () => {
       });
   };
 
-
   useEffect(() => {
     if (token) {
       // FetchLocation();
@@ -303,51 +302,66 @@ const UserLocationComponent = () => {
             </div>
             <div className="h-full w-full">
               <div className="grid grid-cols-1 gap-5">
-                {LastLocationData?.locations?.data?.map((location) => {
-                  return (
-                    <>
-                      <div
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-[#424242] text-white"
-                            : "bg-[#EEEEEE] text-black"
-                        } rounded-md space-y-2 p-3`}
-                        onClick={() => handleCardclick(location)}
-                      >
-                        <h1 className="font-semibold capitalize">
-                          {location?.userName}
-                        </h1>
-                        <hr></hr>
-                        <div className="flex gap-3">
-                          <BsPinMap size={20} className="text-primary" />
-                          {location?.location}
+                {LastLocationData?.locations?.data?.length > 0 ? (
+                  LastLocationData?.locations?.data?.map((location) => {
+                    return (
+                      <>
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-[#424242] text-white"
+                              : "bg-[#EEEEEE] text-black"
+                          } rounded-md space-y-2 p-3`}
+                          onClick={() => handleCardclick(location)}
+                        >
+                          <h1 className="font-semibold capitalize">
+                            {location?.userName}
+                          </h1>
+                          <hr></hr>
+                          <div className="flex gap-3">
+                            <BsPinMap size={20} className="text-primary" />
+                            {location?.location}
+                          </div>
+                          <div className="flex gap-3">
+                            <AiOutlineFieldTime
+                              size={20}
+                              className="text-primary"
+                            />
+                            {location?.latest_recorded_at}
+                          </div>
+                          <div className="flex justify-end">
+                            <Button
+                              type="button"
+                              onClick={() =>
+                                navigate(
+                                  `/location/useralllocation/${location?.user_id}/${filterDate}`
+                                )
+                              }
+                              // onClick={() => handleRowClick(location.user_id)}
+                              sx={{
+                                backgroundColor: "#da1f26",
+                                color: "#ffffff",
+                              }}
+                              className="rounded-md p-1 flex items-center w-fit h-fit text-sm btn-sm"
+                            >
+                              <BiCurrentLocation size={20} />
+                            </Button>
+                          </div>
                         </div>
-                        <div className="flex gap-3">
-                          <AiOutlineFieldTime size={20} className="text-primary" />
-                          {location?.latest_recorded_at}
-                        </div>
-                        <div className="flex justify-end">
-                          <Button
-                            type="button"
-                            onClick={() =>
-                              navigate(
-                                `/location/useralllocation/${location?.user_id}`
-                              )
-                            }
-                            // onClick={() => handleRowClick(location.user_id)}
-                            sx={{
-                              backgroundColor: "#da1f26",
-                              color: "#ffffff",
-                            }}
-                            className="rounded-md p-1 flex items-center w-fit h-fit text-sm btn-sm"
-                          >
-                            <BiCurrentLocation size={20} />
-                          </Button>
-                        </div>
-                      </div>
-                    </>
-                  );
-                })}
+                      </>
+                    );
+                  })
+                ) : (
+                  <div className="mt-10">
+                    <h2
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-dark"
+                      } text-center font-bold text-lg`}
+                    >
+                      No locations for current Date.
+                    </h2>
+                  </div>
+                )}
               </div>
             </div>
           </>
