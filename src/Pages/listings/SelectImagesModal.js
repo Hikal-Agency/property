@@ -76,8 +76,12 @@ const SelectImagesModal = ({
       const ImageData = new FormData();
       ImageData.append("id", selectImagesModal?.listingId);
 
-        allImages?.forEach((image) => {
-          ImageData.append("img_name", image);
+        // allImages?.forEach((image) => {
+        //   ImageData.append("img_name", image);
+        // })
+
+        allImages?.forEach((image, index) => {
+          ImageData.append(`img_name[${index}]`, image);
         })
 
         const token = localStorage.getItem("auth-token");

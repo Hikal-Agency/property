@@ -40,8 +40,12 @@ const SelectDocumentModal = ({ fetchSingleListing, selectDocumentModal, handleCl
 
       const DocData = new FormData();
 
-        allDocs?.forEach((doc) => {
-          DocData.append("doc_name", doc);
+        // allDocs?.forEach((doc) => {
+        //   DocData.append("doc_name", doc);
+        // })
+
+        allDocs?.forEach((doc, index) => {
+          DocData.append(`doc_name[${index}]`, doc);
         })
 
         const token = localStorage.getItem("auth-token");

@@ -9,6 +9,7 @@ import axios from "../../axoisConfig";
 import Error404 from "../Error";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
+import FileViewer from "../../Components/_elements/FileViewer";
 
 import { BiBed, BiBath } from "react-icons/bi";
 import { BsImages, BsFiles, BsPen, BsFileEarmarkText } from "react-icons/bs";
@@ -43,10 +44,6 @@ const SingleListingsPage = () => {
   const static_img = "../assets/no-image.png";
 
   const { lid } = useParams();
-
-  console.log("LID: ", lid);
-
-  console.log("list data: ", listData);
 
   let lat = "";
   let long = "";
@@ -272,7 +269,11 @@ const SingleListingsPage = () => {
                   </div>
 
                   {/* IN MAP  */}
-                  <div className="w-full my-5 h-[50vh] border border-primary">
+
+                  {listData?.latlong === null || listData?.latlong === "" ? (
+                    <></>
+                  ) : (
+                    <div className="w-full my-5 h-[50vh] border border-primary">
                     {typeof window.google !== "object" ? (
                       <div>Your map is loading...</div>
                     ) : (
@@ -298,6 +299,7 @@ const SingleListingsPage = () => {
                       </GoogleMap>
                     )}
                   </div>
+                  )}
 
                   <div className="bg-primary h-0.5 w-full my-5"></div>
 
@@ -370,18 +372,23 @@ const SingleListingsPage = () => {
                             {listData?.documents?.map((l) => {
                               return l?.doc_url ? (
                                 <div className="p-2 flex items-center justify-center">
-                                  <div className="text-center">
+                                  <div className="w-full text-center">
+                                    {/* <div className="w-full flex justify-center"> */}
                                     <BsFileEarmarkText
                                       size={70}
                                       color={"#AAAAAA"}
+                                      className="w-full flex justify-center"
                                     />
                                     <div className="mt-3">{l?.doc_name}</div>
                                   </div>
                                 </div>
                               ) : (
-                                <></>
+                                <div className="py-2 text-xs italic text-primary">
+                                  No documents to show
+                                </div>
                               );
                             })}
+                            
                           </div>
                           {/* )} */}
                         </div>
