@@ -1069,7 +1069,7 @@ const Sidebarmui = () => {
         },
       ],
     },
-    // SOCIAL MEDIA 
+    // SOCIAL MEDIA
     {
       title: "Social Media",
       icon: <GoBrowser />,
@@ -1088,7 +1088,7 @@ const Sidebarmui = () => {
         // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
       ],
     },
-    // LOCATION 
+    // LOCATION
     {
       title: "LOCATION",
       icon: <MdLocationOn />,
@@ -1105,7 +1105,7 @@ const Sidebarmui = () => {
         },
       ],
     },
-    // ATTENDANCE 
+    // ATTENDANCE
     {
       title: "ATTENDANCE",
       icon: <AiTwotoneCalendar />,
@@ -1127,20 +1127,20 @@ const Sidebarmui = () => {
         },
       ],
     },
-    // MESSAGING 
-    {
-      title: "Messaging",
-      icon: <MdApps />,
+    // MESSAGING
+    // {
+    //   title: "Messaging",
+    //   icon: <MdApps />,
 
-      links: [
-        {
-          name: "Chat",
-          icon: <BsCircleFill />,
-          link: "/chat",
-        },
-      ],
-    },
-    // BILLINGS 
+    //   links: [
+    //     {
+    //       name: "Chat",
+    //       icon: <BsCircleFill />,
+    //       link: "/chat",
+    //     },
+    //   ],
+    // },
+    // BILLINGS
     {
       title: "BILLINGS",
       icon: <MdOutlinePayment />,
@@ -1152,7 +1152,7 @@ const Sidebarmui = () => {
         },
       ],
     },
-    // SUPPORT 
+    // SUPPORT
     {
       title: "SUPPORT",
       icon: <BiSupport />,
@@ -1179,7 +1179,7 @@ const Sidebarmui = () => {
         },
       ],
     },
-    // MISC 
+    // MISC
     {
       title: "MISC",
       icon: <MdSettings />,
