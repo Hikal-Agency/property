@@ -1,12 +1,13 @@
 // import Image from "next/image";
 import React from "react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import moment from "moment";
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 
+import { load } from "../../Pages/App";
 import { BsPinMap } from "react-icons/bs";
 import { BiCurrentLocation } from "react-icons/bi";
 import { AiOutlineFieldTime } from "react-icons/ai";
@@ -202,7 +203,7 @@ const UserLocationComponent = () => {
           } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
         >
           {/* MAP */}
-          {typeof window.google !== "object" ? (
+          {!load?.isLoaded ? (
             <div>Your map is loading...</div>
           ) : (
             <>

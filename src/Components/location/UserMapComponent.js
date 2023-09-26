@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { GoogleMap, MarkerF, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap } from '@react-google-maps/api';
+import { load } from '../../Pages/App';
 
 const UserMapContainer = ({ user_location }) => {
   useEffect(() => {
@@ -17,13 +18,9 @@ const UserMapContainer = ({ user_location }) => {
     mapTypeControl: true,
   }
 
-
-    const [selectedMeeting, setSelectedMeeting] = React.useState(null);
-    const [selectedUser, setSelectedUser] = React.useState(null);
-
     return (
       <>
-      {(typeof window.google !== "object") ? <div>Your map is loading...</div> :
+      {!load?.isLoaded ? <div>Your map is loading...</div> :
       <GoogleMap
         zoom={10}
         center={{lat: 25.22527310000002, lng: 55.280889615218406}}

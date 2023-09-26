@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { load } from "../../Pages/App";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 import { useStateContext } from "../../context/ContextProvider";
 
@@ -29,7 +30,7 @@ const MapContainer = ({ location, selectedMeeting, clearSelectedMeeting }) => {
 
   return (
     <>
-      {typeof window.google !== "object" ? (
+      { !load?.isLoaded ? (
         <div>Your map is loading...</div>
       ) : (
         <GoogleMap
