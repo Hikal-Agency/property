@@ -9,6 +9,7 @@ import axios from "../../axoisConfig";
 import Error404 from "../Error";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
+import FileViewer from "../../Components/_elements/FileViewer";
 
 import { BiBed, BiBath } from "react-icons/bi";
 import { BsImages, BsFiles, BsPen, BsFileEarmarkText } from "react-icons/bs";
@@ -44,10 +45,6 @@ const SingleListingsPage = () => {
 
   const { lid } = useParams();
 
-  console.log("LID: ", lid);
-
-  console.log("list data: ", listData);
-
   let lat = "";
   let long = "";
 
@@ -55,7 +52,7 @@ const SingleListingsPage = () => {
     try {
       setloading(true);
       const token = localStorage.getItem("auth-token");
-      const listing = await axios.get(`${BACKEND_URL}/listings/${lid}`, {
+      const listing = await axios.get(`${BACKEND_URL}/listings?id=${lid}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -63,7 +60,7 @@ const SingleListingsPage = () => {
       });
 
       console.log("SINGLE Listings: ", listing);
-      setListingData(listing?.data?.data[0]);
+      setListingData(listing?.data?.data?.data[0]);
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -106,13 +103,8 @@ const SingleListingsPage = () => {
     const [latValue, longValue] = latLongString.split(",");
     lat = latValue;
     long = longValue;
-    // setLat(latValue);
-    // setLong(longValue);
+
   }
-  // const lat = "22.22222";
-  // const long = "55.55555";
-  // console.log("Latitude:", lat);
-  // console.log("Longitude:", long);
 
   return (
     <>
@@ -131,19 +123,17 @@ const SingleListingsPage = () => {
               <div className="w-full">
                 {/* IMAGES  */}
                 <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
-                  {listData?.pictures
-                    ?.split(",")
-                    ?.map((pic) =>
-                      pic ? (
-                        <img
-                          src={pic}
-                          alt="secondary"
-                          className="w-auto h-[200px] object-cover m-1 rounded-md"
-                        />
-                      ) : (
-                        <></>
-                      )
-                    )}
+                  {listData?.images?.map((pic) =>
+                    pic?.img_url ? (
+                      <img
+                        src={pic?.img_url}
+                        alt={pic?.img_alt}
+                        className="w-auto h-[200px] object-cover m-1 rounded-md"
+                      />
+                    ) : (
+                      <></>
+                    )
+                  )}
                 </div>
 
                 <div className="grid sm:grid-cols-1 md:grid-cols-2">
@@ -279,7 +269,11 @@ const SingleListingsPage = () => {
                   </div>
 
                   {/* IN MAP  */}
-                  <div className="w-full my-5 h-[50vh] border border-primary">
+
+                  {listData?.latlong === null || listData?.latlong === "" ? (
+                    <></>
+                  ) : (
+                    <div className="w-full my-5 h-[50vh] border border-primary">
                     {typeof window.google !== "object" ? (
                       <div>Your map is loading...</div>
                     ) : (
@@ -297,7 +291,7 @@ const SingleListingsPage = () => {
                           }}
                           icon={{
                             url: <MdLocationPin size={30} color={"#DA1F26"} />,
-                            scaledSize: window["google"]["maps"]["Size"]
+                            scaledSize: window["google"]["maps"]
                               ? new window.google.maps.Size(50, 50)
                               : 0,
                           }}
@@ -305,6 +299,7 @@ const SingleListingsPage = () => {
                       </GoogleMap>
                     )}
                   </div>
+                  )}
 
                   <div className="bg-primary h-0.5 w-full my-5"></div>
 
@@ -374,21 +369,26 @@ const SingleListingsPage = () => {
                           </div>
 
                           <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
-                            {listData?.documents?.split(",")?.map((l) => {
-                              return l ? (
+                            {listData?.documents?.map((l) => {
+                              return l?.doc_url ? (
                                 <div className="p-2 flex items-center justify-center">
-                                  <div className="text-center">
+                                  <div className="w-full text-center">
+                                    {/* <div className="w-full flex justify-center"> */}
                                     <BsFileEarmarkText
                                       size={70}
                                       color={"#AAAAAA"}
+                                      className="w-full flex justify-center"
                                     />
-                                    <div className="mt-3">{l}</div>
+                                    <div className="mt-3">{l?.doc_name}</div>
                                   </div>
                                 </div>
                               ) : (
-                                <></>
+                                <div className="py-2 text-xs italic text-primary">
+                                  No documents to show
+                                </div>
                               );
                             })}
+                            
                           </div>
                           {/* )} */}
                         </div>

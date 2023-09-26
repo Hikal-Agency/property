@@ -194,177 +194,186 @@ const UserLocationComponent = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 h-[85vh]">
-        {LastLocationData && (
-          <>
-            <div
-              className={`${
-                currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
-              } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
-            >
-              {/* MAP */}
-              {typeof window.google !== "object" ? (
-                <div>Your map is loading...</div>
-              ) : (
-                <GoogleMap
-                  zoom={selectedLocation ? 16 : 10}
-                  center={{
-                    lat: selectedLocation
-                      ? selectedLocation.latitude
-                      : 25.22527310000002,
-                    lng: selectedLocation
-                      ? selectedLocation.longitude
-                      : 55.280889615218406,
-                  }}
-                  mapContainerStyle={mapContainerStyle}
-                  options={options}
-                >
-                  {LastLocationData?.locations?.data?.map((user) => (
-                    <>
-                      <Marker
-                        key={user?.user_id}
-                        position={{
-                          lat: parseFloat(user.latitude),
-                          lng: parseFloat(user.longitude),
-                        }}
-                        icon={{
-                          url:
-                            selectedLocation &&
-                            selectedLocation.user_id === user.user_id
-                              ? "/userpin.svg" //CHANGE FOR SELECTED
-                              : user?.profile_picture || "/userpin.svg",
-                          // scaledSize: window.google
-                          //   ? new window.google.maps.Size(
-                          //       selectedLocation &&
-                          //       selectedLocation.user_id === user.user_id
-                          //         ? 70
-                          //         : 50,
-                          //       selectedLocation &&
-                          //       selectedLocation.user_id === user.user_id
-                          //         ? 70
-                          //         : 50
-                          //     )
-                          //   : null,
-                          scaledSize: window.google
-                            ? new window.google.maps.Size(
-                                selectedLocation &&
-                                selectedLocation.user_id === user.user_id
-                                  ? 70
-                                  : 50,
-                                selectedLocation &&
-                                selectedLocation.user_id === user.user_id
-                                  ? 70
-                                  : 50
-                              )
-                            : new window.google.maps.Size(50, 50),
-
-                          zIndex:
-                            selectedLocation &&
-                            selectedLocation.user_id === user.user_id
-                              ? 1000 // Set a high zIndex value for the selected pin
-                              : 1,
-                        }}
-                        onClick={() => {
-                          // setselectedLocation(user);
-                          handlePinClick(user);
-                        }}
-                      />
-
-                      {selectedLocation && (
-                        <InfoWindow
+      {LastLocationData && (
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 h-[85vh]">
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
+            } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
+          >
+            {/* MAP */}
+            {typeof window.google !== "object" ? (
+              <div>Your map is loading...</div>
+            ) : (
+              <>
+                {LastLocationData ? (
+                  <GoogleMap
+                    zoom={selectedLocation ? 16 : 10}
+                    center={{
+                      lat: selectedLocation
+                        ? selectedLocation.latitude
+                        : 25.22527310000002,
+                      lng: selectedLocation
+                        ? selectedLocation.longitude
+                        : 55.280889615218406,
+                    }}
+                    mapContainerStyle={mapContainerStyle}
+                    options={options}
+                  >
+                    {LastLocationData?.locations?.data?.map((user) => (
+                      <>
+                        <Marker
+                          key={user?.user_id}
                           position={{
-                            lat: parseFloat(selectedLocation.latitude) + 0.0001,
-                            lng: parseFloat(selectedLocation.longitude),
+                            lat: parseFloat(user.latitude),
+                            lng: parseFloat(user.longitude),
                           }}
-                          onCloseClick={() => {
-                            setSelectedLocation(null);
+                          icon={{
+                            url:
+                              selectedLocation &&
+                              selectedLocation.user_id === user.user_id
+                                ? "/userpin.svg" //CHANGE FOR SELECTED
+                                : user?.profile_picture || "/userpin.svg",
+                            // scaledSize: window.google
+                            //   ? new window.google.maps.Size(
+                            //       selectedLocation &&
+                            //       selectedLocation.user_id === user.user_id
+                            //         ? 70
+                            //         : 50,
+                            //       selectedLocation &&
+                            //       selectedLocation.user_id === user.user_id
+                            //         ? 70
+                            //         : 50
+                            //     )
+                            //   : null,
+                            scaledSize: window.google
+                              ? new window.google.maps.Size(
+                                  selectedLocation &&
+                                  selectedLocation.user_id === user.user_id
+                                    ? 70
+                                    : 50,
+                                  selectedLocation &&
+                                  selectedLocation.user_id === user.user_id
+                                    ? 70
+                                    : 50
+                                )
+                              : new window.google.maps.Size(50, 50),
+
+                            zIndex:
+                              selectedLocation &&
+                              selectedLocation.user_id === user.user_id
+                                ? 1000 // Set a high zIndex value for the selected pin
+                                : 1,
                           }}
+                          onClick={() => {
+                            // setselectedLocation(user);
+                            handlePinClick(user);
+                          }}
+                        />
+
+                        {selectedLocation && (
+                          <InfoWindow
+                            position={{
+                              lat:
+                                parseFloat(selectedLocation.latitude) + 0.0001,
+                              lng: parseFloat(selectedLocation.longitude),
+                            }}
+                            onCloseClick={() => {
+                              setSelectedLocation(null);
+                            }}
+                          >
+                            <div>
+                              <h1 className="font-semibold">
+                                {selectedLocation.userName}
+                              </h1>
+                              <h1>
+                                LatLong: {selectedLocation.latitude},{" "}
+                                {selectedLocation.longitude}
+                              </h1>
+                              <h1>
+                                Last updated:{" "}
+                                {selectedLocation.latest_recorded_at}
+                              </h1>
+                            </div>
+                          </InfoWindow>
+                        )}
+                      </>
+                    ))}
+                  </GoogleMap>
+                ) : (
+                  <GoogleMap
+                    zoom={10}
+                    center={{
+                      lat: 25.22527310000002,
+                      lng: 55.280889615218406,
+                    }}
+                    mapContainerStyle={mapContainerStyle}
+                    options={options}
+                  ></GoogleMap>
+                )}
+              </>
+            )}
+          </div>
+          <div className="w-full overflow-y-scroll hide-scrollbar">
+            {LastLocationData?.locations?.data?.length > 0 ? (
+              LastLocationData?.locations?.data?.map((location) => {
+                return (
+                  <div
+                    className={`${
+                      currentMode === "dark"
+                        ? "bg-[#424242] text-white"
+                        : "bg-[#EEEEEE] text-black"
+                    } rounded-md card-hover h-fit space-y-2 p-3 mb-3`}
+                    onClick={() => handleCardclick(location)}
+                  >
+                    <h1 className="font-semibold capitalize">
+                      {location?.userName}
+                    </h1>
+                    <hr></hr>
+                    <div className="flex gap-3">
+                      <BsPinMap size={20} className="text-primary" />
+                      {location?.location}
+                    </div>
+                    <div className="flex gap-3">
+                      <AiOutlineFieldTime size={20} className="text-primary" />
+                      {location?.latest_recorded_at}
+                    </div>
+                    <div className="flex justify-end">
+                      <Tooltip title="View All Location">
+                        <IconButton
+                          onClick={() =>
+                            navigate(
+                              `/location/useralllocation/${location?.user_id}/${filterDate}`
+                            )
+                          }
+                          // // onClick={() => handleRowClick(location.user_id)}
+                          // sx={{
+                          //   backgroundColor: "transparent",
+                          //   color: "#ffffff",
+                          // }}
+                          className="rounded-full p-1 flex items-center w-fit h-fit text-sm btn-sm"
                         >
-                          <div>
-                            <h1 className="font-semibold">
-                              {selectedLocation.userName}
-                            </h1>
-                            <h1>
-                              LatLong: {selectedLocation.latitude},{" "}
-                              {selectedLocation.longitude}
-                            </h1>
-                            <h1>
-                              Last updated:{" "}
-                              {selectedLocation.latest_recorded_at}
-                            </h1>
-                          </div>
-                        </InfoWindow>
-                      )}
-                    </>
-                  ))}
-                </GoogleMap>
-              )}
-            </div>
-            <div className="grid grid-cols-1 gap-3 overflow-y-scroll hide-scrollbar">
-              {LastLocationData?.locations?.data?.length > 0 ? (
-                LastLocationData?.locations?.data?.map((location) => {
-                  return (
-                    <>
-                      <div
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-[#424242] text-white"
-                            : "bg-[#EEEEEE] text-black"
-                        } rounded-md space-y-2 p-3`}
-                        onClick={() => handleCardclick(location)}
-                      >
-                        <h1 className="font-semibold capitalize">
-                          {location?.userName}
-                        </h1>
-                        <hr></hr>
-                        <div className="flex gap-3">
-                          <BsPinMap size={20} className="text-primary" />
-                          {location?.location}
-                        </div>
-                        <div className="flex gap-3">
-                          <AiOutlineFieldTime
+                          <BiCurrentLocation
                             size={20}
                             className="text-primary"
                           />
-                          {location?.latest_recorded_at}
-                        </div>
-                        <div className="flex justify-end">
-                          <Tooltip title="View All Location">
-                            <IconButton
-                              onClick={() =>
-                                navigate(
-                                  `/location/useralllocation/${location?.user_id}/${filterDate}`
-                                )
-                              }
-                              // // onClick={() => handleRowClick(location.user_id)}
-                              // sx={{
-                              //   backgroundColor: "transparent",
-                              //   color: "#ffffff",
-                              // }}
-                              className="rounded-full p-1 flex items-center w-fit h-fit text-sm btn-sm"
-                            >
-                              <BiCurrentLocation
-                                size={20}
-                                className="text-primary"
-                              />
-                            </IconButton>
-                          </Tooltip>
-                        </div>
-                      </div>
-                    </>
-                  );
-                })
-              ) : (
-                <div className="my-5">
-                  <h2 className={`text-primary text-center italic text-lg`}>
-                    No location for selected date.
-                  </h2>
-                </div>
-              )}
-            </div>
-          </>
-        )}
-      </div>
+                        </IconButton>
+                      </Tooltip>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="my-5">
+                <h2 className={`text-primary text-center italic text-lg`}>
+                  No location for selected date.
+                </h2>
+              </div>
+            )}
+          </div>
+          {/* )} */}
+        </div>
+      )}
     </>
   );
 };

@@ -30,7 +30,8 @@ const style = {
 };
 
 const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM"];
-const charLimit = 70;
+const charLimitForEnglish = 160;
+const charLimitForArabic = 70;
 
 const SendMessageModal = ({
   sendMessageModal,
@@ -41,7 +42,6 @@ const SendMessageModal = ({
   const {
     currentMode,
     BACKEND_URL,
-    User,
     setUserCredits,
     isArabic,
     isEnglish,
@@ -62,9 +62,6 @@ const SendMessageModal = ({
   var turndownService = new TurndownService();
 
   const imagePickerRef = useRef();
-  const noOfMessages = Math.ceil(
-    Number(smsTextValue?.trim()?.length) / charLimit
-  );
 
   const uploadImage = () => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
@@ -288,6 +285,13 @@ const SendMessageModal = ({
     }
   }
 
+  let lang = "";
+  lang = isArabic(smsTextValue?.trim())
+    ? "Arabic"
+    : isEnglish(smsTextValue?.trim())
+    ? "English"
+    : "";
+
   const handleSendMessage = (event) => {
     event.preventDefault();
     turndownService.addRule("strikethrough", {
@@ -300,7 +304,7 @@ const SendMessageModal = ({
     if (sendMessageModal.isWhatsapp) {
       sendWhatsappMessage(messageText, selectedContacts);
     } else {
-      if (smsTextValue?.trim()?.length) {
+      if (smsTextValue?.trim()?.length && ((lang === "English" && smsTextValue?.trim()?.length <= charLimitForEnglish) || (lang === "Arabic" && smsTextValue?.trim()?.length <= charLimitForArabic))) {
         sendSMS(smsTextValue?.trim(), selectedContacts);
       }
     }
@@ -341,13 +345,6 @@ const SendMessageModal = ({
   useEffect(() => {
     fetchTemplates();
   }, []);
-
-  let lang = "";
-  lang = isArabic(smsTextValue?.trim())
-    ? "Arabic"
-    : isEnglish(smsTextValue?.trim())
-    ? "English"
-    : "";
 
   return (
     <>
@@ -472,6 +469,7 @@ const SendMessageModal = ({
                       <>
                         <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
                           <div className="flex items-center justify-between px-3 py-2 border-b">
+                          {lang &&
                             <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
                               <div>{lang}</div>
                               {lang && (
@@ -479,25 +477,17 @@ const SendMessageModal = ({
                               )}
                               <div
                                 className={`flex flex-wrap items-center ${
-                                  smsTextValue?.trim()?.length > charLimit
+                                  smsTextValue?.trim()?.length > (lang === "English" ? charLimitForEnglish : charLimitForArabic)
                                     ? "text-primary"
                                     : ""
                                 }`}
                               >
                                 {formatNum(smsTextValue?.trim()?.length)}/
-                                {charLimit}
+                                {lang === "English" ? charLimitForEnglish : charLimitForArabic}
                               </div>
-                              {smsTextValue?.trim()?.length ? (
-                                <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
-                              ) : (
-                                <></>
-                              )}
-                              {smsTextValue?.trim()?.length ? (
-                                <div>{noOfMessages} messages</div>
-                              ) : (
-                                <></>
-                              )}
+                              
                             </div>
+                            }
                             <button
                               type="button"
                               className="p-2 text-gray-500 rounded cursor-pointer sm:ml-auto hover:text-gray-900 hover:bg-gray-100"

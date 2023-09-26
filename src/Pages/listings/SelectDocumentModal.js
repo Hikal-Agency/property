@@ -18,7 +18,11 @@ const style = {
   boxShadow: 24,
 };
 
-const SelectDocumentModal = ({ fetchSingleListing, selectDocumentModal, handleClose }) => {
+const SelectDocumentModal = ({
+  fetchSingleListing,
+  selectDocumentModal,
+  handleClose,
+}) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const documentsInputRef = useRef(null);
   const [allDocs, setAllDocs] = useState([]);
@@ -34,57 +38,28 @@ const SelectDocumentModal = ({ fetchSingleListing, selectDocumentModal, handleCl
   const handleUploadDocs = async () => {
     try {
       setbtnloading(true);
-      const docData = new FormData();
 
-      docData.append("id", selectDocumentModal?.listingId);
-      docData.append("listingID", selectDocumentModal?.listingId);
+      // Simulate image uploading delay (remove this in production)
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const DocData = new FormData();
+
+      // allDocs?.forEach((doc) => {
+      //   DocData.append("doc_name", doc);
+      // })
+
+      allDocs?.forEach((doc, index) => {
+        DocData.append(`doc_name[${index}]`, doc);
+      });
 
       const token = localStorage.getItem("auth-token");
-      const listing = await axios.get(`${BACKEND_URL}/listings/${selectDocumentModal?.listingId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      
-      allDocs.forEach((doc) => {
-        docData.append("files", doc);
-      });
-
-      const response = await axios.post(
-        "http://idxdubai.com:8000/api/uploadfile",
-        docData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      setbtnloading(false);
-
-      const listingData = await axios.get(`${BACKEND_URL}/listings/${selectDocumentModal?.listingId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      const prevDocs  = listingData?.data?.data[0]?.documents || "";
-
-      const links = response?.data?.file_links;
-
-      const data = new FormData();
-
-      data.append("documents", links?.join(",") + ", " + prevDocs);
-
       await axios
         .post(
           `${BACKEND_URL}/listings/${selectDocumentModal?.listingId}`,
-          data,
+          DocData,
           {
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "multipart/form-data",
               Authorization: "Bearer " + token,
             },
           }
@@ -118,7 +93,6 @@ const SelectDocumentModal = ({ fetchSingleListing, selectDocumentModal, handleCl
             theme: "light",
           });
         });
-
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong!", {
@@ -166,7 +140,13 @@ const SelectDocumentModal = ({ fetchSingleListing, selectDocumentModal, handleCl
           <IoMdClose size={18} />
         </IconButton>
         <div className="flex flex-col mb-5 justify-center items-center">
-          <h1 className="font-semibold text-lg">Upload Document(s)</h1>
+          <h1
+            className={`font-semibold text-lg ${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            }`}
+          >
+            Upload Document(s)
+          </h1>
         </div>
 
         <div className="mb-5">
