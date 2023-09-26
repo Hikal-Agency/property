@@ -9,11 +9,7 @@ import axios from "../../axoisConfig";
 import Error404 from "../Error";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
-<<<<<<< HEAD
 import { load } from "../App";
-=======
-import FileViewer from "../../Components/_elements/FileViewer";
->>>>>>> bae5fe5e3e0ba76e04077bbcfe49cef7119b68dd
 
 import { BiBed, BiBath } from "react-icons/bi";
 import { BsImages, BsFiles, BsPen, BsFileEarmarkText } from "react-icons/bs";
@@ -283,30 +279,12 @@ const SingleListingsPage = () => {
                   </div>
 
                   {/* IN MAP  */}
-<<<<<<< HEAD
-                  <div className="w-full my-5 h-[50vh] border border-primary">
-                    {
-                      !load?.isLoaded ? (
-                      <div>Your map is loading...</div>
-                    ) : (
-                      <GoogleMap
-                        zoom={12}
-                        center={{ lat: parseFloat(lat), lng: parseFloat(long) }}
-                        mapContainerStyle={mapContainerStyle}
-                        options={options}
-                      >
-                        <Marker
-                          key={listData?.id}
-                          position={{
-                            lat: Number(parseFloat(lat)),
-                            lng: Number(parseFloat(long)),
-=======
 
                   {listData?.latlong === null || listData?.latlong === "" ? (
                     <></>
                   ) : (
                     <div className="w-full my-5 h-[50vh] border border-primary">
-                      {typeof window.google === "undefined" ? (
+                      {!load?.isLoaded ? (
                         <div>Your map is loading...</div>
                       ) : (
                         <GoogleMap
@@ -314,7 +292,6 @@ const SingleListingsPage = () => {
                           center={{
                             lat: parseFloat(lat),
                             lng: parseFloat(long),
->>>>>>> bae5fe5e3e0ba76e04077bbcfe49cef7119b68dd
                           }}
                           mapContainerStyle={mapContainerStyle}
                           options={options}

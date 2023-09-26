@@ -26,6 +26,9 @@ import { useFilterContext } from "../../context/FilterContextProvider";
 
 import { MdClear } from "react-icons/md";
 
+const charLimitForEnglish = 160;
+const charLimitForArabic = 70;
+
 const BulkSMSModal = ({
   FetchLeads,
   fromRange,
@@ -43,7 +46,7 @@ const BulkSMSModal = ({
   const [senderAddress, setSenderAddress] = useState("");
 
   const [pageloading, setpageloading] = useState(true);
-  const [msg, setMsg] = useState();
+  const [smsTextValue, setSmsTextValue] = useState();
   const token = localStorage.getItem("auth-token");
   const {
     emailFilter,
@@ -73,10 +76,9 @@ const BulkSMSModal = ({
   } = useFilterContext();
 
   const handleMsg = (e) => {
-    setMsg(e.target.value);
+    setSmsTextValue(e.target.value);
   };
 
-  const { hasPermission } = usePermission();
   const {
     currentMode,
     darkModeColors,
@@ -85,6 +87,9 @@ const BulkSMSModal = ({
     fetchSidebarData,
     SalesPerson,
     Managers,
+    isArabic,
+    isEnglish,
+    formatNum,
   } = useStateContext();
   console.log("Salesperson: ", SalesPerson);
   console.log("MAnagers: ", Managers);
@@ -104,6 +109,13 @@ const BulkSMSModal = ({
     // Update the contactsList state
     setContactsList(newContactsList);
   };
+
+  let lang = "";
+  lang = isArabic(smsTextValue?.trim())
+    ? "Arabic"
+    : isEnglish(smsTextValue?.trim())
+    ? "English"
+    : "";
 
   const getNumbers = async () => {
     setBtnLoading(true);
@@ -202,8 +214,8 @@ const BulkSMSModal = ({
   const sendMsg = async (e, messageText, contactList) => {
     e.preventDefault();
     setMsgLoading(true);
-    if (msg && senderAddress) {
-      console.log("sender,msg: ", msg, senderAddress);
+    if (smsTextValue && senderAddress) {
+      console.log("sender,msg: ", smsTextValue, senderAddress);
 
       try {
         const croppedContacts = contactsList?.map((contact) => {
@@ -217,8 +229,6 @@ const BulkSMSModal = ({
 
         console.log("cropped: ", croppedContacts);
 
-        const etisalatToken = process.env.REACT_APP_ETISALAT_TOKEN;
-
         const sendMsg = await axios.post(
           `${BACKEND_URL}/sendsms`,
           JSON.stringify({
@@ -231,7 +241,7 @@ const BulkSMSModal = ({
             desc: "Hikal CRM Single Message to Multiple Recipients",
             campaignName: "test",
             recipients: croppedContacts,
-            msg: { en: msg },
+            msg: { en: smsTextValue },
             defLang: "en",
             dr: "1",
             wapUrl: "",
@@ -757,23 +767,73 @@ const BulkSMSModal = ({
                     SMS Message
                   </h4>
 
-                  <TextField
-                    id="Manager"
-                    label="Message"
-                    size="small"
-                    // sx={{
-                    //   "&": {
-                    //     marginBottom: "1.25rem !important",
-                    //   },
-                    // }}
-                    placeholder="Enter message here ....."
-                    minRows={3}
-                    value={msg}
-                    onChange={handleMsg}
-                    className="w-full p-2"
-                    displayEmpty
-                    multiline
-                  />
+                  <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
+                          <div className="flex items-center justify-between px-3 py-2 border-b">
+                            {lang && (
+                              <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
+                                <div>{lang}</div>
+                                {lang && (
+                                  <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
+                                )}
+                                <div
+                                  className={`flex flex-wrap items-center ${
+                                    smsTextValue?.trim()?.length >
+                                    (lang === "English"
+                                      ? charLimitForEnglish
+                                      : charLimitForArabic)
+                                      ? "text-primary"
+                                      : ""
+                                  }`}
+                                >
+                                  {formatNum(smsTextValue?.trim()?.length)}/
+                                  {lang === "English"
+                                    ? charLimitForEnglish
+                                    : charLimitForArabic}
+                                  <p className="ml-2">
+                                    {smsTextValue?.trim()?.length >
+                                    (lang === "English"
+                                      ? charLimitForEnglish
+                                      : charLimitForArabic)
+                                      ? "Message Character limit exceeded."
+                                      : ""}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+                            <button
+                              type="button"
+                              className="p-2 text-gray-500 rounded cursor-pointer sm:ml-auto hover:text-gray-900 hover:bg-gray-100"
+                            >
+                              <svg
+                                className="w-4 h-4"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 19 19"
+                              >
+                                <path
+                                  stroke="currentColor"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
+                                />
+                              </svg>
+                              <span className="sr-only">Full screen</span>
+                            </button>
+                          </div>
+                          <div className="px-4 h-full py-2 bg-white rounded-b-lg">
+                            <textarea
+                              value={smsTextValue}
+                              onInput={(e) =>
+                                setSmsTextValue(e.target.value?.toString())
+                              }
+                              className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
+                              placeholder="Type the message ..."
+                              required
+                            ></textarea>
+                          </div>
+                        </div>
 
                   {/* <label
                     className={`flex my-3 mt-4  ${
