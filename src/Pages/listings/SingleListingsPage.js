@@ -23,10 +23,12 @@ import {
 } from "react-icons/tb";
 import SelectImagesModal from "./SelectImagesModal";
 import SelectDocumentModal from "./SelectDocumentModal";
+import EditListingModal from "../../Components/Leads/listings/EditListingComponent";
 
 const SingleListingsPage = () => {
   const [loading, setloading] = useState(true);
   const [listData, setListingData] = useState({});
+  const [openEdit, setOpenEdit] = useState(false);
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [selectImagesModal, setSelectImagesModal] = useState({
     isOpen: false,
@@ -42,6 +44,10 @@ const SingleListingsPage = () => {
   // const [long, setLong] = useState(null);
 
   const static_img = "../assets/no-image.png";
+
+  const handleEdit = () => {
+    setOpenEdit(listData);
+  };
 
   const { lid } = useParams();
 
@@ -103,7 +109,6 @@ const SingleListingsPage = () => {
     const [latValue, longValue] = latLongString.split(",");
     lat = latValue;
     long = longValue;
-
   }
 
   return (
@@ -160,7 +165,10 @@ const SingleListingsPage = () => {
                     <div className="flex items-center gap-1 justify-end">
                       {/* EDIT DETAILS  */}
                       <Tooltip title="Edit Listing Details" arrow>
-                        <IconButton className={`rounded-full`}>
+                        <IconButton
+                          className={`rounded-full`}
+                          onClick={handleEdit}
+                        >
                           <BsPen size={20} color={"#AAAAAA"} />
                         </IconButton>
                       </Tooltip>
@@ -274,31 +282,36 @@ const SingleListingsPage = () => {
                     <></>
                   ) : (
                     <div className="w-full my-5 h-[50vh] border border-primary">
-                    {typeof window.google !== "object" ? (
-                      <div>Your map is loading...</div>
-                    ) : (
-                      <GoogleMap
-                        zoom={12}
-                        center={{ lat: parseFloat(lat), lng: parseFloat(long) }}
-                        mapContainerStyle={mapContainerStyle}
-                        options={options}
-                      >
-                        <Marker
-                          key={listData?.id}
-                          position={{
-                            lat: Number(parseFloat(lat)),
-                            lng: Number(parseFloat(long)),
+                      {typeof window.google !== "object" ? (
+                        <div>Your map is loading...</div>
+                      ) : (
+                        <GoogleMap
+                          zoom={12}
+                          center={{
+                            lat: parseFloat(lat),
+                            lng: parseFloat(long),
                           }}
-                          icon={{
-                            url: <MdLocationPin size={30} color={"#DA1F26"} />,
-                            scaledSize: window["google"]["maps"]
-                              ? new window.google.maps.Size(50, 50)
-                              : 0,
-                          }}
-                        ></Marker>
-                      </GoogleMap>
-                    )}
-                  </div>
+                          mapContainerStyle={mapContainerStyle}
+                          options={options}
+                        >
+                          <Marker
+                            key={listData?.id}
+                            position={{
+                              lat: Number(parseFloat(lat)),
+                              lng: Number(parseFloat(long)),
+                            }}
+                            icon={{
+                              url: (
+                                <MdLocationPin size={30} color={"#DA1F26"} />
+                              ),
+                              scaledSize: window["google"]["maps"]
+                                ? new window.google.maps.Size(50, 50)
+                                : 0,
+                            }}
+                          ></Marker>
+                        </GoogleMap>
+                      )}
+                    </div>
                   )}
 
                   <div className="bg-primary h-0.5 w-full my-5"></div>
@@ -388,7 +401,6 @@ const SingleListingsPage = () => {
                                 </div>
                               );
                             })}
-                            
                           </div>
                           {/* )} */}
                         </div>
@@ -412,6 +424,13 @@ const SingleListingsPage = () => {
                 fetchSingleListing={fetchSingleListing}
                 selectDocumentModal={selectDocumentModal}
                 handleClose={() => setSelectDocumentModal({ isOpen: false })}
+              />
+            )}
+            {openEdit && (
+              <EditListingModal
+                setOpenEdit={setOpenEdit}
+                openEdit={openEdit}
+                handleClose={() => setOpenEdit(false)}
               />
             )}
           </>
