@@ -333,195 +333,12 @@ const BulkSMSModal = ({
   const [emailError, setEmailError] = useState(false);
   const [LeadProject, setLeadProject] = useState("");
   const [LeadNotes, setLeadNotes] = useState("");
-  const [value, setValue] = useState();
-  const [error, setError] = useState(false);
 
-  const ChangeEnquiryType = (event) => {
-    setEnquiryType(event.target.value);
-  };
 
-  const ChangeLanguagePrefered = (event) => {
-    setLanguagePrefered(event.target.value);
-  };
-  // eslint-disable-next-line
-
-  const ChangeLeadSource = (event) => {
-    setLeadSource(event.target.value);
-  };
   // eslint-disable-next-line
   const ChangeManager = (event) => {
     setManager(event.target.value);
-    const SalesPersons = Manager2.filter(function (el) {
-      return el.uid === event.target.value;
-    });
     // setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
-  };
-  const ChangeSalesPerson = (event) => {
-    console.log("clicked");
-    setSalesPerson2(event.target.value);
-  };
-
-  const AddLead = async () => {
-    setloading(true);
-    if (LeadEmail && emailError !== false) {
-      setloading(false);
-      toast.error("Kindly enter a valid email.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      return;
-    }
-    if (!LeadContact) {
-      setloading(false);
-      toast.error("Contact number is required.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setloading(false);
-
-      return;
-    }
-    const token = localStorage.getItem("auth-token");
-    const LeadData = new FormData();
-    let coldCall = "0";
-    if (LeadSource.toLowerCase() === "property finder") {
-      coldCall = 3;
-    } else if (LeadSource.toLowerCase() === "personal") {
-      coldCall = 2;
-    }
-    if (LeadName) LeadData.append("leadName", LeadName);
-    if (LeadContact) LeadData.append("leadContact", LeadContact);
-    if (LeadEmail) LeadData.append("leadEmail", LeadEmail);
-    if (EnquiryType) LeadData.append("enquiryType", EnquiryType);
-    if (PropertyType) LeadData.append("leadType", PropertyType);
-    if (LeadProject) LeadData.append("project", LeadProject);
-    if (ForType) LeadData.append("leadFor", ForType);
-    if (LanguagePrefered) LeadData.append("language", LanguagePrefered);
-    if (LeadStatus) LeadData.append("leadStatus", LeadStatus);
-    if (LeadSource) LeadData.append("leadSource", LeadSource);
-    LeadData.append("feedback", "New"); //Always appended
-    LeadData.append("agency_id", User?.agency); //Always appended
-    if (coldCall) LeadData.append("coldCall", coldCall);
-    if (LeadNotes) LeadData.append("notes", LeadNotes);
-
-    if (User?.role === 1) {
-      if (Manager) {
-        LeadData.append("assignedToManager", Number(Manager));
-      }
-      if (SalesPerson2) {
-        LeadData.append("assignedToSales", Number(SalesPerson2));
-      }
-    } else if (User?.role === 3) {
-      LeadData.append("assignedToManager", Number(User?.id));
-      if (SalesPerson2) {
-        LeadData.append("assignedToSales", Number(SalesPerson2));
-      }
-    } else if (User?.role === 7) {
-      LeadData.append("assignedToManager", Number(User?.isParent));
-      LeadData.append("assignedToSales", Number(User?.id));
-    } else if (User?.role === 2) {
-      console.log("values::", Manager, SalesPerson2);
-      if (!Manager && !SalesPerson2) {
-        LeadData.append("assignedToManager", User?.id);
-      } else {
-        if (Manager) {
-          LeadData.append("assignedToManager", Number(Manager));
-        }
-        if (SalesPerson2) {
-          LeadData.append("assignedToSales", Number(SalesPerson2));
-        }
-      }
-    }
-
-    for (var pair of LeadData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
-
-    await axios
-      .post(`${BACKEND_URL}/leads`, LeadData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log(result);
-        setloading(false);
-        if (FetchLeads) {
-          FetchLeads();
-        }
-        toast.success("Lead Added Successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
-        const recipients = [];
-        if (SalesPerson2) {
-          recipients.push(SalesPerson2);
-          recipients.push(
-            SalesPerson[`manager-${Manager}`]?.find(
-              (s) => s?.id === SalesPerson2
-            )?.isParent
-          );
-        } else {
-          recipients.push(Manager);
-        }
-        socket.emit("notification_lead_add", {
-          from: { id: User?.id, userName: User?.userName },
-          leadName: LeadName,
-          participants: recipients,
-        });
-        fetchSidebarData();
-        setLeadName("");
-        setLeadContact("");
-        setLeadEmail("");
-        setEnquiryType("");
-        setPropertyType("");
-        setLeadProject("");
-        setForType("");
-        setLanguagePrefered("");
-        setLeadSource("");
-        setLeadNotes("");
-        setSalesPerson2("");
-        setValue("");
-
-        if (!User?.role === 1 && !User?.role === 3) {
-          setManager("");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setloading(false);
-        toast.error("Something went wrong! Please Try Again", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
   };
 
   console.log("manager: ", Manager);
@@ -531,8 +348,6 @@ const BulkSMSModal = ({
     // eslint-disable-next-line
   }, []);
 
-  console.log("Manager: ", Manager);
-
   return (
     <>
       {pageloading ? (
@@ -540,10 +355,7 @@ const BulkSMSModal = ({
       ) : (
         <div className="mx-auto">
           <form
-            // onSubmit={(e) => {
-            //   e.preventDefault();
-            //   AddLead();
-            // }}
+
             disabled={loading ? true : false}
           >
             <div className="w-full flex items-center py-1 mb-2">
@@ -594,27 +406,7 @@ const BulkSMSModal = ({
                       className="pr-2"
                       style={{ width: "100%", position: "relative" }}
                     >
-                      {/* <label
-                        style={{
-                          position: "absolute",
-                          bottom: "-16px",
-                          right: 0,
-                        }}
-                        className={`flex justify-end items-center ${
-                          currentMode === "dark" ? "text-white" : "text-dark"
-                        } `}
-                      >
-                        {fromRange ? (
-                          <strong
-                            className="mr-4 text-red-600 cursor-pointer"
-                            onClick={() => setFromRange("")}
-                          >
-                            Clear
-                          </strong>
-                        ) : (
-                          ""
-                        )}
-                      </label> */}
+  
                       <Box sx={darkModeColors}>
                         <TextField
                           label="From"
