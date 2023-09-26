@@ -828,6 +828,7 @@ const BulkSMSModal = ({
                               onInput={(e) =>
                                 setSmsTextValue(e.target.value?.toString())
                               }
+                              
                               className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
                               placeholder="Type the message ..."
                               required
@@ -890,7 +891,17 @@ const BulkSMSModal = ({
                   ripple={true}
                   size="lg"
                   type="submit"
-                  disabled={loading ? true : false}
+                  disabled={
+                    loading ? true :
+                    (smsTextValue?.trim() ? 
+                      smsTextValue?.trim()?.length >
+                      (lang === "English"
+                        ? charLimitForEnglish
+                        : charLimitForArabic)
+                        ? true
+                        : false
+                    : true)
+                    }
                   onClick={(e) => sendMsg(e)}
                 >
                   {msgLoading ? (

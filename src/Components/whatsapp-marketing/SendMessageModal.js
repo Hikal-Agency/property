@@ -639,12 +639,14 @@ const SendMessageModal = ({
                       color: "white",
                     }}
                     disabled={
-                      smsTextValue?.trim()?.length >
-                      (lang === "English"
-                        ? charLimitForEnglish
-                        : charLimitForArabic)
-                        ? true
-                        : false
+                      smsTextValue?.trim()
+                        ? smsTextValue?.trim()?.length >
+                          (lang === "English"
+                            ? charLimitForEnglish
+                            : charLimitForArabic)
+                          ? true
+                          : false
+                        : true
                     }
                     sx={{ py: "6px", mr: 2 }}
                     className={`${
