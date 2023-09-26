@@ -17,12 +17,11 @@ import {
 const TodayCallLogs = () => {
   const [noData, setNoData] = useState(false);
   const [callLogs, setCallLogs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const { currentMode, User } = useStateContext();
-
-  const [slide, setSlide] = useState(0);
   const [targetData, setTargetData] = useState([]);
   const [noTargetData, setNoTargetData] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { currentMode, User } = useStateContext();
+  const [slide, setSlide] = useState(0);
 
   useEffect(() => {
     setTimeout(() => {
@@ -47,143 +46,143 @@ const TodayCallLogs = () => {
     },
   ];
 
-  // const target = [
-  //   {
-  //     id: 339,
-  //     userName: "Hanan Nassouh Alzaeem",
-  //     profile_picture:
-  //       "https://staging.hikalcrm.com/storage/profile-pictures/339.jpg",
-  //     target: 3000000,
-  //     booked: 1,
-  //     total_closed: 5,
-  //     month_closed: 2,
-  //     total_closed_amount: 6646500,
-  //     month_closed_amount: 3182500,
-  //   },
-  //   {
-  //     id: 357,
-  //     userName: "Abdullah Zaki",
-  //     profile_picture: null,
-  //     target: 3000000,
-  //     booked: 3,
-  //     total_closed: 1,
-  //     month_closed: 1,
-  //     total_closed_amount: 2370000,
-  //     month_closed_amount: 2370000,
-  //   },
-  //   {
-  //     id: 395,
-  //     userName: "Mohamed Hany Mohamed Ezzat",
-  //     profile_picture: null,
-  //     target: 3000000,
-  //     booked: 1,
-  //     total_closed: 1,
-  //     month_closed: 1,
-  //     total_closed_amount: 1700000,
-  //     month_closed_amount: 1700000,
-  //   },
-  //   {
-  //     id: 120,
-  //     userName: "Hala Hikal",
-  //     profile_picture:
-  //       "https://staging.hikalcrm.com/storage/profile-pictures/120.jpeg",
-  //     target: 3000000,
-  //     booked: 4,
-  //     total_closed: 5,
-  //     month_closed: 0,
-  //     total_closed_amount: 15102408,
-  //     month_closed_amount: 0,
-  //   },
-  //   {
-  //     id: 133,
-  //     userName: "Hossam Hassan",
-  //     profile_picture:
-  //       "https://staging.hikalcrm.com/storage/profile-pictures/133.jpeg",
-  //     target: 5000000,
-  //     booked: 0,
-  //     total_closed: 8,
-  //     month_closed: 0,
-  //     total_closed_amount: 6667000,
-  //     month_closed_amount: 0,
-  //   },
-  //   {
-  //     id: 180,
-  //     userName: "Hams Hossam",
-  //     profile_picture: null,
-  //     target: 3000000,
-  //     booked: 0,
-  //     total_closed: 0,
-  //     month_closed: 0,
-  //     total_closed_amount: null,
-  //     month_closed_amount: 0,
-  //   },
-  //   {
-  //     id: 187,
-  //     userName: "Islam Essam",
-  //     profile_picture: null,
-  //     target: 3000000,
-  //     booked: 0,
-  //     total_closed: 1,
-  //     month_closed: 0,
-  //     total_closed_amount: 700000,
-  //     month_closed_amount: 0,
-  //   },
-  //   {
-  //     id: 231,
-  //     userName: "Mohamed Eid Elnabarawi",
-  //     profile_picture: null,
-  //     target: 3000000,
-  //     booked: 0,
-  //     total_closed: 0,
-  //     month_closed: 0,
-  //     total_closed_amount: null,
-  //     month_closed_amount: 0,
-  //   },
-  //   {
-  //     id: 341,
-  //     userName: "Borhane Zerdoumi",
-  //     profile_picture: null,
-  //     target: 3000000,
-  //     booked: 1,
-  //     total_closed: 0,
-  //     month_closed: 0,
-  //     total_closed_amount: null,
-  //     month_closed_amount: 0,
-  //   },
-  //   {
-  //     id: 342,
-  //     userName: "Hassan Adel Sobhy Mahmoud",
-  //     profile_picture: null,
-  //     target: 3000000,
-  //     booked: 2,
-  //     total_closed: 0,
-  //     month_closed: 0,
-  //     total_closed_amount: null,
-  //     month_closed_amount: 0,
-  //   },
-  //   {
-  //     id: 396,
-  //     userName: "Ruba Al Kaeed",
-  //     profile_picture: null,
-  //     target: 3000000,
-  //     booked: 1,
-  //     total_closed: 0,
-  //     month_closed: 0,
-  //     total_closed_amount: null,
-  //     month_closed_amount: 0,
-  //   },
-  //   {
-  //     id: 397,
-  //     userName: "Cheimaa Merabet",
-  //     profile_picture: null,
-  //     target: 3000000,
-  //     booked: 0,
-  //     total_closed: 1,
-  //     month_closed: 0,
-  //     total_closed_amount: 1835000,
-  //     month_closed_amount: 0,
-  //   },
-  // ];
+  const target = [
+    {
+      id: 339,
+      userName: "Hanan Nassouh Alzaeem",
+      profile_picture:
+        "https://staging.hikalcrm.com/storage/profile-pictures/339.jpg",
+      target: 3000000,
+      booked: 1,
+      total_closed: 5,
+      month_closed: 2,
+      total_closed_amount: 6646500,
+      month_closed_amount: 3182500,
+    },
+    {
+      id: 357,
+      userName: "Abdullah Zaki",
+      profile_picture: null,
+      target: 3000000,
+      booked: 3,
+      total_closed: 1,
+      month_closed: 1,
+      total_closed_amount: 2370000,
+      month_closed_amount: 2370000,
+    },
+    {
+      id: 395,
+      userName: "Mohamed Hany Mohamed Ezzat",
+      profile_picture: null,
+      target: 3000000,
+      booked: 1,
+      total_closed: 1,
+      month_closed: 1,
+      total_closed_amount: 1700000,
+      month_closed_amount: 1700000,
+    },
+    {
+      id: 120,
+      userName: "Hala Hikal",
+      profile_picture:
+        "https://staging.hikalcrm.com/storage/profile-pictures/120.jpeg",
+      target: 3000000,
+      booked: 4,
+      total_closed: 5,
+      month_closed: 0,
+      total_closed_amount: 15102408,
+      month_closed_amount: 0,
+    },
+    {
+      id: 133,
+      userName: "Hossam Hassan",
+      profile_picture:
+        "https://staging.hikalcrm.com/storage/profile-pictures/133.jpeg",
+      target: 5000000,
+      booked: 0,
+      total_closed: 8,
+      month_closed: 0,
+      total_closed_amount: 6667000,
+      month_closed_amount: 0,
+    },
+    {
+      id: 180,
+      userName: "Hams Hossam",
+      profile_picture: null,
+      target: 3000000,
+      booked: 0,
+      total_closed: 0,
+      month_closed: 0,
+      total_closed_amount: null,
+      month_closed_amount: 0,
+    },
+    {
+      id: 187,
+      userName: "Islam Essam",
+      profile_picture: null,
+      target: 3000000,
+      booked: 0,
+      total_closed: 1,
+      month_closed: 0,
+      total_closed_amount: 700000,
+      month_closed_amount: 0,
+    },
+    {
+      id: 231,
+      userName: "Mohamed Eid Elnabarawi",
+      profile_picture: null,
+      target: 3000000,
+      booked: 0,
+      total_closed: 0,
+      month_closed: 0,
+      total_closed_amount: null,
+      month_closed_amount: 0,
+    },
+    {
+      id: 341,
+      userName: "Borhane Zerdoumi",
+      profile_picture: null,
+      target: 3000000,
+      booked: 1,
+      total_closed: 0,
+      month_closed: 0,
+      total_closed_amount: null,
+      month_closed_amount: 0,
+    },
+    {
+      id: 342,
+      userName: "Hassan Adel Sobhy Mahmoud",
+      profile_picture: null,
+      target: 3000000,
+      booked: 2,
+      total_closed: 0,
+      month_closed: 0,
+      total_closed_amount: null,
+      month_closed_amount: 0,
+    },
+    {
+      id: 396,
+      userName: "Ruba Al Kaeed",
+      profile_picture: null,
+      target: 3000000,
+      booked: 1,
+      total_closed: 0,
+      month_closed: 0,
+      total_closed_amount: null,
+      month_closed_amount: 0,
+    },
+    {
+      id: 397,
+      userName: "Cheimaa Merabet",
+      profile_picture: null,
+      target: 3000000,
+      booked: 0,
+      total_closed: 1,
+      month_closed: 0,
+      total_closed_amount: 1835000,
+      month_closed_amount: 0,
+    },
+  ];
 
   const monthNames = [
     "January",
@@ -217,6 +216,7 @@ const TodayCallLogs = () => {
     if (User && socket) {
       socket.emit("get-call-logs");
       socket.emit("get-target-data");
+
       socket.on("call-logs", (data) => {
         if (data) {
           console.log(data);
@@ -230,6 +230,7 @@ const TodayCallLogs = () => {
         }
         setLoading(false);
       });
+
       socket.on("target-data", (data) => {
         if (data) {
           console.log(data);
@@ -480,137 +481,139 @@ const TodayCallLogs = () => {
                   </>
                 ) : item.heading === "MONTHLY TARGET" ? (
                   <>
-                    {/* {loading ? (
+                    {loading ? (
                       <Loader />
                     ) : (
-                      <> */}
-                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-                      {targetData.map((index) => {
-                        return (
-                          <div
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-[#000000]"
-                                : "bg-[#FFFFFF]"
-                            } p-3 rounded-lg shadow-md space-y-2`}
-                          >
-                            <div className="mb-2 flex">
-                              <div>
-                                <img
-                                  src={
-                                    index?.profile_picture
-                                      ? index?.profile_picture
-                                      : "/assets/user.png"
-                                  }
-                                  height={80}
-                                  width={80}
-                                  className={`rounded-sm object-cover relative mr-3`}
-                                  alt=""
-                                />
+                      <>
+                      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+                        {noTargetData === false &&
+                        targetData?.length > 0 &&
+                        targetData?.map((target, index) => {
+                          return (
+                            <div
+                              className={`${
+                                currentMode === "dark"
+                                  ? "bg-[#000000]"
+                                  : "bg-[#FFFFFF]"
+                              } p-3 rounded-lg shadow-md space-y-2`}
+                            >
+                              <div className="mb-2 flex">
+                                <div>
+                                  <img
+                                    src={
+                                      target?.profile_picture
+                                        ? target?.profile_picture
+                                        : "/assets/user.png"
+                                    }
+                                    height={80}
+                                    width={80}
+                                    className={`rounded-sm object-cover relative mr-3`}
+                                    alt=""
+                                  />
+                                </div>
+                                <div className="space-y-2 p-1">
+                                  <div className="font-semibold text-main-red-color">
+                                    {target.userName}
+                                  </div>
+                                  <div className="grid grid-cols-8 flex items-center">
+                                    <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
+                                      <BsFillBookmarkStarFill
+                                        size={20}
+                                        color={"#777777"}
+                                        className="p-1"
+                                      />
+                                    </div>
+                                    <div className="col-span-7">
+                                      {target.booked <= 1 ? (
+                                        <>
+                                          <span className="font-bold">
+                                            {target.booked}
+                                          </span>{" "}
+                                          booked unit
+                                        </>
+                                      ) : (
+                                        <>
+                                          <span className="font-bold">
+                                            {target.booked}
+                                          </span>{" "}
+                                          booked units
+                                        </>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="grid grid-cols-8 flex items-center">
+                                    <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
+                                      <BsFillLockFill
+                                        size={20}
+                                        color={"#777777"}
+                                        className="p-1"
+                                      />
+                                    </div>
+                                    <div className="col-span-7">
+                                      {target.month_closed <= 1 ? (
+                                        <>
+                                          <span className="font-bold">
+                                            {target.month_closed}
+                                          </span>{" "}
+                                          deal in {monthNames[d.getMonth()]}{" "}
+                                        </>
+                                      ) : (
+                                        <>
+                                          <span className="font-bold">
+                                            {target.month_closed}
+                                          </span>{" "}
+                                          deals in {monthNames[d.getMonth()]}{" "}
+                                        </>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="grid grid-cols-8 flex items-center">
+                                    <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
+                                      <BsFillStarFill
+                                        size={20}
+                                        color={"#777777"}
+                                        className="p-1"
+                                      />
+                                    </div>
+                                    <div className="col-span-7">
+                                      <span className="font-bold">
+                                        AED {formatNumber(Number(target.target))}
+                                      </span>{" "}
+                                      target
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                              <div className="space-y-2 p-1">
-                                <div className="font-semibold text-main-red-color">
-                                  {index.userName}
-                                </div>
-                                <div className="grid grid-cols-8 flex items-center">
-                                  <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
-                                    <BsFillBookmarkStarFill
-                                      size={20}
-                                      color={"#777777"}
-                                      className="p-1"
-                                    />
-                                  </div>
-                                  <div className="col-span-7">
-                                    {index.booked <= 1 ? (
-                                      <>
-                                        <span className="font-bold">
-                                          {index.booked}
-                                        </span>{" "}
-                                        booked unit
-                                      </>
-                                    ) : (
-                                      <>
-                                        <span className="font-bold">
-                                          {index.booked}
-                                        </span>{" "}
-                                        booked units
-                                      </>
-                                    )}
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-8 flex items-center">
-                                  <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
-                                    <BsFillLockFill
-                                      size={20}
-                                      color={"#777777"}
-                                      className="p-1"
-                                    />
-                                  </div>
-                                  <div className="col-span-7">
-                                    {index.month_closed <= 1 ? (
-                                      <>
-                                        <span className="font-bold">
-                                          {index.month_closed}
-                                        </span>{" "}
-                                        deal in {monthNames[d.getMonth()]}{" "}
-                                      </>
-                                    ) : (
-                                      <>
-                                        <span className="font-bold">
-                                          {index.month_closed}
-                                        </span>{" "}
-                                        deals in {monthNames[d.getMonth()]}{" "}
-                                      </>
-                                    )}
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-8 flex items-center">
-                                  <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
-                                    <BsFillStarFill
-                                      size={20}
-                                      color={"#777777"}
-                                      className="p-1"
-                                    />
-                                  </div>
-                                  <div className="col-span-7">
-                                    {/* <span className="font-bold text-green-700">AED {index.month_closed_amount}</span>{" "}of{" "} */}
-                                    <span className="font-bold">
-                                      AED {formatNumber(Number(index.target))}
-                                    </span>{" "}
-                                    target
-                                  </div>
-                                </div>
-                              </div>
+                              <ProgressBar
+                                bgcolor="#DA1F26"
+                                height="25px"
+                                progress={(
+                                  (target.month_closed_amount / target.target) *
+                                  100
+                                ).toFixed(1)}
+                                progresswidth={
+                                  target.month_closed_amount >= target.target
+                                    ? 100.0
+                                    : (target.month_closed_amount / target.target) *
+                                      100
+                                }
+                              />
                             </div>
-                            <ProgressBar
-                              bgcolor="#DA1F26"
-                              height="25px"
-                              progress={(
-                                (index.month_closed_amount / index.target) *
-                                100
-                              ).toFixed(1)}
-                              progresswidth={
-                                index.month_closed_amount >= index.target
-                                  ? 100.0
-                                  : (index.month_closed_amount / index.target) *
-                                    100
-                              }
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-                    {noTargetData === true && (
-                      <div className="flex flex-col items-center justify-center h-[80vh] ">
-                        <img
-                          src="./no_data.png"
-                          alt="No data Illustration"
-                          className="w-[500px] h-[500px] object-cover"
-                        />
+                          );
+                        })}
+
                       </div>
+                      {noTargetData === true && (
+                        <div className="flex flex-col items-center justify-center h-[80vh] ">
+                          <img
+                            src="./no_data.png"
+                            alt="No data Illustration"
+                            className="w-[500px] h-[500px] object-cover"
+                          />
+                        </div>
+                      )}
+                    </>
                     )}
-                    {/* </>
-                    )} */}
                   </>
                 ) : (
                   <></>
