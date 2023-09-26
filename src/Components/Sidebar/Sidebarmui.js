@@ -1128,18 +1128,18 @@ const Sidebarmui = () => {
       ],
     },
     // MESSAGING
-    // {
-    //   title: "Messaging",
-    //   icon: <MdApps />,
+    {
+      title: "Messaging",
+      icon: <MdApps />,
 
-    //   links: [
-    //     {
-    //       name: "Chat",
-    //       icon: <BsCircleFill />,
-    //       link: "/chat",
-    //     },
-    //   ],
-    // },
+      links: [
+        {
+          name: "Chat",
+          icon: <BsCircleFill />,
+          link: "/chat",
+        },
+      ],
+    },
     // BILLINGS
     {
       title: "BILLINGS",
