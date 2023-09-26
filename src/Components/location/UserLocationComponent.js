@@ -343,7 +343,10 @@ const UserLocationComponent = () => {
                               // }}
                               className="rounded-full p-1 flex items-center w-fit h-fit text-sm btn-sm"
                             >
-                              <BiCurrentLocation size={20} className="text-primary" />
+                              <BiCurrentLocation
+                                size={20}
+                                className="text-primary"
+                              />
                             </IconButton>
                           </Tooltip>
                         </div>
@@ -353,9 +356,7 @@ const UserLocationComponent = () => {
                 })
               ) : (
                 <div className="my-5">
-                  <h2
-                    className={`text-primary text-center italic text-lg`}
-                  >
+                  <h2 className={`text-primary text-center italic text-lg`}>
                     No location for selected date.
                   </h2>
                 </div>

@@ -443,7 +443,13 @@ const SelectImagesModal = ({
           <IoMdClose size={18} />
         </IconButton>
         <div className="flex flex-col mb-5 justify-center items-center">
-          <h1 className="font-semibold text-lg">Upload Image(s)</h1>
+          <h1
+            className={`font-semibold text-lg ${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            }`}
+          >
+            Upload Image(s)
+          </h1>
         </div>
 
         <div className="flex">
