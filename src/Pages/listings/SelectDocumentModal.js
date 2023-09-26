@@ -18,7 +18,11 @@ const style = {
   boxShadow: 24,
 };
 
-const SelectDocumentModal = ({ fetchSingleListing, selectDocumentModal, handleClose }) => {
+const SelectDocumentModal = ({
+  fetchSingleListing,
+  selectDocumentModal,
+  handleClose,
+}) => {
   const { currentMode, BACKEND_URL } = useStateContext();
   const documentsInputRef = useRef(null);
   const [allDocs, setAllDocs] = useState([]);
@@ -40,11 +44,15 @@ const SelectDocumentModal = ({ fetchSingleListing, selectDocumentModal, handleCl
 
       const DocData = new FormData();
 
-        allDocs?.forEach((doc) => {
-          DocData.append("doc_name", doc);
-        })
+      // allDocs?.forEach((doc) => {
+      //   DocData.append("doc_name", doc);
+      // })
 
-        const token = localStorage.getItem("auth-token");
+      allDocs?.forEach((doc, index) => {
+        DocData.append(`doc_name[${index}]`, doc);
+      });
+
+      const token = localStorage.getItem("auth-token");
       await axios
         .post(
           `${BACKEND_URL}/listings/${selectDocumentModal?.listingId}`,
@@ -85,7 +93,6 @@ const SelectDocumentModal = ({ fetchSingleListing, selectDocumentModal, handleCl
             theme: "light",
           });
         });
-
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong!", {
@@ -133,7 +140,13 @@ const SelectDocumentModal = ({ fetchSingleListing, selectDocumentModal, handleCl
           <IoMdClose size={18} />
         </IconButton>
         <div className="flex flex-col mb-5 justify-center items-center">
-          <h1 className="font-semibold text-lg">Upload Document(s)</h1>
+          <h1
+            className={`font-semibold text-lg ${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            }`}
+          >
+            Upload Document(s)
+          </h1>
         </div>
 
         <div className="mb-5">

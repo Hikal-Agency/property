@@ -25,12 +25,13 @@ const ListingLocation = ({
   listingLocation,
   setListingLocation,
   showOnly = false,
-  currLocByDefault,
+  // currLocByDefault,
   city,
   setCity,
   country,
   setCountry,
 }) => {
+  console.log("listing location: ", listingLocation);
   const { currentMode } = useStateContext();
   const geocoder = new window.google.maps.Geocoder();
 
@@ -95,7 +96,7 @@ const ListingLocation = ({
   }, [listingLocation.lat, listingLocation.lng, map]);
 
   useEffect(() => {
-    if (currLocByDefault) {
+    if (!listingLocation) {
       handleCurrentLocationClick();
     }
   }, []);

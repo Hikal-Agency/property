@@ -1,15 +1,9 @@
 import { useStateContext } from "../../context/ContextProvider";
 import {
   Modal,
-  Backdrop,
-  IconButton,
-  CircularProgress,
-  Box,
-  TextField,
+  Backdrop, Box,
+  TextField
 } from "@mui/material";
-import { IoMdClose } from "react-icons/io";
-import AddLeadComponent from "../Leads/AddLeadComponent";
-import BulkSMSModal from "./BulkSMSModal";
 import moment from "moment";
 import { FaSms } from "react-icons/fa";
 import { RiWhatsappFill } from "react-icons/ri";
@@ -31,7 +25,7 @@ const SingleSMSModal = ({
   singleMsg,
 }) => {
   console.log("sms details: ", singleMsg);
-  const { currentMode, pageState, darkModeColors } = useStateContext();
+  const { currentMode, darkModeColors } = useStateContext();
 
   return (
     <>

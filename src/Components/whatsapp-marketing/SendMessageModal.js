@@ -304,7 +304,13 @@ const SendMessageModal = ({
     if (sendMessageModal.isWhatsapp) {
       sendWhatsappMessage(messageText, selectedContacts);
     } else {
-      if (smsTextValue?.trim()?.length && ((lang === "English" && smsTextValue?.trim()?.length <= charLimitForEnglish) || (lang === "Arabic" && smsTextValue?.trim()?.length <= charLimitForArabic))) {
+      if (
+        smsTextValue?.trim()?.length &&
+        ((lang === "English" &&
+          smsTextValue?.trim()?.length <= charLimitForEnglish) ||
+          (lang === "Arabic" &&
+            smsTextValue?.trim()?.length <= charLimitForArabic))
+      ) {
         sendSMS(smsTextValue?.trim(), selectedContacts);
       }
     }
@@ -469,25 +475,37 @@ const SendMessageModal = ({
                       <>
                         <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
                           <div className="flex items-center justify-between px-3 py-2 border-b">
-                          {lang &&
-                            <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
-                              <div>{lang}</div>
-                              {lang && (
-                                <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
-                              )}
-                              <div
-                                className={`flex flex-wrap items-center ${
-                                  smsTextValue?.trim()?.length > (lang === "English" ? charLimitForEnglish : charLimitForArabic)
-                                    ? "text-primary"
-                                    : ""
-                                }`}
-                              >
-                                {formatNum(smsTextValue?.trim()?.length)}/
-                                {lang === "English" ? charLimitForEnglish : charLimitForArabic}
+                            {lang && (
+                              <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
+                                <div>{lang}</div>
+                                {lang && (
+                                  <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
+                                )}
+                                <div
+                                  className={`flex flex-wrap items-center ${
+                                    smsTextValue?.trim()?.length >
+                                    (lang === "English"
+                                      ? charLimitForEnglish
+                                      : charLimitForArabic)
+                                      ? "text-primary"
+                                      : ""
+                                  }`}
+                                >
+                                  {formatNum(smsTextValue?.trim()?.length)}/
+                                  {lang === "English"
+                                    ? charLimitForEnglish
+                                    : charLimitForArabic}
+                                  <p className="ml-2">
+                                    {smsTextValue?.trim()?.length >
+                                    (lang === "English"
+                                      ? charLimitForEnglish
+                                      : charLimitForArabic)
+                                      ? "Message Character limit exceeded."
+                                      : ""}
+                                  </p>
+                                </div>
                               </div>
-                              
-                            </div>
-                            }
+                            )}
                             <button
                               type="button"
                               className="p-2 text-gray-500 rounded cursor-pointer sm:ml-auto hover:text-gray-900 hover:bg-gray-100"
@@ -517,7 +535,7 @@ const SendMessageModal = ({
                                 setsmsTextValue(e.target.value?.toString())
                               }
                               className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
-                              placeholder="Type the message..."
+                              placeholder="Type the message ..."
                               required
                             ></textarea>
                           </div>
@@ -618,9 +636,26 @@ const SendMessageModal = ({
                   <Button
                     ripple="true"
                     variant="contained"
-                    style={{color: "white"}}
-                    sx={{ py: "6px", mr: 2}}
-                    className="bg-btn-primary"
+                    style={{
+                      color: "white",
+                    }}
+                    disabled={
+                      smsTextValue?.trim()?.length >
+                      (lang === "English"
+                        ? charLimitForEnglish
+                        : charLimitForArabic)
+                        ? true
+                        : false
+                    }
+                    sx={{ py: "6px", mr: 2 }}
+                    className={`${
+                      smsTextValue?.trim()?.length >
+                      (lang === "English"
+                        ? charLimitForEnglish
+                        : charLimitForArabic)
+                        ? "bg-gray"
+                        : "bg-btn-primary"
+                    }`}
                     size="small"
                     type="submit"
                   >

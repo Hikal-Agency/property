@@ -76,8 +76,12 @@ const SelectImagesModal = ({
       const ImageData = new FormData();
       ImageData.append("id", selectImagesModal?.listingId);
 
-        allImages?.forEach((image) => {
-          ImageData.append("img_name", image);
+        // allImages?.forEach((image) => {
+        //   ImageData.append("img_name", image);
+        // })
+
+        allImages?.forEach((image, index) => {
+          ImageData.append(`img_name[${index}]`, image);
         })
 
         const token = localStorage.getItem("auth-token");
@@ -178,7 +182,13 @@ const SelectImagesModal = ({
           <IoMdClose size={18} />
         </IconButton>
         <div className="flex flex-col mb-5 justify-center items-center">
-          <h1 className="font-semibold text-lg">Upload Image(s)</h1>
+          <h1
+            className={`font-semibold text-lg ${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            }`}
+          >
+            Upload Image(s)
+          </h1>
         </div>
 
         <div className="flex">

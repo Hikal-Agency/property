@@ -1,7 +1,7 @@
 import { Avatar, Box, IconButton, ListItemIcon, Tooltip } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { AiFillGift } from "react-icons/ai";
-import { FaLink, FaSnowflake, FaMobile, FaInbox } from "react-icons/fa";
+import { FaLink, FaSnowflake, FaMobile, FaInbox, FaSms } from "react-icons/fa";
 import { socket } from "../../Pages/App";
 import {
   BsStopCircleFill,
@@ -14,7 +14,7 @@ import { BsBuildingGear } from "react-icons/bs";
 
 import { MdOutlinePayment } from "react-icons/md";
 import { AiTwotoneCalendar } from "react-icons/ai";
-import { MdOutlineCampaign } from "react-icons/md";
+import { MdOutlineCampaign, MdSettings } from "react-icons/md";
 import { MdDiscount } from "react-icons/md";
 
 import { HiTicket, HiDocumentReport, HiUsers, HiSearch } from "react-icons/hi";
@@ -1002,19 +1002,14 @@ const Sidebarmui = () => {
       icon: <MdApps />,
       links: [
         {
-          name: "Appointments",
-          icon: <BsCalendarWeekFill />,
-          link: "/appointments",
-        },
-        {
-          name: "Roles",
-          icon: <BsPersonFillLock />,
-          link: "/roles",
-        },
-        {
           name: "Meetings",
           icon: <BsCalendarWeekFill />,
           link: "/meetings",
+        },
+        {
+          name: "Appointments",
+          icon: <BsCalendarWeekFill />,
+          link: "/appointments",
         },
         // {
         //   name: "Add Users",
@@ -1067,25 +1062,14 @@ const Sidebarmui = () => {
           icon: <MdLeaderboard />,
           link: "/leaderboard",
         },
-        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
-      ],
-    },
-    {
-      title: "LOCATION",
-      icon: <MdLocationOn />,
-      links: [
         {
-          name: "Meetings",
-          icon: <ImLocation size={20} />,
-          link: "/location/meetinglocation",
-        },
-        {
-          name: "Live",
-          icon: <MdPersonPinCircle size={22} />,
-          link: "/location/userlocation",
+          name: "Roles",
+          icon: <BsPersonFillLock />,
+          link: "/roles",
         },
       ],
     },
+    // SOCIAL MEDIA
     {
       title: "Social Media",
       icon: <GoBrowser />,
@@ -1104,17 +1088,24 @@ const Sidebarmui = () => {
         // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
       ],
     },
+    // LOCATION
     {
-      title: "BILLINGS",
-      icon: <MdOutlinePayment />,
+      title: "LOCATION",
+      icon: <MdLocationOn />,
       links: [
         {
-          name: "Payments",
-          icon: <BsFillCreditCard2FrontFill />,
-          link: "/marketing/payments",
+          name: "Meetings",
+          icon: <ImLocation />,
+          link: "/location/meetinglocation",
+        },
+        {
+          name: "Live",
+          icon: <MdPersonPinCircle />,
+          link: "/location/userlocation",
         },
       ],
     },
+    // ATTENDANCE
     {
       title: "ATTENDANCE",
       icon: <AiTwotoneCalendar />,
@@ -1136,6 +1127,32 @@ const Sidebarmui = () => {
         },
       ],
     },
+    // MESSAGING
+    {
+      title: "Messaging",
+      icon: <MdApps />,
+
+      links: [
+        {
+          name: "Chat",
+          icon: <BsCircleFill />,
+          link: "/chat",
+        },
+      ],
+    },
+    // BILLINGS
+    {
+      title: "BILLINGS",
+      icon: <MdOutlinePayment />,
+      links: [
+        {
+          name: "Payments",
+          icon: <BsFillCreditCard2FrontFill />,
+          link: "/marketing/payments",
+        },
+      ],
+    },
+    // SUPPORT
     {
       title: "SUPPORT",
       icon: <BiSupport />,
@@ -1162,21 +1179,10 @@ const Sidebarmui = () => {
         },
       ],
     },
-
-    {
-      title: "Messaging",
-      icon: <MdApps />,
-
-      links: [
-        {
-          name: "Chat",
-          icon: <BsCircleFill />,
-          link: "/chat",
-        },
-      ],
-    },
+    // MISC
     {
       title: "MISC",
+      icon: <MdSettings />,
       links: [
         {
           name: "Settings",
@@ -1217,8 +1223,8 @@ const Sidebarmui = () => {
             link: "/marketing/chat",
           },
           {
-            name: "Contacts/SMS",
-            icon: <MdContactPage />,
+            name: "SMS",
+            icon: <FaSms />,
             link: "/marketing/contacts",
           },
           {

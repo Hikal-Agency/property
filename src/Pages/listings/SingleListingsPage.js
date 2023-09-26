@@ -9,7 +9,11 @@ import axios from "../../axoisConfig";
 import Error404 from "../Error";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
+<<<<<<< HEAD
 import { load } from "../App";
+=======
+import FileViewer from "../../Components/_elements/FileViewer";
+>>>>>>> bae5fe5e3e0ba76e04077bbcfe49cef7119b68dd
 
 import { BiBed, BiBath } from "react-icons/bi";
 import { BsImages, BsFiles, BsPen, BsFileEarmarkText } from "react-icons/bs";
@@ -23,10 +27,12 @@ import {
 } from "react-icons/tb";
 import SelectImagesModal from "./SelectImagesModal";
 import SelectDocumentModal from "./SelectDocumentModal";
+import EditListingModal from "../../Components/Leads/listings/EditListingComponent";
 
 const SingleListingsPage = () => {
   const [loading, setloading] = useState(true);
   const [listData, setListingData] = useState({});
+  const [openEdit, setOpenEdit] = useState(false);
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [selectImagesModal, setSelectImagesModal] = useState({
     isOpen: false,
@@ -43,11 +49,11 @@ const SingleListingsPage = () => {
 
   const static_img = "../assets/no-image.png";
 
+  const handleEdit = () => {
+    setOpenEdit(listData);
+  };
+
   const { lid } = useParams();
-
-  console.log("LID: ", lid);
-
-  console.log("list data: ", listData);
 
   let lat = "";
   let long = "";
@@ -107,7 +113,6 @@ const SingleListingsPage = () => {
     const [latValue, longValue] = latLongString.split(",");
     lat = latValue;
     long = longValue;
-
   }
 
   console.log("maps: ", load);
@@ -130,16 +135,16 @@ const SingleListingsPage = () => {
                 {/* IMAGES  */}
                 <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
                   {listData?.images?.map((pic) =>
-                      pic?.img_url ? (
-                        <img
-                          src={pic?.img_url}
-                          alt={pic?.img_alt}
-                          className="w-auto h-[200px] object-cover m-1 rounded-md"
-                        />
-                      ) : (
-                        <></>
-                      )
-                    )}
+                    pic?.img_url ? (
+                      <img
+                        src={pic?.img_url}
+                        alt={pic?.img_alt}
+                        className="w-auto h-[200px] object-cover m-1 rounded-md"
+                      />
+                    ) : (
+                      <></>
+                    )
+                  )}
                 </div>
 
                 <div className="grid sm:grid-cols-1 md:grid-cols-2">
@@ -166,7 +171,10 @@ const SingleListingsPage = () => {
                     <div className="flex items-center gap-1 justify-end">
                       {/* EDIT DETAILS  */}
                       <Tooltip title="Edit Listing Details" arrow>
-                        <IconButton className={`rounded-full`}>
+                        <IconButton
+                          className={`rounded-full`}
+                          onClick={handleEdit}
+                        >
                           <BsPen size={20} color={"#AAAAAA"} />
                         </IconButton>
                       </Tooltip>
@@ -275,6 +283,7 @@ const SingleListingsPage = () => {
                   </div>
 
                   {/* IN MAP  */}
+<<<<<<< HEAD
                   <div className="w-full my-5 h-[50vh] border border-primary">
                     {
                       !load?.isLoaded ? (
@@ -291,17 +300,44 @@ const SingleListingsPage = () => {
                           position={{
                             lat: Number(parseFloat(lat)),
                             lng: Number(parseFloat(long)),
+=======
+
+                  {listData?.latlong === null || listData?.latlong === "" ? (
+                    <></>
+                  ) : (
+                    <div className="w-full my-5 h-[50vh] border border-primary">
+                      {typeof window.google === "undefined" ? (
+                        <div>Your map is loading...</div>
+                      ) : (
+                        <GoogleMap
+                          zoom={12}
+                          center={{
+                            lat: parseFloat(lat),
+                            lng: parseFloat(long),
+>>>>>>> bae5fe5e3e0ba76e04077bbcfe49cef7119b68dd
                           }}
-                          icon={{
-                            url: <MdLocationPin size={30} color={"#DA1F26"} />,
-                            scaledSize: window["google"]["maps"]
-                              ? new window.google.maps.Size(50, 50)
-                              : 0,
-                          }}
-                        ></Marker>
-                      </GoogleMap>
-                    )}
-                  </div>
+                          mapContainerStyle={mapContainerStyle}
+                          options={options}
+                        >
+                          <Marker
+                            key={listData?.id}
+                            position={{
+                              lat: Number(parseFloat(lat)),
+                              lng: Number(parseFloat(long)),
+                            }}
+                            icon={{
+                              url: (
+                                <MdLocationPin size={30} color={"#DA1F26"} />
+                              ),
+                              scaledSize: window.google.maps
+                                ? new window.google.maps.Size(50, 50)
+                                : null,
+                            }}
+                          />
+                        </GoogleMap>
+                      )}
+                    </div>
+                  )}
 
                   <div className="bg-primary h-0.5 w-full my-5"></div>
 
@@ -374,16 +410,20 @@ const SingleListingsPage = () => {
                             {listData?.documents?.map((l) => {
                               return l?.doc_url ? (
                                 <div className="p-2 flex items-center justify-center">
-                                  <div className="text-center">
+                                  <div className="w-full text-center">
+                                    {/* <div className="w-full flex justify-center"> */}
                                     <BsFileEarmarkText
                                       size={70}
                                       color={"#AAAAAA"}
+                                      className="w-full flex justify-center"
                                     />
                                     <div className="mt-3">{l?.doc_name}</div>
                                   </div>
                                 </div>
                               ) : (
-                                <></>
+                                <div className="py-2 text-xs italic text-primary">
+                                  No documents to show
+                                </div>
                               );
                             })}
                           </div>
@@ -409,6 +449,14 @@ const SingleListingsPage = () => {
                 fetchSingleListing={fetchSingleListing}
                 selectDocumentModal={selectDocumentModal}
                 handleClose={() => setSelectDocumentModal({ isOpen: false })}
+              />
+            )}
+            {openEdit && (
+              <EditListingModal
+                setOpenEdit={setOpenEdit}
+                openEdit={openEdit}
+                fetchSingleListing={fetchSingleListing}
+                handleClose={() => setOpenEdit(false)}
               />
             )}
           </>

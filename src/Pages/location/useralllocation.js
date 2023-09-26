@@ -29,6 +29,8 @@ const UserAllLocation = (props) => {
   const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
   const tomorrow = moment().add(1, "days").format("YYYY-MM-DD");
 
+  console.log("parentDate: ", parentDate);
+
   const mapContainerStyle = {
     width: "100%",
     height: "100%",

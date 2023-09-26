@@ -141,18 +141,18 @@ const SecondaryListings = ({
                     className="rounded-md flex flex-col justify-between"
                   >
                     <div className="">
-                      {listing?.pictures === "null" || listing?.pictures === "" || listing?.pictures === null ? (
+                      {listing?.images.length > 0 ? (
+                        <img
+                          src={listing?.images[0]?.img_url}
+                          alt="secondary"
+                          className="w-full h-[200px] object-cover"
+                          onClick={() => handleImageClick(listing?.images[0]?.img_url)}
+                        />
+                      ) : (
                         <img
                           src={static_img}
                           alt="secondary"
                           className="w-full h-[200px] object-cover"
-                        />
-                      ) : (
-                        <img
-                          src={listing?.pictures?.split(",")[0]}
-                          alt="secondary"
-                          className="w-full h-[200px] object-cover"
-                          onClick={() => handleImageClick(listing?.pictures?.split(",")[0])}
                         />
                       )}
                       
