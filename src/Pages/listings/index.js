@@ -23,10 +23,8 @@ import AddUserModel from "../../Components/addUser/AddUserModel";
 import SecondaryListings from "../../Components/Listings/SecondaryListings";
 import AddNewListingModal from "../../Components/Listings/AddNewListingModal";
 import { Link } from "react-router-dom";
-import {
-  BsBuildingAdd,
-  BsSearch
-} from "react-icons/bs";
+import { BsBuildingAdd, BsSearch } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 const Listings = () => {
   const {
@@ -52,7 +50,6 @@ const Listings = () => {
   const [listingModalOpen, setListingModalOpen] = useState(false);
   const handleCloseListingModal = () => setListingModalOpen(false);
   const [open, setOpen] = useState(false);
-
 
   const searchRef = useRef("");
 
@@ -99,7 +96,17 @@ const Listings = () => {
       setbtnloading(false);
       //   console.log("All Offers: ",all_listings)
     } catch (error) {
-      console.log("Offers not fetched. ", error);
+      console.log("listings not fetched. ", error);
+      toast.error("Unable to fetch listings.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -144,12 +151,10 @@ const Listings = () => {
                 <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
                   className={`text-lg font-semibold ${
-                    currentMode === "dark"
-                      ? "text-white"
-                      : "text-black"
+                    currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  Secondary Listings {" "}
+                  Secondary Listings{" "}
                   <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {total}
                   </span>
@@ -190,7 +195,6 @@ const Listings = () => {
                   setListingModalOpen={setListingModalOpen}
                 />
               )}
- 
             </div>
             <div className={`flex items-center justify-between`}>
               <Box
@@ -234,8 +238,7 @@ const Listings = () => {
                             : "#B91C1C !important",
                       },
                       "& .MuiFormControlLabel-label ": {
-                        color:
-                          currentMode === "dark" && "#ffffff !important",
+                        color: currentMode === "dark" && "#ffffff !important",
                         fontWeight: "semi-bold",
                       },
                     }}
@@ -269,7 +272,6 @@ const Listings = () => {
                     <MenuItem value={"10 Bedrooms"}>10 Bedrooms</MenuItem>
                     <MenuItem value={"Retail"}>Retail</MenuItem>
                   </TextField>
-                  
                   <TextField
                     id="bathrooms"
                     // value={PropertyType}
@@ -295,12 +297,9 @@ const Listings = () => {
                     <MenuItem value={"7 Bathrooms"}>7 Bathrooms</MenuItem>
                     <MenuItem value={"8 Bathrooms"}>8 Bathrooms</MenuItem>
                     <MenuItem value={"9 Bathrooms"}>9 Bathrooms</MenuItem>
-                    <MenuItem value={"10 Bathrooms"}>
-                      10 Bathrooms
-                    </MenuItem>
+                    <MenuItem value={"10 Bathrooms"}>10 Bathrooms</MenuItem>
                     <MenuItem value={"Unavailabe"}>Unavailabe</MenuItem>
                   </TextField>
-                  
                   <TextField
                     id="sortby"
                     // value={PropertyType}
@@ -317,9 +316,7 @@ const Listings = () => {
                     }}
                     select
                   >
-                    <MenuItem value="Latest" >
-                      Latest
-                    </MenuItem>
+                    <MenuItem value="Latest">Latest</MenuItem>
                     <MenuItem value="Price High to Low">
                       Price High to Low
                     </MenuItem>
@@ -349,6 +346,7 @@ const Listings = () => {
               setPageBeingScrolled={setPageBeingScrolled}
               currentPage={currentPage}
               lastPage={lastPage}
+              FetchListings={FetchListings}
             />
           </div>
         </div>

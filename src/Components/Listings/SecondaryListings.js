@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, CircularProgress, IconButton, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  Modal,
+  Tooltip,
+} from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { Link } from "react-router-dom";
 
-import { 
-  BiBed, 
-  BiBath 
-} from "react-icons/bi";
-import {
-  BsListStars
-} from "react-icons/bs";
-import {
-  MdClose
-} from "react-icons/md";
-
+import { BiBed, BiBath } from "react-icons/bi";
+import { BsListStars, BsFillTrashFill } from "react-icons/bs";
+import { MdClose } from "react-icons/md";
+import axios from "../../axoisConfig";
+import { toast } from "react-toastify";
+import { IoIosAlert } from "react-icons/io";
 
 const ribbonStyles = {
   width: "200px",
@@ -68,11 +70,13 @@ const SecondaryListings = ({
   btnloading,
   setCurrentPage,
   setPageBeingScrolled,
+  FetchListings,
 }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, BACKEND_URL } = useStateContext();
   const static_img = "assets/no-image.png";
   const hikalre = "fullLogoRE.png";
   const hikalrewhite = "fullLogoREWhite.png";
+  const token = localStorage.getItem("auth-token");
 
   const imagePaths = ["../assets/offers_static_img.png"];
 
@@ -85,10 +89,65 @@ const SecondaryListings = ({
 
   const [showOverlay, setShowOverlay] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
+  const [openDialogue, setOpenDialogue] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
+  const handleCloseModal = () => setOpenDialogue(false);
+
+  const style = {
+    transform: "translate(-50%, -50%)",
+    boxShadow: 24,
+  };
 
   const handleImageClick = (imageUrl) => {
     setActiveImage(imageUrl);
     setShowOverlay(true);
+  };
+
+  const handleOpenDialogue = (e, id, name) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpenDialogue([id, name]);
+  };
+
+  const handleDelete = async (e, id) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setBtnLoading(true);
+    try {
+      const deleteList = await axios.delete(`${BACKEND_URL}/listings/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("list deleted: ", deleteList);
+      toast.success("List deleted successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setBtnLoading(false);
+      setOpenDialogue(false);
+      FetchListings(token);
+    } catch (error) {
+      setBtnLoading(false);
+      console.log("error delete list: ", error);
+      toast.error("Unable to delete list.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const handleCloseOverlay = () => {
@@ -137,16 +196,16 @@ const SecondaryListings = ({
                       : "bg-[#EEEEEE] text-black"
                   } rounded-lg`}
                 >
-                  <div
-                    className="rounded-md flex flex-col justify-between"
-                  >
+                  <div className="rounded-md flex flex-col justify-between">
                     <div className="">
                       {listing?.images.length > 0 ? (
                         <img
                           src={listing?.images[0]?.img_url}
                           alt="secondary"
                           className="w-full h-[200px] object-cover"
-                          onClick={() => handleImageClick(listing?.images[0]?.img_url)}
+                          onClick={() =>
+                            handleImageClick(listing?.images[0]?.img_url)
+                          }
                         />
                       ) : (
                         <img
@@ -155,11 +214,13 @@ const SecondaryListings = ({
                           className="w-full h-[200px] object-cover"
                         />
                       )}
-                      
-                      <div className={`absolute top-0 right-2 p-2 pb-5 rounded-b-full bg-primary`}>
+
+                      <div
+                        className={`absolute top-0 right-2 p-2 pb-5 rounded-b-full bg-primary`}
+                      >
                         <Tooltip title="View Property">
                           <Link
-                            sx={{w: "100%" }}
+                            sx={{ w: "100%" }}
                             to={`/secondaryListings/${listing?.id}`}
                             target="_blank"
                           >
@@ -169,7 +230,9 @@ const SecondaryListings = ({
                           </Link>
                         </Tooltip>
                       </div>
-                      <div className={`absolute top-[200px] right-0 p-2 rounded-b-full`}>
+                      <div
+                        className={`absolute top-[200px] right-0 p-2 rounded-b-full`}
+                      >
                         <img
                           src={currentMode === "dark" ? hikalrewhite : hikalre}
                           alt="secondary"
@@ -178,14 +241,16 @@ const SecondaryListings = ({
                       </div>
                     </div>
                     <Link
-                      sx={{w: "100%" }}
+                      sx={{ w: "100%" }}
                       to={`/secondaryListings/${listing?.id}`}
                       target="_blank"
-                    >                      
+                    >
                       <div className="px-5 py-3">
                         <h1
                           className={`${
-                            currentMode === "dark" ? "text-white" : "text-[#000000]"
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-[#000000]"
                           } my-2 flex justify-between `}
                           style={{ textTransform: "capitalize" }}
                         >
@@ -193,33 +258,65 @@ const SecondaryListings = ({
                             {listing?.price || "Unavailable"}
                           </span>
                         </h1>
-                        <div className={`${
-                            currentMode === "dark" ? "text-white" : "text-[#000000]"
-                          }  my-2 font-semibold`}>
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-[#000000]"
+                          }  my-2 font-semibold`}
+                        >
                           {listing?.project || "Project unknown"}
                         </div>
-                        <div className={`${
-                            currentMode === "dark" ? "text-white" : "text-[#000000]"
-                          }  my-2`}>
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-[#000000]"
+                          }  my-2`}
+                        >
                           {listing?.address || "Address unknown"}
                         </div>
-                        
+
                         <div className="my-2">
                           <div className="flex space-x-3 items-center">
                             <BiBed className="text-[#AAAAAA]" size={20} />
                             <p className="text-start">
-                              <span>{listing?.bedrooms === "null" ? "-" : listing?.bedrooms}</span>{" "} 
-                              <span>{listing?.property_type === "null" ? "-" : listing?.property_type}</span>
+                              <span>
+                                {listing?.bedrooms === "null"
+                                  ? "-"
+                                  : listing?.bedrooms}
+                              </span>{" "}
+                              <span>
+                                {listing?.property_type === "null"
+                                  ? "-"
+                                  : listing?.property_type}
+                              </span>
                             </p>
                           </div>
                         </div>
-                        <div className="my-2">
+                        <div className="my-2 w-full flex items-center justify-between">
                           <div className="flex space-x-3 items-center">
                             <BiBath className="text-[#AAAAAA]" size={20} />
                             <p className="text-start">
-                              <span>{listing?.bathrooms === "null" ? "-" : listing?.bathrooms}</span>
+                              <span>
+                                {listing?.bathrooms === "null"
+                                  ? "-"
+                                  : listing?.bathrooms}
+                              </span>
                             </p>
                           </div>
+                          <IconButton
+                            className="bg-btn-primary p-3 rounded-fulls"
+                            onClick={(e) =>
+                              handleOpenDialogue(
+                                e,
+                                listing?.id,
+                                listing?.project
+                              )
+                            }
+                          >
+                            <BsFillTrashFill color="#ffffff" />
+                          </IconButton>
                         </div>
                       </div>
                     </Link>
@@ -250,23 +347,91 @@ const SecondaryListings = ({
           </div>
         )}
 
+        {/* DELETE CONFIRMATION */}
+        {openDialogue[0] && (
+          <Modal
+            keepMounted
+            open={openDialogue[0]}
+            onClose={handleCloseModal}
+            aria-labelledby="keep-mounted-modal-title"
+            aria-describedby="keep-mounted-modal-description"
+            closeAfterTransition
+            // BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <div
+              style={style}
+              className={`w-[calc(100%-20px)] md:w-[40%]  ${
+                currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
+              } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
+            >
+              <div className="flex flex-col justify-center items-center">
+                <IoIosAlert
+                  size={50}
+                  className="text-main-red-color text-2xl"
+                />
+                <h1
+                  className={`font-semibold pt-3 text-lg ${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  }`}
+                >
+                  {`Do you really want to delete this List ${openDialogue[1]}?`}
+                </h1>
+              </div>
+
+              <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                <Button
+                  className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                  ripple="true"
+                  size="lg"
+                  onClick={(e) => handleDelete(e, openDialogue[0])}
+                >
+                  {btnLoading ? (
+                    <CircularProgress size={18} sx={{ color: "blue" }} />
+                  ) : (
+                    <span>Confirm</span>
+                  )}
+                </Button>
+
+                <Button
+                  onClick={handleCloseModal}
+                  ripple="true"
+                  variant="outlined"
+                  className={`shadow-none  rounded-md text-sm  ${
+                    currentMode === "dark"
+                      ? "text-white border-white"
+                      : "text-main-red-color border-main-red-color"
+                  }`}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </Modal>
+        )}
+
         {/* PICTURE OVERLAY  */}
         {showOverlay && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="fixed inset-0 bg-black opacity-75"></div>
             <div className="relative z-10 bg-white">
               <img src={activeImage} alt="overlay" className="h-[90vh]" />
-              <button 
-                onClick={handleCloseOverlay} 
+              <button
+                onClick={handleCloseOverlay}
                 className="absolute top-4 right-4 text-2xl text-white bg-primary p-2 rounded-full m-0"
               >
                 <MdClose />
               </button>
-              <img src={hikalrewhite} alt="hikal real estate" className="absolute right-4 bottom-4 w-[100px] p-2 bg-[#000000] bg-opacity-70" />
+              <img
+                src={hikalrewhite}
+                alt="hikal real estate"
+                className="absolute right-4 bottom-4 w-[100px] p-2 bg-[#000000] bg-opacity-70"
+              />
             </div>
           </div>
         )}
-
       </Box>
     </div>
   );
