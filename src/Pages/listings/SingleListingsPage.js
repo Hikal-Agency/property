@@ -282,7 +282,7 @@ const SingleListingsPage = () => {
                     <></>
                   ) : (
                     <div className="w-full my-5 h-[50vh] border border-primary">
-                      {typeof window.google !== "object" ? (
+                      {typeof window.google === "undefined" ? (
                         <div>Your map is loading...</div>
                       ) : (
                         <GoogleMap
@@ -304,11 +304,11 @@ const SingleListingsPage = () => {
                               url: (
                                 <MdLocationPin size={30} color={"#DA1F26"} />
                               ),
-                              scaledSize: window["google"]["maps"]
+                              scaledSize: window.google.maps
                                 ? new window.google.maps.Size(50, 50)
-                                : 0,
+                                : null,
                             }}
-                          ></Marker>
+                          />
                         </GoogleMap>
                       )}
                     </div>
