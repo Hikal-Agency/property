@@ -24,7 +24,7 @@ const UserLocationComponent = () => {
   } = useStateContext();
 
   const [loading, setloading] = useState(true);
-  const [filterDate, setFilterDate] = useState();
+  const [filterDate, setFilterDate] = useState(moment().format("YYYY-MM-DD"));
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("auth-token");
