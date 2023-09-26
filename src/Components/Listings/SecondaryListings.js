@@ -16,6 +16,7 @@ import { MdClose } from "react-icons/md";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { IoIosAlert } from "react-icons/io";
+import usePermission from "../../utils/usePermission";
 
 const ribbonStyles = {
   width: "200px",
@@ -73,6 +74,7 @@ const SecondaryListings = ({
   FetchListings,
 }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
+  const { hasPermission } = usePermission();
   const static_img = "assets/no-image.png";
   const hikalre = "fullLogoRE.png";
   const hikalrewhite = "fullLogoREWhite.png";
@@ -305,18 +307,20 @@ const SecondaryListings = ({
                               </span>
                             </p>
                           </div>
-                          <IconButton
-                            className="bg-btn-primary p-3 rounded-fulls"
-                            onClick={(e) =>
-                              handleOpenDialogue(
-                                e,
-                                listing?.id,
-                                listing?.project
-                              )
-                            }
-                          >
-                            <BsFillTrashFill color="#ffffff" />
-                          </IconButton>
+                          {hasPermission("delete_list") && (
+                            <IconButton
+                              className="bg-btn-primary p-3 rounded-fulls"
+                              onClick={(e) =>
+                                handleOpenDialogue(
+                                  e,
+                                  listing?.id,
+                                  listing?.project
+                                )
+                              }
+                            >
+                              <BsFillTrashFill color="#ffffff" />
+                            </IconButton>
+                          )}
                         </div>
                       </div>
                     </Link>
