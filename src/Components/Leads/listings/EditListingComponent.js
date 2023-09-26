@@ -30,11 +30,14 @@ const style = {
   boxShadow: 24,
 };
 
-const EditListingModal = ({ handleClose, openEdit }) => {
+const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
   const LeadData = openEdit;
   console.log("lead data in listing: ", LeadData);
   const { leadId } = LeadData;
   const token = localStorage.getItem("auth-token");
+  const splitLocation = LeadData?.latlong.split(",");
+  console.log("lat long split", splitLocation);
+  console.log("lat long array", splitLocation[0], splitLocation[1]);
 
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [loading, setloading] = useState(false);
@@ -42,10 +45,11 @@ const EditListingModal = ({ handleClose, openEdit }) => {
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [listingLocation, setListingLocation] = useState({
-    lat: 0,
-    lng: 0,
+    lat: parseFloat(splitLocation[0]),
+    lng: parseFloat(splitLocation[1]),
     addressText: "",
   });
+
   const [sellerDetails, setSellerDetails] = useState({
     leadName: LeadData?.seller_name,
     leadContact: LeadData?.seller_contact,
@@ -179,80 +183,41 @@ const EditListingModal = ({ handleClose, openEdit }) => {
     const lng = listingLocation?.lng;
     const location = [lat, lng].join(",");
 
-    const LeadData = new FormData();
+    const Data = new FormData();
 
     if (sellerDetails?.leadName)
-      LeadData.append("seller_name", sellerDetails?.leadName);
+      Data.append("seller_name", sellerDetails?.leadName);
     if (sellerDetails?.leadContact)
-      LeadData.append("seller_contact", sellerDetails?.leadContact);
+      Data.append("seller_contact", sellerDetails?.leadContact);
     if (sellerDetails?.leadEmail)
-      LeadData.append("seller_email", sellerDetails?.leadEmail);
+      Data.append("seller_email", sellerDetails?.leadEmail);
     if (sellerDetails?.propertyPrice)
-      LeadData.append("price", sellerDetails?.propertyPrice);
+      Data.append("price", sellerDetails?.propertyPrice);
     if (projectDetails?.property_type)
-      LeadData.append("property_type", projectDetails?.property_type);
+      Data.append("property_type", projectDetails?.property_type);
     if (projectDetails?.project)
-      LeadData.append("project", projectDetails?.project);
+      Data.append("project", projectDetails?.project);
     if (projectDetails?.bedrooms)
-      LeadData.append("bedrooms", projectDetails?.bedrooms);
+      Data.append("bedrooms", projectDetails?.bedrooms);
     if (projectDetails?.bathrooms)
-      LeadData.append("bathrooms", projectDetails?.bathrooms);
-    if (otherDetails?.address)
-      LeadData.append("address", otherDetails?.address);
-    if (otherDetails?.area) LeadData.append("area", otherDetails?.area);
-    if (LeadData?.leadId) LeadData.append("lead_id", LeadData?.leadId);
-    if (location) LeadData.append("latlong", location);
-    LeadData.append("listing_type", "Secondary"); //Always appended
-    LeadData.append("listing_status", "New"); //Always appended
-    LeadData.append("addedBy", User?.id);
-    LeadData.append("addedBy_name", User?.userName);
+      Data.append("bathrooms", projectDetails?.bathrooms);
+    if (otherDetails?.address) Data.append("address", otherDetails?.address);
+    if (otherDetails?.area) Data.append("area", otherDetails?.area);
+    if (LeadData?.leadId) Data.append("lead_id", LeadData?.leadId);
+    if (location) Data.append("latlong", location);
+    Data.append("listing_type", "Secondary"); //Always appended
+    Data.append("listing_status", "New"); //Always appended
+    Data.append("addedBy", User?.id);
+    Data.append("addedBy_name", User?.userName);
 
-    for (var pair of LeadData.entries()) {
+    for (var pair of Data.entries()) {
       console.log(pair[0] + ", " + pair[1]);
     }
-
-    // await axios
-    //   .post(`${BACKEND_URL}/listings`, LeadData, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: "Bearer " + token,
-    //     },
-    //   })
-    //   .then((result) => {
-    //     console.log(result);
-    //     setloading(false);
-
-    //     toast.success("Listing Added Successfully", {
-    //       position: "top-right",
-    //       autoClose: 3000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "light",
-    //     });
-    //     handleCloseListingModal();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setloading(false);
-    //     toast.error("Something went wrong! Please Try Again", {
-    //       position: "top-right",
-    //       autoClose: 3000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "light",
-    //     });
-    //   });
 
     try {
       const result = await axios.post(
         `${BACKEND_URL}/listings/${LeadData?.id}`,
-        LeadData,
+        Data,
         {
           headers: {
             "Content-Type": "application/json",
@@ -274,24 +239,8 @@ const EditListingModal = ({ handleClose, openEdit }) => {
         theme: "light",
       });
 
-      // Make an additional API call to update 'is_seller' value
-      console.log("lead data after listingcall: ", LeadData);
-
-      await axios.post(
-        `${BACKEND_URL}/leads/${leadId}`,
-        {
-          id: leadId,
-          is_seller: 1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      console.log("is_seller updated successfully");
       handleClose();
+      fetchSingleListing();
     } catch (error) {
       console.error("Error:", error);
       setloading(false);

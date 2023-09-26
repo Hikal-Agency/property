@@ -430,6 +430,7 @@ const SingleListingsPage = () => {
               <EditListingModal
                 setOpenEdit={setOpenEdit}
                 openEdit={openEdit}
+                fetchSingleListing={fetchSingleListing}
                 handleClose={() => setOpenEdit(false)}
               />
             )}
