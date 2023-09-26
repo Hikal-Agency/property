@@ -26,6 +26,9 @@ import { useFilterContext } from "../../context/FilterContextProvider";
 
 import { MdClear } from "react-icons/md";
 
+const charLimitForEnglish = 160;
+const charLimitForArabic = 70;
+
 const BulkSMSModal = ({
   FetchLeads,
   fromRange,
@@ -43,7 +46,7 @@ const BulkSMSModal = ({
   const [senderAddress, setSenderAddress] = useState("");
 
   const [pageloading, setpageloading] = useState(true);
-  const [msg, setMsg] = useState();
+  const [smsTextValue, setSmsTextValue] = useState();
   const token = localStorage.getItem("auth-token");
   const {
     emailFilter,
@@ -73,10 +76,9 @@ const BulkSMSModal = ({
   } = useFilterContext();
 
   const handleMsg = (e) => {
-    setMsg(e.target.value);
+    setSmsTextValue(e.target.value);
   };
 
-  const { hasPermission } = usePermission();
   const {
     currentMode,
     darkModeColors,
@@ -85,6 +87,9 @@ const BulkSMSModal = ({
     fetchSidebarData,
     SalesPerson,
     Managers,
+    isArabic,
+    isEnglish,
+    formatNum,
   } = useStateContext();
   console.log("Salesperson: ", SalesPerson);
   console.log("MAnagers: ", Managers);
@@ -104,6 +109,13 @@ const BulkSMSModal = ({
     // Update the contactsList state
     setContactsList(newContactsList);
   };
+
+  let lang = "";
+  lang = isArabic(smsTextValue?.trim())
+    ? "Arabic"
+    : isEnglish(smsTextValue?.trim())
+    ? "English"
+    : "";
 
   const getNumbers = async () => {
     setBtnLoading(true);
@@ -202,8 +214,8 @@ const BulkSMSModal = ({
   const sendMsg = async (e, messageText, contactList) => {
     e.preventDefault();
     setMsgLoading(true);
-    if (msg && senderAddress) {
-      console.log("sender,msg: ", msg, senderAddress);
+    if (smsTextValue && senderAddress) {
+      console.log("sender,msg: ", smsTextValue, senderAddress);
 
       try {
         const croppedContacts = contactsList?.map((contact) => {
@@ -217,8 +229,6 @@ const BulkSMSModal = ({
 
         console.log("cropped: ", croppedContacts);
 
-        const etisalatToken = process.env.REACT_APP_ETISALAT_TOKEN;
-
         const sendMsg = await axios.post(
           `${BACKEND_URL}/sendsms`,
           JSON.stringify({
@@ -231,7 +241,7 @@ const BulkSMSModal = ({
             desc: "Hikal CRM Single Message to Multiple Recipients",
             campaignName: "test",
             recipients: croppedContacts,
-            msg: { en: msg },
+            msg: { en: smsTextValue },
             defLang: "en",
             dr: "1",
             wapUrl: "",
@@ -323,195 +333,12 @@ const BulkSMSModal = ({
   const [emailError, setEmailError] = useState(false);
   const [LeadProject, setLeadProject] = useState("");
   const [LeadNotes, setLeadNotes] = useState("");
-  const [value, setValue] = useState();
-  const [error, setError] = useState(false);
 
-  const ChangeEnquiryType = (event) => {
-    setEnquiryType(event.target.value);
-  };
 
-  const ChangeLanguagePrefered = (event) => {
-    setLanguagePrefered(event.target.value);
-  };
-  // eslint-disable-next-line
-
-  const ChangeLeadSource = (event) => {
-    setLeadSource(event.target.value);
-  };
   // eslint-disable-next-line
   const ChangeManager = (event) => {
     setManager(event.target.value);
-    const SalesPersons = Manager2.filter(function (el) {
-      return el.uid === event.target.value;
-    });
     // setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
-  };
-  const ChangeSalesPerson = (event) => {
-    console.log("clicked");
-    setSalesPerson2(event.target.value);
-  };
-
-  const AddLead = async () => {
-    setloading(true);
-    if (LeadEmail && emailError !== false) {
-      setloading(false);
-      toast.error("Kindly enter a valid email.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      return;
-    }
-    if (!LeadContact) {
-      setloading(false);
-      toast.error("Contact number is required.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setloading(false);
-
-      return;
-    }
-    const token = localStorage.getItem("auth-token");
-    const LeadData = new FormData();
-    let coldCall = "0";
-    if (LeadSource.toLowerCase() === "property finder") {
-      coldCall = 3;
-    } else if (LeadSource.toLowerCase() === "personal") {
-      coldCall = 2;
-    }
-    if (LeadName) LeadData.append("leadName", LeadName);
-    if (LeadContact) LeadData.append("leadContact", LeadContact);
-    if (LeadEmail) LeadData.append("leadEmail", LeadEmail);
-    if (EnquiryType) LeadData.append("enquiryType", EnquiryType);
-    if (PropertyType) LeadData.append("leadType", PropertyType);
-    if (LeadProject) LeadData.append("project", LeadProject);
-    if (ForType) LeadData.append("leadFor", ForType);
-    if (LanguagePrefered) LeadData.append("language", LanguagePrefered);
-    if (LeadStatus) LeadData.append("leadStatus", LeadStatus);
-    if (LeadSource) LeadData.append("leadSource", LeadSource);
-    LeadData.append("feedback", "New"); //Always appended
-    LeadData.append("agency_id", User?.agency); //Always appended
-    if (coldCall) LeadData.append("coldCall", coldCall);
-    if (LeadNotes) LeadData.append("notes", LeadNotes);
-
-    if (User?.role === 1) {
-      if (Manager) {
-        LeadData.append("assignedToManager", Number(Manager));
-      }
-      if (SalesPerson2) {
-        LeadData.append("assignedToSales", Number(SalesPerson2));
-      }
-    } else if (User?.role === 3) {
-      LeadData.append("assignedToManager", Number(User?.id));
-      if (SalesPerson2) {
-        LeadData.append("assignedToSales", Number(SalesPerson2));
-      }
-    } else if (User?.role === 7) {
-      LeadData.append("assignedToManager", Number(User?.isParent));
-      LeadData.append("assignedToSales", Number(User?.id));
-    } else if (User?.role === 2) {
-      console.log("values::", Manager, SalesPerson2);
-      if (!Manager && !SalesPerson2) {
-        LeadData.append("assignedToManager", User?.id);
-      } else {
-        if (Manager) {
-          LeadData.append("assignedToManager", Number(Manager));
-        }
-        if (SalesPerson2) {
-          LeadData.append("assignedToSales", Number(SalesPerson2));
-        }
-      }
-    }
-
-    for (var pair of LeadData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
-
-    await axios
-      .post(`${BACKEND_URL}/leads`, LeadData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log(result);
-        setloading(false);
-        if (FetchLeads) {
-          FetchLeads();
-        }
-        toast.success("Lead Added Successfully", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
-        const recipients = [];
-        if (SalesPerson2) {
-          recipients.push(SalesPerson2);
-          recipients.push(
-            SalesPerson[`manager-${Manager}`]?.find(
-              (s) => s?.id === SalesPerson2
-            )?.isParent
-          );
-        } else {
-          recipients.push(Manager);
-        }
-        socket.emit("notification_lead_add", {
-          from: { id: User?.id, userName: User?.userName },
-          leadName: LeadName,
-          participants: recipients,
-        });
-        fetchSidebarData();
-        setLeadName("");
-        setLeadContact("");
-        setLeadEmail("");
-        setEnquiryType("");
-        setPropertyType("");
-        setLeadProject("");
-        setForType("");
-        setLanguagePrefered("");
-        setLeadSource("");
-        setLeadNotes("");
-        setSalesPerson2("");
-        setValue("");
-
-        if (!User?.role === 1 && !User?.role === 3) {
-          setManager("");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setloading(false);
-        toast.error("Something went wrong! Please Try Again", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
   };
 
   console.log("manager: ", Manager);
@@ -521,8 +348,6 @@ const BulkSMSModal = ({
     // eslint-disable-next-line
   }, []);
 
-  console.log("Manager: ", Manager);
-
   return (
     <>
       {pageloading ? (
@@ -530,10 +355,7 @@ const BulkSMSModal = ({
       ) : (
         <div className="mx-auto">
           <form
-            // onSubmit={(e) => {
-            //   e.preventDefault();
-            //   AddLead();
-            // }}
+
             disabled={loading ? true : false}
           >
             <div className="w-full flex items-center py-1 mb-2">
@@ -584,27 +406,7 @@ const BulkSMSModal = ({
                       className="pr-2"
                       style={{ width: "100%", position: "relative" }}
                     >
-                      {/* <label
-                        style={{
-                          position: "absolute",
-                          bottom: "-16px",
-                          right: 0,
-                        }}
-                        className={`flex justify-end items-center ${
-                          currentMode === "dark" ? "text-white" : "text-dark"
-                        } `}
-                      >
-                        {fromRange ? (
-                          <strong
-                            className="mr-4 text-red-600 cursor-pointer"
-                            onClick={() => setFromRange("")}
-                          >
-                            Clear
-                          </strong>
-                        ) : (
-                          ""
-                        )}
-                      </label> */}
+  
                       <Box sx={darkModeColors}>
                         <TextField
                           label="From"
@@ -757,23 +559,74 @@ const BulkSMSModal = ({
                     SMS Message
                   </h4>
 
-                  <TextField
-                    id="Manager"
-                    label="Message"
-                    size="small"
-                    // sx={{
-                    //   "&": {
-                    //     marginBottom: "1.25rem !important",
-                    //   },
-                    // }}
-                    placeholder="Enter message here ....."
-                    minRows={3}
-                    value={msg}
-                    onChange={handleMsg}
-                    className="w-full p-2"
-                    displayEmpty
-                    multiline
-                  />
+                  <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
+                          <div className="flex items-center justify-between px-3 py-2 border-b">
+                            {lang && (
+                              <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
+                                <div>{lang}</div>
+                                {lang && (
+                                  <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
+                                )}
+                                <div
+                                  className={`flex flex-wrap items-center ${
+                                    smsTextValue?.trim()?.length >
+                                    (lang === "English"
+                                      ? charLimitForEnglish
+                                      : charLimitForArabic)
+                                      ? "text-primary"
+                                      : ""
+                                  }`}
+                                >
+                                  {formatNum(smsTextValue?.trim()?.length)}/
+                                  {lang === "English"
+                                    ? charLimitForEnglish
+                                    : charLimitForArabic}
+                                  <p className="ml-2">
+                                    {smsTextValue?.trim()?.length >
+                                    (lang === "English"
+                                      ? charLimitForEnglish
+                                      : charLimitForArabic)
+                                      ? "Message Character limit exceeded."
+                                      : ""}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+                            <button
+                              type="button"
+                              className="p-2 text-gray-500 rounded cursor-pointer sm:ml-auto hover:text-gray-900 hover:bg-gray-100"
+                            >
+                              <svg
+                                className="w-4 h-4"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 19 19"
+                              >
+                                <path
+                                  stroke="currentColor"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
+                                />
+                              </svg>
+                              <span className="sr-only">Full screen</span>
+                            </button>
+                          </div>
+                          <div className="px-4 h-full py-2 bg-white rounded-b-lg">
+                            <textarea
+                              value={smsTextValue}
+                              onInput={(e) =>
+                                setSmsTextValue(e.target.value?.toString())
+                              }
+                              
+                              className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
+                              placeholder="Type the message ..."
+                              required
+                            ></textarea>
+                          </div>
+                        </div>
 
                   {/* <label
                     className={`flex my-3 mt-4  ${
@@ -830,7 +683,17 @@ const BulkSMSModal = ({
                   ripple={true}
                   size="lg"
                   type="submit"
-                  disabled={loading ? true : false}
+                  disabled={
+                    loading ? true :
+                    (smsTextValue?.trim() ? 
+                      smsTextValue?.trim()?.length >
+                      (lang === "English"
+                        ? charLimitForEnglish
+                        : charLimitForArabic)
+                        ? true
+                        : false
+                    : true)
+                    }
                   onClick={(e) => sendMsg(e)}
                 >
                   {msgLoading ? (

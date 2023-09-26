@@ -1,9 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
-import Loader from "../../Components/Loader";
-import Footer from "../../Components/Footer/Footer";
+import { load } from "../App";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 
 import axios from "../../axoisConfig";
@@ -156,7 +153,7 @@ const UserAllLocation = (props) => {
                     } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
                   >
                     {/* MAP */}
-                    {typeof window.google !== "object" ? (
+                    {!load?.isLoaded ? (
                       <div>Your map is loading...</div>
                     ) : (
                       <GoogleMap

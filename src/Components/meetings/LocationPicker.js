@@ -4,6 +4,7 @@ import { GoogleMap, Marker } from "@react-google-maps/api";
 import AutoComplete from "./AutoComplete";
 import { useStateContext } from "../../context/ContextProvider";
 import { BiCurrentLocation } from "react-icons/bi";
+import { load } from "../../Pages/App";
 
 const mapContainerStyle = {
   width: "100%",
@@ -96,7 +97,7 @@ const LocationPicker = ({
   }, []);
   return (
     <>
-      {typeof window.google === "object" ? (
+      {load?.isLoaded ? (
         <Box
           sx={{
             "& ul": {

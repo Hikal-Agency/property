@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import { Button, Tooltip, IconButton } from "@mui/material";
+import { Tooltip, IconButton } from "@mui/material";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
 import axios from "../../axoisConfig";
 import Error404 from "../Error";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
-import FileViewer from "../../Components/_elements/FileViewer";
+import { load } from "../App";
 
 import { BiBed, BiBath } from "react-icons/bi";
 import { BsImages, BsFiles, BsPen, BsFileEarmarkText } from "react-icons/bs";
@@ -110,6 +110,8 @@ const SingleListingsPage = () => {
     lat = latValue;
     long = longValue;
   }
+
+  console.log("maps: ", load);
 
   return (
     <>
@@ -282,7 +284,7 @@ const SingleListingsPage = () => {
                     <></>
                   ) : (
                     <div className="w-full my-5 h-[50vh] border border-primary">
-                      {typeof window.google === "undefined" ? (
+                      {!load?.isLoaded ? (
                         <div>Your map is loading...</div>
                       ) : (
                         <GoogleMap

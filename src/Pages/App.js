@@ -454,15 +454,19 @@ const routes = [
 
 export const socket = io(process.env.REACT_APP_SOCKET_URL);
 
+export let load = null;
+
 function App() {
-  const { setAllRoutes, currentMode, User } = useStateContext();
+  const { setAllRoutes, currentMode } = useStateContext();
   const location = useLocation();
   const { hasPermission } = usePermission();
 
-  useJsApiLoader({
+  const loadMaps = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
     libraries,
   });
+
+  load = loadMaps;
 
   useEffect(() => {
     setAllRoutes(routes);
