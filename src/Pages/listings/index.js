@@ -50,6 +50,11 @@ const Listings = () => {
   const [listingModalOpen, setListingModalOpen] = useState(false);
   const handleCloseListingModal = () => setListingModalOpen(false);
   const [open, setOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    bedrooms: null,
+    bathrooms: null,
+    sort: null,
+  });
 
   const searchRef = useRef("");
 
@@ -57,24 +62,37 @@ const Listings = () => {
     if (page > 1) {
       setbtnloading(true);
     }
+    let url = `${BACKEND_URL}/listings?page=${page}`;
+    if (filters?.bedrooms) url += `&bedrooms=${filters?.bedrooms}`;
+    if (filters?.bathrooms) url += `&bathrooms=${filters?.bathrooms}`;
+
     try {
-      const all_listings = await axios.get(
-        `${BACKEND_URL}/listings?page=${page}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const all_listings = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
       console.log("all listings: ", all_listings);
+
+      let filteredListings = all_listings?.data?.data?.data || [];
+
+      if (filters?.sort == "sortByHigh") {
+        filteredListings = filteredListings.sort((a, b) =>
+          a.price > b.price ? -1 : 1
+        );
+      } else if (filters?.sort == "sortByLow") {
+        filteredListings = filteredListings?.sort((a, b) =>
+          a.price < b.price ? -1 : 1
+        );
+      }
 
       if (page > 1) {
         setListings((prevOffers) => {
           return [
             ...prevOffers,
-            ...all_listings?.data?.data?.data?.map((listing) => ({
+            ...filteredListings?.map((listing) => ({
               ...listing,
               page: page,
             })),
@@ -83,7 +101,7 @@ const Listings = () => {
       } else {
         setListings(() => {
           return [
-            ...all_listings?.data?.data?.data?.map((listing) => ({
+            ...filteredListings?.map((listing) => ({
               ...listing,
               page: page,
             })),
@@ -108,6 +126,55 @@ const Listings = () => {
         theme: "light",
       });
     }
+
+    // try {
+    //   const all_listings = await axios.get(url, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: "Bearer " + token,
+    //     },
+    //   });
+
+    //   console.log("all listings: ", all_listings);
+
+    //   if (page > 1) {
+    //     setListings((prevOffers) => {
+    //       return [
+    //         ...prevOffers,
+    //         ...all_listings?.data?.data?.data?.map((listing) => ({
+    //           ...listing,
+    //           page: page,
+    //         })),
+    //       ];
+    //     });
+    //   } else {
+    //     setListings(() => {
+    //       return [
+    //         ...all_listings?.data?.data?.data?.map((listing) => ({
+    //           ...listing,
+    //           page: page,
+    //         })),
+    //       ];
+    //     });
+    //   }
+    //   setLoading(false);
+    //   setLastPage(all_listings?.data?.last_page);
+    //   setTotal(all_listings?.data?.data?.total);
+    //   setbtnloading(false);
+    //   //   console.log("All Offers: ",all_listings)
+    // } catch (error) {
+    //   console.log("listings not fetched. ", error);
+    //   toast.error("Unable to fetch listings.", {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "light",
+    //   });
+    // }
   };
 
   // open listing modal
@@ -129,7 +196,7 @@ const Listings = () => {
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchListings(token, currentPage);
-  }, [currentPage, value]);
+  }, [currentPage, value, filters]);
 
   return (
     <>
@@ -245,9 +312,15 @@ const Listings = () => {
                   />
                   <TextField
                     id="bedrooms"
-                    // value={PropertyType}
+                    value={filters?.bedrooms}
                     label="Beds"
-                    // onChange={ChangePropertyType}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setFilters({
+                        ...filters,
+                        bedrooms: e.target.value,
+                      });
+                    }}
                     size="small"
                     displayEmpty
                     sx={{
@@ -274,9 +347,15 @@ const Listings = () => {
                   </TextField>
                   <TextField
                     id="bathrooms"
-                    // value={PropertyType}
+                    value={filters?.bathrooms}
                     label="Baths"
-                    // onChange={ChangePropertyType}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setFilters({
+                        ...filters,
+                        bathrooms: e.target.value,
+                      });
+                    }}
                     size="small"
                     displayEmpty
                     sx={{
@@ -302,9 +381,15 @@ const Listings = () => {
                   </TextField>
                   <TextField
                     id="sortby"
-                    // value={PropertyType}
+                    value={filters?.sort}
                     label="Sort by"
-                    // onChange={ChangePropertyType}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setFilters({
+                        ...filters,
+                        sort: e.target.id,
+                      });
+                    }}
                     size="small"
                     displayEmpty
                     sx={{
@@ -317,12 +402,8 @@ const Listings = () => {
                     select
                   >
                     <MenuItem value="Latest">Latest</MenuItem>
-                    <MenuItem value="Price High to Low">
-                      Price High to Low
-                    </MenuItem>
-                    <MenuItem value="Price Low to High">
-                      Price Low to High
-                    </MenuItem>
+                    <MenuItem value="sortByHigh">Price High to Low</MenuItem>
+                    <MenuItem value="sortByLow">Price Low to High</MenuItem>
                   </TextField>
                 </Box>
               </Box>
