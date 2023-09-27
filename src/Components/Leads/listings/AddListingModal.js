@@ -240,7 +240,7 @@ const AddListingModal = ({
     try {
       const result = await axios.post(`${BACKEND_URL}/listings`, LeadData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       });
