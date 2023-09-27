@@ -25,6 +25,7 @@ import AddNewListingModal from "../../Components/Listings/AddNewListingModal";
 import { Link } from "react-router-dom";
 import { BsBuildingAdd, BsSearch } from "react-icons/bs";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 const Listings = () => {
   const {
@@ -58,6 +59,16 @@ const Listings = () => {
 
   const searchRef = useRef("");
 
+  const clearFilter = (e) => {
+    e.preventDefault();
+
+    setFilters({
+      bedrooms: null,
+      bathrooms: null,
+      sort: null,
+    });
+  };
+
   const FetchListings = async (token, page = 1) => {
     if (page > 1) {
       setbtnloading(true);
@@ -78,6 +89,8 @@ const Listings = () => {
 
       let filteredListings = all_listings?.data?.data?.data || [];
 
+      console.log("sort: ", filters?.sort);
+
       if (filters?.sort == "sortByHigh") {
         filteredListings = filteredListings.sort((a, b) =>
           a.price > b.price ? -1 : 1
@@ -86,7 +99,12 @@ const Listings = () => {
         filteredListings = filteredListings?.sort((a, b) =>
           a.price < b.price ? -1 : 1
         );
+      } else if (filters?.sort === "latest") {
+        filteredListings = filteredListings.sort((a, b) =>
+          moment(b.created_at).isBefore(moment(a.created_at)) ? -1 : 1
+        );
       }
+      console.log("filtered listings: ", filteredListings);
 
       if (page > 1) {
         setListings((prevOffers) => {
@@ -387,7 +405,7 @@ const Listings = () => {
                       e.preventDefault();
                       setFilters({
                         ...filters,
-                        sort: e.target.id,
+                        sort: e.target.value,
                       });
                     }}
                     size="small"
@@ -401,10 +419,18 @@ const Listings = () => {
                     }}
                     select
                   >
-                    <MenuItem value="Latest">Latest</MenuItem>
+                    <MenuItem value="latest">Latest</MenuItem>
                     <MenuItem value="sortByHigh">Price High to Low</MenuItem>
                     <MenuItem value="sortByLow">Price Low to High</MenuItem>
                   </TextField>
+                  {filters && (
+                    <Button
+                      onClick={clearFilter}
+                      className="w-max btn py-2 px-3 bg-btn-primary"
+                    >
+                      Clear
+                    </Button>
+                  )}
                 </Box>
               </Box>
 
