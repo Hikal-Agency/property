@@ -485,7 +485,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                       </MenuItem>
                       <MenuItem value={"Apartment"}>Apartment</MenuItem>
                       <MenuItem value={"Villa"}>Villa</MenuItem>
-                      <MenuItem value={"Rental"}>Rental</MenuItem>
+                      <MenuItem value={"retail"}>Retail</MenuItem>
                     </TextField>
 
                     <TextField

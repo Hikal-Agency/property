@@ -91,6 +91,7 @@ const Listings = () => {
   };
 
   const FetchListings = async (token, page = 1) => {
+    setLoading(true);
     if (page > 1) {
       setbtnloading(true);
     }
