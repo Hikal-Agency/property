@@ -24,6 +24,8 @@ import { MdFileUpload } from "react-icons/md";
 import { CiMapPin } from "react-icons/ci";
 import axios from "../../../axoisConfig";
 import { toast } from "react-toastify";
+import AddImageModal from "../../../Pages/listings/AddImageModal";
+import AddDocumentModal from "../../../Pages/listings/AddDocumentModal";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -38,12 +40,23 @@ const AddListingModal = ({
   console.log("lead data in listing: ", LeadData);
   const { leadId } = LeadData;
   const token = localStorage.getItem("auth-token");
+  const [allImages, setAllImages] = useState([]);
+  const [allDocs, setAllDocs] = useState([]);
+
+  console.log("all images in parent: ", allImages);
+  console.log("all docs in parent: ", allDocs);
 
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [loading, setloading] = useState(false);
   const [displayMap, setDisplayMap] = useState(false);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
+  const [documentModal, setDocumentModal] = useState(false);
+
+  const [selectImagesModal, setSelectImagesModal] = useState({
+    isOpen: false,
+    listingId: null,
+  });
   const [listingLocation, setListingLocation] = useState({
     lat: 0,
     lng: 0,
@@ -209,48 +222,20 @@ const AddListingModal = ({
     LeadData.append("listing_status", "New"); //Always appended
     LeadData.append("addedBy", User?.id);
     LeadData.append("addedBy_name", User?.userName);
+    if (allImages?.length > 0)
+      allImages?.forEach((image, index) => {
+        console.log("i am image: ", image);
+        LeadData.append(`img_name[${index}]`, image);
+      });
+
+    if (allDocs?.length > 0)
+      allDocs?.forEach((doc, index) => {
+        LeadData.append(`doc_name[${index}]`, doc);
+      });
 
     for (var pair of LeadData.entries()) {
       console.log(pair[0] + ", " + pair[1]);
     }
-
-    // await axios
-    //   .post(`${BACKEND_URL}/listings`, LeadData, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: "Bearer " + token,
-    //     },
-    //   })
-    //   .then((result) => {
-    //     console.log(result);
-    //     setloading(false);
-
-    //     toast.success("Listing Added Successfully", {
-    //       position: "top-right",
-    //       autoClose: 3000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "light",
-    //     });
-    //     handleCloseListingModal();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     setloading(false);
-    //     toast.error("Something went wrong! Please Try Again", {
-    //       position: "top-right",
-    //       autoClose: 3000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "light",
-    //     });
-    //   });
 
     try {
       const result = await axios.post(`${BACKEND_URL}/listings`, LeadData, {
@@ -672,6 +657,61 @@ const AddListingModal = ({
                       onChange={handleOtherDetails}
                     />
                   </Box>
+                  <div className="w-full flex justify-center mr-4 items-center my-4 space-x-5">
+                    <label htmlFor="contained-button-file">
+                      <Button
+                        variant="contained"
+                        size="medium"
+                        className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                        onClick={() =>
+                          setSelectImagesModal({
+                            isOpen: true,
+                          })
+                        }
+                        style={{
+                          // backgroundColor: "#111827",
+                          color: "#ffffff",
+                          // border: "1px solid #DA1F26",
+                        }}
+                        component="span"
+                        disabled={loading ? true : false}
+                        startIcon={loading ? null : <MdFileUpload />}
+                      >
+                        <span>Upload Image</span>
+                      </Button>
+                      <p className="text-primary mt-2 italic">
+                        {allImages?.length > 0
+                          ? `${allImages?.length} images selected.`
+                          : null}
+                      </p>
+                    </label>
+
+                    <label htmlFor="contained-button-document">
+                      <Button
+                        variant="contained"
+                        size="medium"
+                        className="bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
+                        style={{
+                          // backgroundColor: "#111827",
+                          color: "#ffffff",
+                          // border: "1px solid ",
+                        }}
+                        onClick={() => {
+                          setDocumentModal(true);
+                        }}
+                        component="span"
+                        disabled={loading ? true : false}
+                        startIcon={loading ? null : <MdFileUpload />}
+                      >
+                        <span>Upload Document</span>
+                      </Button>
+                      <p className="text-primary mt-2 italic">
+                        {allDocs?.length > 0
+                          ? `${allDocs?.length} documents selected.`
+                          : null}
+                      </p>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -711,61 +751,6 @@ const AddListingModal = ({
                 </Box>
               </div>
 
-              {/* <div className="w-full flex justify-center mr-4 items-center my-4 space-x-5">
-                <input
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  id="contained-button-file"
-                  type="file"
-                  name="picture"
-                  onChange={handleImgUpload}
-                  multiple
-                />
-                <label htmlFor="contained-button-file">
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-                    style={{
-                      // backgroundColor: "#111827",
-                      color: "#ffffff",
-                      // border: "1px solid #DA1F26",
-                    }}
-                    component="span"
-                    disabled={loading ? true : false}
-                    startIcon={loading ? null : <MdFileUpload />}
-                  >
-                    <span>Upload Image</span>
-                  </Button>
-                </label>
-                <input
-                  accept=".pdf"
-                  style={{ display: "none" }}
-                  id="contained-button-document"
-                  type="file"
-                  name="document"
-                  onChange={handleDocumentUpload}
-                  multiple
-                />
-                <label htmlFor="contained-button-document">
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    className="bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
-                    style={{
-                      // backgroundColor: "#111827",
-                      color: "#ffffff",
-                      // border: "1px solid ",
-                    }}
-                    component="span"
-                    disabled={loading ? true : false}
-                    startIcon={loading ? null : <MdFileUpload />}
-                  >
-                    <span>Upload Document</span>
-                  </Button>
-                </label>
-              </div> */}
-
               <div
                 className={`${
                   currentMode === "dark" ? "bg-black" : "bg-white"
@@ -799,6 +784,22 @@ const AddListingModal = ({
               </div>
             </form>
           </div>
+          {selectImagesModal?.isOpen && (
+            <AddImageModal
+              selectImagesModal={selectImagesModal}
+              handleClose={() => setSelectImagesModal({ isOpen: false })}
+              allImages={allImages}
+              setAllImages={setAllImages}
+            />
+          )}
+          {documentModal && (
+            <AddDocumentModal
+              documentModal={documentModal}
+              handleClose={() => setDocumentModal(false)}
+              allDocs={allDocs}
+              setAllDocs={setAllDocs}
+            />
+          )}
         </div>
       </Modal>
     </>
