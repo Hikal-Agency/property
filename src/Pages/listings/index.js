@@ -58,6 +58,8 @@ const Listings = () => {
     bathrooms: null,
     sort: null,
     sold: null,
+    property: null,
+    category: null,
   });
   const isFilterApplied = Object.values(filters).some(
     (value) => value !== null
@@ -82,6 +84,7 @@ const Listings = () => {
       bathrooms: null,
       sort: null,
       sold: null,
+      category: null,
     });
 
     setSearchQuery("");
@@ -94,6 +97,8 @@ const Listings = () => {
     let url = `${BACKEND_URL}/listings?page=${page}`;
     if (filters?.bedrooms) url += `&bedrooms=${filters?.bedrooms}`;
     if (filters?.bathrooms) url += `&bathrooms=${filters?.bathrooms}`;
+    if (filters?.property) url += `&property_type=${filters?.property}`;
+    if (filters?.category) url += `&listing_type=${filters?.category}`;
 
     if (searchCriteria === "city") url += `&city=${searchQuery}`;
     if (searchCriteria === "project") url += `&project=${searchQuery}`;
@@ -109,6 +114,11 @@ const Listings = () => {
 
       console.log("all listings: ", all_listings);
       let filteredListings = all_listings?.data?.data?.data || [];
+
+      // default sorting listing status = New
+      filteredListings = filteredListings?.filter((listing) => {
+        return listing?.listing_status.toLowerCase() === "new";
+      });
 
       // sort by sold status
       if (filters?.sold) {
@@ -348,6 +358,57 @@ const Listings = () => {
                     }}
                   />
                   <TextField
+                    id="property"
+                    value={filters?.property}
+                    label="Property"
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setFilters({
+                        ...filters,
+                        property: e.target.value,
+                      });
+                    }}
+                    size="small"
+                    displayEmpty
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        minWidth: "120px",
+                        marginX: "5px !important",
+                      },
+                    }}
+                    select
+                  >
+                    <MenuItem value={"apartment"}>Apartment</MenuItem>
+                    <MenuItem value={"retail"}>Retail</MenuItem>
+                    <MenuItem value={"villa"}>Villas</MenuItem>
+                  </TextField>
+                  <TextField
+                    id="category"
+                    value={filters?.category}
+                    label="Category"
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setFilters({
+                        ...filters,
+                        category: e.target.value,
+                      });
+                    }}
+                    size="small"
+                    displayEmpty
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        minWidth: "120px",
+                        marginX: "5px !important",
+                      },
+                    }}
+                    select
+                  >
+                    <MenuItem value={"Secondary"}>Secondary</MenuItem>
+                    <MenuItem value={"Off-plan"}>Off Plan</MenuItem>
+                  </TextField>
+                  <TextField
                     id="bedrooms"
                     value={filters?.bedrooms}
                     label="Beds"
@@ -372,15 +433,7 @@ const Listings = () => {
                     <MenuItem value={"Studio"}>Studio</MenuItem>
                     <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
                     <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
-                    <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
-                    <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
-                    <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
-                    <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
-                    <MenuItem value={"7 Bedrooms"}>7 Bedrooms</MenuItem>
-                    <MenuItem value={"8 Bedrooms"}>8 Bedrooms</MenuItem>
-                    <MenuItem value={"9 Bedrooms"}>9 Bedrooms</MenuItem>
-                    <MenuItem value={"10 Bedrooms"}>10 Bedrooms</MenuItem>
-                    <MenuItem value={"Retail"}>Retail</MenuItem>
+                    <MenuItem value={"10 Bedrooms"}> upto 10 Bedrooms</MenuItem>
                   </TextField>
                   <TextField
                     id="bathrooms"
@@ -406,14 +459,10 @@ const Listings = () => {
                   >
                     <MenuItem value={"1 Bathroom"}>1 Bathroom</MenuItem>
                     <MenuItem value={"2 Bathrooms"}>2 Bathrooms</MenuItem>
-                    <MenuItem value={"3 Bathrooms"}>3 Bathrooms</MenuItem>
-                    <MenuItem value={"4 Bathrooms"}>4 Bathrooms</MenuItem>
-                    <MenuItem value={"5 Bathrooms"}>5 Bathrooms</MenuItem>
-                    <MenuItem value={"6 Bathrooms"}>6 Bathrooms</MenuItem>
-                    <MenuItem value={"7 Bathrooms"}>7 Bathrooms</MenuItem>
-                    <MenuItem value={"8 Bathrooms"}>8 Bathrooms</MenuItem>
-                    <MenuItem value={"9 Bathrooms"}>9 Bathrooms</MenuItem>
-                    <MenuItem value={"10 Bathrooms"}>10 Bathrooms</MenuItem>
+                    <MenuItem value={"10 Bathrooms"}>
+                      {" "}
+                      upto 10 Bathrooms
+                    </MenuItem>
                     <MenuItem value={"Unavailabe"}>Unavailabe</MenuItem>
                   </TextField>
                   <TextField
