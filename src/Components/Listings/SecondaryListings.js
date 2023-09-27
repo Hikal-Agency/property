@@ -307,7 +307,7 @@ const SecondaryListings = ({
                               </span>
                             </p>
                           </div>
-                          {hasPermission("delete_list") && (
+                          {hasPermission("delete_listing") && (
                             <IconButton
                               className="bg-btn-primary p-3 rounded-fulls"
                               onClick={(e) =>
