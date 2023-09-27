@@ -51,13 +51,28 @@ const Listings = () => {
   const [listingModalOpen, setListingModalOpen] = useState(false);
   const handleCloseListingModal = () => setListingModalOpen(false);
   const [open, setOpen] = useState(false);
+  const token = localStorage.getItem("auth-token");
+
   const [filters, setFilters] = useState({
     bedrooms: null,
     bathrooms: null,
     sort: null,
+    sold: null,
   });
+  const isFilterApplied = Object.values(filters).some(
+    (value) => value !== null
+  );
 
-  const searchRef = useRef("");
+  const [searchCriteria, setSearchCriteria] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchCriteriaChange = (event) => {
+    setSearchCriteria(event.target.value);
+  };
+
+  const handleSearchQueryChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
   const clearFilter = (e) => {
     e.preventDefault();
@@ -66,7 +81,10 @@ const Listings = () => {
       bedrooms: null,
       bathrooms: null,
       sort: null,
+      sold: null,
     });
+
+    setSearchQuery("");
   };
 
   const FetchListings = async (token, page = 1) => {
@@ -77,6 +95,10 @@ const Listings = () => {
     if (filters?.bedrooms) url += `&bedrooms=${filters?.bedrooms}`;
     if (filters?.bathrooms) url += `&bathrooms=${filters?.bathrooms}`;
 
+    if (searchCriteria === "city") url += `&city=${searchQuery}`;
+    if (searchCriteria === "project") url += `&project=${searchQuery}`;
+    if (searchCriteria === "area") url += `&area=${searchQuery}`;
+
     try {
       const all_listings = await axios.get(url, {
         headers: {
@@ -86,11 +108,18 @@ const Listings = () => {
       });
 
       console.log("all listings: ", all_listings);
-
       let filteredListings = all_listings?.data?.data?.data || [];
 
-      console.log("sort: ", filters?.sort);
+      // sort by sold status
+      if (filters?.sold) {
+        filteredListings = filteredListings?.filter((listing) => {
+          return listing?.listing_status.toLowerCase() === "sold";
+        });
+      }
 
+      console.log("sold: ", filters?.sold);
+
+      // sort by price
       if (filters?.sort == "sortByHigh") {
         filteredListings = filteredListings.sort((a, b) =>
           a.price > b.price ? -1 : 1
@@ -144,55 +173,6 @@ const Listings = () => {
         theme: "light",
       });
     }
-
-    // try {
-    //   const all_listings = await axios.get(url, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: "Bearer " + token,
-    //     },
-    //   });
-
-    //   console.log("all listings: ", all_listings);
-
-    //   if (page > 1) {
-    //     setListings((prevOffers) => {
-    //       return [
-    //         ...prevOffers,
-    //         ...all_listings?.data?.data?.data?.map((listing) => ({
-    //           ...listing,
-    //           page: page,
-    //         })),
-    //       ];
-    //     });
-    //   } else {
-    //     setListings(() => {
-    //       return [
-    //         ...all_listings?.data?.data?.data?.map((listing) => ({
-    //           ...listing,
-    //           page: page,
-    //         })),
-    //       ];
-    //     });
-    //   }
-    //   setLoading(false);
-    //   setLastPage(all_listings?.data?.last_page);
-    //   setTotal(all_listings?.data?.data?.total);
-    //   setbtnloading(false);
-    //   //   console.log("All Offers: ",all_listings)
-    // } catch (error) {
-    //   console.log("listings not fetched. ", error);
-    //   toast.error("Unable to fetch listings.", {
-    //     position: "top-right",
-    //     autoClose: 3000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "light",
-    //   });
-    // }
   };
 
   // open listing modal
@@ -212,9 +192,8 @@ const Listings = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
     FetchListings(token, currentPage);
-  }, [currentPage, value, filters]);
+  }, [currentPage, value, filters, searchQuery]);
 
   return (
     <>
@@ -289,7 +268,7 @@ const Listings = () => {
               >
                 <Box sx={darkModeColors}>
                   {" "}
-                  <TextField
+                  {/* <TextField
                     className="w-[200px]"
                     label="Search"
                     size="small"
@@ -305,10 +284,50 @@ const Listings = () => {
                         </InputAdornment>
                       ),
                     }}
+                  /> */}
+                  <TextField
+                    className="w-[200px]"
+                    label="Search"
+                    size="small"
+                    placeholder="Enter search query"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <BsSearch
+                            color={
+                              currentMode === "dark" ? "#ffffff" : "#000000"
+                            }
+                          />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <Select
+                          value={searchCriteria}
+                          onChange={handleSearchCriteriaChange}
+                          className="p-0 m-0"
+                        >
+                          <MenuItem value="project">Project</MenuItem>
+                          <MenuItem value="city">City</MenuItem>
+                          <MenuItem value="area">Area</MenuItem>
+                          {/* <MenuItem value="neighborhood">Neighborhood</MenuItem> */}
+                        </Select>
+                      ),
+                    }}
+                    variant="outlined"
+                    onChange={handleSearchQueryChange}
+                    value={searchQuery}
                   />
                   <FormControlLabel
                     control={<Switch />}
-                    label="Solid Listings"
+                    value={filters?.sold}
+                    onClick={(e) => {
+                      const value = e.target.value;
+                      setFilters({
+                        ...filters,
+                        sold: value === "sold" ? null : "sold",
+                      });
+                    }}
+                    label="Sold Listings"
                     sx={{
                       marginX: "10px",
 
@@ -423,7 +442,7 @@ const Listings = () => {
                     <MenuItem value="sortByHigh">Price High to Low</MenuItem>
                     <MenuItem value="sortByLow">Price Low to High</MenuItem>
                   </TextField>
-                  {filters && (
+                  {isFilterApplied && (
                     <Button
                       onClick={clearFilter}
                       className="w-max btn py-2 px-3 bg-btn-primary"
