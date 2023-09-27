@@ -633,9 +633,9 @@ const SingleLead = ({
                 </p>
 
                 {/* RESHUFFLED REQUEST  */}
-                {User?.role !== "1" &&
-                (LeadData?.transferRequest === 1 ||
-                  LeadData?.transferRequest === "1") ? (
+                {User?.role === 1 ||
+                LeadData?.transferRequest === 1 ||
+                LeadData?.transferRequest === 1 ? (
                   <></>
                 ) : hasPermission("reshuffle_button") ? (
                   <p

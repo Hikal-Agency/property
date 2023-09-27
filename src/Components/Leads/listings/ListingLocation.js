@@ -25,7 +25,7 @@ const ListingLocation = ({
   listingLocation,
   setListingLocation,
   showOnly = false,
-  // currLocByDefault,
+  currLocByDefault,
   city,
   setCity,
   country,
@@ -96,7 +96,7 @@ const ListingLocation = ({
   }, [listingLocation.lat, listingLocation.lng, map]);
 
   useEffect(() => {
-    if (!listingLocation) {
+    if (listingLocation?.lat === 0 || listingLocation?.lng === 0) {
       handleCurrentLocationClick();
     }
   }, []);
