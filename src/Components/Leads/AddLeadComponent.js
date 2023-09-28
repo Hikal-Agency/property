@@ -35,7 +35,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
     fetchSidebarData,
     SalesPerson,
     Managers,
-    primaryColor
+    primaryColor,
   } = useStateContext();
   console.log("Salesperson: ", SalesPerson);
   console.log("MAnagers: ", Managers);
@@ -122,6 +122,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
     setLeadStatus(event.target.value);
   };
   const ChangeLeadSource = (event) => {
+    console.log("source: ", event.target.value);
     setLeadSource(event.target.value);
   };
   // eslint-disable-next-line
@@ -172,11 +173,14 @@ const AddLeadComponent = ({ FetchLeads }) => {
     }
     const token = localStorage.getItem("auth-token");
     const LeadData = new FormData();
+    console.log("leadSource: ", LeadSource);
     let coldCall = "0";
     if (LeadSource.toLowerCase() === "property finder") {
       coldCall = 3;
     } else if (LeadSource.toLowerCase() === "personal") {
       coldCall = 2;
+    } else if (LeadSource.toLowerCase() === "secondary") {
+      coldCall = 5;
     }
     if (LeadName) LeadData.append("leadName", LeadName);
     if (LeadContact) LeadData.append("leadContact", LeadContact);
@@ -251,16 +255,20 @@ const AddLeadComponent = ({ FetchLeads }) => {
         });
 
         const recipients = [];
-        if(SalesPerson2) {
-          recipients.push(SalesPerson2); 
-          recipients.push(SalesPerson[`manager-${Manager}`]?.find((s) => s?.id === SalesPerson2)?.isParent); 
+        if (SalesPerson2) {
+          recipients.push(SalesPerson2);
+          recipients.push(
+            SalesPerson[`manager-${Manager}`]?.find(
+              (s) => s?.id === SalesPerson2
+            )?.isParent
+          );
         } else {
           recipients.push(Manager);
         }
         socket.emit("notification_lead_add", {
-          from: {id: User?.id, userName: User?.userName},
+          from: { id: User?.id, userName: User?.userName },
           leadName: LeadName,
-          participants: recipients
+          participants: recipients,
         });
         fetchSidebarData();
         setLeadName("");
@@ -322,9 +330,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
               <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
               <h1
                 className={`text-lg font-semibold ${
-                  currentMode === "dark"
-                    ? "text-white"
-                    : "text-black"
+                  currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
                 Add New Lead Details
@@ -336,9 +342,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                 <Box sx={darkModeColors}>
                   <h4
                     className={`${
-                      currentMode === "dark"
-                        ? `text-primary`
-                        : "text-black"
+                      currentMode === "dark" ? `text-primary` : "text-black"
                     } text-center font-semibold pb-5`}
                   >
                     Agent details
@@ -363,11 +367,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                       >
                         <MenuItem value="">
                           Select Manager
-                          <span
-                            className="ml-1 text-primary"
-                          >
-                            *
-                          </span>
+                          <span className="ml-1 text-primary">*</span>
                         </MenuItem>
 
                         {Managers?.map((person, index) => (
@@ -423,26 +423,18 @@ const AddLeadComponent = ({ FetchLeads }) => {
                         className="w-full"
                         displayEmpty
                       >
-                        <MenuItem value="">
-                          Select Agent
-                        </MenuItem>
+                        <MenuItem value="">Select Agent</MenuItem>
                         {User.role === 1
                           ? SalesPerson[`manager-${Manager}`]?.map(
                               (agent, index) => (
-                                <MenuItem
-                                  key={index}
-                                  value={agent?.id}
-                                >
+                                <MenuItem key={index} value={agent?.id}>
                                   {agent?.userName}
                                 </MenuItem>
                               )
                             )
                           : SalesPerson[`manager-${User?.id}`]?.map(
                               (agent, index) => (
-                                <MenuItem
-                                  key={index}
-                                  value={agent?.id}
-                                >
+                                <MenuItem key={index} value={agent?.id}>
                                   {agent?.userName}
                                 </MenuItem>
                               )
@@ -476,10 +468,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                         className="w-full"
                         sx={{
                           marginBottom: "1.25rem !important",
-                          color:
-                            currentMode === "dark"
-                              ? "#ffffff"
-                              : "#000000",
+                          color: currentMode === "dark" ? "#ffffff" : "#000000",
                           pointerEvents: "none",
                         }}
                         variant="outlined"
@@ -518,9 +507,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                 <Box sx={darkModeColors}>
                   <h4
                     className={`${
-                      currentMode === "dark"
-                        ? `text-primary`
-                        : "text-black"
+                      currentMode === "dark" ? `text-primary` : "text-black"
                     } text-center font-semibold pb-5`}
                   >
                     Project details
@@ -558,27 +545,15 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   >
                     <MenuItem value="" disabled>
                       Enquiry about
-                      <span className="ml-1 text-primary">
-                        *
-                      </span>
+                      <span className="ml-1 text-primary">*</span>
                     </MenuItem>
                     <MenuItem value={"Studio"}>Studio</MenuItem>
                     <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
-                    <MenuItem value={"2 Bedrooms"}>
-                      2 Bedrooms
-                    </MenuItem>
-                    <MenuItem value={"3 Bedrooms"}>
-                      3 Bedrooms
-                    </MenuItem>
-                    <MenuItem value={"4 Bedrooms"}>
-                      4 Bedrooms
-                    </MenuItem>
-                    <MenuItem value={"5 Bedrooms"}>
-                      5 Bedrooms
-                    </MenuItem>
-                    <MenuItem value={"6 Bedrooms"}>
-                      6 Bedrooms
-                    </MenuItem>
+                    <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
+                    <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
+                    <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
+                    <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
+                    <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
                     <MenuItem value={"Retail"}>Retail</MenuItem>
                     <MenuItem value={"Other"}>Others</MenuItem>
                   </TextField>
@@ -600,17 +575,13 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   >
                     <MenuItem value="" disabled>
                       Property type
-                      <span className="ml-1 text-primary">
-                        *
-                      </span>
+                      <span className="ml-1 text-primary">*</span>
                     </MenuItem>
                     <MenuItem value={"Apartment"}>Apartment</MenuItem>
                     <MenuItem value={"Villa"}>Villa</MenuItem>
                     <MenuItem value={"penthouse"}>Penthouse</MenuItem>
                     <MenuItem value={"mansion"}>Mansion</MenuItem>
-                    <MenuItem value={"Commercial"}>
-                      Commercial
-                    </MenuItem>
+                    <MenuItem value={"Commercial"}>Commercial</MenuItem>
                     <MenuItem value={"Townhouse"}>TownHouse</MenuItem>
                   </TextField>
 
@@ -631,13 +602,9 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   >
                     <MenuItem value="" disabled>
                       Purpose of enquiry
-                      <span className="ml-1 text-primary">
-                        *
-                      </span>
+                      <span className="ml-1 text-primary">*</span>
                     </MenuItem>
-                    <MenuItem value={"Investment"}>
-                      Investment
-                    </MenuItem>
+                    <MenuItem value={"Investment"}>Investment</MenuItem>
                     <MenuItem value={"End-user"}>End-User</MenuItem>
                   </TextField>
                 </Box>
@@ -647,9 +614,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                 <Box sx={darkModeColors}>
                   <h4
                     className={`${
-                      currentMode === "dark"
-                        ? `text-primary`
-                        : "text-black"
+                      currentMode === "dark" ? `text-primary` : "text-black"
                     } text-center font-semibold pb-5`}
                   >
                     Lead details
@@ -742,9 +707,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   >
                     <MenuItem value="" disabled>
                       Preferred language
-                      <span className="ml-1 text-primary">
-                        *
-                      </span>
+                      <span className="ml-1 text-primary">*</span>
                     </MenuItem>
                     <MenuItem value={"Arabic"}>Arabic</MenuItem>
                     <MenuItem value={"English"}>English</MenuItem>
@@ -775,9 +738,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                   >
                     <MenuItem value="" disabled>
                       Source
-                      <span className="ml-1 text-primary" >
-                        *
-                      </span>
+                      <span className="ml-1 text-primary">*</span>
                     </MenuItem>
                     <MenuItem value={"Campaign Facebook"}>
                       Facebook Campaign
@@ -799,6 +760,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                     <MenuItem value={"Comment"}>Comment</MenuItem>
                     <MenuItem value={"Message"}>Message</MenuItem>
                     <MenuItem value={"Website"}>Website</MenuItem>
+                    <MenuItem value={"Secondary"}>Secondary</MenuItem>
 
                     <MenuItem value={"Property Finder"}>
                       Property Finder
@@ -819,7 +781,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
                 className={`min-w-fit mb-5 w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
                 ripple={true}
                 style={{
-                  background: `${primaryColor}`
+                  background: `${primaryColor}`,
                 }}
                 size="lg"
                 type="submit"
