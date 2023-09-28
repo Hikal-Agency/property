@@ -523,6 +523,8 @@ const Listings = () => {
               currentPage={currentPage}
               lastPage={lastPage}
               FetchListings={FetchListings}
+              loading={loading}
+              setLoading={setLoading}
             />
           </div>
         </div>
