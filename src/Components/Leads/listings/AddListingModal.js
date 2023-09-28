@@ -17,11 +17,8 @@ import PhoneInput, {
 import classNames from "classnames";
 import { IoMdClose } from "react-icons/io";
 import { useStateContext } from "../../../context/ContextProvider";
-import { useState } from "react";
-import LocationPicker from "../../meetings/LocationPicker";
+import { useEffect, useState } from "react";
 import ListingLocation from "./ListingLocation";
-import { MdFileUpload } from "react-icons/md";
-import { CiMapPin } from "react-icons/ci";
 import axios from "../../../axoisConfig";
 import { toast } from "react-toastify";
 
@@ -307,15 +304,13 @@ const AddListingModal = ({
     }
   };
 
-  const handleCurrentLocationClick = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setListingLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-        addressText: "", // You may want to update this if you have an address
+  useEffect(() => {
+    axios
+      .get("https://api.3geonames.org/33.6680394,73.0715331")
+      .then((result) => {
+        console.log("Geo:", result);
       });
-    });
-  };
+  }, []);
 
   return (
     <>

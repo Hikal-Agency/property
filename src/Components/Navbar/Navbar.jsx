@@ -368,7 +368,6 @@ const Navbar = () => {
           <Menu
             className="navbar-menu-backdrop"
             hideBackdrop={true}
-            disableScrollLock
             onClick={handleClose}
             onMouseLeave={handleClose}
             anchorEl={anchorElem}
@@ -405,18 +404,6 @@ const Navbar = () => {
                     padding: "5px !important",
                     paddingRight: "0px !important",
                   },
-                  // "&:before": {
-                  //   content: '""',
-                  //   display: "block",
-                  //   position: "absolute",
-                  //   top: 0,
-                  //   right: 66,
-                  //   width: 10,
-                  //   height: 10,
-                  //   background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
-                  //   transform: "translateY(-50%) rotate(45deg)",
-                  //   zIndex: 0,
-                  // },
                 },
               }}
               transformOrigin={{ horizontal: "center", vertical: "top" }}

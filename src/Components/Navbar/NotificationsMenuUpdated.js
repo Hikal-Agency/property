@@ -26,7 +26,6 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   const [notifications, setNotifications] = useState();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  //const { currentMode, BACKEND_URL } = useStateContext();
 
   const handleAvoidClose = (event) => {
     event.stopPropagation();
@@ -126,16 +125,6 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
         })
         .catch((error) => {
           console.log(error);
-          // toast.error("Sorry, something went wrong!", {
-          //   position: "top-right",
-          //   autoClose: 3000,
-          //   hideProgressBar: false,
-          //   closeOnClick: true,
-          //   pauseOnHover: true,
-          //   draggable: true,
-          //   progress: undefined,
-          //   theme: "light",
-          // });
         });
 
       setCurrNavBtn(null);
@@ -175,19 +164,6 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
           <CircularProgress size={30} />
         </div>
       )}
-      {/* {!loading &&
-        notifications?.map((activity, index) => {
-          return (
-            <NotificationItem
-              setNotifications={setNotifications}
-              iconBGColor={iconBGColor}
-              notificationIcons={notificationIcons}
-              openNotification={openNotification}
-              key={index}
-              activity={activity}
-            />
-          );
-        })} */}
       {!loading &&
         (notifications?.length > 0 ? (
           notifications?.map((activity, index) => {
