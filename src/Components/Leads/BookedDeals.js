@@ -129,7 +129,7 @@ const BookedDeals = ({
     isArabic,
     User,
     Managers,
-    primaryColor
+    primaryColor,
   } = useStateContext();
   const [searchText, setSearchText] = useState("");
   const [openDialog, setopenDialog] = useState(false);
@@ -197,7 +197,6 @@ const BookedDeals = ({
     const [leadDateValue, setLeadDateValue] = useState({});
     const [leadDate, setLeadDate] = useState("");
     const [leadAmount, setLeadAmount] = useState("");
-
 
     const ChangeFeedback = (e) => {
       setnewFeedback(e.target.value);
@@ -357,10 +356,7 @@ const BookedDeals = ({
                 </IconButton>
                 <div className="px-10 py-5">
                   <div className="flex flex-col justify-center items-center">
-                    <IoIosAlert
-                      size={50}
-                      className="text-primary text-2xl"
-                    />
+                    <IoIosAlert size={50} className="text-primary text-2xl" />
                     <h1 className="font-semibold pt-3 text-lg text-center">
                       Do You Really Want Change the Feedback from{" "}
                       <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
@@ -694,7 +690,7 @@ const BookedDeals = ({
                 <Tooltip title="Not Verified" arrow>
                   <div
                     className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                    >
+                  >
                     <span className="text-primary p-1 text-center">
                       <BsShieldX size={16} />
                     </span>
@@ -1371,7 +1367,7 @@ const BookedDeals = ({
 
         {!UpdateLeadModelOpen && (
           <SingleLead
-          setLeadToDelete={setLeadToDelete}
+            setLeadToDelete={setLeadToDelete}
             LeadModelOpen={LeadModelOpen}
             setLeadModelOpen={setLeadModelOpen}
             handleLeadModelOpen={handleLeadModelOpen}
@@ -1391,6 +1387,7 @@ const BookedDeals = ({
             handleLeadModelClose={handleUpdateLeadModelClose}
             LeadData={singleLeadData}
             BACKEND_URL={BACKEND_URL}
+            FetchLeads={FetchLeads}
           />
         )}
       </Box>
