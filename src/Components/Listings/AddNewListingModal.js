@@ -7,7 +7,7 @@ import {
   Button,
   MenuItem,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import PhoneInput, {
   formatPhoneNumberIntl,
@@ -23,6 +23,8 @@ import { MdFileUpload } from "react-icons/md";
 import { CiMapPin } from "react-icons/ci";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
+import AddImageModal from "../../Pages/listings/AddImageModal";
+import AddDocumentModal from "../../Pages/listings/AddDocumentModal";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -31,13 +33,17 @@ const style = {
 
 const AddNewListingModal = ({
   setListingModalOpen,
-  handleCloseListingModal
+  handleCloseListingModal,
 }) => {
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [loading, setloading] = useState(false);
   const [displayMap, setDisplayMap] = useState(false);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
+  const [documentModal, setDocumentModal] = useState(false);
+  const [allImages, setAllImages] = useState([]);
+  const [allDocs, setAllDocs] = useState([]);
+
   const [listingLocation, setListingLocation] = useState({
     lat: 0,
     lng: 0,
@@ -48,6 +54,10 @@ const AddNewListingModal = ({
     leadContact: "",
     leadEmail: "",
     propertyPrice: "",
+  });
+  const [selectImagesModal, setSelectImagesModal] = useState({
+    isOpen: false,
+    listingId: null,
   });
   const [projectDetails, setProjectDetails] = useState({
     property_type: "",
@@ -121,7 +131,10 @@ const AddNewListingModal = ({
     if (inputValue && isPossiblePhoneNumber(inputValue)) {
       console.log("Possible: ", inputValue);
       if (isValidPhoneNumber(inputValue)) {
-        setSellerDetails({...sellerDetails, leadContact: formatPhoneNumberIntl(inputValue)})
+        setSellerDetails({
+          ...sellerDetails,
+          leadContact: formatPhoneNumberIntl(inputValue),
+        });
         console.log("Valid lead contact: ", sellerDetails?.leadContact);
         console.log("Valid input: ", inputValue);
         setError(false);
@@ -132,7 +145,6 @@ const AddNewListingModal = ({
       setError("Not a valid number.");
     }
   };
-  
 
   function removeNull(value) {
     if (value === "null" || value === null) {
@@ -199,26 +211,47 @@ const AddNewListingModal = ({
     const location = [lat, lng].join(",");
 
     const LeadData = new FormData();
-    
-    if (sellerDetails?.leadName) LeadData.append("seller_name", sellerDetails?.leadName);
-    if (sellerDetails?.leadContact) LeadData.append("seller_contact", sellerDetails?.leadContact);
-    if (sellerDetails?.leadEmail) LeadData.append("seller_email", sellerDetails?.leadEmail);
-    if (sellerDetails?.propertyPrice) LeadData.append("price", sellerDetails?.propertyPrice);
-    if (projectDetails?.property_type) LeadData.append("property_type", projectDetails?.property_type);
-    if (projectDetails?.project) LeadData.append("project", projectDetails?.project);
-    if (projectDetails?.bedrooms) LeadData.append("bedrooms", projectDetails?.bedrooms);
-    if (projectDetails?.bathrooms) LeadData.append("bathrooms", projectDetails?.bathrooms);
-    if (otherDetails?.address) LeadData.append("address", otherDetails?.address);
+
+    if (sellerDetails?.leadName)
+      LeadData.append("seller_name", sellerDetails?.leadName);
+    if (sellerDetails?.leadContact)
+      LeadData.append("seller_contact", sellerDetails?.leadContact);
+    if (sellerDetails?.leadEmail)
+      LeadData.append("seller_email", sellerDetails?.leadEmail);
+    if (sellerDetails?.propertyPrice)
+      LeadData.append("price", sellerDetails?.propertyPrice);
+    if (projectDetails?.property_type)
+      LeadData.append("property_type", projectDetails?.property_type);
+    if (projectDetails?.project)
+      LeadData.append("project", projectDetails?.project);
+    if (projectDetails?.bedrooms)
+      LeadData.append("bedrooms", projectDetails?.bedrooms);
+    if (projectDetails?.bathrooms)
+      LeadData.append("bathrooms", projectDetails?.bathrooms);
+    if (otherDetails?.address)
+      LeadData.append("address", otherDetails?.address);
     if (otherDetails?.area) LeadData.append("area", otherDetails?.area);
-    if (otherDetails?.listingType) LeadData.append("listing_type", otherDetails?.listingType);
-    if (otherDetails?.document) LeadData.append("documents", otherDetails?.document);
+    if (otherDetails?.listingType)
+      LeadData.append("listing_type", otherDetails?.listingType);
+    if (otherDetails?.document)
+      LeadData.append("documents", otherDetails?.document);
     if (LeadData?.leadId) LeadData.append("lead_id", LeadData?.leadId);
     if (location) LeadData.append("latlong", location);
     // LeadData.append("listing_type", "Secondary"); //Always appended
     LeadData.append("listing_status", "New"); //Always appended
     LeadData.append("addedBy", User?.id);
-    
+
     LeadData.append("addedBy_name", User?.userName);
+    if (allImages?.length > 0)
+      allImages?.forEach((image, index) => {
+        console.log("i am image: ", image);
+        LeadData.append(`img_name[${index}]`, image);
+      });
+
+    if (allDocs?.length > 0)
+      allDocs?.forEach((doc, index) => {
+        LeadData.append(`doc_name[${index}]`, doc);
+      });
 
     for (var pair of LeadData.entries()) {
       console.log(pair[0] + ", " + pair[1]);
@@ -227,14 +260,14 @@ const AddNewListingModal = ({
     await axios
       .post(`${BACKEND_URL}/listings`, LeadData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       })
       .then((result) => {
         console.log(result);
         setloading(false);
-        
+
         toast.success("Listing Added Successfully", {
           position: "top-right",
           autoClose: 3000,
@@ -412,7 +445,7 @@ const AddNewListingModal = ({
                       value={removeNull(sellerDetails?.leadContact)}
                       onChange={handleChange}
                     /> */}
-                    
+
                     <TextField
                       id="notes"
                       type={"text"}
@@ -604,7 +637,9 @@ const AddNewListingModal = ({
                       select
                       required
                     >
-                      <MenuItem value={"Secondary"} selected>Secondary</MenuItem>
+                      <MenuItem value={"Secondary"} selected>
+                        Secondary
+                      </MenuItem>
                       <MenuItem value={"Off-plan"}>Off-plan</MenuItem>
                     </TextField>
 
@@ -640,25 +675,49 @@ const AddNewListingModal = ({
                       value={otherDetails?.area}
                       onChange={handleOtherDetails}
                     />
+                  </Box>
 
-                    {/* <input
-                      accept=".pdf"
-                      style={{ display: "none" }}
-                      id="contained-button-document"
-                      type="file"
-                      name="document"
-                      onChange={handleDocumentUpload}
-                      multiple
-                    />
+                  <div className="w-full flex justify-center mr-4 items-center my-4 space-x-5">
+                    <label htmlFor="contained-button-file">
+                      <Button
+                        variant="contained"
+                        size="medium"
+                        className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                        onClick={() =>
+                          setSelectImagesModal({
+                            isOpen: true,
+                          })
+                        }
+                        style={{
+                          // backgroundColor: "#111827",
+                          color: "#ffffff",
+                          // border: "1px solid #DA1F26",
+                        }}
+                        component="span"
+                        disabled={loading ? true : false}
+                        startIcon={loading ? null : <MdFileUpload />}
+                      >
+                        <span>Upload Image</span>
+                      </Button>
+                      <p className="text-primary mt-2 italic">
+                        {allImages?.length > 0
+                          ? `${allImages?.length} images selected.`
+                          : null}
+                      </p>
+                    </label>
+
                     <label htmlFor="contained-button-document">
                       <Button
                         variant="contained"
-                        size="small"
+                        size="medium"
                         className="bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
                         style={{
                           // backgroundColor: "#111827",
                           color: "#ffffff",
                           // border: "1px solid ",
+                        }}
+                        onClick={() => {
+                          setDocumentModal(true);
                         }}
                         component="span"
                         disabled={loading ? true : false}
@@ -666,8 +725,13 @@ const AddNewListingModal = ({
                       >
                         <span>Upload Document</span>
                       </Button>
-                    </label> */}
-                  </Box>
+                      <p className="text-primary mt-2 italic">
+                        {allDocs?.length > 0
+                          ? `${allDocs?.length} documents selected.`
+                          : null}
+                      </p>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -693,16 +757,16 @@ const AddNewListingModal = ({
                   )}
 
                   {displayMap && ( */}
-                    <ListingLocation
-                      listingLocation={listingLocation}
-                      currLocByDefault={true}
-                      setListingLocation={setListingLocation}
-                      city={city}
-                      setCity={setCity}
-                      country={country}
-                      setCountry={setCountry}
-                      required
-                    />
+                  <ListingLocation
+                    listingLocation={listingLocation}
+                    currLocByDefault={true}
+                    setListingLocation={setListingLocation}
+                    city={city}
+                    setCity={setCity}
+                    country={country}
+                    setCountry={setCountry}
+                    required
+                  />
                   {/* )} */}
                 </Box>
               </div>
@@ -794,6 +858,22 @@ const AddNewListingModal = ({
               </div>
             </form>
           </div>
+          {selectImagesModal?.isOpen && (
+            <AddImageModal
+              selectImagesModal={selectImagesModal}
+              handleClose={() => setSelectImagesModal({ isOpen: false })}
+              allImages={allImages}
+              setAllImages={setAllImages}
+            />
+          )}
+          {documentModal && (
+            <AddDocumentModal
+              documentModal={documentModal}
+              handleClose={() => setDocumentModal(false)}
+              allDocs={allDocs}
+              setAllDocs={setAllDocs}
+            />
+          )}
         </div>
       </Modal>
     </>

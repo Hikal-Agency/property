@@ -18,16 +18,19 @@ const style = {
   boxShadow: 24,
 };
 
-const SelectImagesModal = ({
-  fetchSingleListing,
+const AddImageModal = ({
   selectImagesModal,
   handleClose,
+  allImages,
+  setAllImages,
 }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
+
   const imagesInputRef = useRef(null);
   const [btnloading, setbtnloading] = useState(false);
   const [imagePreviews, setImagePreviews] = useState([]);
-  const [allImages, setAllImages] = useState([]);
+
+  console.log("all images in child: ", allImages);
 
   const handleSelectImages = (e) => {
     e.preventDefault();
@@ -61,86 +64,84 @@ const SelectImagesModal = ({
     setImagePreviews(updatedPreviews);
   };
 
-  const handleUploadImages = async () => {
-    try {
-      setbtnloading(true);
+  //   const handleUploadImages = async () => {
+  //     try {
+  //       setbtnloading(true);
 
-      // Simulate image uploading delay (remove this in production)
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+  //       // Simulate image uploading delay (remove this in production)
+  //       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // const options = {
-      //   maxSizeMB: 1,
-      //   maxWidthOrHeight: 1920,
-      // };
+  //       // const options = {
+  //       //   maxSizeMB: 1,
+  //       //   maxWidthOrHeight: 1920,
+  //       // };
 
-      const ImageData = new FormData();
-      ImageData.append("id", selectImagesModal?.listingId);
+  //       const ImageData = new FormData();
+  //       ImageData.append("id", selectImagesModal?.listingId);
 
-      // allImages?.forEach((image) => {
-      //   ImageData.append("img_name", image);
-      // })
+  //       // allImages?.forEach((image) => {
+  //       //   ImageData.append("img_name", image);
+  //       // })
 
-      allImages?.forEach((image, index) => {
-        console.log("i am image: ", image);
-        ImageData.append(`img_name[${index}]`, image);
-      });
+  //       allImages?.forEach((image, index) => {
+  //         ImageData.append(`img_name[${index}]`, image);
+  //       });
 
-      const token = localStorage.getItem("auth-token");
-      await axios
-        .post(
-          `${BACKEND_URL}/listings/${selectImagesModal?.listingId}`,
-          ImageData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: "Bearer " + token,
-            },
-          }
-        )
-        .then((result) => {
-          setbtnloading(false);
-          toast.success("Image uploaded successfuly", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          fetchSingleListing();
-          handleClose();
-        })
-        .catch((err) => {
-          console.log(err);
-          setbtnloading(false);
-          toast.error("Something went wrong! Please Try Again", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        });
-    } catch (error) {
-      console.error(error);
-      setbtnloading(false);
-      toast.error("Something went wrong! Please try again", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
+  //       const token = localStorage.getItem("auth-token");
+  //       await axios
+  //         .post(
+  //           `${BACKEND_URL}/listings/${selectImagesModal?.listingId}`,
+  //           ImageData,
+  //           {
+  //             headers: {
+  //               "Content-Type": "multipart/form-data",
+  //               Authorization: "Bearer " + token,
+  //             },
+  //           }
+  //         )
+  //         .then((result) => {
+  //           setbtnloading(false);
+  //           toast.success("Image uploaded successfuly", {
+  //             position: "top-right",
+  //             autoClose: 3000,
+  //             hideProgressBar: false,
+  //             closeOnClick: true,
+  //             pauseOnHover: true,
+  //             draggable: true,
+  //             progress: undefined,
+  //             theme: "light",
+  //           });
+  //           handleClose();
+  //         })
+  //         .catch((err) => {
+  //           console.log(err);
+  //           setbtnloading(false);
+  //           toast.error("Something went wrong! Please Try Again", {
+  //             position: "top-right",
+  //             autoClose: 3000,
+  //             hideProgressBar: false,
+  //             closeOnClick: true,
+  //             pauseOnHover: true,
+  //             draggable: true,
+  //             progress: undefined,
+  //             theme: "light",
+  //           });
+  //         });
+  //     } catch (error) {
+  //       console.error(error);
+  //       setbtnloading(false);
+  //       toast.error("Something went wrong! Please try again", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //     }
+  //   };
 
   const handleAddMoreImages = () => {
     if (allImages.length < 10) {
@@ -251,7 +252,7 @@ const SelectImagesModal = ({
               if (allImages?.length === 0) {
                 imagesInputRef.current?.click();
               } else {
-                handleUploadImages();
+                handleClose();
               }
             }}
             variant="contained"
@@ -265,7 +266,7 @@ const SelectImagesModal = ({
                 <CircularProgress size={18} sx={{ color: "white" }} />
               </div>
             ) : (
-              <span>{allImages?.length === 0 ? "Upload" : "Submit"}</span>
+              <span>{allImages?.length === 0 ? "Upload" : "Select"}</span>
             )}
           </Button>
         </div>
@@ -282,4 +283,4 @@ const SelectImagesModal = ({
   );
 };
 
-export default SelectImagesModal;
+export default AddImageModal;

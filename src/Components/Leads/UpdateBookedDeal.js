@@ -26,6 +26,7 @@ const UpdateBookedDeal = ({
   handleLeadModelClose,
   LeadData,
   BACKEND_URL,
+  FetchLeads,
 }) => {
   const { darkModeColors, currentMode, User } = useStateContext();
   const [loading, setloading] = useState(true);
@@ -34,6 +35,7 @@ const UpdateBookedDeal = ({
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
   };
+  const token = localStorage.getItem("auth-token");
   const [PropertyType, setPropertyType] = useState("");
   const [EnquiryType, setEnquiryType] = useState("");
   const [ForType, setForType] = useState("");
@@ -53,6 +55,7 @@ const UpdateBookedDeal = ({
   const [LeadContact, setLeadContact] = useState("");
   const [LeadEmail, setLeadEmail] = useState("");
   const [LeadProject, setLeadProject] = useState("");
+  const [booked_amount, setBookedAmount] = useState("");
   //eslint-disable-next-line
   const [LeadNotes, setLeadNotes] = useState("");
 
@@ -131,6 +134,7 @@ const UpdateBookedDeal = ({
         setPropertyType(result?.data?.data?.leadType);
         setEnquiryType(result?.data?.data?.enquiryType);
         setLeadProject(result?.data?.data?.project);
+        setBookedAmount(result?.data?.data?.booked_amount);
         setForType(result?.data?.data?.leadFor);
         setLeadName(result?.data?.data?.leadName);
         setLeadContact(result?.data?.data?.leadContact);
@@ -186,6 +190,7 @@ const UpdateBookedDeal = ({
     UpdateLeadData.append("enquiryType", EnquiryType);
     UpdateLeadData.append("leadType", PropertyType);
     UpdateLeadData.append("project", LeadProject);
+    UpdateLeadData.append("booked_amount", booked_amount);
     UpdateLeadData.append("leadFor", ForType);
     UpdateLeadData.append("language", LanguagePrefered);
     UpdateLeadData.append("feedback", Feedback);
@@ -216,6 +221,7 @@ const UpdateBookedDeal = ({
           theme: "light",
         });
         setbtnloading(false);
+        FetchLeads(token);
       })
       .catch((err) => {
         toast.error("Error in Updating the Lead", {
@@ -286,7 +292,6 @@ const UpdateBookedDeal = ({
                 <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-1">
                   <div>
                     <Box sx={darkModeColors}>
-
                       <TextField
                         id="Project"
                         type={"text"}
@@ -298,6 +303,18 @@ const UpdateBookedDeal = ({
                         onChange={(e) => setLeadProject(e.target.value)}
                       />
 
+                      <TextField
+                        id="Project"
+                        type={"text"}
+                        label="Booked Amount"
+                        className="w-full mb-5 mt-4"
+                        style={{ marginTop: "10px" }}
+                        variant="outlined"
+                        size="small"
+                        value={booked_amount}
+                        onChange={(e) => setBookedAmount(e.target.value)}
+                      />
+
                       <FormControl fullWidth variant="outlined" size="medium">
                         <InputLabel id="">Enquiry for</InputLabel>
                         <Select
@@ -305,7 +322,7 @@ const UpdateBookedDeal = ({
                           value={EnquiryType}
                           label="Enquiry for"
                           onChange={ChangeEnquiryType}
-                          className="w-full mb-5"
+                          className="w-full mb-5 mt-4"
                           displayEmpty
                           required
                           size="small"

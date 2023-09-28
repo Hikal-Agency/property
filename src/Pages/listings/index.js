@@ -23,10 +23,9 @@ import AddUserModel from "../../Components/addUser/AddUserModel";
 import SecondaryListings from "../../Components/Listings/SecondaryListings";
 import AddNewListingModal from "../../Components/Listings/AddNewListingModal";
 import { Link } from "react-router-dom";
-import {
-  BsBuildingAdd,
-  BsSearch
-} from "react-icons/bs";
+import { BsBuildingAdd, BsSearch } from "react-icons/bs";
+import { toast } from "react-toastify";
+import moment from "moment";
 
 const Listings = () => {
   const {
@@ -52,32 +51,106 @@ const Listings = () => {
   const [listingModalOpen, setListingModalOpen] = useState(false);
   const handleCloseListingModal = () => setListingModalOpen(false);
   const [open, setOpen] = useState(false);
+  const token = localStorage.getItem("auth-token");
 
+  const [filters, setFilters] = useState({
+    bedrooms: null,
+    bathrooms: null,
+    sort: null,
+    sold: null,
+    property: null,
+    category: null,
+  });
+  const isFilterApplied = Object.values(filters).some(
+    (value) => value !== null
+  );
 
-  const searchRef = useRef("");
+  const [searchCriteria, setSearchCriteria] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchCriteriaChange = (event) => {
+    setSearchCriteria(event.target.value);
+  };
+
+  const handleSearchQueryChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const clearFilter = (e) => {
+    e.preventDefault();
+
+    setFilters({
+      bedrooms: null,
+      bathrooms: null,
+      sort: null,
+      sold: null,
+      category: null,
+    });
+
+    setSearchQuery("");
+  };
 
   const FetchListings = async (token, page = 1) => {
+    setLoading(true);
     if (page > 1) {
       setbtnloading(true);
     }
+    let url = `${BACKEND_URL}/listings?page=${page}`;
+    if (filters?.bedrooms) url += `&bedrooms=${filters?.bedrooms}`;
+    if (filters?.bathrooms) url += `&bathrooms=${filters?.bathrooms}`;
+    if (filters?.property) url += `&property_type=${filters?.property}`;
+    if (filters?.category) url += `&listing_type=${filters?.category}`;
+
+    if (searchCriteria === "city") url += `&city=${searchQuery}`;
+    if (searchCriteria === "project") url += `&project=${searchQuery}`;
+    if (searchCriteria === "area") url += `&area=${searchQuery}`;
+
     try {
-      const all_listings = await axios.get(
-        `${BACKEND_URL}/listings?page=${page}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const all_listings = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
       console.log("all listings: ", all_listings);
+      let filteredListings = all_listings?.data?.data?.data || [];
+
+      // default sorting listing status = New
+      filteredListings = filteredListings?.filter((listing) => {
+        return listing?.listing_status.toLowerCase() === "new";
+      });
+
+      // sort by sold status
+      if (filters?.sold) {
+        filteredListings = filteredListings?.filter((listing) => {
+          return listing?.listing_status.toLowerCase() === "sold";
+        });
+      }
+
+      console.log("sold: ", filters?.sold);
+
+      // sort by price
+      if (filters?.sort == "sortByHigh") {
+        filteredListings = filteredListings.sort((a, b) =>
+          a.price > b.price ? -1 : 1
+        );
+      } else if (filters?.sort == "sortByLow") {
+        filteredListings = filteredListings?.sort((a, b) =>
+          a.price < b.price ? -1 : 1
+        );
+      } else if (filters?.sort === "latest") {
+        filteredListings = filteredListings.sort((a, b) =>
+          moment(b.created_at).isBefore(moment(a.created_at)) ? -1 : 1
+        );
+      }
+      console.log("filtered listings: ", filteredListings);
 
       if (page > 1) {
         setListings((prevOffers) => {
           return [
             ...prevOffers,
-            ...all_listings?.data?.data?.data?.map((listing) => ({
+            ...filteredListings?.map((listing) => ({
               ...listing,
               page: page,
             })),
@@ -86,7 +159,7 @@ const Listings = () => {
       } else {
         setListings(() => {
           return [
-            ...all_listings?.data?.data?.data?.map((listing) => ({
+            ...filteredListings?.map((listing) => ({
               ...listing,
               page: page,
             })),
@@ -99,7 +172,17 @@ const Listings = () => {
       setbtnloading(false);
       //   console.log("All Offers: ",all_listings)
     } catch (error) {
-      console.log("Offers not fetched. ", error);
+      console.log("listings not fetched. ", error);
+      toast.error("Unable to fetch listings.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -120,9 +203,8 @@ const Listings = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
     FetchListings(token, currentPage);
-  }, [currentPage, value]);
+  }, [currentPage, value, filters, searchQuery]);
 
   return (
     <>
@@ -144,12 +226,10 @@ const Listings = () => {
                 <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
                   className={`text-lg font-semibold ${
-                    currentMode === "dark"
-                      ? "text-white"
-                      : "text-black"
+                    currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  Secondary Listings {" "}
+                  Secondary Listings{" "}
                   <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {total}
                   </span>
@@ -190,7 +270,6 @@ const Listings = () => {
                   setListingModalOpen={setListingModalOpen}
                 />
               )}
- 
             </div>
             <div className={`flex items-center justify-between`}>
               <Box
@@ -200,7 +279,7 @@ const Listings = () => {
               >
                 <Box sx={darkModeColors}>
                   {" "}
-                  <TextField
+                  {/* <TextField
                     className="w-[200px]"
                     label="Search"
                     size="small"
@@ -216,10 +295,50 @@ const Listings = () => {
                         </InputAdornment>
                       ),
                     }}
+                  /> */}
+                  <TextField
+                    className="w-[200px]"
+                    label="Search"
+                    size="small"
+                    placeholder="Enter search query"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <BsSearch
+                            color={
+                              currentMode === "dark" ? "#ffffff" : "#000000"
+                            }
+                          />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <Select
+                          value={searchCriteria}
+                          onChange={handleSearchCriteriaChange}
+                          className="p-0 m-0"
+                        >
+                          <MenuItem value="project">Project</MenuItem>
+                          <MenuItem value="city">City</MenuItem>
+                          <MenuItem value="area">Area</MenuItem>
+                          {/* <MenuItem value="neighborhood">Neighborhood</MenuItem> */}
+                        </Select>
+                      ),
+                    }}
+                    variant="outlined"
+                    onChange={handleSearchQueryChange}
+                    value={searchQuery}
                   />
                   <FormControlLabel
                     control={<Switch />}
-                    label="Solid Listings"
+                    value={filters?.sold}
+                    onClick={(e) => {
+                      const value = e.target.value;
+                      setFilters({
+                        ...filters,
+                        sold: value === "sold" ? null : "sold",
+                      });
+                    }}
+                    label="Sold Listings"
                     sx={{
                       marginX: "10px",
 
@@ -234,17 +353,73 @@ const Listings = () => {
                             : "#B91C1C !important",
                       },
                       "& .MuiFormControlLabel-label ": {
-                        color:
-                          currentMode === "dark" && "#ffffff !important",
+                        color: currentMode === "dark" && "#ffffff !important",
                         fontWeight: "semi-bold",
                       },
                     }}
                   />
                   <TextField
+                    id="property"
+                    value={filters?.property}
+                    label="Property"
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setFilters({
+                        ...filters,
+                        property: e.target.value,
+                      });
+                    }}
+                    size="small"
+                    displayEmpty
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        minWidth: "120px",
+                        marginX: "5px !important",
+                      },
+                    }}
+                    select
+                  >
+                    <MenuItem value={"apartment"}>Apartment</MenuItem>
+                    <MenuItem value={"retail"}>Retail</MenuItem>
+                    <MenuItem value={"villa"}>Villas</MenuItem>
+                  </TextField>
+                  <TextField
+                    id="category"
+                    value={filters?.category}
+                    label="Category"
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setFilters({
+                        ...filters,
+                        category: e.target.value,
+                      });
+                    }}
+                    size="small"
+                    displayEmpty
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        minWidth: "120px",
+                        marginX: "5px !important",
+                      },
+                    }}
+                    select
+                  >
+                    <MenuItem value={"Secondary"}>Secondary</MenuItem>
+                    <MenuItem value={"Off-plan"}>Off Plan</MenuItem>
+                  </TextField>
+                  <TextField
                     id="bedrooms"
-                    // value={PropertyType}
+                    value={filters?.bedrooms}
                     label="Beds"
-                    // onChange={ChangePropertyType}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setFilters({
+                        ...filters,
+                        bedrooms: e.target.value,
+                      });
+                    }}
                     size="small"
                     displayEmpty
                     sx={{
@@ -259,22 +434,19 @@ const Listings = () => {
                     <MenuItem value={"Studio"}>Studio</MenuItem>
                     <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
                     <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
-                    <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
-                    <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
-                    <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
-                    <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
-                    <MenuItem value={"7 Bedrooms"}>7 Bedrooms</MenuItem>
-                    <MenuItem value={"8 Bedrooms"}>8 Bedrooms</MenuItem>
-                    <MenuItem value={"9 Bedrooms"}>9 Bedrooms</MenuItem>
-                    <MenuItem value={"10 Bedrooms"}>10 Bedrooms</MenuItem>
-                    <MenuItem value={"Retail"}>Retail</MenuItem>
+                    <MenuItem value={"10 Bedrooms"}> upto 10 Bedrooms</MenuItem>
                   </TextField>
-                  
                   <TextField
                     id="bathrooms"
-                    // value={PropertyType}
+                    value={filters?.bathrooms}
                     label="Baths"
-                    // onChange={ChangePropertyType}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setFilters({
+                        ...filters,
+                        bathrooms: e.target.value,
+                      });
+                    }}
                     size="small"
                     displayEmpty
                     sx={{
@@ -288,24 +460,23 @@ const Listings = () => {
                   >
                     <MenuItem value={"1 Bathroom"}>1 Bathroom</MenuItem>
                     <MenuItem value={"2 Bathrooms"}>2 Bathrooms</MenuItem>
-                    <MenuItem value={"3 Bathrooms"}>3 Bathrooms</MenuItem>
-                    <MenuItem value={"4 Bathrooms"}>4 Bathrooms</MenuItem>
-                    <MenuItem value={"5 Bathrooms"}>5 Bathrooms</MenuItem>
-                    <MenuItem value={"6 Bathrooms"}>6 Bathrooms</MenuItem>
-                    <MenuItem value={"7 Bathrooms"}>7 Bathrooms</MenuItem>
-                    <MenuItem value={"8 Bathrooms"}>8 Bathrooms</MenuItem>
-                    <MenuItem value={"9 Bathrooms"}>9 Bathrooms</MenuItem>
                     <MenuItem value={"10 Bathrooms"}>
-                      10 Bathrooms
+                      {" "}
+                      upto 10 Bathrooms
                     </MenuItem>
                     <MenuItem value={"Unavailabe"}>Unavailabe</MenuItem>
                   </TextField>
-                  
                   <TextField
                     id="sortby"
-                    // value={PropertyType}
+                    value={filters?.sort}
                     label="Sort by"
-                    // onChange={ChangePropertyType}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setFilters({
+                        ...filters,
+                        sort: e.target.value,
+                      });
+                    }}
                     size="small"
                     displayEmpty
                     sx={{
@@ -317,16 +488,18 @@ const Listings = () => {
                     }}
                     select
                   >
-                    <MenuItem value="Latest" >
-                      Latest
-                    </MenuItem>
-                    <MenuItem value="Price High to Low">
-                      Price High to Low
-                    </MenuItem>
-                    <MenuItem value="Price Low to High">
-                      Price Low to High
-                    </MenuItem>
+                    <MenuItem value="latest">Latest</MenuItem>
+                    <MenuItem value="sortByHigh">Price High to Low</MenuItem>
+                    <MenuItem value="sortByLow">Price Low to High</MenuItem>
                   </TextField>
+                  {isFilterApplied && (
+                    <Button
+                      onClick={clearFilter}
+                      className="w-max btn py-2 px-3 bg-btn-primary"
+                    >
+                      Clear
+                    </Button>
+                  )}
                 </Box>
               </Box>
 
@@ -349,6 +522,9 @@ const Listings = () => {
               setPageBeingScrolled={setPageBeingScrolled}
               currentPage={currentPage}
               lastPage={lastPage}
+              FetchListings={FetchListings}
+              loading={loading}
+              setLoading={setLoading}
             />
           </div>
         </div>
