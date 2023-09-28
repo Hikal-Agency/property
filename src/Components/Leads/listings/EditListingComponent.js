@@ -8,6 +8,7 @@ import {
   MenuItem,
   TextField,
   Typography,
+  InputLabel,
 } from "@mui/material";
 import PhoneInput, {
   formatPhoneNumberIntl,
@@ -66,6 +67,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
   const [otherDetails, setOtherDetails] = useState({
     address: LeadData?.address,
     area: LeadData?.area,
+    listing_status: LeadData?.listing_status,
     // picture: [],
     // document: [],
   });
@@ -94,6 +96,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
 
   const handleOtherDetails = (e) => {
     const { name, value } = e.target;
+    console.log("name value: ", name, value);
 
     setOtherDetails((prev) => ({
       ...prev,
@@ -205,8 +208,10 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
     if (otherDetails?.area) Data.append("area", otherDetails?.area);
     if (LeadData?.leadId) Data.append("lead_id", LeadData?.leadId);
     if (location) Data.append("latlong", location);
+    if (otherDetails?.listing_status)
+      Data.append("listing_status", otherDetails?.listing_status);
     Data.append("listing_type", "Secondary"); //Always appended
-    Data.append("listing_status", "New"); //Always appended
+    // Data.append("listing_status", "New"); //Always appended
     Data.append("addedBy", User?.id);
     Data.append("addedBy_name", User?.userName);
 
@@ -621,6 +626,48 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                       value={otherDetails?.area}
                       onChange={handleOtherDetails}
                     />
+
+                    <TextField
+                      id="listing-status"
+                      value={otherDetails?.listing_status}
+                      label="Listing Status"
+                      disabled={
+                        LeadData?.listing_status.toLowerCase() === "sold"
+                      }
+                      onChange={handleOtherDetails}
+                      size="small"
+                      className="w-full mb-5"
+                      name="listing_status"
+                      displayEmpty
+                      sx={{
+                        "&": {
+                          marginBottom: "1.25rem !important",
+                        },
+                        "& .MuiSelect-select  .Mui-selected": {
+                          color: "red !important",
+                        },
+                        "& input:disabled": {
+                          color: "red",
+                        },
+                      }}
+                      select
+                    >
+                      <MenuItem value="" disabled>
+                        Listing Status
+                        <span className="ml-1" style={{ color: "red" }}>
+                          *
+                        </span>
+                      </MenuItem>
+                      <MenuItem value={"New"}>New</MenuItem>
+                      <MenuItem
+                        value={"Sold"}
+                        selected={
+                          LeadData?.listing_status.toLowerCase() === "sold"
+                        }
+                      >
+                        Sold
+                      </MenuItem>
+                    </TextField>
                   </Box>
                 </div>
               </div>
