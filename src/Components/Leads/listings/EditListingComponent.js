@@ -643,12 +643,10 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         "&": {
                           marginBottom: "1.25rem !important",
                         },
-                        "& .MuiSelect-select  .Mui-selected": {
-                          color: "red !important",
-                        },
-                        "& input:disabled": {
-                          color: "red",
-                        },
+                        "& .MuiSelect-select .MuiSelect-outlined .Mui-disabled .MuiInputBase-input .MuiOutlinedInput-input .Mui-disabled .MuiInputBase-inputSizeSmall css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
+                          {
+                            color: "red !important",
+                          },
                       }}
                       select
                     >

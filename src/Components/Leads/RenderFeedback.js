@@ -32,6 +32,7 @@ const RenderFeedback = ({ cellValues }) => {
   const [Feedback, setFeedback] = useState(cellValues?.row?.feedback);
   const [newFeedback, setnewFeedback] = useState("");
   const [DialogueVal, setDialogue] = useState(false);
+  const [booked_amount, setBookedAmount] = useState();
   const [meetingData, setMeetingData] = useState({
     meetingDate: null,
     meetingTime: null,
@@ -118,6 +119,24 @@ const RenderFeedback = ({ cellValues }) => {
       UpdateLeadData.append("meetingNote", meetingData.notes || "");
     }
 
+    if (newFeedback === "Booked") {
+      if (!booked_amount) {
+        toast.error("Booked amount required.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setbtnloading(false);
+        return;
+      }
+
+      UpdateLeadData.append("booked_amount", booked_amount);
+    }
+
     await axios
       .post(`${BACKEND_URL}/leads/${cellValues?.row?.leadId}`, UpdateLeadData, {
         headers: {
@@ -129,7 +148,7 @@ const RenderFeedback = ({ cellValues }) => {
         fetchSidebarData();
         console.log("Feedback Updated successfull");
         console.log(result);
-        
+
         toast.success("Feedback Updated Successfully", {
           position: "top-right",
           autoClose: 3000,
@@ -295,7 +314,6 @@ const RenderFeedback = ({ cellValues }) => {
           <MenuItem value={"Duplicate"}>Duplicate</MenuItem>
           <MenuItem value={"Dead"}>Dead</MenuItem>
           <MenuItem value={"Wrong Number"}>Wrong Number</MenuItem>
-
         </Select>
       </FormControl>
 
@@ -330,11 +348,8 @@ const RenderFeedback = ({ cellValues }) => {
             </IconButton>
             <div className="px-10 py-5">
               <div className="flex flex-col justify-center items-center">
-                <IoIosAlert
-                  size={50}
-                  className="text-primary text-2xl"
-                />
-                <h1 className="font-semibold pt-3 text-lg text-center">
+                <IoIosAlert size={50} className="text-primary text-2xl" />
+                <h1 className="font-semibold pt-3 mb-3 text-lg text-center">
                   Do You Really Want Change the Feedback from{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                     {Feedback ?? "No feedback"}
@@ -485,6 +500,53 @@ const RenderFeedback = ({ cellValues }) => {
                     </Button>
                   </div>
                 </form>
+              ) : newFeedback === "Booked" ? (
+                <>
+                  <TextField
+                    id="booked_amount"
+                    type={"number"}
+                    sx={{
+                      "& input": {
+                        fontFamily: "Noto Kufi Arabic",
+                      },
+                    }}
+                    label="Booked Amount "
+                    className="w-full mb-1 mt-3"
+                    style={{ marginBottom: "20px" }}
+                    variant="outlined"
+                    name="booked_amount"
+                    size="medium"
+                    value={booked_amount}
+                    onChange={(e) => {
+                      setBookedAmount(e.target.value);
+                    }}
+                    required
+                  />
+                  <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                    <Button
+                      className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                      ripple={true}
+                      size="lg"
+                      onClick={() => UpdateFeedback(cellValues)}
+                    >
+                      {btnloading ? (
+                        <CircularProgress size={18} sx={{ color: "white" }} />
+                      ) : (
+                        <span>Confirm</span>
+                      )}
+                    </Button>
+
+                    <Button
+                      onClick={() => setDialogue(false)}
+                      ripple={true}
+                      variant="outlined"
+                      className={`shadow-none  rounded-md text-sm text-[#da1f26]  border-[#da1f26]   py-3                       
+                      `}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </>
               ) : (
                 <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                   <Button
