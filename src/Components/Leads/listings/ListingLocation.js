@@ -77,7 +77,11 @@ const ListingLocation = ({
             lng: Number(latLng.lng()),
             addressText: results[0].formatted_address,
           });
-          console.log(results[0]);
+          const value = results[0].formatted_address?.split(",");
+
+          const count = value.length;
+          setCountry(value[count - 1]);
+          setCity(value[count - 3] || value[count - 2]);
         } else {
           console.log("Google maps couldn't load");
         }
