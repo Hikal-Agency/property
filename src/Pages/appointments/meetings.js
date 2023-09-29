@@ -6,7 +6,7 @@ import {
   AiOutlineTable,
   AiOutlineHistory
 } from "react-icons/ai";
-import { MdLocationOn } from "react-icons/md";
+import { MdOutlineLocationOn } from "react-icons/md";
 import React, { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
@@ -262,18 +262,24 @@ const Meetings = () => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="deleteLeadBtn space-x-2 w-full flex items-center justify-center align-center">
-            <Button
-              onClick={() => handleEditMeeting(cellValues)}
+          <div 
+            // className="deleteLeadBtn space-x-2 w-full flex items-center justify-center align-center"
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            <p
+              style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#229ed1] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
             >
-              {/* <AiTwotoneEdit size={20} /> */}
-              <AiOutlineEdit size={16} />
-            </Button>
+              <Tooltip title="Edit Meeting" arrow>
+                <button onClick={() => handleEditMeeting(cellValues)}>
+                  <AiOutlineEdit size={16} />
+                </button>
+              </Tooltip>
+            </p>
 
             <p
               style={{ cursor: "pointer" }}
@@ -293,18 +299,20 @@ const Meetings = () => {
             {cellValues.row.mLat === "" ? (
               <></>
             ) : (
-              <Button
-                onClick={() =>
-                  showLocation(cellValues.row.mLat, cellValues.row.mLong)
-                }
+              <p
+                style={{ cursor: "pointer" }}
                 className={`${
                   currentMode === "dark"
-                    ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                    : "text-black bg-transparent rounded-md p-1 shadow-none "
-                }`}
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#ec9c19] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
               >
-                <MdLocationOn size={16} />
-              </Button>
+                <Tooltip title="View Location" arrow>
+                  <button onClick={() => showLocation(cellValues.row.mLat, cellValues.row.mLong) }>
+                    <MdOutlineLocationOn size={16} />
+                  </button>
+                </Tooltip>
+              </p>
             )}
           </div>
         );
@@ -510,12 +518,12 @@ const Meetings = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full pl-3 ${
+            className={`w-full p-4 ${
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
             <div className="flex justify-between">
-              <div className="flex items-center py-3">
+              <div className="flex items-center pb-3">
                 <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
                   className={`text-lg font-semibold ${

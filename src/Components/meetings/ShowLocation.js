@@ -16,7 +16,7 @@ const ShowLocation = ({
   meetingLocation,
   meetingNote,
 }) => {
-  const { currentMode, darkModeColors } = useStateContext();
+  const { currentMode, darkModeColors, isArabic } = useStateContext();
 
   console.log("meeting note: ", meetingNote);
 
@@ -45,35 +45,41 @@ const ShowLocation = ({
           style={style}
           className={`w-[calc(100%-20px)] md:w-[50%]  ${
             currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-white"
-          } absolute top-1/2 left-1/2 p-5 rounded-md`}
+          } absolute top-1/2 left-1/2 p-4 rounded-md`}
         >
-          <h1
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-black"
-            } text-center font-bold text-xl mb-5`}
-          >
-            Meeting Detail
-          </h1>
-          <Box sx={darkModeColors} className="w-full">
+          <div className="w-full flex items-center pb-3">
+            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+            <h1
+              className={`text-lg font-semibold ${
+                currentMode === "dark"
+                  ? "text-white"
+                  : "text-black"
+              }`}
+            >
+              Meeting details
+            </h1>
+          </div>
+
+          <Box sx={darkModeColors} className="w-full p-4">
             <FormControl fullWidth>
               <TextField
                 id="text"
                 type={"text"}
                 sx={{"& input": {
-                  fontFamily: "Noto Kufi Arabic"
+                  fontFamily: isArabic(meetingNote) ? "Noto Kufi Arabic" : "inherit"
                 }}}
                 label="Meeting Note"
-                className="w-full mb-3"
+                className="w-full"
                 style={{ marginBottom: "20px" }}
                 variant="outlined"
                 name="text"
-                size="medium"
+                size="small"
                 value={meetingNote || "No note"}
                 readOnly={true}
               />
             </FormControl>
-          </Box>
-          <Box sx={darkModeColors} className="w-full">
+          {/* </Box>
+          <Box sx={darkModeColors} className="w-full p-4"> */}
             {meetingLocation && [
               meetingLocation.lat && meetingLocation.lng ? (
                 <LocationPicker

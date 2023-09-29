@@ -225,220 +225,235 @@ const Reports = () => {
         {/* <ToastContainer/> */}
         <div className="flex min-h-screen">
           <div
-            className={`w-full ${
+            className={`w-full p-4 ${
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`w-full `}>
-              <div className="pl-3">
-                <div className="my-5 mb-10">
-                  <div className="flex justify-center bg-primary py-4 mb-4  rounded-full  ">
-                    <h1 className={`text-white text-lg font-semibold`}>
-                      Turnover
-                    </h1>
+            <div className="mb-10">
+              <div className="mb-5">
+                <div className="flex justify-center bg-primary py-2 mb-4 rounded-full">
+                  <h1 className={`text-white text-lg font-semibold`}>
+                    TURNOVER
+                  </h1>
+                </div>
+                <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
+                  <div
+                    className={`${
+                      currentMode === "dark"
+                        ? "bg-[#1c1c1c] text-white"
+                        : "bg-[#EEEEEE] text-black"
+                    } rounded-md p-2 h-auto`}
+                  >
+                    <h6 className="mb-2 p-2">
+                      <span className="font-semibold">
+                        SALES
+                      </span>
+                      <span className="float-right">
+                        <select
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black"
+                          } text-xs rounded-md p-1`}
+                          value={selectedMonthSales}
+                          onChange={(e) => {
+                            setSelectedMonthSales(e.target.value);
+                          }}
+                        >
+                          <option value="alltime">All-Time</option>
+                          <option value="lastmonth">Last Month</option>
+                          <option value="thismonth">This Month</option>
+                        </select>
+                      </span>
+                    </h6>
+                    <div className="justify-between items-center">
+                      {saleschart_loading ? (
+                        <div className="flex items-center space-x-2">
+                          <CircularProgress size={20} /> <span>Loading</span>
+                        </div>
+                      ) : (
+                        // <SalesAmountChartAdmin
+                        //   selectedMonthSales={selectedMonthSales}
+                        // />
+                        <SaleBubbleChart
+                          selectedMonthSales={selectedMonthSales}
+                        />
+                      )}
+                    </div>
                   </div>
-                  <div className="grid grid-cols-4 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-3 mb-3">
                     <div
                       className={`${
-                        currentMode === "dark"
-                          ? "bg-[#1c1c1c] text-white"
-                          : "bg-gray-200 text-black"
-                      } rounded-md p-2 h-auto`}
+                        currentMode === "dark" ? " text-white" : "text-black"
+                      } rounded-md p-2`}
                     >
                       <h6 className="mb-2 p-2">
-                        <span className="font-semibold">Sales</span>
-                        <span className="float-right">
-                          <select
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
-                            } text-xs rounded-md p-1`}
-                            value={selectedMonthSales}
-                            onChange={(e) => {
-                              setSelectedMonthSales(e.target.value);
-                            }}
-                          >
-                            <option value="alltime">All-Time</option>
-                            <option value="lastmonth">Last Month</option>
-                            <option value="thismonth">This Month</option>
-                          </select>
+                        <span className="font-semibold">
+                          TARGET
                         </span>
                       </h6>
-                      <div className="justify-between items-center">
-                        {saleschart_loading ? (
-                          <div className="flex items-center space-x-2">
-                            <CircularProgress size={20} /> <span>Loading</span>
-                          </div>
-                        ) : (
-                          // <SalesAmountChartAdmin
-                          //   selectedMonthSales={selectedMonthSales}
-                          // />
-                          <SaleBubbleChart
-                            selectedMonthSales={selectedMonthSales}
-                          />
-                        )}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3 h-48 mb-3">
-                      <div
-                        className={`${
-                          currentMode === "dark" ? " text-white" : "text-black"
-                        } rounded-md p-2`}
-                      >
-                        <div className="justify-between items-center mb-3">
-                          {/* MONTHLY  */}
-                          <DoughnutChart
-                            target={DashboardData?.user?.target}
-                            target_reached={DashboardData?.target_reached}
-                            target_remaining={DashboardData?.target_remaining}
-                          />
-                        </div>
-                        <h6 className="text-xs text-center mt-3 italic">
-                          Total revenue achieved with respect to addressed
-                          target for the month.
-                        </h6>
-                      </div>
-                      <div
-                        className={`${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        } rounded-md p-2`}
-                      >
-                        <div className="justify-between items-center mb-3">
-                          {/* MONTHLY  */}
-                          <ReportClosedMeetingDoughnut />
-                        </div>
-                        <h6 className="text-xs text-center mt-3 italic">
-                          Number of total deals closed in comparison to total
-                          attended meetings.
-                        </h6>
-                      </div>
-                    </div>
-                    <div className="flex justify-center bg-primary py-4 mt-6  rounded-full  col-span-2">
-                      <h1 className={`text-white text-lg font-semibold`}>
-                        Achievement
-                      </h1>
-                    </div>
-
-                    <div className="grid grid-cols-2 col-span-2 gap-3">
-                      <div
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-gray-200 text-black"
-                        } rounded-md p-2`}
-                      >
-                        <h6 className="mb-2 p-2">
-                          <span className="font-semibold">Performance</span>
-                          <span className="float-right">
-                            <select
-                              className={`${
-                                currentMode === "dark"
-                                  ? "bg-black text-white"
-                                  : "bg-white text-black"
-                              } text-xs rounded-md p-1`}
-                              value={selectedMonth}
-                              onChange={(e) => {
-                                setSelectedMonth(e.target.value);
-                              }}
-                            >
-                              <option value="alltime">All-Time</option>
-                              <option value="lastmonth">Last Month</option>
-                              <option value="thismonth">This Month</option>
-                            </select>
-                          </span>
-                        </h6>
-                        <div className="justify-between items-center">
-                          <ReportMeetingsClosed selectedMonth={selectedMonth} />
-                        </div>
-                      </div>
-                      <div
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-gray-200 text-black"
-                        } rounded-md  p-2`}
-                      >
-                        <h6 className="mb-2 p-2">
-                          <span className="font-semibold">Social Chart</span>
-                          <span className="float-right">
-                            <select
-                              className={`${
-                                currentMode === "dark"
-                                  ? "bg-black text-white"
-                                  : "bg-white text-black"
-                              } text-xs rounded-md p-1`}
-                              value={selectedMonthSocial}
-                              onChange={(e) => {
-                                setSelectedMonthSocial(e.target.value);
-                              }}
-                            >
-                              <option value="alltime">All-Time</option>
-                              <option value="lastmonth">Last Month</option>
-                              <option value="thismonth">This Month</option>
-                            </select>
-                          </span>
-                        </h6>
-                        <div className="justify-between items-center">
-                          {saleschart_loading ? (
-                            <div className="flex items-center space-x-2">
-                              <CircularProgress size={20} />{" "}
-                              <span>Loading</span>
-                            </div>
-                          ) : (
-                            <SocialChart
-                              data={socialChartData}
-                              selectedMonthSocial={selectedMonthSocial}
-                            />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-center bg-primary py-4 mt-5  rounded-full col-span-2">
-                      <h1 className={`text-white text-lg font-semibold`}>
-                        Projects
-                      </h1>
-                    </div>
-                    <div
-                      className={`${
-                        currentMode === "dark"
-                          ? "bg-[#1c1c1c] text-white"
-                          : "bg-gray-200 text-black"
-                      } rounded-md p-3`}
-                    >
-                      <h6 className="mb-2 p-2">
-                        <span className="font-semibold">Project</span>
-                        <span className="float-right">
-                          <select
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
-                            } text-xs rounded-md p-1`}
-                            value={selectedMonthProject}
-                            onChange={(e) => {
-                              setSelectedMonthProject(e.target.value);
-                            }}
-                          >
-                            <option value="alltime">All-Time</option>
-                            <option value="lastmonth">Last Month</option>
-                            <option value="thismonth">This Month</option>
-                          </select>
-                        </span>
-                      </h6>
-                      <div className="justify-between items-center">
-                        <ReportProjectBar
-                          total_projects={DashboardData?.total_projects}
-                          selectedMonthProject={selectedMonthProject}
+                      <div className="justify-between items-center mb-3">
+                        {/* MONTHLY  */}
+                        <DoughnutChart
+                          target={DashboardData?.user?.target}
+                          target_reached={DashboardData?.target_reached}
+                          target_remaining={DashboardData?.target_remaining}
                         />
                       </div>
+                      <h6 className="text-xs text-center mt-3 italic">
+                        Total revenue achieved with respect to addressed
+                        target for the month.
+                      </h6>
+                    </div>
+                    <div
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } rounded-md p-2`}
+                    >
+                      <h6 className="mb-2 p-2">
+                        <span className="font-semibold">
+                          CLOSED OVER MEETING
+                        </span>
+                      </h6>
+                      <div className="justify-between items-center mb-3">
+                        {/* MONTHLY  */}
+                        <ReportClosedMeetingDoughnut />
+                      </div>
+                      <h6 className="text-xs text-center mt-3 italic">
+                        Number of total deals closed in comparison to total
+                        attended meetings.
+                      </h6>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div class="mb-5">
+                <div className="flex justify-center bg-primary py-2 mb-4 rounded-full">
+                  <h1 className={`text-white text-lg font-semibold`}>
+                    ACHIEVEMENT
+                  </h1>
+                </div>
+
+                <div className="grid grid-cols-1 gap-3">
+                  <div
+                    className={`${
+                      currentMode === "dark"
+                        ? "bg-[#1c1c1c] text-white"
+                        : "bg-[#EEEEEE] text-black"
+                    } rounded-md p-2`}
+                  >
+                    <h6 className="mb-2 p-2">
+                      <span className="font-semibold">PERFORMANCE</span>
+                      <span className="float-right">
+                        <select
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black"
+                          } text-xs rounded-md p-1`}
+                          value={selectedMonth}
+                          onChange={(e) => {
+                            setSelectedMonth(e.target.value);
+                          }}
+                        >
+                          <option value="alltime">All-Time</option>
+                          <option value="lastmonth">Last Month</option>
+                          <option value="thismonth">This Month</option>
+                        </select>
+                      </span>
+                    </h6>
+                    <div className="justify-between items-center">
+                      <ReportMeetingsClosed selectedMonth={selectedMonth} />
+                    </div>
+                  </div>
+                  <div
+                    className={`${
+                      currentMode === "dark"
+                        ? "bg-[#1c1c1c] text-white"
+                        : "bg-[#EEEEEE] text-black"
+                    } rounded-md  p-2`}
+                  >
+                    <h6 className="mb-2 p-2">
+                      <span className="font-semibold">LEAD SOURCE</span>
+                      <span className="float-right">
+                        <select
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black"
+                          } text-xs rounded-md p-1`}
+                          value={selectedMonthSocial}
+                          onChange={(e) => {
+                            setSelectedMonthSocial(e.target.value);
+                          }}
+                        >
+                          <option value="alltime">All-Time</option>
+                          <option value="lastmonth">Last Month</option>
+                          <option value="thismonth">This Month</option>
+                        </select>
+                      </span>
+                    </h6>
+                    <div className="justify-between items-center">
+                      {saleschart_loading ? (
+                        <div className="flex items-center space-x-2">
+                          <CircularProgress size={20} />{" "}
+                          <span>Loading</span>
+                        </div>
+                      ) : (
+                        <SocialChart
+                          data={socialChartData}
+                          selectedMonthSocial={selectedMonthSocial}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-5">
+                <div className="flex justify-center bg-primary py-2 mb-4 rounded-full">
+                  <h1 className={`text-white text-lg font-semibold`}>
+                    PROJECTS
+                  </h1>
+                </div>
+                <div
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-[#1c1c1c] text-white"
+                      : "bg-[#EEEEEE] text-black"
+                  } rounded-md p-3`}
+                >
+                  <h6 className="mb-2 p-2">
+                    <span className="font-semibold">PROJECT</span>
+                    <span className="float-right">
+                      <select
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-black text-white"
+                            : "bg-white text-black"
+                        } text-xs rounded-md p-1`}
+                        value={selectedMonthProject}
+                        onChange={(e) => {
+                          setSelectedMonthProject(e.target.value);
+                        }}
+                      >
+                        <option value="alltime">All-Time</option>
+                        <option value="lastmonth">Last Month</option>
+                        <option value="thismonth">This Month</option>
+                      </select>
+                    </span>
+                  </h6>
+                  <div className="justify-between items-center">
+                    <ReportProjectBar
+                      total_projects={DashboardData?.total_projects}
+                      selectedMonthProject={selectedMonthProject}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-            {/* <Footer /> */}
+            
           </div>
         </div>
       </>

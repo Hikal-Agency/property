@@ -297,26 +297,34 @@ const Listings = () => {
                     }}
                   /> */}
                   <TextField
-                    className="w-[200px]"
-                    label="Search"
+                    className="w-[250px]"
+                    // label="Search"
                     size="small"
-                    placeholder="Enter search query"
+                    placeholder="Search.."
+                    sx={{ 
+                      ".css-2ehmn7-MuiInputBase-root-MuiOutlinedInput-root": {
+                        paddingLeft: "0px !important",
+                        paddingRight: "10px !important",
+                      }
+                    }}
                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
+                      endAdornment: (
+                        <InputAdornment position="end">
                           <BsSearch
                             color={
-                              currentMode === "dark" ? "#ffffff" : "#000000"
+                              currentMode === "dark" ? "#AAAAAA" : "#AAAAAA"
                             }
                           />
                         </InputAdornment>
                       ),
-                      endAdornment: (
+                      startAdornment: (
                         <Select
                           value={searchCriteria}
                           onChange={handleSearchCriteriaChange}
-                          className="p-0 m-0"
+                          className={`p-0 mr-3 ${currentMode === "dark" ? "bg-[#333333]" : "bg-[#DDDDDD]"} `}
+                          displayEmpty
                         >
+                          <MenuItem value="" sx={{ fontSize: "x-small" }}>SELECT</MenuItem>
                           <MenuItem value="project">Project</MenuItem>
                           <MenuItem value="city">City</MenuItem>
                           <MenuItem value="area">Area</MenuItem>

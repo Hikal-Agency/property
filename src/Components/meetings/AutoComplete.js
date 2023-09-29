@@ -17,7 +17,10 @@ const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
   } = usePlacesAutocomplete({
     debounce: 300,
   });
-  const {currentMode} = useStateContext();
+  const {
+    currentMode, 
+    isArabic
+  } = useStateContext();
   const ref = useOnclickOutside(() => {
     clearSuggestions();
   });
@@ -65,11 +68,18 @@ const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
         <TextField
             type={"text"}
             fullWidth
-            sx={{"& input": {color: currentMode === "dark" ? "white" : "black", fontFamily: "Noto Kufi Arabic"}}}
+            sx={{
+              "& input": {
+                color: currentMode === "dark" ? "white" : "black", 
+                fontFamily: isArabic(value) ? "Noto Kufi Arabic" : "inherit",
+              }
+            }}
             disabled={isDisabled ? true : !ready}
             onChange={handleInput}
             required
             placeholder="Search Location"
+            label="Location"
+            size="small"
             value={value}
         />
       {(status === "OK" && !isDisabled) && <ul>{renderSuggestions()}</ul>}
