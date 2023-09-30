@@ -164,7 +164,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="px-5">
+            <div className="">
               <div className="mt-5 md:mt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
                   {notesData?.length > 0 &&
@@ -205,7 +205,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                                     onClick={() => handleEditMeeting(item)}
                                   >
                                     <MdEdit
-                                      className="text-primary"
+                                      className={`${currentMode === "dark" ? "text-white" : "text-primary"} `}
                                       size={14}
                                     />
                                   </IconButton>
@@ -221,7 +221,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                                     onClick={() => showLocation(mLat, mLong)}
                                   >
                                     <MdLocationOn
-                                      className="text-primary"
+                                      className={`${currentMode === "dark" ? "text-white" : "text-primary"} `}
                                       size={14}
                                     />
                                   </IconButton>

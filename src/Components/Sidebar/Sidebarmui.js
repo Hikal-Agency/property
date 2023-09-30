@@ -239,14 +239,15 @@ const Sidebarmui = () => {
           const wordToExtract = String("dashboard");
           const wordIndex = permissionsArray.indexOf(wordToExtract);
 
+          // TODO BECAUSE ALL NEW TABS WERE OPENING TO ATTENDANCE FOR OTHER USERS
           if (wordIndex !== -1) {
             const specificWord = permissionsArray[wordIndex];
             console.log("specificWord: ", specificWord); // Output: "cherry"
           } else {
             console.log("Word not found in the string.");
-            if (result?.data?.user[0]?.role !== 1) {
-              navigate("/attendance_self");
-            }
+            // if (result?.data?.user[0]?.role !== 1) {
+            //   // navigate("/attendance_self");
+            // }
           }
 
           setUserCredits(result.data?.user[0]?.credits);

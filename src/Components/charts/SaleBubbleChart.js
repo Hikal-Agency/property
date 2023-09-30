@@ -13,8 +13,9 @@ import ReactApexChart from "react-apexcharts";
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
 const SaleBubbleChart = ({ selectedMonthSales }) => {
-  const { currentMode, Sales_chart_data } = useStateContext();
+  const { currentMode, Sales_chart_data, primaryColor } = useStateContext();
   console.log("sales chart: ", Sales_chart_data);
+  console.log("primary ::::::::::::::::::: ", primaryColor);
   const [salesData, setSalesData] = useState({
     labels: [],
     datasets: [],
@@ -39,29 +40,22 @@ const SaleBubbleChart = ({ selectedMonthSales }) => {
         show: false,
       },
     },
-
     fill: {
-      type: "gradient",
+      type: "gradient"
     },
     xaxis: {
-      // title: {
-      //   text: "Sales in AED",
-      // },
       labels: {
         style: {
-          colors: currentMode === "dark" ? "#ffffff" : "#000000",
+          colors: currentMode === "dark" ? "#eeeeee" : "#333333",
         },
         rotateAlways: true, // Tilt the X-axis labels
         className: "x-axis-labels",
       },
     },
     yaxis: {
-      // title: {
-      //   text: "Y-Axis",
-      // },
       labels: {
         style: {
-          colors: currentMode === "dark" ? "#ffffff" : "#000000",
+          colors: currentMode === "dark" ? "#eeeeee" : "#333333",
         },
       },
     },

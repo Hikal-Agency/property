@@ -19,14 +19,14 @@ const DoughnutChart = ({ target_reached, target_remaining }) => {
                 label: "AED",
                 data: [target_reached, target_remaining],
                 borderWidth: 1,
-                backgroundColor: [primaryColor, "#1C1C1C"],
+                backgroundColor: [primaryColor, "#333333"],
               },
             ],
           }}
           options={{
             color: "#EEEEEE",
             backgroundColor: [primaryColor, primaryColor],
-            borderColor: [primaryColor, "#424242"],
+            borderColor: [primaryColor, "#777777"],
             responsive: true,
             maintainAspectRatio: true,
             aspectRatio: 1,
@@ -42,7 +42,7 @@ const DoughnutChart = ({ target_reached, target_remaining }) => {
                 // data: [`${DashboardData?.lead_status?.target_reached}`, `${DashboardData?.lead_status?.target_remaining}`],
                 data: [target_reached, target_remaining],
                 borderWidth: 1,
-                backgroundColor: [primaryColor, "#000000"],
+                backgroundColor: [primaryColor, "#333333"],
               },
             ],
           }}

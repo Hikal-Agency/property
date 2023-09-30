@@ -111,7 +111,7 @@ const BookedDeals = ({
       if (l) {
         return l.code.toUpperCase();
       } else {
-        return "Invalid";
+        return (language === "null" ? "-" : language);
       }
     } else {
       return null;
@@ -644,7 +644,6 @@ const BookedDeals = ({
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
-
     {
       field: "priority",
       headerName: "Priority",
@@ -654,7 +653,26 @@ const BookedDeals = ({
       hideable: false,
       renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
-
+    {
+      field: "booked_amount",
+      headerAlign: "center",
+      headerName: "Amount",
+      minWidth: 90,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex items-center justify-center">
+            {cellValues.row.booked_amount === null || cellValues.row.booked_amount === "null" || cellValues.row.booked_amount === "" ? (
+              <>-</>
+            ) : (
+              <>
+                AED {cellValues.row.booked_amount}
+              </>
+            )}
+          </div>
+        );
+      },
+    },
     {
       field: "otp",
       headerName:
@@ -835,7 +853,7 @@ const BookedDeals = ({
 
     {
       field: "edit",
-      headerName: "Edit",
+      headerName: "Action",
       flex: 1,
       minWidth: 100,
       sortable: false,
@@ -845,36 +863,37 @@ const BookedDeals = ({
       renderCell: (cellValues) => {
         return (
           <div
-            className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
+            // className={`deleteLeadBtn edit-lead-btns space-x-1 w-full flex items-center justify-center`}
+            className={`w-full h-full px-1 flex items-center justify-center`}
           >
             <p
               style={{ cursor: "pointer" }}
-              className={`mx-1 ${
+              className={`${
                 currentMode === "dark"
-                  ? "bg-transparent text-white rounded-md shadow-none"
-                  : "bg-transparent text-black rounded-md shadow-none"
-              }`}
-              onClick={() => HandleEditFunc(cellValues)}
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#229eca] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <IconButton sx={{ padding: 0 }}>
-                <AiOutlineEdit size={16} />
-              </IconButton>
+              <Tooltip title="Edit Booked Deal" arrow>
+                <button onClick={() => HandleEditFunc(cellValues)}>
+                  <AiOutlineEdit size={16} />
+                </button>
+              </Tooltip>
             </p>
 
             {cellValues.row.leadId !== null && (
               <p
                 style={{ cursor: "pointer" }}
-                className={` mx-1 ${
+                className={`${
                   currentMode === "dark"
-                    ? "bg-transparent text-white rounded-md shadow-none"
-                    : "bg-transparent text-black rounded-md shadow-none"
-                }`}
-                onClick={() => HandleViewTimeline(cellValues)}
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Timeline" arrow>
-                  <IconButton sx={{ padding: 0 }}>
+                  <button onClick={() => HandleViewTimeline(cellValues)}>
                     <AiOutlineHistory size={16} />
-                  </IconButton>
+                  </button>
                 </Tooltip>
               </p>
             )}
@@ -931,6 +950,7 @@ const BookedDeals = ({
           priority: row?.priority,
           language: getLangCode(row?.language) || "-",
           leadSource: row?.leadSource || "-",
+          booked_amount: row?.booked_amount || "",
           lid: row?.lid,
           firstAssigned: row?.firstAssigned || "",
           leadId: row?.id,
@@ -1114,6 +1134,7 @@ const BookedDeals = ({
           priority: row?.priority || null,
           language: getLangCode(row?.language) || "-",
           leadSource: row?.leadSource || "-",
+          booked_amount: row?.booked_amount || "-",
           lid: row?.lid || "-",
           firstAssigned: row?.firstAssigned || "",
           lastEdited: row?.lastEdited || "-",

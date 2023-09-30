@@ -46,15 +46,15 @@ const ReportMeetingsClosed = ({ selectedMonth }) => {
           .startOf("month")
           .format("YYYY-MM-DD");
         const lastMonthEndDate = moment()
-          .subtract(1, "months")
-          .endOf("month")
+          .subtract(2, "months")
+          .startOf("month")
           .format("YYYY-MM-DD");
         params.date_range = `${lastMonthStartDate},${lastMonthEndDate}`;
       } else if (selectedMonth === "thismonth") {
         const thisMonthStartDate = moment()
           .startOf("month")
           .format("YYYY-MM-DD");
-        const thisMonthEndDate = moment().endOf("month").format("YYYY-MM-DD");
+        const thisMonthEndDate = moment().add(1, "months").startOf("month").format("YYYY-MM-DD");
         params.date_range = `${thisMonthStartDate},${thisMonthEndDate}`;
       }
     }
