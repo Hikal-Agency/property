@@ -95,11 +95,12 @@ const Listings = () => {
     if (page > 1) {
       setbtnloading(true);
     }
-    let url = `${BACKEND_URL}/listings?page=${page}`;
+    let url = `${BACKEND_URL}/listings?page=${page}&listing_status=New`;
     if (filters?.bedrooms) url += `&bedrooms=${filters?.bedrooms}`;
     if (filters?.bathrooms) url += `&bathrooms=${filters?.bathrooms}`;
     if (filters?.property) url += `&property_type=${filters?.property}`;
     if (filters?.category) url += `&listing_type=${filters?.category}`;
+    if (filters?.sold) url += `&listing_status=Sold`;
 
     if (searchCriteria === "city") url += `&city=${searchQuery}`;
     if (searchCriteria === "project") url += `&project=${searchQuery}`;
@@ -116,17 +117,17 @@ const Listings = () => {
       console.log("all listings: ", all_listings);
       let filteredListings = all_listings?.data?.data?.data || [];
 
-      // default sorting listing status = New
-      filteredListings = filteredListings?.filter((listing) => {
-        return listing?.listing_status.toLowerCase() === "new";
-      });
-
-      // sort by sold status
-      if (filters?.sold) {
-        filteredListings = filteredListings?.filter((listing) => {
-          return listing?.listing_status.toLowerCase() === "sold";
-        });
-      }
+      // // sort by sold status
+      // if (filters?.sold) {
+      //   filteredListings = filteredListings?.filter((listing) => {
+      //     return listing?.listing_status.toLowerCase() === "sold";
+      //   });
+      // } else {
+      //   // default sorting listing status = New
+      //   filteredListings = filteredListings?.filter((listing) => {
+      //     return listing?.listing_status.toLowerCase() === "new";
+      //   });
+      // }
 
       console.log("sold: ", filters?.sold);
 
@@ -301,11 +302,11 @@ const Listings = () => {
                     // label="Search"
                     size="small"
                     placeholder="Search.."
-                    sx={{ 
+                    sx={{
                       ".css-2ehmn7-MuiInputBase-root-MuiOutlinedInput-root": {
                         paddingLeft: "0px !important",
                         paddingRight: "10px !important",
-                      }
+                      },
                     }}
                     InputProps={{
                       endAdornment: (
@@ -321,10 +322,16 @@ const Listings = () => {
                         <Select
                           value={searchCriteria}
                           onChange={handleSearchCriteriaChange}
-                          className={`p-0 mr-3 ${currentMode === "dark" ? "bg-[#333333]" : "bg-[#DDDDDD]"} `}
+                          className={`p-0 mr-3 ${
+                            currentMode === "dark"
+                              ? "bg-[#333333]"
+                              : "bg-[#DDDDDD]"
+                          } `}
                           displayEmpty
                         >
-                          <MenuItem value="" sx={{ fontSize: "x-small" }}>SELECT</MenuItem>
+                          <MenuItem value="" sx={{ fontSize: "x-small" }}>
+                            SELECT
+                          </MenuItem>
                           <MenuItem value="project">Project</MenuItem>
                           <MenuItem value="city">City</MenuItem>
                           <MenuItem value="area">Area</MenuItem>
