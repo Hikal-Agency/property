@@ -996,9 +996,9 @@ const Sidebarmui = () => {
           link: "/secondaryListings",
         },
         {
-          name: "Sellers/Buyers",
+          name: "Sellers",
           icon: <MdDiscount />,
-          link: "/listingUsers",
+          link: "/sellers",
         },
       ],
     },

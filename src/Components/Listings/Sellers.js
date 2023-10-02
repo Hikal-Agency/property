@@ -489,7 +489,7 @@ const Sellers = ({
                                       </span>
                                     </p>
                                   </div>
-                                  {hasPermission("delete_listing") && (
+                                  {/* {hasPermission("delete_listing") && (
                                     <IconButton
                                       className="bg-btn-primary p-3 rounded-fulls"
                                       onClick={(e) =>
@@ -502,7 +502,7 @@ const Sellers = ({
                                     >
                                       <BsFillTrashFill color="#ffffff" />
                                     </IconButton>
-                                  )}
+                                  )} */}
                                 </div>
                               </div>
                             </Link>

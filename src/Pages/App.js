@@ -448,7 +448,7 @@ const routes = [
     page: "Single Listing",
   },
   {
-    path: "/listingUsers",
+    path: "/sellers",
     element: <ListingUsers />,
     page: "Single Listing",
   },
