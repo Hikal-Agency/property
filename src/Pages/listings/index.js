@@ -61,12 +61,14 @@ const Listings = () => {
     property: null,
     category: null,
   });
+
   const isFilterApplied = Object.values(filters).some(
     (value) => value !== null
   );
 
   const [searchCriteria, setSearchCriteria] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [switchValue, setSwitchValue] = useState(false);
 
   const handleSearchCriteriaChange = (event) => {
     setSearchCriteria(event.target.value);
@@ -88,6 +90,8 @@ const Listings = () => {
     });
 
     setSearchQuery("");
+    setSearchCriteria("");
+    setSwitchValue(false);
   };
 
   const FetchListings = async (token, page = 1) => {
@@ -344,10 +348,13 @@ const Listings = () => {
                     value={searchQuery}
                   />
                   <FormControlLabel
-                    control={<Switch />}
+                    control={<Switch checked={switchValue} />}
                     value={filters?.sold}
                     onClick={(e) => {
                       const value = e.target.value;
+                      value === "sold"
+                        ? setSwitchValue(false)
+                        : setSwitchValue(true);
                       setFilters({
                         ...filters,
                         sold: value === "sold" ? null : "sold",
@@ -507,7 +514,7 @@ const Listings = () => {
                     <MenuItem value="sortByHigh">Price High to Low</MenuItem>
                     <MenuItem value="sortByLow">Price Low to High</MenuItem>
                   </TextField>
-                  {isFilterApplied && (
+                  {(isFilterApplied || searchCriteria || searchQuery) && (
                     <Button
                       onClick={clearFilter}
                       className="w-max btn py-2 px-3 bg-btn-primary"
