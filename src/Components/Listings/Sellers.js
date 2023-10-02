@@ -10,6 +10,7 @@ import {
   Modal,
   Tooltip,
   Typography,
+  styled,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { Link } from "react-router-dom";
@@ -24,6 +25,7 @@ import { IoIosAlert } from "react-icons/io";
 import usePermission from "../../utils/usePermission";
 import { BsChevronCompactDown } from "react-icons/bs";
 import { AiOutlinePhone, AiOutlineMail } from "react-icons/ai";
+import { style } from "@mui/system";
 
 const ribbonStyles = {
   width: "200px",
@@ -71,9 +73,15 @@ const ribbonStyles = {
   },
 };
 
-const BuyersSellers = ({
+const useStyles = styled({
+  customAccordion: {
+    backgroundColor: "lightblue",
+  },
+});
+
+const Sellers = ({
   lastPage,
-  listing,
+  manualSellers,
   currentPage,
   btnloading,
   setCurrentPage,
@@ -81,7 +89,11 @@ const BuyersSellers = ({
   FetchListings,
   loading,
   setLoading,
+  leadSellers,
+  setLeadSellers,
 }) => {
+  const classes = useStyles();
+
   const { currentMode, BACKEND_URL } = useStateContext();
   const { hasPermission } = usePermission();
   const static_img = "assets/no-image.png";
@@ -193,9 +205,22 @@ const BuyersSellers = ({
   return (
     <div className="relative">
       <Box className="p-0">
-        <Accordion className="mb-4" defaultExpanded={true}>
+        <Accordion
+          className={`mb-4 `}
+          defaultExpanded={true}
+          sx={{
+            "& .MuiPaper-root .MuiPaper-elevation .MuiPaper-rounded .MuiPaper-elevation1 .MuiAccordion-root .MuiAccordion-rounded .Mui-expanded .MuiAccordion-gutters .mb-4 .css-1i264kv-MuiPaper-root-MuiAccordion-root":
+              {
+                background: "red !important",
+              },
+          }}
+        >
           <AccordionSummary
-            expandIcon={<BsChevronCompactDown />}
+            expandIcon={
+              <BsChevronCompactDown
+                color={currentMode === "dark" ? "#ffffff" : "#000000"}
+              />
+            }
             sx={{
               color: currentMode === "dark" && "#ffffff",
               backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#777777",
@@ -208,10 +233,10 @@ const BuyersSellers = ({
           </AccordionSummary>
 
           <AccordionDetails>
-            {listing?.length > 0 ? (
+            {manualSellers?.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
                 {loading === false ? (
-                  listing?.map((listing, index) => {
+                  manualSellers?.map((listing, index) => {
                     return (
                       <>
                         <div
@@ -260,7 +285,7 @@ const BuyersSellers = ({
                                   style={{ textTransform: "capitalize" }}
                                 >
                                   <span className="text-xl font-bold text-primary">
-                                    {listing?.price || "Unavailable"}
+                                    {listing?.seller_name || "Unavailable"}
                                   </span>
                                 </h1>
 
@@ -272,15 +297,10 @@ const BuyersSellers = ({
                                     />
                                     <p className="text-start">
                                       <span>
-                                        {listing?.bedrooms === "null"
+                                        {listing?.seller_contact === "null"
                                           ? "-"
-                                          : listing?.bedrooms}
+                                          : listing?.seller_contact}
                                       </span>{" "}
-                                      <span>
-                                        {listing?.property_type === "null"
-                                          ? "-"
-                                          : listing?.property_type}
-                                      </span>
                                     </p>
                                   </div>
                                 </div>
@@ -292,9 +312,165 @@ const BuyersSellers = ({
                                     />
                                     <p className="text-start">
                                       <span>
+                                        {listing?.seller_email === "null"
+                                          ? "-"
+                                          : listing?.seller_email}
+                                      </span>
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="my-2 w-full flex items-center justify-between">
+                                  <div className="flex space-x-3 items-center">
+                                    <BsFillBuildingFill
+                                      className="text-[#AAAAAA]"
+                                      size={20}
+                                    />
+                                    <p className="text-start">
+                                      <span>
                                         {listing?.bathrooms === "null"
                                           ? "-"
                                           : listing?.bathrooms}
+                                      </span>
+                                    </p>
+                                  </div>
+                                  {hasPermission("delete_listing") && (
+                                    <IconButton
+                                      className="bg-btn-primary p-3 rounded-fulls"
+                                      onClick={(e) =>
+                                        handleOpenDialogue(
+                                          e,
+                                          listing?.id,
+                                          listing?.project
+                                        )
+                                      }
+                                    >
+                                      <BsFillTrashFill color="#ffffff" />
+                                    </IconButton>
+                                  )}
+                                </div>
+                              </div>
+                            </Link>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })
+                ) : (
+                  <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
+                    <CircularProgress />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex justify-center items-center col-span-3 h-[500px] w-full">
+                <h2 className="text-primary font-bold text-2xl">
+                  Ups!... no listings available
+                </h2>
+              </div>
+            )}
+          </AccordionDetails>
+        </Accordion>
+        <Accordion className={``} defaultExpanded={true}>
+          <AccordionSummary
+            expandIcon={
+              <BsChevronCompactDown
+                color={currentMode === "dark" ? "#ffffff" : "#000000"}
+              />
+            }
+            sx={{
+              color: currentMode === "dark" && "#ffffff",
+              backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#777777",
+              borderRadius: "10px",
+            }}
+          >
+            <Typography variant="h4" className="font-bold text-lg">
+              Seller From Leads
+            </Typography>
+          </AccordionSummary>
+
+          <AccordionDetails>
+            {leadSellers?.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
+                {loading === false ? (
+                  leadSellers?.map((listing, index) => {
+                    return (
+                      <>
+                        <div
+                          key={index}
+                          className={`card-hover relative overflow-hidden offers-page-${
+                            listing?.page
+                          } ${
+                            currentMode === "dark"
+                              ? "bg-[#1C1C1C] text-white"
+                              : "bg-[#EEEEEE] text-black"
+                          } rounded-lg`}
+                        >
+                          <div className="rounded-md flex flex-col justify-between">
+                            <div className="">
+                              <div
+                                className={`absolute top-0 right-2 p-2 pb-5 rounded-b-full bg-primary`}
+                              >
+                                <Tooltip title="View Property">
+                                  <Link
+                                    sx={{ w: "100%" }}
+                                    to={`/secondaryListings/${listing?.id}`}
+                                    target="_blank"
+                                  >
+                                    <IconButton className="my-1">
+                                      <BsFillBuildingFill
+                                        size={20}
+                                        color={"#FFFFFF"}
+                                      />
+                                    </IconButton>
+                                  </Link>
+                                </Tooltip>
+                              </div>
+                            </div>
+                            <Link
+                              sx={{ w: "100%" }}
+                              to={`/secondaryListings/${listing?.id}`}
+                              target="_blank"
+                            >
+                              <div className="px-5 py-3">
+                                <h1
+                                  className={`${
+                                    currentMode === "dark"
+                                      ? "text-white"
+                                      : "text-[#000000]"
+                                  } my-2 flex justify-between `}
+                                  style={{ textTransform: "capitalize" }}
+                                >
+                                  <span className="text-xl font-bold text-primary">
+                                    {listing?.leadName || "Unavailable"}
+                                  </span>
+                                </h1>
+
+                                <div className="my-2">
+                                  <div className="flex space-x-3 items-center">
+                                    <AiOutlinePhone
+                                      className="text-[#AAAAAA]"
+                                      size={20}
+                                    />
+                                    <p className="text-start">
+                                      <span>
+                                        {listing?.leadContact === "null"
+                                          ? "-"
+                                          : listing?.leadContact}
+                                      </span>{" "}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="my-2 w-full flex items-center justify-between">
+                                  <div className="flex space-x-3 items-center">
+                                    <AiOutlineMail
+                                      className="text-[#AAAAAA]"
+                                      size={20}
+                                    />
+                                    <p className="text-start">
+                                      <span>
+                                        {listing?.leadEmail === "null"
+                                          ? "-"
+                                          : listing?.leadEmail}
                                       </span>
                                     </p>
                                   </div>
@@ -459,4 +635,4 @@ const BuyersSellers = ({
   );
 };
 
-export default BuyersSellers;
+export default Sellers;

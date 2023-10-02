@@ -26,7 +26,8 @@ import { Link } from "react-router-dom";
 import { BsBuildingAdd, BsSearch } from "react-icons/bs";
 import { toast } from "react-toastify";
 import moment from "moment";
-import BuyersSellers from "../../Components/Listings/BuyersSellers";
+import BuyersSellers from "../../Components/Listings/Sellers";
+import Sellers from "../../Components/Listings/Sellers";
 
 const ListingUsers = () => {
   const {
@@ -42,7 +43,8 @@ const ListingUsers = () => {
   const [tabValue, setTabValue] = useState(0);
 
   const [value, setValue] = useState(0);
-  const [listing, setListings] = useState([]);
+  const [manualSellers, setManualSellers] = useState([]);
+  const [leadSellers, setLeadSellers] = useState([]);
   const [lastPage, setLastPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [model, setModel] = useState(false);
@@ -82,85 +84,101 @@ const ListingUsers = () => {
     if (page > 1) {
       setbtnloading(true);
     }
-    let url = `${BACKEND_URL}/listings?page=${page}`;
-    if (filters?.bedrooms) url += `&bedrooms=${filters?.bedrooms}`;
-    if (filters?.bathrooms) url += `&bathrooms=${filters?.bathrooms}`;
-    if (filters?.property) url += `&property_type=${filters?.property}`;
-    if (filters?.category) url += `&listing_type=${filters?.category}`;
 
-    if (searchCriteria === "city") url += `&city=${searchQuery}`;
-    if (searchCriteria === "project") url += `&project=${searchQuery}`;
-    if (searchCriteria === "area") url += `&area=${searchQuery}`;
+    const listingsUrl = `${BACKEND_URL}/listings?page=${page}`;
+    const leadsUrl = `${BACKEND_URL}/coldLeads?page=${page}&coldCall=0`;
 
     try {
-      const all_listings = await axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const [listingsResponse, leadsResponse] = await Promise.all([
+        axios.get(listingsUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+        axios.get(leadsUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+      ]);
 
-      console.log("all listings: ", all_listings);
-      let filteredListings = all_listings?.data?.data?.data || [];
+      console.log("Listings: ", listingsResponse.data);
+      console.log("Leads: ", leadsResponse.data);
 
-      // default sorting listing status = New
-      filteredListings = filteredListings?.filter((listing) => {
-        return listing?.listing_status.toLowerCase() === "new";
-      });
+      // Filter listings where lead_id is null
+      const allListings = (listingsResponse.data.data.data || [])?.filter(
+        (listing) => listing.lead_id === null
+      );
 
-      // sort by sold status
-      if (filters?.sold) {
-        filteredListings = filteredListings?.filter((listing) => {
-          return listing?.listing_status.toLowerCase() === "sold";
-        });
-      }
+      // Filter leads where is_seller is 1
+      const allLeads = (leadsResponse.data.coldLeads.data || [])?.filter(
+        (lead) => lead.is_seller === 1
+      );
 
-      console.log("sold: ", filters?.sold);
+      //   total sellers
+      setTotal(allListings.length + allLeads.length);
 
-      // sort by price
-      if (filters?.sort == "sortByHigh") {
-        filteredListings = filteredListings.sort((a, b) =>
-          a.price > b.price ? -1 : 1
+      // Count listings where listings.lead_id matches leads.id
+      const listingsCountForLeads = allLeads?.reduce((count, lead) => {
+        const matchingListings = allListings.filter(
+          (listing) => listing.lead_id === lead.id
         );
-      } else if (filters?.sort == "sortByLow") {
-        filteredListings = filteredListings?.sort((a, b) =>
-          a.price < b.price ? -1 : 1
-        );
-      } else if (filters?.sort === "latest") {
-        filteredListings = filteredListings.sort((a, b) =>
-          moment(b.created_at).isBefore(moment(a.created_at)) ? -1 : 1
-        );
-      }
-      console.log("filtered listings: ", filteredListings);
+        return {
+          ...count,
+          [lead.id]: matchingListings.length,
+        };
+      }, {});
+
+      // Count listings where listings.seller_name and listings.seller_contact are repeated
+      const listingSeller = allListings?.reduce((count, listing) => {
+        const key = `${listing.seller_name}-${listing.seller_contact}`;
+        count[key] = (count[key] || 0) + 1;
+        return count;
+      }, {});
+
+      console.log(
+        "leadSeller, listingsSeller: ",
+        listingsCountForLeads,
+        listingSeller
+      );
 
       if (page > 1) {
-        setListings((prevOffers) => {
-          return [
-            ...prevOffers,
-            ...filteredListings?.map((listing) => ({
-              ...listing,
-              page: page,
-            })),
-          ];
-        });
+        setManualSellers((prevListings) => [
+          ...prevListings,
+          ...allListings?.map((listing) => ({
+            ...listing,
+            page: page,
+          })),
+        ]);
+        setLeadSellers((prevListings) => [
+          ...prevListings,
+          ...allLeads?.map((listing) => ({
+            ...listing,
+            page: page,
+          })),
+        ]);
       } else {
-        setListings(() => {
-          return [
-            ...filteredListings?.map((listing) => ({
-              ...listing,
-              page: page,
-            })),
-          ];
-        });
+        setManualSellers(
+          allListings?.map((listing) => ({
+            ...listing,
+            page: page,
+          }))
+        );
+        setLeadSellers(
+          allLeads?.map((listing) => ({
+            ...listing,
+            page: page,
+          }))
+        );
       }
+
       setLoading(false);
-      setLastPage(all_listings?.data?.last_page);
-      setTotal(all_listings?.data?.data?.total);
       setbtnloading(false);
-      //   console.log("All Offers: ",all_listings)
     } catch (error) {
-      console.log("listings not fetched. ", error);
-      toast.error("Unable to fetch listings.", {
+      console.error("Data not fetched. ", error);
+      toast.error("Unable to fetch data.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -216,63 +234,28 @@ const ListingUsers = () => {
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  Buyers/Sellers{" "}
+                  Sellers{" "}
                   <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {total}
                   </span>
                 </h1>
               </div>
             </div>
-            <div className={`flex items-center justify-between`}>
-              <Box className={`pt-3 border-t-1 overflow-hidden mb-3`}>
-                <Box
-                  sx={{
-                    ...darkModeColors,
-                    "& .MuiTabs-indicator": {
-                      height: "100%",
-                      borderRadius: "5px",
-                    },
-                    "& .Mui-selected": {
-                      color: "white !important",
-                      zIndex: "1",
-                    },
-                  }}
-                  className={`w-full rounded-md overflow-hidden ${
-                    currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-100"
-                  } `}
-                >
-                  <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    variant="variant"
-                    className="w-full px-1 m-1"
-                  >
-                    {/* {hasPermission("offers_create") ? ( */}
-                    <Tab label="Sellers " />
-                    {/* )} */}
 
-                    {/* {hasPermission("offers_manager_tab") && ( */}
-                    <Tab label="Buyers" />
-                    {/* )} */}
-                  </Tabs>
-                </Box>
-              </Box>
-            </div>
-
-            <TabPanel value={value} index={0}>
-              <BuyersSellers
-                listing={listing}
-                setCurrentPage={setCurrentPage}
-                setPageBeingScrolled={setPageBeingScrolled}
-                currentPage={currentPage}
-                lastPage={lastPage}
-                FetchListings={FetchListings}
-                loading={loading}
-                setLoading={setLoading}
-                tabValue={tabValue}
-                setTabValue={setTabValue}
-              />
-            </TabPanel>
+            <Sellers
+              manualSellers={manualSellers}
+              setCurrentPage={setCurrentPage}
+              setPageBeingScrolled={setPageBeingScrolled}
+              currentPage={currentPage}
+              lastPage={lastPage}
+              FetchListings={FetchListings}
+              loading={loading}
+              setLoading={setLoading}
+              tabValue={tabValue}
+              setTabValue={setTabValue}
+              leadSellers={leadSellers}
+              setLeadSellers={setLeadSellers}
+            />
           </div>
         </div>
       </div>
