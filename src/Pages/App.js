@@ -73,6 +73,7 @@ import NotificationsList from "./notifications/notificationsList";
 import Listings from "./listings";
 import SingleListingsPage from "./listings/SingleListingsPage";
 import ListingUsers from "./listingsUsers";
+import Buyers from "./listingsUsers/buyers";
 
 const libraries = ["places"];
 
@@ -451,6 +452,11 @@ const routes = [
     path: "/sellers",
     element: <ListingUsers />,
     page: "Single Listing",
+  },
+  {
+    path: "/buyers/:lead_type",
+    element: <Buyers />,
+    pageName: "Buyers",
   },
   {
     path: "*",

@@ -1000,6 +1000,11 @@ const Sidebarmui = () => {
           icon: <MdDiscount />,
           link: "/sellers",
         },
+        {
+          name: "buyers",
+          icon: <MdDiscount />,
+          link: "/buyers/buyers",
+        },
       ],
     },
 
