@@ -46,144 +46,6 @@ const TodayCallLogs = () => {
     },
   ];
 
-  const target = [
-    {
-      id: 339,
-      userName: "Hanan Nassouh Alzaeem",
-      profile_picture:
-        "https://staging.hikalcrm.com/storage/profile-pictures/339.jpg",
-      target: 3000000,
-      booked: 1,
-      total_closed: 5,
-      month_closed: 2,
-      total_closed_amount: 6646500,
-      month_closed_amount: 3182500,
-    },
-    {
-      id: 357,
-      userName: "Abdullah Zaki",
-      profile_picture: null,
-      target: 3000000,
-      booked: 3,
-      total_closed: 1,
-      month_closed: 1,
-      total_closed_amount: 2370000,
-      month_closed_amount: 2370000,
-    },
-    {
-      id: 395,
-      userName: "Mohamed Hany Mohamed Ezzat",
-      profile_picture: null,
-      target: 3000000,
-      booked: 1,
-      total_closed: 1,
-      month_closed: 1,
-      total_closed_amount: 1700000,
-      month_closed_amount: 1700000,
-    },
-    {
-      id: 120,
-      userName: "Hala Hikal",
-      profile_picture:
-        "https://staging.hikalcrm.com/storage/profile-pictures/120.jpeg",
-      target: 3000000,
-      booked: 4,
-      total_closed: 5,
-      month_closed: 0,
-      total_closed_amount: 15102408,
-      month_closed_amount: 0,
-    },
-    {
-      id: 133,
-      userName: "Hossam Hassan",
-      profile_picture:
-        "https://staging.hikalcrm.com/storage/profile-pictures/133.jpeg",
-      target: 5000000,
-      booked: 0,
-      total_closed: 8,
-      month_closed: 0,
-      total_closed_amount: 6667000,
-      month_closed_amount: 0,
-    },
-    {
-      id: 180,
-      userName: "Hams Hossam",
-      profile_picture: null,
-      target: 3000000,
-      booked: 0,
-      total_closed: 0,
-      month_closed: 0,
-      total_closed_amount: null,
-      month_closed_amount: 0,
-    },
-    {
-      id: 187,
-      userName: "Islam Essam",
-      profile_picture: null,
-      target: 3000000,
-      booked: 0,
-      total_closed: 1,
-      month_closed: 0,
-      total_closed_amount: 700000,
-      month_closed_amount: 0,
-    },
-    {
-      id: 231,
-      userName: "Mohamed Eid Elnabarawi",
-      profile_picture: null,
-      target: 3000000,
-      booked: 0,
-      total_closed: 0,
-      month_closed: 0,
-      total_closed_amount: null,
-      month_closed_amount: 0,
-    },
-    {
-      id: 341,
-      userName: "Borhane Zerdoumi",
-      profile_picture: null,
-      target: 3000000,
-      booked: 1,
-      total_closed: 0,
-      month_closed: 0,
-      total_closed_amount: null,
-      month_closed_amount: 0,
-    },
-    {
-      id: 342,
-      userName: "Hassan Adel Sobhy Mahmoud",
-      profile_picture: null,
-      target: 3000000,
-      booked: 2,
-      total_closed: 0,
-      month_closed: 0,
-      total_closed_amount: null,
-      month_closed_amount: 0,
-    },
-    {
-      id: 396,
-      userName: "Ruba Al Kaeed",
-      profile_picture: null,
-      target: 3000000,
-      booked: 1,
-      total_closed: 0,
-      month_closed: 0,
-      total_closed_amount: null,
-      month_closed_amount: 0,
-    },
-    {
-      id: 397,
-      userName: "Cheimaa Merabet",
-      profile_picture: null,
-      target: 3000000,
-      booked: 0,
-      total_closed: 1,
-      month_closed: 0,
-      total_closed_amount: 1835000,
-      month_closed_amount: 0,
-    },
-  ];
-
   const monthNames = [
     "January",
     "February",
@@ -246,6 +108,8 @@ const TodayCallLogs = () => {
       });
     }
   }, [User, socket]);
+
+  
   function requestFullScreen(element) {
     var requestMethod =
       element.requestFullScreen ||

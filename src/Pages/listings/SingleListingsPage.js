@@ -24,12 +24,17 @@ import {
 import SelectImagesModal from "./SelectImagesModal";
 import SelectDocumentModal from "./SelectDocumentModal";
 import EditListingModal from "../../Components/Leads/listings/EditListingComponent";
+import SingleImageModal from "./SingleImageModal";
 
 const SingleListingsPage = () => {
   const [loading, setloading] = useState(true);
   const [listData, setListingData] = useState({});
   const [openEdit, setOpenEdit] = useState(false);
   const [leadNotFound, setLeadNotFound] = useState(false);
+  const [singleImageModal, setSingleImageModal] = useState({
+    isOpen: false, 
+    url: ""
+  })
   const [selectImagesModal, setSelectImagesModal] = useState({
     isOpen: false,
     listingId: null,
@@ -40,10 +45,6 @@ const SingleListingsPage = () => {
   });
   const { currentMode, setopenBackDrop, BACKEND_URL, isArabic } =
     useStateContext();
-  // const [lat, setLat] = useState(null);
-  // const [long, setLong] = useState(null);
-
-  const static_img = "../assets/no-image.png";
 
   const handleEdit = () => {
     setOpenEdit(listData);
@@ -133,6 +134,10 @@ const SingleListingsPage = () => {
                   {listData?.images?.map((pic) =>
                     pic?.img_url ? (
                       <img
+                        onClick={() => setSingleImageModal({
+                          isOpen: true, 
+                          url: pic?.img_url
+                        })}
                         src={pic?.img_url}
                         alt={pic?.img_alt}
                         className="w-auto h-[200px] object-cover m-1 rounded-md"
@@ -413,6 +418,13 @@ const SingleListingsPage = () => {
               </div>
             )}
             {/* <Footer /> */}
+
+            {singleImageModal?.isOpen && (
+              <SingleImageModal
+                singleImageModal={singleImageModal}
+                handleClose={() => setSingleImageModal({ isOpen: false })}
+              />
+            )}
 
             {selectImagesModal?.isOpen && (
               <SelectImagesModal

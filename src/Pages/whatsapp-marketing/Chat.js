@@ -354,13 +354,6 @@ const Chat = () => {
           logout();
         }
       });
-      // socket.on("whatsapp_disconnect", () => {
-      //   const waDevice = localStorage.getItem("authenticated-wa-device");
-      //   if (waDevice) {
-      //     disconnectDevice(waDevice);
-      //     setServerDisconnected(true);
-      //   }
-      // });
     }
   }, [socket]);
 

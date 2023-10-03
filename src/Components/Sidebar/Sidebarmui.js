@@ -252,6 +252,12 @@ const Sidebarmui = () => {
 
           setUserCredits(result.data?.user[0]?.credits);
           setPermits(allPermissions);
+
+          if(!result.data?.user[0]?.theme || result.data?.user[0]?.theme === "default") {
+            setPrimaryColor("rgb(218,31,38)");
+          } else {
+            setPrimaryColor(result.data?.user[0]?.theme);
+          }
         });
     } catch (error) {
       console.log(error);
@@ -267,7 +273,6 @@ const Sidebarmui = () => {
       setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
       FetchProfileData();
-      setPrimaryColor("rgb(218,31,38)");
       socket.emit("add_user", { ...JSON.parse(storedUser) });
     } else {
       axios
@@ -326,7 +331,6 @@ const Sidebarmui = () => {
           getAllLeadsMembers(user);
 
           FetchProfileData();
-          setPrimaryColor("rgb(218,31,38)");
 
           socket.emit("add_user", {
             ...user,
@@ -1544,7 +1548,7 @@ const Sidebarmui = () => {
                   src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
                   height={60}
                   width={60}
-                  className={`rounded-md pointer-events-none object-cover relative z-[500] `}
+                  className={`rounded-md pointer-events-none object-cover relative z-[10000] `}
                   alt=""
                 />
               </div>

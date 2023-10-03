@@ -397,7 +397,6 @@ const Navbar = () => {
           <Menu
             className="navbar-menu-backdrop"
             hideBackdrop={true}
-            disableScrollLock
             onClick={handleClose}
             onMouseLeave={handleClose}
             anchorEl={anchorElem}
