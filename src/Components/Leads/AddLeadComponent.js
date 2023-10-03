@@ -97,14 +97,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
     }
   };
 
-  const handlePhone = (e) => {
-    const value = e.target.value;
-    const onlyDigitsAndPlus = /^[0-9+]*$/;
-    if (onlyDigitsAndPlus.test(value)) {
-      setLeadContact(value);
-    }
-    console.log(LeadContact);
-  };
+
   const ChangePropertyType = (event) => {
     setPropertyType(event.target.value);
   };

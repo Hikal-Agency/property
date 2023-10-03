@@ -1,6 +1,8 @@
 import { Box, Container } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { BsCheck } from "react-icons/bs";
+import axios from "../../axoisConfig";
+import { toast } from "react-toastify";
 
 const colors = [
   "rgb(218,31,38)", // Main color
@@ -15,7 +17,39 @@ const colors = [
 ];
 
 const ColorsPopup = ({ handleClose }) => {
-  const { setPrimaryColor, primaryColor, currentMode } = useStateContext();
+  const { setPrimaryColor, primaryColor, currentMode, BACKEND_URL, User } =
+    useStateContext();
+
+  const handleSelectTheme = async (color) => {
+    setPrimaryColor(color);
+    const token = localStorage.getItem("auth-token");
+    try {
+      await axios.post(
+        `${BACKEND_URL}/updateuser/${User.id}`,
+        JSON.stringify({
+          theme: color
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
   return (
     <Container
       onMouseLeave={handleClose}
@@ -27,14 +61,14 @@ const ColorsPopup = ({ handleClose }) => {
             style={{
               background: color,
             }}
-            onClick={() => setPrimaryColor(color)}
+            onClick={() => handleSelectTheme(color)}
             className={`w-[35px] relative rounded-full h-[35px] cursor-pointer border-4 border-white shadow`}
           >
             {primaryColor === color && (
               <Box
                 sx={{
                   "& svg": {
-                    color: currentMode === "dark" ? 'black' : 'white',
+                    color: currentMode === "dark" ? "black" : "white",
                   },
                 }}
                 className={`absolute rounded-full -top-[4px] -right-[4px] ${

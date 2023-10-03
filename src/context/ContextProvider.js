@@ -329,14 +329,10 @@ export const ContextProvider = ({ children }) => {
     }
   };
   useEffect(() => {
-    // if(localStorage.getItem("primary-color")) {
-    //   localStorage.setItem("primary-color", primaryColor);
-    //   document.documentElement.style.setProperty('--primary-color', primaryColor);
-    // } else {
-    //   localStorage.setItem("primary-color", "red");
-    //   document.documentElement.style.setProperty('--primary-color', "red");
-    // }
-         document.documentElement.style.setProperty('--primary-color', primaryColor);
+      document.documentElement.style.setProperty('--primary-color', primaryColor);
+      // if(primaryColor) {
+      //   localStorage.setItem("theme", primaryColor);
+      // }
   }, [primaryColor]);
 
   const withOpacity = (rgb, opacity) => {
