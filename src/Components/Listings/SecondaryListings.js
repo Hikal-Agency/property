@@ -75,6 +75,7 @@ const SecondaryListings = ({
   loading,
   setLoading,
 }) => {
+  console.log("loading status: ", loading);
   const { currentMode, BACKEND_URL } = useStateContext();
   const { hasPermission } = usePermission();
   const static_img = "assets/no-image.png";
@@ -186,9 +187,13 @@ const SecondaryListings = ({
   return (
     <div className="relative">
       <Box className="p-0">
-        {listing?.length > 0 ? (
+        {/* {listing?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
-            {loading === false ? (
+            {loading === true ? (
+              <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
+                <CircularProgress />
+              </div>
+            ) : (
               listing?.map((listing, index) => {
                 return (
                   <div
@@ -333,10 +338,6 @@ const SecondaryListings = ({
                   </div>
                 );
               })
-            ) : (
-              <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
-                <CircularProgress />
-              </div>
             )}
           </div>
         ) : (
@@ -345,7 +346,165 @@ const SecondaryListings = ({
               Ups!... no listings available
             </h2>
           </div>
+        )} */}
+
+        {loading ? (
+          <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
+            <CircularProgress />
+          </div>
+        ) : listing?.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
+            {listing?.map((listing, index) => {
+              return (
+                <div
+                  key={index}
+                  className={`card-hover relative overflow-hidden offers-page-${
+                    listing?.page
+                  } ${
+                    currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-[#EEEEEE] text-black"
+                  } rounded-lg`}
+                >
+                  <div className="rounded-md flex flex-col justify-between">
+                    <div className="">
+                      {listing?.images.length > 0 ? (
+                        <img
+                          src={listing?.images[0]?.img_url}
+                          alt="secondary"
+                          className="w-full h-[200px] object-cover"
+                          onClick={() =>
+                            handleImageClick(listing?.images[0]?.img_url)
+                          }
+                        />
+                      ) : (
+                        <img
+                          src={static_img}
+                          alt="secondary"
+                          className="w-full h-[200px] object-cover"
+                        />
+                      )}
+
+                      <div
+                        className={`absolute top-0 right-2 p-2 pb-5 rounded-b-full bg-primary`}
+                      >
+                        <Tooltip title="View Property">
+                          <Link
+                            sx={{ w: "100%" }}
+                            to={`/secondaryListings/${listing?.id}`}
+                            target="_blank"
+                          >
+                            <IconButton className="my-1">
+                              <BsListStars size={20} color={"#FFFFFF"} />
+                            </IconButton>
+                          </Link>
+                        </Tooltip>
+                      </div>
+                      <div
+                        className={`absolute top-[200px] right-0 p-2 rounded-b-full`}
+                      >
+                        <img
+                          src={currentMode === "dark" ? hikalrewhite : hikalre}
+                          alt="secondary"
+                          className="h-[30px]"
+                        />
+                      </div>
+                    </div>
+                    <Link
+                      sx={{ w: "100%" }}
+                      to={`/secondaryListings/${listing?.id}`}
+                      target="_blank"
+                    >
+                      <div className="px-5 py-3">
+                        <h1
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-[#000000]"
+                          } my-2 flex justify-between `}
+                          style={{ textTransform: "capitalize" }}
+                        >
+                          <span className="text-xl font-bold text-primary">
+                            {listing?.price || "Unavailable"}
+                          </span>
+                        </h1>
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-[#000000]"
+                          }  my-2 font-semibold`}
+                        >
+                          {listing?.project || "Project unknown"}
+                        </div>
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-[#000000]"
+                          }  my-2`}
+                        >
+                          {listing?.address || "Address unknown"}
+                        </div>
+
+                        <div className="my-2">
+                          <div className="flex space-x-3 items-center">
+                            <BiBed className="text-[#AAAAAA]" size={20} />
+                            <p className="text-start">
+                              <span>
+                                {listing?.bedrooms === "null"
+                                  ? "-"
+                                  : listing?.bedrooms}
+                              </span>{" "}
+                              <span>
+                                {listing?.property_type === "null"
+                                  ? "-"
+                                  : listing?.property_type}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                        <div className="my-2 w-full flex items-center justify-between">
+                          <div className="flex space-x-3 items-center">
+                            <BiBath className="text-[#AAAAAA]" size={20} />
+                            <p className="text-start">
+                              <span>
+                                {listing?.bathrooms === "null"
+                                  ? "-"
+                                  : listing?.bathrooms}
+                              </span>
+                            </p>
+                          </div>
+                          {hasPermission("delete_listing") && (
+                            <IconButton
+                              className="bg-btn-primary p-3 rounded-fulls"
+                              onClick={(e) =>
+                                handleOpenDialogue(
+                                  e,
+                                  listing?.id,
+                                  listing?.project
+                                )
+                              }
+                            >
+                              <BsFillTrashFill color="#ffffff" />
+                            </IconButton>
+                          )}
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="flex justify-center items-center col-span-3 h-[500px] w-full">
+            <h2 className="text-primary font-bold text-2xl">
+              Ups!... no listings available
+            </h2>
+          </div>
         )}
+
         {currentPage < lastPage && (
           <div className="flex justify-center mt-5">
             <Button
