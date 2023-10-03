@@ -233,7 +233,7 @@ const Sellers = ({
           </AccordionSummary>
 
           <AccordionDetails>
-            {manualSellers?.length > 0 ? (
+            {/* {manualSellers?.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
                 {loading === false ? (
                   manualSellers?.map((listing, index) => {
@@ -360,6 +360,139 @@ const Sellers = ({
                     <CircularProgress />
                   </div>
                 )}
+              </div>
+            ) : (
+              <div className="flex justify-center items-center col-span-3 h-[500px] w-full">
+                <h2 className="text-primary font-bold text-2xl">
+                  Ups!... no listings available
+                </h2>
+              </div>
+            )} */}
+            {loading === true ? (
+              <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
+                <CircularProgress />
+              </div>
+            ) : manualSellers?.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
+                {manualSellers?.map((listing, index) => {
+                  return (
+                    <>
+                      <div
+                        key={index}
+                        className={`card-hover relative overflow-hidden offers-page-${
+                          listing?.page
+                        } ${
+                          currentMode === "dark"
+                            ? "bg-[#1C1C1C] text-white"
+                            : "bg-[#EEEEEE] text-black"
+                        } rounded-lg`}
+                      >
+                        <div className="rounded-md flex flex-col justify-between">
+                          <div className="">
+                            <div
+                              className={`absolute top-0 right-2 p-2 pb-5 rounded-b-full bg-primary`}
+                            >
+                              <Tooltip title="View Property">
+                                <Link
+                                  sx={{ w: "100%" }}
+                                  to={`/secondaryListings/${listing?.id}`}
+                                  target="_blank"
+                                >
+                                  <IconButton className="my-1">
+                                    <BsFillBuildingFill
+                                      size={20}
+                                      color={"#FFFFFF"}
+                                    />
+                                  </IconButton>
+                                </Link>
+                              </Tooltip>
+                            </div>
+                          </div>
+                          <Link
+                            sx={{ w: "100%" }}
+                            to={`/secondaryListings/${listing?.id}`}
+                            target="_blank"
+                          >
+                            <div className="px-5 py-3">
+                              <h1
+                                className={`${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-[#000000]"
+                                } my-2 flex justify-between `}
+                                style={{ textTransform: "capitalize" }}
+                              >
+                                <span className="text-xl font-bold text-primary">
+                                  {listing?.seller_name || "Unavailable"}
+                                </span>
+                              </h1>
+
+                              <div className="my-2">
+                                <div className="flex space-x-3 items-center">
+                                  <AiOutlinePhone
+                                    className="text-[#AAAAAA]"
+                                    size={20}
+                                  />
+                                  <p className="text-start">
+                                    <span>
+                                      {listing?.seller_contact === "null"
+                                        ? "-"
+                                        : listing?.seller_contact}
+                                    </span>{" "}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="my-2 w-full flex items-center justify-between">
+                                <div className="flex space-x-3 items-center">
+                                  <AiOutlineMail
+                                    className="text-[#AAAAAA]"
+                                    size={20}
+                                  />
+                                  <p className="text-start">
+                                    <span>
+                                      {listing?.seller_email === "null"
+                                        ? "-"
+                                        : listing?.seller_email}
+                                    </span>
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="my-2 w-full flex items-center justify-between">
+                                <div className="flex space-x-3 items-center">
+                                  <BsFillBuildingFill
+                                    className="text-[#AAAAAA]"
+                                    size={20}
+                                  />
+                                  <p className="text-start">
+                                    <span>
+                                      {listing?.bathrooms === "null"
+                                        ? "-"
+                                        : listing?.bathrooms}
+                                    </span>
+                                  </p>
+                                </div>
+                                {/* {hasPermission("delete_listing") && (
+                                  <IconButton
+                                    className="bg-btn-primary p-3 rounded-fulls"
+                                    onClick={(e) =>
+                                      handleOpenDialogue(
+                                        e,
+                                        listing?.id,
+                                        listing?.project
+                                      )
+                                    }
+                                  >
+                                    <BsFillTrashFill color="#ffffff" />
+                                  </IconButton>
+                                )} */}
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
               </div>
             ) : (
               <div className="flex justify-center items-center col-span-3 h-[500px] w-full">
