@@ -116,6 +116,30 @@ const Sellers = ({
   const [btnLoading, setBtnLoading] = useState(false);
   const handleCloseModal = () => setOpenDialogue(false);
 
+  // count lead seller listings
+  const leadListingsCount = {};
+  manualSellers?.forEach((listing) => {
+    if (listing?.lead_id === leadListingsCount[listing?.id]) {
+      if (!leadListingsCount[listing.id]) {
+        leadListingsCount[listing.id] = 0;
+      }
+      leadListingsCount[listing.id]++;
+    }
+  });
+
+  // count manual seller listings
+  // Initialize an object to store the counts
+  const repeatedListingsCount = {};
+  manualSellers?.forEach((listing) => {
+    const key = `${listing?.seller_name}_${listing?.seller_contact}`;
+    if (!repeatedListingsCount[key]) {
+      repeatedListingsCount[key] = 0;
+    }
+    repeatedListingsCount[key]++;
+  });
+
+  console.log("lead listings count :: ", leadListingsCount);
+
   const style = {
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
@@ -240,6 +264,11 @@ const Sellers = ({
             ) : manualSellers?.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
                 {manualSellers?.map((listing, index) => {
+                  const countForSpecificCombination =
+                    repeatedListingsCount[
+                      `${listing?.seller_name}_${listing?.seller_contact}`
+                    ];
+
                   return (
                     <>
                       <div
@@ -330,9 +359,9 @@ const Sellers = ({
                                 />
                                 <p className="text-start">
                                   <span>
-                                    {listing?.bathrooms === "null"
+                                    {countForSpecificCombination === "null"
                                       ? "-"
-                                      : listing?.bathrooms}
+                                      : countForSpecificCombination}
                                   </span>
                                 </p>
                               </div>
@@ -391,6 +420,8 @@ const Sellers = ({
               <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
                 {loading === false ? (
                   leadSellers?.map((listing, index) => {
+                    const listingsCount = leadListingsCount[listing?.id] || 0;
+                    console.log("listings count : ", listingsCount);
                     return (
                       <>
                         <div
@@ -481,9 +512,9 @@ const Sellers = ({
                                   />
                                   <p className="text-start">
                                     <span>
-                                      {listing?.bathrooms === "null"
+                                      {listingsCount === "null"
                                         ? "-"
-                                        : listing?.bathrooms}
+                                        : listingsCount}
                                     </span>
                                   </p>
                                 </div>
