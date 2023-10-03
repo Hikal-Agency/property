@@ -1672,7 +1672,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   }
   return (
     <>
-      <div className="pl-3 w-full">
+      <div className="p-4 w-full">
         {/* {leadOriginSelected?.id === "unassigned" &&
           leadTypeSelected?.id === "fresh" && (
             <Box
@@ -1729,7 +1729,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           )}
         <Box></Box> */}
 
-        <div className="w-full flex items-center py-3">
+        <div className="w-full flex items-center pb-3">
           <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
             className={`text-lg font-semibold ${

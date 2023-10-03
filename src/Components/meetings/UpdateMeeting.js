@@ -32,7 +32,7 @@ const UpdateMeeting = ({
   const id = meetingData?.meetingId;
   console.log("Update lead: ", meetingModalOpen);
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum } =
+  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum, isArabic } =
     useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(
@@ -240,7 +240,7 @@ const UpdateMeeting = ({
           style={style}
           className={`w-[calc(100%-20px)] md:w-[50%]  ${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-          } absolute top-1/2 left-1/2 p-5 rounded-md`}
+          } absolute top-1/2 left-1/2 p-4 rounded-md`}
         >
           <IconButton
             sx={{
@@ -255,25 +255,30 @@ const UpdateMeeting = ({
           </IconButton>
 
           <>
-            {/*  */}
-            <h1
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              } text-center font-bold text-xl pb-10`}
-            >
-              Update Meeting details
-            </h1>
+            <div className="w-full flex items-center pb-3">
+              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+              <h1
+                className={`text-lg font-semibold ${
+                  currentMode === "dark"
+                    ? "text-white"
+                    : "text-black"
+                }`}
+              >
+                Update Meeting details
+              </h1>
+            </div>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 update();
               }}
             >
-              <div className="grid sm:grid-cols-1 gap-5">
-                <div className="flex flex-col justify-center items-center gap-4 mt-2 mb-4">
+              <div className="grid sm:grid-cols-1 gap-5 px-4 pt-4">
+                <div className="flex flex-col justify-center items-center gap-8">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       value={meetingDateValue}
+                      label="Meeting Date"
                       views={["year", "month", "day"]}
                       onChange={(newValue) => {
                         setMeetingDateValue(newValue);
@@ -296,18 +301,12 @@ const UpdateMeeting = ({
                             "& input": {
                               color: currentMode === "dark" ? "white" : "black",
                             },
-                            "&": {
-                              borderRadius: "4px",
-                              border:
-                                currentMode === "dark"
-                                  ? "1px solid white"
-                                  : "1px solid black",
-                            },
                             "& .MuiSvgIcon-root": {
                               color: currentMode === "dark" ? "white" : "black",
                             },
                           }}
                           fullWidth
+                          size="small"
                           label="Meeting Date"
                           {...params}
                           onKeyDown={(e) => e.preventDefault()}
@@ -335,6 +334,7 @@ const UpdateMeeting = ({
                           {...params}
                           fullWidth
                           label="Meeting Time"
+                          size="small"
                           sx={{
                             "& .MuiFormLabel-root": {
                               background:
@@ -377,6 +377,7 @@ const UpdateMeeting = ({
                     <TextField
                       sx={SelectStyles}
                       select
+                      size="small"
                       labelId="meeting-status"
                       label="Meeting Status"
                       value={meetingStatus}
@@ -395,17 +396,16 @@ const UpdateMeeting = ({
                       <TextField
                         id="text"
                         type={"text"}
-                        label="Meeting Notes "
-                        className="w-full mb-3"
-                        style={{ marginBottom: "20px" }}
+                        label="Meeting Notes"
+                        size="small"
+                        className="w-full"
                         variant="outlined"
                         sx={{
                           "& input": {
-                            fontFamily: "Noto Kufi Arabic",
+                            fontFamily: isArabic(meetingNotes) ? "Noto Kufi Arabic" : "inherit",
                           },
                         }}
                         name="text"
-                        size="medium"
                         value={meetingNotes}
                         onChange={(e) => {
                           setMeetingNotes(e.target.value);

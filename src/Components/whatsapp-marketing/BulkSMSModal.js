@@ -239,7 +239,7 @@ const BulkSMSModal = ({
             priority: 1,
             clientTxnId: "",
             desc: "Hikal CRM Single Message to Multiple Recipients",
-            campaignName: "test",
+            campaignName: "Campaign",
             recipients: croppedContacts,
             msg: { en: smsTextValue },
             defLang: "en",

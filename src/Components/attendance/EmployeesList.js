@@ -19,7 +19,7 @@ const EmployeesList = ({ user }) => {
     setpageState,
     darkModeColors,
     User,
-    primaryColor
+    primaryColor,
   } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
@@ -72,7 +72,7 @@ const EmployeesList = ({ user }) => {
     try {
       const params = {
         page: pageState.page,
-        agency_id: User?.agency,
+        // agency_id: User?.agency,
       };
 
       if (selectedDay) {
@@ -82,8 +82,7 @@ const EmployeesList = ({ user }) => {
           // const startDate = moment(currentDate)
           //   .subtract(1, "days")
           //   .format("YYYY-MM-DD");
-          const startDate = moment(currentDate)
-            .format("YYYY-MM-DD");
+          const startDate = moment(currentDate).format("YYYY-MM-DD");
           const endDate = moment(currentDate)
             .add(1, "days")
             .format("YYYY-MM-DD");

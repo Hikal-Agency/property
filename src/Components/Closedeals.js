@@ -354,29 +354,60 @@ const Closedeals = ({ pageState, setpageState }) => {
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          <div className="space-x-2 w-full flex items-center justify-center ">
-            <Button
+          // <div className="space-x-2 w-full flex items-center justify-center ">
+          //   <Button
+          //     className={`${
+          //       currentMode === "dark"
+          //         ? "text-white bg-transparent rounded-md p-1 shadow-none "
+          //         : "text-black bg-transparent rounded-md p-1 shadow-none "
+          //     }`}
+          //   >
+          //     <AiOutlineHistory
+          //       size={16}
+          //       onClick={() => HandleViewTimeline(cellValues)}
+          //     />
+          //   </Button>
+          //   <Button
+          //     onClick={() => HandleEditFunc(cellValues)}
+          //     className={`${
+          //       currentMode === "dark"
+          //         ? "text-white bg-transparent rounded-md p-1 shadow-none "
+          //         : "text-black bg-transparent rounded-md p-1 shadow-none "
+          //     }`}
+          //   >
+          //     <AiOutlineEdit size={16} />
+          //   </Button>
+          // </div>
+          <div className={`w-full h-full px-1 flex items-center justify-center`}>
+            <p
+              style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <AiOutlineHistory
-                size={16}
-                onClick={() => HandleViewTimeline(cellValues)}
-              />
-            </Button>
-            <Button
-              onClick={() => HandleEditFunc(cellValues)}
+              <Tooltip title="Edit Closed Deal" arrow>
+                <button onClick={() => HandleEditFunc(cellValues)}>
+                  <AiOutlineEdit size={16} />
+                </button>
+              </Tooltip>
+            </p>
+
+            <p
+              style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <AiOutlineEdit size={16} />
-            </Button>
+              <Tooltip title="View Timeline" arrow>
+                <button onClick={() => HandleViewTimeline(cellValues)}>
+                  <AiOutlineHistory size={16} />
+                </button>
+              </Tooltip>
+            </p>
           </div>
         );
       },
@@ -493,30 +524,36 @@ const Closedeals = ({ pageState, setpageState }) => {
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          <div className="space-x-2 w-full flex items-center justify-center ">
-            <Button
-              // onClick={() => HandleEditFunc(cellValues)}
+          <div className={`w-full h-full px-1 flex items-center justify-center`}>
+            <p
+              style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <AiOutlineHistory
-                size={20}
-                onClick={() => HandleViewTimeline(cellValues)}
-              />
-            </Button>
-            <Button
-              onClick={() => HandleEditFunc(cellValues)}
+              <Tooltip title="Edit Closed Deal" arrow>
+                <button onClick={() => HandleEditFunc(cellValues)}>
+                  <AiOutlineEdit size={16} />
+                </button>
+              </Tooltip>
+            </p>
+
+            <p
+              style={{ cursor: "pointer" }}
               className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <AiOutlineEdit size={20} />
-            </Button>
+              <Tooltip title="View Timeline" arrow>
+                <button onClick={() => HandleViewTimeline(cellValues)}>
+                  <AiOutlineHistory size={16} />
+                </button>
+              </Tooltip>
+            </p>
           </div>
         );
       },

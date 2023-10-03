@@ -61,12 +61,14 @@ const Listings = () => {
     property: null,
     category: null,
   });
+
   const isFilterApplied = Object.values(filters).some(
     (value) => value !== null
   );
 
   const [searchCriteria, setSearchCriteria] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [switchValue, setSwitchValue] = useState(false);
 
   const handleSearchCriteriaChange = (event) => {
     setSearchCriteria(event.target.value);
@@ -88,6 +90,8 @@ const Listings = () => {
     });
 
     setSearchQuery("");
+    setSearchCriteria("");
+    setSwitchValue(false);
   };
 
   const FetchListings = async (token, page = 1) => {
@@ -95,11 +99,12 @@ const Listings = () => {
     if (page > 1) {
       setbtnloading(true);
     }
-    let url = `${BACKEND_URL}/listings?page=${page}`;
+    let url = `${BACKEND_URL}/listings?page=${page}&listing_status=New`;
     if (filters?.bedrooms) url += `&bedrooms=${filters?.bedrooms}`;
     if (filters?.bathrooms) url += `&bathrooms=${filters?.bathrooms}`;
     if (filters?.property) url += `&property_type=${filters?.property}`;
     if (filters?.category) url += `&listing_type=${filters?.category}`;
+    if (filters?.sold) url += `&listing_status=Sold`;
 
     if (searchCriteria === "city") url += `&city=${searchQuery}`;
     if (searchCriteria === "project") url += `&project=${searchQuery}`;
@@ -116,17 +121,17 @@ const Listings = () => {
       console.log("all listings: ", all_listings);
       let filteredListings = all_listings?.data?.data?.data || [];
 
-      // default sorting listing status = New
-      filteredListings = filteredListings?.filter((listing) => {
-        return listing?.listing_status.toLowerCase() === "new";
-      });
-
-      // sort by sold status
-      if (filters?.sold) {
-        filteredListings = filteredListings?.filter((listing) => {
-          return listing?.listing_status.toLowerCase() === "sold";
-        });
-      }
+      // // sort by sold status
+      // if (filters?.sold) {
+      //   filteredListings = filteredListings?.filter((listing) => {
+      //     return listing?.listing_status.toLowerCase() === "sold";
+      //   });
+      // } else {
+      //   // default sorting listing status = New
+      //   filteredListings = filteredListings?.filter((listing) => {
+      //     return listing?.listing_status.toLowerCase() === "new";
+      //   });
+      // }
 
       console.log("sold: ", filters?.sold);
 
@@ -297,26 +302,40 @@ const Listings = () => {
                     }}
                   /> */}
                   <TextField
-                    className="w-[200px]"
-                    label="Search"
+                    className="w-[250px]"
+                    // label="Search"
                     size="small"
-                    placeholder="Enter search query"
+                    placeholder="Search.."
+                    sx={{
+                      ".css-2ehmn7-MuiInputBase-root-MuiOutlinedInput-root": {
+                        paddingLeft: "0px !important",
+                        paddingRight: "10px !important",
+                      },
+                    }}
                     InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
+                      endAdornment: (
+                        <InputAdornment position="end">
                           <BsSearch
                             color={
-                              currentMode === "dark" ? "#ffffff" : "#000000"
+                              currentMode === "dark" ? "#AAAAAA" : "#AAAAAA"
                             }
                           />
                         </InputAdornment>
                       ),
-                      endAdornment: (
+                      startAdornment: (
                         <Select
                           value={searchCriteria}
                           onChange={handleSearchCriteriaChange}
-                          className="p-0 m-0"
+                          className={`p-0 mr-3 ${
+                            currentMode === "dark"
+                              ? "bg-[#333333]"
+                              : "bg-[#DDDDDD]"
+                          } `}
+                          displayEmpty
                         >
+                          <MenuItem value="" sx={{ fontSize: "x-small" }}>
+                            SELECT
+                          </MenuItem>
                           <MenuItem value="project">Project</MenuItem>
                           <MenuItem value="city">City</MenuItem>
                           <MenuItem value="area">Area</MenuItem>
@@ -329,10 +348,13 @@ const Listings = () => {
                     value={searchQuery}
                   />
                   <FormControlLabel
-                    control={<Switch />}
+                    control={<Switch checked={switchValue} />}
                     value={filters?.sold}
                     onClick={(e) => {
                       const value = e.target.value;
+                      value === "sold"
+                        ? setSwitchValue(false)
+                        : setSwitchValue(true);
                       setFilters({
                         ...filters,
                         sold: value === "sold" ? null : "sold",
@@ -492,7 +514,7 @@ const Listings = () => {
                     <MenuItem value="sortByHigh">Price High to Low</MenuItem>
                     <MenuItem value="sortByLow">Price Low to High</MenuItem>
                   </TextField>
-                  {isFilterApplied && (
+                  {(isFilterApplied || searchCriteria || searchQuery) && (
                     <Button
                       onClick={clearFilter}
                       className="w-max btn py-2 px-3 bg-btn-primary"

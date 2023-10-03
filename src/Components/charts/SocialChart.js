@@ -26,16 +26,7 @@ function SocialChart({ data, selectedMonthSocial }) {
   console.log("social chart : ", data);
   const { currentMode } = useStateContext();
 
-  // const graphData = {
-  //   labels,
-  //   datasets: [
-  //     {
-  //       label: "All",
-  //       data: data?.map((elem) => elem?.total),
-  //       backgroundColor: ["rgba(218, 31, 38, 1)"],
-  //     },
-  //   ],
-  // };
+  // const formatted_data = ;
 
   const chartData = {
     options: {
@@ -63,7 +54,6 @@ function SocialChart({ data, selectedMonthSocial }) {
       },
       plotOptions: {
         bar: {
-          // columnWidth: "50%",
           dataLabels: {
             position: "top", // top, center, bottom
           },
@@ -73,8 +63,12 @@ function SocialChart({ data, selectedMonthSocial }) {
     series: [
       {
         name: "All",
-        data: data?.map((elem) => elem?.total),
-        backgroundColor: [primaryColor],
+        // data: data?.map((elem) => elem?.total),
+        data: data?.map(elem => ({
+          x: elem?.leadSource,
+          y: elem.total,
+          fillColor: primaryColor,
+        })),
       },
     ],
   };

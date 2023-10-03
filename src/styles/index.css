@@ -1205,3 +1205,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
       opacity: 1;
     }
 }
+
+.apexcharts-xaxis-label, .apexcharts-yaxis-label {
+  fill: #AAAAAA; /* Set the color for all labels */
+}

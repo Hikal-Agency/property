@@ -21,14 +21,14 @@ const ReportClosedMeetingDoughnut = ({ target_reached, target_remaining }) => {
                 // data: [`${DashboardData?.lead_status?.target_reached}`, `${DashboardData?.lead_status?.target_remaining}`],
                 data: [25, 81],
                 borderWidth: 1,
-                backgroundColor: [primaryColor, "#ffffff"],
+                backgroundColor: [primaryColor, "#333333"],
               },
             ],
           }}
           options={{
             color: "#ffffff",
-            backgroundColor: [primaryColor, "#ffffff"],
-            borderColor: [primaryColor, "#ffffff"],
+            backgroundColor: [primaryColor, "#333333"],
+            borderColor: [primaryColor, "#777777"],
             responsive: true,
             maintainAspectRatio: true,
             aspectRatio: 1,
@@ -44,7 +44,7 @@ const ReportClosedMeetingDoughnut = ({ target_reached, target_remaining }) => {
                 // data: [`${DashboardData?.lead_status?.target_reached}`, `${DashboardData?.lead_status?.target_remaining}`],
                 data: [25, 81],
                 borderWidth: 1,
-                backgroundColor: [primaryColor, "#000000"],
+                backgroundColor: [primaryColor, "#333333"],
               },
             ],
           }}

@@ -25,17 +25,15 @@ import {
 import {
   FaSnapchatGhost,
   FaTiktok,
-  FaFacebookF, FaWhatsapp,
+  FaFacebookF,
+  FaWhatsapp,
   FaYoutube,
   FaTwitter,
   FaUser,
-  FaRegComments
+  FaRegComments,
 } from "react-icons/fa";
 import { MdCampaign } from "react-icons/md";
-import {
-  BiImport,
-  BiMessageRoundedDots, BiArchive
-} from "react-icons/bi";
+import { BiImport, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
 import { BsShieldX, BsShieldCheck, BsShieldMinus } from "react-icons/bs";
 import { BsShuffle } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
@@ -86,7 +84,7 @@ const feedbacks = [
   "No Answer",
   "Unreachable",
   "Dead",
-  "Wrong Number"
+  "Wrong Number",
 ];
 
 const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
@@ -146,7 +144,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     BACKEND_URL,
     isArabic,
     darkModeColors,
-    primaryColor
+    primaryColor,
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -599,10 +597,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       renderCell: (cellValues) => {
         return (
           <>
-            {cellValues.formattedValue === "null" ? "-" : cellValues.formattedValue}
+            {cellValues.formattedValue === "null"
+              ? "-"
+              : cellValues.formattedValue}
           </>
-        )
-      }
+        );
+      },
     },
 
     {
@@ -791,6 +791,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       ...old,
       isLoading: true,
     }));
+
+    // BUYERS LIST
+    if (lead_origin === "buyers") {
+      FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+        pageState.page
+      }&perpage=${pageState.perpage || 14}&coldCall=5`;
+    }
 
     // LEADS URL GENERATON FOR FRESH LEADS SECTION
     if (lead_origin === "freshleads") {
@@ -1474,7 +1481,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     // setUpdateLeadModelOpen(true);
   };
 
-
   const HandleViewTimeline = (params) => {
     setsingleLeadData(params.row);
     setTimelineModelOpen(true);
@@ -1664,7 +1670,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       setCSVData({
         rows: formatted,
         keys,
-        fileName: file?.name
+        fileName: file?.name,
       });
       setBulkImportModelOpen(true);
     };
@@ -1675,7 +1681,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const handleRowHover = (params) => {
     setHoveredRow(params.row);
   };
-
 
   return (
     <>

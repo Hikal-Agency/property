@@ -72,6 +72,8 @@ import Notifications from "./notifications";
 import NotificationsList from "./notifications/notificationsList";
 import Listings from "./listings";
 import SingleListingsPage from "./listings/SingleListingsPage";
+import ListingUsers from "./listingsUsers";
+import Buyers from "./listingsUsers/buyers";
 
 const libraries = ["places"];
 
@@ -447,6 +449,16 @@ const routes = [
     page: "Single Listing",
   },
   {
+    path: "/sellers",
+    element: <ListingUsers />,
+    page: "Single Listing",
+  },
+  {
+    path: "/buyers/:lead_type",
+    element: <Buyers />,
+    pageName: "Buyers",
+  },
+  {
     path: "*",
     element: <Error />,
   },
@@ -471,6 +483,25 @@ function App() {
   useEffect(() => {
     setAllRoutes(routes);
   }, []);
+
+  // useEffect(() => {
+  //   const handleMessage = (event) => {
+  //     console.log("event msg:==============> ");
+  //     if (event.data && event.data.type === "userLoggedIn") {
+  //       // Update auth token in the state
+  //       localStorage.getItem(event.data.data);
+  //       window.location.reload();
+  //     }
+  //   };
+
+  //   // Listen for messages from other tabs
+  //   window.addEventListener("message", handleMessage);
+
+  //   // Cleanup the event listener on component unmount
+  //   return () => {
+  //     window.removeEventListener("message", handleMessage);
+  //   };
+  // }, []);
 
   function hasSidebarOrNavbar() {
     const pathname = location.pathname;

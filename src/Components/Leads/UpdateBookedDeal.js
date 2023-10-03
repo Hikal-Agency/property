@@ -256,7 +256,7 @@ const UpdateBookedDeal = ({
           style={style}
           className={`  ${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-          } absolute top-1/2 left-1/2 p-7 rounded-md`}
+          } absolute top-1/2 left-1/2 p-4 rounded-md`}
         >
           <IconButton
             sx={{
@@ -276,43 +276,54 @@ const UpdateBookedDeal = ({
             </div>
           ) : (
             <>
-              <h1
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                } text-center font-bold text-xl pb-10`}
-              >
-                Update project details
-              </h1>
+              <div className="w-full flex items-center pb-3">
+                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                <h1
+                  className={`text-lg font-semibold ${
+                    currentMode === "dark"
+                      ? "text-white"
+                      : "text-black"
+                  }`}
+                >
+                  Update Booked Deal Details
+                </h1>
+              </div>
+              
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   UpdateLeadFunc();
                 }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-1">
+                <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-1 px-4 pt-4">
                   <div>
                     <Box sx={darkModeColors}>
                       <TextField
                         id="Project"
-                        type={"text"}
-                        label="Project name"
-                        className="w-full mb-5"
+                        type={"number"}
+                        label="Booked Amount"
+                        className="w-full"
                         variant="outlined"
                         size="small"
-                        value={LeadProject}
-                        onChange={(e) => setLeadProject(e.target.value)}
+                        value={booked_amount}
+                        sx={{ 
+                          marginBottom: "1.35rem !important" 
+                        }}
+                        onChange={(e) => setBookedAmount(e.target.value)}
                       />
 
                       <TextField
                         id="Project"
                         type={"text"}
-                        label="Booked Amount"
-                        className="w-full mb-5 mt-4"
-                        style={{ marginTop: "10px" }}
+                        label="Project name"
+                        className="w-full"
                         variant="outlined"
                         size="small"
-                        value={booked_amount}
-                        onChange={(e) => setBookedAmount(e.target.value)}
+                        value={LeadProject}
+                        sx={{ 
+                          marginBottom: "1.35rem !important" 
+                        }}
+                        onChange={(e) => setLeadProject(e.target.value)}
                       />
 
                       <FormControl fullWidth variant="outlined" size="medium">
@@ -322,7 +333,10 @@ const UpdateBookedDeal = ({
                           value={EnquiryType}
                           label="Enquiry for"
                           onChange={ChangeEnquiryType}
-                          className="w-full mb-5 mt-4"
+                          className="w-full"
+                          sx={{ 
+                            marginBottom: "1.35rem !important" 
+                          }}
                           displayEmpty
                           required
                           size="small"
@@ -349,10 +363,13 @@ const UpdateBookedDeal = ({
                           value={PropertyType}
                           label="Property type"
                           onChange={ChangePropertyType}
-                          className="w-full mb-5"
+                          className="w-full"
                           displayEmpty
                           required
                           size="small"
+                          sx={{ 
+                            marginBottom: "1.35rem !important" 
+                          }}
                         >
                           <MenuItem value="" disabled>
                             ---NONE---
@@ -373,10 +390,13 @@ const UpdateBookedDeal = ({
                           value={ForType}
                           label="Purpose of enquiry"
                           onChange={ChangeForType}
-                          className="w-full mb-5"
+                          className="w-full"
                           displayEmpty
                           required
                           size="small"
+                          sx={{ 
+                            marginBottom: "1.35rem !important" 
+                          }}
                         >
                           <MenuItem value="" disabled>
                             ---NONE---

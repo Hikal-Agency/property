@@ -128,3 +128,5 @@ const ReportProjectBar = ({ total_projects, selectedMonthProject }) => {
 };
 
 export default ReportProjectBar;
+
+

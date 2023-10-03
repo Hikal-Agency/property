@@ -42,7 +42,14 @@ const Home = () => {
       .then((result) => {
         setOpenBackDrop(true);
         if (result.data.success && result.data.data.token) {
-          localStorage.setItem("auth-token", result.data.data.token);
+          const token = result.data.data.token;
+
+          localStorage.setItem("auth-token", token);
+          // window.postMessage(
+          //   { type: "userLoggedIn", data: token },
+          //   window.origin
+          // );
+
           document.location.href =
             result.data.data.role === 5
               ? "/attendance/officeSettings"
@@ -179,7 +186,6 @@ const Home = () => {
     }
     // eslint-disable-next-line
   }, []);
-
 
   return (
     <>
