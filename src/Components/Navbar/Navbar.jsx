@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useProSidebar } from "react-pro-sidebar";
 import { toast } from "react-toastify";
-import { 
-  Link, 
-} from "react-router-dom";
-import {MdStars} from "react-icons/md";
+import { Link } from "react-router-dom";
+import { MdStars } from "react-icons/md";
 
 import { Tooltip, Button, Badge } from "@mui/material";
 import Menu from "@mui/material/Menu";
@@ -30,8 +28,8 @@ import {
   MdDarkMode,
   MdKeyboardArrowDown,
   MdOutlineLightMode,
-  MdColorLens, 
-  MdOutlineColorLens
+  MdColorLens,
+  MdOutlineColorLens,
 } from "react-icons/md";
 import {
   VscHistory,
@@ -69,6 +67,8 @@ const NavButton = ({
 );
 
 const Navbar = () => {
+  const token = localStorage.getItem("auth-token");
+
   const {
     currentMode,
     setCurrentMode,
@@ -108,19 +108,41 @@ const Navbar = () => {
     setCurrNavBtn("");
   };
 
-  const LogoutUser = () => {
+  const LogoutUser = async () => {
     localStorage.removeItem("auth-token");
     localStorage.removeItem("user");
     localStorage.removeItem("leadsData");
     localStorage.removeItem("fb_token");
     localStorage.removeItem("access_token");
     localStorage.removeItem("expires_in");
-    window.open("/", "_self");
+
+    try {
+      const logout = await axios.post(`${BACKEND_URL}/logout`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("logout: ", logout);
+      window.open("/", "_self");
+    } catch (error) {
+      console.log("error: ", error);
+      toast.error("Unable to logout", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const UnsubscribeUser = async () => {
     try {
-      const token = localStorage.getItem("auth-token");
       await axios.post(
         `${BACKEND_URL}/cancel`,
         JSON.stringify({
@@ -228,7 +250,7 @@ const Navbar = () => {
             <button
               type="button"
               style={{
-                color: currentMode === "dark" ? "white" : primaryColor
+                color: currentMode === "dark" ? "white" : primaryColor,
               }}
               // style={{ color: currentColor }}
               className={`relative text-xl rounded-full hover:bg-light-gray mr-4`}
@@ -247,11 +269,17 @@ const Navbar = () => {
               <Button
                 variant="contained"
                 className="bg-btn-primary"
-                sx={{ mr: 2, "& svg": {
-                  color: "white"
-                } }}
+                sx={{
+                  mr: 2,
+                  "& svg": {
+                    color: "white",
+                  },
+                }}
               >
-                <Link to="/marketing/payments" className="flex items-center"><MdStars className="mr-2" size={18}/><span className="mt-[2px]">Upgrade</span></Link>
+                <Link to="/marketing/payments" className="flex items-center">
+                  <MdStars className="mr-2" size={18} />
+                  <span className="mt-[2px]">Upgrade</span>
+                </Link>
               </Button>
             ) : (
               <></>
@@ -281,18 +309,19 @@ const Navbar = () => {
             // dotColor={currentMode === "dark" ? "#ffffff" : "#DA1F26"}
             customFunc={(event) => handleClick(event, "Notifications")}
             color={currentMode === "dark" ? "#ffffff" : "#333333"}
-            icon={ <Badge
-                      className={notifIconAnimating ? "animate-notif-icon" : ""}
-                      badgeContent={unreadNotifsCount}
-                      sx={{
-                        "& .MuiBadge-badge": {
-                          background: primaryColor, 
-                          color: "white"
-                        }
-                      }}
-                    >
-                      <BsBell size={16} />
-                    </Badge>
+            icon={
+              <Badge
+                className={notifIconAnimating ? "animate-notif-icon" : ""}
+                badgeContent={unreadNotifsCount}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    background: primaryColor,
+                    color: "white",
+                  },
+                }}
+              >
+                <BsBell size={16} />
+              </Badge>
             }
           />
 
@@ -338,7 +367,7 @@ const Navbar = () => {
             <div
               className="ml-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
               onClick={(event) => {
-                if(currNavBtn === "Profile"){
+                if (currNavBtn === "Profile") {
                   handleClose();
                 } else {
                   handleClick(event, "Profile");
@@ -405,183 +434,228 @@ const Navbar = () => {
                     padding: "5px !important",
                     paddingRight: "0px !important",
                   },
-                  // "&:before": {
-                  //   content: '""',
-                  //   display: "block",
-                  //   position: "absolute",
-                  //   top: 0,
-                  //   right: 66,
-                  //   width: 10,
-                  //   height: 10,
-                  //   background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
-                  //   transform: "translateY(-50%) rotate(45deg)",
-                  //   zIndex: 0,
-                  // },
-                },
-              }}
-              transformOrigin={{ horizontal: "center", vertical: "top" }}
-              anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-            >
-              {currNavBtn ? (
-                currNavBtn === "Notifications" ? (
-                  // <NotificationsMenu />
-                  <NotificationsMenuUpdated handleClose={handleClose} setCurrNavBtn={setCurrNavBtn}/>
-                ) : (currNavBtn === "Clock") ? (
-                    <Clock handleClose={handleClose} /> 
-                )
-                    : (currNavBtn === "Meetings") ? (
-                    <UpcomingMeetingsMenu />
-                ) : (currNavBtn === "Profile") ? (
-                  <div className="pl-2">
-                    <div
-                      className={`cursor-pointer card-hover ${
-                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } mb-3 p-4 rounded-xl shadow-sm w-full`}
-                    >
-                      <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-                        <div className="flex items-center justify-start">
-                          <Avatar
-                            src={User?.displayImg}
-                            className="inline-block"
-                          />
-                          <div className="flex justify-between items-center w-full h-full">
-                            <div className="mx-1 space-y-1">
-                              <p className="font-semibold">{User?.userName}</p>
-                              <p className="text-xs capitalize">{User?.position}</p>
-                            </div>
-                            <div style={{
-                              borderColor: primaryColor
-                            }} className={`text-sm rounded-full border px-2 py-1`}>
-                              Profile
-                            </div>
+                // "&:before": {
+                //   content: '""',
+                //   display: "block",
+                //   position: "absolute",
+                //   top: 0,
+                //   right: 66,
+                //   width: 10,
+                //   height: 10,
+                //   background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
+                //   transform: "translateY(-50%) rotate(45deg)",
+                //   zIndex: 0,
+                // },
+              },
+            }}
+            transformOrigin={{ horizontal: "center", vertical: "top" }}
+            anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+          >
+            {currNavBtn ? (
+              currNavBtn === "Notifications" ? (
+                // <NotificationsMenu />
+                <NotificationsMenuUpdated
+                  handleClose={handleClose}
+                  setCurrNavBtn={setCurrNavBtn}
+                />
+              ) : currNavBtn === "Clock" ? (
+                <Clock handleClose={handleClose} />
+              ) : currNavBtn === "Meetings" ? (
+                <UpcomingMeetingsMenu />
+              ) : currNavBtn === "Profile" ? (
+                <div className="pl-2">
+                  <div
+                    className={`cursor-pointer card-hover ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-3 p-4 rounded-xl shadow-sm w-full`}
+                  >
+                    <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
+                      <div className="flex items-center justify-start">
+                        <Avatar
+                          src={User?.displayImg}
+                          className="inline-block"
+                        />
+                        <div className="flex justify-between items-center w-full h-full">
+                          <div className="mx-1 space-y-1">
+                            <p className="font-semibold">{User?.userName}</p>
+                            <p className="text-xs capitalize">
+                              {User?.position}
+                            </p>
                           </div>
-                        </div>
-                      </Link>
-                    </div>
-
-                    <ColorSchemeMenuItem/>
-
-                    {/* LOGIN HISTORY  */}
-                    <div
-                      className={`cursor-pointer card-hover ${
-                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                    >
-                      {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
-                        <div className="flex items-center justify-start">
-                          <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
-                            <VscHistory size={18} color={"#AAAAAA"} />
-                          </div>
-                          <div className="flex justify-between items-center w-full h-full">
-                            <div className="flex items-center">
-                              <p className="font-semibold mx-1 mr-2">Login history</p>
-                              <VscLock size={14} color={primaryColor} className="mr-2" />
-                            </div>
-                            <div style={{
-                              background: primaryColor, 
-                              fontSize: "0.5rem"
-                            }} className="rounded-full text-white px-2 py-1 font-bold">
-                              SOON
-                            </div>
-                          </div>
-                        </div>
-                      {/* </Link> */}
-                    </div>
-
-                    {/* CHANGE PASSWORD  */}
-                    <div
-                      className={`cursor-pointer card-hover ${
-                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                    >
-                      <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}>
-                        <div className="flex items-center justify-start">
-                          <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`}>
-                            <VscShield size={18} color={"#AAAAAA"} />
-                          </div>
-                          <p className="mx-1 mr-2 font-semibold">Change password</p>
-                        </div>
-                      </Link>
-                    </div>
-
-                    {/* IF SUBSCRIBED, UNSUBCRIBE  */}
-                    {User?.role !== 1 && isUserSubscribed && (
-                      <div
-                        className={`cursor-pointer card-hover ${
-                          currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                        onClick={UnsubscribeUser}
-                      >
-                        {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
-                          <div className="flex items-center justify-start">
-                            <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-2 rounded-full mr-2`} >
-                              <VscExclude size={18} color={"#AAAAAA"} />
-                            </div>
-                            <p className="mx-1 mr-2 font-semibold">Unsubscribe package</p>
-                            <VscLock size={14} color={primaryColor} className="mr-2" />
-                          </div>
-                        {/* </Link> */}
-                      </div>
-                    )}
-
-                    {/* IF SUBSCRIBED, UNSUBCRIBE  */}
-                    {User?.role !== 1 && isUserSubscribed && (
-                      <div
-                        className={`cursor-pointer card-hover ${
-                          currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                        onClick={UnsubscribeUser}
-                      >
-                        {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
-                        <div className="flex items-center justify-start">
                           <div
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-[#1C1C1C]"
-                                : "bg-[#EEEEEE]"
-                            } p-2 rounded-full mr-2`}
+                            style={{
+                              borderColor: primaryColor,
+                            }}
+                            className={`text-sm rounded-full border px-2 py-1`}
                           >
-                            <VscExclude size={18} color={"#AAAAAA"} />
+                            Profile
                           </div>
-                          <p className="mx-1 mr-2 font-semibold">
-                            Unsubscribe package
-                          </p>
-                          <VscLock size={14} color={"#DA1F26"} className="mr-2" />
                         </div>
-                        {/* </Link> */}
                       </div>
-                    )}
+                    </Link>
+                  </div>
 
-                    {/* LOGOUT  */}
-                    <div
-                      className={`cursor-pointer card-hover ${
-                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } p-3 rounded-xl shadow-sm w-full`}
-                      onClick={LogoutUser}
+                  <ColorSchemeMenuItem />
+
+                  {/* LOGIN HISTORY  */}
+                  <div
+                    className={`cursor-pointer card-hover ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                  >
+                    {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
+                    <div className="flex items-center justify-start">
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                        } p-2 rounded-full mr-2`}
+                      >
+                        <VscHistory size={18} color={"#AAAAAA"} />
+                      </div>
+                      <div className="flex justify-between items-center w-full h-full">
+                        <div className="flex items-center">
+                          <p className="font-semibold mx-1 mr-2">
+                            Login history
+                          </p>
+                          <VscLock
+                            size={14}
+                            color={primaryColor}
+                            className="mr-2"
+                          />
+                        </div>
+                        <div
+                          style={{
+                            background: primaryColor,
+                            fontSize: "0.5rem",
+                          }}
+                          className="rounded-full text-white px-2 py-1 font-bold"
+                        >
+                          SOON
+                        </div>
+                      </div>
+                    </div>
+                    {/* </Link> */}
+                  </div>
+
+                  {/* CHANGE PASSWORD  */}
+                  <div
+                    className={`cursor-pointer card-hover ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                  >
+                    <Link
+                      to={"/changepassword"}
+                      onClick={() => setopenBackDrop(true)}
                     >
                       <div className="flex items-center justify-start">
                         <div
                           className={`${
-                            currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                            currentMode === "dark"
+                              ? "bg-[#1C1C1C]"
+                              : "bg-[#EEEEEE]"
                           } p-2 rounded-full mr-2`}
                         >
-                          <VscSignOut size={18} color={"#AAAAAA"} />
+                          <VscShield size={18} color={"#AAAAAA"} />
                         </div>
-                        <p className="mx-1 mr-2 font-semibold">Log out</p>
+                        <p className="mx-1 mr-2 font-semibold">
+                          Change password
+                        </p>
                       </div>
+                    </Link>
+                  </div>
+
+                  {/* IF SUBSCRIBED, UNSUBCRIBE  */}
+                  {User?.role !== 1 && isUserSubscribed && (
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                      onClick={UnsubscribeUser}
+                    >
+                      {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
+                      <div className="flex items-center justify-start">
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-[#1C1C1C]"
+                              : "bg-[#EEEEEE]"
+                          } p-2 rounded-full mr-2`}
+                        >
+                          <VscExclude size={18} color={"#AAAAAA"} />
+                        </div>
+                        <p className="mx-1 mr-2 font-semibold">
+                          Unsubscribe package
+                        </p>
+                        <VscLock
+                          size={14}
+                          color={primaryColor}
+                          className="mr-2"
+                        />
+                      </div>
+                      {/* </Link> */}
+                    </div>
+                  )}
+
+                  {/* IF SUBSCRIBED, UNSUBCRIBE  */}
+                  {User?.role !== 1 && isUserSubscribed && (
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                      onClick={UnsubscribeUser}
+                    >
+                      {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
+                      <div className="flex items-center justify-start">
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-[#1C1C1C]"
+                              : "bg-[#EEEEEE]"
+                          } p-2 rounded-full mr-2`}
+                        >
+                          <VscExclude size={18} color={"#AAAAAA"} />
+                        </div>
+                        <p className="mx-1 mr-2 font-semibold">
+                          Unsubscribe package
+                        </p>
+                        <VscLock size={14} color={"#DA1F26"} className="mr-2" />
+                      </div>
+                      {/* </Link> */}
+                    </div>
+                  )}
+
+                  {/* LOGOUT  */}
+                  <div
+                    className={`cursor-pointer card-hover ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } p-3 rounded-xl shadow-sm w-full`}
+                    onClick={LogoutUser}
+                  >
+                    <div className="flex items-center justify-start">
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                        } p-2 rounded-full mr-2`}
+                      >
+                        <VscSignOut size={18} color={"#AAAAAA"} />
+                      </div>
+                      <p className="mx-1 mr-2 font-semibold">Log out</p>
                     </div>
                   </div>
-                ) : <></>
+                </div>
               ) : (
                 <></>
               )
-            }
+            ) : (
+              <></>
+            )}
           </Menu>
-
-         
         </div>
       </div>
-
     </>
   );
 };

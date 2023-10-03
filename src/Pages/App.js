@@ -484,6 +484,25 @@ function App() {
     setAllRoutes(routes);
   }, []);
 
+  // useEffect(() => {
+  //   const handleMessage = (event) => {
+  //     console.log("event msg:==============> ");
+  //     if (event.data && event.data.type === "userLoggedIn") {
+  //       // Update auth token in the state
+  //       localStorage.getItem(event.data.data);
+  //       window.location.reload();
+  //     }
+  //   };
+
+  //   // Listen for messages from other tabs
+  //   window.addEventListener("message", handleMessage);
+
+  //   // Cleanup the event listener on component unmount
+  //   return () => {
+  //     window.removeEventListener("message", handleMessage);
+  //   };
+  // }, []);
+
   function hasSidebarOrNavbar() {
     const pathname = location.pathname;
     if (
