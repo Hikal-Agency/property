@@ -194,7 +194,7 @@ const NotificationsList = () => {
 
   return (
     <>
-      <div className=" flex min-h-screen" onClick={handleParentClick}>
+      <div className=" " onClick={handleParentClick}>
         {loading ? (
           <Loader />
         ) : (

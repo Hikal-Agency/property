@@ -23,8 +23,8 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { IoIosAlert } from "react-icons/io";
 import usePermission from "../../utils/usePermission";
-import { BsChevronCompactDown } from "react-icons/bs";
-import { AiOutlinePhone, AiOutlineMail } from "react-icons/ai";
+import { BsCaretDownFill } from "react-icons/bs";
+import { HiOutlineMail, HiOutlinePhone, HiOutlineOfficeBuilding } from "react-icons/hi";
 import { style } from "@mui/system";
 
 const ribbonStyles = {
@@ -228,41 +228,41 @@ const Sellers = ({
 
   return (
     <div className="relative">
-      <Box className="p-0">
+      <Box className="">
         <Accordion
-          className={`mb-4 `}
+          className={`mb-4 shadow-none`}
           defaultExpanded={true}
           sx={{
-            "& .MuiPaper-root .MuiPaper-elevation .MuiPaper-rounded .MuiPaper-elevation1 .MuiAccordion-root .MuiAccordion-rounded .Mui-expanded .MuiAccordion-gutters .mb-4 .css-1i264kv-MuiPaper-root-MuiAccordion-root":
-              {
-                background: "red !important",
-              },
+            ".css-15v22id-MuiAccordionDetails-root": {
+              background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+              shadow: "none",
+              border: "none !important",
+            }
           }}
         >
           <AccordionSummary
             expandIcon={
-              <BsChevronCompactDown
-                color={currentMode === "dark" ? "#ffffff" : "#000000"}
+              <BsCaretDownFill
+                color={"#AAAAAA"}
               />
             }
             sx={{
               color: currentMode === "dark" && "#ffffff",
-              backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#777777",
-              borderRadius: "10px",
+              backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+              // borderRadius: "10px",
             }}
+            className="shadow-sm font-bold text-lg"
           >
-            <Typography variant="h4" className="font-bold text-lg">
               Manual Sellers
-            </Typography>
           </AccordionSummary>
 
           <AccordionDetails>
             {loading === true ? (
-              <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
+              <div className="flex col-span-3 justify-center items-center w-full">
                 <CircularProgress />
               </div>
             ) : manualSellers?.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
                 {manualSellers?.map((listing, index) => {
                   const countForSpecificCombination =
                     repeatedListingsCount[
@@ -277,14 +277,14 @@ const Sellers = ({
                           listing?.page
                         } ${
                           currentMode === "dark"
-                            ? "bg-[#1C1C1C] text-white"
-                            : "bg-[#EEEEEE] text-black"
+                            ? "bg-[#000000] text-white"
+                            : "bg-[#FFFFFF] text-black"
                         } rounded-lg`}
                       >
                         <div className="rounded-md flex flex-col justify-between">
                           <div className="">
                             <div
-                              className={`absolute top-0 right-2 p-2 pb-5 rounded-b-full bg-primary`}
+                              className={`absolute top-0 right-3 p-2 pb-4 rounded-b-full bg-primary`}
                             >
                               <Tooltip title="View Property">
                                 <Link
@@ -292,9 +292,9 @@ const Sellers = ({
                                   to={`/secondaryListings/${listing?.id}`}
                                   target="_blank"
                                 >
-                                  <IconButton className="my-1">
+                                  <IconButton className="">
                                     <BsFillBuildingFill
-                                      size={20}
+                                      size={16}
                                       color={"#FFFFFF"}
                                     />
                                   </IconButton>
@@ -307,81 +307,51 @@ const Sellers = ({
                             to={`/secondaryListings/${listing?.id}`}
                             target="_blank"
                           > */}
-                          <div className="px-5 py-3">
-                            <h1
-                              className={`${
-                                currentMode === "dark"
-                                  ? "text-white"
-                                  : "text-[#000000]"
-                              } my-2 flex justify-between `}
-                              style={{ textTransform: "capitalize" }}
-                            >
-                              <span className="text-xl font-bold text-primary">
-                                {listing?.seller_name || "Unavailable"}
-                              </span>
+                          <div className="p-4">
+                            <h1 className="text-lg font-bold text-primary">
+                              {listing?.seller_name || "---"}
                             </h1>
 
-                            <div className="my-2">
-                              <div className="flex space-x-3 items-center">
-                                <AiOutlinePhone
-                                  className="text-[#AAAAAA]"
-                                  size={20}
-                                />
-                                <p className="text-start">
-                                  <span>
-                                    {listing?.seller_contact === "null"
-                                      ? "-"
-                                      : listing?.seller_contact}
-                                  </span>{" "}
-                                </p>
-                              </div>
+                            <div className="my-2 grid grid-cols-8 gap-3">
+                              <HiOutlinePhone
+                                className="col-span-1 text-[#AAAAAA]"
+                                size={20}
+                              />
+                              <p className="col-span-7 text-start">
+                                <span>
+                                  {listing?.seller_contact === "null"
+                                    ? "-"
+                                    : listing?.seller_contact}
+                                </span>{" "}
+                              </p>
                             </div>
-                            <div className="my-2 w-full flex items-center justify-between">
-                              <div className="flex space-x-3 items-center">
-                                <AiOutlineMail
-                                  className="text-[#AAAAAA]"
-                                  size={20}
-                                />
-                                <p className="text-start">
-                                  <span>
-                                    {listing?.seller_email === "null"
-                                      ? "-"
-                                      : listing?.seller_email}
-                                  </span>
-                                </p>
-                              </div>
+                            <div className="my-2 grid grid-cols-8 gap-3">
+                              <HiOutlineMail
+                                className="col-span-1 text-[#AAAAAA]"
+                                size={20}
+                              />
+                              <p className="col-span-7 text-start">
+                                <span>
+                                  {listing?.seller_email === "null"
+                                  ? "-"
+                                  : listing?.seller_email}
+                                </span>{" "}
+                              </p>
                             </div>
-                            <div className="my-2 w-full flex items-center justify-between">
-                              <div className="flex space-x-3 items-center">
-                                <BsFillBuildingFill
-                                  className="text-[#AAAAAA]"
-                                  size={20}
-                                />
-                                <p className="text-start">
-                                  <span>
-                                    {countForSpecificCombination === "null"
-                                      ? "-"
-                                      : countForSpecificCombination}
-                                  </span>
-                                </p>
-                              </div>
-                              {/* {hasPermission("delete_listing") && (
-                                  <IconButton
-                                    className="bg-btn-primary p-3 rounded-fulls"
-                                    onClick={(e) =>
-                                      handleOpenDialogue(
-                                        e,
-                                        listing?.id,
-                                        listing?.project
-                                      )
-                                    }
-                                  >
-                                    <BsFillTrashFill color="#ffffff" />
-                                  </IconButton>
-                                )} */}
+                            <div className="my-2 grid grid-cols-8 gap-3">
+                              <HiOutlineOfficeBuilding
+                                className="col-span-1 text-[#AAAAAA]"
+                                size={20}
+                              />
+                              <p className="col-span-7 text-start">
+                                <span>
+                                  {countForSpecificCombination === "null"
+                                    ? "-"
+                                    : countForSpecificCombination}
+                                </span>
+                              </p>
                             </div>
                           </div>
-                          {/* </Link> */}
                         </div>
                       </div>
                     </>
@@ -389,30 +359,40 @@ const Sellers = ({
                 })}
               </div>
             ) : (
-              <div className="flex justify-center items-center col-span-3 h-[500px] w-full">
-                <h2 className="text-primary font-bold text-2xl">
+              <div className="flex justify-center items-center col-span-3 w-full">
+                <h2 className="text-primary italic">
                   No manual sellers available
                 </h2>
               </div>
             )}
           </AccordionDetails>
         </Accordion>
-        <Accordion className={``} defaultExpanded={true}>
+
+        <Accordion 
+          className={`mb-4 shadow-none`} 
+          defaultExpanded={true}
+          sx={{
+            ".css-15v22id-MuiAccordionDetails-root": {
+              background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+              shadow: "none",
+              border: "none !important",
+            }
+          }}
+        >
           <AccordionSummary
             expandIcon={
-              <BsChevronCompactDown
-                color={currentMode === "dark" ? "#ffffff" : "#000000"}
+              <BsCaretDownFill
+                color={"#AAAAAA"}
               />
             }
             sx={{
               color: currentMode === "dark" && "#ffffff",
-              backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#777777",
-              borderRadius: "10px",
+              backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+              // borderRadius: "10px",
             }}
+            className="shadow-sm font-bold text-lg"
           >
-            <Typography variant="h4" className="font-bold text-lg">
-              Seller From Leads
-            </Typography>
+              Seller From leads
           </AccordionSummary>
 
           <AccordionDetails>
@@ -430,14 +410,14 @@ const Sellers = ({
                             listing?.page
                           } ${
                             currentMode === "dark"
-                              ? "bg-[#1C1C1C] text-white"
-                              : "bg-[#EEEEEE] text-black"
+                              ? "bg-[#000000] text-white"
+                              : "bg-[#FFFFFF] text-black"
                           } rounded-lg`}
                         >
                           <div className="rounded-md flex flex-col justify-between">
                             <div className="">
                               <div
-                                className={`absolute top-0 right-2 p-2 pb-5 rounded-b-full bg-primary`}
+                                className={`absolute top-0 right-3 p-2 pb-4 rounded-b-full bg-primary`}
                               >
                                 <Tooltip title="View Property">
                                   <Link
@@ -447,7 +427,7 @@ const Sellers = ({
                                   >
                                     <IconButton className="my-1">
                                       <BsFillBuildingFill
-                                        size={20}
+                                        size={16}
                                         color={"#FFFFFF"}
                                       />
                                     </IconButton>
@@ -455,100 +435,82 @@ const Sellers = ({
                                 </Tooltip>
                               </div>
                             </div>
-                            {/* <Link
-                              sx={{ w: "100%" }}
-                              to={`/secondaryListings/${listing?.id}`}
-                              target="_blank"
-                            > */}
-                            <div className="px-5 py-3">
-                              <h1
-                                className={`${
-                                  currentMode === "dark"
-                                    ? "text-white"
-                                    : "text-[#000000]"
-                                } my-2 flex justify-between `}
-                                style={{ textTransform: "capitalize" }}
-                              >
-                                <span className="text-xl font-bold text-primary">
-                                  {listing?.leadName || "Unavailable"}
-                                </span>
+                            
+                            <div className="p-4">
+                              <h1 className="text-lg font-bold text-primary">
+                                {listing?.leadName || "---"}
                               </h1>
 
-                              <div className="my-2">
-                                <div className="flex space-x-3 items-center">
-                                  <AiOutlinePhone
-                                    className="text-[#AAAAAA]"
-                                    size={20}
-                                  />
-                                  <p className="text-start">
-                                    <span>
-                                      {listing?.leadContact === "null"
-                                        ? "-"
-                                        : listing?.leadContact}
-                                    </span>{" "}
-                                  </p>
-                                </div>
+                              <div className="my-2 grid grid-cols-8 gap-3">
+                                <HiOutlinePhone
+                                  className="col-span-1 text-[#AAAAAA]"
+                                  size={20}
+                                />
+                                <p className="col-span-7 text-start">
+                                  <span>
+                                    {listing?.leadContact === "null"
+                                      ? "-"
+                                      : listing?.leadContact}
+                                  </span>{" "}
+                                </p>
                               </div>
-                              <div className="my-2 w-full flex items-center justify-between">
-                                <div className="flex space-x-3 items-center">
-                                  <AiOutlineMail
-                                    className="text-[#AAAAAA]"
-                                    size={20}
-                                  />
-                                  <p className="text-start">
-                                    <span>
-                                      {listing?.leadEmail === "null"
-                                        ? "-"
-                                        : listing?.leadEmail}
-                                    </span>
-                                  </p>
-                                </div>
+                              <div className="my-2 grid grid-cols-8 gap-3">
+                                <HiOutlineMail
+                                  className="col-span-1 text-[#AAAAAA]"
+                                  size={20}
+                                />
+                                <p className="col-span-7 text-start">
+                                  <span>
+                                    {listing?.leadEmail === "null"
+                                      ? "-"
+                                      : listing?.leadEmail}
+                                  </span>
+                                </p>
                               </div>
-                              <div className="my-2 w-full flex items-center justify-between">
-                                <div className="flex space-x-3 items-center">
-                                  <BsFillBuildingFill
-                                    className="text-[#AAAAAA]"
-                                    size={20}
-                                  />
-                                  <p className="text-start">
-                                    <span>
-                                      {listingsCount === "null"
-                                        ? "-"
-                                        : listingsCount}
-                                    </span>
-                                  </p>
-                                </div>
-                                {/* {hasPermission("delete_listing") && (
-                                    <IconButton
-                                      className="bg-btn-primary p-3 rounded-fulls"
-                                      onClick={(e) =>
-                                        handleOpenDialogue(
-                                          e,
-                                          listing?.id,
-                                          listing?.project
-                                        )
-                                      }
-                                    >
-                                      <BsFillTrashFill color="#ffffff" />
-                                    </IconButton>
-                                  )} */}
+                              <div className="my-2 grid grid-cols-8 gap-3">
+                                <HiOutlineOfficeBuilding
+                                  className="col-span-1 text-[#AAAAAA]"
+                                  size={20}
+                                />
+                                <p className="col-span-7 text-start">
+                                  <span>
+                                    {listingsCount === "null"
+                                      ? "-"
+                                      : listingsCount}
+                                  </span>
+                                </p>
                               </div>
+
+                              {/* {hasPermission("delete_listing") && (
+                                  <IconButton
+                                    className="bg-btn-primary p-3 rounded-fulls"
+                                    onClick={(e) =>
+                                      handleOpenDialogue(
+                                        e,
+                                        listing?.id,
+                                        listing?.project
+                                      )
+                                    }
+                                  >
+                                    <BsFillTrashFill color="#ffffff" />
+                                  </IconButton>
+                                )} */}
                             </div>
-                            {/* </Link> */}
+                            
                           </div>
                         </div>
                       </>
                     );
                   })
                 ) : (
-                  <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
+                  <div className="flex col-span-3 justify-center items-center w-full">
                     <CircularProgress />
                   </div>
                 )}
               </div>
             ) : (
-              <div className="flex justify-center items-center col-span-3 h-[500px] w-full">
-                <h2 className="text-primary font-bold text-2xl">
+              <div className="flex justify-center items-center col-span-3 w-full">
+                <h2 className="text-primary italic">
                   No sellers available
                 </h2>
               </div>

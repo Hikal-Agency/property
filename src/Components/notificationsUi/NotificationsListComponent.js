@@ -3,7 +3,7 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import axios from "../../axoisConfig";
 import Loader from "../Loader";
-import {  Pagination, Stack } from "@mui/material";
+import { Pagination, Stack } from "@mui/material";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { BsShuffle } from "react-icons/bs";
@@ -115,7 +115,6 @@ const NotificationsListComponent = ({
         },
       });
 
-  
       unreadNotifsCount > 0
         ? setdisplayMarkBtn(true)
         : setdisplayMarkBtn(false);
@@ -185,7 +184,6 @@ const NotificationsListComponent = ({
                     }`}
                   >
                     {notification?.title}
-
                   </p>
                   <p style={{ color: "#AAAAAA" }} className="mt-2 text-sm">
                     {notification?.type}{" "}
