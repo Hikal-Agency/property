@@ -36,48 +36,45 @@ const GridNewsletter = ({ pageState, setpageState }) => {
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className="px-5">
-              <div className="mt-5 md:mt-2">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
-                  {notesData?.length > 0 &&
-                    notesData?.map((item, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className={`${
-                            currentMode === "dark"
-                              ? "bg-[#1c1c1c] text-white"
-                              : "bg-gray-200 text-black"
-                          } p-3 rounded-md `}
-                        >
-                          <div className="mt-2 space-y-1 overflow-hidden">
-                            <h1 className="font-bold ">
-                              <b>Email: </b> {item?.email}
-                            </h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 pb-3">
+              {notesData?.length > 0 &&
+                notesData?.map((item, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-[#1c1c1c] text-white"
+                          : "bg-[#EEEEEE] text-black"
+                      } p-3 rounded-md `}
+                    >
+                      <div className="mt-2 space-y-1 overflow-hidden">
+                        <h1 className="font-bold ">
+                          <b>Email: </b> {item?.email}
+                        </h1>
 
-                            <p className="text-sm">
-                              <b>Added At: </b> {item?.creationDate}
-                            </p>
-                            <hr />
-                            <p className="text-sm font-semibold text-primary ">
-                              <b>Status: </b>{" "}
-                              {item?.status === "Subscribed" ? (
-                                <span className="text-green-600">
-                                  Subscribed
-                                </span>
-                              ) : (
-                                <span className="text-red-600">
-                                  UnSubscribed
-                                </span>
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
-              </div>
+                        <p className="text-sm">
+                          <b>Added At: </b> {item?.creationDate}
+                        </p>
+                        <hr />
+                        <p className="text-sm font-semibold text-primary ">
+                          <b>Status: </b>{" "}
+                          {item?.status === "Subscribed" ? (
+                            <span className="text-green-600">
+                              Subscribed
+                            </span>
+                          ) : (
+                            <span className="text-red-600">
+                              UnSubscribed
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
+
             <Stack spacing={2} marginTop={2}>
               <Pagination
                 count={maxPage}
