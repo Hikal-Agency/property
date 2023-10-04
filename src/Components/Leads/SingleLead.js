@@ -34,6 +34,7 @@ const SingleLead = ({
   LeadData,
   setLeadData,
   handleUpdateLeadModelOpen,
+  FetchLeads,
   setDeleteModelOpen,
   setBulkDeleteClicked,
   setLeadToDelete,
@@ -656,7 +657,7 @@ const SingleLead = ({
                 ) : null}
 
                 {/* IP BLOCKING */}
-                {LeadData?.ip && LeadData?.is_blocked !== 1 && (
+                {LeadData?.ip && (
                   <div className="flex items-center mr-3 justify-end">
                     <p
                       style={{ cursor: "pointer", display: "inline-block" }}
@@ -794,6 +795,8 @@ const SingleLead = ({
         </div>
       </Modal>
       <BlockIPModal
+      handleLeadModelClose={handleLeadModelClose}
+      FetchLeads={FetchLeads}
         addNote={AddNote}
         blockIPModalOpened={blockIPModalOpened?.isOpened}
         handleCloseIPModal={() =>

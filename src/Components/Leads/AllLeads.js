@@ -1194,6 +1194,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           priority: row?.priority || null,
           language: getLangCode(row?.language) || "-",
           leadSource: row?.leadSource || "-",
+          is_blocked: row?.is_blocked,
           lid: row?.lid || "-",
           firstAssigned: row?.firstAssigned || "",
           transferRequest: row?.transferRequest || "",
@@ -1395,6 +1396,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
           leadEmail: row?.leadEmail || "-",
           project: row?.project || "-",
+          is_blocked: row?.is_blocked,
           ip: row?.ip,
           enquiryType: row?.enquiryType || "-",
           leadType: row?.leadType || "-",
@@ -2159,6 +2161,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           {!UpdateLeadModelOpen && (
             <SingleLead
               LeadModelOpen={LeadModelOpen}
+              FetchLeads={FetchLeads}
               setLeadModelOpen={setLeadModelOpen}
               handleLeadModelOpen={handleLeadModelOpen}
               handleLeadModelClose={handleLeadModelClose}

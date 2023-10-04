@@ -17,7 +17,7 @@ const style = {
   boxShadow: 24,
 };
 
-const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead }) => {
+const BlockIPModal = ({ FetchLeads, handleLeadModelClose, addNote, handleCloseIPModal, blockIPModalOpened, lead }) => {
   const { currentMode, BACKEND_URL, User, darkModeColors } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [reason, setReason] = useState("");
@@ -53,7 +53,9 @@ const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead })
         theme: "light",
       });
       setbtnloading(false);
+      FetchLeads(localStorage.getItem("auth-token"));
       handleCloseIPModal();
+      handleLeadModelClose();
     } catch (error) {
       console.log(error);
       toast.error("Request to block IP failed!", {
