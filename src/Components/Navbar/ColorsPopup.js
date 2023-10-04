@@ -16,8 +16,15 @@ const colors = [
   "rgb(247, 193, 52)", // Light yellow
 ];
 
+const images = [
+  "https://www.bsr.org/images/heroes/bsr-focus-nature-hero.jpg", 
+  "https://s1.1zoom.me/big3/695/Mountains_Lake_Canada_Scenery_Parks_Alberta_574417_6144x4097.jpg", 
+  "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80", 
+  "https://images.unsplash.com/photo-1414872785488-7620d2ae7566?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+];
+
 const ColorsPopup = ({ handleClose }) => {
-  const { setPrimaryColor, primaryColor, currentMode, BACKEND_URL, User } =
+  const { setPrimaryColor, primaryColor, currentMode, BACKEND_URL, User, setThemeBgImg } =
     useStateContext();
 
   const handleSelectTheme = async (color) => {
@@ -80,7 +87,16 @@ const ColorsPopup = ({ handleClose }) => {
             )}
           </div>
         ))}
+
       </Box>
+        <div className="my-4 mx-auto place-items-center grid grid-cols-5 gap-y-5">
+            {images?.map((image) => <div onClick={() => setThemeBgImg(image)} className="cursor-pointer rounded-md w-[40px] h-[40px]" style={{
+              backgroundImage: `url(${image})`, 
+              backgroundRepeat: "no-repeat", 
+              backgroundSize: "cover"
+            }}>
+            </div>)}
+        </div>
     </Container>
   );
 };

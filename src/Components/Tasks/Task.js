@@ -5,7 +5,7 @@ import Calls from "./Calls";
 // eslint-disable-next-line
 
 const Task = () => {
-  const { currentMode, darkModeColors, BACKEND_URL, primaryColor } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, primaryColor, themeBgImg } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -90,7 +90,7 @@ const Task = () => {
             </Tabs>
           </div>
         </Box>
-        <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#CCCCCC]"} rounded-md`}>
+        <div className={`${!themeBgImg && (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#CCCCCC]")} rounded-md`}>
           <TabPanel value={value} index={0}>
             <Calls
               isLoading={loading}

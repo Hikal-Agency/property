@@ -469,7 +469,7 @@ export const socket = io(process.env.REACT_APP_SOCKET_URL);
 export let load = null;
 
 function App() {
-  const { setAllRoutes, currentMode } = useStateContext();
+  const { setAllRoutes, currentMode, themeBgImg } = useStateContext();
   const location = useLocation();
   const { hasPermission } = usePermission();
 
@@ -526,7 +526,6 @@ function App() {
         style={{
           margin: 0,
           padding: 0,
-          background: currentMode === "dark" ? "#000000" : "#ffffff",
         }}
       >
         <div className="flex" style={{ width: "100vw" }}>
@@ -534,7 +533,7 @@ function App() {
           <div
             className={`w-[100%] overflow-x-hidden ${
               hasSidebarOrNavbar() ? "pt-16" : "pt-0"
-            } ${currentMode === "dark" ? "bg-black" : "bg-white"}`}
+            } ${!themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")}`}
           >
             {hasSidebarOrNavbar() && (
               <div className={`px-0`}>
@@ -546,9 +545,6 @@ function App() {
               <Route path="/attendance" element={<RegisterAttendance />} />
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
-              {/* {User?.role !== 5 && (
-                <Route path="/dashboard" element={<Dashboard />} />
-              )} */}
               {routes.map((route, index) => {
                 return (
                   <Route

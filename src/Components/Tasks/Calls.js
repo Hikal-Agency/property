@@ -15,7 +15,7 @@ const Calls = ({
   callLogsData,
   isLoading,
 }) => {
-  const { darkModeColors, currentMode, primaryColor } = useStateContext();
+  const { darkModeColors, currentMode, primaryColor, themeBgImg } = useStateContext();
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -25,7 +25,7 @@ const Calls = ({
   return (
     <div
       className={`${
-        currentMode === "dark" ? "bg-black" : "bg-white"
+        !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
       } py-3 w-full rounded-md`}
     >
       <div>

@@ -16,7 +16,8 @@ const Dashboard = () => {
     setopenBackDrop, 
     currentMode, 
     setDashboardData, 
-    BACKEND_URL 
+    BACKEND_URL, 
+    themeBgImg
   } =
     useStateContext();
   const [loading, setloading] = useState(true);
@@ -52,12 +53,6 @@ const Dashboard = () => {
           progress: undefined,
           theme: "light",
         });
-        // navigate("/", {
-        //   state: {
-        //     error: "Something Went Wrong! Please Try Again",
-        //     continueURL: location.pathname,
-        //   },
-        // });
       });
   };
 
@@ -78,7 +73,7 @@ const Dashboard = () => {
         ) : (
           <div
             className={`w-full p-4 overflow-x-hidden ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <DashboardPanel />

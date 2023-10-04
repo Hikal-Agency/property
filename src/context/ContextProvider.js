@@ -46,6 +46,7 @@ export const ContextProvider = ({ children }) => {
   const [fbToken, setFBToken] = useState();
   const [permits, setPermits] = useState("");
   const [primaryColor, setPrimaryColor] = useState("default");
+  const [themeBgImg, setThemeBgImg] = useState("");
   const [session, setSession] = useState({
     expiresIn: localStorage.getItem("expires_in"),
     accessToken: localStorage.getItem("access_token"),
@@ -335,6 +336,17 @@ export const ContextProvider = ({ children }) => {
       // }
   }, [primaryColor]);
 
+  useEffect(() => {
+    document.body.style.backgroundImage = `url(${themeBgImg})`;
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundAttachment = "fixed";
+    document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+    document.body.style.backgroundBlendMode =  "overlay";
+
+}, [themeBgImg]);
+
   const withOpacity = (rgb, opacity) => {
     return rgb.replace('rgb', 'rgba').replace(')', `, ${opacity})`);
   }
@@ -422,7 +434,9 @@ export const ContextProvider = ({ children }) => {
         userCredits,
         setUserCredits, 
         primaryColor, 
-        setPrimaryColor
+        setPrimaryColor,
+        themeBgImg, 
+        setThemeBgImg
       }}
     >
       {children}

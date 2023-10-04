@@ -15,7 +15,6 @@ import { BsBuildingGear } from "react-icons/bs";
 import { MdOutlinePayment } from "react-icons/md";
 import { AiTwotoneCalendar } from "react-icons/ai";
 import { MdOutlineCampaign, MdSettings } from "react-icons/md";
-import { MdDiscount } from "react-icons/md";
 
 import { HiTicket, HiDocumentReport, HiUsers, HiSearch } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
@@ -93,7 +92,7 @@ const Sidebarmui = () => {
     setUnreadNotifsCount,
     setNotifIconAnimating,
     getNotifCounts,
-    userCredits,
+    themeBgImg,
     setUserCredits,
     primaryColor,
     setPrimaryColor,
@@ -1372,14 +1371,19 @@ const Sidebarmui = () => {
         />
       )}
 
-      <div
+      <Box 
+      sx={{
+        "& .ps-sidebar-container": {
+          backgroundColor: !themeBgImg ? 'rgb(249, 249, 249, 0.7)' : 'rgb(249, 249, 249, 0.4)'
+        }
+      }}
         style={{ display: "flex", height: "100%" }}
         className={`max-w-[200px] sticky top-0 left-0 `}
       >
-        <Sidebar
+        <Sidebar 
           rootStyles={{
             [`.${sidebarClasses.container}`]: {
-              backgroundColor: currentMode === "dark" ? "#000000" : "#ffffff",
+              backgroundColor: !themeBgImg && (currentMode === "dark" ? "#000000" : "#ffffff"),
             },
           }}
           className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
@@ -1388,9 +1392,9 @@ const Sidebarmui = () => {
             <div
               className="sidebar-top"
               style={{
-                position: "sticky",
-                top: 0,
-                background: currentMode === "dark" ? "black" : "white",
+                position: !themeBgImg && "sticky",
+                top: !themeBgImg && 0,
+                background: !themeBgImg && (currentMode === "dark" ? "black" : "white"),
                 zIndex: 1000,
               }}
             >
@@ -2078,7 +2082,7 @@ const Sidebarmui = () => {
             <></>
           )} */}
         </Sidebar>
-      </div>
+      </Box>
 
       {dealClosedAnimation?.isOpen && (
         <DealClosedAlert

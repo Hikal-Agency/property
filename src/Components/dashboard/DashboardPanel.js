@@ -610,7 +610,7 @@ const DashboardPanel = ({ setloading }) => {
         viewport={{ margin: "-70px" }}
         className={`${
           currentMode === "dark" ? "border-[#1C1C1C]" : "border-[#d8d8d845]"
-        } grid grid-cols-1 pb-3 my-3 border-4 rounded-xl`}
+        } grid grid-cols-1 pb-3 my-3 border-4 rounded-xl backdrop-blur`}
       >
         <Task />
       </motion.div>

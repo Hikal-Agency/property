@@ -78,6 +78,7 @@ const Navbar = () => {
     allRoutes,
     primaryColor,
     setIsCollapsed,
+    themeBgImg
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -232,7 +233,7 @@ const Navbar = () => {
           left: !isCollapsed ? 65 : 200,
           right: 0,
           zIndex: "20",
-          backgroundColor: currentMode === "dark" ? "black" : "white",
+          backgroundColor: !themeBgImg && (currentMode === "dark" ? "black" : "white"),
           boxShadow:
             currentMode !== "dark"
               ? "0 2px 4px rgba(0, 0, 0, 0.1)"
@@ -342,6 +343,7 @@ const Navbar = () => {
           />
 
           {/* THEME  */}
+          {!themeBgImg &&
           <Tooltip
             title={currentMode === "dark" ? "light mode" : "dark mode"}
             arrow
@@ -362,6 +364,7 @@ const Navbar = () => {
             </button>
           </Tooltip>
 
+          }
           {/* PROFILE  */}
           <Tooltip title="Profile" arrow placement="bottom">
             <div
