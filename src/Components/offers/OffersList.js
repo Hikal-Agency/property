@@ -109,7 +109,7 @@ const OffersList = ({
           {offersArr?.map((offer, index) => {
             return (
               <div
-                className={`relative overflow-hidden rounded-md shadow-sm offers-page-${
+                className={`card-hover relative overflow-hidden rounded-md shadow-sm offers-page-${
                   offer?.page
                 } ${
                   currentMode === "dark"

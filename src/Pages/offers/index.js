@@ -87,11 +87,11 @@ const Offers = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full pl-3 ${
+            className={`w-full p-4 ${
               currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
             }`}
           >
-            <div className="w-full flex items-center py-3">
+            <div className="w-full flex items-center pb-3">
               <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
               <h1
                 className={`text-lg font-semibold ${

@@ -234,7 +234,7 @@ const Listings = () => {
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  Secondary Listings{" "}
+                  Listings{" "}
                   <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {total}
                   </span>
@@ -403,8 +403,8 @@ const Listings = () => {
                     select
                   >
                     <MenuItem value={"apartment"}>Apartment</MenuItem>
+                    <MenuItem value={"villa"}>Villa</MenuItem>
                     <MenuItem value={"retail"}>Retail</MenuItem>
-                    <MenuItem value={"villa"}>Villas</MenuItem>
                   </TextField>
                   <TextField
                     id="category"

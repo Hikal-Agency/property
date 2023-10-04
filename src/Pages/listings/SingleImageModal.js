@@ -14,8 +14,12 @@ import {toast} from "react-toastify";
 
 import { useStateContext } from "../../context/ContextProvider";
 
+import {
+  MdClose
+} from "react-icons/md";
+
 const style = {
-  transform: "translate(-50%, -50%)",
+  // transform: "translate(-50%, -50%)",
   boxShadow: 24,
 };
 
@@ -78,7 +82,62 @@ const SingleImageModal = ({ singleImageModal, handleClose }) => {
         timeout: 500,
       }}
     >
-      <div
+      <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black opacity-75"></div>
+        <div className="relative z-10 bg-white">
+          <img src={singleImageModal?.url} alt="overlay" className="h-[90vh]" />
+          <button
+            onClick={handleClose}
+            className="absolute top-4 right-4 text-2xl text-white bg-[#AAAAAA] p-2 rounded-full m-0"
+          >
+            <MdClose />
+          </button>
+          <div className="absolute bottom-4 right-4">
+            <div className="flex items-center">
+              <button
+                onClick={handleClick}
+                className="text-white bg-primary p-2 rounded-full mx-2"
+              >
+                <AiOutlineDownload size={19}/>
+              </button>
+              <button
+                onClick={handleCopyLink}
+                className="text-white bg-primary p-2 rounded-full mx-2"
+              >
+                <GiShare size={19}/>
+              </button>
+              
+              <Menu
+                elevation={0}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                id="demo-customized-menu"
+                MenuListProps={{
+                  "aria-labelledby": "demo-customized-button",
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleCloseMenu}
+              >
+                <MenuItem onClick={handleDownloadSingle} disableRipple>
+                  Download
+                </MenuItem>
+                <MenuItem onClick={handleCloseMenu} disableRipple>
+                  Download All
+                </MenuItem>
+              </Menu>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* <div
         style={style}
         className={`w-[calc(100%-20px)] md:w-[70%]  ${
           currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
@@ -149,7 +208,7 @@ const SingleImageModal = ({ singleImageModal, handleClose }) => {
             alt=""
           />
         </div>
-      </div>
+      </div> */}
     </Modal>
   );
 };
