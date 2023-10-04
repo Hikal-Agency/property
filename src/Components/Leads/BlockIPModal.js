@@ -88,6 +88,20 @@ const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead })
           currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
         } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
       >
+
+      {lead?.is_blocked ? <div className="flex flex-col justify-center items-center">
+          <IoIosAlert size={50} className="text-main-red-color text-2xl" />
+          <h1 className="font-semibold pt-3 text-lg w-[60%] mx-auto text-center">
+            <span
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              }`}
+            >
+              This IP is blocked already!
+            </span>
+          </h1>
+        </div>
+      : <>
         <div className="flex flex-col justify-center items-center">
           <IoIosAlert size={50} className="text-main-red-color text-2xl" />
           <h1 className="font-semibold pt-3 text-lg w-[60%] mx-auto text-center">
@@ -153,6 +167,7 @@ const BlockIPModal = ({ addNote, handleCloseIPModal, blockIPModalOpened, lead })
             </Button>
           </div>
         </form>
+      </>}
       </div>
     </Modal>
   );
