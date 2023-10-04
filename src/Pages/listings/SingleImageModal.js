@@ -6,10 +6,12 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
+import fileDownload from 'js-file-download'; 
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import {GiShare} from "react-icons/gi";
 import {AiOutlineDownload} from "react-icons/ai"
+import axios from "axios";
 import {toast} from "react-toastify";
 
 import { useStateContext } from "../../context/ContextProvider";
@@ -31,20 +33,14 @@ const SingleImageModal = ({ singleImageModal, handleClose }) => {
     setAnchorEl(null);
   };
 
-  async function toDataURL(url) {
-    const blob = await fetch(url).then(res => res.blob());
-    return URL.createObjectURL(blob);
-}
-
-  async function downloadImage(url) {
-    const a = document.createElement("a");
-    a.href = await toDataURL(url);
-    a.download = "download";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-}
-
+  function downloadImage(url) {
+    axios.get(url, {
+      responseType: 'blob',
+      
+    }).then(res => {
+      fileDownload(res.data, "download");
+    });
+  }
   const handleDownloadSingle = () => {
     downloadImage(singleImageModal?.url);
     handleClose();

@@ -39,6 +39,7 @@
     "firebase": "^9.22.2",
     "framer-motion": "^10.12.16",
     "googleapis": "^118.0.0",
+    "js-file-download": "^0.4.12",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.31",
     "libphonenumber-js": "^1.10.28",
