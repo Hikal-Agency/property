@@ -233,8 +233,8 @@ const Sellers = ({
           className={`mb-4 shadow-none`}
           defaultExpanded={true}
           sx={{
-            ".MuiAccordionDetails-root": {
-              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+            ".css-15v22id-MuiAccordionDetails-root": {
+              background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
               shadow: "none",
               border: "none !important",
             }
@@ -277,8 +277,8 @@ const Sellers = ({
                           listing?.page
                         } ${
                           currentMode === "dark"
-                            ? "bg-[#1C1C1C] text-white"
-                            : "bg-[#EEEEEE] text-black"
+                            ? "bg-[#000000] text-white"
+                            : "bg-[#FFFFFF] text-black"
                         } rounded-lg`}
                       >
                         <div className="rounded-md flex flex-col justify-between">
@@ -373,7 +373,7 @@ const Sellers = ({
           defaultExpanded={true}
           sx={{
             ".MuiAccordionDetails-root": {
-              background: currentMode === "dark" ? "#000000" : "#FFFFFF",
+              background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
               shadow: "none",
               border: "none !important",
             }
@@ -410,8 +410,8 @@ const Sellers = ({
                             listing?.page
                           } ${
                             currentMode === "dark"
-                              ? "bg-[#1C1C1C] text-white"
-                              : "bg-[#EEEEEE] text-black"
+                              ? "bg-[#000000] text-white"
+                              : "bg-[#FFFFFF] text-black"
                           } rounded-lg`}
                         >
                           <div className="rounded-md flex flex-col justify-between">
