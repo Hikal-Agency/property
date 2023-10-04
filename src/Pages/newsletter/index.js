@@ -1,4 +1,14 @@
-import { Box, Pagination } from "@mui/material";
+import React, { 
+  useState,
+  useEffect 
+} from "react";
+import { toast } from "react-toastify";
+import { 
+  Box, 
+  Pagination,
+  TextField,
+  Tooltip
+} from "@mui/material";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -7,16 +17,22 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import React, { useState } from "react";
-import { useStateContext } from "../../context/ContextProvider";
-import { AiOutlineTable, AiOutlineAppstore } from "react-icons/ai";
 import { Tab, Tabs } from "@mui/material";
-import { useEffect } from "react";
+import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
-import { Link } from "react-router-dom";
 import GridNewsletter from "../../Components/newsletter/GridNewsletter";
-
 import axios from "../../axoisConfig";
+
+import { 
+  AiOutlineTable, 
+  AiOutlineAppstore 
+} from "react-icons/ai";
+import {
+  RiMailAddLine
+} from "react-icons/ri";
+import {
+  MdClose
+} from "react-icons/md";
 
 const Newsletter = () => {
   const {
@@ -31,6 +47,21 @@ const Newsletter = () => {
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(value === 0 ? 1 : 0);
+  };
+
+  
+  const [emailError, setEmailError] = useState(false);
+  const [newsletterData, setNewsletterData] = useState({
+    email: ""
+  });
+
+  const [showModal, setShowModal] = useState(false);
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   const [searchText, setSearchText] = useState("");
@@ -48,6 +79,122 @@ const Newsletter = () => {
     page: 1,
     pageSize: 15,
   });
+
+  const handleEmail = (e) => {
+    setEmailError(false);
+    const value = e.target.value;
+    setNewsletterData({ ...newsletterData, email: value });
+
+    console.log(value);
+    // const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+    const emailRegex = /^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+    if (emailRegex.test(value)) {
+      setEmailError(false);
+      setNewsletterData({ ...newsletterData, email: value });
+    } else {
+      setEmailError("Kindly enter a valid email.");
+      return;
+    }
+    // setNewsletterData({ ...newsletterData, email: value });
+    // setEmail(value);
+    console.log("Email state: ", newsletterData?.email);
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    setloading(true);
+    if (!newsletterData?.email) {
+      toast.error("Kindly enter the email.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setloading(false);
+
+      return;
+    }
+
+    if (!emailError === false) {
+      toast.error("Kindly enter a valid email.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setloading(false);
+
+      return;
+    }
+
+    const token = localStorage.getItem("auth-token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    console.log("User", user);
+    const NewsLetter = new FormData();
+
+    NewsLetter.append("email", newsletterData?.email);
+    NewsLetter.append("status", "Subscribed");
+
+    console.log("NewsLetter append: ", NewsLetter);
+
+    try {
+      const submitOffer = await axios.post(
+        `${BACKEND_URL}/newsletters`,
+        NewsLetter,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("NewsLetter Added Successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setNewsletterData({
+        email: "",
+        status: "",
+      });
+
+      setloading(false);
+      FetchNews(token);
+    } catch (error) {
+      console.log("Error: ", error);
+      setloading(false);
+      toast.error("Something went wrong! Please Try Again", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const columns = [
     {
@@ -234,185 +381,229 @@ const Newsletter = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full ${
+            className={`w-full p-4 ${
               currentMode === "dark" ? "bg-black" : "bg-white"
             }`}
           >
-            <div className={`w-full `}>
-              <div className="pl-3">
-                <div className="mt-3 flex justify-between items-center">
-                  <h1
-                    className={`text-xl border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-primary font-bold border-primary"
-                    }`}
-                  >
-                    ● Newsletter{" "}
-                    <span className="bg-primary text-white px-2 py-1 rounded-sm my-auto">
-                      <span>{pageState?.total}</span>
-                    </span>
-                  </h1>
-                  <Link
-                    to="/newsletter/addnewsletter"
-                    className="bg-primary text-white px-4 py-2 rounded-sm"
-                  >
-                    Add Newsletter
-                  </Link>
-                </div>
-                <Box
-                  sx={{
-                    ...darkModeColors,
-                    "& .MuiTabs-indicator": {
-                      // height: "100%",
-                      borderRadius: "5px",
-                    },
-                    "& .Mui-selected": {
-                      color: "white !important",
-                      zIndex: "1",
-                    },
-                  }}
-                  className={`w-full rounded-md overflow-hidden ${
-                    currentMode === "dark" ? "bg-black" : "bg-white"
-                  } `}
+            <div className="flex justify-between items-center">
+              <div className="flex items-center pb-3">
+                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                <h1
+                  className={`text-lg font-semibold ${
+                    currentMode === "dark"
+                      ? "text-white"
+                      : "text-black"
+                  }`}
                 >
-                  {/* <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    variant="standard"
-                    className="w-full px-1 m-1"
-                  >
-                    <Tab
-                      icon={
-                        <AiOutlineTable
-                          style={{
-                            color:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          }}
-                        />
-                      }
+                  {/* ●  */}
+                  Newsletter Subscriber {" "}
+                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
+                    {pageState?.total}
+                  </span>
+                </h1>
+              </div>
+
+              {!showModal && (
+                <button 
+                  onClick={openModal}
+                  className="bg-primary text-white px-3 py-2 rounded-md flex items-center"
+                >
+                    <RiMailAddLine size={16} className="mx-2" /> 
+                    Email/Subscriber
+                </button>
+              )}
+
+              {showModal && (
+                <Box sx={darkModeColors}>
+                  <div className="flex items-center">
+                    <TextField
+                      id="email"
+                      type={"email"}
+                      label="Email "
+                      className="w-full"
+                      variant="outlined"
+                      name="email"
+                      size="small"
+                      value={newsletterData?.email}
+                      // onChange={(e) =>
+                      //   setNewsletterData({ ...newsletterData, email: e.target.value })
+                      // }
+                      error={emailError && emailError}
+                      helperText={emailError && emailError}
+                      onChange={handleEmail}
                     />
-                    <Tab
-                      icon={
-                        <AiOutlineAppstore
-                          style={{
-                            color:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                          }}
-                        />
-                      }
+                    <Tooltip title="Add Email" arrow>
+                      <button
+                      onClick={handleClick}
+                        className="text-2xl text-white bg-primary p-2 rounded-full ms-2"
+                      >
+                        <RiMailAddLine size={16} />
+                      </button>
+                    </Tooltip>
+                    <Tooltip title="Cancel" arrow>
+                      <button
+                        onClick={closeModal}
+                        className="text-2xl text-white bg-[#AAAAAA] p-2 rounded-full ms-2"
+                      >
+                        <MdClose size={16} />
+                      </button>
+                    </Tooltip>
+                  </div>
+                </Box>
+              )}
+            </div>
+            <Box
+              sx={{
+                ...darkModeColors,
+                "& .MuiTabs-indicator": {
+                  // height: "100%",
+                  borderRadius: "5px",
+                },
+                "& .Mui-selected": {
+                  color: "white !important",
+                  zIndex: "1",
+                },
+              }}
+              className={`w-full rounded-md overflow-hidden ${
+                currentMode === "dark" ? "bg-black" : "bg-white"
+              } `}
+            >
+              {/* <Tabs
+                value={value}
+                onChange={handleChange}
+                variant="standard"
+                className="w-full px-1 m-1"
+              >
+                <Tab
+                  icon={
+                    <AiOutlineTable
+                      style={{
+                        color:
+                          currentMode === "dark" ? "#ffffff" : "#000000",
+                      }}
                     />
-                  </Tabs> */}
-                  <Tabs value={value} onClick={handleChange} variant="standard">
-                    <Tab
-                      icon={
-                        value === 0 ? (
-                          <AiOutlineAppstore
-                            size={22}
-                            style={{
-                              color:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                            }}
-                          />
-                        ) : (
-                          <AiOutlineTable
-                            size={22}
-                            style={{
-                              color:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                            }}
-                          />
-                        )
-                      }
+                  }
+                />
+                <Tab
+                  icon={
+                    <AiOutlineAppstore
+                      style={{
+                        color:
+                          currentMode === "dark" ? "#ffffff" : "#000000",
+                      }}
                     />
-                  </Tabs>
+                  }
+                />
+              </Tabs> */}
+              <Tabs value={value} onClick={handleChange} variant="standard">
+                <Tab
+                  icon={
+                    <AiOutlineAppstore
+                      size={22}
+                      style={{
+                        color:
+                          currentMode === "dark" ? "#ffffff" : "#000000",
+                      }}
+                    />
+                  }
+                />
+                <Tab
+                  icon={
+                    <AiOutlineTable
+                      size={22}
+                      style={{
+                        color:
+                          currentMode === "dark" ? "#ffffff" : "#000000",
+                      }}
+                    />
+                  }
+                />
+              </Tabs>
+            </Box>
+
+            <div className="mt-3 pb-3">
+              <TabPanel value={value} index={0}>
+                <GridNewsletter
+                  isLoading={loading}
+                  tabValue={tabValue}
+                  setTabValue={setTabValue}
+                  pageState={pageState}
+                  setpageState={setpageState}
+                />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <Box
+                  width={"100%"}
+                  className={`${currentMode}-mode-datatable`}
+                  sx={DataGridStyles}
+                >
+                  <DataGrid
+                  disableDensitySelector
+                    autoHeight
+                    rows={pageState.data}
+                    //   onRowClick={handleRowClick}
+                    rowCount={pageState.total}
+                    loading={pageState.isLoading}
+                    rowsPerPageOptions={[30, 50, 75, 100]}
+                    pagination
+                    paginationMode="server"
+                    page={pageState.page - 1}
+                    pageSize={pageState.pageSize}
+                    onPageChange={(newPage) => {
+                      setpageState((old) => ({
+                        ...old,
+                        page: newPage + 1,
+                      }));
+                    }}
+                    onPageSizeChange={(newPageSize) =>
+                      setpageState((old) => ({
+                        ...old,
+                        pageSize: newPageSize,
+                      }))
+                    }
+                    columns={columns}
+                    components={{
+                      Toolbar: GridToolbar,
+                      Pagination: CustomPagination,
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        printOptions: {
+                          disableToolbarButton: User?.role !== 1,
+                        },
+                        csvOptions: {
+                          disableToolbarButton: User?.role !== 1,
+                        },
+                        showQuickFilter: true,
+                        value: searchText,
+                        onChange: HandleQuicSearch,
+                      },
+                    }} 
+                    sx={{
+                      "& .MuiDataGrid-row": {
+                        justifyContent: "center",
+                      },
+                      "& .MuiDataGrid-cell": {
+                        textAlign: "center",
+                      },
+                      "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                        color:
+                          currentMode === "dark"
+                            ? "white !important"
+                            : "black !important",
+                      },
+                    }}
+                    getRowClassName={(params) =>
+                      params.indexRelativeToCurrentPage % 2 === 0
+                        ? "even"
+                        : "odd"
+                    }
+                  />
                 </Box>
 
-                <div className="mt-3 pb-3">
-                  <TabPanel value={value} index={0}>
-                    <GridNewsletter
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                      pageState={pageState}
-                      setpageState={setpageState}
-                    />
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <Box
-                      width={"100%"}
-                      className={`${currentMode}-mode-datatable`}
-                      sx={DataGridStyles}
-                    >
-                      <DataGrid
-                      disableDensitySelector
-                        autoHeight
-                        rows={pageState.data}
-                        //   onRowClick={handleRowClick}
-                        rowCount={pageState.total}
-                        loading={pageState.isLoading}
-                        rowsPerPageOptions={[30, 50, 75, 100]}
-                        pagination
-                        paginationMode="server"
-                        page={pageState.page - 1}
-                        pageSize={pageState.pageSize}
-                        onPageChange={(newPage) => {
-                          setpageState((old) => ({
-                            ...old,
-                            page: newPage + 1,
-                          }));
-                        }}
-                        onPageSizeChange={(newPageSize) =>
-                          setpageState((old) => ({
-                            ...old,
-                            pageSize: newPageSize,
-                          }))
-                        }
-                        columns={columns}
-                        components={{
-                          Toolbar: GridToolbar,
-                          Pagination: CustomPagination,
-                        }}
-                        componentsProps={{
-                          toolbar: {
-                            printOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            csvOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            showQuickFilter: true,
-                            value: searchText,
-                            onChange: HandleQuicSearch,
-                          },
-                        }} 
-                        sx={{
-                          "& .MuiDataGrid-row": {
-                            justifyContent: "center",
-                          },
-                          "& .MuiDataGrid-cell": {
-                            textAlign: "center",
-                          },
-                          "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                            color:
-                              currentMode === "dark"
-                                ? "white !important"
-                                : "black !important",
-                          },
-                        }}
-                        getRowClassName={(params) =>
-                          params.indexRelativeToCurrentPage % 2 === 0
-                            ? "even"
-                            : "odd"
-                        }
-                      />
-                    </Box>
- 
-                  </TabPanel>
-                </div>
-              </div>
+              </TabPanel>
             </div>
-            {/* <Footer /> */}
+            
           </div>
         )}
       </div>
