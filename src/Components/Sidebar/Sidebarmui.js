@@ -27,7 +27,7 @@ import { BiBlock } from "react-icons/bi";
 import { BiCalendar, BiSupport } from "react-icons/bi";
 import { MdApps } from "react-icons/md";
 import { FiSettings, FiUsers } from "react-icons/fi";
-import { FaRandom } from "react-icons/fa";
+import { FaRandom, FaUserTag, FaUserFriends, FaTags } from "react-icons/fa";
 import { BsPersonFillLock } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 import { GoBrowser } from "react-icons/go";
@@ -996,17 +996,17 @@ const Sidebarmui = () => {
       links: [
         {
           name: "Listings",
-          icon: <MdDiscount />,
+          icon: <FaTags />,
           link: "/secondaryListings",
         },
         {
           name: "Sellers",
-          icon: <MdDiscount />,
+          icon: <FaUserTag />,
           link: "/sellers",
         },
         {
           name: "buyers",
-          icon: <MdDiscount />,
+          icon: <FaUserFriends />,
           link: "/buyers/buyers",
         },
       ],
