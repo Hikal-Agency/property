@@ -24,7 +24,7 @@ import { Textarea } from "@material-tailwind/react";
 const currentDate = dayjs();
 
 const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, formatNum, BACKEND_URL, User } =
+  const { currentMode, darkModeColors, formatNum, BACKEND_URL, User, primaryColor } =
     useStateContext();
   const [validFromDate, setValidFromDate] = useState("");
   const [validFromDateValue, setValidFromDateValue] = useState({});
@@ -200,7 +200,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
             type={"text"}
             label="Offer Title"
             className="w-full"
-            style={{ marginBottom: "10px" }}
+            style={{ marginBottom: "15px" }}
             variant="outlined"
             name="offerTitle"
             size="medium"
@@ -210,15 +210,16 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
             }
             required
           />
-          <Textarea
+          <TextField
             type="text"
-            placeholder="Offer Description"
-            rows={4} 
+            label="Offer Description"
+            multiline
+            minRows={4} 
             className="w-full"
             name="offerDescription"
-            style={{ marginBottom: "10px" }}
+            style={{ marginBottom: "15px" }}
             variant="outlined"
-            size="lg"
+            size="medium"
             value={offerData.offerDescription}
             required
             onChange={(e) =>
@@ -231,7 +232,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
               <DatePicker
                 label="Offer valid from"
                 className="w-full"
-                style={{ marginBottom: "20px" }}
+                style={{ marginBottom: "15px" }}
                 value={validFromDateValue}
                 views={["year", "month", "day"]}
                 minDate={currentDate.toDate()}
@@ -259,7 +260,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
               <DatePicker
                 label="Offer valid till"
                 className="w-full"
-                style={{ marginBottom: "20px" }}
+                style={{ marginBottom: "15px" }}
                 value={validToDateValue}
                 views={["year", "month", "day"]}
                 minDate={currentDate.toDate()}
@@ -358,7 +359,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
               <Button
                 variant="contained"
                 size="medium"
-                className="bg-primary w-full text-white rounded-lg py-3 font-semibold my-3"
+                className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
                 style={{
                   color: "#ffffff",
                   border: "1px solid white",
@@ -380,7 +381,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
         style={{
           color: "white"
         }}
-        className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3"
+        className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
         onClick={handleClick}
         disabled={loading ? true : false}
       >

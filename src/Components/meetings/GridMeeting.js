@@ -176,7 +176,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                           className={`${
                             currentMode === "dark"
                               ? "bg-[#1c1c1c] text-white"
-                              : "bg-gray-200 text-black"
+                              : "bg-[#EEEEEE] text-black"
                           } p-4 rounded-md `}
                         >
                           <div className="space-y-1 overflow-hidden">
