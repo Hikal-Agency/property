@@ -85,8 +85,10 @@ const ListingUsers = () => {
       setbtnloading(true);
     }
 
-    const listingsUrl = `${BACKEND_URL}/listings?page=${page}`;
-    const leadsUrl = `${BACKEND_URL}/coldLeads?page=${page}&coldCall=0`;
+    // const listingsUrl = `${BACKEND_URL}/listings?page=${page}`;
+    const listingsUrl = `${BACKEND_URL}/listings?is_fill=1&page=${page}`;
+    // const leadsUrl = `${BACKEND_URL}/coldLeads?page=${page}&coldCall=0`;
+    const leadsUrl = `${BACKEND_URL}/listings?is_fill=2&page=${page}`;
 
     try {
       const [listingsResponse, leadsResponse] = await Promise.all([
@@ -108,14 +110,13 @@ const ListingUsers = () => {
       console.log("Leads: ", leadsResponse.data);
 
       // Filter listings where lead_id is null
-      const allListings = (listingsResponse.data.data.data || [])?.filter(
-        (listing) => listing.lead_id === null
+      const allListings = (listingsResponse.data.data.data
+        //  || [])?.filter(
+        // (listing) => listing.lead_id === null
       );
 
       // Filter leads where is_seller is 1
-      const allLeads = (leadsResponse.data.coldLeads.data || [])?.filter(
-        (lead) => lead.is_seller === 1
-      );
+      const allLeads = (leadsResponse.data.data.data);
 
       //   total sellers
       setTotal(allListings.length + allLeads.length);

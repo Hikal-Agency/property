@@ -58,8 +58,8 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
               
               }}
             key={index}
-            className={`card-hover backdrop-blur w-[350px] flex flex-col justify-between ${
-              currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-[#d8d8d845] text-black" // ${ currentMode === "dark" ? "bg- text-white " : "bg-" } 
+            className={`card-hover w-[350px] flex flex-col justify-between ${
+              currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black" // ${ currentMode === "dark" ? "bg- text-white " : "bg-" } 
             } rounded-xl my-2 `}
           >
             <div className="px-5 py-5 space-y-3">

@@ -338,7 +338,7 @@ const Sellers = ({
                                 </span>{" "}
                               </p>
                             </div>
-                            <div className="my-2 grid grid-cols-8 gap-3">
+                            {/* <div className="my-2 grid grid-cols-8 gap-3">
                               <HiOutlineOfficeBuilding
                                 className="col-span-1 text-[#AAAAAA]"
                                 size={20}
@@ -350,7 +350,7 @@ const Sellers = ({
                                     : countForSpecificCombination}
                                 </span>
                               </p>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>
@@ -372,7 +372,7 @@ const Sellers = ({
           className={`mb-4 shadow-none`} 
           defaultExpanded={true}
           sx={{
-            ".css-15v22id-MuiAccordionDetails-root": {
+            ".MuiAccordionDetails-root": {
               background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
               shadow: "none",
               border: "none !important",
@@ -438,7 +438,7 @@ const Sellers = ({
                             
                             <div className="p-4">
                               <h1 className="text-lg font-bold text-primary">
-                                {listing?.leadName || "---"}
+                                {listing?.seller_name || "---"}
                               </h1>
 
                               <div className="my-2 grid grid-cols-8 gap-3">
@@ -448,9 +448,9 @@ const Sellers = ({
                                 />
                                 <p className="col-span-7 text-start">
                                   <span>
-                                    {listing?.leadContact === "null"
+                                    {listing?.seller_contact === "null"
                                       ? "-"
-                                      : listing?.leadContact}
+                                      : listing?.seller_contact}
                                   </span>{" "}
                                 </p>
                               </div>
@@ -461,25 +461,25 @@ const Sellers = ({
                                 />
                                 <p className="col-span-7 text-start">
                                   <span>
-                                    {listing?.leadEmail === "null"
+                                    {listing?.seller_email === "null"
                                       ? "-"
-                                      : listing?.leadEmail}
+                                      : listing?.seller_email}
                                   </span>
                                 </p>
                               </div>
-                              <div className="my-2 grid grid-cols-8 gap-3">
+                              {/* <div className="my-2 grid grid-cols-8 gap-3">
                                 <HiOutlineOfficeBuilding
                                   className="col-span-1 text-[#AAAAAA]"
                                   size={20}
                                 />
                                 <p className="col-span-7 text-start">
                                   <span>
-                                    {listingsCount === "null"
+                                    {listing?.lead_id === "null"
                                       ? "-"
-                                      : listingsCount}
+                                      : listing?.lead_id}
                                   </span>
                                 </p>
-                              </div>
+                              </div> */}
 
                               {/* {hasPermission("delete_listing") && (
                                   <IconButton

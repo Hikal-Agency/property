@@ -29,6 +29,7 @@ import { Link } from "react-router-dom";
 import UserTable from "../../Components/Users/UserTable";
 import AddUserModel from "../../Components/addUser/AddUserModel";
 import { FaBan, FaUnlock } from "react-icons/fa";
+import { HiOutlineBan } from "react-icons/hi";
 import DeleteUser from "../../Components/Users/DeleteUser";
 import { BsPersonFillLock, BsSearch } from "react-icons/bs";
 import UpdateUserPermissions from "../../Components/addUser/UpdateUserPermissions";
@@ -482,9 +483,9 @@ const Users = () => {
                     }`}
                   >
                     {currentMode === "dark" ? (
-                      <FaBan style={{ color: "white" }} size={16} />
+                      <HiOutlineBan style={{ color: "white" }} size={16} />
                     ) : (
-                      <FaBan style={{ color: "black" }} size={16} />
+                      <HiOutlineBan style={{ color: "black" }} size={16} />
                     )}
                   </Button>
                 ) : (
@@ -572,225 +573,224 @@ const Users = () => {
     <>
       <div className="flex min-h-screen">
         <div
-          className={`w-full ${
+          className={`w-full p-4 ${
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <div className={`w-full `}>
-            <div className="pl-3">
-              <div className="my-5 mb-10">
-                {model && (
-                  <AddUserModel
-                    handleOpenModel={HandleOpenModel}
-                    addUserModelClose={HandleModelClose}
-                  />
-                )}
-                <div className="mt-3 flex justify-between items-center">
-                  <h1
-                    className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-primary font-bold border-primary"
-                    }`}
-                  >
-                    ● Users{" "}
-                    <span className="bg-primary text-white px-2 py-1 rounded-sm my-auto">
-                      <span>{pageState?.total}</span>
-                    </span>
-                  </h1>
-                  {hasPermission("users_create") ? (
-                    <Button
-                      className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
-                      onClick={HandleOpenModel}
-                    >
-                      <span className="flex justify-between items-center ">
-                        <AiOutlinePlus style={{ marginRight: "0.5em" }} />
-                        Add User
-                      </span>
-                    </Button>
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <div className="flex items-center justify-between">
-                  {value === 0 && (
-                    <div className="mx-5 mt-6">
-                      <Box sx={darkModeColors} >
-                        <TextField
-                          placeholder="Search.."
-                          ref={searchRef}
-                          sx={{
-                            "& input": {
-                              borderBottom: "2px solid #ffffff6e",
-                            },
-                          }}
-                          variant="standard"
-                          onKeyUp={handleKeyUp}
-                          onInput={handleSearch}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <IconButton sx={{ padding: 1 }}>
-                                  <BsSearch className={`text-[#AAAAAA]`} size={18} />
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      </Box>
-                    </div>
-                  )}
-                  {value === 1 && <div className="mx-5"></div>}
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiTabs-indicator": {
-                        // height: "100%",
-                        borderRadius: "5px",
-                      },
-                      "& .Mui-selected": {
-                        color: "white !important",
-                        zIndex: "1",
-                      },
-                    }}
-                    className={`mx-5 rounded-md overflow-hidden ${
-                      currentMode === "dark" ? "bg-black" : "bg-white"
-                    } `}
-                  >
-                    <Tabs
-                      value={value}
-                      onClick={handleChange}
+          <div className="mb-10">
+            {model && (
+              <AddUserModel
+                handleOpenModel={HandleOpenModel}
+                addUserModelClose={HandleModelClose}
+              />
+            )}
+            <div className="flex justify-between items-center">
+              <div className="flex items-center pb-3">
+                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                <h1
+                  className={`text-lg font-semibold ${
+                    currentMode === "dark"
+                      ? "text-white"
+                      : "text-black"
+                  }`}
+                >
+                  Users {" "}
+                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
+                    {pageState?.total}
+                  </span>
+                </h1>
+              </div>
+              {hasPermission("users_create") ? (
+                <Button
+                  className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
+                  onClick={HandleOpenModel}
+                >
+                  <span className="flex justify-between items-center ">
+                    <AiOutlinePlus style={{ marginRight: "0.5em" }} />
+                    Add User
+                  </span>
+                </Button>
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="flex items-center justify-between">
+              {value === 0 && (
+                <div className="mx-5 mt-6">
+                  <Box sx={darkModeColors} >
+                    <TextField
+                      placeholder="Search.."
+                      ref={searchRef}
+                      sx={{
+                        "& input": {
+                          borderBottom: "2px solid #ffffff6e",
+                        },
+                      }}
                       variant="standard"
-                    >
-                      <Tab
-                        icon={
-                          <AiOutlineTable
-                            size={20}
-                            style={{
-                              color:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                            }}
-                          />
-                        }
-                      />
-                      <Tab
-                        icon={
-                          <AiOutlineAppstore
-                            size={20}
-                            style={{
-                              color:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                            }}
-                          />
-                        }
-                      />
-                    </Tabs>
+                      onKeyUp={handleKeyUp}
+                      onInput={handleSearch}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <IconButton sx={{ padding: 1 }}>
+                              <BsSearch className={`text-[#AAAAAA]`} size={18} />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
                   </Box>
                 </div>
-                <div className="mt-3 pb-3">
-                  <TabPanel value={value} index={0}>
-                    <Box
-                      className={`${currentMode}-mode-datatable`}
-                      // width={"100%"}
-                      sx={{ ...DataGridStyles, marginBottom: "5%" }}
-                    >
-                      <DataGrid
-                        disableDensitySelector
-                        autoHeight
-                        disableSelectionOnClick
-                        rows={pageState.data}
-                        columns={columns}
-                        rowCount={pageState.total}
-                        loading={pageState.isLoading}
-                        rowsPerPageOptions={[30, 50, 75, 100]}
-                        pagination
-                        // width="auto"
-                        getRowHeight={() => "auto"}
-                        paginationMode="server"
-                        page={pageState.page - 1}
-                        pageSize={pageState.pageSize}
-                        componentsProps={{
-                          toolbar: {
-                            printOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            csvOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            showQuickFilter: true,
-                          },
+              )}
+              {value === 1 && <div className="mx-5"></div>}
+              <Box
+                sx={{
+                  ...darkModeColors,
+                  "& .MuiTabs-indicator": {
+                    // height: "100%",
+                    borderRadius: "5px",
+                  },
+                  "& .Mui-selected": {
+                    color: "white !important",
+                    zIndex: "1",
+                  },
+                }}
+                className={`mx-5 rounded-md overflow-hidden ${
+                  currentMode === "dark" ? "bg-black" : "bg-white"
+                } `}
+              >
+                <Tabs
+                  value={value}
+                  onClick={handleChange}
+                  variant="standard"
+                >
+                  <Tab
+                    icon={
+                      <AiOutlineTable
+                        size={20}
+                        style={{
+                          color:
+                            currentMode === "dark" ? "#ffffff" : "#000000",
                         }}
-                        onPageChange={(newPage) => {
-                          setpageState((old) => ({
-                            ...old,
-                            page: newPage + 1,
-                          }));
-                        }}
-                        onPageSizeChange={(newPageSize) =>
-                          setpageState((old) => ({
-                            ...old,
-                            pageSize: newPageSize,
-                          }))
-                        }
-                        sx={{
-                          boxShadow: 2,
-                          "& .MuiDataGrid-cell:hover": {
-                            cursor: "pointer",
-                          },
-                          "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                            color:
-                              currentMode === "dark"
-                                ? "white !important"
-                                : "black !important",
-                          },
-                        }}
-                        getRowClassName={(params) =>
-                          params.indexRelativeToCurrentPage % 2 === 0
-                            ? "even"
-                            : "odd"
-                        }
                       />
-                    </Box>
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <UserTable
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                      user={user}
-                    />
-                  </TabPanel>
-                </div>
-                {openDeleteModel && (
-                  <DeleteUser
-                    UserModelOpen={handleDelete}
-                    handleUserModelClose={handleDeleteModelClose}
-                    UserData={userID}
-                    UserStatus={userStatus}
-                    UserName={username}
-                    fetchUser={fetchUsers}
+                    }
                   />
-                )}
-                {openPermissionModel && (
-                  <UpdateUserPermissions
-                    UserModelOpen={HandlePermissionModel}
-                    handleUserModelClose={HandlePermissionClose}
-                    UserData={userID}
-                    UserName={username}
-                    userRole={role}
-                    fetchUser={fetchUsers}
+                  <Tab
+                    icon={
+                      <AiOutlineAppstore
+                        size={20}
+                        style={{
+                          color:
+                            currentMode === "dark" ? "#ffffff" : "#000000",
+                        }}
+                      />
+                    }
                   />
-                )}
-
-                    {shareCreditsModal && (
-                  <ShareCreditsModal
-                    shareCreditsModal={shareCreditsModal}
-                    handleClose={() => setShareCreditsModal({open: false, data: {}})}
-                  />
-                )}
-              </div>
+                </Tabs>
+              </Box>
             </div>
+            <div className="mt-3 pb-3">
+              <TabPanel value={value} index={0}>
+                <Box
+                  className={`${currentMode}-mode-datatable`}
+                  // width={"100%"}
+                  sx={{ ...DataGridStyles, marginBottom: "5%" }}
+                >
+                  <DataGrid
+                    disableDensitySelector
+                    autoHeight
+                    disableSelectionOnClick
+                    rows={pageState.data}
+                    columns={columns}
+                    rowCount={pageState.total}
+                    loading={pageState.isLoading}
+                    rowsPerPageOptions={[30, 50, 75, 100]}
+                    pagination
+                    // width="auto"
+                    getRowHeight={() => "auto"}
+                    paginationMode="server"
+                    page={pageState.page - 1}
+                    pageSize={pageState.pageSize}
+                    componentsProps={{
+                      toolbar: {
+                        printOptions: {
+                          disableToolbarButton: User?.role !== 1,
+                        },
+                        csvOptions: {
+                          disableToolbarButton: User?.role !== 1,
+                        },
+                        showQuickFilter: true,
+                      },
+                    }}
+                    onPageChange={(newPage) => {
+                      setpageState((old) => ({
+                        ...old,
+                        page: newPage + 1,
+                      }));
+                    }}
+                    onPageSizeChange={(newPageSize) =>
+                      setpageState((old) => ({
+                        ...old,
+                        pageSize: newPageSize,
+                      }))
+                    }
+                    sx={{
+                      boxShadow: 2,
+                      "& .MuiDataGrid-cell:hover": {
+                        cursor: "pointer",
+                      },
+                      "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                        color:
+                          currentMode === "dark"
+                            ? "white !important"
+                            : "black !important",
+                      },
+                    }}
+                    getRowClassName={(params) =>
+                      params.indexRelativeToCurrentPage % 2 === 0
+                        ? "even"
+                        : "odd"
+                    }
+                  />
+                </Box>
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <UserTable
+                  tabValue={tabValue}
+                  setTabValue={setTabValue}
+                  user={user}
+                />
+              </TabPanel>
+            </div>
+            {openDeleteModel && (
+              <DeleteUser
+                UserModelOpen={handleDelete}
+                handleUserModelClose={handleDeleteModelClose}
+                UserData={userID}
+                UserStatus={userStatus}
+                UserName={username}
+                fetchUser={fetchUsers}
+              />
+            )}
+            {openPermissionModel && (
+              <UpdateUserPermissions
+                UserModelOpen={HandlePermissionModel}
+                handleUserModelClose={HandlePermissionClose}
+                UserData={userID}
+                UserName={username}
+                userRole={role}
+                fetchUser={fetchUsers}
+              />
+            )}
+
+                {shareCreditsModal && (
+              <ShareCreditsModal
+                shareCreditsModal={shareCreditsModal}
+                handleClose={() => setShareCreditsModal({open: false, data: {}})}
+              />
+            )}
           </div>
-          {/* <Footer /> */}
+          
         </div>
       </div>
     </>
