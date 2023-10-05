@@ -10,23 +10,39 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { BsTrash } from "react-icons/bs";
-import { IoIosAlert } from "react-icons/io";
-import { BsBuildingGear } from "react-icons/bs";
-
 import usePermission from "../../utils/usePermission";
 
 import axios from "../../axoisConfig";
 import BlockIPModal from "./BlockIPModal";
-import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
-import { BiBlock } from "react-icons/bi";
 import { Link } from "react-router-dom";
 
-import { BsShuffle } from "react-icons/bs";
 import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
 import moment from "moment";
 import AddListingModal from "./listings/AddListingModal";
+import { datetimeAMPM, datetimeLong } from "../_elements/formatDateTime";
+
+import { IoIosAlert } from "react-icons/io";
+import { 
+  MdClose,
+} from "react-icons/md";
+import { 
+  BiBlock,
+  BiBed 
+} from "react-icons/bi";
+import { 
+  BsShuffle,
+  BsTelephone,
+  BsEnvelopeAt,
+  BsType,
+  BsHouseGear,
+  BsBuildings,
+  BsTrash,
+  BsBuildingGear,
+  BsPersonPlus,
+  BsBookmarkFill,
+  BsPersonGear
+} from "react-icons/bs";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -247,7 +263,7 @@ const SingleLead = ({
   };
 
   const style = {
-    transform: "translate(-50%, -50%)",
+    transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
 
@@ -423,375 +439,410 @@ const SingleLead = ({
           timeout: 500,
         }}
       >
-        <div
-          style={style}
-          className={`w-[calc(100%-20px)] md:w-[900px]  ${
-            currentMode === "dark"
-              ? "bg-[#1c1c1c] text-white"
-              : "bg-white text-black"
-          } absolute top-1/2 left-1/2 px-10 py-5 rounded-md border border-[#AAAAAA]`}
-        >
-          <IconButton
-            sx={{
-              position: "absolute",
-              right: 12,
-              top: 10,
-              color: (theme) => theme.palette.grey[500],
-            }}
-            onClick={handleLeadModelClose}
+        <div className="w-[100vw] h-[100vh] flex items-start justify-end">
+          <button onClick={handleLeadModelClose}
+            className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
           >
-            <IoMdClose size={18} />
-          </IconButton>
-          {/* {console.log("lead data is")}
-          {console.log(LeadData)} */}
-          <h1 className={` text-center font-semibold text-lg pb-5`}>
-            Lead details
-          </h1>
-          {loading ? (
-            <div className="flex justify-center">
-              <CircularProgress />
-            </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-5 md:grid-cols-5 sm:grid-cols-1 gap-5">
-                <div className="col-span-3 space-y-2">
-                  <div className="flex">
-                    <h6 className="mr-3">Lead name:</h6>
-                    <h6 className="font-semibold">{LeadData?.leadName}</h6>
-                  </div>
-                  <div className="flex">
-                    <h6 className="mr-3">Contact details:</h6>
-                    <h6>{contact}</h6>
-                    <h6>{LeadData?.LeadEmail}</h6>
-                  </div>
-                  <div className="flex">
-                    <h6 className="mr-3">Preferred language:</h6>
-                    <h6>{LeadData?.language}</h6>
-                  </div>
-                </div>
-                {/* FEEDBACK  */}
-                <div className="col-span-2 space-y-2 text-right">
-                  <div className="mb-5 space-x-3">
-                    <span className="py-2 px-3 bg-primary text-white rounded-md">
-                      {LeadData?.feedback ?? "No Feedback"}
-                    </span>
-                  </div>
-                  <p
-                    className={` text-sm ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  >
-                    Lead added on {LeadData?.creationDate}
-                  </p>
-                  <p
-                    className={` text-sm ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  >
-                    Last edited on{" "}
-                    {LeadData?.lastEdited === "" ? "-" : LeadData?.lastEdited}
-                  </p>
-                </div>
+            <MdClose size={18} color={"white"} className="hover:border hover:border-white hover:rounded-full" />
+          </button>
+
+          <div
+            style={style}
+            className={` ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-[#FFFFFF] text-black"}
+             p-4 h-[100vh] w-[80vw] rounded-l-md overflow-y-scroll
+            `}
+          >
+            {loading ? (
+              <div className="flex justify-center">
+                <CircularProgress />
               </div>
-              <div className="bg-primary h-0.5 w-full my-7"></div>
+            ) : (
+              <>
+                <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5">
+                  <div className="w-full flex items-center pb-3 ">
+                    <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                    <h1
+                      className={`text-lg font-semibold ${
+                        currentMode === "dark"
+                          ? "text-white"
+                          : "text-black"
+                      }`}
+                    >
+                      {LeadData?.leadName}
+                    </h1>
+                  </div>
 
-              <div
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                } grid grid-cols-4 md:grid-cols-4 sm:grid-cols-2 gap-5 `}
-              >
-                <div className="grid justify-center space-y-3 text-center">
-                  <h6 className="font-bold">Project</h6>
-                  <h6 className="font-semibold">
-                    {LeadData?.project === "null" ? "-" : LeadData?.project}
-                  </h6>
-                </div>
-                <div className="grid justify-center space-y-3 text-center">
-                  <h6 className="font-bold">Enquiry about</h6>
-                  <h6 className="font-semibold">
-                    {LeadData?.enquiryType === "null"
-                      ? "-"
-                      : LeadData?.enquiryType}
-                  </h6>
-                </div>
-                <div className="grid justify-center space-y-3 text-center">
-                  <h6 className="font-bold">Property type</h6>
-                  <h6 className="font-semibold">
-                    {LeadData?.leadType === "null" ? "-" : LeadData?.leadType}
-                  </h6>
-                </div>
-                <div className="grid justify-center space-y-3 text-center">
-                  <h6 className="font-bold">Purpose</h6>
-                  <h6 className="font-semibold">
-                    {LeadData?.leadFor === "null" ? "-" : LeadData?.leadFor}
-                  </h6>
-                </div>
-              </div>
-
-              <div className="bg-primary h-0.5 w-full mt-6 mb-4"></div>
-              <div className="flex mb-6 justify-end items-center mt-0 w-full">
-                {/* CALL  */}
-                <p
-                  style={{ cursor: "pointer" }}
-                  className={`${
-                    currentMode === "dark"
-                      ? "text-[#FFFFFF] bg-[#262626]"
-                      : "text-[#1C1C1C] bg-[#EEEEEE]"
-                  } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
-                >
-                  <Tooltip title="Call" arrow>
-                    <CallButton phone={LeadData?.leadContact} />
-                  </Tooltip>
-                </p>
-
-                {/* EMAIL  */}
-                {LeadData?.leadEmail === "" ||
-                LeadData?.leadEmail === "null" ||
-                LeadData?.leadEmail === "undefined" ||
-                LeadData?.leadEmail === "-" ||
-                LeadData?.leadEmail === null ||
-                LeadData?.leadEmail === undefined ? (
-                  <></>
-                ) : (
-                  <p
-                    style={{ cursor: "pointer" }}
-                    className={`${
-                      currentMode === "dark"
-                        ? "text-[#FFFFFF] bg-[#262626]"
-                        : "text-[#1C1C1C] bg-[#EEEEEE]"
-                    } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
-                  >
-                    <Tooltip title="Send Mail" arrow>
-                      <EmailButton email={LeadData?.leadEmail} />
-                    </Tooltip>
-                  </p>
-                )}
-
-                {/* EDIT  */}
-                <p
-                  style={{ cursor: "pointer" }}
-                  className={`${
-                    currentMode === "dark"
-                      ? "text-[#FFFFFF] bg-[#262626]"
-                      : "text-[#1C1C1C] bg-[#EEEEEE]"
-                  } hover:bg-[#019a9a] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                >
-                  <Tooltip title="Update Details" arrow>
-                    <button onClick={() => HandleEditFunc(LeadData)}>
-                      <VscEdit size={16} />
-                    </button>
-                  </Tooltip>
-                </p>
-
-                {/* DELETE  */}
-                {hasPermission("lead_delete") && !isBookedDeal && (
-                  <p
-                    style={{ cursor: "pointer" }}
-                    disabled={deleteloading ? true : false}
-                    className={`${
-                      currentMode === "dark"
-                        ? "text-[#FFFFFF] bg-[#262626]"
-                        : "text-[#1C1C1C] bg-[#EEEEEE]"
-                    } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                  >
-                    <Tooltip title="Delete Lead" arrow>
-                      <button
-                        onClick={() => {
-                          setLeadToDelete(LeadData?.leadId);
-                          setDeleteModelOpen(true);
-                          if (setBulkDeleteClicked) setBulkDeleteClicked(false);
-                        }}
-                      >
-                        <BsTrash
-                          className="deleteLeadBtn"
-                          size={18}
-                          style={{ color: "inherit" }}
-                        />
-                      </button>
-                    </Tooltip>
-                  </p>
-                )}
-
-                {/* listing */}
-                <p
-                  style={{ cursor: "pointer" }}
-                  disabled={deleteloading ? true : false}
-                  className={`${
-                    currentMode === "dark"
-                      ? "text-[#FFFFFF] bg-[#262626]"
-                      : "text-[#1C1C1C] bg-[#EEEEEE]"
-                  } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                >
-                  <Tooltip title="Add Listing" arrow>
-                    <button onClick={handleOpenListingModal}>
-                      <BsBuildingGear
-                        className="listingbtn"
-                        size={18}
-                        style={{ color: "inherit" }}
-                      />
-                    </button>
-                  </Tooltip>
-                </p>
-
-                {/* RESHUFFLED REQUEST  */}
-                {User?.role === 1 ||
-                LeadData?.transferRequest === 1 ||
-                LeadData?.transferRequest === 1 ? (
-                  <></>
-                ) : hasPermission("reshuffle_button") ? (
-                  <p
-                    style={{ cursor: "pointer" }}
-                    className={`${
-                      currentMode === "dark"
-                        ? "text-[#FFFFFF] bg-[#262626]"
-                        : "text-[#1C1C1C] bg-[#EEEEEE]"
-                    } hover:bg-purple-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
-                  >
-                    <Tooltip title="Request for Reshuffle" arrow>
-                      {/* <button onClick={(e) => handleRequest(e, LeadData)}> */}
-                      <button onClick={(e) => setOpen([true, e, LeadData])}>
-                        <BsShuffle size={16} />
-                      </button>
-                    </Tooltip>
-                  </p>
-                ) : null}
-
-                {/* IP BLOCKING */}
-                {LeadData?.ip && (
-                  <div className="flex items-center mr-3 justify-end">
+                  <div className="w-full flex justify-end items-center">
+                    {/* CALL  */}
                     <p
-                      style={{ cursor: "pointer", display: "inline-block" }}
+                      style={{ cursor: "pointer" }}
                       className={`${
                         currentMode === "dark"
-                          ? "bg-transparent text-white rounded-md shadow-none"
-                          : "bg-transparent text-black rounded-md shadow-none"
-                      }`}
-                      onClick={() => HandleBlockIP(LeadData)}
+                          ? "text-[#FFFFFF] bg-[#262626]"
+                          : "text-[#1C1C1C] bg-[#EEEEEE]"
+                      } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                     >
-                      <Tooltip title="Block IP" arrow>
-                        <IconButton
+                      <Tooltip title="Call" arrow>
+                        <CallButton phone={LeadData?.leadContact} />
+                      </Tooltip>
+                    </p>
+
+                    {/* EMAIL  */}
+                    {LeadData?.leadEmail === "" ||
+                    LeadData?.leadEmail === "null" ||
+                    LeadData?.leadEmail === "undefined" ||
+                    LeadData?.leadEmail === "-" ||
+                    LeadData?.leadEmail === null ||
+                    LeadData?.leadEmail === undefined ? (
+                      <></>
+                    ) : (
+                      <p
+                        style={{ cursor: "pointer" }}
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-[#FFFFFF] bg-[#262626]"
+                            : "text-[#1C1C1C] bg-[#EEEEEE]"
+                        } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                      >
+                        <Tooltip title="Send Mail" arrow>
+                          <EmailButton email={LeadData?.leadEmail} />
+                        </Tooltip>
+                      </p>
+                    )}
+
+                    {/* EDIT  */}
+                    <p
+                      style={{ cursor: "pointer" }}
+                      className={`${
+                        currentMode === "dark"
+                          ? "text-[#FFFFFF] bg-[#262626]"
+                          : "text-[#1C1C1C] bg-[#EEEEEE]"
+                      } hover:bg-[#019a9a] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                    >
+                      <Tooltip title="Update Details" arrow>
+                        <button onClick={() => HandleEditFunc(LeadData)}>
+                          <VscEdit size={16} />
+                        </button>
+                      </Tooltip>
+                    </p>
+
+                    {/* DELETE  */}
+                    {hasPermission("lead_delete") && !isBookedDeal && (
+                      <p
+                        style={{ cursor: "pointer" }}
+                        disabled={deleteloading ? true : false}
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-[#FFFFFF] bg-[#262626]"
+                            : "text-[#1C1C1C] bg-[#EEEEEE]"
+                        } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                      >
+                        <Tooltip title="Delete Lead" arrow>
+                          <button
+                            onClick={() => {
+                              setLeadToDelete(LeadData?.leadId);
+                              setDeleteModelOpen(true);
+                              if (setBulkDeleteClicked) setBulkDeleteClicked(false);
+                            }}
+                          >
+                            <BsTrash
+                              className="deleteLeadBtn"
+                              size={18}
+                              style={{ color: "inherit" }}
+                            />
+                          </button>
+                        </Tooltip>
+                      </p>
+                    )}
+
+                    {/* listing */}
+                    <p
+                      style={{ cursor: "pointer" }}
+                      disabled={deleteloading ? true : false}
+                      className={`${
+                        currentMode === "dark"
+                          ? "text-[#FFFFFF] bg-[#262626]"
+                          : "text-[#1C1C1C] bg-[#EEEEEE]"
+                      } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                    >
+                      <Tooltip title="Add Listing" arrow>
+                        <button onClick={handleOpenListingModal}>
+                          <BsBuildingGear
+                            className="listingbtn"
+                            size={18}
+                            style={{ color: "inherit" }}
+                          />
+                        </button>
+                      </Tooltip>
+                    </p>
+
+                    {/* RESHUFFLED REQUEST  */}
+                    {User?.role === 1 ||
+                    LeadData?.transferRequest === 1 ||
+                    LeadData?.transferRequest === 1 ? (
+                      <></>
+                    ) : hasPermission("reshuffle_button") ? (
+                      <p
+                        style={{ cursor: "pointer" }}
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-[#FFFFFF] bg-[#262626]"
+                            : "text-[#1C1C1C] bg-[#EEEEEE]"
+                        } hover:bg-purple-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                      >
+                        <Tooltip title="Request for Reshuffle" arrow>
+                          {/* <button onClick={(e) => handleRequest(e, LeadData)}> */}
+                          <button onClick={(e) => setOpen([true, e, LeadData])}>
+                            <BsShuffle size={16} />
+                          </button>
+                        </Tooltip>
+                      </p>
+                    ) : null}
+
+                    {/* IP BLOCKING */}
+                    {LeadData?.ip && (
+                      <p
+                        style={{ cursor: "pointer" }}
+                        disabled={deleteloading ? true : false}
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-[#FFFFFF] bg-[#262626]"
+                            : "text-[#1C1C1C] bg-[#EEEEEE]"
+                        } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                      >
+                        <Tooltip title="Block IP" arrow>
+                          <button onClick={() => HandleBlockIP(LeadData)}>
+                            <BiBlock
+                              className="listingbtn"
+                              size={18}
+                              style={{ color: "inherit" }}
+                            />
+                          </button>
+                        </Tooltip>
+                      </p>
+                    )}
+                    <Link
+                      sx={{ my: 0, w: "100%" }}
+                      to={`/lead/${LeadData?.leadId || LeadData?.id}`}
+                      target="_blank"
+                      className="mx-2"
+                    >
+                      <Button
+                        fullWidth
+                        sx={{ my: 0 }}
+                        variant="contained"
+                        style={{
+                          backgroundColor: primaryColor,
+                        }}
+                        size="medium"
+                      >
+                        View Lead Details
+                      </Button>
+
+                      {/* <Tooltip title="View Lead Dettails" arrow>
+                        <Button
+                          className="rounded-full"
                           sx={{
-                            padding: 0,
                             "& svg": {
-                              color: `${primaryColor} !important`,
+                              color:
+                                currentMode === "dark"
+                                  ? "white !important"
+                                  : "black !important",
                             },
                           }}
                         >
-                          <BiBlock size={19} />
-                        </IconButton>
-                      </Tooltip>
-                    </p>
+                          <BsPersonVcard size={18}/>
+                        </Button>
+                      </Tooltip> */}
+                    </Link>
                   </div>
-                )}
-                <Link
-                  sx={{ my: 0, w: "100%" }}
-                  to={`/lead/${LeadData?.leadId || LeadData?.id}`}
-                  target="_blank"
-                >
-                  <Button
-                    fullWidth
-                    sx={{ my: 0 }}
-                    variant="contained"
-                    style={{
-                      backgroundColor: primaryColor,
-                    }}
-                    size="medium"
-                  >
-                    View Lead Details
-                  </Button>
+                </div>
 
-                  {/* <Tooltip title="View Lead Dettails" arrow>
-                    <Button
-                      className="rounded-full"
-                      sx={{
-                        "& svg": {
-                          color:
-                            currentMode === "dark"
-                              ? "white !important"
-                              : "black !important",
-                        },
-                      }}
-                    >
-                      <BsPersonVcard size={18}/>
-                    </Button>
-                  </Tooltip> */}
-                </Link>
-              </div>
-              <div className={`rounded-md mt-2`}>
-                {lastNote && (
-                  <div
-                    className={`${
-                      currentMode === "dark"
-                        ? "text-white bg-black border-gray-800"
-                        : "text-black bg-[#EEEEEE] border-gray-300"
-                    } border-2 flex items-center my-2 w-full rounded-md`}
+                <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-5 p-5">
+                  {/* USER DETAILS  */}
+                  <div className={`p-4 rounded-md card-hover
+                    ${currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black"}`}
                   >
-                    <p className="px-2 py-2 mx-1 text-center text-sm">
-                      {lastNoteDate}
-                    </p>
-                    <div className="bg-primary h-10 w-0.5"></div>
-                    <div className="flex-grow">
-                      <p
-                        style={{
-                          fontFamily: isArabic(lastNote)
-                            ? "Noto Kufi Arabic"
-                            : "inherit",
-                        }}
-                        className="px-2 py-2 mx-1"
-                      >
-                        {lastNote}
-                      </p>
+                    <h1 className="text-center uppercase font-semibold">User details</h1>
+                    <hr className="my-4" />
+                    <div className="w-full">
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
+                        <BsTelephone size={16} className="text-primary" />
+                        <div className="col-span-7">{contact}</div>
+                      </div>
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
+                        <BsEnvelopeAt size={16} className="text-primary" />
+                        <div className="col-span-7">
+                          {LeadData?.leadEmail === "" ||
+                          LeadData?.leadEmail === "null" ||
+                          LeadData?.leadEmail === "undefined" ||
+                          LeadData?.leadEmail === "-" ||
+                          LeadData?.leadEmail === null ||
+                          LeadData?.leadEmail === undefined 
+                          ? "-"
+                          : LeadData?.leadEmail}
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
+                        <BsType size={16} className="text-primary" />
+                        <div className="col-span-7">{LeadData?.language}{" "}Language</div>
+                      </div>
                     </div>
-                    <div className="bg-primary h-10 w-0.5"></div>
-                    <p className="px-2 py-2 mx-1 text-center text-sm">
-                      {lastNoteAddedBy}
-                    </p>
                   </div>
-                )}
-                <form
-                  className="mt-5"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    AddNote();
-                  }}
-                >
-                  <TextField
-                    sx={{
-                      ...darkModeColors,
-                      "& input": {
-                        fontFamily: "Noto Kufi Arabic",
-                      },
-                    }}
-                    id="note"
-                    type={"text"}
-                    label="Your Note"
-                    className="w-full"
-                    variant="outlined"
-                    size="small"
-                    required
-                    value={AddNoteTxt}
-                    onChange={(e) => setAddNoteTxt(e.target.value)}
-                  />
 
-                  <button
-                    disabled={addNoteloading ? true : false}
-                    type="submit"
-                    className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary group relative flex w-full justify-center rounded-md border border-transparent p-1 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
+                  {/* PROJECT DETAILS  */}
+                  <div className={`p-4 rounded-md card-hover
+                    ${currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black"}`}
                   >
-                    {addNoteloading ? (
-                      <CircularProgress
-                        sx={{ color: "white" }}
-                        size={25}
-                        className="text-white"
-                      />
-                    ) : (
-                      <span>Add Note</span>
-                    )}
-                  </button>
-                </form>
-              </div>
-            </>
-          )}
+                    <h1 className="text-center uppercase font-semibold">Enquiry details</h1>
+                    <hr className="my-4" />
+                    <div className="w-full">
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
+                        <BsBuildings size={16} className="text-primary" />
+                        <div className="col-span-7">
+                          {LeadData?.project === "null" ? "-" : LeadData?.project}
+                          {" "}
+                          {LeadData?.leadType === "null" ? "-" : LeadData?.leadType}
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
+                        <BiBed size={16} className="text-primary" />
+                        <div className="col-span-7">
+                          {LeadData?.enquiryType === "null"
+                          ? "-"
+                          : LeadData?.enquiryType}
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
+                        <BsHouseGear size={16} className="text-primary" />
+                        <div className="col-span-7">
+                          {LeadData?.leadFor === "null" ? "-" : `For ${LeadData?.leadFor}`}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* STATUS  */}
+                  <div className={`sm:col-span-1 md:col-span-2 p-4 rounded-md card-hover text-center
+                    ${currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black"}`}
+                  >
+                    <h1 className="text-center uppercase flex items-center justify-center">
+                      <BsBookmarkFill size={16} className="mx-2 text-primary" />
+                      Feedback
+                      <span className="mx-2  font-semibold">{LeadData?.feedback ?? "---"}</span>
+                    </h1>
+                    <hr className="my-4" />
+                    <div className="w-full">
+                      <div class="flex items-center gap-5 my-4 md:px-5">
+                        <BsPersonPlus size={16} className="text-primary" />
+                        <div className="text-start">
+                          Lead added on {datetimeLong(LeadData?.creationDate)}
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-5 my-4 md:px-5">
+                        <BsPersonGear size={16} className="text-primary" />
+                        <div className="text-start">
+                          Last updated on {LeadData?.lastEdited === "" ? "-" : datetimeLong(LeadData?.lastEdited)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* <div className="p-5">
+                  <div className="bg-primary h-0.5 w-full my-1"></div>
+                </div> */}
+
+                {/* LAST NOTE  */}
+                <div className="p-5">
+                  <div className={`w-full p-4 rounded-md card-hover text-center
+                      ${currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black"}`}
+                    >
+                    <div className="w-full my-4">
+                      {lastNote ? (
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-white bg-black border-gray-800"
+                              : "text-black bg-[#EEEEEE] border-gray-300"
+                          } border-2 flex items-center my-2 gap-5 w-full rounded-md`}
+                        >
+                          <div className="p-3 text-center text-sm">
+                            <div className="mb-1">
+                              {lastNoteAddedBy}
+                            </div>
+                            <div className="mt-1 text-[#AAAAAA]">
+                              {lastNoteDate}
+                            </div>
+                          </div>
+                          <div className="bg-primary h-10 w-0.5"></div>
+                          <div className="p-3 flex-grow text-start">
+                            <p
+                              style={{
+                                fontFamily: isArabic(lastNote)
+                                  ? "Noto Kufi Arabic"
+                                  : "inherit",
+                              }}
+                            >
+                              {lastNote}
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="italic text-xs text-primary text-center">
+                          No notes available
+                        </div>
+                      )}
+                    </div>
+                    <div className="my-4 w-full">
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          AddNote();
+                        }}
+                      >
+                        <TextField
+                          sx={{
+                            ...darkModeColors,
+                            "& input": {
+                              fontFamily: "Noto Kufi Arabic",
+                            },
+                          }}
+                          id="note"
+                          type={"text"}
+                          label="Note"
+                          className="w-full"
+                          variant="outlined"
+                          size="small"
+                          multiline
+                          minRows={2}
+                          required
+                          value={AddNoteTxt}
+                          onChange={(e) => setAddNoteTxt(e.target.value)}
+                        />
+
+                        <button
+                          disabled={addNoteloading ? true : false}
+                          type="submit"
+                          className="mt-4 disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary group relative flex w-full justify-center rounded-md border border-transparent p-1 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
+                        >
+                          {addNoteloading ? (
+                            <CircularProgress
+                              sx={{ color: "white" }}
+                              size={25}
+                              className="text-white"
+                            />
+                          ) : (
+                            <span>Add New Note</span>
+                          )}
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </Modal>
       <BlockIPModal
