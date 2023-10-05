@@ -246,4 +246,19 @@
 .hide-scrollbar::-webkit-scrollbar-thumb:hover {
     background-color: transparent;
 }
+
+/* BLUR BACKGROUND */
+.blur-bg-light {
+    background: rgba(255,255,255,0.4);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    /* border: 1px solid rgba(255,255,255,0.25); */
+}
+
+.blur-bg-dark {
+    background: rgba(28,28,28,0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    /* border: 1px solid rgba(255,255,255,0.25); */
+}
   

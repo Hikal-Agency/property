@@ -285,26 +285,36 @@ const Newsletter = () => {
   }, [pageState.page]);
 
   const DataGridStyles = {
+    ".applied-filter": {
+      width: "max-content",
+    },
     "& .MuiButtonBase-root": {
-      color: "white",
+      marginTop: "5px",
+      color: currentMode === "dark" ? "white" : "black",
     },
     // TOOLBAR
     "& .MuiDataGrid-toolbarContainer": {
-      backgroundColor: currentMode === "dark" ? "#212121" : "#000000",
-      paddingTop: "10px",
-      paddingBottom: "10px",
-      paddingLeft: "20px",
-      paddingRight: "20px",
-    },
-
-    "& .MuiInputBase-root": {
-      color: "white",
+      backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+      padding: "10px 5px",
+      gap: "15px",
+      color: currentMode === "dark" ? "white" : "black",
     },
     "& .MuiInputBase-root::before": {
-      color: "white",
+      color: currentMode === "dark" ? "white" : "black",
     },
     "& .MuiInputBase-root:hover::before": {
-      color: "white",
+      color: currentMode === "dark" ? "white" : "black",
+    },
+
+    // DATATABLE BORDER - DARK
+    "& .MuiDataGrid-root": { //css-h0wcjk-
+      border: "none !important",
+      boxShadow: "none !important",
+    },
+    // DATATABLE BORDER - LIGHT
+    "& .MuiDataGrid-root": { //css-hgxfug-
+      border: "none !important",
+      boxShadow: "none !important",
     },
 
     // Background color of header of data grid
@@ -317,7 +327,7 @@ const Newsletter = () => {
     },
     // background color of main table content
     "& .MuiDataGrid-virtualScroller": {
-      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
+      backgroundColor: currentMode === "dark" ? "#000000" : "#FFFFFF",
       color: currentMode === "dark" ? "white" : "black",
     },
     // changing rows hover color
@@ -327,7 +337,7 @@ const Newsletter = () => {
     },
     // changing row colors
     " .even": {
-      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
+      backgroundColor: currentMode === "dark" ? "#000000" : "#ffffff",
     },
     // changing rows right border
     // "& .MuiDataGrid-cell": {
@@ -335,20 +345,23 @@ const Newsletter = () => {
     // },
     // BACKGROUND COLOR OF FOOTER
     "& .MuiDataGrid-footerContainer": {
-      borderTop: "none",
-      backgroundColor: primaryColor,
-      color: "white",
+      borderTop: `2px solid ${primaryColor}`,
+      backgroundColor: currentMode === "dark" ? "black" : "white",
+      color: currentMode === "dark" ? "white" : "black",
     },
     "& .MuiTablePagination-selectLabel": {
       color: "white",
     },
-    "& .MuiTablePagination-select ": { color: "white" },
-    "& .MuiSvgIcon-fontSizeMedium ": { color: "white" },
-    "& .MuiTablePagination-displayedRows": { color: "white" },
+    "& .MuiTablePagination-select ": { color: currentMode === "dark" ? "white" : "black" },
+    "& .MuiSvgIcon-fontSizeMedium ": { color: currentMode === "dark" ? "white" : "black" },
+    "& .MuiTablePagination-displayedRows": { color: currentMode === "dark" ? "white" : "black" },
     // For inner data styling
     "& .MuiDataGrid-virtualScrollerRenderZone": {
       // backgroundColor: "red",
     },
+    // "& .css-v4u5dn-MuiInputBase-root-MuiInput-root": {
+    //   color: "#AAAAAA",
+    // }
   };
 
   function CustomPagination() {
@@ -361,9 +374,9 @@ const Newsletter = () => {
         <Pagination
           sx={{
             "& .Mui-selected": {
-              backgroundColor: "white !important",
-              color: "black !important",
-              borderRadius: "5px !important",
+              backgroundColor: `${primaryColor} !important`,
+              color: "white !important",
+              borderRadius: "50px !important",
             },
           }}
           count={pageCount}

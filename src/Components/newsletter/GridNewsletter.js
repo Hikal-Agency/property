@@ -3,6 +3,13 @@ import React, { useEffect } from "react";
 import Loader from "../Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
+
+import {
+  BsFillEnvelopeCheckFill,
+  BsFillEnvelopeXFill
+} from "react-icons/bs";
+
+
 const GridNewsletter = ({ pageState, setpageState }) => {
   console.log("Newsletter state: ", pageState);
   const [loading, setLoading] = useState(false);
@@ -46,29 +53,25 @@ const GridNewsletter = ({ pageState, setpageState }) => {
                         currentMode === "dark"
                           ? "bg-[#1c1c1c] text-white"
                           : "bg-[#EEEEEE] text-black"
-                      } p-3 rounded-md `}
+                      } p-4 rounded-md `}
                     >
-                      <div className="mt-2 space-y-1 overflow-hidden">
-                        <h1 className="font-bold ">
-                          <b>Email: </b> {item?.email}
-                        </h1>
+                      <div className="grid grid-cols-8 gap-2 items-center">
+                        <div className="col-span-7">
+                          <h1 className="col-span-7 font-bold mb-2">
+                            {item?.email}
+                          </h1>
+                          <p className="text-xs text-[#AAAAAA]">
+                            Subscribed on {item?.creationDate}
+                          </p>
+                        </div>
 
-                        <p className="text-sm">
-                          <b>Added At: </b> {item?.creationDate}
-                        </p>
-                        <hr />
-                        <p className="text-sm font-semibold text-primary ">
-                          <b>Status: </b>{" "}
+                        <div className="w-full flex justify-center">
                           {item?.status === "Subscribed" ? (
-                            <span className="text-green-600">
-                              Subscribed
-                            </span>
+                            <BsFillEnvelopeCheckFill size={20} className="text-green-600" />
                           ) : (
-                            <span className="text-red-600">
-                              UnSubscribed
-                            </span>
+                            <BsFillEnvelopeXFill size={20} className="text-red-600" />
                           )}
-                        </p>
+                        </div>
                       </div>
                     </div>
                   );

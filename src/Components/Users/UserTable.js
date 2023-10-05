@@ -15,6 +15,7 @@ import DeleteUser from "./DeleteUser";
 import { MdOutlineCall, MdOutlinePermContactCalendar } from "react-icons/md";
 import { TfiEmail } from "react-icons/tfi";
 import { AiOutlineEdit } from "react-icons/ai";
+import { HiOutlineBan } from "react-icons/hi";
 
 // const UserTable = ({ user }) => {
 //   const [loading, setloading] = useState(false);
@@ -395,15 +396,16 @@ const UserTable = ({}) => {
                           </div>
 
                           <div className={`col-span-2 px-2 rounded-md`}>
-                            <div className={`${currentMode === "dark" ? "bg-[#333333]" : "bg-primary"} flex flex-col space-y-3 justify-center p-1 rounded-b-full`}>
+                            <div className={`${currentMode === "dark" ? "bg-[#333333]" : "bg-transparent"} flex flex-col space-y-3 justify-center p-1 rounded-b-full`}>
                               {/* VIEW  */}
                               <div className="w-full flex justify-center my-1">
                                 <Tooltip title="View User Details" arrow>
-                                  <Button
+                                  <button
                                     onClick={() => handleModel(item?.id)}
+                                    className="rounded-full bg-primary p-2"
                                   >
                                     <MdOutlinePermContactCalendar size={18} className={`text-white hover:text-black`} />
-                                  </Button>
+                                  </button>
                                 </Tooltip>
                               </div>
 
@@ -412,6 +414,7 @@ const UserTable = ({}) => {
                                 <Tooltip title="Edit User Details" arrow>
                                   <Link
                                     to={`/updateuser/${item?.id}`}
+                                    className="rounded-full bg-primary p-2"
                                   >
                                     <AiOutlineEdit size={18} className={`text-white hover:text-black`} />
                                   </Link>
@@ -424,7 +427,7 @@ const UserTable = ({}) => {
                                   <>
                                     {item?.status === 1 ? (
                                       <Tooltip title="Deactivate User" arrow>
-                                        <Button
+                                        <button
                                           onClick={() =>
                                             handleDelete(
                                               item?.id,
@@ -432,13 +435,14 @@ const UserTable = ({}) => {
                                               item?.userName
                                             )
                                           }
+                                          className="rounded-full bg-primary p-2"
                                         >
-                                          <FaBan size={14} className={`text-white hover:text-black`} />
-                                        </Button>
+                                          <HiOutlineBan size={18} className={`text-white hover:text-black`} />
+                                        </button>
                                       </Tooltip>
                                     ) : (
                                       <Tooltip title="Reactivate User" arrow>
-                                        <Button
+                                        <button
                                           onClick={() =>
                                             handleDelete(
                                               item?.id,
@@ -446,9 +450,10 @@ const UserTable = ({}) => {
                                               item?.userName
                                             )
                                           }
+                                          className="rounded-full bg-primary p-2"
                                         >
-                                          <FaUnlock size={14} className={`text-white hover:text-black`} />
-                                        </Button>
+                                          <FaUnlock size={18} className={`text-white hover:text-black`} />
+                                        </button>
                                       </Tooltip>
                                     )}
                                   </>

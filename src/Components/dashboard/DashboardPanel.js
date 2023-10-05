@@ -207,10 +207,10 @@ const DashboardPanel = ({ setloading }) => {
           {/* {DashboardData?.designation === "Head" && ( */}
           <Link
             to={"/freshleads/all"}
-            className={`card-hover backdrop-blur ${
+            className={`card-hover  ${
               currentMode === "dark"
-                ? "bg-[#1c1c1c] text-white "
-                : "bg-[#d8d8d845] text-main-dark-bg"
+                ? "blur-bg-dark text-white "
+                : "blur-bg-light text-main-dark-bg"
             }  h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
             onClick={() => setopenBackDrop(true)}
           >
@@ -257,10 +257,10 @@ const DashboardPanel = ({ setloading }) => {
                 <Link
                   key={index}
                   to={item?.link}
-                  className={`card-hover backdrop-blur ${
+                  className={`card-hover ${
                     currentMode === "dark"
-                      ? "bg-[#1c1c1c] text-white "
-                      : "bg-[#d8d8d845] text-main-dark-bg"
+                      ? "blur-bg-dark text-white "
+                      : "blur-bg-light text-main-dark-bg"
                   } h-auto w-full p-5 rounded-xl grid content-center`}
                 >
                   <p
@@ -288,10 +288,10 @@ const DashboardPanel = ({ setloading }) => {
                   <Link
                     to={item?.link}
                     key={index}
-                    className={`card-hover backdrop-blur ${
+                    className={`card-hover ${
                       currentMode === "dark"
-                        ? "bg-[#1c1c1c] text-white "
-                        : "bg-[#d8d8d845] text-main-dark-bg"
+                        ? "blur-bg-light text-white "
+                        : "blur-bg-dark text-main-dark-bg"
                     } h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
@@ -323,10 +323,10 @@ const DashboardPanel = ({ setloading }) => {
                   <Link
                     to={item.link}
                     key={index}
-                    className={`card-hover backdrop-blur ${
+                    className={`card-hover ${
                       currentMode === "dark"
-                        ? "bg-[#1c1c1c] text-white "
-                        : "bg-[#d8d8d845] text-main-dark-bg"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg"
                     }  h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
@@ -362,10 +362,10 @@ const DashboardPanel = ({ setloading }) => {
                 initial={{ x: 120 }}
                 transition={{ duration: 0.7 }}
                 animate={{ x: [-20, 30, 0] }}
-                className={`card-hover backdrop-blur ${
+                className={`card-hover ${
                   currentMode === "dark"
-                    ? "bg-[#1c1c1c] text-white "
-                    : "bg-[#d8d8d845]"
+                    ? "blur-bg-dark text-white "
+                    : "blur-bg-light text-black"
                 } h-full rounded-xl p-5 cursor-pointer w-full`}
               >
                 <div className="justify-between items-center w-full">
@@ -377,10 +377,10 @@ const DashboardPanel = ({ setloading }) => {
           ) : User?.role === 3 ? (
             <>
               <div
-                className={`card-hover backdrop-blur ${
+                className={`card-hover ${
                   currentMode === "dark"
-                    ? "bg-[#1c1c1c] text-white "
-                    : "bg-[#d8d8d845]"
+                    ? "blur-bg-dark text-white "
+                    : "blur-bg-light"
                 } h-full w-full rounded-xl p-5 cursor-pointer`}
               >
                 <div className="justify-between items-center">
@@ -393,10 +393,10 @@ const DashboardPanel = ({ setloading }) => {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
                 <div
-                  className={`card-hover backdrop-blur ${
+                  className={`card-hover ${
                     currentMode === "dark"
-                      ? "bg-[#1c1c1c] text-white "
-                      : "bg-[#d8d8d845]"
+                      ? "blur-bg-dark text-white "
+                      : "blur-bg-light"
                   } h-full w-full rounded-xl p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
@@ -408,10 +408,10 @@ const DashboardPanel = ({ setloading }) => {
                   </div>
                 </div>
                 <div
-                  className={`card-hover backdrop-blur ${
+                  className={`card-hover ${
                     currentMode === "dark"
-                      ? "bg-[#1c1c1c] text-white "
-                      : "bg-[#d8d8d845]"
+                      ? "blur-bg-dark text-white "
+                      : "blur-bg-light"
                   } h-full w-full rounded-xl p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
@@ -432,10 +432,10 @@ const DashboardPanel = ({ setloading }) => {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-1">
             <div
-              className={`card-hover backdrop-blur ${
+              className={`card-hover ${
                 currentMode === "dark"
-                  ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#d8d8d845]"
+                  ? "blur-bg-dark text-white"
+                  : "blur-bg-light text-black"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -445,10 +445,10 @@ const DashboardPanel = ({ setloading }) => {
             </div>
 
             <div
-              className={`card-hover backdrop-blur ${
+              className={`card-hover ${
                 currentMode === "dark"
-                  ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#d8d8d845]"
+                  ? "blur-bg-dark text-white "
+                  : "blur-bg-light text-black"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer `}
             >
               <div className="justify-between items-center">
@@ -466,10 +466,10 @@ const DashboardPanel = ({ setloading }) => {
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-1">
             <div
-              className={`card-hover backdrop-blur ${
+              className={`card-hover ${
                 currentMode === "dark"
-                  ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#d8d8d845]"
+                  ? "blur-bg-dark text-white "
+                  : "blur-bg-light text-black"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -484,10 +484,10 @@ const DashboardPanel = ({ setloading }) => {
               </div>
             </div>
             <div
-              className={`card-hover backdrop-blur ${
+              className={`card-hover ${
                 currentMode === "dark"
-                  ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#d8d8d845]"
+                  ? "blur-bg-dark text-white "
+                  : "blur-bg-light text-black"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -501,10 +501,10 @@ const DashboardPanel = ({ setloading }) => {
             </div>
 
             <div
-              className={`card-hover backdrop-blur ${
+              className={`card-hover ${
                 currentMode === "dark"
-                  ? "bg-[#1c1c1c] text-white "
-                  : "bg-[#d8d8d845]"
+                  ? "blur-bg-dark text-white "
+                  : "blur-bg-light text-black"
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
@@ -528,7 +528,7 @@ const DashboardPanel = ({ setloading }) => {
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
           className={`
-          card-hover bg-primary backdrop-blur h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
+          card-hover bg-primary h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white `}>
@@ -545,7 +545,7 @@ const DashboardPanel = ({ setloading }) => {
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
         
-          className={`bg-primary card-hover backdrop-blur h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
+          className={`bg-primary card-hover h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white`}>
@@ -609,8 +609,8 @@ const DashboardPanel = ({ setloading }) => {
         whileInView={{ opacity: 1 }}
         viewport={{ margin: "-70px" }}
         className={`${
-          currentMode === "dark" ? "border-[#1C1C1C]" : "border-[#d8d8d845]"
-        } grid grid-cols-1 pb-3 my-3 border-4 rounded-xl backdrop-blur`}
+          currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"
+        } grid grid-cols-1 pb-3 my-3 rounded-md`}
       >
         <Task />
       </motion.div>
