@@ -38,15 +38,19 @@ const CreateTemplateModal = ({
     try {
       setbtnloading(true);
       const token = localStorage.getItem("auth-token");
+      const data = {
+        name: templateTitle,
+        body: templateBody,
+        type: templateType,
+        status: "active",
+      };
+
+      if(imageURL) {
+        data["image_url"] = imageURL;
+      }
       await axios.post(
         `${BACKEND_URL}/templates`,
-        JSON.stringify({
-          name: templateTitle,
-          body: templateBody,
-          type: templateType,
-          image_url: imageURL,
-          status: "active",
-        }),
+        JSON.stringify(data),
         {
           headers: {
             "Content-Type": "application/json",
