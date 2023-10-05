@@ -249,7 +249,7 @@
 
 /* BLUR BACKGROUND */
 .blur-bg-light {
-    background: rgba(255,255,255,0.4);
+    background: rgba(238,238,238,0.5);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     /* border: 1px solid rgba(255,255,255,0.25); */

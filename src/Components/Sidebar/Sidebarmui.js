@@ -998,11 +998,11 @@ const Sidebarmui = () => {
           icon: <FaTags />,
           link: "/secondaryListings",
         },
-        {
-          name: "Sellers",
-          icon: <FaUserTag />,
-          link: "/sellers",
-        },
+        // {
+        //   name: "Sellers",
+        //   icon: <FaUserTag />,
+        //   link: "/sellers",
+        // },
         {
           name: "buyers",
           icon: <FaUserFriends />,
@@ -1480,7 +1480,7 @@ const Sidebarmui = () => {
                           onClick={() =>
                             setAnimateProfilePic(!animateProfilePic)
                           }
-                          className={`absolute rounded-md z-[999] view-image hidden top-0 left-0 w-full font-bold h-full flex-col justify-center items-center`}
+                          className={`absolute rounded-md z-[11111] view-image hidden top-0 left-0 w-full font-bold h-full flex-col justify-center items-center`}
                         >
                           <p
                             className={`${

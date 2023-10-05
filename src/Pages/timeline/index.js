@@ -15,7 +15,8 @@ import {
   BsTelephone,
   BsBuildings,
   BsBookmarkCheckFill,
-  BsClockFill
+  BsClockFill,
+  BsFlagFill
 } from "react-icons/bs";
 import {
   FaUserCheck
@@ -31,11 +32,12 @@ import {
   IoMdClose
 } from "react-icons/io";
 import {
-  MdOutlineEditNote
+  MdNoteAlt,
+  MdClose
 } from "react-icons/md";
 
 const style = {
-  transform: "translate(-50%, -50%)",
+  transform: "translate(0%, 0%)",
   boxShadow: 24,
 };
 
@@ -141,468 +143,519 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
         BackdropProps={{
           timeout: 500,
         }}
+        
       >
-        <div
-          style={style}
-          className={`w-[calc(100%-20px)] h-[80%] overflow-y-scroll md:w-[900px]  ${
-            currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-white"
-          } absolute top-1/2 left-1/2 px-10 py-5 rounded-md`}
-        >
-          <IconButton
-            sx={{
-              position: "absolute",
-              right: 12,
-              top: 10,
-              color: (theme) => theme.palette.grey[500],
-            }}
-            onClick={handleCloseTimelineModel}
+        <div className="w-[100vw] h-[100vh] flex items-start justify-end">
+          <button onClick={handleCloseTimelineModel}
+            className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
           >
-            <IoMdClose size={18} />
-          </IconButton>
-          <div className={`w-full`} >
-            {error404 ? (
-              <Error />
-            ) : (
-              <div className="mt-5 md:mt-2">
-                <div className="w-full flex items-center py-3">
-                  <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-                  <h1
-                    className={`text-lg font-semibold ${
-                      currentMode === "dark"
-                        ? "text-white"
-                        : "text-black"
-                    }`}
-                  >
-                    Timeline
-                  </h1>
-                </div>
-                <div>
-                  <div
-                    className={`${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    } p-5 mx-auto`}
-                  >
-                    <div className="grid sm:grid-cols-12">
-                      <div className="col-span-12 md:col-span-3">
-                        {loading ? (
-                          <div className="flex items-center justify-center w-full">
-                            <h1 className="font-semibold text-lg">Loading</h1>
-                          </div>
-                        ) : (
-                          <>
-                            <h3 className="text-lg font-semibold uppercase mb-5"
-                              style={{
-                                fontFamily: isArabic(leadDetails.leadName)
-                                  ? "Noto Kufi Arabic"
-                                  : "inherit",
-                              }}
-                            >
-                              {leadDetails.leadName}
-                            </h3>
-                            <div className="w-[80%] bg-primary h-0.5 mb-5"></div>
-                            <div className="text-center sm:text-left my-3 sm:before:mx-0">
-                              {/* CONTACT NUMBER  */}
-                              <div className="flex mb-5">
-                                <BsTelephone size={16} className="mr-3" />
-                                {leadDetails.leadContact !== "" ? (
-                                  <p>{leadDetails.leadContact}</p>
-                                ) : (
-                                  <></>
-                                )}
-                              </div>
-                              {/* EMAIL ADDRESS  */}
-                              {leadDetails.leadEmail !== "" && leadDetails.leadEmail != "null" ? (
-                                <div className="flex mb-5">
-                                  <GoMail size={16} className="mr-3" />
-                                  {leadDetails.leadEmail}
-                                </div>
-                              ) : (
-                                <></>
-                              )}
-                              {/* PROJECT  */}
-                              <div className="flex mb-5">
-                                <BsBuildings size={16} className="mr-3" />
-                                <div>
-                                  {leadDetails.project === "null" ? "-" : leadDetails.project} {" "}
-                                  {leadDetails.leadType === "null" ? "-" : leadDetails.leadType} {" "}
-                                </div>
-                              </div>
-                              {/* ENQUIRY  */}
-                              <div className="flex mb-5">
-                                <BiBed size={16} className="mr-3" />
-                                <div>
-                                  {leadDetails.enquiryType === "null" ? "-" : leadDetails.enquiryType} {" "}
-                                  {leadDetails.leadFor === "null" ? "-" : leadDetails.leadFor} {" "}
-                                </div>
-                              </div>
+            {/* <IconButton
+              onClick={handleCloseTimelineModel}
+            > */}
+              <MdClose size={18} color={"white"} className="hover:border hover:border-white hover:rounded-full" />
+            {/* </IconButton> */}
+          </button>
 
-                              <div className="w-[80%] bg-primary h-0.5 mb-5"></div>
+          <div
+            style={style}
+            // className={`w-[calc(100%-20px)] h-[80%] overflow-y-scroll md:w-[900px]  ${
+            //   currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-white"
+            // } absolute top-1/2 left-1/2 px-10 py-5 rounded-md`}
+            className={` ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-[#FFFFFF] text-black"}
+             p-4 h-[100vh] w-[80vw] rounded-l-md overflow-y-scroll
+            `}
+          >
+            <div className={`w-full`} >
+              {error404 ? (
+                <Error />
+              ) : (
+                <div className="">
+                  <div className="w-full flex items-center pb-3 ">
+                    <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                    <h1
+                      className={`text-lg font-semibold ${
+                        currentMode === "dark"
+                          ? "text-white"
+                          : "text-black"
+                      }`}
+                    >
+                      Timeline
+                    </h1>
+                  </div>
 
-                              {/* CREATION DATE  */}
-                              <div className="text-sm mb-5">
-                                <p>Lead added on:</p>
-                                <p>{leadDetails.creationDate}</p>
-                              </div>
-                              <div className="text-sm mb-5">
-                                <p>Last edited on:</p>
-                                <p>{leadDetails.lastEdited}</p>
-                              </div>
-                            </div>
-                          </>
-                        )}
-                      </div>
-
-                      <div className="relative col-span-12 space-y-6 md:col-span-9">
-                        <div className="flex flex-col md:grid grid-cols-12 w-full">
+                  <div>
+                    <div
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } p-4 `}
+                    >
+                      <div className="grid sm:grid-cols-12 gap-1">
+                        <div className="col-span-12 md:col-span-4 w-full">
                           {loading ? (
                             <div className="flex items-center justify-center w-full">
                               <h1 className="font-semibold text-lg">Loading</h1>
                             </div>
                           ) : (
-                            groupLeadsByDate(leadsCycle).map(
-                              (timeline, index) => {
-                                return (
-                                  <>
-                                    <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                      <div className="h-full w-6 flex items-center justify-center">
-                                        <div
-                                          className={`h-full border-b-[${primaryColor}] rounded-md px-2 py-1 text-sm`}
-                                          style={{
-                                            width: "min-content",
-                                            whiteSpace: "nowrap",
-                                          }}
-                                        >
-                                          {timeline.date}
+                            <>
+                              <h3 className="text-lg font-bold uppercase mb-5"
+                                style={{
+                                  fontFamily: isArabic(leadDetails.leadName)
+                                    ? "Noto Kufi Arabic"
+                                    : "inherit",
+                                }}
+                              >
+                                {leadDetails.leadName}
+                              </h3>
+                              <div className="w-[80%] bg-primary h-0.5 my-5"></div>
+                              <div className="text-center sm:text-left sm:before:mx-0">
+                                {/* CONTACT NUMBER  */}
+                                <div className="grid grid-cols-8 gap-3 my-3">
+                                  <BsTelephone size={16} />
+                                  <div className="col-span-7">
+                                    {leadDetails.leadContact !== "" ? (
+                                      <p>{leadDetails.leadContact}</p>
+                                    ) : (
+                                      <></>
+                                    )}
+                                  </div>
+                                </div>
+                                {/* EMAIL ADDRESS  */}
+                                {leadDetails.leadEmail !== "" && leadDetails.leadEmail != "null" ? (
+                                  <div className="grid grid-cols-8 gap-3 my-3">
+                                    <GoMail size={16} />
+                                    <div className="col-span-7">
+                                      {leadDetails.leadEmail}
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <></>
+                                )}
+                                {/* PROJECT  */}
+                                <div className="grid grid-cols-8 gap-3 my-3">
+                                  <BsBuildings size={16} />
+                                  <div className="col-span-7">
+                                    {leadDetails.project === "null" ? "-" : leadDetails.project} {" "}
+                                    {leadDetails.leadType === "null" ? "-" : leadDetails.leadType} {" "}
+                                  </div>
+                                </div>
+                                {/* ENQUIRY  */}
+                                <div className="grid grid-cols-8 gap-3 my-3">
+                                  <BiBed size={16} />
+                                  <div className="col-span-7">
+                                    {leadDetails.enquiryType === "null" ? "-" : leadDetails.enquiryType} {" "}
+                                    {leadDetails.leadFor === "null" ? "-" : leadDetails.leadFor} {" "}
+                                  </div>
+                                </div>
+
+                                <div className="w-[80%] bg-primary h-0.5 my-5"></div>
+
+                                {/* CREATION DATE  */}
+                                <div className="text-sm mb-5">
+                                  <p>Lead added on:</p>
+                                  <p>{leadDetails.creationDate}</p>
+                                </div>
+                                <div className="text-sm mb-5">
+                                  <p>Last edited on:</p>
+                                  <p>{leadDetails.lastEdited}</p>
+                                </div>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                                  
+                        <div className="relative col-span-12 space-y-6 md:col-span-8 w-full">
+                          <div className="flex flex-col md:grid grid-cols-12 w-full">
+                            {loading ? (
+                              <div className="flex items-center justify-center w-full">
+                                <h1 className="font-semibold text-lg">Loading</h1>
+                              </div>
+                            ) : (
+                              groupLeadsByDate(leadsCycle).map(
+                                (timeline, index) => {
+                                  return (
+                                    <>
+                                      <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                        <div className="h-full w-6 flex items-center justify-center">
+                                          <div
+                                            className={`h-full border-b-[${primaryColor}] rounded-md px-2 py-1 text-sm`}
+                                            style={{
+                                              width: "min-content",
+                                              whiteSpace: "nowrap",
+                                            }}
+                                          >
+                                            {timeline.date}
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                    {timeline.leads.map((timeline, index) => {
-                                      return (
-                                        <div
-                                          key={index}
-                                          className="flex md:contents"
-                                        >
-                                          {/* LEAD NOTE  */}
-                                          {timeline.leadNote ? (
-                                            <>
-                                              <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                                <div className="h-full w-6 flex items-center justify-center">
-                                                  <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
+                                      {timeline.leads.map((timeline, index) => {
+                                        return (
+                                          <div
+                                            key={index}
+                                            className="flex md:contents"
+                                          >
+                                            {/* LEAD NOTE  */}
+                                            {timeline.leadNote ? (
+                                              <>
+                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                  <div className="h-full w-6 flex items-center justify-center">
+                                                    <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
+                                                  </div>
+                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                    <MdNoteAlt
+                                                      className="text-white"
+                                                      size={16}
+                                                    />
+                                                  </div>
                                                 </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
-                                                  <MdOutlineEditNote
-                                                    className="text-white"
-                                                    size={16}
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div
-                                                className={`${
-                                                  currentMode === "dark"
-                                                    ? "bg-[#000000]"
-                                                    : "bg-[#EEEEEE]"
-                                                } p-4 space-y-3 rounded-md shadow-md col-start-4 col-end-13 my-2 w-full`}
-                                                style={{
-                                                  transform:
-                                                    "translateX(-30px)",
-                                                }}
-                                              >
-                                                {/* ADDED BY  */}
-                                                <p
-                                                  className="text-xs tracking-wide font-italic justify-end flex items-center"
+                                                <div
+                                                  className={`${
+                                                    currentMode === "dark"
+                                                      ? "bg-[#000000]"
+                                                      : "bg-[#EEEEEE]"
+                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  // style={{
+                                                  //   transform:
+                                                  //     "translateX(-30px)",
+                                                  // }}
                                                 >
-                                                  <HiUser size={12} className="mr-2" />
-                                                  {timeline.addedBy}
-                                                </p>
-                                                {/* LEAD NOTE  */}
-                                                <p className="font-semibold tracking-wide mb-2" style={{ fontFamily: isArabic(timeline.leadNote) ? "Noto Kufi Arabic" : "inherit"}}>
-                                                  {timeline.leadNote}
-                                                </p>
-                                                {/* FEEDBACK  */}
-                                                {timeline?.feedback &&
-                                                timeline.feedback !== "0" && (
+                                                  {/* ADDED BY  */}
+                                                  <p
+                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
+                                                  >
+                                                    <HiUser size={12} color={"#AAAAAA"} className="mr-2" />
+                                                    {timeline.addedBy}
+                                                  </p>
+                                                  {/* LEAD NOTE  */}
+                                                  <p className="font-semibold tracking-wide mb-2" style={{ fontFamily: isArabic(timeline.leadNote) ? "Noto Kufi Arabic" : "inherit"}}>
+                                                    {timeline.leadNote}
+                                                  </p>
+                                                  {/* FEEDBACK 
+                                                  {timeline?.feedback &&
+                                                  timeline.feedback !== "0" && (
+                                                    <p className="font-semibold tracking-wide">
+                                                      Feedback updated to{" "}
+                                                      <span className="font-bold text-primary">
+                                                        {timeline.feedback}
+                                                      </span>.
+                                                    </p>
+                                                  )} */}
+                                                  {/* CREATION DATE  */}
+                                                  <p className="text-xs tracking-wide uppercase  text-[#AAAAAA]">
+                                                    {timeline.creationDate ||
+                                                      timeline.CreationDate}
+                                                  </p>
+                                                </div>
+                                              </>
+
+                                              // MANAGER 
+                                            ) : timeline.manager &&
+                                              timeline.manager !== "0" ? (
+                                              <>
+                                              <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                  <div className="h-full w-6 flex items-center justify-center">
+                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                  </div>
+                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                    <FaUserCheck
+                                                      className="text-white"
+                                                      size={16}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div
+                                                  className={`${
+                                                    currentMode === "dark"
+                                                      ? "bg-[#000000]"
+                                                      : "bg-[#EEEEEE]"
+                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  // style={{
+                                                  //   transform:
+                                                  //     "translateX(-30px)",
+                                                  // }}
+                                                >
+                                                  {/* ADDED BY  */}
+                                                  <p
+                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
+                                                  >
+                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                    {timeline.addedBy}
+                                                  </p>
+                                                  {/* AGENT  */}
                                                   <p className="font-semibold tracking-wide">
-                                                    Feedback updated to{" "}
+                                                    Sales manager has been updated to{" "}
+                                                    <span className="font-bold text-primary">
+                                                      {timeline.manager}
+                                                    </span>.
+                                                  </p>
+                                                  {/* CREATION DATE  */}
+                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
+                                                    {timeline.creationDate ||
+                                                      timeline.CreationDate}
+                                                  </p>
+                                                </div>
+                                              </>
+
+                                              // SALESPERSON 
+                                            ) : timeline.agent &&
+                                              timeline.agent !== "0" ? (
+                                              <>
+                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                  <div className="h-full w-6 flex items-center justify-center">
+                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                  </div>
+                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                    <FaUserCheck
+                                                      className="text-white"
+                                                      size={16}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div
+                                                  className={`${
+                                                    currentMode === "dark"
+                                                      ? "bg-[#000000]"
+                                                      : "bg-[#EEEEEE]"
+                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  // style={{
+                                                  //   transform:
+                                                  //     "translateX(-30px)",
+                                                  // }}
+                                                >
+                                                  {/* ADDED BY  */}
+                                                  <p
+                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
+                                                  >
+                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                    {timeline.addedBy}
+                                                  </p>
+                                                  {/* AGENT  */}
+                                                  <p className="font-semibold tracking-wide">
+                                                    Sales agent has been updated to{" "}
+                                                    <span className="font-bold text-primary">
+                                                      {timeline.agent}
+                                                    </span>.
+                                                  </p>
+                                                  {/* CREATION DATE  */}
+                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
+                                                    {timeline.creationDate ||
+                                                      timeline.CreationDate}
+                                                  </p>
+                                                </div>
+                                              </>
+
+                                              // FEEDBACK
+                                            ) : timeline.feedback &&
+                                              timeline.feedback !== "0" ? (
+                                              <>
+                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                  <div className="h-full w-6 flex items-center justify-center">
+                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                  </div>
+                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                    <BsBookmarkCheckFill
+                                                      className="text-white"
+                                                      size={16}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div
+                                                  className={`${
+                                                    currentMode === "dark"
+                                                      ? "bg-[#000000]"
+                                                      : "bg-[#EEEEEE]"
+                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  // style={{
+                                                  //   transform:
+                                                  //     "translateX(-30px)",
+                                                  // }}
+                                                >
+                                                  {/* ADDED BY  */}
+                                                  <p
+                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
+                                                  >
+                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                    {timeline.addedBy}
+                                                  </p>
+                                                  {/* FEEDBACK  */}
+                                                  <p className="font-semibold tracking-wide">
+                                                    Feedback has been updated to{" "}
                                                     <span className="font-bold text-primary">
                                                       {timeline.feedback}
                                                     </span>.
                                                   </p>
-                                                )}
-                                                {/* CREATION DATE  */}
-                                                <p className="text-xs tracking-wide uppercase dark:text-gray-400">
-                                                  {timeline.creationDate ||
-                                                    timeline.CreationDate}
-                                                </p>
-                                              </div>
-                                            </>
+                                                  {/* CREATION DATE  */}
+                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
+                                                    {timeline.creationDate ||
+                                                      timeline.CreationDate}
+                                                  </p>
+                                                </div>
+                                              </>
 
-                                            // MANAGER 
-                                          ) : timeline.manager &&
-                                            timeline.manager !== "0" ? (
-                                            <>
-                                            <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                                <div className="h-full w-6 flex items-center justify-center">
-                                                  <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                              // MEETING STATUS 
+                                            ) : timeline.meetingStatus &&
+                                              timeline.meetingStatus !== "0" ? (
+                                              <>
+                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                  <div className="h-full w-6 flex items-center justify-center">
+                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                  </div>
+                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                    <BiCalendarExclamation
+                                                      className="text-white"
+                                                      size={16}
+                                                    />
+                                                  </div>
                                                 </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
-                                                  <FaUserCheck
-                                                    className="text-white"
-                                                    size={16}
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div
-                                                className={`${
-                                                  currentMode === "dark"
-                                                    ? "bg-[#000000]"
-                                                    : "bg-[#EEEEEE]"
-                                                } p-4 space-y-3 rounded-md shadow-md col-start-4 col-end-13 my-2 w-full`}
-                                                style={{
-                                                  transform:
-                                                    "translateX(-30px)",
-                                                }}
-                                              >
-                                                {/* ADDED BY  */}
-                                                <p
-                                                  className="text-xs tracking-wide font-italic justify-end flex items-center"
+                                                <div
+                                                  className={`${
+                                                    currentMode === "dark"
+                                                      ? "bg-[#000000]"
+                                                      : "bg-[#EEEEEE]"
+                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  // style={{
+                                                  //   transform:
+                                                  //     "translateX(-30px)",
+                                                  // }}
                                                 >
-                                                  <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
-                                                  {timeline.addedBy}
-                                                </p>
-                                                {/* AGENT  */}
-                                                <p className="font-semibold tracking-wide">
-                                                  Sales manager has been updated to{" "}
-                                                  <span className="font-bold text-primary">
-                                                    {timeline.manager}
-                                                  </span>.
-                                                </p>
-                                                {/* CREATION DATE  */}
-                                                <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
-                                                  {timeline.creationDate ||
-                                                    timeline.CreationDate}
-                                                </p>
-                                              </div>
-                                            </>
+                                                  {/* ADDED BY  */}
+                                                  <p
+                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
+                                                  >
+                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                    {timeline.addedBy}
+                                                  </p>
+                                                  {/* FEEDBACK  */}
+                                                  <p className="font-semibold tracking-wide">
+                                                    Meeting status has been updated to{" "}
+                                                    <span className="font-bold text-primary">
+                                                      {timeline.meetingStatus}
+                                                    </span>.
+                                                  </p>
+                                                  {/* CREATION DATE  */}
+                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
+                                                    {timeline.creationDate ||
+                                                      timeline.CreationDate}
+                                                  </p>
+                                                </div>
+                                              </>
 
-                                            // SALESPERSON 
-                                          ) : timeline.agent &&
-                                            timeline.agent !== "0" ? (
-                                            <>
-                                              <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                                <div className="h-full w-6 flex items-center justify-center">
-                                                  <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                              // MEETING DATE TIME 
+                                            ) : timeline.meetingDate &&
+                                              timeline.meetingDate !== "0" ? (
+                                              <>
+                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                  <div className="h-full w-6 flex items-center justify-center">
+                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                  </div>
+                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                    <BsClockFill
+                                                      className="text-white"
+                                                      size={16}
+                                                    />
+                                                  </div>
                                                 </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
-                                                  <FaUserCheck
-                                                    className="text-white"
-                                                    size={16}
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div
-                                                className={`${
-                                                  currentMode === "dark"
-                                                    ? "bg-[#000000]"
-                                                    : "bg-[#EEEEEE]"
-                                                } p-4 space-y-3 rounded-md shadow-md col-start-4 col-end-13 my-2 w-full`}
-                                                style={{
-                                                  transform:
-                                                    "translateX(-30px)",
-                                                }}
-                                              >
-                                                {/* ADDED BY  */}
-                                                <p
-                                                  className="text-xs tracking-wide font-italic justify-end flex items-center"
+                                                <div
+                                                  className={`${
+                                                    currentMode === "dark"
+                                                      ? "bg-[#000000]"
+                                                      : "bg-[#EEEEEE]"
+                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  // style={{
+                                                  //   transform:
+                                                  //     "translateX(-30px)",
+                                                  // }}
                                                 >
-                                                  <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
-                                                  {timeline.addedBy}
-                                                </p>
-                                                {/* AGENT  */}
-                                                <p className="font-semibold tracking-wide">
-                                                  Sales agent has been updated to{" "}
-                                                  <span className="font-bold text-primary">
-                                                    {timeline.agent}
-                                                  </span>.
-                                                </p>
-                                                {/* CREATION DATE  */}
-                                                <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
-                                                  {timeline.creationDate ||
-                                                    timeline.CreationDate}
-                                                </p>
-                                              </div>
-                                            </>
-
-                                            // FEEDBACK
-                                          ) : timeline.feedback &&
-                                            timeline.feedback !== "0" ? (
-                                            <>
-                                              <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                                <div className="h-full w-6 flex items-center justify-center">
-                                                  <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                  {/* ADDED BY  */}
+                                                  <p
+                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
+                                                  >
+                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                    {timeline.addedBy}
+                                                  </p>
+                                                  {/* FEEDBACK  */}
+                                                  <p className="font-semibold tracking-wide">
+                                                    Meeting has been set for{" "}
+                                                    <span className="font-bold text-primary">
+                                                      {!timeline.meetingTime ||
+                                                      timeline.meetingTime === ""
+                                                        ? ""
+                                                        : `${timeline.meetingTime}, `}{" "}
+                                                      {(timeline.meetingDate ||
+                                                        timeline.meetingDate !==
+                                                          "") &&
+                                                        moment(
+                                                          timeline.meetingDate
+                                                        ).format("MMMM D, Y")}
+                                                    </span>.
+                                                  </p>
+                                                  {/* CREATION DATE  */}
+                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
+                                                    {timeline.creationDate ||
+                                                      timeline.CreationDate}
+                                                  </p>
                                                 </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
-                                                  <BsBookmarkCheckFill
-                                                    className="text-white"
-                                                    size={16}
-                                                  />
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                  <div className="h-full w-6 flex items-center justify-center">
+                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                  </div>
+                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                    <BsFlagFill
+                                                      className="text-white"
+                                                      size={16}
+                                                    />
+                                                  </div>
                                                 </div>
-                                              </div>
-                                              <div
-                                                className={`${
-                                                  currentMode === "dark"
-                                                    ? "bg-[#000000]"
-                                                    : "bg-[#EEEEEE]"
-                                                } p-4 space-y-3 rounded-md shadow-md col-start-4 col-end-13 my-2 w-full`}
-                                                style={{
-                                                  transform:
-                                                    "translateX(-30px)",
-                                                }}
-                                              >
-                                                {/* ADDED BY  */}
-                                                <p
-                                                  className="text-xs tracking-wide font-italic justify-end flex items-center"
+                                                <div
+                                                  className={`${
+                                                    currentMode === "dark"
+                                                      ? "bg-[#000000]"
+                                                      : "bg-[#EEEEEE]"
+                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  // style={{
+                                                  //   transform:
+                                                  //     "translateX(-30px)",
+                                                  // }}
                                                 >
-                                                  <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
-                                                  {timeline.addedBy}
-                                                </p>
-                                                {/* FEEDBACK  */}
-                                                <p className="font-semibold tracking-wide">
-                                                  Feedback has been updated to{" "}
-                                                  <span className="font-bold text-primary">
-                                                    {timeline.feedback}
-                                                  </span>.
-                                                </p>
-                                                {/* CREATION DATE  */}
-                                                <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
-                                                  {timeline.creationDate ||
-                                                    timeline.CreationDate}
-                                                </p>
-                                              </div>
-                                            </>
-
-                                            // MEETING STATUS 
-                                          ) : timeline.meetingStatus &&
-                                            timeline.meetingStatus !== "0" ? (
-                                            <>
-                                              <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                                <div className="h-full w-6 flex items-center justify-center">
-                                                  <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                  {/* ADDED BY  */}
+                                                  <p
+                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
+                                                  >
+                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                    {timeline.addedBy}
+                                                  </p>
+                                                  {/* FEEDBACK  */}
+                                                  <p className="font-semibold tracking-wide">
+                                                    Priority has been updated.
+                                                  </p>
+                                                  {/* CREATION DATE  */}
+                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
+                                                    {timeline.creationDate ||
+                                                      timeline.CreationDate}
+                                                  </p>
                                                 </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
-                                                  <BiCalendarExclamation
-                                                    className="text-white"
-                                                    size={16}
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div
-                                                className={`${
-                                                  currentMode === "dark"
-                                                    ? "bg-[#000000]"
-                                                    : "bg-[#EEEEEE]"
-                                                } p-4 space-y-3 rounded-md shadow-md col-start-4 col-end-13 my-2 w-full`}
-                                                style={{
-                                                  transform:
-                                                    "translateX(-30px)",
-                                                }}
-                                              >
-                                                {/* ADDED BY  */}
-                                                <p
-                                                  className="text-xs tracking-wide font-italic justify-end flex items-center"
-                                                >
-                                                  <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
-                                                  {timeline.addedBy}
-                                                </p>
-                                                {/* FEEDBACK  */}
-                                                <p className="font-semibold tracking-wide">
-                                                  Meeting status has been updated to{" "}
-                                                  <span className="font-bold text-primary">
-                                                    {timeline.meetingStatus}
-                                                  </span>.
-                                                </p>
-                                                {/* CREATION DATE  */}
-                                                <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
-                                                  {timeline.creationDate ||
-                                                    timeline.CreationDate}
-                                                </p>
-                                              </div>
-                                            </>
-
-                                            // MEETING DATE TIME 
-                                          ) : timeline.meetingDate &&
-                                            timeline.meetingDate !== "0" ? (
-                                            <>
-                                              <div className="col-start-2 col-end-4 mr-3 md:mx-auto relative">
-                                                <div className="h-full w-6 flex items-center justify-center">
-                                                  <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                </div>
-                                                <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
-                                                  <BsClockFill
-                                                    className="text-white"
-                                                    size={16}
-                                                  />
-                                                </div>
-                                              </div>
-                                              <div
-                                                className={`${
-                                                  currentMode === "dark"
-                                                    ? "bg-[#000000]"
-                                                    : "bg-[#EEEEEE]"
-                                                } p-4 space-y-3 rounded-md shadow-md col-start-4 col-end-13 my-2 w-full`}
-                                                style={{
-                                                  transform:
-                                                    "translateX(-30px)",
-                                                }}
-                                              >
-                                                {/* ADDED BY  */}
-                                                <p
-                                                  className="text-xs tracking-wide font-italic justify-end flex items-center"
-                                                >
-                                                  <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
-                                                  {timeline.addedBy}
-                                                </p>
-                                                {/* FEEDBACK  */}
-                                                <p className="font-semibold tracking-wide">
-                                                  Meeting has been set for{" "}
-                                                  <span className="font-bold text-primary">
-                                                    {!timeline.meetingTime ||
-                                                    timeline.meetingTime === ""
-                                                      ? ""
-                                                      : `${timeline.meetingTime}, `}{" "}
-                                                    {(timeline.meetingDate ||
-                                                      timeline.meetingDate !==
-                                                        "") &&
-                                                      moment(
-                                                        timeline.meetingDate
-                                                      ).format("MMMM D, Y")}
-                                                  </span>.
-                                                </p>
-                                                {/* CREATION DATE  */}
-                                                <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
-                                                  {timeline.creationDate ||
-                                                    timeline.CreationDate}
-                                                </p>
-                                              </div>
-                                            </>
-                                          ) : (
-                                            <></>
-                                          )}
-                                        </div>
-                                      );
-                                    })}
-                                  </>
-                                );
-                              }
-                            )
-                          )}
+                                              </>
+                                            )}
+                                          </div>
+                                        );
+                                      })}
+                                    </>
+                                  );
+                                }
+                              )
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
+        
         </div>
       </Modal>
     </>
@@ -610,3 +663,4 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
 };
 
 export default Timeline;
+

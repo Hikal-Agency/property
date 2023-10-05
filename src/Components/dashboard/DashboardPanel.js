@@ -290,8 +290,8 @@ const DashboardPanel = ({ setloading }) => {
                     key={index}
                     className={`card-hover ${
                       currentMode === "dark"
-                        ? "blur-bg-light text-white "
-                        : "blur-bg-dark text-main-dark-bg"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg"
                     } h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
@@ -464,7 +464,7 @@ const DashboardPanel = ({ setloading }) => {
         </>
       ) : User?.role === 3 ? (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-1">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3">
             <div
               className={`card-hover ${
                 currentMode === "dark"
