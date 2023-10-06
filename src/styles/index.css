@@ -174,12 +174,7 @@ background-color: var(--primary-color);
 
 .ps-submenu-content {
   border-radius: 15px !important;
-  /* margin: 7px !important; */
 }
-
-/* .ps-submenu-content ul a:hover .leads_counter {
-  color: #FFFFFF !important;
-} */
 
 .nav-item,
 .navbar {

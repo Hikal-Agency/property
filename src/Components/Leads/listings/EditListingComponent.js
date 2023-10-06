@@ -8,7 +8,6 @@ import {
   MenuItem,
   TextField,
   Typography,
-  InputLabel,
 } from "@mui/material";
 import PhoneInput, {
   formatPhoneNumberIntl,
@@ -18,11 +17,8 @@ import PhoneInput, {
 import classNames from "classnames";
 import { IoMdClose } from "react-icons/io";
 import { useStateContext } from "../../../context/ContextProvider";
-import { useState } from "react";
-import LocationPicker from "../../meetings/LocationPicker";
+import { useEffect, useState } from "react";
 import ListingLocation from "./ListingLocation";
-import { MdFileUpload } from "react-icons/md";
-import { CiMapPin } from "react-icons/ci";
 import axios from "../../../axoisConfig";
 import { toast } from "react-toastify";
 
@@ -33,22 +29,16 @@ const style = {
 
 const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
   const LeadData = openEdit;
-  console.log("lead data in listing: ", LeadData);
-  const { leadId } = LeadData;
   const token = localStorage.getItem("auth-token");
   const splitLocation = LeadData?.latlong.split(",");
-  console.log("lat long split", splitLocation);
-  console.log("lat long array", splitLocation[0], splitLocation[1]);
 
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
   const [loading, setloading] = useState(false);
   const [displayMap, setDisplayMap] = useState(false);
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
   const [listingLocation, setListingLocation] = useState({
     lat: parseFloat(splitLocation[0]),
     lng: parseFloat(splitLocation[1]),
-    addressText: "",
+    addressText: LeadData?.location || "",
   });
 
   const [sellerDetails, setSellerDetails] = useState({
@@ -68,14 +58,13 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
     address: LeadData?.address,
     area: LeadData?.area,
     listing_status: LeadData?.listing_status,
+    city: "",
+    country: "",
     // picture: [],
     // document: [],
   });
   const [value, setValue] = useState();
   const [error, setError] = useState(false);
-
-  console.log("other details: ", otherDetails);
-  console.log("city,country: ", city, country);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -129,6 +118,55 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
     }
 
     return value;
+  }
+  function getCityAndCountry(lat, lng, callback) {
+    const latlng = new window.google.maps.LatLng(
+      parseFloat(lat),
+      parseFloat(lng)
+    );
+    const geocoder = new window.google.maps.Geocoder();
+
+    geocoder.geocode({ latLng: latlng }, function (results, status) {
+      if (status === "OK") {
+        let city = null;
+        let country = null;
+
+        for (let i = 0; i < results.length; i++) {
+          const result = results[i];
+
+          for (let j = 0; j < result.address_components.length; j++) {
+            const component = result.address_components[j];
+
+            if (!city && component.types.includes("locality")) {
+              city = component.long_name;
+            } else if (
+              !city &&
+              component.types.includes("administrative_area_level_1")
+            ) {
+              city = component.long_name;
+            } else if (!country && component.types.includes("country")) {
+              country = component.long_name;
+            }
+
+            if (city && country) {
+              break;
+            }
+          }
+
+          if (city && country) {
+            break;
+          }
+        }
+
+        callback({
+          city: city,
+          country: country,
+        });
+      } else {
+        console.error("Geocoder failed due to: " + status);
+        callback(null);
+      }
+    });
   }
 
   // const handleImgUpload = (e) => {
@@ -186,6 +224,10 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
     const lng = listingLocation?.lng;
     const location = [lat, lng].join(",");
 
+    // getCityAndCountry(lat, lng, (result) => {
+    //   console.log("Result:", result);
+    // })
+
     const Data = new FormData();
 
     if (sellerDetails?.leadName)
@@ -202,6 +244,8 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
       Data.append("project", projectDetails?.project);
     if (projectDetails?.bedrooms)
       Data.append("bedrooms", projectDetails?.bedrooms);
+    if (listingLocation?.addressText)
+      Data.append("location", listingLocation?.addressText);
     if (projectDetails?.bathrooms)
       Data.append("bathrooms", projectDetails?.bathrooms);
     if (otherDetails?.address) Data.append("address", otherDetails?.address);
@@ -271,6 +315,16 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
       });
     });
   };
+
+  useEffect(() => {
+    getCityAndCountry(listingLocation?.lat, listingLocation?.lng, (result) => {
+      setOtherDetails({
+        ...otherDetails,
+        city: result?.city,
+        country: result?.country,
+      });
+    });
+  }, [listingLocation]);
 
   return (
     <>
@@ -611,7 +665,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                       onChange={handleOtherDetails}
                     />
                     <TextField
-                      id="LeadEmailAddress"
+                      id="LeadArea"
                       type={"text"}
                       label="Area"
                       className="w-full"
@@ -624,6 +678,40 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                       variant="outlined"
                       size="small"
                       value={otherDetails?.area}
+                      onChange={handleOtherDetails}
+                    />
+                    <TextField
+                      id="leadCity"
+                      type={"text"}
+                      label="City"
+                      className="w-full"
+                      name="city"
+                      sx={{
+                        "&": {
+                          marginBottom: "1.25rem !important",
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={otherDetails?.city}
+                      onChange={handleOtherDetails}
+                      required
+                    />
+                    <TextField
+                      id="leadCountry"
+                      type={"text"}
+                      label="Country"
+                      className="w-full"
+                      name="country"
+                      sx={{
+                        "&": {
+                          marginBottom: "1.25rem !important",
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={otherDetails?.country}
+                      required
                       onChange={handleOtherDetails}
                     />
 
@@ -696,10 +784,6 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                     listingLocation={listingLocation}
                     currLocByDefault={true}
                     setListingLocation={setListingLocation}
-                    city={city}
-                    setCity={setCity}
-                    country={country}
-                    setCountry={setCountry}
                     required
                   />
                   {/* )} */}

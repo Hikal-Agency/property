@@ -26,10 +26,6 @@ const ListingLocation = ({
   setListingLocation,
   showOnly = false,
   currLocByDefault,
-  city,
-  setCity,
-  country,
-  setCountry,
 }) => {
   console.log("listing location: ", listingLocation);
   const { currentMode } = useStateContext();
@@ -77,11 +73,6 @@ const ListingLocation = ({
             lng: Number(latLng.lng()),
             addressText: results[0].formatted_address,
           });
-          const value = results[0].formatted_address?.split(",");
-
-          const count = value.length;
-          setCountry(value[count - 1]);
-          setCity(value[count - 3] || value[count - 2]);
         } else {
           console.log("Google maps couldn't load");
         }
@@ -119,10 +110,6 @@ const ListingLocation = ({
             defaultLocation={listingLocation.addressText}
             setListingLocation={setListingLocation}
             isDisabled={showOnly}
-            setCity={setCity}
-            country={country}
-            setCountry={setCountry}
-            city={city}
             size="small"
             className={`${
               currentMode === "dark" ? "text-white" : "text-black"

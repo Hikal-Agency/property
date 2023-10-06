@@ -343,7 +343,7 @@ const Navbar = () => {
           />
 
           {/* THEME  */}
-          {!themeBgImg &&
+          {/* {!themeBgImg && */}
           <Tooltip
             title={currentMode === "dark" ? "light mode" : "dark mode"}
             arrow
@@ -364,7 +364,7 @@ const Navbar = () => {
             </button>
           </Tooltip>
 
-          }
+          {/* } */}
           {/* PROFILE  */}
           <Tooltip title="Profile" arrow placement="bottom">
             <div
