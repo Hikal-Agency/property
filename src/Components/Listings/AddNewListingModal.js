@@ -32,6 +32,7 @@ const style = {
 };
 
 const AddNewListingModal = ({
+  LeadData,
   setListingModalOpen,
   handleCloseListingModal,
 }) => {
@@ -44,15 +45,17 @@ const AddNewListingModal = ({
   const [allImages, setAllImages] = useState([]);
   const [allDocs, setAllDocs] = useState([]);
 
+  console.log("Lead Data:", LeadData);
+
   const [listingLocation, setListingLocation] = useState({
     lat: 0,
     lng: 0,
     addressText: "",
   });
   const [sellerDetails, setSellerDetails] = useState({
-    leadName: "",
-    leadContact: "",
-    leadEmail: "",
+    leadName: LeadData?.leadName,
+    leadContact: LeadData?.leadContact,
+    leadEmail: LeadData?.leadEmail,
     propertyPrice: "",
   });
   const [selectImagesModal, setSelectImagesModal] = useState({
@@ -60,9 +63,9 @@ const AddNewListingModal = ({
     listingId: null,
   });
   const [projectDetails, setProjectDetails] = useState({
-    property_type: "",
-    project: "",
-    bedrooms: "",
+    property_type: LeadData?.leadType,
+    project: LeadData?.project,
+    bedrooms: LeadData?.enquiryType,
     bathrooms: "",
   });
 

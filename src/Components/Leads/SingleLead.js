@@ -4,7 +4,6 @@ import {
   CircularProgress,
   Modal,
   TextField,
-  IconButton,
   Button,
   Tooltip,
 } from "@mui/material";
@@ -19,18 +18,12 @@ import { Link } from "react-router-dom";
 
 import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
 import moment from "moment";
-import AddListingModal from "./listings/AddListingModal";
-import { datetimeAMPM, datetimeLong } from "../_elements/formatDateTime";
+import { datetimeLong } from "../_elements/formatDateTime";
 
 import { IoIosAlert } from "react-icons/io";
-import { 
-  MdClose,
-} from "react-icons/md";
-import { 
-  BiBlock,
-  BiBed 
-} from "react-icons/bi";
-import { 
+import { MdClose } from "react-icons/md";
+import { BiBlock, BiBed } from "react-icons/bi";
+import {
   BsShuffle,
   BsTelephone,
   BsEnvelopeAt,
@@ -41,8 +34,9 @@ import {
   BsBuildingGear,
   BsPersonPlus,
   BsBookmarkFill,
-  BsPersonGear
+  BsPersonGear,
 } from "react-icons/bs";
+import AddNewListingModal from "../Listings/AddNewListingModal";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -440,15 +434,24 @@ const SingleLead = ({
         }}
       >
         <div className="w-[100vw] h-[100vh] flex items-start justify-end">
-          <button onClick={handleLeadModelClose}
+          <button
+            onClick={handleLeadModelClose}
             className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
           >
-            <MdClose size={18} color={"white"} className="hover:border hover:border-white hover:rounded-full" />
+            <MdClose
+              size={18}
+              color={"white"}
+              className="hover:border hover:border-white hover:rounded-full"
+            />
           </button>
 
           <div
             style={style}
-            className={` ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-[#FFFFFF] text-black"}
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#1C1C1C] text-white"
+                : "bg-[#FFFFFF] text-black"
+            }
              p-4 h-[100vh] w-[80vw] rounded-l-md overflow-y-scroll
             `}
           >
@@ -463,9 +466,7 @@ const SingleLead = ({
                     <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                     <h1
                       className={`text-lg font-semibold ${
-                        currentMode === "dark"
-                          ? "text-white"
-                          : "text-black"
+                        currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                     >
                       {LeadData?.leadName}
@@ -542,7 +543,8 @@ const SingleLead = ({
                             onClick={() => {
                               setLeadToDelete(LeadData?.leadId);
                               setDeleteModelOpen(true);
-                              if (setBulkDeleteClicked) setBulkDeleteClicked(false);
+                              if (setBulkDeleteClicked)
+                                setBulkDeleteClicked(false);
                             }}
                           >
                             <BsTrash
@@ -660,10 +662,17 @@ const SingleLead = ({
 
                 <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-5 p-5">
                   {/* USER DETAILS  */}
-                  <div className={`p-4 rounded-md card-hover
-                    ${currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black"}`}
+                  <div
+                    className={`p-4 rounded-md card-hover
+                    ${
+                      currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black"
+                    }`}
                   >
-                    <h1 className="text-center uppercase font-semibold">User details</h1>
+                    <h1 className="text-center uppercase font-semibold">
+                      User details
+                    </h1>
                     <hr className="my-4" />
                     <div className="w-full">
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
@@ -678,58 +687,79 @@ const SingleLead = ({
                           LeadData?.leadEmail === "undefined" ||
                           LeadData?.leadEmail === "-" ||
                           LeadData?.leadEmail === null ||
-                          LeadData?.leadEmail === undefined 
-                          ? "-"
-                          : LeadData?.leadEmail}
+                          LeadData?.leadEmail === undefined
+                            ? "-"
+                            : LeadData?.leadEmail}
                         </div>
                       </div>
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                         <BsType size={16} className="text-primary" />
-                        <div className="col-span-7">{LeadData?.language}{" "}Language</div>
+                        <div className="col-span-7">
+                          {LeadData?.language} Language
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   {/* PROJECT DETAILS  */}
-                  <div className={`p-4 rounded-md card-hover
-                    ${currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black"}`}
+                  <div
+                    className={`p-4 rounded-md card-hover
+                    ${
+                      currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black"
+                    }`}
                   >
-                    <h1 className="text-center uppercase font-semibold">Enquiry details</h1>
+                    <h1 className="text-center uppercase font-semibold">
+                      Enquiry details
+                    </h1>
                     <hr className="my-4" />
                     <div className="w-full">
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                         <BsBuildings size={16} className="text-primary" />
                         <div className="col-span-7">
-                          {LeadData?.project === "null" ? "-" : LeadData?.project}
-                          {" "}
-                          {LeadData?.leadType === "null" ? "-" : LeadData?.leadType}
+                          {LeadData?.project === "null"
+                            ? "-"
+                            : LeadData?.project}{" "}
+                          {LeadData?.leadType === "null"
+                            ? "-"
+                            : LeadData?.leadType}
                         </div>
                       </div>
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                         <BiBed size={16} className="text-primary" />
                         <div className="col-span-7">
                           {LeadData?.enquiryType === "null"
-                          ? "-"
-                          : LeadData?.enquiryType}
+                            ? "-"
+                            : LeadData?.enquiryType}
                         </div>
                       </div>
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                         <BsHouseGear size={16} className="text-primary" />
                         <div className="col-span-7">
-                          {LeadData?.leadFor === "null" ? "-" : `For ${LeadData?.leadFor}`}
+                          {LeadData?.leadFor === "null"
+                            ? "-"
+                            : `For ${LeadData?.leadFor}`}
                         </div>
                       </div>
                     </div>
                   </div>
 
                   {/* STATUS  */}
-                  <div className={`sm:col-span-1 md:col-span-2 p-4 rounded-md card-hover text-center
-                    ${currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black"}`}
+                  <div
+                    className={`sm:col-span-1 md:col-span-2 p-4 rounded-md card-hover text-center
+                    ${
+                      currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black"
+                    }`}
                   >
                     <h1 className="text-center uppercase flex items-center justify-center">
                       <BsBookmarkFill size={16} className="mx-2 text-primary" />
                       Feedback
-                      <span className="mx-2  font-semibold">{LeadData?.feedback ?? "---"}</span>
+                      <span className="mx-2  font-semibold">
+                        {LeadData?.feedback ?? "---"}
+                      </span>
                     </h1>
                     <hr className="my-4" />
                     <div className="w-full">
@@ -742,22 +772,30 @@ const SingleLead = ({
                       <div class="flex items-center gap-5 my-4 md:px-5">
                         <BsPersonGear size={16} className="text-primary" />
                         <div className="text-start">
-                          Last updated on {LeadData?.lastEdited === "" ? "-" : datetimeLong(LeadData?.lastEdited)}
+                          Last updated on{" "}
+                          {LeadData?.lastEdited === ""
+                            ? "-"
+                            : datetimeLong(LeadData?.lastEdited)}
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                
+
                 {/* <div className="p-5">
                   <div className="bg-primary h-0.5 w-full my-1"></div>
                 </div> */}
 
                 {/* LAST NOTE  */}
                 <div className="p-5">
-                  <div className={`w-full p-4 rounded-md card-hover text-center
-                      ${currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black"}`}
-                    >
+                  <div
+                    className={`w-full p-4 rounded-md card-hover text-center
+                      ${
+                        currentMode === "dark"
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black"
+                      }`}
+                  >
                     <div className="w-full my-4">
                       {lastNote ? (
                         <div
@@ -768,9 +806,7 @@ const SingleLead = ({
                           } border-2 flex items-center my-2 gap-5 w-full rounded-md`}
                         >
                           <div className="p-3 text-center text-sm">
-                            <div className="mb-1">
-                              {lastNoteAddedBy}
-                            </div>
+                            <div className="mb-1">{lastNoteAddedBy}</div>
                             <div className="mt-1 text-[#AAAAAA]">
                               {lastNoteDate}
                             </div>
@@ -846,8 +882,8 @@ const SingleLead = ({
         </div>
       </Modal>
       <BlockIPModal
-      handleLeadModelClose={handleLeadModelClose}
-      FetchLeads={FetchLeads}
+        handleLeadModelClose={handleLeadModelClose}
+        FetchLeads={FetchLeads}
         addNote={AddNote}
         blockIPModalOpened={blockIPModalOpened?.isOpened}
         handleCloseIPModal={() =>
@@ -920,9 +956,13 @@ const SingleLead = ({
         </Modal>
       )}
 
-      {/* {listingModalOpen && (
-
-      )} */}
+      {listingModalOpen && (
+        <AddNewListingModal
+          LeadData={LeadData}
+          handleCloseListingModal={handleCloseListingModal}
+          setListingModalOpen={setListingModalOpen}
+        />
+      )}
     </>
   );
 };

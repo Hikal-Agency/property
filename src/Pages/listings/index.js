@@ -4,15 +4,10 @@ import Avatar from "@mui/material/Avatar";
 
 import {
   Box,
-  Checkbox,
-  FormControl,
   FormControlLabel,
-  IconButton,
   InputAdornment,
   MenuItem,
   Select,
-  Tab,
-  Tabs,
   TextField,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
