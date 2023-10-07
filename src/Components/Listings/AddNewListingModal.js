@@ -17,7 +17,7 @@ import PhoneInput, {
 import classNames from "classnames";
 import { IoMdClose } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ListingLocation from "../Leads/listings/ListingLocation";
 import { MdFileUpload } from "react-icons/md";
 import { CiMapPin } from "react-icons/ci";
@@ -69,7 +69,9 @@ const AddNewListingModal = ({
   const [otherDetails, setOtherDetails] = useState({
     address: "",
     area: "",
-    listingType: "",
+    city: "", 
+    country: "", 
+    listingType: "Secondary",
     // picture: [],
     document: "",
   });
@@ -212,6 +214,11 @@ const AddNewListingModal = ({
 
     const LeadData = new FormData();
 
+    if (otherDetails?.city)
+      LeadData.append("city", otherDetails?.city);
+    if (otherDetails?.country)
+      LeadData.append("country", otherDetails?.country);
+
     if (sellerDetails?.leadName)
       LeadData.append("seller_name", sellerDetails?.leadName);
     if (sellerDetails?.leadContact)
@@ -233,6 +240,8 @@ const AddNewListingModal = ({
     if (otherDetails?.area) LeadData.append("area", otherDetails?.area);
     if (otherDetails?.listingType)
       LeadData.append("listing_type", otherDetails?.listingType);
+    if (listingLocation?.addressText)
+      LeadData.append("location", listingLocation?.addressText);
     if (otherDetails?.document)
       LeadData.append("documents", otherDetails?.document);
     if (LeadData?.leadId) LeadData.append("lead_id", LeadData?.leadId);
@@ -296,6 +305,56 @@ const AddNewListingModal = ({
       });
   };
 
+  function getCityAndCountry(lat, lng, callback) {
+    const latlng = new window.google.maps.LatLng(
+      parseFloat(lat),
+      parseFloat(lng)
+    );
+    const geocoder = new window.google.maps.Geocoder();
+
+    geocoder.geocode({ latLng: latlng }, function (results, status) {
+      if (status === "OK") {
+        let city = null;
+        let country = null;
+
+        for (let i = 0; i < results.length; i++) {
+          const result = results[i];
+
+          for (let j = 0; j < result.address_components.length; j++) {
+            const component = result.address_components[j];
+
+            if (!city && component.types.includes("locality")) {
+              city = component.long_name;
+            } else if (
+              !city &&
+              component.types.includes("administrative_area_level_1")
+            ) {
+              city = component.long_name;
+            } else if (!country && component.types.includes("country")) {
+              country = component.long_name;
+            }
+
+            if (city && country) {
+              break;
+            }
+          }
+
+          if (city && country) {
+            break;
+          }
+        }
+
+        callback({
+          city: city,
+          country: country,
+        });
+      } else {
+        console.error("Geocoder failed due to: " + status);
+        callback(null);
+      }
+    });
+  }
+
   const handleCurrentLocationClick = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       setListingLocation({
@@ -305,6 +364,17 @@ const AddNewListingModal = ({
       });
     });
   };
+
+
+  useEffect(() => {
+    getCityAndCountry(listingLocation?.lat, listingLocation?.lng, (result) => {
+      setOtherDetails({
+        ...otherDetails,
+        city: result?.city,
+        country: result?.country,
+      });
+    });
+  }, [listingLocation]);
 
   return (
     <>
@@ -637,11 +707,46 @@ const AddNewListingModal = ({
                       select
                       required
                     >
-                      <MenuItem value={"Secondary"} selected>
+                      <MenuItem value={"Secondary"}>
                         Secondary
                       </MenuItem>
                       <MenuItem value={"Off-plan"}>Off-plan</MenuItem>
                     </TextField>
+                    <TextField
+                    
+                      id="leadCity"
+                      type={"text"}
+                      label="City"
+                      className="w-full"
+                      name="city"
+                      sx={{
+                        "&": {
+                          marginBottom: "1.25rem !important",
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={otherDetails?.city}
+                      onChange={handleOtherDetails}
+                      required
+                    />
+                    <TextField
+                      id="leadCountry"
+                      type={"text"}
+                      label="Country"
+                      className="w-full"
+                      name="country"
+                      sx={{
+                        "&": {
+                          marginBottom: "1.25rem !important",
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={otherDetails?.country}
+                      required
+                      onChange={handleOtherDetails}
+                    />
 
                     <TextField
                       id="LeadEmailAddress"

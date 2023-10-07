@@ -920,13 +920,9 @@ const SingleLead = ({
         </Modal>
       )}
 
-      {listingModalOpen && (
-        <AddListingModal
-          LeadData={LeadData}
-          handleCloseListingModal={handleCloseListingModal}
-          setListingModalOpen={setListingModalOpen}
-        />
-      )}
+      {/* {listingModalOpen && (
+
+      )} */}
     </>
   );
 };

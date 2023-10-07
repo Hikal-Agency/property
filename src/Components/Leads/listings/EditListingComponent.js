@@ -60,8 +60,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
     listing_status: LeadData?.listing_status,
     city: "",
     country: "",
-    // picture: [],
-    // document: [],
+    listingType: LeadData?.listing_type || "",
   });
   const [value, setValue] = useState();
   const [error, setError] = useState(false);
@@ -230,6 +229,11 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
 
     const Data = new FormData();
 
+    if (otherDetails?.city)
+      Data.append("city", otherDetails?.city);
+    if (otherDetails?.country)
+      Data.append("country", otherDetails?.country);
+
     if (sellerDetails?.leadName)
       Data.append("seller_name", sellerDetails?.leadName);
     if (sellerDetails?.leadContact)
@@ -254,7 +258,8 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
     if (location) Data.append("latlong", location);
     if (otherDetails?.listing_status)
       Data.append("listing_status", otherDetails?.listing_status);
-    Data.append("listing_type", "Secondary"); //Always appended
+      if (otherDetails?.listingType)
+      Data.append("listing_type", otherDetails?.listingType);
     // Data.append("listing_status", "New"); //Always appended
     Data.append("addedBy", User?.id);
     Data.append("addedBy_name", User?.userName);
@@ -647,6 +652,30 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                     >
                       Other Details
                     </h4>
+
+
+                    <TextField
+                      id="type"
+                      value={otherDetails?.listingType}
+                      label="Listing Type"
+                      onChange={handleOtherDetails}
+                      size="small"
+                      className="w-full"
+                      name="listingType"
+                      sx={{
+                        "&": {
+                          marginBottom: "1.25rem !important",
+                        },
+                      }}
+                      displayEmpty
+                      select
+                      required
+                    >
+                      <MenuItem value={"Secondary"}>
+                        Secondary
+                      </MenuItem>
+                      <MenuItem value={"Off-plan"}>Off-plan</MenuItem>
+                    </TextField>
 
                     <TextField
                       id="LeadEmailAddress"
