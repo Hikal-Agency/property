@@ -33,7 +33,8 @@ const SingleListingsPage = () => {
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [singleImageModal, setSingleImageModal] = useState({
     isOpen: false, 
-    url: ""
+    url: "", 
+    id: null
   })
   const [selectImagesModal, setSelectImagesModal] = useState({
     isOpen: false,
@@ -136,7 +137,9 @@ const SingleListingsPage = () => {
                       <img
                         onClick={() => setSingleImageModal({
                           isOpen: true, 
-                          url: pic?.img_url
+                          url: pic?.img_url, 
+                          id: pic?.id, 
+                          listingId: listData?.id
                         })}
                         src={pic?.img_url}
                         alt={pic?.img_alt}

@@ -1,34 +1,26 @@
 import {
   Modal,
   Backdrop,
-  IconButton,
   Menu,
   MenuItem,
-  Button,
+  CircularProgress,
 } from "@mui/material";
-import fileDownload from 'js-file-download'; 
 import { useState } from "react";
-import { IoMdClose } from "react-icons/io";
-import {GiShare} from "react-icons/gi";
-import {AiOutlineDownload} from "react-icons/ai"
+import { GiShare } from "react-icons/gi";
+import { AiOutlineDownload } from "react-icons/ai";
+import { FiTrash } from "react-icons/fi";
 import axios from "axios";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 import { useStateContext } from "../../context/ContextProvider";
 
-import {
-  MdClose
-} from "react-icons/md";
-
-const style = {
-  // transform: "translate(-50%, -50%)",
-  boxShadow: 24,
-};
+import { MdClose } from "react-icons/md";
 
 const SingleImageModal = ({ singleImageModal, handleClose }) => {
-  const { currentMode } = useStateContext();
+  const { BACKEND_URL } = useStateContext();
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [deleteBtnLoading, setDeleteBtnLoading] = useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -37,18 +29,62 @@ const SingleImageModal = ({ singleImageModal, handleClose }) => {
     setAnchorEl(null);
   };
 
-  function downloadImage(url) {
-    axios.get(url, {
-      responseType: 'blob',
-      
-    }).then(res => {
-      fileDownload(res.data, "download");
+  async function downloadImage(id) {
+    let url = `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images/download?image_ids[0]=${id}`;
+    const token = localStorage.getItem("auth-token");
+    await axios.get(url, {
+      headers: {
+        // "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     });
   }
   const handleDownloadSingle = () => {
-    downloadImage(singleImageModal?.url);
+    downloadImage(singleImageModal?.id);
     handleClose();
-  }
+  };
+
+  const handleDelete = async () => {
+    try {
+      setDeleteBtnLoading(true);
+      const token = localStorage.getItem("auth-token");
+      await axios.delete(
+        `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images`,
+        JSON.stringify({
+          image_ids: [singleImageModal?.id],
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token,
+          },
+        }
+      );
+      toast.success("Image deleted succesfuly!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    setDeleteBtnLoading(false);
+  };
 
   const handleCopyLink = async () => {
     await navigator.clipboard.writeText(singleImageModal?.url);
@@ -63,7 +99,7 @@ const SingleImageModal = ({ singleImageModal, handleClose }) => {
       progress: undefined,
       theme: "light",
     });
-  }
+  };
 
   return (
     <Modal
@@ -94,15 +130,29 @@ const SingleImageModal = ({ singleImageModal, handleClose }) => {
                 onClick={handleClick}
                 className="text-white bg-primary p-2 rounded-full mx-2"
               >
-                <AiOutlineDownload size={19}/>
+                <AiOutlineDownload size={19} />
               </button>
               <button
                 onClick={handleCopyLink}
                 className="text-white bg-primary p-2 rounded-full mx-2"
               >
-                <GiShare size={19}/>
+                <GiShare size={19} />
               </button>
-              
+              <button
+                onClick={handleDelete}
+                className="text-white bg-primary p-2 rounded-full mx-2"
+              >
+                {deleteBtnLoading ? (
+                  <CircularProgress
+                    size={14}
+                    sx={{ color: "white" }}
+                    className="text-white"
+                  />
+                ) : (
+                  <FiTrash size={19} />
+                )}
+              </button>
+
               <Menu
                 elevation={0}
                 anchorOrigin={{

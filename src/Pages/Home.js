@@ -188,15 +188,6 @@ const Home = () => {
 
   return (
     <>
-      {/* <Head>
-        <title>HIKAL CRM - LOGIN</title>
-        <meta
-          name="description"
-          content="Login into Your Account - HIKAL CRM"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.png" />
-      </Head> */}
 
       <div className="relative overflow-hidden">
         <div className="canvas absolute w-full overflow-x-hidden">
@@ -206,14 +197,10 @@ const Home = () => {
           className={`LoginWrapper md:h-screen w-screen flex items-center justify-center `}
         >
           <div className="flex min-h-screen items-center justify-center mt-5 pl-3">
-            <div className="w-[calc(100vw-50px)] md:max-w-[500px] space-y-4 md:space-y-6 bg-white py-8 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+            <div className="w-[calc(100vw-50px)] pb-40 md:max-w-[500px] space-y-4 md:space-y-6 bg-white pt-8 relative px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
               {errorMsg && (
                 <div className="flex flex-col items-center text-center p-5 bg-[#d4edda] font-bold text-lg">
-                  {/* <IoHappySharp
-                    color={"#FFC83D"}
-                    size={"30"}
-                    className="text-center mb-3"
-                  /> */}
+
                   {errorMsg}
                 </div>
               )}
@@ -270,24 +257,7 @@ const Home = () => {
                         }}
                       />
                     </div>
-                    {/* <div className="pt-5 space-y-6">
-                      <TextField
-                        id="password"
-                        type={"password"}
-                        label="Password"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={formdata?.password}
-                        onChange={(e) => {
-                          setformdata({
-                            ...formdata,
-                            password: e.target.value,
-                          });
-                        }}
-                      />
-                    </div> */}
+
                     <div className="pt-5 space-y-6">
                       <TextField
                         id="password"
@@ -340,9 +310,9 @@ const Home = () => {
                         <span>Sign in</span>
                       )}
                     </button>
-                    <div className="mt-3 flex items-center justify-between">
-                        <h1>DOWNLOAD THE APP NOW</h1>
-                        <img src="../assets/mockup.png" width={80} height={80} alt=""/>
+                    <div className="absolute bottom-0 px-4 py-5 left-0 right-0 flex items-center justify-between bg-main-red-color">
+                        <strong className="text-white cursor-pointer">DOWNLOAD THE APP NOW</strong>
+                        <img className="absolute -top-[40px] right-[12px]" src="../assets/mockup.png" width={140} height={140} alt=""/>
                     </div>
                   </div>
                 </form>
