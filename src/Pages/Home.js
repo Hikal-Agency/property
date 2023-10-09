@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
-import { IoHappySharp } from "react-icons/io5";
 
 const Home = () => {
   let canvas = useRef();
@@ -341,17 +340,10 @@ const Home = () => {
                         <span>Sign in</span>
                       )}
                     </button>
-                    {/* <div className="flex justify-center">
-                      <Link
-                        to={"/auth/signup"}
-                        state={{ continueURL: location?.state?.continueURL }}
-                        onClick={() => setOpenBackDrop(true)}
-                      >
-                        <button className="mt-1 h-10 rounded-md bg-transparent text-sm font-medium text-main_bg_color hover:text-hover_color focus:outline-none">
-                          Don&apos;t Have an Account? Register Now
-                        </button>
-                      </Link>
-                    </div> */}
+                    <div className="mt-3 flex items-center justify-between">
+                        <h1>DOWNLOAD THE APP NOW</h1>
+                        <img src="../assets/mockup.png" width={80} height={80} alt=""/>
+                    </div>
                   </div>
                 </form>
               </div>
