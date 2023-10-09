@@ -16,7 +16,7 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import { MdClose } from "react-icons/md";
 
-const SingleImageModal = ({ singleImageModal, handleClose }) => {
+const SingleImageModal = ({ singleImageModal, handleClose, fetchSingleListing }) => {
   const { BACKEND_URL } = useStateContext();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -48,15 +48,17 @@ const SingleImageModal = ({ singleImageModal, handleClose }) => {
     try {
       setDeleteBtnLoading(true);
       const token = localStorage.getItem("auth-token");
+      console.log("TOken: ", singleImageModal?.id);
       await axios.delete(
         `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images`,
-        JSON.stringify({
-          image_ids: [singleImageModal?.id],
-        }),
+
         {
+          data: JSON.stringify({
+            image_ids: [singleImageModal?.id],
+          }),
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + token,
+            Authorization: "Bearer " + token,
           },
         }
       );
@@ -70,6 +72,8 @@ const SingleImageModal = ({ singleImageModal, handleClose }) => {
         progress: undefined,
         theme: "light",
       });
+      fetchSingleListing();
+      handleClose();
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong!", {

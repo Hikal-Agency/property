@@ -310,7 +310,7 @@ const Home = () => {
                         <span>Sign in</span>
                       )}
                     </button>
-                    <div className="absolute bottom-0 px-4 py-5 left-0 right-0 flex items-center justify-between bg-main-red-color">
+                    <div className="absolute bottom-0 pl-5 py-5 left-0 right-0 flex items-center justify-between bg-main-red-color">
                         <strong className="text-white cursor-pointer">DOWNLOAD THE APP NOW</strong>
                         <img className="absolute -top-[40px] right-[12px]" src="../assets/mockup.png" width={140} height={140} alt=""/>
                     </div>

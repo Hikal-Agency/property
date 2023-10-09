@@ -426,6 +426,7 @@ const SingleListingsPage = () => {
               <SingleImageModal
                 singleImageModal={singleImageModal}
                 handleClose={() => setSingleImageModal({ isOpen: false })}
+                fetchSingleListing={fetchSingleListing}
               />
             )}
 
