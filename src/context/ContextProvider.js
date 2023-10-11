@@ -351,6 +351,61 @@ export const ContextProvider = ({ children }) => {
     return rgb.replace('rgb', 'rgba').replace(')', `, ${opacity})`);
   }
 
+  const ReFetchProfile = () => {
+    const token = localStorage.getItem("auth-token");
+    axios
+        .get(`${BACKEND_URL}/profile`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+
+          // Create a new object with only the specific fields you want to store
+          const user = {
+            permissions: result.data.roles.permissions,
+            addedBy: result.data.user[0].addedBy,
+            addedFor: result.data.user[0].addedFor,
+            agency: result.data.user[0].agency,
+            created_at: result.data.user[0].created_at,
+            creationDate: result.data.user[0].creationDate,
+            displayImg: result.data.user[0].profile_picture,
+            expiry_date: result.data.user[0].expiry_date,
+            credits: result.data.user[0].credits,
+            gender: result.data.user[0].gender,
+            id: result.data.user[0].id,
+            idExpiryDate: result.data.user[0].idExpiryDate,
+            isParent: result.data.user[0].isParent,
+            is_online: result.data.user[0].is_online,
+            joiningDate: result.data.user[0].joiningDate,
+            loginId: result.data.user[0].loginId,
+            loginStatus: result.data.user[0].loginStatus,
+            master: result.data.user[0].master,
+            nationality: result.data.user[0].nationality,
+            notes: result.data.user[0].notes,
+            old_password: result.data.user[0].old_password,
+
+            package_name: result.data.user[0].package_name,
+            plusSales: result.data.user[0].plusSales,
+            position: result.data.user[0].position,
+            profile_picture: result.data.user[0].profile_picture,
+            role: result.data.user[0].role,
+            status: result.data.user[0].status,
+            target: result.data.user[0].target,
+            uid: result.data.user[0].uid,
+            updated_at: result.data.user[0].updated_at,
+            userEmail: result.data.user[0].userEmail,
+            userContact: result.data.user[0].userContact,
+            userName: result.data.user[0].userName,
+            userType: result.data.user[0].userType,
+            is_alert: result.data.user[0].is_alert,
+          };
+
+          setUser(user);
+        })
+  }
+
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
     <StateContext.Provider
@@ -431,6 +486,7 @@ export const ContextProvider = ({ children }) => {
         setNotifIconAnimating, 
         setUnreadNotifsCount, 
         getNotifCounts, 
+        ReFetchProfile,
         userCredits,
         setUserCredits, 
         primaryColor, 

@@ -11,12 +11,17 @@ import { AiOutlineDownload } from "react-icons/ai";
 import { FiTrash } from "react-icons/fi";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { saveAs } from "file-saver";
 
 import { useStateContext } from "../../context/ContextProvider";
 
 import { MdClose } from "react-icons/md";
 
-const SingleImageModal = ({ singleImageModal, handleClose, fetchSingleListing }) => {
+const SingleImageModal = ({
+  singleImageModal,
+  handleClose,
+  fetchSingleListing,
+}) => {
   const { BACKEND_URL } = useStateContext();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -29,16 +34,37 @@ const SingleImageModal = ({ singleImageModal, handleClose, fetchSingleListing })
     setAnchorEl(null);
   };
 
+  function download(responseData) {
+    const blob = new Blob([responseData], { type: "image/jpeg" });
+    const url = URL.createObjectURL(blob);
+
+    console.log("URL::", url);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "download.jpg";
+    a.style.display = "none";
+
+    document.body.appendChild(a);
+    a.click();
+
+    URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  }
+
   async function downloadImage(id) {
     let url = `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images/download?image_ids[0]=${id}`;
     const token = localStorage.getItem("auth-token");
-    await axios.get(url, {
+    const response = await axios.get(url, {
       headers: {
-        // "Content-Type": "application/json",
+        "Content-Type": "image/png",
+        "Content-Disposition": 'attachment; filename="picture.png"',
         Authorization: "Bearer " + token,
       },
     });
+    download(response?.data);
   }
+
   const handleDownloadSingle = () => {
     downloadImage(singleImageModal?.id);
     handleClose();

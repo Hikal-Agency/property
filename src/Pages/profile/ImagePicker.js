@@ -23,7 +23,7 @@ const style = {
 };
 
 const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
-  const { BACKEND_URL, currentMode, setUser } = useStateContext();
+  const { BACKEND_URL, currentMode, setUser, ReFetchProfile } = useStateContext();
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -93,7 +93,6 @@ const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
           },
         }
       );
-      console.log(result.data);
       setImagePickerModal({ isOpen: false });
       setbtnloading(false);
       toast.success("Profile Picture Updated Successfuly!", {
@@ -105,6 +104,7 @@ const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
         progress: undefined,
         theme: "light",
       });
+      ReFetchProfile();
       SetUserProfilePic(result.data.url);
     } catch (err) {
       setbtnloading(false);

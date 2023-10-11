@@ -11,10 +11,6 @@ const Employee = () => {
   const {
     currentMode,
     setopenBackDrop,
-    setLocationData,
-    BACKEND_URL,
-    setUser,
-    User,
   } = useStateContext();
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 // import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
@@ -11,24 +11,21 @@ import { load } from "../../Pages/App";
 import { BsPinMap } from "react-icons/bs";
 import { BiCurrentLocation } from "react-icons/bi";
 import { AiOutlineFieldTime } from "react-icons/ai";
-import { IconButton, TextField, Tooltip } from "@mui/material";
+import { Box, IconButton, TextField, Tooltip } from "@mui/material";
+import { toPng } from "html-to-image";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const UserLocationComponent = () => {
-  const {
-    currentMode,
-    setLocationData,
-    LastLocationData,
-    setLastLocationData,
-    BACKEND_URL,
-  } = useStateContext();
+  const { currentMode, LastLocationData, setLastLocationData, BACKEND_URL } =
+    useStateContext();
 
   const [loading, setloading] = useState(true);
   const [filterDate, setFilterDate] = useState(moment().format("YYYY-MM-DD"));
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("auth-token");
+  const imageContainerRef = useRef(null);
 
   const [selectedLocation, setSelectedLocation] = useState(null);
 
@@ -49,38 +46,6 @@ const UserLocationComponent = () => {
     disableDefaultUI: true,
     zoomControl: true,
     mapTypeControl: true,
-  };
-
-  const FetchLocation = async (date) => {
-    let url = `${BACKEND_URL}/locations`;
-    if (date) {
-      const startDate = moment(date).format("YYYY-MM-DD");
-      const endDate = moment(date).add(1, "days").format("YYYY-MM-DD");
-      const dateRange = [startDate, endDate].join(",");
-
-      url += `?date_range=${dateRange}`;
-    }
-    await axios
-      .get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        // console.log("user location data is");
-        // console.log(result.data);
-        setLocationData(result.data);
-        setloading(false);
-      })
-      .catch((err) => {
-        navigate("/", {
-          state: {
-            error: "Something Went Wrong! Please Try Again",
-            continueURL: location.pathname,
-          },
-        });
-      });
   };
 
   const FetchLastLocation = async (date) => {
@@ -140,8 +105,61 @@ const UserLocationComponent = () => {
     FetchLastLocation(filterDate);
   }, [filterDate]);
 
+  const generateCompositeImage = () => {
+    if(imageContainerRef.current) {
+      toPng(imageContainerRef.current).then(function (dataUrl) {
+        return dataUrl;
+      });
+    }
+  };
+
+  generateCompositeImage();
+
   return (
     <>
+      <Box
+      className="relative"
+        sx={{
+          "& .cls-1": {
+            fill: "#231f20",
+          },
+          "& .cls-1, & .cls-2": {
+            stroke: "#231f20",
+            strokeiMterlimit: 10,
+          },
+          "& .cls-2": {
+            fill: "#da2027",
+            width: "200px",
+          },
+        }}
+        ref={imageContainerRef}
+      >
+        <svg
+        className="relative w-[48px]"
+          id="Layer_2"
+          data-name="Layer 2"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 60.62 88.68"
+        >
+          <defs></defs>
+          <g id="Layer_1-2" data-name="Layer 1">
+            <g>
+              <g>
+                <circle class="cls-1" cx="30.65" cy="27.54" r="6.65" />
+                <path
+                  class="cls-1"
+                  d="M30.31,53.93H13.81c0-9.05,7.44-16.49,16.49-16.49s16.49,7.44,16.49,16.49c0,0,0,0,0,.01H30.31Z"
+                />
+              </g>
+              <path
+                class="cls-2"
+                d="M51.14,9.76C45.77,4.03,38.42,.5,30.31,.5S14.85,4.03,9.48,9.76C3.94,15.65,.5,23.89,.5,32.99c0,5.99,1.49,11.59,4.09,16.41l3.59,5.35,22.13,33.03,22.13-33.03,3.59-5.35c2.6-4.82,4.09-10.42,4.09-16.41,0-9.1-3.44-17.34-8.98-23.23ZM30.31,53.34c-11.8,0-21.36-9.56-21.36-21.36S18.51,10.62,30.31,10.62s21.35,9.57,21.35,21.36-9.56,21.36-21.35,21.36Z"
+              />
+            </g>
+          </g>
+        </svg>
+        <img className="absolute rounded-full top-[5px] left-[3px] w-[42px]" src="https://testing.hikalcrm.com/storage/profile-pictures/102.jpg" alt=""/>
+      </Box>
       <div className="w-full flex items-center justify-between pb-3">
         <div className="flex items-center mb-2">
           <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
@@ -203,7 +221,7 @@ const UserLocationComponent = () => {
             } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
           >
             {/* MAP */}
-            { !load?.isLoaded ? (
+            {!load?.isLoaded ? (
               <div>Your map is loading...</div>
             ) : (
               <>
@@ -230,11 +248,12 @@ const UserLocationComponent = () => {
                             lng: parseFloat(user.longitude),
                           }}
                           icon={{
-                            url:
-                              selectedLocation &&
-                              selectedLocation.user_id === user.user_id
-                                ? "/userpin.svg" //CHANGE FOR SELECTED
-                                : user?.profile_picture || "/userpin.svg",
+                            url: generateCompositeImage(),
+                            // url:
+                            //   selectedLocation &&
+                            //   selectedLocation.user_id === user.user_id
+                            //     ? user?.profile_picture //CHANGE FOR SELECTED
+                            //     : "/userpin.svg",
                             // scaledSize: window.google
                             //   ? new window.google.maps.Size(
                             //       selectedLocation &&
@@ -270,7 +289,7 @@ const UserLocationComponent = () => {
                             // setselectedLocation(user);
                             handlePinClick(user);
                           }}
-                        />
+                        ></Marker>
 
                         {selectedLocation && (
                           <InfoWindow

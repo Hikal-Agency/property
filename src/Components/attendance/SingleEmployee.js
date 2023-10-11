@@ -37,7 +37,6 @@ const SingleEmployee = ({ user }) => {
     darkModeColors,
     setopenBackDrop,
     BACKEND_URL,
-    setUser,
     DataGridStyles,
     pageState,
     setpageState,
@@ -58,12 +57,9 @@ const SingleEmployee = ({ user }) => {
   const { hasPermission } = usePermission();
 
   const [cut_salary, setCutSalary] = useState();
-  const [PersonalInfo, setPersonalInfo] = useState({});
-  const navigate = useNavigate();
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [empData, setEmpData] = useState(null);
   const [showDailogue, setDialogue] = useState(false);
-  const [showApproval, setApproval] = useState(false);
   const [passwordConfirm, setPasswordConfirm] = useState(false);
   console.log("cut: ", cut_salary);
 
@@ -100,11 +96,6 @@ const SingleEmployee = ({ user }) => {
       renderCell: (cellValues) => {
         const date = moment(cellValues.row.check_datetime).format("YYYY-MM-DD");
         return date;
-        // (
-        //   <div>
-        //     {moment(cellValues.row.check_datetime).format("YYYY-MM-DD")}
-        //   </div>
-        // );
       },
     },
     {
@@ -152,7 +143,6 @@ const SingleEmployee = ({ user }) => {
       flex: 1,
       renderCell: (params) => {
         if (params.row.is_late === 1 || params.row.is_late === 2) {
-          // If there are late minutes, display the number of minutes as a string
           return params.row.late_minutes + " minutes";
         } else if (hasPermission("mark_late")) {
           // If there are no late minutes, return the buttons wrapped in a component
@@ -193,6 +183,22 @@ const SingleEmployee = ({ user }) => {
         }
       },
     },
+    
+    {
+      field: "extra_minutes",
+      headerAlign: "center",
+      headerName: "Extra",
+      minWidth: 80,
+      flex: 1,
+      renderCell: (params) => {
+        if(params.row.late_minutes <= 0) {
+          return params.row.late_minutes?.slice(1) + " minutes";
+        } else {
+          return "-";
+        }
+      },
+    },
+
 
     // LATE REASON
     {
