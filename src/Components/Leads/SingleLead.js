@@ -419,6 +419,15 @@ const SingleLead = ({
     );
   };
 
+  useEffect(() => {
+    // Open the modal after a short delay to allow the animation to work
+    const timeout = setTimeout(() => {
+      setOpen(true);
+    }, 100);
+    
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <>
       <Modal
@@ -433,9 +442,9 @@ const SingleLead = ({
           timeout: 500,
         }}
       >
-        <div className="w-[100vw] h-[100vh] flex items-start justify-end">
-          <button
-            onClick={handleLeadModelClose}
+        <div className="modal-container w-[100vw] h-[100vh] flex items-start justify-end">
+          <button onClick={handleLeadModelClose}
+
             className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
           >
             <MdClose

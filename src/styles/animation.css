@@ -261,4 +261,18 @@
     backdrop-filter: blur(10px);
     /* border: 1px solid rgba(255,255,255,0.25); */
 }
+
+/* SLIDE MODAL FROM RIGHT  */
+.modal-container {
+    animation: slideFromRight 1s ease-in-out; /* Animation duration and easing */
+}
+
+@keyframes slideFromRight {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+}
   
