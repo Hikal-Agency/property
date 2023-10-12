@@ -23,6 +23,8 @@ import {
   BsBell,
   BsClock,
   BsClockFill,
+  BsApple,
+  BsAndroid2
 } from "react-icons/bs";
 import {
   MdDarkMode,
@@ -50,7 +52,7 @@ const NavButton = ({
   handleClose,
   dotColor,
 }) => (
-  <Tooltip title={title} arrow placement="bottom">
+  // <Tooltip title={title} arrow placement="bottom">
     <button
       type="button"
       onMouseEnter={customFunc}
@@ -63,7 +65,7 @@ const NavButton = ({
       />
       {icon}
     </button>
-  </Tooltip>
+  // </Tooltip>
 );
 
 const Navbar = () => {
@@ -345,7 +347,7 @@ const Navbar = () => {
           {/* THEME  */}
           {/* {!themeBgImg && */}
           <Tooltip
-            title={currentMode === "dark" ? "light mode" : "dark mode"}
+            title={currentMode === "dark" ? "Light mode" : "Dark mode"}
             arrow
             placement="bottom"
           >
@@ -498,6 +500,58 @@ const Navbar = () => {
                   </div>
 
                   <ColorSchemeMenuItem />
+
+                  {/* DOWNLOAD MOBILE APP  */}
+                  <div className="grid grid-cols-2 gap-2">
+                    {/* iOS  */}
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-primary" : "bg-primary"
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                    >
+                      {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
+                      <div className="flex items-center justify-start">
+                        <div className={`p-1 rounded-full mr-2`}>
+                          <BsApple size={18} color={"#FFFFFF"} />
+                        </div>
+                        <div className="flex justify-between items-center w-full h-full text-white">
+                          <div className="flex items-center">
+                            <p className="font-semibold mx-1 mr-2">
+                              Hikal CRM<br />iOS
+                            </p>
+                          </div>
+                          <VscLock
+                            size={14}
+                            color={"#FFFFFF"}
+                            className="mr-2"
+                          />
+                        </div>
+                      </div>
+                      {/* </Link> */}
+                    </div>
+
+                    {/* ANDROID  */}
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-primary" : "bg-primary"
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                    >
+                      {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
+                      <div className="flex items-center justify-start">
+                      <div className={`p-1 rounded-full mr-2`}>
+                          <BsAndroid2 size={18} color={"#FFFFFF"} />
+                        </div>
+                        <div className="flex justify-between items-center w-full h-full text-white">
+                          <div className="flex items-center">
+                            <p className="font-semibold mx-1 mr-2">
+                              Hikal CRM<br />Android
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      {/* </Link> */}
+                    </div>
+                  </div>
 
                   {/* LOGIN HISTORY  */}
                   <div

@@ -74,6 +74,7 @@ import Listings from "./listings";
 import SingleListingsPage from "./listings/SingleListingsPage";
 import ListingUsers from "./listingsUsers";
 import Buyers from "./listingsUsers/buyers";
+import AllLiveLeads from "./liveleads";
 
 const libraries = ["places"];
 
@@ -148,6 +149,11 @@ const routes = [
     path: "/freshleads/:lead_type",
     element: <AllHotLeads />,
     pageName: "Hot Leads",
+  },
+  {
+    path: "/liveleads/:lead_type",
+    element: <AllLiveLeads />,
+    pageName: "Live Call Leads",
   },
   {
     path: "/personalleads/:lead_type",
