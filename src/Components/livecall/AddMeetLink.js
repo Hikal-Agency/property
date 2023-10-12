@@ -6,6 +6,7 @@ import {
   IconButton,
   Modal,
   TextField,
+  Tooltip
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
@@ -14,19 +15,8 @@ import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import "react-phone-number-input/style.css";
-import dayjs from "dayjs";
-import { BsCalendarDate, BsClock, BsPen } from "react-icons/bs";
-import { AiOutlineMail } from "react-icons/ai";
+import { MdAddLink } from "react-icons/md";
 
-import {
-  DatePicker,
-  LocalizationProvider,
-  // TimePicker,
-} from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-
-import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
-import moment from "moment";
 
 const AddMeetLink = ({
   LeadModelOpen,
@@ -49,13 +39,7 @@ const AddMeetLink = ({
   const [value, setValue] = useState();
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
-  const [ReminderNotes, setReminderNotes] = useState("");
-  const [ReminderEmail, setReminderEmail] = useState(User?.userEmail);
-  const [reminderDate, setReminderDate] = useState(null);
-  const [reminderTime, setReminderTime] = useState(null);
-  const [reminderTimeValue, setTimeValue] = useState({});
-
-  console.log("reminder:: ", reminderDate);
+  const [MeetLink, setMeetLink] = useState("");
 
   const [error, setError] = useState(false);
   const style = {
@@ -63,46 +47,26 @@ const AddMeetLink = ({
     boxShadow: 24,
   };
 
-  const AddReminderFunction = async () => {
+  const AddMeetLinkFunction = async () => {
     setbtnloading(true);
-    if (!ReminderEmail) {
-      toast.error("Email is required.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
 
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setbtnloading(false);
-    }
     const token = localStorage.getItem("auth-token");
-    const creationDate = new Date();
-    const AddReminderData = new FormData();
-    AddReminderData.append("reminder_note", ReminderNotes);
-    AddReminderData.append("reminder_time", reminderTime);
-    AddReminderData.append("reminder_date", reminderDate);
-    AddReminderData.append("email", ReminderEmail);
-    AddReminderData.append("leadName", LeadData?.leadName);
-    AddReminderData.append("lead_id", LeadData?.leadId);
-    AddReminderData.append("user_id", User?.id);
-    AddReminderData.append("reminder_status", "Pending");
-    // AddReminderData.append("reminder_enquiryType", LeadData?.enquiryType);
-    // AddReminderData.append("reminder_project", LeadData?.project);
+    // const creationDate = new Date();
+    const AddLeadData = new FormData();
+    AddLeadData.append("id", LeadData.leadId);
+    AddLeadData.append("meet_link", MeetLink);
 
     await axios
-      .post(`${BACKEND_URL}/reminders`, AddReminderData, {
+      .post(`${BACKEND_URL}/leads/${LeadData.leadId}`, AddLeadData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       })
       .then((result) => {
-        console.log("Reminder added successfull");
+        console.log("Meeting link sent successfully!");
         console.log(result);
-        toast.success("Reminder Added Successfully", {
+        toast.success("Meeting link sent successfully!", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -115,7 +79,7 @@ const AddMeetLink = ({
         handleLeadModelClose();
       })
       .catch((err) => {
-        toast.error("Error in adding reminder", {
+        toast.error("Error in sending meeting link", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -147,7 +111,7 @@ const AddMeetLink = ({
           style={style}
           className={`w-[calc(100%-20px)] md:w-[50%]  ${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-          } absolute top-1/2 left-1/2 p-5 rounded-md`}
+          } absolute top-1/2 left-1/2 p-4 rounded-md`}
         >
           <IconButton
             sx={{
@@ -160,294 +124,49 @@ const AddMeetLink = ({
           >
             <IoMdClose size={18} />
           </IconButton>
-          <h1
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-black"
-            } text-center font-semibold text-lg pb-7`}
-          >
-            Reminder
-          </h1>
+          <div className="w-full flex items-center pb-3">
+            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+            <h1
+              className={`mr-2 text-lg font-semibold ${
+                currentMode === "dark"
+                  ? "text-white"
+                  : "text-black"
+              }`}
+            >
+              Meeting Link
+            </h1>
+            <Tooltip title="Create Meeting Link" arrow>
+              <button className="bg-primary text-white mx-2 rounded-full p-2 text-sm font-semibold">
+                <MdAddLink size={16} />
+              </button>
+            </Tooltip>
+          </div>
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              AddReminderFunction();
+              AddMeetLinkFunction();
             }}
           >
-            <div className="reminder grid grid-cols-1 md:grid-cols-1 sm:grid-cols-1 gap-5">
-              <div className="space-y-5">
-                <Box sx={darkModeColors}>
-                  <TextField
-                    id="LeadName"
-                    type={"text"}
-                    sx={{
-                      "& input": {
-                        fontFamily: "Noto Kufi Arabic",
-                      },
-                    }}
-                    label="Reminder Note"
-                    className="w-full"
-                    variant="outlined"
-                    size="small"
-                    required
-                    value={ReminderNotes}
-                    onChange={(e) => setReminderNotes(e.target.value)}
-                    InputProps={{
-                      endAdornment: (
-                        <IconButton>
-                          <BsPen size={16} color={"#AAAAAA"} />
-                        </IconButton>
-                      ),
-                    }}
-                  />
-                </Box>
-                <Box sx={darkModeColors}>
-                  <TextField
-                    id="LeadName"
-                    type={"text"}
-                    sx={{
-                      "& input": {
-                        fontFamily: "Noto Kufi Arabic",
-                        margintTop: "10px !important",
-                      },
-                    }}
-                    label="Email"
-                    className="w-full mt-3"
-                    variant="outlined"
-                    size="small"
-                    required
-                    value={ReminderEmail}
-                    onChange={(e) => setReminderEmail(e.target.value)}
-                    InputProps={{
-                      endAdornment: (
-                        <IconButton>
-                          <AiOutlineMail size={16} color={"#AAAAAA"} />
-                        </IconButton>
-                      ),
-                    }}
-                  />
-                </Box>
-
-                {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    views={["year", "month", "day"]}
-                    onChange={(newValue) => {
-                      setReminderDate(
-                        formatNum(newValue?.$d?.getUTCFullYear()) +
-                          "-" +
-                          formatNum(newValue?.$d?.getUTCMonth() + 1) +
-                          "-" +
-                          formatNum(newValue?.$d?.getUTCDate() + 1)
-                      );
-                    }}
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        marginRight: "50px",
-                      },
-                    }}
-                    format="yyyy-MM-dd"
-                    InputProps={{ required: true }}
-                    value={reminderDate}
-                    renderInput={(params) => (
-                      <TextField
-                        label="Reminder Date"
-                        sx={{
-                          "& .MuiFormLabel-root": {
-                            background: currentMode === "dark" ? "#111827" : "",
-                            color: currentMode === "dark" ? "white" : "",
-                          },
-                          "& input": {
-                            color: currentMode === "dark" ? "white" : "black",
-                          },
-                          "&": {
-                            borderRadius: "4px",
-                            border:
-                              currentMode === "dark" ? "1px solid white" : "",
-                          },
-                          "& .MuiSvgIcon-root": {
-                            color:
-                              currentMode === "dark" ? "#AAAAAA" : "#AAAAAA",
-                            marginRight: "10px",
-                          },
-                        }}
-                        fullWidth
-                        {...params}
-                        onKeyDown={(e) => e.preventDefault()}
-                        readOnly={true}
-                        size="small"
-                        // InputProps={{
-                        //   endAdornment: (
-                        //     <IconButton>
-                        //       <BsCalendarDate size={16} color={"#AAAAAA"} />
-                        //     </IconButton>
-                        //   ),
-                        // }}
-                      />
-                    )}
-                    minDate={dayjs().startOf("day").toDate()}
-                  />
-                </LocalizationProvider> */}
-
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    views={["year", "month", "day"]}
-                    onChange={(newValue) => {
-                      // setReminderDate(
-                      //   formatNum(newValue?.$d?.getUTCFullYear()) +
-                      //     "-" +
-                      //     formatNum(newValue?.$d?.getUTCMonth() + 1) +
-                      //     "-" +
-                      //     formatNum(newValue?.$d?.getUTCDate() + 1)
-                      // );
-
-                      const formattedDate = moment(newValue?.$d).format(
-                        "YYYY-MM-DD"
-                      );
-                      setReminderDate(formattedDate);
-                    }}
-                    format="yyyy-MM-dd"
-                    InputProps={{ required: true }}
-                    value={reminderDate}
-                    renderInput={(params) => (
-                      <TextField
-                        label="Reminder Date"
-                        sx={{
-                          "& .MuiFormLabel-root": {
-                            background: currentMode === "dark" ? "#111827" : "",
-                            color: currentMode === "dark" ? "white" : "",
-                          },
-                          "& input": {
-                            color: currentMode === "dark" ? "white" : "black",
-                          },
-                          "&": {
-                            borderRadius: "4px",
-                            border:
-                              currentMode === "dark"
-                                ? "1px solid white"
-                                : "0px solid black",
-                          },
-                          "& .MuiSvgIcon-root": {
-                            color: "#AAAAAA",
-                            marginRight: "10px",
-                          },
-                        }}
-                        fullWidth
-                        {...params}
-                        onKeyDown={(e) => e.preventDefault()}
-                        readOnly={true}
-                        size="small"
-                      />
-                    )}
-                    minDate={dayjs().startOf("day").toDate()}
-                  />
-                </LocalizationProvider>
-
-                {/*  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker
-                    ampm={false}
-                    format="HH:mm"
-                    value={reminderTimeValue}
-                    onChange={(newValue) => {
-                      setReminderTime(
-                        formatNum(newValue?.$d?.getHours()) +
-                          ":" +
-                          formatNum(newValue?.$d?.getMinutes())
-                      );
-                      setTimeValue(newValue);
-                    }}
-                    InputProps={{ required: true }}
-                    sx={{ marginTop: "3px !important" }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        fullWidth
-                        label="Reminder Time"
-                        sx={{
-                          "& .MuiFormLabel-root": {
-                            background: currentMode === "dark" ? "#111827" : "",
-                            color: currentMode === "dark" ? "white" : "",
-                          },
-                          "& input": {
-                            color: currentMode === "dark" ? "white" : "black",
-                          },
-                          "& .MuiSvgIcon-root": {
-                            color: currentMode === "dark" ? "white" : "black",
-                          },
-                          "&": {
-                            borderRadius: "4px",
-                            border:
-                              currentMode === "dark" ? "1px solid white" : "",
-                          },
-                          "&:focus": {
-                            border: "",
-                          },
-                        }}
-                        onKeyDown={(e) => e.preventDefault()}
-                        readOnly={true}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>{" "}
-                */}
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <MobileTimePicker
-                    // ampm={false}
-                    format="hh:mm A"
-                    value={reminderTimeValue}
-                    onChange={(newValue) => {
-                      setReminderTime(
-                        formatNum(newValue?.$d?.getHours()) +
-                          ":" +
-                          formatNum(newValue?.$d?.getMinutes())
-                      );
-                      setTimeValue(newValue);
-                    }}
-                    InputProps={{ required: true }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        fullWidth
-                        size="small"
-                        label="Reminder Time"
-                        sx={{
-                          "& .MuiFormLabel-root": {
-                            background: currentMode === "dark" ? "#111827" : "",
-                            color: currentMode === "dark" ? "white" : "",
-                          },
-                          "& input": {
-                            color: currentMode === "dark" ? "white" : "black",
-                          },
-                          "& .MuiSvgIcon-root": {
-                            color: currentMode === "dark" ? "white" : "black",
-                          },
-                          "&": {
-                            borderRadius: "4px",
-                            // border:
-                            //   currentMode === "dark" ? "1px solid white" : "",
-                          },
-                          "&:focus": {
-                            border: "",
-                          },
-                        }}
-                        onKeyDown={(e) => e.preventDefault()}
-                        readOnly={true}
-                        InputProps={{
-                          endAdornment: (
-                            <IconButton>
-                              <BsClock size={16} color={"#AAAAAA"} />
-                            </IconButton>
-                          ),
-                        }}
-                      />
-                    )}
-                    // views={["hours", "minutes", "seconds"]}
-                    // defaultView={"hours"}
-                  />
-                </LocalizationProvider>
-              </div>
+            <div className="text-[#AAAAAA] text-sm pb-3 w-full text-center">
+              Create a meeting, then copy the invite link and paste it here to invite your client for the live meeting!
             </div>
-
+            <Box sx={darkModeColors} className="my-3">
+              <TextField
+                id="MeetLink"
+                type={"text"}
+                label="Meeting Link"
+                className="w-full"
+                variant="outlined"
+                size="small"
+                multiline
+                minRows={2}
+                required
+                value={MeetLink}
+                onChange={(e) => setMeetLink(e.target.value)}
+              />
+            </Box>
             <Button
-              className={`min-w-fit w-full mt-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
+              className={`min-w-fit w-full mt-3 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
               ripple={true}
               size="lg"
               style={{color: "white"}}
@@ -455,11 +174,11 @@ const AddMeetLink = ({
               disabled={btnloading ? true : false}
             >
               {btnloading ? (
-                <div className="flex items-center justify-center space-x-1 mt-5">
+                <div className="flex items-center justify-center space-x-1">
                   <CircularProgress size={18} sx={{ color: "white" }} />
                 </div>
               ) : (
-                <span>Set Reminder</span>
+                <span>Send Meeting Link</span>
               )}
             </Button>
           </form>
