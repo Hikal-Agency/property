@@ -34,24 +34,6 @@ const SingleImageModal = ({
     setAnchorEl(null);
   };
 
-  function download(responseData) {
-    const blob = new Blob([responseData], { type: "image/jpeg" });
-    const url = URL.createObjectURL(blob);
-
-    console.log("URL::", url);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "download.jpg";
-    a.style.display = "none";
-
-    document.body.appendChild(a);
-    a.click();
-
-    URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-  }
-
   async function downloadImage(id) {
     let url = `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images/download?image_ids[0]=${id}`;
     const token = localStorage.getItem("auth-token");
@@ -62,7 +44,6 @@ const SingleImageModal = ({
         Authorization: "Bearer " + token,
       },
     });
-    download(response?.data);
   }
 
   const handleDownloadSingle = () => {

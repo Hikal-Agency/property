@@ -57,7 +57,6 @@ const Livelocation = () => {
     FetchLocations(token);
   }, []);
 
-  console.log("meetinglocations:: ", DashboardData);
 
   return (
     <>

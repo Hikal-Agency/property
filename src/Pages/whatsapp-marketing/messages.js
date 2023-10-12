@@ -1247,7 +1247,7 @@ const AllLeads = () => {
         </Box>
 
         <Box className="flex items-center justify-end">
-          <Tooltip title="Add New Contact" arrow>
+          <Tooltip title="cContact" arrow>
             <Button
               onClick={() => {
                 setAddLeadModalOpen(true);

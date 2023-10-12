@@ -12,7 +12,7 @@ import { BsPinMap } from "react-icons/bs";
 import { BiCurrentLocation } from "react-icons/bi";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { Box, IconButton, TextField, Tooltip } from "@mui/material";
-import { toPng } from "html-to-image";
+// import { toPng } from "html-to-image";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
@@ -105,15 +105,15 @@ const UserLocationComponent = () => {
     FetchLastLocation(filterDate);
   }, [filterDate]);
 
-  const generateCompositeImage = () => {
-    if(imageContainerRef.current) {
-      toPng(imageContainerRef.current).then(function (dataUrl) {
-        return dataUrl;
-      });
-    }
-  };
+  // const generateCompositeImage = () => {
+  //   if(imageContainerRef.current) {
+  //     toPng(imageContainerRef.current).then(function (dataUrl) {
+  //       return dataUrl;
+  //     });
+  //   }
+  // };
 
-  generateCompositeImage();
+  // generateCompositeImage();
 
   return (
     <>
@@ -248,12 +248,12 @@ const UserLocationComponent = () => {
                             lng: parseFloat(user.longitude),
                           }}
                           icon={{
-                            url: generateCompositeImage(),
-                            // url:
-                            //   selectedLocation &&
-                            //   selectedLocation.user_id === user.user_id
-                            //     ? user?.profile_picture //CHANGE FOR SELECTED
-                            //     : "/userpin.svg",
+                            
+                            url:
+                              selectedLocation &&
+                              selectedLocation.user_id === user.user_id
+                                ? user?.profile_picture //CHANGE FOR SELECTED
+                                : "/userpin.svg",
                             // scaledSize: window.google
                             //   ? new window.google.maps.Size(
                             //       selectedLocation &&

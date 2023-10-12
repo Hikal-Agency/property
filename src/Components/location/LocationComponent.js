@@ -1,6 +1,5 @@
 import moment from "moment";
-import React , { useState } from "react";
-import { Tooltip } from "@mui/material";
+import React from "react";
 import { useEffect } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import MapContainer from "./MapComponent";
@@ -20,8 +19,6 @@ const LocationComponent = ({ upcoming_meetings }) => {
     console.log("Clicked on meeting:", meeting);
     setSelectedMeeting(meeting);
   }
-
-  console.log("upcommings meetins locations : ", upcoming_meetings);
 
   useEffect(() => {
     console.log("upcoming meetings are");
@@ -53,7 +50,6 @@ const LocationComponent = ({ upcoming_meetings }) => {
           } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
         >
           {/* MAP */}
-          {/* {upcoming_meetings?.length > 0 && ( */}
           <MapContainer 
             location={upcoming_meetings} 
             selectedMeeting={selectedMeeting}

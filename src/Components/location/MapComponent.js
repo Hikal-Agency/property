@@ -13,7 +13,6 @@ const MapContainer = ({ location, selectedMeeting, clearSelectedMeeting }) => {
   const validLocations = location?.filter((meeting) => {
     return meeting.mLat && meeting.mLong;
   });
-  console.log("valid locations: ", validLocations);
 
   const mapContainerStyle = {
     width: "100%",
@@ -25,8 +24,6 @@ const MapContainer = ({ location, selectedMeeting, clearSelectedMeeting }) => {
     zoomControl: true,
     mapTypeControl: true,
   };
-
-  // const [selectedMeeting, setSelectedMeeting] = useState(null);
 
   return (
     <>
@@ -41,7 +38,6 @@ const MapContainer = ({ location, selectedMeeting, clearSelectedMeeting }) => {
         >
           {validLocations?.length > 0 ? (
             validLocations?.map((meeting) => {
-              console.log("locations on map: ", validLocations);
               return (
                 <MarkerF
                   key={meeting.id}

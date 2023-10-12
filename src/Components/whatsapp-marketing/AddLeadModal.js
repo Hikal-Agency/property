@@ -15,7 +15,8 @@ const style = {
 const AddLeadModal = ({
     addLeadModalOpen, 
     handleCloseAddLeadModal, 
-    FetchLeads
+    FetchLeads, 
+    noSourceDropdown
 }) => {
     const {currentMode} = useStateContext();
 
@@ -51,7 +52,7 @@ const AddLeadModal = ({
             <IoMdClose size={18} />
           </IconButton>
 
-          <AddLeadComponent FetchLeads={FetchLeads}/>
+          <AddLeadComponent handleCloseAddLeadModal={handleCloseAddLeadModal} noSourceDropdown={noSourceDropdown} FetchLeads={FetchLeads}/>
         </div>
       </Modal>
     </>

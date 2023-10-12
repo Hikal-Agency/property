@@ -23,7 +23,7 @@ import PhoneInput, {
 import classNames from "classnames";
 import Loader from "../Loader";
 
-const AddLeadComponent = ({ FetchLeads }) => {
+const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdown }) => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
   const { hasPermission } = usePermission();
@@ -47,7 +47,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
   const [ForType, setForType] = useState("");
   const [LanguagePrefered, setLanguagePrefered] = useState("");
   const [LeadStatus, setLeadStatus] = useState("");
-  const [LeadSource, setLeadSource] = useState("");
+  const [LeadSource, setLeadSource] = useState(noSourceDropdown ? "Secondary" : "");
   const [Manager, setManager] = useState("");
   const [SalesPerson2, setSalesPerson2] = useState("");
   const [LeadName, setLeadName] = useState("");
@@ -185,8 +185,13 @@ const AddLeadComponent = ({ FetchLeads }) => {
     if (LanguagePrefered) LeadData.append("language", LanguagePrefered);
     if (LeadStatus) LeadData.append("leadStatus", LeadStatus);
     if (LeadSource) LeadData.append("leadSource", LeadSource);
+
+    if(!LeadSource && noSourceDropdown) {
+      LeadData.append("leadSource", "Secondary");
+    }
     LeadData.append("feedback", "New"); //Always appended
     LeadData.append("agency_id", User?.agency); //Always appended
+    
     if (coldCall) LeadData.append("coldCall", coldCall);
     if (LeadNotes) LeadData.append("notes", LeadNotes);
 
@@ -246,6 +251,10 @@ const AddLeadComponent = ({ FetchLeads }) => {
           progress: undefined,
           theme: "light",
         });
+
+        if(handleCloseAddLeadModal) {
+          handleCloseAddLeadModal();
+        }
 
         const recipients = [];
         if (SalesPerson2) {
@@ -713,6 +722,8 @@ const AddLeadComponent = ({ FetchLeads }) => {
                     <MenuItem value={"Urdu"}>Urdu</MenuItem>
                   </TextField>
 
+                  {!noSourceDropdown &&
+
                   <TextField
                     id="LeadSource"
                     value={LeadSource}
@@ -761,6 +772,7 @@ const AddLeadComponent = ({ FetchLeads }) => {
 
                     <MenuItem value={"Personal"}>Personal</MenuItem>
                   </TextField>
+                  }
                 </Box>
               </div>
             </div>

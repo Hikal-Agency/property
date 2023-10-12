@@ -1,33 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
-import { Box } from "@mui/material";
 
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
-import usePermission from "../../utils/usePermission";
+import {IoMdAdd} from "react-icons/io";
+import { Button } from "@mui/material";
+import AddLeadModal from "../../Components/whatsapp-marketing/AddLeadModal";
 
-import { BiMessageRoundedDots } from "react-icons/bi";
-import {
-  FaSnapchatGhost,
-  FaYoutube,
-  FaFacebookF,
-  FaTiktok,
-  FaWhatsapp,
-} from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { MdCampaign } from "react-icons/md";
-import { TbWorldWww } from "react-icons/tb";
 
 const Buyers = () => {
   const { currentMode, setopenBackDrop, pageState, BACKEND_URL } =
     useStateContext();
   const location = useLocation();
-  const { hasPermission } = usePermission();
   const lead_type2 = location.pathname.split("/")[2];
   var lead_type = lead_type2.replace(/%20/g, " ");
   const pathname2 = location.pathname.split("/")[1];
+  const [createLeadModalOpen, setCreateLeadModalOpen] = useState(false);
   const [loading, setloading] = useState(true);
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -51,22 +42,34 @@ const Buyers = () => {
             }`}
           >
             {/* <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between"> */}
-              <div className="flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-                <h1
-                  className={`text-lg font-semibold ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
+              <div className="flex justify-between items-center">
+                <div className="flex items-center pb-3">
+                  <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                  <h1
+                    className={`text-lg font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    Secondary Leads <span className="capitalize">({lead_type})</span>{" "}
+                    <span className="bg-primary text-white px-3 py-1 ml-2 rounded-sm my-auto">
+                      {pageState?.total}
+                    </span>
+                  </h1>
+                </div>
+                <Button
+                  variant="contained"
+                  className="bg-btn-primary flex items-center gap-x-3 px-2"
+                  size="small"
+                  onClick={() => setCreateLeadModalOpen(true)}
                 >
-                  Secondary Leads <span className="capitalize">({lead_type})</span>{" "}
-                  <span className="bg-primary text-white px-3 py-1 ml-2 rounded-sm my-auto">
-                    {pageState?.total}
-                  </span>
-                </h1>
+                  <IoMdAdd size={16} />
+                  Add New Lead
+                </Button>
               </div>
             {/* </div> */}
             
             <AllLeads
+            key={key}
               BACKEND_URL={BACKEND_URL}
               lead_type={lead_type}
               lead_origin={pathname2}
@@ -75,6 +78,16 @@ const Buyers = () => {
           </div>
         )}
       </div>
+
+      
+      {createLeadModalOpen && (
+        <AddLeadModal
+        noSourceDropdown={true}
+        FetchLeads={() => setKey((key) => key + 1)}
+          addLeadModalOpen={createLeadModalOpen}
+          handleCloseAddLeadModal={() => setCreateLeadModalOpen(false)}
+        />
+      )}
     </>
   );
 };
