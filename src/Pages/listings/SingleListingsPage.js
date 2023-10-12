@@ -25,6 +25,7 @@ import SelectImagesModal from "./SelectImagesModal";
 import SelectDocumentModal from "./SelectDocumentModal";
 import EditListingModal from "../../Components/Leads/listings/EditListingComponent";
 import SingleImageModal from "./SingleImageModal";
+import SingleDocModal from "./SingleDocModal";
 
 const SingleListingsPage = () => {
   const [loading, setloading] = useState(true);
@@ -32,6 +33,11 @@ const SingleListingsPage = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [singleImageModal, setSingleImageModal] = useState({
+    isOpen: false, 
+    url: "", 
+    id: null
+  })
+  const [singleDocModal, setSingleDocModal] = useState({
     isOpen: false, 
     url: "", 
     id: null
@@ -394,7 +400,7 @@ const SingleListingsPage = () => {
                           <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
                             {listData?.documents?.map((l) => {
                               return l?.doc_url ? (
-                                <div className="p-2 flex items-center justify-center">
+                                <div onClick={() => setSingleDocModal({isOpen: true, url: l?.doc_url, id: l?.id})} className="p-2 flex items-center justify-center">
                                   <div className="w-full text-center">
                                     {/* <div className="w-full flex justify-center"> */}
                                     <BsFileEarmarkText
@@ -426,6 +432,14 @@ const SingleListingsPage = () => {
               <SingleImageModal
                 singleImageModal={singleImageModal}
                 handleClose={() => setSingleImageModal({ isOpen: false })}
+                fetchSingleListing={fetchSingleListing}
+              />
+            )}
+
+                {singleDocModal?.isOpen && (
+              <SingleDocModal
+                singleImageModal={singleDocModal}
+                handleClose={() => setSingleDocModal({ isOpen: false })}
                 fetchSingleListing={fetchSingleListing}
               />
             )}

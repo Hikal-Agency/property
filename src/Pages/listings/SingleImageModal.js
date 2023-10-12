@@ -34,17 +34,45 @@ const SingleImageModal = ({
     setAnchorEl(null);
   };
 
+  // async function downloadImage(id) {
+  //   let url = `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images/download?image_ids[0]=${id}`;
+  //   const token = localStorage.getItem("auth-token");
+  //   const response = await axios.get(url, {
+  //     headers: {
+  //       "Content-Type": "application/octet-stream",
+  //       "Content-Disposition": 'attachment; filename="picture.png"',
+  //       Authorization: "Bearer " + token,
+  //     },
+  //   });
+  // }
+
   async function downloadImage(id) {
-    let url = `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images/download?image_ids[0]=${id}`;
-    const token = localStorage.getItem("auth-token");
-    const response = await axios.get(url, {
-      headers: {
-        "Content-Type": "image/png",
-        "Content-Disposition": 'attachment; filename="picture.png"',
-        Authorization: "Bearer " + token,
-      },
-    });
+    try {
+      const url = `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images/download?image_ids[0]=${id}`;
+      const token = localStorage.getItem("auth-token");
+  
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: 'blob', // Set the response type to 'blob' to download the image
+      });
+  
+      if (response.status === 200) {
+        // Create a blob URL and trigger a download
+        const blob = new Blob([response.data], { type: response.headers['content-type'] });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'picture.png'; // Set the desired file name
+        link.click();
+      } else {
+        console.error('Failed to download image');
+      }
+    } catch (error) {
+      console.error('Error while downloading image:', error);
+    }
   }
+  
 
   const handleDownloadSingle = () => {
     downloadImage(singleImageModal?.id);
