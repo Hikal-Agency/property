@@ -628,7 +628,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   </p>
                                                   {/* FEEDBACK  */}
                                                   <p className="font-semibold tracking-wide">
-                                                    Priority has been updated.
+                                                    A new lead has been created.
                                                   </p>
                                                   {/* CREATION DATE  */}
                                                   <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">

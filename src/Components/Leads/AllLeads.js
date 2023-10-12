@@ -42,6 +42,7 @@ import { TbFileImport, TbWorldWww } from "react-icons/tb";
 import { RiMailSendLine } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
 import { VscCallOutgoing } from "react-icons/vsc";
+import { SiGooglemeet } from "react-icons/si";
 
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
@@ -64,6 +65,7 @@ import DeleteLeadModel from "./DeleteLead";
 import BulkImport from "./BulkImport";
 import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
+import AddMeetLink from "../livecall/AddMeetLink";
 import Timeline from "../../Pages/timeline";
 
 const bulkUpdateBtnStyles = {
@@ -161,6 +163,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
   const [AddReminderModelOpen, setAddReminderModelOpen] = useState(false);
+  const [AddMeetLinkModelOpen, setAddMeetLinkModelOpen] = useState(false);
   const [timelineModelOpen, setTimelineModelOpen] = useState(false);
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
   const handleUpdateLeadModelClose = () => {
@@ -172,6 +175,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const handleAdReminderModalClose = () => {
     setLeadModelOpen(false);
     setAddReminderModelOpen(false);
+  };
+
+  const handleAddMeetLinkModalOpen = () => setAddMeetLinkModelOpen(true);
+  const handleAddMeetLinkModalClose = () => {
+    setLeadModelOpen(false);
+    setAddMeetLinkModelOpen(false);
   };
 
   const CustomColorSwitch = styled(() => ({
@@ -635,7 +644,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "edit",
       headerName: "Action",
       flex: 1,
-      minWidth: 100,
+      minWidth: 130,
       // maxWidth:200,
       sortable: false,
       filterable: false,
@@ -646,6 +655,25 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           <div
             className={`w-full h-full px-1 flex items-center justify-center`}
           >
+            {/* MEET LINK  */}
+            {lead_origin === "liveleads" && (
+              <>
+              {cellValues.row.meet_link === null || cellValues.row.meet_link === "" || cellValues.row.meet_link === "null" ? (
+                <p
+                  style={{ cursor: "pointer" }}
+                  className={`text-white bg-primary rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}>
+                  <Tooltip title="Send Link" arrow>
+                    <button onClick={() => HandleAddMeetLinkBtn(cellValues)}>
+                      <SiGooglemeet size={16} />
+                    </button>
+                  </Tooltip>
+                </p>
+              ) : (
+                <></>
+              )}
+              </>
+            )}
+
             {/* CALL  */}
             <p
               style={{ cursor: "pointer" }}
@@ -1051,6 +1079,45 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       }
     }
 
+    // LEADS URL GENERATON FOR FRESH LEADS SECTION
+    else if (lead_origin === "liveleads") {
+      if (lead_type === "all") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=10`;
+      } else if (lead_type === "new") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=10&feedback=New`;
+      } else if (lead_type === "no answer") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=10&feedback=No Answer`;
+      } else if (lead_type === "meeting") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=10&feedback=Meeting`;
+      } else if (lead_type === "follow up") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=10&feedback=Follow Up`;
+      } else if (lead_type === "low budget") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=10&feedback=Low Budget`;
+      } else if (lead_type === "not interested") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=10&feedback=Not Interested`;
+      } else if (lead_type === "unreachable") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=10&feedback=Unreachable`;
+      }
+    }
+
     // LEADS URL GENERATON FOR UNASSIGNED LEADS PAGE
     else if (lead_origin === "unassigned") {
       if (lead_type === "fresh") {
@@ -1115,6 +1182,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&unassigned=1&coldCall=3`;
+      } else if (lead_type === "livecall") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&unassigned=1&coldCall=10`;
       }
     }
 
@@ -1203,6 +1274,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadStatus: row?.leadStatus || "-",
           leadCategory: leadCategory || "-",
           coldCall: row?.coldcall,
+          meet_link: row?.meet_link || "",
           notes: row?.notes || "-",
           otp:
             row?.otp === "No OTP" || row?.otp === "No OTP Used"
@@ -1413,6 +1485,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadFor: row?.leadFor || "-",
           leadStatus: row?.leadStatus || "-",
           coldCall: row?.coldcall,
+          meet_link: row?.meet_link || "",
           leadCategory: leadCategory || "-",
           notes: row?.notes || "-",
           otp:
@@ -1480,6 +1553,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     console.log("LEADID: ", params);
     setsingleLeadData(params.row);
     handleAdReminderModalOpen();
+    // setUpdateLeadModelOpen(true);
+  };
+
+  // MEET LINK BUTTON CLICK 
+  const HandleAddMeetLinkBtn = async (params) => {
+    console.log("LEADID: ", params);
+    setsingleLeadData(params.row);
+    handleAddMeetLinkModalOpen();
     // setUpdateLeadModelOpen(true);
   };
 
@@ -2205,6 +2286,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               setLeadModelOpen={setAddReminderModelOpen}
               handleLeadModelOpen={handleAdReminderModalOpen}
               handleLeadModelClose={handleAdReminderModalClose}
+              LeadData={singleLeadData}
+              BACKEND_URL={BACKEND_URL}
+              FetchLeads={FetchLeads}
+            />
+          )}
+
+          {AddMeetLinkModelOpen && (
+            <AddMeetLink
+              LeadModelOpen={AddMeetLinkModelOpen}
+              setLeadModelOpen={setAddMeetLinkModelOpen}
+              handleLeadModelOpen={handleAddMeetLinkModalOpen}
+              handleLeadModelClose={handleAddMeetLinkModalClose}
               LeadData={singleLeadData}
               BACKEND_URL={BACKEND_URL}
               FetchLeads={FetchLeads}

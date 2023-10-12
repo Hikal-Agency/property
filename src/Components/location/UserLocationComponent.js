@@ -227,7 +227,7 @@ const UserLocationComponent = () => {
               <>
                 {LastLocationData ? (
                   <GoogleMap
-                    zoom={selectedLocation ? 16 : 10}
+                    zoom={selectedLocation ? 14 : 10}
                     center={{
                       lat: selectedLocation
                         ? selectedLocation.latitude
@@ -295,7 +295,7 @@ const UserLocationComponent = () => {
                           <InfoWindow
                             position={{
                               lat:
-                                parseFloat(selectedLocation.latitude) + 0.0001,
+                                parseFloat(selectedLocation.latitude),
                               lng: parseFloat(selectedLocation.longitude),
                             }}
                             onCloseClick={() => {

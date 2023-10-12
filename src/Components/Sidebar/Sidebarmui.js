@@ -48,6 +48,7 @@ import {
 } from "react-icons/ri";
 import { SiHotjar } from "react-icons/si";
 import { ImBookmark } from "react-icons/im";
+import { RiLiveFill } from "react-icons/ri";
 import {
   Sidebar,
   Menu,
@@ -633,32 +634,86 @@ const Sidebarmui = () => {
           icon: <BsStopCircleFill />,
           submenu: [
             {
-              name: "Fresh leads",
+              name: "LIVE CALL",
+              link: "/unassigned/livecall",
+              // count: sidebarData?.UNASSIGNED?.fresh,
+            },
+            {
+              name: "Fresh",
               link: "/unassigned/fresh",
               count: sidebarData?.UNASSIGNED?.fresh,
-            },
-            {
-              name: "Cold leads",
-              count: sidebarData?.UNASSIGNED?.cold,
-              link: "/unassigned/coldleads",
-            },
-            {
-              name: "Archived Leads",
-              count: sidebarData?.UNASSIGNED?.warm,
-              link: "/unassigned/archive",
-            },
-            {
-              name: "Personal leads",
-              count: sidebarData?.UNASSIGNED?.personal,
-              link: "/unassigned/personalleads",
             },
             {
               name: "Third Party",
               count: sidebarData?.UNASSIGNED?.third_party,
               link: "/unassigned/thirdpartyleads",
             },
+            {
+              name: "Cold",
+              count: sidebarData?.UNASSIGNED?.cold,
+              link: "/unassigned/coldleads",
+            },
+            {
+              name: "Archived",
+              count: sidebarData?.UNASSIGNED?.warm,
+              link: "/unassigned/archive",
+            },
+            {
+              name: "Personal",
+              count: sidebarData?.UNASSIGNED?.personal,
+              link: "/unassigned/personalleads",
+            },
           ],
         },
+        
+        // FRESH 
+        {
+          name: "Live Call",
+          icon: <RiLiveFill />,
+          submenu: [
+            {
+              name: "All",
+              // count: sidebarData?.HotLeadsCount?.hot,
+              link: "/liveleads/all",
+            },
+            {
+              name: "New",
+              // count: sidebarData?.HotLeadsCount?.new,
+              link: "/liveleads/new",
+            },
+            {
+              name: "Follow Up",
+              // count: sidebarData?.HotLeadsCount?.follow_up,
+              link: "/liveleads/follow up",
+            },
+            {
+              name: "Meeting",
+              // count: sidebarData?.HotLeadsCount?.Meeting,
+              link: "/liveleads/meeting",
+            },
+            {
+              name: "Low Budget",
+              // count: sidebarData?.HotLeadsCount?.low_budget,
+              link: "/liveleads/low budget",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.HotLeadsCount?.no_nswer,
+              link: "/freshleads/no answer",
+            },
+            {
+              name: "Not Interested",
+              count: sidebarData?.HotLeadsCount?.not_interested,
+              link: "/freshleads/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.HotLeadsCount?.unreachable,
+              link: "/freshleads/unreachable",
+            },
+          ],
+        },
+        // FRESH 
         {
           name: "Fresh",
           icon: <SiHotjar />,
@@ -705,7 +760,7 @@ const Sidebarmui = () => {
             },
           ],
         },
-
+        // THIRD PARTY 
         {
           name: "Third party",
           icon: <FaLink />,
@@ -752,6 +807,7 @@ const Sidebarmui = () => {
             },
           ],
         },
+        // COLD 
         {
           name: "Cold",
           icon: <FaSnowflake />,
@@ -819,9 +875,9 @@ const Sidebarmui = () => {
             },
           ],
         },
-
+        // RESHUFFLED 
         {
-          name: "Reshuffle",
+          name: "Reshuffled",
           icon: <FaRandom />,
           // link: "/reshuffleleads",
           submenu: [
@@ -867,6 +923,54 @@ const Sidebarmui = () => {
             },
           ],
         },
+        // ARCHIVED 
+        {
+          name: "Archived",
+          icon: <FaArchive />,
+          submenu: [
+            {
+              name: "All Leads",
+              count: sidebarData?.WarmLeadCount?.all,
+              link: "/archive/all",
+            },
+            {
+              name: "New Leads",
+              count: sidebarData?.WarmLeadCount?.new,
+              link: "/archive/new",
+            },
+            {
+              name: "Follow Up",
+              count: sidebarData?.WarmLeadCount?.follow_up,
+              link: "/archive/follow up",
+            },
+            {
+              name: "Meeting",
+              count: sidebarData?.WarmLeadCount?.Meeting,
+              link: "/archive/meeting",
+            },
+            {
+              name: "Low Budget",
+              count: sidebarData?.WarmLeadCount?.low_budget,
+              link: "/archive/low budget",
+            },
+            {
+              name: "No Answer",
+              count: sidebarData?.WarmLeadCount?.no_nswer,
+              link: "/archive/no answer",
+            },
+            {
+              name: "Not Intrested",
+              count: sidebarData?.WarmLeadCount?.not_interested,
+              link: "/archive/not interested",
+            },
+            {
+              name: "Unreachable",
+              count: sidebarData?.WarmLeadCount?.unreachable,
+              link: "/archive/unreachable",
+            },
+          ],
+        },
+        // PERSONAL 
         {
           name: "Personal",
           icon: <HiUsers />,
@@ -910,53 +1014,6 @@ const Sidebarmui = () => {
               name: "Unreachable",
               count: sidebarData?.PersonalLeadsCount?.unreachable,
               link: "/personalleads/unreachable",
-            },
-          ],
-        },
-
-        {
-          name: "Archived Leads",
-          icon: <FaArchive />,
-          submenu: [
-            {
-              name: "All Leads",
-              count: sidebarData?.WarmLeadCount?.all,
-              link: "/archive/all",
-            },
-            {
-              name: "New Leads",
-              count: sidebarData?.WarmLeadCount?.new,
-              link: "/archive/new",
-            },
-            {
-              name: "Follow Up",
-              count: sidebarData?.WarmLeadCount?.follow_up,
-              link: "/archive/follow up",
-            },
-            {
-              name: "Meeting",
-              count: sidebarData?.WarmLeadCount?.Meeting,
-              link: "/archive/meeting",
-            },
-            {
-              name: "Low Budget",
-              count: sidebarData?.WarmLeadCount?.low_budget,
-              link: "/archive/low budget",
-            },
-            {
-              name: "No Answer",
-              count: sidebarData?.WarmLeadCount?.no_nswer,
-              link: "/archive/no answer",
-            },
-            {
-              name: "Not Intrested",
-              count: sidebarData?.WarmLeadCount?.not_interested,
-              link: "/archive/not interested",
-            },
-            {
-              name: "Unreachable",
-              count: sidebarData?.WarmLeadCount?.unreachable,
-              link: "/archive/unreachable",
             },
           ],
         },
