@@ -436,6 +436,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       // headerClassName: headerClasses.header,
       headerClassName: "break-normal",
+      hide: true,
       flex: 1,
       renderCell: (cellValues) => {
         if (lead_origin === "transfferedleads") {
@@ -639,6 +640,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         }
       },
     },
+    
+    {
+      field: "notes",
+      headerName: "Note",
+      minWidth: 150,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="p-3" style={{
+            fontFamily: "Noto Kufi Arabic"
+          }}>
+            {cellValues.row.notes}
+          </div>
+        );
+      },
+    },
 
     {
       field: "edit",
@@ -657,34 +675,34 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           >
             {/* MEET LINK  */}
             {lead_origin === "liveleads" && (
-              <>
-              {cellValues.row.meet_link === null || cellValues.row.meet_link === "" || cellValues.row.meet_link === "null" ? (
-                <p
-                  style={{ cursor: "pointer" }}
-                  className={`text-white bg-primary rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}>
-                  <Tooltip title="Send Link" arrow>
-                    <button onClick={() => HandleAddMeetLinkBtn(cellValues)}>
-                      <SiGooglemeet size={16} />
-                    </button>
-                  </Tooltip>
-                </p>
-              ) : (
-                <p
-                  style={{ cursor: "pointer" }}
-                  className={`${
-                    currentMode === "dark"
-                      ? "text-[#FFFFFF] bg-[#262626]"
-                      : "text-[#1C1C1C] bg-[#EEEEEE]"
-                  } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
-                >
-                  <Tooltip title="Send Link" arrow>
-                    <button onClick={() => HandleAddMeetLinkBtn(cellValues)}>
-                      <SiGooglemeet size={16} />
-                    </button>
-                  </Tooltip>
-                </p>
-              )}
-              </>
+              cellValues.row.notes.startsWith('Live Video Call') && (
+                cellValues.row.meet_link === null || cellValues.row.meet_link === "" || cellValues.row.meet_link === "null" ? (
+                  <p
+                    style={{ cursor: "pointer" }}
+                    className={`text-white bg-primary rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}>
+                    <Tooltip title="Send Link" arrow>
+                      <button onClick={() => HandleAddMeetLinkBtn(cellValues)}>
+                        <SiGooglemeet size={16} />
+                      </button>
+                    </Tooltip>
+                  </p>
+                ) : (
+                  <p
+                    style={{ cursor: "pointer" }}
+                    className={`${
+                      currentMode === "dark"
+                        ? "text-[#FFFFFF] bg-[#262626]"
+                        : "text-[#1C1C1C] bg-[#EEEEEE]"
+                    } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
+                  >
+                    <Tooltip title="Send Link" arrow>
+                      <button onClick={() => HandleAddMeetLinkBtn(cellValues)}>
+                        <SiGooglemeet size={16} />
+                      </button>
+                    </Tooltip>
+                  </p>
+                )
+              )
             )}
 
             {/* CALL  */}
@@ -1288,7 +1306,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadCategory: leadCategory || "-",
           coldCall: row?.coldcall,
           meet_link: row?.meet_link || "",
-          notes: row?.notes || "-",
+          notes: row?.notes || "",
           otp:
             row?.otp === "No OTP" || row?.otp === "No OTP Used"
               ? "No OTP Used"
@@ -1500,7 +1518,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           coldCall: row?.coldcall,
           meet_link: row?.meet_link || "",
           leadCategory: leadCategory || "-",
-          notes: row?.notes || "-",
+          notes: row?.notes || "",
           otp:
             row?.otp === "No OTP" || row?.otp === "No OTP Used"
               ? "No OTP Used"
@@ -2170,7 +2188,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               initialState={{
                 columns: {
                   columnVisibilityModel: {
+                    otp: false,
                     creationDate: false,
+                    notes: lead_origin === "liveleads" ? true : false,
+                    leadType: lead_origin === "liveleads" ? false : true,
+                    leadSource: lead_origin === "liveleads" ? false : true,
                   },
                 },
               }}
