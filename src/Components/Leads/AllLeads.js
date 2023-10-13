@@ -669,7 +669,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   </Tooltip>
                 </p>
               ) : (
-                <></>
+                <p
+                  style={{ cursor: "pointer" }}
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-[#FFFFFF] bg-[#262626]"
+                      : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
+                >
+                  <Tooltip title="Send Link" arrow>
+                    <button onClick={() => HandleAddMeetLinkBtn(cellValues)}>
+                      <SiGooglemeet size={16} />
+                    </button>
+                  </Tooltip>
+                </p>
               )}
               </>
             )}
