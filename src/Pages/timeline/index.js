@@ -596,47 +596,7 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                 </div>
                                               </>
                                             ) : (
-                                              <>
-                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
-                                                  <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                  </div>
-                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
-                                                    <BsFlagFill
-                                                      className="text-white"
-                                                      size={16}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  className={`${
-                                                    currentMode === "dark"
-                                                      ? "bg-[#000000]"
-                                                      : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                  // style={{
-                                                  //   transform:
-                                                  //     "translateX(-30px)",
-                                                  // }}
-                                                >
-                                                  {/* ADDED BY  */}
-                                                  <p
-                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
-                                                  >
-                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
-                                                    {timeline.addedBy}
-                                                  </p>
-                                                  {/* FEEDBACK  */}
-                                                  <p className="font-semibold tracking-wide">
-                                                    A new lead has been created.
-                                                  </p>
-                                                  {/* CREATION DATE  */}
-                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
-                                                    {timeline.creationDate ||
-                                                      timeline.CreationDate}
-                                                  </p>
-                                                </div>
-                                              </>
+                                              <></>
                                             )}
                                           </div>
                                         );

@@ -214,7 +214,7 @@ const Newsletter = () => {
 
     {
       field: "status",
-      headerName: "Note",
+      headerName: "Status",
       headerAlign: "center",
       minWidth: 100,
       flex: 1,

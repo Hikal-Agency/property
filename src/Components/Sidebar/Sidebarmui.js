@@ -635,7 +635,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: "LIVE CALL",
-              link: "/unassigned/livecall",
+              link: "/unassigned/liveleads",
               // count: sidebarData?.UNASSIGNED?.fresh,
             },
             {
@@ -698,17 +698,17 @@ const Sidebarmui = () => {
             },
             {
               name: "No Answer",
-              count: sidebarData?.HotLeadsCount?.no_nswer,
+              // count: sidebarData?.HotLeadsCount?.no_nswer,
               link: "/freshleads/no answer",
             },
             {
               name: "Not Interested",
-              count: sidebarData?.HotLeadsCount?.not_interested,
+              // count: sidebarData?.HotLeadsCount?.not_interested,
               link: "/freshleads/not interested",
             },
             {
               name: "Unreachable",
-              count: sidebarData?.HotLeadsCount?.unreachable,
+              // count: sidebarData?.HotLeadsCount?.unreachable,
               link: "/freshleads/unreachable",
             },
           ],

@@ -65,7 +65,7 @@ import DeleteLeadModel from "./DeleteLead";
 import BulkImport from "./BulkImport";
 import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
-import AddMeetLink from "../livecall/AddMeetLink";
+import AddMeetLink from "../liveleads/AddMeetLink";
 import Timeline from "../../Pages/timeline";
 
 const bulkUpdateBtnStyles = {
@@ -1213,7 +1213,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&unassigned=1&coldCall=3`;
-      } else if (lead_type === "livecall") {
+      } else if (lead_type === "liveleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&unassigned=1&coldCall=10`;
