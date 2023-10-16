@@ -14,7 +14,7 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
-import {GiTwoCoins} from "react-icons/gi";
+import EditUserModal from "../../Components/Users/EditUserModal";
 
 import {
   AiOutlineEdit,
@@ -23,7 +23,7 @@ import {
   AiOutlineAppstore,
 } from "react-icons/ai";
 import { RiCoinsFill } from "react-icons/ri";
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
@@ -31,9 +31,12 @@ import { Link } from "react-router-dom";
 import UserTable from "../../Components/Users/UserTable";
 import AddUserModel from "../../Components/addUser/AddUserModel";
 import { FaBan, FaUnlock } from "react-icons/fa";
-import { HiOutlineBan } from "react-icons/hi";
 import DeleteUser from "../../Components/Users/DeleteUser";
-import { BsPersonFillLock, BsSearch } from "react-icons/bs";
+import { 
+  BsPersonFillGear, 
+  BsSearch,
+  BsPersonFillSlash 
+} from "react-icons/bs";
 import UpdateUserPermissions from "../../Components/addUser/UpdateUserPermissions";
 import ShareCreditsModal from "../../Components/addUser/ShareCreditsModal";
 
@@ -64,6 +67,14 @@ const Users = () => {
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [openPermissionModel, setOpenPermissionModel] = useState(false);
   const token = localStorage.getItem("auth-token");
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const handleCloseEditModal = () => setEditModalOpen(false);
+  const handleEditModal = (id) => {
+    setUserId(id);
+    setEditModalOpen(true);
+    // handleLeadModelClose();
+  };
 
   const searchRef = useRef("");
 
@@ -466,46 +477,33 @@ const Users = () => {
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          <div className=" space-x-2 w-full flex items-center justify-center ">
-            <Button
-              title="Edit User"
-              className={`editUserBtn ${
+          <div className="space-x-2 w-full flex items-center justify-start mx-2">
+
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
             >
-              <Link to={`/updateuser/${cellValues?.id}`}>
-                {" "}
-                <AiOutlineEdit size={16} />
-              </Link>
-            </Button>
+              <Tooltip title="Edit User" arrow>
+                <button className="editUserBtn"
+                  onClick={() =>
+                    handleEditModal(
+                      cellValues?.id
+                    )
+                  }
+                >
+                  {/* <Link to={`/updateuser/${cellValues?.id}`}> */}
+                    <AiOutlineEdit size={16} />
+                  {/* </Link> */}
+                </button>
+              </Tooltip>
+            </p>
 
             {cellValues?.row?.status === 1 && (
               <>
-                {hasPermission("role_update") ? (
-                  <Button
-                    onClick={() =>
-                      HandlePermissionModel(
-                        cellValues?.id,
-                        cellValues.row.status,
-                        cellValues?.row?.userName,
-                        cellValues?.row?.role
-                      )
-                    }
-                    className={`editUserBtn ${
-                      currentMode === "dark"
-                        ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                        : "text-black bg-transparent rounded-md p-1 shadow-none "
-                    }`}
-                  >
-                    <BsPersonFillLock
-                      style={{ color: currentMode === "dark" ? "white" : "black" }}
-                      size={16}
-                    />
-                  </Button>
-                ) : null}
-
                 {/* SEND CREDIT  */}
                 <p
                   style={{ cursor: "pointer" }}
@@ -526,6 +524,33 @@ const Users = () => {
                     </button>
                   </Tooltip>
                 </p>
+                
+                {/* UPDATE ROLE  */}
+                {cellValues.row.role !== 1 && (
+                  hasPermission("role_update") ? (
+                    <p
+                      style={{ cursor: "pointer" }}
+                      className={`${
+                        currentMode === "dark"
+                          ? "text-[#FFFFFF] bg-[#262626]"
+                          : "text-[#1C1C1C] bg-[#EEEEEE]"
+                      } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
+                    >
+                      <Tooltip title="Update Role" arrow>
+                        <button onClick={() =>
+                          HandlePermissionModel(
+                            cellValues?.id,
+                            cellValues.row.status,
+                            cellValues?.row?.userName,
+                            cellValues?.row?.role
+                          )
+                        }>
+                          <BsPersonFillGear size={16} />
+                        </button>
+                      </Tooltip>
+                    </p>
+                  ) : null
+                )}
 
                 {/* DELETE USER  */}
                 {hasPermission("users_delete") ? (
@@ -538,7 +563,7 @@ const Users = () => {
                           : "text-[#1C1C1C] bg-[#EEEEEE]"
                       } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
                     >
-                      <Tooltip title="Send Link" arrow>
+                      <Tooltip title="Deactivate User" arrow>
                         <button onClick={() =>
                           handleDelete(
                             cellValues?.id,
@@ -546,7 +571,7 @@ const Users = () => {
                             cellValues?.row?.userName
                           )
                         }>
-                          <HiOutlineBan size={16} />
+                          <BsPersonFillSlash size={16} />
                         </button>
                       </Tooltip>
                     </p>
@@ -795,10 +820,18 @@ const Users = () => {
               />
             )}
 
-                {shareCreditsModal && (
+            {shareCreditsModal && (
               <ShareCreditsModal
                 shareCreditsModal={shareCreditsModal}
                 handleClose={() => setShareCreditsModal({open: false, data: {}})}
+              />
+            )}
+
+            {editModalOpen && (
+              <EditUserModal
+                UserData={userID}
+                handleCloseEditModal={handleCloseEditModal}
+                setEditModalOpen={setEditModalOpen}
               />
             )}
           </div>

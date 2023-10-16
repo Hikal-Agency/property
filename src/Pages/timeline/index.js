@@ -25,12 +25,8 @@ import {
   GoMail
 } from "react-icons/go";
 import {
-  HiUser,
-  HiClock
+  HiUser
 } from "react-icons/hi";
-import {
-  IoMdClose
-} from "react-icons/io";
 import {
   MdNoteAlt,
   MdClose

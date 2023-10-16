@@ -303,43 +303,46 @@ const UserTable = ({}) => {
                               </div>
 
                               {/* DEACTIVATE & REACTIVATE */}
-                              <div className="w-full flex justify-center my-1">
-                                {hasPermission("users_delete") ? (
-                                  <>
-                                    {item?.status === 1 ? (
-                                      <Tooltip title="Deactivate User" arrow>
-                                        <button
-                                          onClick={() =>
-                                            handleDelete(
-                                              item?.id,
-                                              item?.status,
-                                              item?.userName
-                                            )
-                                          }
-                                          className="rounded-full bg-primary p-2"
-                                        >
-                                          <HiOutlineBan size={18} className={`text-white hover:text-black`} />
-                                        </button>
-                                      </Tooltip>
-                                    ) : (
-                                      <Tooltip title="Reactivate User" arrow>
-                                        <button
-                                          onClick={() =>
-                                            handleDelete(
-                                              item?.id,
-                                              item?.status,
-                                              item?.userName
-                                            )
-                                          }
-                                          className="rounded-full bg-primary p-2"
-                                        >
-                                          <AiFillUnlock size={18} className={`text-white hover:text-black`} />
-                                        </button>
-                                      </Tooltip>
-                                    )}
-                                  </>
-                                ) : null}
-                              </div>
+                              {item?.role !== 1 && (
+                                <div className="w-full flex justify-center my-1">
+                                  {hasPermission("users_delete") ? (
+                                    <>
+                                      {item?.status === 1 ? (
+                                        <Tooltip title="Deactivate User" arrow>
+                                          <button
+                                            onClick={() =>
+                                              handleDelete(
+                                                item?.id,
+                                                item?.status,
+                                                item?.userName
+                                              )
+                                            }
+                                            className="rounded-full bg-primary p-2"
+                                          >
+                                            <HiOutlineBan size={18} className={`text-white hover:text-black`} />
+                                          </button>
+                                        </Tooltip>
+                                      ) : (
+                                        <></>
+                                        // <Tooltip title="Reactivate User" arrow>
+                                        //   <button
+                                        //     onClick={() =>
+                                        //       handleDelete(
+                                        //         item?.id,
+                                        //         item?.status,
+                                        //         item?.userName
+                                        //       )
+                                        //     }
+                                        //     className="rounded-full bg-primary p-2"
+                                        //   >
+                                        //     <AiFillUnlock size={18} className={`text-white hover:text-black`} />
+                                        //   </button>
+                                        // </Tooltip>
+                                      )}
+                                    </>
+                                  ) : null}
+                                </div>
+                              )}
                             </div>
                             
                            

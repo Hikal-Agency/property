@@ -675,7 +675,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           >
             {/* MEET LINK  */}
             {lead_origin === "liveleads" && (
-              cellValues.row.notes.startsWith('Live Video Call') && (
+              cellValues.row.notes.startsWith('Live') && (
                 cellValues.row.meet_link === null || cellValues.row.meet_link === "" || cellValues.row.meet_link === "null" ? (
                   <p
                     style={{ cursor: "pointer" }}
@@ -2274,7 +2274,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             />
           </div>
 
-          {!UpdateLeadModelOpen && (
+          {!UpdateLeadModelOpen && !timelineModelOpen && (
             <SingleLead
               LeadModelOpen={LeadModelOpen}
               FetchLeads={FetchLeads}

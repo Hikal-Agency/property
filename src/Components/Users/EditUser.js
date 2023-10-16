@@ -97,181 +97,128 @@ const EditUser = ({ user }) => {
         }}
         disabled={loading ? true : false}
       >
-        <div className="sm:mt-0 rounded-lg shadow-lg">
-          <div className="md:grid md:grid-cols-3 md:gap-6">
-            <div className="md:col-span-3 md:mt-0">
-              <div className="sm:rounded-md">
-                <div
-                  className={`${
-                    currentMode === "dark" ? "bg-black" : "bg-white"
-                  } py-10 px-4 md:px-10 `}
-                >
-                  {/* <div className="mb-10"></div> */}
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 md:grid-cols- sm:grid-cols-1 gap-5">
-                    <div>
-                      <Box sx={darkModeColors}>
-                        <InputLabel id="position">Position</InputLabel>
-                        <TextField
-                          id="position"
-                          value={userData?.position}
-                          InputLabel="Position"
-                          size="medium"
-                          className="w-full mb-5"
-                          displayEmpty
-                          required
-                          onInput={(e) =>
-                            setUserData({
-                              ...userData,
-                              position: e.target.value,
-                            })
-                          }
-                          sx={{
-                            "& input": {
-                              color: currentMode === "light" && "#000000",
-                            },
-                            marginBottom: "20px",
-                            "& .Mui-selected": {
-                              color: currentMode === "light" && "#000000",
-                            },
-                          }}
-                        ></TextField>
+        <div className="shadow-lg rounded-lg w-full h-fit">
+          <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} text-center font-semibold p-3 uppercase rounded-t-lg`}>
+            Edit user details
+          </div>
+          <div className="p-5">
+            <Box sx={darkModeColors} className="py-5">
+              <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-5">
+                {/* POSITION  */}
+                <TextField
+                  id="position"
+                  label="Position"
+                  value={userData?.position}
+                  size="small"
+                  className="w-full"
+                  displayEmpty
+                  required
+                  onInput={(e) =>
+                    setUserData({
+                      ...userData,
+                      position: e.target.value,
+                    })
+                  }
+                  sx={{
+                    marginBottom: "15px",
+                  }}
+                />
 
-                        <br />
+                {/* SALARY  */}
+                {hasPermission("edit_user") && (
+                  <div className="grid grid-cols-3">
+                    <TextField
+                      id="LeadSource"
+                      size="small"
+                      value={userData?.currency || "AED"}
+                      label="Currency"
+                      onChange={(e) =>
+                        setUserData({
+                          ...userData,
+                          currency: e.target.value,
+                        })
+                      }
+                      className="w-full"
+                      sx={{
+                        marginBottom: "15px",
+                      }}
+                      displayEmpty
+                      select
+                      required
+                    >
+                      <MenuItem value="" disabled>
+                        Currency
+                      </MenuItem>
+                      <MenuItem value={"AED"}>AED</MenuItem>
+                      <MenuItem value={"USD"}>USD</MenuItem>
+                      <MenuItem value={"PKR"}>PKR</MenuItem>
+                      <MenuItem value={"SAR"}>SAR</MenuItem>
+                      <MenuItem value={"EGP"}>EGP</MenuItem>
+                      <MenuItem value={"ILS"}>ILS</MenuItem>
+                    </TextField>
 
-                        <TextField
-                          id="target"
-                          type={"number"}
-                          label="Target"
-                          className={`w-full mb-5 ${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
-                          sx={{
-                            marginBottom: "20px",
-                            input: {
-                              color: `${
-                                currentMode === "dark" ? "#ffffff" : "#000000"
-                              }`,
-                            },
-                          }}
-                          variant="outlined"
-                          size="medium"
-                          value={userData?.target}
-                          onChange={(e) =>
-                            setUserData({
-                              ...userData,
-                              target: e.target.value,
-                            })
-                          }
-                        />
-
-                        <div
-                          className="mt-4 h-0.5 w-full bg-primary"
-                          style={{ marginBottom: "40px" }}
-                        ></div>
-
-                        {hasPermission("edit_user") && (
-                          <>
-                            <TextField
-                              id="LeadSource"
-                              value={userData?.currency || "AED"}
-                              label="Currency"
-                              onChange={(e) =>
-                                setUserData({
-                                  ...userData,
-                                  currency: e.target.value,
-                                })
-                              }
-                              size="medium"
-                              className="w-full mb-5"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                                "& .MuiOutlinedInput-input": {
-                                  color:
-                                    currentMode === "dark"
-                                      ? "#ffffff"
-                                      : "#000000",
-                                },
-                              }}
-                              displayEmpty
-                              select
-                              required
-                            >
-                              <MenuItem value="" disabled>
-                                Currency
-                                <span className="ml-1 text-primary">
-                                  *
-                                </span>
-                              </MenuItem>
-                              <MenuItem value={"AED"}>AED</MenuItem>
-                              <MenuItem value={"USD"}>USD</MenuItem>
-                              <MenuItem value={"PKR"}>PKR</MenuItem>
-                              <MenuItem value={"SAR"}>SAR</MenuItem>
-                              <MenuItem value={"EGP"}>EGP</MenuItem>
-                              <MenuItem value={"ILS"}>ILS</MenuItem>
-                            </TextField>
-
-                            <br />
-
-                            <InputLabel id="salary">Salary</InputLabel>
-                            <TextField
-                              id="salary"
-                              value={userData?.salary}
-                              InputLabel="Salary"
-                              size="medium"
-                              className="w-full mb-2"
-                              type="number"
-                              displayEmpty
-                              required
-                              onInput={(e) =>
-                                setUserData({
-                                  ...userData,
-                                  salary: e.target.value,
-                                })
-                              }
-                              sx={{
-                                "& input": {
-                                  color: currentMode === "light" && "#000000",
-                                },
-                                marginBottom: "20px",
-                                "& .Mui-selected": {
-                                  color: currentMode === "light" && "#000000",
-                                },
-                              }}
-                            ></TextField>
-                          </>
-                        )}
-                      </Box>
-                    </div>
+                    <TextField
+                      id="salary"
+                      value={userData?.salary}
+                      label="Salary"
+                      size="small"
+                      className="w-full col-span-2"
+                      type="number"
+                      displayEmpty
+                      required
+                      onInput={(e) =>
+                        setUserData({
+                          ...userData,
+                          salary: e.target.value,
+                        })
+                      }
+                      sx={{
+                        marginBottom: "15px",
+                      }}
+                    ></TextField>
                   </div>
-                  {/* ------- */}
-                </div>
+                )}
+
+                {/* TARGET  */}
+                {user?.role === 3 || user?.role === 7 && (
+                  <TextField
+                    id="target"
+                    type={"number"}
+                    label="Target"
+                    className="w-full"
+                    sx={{
+                      marginBottom: "15px",
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={userData?.target}
+                    onChange={(e) =>
+                      setUserData({
+                        ...userData,
+                        target: e.target.value,
+                      })
+                    }
+                  />
+                )}
               </div>
-              <div
-                className={`${
-                  currentMode === "dark" ? "bg-black" : "bg-white"
-                } px-4 py-3 text-right sm:px-6`}
-              >
-                <Button
-                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
-                  ripple={true}
-                  size="lg"
-                  type="submit"
-                  disabled={loading ? true : false}
-                >
-                  {loading ? (
-                    <CircularProgress
-                      size={23}
-                      sx={{ color: "white" }}
-                      className="text-white"
-                    />
-                  ) : (
-                    <span> Update User</span>
-                  )}
-                </Button>
-              </div>
-            </div>
+            </Box>
+            <Button
+              className={`card-hover min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
+              ripple={true}
+              size="lg"
+              type="submit"
+              disabled={loading ? true : false}
+            >
+              {loading ? (
+                <CircularProgress
+                  size={23}
+                  sx={{ color: "white" }}
+                  className="text-white"
+                />
+              ) : (
+                <span>Update User</span>
+              )}
+            </Button>
           </div>
         </div>
       </form>
