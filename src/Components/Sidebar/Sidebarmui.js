@@ -1068,12 +1068,12 @@ const Sidebarmui = () => {
       icon: <MdApps />,
       links: [
         {
-          name: "Meetings",
+          name: t("menu_meetings"),
           icon: <BsCalendarWeekFill />,
           link: "/meetings",
         },
         {
-          name: "Appointments",
+          name: t("menu_appointments"),
           icon: <BsCalendarWeekFill />,
           link: "/appointments",
         },
@@ -1084,27 +1084,27 @@ const Sidebarmui = () => {
         // },
 
         {
-          name: "Reports",
+          name: t("menu_reports"),
           icon: <HiDocumentReport />,
           link: "/reports",
         },
         {
-          name: "Offers",
+          name: t("menu_offers"),
           icon: <AiFillGift />,
           link: "/offers",
         },
         {
-          name: "Newsletter",
+          name: t("menu_newsletter"),
           icon: <BsEnvelopeFill />,
           link: "/newsletter",
         },
         {
-          name: "Users",
+          name: t("menu_users"),
           icon: <ImUsers />,
           link: "/users",
         },
         {
-          name: "Clients",
+          name: t("menu_clients"),
           icon: <ImUsers />,
           link: "/clients",
         },
@@ -1114,22 +1114,22 @@ const Sidebarmui = () => {
         //   link: "/contacts",
         // },
         {
-          name: "Blocked IPs",
+          name: t("menu_blocked_ips"),
           icon: <BiBlock />,
           link: "/blocked",
         },
         {
-          name: "Property Portfolio",
+          name: t("menu_property_portfolio"),
           icon: <RiBuilding2Fill />,
           link: "/propertyPortfolio",
         },
         {
-          name: "Leaderboard",
+          name: t("menu_leaderboard"),
           icon: <MdLeaderboard />,
           link: "/leaderboard",
         },
         {
-          name: "Roles",
+          name: t("menu_roles"),
           icon: <BsPersonFillLock />,
           link: "/roles",
         },
@@ -1137,11 +1137,11 @@ const Sidebarmui = () => {
     },
     // SOCIAL MEDIA
     {
-      title: "Social Media",
+      title: t("menu_social_media"),
       icon: <GoBrowser />,
       links: [
         {
-          name: "Facebook",
+          name: t("menu_facebook"),
           // icon: <FaChartLine />,
           icon: <FaFacebookSquare />,
           link: "/facebook",
@@ -1156,16 +1156,16 @@ const Sidebarmui = () => {
     },
     // LOCATION
     {
-      title: "LOCATION",
+      title: t("menu_location"),
       icon: <MdLocationOn />,
       links: [
         {
-          name: "Meetings",
+          name: t("menu_location_meetings"),
           icon: <ImLocation />,
           link: "/location/meetinglocation",
         },
         {
-          name: "Live",
+          name: t("menu_location_live"),
           icon: <MdPersonPinCircle />,
           link: "/location/userlocation",
         },
@@ -1173,21 +1173,21 @@ const Sidebarmui = () => {
     },
     // ATTENDANCE
     {
-      title: "ATTENDANCE",
+      title: t("menu_attendance"),
       icon: <AiTwotoneCalendar />,
       links: [
         {
-          name: "Office Settings ",
+          name: t("menu_office_settings"),
           icon: <BiCalendar />,
           link: "/attendance/officeSettings",
         },
         {
-          name: "Employees List",
+          name: t("menu_employee_list"),
           icon: <FiUsers />,
           link: "/attendance/employeesList",
         },
         {
-          name: "My Attendance",
+          name: t("menu_my_attendance"),
           icon: <FiUsers />,
           link: "/attendance_self",
         },
@@ -1195,12 +1195,12 @@ const Sidebarmui = () => {
     },
     // MESSAGING
     {
-      title: "Messaging",
+      title: t("menu_messaging"),
       icon: <MdApps />,
 
       links: [
         {
-          name: "Chat",
+          name: t("menu_chat"),
           icon: <BsCircleFill />,
           link: "/chat",
         },
@@ -1208,11 +1208,11 @@ const Sidebarmui = () => {
     },
     // BILLINGS
     {
-      title: "BILLINGS",
+      title: t("menu_billings"),
       icon: <MdOutlinePayment />,
       links: [
         {
-          name: "Payments",
+          name: t("menu_payments"),
           icon: <BsFillCreditCard2FrontFill />,
           link: "/marketing/payments",
         },
@@ -1220,26 +1220,26 @@ const Sidebarmui = () => {
     },
     // SUPPORT
     {
-      title: "SUPPORT",
+      title: t("menu_support"),
       icon: <BiSupport />,
 
       links: [
         {
-          name: "QA ",
+          name: t("menu_qa"),
           icon: <AiOutlineQuestionCircle />,
           submenu: [
             {
-              name: "QA Form",
+              name: t("menu_qa_form"),
               link: "/trainer",
             },
             {
-              name: "All QA",
+              name: t("menu_qa_all"),
               link: "/qa",
             },
           ],
         },
         {
-          name: "Tickets",
+          name: t("menu_tickets"),
           icon: <HiTicket />,
           link: "/support",
         },
@@ -1247,11 +1247,11 @@ const Sidebarmui = () => {
     },
     // MISC
     {
-      title: "MISC",
+      title: t("menu_misc"),
       icon: <MdSettings />,
       links: [
         {
-          name: "Settings",
+          name: t("menu_settings"),
           icon: <FiSettings />,
           submenu: [
             // {
@@ -1259,11 +1259,11 @@ const Sidebarmui = () => {
             //   link: "/integrations",
             // },
             {
-              name: "Notifications Settings",
+              name: t("menu_notification_settings"),
               link: "/notifications",
             },
             {
-              name: "Notifications History",
+              name: t("menu_notification_history"),
               link: "/notificationsList",
             },
           ],
@@ -1275,31 +1275,31 @@ const Sidebarmui = () => {
   if (isUserSubscribed !== null && isUserSubscribed === true) {
     if (User?.role === 1) {
       links.splice(5, 0, {
-        title: "MARKETING",
+        title: t("menu_marketing"),
         icon: <MdCampaign />,
         links: [
           {
-            name: "Instances",
+            name: t("menu_instances"),
             icon: <BsFillLayersFill />,
             link: "/instances",
           },
           {
-            name: "WhatsApp",
+            name: t("menu_whatsapp"),
             icon: <RiWhatsappFill />,
             link: "/marketing/chat",
           },
           {
-            name: "SMS",
+            name: t("menu_sms"),
             icon: <FaSms />,
             link: "/marketing/contacts",
           },
           {
-            name: "Templates",
+            name: t("menu_templates"),
             icon: <FaMobile />,
             link: "/marketing/templates",
           },
           {
-            name: "Campaigns",
+            name: t("menu_campaigns"),
             icon: <MdOutlineCampaign />,
             link: "/marketing/messages",
           },
@@ -1307,21 +1307,21 @@ const Sidebarmui = () => {
       });
     } else {
       links.splice(5, 0, {
-        title: "MARKETING",
+        title:  t("menu_marketing"),
         icon: <MdCampaign />,
         links: [
           {
-            name: "WhatsApp",
+            name: t("menu_whatsapp"),
             icon: <RiWhatsappFill />,
             link: "/marketing/chat",
           },
           {
-            name: "Contacts",
+            name: t("menu_sms"),
             icon: <MdContactPage />,
             link: "/marketing/contacts",
           },
           {
-            name: "Templates",
+            name: t("menu_templates"),
             icon: <FaMobile />,
             link: "/marketing/templates",
           },

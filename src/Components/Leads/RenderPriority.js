@@ -255,11 +255,11 @@ fetchSidebarData();
                   <h1 className="font-semibold pt-3 text-lg text-center">
                     {t("want_to_change_priority")}{" "}{t("from")}{" "}
                     <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                      {Priority === null ? "Null" : Priority}
+                      {Priority === null ? "Null" : t("priority_" + Priority?.toLowerCase())}
                     </span>{" "}
                     {t("to")}{" "}
                     <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                      {newPriority}
+                      {t("priority_" + newPriority?.toLowerCase())}
                     </span>{" "}
                     ?
                   </h1>

@@ -1,19 +1,12 @@
 
-import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import Closedeals from "../../Components/Closedeals";
-import Footer from "../../Components/Footer/Footer";
 import Loader from "../../Components/Loader";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
 
 const ClosedealsPage = (props) => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [loading, setloading] = useState(true);
-  const { User, setUser, currentMode, setopenBackDrop, BACKEND_URL } =
+  const { t, currentMode, setopenBackDrop, BACKEND_URL } =
     useStateContext();
 
   const [pageState, setpageState] = useState({
@@ -23,34 +16,14 @@ const ClosedealsPage = (props) => {
     page: 1,
     pageSize: 25,
   });
-  const FetchProfile = async (token) => {
-    await axios
-      .get(`${BACKEND_URL}/profile`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setUser(result.data.user[0]);
-        setloading(false);
-      })
-      .catch((err) => {
-        navigate("/", {
-          state: { error: "Something Went Wrong! Please Try Again " },
-        });
-      });
-  };
+
   useEffect(() => {
     setopenBackDrop(false);
     setloading(false);
   }, []);
   return (
     <>
-      {/* <Head>
-        <title>HIKAL CRM - Closed Deals</title>
-        <meta name="description" content="User Dashboard - HIKAL CRM" />
-      </Head> */}
+ 
 
       <div className="flex min-h-screen">
         {loading ? (
@@ -70,7 +43,7 @@ const ClosedealsPage = (props) => {
                     : "text-black"
                 }`}
               >
-                Closed Deals {" "}
+                {`${t("closed")} ${t("deals")}`} {" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>

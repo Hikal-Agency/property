@@ -272,7 +272,7 @@ const RenderFeedback = ({ cellValues }) => {
         <Select
           id="feedback"
           value={Feedback ?? "selected"}
-          label="Feedback"
+          label={t("label_feedback")}
           onChange={ChangeFeedback}
           size="medium"
           // className="w-[100%] h-[75%] border-none render"
@@ -298,7 +298,7 @@ const RenderFeedback = ({ cellValues }) => {
         >
           {!Feedback ? (
             <MenuItem value={"selected"} selected>
-              ---Feedback---
+              ---{t("label_feedback")}---
             </MenuItem>
           ) : null}
 
@@ -351,11 +351,11 @@ const RenderFeedback = ({ cellValues }) => {
                 <h1 className="font-semibold pt-3 mb-3 text-lg text-center">
                   {t("want_to_change_feedback")}{" "} {t("from")}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {Feedback ?? "No feedback"}
+                    {Feedback ? t("feedback_" + Feedback?.toLowerCase()?.replaceAll(" ", "_")) : t("no_feedback")}
                   </span>{" "}
                   {t("to")}{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {newFeedback}
+                    {newFeedback ? t("feedback_" + newFeedback?.toLowerCase()?.replaceAll(" ", "_")) : t("no_feedback")}
                   </span>{" "}
                   ?
                 </h1>
