@@ -26,6 +26,7 @@ const Role = () => {
     setpageState,
     User,
     darkModeColors,
+    themeBgImg
   } = useStateContext();
 
   const [user, setUser] = useState([]);
@@ -338,231 +339,222 @@ const Role = () => {
     <>
       <div className="flex min-h-screen">
         <div
-          className={`w-full ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+          className={`w-full p-4 ${
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
-          <div className={`w-full `}>
-            <div className="pl-3">
-              <div className="my-5 mb-10">
-                <div className="mt-3 flex justify-between items-center">
-                  <h1
-                    className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-primary font-bold border-primary"
-                    }`}
-                  >
-                    ● Roles & Permissions{" "}
-                    {/* <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
-                      <span>{pageState?.total}</span>
-                    </span> */}
-                  </h1>
-                </div>
-                <div className="flex items-center justify-between">
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiTabs-indicator": {
-                        height: "100%",
-                        borderRadius: "5px",
-                      },
-                      "& .Mui-selected": {
-                        color: "white !important",
-                        zIndex: "1",
-                      },
-                    }}
-                    className={`w-full rounded-md overflow-hidden ${
-                      currentMode === "dark" ? "bg-black" : "bg-white"
-                    } `}
-                  >
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      variant="standard"
-                      className="w-full px-1 m-1"
-                    >
-                      <Tab label="Roles" />
-                      <Tab label="Permissions" />
-                    </Tabs>
-                  </Box>
-                  <div className="w-max">
-                    <Button
-                      className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
-                      onClick={HandleOpenModel}
-                    >
-                      <span className="flex justify-between items-center ">
-                        <AiOutlinePlus style={{ marginRight: "0.5em" }} />
-                        {value === 0 ? "Add Role" : "Add Permissions"}
-                      </span>
-                    </Button>
-                  </div>
-                </div>
-                <div className="mt-3 pb-3">
-                  <TabPanel value={value} index={0}>
-                    <Box
-                      className={`${currentMode}-mode-datatable`}
-                      // width={"100%"}
-                      sx={DataGridStyles}
-                    >
-                      <DataGrid
-                        autoHeight
-                        disableDensitySelector
-                        disableSelectionOnClick
-                        rowHeight={45}
-                        rows={pageState.data}
-                        columns={columns}
-                        rowCount={pageState.total}
-                        loading={pageState.isLoading}
-                        rowsPerPageOptions={[]}
-                        pagination
-                        // width="auto"
-                        // getRowHeight={() => "auto"}
-                        paginationMode="server"
-                        page={pageState.page - 1}
-                        pageSize={pageState.pageSize}
-                        componentsProps={{
-                          toolbar: {
-                            printOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            csvOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            showQuickFilter: true,
-                          },
-                        }}
-                        onPageChange={(newPage) => {
-                          setpageState((old) => ({
-                            ...old,
-                            page: newPage + 1,
-                          }));
-                        }}
-                        onPageSizeChange={(newPageSize) =>
-                          setpageState((old) => ({
-                            ...old,
-                            pageSize: newPageSize,
-                          }))
-                        }
-                        sx={{
-                          boxShadow: 2,
-                          "& .MuiDataGrid-cell:hover": {
-                            cursor: "pointer",
-                          },
-                          "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                            color:
-                              currentMode === "dark"
-                                ? "white !important"
-                                : "black !important",
-                          },
-                        }}
-                        getRowClassName={(params) =>
-                          params.indexRelativeToCurrentPage % 2 === 0
-                            ? "even"
-                            : "odd"
-                        }
-                      />
-                    </Box>
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <Box
-                      className={`${currentMode}-mode-datatable`}
-                      // width={"100%"}
-                      sx={DataGridStyles}
-                    >
-                      <DataGrid
-                        disableDensitySelector
-                        autoHeight
-                        disableSelectionOnClick
-                        rows={pageState.data}
-                        columns={permissionsColumns}
-                        rowCount={pageState.total}
-                        loading={pageState.isLoading}
-                        rowsPerPageOptions={[30, 50, 75, 100]}
-                        pagination
-                        // width="auto"
-                        // getRowHeight={() => "auto"}
-                        rowHeight={45}
-                        paginationMode="server"
-                        page={pageState.page - 1}
-                        pageSize={pageState.pageSize}
-                        componentsProps={{
-                          toolbar: {
-                            printOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            csvOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            showQuickFilter: true,
-                          },
-                        }}
-                        onPageChange={(newPage) => {
-                          setpageState((old) => ({
-                            ...old,
-                            page: newPage + 1,
-                          }));
-                        }}
-                        onPageSizeChange={(newPageSize) =>
-                          setpageState((old) => ({
-                            ...old,
-                            pageSize: newPageSize,
-                          }))
-                        }
-                        sx={{
-                          boxShadow: 2,
-                          "& .MuiDataGrid-cell:hover": {
-                            cursor: "pointer",
-                          },
-                          "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                            color:
-                              currentMode === "dark"
-                                ? "white !important"
-                                : "black !important",
-                          },
-                        }}
-                        getRowClassName={(params) =>
-                          params.indexRelativeToCurrentPage % 2 === 0
-                            ? "even"
-                            : "odd"
-                        }
-                      />
-                    </Box>
-                  </TabPanel>
-                </div>
-                {openDeleteModel && (
-                  <DeleteComponent
-                    UserModelOpen={handleDelete}
-                    handleUserModelClose={handleDeleteModelClose}
-                    UserData={userID}
-                    fetchData={fetchData}
-                    value={value}
-                    DataName={DataName}
-                  />
-                )}
-
-                {openUpdateModel && (
-                  <UpdateComponent
-                    handleOpenModel={HandleOpenModel}
-                    addUserModelClose={handleCloseUpdateModel}
-                    UserData={userID}
-                    fetchData={fetchData}
-                    value={value}
-                    DataName={DataName}
-                  />
-                )}
-                {model && (
-                  <RolesComponent
-                    handleOpenModel={HandleOpenModel}
-                    addUserModelClose={HandleModelClose}
-                    value={value}
-                    fetchData={fetchData}
-                  />
-                )}
-              </div>
+          <div className="w-full flex items-center pb-3">
+            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+            <h1
+              className={`text-lg font-semibold ${
+                currentMode === "dark"
+                  ? "text-white"
+                  : "text-black"
+              }`}
+            >
+              Roles and Permissions
+            </h1>
+          </div>
+          <div className="flex items-center justify-between">
+            <Box
+              sx={{
+                ...darkModeColors,
+                "& .MuiTabs-indicator": {
+                  height: "100%",
+                  borderRadius: "5px",
+                },
+                "& .Mui-selected": {
+                  color: "white !important",
+                  zIndex: "1",
+                },
+              }}
+              className={`w-full rounded-md overflow-hidden ${
+                currentMode === "dark" ? "bg-black" : "bg-white"
+              } `}
+            >
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                variant="standard"
+                className="w-full px-1 m-1"
+              >
+                <Tab label="Roles" />
+                <Tab label="Permissions" />
+              </Tabs>
+            </Box>
+            <div className="w-max">
+              <Button
+                className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
+                onClick={HandleOpenModel}
+              >
+                <span className="flex justify-between items-center ">
+                  <AiOutlinePlus style={{ marginRight: "0.5em" }} />
+                  {value === 0 ? "Add Role" : "Add Permissions"}
+                </span>
+              </Button>
             </div>
           </div>
-          {/* <Footer /> */}
+          <div className="mt-3 pb-3">
+            <TabPanel value={value} index={0}>
+              <Box
+                className={`${currentMode}-mode-datatable`}
+                // width={"100%"}
+                sx={DataGridStyles}
+              >
+                <DataGrid
+                  autoHeight
+                  disableDensitySelector
+                  disableSelectionOnClick
+                  rowHeight={45}
+                  rows={pageState.data}
+                  columns={columns}
+                  rowCount={pageState.total}
+                  loading={pageState.isLoading}
+                  rowsPerPageOptions={[]}
+                  pagination
+                  // width="auto"
+                  // getRowHeight={() => "auto"}
+                  paginationMode="server"
+                  page={pageState.page - 1}
+                  pageSize={pageState.pageSize}
+                  componentsProps={{
+                    toolbar: {
+                      printOptions: {
+                        disableToolbarButton: User?.role !== 1,
+                      },
+                      csvOptions: {
+                        disableToolbarButton: User?.role !== 1,
+                      },
+                      showQuickFilter: true,
+                    },
+                  }}
+                  onPageChange={(newPage) => {
+                    setpageState((old) => ({
+                      ...old,
+                      page: newPage + 1,
+                    }));
+                  }}
+                  onPageSizeChange={(newPageSize) =>
+                    setpageState((old) => ({
+                      ...old,
+                      pageSize: newPageSize,
+                    }))
+                  }
+                  sx={{
+                    boxShadow: 2,
+                    "& .MuiDataGrid-cell:hover": {
+                      cursor: "pointer",
+                    },
+                    "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                      color:
+                        currentMode === "dark"
+                          ? "white !important"
+                          : "black !important",
+                    },
+                  }}
+                  getRowClassName={(params) =>
+                    params.indexRelativeToCurrentPage % 2 === 0
+                      ? "even"
+                      : "odd"
+                  }
+                />
+              </Box>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <Box
+                className={`${currentMode}-mode-datatable`}
+                // width={"100%"}
+                sx={DataGridStyles}
+              >
+                <DataGrid
+                  disableDensitySelector
+                  autoHeight
+                  disableSelectionOnClick
+                  rows={pageState.data}
+                  columns={permissionsColumns}
+                  rowCount={pageState.total}
+                  loading={pageState.isLoading}
+                  rowsPerPageOptions={[30, 50, 75, 100]}
+                  pagination
+                  // width="auto"
+                  // getRowHeight={() => "auto"}
+                  rowHeight={45}
+                  paginationMode="server"
+                  page={pageState.page - 1}
+                  pageSize={pageState.pageSize}
+                  componentsProps={{
+                    toolbar: {
+                      printOptions: {
+                        disableToolbarButton: User?.role !== 1,
+                      },
+                      csvOptions: {
+                        disableToolbarButton: User?.role !== 1,
+                      },
+                      showQuickFilter: true,
+                    },
+                  }}
+                  onPageChange={(newPage) => {
+                    setpageState((old) => ({
+                      ...old,
+                      page: newPage + 1,
+                    }));
+                  }}
+                  onPageSizeChange={(newPageSize) =>
+                    setpageState((old) => ({
+                      ...old,
+                      pageSize: newPageSize,
+                    }))
+                  }
+                  sx={{
+                    boxShadow: 2,
+                    "& .MuiDataGrid-cell:hover": {
+                      cursor: "pointer",
+                    },
+                    "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                      color:
+                        currentMode === "dark"
+                          ? "white !important"
+                          : "black !important",
+                    },
+                  }}
+                  getRowClassName={(params) =>
+                    params.indexRelativeToCurrentPage % 2 === 0
+                      ? "even"
+                      : "odd"
+                  }
+                />
+              </Box>
+            </TabPanel>
+          </div>
+          {openDeleteModel && (
+            <DeleteComponent
+              UserModelOpen={handleDelete}
+              handleUserModelClose={handleDeleteModelClose}
+              UserData={userID}
+              fetchData={fetchData}
+              value={value}
+              DataName={DataName}
+            />
+          )}
+
+          {openUpdateModel && (
+            <UpdateComponent
+              handleOpenModel={HandleOpenModel}
+              addUserModelClose={handleCloseUpdateModel}
+              UserData={userID}
+              fetchData={fetchData}
+              value={value}
+              DataName={DataName}
+            />
+          )}
+          {model && (
+            <RolesComponent
+              handleOpenModel={HandleOpenModel}
+              addUserModelClose={HandleModelClose}
+              value={value}
+              fetchData={fetchData}
+            />
+          )}
         </div>
       </div>
     </>
