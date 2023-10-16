@@ -5,7 +5,6 @@ import React, {
 } from "react";
 import { 
   useLocation, 
-  useNavigate 
 } from "react-router-dom";
 import { 
   useStateContext 
@@ -44,6 +43,7 @@ const AllHotLeads = () => {
     setopenBackDrop,
     pageState,
     BACKEND_URL,
+    t
   } = useStateContext();
   const location = useLocation();
   const {hasPermission} = usePermission();
@@ -84,8 +84,8 @@ const AllHotLeads = () => {
                       : "text-black"
                   }`}
                 >
-                  Fresh Leads{" "}
-                  <span className="capitalize">({lead_type})</span>{" "}
+                  {`${t("fresh")} ${t("leads")}`}{" "}
+                  <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))})</span>{" "}
                   <span className="bg-primary text-white px-3 py-1 ml-2 rounded-sm my-auto">
                     {pageState?.total}
                   </span>

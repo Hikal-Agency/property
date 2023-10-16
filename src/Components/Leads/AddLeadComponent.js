@@ -36,6 +36,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
     SalesPerson,
     Managers,
     primaryColor,
+    t
   } = useStateContext();
   console.log("Salesperson: ", SalesPerson);
   console.log("MAnagers: ", Managers);
@@ -335,7 +336,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                Add New Lead Details
+                {t("title_add_new_lead_details")}
               </h1>
             </div>
 
@@ -347,7 +348,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       currentMode === "dark" ? `text-primary` : "text-black"
                     } text-center font-semibold pb-5`}
                   >
-                    Agent details
+                    {t("agent_details")}
                   </h4>
                   {hasPermission("addlead_manager_dropdown") && (
                     <>
@@ -361,14 +362,14 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                         }}
                         value={Manager}
                         disabled={User?.role === 3 && true}
-                        label="Sales Manager"
+                        label={t("label_sales_manager")}
                         onChange={ChangeManager}
                         size="small"
                         className="w-full"
                         displayEmpty
                       >
                         <MenuItem value="">
-                          Select Manager
+                          {t("label_select_manager")}
                           <span className="ml-1 text-primary">*</span>
                         </MenuItem>
 
@@ -418,7 +419,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                         }}
                         select
                         id="SalesPerson"
-                        label="Sales Agent"
+                        label={t("label_sales_agent")}
                         value={SalesPerson2}
                         onChange={ChangeSalesPerson}
                         size="small"
@@ -448,7 +449,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                   <TextField
                     id="notes"
                     type={"text"}
-                    label="Note"
+                    label={t("label_note")}
                     className="w-full"
                     sx={{
                       "&": {
@@ -466,7 +467,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       <TextField
                         id="Manager"
                         type="text"
-                        label="Manager"
+                        label={t("label_manager")}
                         className="w-full"
                         sx={{
                           marginBottom: "1.25rem !important",
@@ -487,7 +488,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       />
                       <TextField
                         id="Salesperson"
-                        label="Agent"
+                        label={t("label_agent")}
                         type="text"
                         className="w-full"
                         style={{
@@ -512,12 +513,12 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       currentMode === "dark" ? `text-primary` : "text-black"
                     } text-center font-semibold pb-5`}
                   >
-                    Project details
+                   {t("project_details")}
                   </h4>
                   <TextField
                     id="Project"
                     type={"text"}
-                    label="Project name"
+                    label={t("project")}
                     className="w-full"
                     sx={{
                       "&": {
@@ -532,7 +533,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
 
                   <TextField
                     id="enquiry"
-                    label="Enquiry for"
+                    label={t("label_enquiry_for")}
                     value={EnquiryType}
                     onChange={ChangeEnquiryType}
                     size="small"
@@ -546,24 +547,24 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     select
                   >
                     <MenuItem value="" disabled>
-                      Enquiry about
+                     {t("label_enquiry_about")}
                       <span className="ml-1 text-primary">*</span>
                     </MenuItem>
-                    <MenuItem value={"Studio"}>Studio</MenuItem>
-                    <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
-                    <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
-                    <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
-                    <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
-                    <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
-                    <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
-                    <MenuItem value={"Retail"}>Retail</MenuItem>
-                    <MenuItem value={"Other"}>Others</MenuItem>
+                    <MenuItem value={"Studio"}>{t("enquiry_studio")}</MenuItem>
+                    <MenuItem value={"1 Bedroom"}>{t("enquiry_1bed")}</MenuItem>
+                    <MenuItem value={"2 Bedrooms"}>{t("enquiry_2bed")}</MenuItem>
+                    <MenuItem value={"3 Bedrooms"}>{t("enquiry_3bed")}</MenuItem>
+                    <MenuItem value={"4 Bedrooms"}>{t("enquiry_4bed")}</MenuItem>
+                    <MenuItem value={"5 Bedrooms"}>{t("enquiry_5bed")}</MenuItem>
+                    <MenuItem value={"6 Bedrooms"}>{t("enquiry_6bed")}</MenuItem>
+                    <MenuItem value={"Retail"}>{t("enquiry_retail")}</MenuItem>
+                    <MenuItem value={"Other"}>{t("enquiry_others")}</MenuItem>
                   </TextField>
 
                   <TextField
                     id="property-type"
                     value={PropertyType}
-                    label="Property type"
+                    label={t("label_property_type")}
                     onChange={ChangePropertyType}
                     size="small"
                     className="w-full mb-5"
@@ -576,21 +577,21 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     select
                   >
                     <MenuItem value="" disabled>
-                      Property type
+                      {t("label_property_type")}
                       <span className="ml-1 text-primary">*</span>
                     </MenuItem>
-                    <MenuItem value={"Apartment"}>Apartment</MenuItem>
-                    <MenuItem value={"Villa"}>Villa</MenuItem>
-                    <MenuItem value={"penthouse"}>Penthouse</MenuItem>
-                    <MenuItem value={"mansion"}>Mansion</MenuItem>
-                    <MenuItem value={"Commercial"}>Commercial</MenuItem>
-                    <MenuItem value={"Townhouse"}>TownHouse</MenuItem>
+                    <MenuItem value={"Apartment"}>{t("property_apartment")}</MenuItem>
+                    <MenuItem value={"Villa"}>{t("property_villa")}</MenuItem>
+                    <MenuItem value={"penthouse"}>{t("property_penthouse")}</MenuItem>
+                    <MenuItem value={"mansion"}>{t("property_mansion")}</MenuItem>
+                    <MenuItem value={"Commercial"}>{t("property_commercial")}</MenuItem>
+                    <MenuItem value={"Townhouse"}>{t("property_townhouse")}</MenuItem>
                   </TextField>
 
                   <TextField
                     id="for"
                     value={ForType}
-                    label="Purpose of enquiry"
+                    label={t("label_purpose_of_enquiry")}
                     onChange={ChangeForType}
                     size="small"
                     className="w-full"
@@ -603,11 +604,11 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     select
                   >
                     <MenuItem value="" disabled>
-                      Purpose of enquiry
+                      {t("label_purpose_of_enquiry")}
                       <span className="ml-1 text-primary">*</span>
                     </MenuItem>
-                    <MenuItem value={"Investment"}>Investment</MenuItem>
-                    <MenuItem value={"End-user"}>End-User</MenuItem>
+                    <MenuItem value={"Investment"}>{t("purpose_investment")}</MenuItem>
+                    <MenuItem value={"End-user"}>{t("purpose_end_user")}</MenuItem>
                   </TextField>
                 </Box>
               </div>
@@ -619,12 +620,12 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       currentMode === "dark" ? `text-primary` : "text-black"
                     } text-center font-semibold pb-5`}
                   >
-                    Lead details
+                    {t("lead_details")}
                   </h4>
                   <TextField
                     id="LeadName"
                     type={"text"}
-                    label="Lead name"
+                    label={t("label_lead_name")}
                     className="w-full"
                     sx={{
                       "&": {
@@ -638,7 +639,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     onChange={(e) => setLeadName(e.target.value)}
                   />
                   <PhoneInput
-                    placeholder="Contact number *"
+                    placeholder={t("label_contact_number")}
                     value={value}
                     onChange={(value) => setValue(value)}
                     onKeyUp={handleContact}
@@ -677,7 +678,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                   <TextField
                     id="LeadEmailAddress"
                     type={"email"}
-                    label="Email address"
+                    label={t("label_email_address")}
                     className="w-full"
                     sx={{
                       "&": {
@@ -698,7 +699,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     onChange={ChangeLanguagePrefered}
                     size="small"
                     className="w-full"
-                    label="Language"
+                    label={t("label_language")}
                     sx={{
                       "&": {
                         marginBottom: "1.25rem !important",
@@ -708,7 +709,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     select
                   >
                     <MenuItem value="" disabled>
-                      Preferred language
+                      {t("label_language")}
                       <span className="ml-1 text-primary">*</span>
                     </MenuItem>
                     <MenuItem value={"Arabic"}>Arabic</MenuItem>
@@ -727,7 +728,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                   <TextField
                     id="LeadSource"
                     value={LeadSource}
-                    label="Source"
+                    label={t("label_source")}
                     onChange={ChangeLeadSource}
                     size="small"
                     className="w-full"
@@ -741,36 +742,36 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     required
                   >
                     <MenuItem value="" disabled>
-                      Source
+                      {t("label_source")}
                       <span className="ml-1 text-primary">*</span>
                     </MenuItem>
                     <MenuItem value={"Campaign Facebook"}>
-                      Facebook Campaign
+                      {t("source_facebook")} Campaign
                     </MenuItem>
                     <MenuItem value={"Campaign Snapchat"}>
-                      Snapchat Campaign
+                     {t("source_snapchat")}  Campaign
                     </MenuItem>
                     <MenuItem value={"Campaign TikTok"}>
-                      TikTok Campaign
+                      {t("source_tiktok")}TikTok Campaign
                     </MenuItem>
                     <MenuItem value={"Campaign GoogleAds"}>
-                      GoogleAds Campaign
+                   {t("source_googleads")} Campaign
                     </MenuItem>
                     <MenuItem value={"Campaign YouTube"}>
-                      YouTube Campaign
+                      {t("source_youtube")} Campaign
                     </MenuItem>
-                    <MenuItem value={"Campaign"}>Campaign</MenuItem>
-                    <MenuItem value={"WhatsApp"}>WhatsApp</MenuItem>
-                    <MenuItem value={"Comment"}>Comment</MenuItem>
-                    <MenuItem value={"Message"}>Message</MenuItem>
-                    <MenuItem value={"Website"}>Website</MenuItem>
-                    <MenuItem value={"Secondary"}>Secondary</MenuItem>
+                    <MenuItem value={"Campaign"}>{t("source_campaign")}</MenuItem>
+                    <MenuItem value={"WhatsApp"}>{t("source_whatsapp")}</MenuItem>
+                    <MenuItem value={"Comment"}>{t("source_comment")}</MenuItem>
+                    <MenuItem value={"Message"}>{t("source_message")}</MenuItem>
+                    <MenuItem value={"Website"}>{t("source_website")}</MenuItem>
+                    <MenuItem value={"Secondary"}>{t("source_secondary")}</MenuItem>
 
                     <MenuItem value={"Property Finder"}>
-                      Property Finder
+                      {t("source_property_finder")}
                     </MenuItem>
 
-                    <MenuItem value={"Personal"}>Personal</MenuItem>
+                    <MenuItem value={"Personal"}>{t("source_personal")}</MenuItem>
                   </TextField>
                   }
                 </Box>
@@ -799,7 +800,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     className="text-white"
                   />
                 ) : (
-                  <span>Add New Lead</span>
+                  <span>{t("button_add_new_lead")}</span>
                 )}
               </Button>
             </div>

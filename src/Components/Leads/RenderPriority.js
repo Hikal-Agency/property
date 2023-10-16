@@ -26,7 +26,7 @@ const RenderPriority = ({ cellValues }) => {
   const [PriorityDialogue, setPriorityDialogue] = useState(false);
   // eslint-disable-next-line
   const [confirmbtnloading, setconfirmbtnloading] = useState(false);
-  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL, fetchSidebarData, User, Managers} =
+  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL, fetchSidebarData, User, t} =
     useStateContext();
 
   const [selectedPriority, setSelectedPriority] = useState(Priority);
@@ -175,9 +175,9 @@ fetchSidebarData();
               value={selectedPriority}
               onChange={(e) => handlePriorityChange(e.target.value)}
             >
-              <MenuItem value={"High"}>High</MenuItem>
-              <MenuItem value={"Medium"}>Medium</MenuItem>
-              <MenuItem value={"Low"}>Low</MenuItem>
+              <MenuItem value={"High"}>{t("priority_high")}</MenuItem>
+              <MenuItem value={"Medium"}>{t("priority_medium")}</MenuItem>
+              <MenuItem value={"Low"}>{t("priority_low")}</MenuItem>
             </Select>
           </FormControl>
         )}
@@ -253,11 +253,11 @@ fetchSidebarData();
                     className="text-primary text-2xl"
                   />
                   <h1 className="font-semibold pt-3 text-lg text-center">
-                    Do You Really Want Change the Priority from{" "}
+                    {t("want_to_change_priority")}{" "}{t("from")}{" "}
                     <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                       {Priority === null ? "Null" : Priority}
                     </span>{" "}
-                    to{" "}
+                    {t("to")}{" "}
                     <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                       {newPriority}
                     </span>{" "}
@@ -274,7 +274,7 @@ fetchSidebarData();
                     {btnloading ? (
                       <CircularProgress size={18} sx={{ color: "white" }} />
                     ) : (
-                      <span>Confirm</span>
+                      <span>{t("confirm")}</span>
                     )}
                   </Button>
 
@@ -288,7 +288,7 @@ fetchSidebarData();
                         : "text-primary border-primary"
                     }`}
                   >
-                    Cancel
+                    {t("cancel")}
                   </Button>
                 </div>
               </div>

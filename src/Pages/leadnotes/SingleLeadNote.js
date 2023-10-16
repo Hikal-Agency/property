@@ -27,9 +27,8 @@ const SingleLeadNote = (props) => {
   const [LeadData, setLeadData] = useState();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [error404, setError404] = useState(false);
-  const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, User, BACKEND_URL, t } = useStateContext();
 
-  console.log("ID: ", leadId);
 
   const fetchLead = async () => {
     const token = localStorage.getItem("auth-token");

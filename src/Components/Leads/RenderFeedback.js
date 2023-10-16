@@ -23,7 +23,6 @@ import { useStateContext } from "../../context/ContextProvider";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import LocationPicker from "../meetings/LocationPicker";
 import dayjs from "dayjs";
 
@@ -50,7 +49,7 @@ const RenderFeedback = ({ cellValues }) => {
     fetchSidebarData,
     BACKEND_URL,
     User,
-    Managers,
+    t
   } = useStateContext();
   const ChangeFeedback = (e) => {
     setnewFeedback(e.target.value);
@@ -303,17 +302,17 @@ const RenderFeedback = ({ cellValues }) => {
             </MenuItem>
           ) : null}
 
-          <MenuItem value={"New"}>New</MenuItem>
-          <MenuItem value={"Follow Up"}>Follow Up</MenuItem>
-          <MenuItem value={"Meeting"}>Meeting</MenuItem>
-          <MenuItem value={"Booked"}>Booked</MenuItem>
-          <MenuItem value={"Low Budget"}>Low Budget</MenuItem>
-          <MenuItem value={"Not Interested"}>Not Interested</MenuItem>
-          <MenuItem value={"No Answer"}>No Answer</MenuItem>
-          <MenuItem value={"Unreachable"}>Unreachable</MenuItem>
-          <MenuItem value={"Duplicate"}>Duplicate</MenuItem>
-          <MenuItem value={"Dead"}>Dead</MenuItem>
-          <MenuItem value={"Wrong Number"}>Wrong Number</MenuItem>
+          <MenuItem value={"New"}>{t("feedback_new")}</MenuItem>
+          <MenuItem value={"Follow Up"}>{t("feedback_follow_up")}</MenuItem>
+          <MenuItem value={"Meeting"}>{t("feedback_meeting")}</MenuItem>
+          <MenuItem value={"Booked"}>{t("feedback_booked")}</MenuItem>
+          <MenuItem value={"Low Budget"}>{t("feedback_low_budget")}</MenuItem>
+          <MenuItem value={"Not Interested"}>{t("feedback_not_interested")}</MenuItem>
+          <MenuItem value={"No Answer"}>{t("feedback_no_answer")}</MenuItem>
+          <MenuItem value={"Unreachable"}>{t("feedback_unreachable")}</MenuItem>
+          <MenuItem value={"Duplicate"}>{t("feedback_duplicate")}</MenuItem>
+          <MenuItem value={"Dead"}>{t("feedback_dead")}</MenuItem>
+          <MenuItem value={"Wrong Number"}>{t("feedback_wrong_number")}</MenuItem>
         </Select>
       </FormControl>
 
@@ -350,11 +349,11 @@ const RenderFeedback = ({ cellValues }) => {
               <div className="flex flex-col justify-center items-center">
                 <IoIosAlert size={50} className="text-primary text-2xl" />
                 <h1 className="font-semibold pt-3 mb-3 text-lg text-center">
-                  Do You Really Want Change the Feedback from{" "}
+                  {t("want_to_change_feedback")}{" "} {t("from")}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                     {Feedback ?? "No feedback"}
                   </span>{" "}
-                  to{" "}
+                  {t("to")}{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                     {newFeedback}
                   </span>{" "}
@@ -371,7 +370,7 @@ const RenderFeedback = ({ cellValues }) => {
                   <div className="flex flex-col justify-center items-center gap-4 mt-4">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
-                        label="Meeting Date *"
+                        label={t("label_meeting_date")}
                         value={meetingData.meetingDate}
                         views={["year", "month", "day"]}
                         onChange={(newValue) => {
@@ -396,7 +395,7 @@ const RenderFeedback = ({ cellValues }) => {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <MobileTimePicker
                         // ampm={false}
-                        label="Meeting Time *"
+                        label={t("label_meeting_time")}
                         format="hh:mm A"
                         value={meetingData.meetingTime}
                         onChange={(newValue) => {
@@ -427,7 +426,7 @@ const RenderFeedback = ({ cellValues }) => {
                       </InputLabel>
                       <Select
                         labelId="meeting-status"
-                        label="Meeting Status *"
+                        label={t("label_meeting_status")}
                         value={meetingData.meetingStatus}
                         onChange={(e) => {
                           setMeetingData({
@@ -437,10 +436,10 @@ const RenderFeedback = ({ cellValues }) => {
                         }}
                         required
                       >
-                        <MenuItem value={"Pending"}>Pending</MenuItem>
-                        <MenuItem value={"Postponed"}>Postponed</MenuItem>
-                        <MenuItem value={"Attended"}>Attended</MenuItem>
-                        <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+                        <MenuItem value={"Pending"}>{t("status_pending")}</MenuItem>
+                        <MenuItem value={"Postponed"}>{t("status_postponed")}</MenuItem>
+                        <MenuItem value={"Attended"}>{t("status_attended")}</MenuItem>
+                        <MenuItem value={"Cancelled"}>{t("status_cancelled")}</MenuItem>
                       </Select>
                     </FormControl>
                     <TextField
@@ -451,7 +450,7 @@ const RenderFeedback = ({ cellValues }) => {
                           fontFamily: "Noto Kufi Arabic",
                         },
                       }}
-                      label="Meeting Notes "
+                      label={t("label_meeting_notes")}
                       className="w-full mb-3"
                       style={{ marginBottom: "20px" }}
                       variant="outlined"
@@ -482,7 +481,7 @@ const RenderFeedback = ({ cellValues }) => {
                       {btnloading ? (
                         <CircularProgress size={18} sx={{ color: "white" }} />
                       ) : (
-                        <span>Confirm</span>
+                        <span>{t("confirm")}</span>
                       )}
                     </Button>
 

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
@@ -11,6 +11,7 @@ const AllUnassignedLeads = () => {
     setopenBackDrop,
     pageState,
     BACKEND_URL,
+    t
   } = useStateContext();
   const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
@@ -48,8 +49,8 @@ const AllUnassignedLeads = () => {
                 }`}
               >
                 {/* ●  */}
-                Unassigned Leads {" "}
-                <span className="capitalize">({lead_type})</span>{" "}
+                {`${t("unassigned")} ${t("leads")}`} {" "}
+                <span className="capitalize">({t("type_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))})</span>{" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>

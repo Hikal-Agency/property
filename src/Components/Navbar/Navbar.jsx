@@ -4,8 +4,9 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { MdStars } from "react-icons/md";
 
-import { Tooltip, Button, Badge } from "@mui/material";
+import { Tooltip, Button, Badge, MenuItem, Select } from "@mui/material";
 import Menu from "@mui/material/Menu";
+import langs from "../../utils/langs.js";
 import Avatar from "@mui/material/Avatar";
 
 import { useStateContext } from "../../context/ContextProvider";
@@ -30,8 +31,6 @@ import {
   MdDarkMode,
   MdKeyboardArrowDown,
   MdOutlineLightMode,
-  MdColorLens,
-  MdOutlineColorLens,
 } from "react-icons/md";
 import {
   VscHistory,
@@ -41,7 +40,6 @@ import {
   VscSignOut,
 } from "react-icons/vsc";
 import "../../styles/animation.css";
-import ColorsPopup from "./ColorsPopup";
 import ColorSchemeMenuItem from "./ColorSchemeMenuItem";
 
 const NavButton = ({
@@ -93,6 +91,7 @@ const Navbar = () => {
     isUserSubscribed,
     unreadNotifsCount,
     notifIconAnimating,
+    i18n
   } = useStateContext();
   const [currNavBtn, setCurrNavBtn] = useState("");
   const [anchorElem, setAnchorElem] = useState("");
@@ -288,6 +287,22 @@ const Navbar = () => {
               <></>
             ),
           ]}
+
+          <Select
+          sx={{
+            marginRight: "8px", 
+            "& fieldset": {
+              border: 0
+            }
+          }}
+          size="small"
+        value={i18n.language}
+        onChange={(e) =>
+          i18n.changeLanguage(e.target.value)
+        }
+      >
+      {langs?.map((lang) => <MenuItem value={lang?.code} key={lang?.code}>{lang?.title}</MenuItem>)}
+      </Select>
 
           {/* MEETINGS  */}
           <NavButton

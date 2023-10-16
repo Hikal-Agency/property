@@ -63,7 +63,6 @@ import RenderSalesperson from "../../Components/Leads/RenderSalesperson";
 import RenderFeedback from "../../Components/Leads/RenderFeedback";
 import BulkUpdateLeads from "../../Components/Leads/BulkUpdateLeads";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import DeleteLeadModel from "../../Components/Leads/DeleteLead";
 import { langs } from "../../langCodes";
 import AddReminder from "../../Components/reminder/AddReminder";
@@ -80,63 +79,54 @@ const bulkUpdateBtnStyles = {
 
 
 const leadOrigins = [
-  { id: "hotleads", formattedValue: "Fresh Leads" },
-  { id: "coldleads", formattedValue: "Cold Leads" },
-  { id: "thirdpartyleads", formattedValue: "Thirdparty Leads" },
-  { id: "personalleads", formattedValue: "Personal Leads" },
-  { id: "warmleads", formattedValue: "Archived Leads" },
-  { id: "transfferedleads", formattedValue: "Reshuffled Leads" },
+  { id: "hotleads" },
+  { id: "coldleads" },
+  { id: "thirdpartyleads" },
+  { id: "personalleads" },
+  { id: "warmleads" },
+  { id: "transfferedleads" },
 ];
 const leadTypes = [
-  { id: "all", formattedValue: "All" },
-  { id: "new", formattedValue: "New" },
-  { id: "no answer", formattedValue: "No Answer" },
-  { id: "meeting", formattedValue: "Meeting" },
-  { id: "follow up", formattedValue: "Follow Up" },
-  { id: "low budget", formattedValue: "Low Budget" },
-  { id: "not interested", formattedValue: "Not Interested" },
-  { id: "unreachable", formattedValue: "Unreachable" },
-  { id: "dead", formattedValue: "Dead" },
-  { id: "wrong number", formattedValue: "Wrong Number" },
+  { id: "all" },
+  { id: "new" },
+  { id: "no answer"},
+  { id: "meeting" },
+  { id: "follow up"},
+  { id: "low budget"},
+  { id: "not interested" },
+  { id: "unreachable" },
+  { id: "dead" },
+  { id: "wrong number" },
 
 ];
 
 const enquiryTypes = [
   {
     id: "studio",
-    formattedValue: "Studio",
   },
   {
     id: "1 bedroom",
-    formattedValue: "1 Bedroom",
   },
   {
     id: "2 bedrooms",
-    formattedValue: "2 Bedrooms",
   },
   {
     id: "3 bedrooms",
-    formattedValue: "3 Bedrooms",
   },
   {
     id: "4 bedrooms",
-    formattedValue: "4 Bedrooms",
   },
   {
     id: "5 bedrooms",
-    formattedValue: "5 Bedrooms",
   },
   {
     id: "6 bedrooms",
-    formattedValue: "6 Bedrooms",
   },
   {
     id: "retail",
-    formattedValue: "Retail",
   },
   {
     id: "others",
-    formattedValue: "Others",
   },
 ];
 
@@ -158,7 +148,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     SalesPerson,
     isArabic,
     darkModeColors,
-    primaryColor
+    primaryColor, t
   } = useStateContext();
   const [singleLeadData, setsingleLeadData] = useState({});
   const [deleteloading, setdeleteloading] = useState(false);
@@ -191,8 +181,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   const bulkImportRef = useRef();
 
-  console.log("Path in alleads component: ", lead_origin);
-  console.log("Sales:", SalesPerson);
 
   // eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
@@ -253,8 +241,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     }
   };
 
-  const handleChangeNumber = (e) => {};
-
   const handleSearch = (e) => {
     if (e.target.value === "") {
       setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
@@ -303,7 +289,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "leadName",
       headerAlign: "center",
-      headerName: "Lead name",
+      headerName: t("label_lead_name"),
       minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
@@ -324,7 +310,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "leadContact",
-      headerName: "Contact",
+      headerName: t("label_contact"),
       minWidth: 100,
       headerAlign: "center",
       flex: 1,
@@ -352,7 +338,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "project",
-      headerName: "Project",
+      headerName: t("label_project"),
       headerAlign: "center",
       minWidth: 80,
       flex: 1,
@@ -391,7 +377,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       headerAlign: "center",
       field: "leadType",
-      headerName: "Property",
+      headerName: t("label_property"),
       minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
@@ -412,7 +398,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       headerAlign: "center",
       field: "assignedToManager",
-      headerName: "Manager",
+      headerName: t("label_manager"),
       minWidth: 100,
       flex: 1,
       hideable: false,
@@ -421,7 +407,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       headerAlign: "center",
       field: "assignedToSales",
-      headerName: "Agent",
+      headerName: t("label_agent"),
       minWidth: 100,
       flex: 1,
       hideable: false,
@@ -430,7 +416,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "feedback",
       headerAlign: "center",
-      headerName: "Feedback",
+      headerName: t("label_feedback"),
       minWidth: 100,
       flex: 1,
 
@@ -439,7 +425,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "priority",
-      headerName: "Priority",
+      headerName: t("label_priority"),
       minWidth: 80,
       headerAlign: "center",
       flex: 1,
@@ -449,7 +435,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "otp",
       headerName:
-        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
+        lead_origin === "transfferedleads" ? t("label_transferred_from") : t("label_otp"),
       minWidth: 30,
       headerAlign: "center",
       flex: 1,
@@ -506,7 +492,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "leadSource",
-      headerName: "Src",
+      headerName: t("label_source"),
       flex: 1,
       minWidth: 30,
       headerAlign: "center",
@@ -614,7 +600,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "language",
-      headerName: "Lang",
+      headerName: t("label_language"),
       headerAlign: "center",
       minWidth: 30,
       flex: 1,
@@ -628,7 +614,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     },
     {
       field: "edit",
-      headerName: "Action",
+      headerName: t("label_action"),
       flex: 1,
       minWidth: 100,
       sortable: false,
@@ -1736,7 +1722,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
-            Leads Search{" "}
+            {t("leads_search")}{" "}
             <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
               {pageState?.total}
             </span>
@@ -1784,7 +1770,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <InputLabel>Category</InputLabel>
               <Select
                 id="leadOrigin"
-                label="Category"
+                label={t("label_category")}
                 value={leadOriginSelected?.id || "hotleads"}
                 onChange={(event) => {
                   searchRef.current.querySelector("input").value = "";
@@ -1811,15 +1797,14 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 }}
               >
                 <MenuItem value="0" disabled>
-                  Lead Origin
+                  {t("label_lead_origin")}
                 </MenuItem>
                 {leadOrigins?.map((origin, index) => (
                   <MenuItem
                     key={index}
                     value={origin?.id || ""}
-                    // sx={{ color: "#ffffff" }}
                   >
-                    {origin?.formattedValue}
+                    {t("origin_" + origin?.id)}
                   </MenuItem>
                 ))}
               </Select>
@@ -1832,7 +1817,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <InputLabel>Feedback</InputLabel>
               <Select
                 id="leadType"
-                label="Feedback"
+                label={t("label_feedback")}
                 value={leadTypeSelected?.id || "all"}
                 onChange={(event) => {
                   searchRef.current.querySelector("input").value = "";
@@ -1863,11 +1848,11 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     color: currentMode === "dark" ? "#ffffff" : "#000000",
                   }}
                 >
-                  Feedback
+                  {t("label_feedback")}
                 </MenuItem>
                 {leadTypes?.map((type, index) => (
                   <MenuItem key={index} value={type?.id || ""}>
-                    {type?.formattedValue}
+                    {t("feedback_" + type?.id?.toLowerCase()?.replaceAll(" ", "_"))}
                   </MenuItem>
                 ))}
               </Select>
@@ -1888,7 +1873,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   className="ml-4 text-red-600 cursor-pointer"
                   onClick={() => setEnquiryTypeSelected({ id: 0 })}
                 >
-                  Clear
+                  {t("clear")}
                 </strong>
               ) : (
                 ""
@@ -1898,7 +1883,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <FormControl fullWidth>
                 <InputLabel>Enquiry</InputLabel>
                 <Select
-                  label="Enquiry"
+                  label={t("label_enquiry")}
                   id="enquiryType"
                   value={enquiryTypeSelected?.id}
                   className={`w-full py-2 px-3`}
@@ -1939,7 +1924,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   </MenuItem>
                   {enquiryTypes?.map((type, index) => (
                     <MenuItem key={index} value={type?.id || ""}>
-                      {type?.formattedValue}
+                      {isNaN(parseInt(type?.id)) ? t("enquiry_" + type?.id) : t("enquiry_" + type?.id[0] + "bed")}
                     </MenuItem>
                   ))}
                 </Select>
@@ -1962,7 +1947,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     className="ml-4 text-red-600 cursor-pointer"
                     onClick={() => setLeadSourceSelected(0)}
                   >
-                    Clear
+                    {t("clear")}
                   </strong>
                 ) : (
                   ""
@@ -1970,9 +1955,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  <InputLabel>Source</InputLabel>
+                  <InputLabel>{t("label_source")}</InputLabel>
                   <Select
-                    label="Source"
+                    label={t("label_source")}
                     id="leadSource"
                     value={leadSourceSelected}
                     className={`w-full py-2 px-3`}
@@ -2007,21 +1992,21 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     >
                       <span className="text-gray-400">- - -</span>
                     </MenuItem>
-                    <MenuItem value={"Website"}>Website</MenuItem>
-                    <MenuItem value={"Campaign Facebook"}>Facebook</MenuItem>
-                    <MenuItem value={"Campaign Snapchat"}>Snapchat</MenuItem>
-                    <MenuItem value={"Campaign Tiktok"}>Tiktok</MenuItem>
-                    <MenuItem value={"Campaign GoogleAds"}>GoogleAds</MenuItem>
-                    <MenuItem value={"Campaign YouTube"}>YouTube</MenuItem>
-                    <MenuItem value={"Campaign"}>Campaign</MenuItem>
-                    <MenuItem value={"Whatsapp"}>Whatsapp</MenuItem>
-                    <MenuItem value={"Comment"}>Comment</MenuItem>
-                    <MenuItem value={"Message"}>Message</MenuItem>
+                    <MenuItem value={"Website"}>{t("source_website")}</MenuItem>
+                    <MenuItem value={"Campaign Facebook"}>{t("source_facebook")}</MenuItem>
+                    <MenuItem value={"Campaign Snapchat"}>{t("source_snapchat")}</MenuItem>
+                    <MenuItem value={"Campaign Tiktok"}>{t("source_tiktok")}</MenuItem>
+                    <MenuItem value={"Campaign GoogleAds"}>{t("source_googleads")}</MenuItem>
+                    <MenuItem value={"Campaign YouTube"}>{t("source_youtube")}</MenuItem>
+                    <MenuItem value={"Campaign"}>{t("source_campaign")}</MenuItem>
+                    <MenuItem value={"Whatsapp"}>{t("source_whatsapp")}</MenuItem>
+                    <MenuItem value={"Comment"}>{t("source_comment")}</MenuItem>
+                    <MenuItem value={"Message"}>{t("source_message")}</MenuItem>
                     <MenuItem value={"Property Finder"}>
-                      Property Finder
+                    {t("source_property_finder")}
                     </MenuItem>
-                    <MenuItem value={"Bulk Import"}>Bulk Import</MenuItem>
-                    <MenuItem value={"Personal"}>Personal</MenuItem>
+                    <MenuItem value={"Bulk Import"}>{t("source_bulk_import")}</MenuItem>
+                    <MenuItem value={"Personal"}>{t("source_personal")}</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
@@ -2034,7 +2019,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               className={`w-full py-2 px-3`}
               id="Project"
               type={"text"}
-              label="Project"
+              label={t('label_project')}
               variant="outlined"
               size="medium"
               sx={{
@@ -2066,7 +2051,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     className="ml-4 text-red-600 cursor-pointer"
                     onClick={() => setManagerSelected("")}
                   >
-                    Clear
+                    {t("clear")}
                   </strong>
                 ) : (
                   ""
@@ -2074,9 +2059,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  <InputLabel style={{ top: "-6px" }}>Manager</InputLabel>
+                  <InputLabel style={{ top: "-6px" }}>{t("label_manager")}</InputLabel>
                   <Select
-                    label="Manager"
+                    label={t("label_manager")}
                     id="Manager"
                     value={managerSelected || ""}
                     onChange={(event) => {
@@ -2138,7 +2123,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       setAgentSelected("");
                     }}
                   >
-                    Clear
+                    {t("clear")}
                   </strong>
                 ) : (
                   ""
@@ -2146,9 +2131,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  <InputLabel style={{ top: "-6px" }}>Agent</InputLabel>
+                  <InputLabel style={{ top: "-6px" }}>{t("label_agent")}</InputLabel>
                   <Select
-                    label="Agent"
+                    label={t("label_agent")}
                     id="Agent"
                     value={agentSelected || ""}
                     onChange={(event) => {

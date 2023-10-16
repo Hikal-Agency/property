@@ -1,6 +1,8 @@
+import { useTranslation } from "react-i18next";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "../axoisConfig";
 import {toast} from "react-toastify";
+
 const StateContext = createContext();
 
 const initialState = {
@@ -52,6 +54,8 @@ export const ContextProvider = ({ children }) => {
     accessToken: localStorage.getItem("access_token"),
     userName: "",
   });
+
+  const { t, i18n } = useTranslation();
 
   // DATA GRID
   const [pageState, setpageState] = useState({
@@ -492,7 +496,8 @@ export const ContextProvider = ({ children }) => {
         primaryColor, 
         setPrimaryColor,
         themeBgImg, 
-        setThemeBgImg
+        setThemeBgImg, 
+        t, i18n
       }}
     >
       {children}

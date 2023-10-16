@@ -142,42 +142,54 @@ const SingleEmployee = ({ user }) => {
       minWidth: 80,
       flex: 1,
       renderCell: (params) => {
-        if (params.row.is_late === 1 || params.row.is_late === 2) {
-          return params.row.late_minutes + " minutes";
+        if (params?.row?.is_late === 1 || params.row.is_late === 2) {
+          return params?.row?.late_minutes + " minutes";
         } else if (hasPermission("mark_late")) {
           // If there are no late minutes, return the buttons wrapped in a component
-          return (
-            <div className="flex justify-between px-5 py-3">
-              <Tooltip title="Yes" arrow>
-                <IconButton
-                  style={{
-                    backgroundColor: "#4CAF50",
-                    color: "white",
-                    fontSize: "1rem",
-                  }}
-                  className="rounded-full"
-                  onClick={(event) => lateSalary(event, 1, params?.row.id)}
-                >
-                  <CheckIcon />
-                </IconButton>
-              </Tooltip>
+          const checkTime = moment(params?.row?.check_datetime).format("HH:mm");
 
-              <Tooltip title="No" arrow>
-                <IconButton
-                  style={{
-                    backgroundColor: "#DC2626",
-                    color: "white",
-                    fontSize: "1rem",
-                    marginLeft: "5%",
-                  }}
-                  className="rounded-full"
-                  onClick={(event) => lateSalary(event, 2, params?.row.id)}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
+          let lateMinutes = moment(checkTime, "HH:mm").diff(
+            moment(params?.row?.default_datetime || "09:30 AM", "HH:mm"),
+            "minutes"
           );
+
+          if(lateMinutes > 0) {
+            return (
+              <div className="flex justify-between px-5 py-3">
+                <Tooltip title="Yes" arrow>
+                  <IconButton
+                    style={{
+                      backgroundColor: "#4CAF50",
+                      color: "white",
+                      fontSize: "1rem",
+                    }}
+                    className="rounded-full"
+                    onClick={(event) => lateSalary(event, 1, params?.row.id)}
+                  >
+                    <CheckIcon />
+                  </IconButton>
+                </Tooltip>
+  
+                <Tooltip title="No" arrow>
+                  <IconButton
+                    style={{
+                      backgroundColor: "#DC2626",
+                      color: "white",
+                      fontSize: "1rem",
+                      marginLeft: "5%",
+                    }}
+                    className="rounded-full"
+                    onClick={(event) => lateSalary(event, 2, params?.row.id)}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            );
+
+          } else {
+            return "-";
+          }
         } else {
           return "-";
         }
@@ -191,10 +203,35 @@ const SingleEmployee = ({ user }) => {
       minWidth: 80,
       flex: 1,
       renderCell: (params) => {
-        if(params.row.late_minutes <= 0) {
-          return params.row.late_minutes?.slice(1) + " minutes";
-        } else {
+        console.log("Params:", params);
+        const checkTime = moment(params?.row?.check_datetime).format("HH:mm");
+        const checkoutTime = moment(`${params?.row?.date} ${moment(params?.row?.checkOuts?.split(",")[0], "hh:mm A").format("HH:mm:ss")}`).format("HH:mm");
+        const extraMinutes = moment(checkoutTime, "HH:mm").diff(
+          moment(params?.row?.defaultCheckout || "06:30 PM", "HH:mm"),
+          "minutes"
+        );
+
+        let lateMinutes = moment(checkTime, "HH:mm").diff(
+          moment(params?.row?.default_datetime || "09:30 AM", "HH:mm"),
+          "minutes"
+        );
+
+        if(isNaN(lateMinutes) || isNaN(extraMinutes)) {
           return "-";
+        } else {
+          let totalMinutes = 0;
+          if(lateMinutes < 0) {
+            totalMinutes += lateMinutes; 
+          }
+          if(extraMinutes > 0) {
+            totalMinutes += extraMinutes;
+          }
+
+          if(totalMinutes > 0) {
+            return totalMinutes?.toString()?.slice(1) + " minutes"
+          } else {
+            return "-";
+          }
         }
       },
     },
@@ -720,7 +757,7 @@ const SingleEmployee = ({ user }) => {
     const checkTime = moment(employeeData?.check_datetime).format("HH:mm");
 
     let lateMinutes = moment(checkTime, "HH:mm").diff(
-      moment(employeeData?.default_datetime, "HH:mm"),
+      moment(employeeData?.default_datetime || "09:30 AM", "HH:mm"),
       "minutes"
     );
 
@@ -745,7 +782,7 @@ const SingleEmployee = ({ user }) => {
     if (btn === 1) {
       console.log("deducted salary: ", deduted_salary);
       UpdateData.append("is_late", 1);
-      UpdateData.append("late_minutes", lateMinutes);
+      UpdateData.append("late_minutes", Number(lateMinutes) <= 0 ? 0 : lateMinutes);
       UpdateData.append("deduct_salary", 1);
       UpdateData.append("notify_status", "Direct");
       UpdateData.append("cut_salary", deduted_salary.toString());
@@ -789,7 +826,7 @@ const SingleEmployee = ({ user }) => {
       ) {
         console.log("lates::::::::::::::");
         UpdateData.append("is_late", 1);
-        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("late_minutes",  Number(lateMinutes) <= 0 ? 0 : lateMinutes);
         UpdateData.append("deduct_salary", 2);
       } else if (
         // moment(pageState?.first_check?.check_datetime, "HH:mm") >
@@ -798,7 +835,7 @@ const SingleEmployee = ({ user }) => {
       ) {
         console.log("lates::::::::::::::");
         UpdateData.append("is_late", 2);
-        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("late_minutes",  Number(lateMinutes) <= 0 ? 0 : lateMinutes);
         UpdateData.append("deduct_salary", 2);
       } else if (
         moment(pageState?.first_check?.check_datetime, "HH:mm") <=

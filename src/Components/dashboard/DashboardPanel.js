@@ -35,6 +35,7 @@ const DashboardPanel = ({ setloading }) => {
     Sales_chart_data,
     setSales_chart_data,
     BACKEND_URL,
+    t
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
@@ -74,46 +75,45 @@ const DashboardPanel = ({ setloading }) => {
     {
       icon: <FaHandshake />,
       amount: DashboardData?.lead_status?.closed,
-      title: "Closed deal",
+      title: `${t("closed")} ${t("deal")?.toLowerCase()}`,
       link: "/closedeals",
     },
     {
       icon: <ImUser />,
       amount: DashboardData?.isAdmin?.managers,
-      title: "Sales managers ",
+      title: t("sales_managers"),
     },
     {
       icon: <MdSupportAgent />,
       amount: DashboardData?.isAdmin?.total_agents,
       percentage: "+38%",
-      title: "Sales agents",
+      title: t("sales_agents"),
     },
     {
       icon: <AiOutlineFire />,
       amount: DashboardData?.newLeads,
       percentage: "-12%",
-      title: "All New Leads",
-      // link: "/freshleads/all",
+      title: t("all_new_leads"),
     },
     {
       icon: <GiThermometerCold />,
       amount: DashboardData?.isAdmin?.verified_cold_leads,
       percentage: "-12%",
-      title: "Verified cold leads",
+      title: `${t("verified")} ${t("cold")?.toLowerCase()} ${t("leads")?.toLowerCase()}`,
       link: "/coldleads/coldLeadsVerified",
     },
     {
       icon: <FiUsers />,
       amount: DashboardData?.isAdmin?.personal_leads,
       percentage: "-12%",
-      title: "Personal leads",
+      title: `${t("personal")} ${t("leads")?.toLowerCase()}`,
       link: "/personalleads/all",
     },
     {
       icon: <MdLeaderboard />,
       amount: DashboardData?.isAdmin?.thirdparty,
       percentage: "-12%",
-      title: "Third party leads",
+      title: `${t("thirdparty")} ${t("leads")?.toLowerCase()}`,
       link: "/thirdpartyleads/all",
     },
   ];
@@ -121,7 +121,7 @@ const DashboardPanel = ({ setloading }) => {
   const ManagerData = [
     {
       amount: DashboardData?.lead_status?.closed,
-      title: "Closed deal",
+      title: `${t("closed")} ${t("deal")?.toLowerCase()}`,
       link: "/closedeals",
     },
     {
@@ -195,7 +195,7 @@ const DashboardPanel = ({ setloading }) => {
 
         className={`font-semibold text-primary text-lg ml-2 mb-5 mt-2`}
       >
-        OVERVIEW
+        {t("overview")?.toUpperCase()}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-2">
         <motion.div
@@ -245,7 +245,7 @@ const DashboardPanel = ({ setloading }) => {
                     : "text-main-dark-bg-2 font-semibold"
                 }   `}
               >
-                Fresh leads
+                {t("fresh")} {t("leads")}
               </p>
             </div>
           </Link>
@@ -369,7 +369,7 @@ const DashboardPanel = ({ setloading }) => {
                 } h-full rounded-xl p-5 cursor-pointer w-full`}
               >
                 <div className="justify-between items-center w-full">
-                  <h6 className="font-semibold">Performance</h6>
+                  <h6 className="font-semibold">{t("performance")}</h6>
                   <CombinationChart />
                 </div>
               </motion.div>
@@ -439,7 +439,7 @@ const DashboardPanel = ({ setloading }) => {
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">Sales</h6>
+                <h6 className="font-semibold pb-3">{t("sales")}</h6>
                 <SalesAmountChartAdmin />
               </div>
             </div>
@@ -452,7 +452,7 @@ const DashboardPanel = ({ setloading }) => {
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer `}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">Closed Projects</h6>
+                <h6 className="font-semibold pb-3">{`${t("closed")} ${t("projects")}`}</h6>
                 <BarChartProjectAdmin
                   total_projects={DashboardData?.total_projects}
                 />
@@ -508,7 +508,7 @@ const DashboardPanel = ({ setloading }) => {
               } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">Project Chart</h6>
+                <h6 className="font-semibold pb-3">{`${t("project")} ${t("chart")}`}</h6>
                 <BarChartProject
                   total_projects={DashboardData?.total_projects}
                 />
@@ -532,7 +532,7 @@ const DashboardPanel = ({ setloading }) => {
         >
           <div>
             <p className={`text-sm font-semibold text-white `}>
-              Deal drawn in the month
+              {t("deal_drawn_in_the_month")}
             </p>
             <p className={`text-4xl font-bold mt-2 text-white`}>
               AED {formatNumber(Number(DashboardData?.target_reached))}
@@ -549,7 +549,7 @@ const DashboardPanel = ({ setloading }) => {
         >
           <div>
             <p className={`text-sm font-semibold text-white`}>
-              All time revenue
+              {t("all_time_revenue")}
             </p>
             <p className={`text-4xl font-bold mt-2 text-white`}>
               AED {formatNumber(Number(DashboardData?.total_closed))}
@@ -569,7 +569,7 @@ const DashboardPanel = ({ setloading }) => {
               currentMode === "dark" ? "text-white" : "text-black"
             } col-span-1 h-fit py-2`}
           >
-            <h4 className="font-semibold p-3">UPCOMING MEETINGS</h4>
+            <h4 className="font-semibold p-3">{`${t("upcoming")} ${t("meetings")}`?.toUpperCase()}</h4>
             <UpcomingMeeting
               upcoming_meetings={DashboardData?.upcoming_meetings}
             />
@@ -589,7 +589,7 @@ const DashboardPanel = ({ setloading }) => {
             } col-span-1 h-fit`}
           >
             <h4 id="reminders" className="font-semibold p-3">
-              REMINDERS
+              {t("reminders")?.toUpperCase()}
             </h4>
             <Reminder
               reminder={reminder}

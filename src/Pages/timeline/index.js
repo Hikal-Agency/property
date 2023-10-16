@@ -4,45 +4,35 @@ import { useStateContext } from "../../context/ContextProvider";
 import Error from "../Error";
 
 import axios from "../../axoisConfig";
-import {useNavigate } from "react-router-dom";
-import {Backdrop, IconButton, Modal } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Backdrop, IconButton, Modal } from "@mui/material";
 
-import {
-  BiBed,
-  BiCalendarExclamation
-} from "react-icons/bi";
+import { BiBed, BiCalendarExclamation } from "react-icons/bi";
 import {
   BsTelephone,
   BsBuildings,
   BsBookmarkCheckFill,
   BsClockFill,
-  BsFlagFill
+  BsFlagFill,
 } from "react-icons/bs";
-import {
-  FaUserCheck
-} from "react-icons/fa";
-import {
-  GoMail
-} from "react-icons/go";
-import {
-  HiUser,
-  HiClock
-} from "react-icons/hi";
-import {
-  IoMdClose
-} from "react-icons/io";
-import {
-  MdNoteAlt,
-  MdClose
-} from "react-icons/md";
+import { FaUserCheck } from "react-icons/fa";
+import { GoMail } from "react-icons/go";
+import { HiUser, HiClock } from "react-icons/hi";
+import { IoMdClose } from "react-icons/io";
+import { MdNoteAlt, MdClose } from "react-icons/md";
 
 const style = {
   transform: "translate(0%, 0%)",
   boxShadow: 24,
 };
 
-const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
-  const { currentMode, BACKEND_URL, isArabic, primaryColor} = useStateContext();
+const Timeline = ({
+  LeadData,
+  handleCloseTimelineModel,
+  timelineModelOpen,
+}) => {
+  const { currentMode, BACKEND_URL, isArabic, primaryColor, t } =
+    useStateContext();
   const [leadsCycle, setLeadsCycle] = useState(null);
   const [leadDetails, setLeadDetails] = useState(null);
   const [error404, setError404] = useState(false);
@@ -50,8 +40,6 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
   const navigate = useNavigate();
 
   const fetchLeadsData = async (token, LeadID) => {
-    // const LeadID = location.pathname.split("/")[2].replace(/%20/g, " ");
-    console.log("ID: ", LeadID);
     const urlLeadsCycle = `${BACKEND_URL}/leadscycle/${LeadID}}`;
     const urlLeadDetails = `${BACKEND_URL}/leads/${LeadID}`;
     try {
@@ -75,9 +63,6 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
     } catch (error) {
       console.log(error);
       setError404(true);
-      // navigate("/", {
-      //   state: { error: "Something Went Wrong! Please Try Again " },
-      // });
     }
   };
 
@@ -131,7 +116,6 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
 
   return (
     <>
-    
       <Modal
         keepMounted
         open={timelineModelOpen}
@@ -143,29 +127,30 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
         BackdropProps={{
           timeout: 500,
         }}
-        
       >
         <div className="w-[100vw] h-[100vh] flex items-start justify-end">
-          <button onClick={handleCloseTimelineModel}
+          <button
+            onClick={handleCloseTimelineModel}
             className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
           >
-            {/* <IconButton
-              onClick={handleCloseTimelineModel}
-            > */}
-              <MdClose size={18} color={"white"} className="hover:border hover:border-white hover:rounded-full" />
-            {/* </IconButton> */}
+            <MdClose
+              size={18}
+              color={"white"}
+              className="hover:border hover:border-white hover:rounded-full"
+            />
           </button>
 
           <div
             style={style}
-            // className={`w-[calc(100%-20px)] h-[80%] overflow-y-scroll md:w-[900px]  ${
-            //   currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-white"
-            // } absolute top-1/2 left-1/2 px-10 py-5 rounded-md`}
-            className={` ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-[#FFFFFF] text-black"}
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#1C1C1C] text-white"
+                : "bg-[#FFFFFF] text-black"
+            }
              p-4 h-[100vh] w-[80vw] rounded-l-md overflow-y-scroll
             `}
           >
-            <div className={`w-full`} >
+            <div className={`w-full`}>
               {error404 ? (
                 <Error />
               ) : (
@@ -174,12 +159,10 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                     <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                     <h1
                       className={`text-lg font-semibold ${
-                        currentMode === "dark"
-                          ? "text-white"
-                          : "text-black"
+                        currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                     >
-                      Timeline
+                      {t("timeline")}
                     </h1>
                   </div>
 
@@ -197,7 +180,8 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                             </div>
                           ) : (
                             <>
-                              <h3 className="text-lg font-bold uppercase mb-5"
+                              <h3
+                                className="text-lg font-bold uppercase mb-5"
                                 style={{
                                   fontFamily: isArabic(leadDetails.leadName)
                                     ? "Noto Kufi Arabic"
@@ -220,7 +204,8 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                   </div>
                                 </div>
                                 {/* EMAIL ADDRESS  */}
-                                {leadDetails.leadEmail !== "" && leadDetails.leadEmail != "null" ? (
+                                {leadDetails.leadEmail !== "" &&
+                                leadDetails.leadEmail != "null" ? (
                                   <div className="grid grid-cols-8 gap-3 my-3">
                                     <GoMail size={16} />
                                     <div className="col-span-7">
@@ -234,16 +219,24 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                 <div className="grid grid-cols-8 gap-3 my-3">
                                   <BsBuildings size={16} />
                                   <div className="col-span-7">
-                                    {leadDetails.project === "null" ? "-" : leadDetails.project} {" "}
-                                    {leadDetails.leadType === "null" ? "-" : leadDetails.leadType} {" "}
+                                    {leadDetails.project === "null"
+                                      ? "-"
+                                      : leadDetails.project}{" "}
+                                    {leadDetails.leadType === "null"
+                                      ? "-"
+                                      : leadDetails.leadType}{" "}
                                   </div>
                                 </div>
                                 {/* ENQUIRY  */}
                                 <div className="grid grid-cols-8 gap-3 my-3">
                                   <BiBed size={16} />
                                   <div className="col-span-7">
-                                    {leadDetails.enquiryType === "null" ? "-" : leadDetails.enquiryType} {" "}
-                                    {leadDetails.leadFor === "null" ? "-" : leadDetails.leadFor} {" "}
+                                    {leadDetails.enquiryType === "null"
+                                      ? "-"
+                                      : leadDetails.enquiryType}{" "}
+                                    {leadDetails.leadFor === "null"
+                                      ? "-"
+                                      : leadDetails.leadFor}{" "}
                                   </div>
                                 </div>
 
@@ -251,23 +244,25 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
 
                                 {/* CREATION DATE  */}
                                 <div className="text-sm mb-5">
-                                  <p>Lead added on:</p>
+                                  <p>{t("lead_added_on")}:</p>
                                   <p>{leadDetails.creationDate}</p>
                                 </div>
                                 <div className="text-sm mb-5">
-                                  <p>Last edited on:</p>
+                                  <p>{t("lead_edited_on")}:</p>
                                   <p>{leadDetails.lastEdited}</p>
                                 </div>
                               </div>
                             </>
                           )}
                         </div>
-                                  
+
                         <div className="relative col-span-12 space-y-6 md:col-span-8 w-full">
                           <div className="flex flex-col md:grid grid-cols-12 w-full">
                             {loading ? (
                               <div className="flex items-center justify-center w-full">
-                                <h1 className="font-semibold text-lg">Loading</h1>
+                                <h1 className="font-semibold text-lg">
+                                  Loading
+                                </h1>
                               </div>
                             ) : (
                               groupLeadsByDate(leadsCycle).map(
@@ -313,20 +308,28 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                       ? "bg-[#000000]"
                                                       : "bg-[#EEEEEE]"
                                                   } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                  // style={{
-                                                  //   transform:
-                                                  //     "translateX(-30px)",
-                                                  // }}
+                                    
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p
-                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
-                                                  >
-                                                    <HiUser size={12} color={"#AAAAAA"} className="mr-2" />
+                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                    <HiUser
+                                                      size={12}
+                                                      color={"#AAAAAA"}
+                                                      className="mr-2"
+                                                    />
                                                     {timeline.addedBy}
                                                   </p>
                                                   {/* LEAD NOTE  */}
-                                                  <p className="font-semibold tracking-wide mb-2" style={{ fontFamily: isArabic(timeline.leadNote) ? "Noto Kufi Arabic" : "inherit"}}>
+                                                  <p
+                                                    className="font-semibold tracking-wide mb-2"
+                                                    style={{
+                                                      fontFamily: isArabic(
+                                                        timeline.leadNote
+                                                      )
+                                                        ? "Noto Kufi Arabic"
+                                                        : "inherit",
+                                                    }}
+                                                  >
                                                     {timeline.leadNote}
                                                   </p>
                                                   {/* FEEDBACK 
@@ -346,12 +349,11 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   </p>
                                                 </div>
                                               </>
-
-                                              // MANAGER 
-                                            ) : timeline.manager &&
+                                            ) : // MANAGER
+                                            timeline.manager &&
                                               timeline.manager !== "0" ? (
                                               <>
-                                              <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
                                                   <div className="h-full w-6 flex items-center justify-center">
                                                     <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                   </div>
@@ -374,18 +376,20 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   // }}
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p
-                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
-                                                  >
-                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                    <HiUser
+                                                      size={12}
+                                                      className="mr-1 text-[#AAAAAA]"
+                                                    />
                                                     {timeline.addedBy}
                                                   </p>
                                                   {/* AGENT  */}
                                                   <p className="font-semibold tracking-wide">
-                                                    Sales manager has been updated to{" "}
+                                                    {t("salesmanager_updated_to")}{" "}
                                                     <span className="font-bold text-primary">
                                                       {timeline.manager}
-                                                    </span>.
+                                                    </span>
+                                                    .
                                                   </p>
                                                   {/* CREATION DATE  */}
                                                   <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
@@ -394,9 +398,8 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   </p>
                                                 </div>
                                               </>
-
-                                              // SALESPERSON 
-                                            ) : timeline.agent &&
+                                            ) : // SALESPERSON
+                                            timeline.agent &&
                                               timeline.agent !== "0" ? (
                                               <>
                                                 <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
@@ -422,18 +425,20 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   // }}
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p
-                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
-                                                  >
-                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                    <HiUser
+                                                      size={12}
+                                                      className="mr-1 text-[#AAAAAA]"
+                                                    />
                                                     {timeline.addedBy}
                                                   </p>
                                                   {/* AGENT  */}
                                                   <p className="font-semibold tracking-wide">
-                                                    Sales agent has been updated to{" "}
+                                                    {t("salesagent_updated_to")}{" "}
                                                     <span className="font-bold text-primary">
                                                       {timeline.agent}
-                                                    </span>.
+                                                    </span>
+                                                    .
                                                   </p>
                                                   {/* CREATION DATE  */}
                                                   <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
@@ -442,9 +447,8 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   </p>
                                                 </div>
                                               </>
-
-                                              // FEEDBACK
-                                            ) : timeline.feedback &&
+                                            ) : // FEEDBACK
+                                            timeline.feedback &&
                                               timeline.feedback !== "0" ? (
                                               <>
                                                 <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
@@ -470,18 +474,20 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   // }}
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p
-                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
-                                                  >
-                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                    <HiUser
+                                                      size={12}
+                                                      className="mr-1 text-[#AAAAAA]"
+                                                    />
                                                     {timeline.addedBy}
                                                   </p>
                                                   {/* FEEDBACK  */}
                                                   <p className="font-semibold tracking-wide">
-                                                    Feedback has been updated to{" "}
+                                                   {t("feedback_updated_to")}{" "}
                                                     <span className="font-bold text-primary">
                                                       {timeline.feedback}
-                                                    </span>.
+                                                    </span>
+                                                    .
                                                   </p>
                                                   {/* CREATION DATE  */}
                                                   <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
@@ -490,9 +496,8 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   </p>
                                                 </div>
                                               </>
-
-                                              // MEETING STATUS 
-                                            ) : timeline.meetingStatus &&
+                                            ) : // MEETING STATUS
+                                            timeline.meetingStatus &&
                                               timeline.meetingStatus !== "0" ? (
                                               <>
                                                 <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
@@ -518,18 +523,20 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   // }}
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p
-                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
-                                                  >
-                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                    <HiUser
+                                                      size={12}
+                                                      className="mr-1 text-[#AAAAAA]"
+                                                    />
                                                     {timeline.addedBy}
                                                   </p>
                                                   {/* FEEDBACK  */}
                                                   <p className="font-semibold tracking-wide">
-                                                    Meeting status has been updated to{" "}
+                                                    {t("meeting_status_updated_to")}{" "}
                                                     <span className="font-bold text-primary">
                                                       {timeline.meetingStatus}
-                                                    </span>.
+                                                    </span>
+                                                    .
                                                   </p>
                                                   {/* CREATION DATE  */}
                                                   <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
@@ -538,9 +545,8 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   </p>
                                                 </div>
                                               </>
-
-                                              // MEETING DATE TIME 
-                                            ) : timeline.meetingDate &&
+                                            ) : // MEETING DATE TIME
+                                            timeline.meetingDate &&
                                               timeline.meetingDate !== "0" ? (
                                               <>
                                                 <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
@@ -566,18 +572,20 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   // }}
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p
-                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
-                                                  >
-                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                    <HiUser
+                                                      size={12}
+                                                      className="mr-1 text-[#AAAAAA]"
+                                                    />
                                                     {timeline.addedBy}
                                                   </p>
                                                   {/* FEEDBACK  */}
                                                   <p className="font-semibold tracking-wide">
-                                                    Meeting has been set for{" "}
+                                                    {t("meeting_set_to")}{" "}
                                                     <span className="font-bold text-primary">
                                                       {!timeline.meetingTime ||
-                                                      timeline.meetingTime === ""
+                                                      timeline.meetingTime ===
+                                                        ""
                                                         ? ""
                                                         : `${timeline.meetingTime}, `}{" "}
                                                       {(timeline.meetingDate ||
@@ -586,7 +594,8 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                         moment(
                                                           timeline.meetingDate
                                                         ).format("MMMM D, Y")}
-                                                    </span>.
+                                                    </span>
+                                                    .
                                                   </p>
                                                   {/* CREATION DATE  */}
                                                   <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
@@ -620,15 +629,16 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                                                   // }}
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p
-                                                    className="text-xs tracking-wide font-italic justify-end flex items-center"
-                                                  >
-                                                    <HiUser size={12} className="mr-1 text-[#AAAAAA]" />
+                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                    <HiUser
+                                                      size={12}
+                                                      className="mr-1 text-[#AAAAAA]"
+                                                    />
                                                     {timeline.addedBy}
                                                   </p>
                                                   {/* FEEDBACK  */}
                                                   <p className="font-semibold tracking-wide">
-                                                    A new lead has been created.
+                                                    {t("new_lead_created")}
                                                   </p>
                                                   {/* CREATION DATE  */}
                                                   <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
@@ -655,7 +665,6 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
               )}
             </div>
           </div>
-        
         </div>
       </Modal>
     </>
@@ -663,4 +672,3 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
 };
 
 export default Timeline;
-

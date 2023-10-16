@@ -19,7 +19,7 @@ const TransferredLeads = (props) => {
     currentMode,
     pageState,
     setopenBackDrop,
-    BACKEND_URL,
+    BACKEND_URL,t
   } = useStateContext();
 
   const lead_type2 = location.pathname.split("/")[2];
@@ -50,8 +50,8 @@ const TransferredLeads = (props) => {
                     : "text-black"
                 }`}
               >
-                Reshuffled Leads {" "}
-                <span className="capitalize">({lead_type})</span>{" "}
+                {`${t("reshuffled")} ${t("leads")}`} {" "}
+                <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))})</span>{" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>
