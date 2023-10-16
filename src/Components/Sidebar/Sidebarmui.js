@@ -1115,11 +1115,11 @@ const Sidebarmui = () => {
           icon: <ImUsers />,
           link: "/users",
         },
-        {
-          name: "Clients",
-          icon: <ImUsers />,
-          link: "/clients",
-        },
+        // {
+        //   name: "Clients",
+        //   icon: <ImUsers />,
+        //   link: "/clients",
+        // },
         // {
         //   name: "Contacts",
         //   icon: <MdContactPage />,

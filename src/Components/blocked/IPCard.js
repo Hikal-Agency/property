@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { CircularProgress, IconButton } from "@mui/material";
+import { CircularProgress, IconButton, Tooltip } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "../../axoisConfig";
+import IPLeadsModal from "./IPLeadsModal";
+
 import { CgUnblock } from "react-icons/cg";
 import { toast } from "react-toastify";
-import { RxCross2 } from "react-icons/rx";
-import { FaCheck } from "react-icons/fa";
-import IPLeadsModal from "./IPLeadsModal";
+import { 
+  RxCheck,
+  RxCross2
+} from "react-icons/rx";
 
 import {
   BiNotepad,
@@ -165,7 +168,41 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
         ) : (
           <div>
             <div className="flex flex-col">
-              <strong className="mb-2">{ip?.byIP}</strong>
+              <div className="flex justify-between items-center">
+                <strong className="mb-2">{ip?.byIP}</strong>
+                {isRequest ? (
+                  <div className="flex items-center">
+                    <Tooltip title="Approve" arrow>
+                      <button
+                        className="rounded-full bg-[#4CAF50] text-white p-1.5 mx-1"
+                        onClick={() => handleBlock(ip)}
+                      >
+                        <RxCheck size={16} />
+                      </button>
+                    </Tooltip>
+
+                    <Tooltip title="Reject" arrow>
+                      <button
+                        className="rounded-full bg-[#DC2626] text-white p-1.5 mx-1"
+                        onClick={() => handleReject(ip)}
+                      >
+                        <RxCross2 size={16} />
+                      </button>
+                    </Tooltip>
+                  </div>
+                ) : !isRejected ? (
+                  <Tooltip title="Unblock IP" arrow>
+                    <button
+                      onClick={() => handleUnblock(ip)}
+                      className="rounded-full bg-primary text-white p-1.5"
+                    >
+                      <CgUnblock size={16} />
+                    </button>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
+              </div>
               <div className="h-0.5 w-full bg-primary my-2"></div>
               <div className="font-semibold my-1 flex">
                 <BiNotepad size={16} className="mr-3" />
@@ -180,54 +217,6 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
                 {new Date(ip?.created_at)?.toUTCString()}
               </div>
             </div>
-
-            {isRequest ? (
-              <div className="flex mt-4 items-center">
-                <IconButton
-                  style={{ backgroundColor: "#4CAF50" }}
-                  className="rounded-full"
-                  onClick={() => handleBlock(ip)}
-                  sx={{
-                    "& svg": {
-                      color: currentMode === "dark" ? "white" : "white",
-                    },
-                    padding: "4px",
-                    marginRight: "6px",
-                  }}
-                >
-                  <FaCheck />
-                </IconButton>
-                <IconButton
-                  style={{ backgroundColor: "#DC2626" }}
-                  className="rounded-full"
-                  onClick={() => handleReject(ip)}
-                  sx={{
-                    "& svg": {
-                      color: currentMode === "dark" ? "white" : "white",
-                    },
-                    padding: "4px",
-                  }}
-                >
-                  <RxCross2 />
-                </IconButton>
-              </div>
-            ) : !isRejected ? (
-              <IconButton
-                onClick={() => handleUnblock(ip)}
-                style={{ backgroundColor: "black" }}
-                className="rounded-full"
-                sx={{
-                  "& svg": {
-                    color: "white",
-                  },
-                  marginTop: "10px",
-                }}
-              >
-                <CgUnblock />
-              </IconButton>
-            ) : (
-              <></>
-            )}
           </div>
         )}
       </div>
