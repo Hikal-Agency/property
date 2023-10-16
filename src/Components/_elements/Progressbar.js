@@ -3,6 +3,7 @@ import { BsStarFill } from "react-icons/bs";
 import { useStateContext } from "../../context/ContextProvider";
   
 const ProgressBar = ({
+    bgcolor,
     progress,
     height,
     progresswidth
@@ -21,7 +22,8 @@ const ProgressBar = ({
     const Childdiv = {
         height: '100%',
         width: `${progresswidth}%`,
-        backgroundColor: progress >= 100 ? "#269144" : "#DA1F26",
+        // backgroundColor: progress >= 100 ? "#269144" : "#DA1F26",
+        backgroundColor: bgcolor,
         borderRadius: 40,
         textAlign: 'right',
         display: 'flex',
