@@ -311,10 +311,7 @@ const Reports = () => {
                             size="small"
                             sx={{
                               "& input": {
-                                color:
-                                  currentMode === "dark"
-                                    ? "#EEEEEE"
-                                    : "#424242",
+                                color: "#ffffff",
                               },
                               "&": {
                                 borderRadius: "4px",
