@@ -12,7 +12,10 @@ import { useStateContext } from "../../context/ContextProvider";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 import usePermission from "../../utils/usePermission";
-const EditUser = ({ user }) => {
+
+const EditUser = ({ 
+  user 
+}) => {
   console.log("Edit User: ", user);
   const [loading, setloading] = useState(false);
   const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
@@ -61,6 +64,7 @@ const EditUser = ({ user }) => {
       setloading(false);
 
       console.log("Response: ", UpdateUser);
+
     } catch (error) {
       setloading(false);
       console.log("Error: ", error);

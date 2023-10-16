@@ -832,6 +832,7 @@ const Users = () => {
                 UserData={userID}
                 handleCloseEditModal={handleCloseEditModal}
                 setEditModalOpen={setEditModalOpen}
+                fetchUser={fetchUsers}
               />
             )}
           </div>
