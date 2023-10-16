@@ -7,7 +7,7 @@ import ReportClosedMeetingDoughnut from "../../Components/charts/ReportClosedMee
 import { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
 import axios from "../../axoisConfig";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, TextField } from "@mui/material";
 import SocialChart from "../../Components/charts/SocialChart";
 import { toast } from "react-toastify";
 import moment from "moment";
@@ -16,6 +16,8 @@ import { MdCampaign } from "react-icons/md";
 import { FaFacebookF } from "react-icons/fa";
 import usePermission from "../../utils/usePermission";
 import { BiMessageRoundedDots } from "react-icons/bi";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const Reports = () => {
   const {
@@ -36,6 +38,7 @@ const Reports = () => {
   const [selectedMonthSales, setSelectedMonthSales] = useState();
   const [counters, setCounter] = useState([]);
   const { hasPermission } = usePermission();
+  const [countFilter, setCountFilter] = useState();
 
   const FetchProfile = (token) => {
     let params = {
@@ -203,8 +206,7 @@ const Reports = () => {
   };
 
   const fetchCounter = async (token) => {
-    const currentDate = moment().format("YYYY-MM-DD");
-    // const currentDate = "2023-01-01";
+    const currentDate = moment(countFilter).format("YYYY-MM-DD");
     try {
       const callCounter = await axios.get(
         `${BACKEND_URL}/totalSource?date=${currentDate}`,
@@ -244,6 +246,12 @@ const Reports = () => {
   }, []);
 
   useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+
+    fetchCounter(token);
+  }, [countFilter]);
+
+  useEffect(() => {
     // fetchData();
     fetchSocialChart(selectedMonthSocial);
     // const token = localStorage.getItem("auth-token");
@@ -278,10 +286,53 @@ const Reports = () => {
           >
             <div className="mb-10">
               <div className="mb-5 ">
-                <div className="flex justify-center bg-primary py-2 mb-4 rounded-full">
+                <div className="flex justify-center items-center bg-primary py-2 mb-4 rounded-full">
                   <h1 className={`text-white text-lg font-semibold`}>
                     Lead Sources
                   </h1>
+
+                  <div className="m-2">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        value={countFilter}
+                        views={["year", "month", "day"]}
+                        format="yyyy-MM-dd"
+                        onChange={(newValue) => {
+                          const formattedDate = moment(newValue?.$d).format(
+                            "YYYY-MM-DD"
+                          );
+                          setCountFilter(formattedDate);
+
+                          // FetchLastLocation(token, formattedDate);
+                          // FetchLocation(token, formattedDate);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            size="small"
+                            sx={{
+                              "& input": {
+                                color:
+                                  currentMode === "dark"
+                                    ? "#EEEEEE"
+                                    : "#424242",
+                              },
+                              "&": {
+                                borderRadius: "4px",
+                                border: "1px solid #AAAAAA",
+                              },
+                              "& .MuiSvgIcon-root": {
+                                color: "#AAAAAA",
+                              },
+                            }}
+                            label="Date"
+                            {...params}
+                            onKeyDown={(e) => e.preventDefault()}
+                            readOnly={true}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </div>
                 </div>
 
                 {hasPermission("leadSource_counts") && (
