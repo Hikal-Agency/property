@@ -115,7 +115,7 @@ import { HiOutlineBan } from "react-icons/hi";
 
 const UserTable = ({}) => {
   const [loading, setLoading] = useState(false);
-  const { currentMode, BACKEND_URL, pageState, setpageState, primaryColor } =
+  const { currentMode, BACKEND_URL, pageState, setpageState, primaryColor, t } =
     useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
@@ -388,9 +388,9 @@ const UserTable = ({}) => {
                               </div>
 
                               {item?.status !== 1 ? (
-                                <p className="text-red-600 text-xs">DEACTIVATED ACCOUNT</p>
+                                <p className="text-red-600 text-xs">{t("deactivated_account")?.toUpperCase()}</p>
                               ) : (
-                                <p className="text-green-600 text-xs">ACTIVE ACCOUNT</p>
+                                <p className="text-green-600 text-xs">{t("active_account")?.toUpperCase()}</p>
                               )}
                             </div>
                           </div>

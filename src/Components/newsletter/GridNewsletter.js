@@ -13,7 +13,7 @@ import {
 const GridNewsletter = ({ pageState, setpageState }) => {
   console.log("Newsletter state: ", pageState);
   const [loading, setLoading] = useState(false);
-  const { currentMode, primaryColor } = useStateContext();
+  const { currentMode, primaryColor, t } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [notesData, setUserData] = useState([]);
 
@@ -61,7 +61,7 @@ const GridNewsletter = ({ pageState, setpageState }) => {
                             {item?.email}
                           </h1>
                           <p className="text-xs text-[#AAAAAA]">
-                            Subscribed on {item?.creationDate}
+                            {t("label_subscribed_on")} {item?.creationDate}
                           </p>
                         </div>
 

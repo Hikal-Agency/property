@@ -9,7 +9,7 @@ import OffersList from "../../Components/offers/OffersList";
 import usePermission from "../../utils/usePermission";
 
 const Offers = () => {
-  const { currentMode, darkModeColors, setopenBackDrop, BACKEND_URL } =
+  const { currentMode, darkModeColors, setopenBackDrop, BACKEND_URL, t } =
     useStateContext();
   const [value, setValue] = useState(0);
   const { hasPermission } = usePermission();
@@ -100,7 +100,7 @@ const Offers = () => {
                     : "text-black"
                 }`}
               >
-                Offers
+                {t("offers")}
               </h1>
             </div>
 
@@ -127,14 +127,14 @@ const Offers = () => {
                 className="w-full px-1 m-1"
               >
                 {hasPermission("offers_create") ? (
-                  <Tab label="CREATE NEW OFFER" />
+                  <Tab label={t("create_new_offer")?.toUpperCase()} />
                 ) : (
                   ""
                 )}
                 {hasPermission("offers_manager_tab") && (
-                  <Tab label="OFFERS FOR MANAGERS" />
+                  <Tab label={t("offers_for_managers")?.toUpperCase()} />
                 )}
-                <Tab label="OFFERS FOR AGENTS" />
+                <Tab label={t("offers_for_agents")?.toUpperCase()} />
               </Tabs>
             </Box>
             <div className="mt-3 pb-3">

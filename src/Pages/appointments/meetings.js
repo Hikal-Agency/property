@@ -27,7 +27,7 @@ import Timeline from "../timeline";
 
 const Meetings = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, BACKEND_URL, User, darkModeColors, DataGridStyles, primaryColor } =
+  const { currentMode, setopenBackDrop, BACKEND_URL, User, darkModeColors, DataGridStyles, primaryColor, t } =
     useStateContext();
   const [locationModalOpen, setLocationModalOpen] = useState(false);
   const [meetingNote, setMeetingNote] = useState(null);
@@ -125,7 +125,7 @@ const Meetings = () => {
     // MEETING DATE
     {
       field: "meetingDate",
-      headerName: "Meeting Date",
+      headerName: t("label_meeting_date"),
       minWidth: 50,
       headerAlign: "center",
       flex: 1,
@@ -133,7 +133,7 @@ const Meetings = () => {
     // MEETING TIME
     {
       field: "meetingTime",
-      headerName: "Meeting Time",
+      headerName: t("label_meeting_time"),
       minWidth: 50,
       headerAlign: "center",
       flex: 1,
@@ -141,7 +141,7 @@ const Meetings = () => {
     // LEAD NAME
     {
       field: "leadName",
-      headerName: "Lead name",
+      headerName: t("label_lead_name"),
       headerAlign: "center",
       minWidth: 100,
       flex: 1,
@@ -149,7 +149,7 @@ const Meetings = () => {
     // PROJECT
     {
       field: "project",
-      headerName: "Project",
+      headerName: t("label_project"),
       headerAlign: "center",
       minWidth: 80,
       flex: 1,
@@ -165,7 +165,7 @@ const Meetings = () => {
     // PROPERTY
     {
       field: "enquiryType",
-      headerName: "Property",
+      headerName: t("label_property"),
       minWidth: 80,
       headerAlign: "center",
       flex: 1,
@@ -181,7 +181,7 @@ const Meetings = () => {
     // STATUS
     {
       field: "meetingStatus",
-      headerName: "Status",
+      headerName: t("status"),
       width: 100,
       flex: 1,
       sortable: false,
@@ -198,7 +198,7 @@ const Meetings = () => {
                 style={{ fontSize: 9 }}
               >
                 <span className="text-[#238e41] p-1 rounded-md w-24 text-center">
-                  ATTENDED
+                  {t("status_attended")?.toUpperCase()}
                 </span>
               </div>
             )}
@@ -211,7 +211,7 @@ const Meetings = () => {
                 style={{ fontSize: 9 }}
               >
                 <span className="text-[#DA1F26] p-1 rounded-md w-24 text-center">
-                  CANCELLED
+                  {t("status_cancelled")?.toUpperCase()}
                 </span>
               </div>
             )}
@@ -224,7 +224,7 @@ const Meetings = () => {
                 style={{ fontSize: 9 }}
               >
                 <span className="text-[#f27f25] p-1 rounded-md w-24 text-center">
-                  POSTPONED
+                  {t("status_postponed")?.toUpperCase()}
                 </span>
               </div>
             )}
@@ -237,7 +237,7 @@ const Meetings = () => {
                 style={{ fontSize: 9 }}
               >
                 <span className="text-[#AAAAAA] p-1 rounded-md w-24 text-center">
-                  PENDING
+                  {t("status_pending")?.toUpperCase()}
                 </span>
               </div>
             )}
@@ -248,7 +248,7 @@ const Meetings = () => {
     // MEETING BY
     {
       field: "meetingBy",
-      headerName: "Meeting By",
+      headerName: t("label_meeting_by"),
       minWidth: 100,
       headerAlign: "center",
       flex: 1,
@@ -256,7 +256,7 @@ const Meetings = () => {
     // ACTION
     {
       field: "edit",
-      headerName: "Action",
+      headerName: t("label_action"),
       headerAlign: "center",
       minWidth: "50",
       flex: 1,
@@ -532,7 +532,7 @@ const Meetings = () => {
                       : "text-black"
                   }`}
                 >
-                  Meetings {" "}
+                  {t("menu_meetings")} {" "}
                   <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {pageState?.total}
                   </span>

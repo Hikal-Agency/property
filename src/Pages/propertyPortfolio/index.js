@@ -9,7 +9,7 @@ import { BiCheckboxChecked, BiCheckboxMinus } from "react-icons/bi";
 import { toast } from "react-toastify";
 
 const PropertyPortfolio = () => {
-  const { currentMode, DevProData, setDevProData, BACKEND_URL } =
+  const { currentMode, DevProData, setDevProData, BACKEND_URL, t } =
     useStateContext();
   const navigate = useNavigate();
 
@@ -60,7 +60,7 @@ const PropertyPortfolio = () => {
                 currentMode === "dark" ? "text-white" : "text-primary"
               } text-lg ml-2 auto-cols-max gap-x-3`}
             >
-              Property Portfolio
+              {t("menu_property_portfolio")}
             </h1>
 
             <div className="space-y-3">
@@ -94,15 +94,15 @@ const PropertyPortfolio = () => {
                                   <hr className="h-0.5"></hr>
                                   {project.projectStatus === "Available" ? (
                                     <div className="flex items-center justify-center gap-3 bg-[#0f9a56] text-white text-sm rounded-sm">
-                                      <p>Available</p>
+                                      <p>{t("project_available")}</p>
                                     </div>
                                   ) : project.projectStatus === "Sold Out" ? (
                                     <div className="flex items-center justify-center gap-3 bg-[#da1f26] text-white text-sm rounded-sm">
-                                      <p>Sold Out</p>
+                                      <p>{t("project_soldout")}</p>
                                     </div>
                                   ) : (
                                     <div className="flex items-center justify-center gap-3 bg-[#ff6c37] text-white text-sm rounded-sm">
-                                      <p>Unknown</p>
+                                      <p>{t("project_unknown")}</p>
                                     </div>
                                   )}
                                   <div className="flex items-center gap-3">
@@ -117,7 +117,7 @@ const PropertyPortfolio = () => {
                                         className="text-primary"
                                       />
                                     )}
-                                    <p>Studio</p>
+                                    <p>{t("enquiry_studio")}</p>
                                   </div>
                                   <div className="flex items-center gap-3">
                                     {project.onebed === 1 ? (
@@ -131,7 +131,7 @@ const PropertyPortfolio = () => {
                                         className="text-primary"
                                       />
                                     )}
-                                    <p>1 Bedroom</p>
+                                    <p>{t("enquiry_1bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3">
                                     {project.twobed === 1 ? (
@@ -145,7 +145,7 @@ const PropertyPortfolio = () => {
                                         className="text-primary"
                                       />
                                     )}
-                                    <p>2 Bedrooms</p>
+                                    <p>{t("enquiry_2bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3">
                                     {project.threebed === 1 ? (
@@ -159,7 +159,7 @@ const PropertyPortfolio = () => {
                                         className="text-primary"
                                       />
                                     )}
-                                    <p>3 Bedrooms</p>
+                                    <p>{t("enquiry_3bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3">
                                     {project.fourbed === 1 ? (
@@ -173,7 +173,7 @@ const PropertyPortfolio = () => {
                                         className="text-primary"
                                       />
                                     )}
-                                    <p>4 Bedrooms</p>
+                                    <p>{t("enquiry_4bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3">
                                     {project.fivebed === 1 ? (
@@ -187,7 +187,7 @@ const PropertyPortfolio = () => {
                                         className="text-primary"
                                       />
                                     )}
-                                    <p>5 Bedrooms</p>
+                                    <p>{t("enquiry_5bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3">
                                     {project.sixbed === 1 ? (
@@ -201,7 +201,7 @@ const PropertyPortfolio = () => {
                                         className="text-primary"
                                       />
                                     )}
-                                    <p>6 Bedrooms</p>
+                                    <p>{t("enquiry_6bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3">
                                     {project.retail === 1 ? (
@@ -215,7 +215,7 @@ const PropertyPortfolio = () => {
                                         className="text-primary"
                                       />
                                     )}
-                                    <p>Retail</p>
+                                    <p>{t("enquiry_retail")}</p>
                                   </div>
                                   {project.tour360 === 1 ? (
                                     <div className="flex items-center justify-end gap-3 text-white text-sm">
@@ -234,7 +234,7 @@ const PropertyPortfolio = () => {
                                       >
                                         <Md360 size={"25px"} />
                                         <span className="text-xs">
-                                          360 View
+                                          {t("360_view")}
                                         </span>
                                       </Button>
                                     </div>
@@ -247,7 +247,7 @@ const PropertyPortfolio = () => {
                           </div>
                         ) : (
                           <p className="italic text-sm text-primary">
-                            No projects to show
+                            {t("no_projects")}
                           </p>
                         )}
                       </div>

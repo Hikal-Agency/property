@@ -5,7 +5,7 @@ import { DataGrid } from "@mui/x-data-grid";
 
 import { useStateContext } from "../../context/ContextProvider";
 import { RiRadioButtonLine } from "react-icons/ri";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { ImUser } from "react-icons/im";
 import { HiUsers } from "react-icons/hi";
@@ -20,8 +20,7 @@ import DeactivateModel from "./deactivateModel";
 // import axios from "../../axoisConfig";
 
 const Clients = () => {
-  // const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
-  const { currentMode, DataGridStyles, BACKEND_URL, User, setUser } =
+  const { currentMode, DataGridStyles, BACKEND_URL, User, t } =
     useStateContext();
   const [accountDeactivate, setAccountToDeactivate] = useState();
   const [model, setModel] = useState(false);
@@ -483,7 +482,7 @@ const Clients = () => {
   const columns = [
     {
       field: "clientId",
-      headerName: "Id",
+      headerName: "#",
       headerAlign: "center",
       maxWidth: 40,
       flex: 1,
@@ -510,7 +509,7 @@ const Clients = () => {
     // },
     {
       field: "clientName",
-      headerName: "Client Name",
+      headerName: t("label_client_name"),
       headerAlign: "center",
       editable: false,
       align: "center",
@@ -531,7 +530,7 @@ const Clients = () => {
                   className="text-sm font-medium text-gray-500"
                   style={{ marginRight: "5px" }}
                 >
-                  Active
+                  {t("status_active")}
                 </p>
                 <RiRadioButtonLine
                   style={{ color: "green", marginRight: "5px" }}
@@ -545,7 +544,7 @@ const Clients = () => {
             </div>
             <div className="flex flex-col  justify-between w-full">
               <p className="text-sm font-medium text-gray-500">
-                Total : {cellValues.row.totalAccounts}
+                {t("total")} : {cellValues.row.totalAccounts}
               </p>
             </div>
           </div>
@@ -555,7 +554,7 @@ const Clients = () => {
 
     {
       field: "clientContact",
-      headerName: "Contact Number",
+      headerName: t("label_contact_number"),
       headerAlign: "center",
       editable: false,
       minWidth: 130,
@@ -570,7 +569,7 @@ const Clients = () => {
     },
     {
       field: "clientEmail",
-      headerName: "Email Address",
+      headerName: t("label_email_address"),
       headerAlign: "center",
 
       editable: false,
@@ -586,7 +585,7 @@ const Clients = () => {
     },
     {
       field: "businessName",
-      headerName: "Business Name",
+      headerName: t("label_business_name"),
       headerAlign: "center",
 
       editable: false,
@@ -624,7 +623,7 @@ const Clients = () => {
     // },
     {
       field: "totalLeads",
-      headerName: "Leads",
+      headerName: t("leads"),
       headerAlign: "center",
       align: "center",
       editable: false,
@@ -633,7 +632,7 @@ const Clients = () => {
     },
     {
       field: "",
-      headerName: "Actions",
+      headerName: t("label_action"),
       minWidth: 130,
       flex: 1,
       headerAlign: "center",
@@ -720,7 +719,7 @@ const Clients = () => {
                       currentMode === "dark" ? "text-white" : "text-black"
                     } font-semibold text-lg`}
                   >
-                    Clients
+                  {t("menu_clients")}
                   </h2>
                 </div>
                 <Box width={"100%"} className={`${currentMode}-mode-datatable`} sx={DataGridStyles}>

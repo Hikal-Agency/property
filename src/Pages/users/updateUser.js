@@ -10,7 +10,7 @@ import EditUser from "../../Components/Users/EditUser";
 import { useLocation } from "react-router-dom";
 
 const UpdateUser = () => {
-  const { currentMode, DataGridStyles, BACKEND_URL } =
+  const { currentMode, DataGridStyles, BACKEND_URL, t } =
     useStateContext();
 
   const location = useLocation();
@@ -72,7 +72,7 @@ const UpdateUser = () => {
                       currentMode === "dark" ? "text-white" : "text-black"
                     } font-semibold text-lg ml-8`}
                   >
-                    Edit User:{" "}
+                    {t("edit_user")}:{" "}
                     <span className="text-primary font-bold">
                       {user?.userName &&
                         user?.userName.charAt(0).toUpperCase() +

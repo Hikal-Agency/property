@@ -10,7 +10,7 @@ import AddLeadModal from "../../Components/whatsapp-marketing/AddLeadModal";
 
 
 const Buyers = () => {
-  const { currentMode, setopenBackDrop, pageState, BACKEND_URL } =
+  const { currentMode, setopenBackDrop, pageState, BACKEND_URL, t } =
     useStateContext();
   const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
@@ -50,7 +50,7 @@ const Buyers = () => {
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   >
-                    Secondary Leads <span className="capitalize">({lead_type})</span>{" "}
+                   {t("secondary_leads")} <span className="capitalize">({lead_type})</span>{" "}
                     <span className="bg-primary text-white px-3 py-1 ml-2 rounded-sm my-auto">
                       {pageState?.total}
                     </span>
@@ -63,7 +63,7 @@ const Buyers = () => {
                   onClick={() => setCreateLeadModalOpen(true)}
                 >
                   <IoMdAdd size={16} />
-                  Add New Lead
+                  {t("button_add_new_lead")}
                 </Button>
               </div>
             {/* </div> */}

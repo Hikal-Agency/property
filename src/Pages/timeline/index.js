@@ -5,7 +5,7 @@ import Error from "../Error";
 
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
-import { Backdrop, IconButton, Modal } from "@mui/material";
+import { Backdrop, Modal } from "@mui/material";
 
 import { BiBed, BiCalendarExclamation } from "react-icons/bi";
 import {
@@ -17,8 +17,7 @@ import {
 } from "react-icons/bs";
 import { FaUserCheck } from "react-icons/fa";
 import { GoMail } from "react-icons/go";
-import { HiUser, HiClock } from "react-icons/hi";
-import { IoMdClose } from "react-icons/io";
+import { HiUser } from "react-icons/hi";
 import { MdNoteAlt, MdClose } from "react-icons/md";
 
 const style = {

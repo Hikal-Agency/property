@@ -20,11 +20,12 @@ import moment from "moment";
 import axios from "../../axoisConfig";
 import {toast } from "react-toastify";
 import { Textarea } from "@material-tailwind/react";
+import { t } from "i18next";
 
 const currentDate = dayjs();
 
 const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, formatNum, BACKEND_URL, User, primaryColor } =
+  const { currentMode, darkModeColors, formatNum, BACKEND_URL, User, t } =
     useStateContext();
   const [validFromDate, setValidFromDate] = useState("");
   const [validFromDateValue, setValidFromDateValue] = useState({});
@@ -48,20 +49,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     setImg(file);
   };
 
-  // const handleImgUpload = (e) => {
-  //   const file = e.target.files[0];
-
-  //   if (file) {
-  //     const reader = new FileReader();
-
-  //     reader.onloadend = () => {
-  //       setImg(reader.result);
-  //     };
-
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
+ 
   console.log("img state: ", img);
 
   const handleClick = async (e) => {
@@ -198,7 +186,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
         <Box sx={darkModeColors} className="p-2">
           <TextField
             type={"text"}
-            label="Offer Title"
+            label={t("label_offer_title")}
             className="w-full"
             style={{ marginBottom: "15px" }}
             variant="outlined"
@@ -212,7 +200,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
           />
           <TextField
             type="text"
-            label="Offer Description"
+            label={t("label_offer_description")}
             multiline
             minRows={4} 
             className="w-full"
@@ -230,7 +218,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
           <div className="grid grid-cols-2 gap-3 mb-1">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Offer valid from"
+                label={`${t("offer")} ${t("label_valid_from")}`}
                 className="w-full"
                 style={{ marginBottom: "15px" }}
                 value={validFromDateValue}
@@ -258,7 +246,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Offer valid till"
+                label={`${t("offer")} ${t("label_valid_till")}`}
                 className="w-full"
                 style={{ marginBottom: "15px" }}
                 value={validToDateValue}
@@ -295,7 +283,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
             >
               <Box sx={darkModeColors}>
                 <label className="font-semibold mb-1">
-                  <span className="text-primary">Offer Validity</span>
+                  <span className="text-primary">{`${t("offer")} ${t("label_validity")}`}</span>
                 </label>
                 <br></br>
                 <FormControl>
@@ -305,7 +293,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                       value="manager"
                       name="validToManager"
                       control={<Radio />}
-                      label="Sales Managers"
+                      label={t("sales_managers")}
                       onChange={(e) =>
                         setOfferData({
                           ...offerData,
@@ -326,7 +314,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                           validToManager: 0,
                         })
                       }
-                      label="Sales Agents"
+                      label={t("sales_agents")}
                     />
                     <FormControlLabel
                       className="mt-1"
@@ -339,7 +327,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                         })
                       }
                       control={<Radio />}
-                      label="Sales Managers and Sales Agents (Both)"
+                      label={t("managers_and_agents")}
                     />
                   </RadioGroup>
                 </FormControl>
@@ -368,7 +356,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 disabled={loading ? true : false}
                 startIcon={loading ? null : <MdFileUpload />}
               >
-                <span>Upload Image</span>
+                <span>{t("button_upload_image")}</span>
               </Button>
             </label>
           {/* </div> */}
@@ -392,7 +380,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
             className="text-white"
           />
         ) : (
-          <span> Create</span>
+          <span>{t("create")}</span>
         )}
       </Button>
     </div>

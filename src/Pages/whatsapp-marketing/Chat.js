@@ -327,7 +327,6 @@ const Chat = () => {
             setloading(false);
             setWALoadingScreen(false);
             setReady(true);
-            // setSelectedDevice(null);
         });
       });
 

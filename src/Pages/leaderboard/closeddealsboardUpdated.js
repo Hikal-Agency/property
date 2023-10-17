@@ -12,9 +12,8 @@ import Loader from "../../Components/Loader";
 
 
 const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, t } = useStateContext();
   const [loading, setLoading] = useState(false);
-  const [callLogs, setCallLogs] = useState();
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -149,9 +148,9 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
           <div className="mb-3">
             <Box sx={darkModeColors} className="font-semibold">
               <Tabs value={tabValue} onChange={handleChange} variant="standard">
-                <Tab label="All TIME" />
-                <Tab label="LAST MONTH" />
-                <Tab label="THIS MONTH" />
+                <Tab label={t("all_time")} />
+                <Tab label={t("last_month")} />
+                <Tab label={t("this_month")} />
               </Tabs>
             </Box>
             {/* <Box sx={SelectStyles}>
@@ -188,7 +187,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                     : "text-primary"
                 } text-lg font-bold my-2 text-center`}
               >
-                Manager
+                {t("label_manager")}
               </div>
               <div className="grid  gap-4">
                 <div className="rounded-md px-2 mb-2 w-full">
@@ -230,7 +229,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                               </h2>
                               {item?.total_closed_deals > 0 && (
                                 <p className="text-gray-500">
-                                  Deals Closed:{" "}
+                                  {t("deals_closed")}:{" "}
                                   <span className="text-primary">
                                     {item?.total_closed_deals}
                                   </span>
@@ -239,7 +238,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                               {item?.total_closed_deals > 0 &&
                                 item?.total_closed_deals !== null && (
                                   <p className="text-gray-500">
-                                    Total Sales:{" "}
+                                    {t("total_sales")}:{" "}
                                     <span className="text-primary">
                                       {item?.total_sales}
                                     </span>
@@ -284,7 +283,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                     : "text-primary"
                 } text-lg font-bold my-2 text-center`}
               >
-                Agent
+                {t("label_agent")}
               </div>
               <div className="grid  gap-4">
                 <div className="rounded-md px-2 mb-2 w-full">
@@ -323,13 +322,13 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                                   {item?.userName}
                                 </h2>
                                 <p className="text-gray-500">
-                                  Deals Closed:{" "}
+                                  {t("deals_closed")}:{" "}
                                   <span className="text-primary">
                                     {item?.total_closed_deals}
                                   </span>
                                 </p>
                                 <p className="text-gray-500">
-                                  Total Sales:{" "}
+                                  {t("total_sales")}:{" "}
                                   <span className="text-primary">
                                     {item?.total_sales || 0} AED
                                   </span>
@@ -346,7 +345,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                             currentMode === "dark" ? "text-white" : "text-red"
                           } text-center`}
                         >
-                          No data found
+                          {t("no_data_found")}
                         </h2>
                       )
                     ) : (
@@ -381,13 +380,13 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                                 {item?.userName}
                               </h2>
                               <p className="text-gray-500">
-                                Deals Closed:{" "}
+                               {t("deals_closed")}:{" "}
                                 <span className="text-primary">
                                   {item?.total_closed_deals}
                                 </span>
                               </p>
                               <p className="text-gray-500">
-                                Total Sales:{" "}
+                                {t("total_sales")}:{" "}
                                 <span className="text-primary">
                                   {item?.total_sales || 0} AED
                                 </span>

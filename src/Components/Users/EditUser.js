@@ -15,7 +15,7 @@ import usePermission from "../../utils/usePermission";
 const EditUser = ({ user }) => {
   console.log("Edit User: ", user);
   const [loading, setloading] = useState(false);
-  const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, t, BACKEND_URL } = useStateContext();
   const { hasPermission } = usePermission();
 
   const [userData, setUserData] = useState({
@@ -114,7 +114,7 @@ const EditUser = ({ user }) => {
                         <TextField
                           id="position"
                           value={userData?.position}
-                          InputLabel="Position"
+                          InputLabel={t("label_position")}
                           size="medium"
                           className="w-full mb-5"
                           displayEmpty
@@ -141,7 +141,7 @@ const EditUser = ({ user }) => {
                         <TextField
                           id="target"
                           type={"number"}
-                          label="Target"
+                          label={t("label_target")}
                           className={`w-full mb-5 ${
                             currentMode === "dark" ? "text-white" : "text-black"
                           }`}
@@ -174,7 +174,7 @@ const EditUser = ({ user }) => {
                             <TextField
                               id="LeadSource"
                               value={userData?.currency || "AED"}
-                              label="Currency"
+                              label={t("label_currency")}
                               onChange={(e) =>
                                 setUserData({
                                   ...userData,
@@ -199,7 +199,7 @@ const EditUser = ({ user }) => {
                               required
                             >
                               <MenuItem value="" disabled>
-                                Currency
+                                {t("label_currency")}
                                 <span className="ml-1 text-primary">
                                   *
                                 </span>
@@ -218,7 +218,7 @@ const EditUser = ({ user }) => {
                             <TextField
                               id="salary"
                               value={userData?.salary}
-                              InputLabel="Salary"
+                              InputLabel={t("label_salary")}
                               size="medium"
                               className="w-full mb-2"
                               type="number"
@@ -267,7 +267,7 @@ const EditUser = ({ user }) => {
                       className="text-white"
                     />
                   ) : (
-                    <span> Update User</span>
+                    <span>{t("btn_update_user")}</span>
                   )}
                 </Button>
               </div>

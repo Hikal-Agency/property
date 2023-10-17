@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Loader from "../../Components/Loader";
 
 const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, t } = useStateContext();
 
   const [noData, setNoData] = useState(false);
 
@@ -91,38 +91,14 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
     setTabValue(newValue);
   };
 
-  const Manager = [
-    {
-      name: "Belal Hikal",
-      target: "5000000",
-      achieved: "5000000",
-      teamDeals: "3",
-      directDeals: "2",
-    },
-    {
-      name: "Hossam Hassan",
-      target: "5000000",
-      achieved: "3000000",
-      teamDeals: "0",
-      directDeals: "1",
-    },
-    {
-      name: "Nada Amin",
-      target: "5000000",
-      achieved: "2900000",
-      teamDeals: "1",
-      directDeals: "2",
-    },
-  ];
-
 
   return (
     <div>
       
       <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={tabValue} onChange={handleChange} variant="standard">
-          <Tab label="THIS MONTH" />
-          <Tab label="LAST MONTH" />
+          <Tab label={t("this_month")} />
+          <Tab label={t("last_month")} />
         </Tabs>
       </Box>
       {loading ? (
@@ -163,7 +139,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                   currentMode === "dark" ? "text-primary" : "text-primary"
                 } text-lg font-bold`}
               >
-                Sales Manager
+               {t("label_sales_manager")}
               </div>
               <div className={`${!noData && "h-[300px]"} overflow-y-scroll`}>
                 {!noData && manager?.length > 0
@@ -210,8 +186,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             {item?.total_sales || 0}
                           </span> */}
-                                {percentageSales?.toFixed(2)}% of target
-                                achieved
+                                {percentageSales?.toFixed(2)}% {t("of_target_achieved")}
                               </div>
                             </div>
                             {item?.profile_picture ? (
@@ -276,7 +251,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                     : "text-primary"
                 } text-lg font-bold`}
               >
-                Sales Agent
+               {t("label_sales_agent")}
               </div>
               <div className="h-[300px] overflow-y-scroll">
                 {!noData && agents?.length > 0
@@ -323,8 +298,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             {item?.total_sales || 0}
                           </span> */}
-                                {percentageSales?.toFixed(2)}% of target
-                                achieved
+                                {percentageSales?.toFixed(2)}% {t("of_target_achieved")}
                               </div>
                             </div>
                             {item?.profile_picture ? (
@@ -381,7 +355,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                   currentMode === "dark" ? "text-primary" : "text-primary"
                 } text-lg font-bold`}
               >
-                Sales Manager
+                {t("label_sales_manager")}
               </div>
               <div className="h-[300px] overflow-y-scroll">
                 {manager?.length > 0
@@ -428,8 +402,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             {item?.total_sales || 0}
                           </span> */}
-                                {percentageSales?.toFixed(2)}% of target
-                                achieved
+                                {percentageSales?.toFixed(2)}% {t("of_target_achieved")}
                               </div>
                             </div>
                             {item?.profile_picture ? (
@@ -470,7 +443,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                     : "text-primary"
                 } text-lg font-bold`}
               >
-                Sales Agent
+                {t("label_sales_agent")}
               </div>
               <div className="h-[300px] overflow-y-scroll">
                 {agents?.length > 0
@@ -517,8 +490,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             {item?.total_sales || 0}
                           </span> */}
-                                {percentageSales?.toFixed(2)}% of target
-                                achieved
+                                {percentageSales?.toFixed(2)}% {t("of_target_achieved")}
                               </div>
                             </div>
                             {item?.profile_picture ? (

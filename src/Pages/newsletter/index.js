@@ -41,7 +41,7 @@ const Newsletter = () => {
     setopenBackDrop,
     BACKEND_URL,
     darkModeColors,
-    primaryColor
+    primaryColor, t
   } = useStateContext();
   const [loading, setloading] = useState(true);
   const [value, setValue] = useState(0);
@@ -199,14 +199,14 @@ const Newsletter = () => {
   const columns = [
     {
       field: "creationDate",
-      headerName: "Date",
+      headerName: t("date"),
       minWidth: 50,
       headerAlign: "center",
       flex: 1,
     },
     {
       field: "email",
-      headerName: "Email",
+      headerName: t("label_email"),
       minWidth: 150,
       headerAlign: "center",
       flex: 1,
@@ -214,7 +214,7 @@ const Newsletter = () => {
 
     {
       field: "status",
-      headerName: "Note",
+      headerName: t("label_note"),
       headerAlign: "center",
       minWidth: 100,
       flex: 1,
@@ -258,8 +258,8 @@ const Newsletter = () => {
           email: row?.email || "No Email",
           status:
             row?.status === "Subscribed" || row?.status === "Subscribed"
-              ? "Subscribed"
-              : "UnSubscribed",
+              ? t("status_subscribed")
+              : t("status_unsubscribed"),
         }));
 
         setpageState((old) => ({
@@ -409,7 +409,7 @@ const Newsletter = () => {
                   }`}
                 >
                   {/* ●  */}
-                  Newsletter Subscriber {" "}
+                  {t("newsletter")} {" "}
                   <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {pageState?.total}
                   </span>
@@ -422,7 +422,7 @@ const Newsletter = () => {
                   className="bg-primary text-white px-3 py-2 rounded-md flex items-center"
                 >
                     <RiMailAddLine size={16} className="mx-2" /> 
-                    Email/Subscriber
+                    {t("btn_email/subscriber")}
                 </button>
               )}
 
@@ -432,15 +432,12 @@ const Newsletter = () => {
                     <TextField
                       id="email"
                       type={"email"}
-                      label="Email "
+                      label={t("label_email")}
                       className="w-full"
                       variant="outlined"
                       name="email"
                       size="small"
                       value={newsletterData?.email}
-                      // onChange={(e) =>
-                      //   setNewsletterData({ ...newsletterData, email: e.target.value })
-                      // }
                       error={emailError && emailError}
                       helperText={emailError && emailError}
                       onChange={handleEmail}

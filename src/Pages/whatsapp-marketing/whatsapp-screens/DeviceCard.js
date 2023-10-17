@@ -22,7 +22,7 @@ const DeviceCard = ({
   setCreateDeviceModal = () => {},
 }) => {
   const [loading, setLoading] = useState(false);
-  const { BACKEND_URL, currentMode } = useStateContext();
+  const { BACKEND_URL, currentMode, t } = useStateContext();
 
   const handleDeleteInstance = async (e, instance) => {
     if (e.target.closest(".delete-btn")) {
@@ -76,7 +76,7 @@ const DeviceCard = ({
         >
           <GrAdd size={14} />
         </Avatar>
-        <p>Add new device</p>
+        <p>{t("add_new_device")}</p>
       </Box>
     );
   } else {
@@ -103,14 +103,14 @@ const DeviceCard = ({
                     <>
                       <RxCheckCircled size={16} className="text-green-600 mr-2" />
                       <p className="text-green-600">
-                        Connected
+                        {t("status_connected")}
                       </p>
                     </>
                   ) : (
                     <>
                       <RxCrossCircled size={16} className="text-red-600 mr-2" />
                       <p className="text-red-600">
-                        Disconnected
+                        {t("status_disconnected")}
                       </p>
                     </>
                   )}
@@ -129,7 +129,7 @@ const DeviceCard = ({
             {details.phone_number && details.status === "connected" && (
               <Box className={`mt-2 ${currentMode === "dark" ? "text-white" : "text-black" }`}>
                 <small>
-                  Instance of <strong>+{details.phone_number}</strong>
+                  {t("instance")}: <strong>+{details.phone_number}</strong>
                 </small>
               </Box>
             )}

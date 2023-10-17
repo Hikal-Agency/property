@@ -36,9 +36,6 @@ import {
   BiImport,
   BiMessageRoundedDots,
   BiArchive,
-  BiMailSend,
-  BiPhoneCall,
-  BiLogoWhatsapp,
 } from "react-icons/bi";
 import {
   BsWhatsapp,
@@ -48,7 +45,6 @@ import {
   BsShieldX,
   BsShieldCheck,
   BsShieldMinus,
-  BsCoin,
   BsPersonAdd,
 } from "react-icons/bs";
 import {
@@ -63,7 +59,7 @@ import {
 } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
-import { HiMail, HiPhoneOutgoing } from "react-icons/hi";
+import { HiMail } from "react-icons/hi";
 import { IoMdChatboxes } from "react-icons/io";
 import { MdSms, MdCampaign } from "react-icons/md";
 import { RiMailSendLine } from "react-icons/ri";
@@ -82,13 +78,12 @@ const AllLeads = () => {
     DataGridStyles,
     setopenBackDrop,
     BACKEND_URL,
-    darkModeColors,
     Managers,
     SalesPerson,
     formatNum,
     User,
     userCredits,
-    isArabic,
+    isArabic,t
   } = useStateContext();
   const {
     toRange,
@@ -218,7 +213,7 @@ const AllLeads = () => {
     {
       field: "leadName",
       headerAlign: "center",
-      headerName: "Name",
+      headerName: t("label_lead_name"),
       minWidth: 130,
       flex: 1,
       renderCell: (cellValues) => {
@@ -239,21 +234,21 @@ const AllLeads = () => {
     },
     {
       field: "leadContact",
-      headerName: "Phone",
+      headerName: t("label_phone"),
       minWidth: 130,
       headerAlign: "center",
       flex: 1,
     },
     {
       field: "email",
-      headerName: "Email",
+      headerName: t("label_email"),
       minWidth: 200,
       headerAlign: "center",
       flex: 1,
     },
     {
       field: "language",
-      headerName: "Language",
+      headerName: t("label_language"),
       headerAlign: "center",
       minWidth: 30,
       flex: 1,
@@ -270,7 +265,7 @@ const AllLeads = () => {
     {
       field: "otp",
       headerName:
-        leadOriginSelected?.id === "transfferedleads" ? "Ex-Agent" : "OTP",
+        leadOriginSelected?.id === "transfferedleads" ? t("label_ex_agent") : t("label_otp"),
       minWidth: 50,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
@@ -330,7 +325,7 @@ const AllLeads = () => {
 
     {
       field: "leadSource",
-      headerName: "Src",
+      headerName: t("label_source"),
       flex: 1,
       minWidth: 70,
       headerAlign: "center",
@@ -440,7 +435,7 @@ const AllLeads = () => {
 
     {
       field: "whatsapp-web",
-      headerName: "Action",
+      headerName: t("label_action"),
       headerAlign: "center",
       minWidth: 150,
       flex: 1,
@@ -519,7 +514,6 @@ const AllLeads = () => {
   ];
 
   const EmailButton = ({ email }) => {
-    // console.log("email:::::::::::::::::::: ", email);
     const handleEmailClick = (event) => {
       event.stopPropagation();
       window.location.href = `mailto:${email}`;
@@ -1108,7 +1102,7 @@ const AllLeads = () => {
             {pageState.from}-{pageState.to}
           </p>
 
-          <p className="mr-3">Rows Per Page</p>
+          <p className="mr-3">{t("rows_per_page")}</p>
 
           <Select
             labelId="select-page-size-label"
@@ -1168,7 +1162,7 @@ const AllLeads = () => {
               currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
-            Search for {leadOriginSelected.formattedValue}
+            {t("search_for")} {leadOriginSelected.formattedValue}
             {" | "}
             <span>{leadTypeSelected.formattedValue}</span>{" "}
             <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
@@ -1240,7 +1234,7 @@ const AllLeads = () => {
                 },
               }}
             >
-              <small>PURCHASE</small>
+              <small>{t("purchase")?.toUpperCase()}</small>
             </Typography>
           </div>
         </Box>

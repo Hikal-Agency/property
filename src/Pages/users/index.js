@@ -28,7 +28,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import UserTable from "../../Components/Users/UserTable";
 import AddUserModel from "../../Components/addUser/AddUserModel";
-import { FaBan, FaUnlock } from "react-icons/fa";
+import { FaUnlock } from "react-icons/fa";
 import { HiOutlineBan } from "react-icons/hi";
 import DeleteUser from "../../Components/Users/DeleteUser";
 import { BsPersonFillLock, BsSearch } from "react-icons/bs";
@@ -43,7 +43,7 @@ const Users = () => {
     pageState,
     setpageState,
     User,
-    darkModeColors,
+    darkModeColors, t
   } = useStateContext();
   const { hasPermission } = usePermission();
 
@@ -265,7 +265,7 @@ const Users = () => {
     // NAME + PICTURE
     {
       field: "profile_picture",
-      headerName: "User Name",
+      headerName: t("label_user_name"),
       headerAlign: "center",
       align: "center",
       editable: false,
@@ -312,7 +312,7 @@ const Users = () => {
     // POSITION
     {
       field: "position",
-      headerName: "Profession",
+      headerName: t("label_profession"),
       headerAlign: "center",
       editable: false,
       minwidth: 100,
@@ -330,7 +330,7 @@ const Users = () => {
     // CONTACT
     {
       field: "userContact",
-      headerName: "Contact Number",
+      headerName: t("label_contact_number"),
       headerAlign: "center",
       editable: false,
       minwidth: 100,
@@ -346,7 +346,7 @@ const Users = () => {
     // EMAIL ADDRESS
     {
       field: "userEmail",
-      headerName: "Email Address",
+      headerName: t("label_email_address"),
       headerAlign: "center",
       editable: false,
       minwidth: 200,
@@ -362,7 +362,7 @@ const Users = () => {
     // SALARY
     {
       field: "salary",
-      headerName: "Salary",
+      headerName: t("label_salary"),
       headerAlign: "center",
       editable: false,
       minwidth: 70,
@@ -378,7 +378,7 @@ const Users = () => {
     // TRAINER
     {
       field: "is_trainer",
-      headerName: "Trainer",
+      headerName: t("label_trainer"),
       headerAlign: "center",
       editable: false,
       minwidth: 40,
@@ -427,7 +427,7 @@ const Users = () => {
     // STATUS
     {
       field: "status",
-      headerName: "Status",
+      headerName: t("status"),
       headerAlign: "center",
       editable: false,
       minwidth: 50,
@@ -437,11 +437,11 @@ const Users = () => {
           <>
             {cellValues?.formattedValue === 1 ? (
               <div className="w-full h-full flex justify-center items-center text-[#0f9d58] px-5 text-xs font-semibold">
-                ACTIVE
+                {t("status_active")}
               </div>
             ) : (
               <div className="w-full h-full flex justify-center items-center text-[#ff0000] px-5 text-xs font-semibold">
-                DEACTIVE
+               {t("status_deactive")}
               </div>
             )}
             {/* 
@@ -456,7 +456,7 @@ const Users = () => {
     },
     {
       field: "",
-      headerName: "Action",
+      headerName: t("label_action"),
       minwidth: 100,
       flex: 1,
       headerAlign: "center",
@@ -594,7 +594,7 @@ const Users = () => {
                       : "text-black"
                   }`}
                 >
-                  Users {" "}
+                  {t("users")} {" "}
                   <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {pageState?.total}
                   </span>
@@ -607,7 +607,7 @@ const Users = () => {
                 >
                   <span className="flex justify-between items-center ">
                     <AiOutlinePlus style={{ marginRight: "0.5em" }} />
-                    Add User
+                    {t("button_add_user")}
                   </span>
                 </Button>
               ) : (
@@ -619,7 +619,7 @@ const Users = () => {
                 <div className="mx-5 mt-6">
                   <Box sx={darkModeColors} >
                     <TextField
-                      placeholder="Search.."
+                      placeholder={`${t("search")}...`}
                       ref={searchRef}
                       sx={{
                         "& input": {

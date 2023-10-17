@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import BookedDeals from "../../Components/Leads/BookedDeals";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import MessagesComponent from "../../Components/whatsapp-marketing/MessageComponent";
@@ -26,8 +24,6 @@ import { toast } from "react-toastify";
 import moment from "moment";
 
 const MessagesDashboar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [loading, setloading] = useState(true);
   const [userLoading, setUserLoading] = useState(true);
   const [showFilter, setShowFilter] = useState(false);
@@ -35,9 +31,8 @@ const MessagesDashboar = () => {
   const [date_filter, setDateFilter] = useState();
   const [date, setDate] = useState();
   const [sender_id_filter, setSenderIDFitler] = useState();
-  const { currentMode, setopenBackDrop, BACKEND_URL, pageState, formatNum } =
+  const { currentMode, setopenBackDrop, BACKEND_URL, pageState } =
     useStateContext();
-  const { hasPermission } = usePermission();
   const token = localStorage.getItem("auth-token");
   const searchRef = useRef("");
   const [user, setUser] = useState([]);
@@ -89,25 +84,6 @@ const MessagesDashboar = () => {
     },
   ];
 
-  const handleKeyUp = (e) => {
-    console.log("handle key: ", e.target.value);
-    e.preventDefault();
-    // e.stopPropagation();
-    if (searchRef.current.querySelector("input").value) {
-      // if (e.key === "Enter" || e.keyCode === 13) {
-      fetchUsers(e.target.value);
-      // }
-    }
-  };
-  const handleSearch = (e) => {
-    console.log("handle search: ", e.target.value);
-
-    // e.preventDefault();
-    // e.stopPropagation();
-    if (e.target.value === "") {
-      fetchUsers();
-    }
-  };
 
   const toggleFilter = () => {
     setShowFilter(!showFilter);

@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import Loader from "../../Components/Loader";
 
 const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, t } = useStateContext();
   const [callLogs, setCallLogs] = useState();
   const [noData, setNoData] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -74,52 +74,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
     }
   };
 
-  const calldata = [
-    {
-      userImage: "",
-      userName: "Hala Hikal",
-      outgoing_calls: 303,
-      out_answered_calls: 209,
-      out_notanswered_calls: 89,
-      out_rejected_calls: 5,
-      incoming_calls: 35,
-      in_answered_calls: 35,
-      in_missed_calls: 0,
-    },
-    {
-      userImage: "",
-      userName: "Ameer Ali",
-      outgoing_calls: 203,
-      out_answered_calls: 109,
-      out_notanswered_calls: 89,
-      out_rejected_calls: 5,
-      incoming_calls: 35,
-      in_answered_calls: 30,
-      in_missed_calls: 5,
-    },
-    {
-      userImage: "",
-      userName: "Hassan Lodhi",
-      outgoing_calls: 303,
-      out_answered_calls: 209,
-      out_notanswered_calls: 89,
-      out_rejected_calls: 5,
-      incoming_calls: 35,
-      in_answered_calls: 35,
-      in_missed_calls: 0,
-    },
-    {
-      userImage: "",
-      userName: "Rahul TR",
-      outgoing_calls: 203,
-      out_answered_calls: 109,
-      out_notanswered_calls: 89,
-      out_rejected_calls: 5,
-      incoming_calls: 35,
-      in_answered_calls: 30,
-      in_missed_calls: 5,
-    },
-  ];
+
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
@@ -130,10 +85,10 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
     <div>
       <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={tabValue} onChange={handleChange} variant="standard">
-          <Tab label="Today" />
-          <Tab label="Yesterday" />
-          <Tab label="This month" />
-          <Tab label="LAST MONTH" />
+          <Tab label={t("today")} />
+          <Tab label={t("yesterday")} />
+          <Tab label={t("this_month")} />
+          <Tab label={t("last_month")} />
         </Tabs>
       </Box>
       <Box
@@ -176,13 +131,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-xs font-semibold">
-                              Outgoing
+                             {t("outgoing")}
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  DIALED&nbsp;
+                                  {t("dialed")}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.dialed || 0}
                                   </span>
@@ -190,7 +145,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  ANSWERED&nbsp;
+                                  {t("answered")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
@@ -198,7 +153,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  NOT ANSWERED&nbsp;
+                                  {t("not_answered")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.notanswered || 0}
                                   </span>
@@ -214,13 +169,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-xs font-semibold">
-                              Incoming
+                              {t("incoming")}
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  RECEIVED&nbsp;
+                                  {t("received")}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call.received || 0}
                                   </span>
@@ -228,7 +183,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  MISSED&nbsp;
+                                  {t("missed")}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call.missed || 0}
                                   </span>
@@ -289,13 +244,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-xs font-semibold">
-                              Outgoing
+                            {t("outgoing")}
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  DIALED&nbsp;
+                                  {t("dialed")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.dialed || 0}
                                   </span>
@@ -303,7 +258,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  ANSWERED&nbsp;
+                                  {t("answered")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
@@ -311,7 +266,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  NOT ANSWERED&nbsp;
+                                  {t("not_answered")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.notanswered || 0}
                                   </span>
@@ -327,13 +282,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-xs font-semibold">
-                              Incoming
+                              {t("incoming")}
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  RECEIVED&nbsp;
+                  {t("received")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call.received || 0}
                                   </span>
@@ -341,7 +296,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  MISSED&nbsp;
+                                  {t("missed")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call.missed || 0}
                                   </span>
@@ -401,13 +356,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-xs font-semibold">
-                              Outgoing
+                              {t("outgoing")}
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  DIALED&nbsp;
+                                  {t("dialed")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.dialed || 0}
                                   </span>
@@ -415,7 +370,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  ANSWERED&nbsp;
+                                  {t("answered")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
@@ -423,7 +378,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  NOT ANSWERED&nbsp;
+                                  {t("not_answered")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.notanswered || 0}
                                   </span>
@@ -439,13 +394,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-xs font-semibold">
-                              Incoming
+                              {t("incoming")}
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  RECEIVED&nbsp;
+                                 {t("received")?.toUpperCase()} &nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call.received || 0}
                                   </span>
@@ -453,7 +408,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  MISSED&nbsp;
+                                  {t("missed")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call.missed || 0}
                                   </span>
@@ -512,13 +467,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-xs font-semibold">
-                              Outgoing
+                              {t("outgoing")}
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  DIALED&nbsp;
+                                  {t("dialed")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.dialed || 0}
                                   </span>
@@ -526,7 +481,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  ANSWERED&nbsp;
+                                  {t("answered")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
@@ -534,7 +489,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  NOT ANSWERED&nbsp;
+                                  {t("not_answered")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call?.notanswered || 0}
                                   </span>
@@ -550,13 +505,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-xs font-semibold">
-                              Incoming
+                              {t("incoming")}
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  RECEIVED&nbsp;
+                                  {t("received")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call.received || 0}
                                   </span>
@@ -564,7 +519,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  MISSED&nbsp;
+                                  {t("missed")?.toUpperCase()}&nbsp;
                                   <span className="font-semibold text-primary float-right">
                                     {call.missed || 0}
                                   </span>

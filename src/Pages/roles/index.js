@@ -25,7 +25,7 @@ const Role = () => {
     pageState,
     setpageState,
     User,
-    darkModeColors,
+    darkModeColors, t
   } = useStateContext();
 
   const [user, setUser] = useState([]);
@@ -182,7 +182,7 @@ const Role = () => {
   const columns = [
     {
       field: "role",
-      headerName: "Role",
+      headerName: t("role"),
       headerAlign: "center",
       editable: false,
       minwidth: 130,
@@ -190,7 +190,7 @@ const Role = () => {
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: t("label_status"),
       headerAlign: "center",
       editable: false,
       minwidth: 150,
@@ -208,7 +208,7 @@ const Role = () => {
 
     {
       field: "",
-      headerName: "Action",
+      headerName: t("label_action"),
       minwidth: 90,
       flex: 1,
       headerAlign: "center",
@@ -256,7 +256,7 @@ const Role = () => {
   const permissionsColumns = [
     {
       field: "permission",
-      headerName: "Permission",
+      headerName: t("permission"),
       headerAlign: "center",
       editable: false,
       minwidth: 130,
@@ -264,7 +264,7 @@ const Role = () => {
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: t("label_status"),
       headerAlign: "center",
       editable: false,
       minwidth: 150,
@@ -282,7 +282,7 @@ const Role = () => {
 
     {
       field: "",
-      headerName: "Action",
+      headerName: t("label_action"),
       minwidth: 90,
       flex: 1,
       headerAlign: "center",
@@ -353,7 +353,7 @@ const Role = () => {
                         : "text-primary font-bold border-primary"
                     }`}
                   >
-                    ● Roles & Permissions{" "}
+                    {t("title_roles_permissions")}{" "}
                     {/* <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
                       <span>{pageState?.total}</span>
                     </span> */}
@@ -382,8 +382,8 @@ const Role = () => {
                       variant="standard"
                       className="w-full px-1 m-1"
                     >
-                      <Tab label="Roles" />
-                      <Tab label="Permissions" />
+                      <Tab label={t("menu_roles")} />
+                      <Tab label={t("permissions")}/>
                     </Tabs>
                   </Box>
                   <div className="w-max">
@@ -393,7 +393,7 @@ const Role = () => {
                     >
                       <span className="flex justify-between items-center ">
                         <AiOutlinePlus style={{ marginRight: "0.5em" }} />
-                        {value === 0 ? "Add Role" : "Add Permissions"}
+                        {value === 0 ? t("add_role") : t("add_permission")}
                       </span>
                     </Button>
                   </div>

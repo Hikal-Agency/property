@@ -14,7 +14,7 @@ const OffersList = ({
   setCurrentPage,
   setPageBeingScrolled
 }) => {
-  const { currentMode, isArabic, primaryColor } = useStateContext();
+  const { currentMode, isArabic, primaryColor, t } = useStateContext();
 
   const imagePaths = ["../assets/offers_static_img.png"];
 
@@ -120,7 +120,7 @@ const OffersList = ({
                 {offer?.status?.toLowerCase() === "expired" && (
                   <Box sx={{ ...ribbonStyles }}>
                     <div className="wrap">
-                      <span>Expired</span>
+                      <span>{t("offer_expired")}</span>
                     </div>
                   </Box>
                 )}
@@ -176,9 +176,9 @@ const OffersList = ({
 
                   {/* VALIDITY  */}
                   <p className="font-semibold text-base mb-3">
-                    Valid from{" "}
+                    {t("label_valid_from")}{" "}
                     <span className="text-primary">{offer?.validFrom}</span>{" "}
-                    to{" "}
+                    -{" "}
                     <span className="text-primary">{offer?.validTill}</span>
                   </p>
                   
@@ -188,7 +188,7 @@ const OffersList = ({
                     }  text-sm text-center mb-2`}
                     style={{ textTransform: "capitalize" }}
                   >
-                    Offer from {" "}
+                    {t("label_offer_from")} {" "}
                     <span className="text-primary font-semibold">
                       {offer?.offerFromName}
                     </span>
@@ -211,7 +211,7 @@ const OffersList = ({
                   <CircularProgress size={18} sx={{ color: "blue" }} />
                 </div>
               ) : (
-                <span>Show More</span>
+                <span>{t("show_more")}</span>
               )}
             </Button>
           </div>

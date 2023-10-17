@@ -1,7 +1,7 @@
 import { CircularProgress, Modal, Backdrop, IconButton } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import { Select, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import {  TextField } from "@mui/material";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { GridCloseIcon } from "@mui/x-data-grid";
 import axios from "../../axoisConfig";
@@ -17,7 +17,7 @@ const ShareCreditsModal = ({
 }) => {
   const [loading, setloading] = useState(false);
   const [credits, setCredits] = useState("");
-  const { BACKEND_URL, currentMode, userCredits, setUserCredits} = useStateContext();
+  const { BACKEND_URL, t, userCredits, setUserCredits} = useStateContext();
 
   const shareCredits = async () => {
     try {
@@ -106,7 +106,7 @@ const ShareCreditsModal = ({
                     <GridCloseIcon size={18} />
                   </IconButton>
                   <h2 className="text-center mt-3 text-xl font-bold text-[#1c1c1c] py-4">
-                    Share credits to{" "}
+                    {t("shared_credits_to")}{" "}
                     <span style={{ color: "#DA1F26", fontWeight: "700" }}>
                       {shareCreditsModal?.data?.userName}
                     </span>
@@ -123,7 +123,7 @@ const ShareCreditsModal = ({
                   <TextField
                     onInput={(e) => setCredits(e.target.value)}
                     value={credits}
-                    label="Enter the number of credits to share.."
+                    label={t("enter_num_credits_to_share") + ".."}
                     type="number"
                     fullWidth
                   />
@@ -141,7 +141,7 @@ const ShareCreditsModal = ({
                           className="text-white"
                         />
                       ) : (
-                        <span>Share</span>
+                        <span>{t("share")}</span>
                       )}
                     </button>
                   </div>
