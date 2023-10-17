@@ -407,8 +407,13 @@ const Sidebarmui = () => {
   };
 
   useEffect(() => {
+    console.log("User role 6===> ", User);
+
+    if (User?.role === 6) {
+      return;
+    }
     fetchSidebarData();
-  }, []);
+  }, [User]);
 
   useEffect(() => {
     const setUnreadCount = async (isNoToast = false) => {

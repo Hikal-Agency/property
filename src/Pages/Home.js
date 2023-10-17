@@ -52,6 +52,8 @@ const Home = () => {
           document.location.href =
             result.data.data.role === 5
               ? "/attendance/officeSettings"
+              : result.data.data.role === 6
+              ? "/attendance_self"
               : location?.state?.continueURL || "/dashboard";
           toast.success("Login Successfull", {
             position: "top-right",
@@ -188,7 +190,6 @@ const Home = () => {
 
   return (
     <>
-
       <div className="relative overflow-hidden">
         <div className="canvas absolute w-full overflow-x-hidden">
           <canvas ref={(elem) => (canvas = elem)} className="-z-[1]"></canvas>
@@ -200,7 +201,6 @@ const Home = () => {
             <div className="w-[calc(100vw-50px)] pb-40 md:max-w-[500px] space-y-4 md:space-y-6 bg-white pt-8 relative px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
               {errorMsg && (
                 <div className="flex flex-col items-center text-center p-5 bg-[#d4edda] font-bold text-lg">
-
                   {errorMsg}
                 </div>
               )}
@@ -311,8 +311,16 @@ const Home = () => {
                       )}
                     </button>
                     <div className="absolute bottom-0 pl-5 py-5 left-0 right-0 flex items-center justify-between bg-main-red-color">
-                        <strong className="text-white cursor-pointer">DOWNLOAD THE APP NOW</strong>
-                        <img className="absolute -top-[40px] right-[12px]" src="../assets/mockup.png" width={140} height={140} alt=""/>
+                      <strong className="text-white cursor-pointer">
+                        DOWNLOAD THE APP NOW
+                      </strong>
+                      <img
+                        className="absolute -top-[40px] right-[12px]"
+                        src="../assets/mockup.png"
+                        width={140}
+                        height={140}
+                        alt=""
+                      />
                     </div>
                   </div>
                 </form>
