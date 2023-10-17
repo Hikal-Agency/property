@@ -41,7 +41,8 @@ const Newsletter = () => {
     setopenBackDrop,
     BACKEND_URL,
     darkModeColors,
-    primaryColor
+    primaryColor,
+    themeBgImg
   } = useStateContext();
   const [loading, setloading] = useState(true);
   const [value, setValue] = useState(0);
@@ -395,7 +396,7 @@ const Newsletter = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="flex justify-between items-center">
@@ -408,7 +409,6 @@ const Newsletter = () => {
                       : "text-black"
                   }`}
                 >
-                  {/* ●  */}
                   Newsletter Subscriber {" "}
                   <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {pageState?.total}
@@ -448,7 +448,7 @@ const Newsletter = () => {
                     <Tooltip title="Add Email" arrow>
                       <button
                       onClick={handleClick}
-                        className="text-2xl text-white bg-primary p-2 rounded-full ms-2"
+                        className="text-2xl text-white bg-green-600 p-2 rounded-full ms-2"
                       >
                         <RiMailAddLine size={16} />
                       </button>
@@ -456,7 +456,7 @@ const Newsletter = () => {
                     <Tooltip title="Cancel" arrow>
                       <button
                         onClick={closeModal}
-                        className="text-2xl text-white bg-[#AAAAAA] p-2 rounded-full ms-2"
+                        className="text-2xl text-white bg-red-600 p-2 rounded-full ms-2"
                       >
                         <MdClose size={16} />
                       </button>
@@ -477,9 +477,7 @@ const Newsletter = () => {
                   zIndex: "1",
                 },
               }}
-              className={`w-full flex justify-end rounded-md overflow-hidden ${
-                currentMode === "dark" ? "bg-black" : "bg-white"
-              } `}
+              className={`w-full flex justify-end rounded-lg overflow-hidden`}
             >
               <Tabs value={value} onClick={handleChange} variant="standard">
                 <Tab

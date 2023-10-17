@@ -21,8 +21,14 @@ import { AiFillUnlock } from "react-icons/ai";
 
 const UserTable = ({}) => {
   const [loading, setLoading] = useState(false);
-  const { currentMode, BACKEND_URL, pageState, setpageState, primaryColor } =
-    useStateContext();
+  const { 
+    currentMode, 
+    BACKEND_URL, 
+    pageState, 
+    setpageState, 
+    primaryColor,
+    themeBgImg
+  } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
   const [openModel, setOpenModel] = useState(false);
@@ -135,10 +141,7 @@ const UserTable = ({}) => {
           <Loader />
         ) : (
           <div
-            className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
-          >
+            className={`w-full`}>
             <div className="px-5">
               <div className="mt-5 md:mt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-3 pb-3">
@@ -147,12 +150,16 @@ const UserTable = ({}) => {
                       <div
                         key={index}
                         className={`${
-                          currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-gray-200 text-black"
+                          !themeBgImg 
+                            ? (currentMode === "dark"
+                              ? "bg-[#1c1c1c] text-white"
+                              : "bg-gray-200 text-black")
+                            : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                         } rounded-md relative hover:shadow-lg text-sm`}
                       >
-                        <div className={`${currentMode === "dark" ? "border-[#333333]" : "border-primary"} grid grid-cols-12 border-t-2 rounded-md`}>
+                        <div className={`border-primary grid grid-cols-12 border-t-2 rounded-md`}>
                           <div className="col-span-10 p-2">
                             <div className="flex items-center m-1 mb-4">
                               {/* IMAGE  */}
@@ -174,7 +181,7 @@ const UserTable = ({}) => {
                                 <h1 className="font-bold text-base">
                                   {item?.userName}
                                 </h1>
-                                <p className="text-primary">
+                                <p className="font-semibold">
                                   {item?.position}
                                 </p>
                               </div>
@@ -191,17 +198,17 @@ const UserTable = ({}) => {
                               </div>
 
                               {item?.status !== 1 ? (
-                                <p className="text-red-600 text-xs">DEACTIVATED ACCOUNT</p>
+                                <p className="text-red-600 text-xs font-semibold">DEACTIVATED ACCOUNT</p>
                               ) : (
-                                <p className="text-green-600 text-xs">ACTIVE ACCOUNT</p>
+                                <p className="text-green-600 text-xs font-semibold">ACTIVE ACCOUNT</p>
                               )}
                             </div>
                           </div>
 
                           <div className={`col-span-2 px-2 rounded-md`}>
-                            <div className={`${currentMode === "dark" ? "bg-[#333333]" : "bg-transparent"} flex flex-col space-y-3 justify-center p-1 rounded-b-full`}>
+                            <div className={`flex flex-col space-y-1 justify-center p-1 pt-3 rounded-b-full`}>
                               {/* VIEW  */}
-                              <div className="w-full flex justify-center my-1">
+                              <div className="w-full flex justify-center">
                                 <Tooltip title="View User Details" arrow>
                                   <button
                                     onClick={() => handleModel(item?.id)}
@@ -213,7 +220,7 @@ const UserTable = ({}) => {
                               </div>
 
                               {/* EDIT  */}
-                              <div className="w-full flex justify-center items-center my-1 mb-5">
+                              <div className="w-full flex justify-center items-center">
                                 <Tooltip title="Edit User Details" arrow>
                                   <button 
                                     onClick={() =>
@@ -230,7 +237,7 @@ const UserTable = ({}) => {
 
                               {/* DEACTIVATE & REACTIVATE */}
                               {item?.role !== 1 && (
-                                <div className="w-full flex justify-center my-1">
+                                <div className="w-full flex justify-center">
                                   {hasPermission("users_delete") ? (
                                     <>
                                       {item?.status === 1 ? (
