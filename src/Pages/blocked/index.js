@@ -10,7 +10,13 @@ import {RxCaretDown} from "react-icons/rx";
 import IPsList from "../../Components/blocked/IPsList";
 
 const BlockedIps = () => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { 
+    currentMode, 
+    BACKEND_URL,
+    themeBgImg,
+    blurDarkColor,
+    blurLightColor
+  } = useStateContext();
   const [loading, setLoading] = useState(true);
   const [IPs, setIPs] = useState([]);
 
@@ -59,11 +65,11 @@ const BlockedIps = () => {
   return (
     <>
       <div
-        className={`w-full pl-3  ${
-          currentMode === "dark" ? "bg-black" : "bg-white"
+        className={`w-full p-4  ${
+          !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
         }`}
       >
-        <div className="w-full flex items-center py-3 mb-3">
+        <div className="w-full flex items-center pb-3 mb-1">
           <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
             className={`text-lg font-semibold ${
@@ -76,14 +82,18 @@ const BlockedIps = () => {
           </h1>
         </div>
 
-          <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}
+          <Accordion 
+            expanded={expanded === 'panel1'} 
+            onChange={handleChange('panel1')}
             sx={{
-              backgroundColor: currentMode === "dark" ? "#1C1C1C !important" : "#EEEEEE !important",
+              backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#1C1C1C" : "#EBEBEB") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
               color: currentMode === "dark" ? "#FFFFFF" : "#000000",
+              borderRadius: "10px",
+              marginBottom: "20px",
             }}
           >
             <AccordionSummary
-              expandIcon={<RxCaretDown size={28} color={"#AAAAAA"}/>}
+              expandIcon={<RxCaretDown size={28} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />}
               aria-controls="panel1bh-content"
               id="panel1bh-header"
             >
@@ -105,12 +115,14 @@ const BlockedIps = () => {
 
           <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}
             sx={{
-              backgroundColor: currentMode === "dark" ? "#1C1C1C !important" : "#EEEEEE !important",
+              backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#1C1C1C" : "#EBEBEB") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
               color: currentMode === "dark" ? "#FFFFFF" : "#000000",
+              borderRadius: "10px",
+              marginBottom: "20px",
             }}
           >
             <AccordionSummary
-              expandIcon={<RxCaretDown size={28} color={"#AAAAAA"}/>}
+              expandIcon={<RxCaretDown size={28} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />}
               aria-controls="panel2bh-content"
               id="panel2bh-header"
             >
@@ -126,14 +138,17 @@ const BlockedIps = () => {
                 </div>
             </AccordionDetails>
           </Accordion>
+
           <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}
             sx={{
-              backgroundColor: currentMode === "dark" ? "#1C1C1C !important" : "#EEEEEE !important",
+              backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#1C1C1C" : "#EBEBEB") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
               color: currentMode === "dark" ? "#FFFFFF" : "#000000",
+              borderRadius: "10px",
+              marginBottom: "20px",
             }}
           >
             <AccordionSummary
-              expandIcon={<RxCaretDown size={28} color={"#AAAAAA"}/>}
+              expandIcon={<RxCaretDown size={28} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />}
               aria-controls="panel3bh-content"
               id="panel3bh-header"
             >
@@ -152,37 +167,6 @@ const BlockedIps = () => {
                 </div>
             </AccordionDetails>
           </Accordion>
-
-
-        {/* <div className="pl-3">
-          <div className="my-5 md:mt-2">
-            <div>
-              <IPsList
-                isRequest={true}
-                heading="Requests"
-                ips={IPs?.filter((ip) => !Number(ip?.status))}
-                fetchBlockedIPs={fetchBlockedIPs}
-              />
-            </div>
-
-            <div>
-              <IPsList
-                heading="Blocked"
-                fetchBlockedIPs={fetchBlockedIPs}
-                ips={IPs?.filter((ip) => Number(ip?.status) === 1)}
-              />
-            </div>
-
-            <div>
-              <IPsList
-                isRejected={true}
-                heading="Rejected"
-                ips={IPs?.filter((ip) => Number(ip?.status) === 2)}
-                fetchBlockedIPs={fetchBlockedIPs}
-              />
-            </div>
-          </div>
-        </div> */}
       </div>
     </>
   );

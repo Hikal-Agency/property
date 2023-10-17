@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import SingleUser from "./SingleUser";
 import usePermission from "../../utils/usePermission";
 import DeleteUser from "./DeleteUser";
+import EditUserModal from "./EditUserModal";
 
 import { MdOutlineCall, MdOutlinePermContactCalendar } from "react-icons/md";
 import { TfiEmail } from "react-icons/tfi";
@@ -18,106 +19,16 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { HiOutlineBan } from "react-icons/hi";
 import { AiFillUnlock } from "react-icons/ai";
 
-// const UserTable = ({ user }) => {
-//   const [loading, setloading] = useState(false);
-//   const { currentMode, BACKEND_URL, pageState, setpageState } =
-//     useStateContext();
-//   const [page, setPage] = useState("1");
-//   const [maxPage, setMaxPage] = useState(0);
-//   const [userData, setUserData] = useState([]);
-
-//   const handlePageChange = (event, value) => {
-//     setPage(value);
-//     setUserData(user?.managers?.data);
-//   };
-
-//   useEffect(() => {
-//     setUserData(user?.managers?.data);
-//     setMaxPage(user?.managers?.last_page);
-//   }, [user]);
-
-//   console.log("UsersData: ", userData);
-
-//   return (
-//     <>
-//       <div className="min-h-screen">
-//         {loading ? (
-//           <Loader />
-//         ) : (
-//           <div
-//             className={`w-full  ${
-//               currentMode === "dark" ? "bg-black" : "bg-white"
-//             }`}
-//           >
-//             <div className="px-5">
-//               <div className="mt-5 md:mt-2">
-//                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
-//                   {userData?.map((item, index) => {
-//                     return (
-//                       <div
-//                         key={index}
-//                         className={`${
-//                           currentMode === "dark"
-//                             ? "bg-[#1c1c1c] text-white"
-//                             : "bg-gray-200 text-black"
-//                         } p-3 rounded-md `}
-//                       >
-//                         {item?.displayImg ? (
-//                           <img
-//                             src={item?.displayImg}
-//                             className="rounded-md cursor-pointer h-[50px] w-[50px] object-cover"
-//                             alt=""
-//                           />
-//                         ) : (
-//                           <Avatar
-//                             alt="User"
-//                             variant="circular"
-//                             style={{ width: "30px", height: "30px" }}
-//                           />
-//                         )}
-//                         <div className="mt-2 space-y-1 overflow-hidden">
-//                           <h1 className="font-bold">{item?.userName}</h1>
-//                           <p className="text-sm font-semibold text-red-600">
-//                             {item?.position}
-//                           </p>
-
-//                           <hr />
-
-//                           <p className="text-sm">{item?.userContact}</p>
-//                           <p className="text-sm">{item?.userEmail}</p>
-//                           {item?.status === 0 ? (
-//                             <p className="text-sm text-red-600">Deactive</p>
-//                           ) : (
-//                             <p className="text-sm text-green-600">Active</p>
-//                           )}
-//                         </div>
-//                       </div>
-//                     );
-//                   })}
-//                 </div>
-//               </div>
-//             </div>
-
-//             <Stack spacing={2} marginTop={2}>
-//               <Pagination
-//                 count={maxPage}
-//                 color="error"
-//                 onChange={handlePageChange}
-//                 style={{ margin: "auto" }}
-//               />
-//             </Stack>
-//           </div>
-//         )}
-//         {/* <Footer /> */}
-//       </div>
-//     </>
-//   );
-// };
-
 const UserTable = ({}) => {
   const [loading, setLoading] = useState(false);
-  const { currentMode, BACKEND_URL, pageState, setpageState, primaryColor } =
-    useStateContext();
+  const { 
+    currentMode, 
+    BACKEND_URL, 
+    pageState, 
+    setpageState, 
+    primaryColor,
+    themeBgImg
+  } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
   const [openModel, setOpenModel] = useState(false);
@@ -129,6 +40,14 @@ const UserTable = ({}) => {
   const [currentPage, setCurrentPage] = useState();
   const token = localStorage.getItem("auth-token");
   const { hasPermission } = usePermission();
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const handleCloseEditModal = () => setEditModalOpen(false);
+  const handleEditModal = (id) => {
+    setUserId(id);
+    setEditModalOpen(true);
+    // handleLeadModelClose();
+  };
 
   const handlePageChange = (event, value) => {
     console.log(value);
@@ -209,14 +128,20 @@ const UserTable = ({}) => {
             fetchUser={fetchUsers}
           />
         )}
+        {editModalOpen && (
+          <EditUserModal
+            UserData={userID}
+            handleCloseEditModal={handleCloseEditModal}
+            setEditModalOpen={setEditModalOpen}
+            fetchUser={fetchUsers}
+          />
+        )}
+
         {loading ? (
           <Loader />
         ) : (
           <div
-            className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
-          >
+            className={`w-full`}>
             <div className="px-5">
               <div className="mt-5 md:mt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-3 pb-3">
@@ -225,12 +150,16 @@ const UserTable = ({}) => {
                       <div
                         key={index}
                         className={`${
-                          currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-gray-200 text-black"
+                          !themeBgImg 
+                            ? (currentMode === "dark"
+                              ? "bg-[#1c1c1c] text-white"
+                              : "bg-gray-200 text-black")
+                            : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                         } rounded-md relative hover:shadow-lg text-sm`}
                       >
-                        <div className={`${currentMode === "dark" ? "border-[#333333]" : "border-primary"} grid grid-cols-12 border-t-2 rounded-md`}>
+                        <div className={`border-primary grid grid-cols-12 border-t-2 rounded-md`}>
                           <div className="col-span-10 p-2">
                             <div className="flex items-center m-1 mb-4">
                               {/* IMAGE  */}
@@ -252,7 +181,7 @@ const UserTable = ({}) => {
                                 <h1 className="font-bold text-base">
                                   {item?.userName}
                                 </h1>
-                                <p className="text-primary">
+                                <p className="font-semibold">
                                   {item?.position}
                                 </p>
                               </div>
@@ -269,17 +198,17 @@ const UserTable = ({}) => {
                               </div>
 
                               {item?.status !== 1 ? (
-                                <p className="text-red-600 text-xs">DEACTIVATED ACCOUNT</p>
+                                <p className="text-red-600 text-xs font-semibold">DEACTIVATED ACCOUNT</p>
                               ) : (
-                                <p className="text-green-600 text-xs">ACTIVE ACCOUNT</p>
+                                <p className="text-green-600 text-xs font-semibold">ACTIVE ACCOUNT</p>
                               )}
                             </div>
                           </div>
 
                           <div className={`col-span-2 px-2 rounded-md`}>
-                            <div className={`${currentMode === "dark" ? "bg-[#333333]" : "bg-transparent"} flex flex-col space-y-3 justify-center p-1 rounded-b-full`}>
+                            <div className={`flex flex-col space-y-1 justify-center p-1 pt-3 rounded-b-full`}>
                               {/* VIEW  */}
-                              <div className="w-full flex justify-center my-1">
+                              <div className="w-full flex justify-center">
                                 <Tooltip title="View User Details" arrow>
                                   <button
                                     onClick={() => handleModel(item?.id)}
@@ -291,20 +220,24 @@ const UserTable = ({}) => {
                               </div>
 
                               {/* EDIT  */}
-                              <div className="w-full flex justify-center items-center my-1 mb-5">
+                              <div className="w-full flex justify-center items-center">
                                 <Tooltip title="Edit User Details" arrow>
-                                  <Link
-                                    to={`/updateuser/${item?.id}`}
+                                  <button 
+                                    onClick={() =>
+                                      handleEditModal(
+                                        item?.id
+                                      )
+                                    }
                                     className="rounded-full bg-primary p-2"
                                   >
                                     <AiOutlineEdit size={18} className={`text-white hover:text-black`} />
-                                  </Link>
+                                  </button>
                                 </Tooltip>
                               </div>
 
                               {/* DEACTIVATE & REACTIVATE */}
                               {item?.role !== 1 && (
-                                <div className="w-full flex justify-center my-1">
+                                <div className="w-full flex justify-center">
                                   {hasPermission("users_delete") ? (
                                     <>
                                       {item?.status === 1 ? (

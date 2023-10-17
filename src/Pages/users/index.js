@@ -49,6 +49,7 @@ const Users = () => {
     setpageState,
     User,
     darkModeColors,
+    themeBgImg
   } = useStateContext();
   const { hasPermission } = usePermission();
 
@@ -608,7 +609,7 @@ const Users = () => {
       <div className="flex min-h-screen">
         <div
           className={`w-full p-4 ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+            !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
           <div className="mb-10">
@@ -655,11 +656,6 @@ const Users = () => {
                     <TextField
                       placeholder="Search.."
                       ref={searchRef}
-                      sx={{
-                        "& input": {
-                          borderBottom: "2px solid #ffffff6e",
-                        },
-                      }}
                       variant="standard"
                       onKeyUp={handleKeyUp}
                       onInput={handleSearch}
@@ -667,7 +663,7 @@ const Users = () => {
                         startAdornment: (
                           <InputAdornment position="start">
                             <IconButton sx={{ padding: 1 }}>
-                              <BsSearch className={`text-[#AAAAAA]`} size={18} />
+                              <BsSearch className={`${currentMode === "dark" ? "text-white" : "text-black"}`} size={18} />
                             </IconButton>
                           </InputAdornment>
                         ),
@@ -681,7 +677,7 @@ const Users = () => {
                 sx={{
                   ...darkModeColors,
                   "& .MuiTabs-indicator": {
-                    // height: "100%",
+                    // height: "20%",
                     borderRadius: "5px",
                   },
                   "& .Mui-selected": {
@@ -689,9 +685,7 @@ const Users = () => {
                     zIndex: "1",
                   },
                 }}
-                className={`mx-5 rounded-md overflow-hidden ${
-                  currentMode === "dark" ? "bg-black" : "bg-white"
-                } `}
+                className={`rounded-md overflow-hidden`}
               >
                 <Tabs
                   value={value}

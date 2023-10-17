@@ -188,7 +188,7 @@ import {
                     style={style}
                     className={` ${
                         currentMode === "dark"
-                            ? "bg-[#1C1C1C] text-white"
+                            ? "bg-[#000000] text-white"
                             : "bg-[#FFFFFF] text-black"
                         }
                          h-[100vh] w-[80vw] rounded-l-md overflow-y-scroll
@@ -221,10 +221,10 @@ import {
                         <div className={` ${currentMode === "dark" ? "text-white" : "text-black"} grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5`}>
                             {/* CONTACT DETAILS  */}
                             <div className="card-hover shadow-lg rounded-lg w-full h-fit">
-                                <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} text-center font-semibold p-3 uppercase rounded-t-lg`}>
+                                <div className={`${currentMode === "dark" ? "bg-primary" : "bg-[#EEEEEE]"} text-center font-semibold p-3 uppercase rounded-t-lg`}>
                                     Contact Details
                                 </div>
-                                <div className="px-4">
+                                <div className={`${currentMode === "dark" && "bg-[#1C1C1C]"} rounded-b-lg p-4`}>
                                     <div className="grid grid-cols-6 my-5">
                                         <div className="px-2 flex justify-center">
                                             <FaPhoneAlt size={16} color={"#AAAAAA"} />
@@ -268,10 +268,10 @@ import {
 
                             {/* PERSONAL DETAILS */}
                             <div className="card-hover shadow-lg rounded-lg w-full h-fit">
-                                <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} text-center font-semibold p-3 uppercase rounded-t-lg`}>
+                                <div className={`${currentMode === "dark" ? "bg-primary" : "bg-[#EEEEEE]"} text-center font-semibold p-3 uppercase rounded-t-lg`}>
                                     Personal Details
                                 </div>
-                                <div className="px-4">
+                                <div className={`${currentMode === "dark" && "bg-[#1C1C1C]"} rounded-b-lg p-4`}>
                                     <div className="grid grid-cols-2 my-5 px-4">
                                         <div className="text-start">
                                             Gender
@@ -309,10 +309,10 @@ import {
 
                             {/* EMPLOYEE DETAILS  */}
                             <div className="card-hover shadow-lg rounded-lg w-full h-fit">
-                                <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} text-center font-semibold p-3 uppercase rounded-t-lg`}>
+                                <div className={`${currentMode === "dark" ? "bg-primary" : "bg-[#EEEEEE]"} text-center font-semibold p-3 uppercase rounded-t-lg`}>
                                     Employee Details
                                 </div>
-                                <div className="px-4">
+                                <div className={`${currentMode === "dark" && "bg-[#1C1C1C]"} rounded-b-lg p-4`}>
                                     <div className="grid grid-cols-2 my-5 px-4">
                                         <div className="text-start">
                                             Profession
@@ -359,11 +359,11 @@ import {
                                 }}
                                 disabled={loading ? true : false}
                             >
-                                <div className="shadow-lg rounded-lg w-full h-fit">
+                                <div className="shadow-lg rounded-lg w-full h-fit card-hover">
                                 <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} text-center font-semibold p-3 uppercase rounded-t-lg`}>
                                     Edit user details
                                 </div>
-                                <div className="p-5">
+                                <div className={`${currentMode === "dark" && "bg-[#1C1C1C]"} rounded-b-lg p-5`}>
                                     <Box sx={darkModeColors} className="py-5">
                                     <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-5">
                                         {/* POSITION  */}

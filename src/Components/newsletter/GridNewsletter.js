@@ -13,7 +13,7 @@ import {
 const GridNewsletter = ({ pageState, setpageState }) => {
   console.log("Newsletter state: ", pageState);
   const [loading, setLoading] = useState(false);
-  const { currentMode, primaryColor } = useStateContext();
+  const { currentMode, primaryColor, themeBgImg } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [notesData, setUserData] = useState([]);
 
@@ -39,28 +39,29 @@ const GridNewsletter = ({ pageState, setpageState }) => {
           <Loader />
         ) : (
           <div
-            className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
+            className={`w-full`}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 pb-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 pb-3">
               {notesData?.length > 0 &&
                 notesData?.map((item, index) => {
                   return (
                     <div
                       key={index}
                       className={`${
-                        currentMode === "dark"
+                        !themeBgImg ? (currentMode === "dark"
                           ? "bg-[#1c1c1c] text-white"
-                          : "bg-[#EEEEEE] text-black"
-                      } p-4 rounded-md `}
+                          : "bg-[#EEEEEE] text-black")
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black")
+                      } p-4 rounded-lg shadow-md `}
                     >
                       <div className="grid grid-cols-8 gap-2 items-center">
                         <div className="col-span-7">
                           <h1 className="col-span-7 font-bold mb-2">
                             {item?.email}
                           </h1>
-                          <p className="text-xs text-[#AAAAAA]">
+                          <p className="text-xs">
                             Subscribed on {item?.creationDate}
                           </p>
                         </div>

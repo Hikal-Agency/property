@@ -47,6 +47,9 @@ export const ContextProvider = ({ children }) => {
   const [permits, setPermits] = useState("");
   const [primaryColor, setPrimaryColor] = useState("default");
   const [themeBgImg, setThemeBgImg] = useState("");
+  const [blurDarkColor, setBlurDarkColor] = useState("rgba(28,28,28,0.5)");
+  const [blurLightColor, setBlurLightColor] = useState("rgba(238,238,238,0.5)");
+  const [blurWhiteColor, setBlurWhiteColor] = useState("rgba(255,255,255,0.5)");
   const [session, setSession] = useState({
     expiresIn: localStorage.getItem("expires_in"),
     accessToken: localStorage.getItem("access_token"),
@@ -499,6 +502,12 @@ export const ContextProvider = ({ children }) => {
         setUserCredits,
         primaryColor,
         setPrimaryColor,
+        blurDarkColor,
+        setBlurDarkColor,
+        blurLightColor,
+        setBlurLightColor,
+        blurWhiteColor,
+        setBlurWhiteColor,
         themeBgImg,
         setThemeBgImg,
       }}
